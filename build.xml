@@ -109,6 +109,8 @@
             <include name="imp/**/*.class" />
             <include name="imp/**/*.gif" />
             <include name="imp/**/*.png" />
+            <include name="imp/**/*.JPG" />
+            <include name="imp/**/*.jpg" />
             <exclude name="**/package-info.java" />
         </fileset>
     </copy>
