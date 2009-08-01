@@ -1,32 +1,32 @@
 <project name="Impro-Visor" default="compile" basedir=".">
-    <description>
- * Build-file for Impro-Visor
 
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
- * Impro-Visor is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * Impro-Visor is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Impro-Visor; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-    </description>
+<description>
+Build-file for Impro-Visor
+
+Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+
+Impro-Visor is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+Impro-Visor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+merchantability or fitness for a particular purpose.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Impro-Visor; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+</description>
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor400"            />
-    <property name="dist-mac"               value="improvisor400-mac"        />
-    <property name="dist-win"               value="improvisor400-win"        />
-    <property name="zipName"                value="improvisor400.zip"        />
-    <property name="zipMacName"             value="improvisor400mac.zip"     />
+    <property name="distDir"                value="improvisor401"            />
+    <property name="dist-mac"               value="improvisor401-mac"        />
+    <property name="dist-win"               value="improvisor401-win"        />
+    <property name="zipName"                value="improvisor401.zip"        />
+    <property name="zipMacName"             value="improvisor401mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
