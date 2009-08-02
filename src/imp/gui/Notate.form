@@ -8834,7 +8834,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="B"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Enter Melody"/>
+                <Property name="text" type="java.lang.String" value="Enter Melody from Text&#xa;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Enter melody currently in the text entry window."/>
               </Properties>
               <Events>
@@ -8846,7 +8846,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+B"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Enter Chords"/>
+                <Property name="text" type="java.lang.String" value="Enter Chords from Text&#xa;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Enter chords currently in text entry window."/>
                 <Property name="actionCommand" type="java.lang.String" value="Enter Chords2"/>
               </Properties>
@@ -8859,7 +8859,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+B"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Enter Melody and Chords"/>
+                <Property name="text" type="java.lang.String" value="Enter Melody and Chords from Text&#xa;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Enter chords and melody currently in the text entry window."/>
               </Properties>
               <Events>
@@ -8867,128 +8867,6 @@
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator13">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpSemitone">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="E"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Up Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one half-step."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpSemitoneActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeChordsUpSemitone">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+E"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Chords Up Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords up one half-step."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsUpSemitoneActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeBothUpSemitone">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+E"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Both Up Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords up one half-step."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothUpSemitoneActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpHarmonically">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="W"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Up Harmonically"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody upward, consistently with the chord/scale."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpHarmonicallyActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpOctave">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="T"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Up Octave"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one octave."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpOctaveActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyDownSemitone">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="D"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Down Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one half-step."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownSemitoneActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeChordsDownSemitone">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+D"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Chords Down Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords down one half-step."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsDownSemitoneActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeBothDownSemitone">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+D"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Both Down Semitone"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords down one half-step."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothDownSemitoneActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyDownHarmonically">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="S"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Down Harmonically&#xa;"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down, consistently with the chord/scale."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownHarmonicallyActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyDownOctave">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="G"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Transpose Melody Down Octave"/>
-                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one octave."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownOctaveActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator19">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="reverseMelody">
               <Properties>
@@ -9138,6 +9016,133 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resolvePitchesActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="transposeMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Transpose"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpSemitone">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="E"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Up Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one half-step."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpSemitoneActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeChordsUpSemitone">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+E"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Chords Up Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords up one half-step."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsUpSemitoneActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeBothUpSemitone">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+E"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Both Up Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords up one half-step."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothUpSemitoneActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpHarmonically">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="W"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Up Harmonically"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody upward, consistently with the chord/scale."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpHarmonicallyActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyUpOctave">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="T"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Up Octave"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody up one octave."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyUpOctaveActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyDownSemitone">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="D"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Down Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one half-step."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownSemitoneActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeChordsDownSemitone">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+D"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Chords Down Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected chords down one half-step."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeChordsDownSemitoneActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeBothDownSemitone">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+D"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Both Down Semitone"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody and chords down one half-step."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeBothDownSemitoneActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyDownHarmonically">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="S"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Down Harmonically&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down, consistently with the chord/scale."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownHarmonicallyActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="transposeMelodyDownOctave">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="G"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Transpose Melody Down Octave"/>
+                <Property name="toolTipText" type="java.lang.String" value="Transpose the selected melody down one octave."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeMelodyDownOctaveActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

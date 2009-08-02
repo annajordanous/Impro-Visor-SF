@@ -2251,17 +2251,6 @@ public class Notate
         enterChordsMI = new javax.swing.JMenuItem();
         enterBothMI = new javax.swing.JMenuItem();
         jSeparator13 = new javax.swing.JSeparator();
-        transposeMelodyUpSemitone = new javax.swing.JMenuItem();
-        transposeChordsUpSemitone = new javax.swing.JMenuItem();
-        transposeBothUpSemitone = new javax.swing.JMenuItem();
-        transposeMelodyUpHarmonically = new javax.swing.JMenuItem();
-        transposeMelodyUpOctave = new javax.swing.JMenuItem();
-        transposeMelodyDownSemitone = new javax.swing.JMenuItem();
-        transposeChordsDownSemitone = new javax.swing.JMenuItem();
-        transposeBothDownSemitone = new javax.swing.JMenuItem();
-        transposeMelodyDownHarmonically = new javax.swing.JMenuItem();
-        transposeMelodyDownOctave = new javax.swing.JMenuItem();
-        jSeparator19 = new javax.swing.JSeparator();
         reverseMelody = new javax.swing.JMenuItem();
         invertMelody = new javax.swing.JMenuItem();
         expandMelodyBy2 = new javax.swing.JMenuItem();
@@ -2278,6 +2267,17 @@ public class Notate
         insertRestMeasure = new javax.swing.JMenuItem();
         addRestMI = new javax.swing.JMenuItem();
         resolvePitches = new javax.swing.JMenuItem();
+        transposeMenu = new javax.swing.JMenu();
+        transposeMelodyUpSemitone = new javax.swing.JMenuItem();
+        transposeChordsUpSemitone = new javax.swing.JMenuItem();
+        transposeBothUpSemitone = new javax.swing.JMenuItem();
+        transposeMelodyUpHarmonically = new javax.swing.JMenuItem();
+        transposeMelodyUpOctave = new javax.swing.JMenuItem();
+        transposeMelodyDownSemitone = new javax.swing.JMenuItem();
+        transposeChordsDownSemitone = new javax.swing.JMenuItem();
+        transposeBothDownSemitone = new javax.swing.JMenuItem();
+        transposeMelodyDownHarmonically = new javax.swing.JMenuItem();
+        transposeMelodyDownOctave = new javax.swing.JMenuItem();
         viewMenu = new javax.swing.JMenu();
         oneAutoMI = new javax.swing.JMenuItem();
         autoAdjustMI = new javax.swing.JCheckBoxMenuItem();
@@ -3609,7 +3609,7 @@ public class Notate
 
         loadBaseGrammarBtn.setBackground(Color.yellow
         );
-        loadBaseGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        loadBaseGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         loadBaseGrammarBtn.setText("<html><b>Step 1</b>: Load the grammar on which you wish to build, such as Bare.grammar.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This step also clears any accumulated productions from prior use of the learning tool.</html>  ");
         loadBaseGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loadBaseGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3632,7 +3632,7 @@ public class Notate
 
         saveGrammarAsButton.setBackground(Color.yellow
         );
-        saveGrammarAsButton.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        saveGrammarAsButton.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         saveGrammarAsButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveGrammarAsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         saveGrammarAsButton.setLabel("<html><b>Step 2</b>: <b>IMPORTANT</b>: This step will use <b>Save as ...</b> in the Grammar menu to save your new grammar under a new name, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; in case you want to return to the old grammar.\n<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.</html>  ");
@@ -3653,7 +3653,7 @@ public class Notate
         grammarLearningPanel.add(saveGrammarAsButton, gridBagConstraints);
 
         openCorpusBtn.setBackground(Color.orange);
-        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         openCorpusBtn.setActionCommand("<html><b>Step 5</b>: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.</html>");
         openCorpusBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openCorpusBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3676,7 +3676,7 @@ public class Notate
         grammarLearningPanel.add(openCorpusBtn, gridBagConstraints);
 
         toGrammarBtn.setBackground(Color.green);
-        toGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        toGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         toGrammarBtn.setText("<html><b>Step 5</b>: Click this button to create and save the grammar and Soloist file. \n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are two <b>other alternatives</b> at this point:\n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a, Quit by closing the window, with no changes.\n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. Return to Step 4 and learn from other corpuses of solos.\n</html>");
         toGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         toGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3699,7 +3699,7 @@ public class Notate
         grammarLearningPanel.add(toGrammarBtn, gridBagConstraints);
         toGrammarBtn.getAccessibleContext().setAccessibleName("Add Accumulation to Grammar and Create Grammar (and Soloist) File\n");
 
-        learningStep0Label.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        learningStep0Label.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         learningStep0Label.setText("<html>Please follow these steps to learn a new grammar from a corpus of solos as a folder of leadsheets. <br>Click the rectangular buttons below from top to bottom.</html>  ");
         learningStep0Label.setMaximumSize(new java.awt.Dimension(2147483647, 90));
         learningStep0Label.setMinimumSize(new java.awt.Dimension(400, 85));
@@ -3714,7 +3714,7 @@ public class Notate
         grammarLearningPanel.add(learningStep0Label, gridBagConstraints);
 
         testGeneration.setBackground(Color.green);
-        testGeneration.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        testGeneration.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         testGeneration.setText("<html><b>Step 6</b>: Press this button to generate solos with your Learned grammar</html>");
         testGeneration.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         testGeneration.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -9218,7 +9218,7 @@ public class Notate
         editMenu.add(jSeparator16);
 
         enterMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
-        enterMelodyMI.setText("Enter Melody");
+        enterMelodyMI.setText("Enter Melody from Text\n");
         enterMelodyMI.setToolTipText("Enter melody currently in the text entry window.");
         enterMelodyMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -9228,7 +9228,7 @@ public class Notate
         editMenu.add(enterMelodyMI);
 
         enterChordsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.SHIFT_MASK));
-        enterChordsMI.setText("Enter Chords");
+        enterChordsMI.setText("Enter Chords from Text\n");
         enterChordsMI.setToolTipText("Enter chords currently in text entry window.");
         enterChordsMI.setActionCommand("Enter Chords2");
         enterChordsMI.addActionListener(new java.awt.event.ActionListener() {
@@ -9239,7 +9239,7 @@ public class Notate
         editMenu.add(enterChordsMI);
 
         enterBothMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
-        enterBothMI.setText("Enter Melody and Chords");
+        enterBothMI.setText("Enter Melody and Chords from Text\n");
         enterBothMI.setToolTipText("Enter chords and melody currently in the text entry window.");
         enterBothMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -9248,107 +9248,6 @@ public class Notate
         });
         editMenu.add(enterBothMI);
         editMenu.add(jSeparator13);
-
-        transposeMelodyUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
-        transposeMelodyUpSemitone.setText("Transpose Melody Up Semitone");
-        transposeMelodyUpSemitone.setToolTipText("Transpose the selected melody up one half-step.");
-        transposeMelodyUpSemitone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeMelodyUpSemitoneActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeMelodyUpSemitone);
-
-        transposeChordsUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK));
-        transposeChordsUpSemitone.setText("Transpose Chords Up Semitone");
-        transposeChordsUpSemitone.setToolTipText("Transpose the selected chords up one half-step.");
-        transposeChordsUpSemitone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeChordsUpSemitoneActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeChordsUpSemitone);
-
-        transposeBothUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        transposeBothUpSemitone.setText("Transpose Both Up Semitone");
-        transposeBothUpSemitone.setToolTipText("Transpose the selected melody and chords up one half-step.");
-        transposeBothUpSemitone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeBothUpSemitoneActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeBothUpSemitone);
-
-        transposeMelodyUpHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, 0));
-        transposeMelodyUpHarmonically.setText("Transpose Melody Up Harmonically");
-        transposeMelodyUpHarmonically.setToolTipText("Transpose the selected melody upward, consistently with the chord/scale.");
-        transposeMelodyUpHarmonically.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeMelodyUpHarmonicallyActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeMelodyUpHarmonically);
-
-        transposeMelodyUpOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
-        transposeMelodyUpOctave.setText("Transpose Melody Up Octave");
-        transposeMelodyUpOctave.setToolTipText("Transpose the selected melody up one octave.");
-        transposeMelodyUpOctave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeMelodyUpOctaveActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeMelodyUpOctave);
-
-        transposeMelodyDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
-        transposeMelodyDownSemitone.setText("Transpose Melody Down Semitone");
-        transposeMelodyDownSemitone.setToolTipText("Transpose the selected melody down one half-step.");
-        transposeMelodyDownSemitone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeMelodyDownSemitoneActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeMelodyDownSemitone);
-
-        transposeChordsDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK));
-        transposeChordsDownSemitone.setText("Transpose Chords Down Semitone");
-        transposeChordsDownSemitone.setToolTipText("Transpose the selected chords down one half-step.");
-        transposeChordsDownSemitone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeChordsDownSemitoneActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeChordsDownSemitone);
-
-        transposeBothDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        transposeBothDownSemitone.setText("Transpose Both Down Semitone");
-        transposeBothDownSemitone.setToolTipText("Transpose the selected melody and chords down one half-step.");
-        transposeBothDownSemitone.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeBothDownSemitoneActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeBothDownSemitone);
-
-        transposeMelodyDownHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
-        transposeMelodyDownHarmonically.setText("Transpose Melody Down Harmonically\n");
-        transposeMelodyDownHarmonically.setToolTipText("Transpose the selected melody down, consistently with the chord/scale.");
-        transposeMelodyDownHarmonically.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeMelodyDownHarmonicallyActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeMelodyDownHarmonically);
-
-        transposeMelodyDownOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
-        transposeMelodyDownOctave.setText("Transpose Melody Down Octave");
-        transposeMelodyDownOctave.setToolTipText("Transpose the selected melody down one octave.");
-        transposeMelodyDownOctave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transposeMelodyDownOctaveActionPerformed(evt);
-            }
-        });
-        editMenu.add(transposeMelodyDownOctave);
-        editMenu.add(jSeparator19);
 
         reverseMelody.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, 0));
         reverseMelody.setText("Reverse selected melody");
@@ -9481,6 +9380,110 @@ public class Notate
         editMenu.add(resolvePitches);
 
         menuBar.add(editMenu);
+
+        transposeMenu.setText("Transpose");
+
+        transposeMelodyUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
+        transposeMelodyUpSemitone.setText("Transpose Melody Up Semitone");
+        transposeMelodyUpSemitone.setToolTipText("Transpose the selected melody up one half-step.");
+        transposeMelodyUpSemitone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeMelodyUpSemitoneActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeMelodyUpSemitone);
+
+        transposeChordsUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK));
+        transposeChordsUpSemitone.setText("Transpose Chords Up Semitone");
+        transposeChordsUpSemitone.setToolTipText("Transpose the selected chords up one half-step.");
+        transposeChordsUpSemitone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeChordsUpSemitoneActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeChordsUpSemitone);
+
+        transposeBothUpSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        transposeBothUpSemitone.setText("Transpose Both Up Semitone");
+        transposeBothUpSemitone.setToolTipText("Transpose the selected melody and chords up one half-step.");
+        transposeBothUpSemitone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeBothUpSemitoneActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeBothUpSemitone);
+
+        transposeMelodyUpHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, 0));
+        transposeMelodyUpHarmonically.setText("Transpose Melody Up Harmonically");
+        transposeMelodyUpHarmonically.setToolTipText("Transpose the selected melody upward, consistently with the chord/scale.");
+        transposeMelodyUpHarmonically.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeMelodyUpHarmonicallyActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeMelodyUpHarmonically);
+
+        transposeMelodyUpOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, 0));
+        transposeMelodyUpOctave.setText("Transpose Melody Up Octave");
+        transposeMelodyUpOctave.setToolTipText("Transpose the selected melody up one octave.");
+        transposeMelodyUpOctave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeMelodyUpOctaveActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeMelodyUpOctave);
+
+        transposeMelodyDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
+        transposeMelodyDownSemitone.setText("Transpose Melody Down Semitone");
+        transposeMelodyDownSemitone.setToolTipText("Transpose the selected melody down one half-step.");
+        transposeMelodyDownSemitone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeMelodyDownSemitoneActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeMelodyDownSemitone);
+
+        transposeChordsDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.SHIFT_MASK));
+        transposeChordsDownSemitone.setText("Transpose Chords Down Semitone");
+        transposeChordsDownSemitone.setToolTipText("Transpose the selected chords down one half-step.");
+        transposeChordsDownSemitone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeChordsDownSemitoneActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeChordsDownSemitone);
+
+        transposeBothDownSemitone.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        transposeBothDownSemitone.setText("Transpose Both Down Semitone");
+        transposeBothDownSemitone.setToolTipText("Transpose the selected melody and chords down one half-step.");
+        transposeBothDownSemitone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeBothDownSemitoneActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeBothDownSemitone);
+
+        transposeMelodyDownHarmonically.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
+        transposeMelodyDownHarmonically.setText("Transpose Melody Down Harmonically\n");
+        transposeMelodyDownHarmonically.setToolTipText("Transpose the selected melody down, consistently with the chord/scale.");
+        transposeMelodyDownHarmonically.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeMelodyDownHarmonicallyActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeMelodyDownHarmonically);
+
+        transposeMelodyDownOctave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
+        transposeMelodyDownOctave.setText("Transpose Melody Down Octave");
+        transposeMelodyDownOctave.setToolTipText("Transpose the selected melody down one octave.");
+        transposeMelodyDownOctave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeMelodyDownOctaveActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeMelodyDownOctave);
+
+        menuBar.add(transposeMenu);
 
         viewMenu.setMnemonic('v');
         viewMenu.setText("View");
@@ -24974,7 +24977,6 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator16;
     private javax.swing.JSeparator jSeparator17;
     private javax.swing.JSeparator jSeparator18;
-    private javax.swing.JSeparator jSeparator19;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator20;
     private javax.swing.JSeparator jSeparator21;
@@ -25293,6 +25295,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem transposeMelodyUpHarmonically;
     private javax.swing.JMenuItem transposeMelodyUpOctave;
     private javax.swing.JMenuItem transposeMelodyUpSemitone;
+    private javax.swing.JMenu transposeMenu;
     private javax.swing.JLabel transposeProbLabel;
     private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JSpinner transposeSpinner;
