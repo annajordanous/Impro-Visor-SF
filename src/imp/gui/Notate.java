@@ -10635,6 +10635,8 @@ private String getChordRedirectName(int row)
           }
       }
 
+    generatorFrame.toFront();
+
  }
 
     private void useGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useGrammarMIActionPerformed
@@ -10693,8 +10695,7 @@ private String getChordRedirectName(int row)
         }
 
       grammarfc.setCurrentDirectory(oldDirectory);
-
-      generatorFrame.requestFocus();
+      generatorFrame.toFront();
     }
 
     private void openGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGrammarMIActionPerformed
@@ -19879,7 +19880,7 @@ public boolean saveAsLeadsheetSwing()
             }
         }
 
-        staveRequestFocus();
+       staveRequestFocus();
     }
     
   /**
