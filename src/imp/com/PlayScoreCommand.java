@@ -80,6 +80,13 @@ public class PlayScoreCommand implements Command, Constants {
 
     private static final int ENDSCORE = -1;
 
+   /**
+    * The duration of the accompanying chord for single-note entry
+    */
+
+   private int oneNoteChordPlayValue = BEAT;
+
+
     public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms, MidiPlayListener listener, int loopCount, int transposition) {
         this(score, startTime, swing, ms, listener, loopCount, transposition, USEDRUMS);
     }
@@ -129,13 +136,33 @@ public class PlayScoreCommand implements Command, Constants {
             + startTime + ", endLimitIndex = " + endLimitIndex);
         score = score.copy();
 
-        // Temporary??
-
-
         // Use plain style for note entry
+        
         if( !useDrums )
         {
         ChordPart chords = score.getChordProg();
+
+        // If there is no chord on the slot starting the selection,
+        // we try to find the previous chord and use it.
+
+        int startSlot = (int)(startTime%chords.size());
+
+        if( chords.getChord(startSlot) == null )
+          {
+            for( int i = startSlot - 1; i >= 0; i-- )
+              {
+                Chord previousChord = chords.getChord(i);
+
+                if( previousChord != null )
+                  {
+                    Chord copy = previousChord.copy();
+                    copy.setRhythmValue(oneNoteChordPlayValue);
+                    chords.setChord(startSlot, copy);
+                    break;
+                  }
+              }
+          }
+
         SectionInfo info = new SectionInfo(chords);
         info.setStyle(swing ? "no-style-but-swing" : "no-style");
         chords.setSectionInfo(info);

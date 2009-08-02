@@ -98,11 +98,11 @@ public class ShiftPitchesCommand implements Command, Constants {
         
         doShift(shift);
         
-        if( ImproVisor.getPlay() ) {
-        ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
+//        if( ImproVisor.getPlay() ) {
+//        ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
 //            How it used to be: No chords were played.
 //            new PlayPartCommand(((MelodyPart)part).extract(startIndex, stopIndex)).execute();
-        }
+//        }
     }
     
     /**
