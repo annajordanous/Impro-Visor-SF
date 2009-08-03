@@ -3797,8 +3797,8 @@ public class StyleEditor
         extractionList.setColumns(20);
         extractionList.setRows(5);
         extractionList.setText("Style Extraction:\n\nThe process of extracting a style from a MIDI file attempts to capture the many\npatterns (also called \"rules\" herein) found in the performance, to obtain a\nselect number of patterns that best represent that style.  By picking\nExtraction->Extraction Preferences the user may change various aspects of this\nprocess.\n\n1. Bass Chord Tones\n\n    When this box is checked, it will cause bass notes to be classified as 'C'\n    in preference to '(X # d)' when applicable. Please refer to the bass bass section of this\n    help for more information on note classifications.  \n\n2. Merge Bass Rests\n\n    When this box is checked, rests in bass patterns will be removed and their\n    durations will be added to the notes preceeding them. This may lead to\n    smoother bass patterns.  \n\n3. Import\n\n    Boxes in this section that are not checked will not have patterns extracted.  \n\n4. Show Extraction\n\n    The process of extraction works by forming many candidate patterns from a MIDI file.\n    Those patterns are then put into groups of similar patterns. One pattern from each\n    group is then picked to represent that group. In this way, from many patterns, a\n    select few are able to represent the style of the song. By checking the show\n    extraction box, the user may see and interact with the grouping process.\n\nExtraction Editor \n\n1. Raw Rules\n    This pane shows every pattern that came from the MIDI file. Patterns are organized\n    by length and then by the group of which they are a part (a cluster). The add rule\n    button will add the pattern to the final group of selected pattern.  \n\n2. Selected Rules\n    This pane shows the selected patterns that came from the raw rules that will be\n    used to represent the style of the MIDI file. Patterns that the user does not want\n    included may be removed with the Remove Rule button.  \n\n3. Re-Generation\n    This button will cause the selected patterns to be created again. By changing\n    the following options, results differing results may be obtained:\n\n         a. Maximum Number of Clusters\n\n             By setting a maximum number of clusters, more patterns will be\n             put in the same group, resulting in fewer more unique select\n             patterns.\n\n         b. Start/End Beat\n\n            This changes where in the song the raw patterns are created from. \n            This attruibute is set by default to where the instrument\n            starts and stops.\n\n         c. Selected Part\n\n             This pane lists all instruments were found in the MIDI file. \n             Whichever instrument is selected is the one that will be used to\n             generate the raw patterns.   \n");
-        extractionList.setMinimumSize(new java.awt.Dimension(632, 640));
-        extractionList.setPreferredSize(new java.awt.Dimension(632, 640));
+        extractionList.setMinimumSize(new java.awt.Dimension(632, 1200));
+        extractionList.setPreferredSize(new java.awt.Dimension(632, 1200));
         extractionPane.setViewportView(extractionList);
 
         helpTabbedPane.addTab("Extraction", extractionPane);
@@ -3992,7 +3992,7 @@ public class StyleEditor
         gridBagConstraints.insets = new java.awt.Insets(3, 2, 0, 0);
         bassAttrPanel.add(bassLowOctave, gridBagConstraints);
 
-        bassBaseOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        bassBaseOctave.setFont(new java.awt.Font("Tahoma", 0, 10));
         bassBaseOctave.setMinimumSize(new java.awt.Dimension(100, 18));
         bassBaseOctave.setPreferredSize(new java.awt.Dimension(100, 18));
         bassBaseOctave.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -4220,7 +4220,7 @@ public class StyleEditor
         chordPanel.setLayout(new java.awt.GridBagLayout());
 
         muteChordToggle.setBackground(new java.awt.Color(255, 0, 0));
-        muteChordToggle.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        muteChordToggle.setFont(new java.awt.Font("Dialog", 1, 10));
         muteChordToggle.setText("Play");
         muteChordToggle.setToolTipText("Mute/unmute the preview chord.");
         muteChordToggle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
