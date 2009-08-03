@@ -1,4 +1,4 @@
-Impro-Visor project sources.
+Notes on Impro-Visor project sources:
 
 If doing GUI work of any kind, please use the Netbeans environment 6.5 or later.
 
@@ -12,4 +12,4 @@ Thanks.
 
 Bob Keller
 
-Impro-Visor Project Manager.
+Impro-Visor Project Director

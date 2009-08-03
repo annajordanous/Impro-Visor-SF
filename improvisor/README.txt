@@ -1,4 +1,5 @@
-Welcome to Impro-Visor (Improvisation Advisor) Version 4, from Bob Keller at Harvey Mudd College.
+Welcome to Impro-Visor (Improvisation Advisor) Version 4, 
+from Harvey Mudd College.
 
 If you need help, please post to the Yahoo! impro-visor user group:
 
@@ -27,7 +28,25 @@ You can download the latest version of Java free from:
  
 What you want is the JRE (Java Runtime Environment).
 
-I hope you enjoy using the program.
+You may address support questions by joining our Yahoo! group:
 
+    http://launch.groups.yahoo.com/group/impro-visor/
+
+or the mailing list at:
+
+    https://sourceforge.net/projects/impro-visor/
+
+I hope you enjoy using the program. 
+
+I am pleased to acknowledge contributions from the following developers:
+
+Stephen Jones, Aaron Wolin
+David Morrison, Martin Hunt, Steven Gomez
+Jim Herold, Brandy McMenamy, Sayuri Soejima
+Emma Carlson, Jon Gillick, Kevin Tang, Stephen Lee
+Chad Waters, John Goodman
+
+Sincerely,
 
 Bob Keller, Impro-Visor Project Director
+
