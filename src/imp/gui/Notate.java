@@ -10030,7 +10030,6 @@ public class Notate
     }//GEN-LAST:event_midiPrefsMIActionPerformed
 
     private void stylePrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stylePrefsMIActionPerformed
-
       changePrefTab(styleBtn, stylePreferences);
       showPreferencesDialog();
         
@@ -12052,7 +12051,7 @@ private String getChordRedirectName(int row)
     private void styleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleBtnActionPerformed
         
         changePrefTab(styleBtn, stylePreferences);
-        
+       
     }//GEN-LAST:event_styleBtnActionPerformed
     
     
@@ -12137,21 +12136,16 @@ private String getChordRedirectName(int row)
         button.setSelected(true);
         
         currentPrefButton = button;
-        
-        
-        
-        if(currentPrefTab == tab) {
-            
-            return;
-            
-        }
+
         
         currentPrefTab = tab;
+
+        //System.out.println("setting tab to " + tab);
         
         preferencesScrollPane.setViewportView(tab);
         
         preferencesDialog.setSize(preferencesDialogDimension);
-        
+
         preferencesDialog.repaint();
         
     }
@@ -13125,11 +13119,8 @@ private String getChordRedirectName(int row)
 
            preferencesDialog.setLocationRelativeTo(this);
             
-           // Set initial preference opening tab. 
-           changePrefTab(leadsheetBtn, leadsheetPreferences);
-
            initLocationPreferencesDialog = true;
-            
+
         }
         
         showFakeModalDialog(preferencesDialog);
