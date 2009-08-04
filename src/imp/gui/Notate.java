@@ -11746,34 +11746,32 @@ private String getChordRedirectName(int row)
     
     
     
-    private void chordVolumeChanged() {
-        
-        
-        
-        // set flag to for unsaved changes
-        
-        cm.changedSinceLastSave(true);
-        
-        
-        
-        int v = chordVolume.getValue();
-        
-        score.setChordVolume(v);
-        
-        score.setChordMuted(chordMute.isSelected());
-        
-        chordVolume.setEnabled(!chordMute.isSelected());
-        
-        Style style = score.getChordProg().getStyle();
-        
-        if( style != null )
+private void chordVolumeChanged()
+  {
+    cm.changedSinceLastSave(true);
+
+    int v = chordVolume.getValue();
+
+    score.setChordVolume(v);
+
+    score.setChordMuted(chordMute.isSelected());
+
+    chordVolume.setEnabled(!chordMute.isSelected());
+
+    Style style = score.getChordProg().getStyle();
+
+    if( style != null )
+      {
+        if( false ) // score.getChordMuted() )  // causes loss of chord on style edit
           {
-          if(score.getChordMuted())
-              midiSynth.setChannelVolume(style.getChordChannel(), 0);
-          else
+            midiSynth.setChannelVolume(style.getChordChannel(), 0);
+          }
+        else
+          {
             midiSynth.setChannelVolume(style.getChordChannel(), v);
-          }        
-    }
+          }
+      }
+  }
     
     
     

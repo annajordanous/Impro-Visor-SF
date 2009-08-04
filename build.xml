@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor402"            />
-    <property name="dist-mac"               value="improvisor402-mac"        />
-    <property name="dist-win"               value="improvisor402-win"        />
-    <property name="zipName"                value="improvisor402.zip"        />
-    <property name="zipMacName"             value="improvisor402mac.zip"     />
+    <property name="distDir"                value="improvisor403"            />
+    <property name="dist-mac"               value="improvisor403-mac"        />
+    <property name="dist-win"               value="improvisor403-win"        />
+    <property name="zipName"                value="improvisor403.zip"        />
+    <property name="zipMacName"             value="improvisor403mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
