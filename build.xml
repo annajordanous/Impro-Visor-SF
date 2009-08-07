@@ -158,6 +158,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     <copy todir="${distDir}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.voc HeadData.data" />
     </copy>
+    <copy todir="${distDir}">
+        <fileset dir="" includes="LICENSE.txt" />
+    </copy>
     <copy todir="${distDir}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.grammar **/*.soloist" />
     </copy>
