@@ -19461,35 +19461,78 @@ private void pasteMelody(Part part, Stave stave)
    * Play count-in pattern if one is specified
    */
 
-  public void playCountIn()
+public void playCountIn()
   {
-      String pattern = "X4 R4 X4 R4 X4 X4 X4 X4";
-      StyleEditor se = new StyleEditor(this, this.cm);
+    String instrument[] = {"Acoustic Bass Drum", "Acoustic Snare"};
 
-      double tempo = score.getTempo();
-      int saveChordVolume = score.getChordVolume();
+    String pattern[] = {"", ""};
 
-      DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
-      DrumRuleDisplay drumRule = new DrumRuleDisplay(pattern, "Acoustic Snare", this, this.cm, drumPattern, se);
-      drumPattern.addRule(drumRule);
-      drumPattern.playMe(0.5, 0, tempo);
+    StyleEditor se = new StyleEditor(this, this.cm);
 
-      int msPerMinute = 60000;
-      int beatsInCount = 8;
-      int trim = 90;    // To close gap
+    double tempo = score.getTempo();
 
-      // Wait for count-in pattern to be played before playing score
-      long sleepMs = (long)(beatsInCount * msPerMinute/tempo) - trim;
+    int[] metre = score.getMetre();
 
-      try
-        {
-            Thread.sleep(sleepMs);
-        }
-        catch(InterruptedException e)
-        {
-        }
+    int measures = 2;
 
-      score.setChordVolume(saveChordVolume);
+    int beatsInMeasure = metre[0];
+
+    int oneBeat = metre[1];
+
+    if( beatsInMeasure == 4 && oneBeat == 4 )
+      {
+        pattern[1] = "X4 R4 X4 R4 X4 X4 X4 X4";
+      }
+    else
+      {
+       StringBuffer buffer[] = {new StringBuffer(), new StringBuffer()};
+
+        for( int measure = 0; measure < measures; measure++ )
+          {
+            // Handle downbeat
+
+            buffer[0].append("X4 ");
+            buffer[1].append("R4 ");
+
+            // Handle other beats
+            for( int beat = 1; beat < beatsInMeasure; beat++ )
+              {
+                buffer[0].append("R4 ");
+                buffer[1].append("X4 ");
+              }
+          }
+        pattern[0] = buffer[0].toString();
+        pattern[1] = buffer[1].toString();
+      }
+
+    DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
+    
+    DrumRuleDisplay drumRule[] =
+    { new DrumRuleDisplay(pattern[0], instrument[0], this, this.cm, drumPattern, se),
+      new DrumRuleDisplay(pattern[1], instrument[1], this, this.cm, drumPattern, se)};
+
+    drumPattern.addRule(drumRule[0]);
+    drumPattern.addRule(drumRule[1]);
+
+    drumPattern.playMe(0.5, 0, tempo);
+
+    int msPerMinute = 60000;    // milliseconds per minute
+
+    int beatsInCount = measures * beatsInMeasure;
+
+    int trim = 90;    // To close gap
+
+    // Wait for count-in pattern to be played before playing score
+    long sleepMs = (long) (beatsInCount * msPerMinute / tempo) - trim;
+
+    try
+      {
+        Thread.sleep(sleepMs);
+      }
+    catch( InterruptedException e )
+      {
+      }
+
   }
 
 

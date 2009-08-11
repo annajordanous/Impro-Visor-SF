@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
+import imp.util.ErrorLog;
 import java.awt.Color;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -60,6 +61,10 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     private DrumPatternDisplay myParentHolder = null;
     
     private boolean playable = true;
+
+    private String instrumentString = "";
+
+    private int instrumentNumber = -1;
     
     /**
      * Constructs a new DrumRuleDisplay JPanel with default empty rule and instrument "Acoustic Bass Drum".
@@ -95,7 +100,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
 	badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png"); 
         initComponents();
         
-        initInstrumentBox();
+        //initInstrumentBox();
         setDisplayText(rule);
         setInstrument(instrument);
     }
@@ -113,8 +118,8 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
      * @return the text formatted with drum-rule syntax to be included with the overall drum-pattern
      **/
     public String getRule() {
-        int instrumentNumber = MIDIBeast.getDrumInstrumentNumber((String) drumInstrumentBox.getSelectedItem());
-        String rule = "(drum " + instrumentNumber + " " + getDisplayText() + ")";
+        //int instrumentNumber = MIDIBeast.getDrumInstrumentNumber((String) drumInstrumentBox.getSelectedItem());
+        String rule = "(drum " + getInstrumentNumber() + " " + getDisplayText() + ")";
         return  rule;
     }
     
@@ -136,9 +141,17 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
      * @return the instrument selected in the combo box
      **/
     public String getInstrument() {
-        return (String) drumInstrumentBox.getSelectedItem();       
+        return instrumentString;
+        //return (String) drumInstrumentBox.getSelectedItem();
     }
     
+   /**
+     * @return the number of the instrument
+     **/
+    public int getInstrumentNumber() {
+        return instrumentNumber;
+    }
+
     //Mutators:
     
     /**
@@ -153,18 +166,26 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
      * Sets the selected instrument to parameter instrument if it exists in the combo box
      **/
     public void setInstrument(String instrument) {
-        drumInstrumentBox.setSelectedItem((Object) instrument);
+        instrumentString = instrument;
+        instrumentNumber = MIDIBeast.getDrumInstrumentNumber(instrument);
+        if( instrumentNumber < 0 )
+        {
+            ErrorLog.log(ErrorLog.WARNING, "Instrument has no corresponding number: " + instrument);
+        }
+
+        //drumInstrumentBox.setSelectedItem((Object) instrument);
     }
     
-    /**
+    /*
      * Adds every drum instrument specified by MIDIBeast.drumNames to the instrument box.
-     **/
+
     private void initInstrumentBox(){
         drumInstrumentBox.removeAllItems();
         for(int i = 0; i < MIDIBeast.drumNames.length; i++){
             drumInstrumentBox.addItem(MIDIBeast.drumNames[i]);
         }      
     }
+    */
 
    /**
      * Changes the appearance of this DrumRuleDisplay to "deselected"

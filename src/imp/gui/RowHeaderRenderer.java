@@ -84,12 +84,14 @@ class RowHeaderRenderer
     rowHeaders.setElementAt(text, index);
     // Set all instruments in index row to the selected one
     int ncols = table.getColumnCount();
+
     for( int j = StyleTableModel.FIRST_PATTERN_COLUMN; j < ncols; j++ )
       {
       Object cell = table.getValueAt(index, j);
       if( cell != null & cell instanceof DrumRuleDisplay )
         {
         ((DrumRuleDisplay)cell).setInstrument(text);
+        //System.out.println("Setting instrument in row " + index + " column " + j + " to " + text);
         }
       }
     }

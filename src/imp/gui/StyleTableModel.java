@@ -571,7 +571,8 @@ public void setDrumPatternBeats(double beats, int column)
                  // not found; add it in
                  instIndex = instrumentNumbers.size();
                  instrumentNumbers.add(instrumentNumber);
-                 String instrumentName = MIDIBeast.drumNames[instrumentNumber.intValue()-35]; // FIX!
+                 String instrumentName = MIDIBeast.getInstrumentName(instrumentNumber.intValue());
+                 //String instrumentName = MIDIBeast.drumNames[instrumentNumber.intValue()-35]; // FIX!
                  ++lastPercussionrowUsed;       // One more percussion instrument
 
                  if( lastPercussionrowUsed < getRowCount() )

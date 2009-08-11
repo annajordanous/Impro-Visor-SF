@@ -400,9 +400,11 @@ public class MIDIBeast{
 		for(int i = 0; i < MIDIBeast.drumNames.length; i++) {
 			if(MIDIBeast.drumNames[i].equalsIgnoreCase(instrumentName)) {
 				//add 35 because midi drum numbers start at 35
+                //System.out.println("instrument named " + instrumentName + " maps to " + (i + 35));
 				return i+35;
 			}
 		}
+                System.out.println("instrument named " + instrumentName + " not found");
 		return -1;
 	}
 	
