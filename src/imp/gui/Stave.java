@@ -5321,7 +5321,8 @@ boolean isaNote(int pitch)
 
   public void play(int startAt)
     {
-    playingSlot = startAt; // was 0;
+    playingSlot = startAt;
+    notate.chordVolumeChanged();
     notate.setPlaybackStop(notate.score.getTotalLength()-1);
 
     notate.setShowPlayLine(true);
@@ -5374,6 +5375,7 @@ boolean isaNote(int pitch)
 
   public void playSelection(int startIndex, int stopIndex, int loopCount, boolean useDrums)
   {
+    notate.chordVolumeChanged();
 
     //System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex);
 

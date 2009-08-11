@@ -214,7 +214,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 tempStyle.setAccompanimentSwing(swingVal);
                
                 String chord = styleParent.getChord();
-                boolean muteChord = true; // preferred not to play styleParent.isChordMuted();
+                boolean muteChord = styleParent.isChordMuted();
                 int duration = tempStyle.getDP().get(0).getDuration();
                 ChordPart c = new ChordPart();
                 c.addChord(chord, duration);

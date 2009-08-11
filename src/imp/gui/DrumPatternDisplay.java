@@ -995,12 +995,22 @@ public class DrumPatternDisplay
 
     public boolean playMe(double swingVal, int loopCount)
     {
+        return playMe(swingVal, loopCount, styleParent.getTempo());
+    }//GEN-LAST:event_playPatternBtnActionPerformed
+
+      /**
+       * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
+       *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
+       */
+
+    public boolean playMe(double swingVal, int loopCount, double tempo)
+    {
         canPlay();
-        
+
         if(checkStatus()) {
             try{
                 String p = this.getPattern();
-                Polylist rule = Notate.parseListFromString(p); 
+                Polylist rule = Notate.parseListFromString(p);
                 if(rule.isEmpty()) {
                     cannotPlay();
                     return false;
@@ -1008,39 +1018,39 @@ public class DrumPatternDisplay
                 Style tempStyle = Style.makeStyle(rule);
                 tempStyle.setSwing(swingVal);
                 tempStyle.setAccompanimentSwing(swingVal);
-               
+
                 String chord = styleParent.getChord();
                 ChordPart c = new ChordPart();
-                boolean muteChord = true; // preferred not to play styleParent.isChordMuted();
- 
+                boolean muteChord = styleParent.isChordMuted();
+
                 int duration = tempStyle.getDrumPatternDuration();
                 c.addChord(chord, duration);
                 c.setStyle(tempStyle);
-                
-                 Score s = new Score(4);
+
+                Score s = new Score(4);
                 if(muteChord)s.setChordVolume(0);
                 else s.setChordVolume(styleParent.getVolume());
                 s.setBassVolume(styleParent.getVolume());
-                s.setTempo(styleParent.getTempo());
+                s.setTempo(tempo);
                 s.setVolumes(parent.getMidiSynth());
                 s.setChordProg(c);
-                
+
                 /* if(styleParent.isLooped()) parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), styleParent.getLoopCount()));
                 else */ parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), loopCount, parent.getTransposition()));
             }
             catch(Exception e) {
                 cannotPlay();
-                return false;                    
+                return false;
            }
         }
         else {
                 cannotPlay();
-                return false;                    
-        }        
+                return false;
+        }
         return true;
-    }//GEN-LAST:event_playPatternBtnActionPerformed
+    }
 
-   // Only to satisfy interface: FIX
+    // Only to satisfy interface: FIX
     
     public Color getPlayableColor()
     {
