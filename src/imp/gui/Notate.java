@@ -19463,9 +19463,15 @@ private void pasteMelody(Part part, Stave stave)
 
 public void playCountIn()
   {
-    String instrument[] = {"Acoustic Bass Drum", "Acoustic Snare"};
+    String instrument[] =
+      {
+        "Acoustic Bass Drum", "Acoustic Snare"
+      };
 
-    String pattern[] = {"", ""};
+    String pattern[] =
+      {
+        "", ""
+      };
 
     StyleEditor se = new StyleEditor(this, this.cm);
 
@@ -19479,13 +19485,33 @@ public void playCountIn()
 
     int oneBeat = metre[1];
 
+    // Treat 4/4 as a special case, for jazz-style count-in
+
     if( beatsInMeasure == 4 && oneBeat == 4 )
       {
         pattern[1] = "X4 R4 X4 R4 X4 X4 X4 X8 R8";
       }
     else
       {
-       StringBuffer buffer[] = {new StringBuffer(), new StringBuffer()};
+        // To handle meters such as 6/8, 12/8:
+
+        if( beatsInMeasure % 3 == 0 )
+          {
+            measures *= (beatsInMeasure / 3);
+            beatsInMeasure = 3;
+          }
+        else if( beatsInMeasure % 5 == 0 )
+          {
+            measures *= (beatsInMeasure / 5);
+            beatsInMeasure = 5;
+          }
+
+
+
+        StringBuffer buffer[] =
+          {
+            new StringBuffer(), new StringBuffer()
+          };
 
         for( int measure = 0; measure < measures; measure++ )
           {
@@ -19506,10 +19532,14 @@ public void playCountIn()
       }
 
     DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
-    
+
     DrumRuleDisplay drumRule[] =
-    { new DrumRuleDisplay(pattern[0], instrument[0], this, this.cm, drumPattern, se),
-      new DrumRuleDisplay(pattern[1], instrument[1], this, this.cm, drumPattern, se)};
+      {
+        new DrumRuleDisplay(pattern[0], instrument[0], this, this.cm,
+                            drumPattern, se),
+        new DrumRuleDisplay(pattern[1], instrument[1], this, this.cm,
+                            drumPattern, se)
+      };
 
     drumPattern.addRule(drumRule[0]);
     drumPattern.addRule(drumRule[1]);
