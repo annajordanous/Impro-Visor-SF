@@ -19465,8 +19465,9 @@ public void playCountIn()
   {
     String instrument[] =
       {
-        "Low Bongo", "Hi Bongo"
-     // "Acoustic Bass Drum", "Acoustic Snare"
+        "Acoustic Bass Drum", "Side Stick"
+      // "Low Bongo", "Hi Bongo"
+      // "Acoustic Bass Drum", "Acoustic Snare"
       };
 
     String pattern[] =
