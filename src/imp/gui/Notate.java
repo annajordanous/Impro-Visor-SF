@@ -19481,7 +19481,7 @@ public void playCountIn()
 
     if( beatsInMeasure == 4 && oneBeat == 4 )
       {
-        pattern[1] = "X4 R4 X4 R4 X4 X4 X4 X4";
+        pattern[1] = "X4 R4 X4 R4 X4 X4 X4 X8 R8";
       }
     else
       {
@@ -19491,14 +19491,14 @@ public void playCountIn()
           {
             // Handle downbeat
 
-            buffer[0].append("X4 ");
+            buffer[0].append("X8 R8 ");
             buffer[1].append("R4 ");
 
             // Handle other beats
             for( int beat = 1; beat < beatsInMeasure; beat++ )
               {
                 buffer[0].append("R4 ");
-                buffer[1].append("X4 ");
+                buffer[1].append("X8 R8 ");
               }
           }
         pattern[0] = buffer[0].toString();
@@ -19516,14 +19516,14 @@ public void playCountIn()
 
     drumPattern.playMe(0.5, 0, tempo);
 
-    int msPerMinute = 60000;    // milliseconds per minute
+    double millisecondsPerMinute = 60000;
 
     int beatsInCount = measures * beatsInMeasure;
 
-    int trim = 90;    // To close gap
+    int trimMs = 45;    // To close gap between count-in and start of tune
 
     // Wait for count-in pattern to be played before playing score
-    long sleepMs = (long) (beatsInCount * msPerMinute / tempo) - trim;
+    long sleepMs = (long) (beatsInCount * millisecondsPerMinute / tempo) - trimMs;
 
     try
       {
