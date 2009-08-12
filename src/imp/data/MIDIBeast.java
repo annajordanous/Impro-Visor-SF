@@ -404,7 +404,7 @@ public class MIDIBeast{
 				return i+35;
 			}
 		}
-                System.out.println("instrument named " + instrumentName + " not found");
+                //System.out.println("instrument named " + instrumentName + " not found");
 		return -1;
 	}
 	

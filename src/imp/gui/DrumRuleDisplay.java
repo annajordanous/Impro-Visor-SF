@@ -65,6 +65,8 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     private String instrumentString = "";
 
     private int instrumentNumber = -1;
+
+    private String ruleText = "";
     
     /**
      * Constructs a new DrumRuleDisplay JPanel with default empty rule and instrument "Acoustic Bass Drum".
@@ -81,6 +83,8 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     public DrumRuleDisplay(String rule, String instrument, Notate parent, CommandManager cm, DrumPatternDisplay myParentHolder, StyleEditor styleParent) {
         super(parent, cm, styleParent);
         this.myParentHolder = myParentHolder;
+
+        //System.out.println("new DrumRuleDisplay " + rule + " " + instrument);
         initialize(rule, instrument);
     }
     
@@ -97,30 +101,46 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
         goodPattern = new ImageIcon("src/imp/gui/graphics/icons/goodpattern.png");
         badPattern = new ImageIcon("src/imp/gui/graphics/icons/badPattern.png");
         goodRule = new ImageIcon("src/imp/gui/graphics/greenCircle.png");
-	badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png"); 
+	    badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png");
+
         initComponents();
         
-        //initInstrumentBox();
-        setDisplayText(rule);
+        setRuleText(rule);
         setInstrument(instrument);
     }
-    
+
+     
     //Accessors:
    
     /**
      * @return the actual text displpayed in the text field
      **/  
     public String getDisplayText() {
-        return drumRuleText.getText().trim();
+        return getRuleText(); // drumRuleText.getText().trim();
     }
 
     /**
      * @return the text formatted with drum-rule syntax to be included with the overall drum-pattern
      **/
     public String getRule() {
-        //int instrumentNumber = MIDIBeast.getDrumInstrumentNumber((String) drumInstrumentBox.getSelectedItem());
+
         String rule = "(drum " + getInstrumentNumber() + " " + getDisplayText() + ")";
+
+        //System.out.println("rule = " + rule);
+        
         return  rule;
+    }
+
+    public String getRuleText()
+    {
+        return ruleText;
+    }
+
+    public void setRuleText(String text)
+    {
+        //System.out.println("setting rule text to " + text);
+        ruleText = text;
+        drumRuleText.setText(text);
     }
     
     /**
@@ -158,8 +178,8 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
      * Sets the displayed text to parameter rule and updates its legality feedback
      **/
     public void setDisplayText(String rule) {
-        drumRuleText.setText(rule);
-        checkStatus();
+        setRuleText(rule);
+        //checkStatus();
     }
     
     /**
@@ -168,6 +188,9 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     public void setInstrument(String instrument) {
         instrumentString = instrument;
         instrumentNumber = MIDIBeast.getDrumInstrumentNumber(instrument);
+
+        //System.out.println("getting instrument number for " + instrument + " = " + instrumentNumber);
+        
         if( instrumentNumber < 0 )
         {
             ErrorLog.log(ErrorLog.WARNING, "Instrument has no corresponding number: " + instrument);

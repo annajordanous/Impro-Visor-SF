@@ -26,6 +26,8 @@ import imp.com.PlayScoreCommand;
 import imp.Constants;
 import imp.data.*;
 import java.awt.*;
+import java.util.Vector;
+import java.util.Enumeration;
 import javax.swing.*;
 import polya.Polylist;
 
@@ -75,6 +77,8 @@ public class DrumPatternDisplay
     
     //True if the pattern information is displayed, false otherwise
     boolean isExpanded = false;
+
+    private Vector<DrumRuleDisplay> rules = new Vector<DrumRuleDisplay>();
     
     // To satisfy interface only
     public java.awt.Color getColor()
@@ -111,7 +115,7 @@ public class DrumPatternDisplay
         goodPattern = new ImageIcon("src/imp/gui/graphics/icons/goodpattern.png");
         badPattern = new ImageIcon("src/imp/gui/graphics/icons/badPattern.png");
         goodRule = new ImageIcon("src/imp/gui/graphics/greenCircle.png");
-	badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png");   
+	    badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png");
 
         initComponents();
         initWeight();
@@ -129,9 +133,9 @@ public class DrumPatternDisplay
         checkStatus();
     } 
     
-    /**
+    /*
      * Fills the DrumPatternDisplay with three empty DrumRuleDisplay objects with default instruments.
-     **/
+     
     public void fill() {
         DrumRuleDisplay d = new DrumRuleDisplay(null, "Acoustic Bass", this.parent, this.cm, this, styleParent);
         d.setDisplayText("X4");
@@ -146,6 +150,7 @@ public class DrumPatternDisplay
         this.updateUI();
         setDeselectedAppearance();
     }
+     */
     
     //Accessors:
     
@@ -161,29 +166,26 @@ public class DrumPatternDisplay
      **/    
     public String getPattern() {
         String pattern = "(drum-pattern ";
-        Component[] allRules = drumRuleHolder.getComponents();
-        for(int i = 0; i < allRules.length; i++) {
+
+        //Component[] allRules = drumRuleHolder.getComponents();
+        //for(int i = 0; i < allRules.length; i++) {
+
+        for( Enumeration<DrumRuleDisplay> e = rules.elements(); e.hasMoreElements(); )
+        {
             try {
-                DrumRuleDisplay d = (DrumRuleDisplay) allRules[i];
-                //System.out.println("rule " + d.getInstrument());
+                DrumRuleDisplay d = e.nextElement();
+
                 // See if instrument is to be included per checkbox in editor
                 // FIX: This is round-about, and should be changed to iterate directly over
                 // table column, rather than going through drumRuleHolder.
-                if( styleParent.isInstrumentIncluded(d.getInstrument()) )
-                {
-                //System.out.println("instrument included: " + d.getInstrument());
+
                 if(d.checkStatus() ) {
                     pattern += "\n\t\t" + d.getRule();
                 }
                 else {
-                    MIDIBeast.addSaveError(d.getErrorMsgRule() + " and was not inclued in Drum Pattern " + this.getTitleNumber());
-                }          
+                    System.out.println("status check failed");
                 }
-                else
-                {
-                //System.out.println("instrument NOT included: " + d.getInstrument());
-                }
-            }catch(ClassCastException e) {}
+             }catch(ClassCastException ex) {}
         }      
         pattern += "\n\t\t(weight " + ((Integer) weightSpinner.getValue()) + ")\n\t)";       
         return pattern;
@@ -337,6 +339,7 @@ public class DrumPatternDisplay
      **/
     public void addRule(DrumRuleDisplay rule) {
         if(rule != null) {
+            rules.add(rule);
             drumRuleHolder.add(rule);
             drumRuleHolder.updateUI();
             unselectInstrument(rule);    
@@ -998,57 +1001,70 @@ public class DrumPatternDisplay
         return playMe(swingVal, loopCount, styleParent.getTempo());
     }//GEN-LAST:event_playPatternBtnActionPerformed
 
-      /**
-       * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
-       *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
-       */
+/**
+ * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
+ *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
+ ("rule*/
 
-    public boolean playMe(double swingVal, int loopCount, double tempo)
-    {
-        canPlay();
+public boolean playMe(double swingVal, int loopCount, double tempo)
+  {
+    canPlay();
 
-        if(checkStatus()) {
-            try{
-                String p = this.getPattern();
-                Polylist rule = Notate.parseListFromString(p);
-                if(rule.isEmpty()) {
-                    cannotPlay();
-                    return false;
-                }
-                Style tempStyle = Style.makeStyle(rule);
-                tempStyle.setSwing(swingVal);
-                tempStyle.setAccompanimentSwing(swingVal);
-
-                String chord = styleParent.getChord();
-                ChordPart c = new ChordPart();
-                boolean muteChord = styleParent.isChordMuted();
-
-                int duration = tempStyle.getDrumPatternDuration();
-                c.addChord(chord, duration);
-                c.setStyle(tempStyle);
-
-                Score s = new Score(4);
-                if(muteChord)s.setChordVolume(0);
-                else s.setChordVolume(styleParent.getVolume());
-                s.setBassVolume(styleParent.getVolume());
-                s.setTempo(tempo);
-                s.setVolumes(parent.getMidiSynth());
-                s.setChordProg(c);
-
-                /* if(styleParent.isLooped()) parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), styleParent.getLoopCount()));
-                else */ parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), loopCount, parent.getTransposition()));
-            }
-            catch(Exception e) {
+    if( checkStatus() )
+      {
+        try
+          {
+            String p = this.getPattern();
+            Polylist rule = Notate.parseListFromString(p);
+            //System.out.println("pattern = " + p + "\nrule = " + rule);
+            if( rule.isEmpty() )
+              {
                 cannotPlay();
                 return false;
-           }
-        }
-        else {
-                cannotPlay();
-                return false;
-        }
-        return true;
-    }
+              }
+            Style tempStyle = Style.makeStyle(rule);
+            tempStyle.setSwing(swingVal);
+            tempStyle.setAccompanimentSwing(swingVal);
+            String chord = styleParent.getChord();
+            ChordPart c = new ChordPart();
+            boolean muteChord = styleParent.isChordMuted();
+
+            int duration = tempStyle.getDrumPatternDuration();
+            c.addChord(chord, duration);
+            c.setStyle(tempStyle);
+
+            Score s = new Score(4);
+            if( muteChord )
+              {
+                s.setChordVolume(0);
+              }
+            else
+              {
+                s.setChordVolume(styleParent.getVolume());
+              }
+            s.setBassVolume(styleParent.getVolume());
+            s.setTempo(tempo);
+            s.setVolumes(parent.getMidiSynth());
+            s.setChordProg(c);
+
+            parent.cm.execute(new PlayScoreCommand(s, 0, true,
+                                                   parent.getMidiSynth(),
+                                                   loopCount,
+                                                   parent.getTransposition()));
+          }
+        catch( Exception e )
+          {
+            cannotPlay();
+            return false;
+          }
+      }
+    else
+      {
+        cannotPlay();
+        return false;
+      }
+    return true;
+  }
 
     // Only to satisfy interface: FIX
     

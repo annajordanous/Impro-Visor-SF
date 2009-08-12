@@ -19465,7 +19465,8 @@ public void playCountIn()
   {
     String instrument[] =
       {
-        "Acoustic Bass Drum", "Acoustic Snare"
+        "Low Bongo", "Hi Bongo"
+     // "Acoustic Bass Drum", "Acoustic Snare"
       };
 
     String pattern[] =
@@ -19485,15 +19486,19 @@ public void playCountIn()
 
     int oneBeat = metre[1];
 
-    // Treat 4/4 as a special case, for jazz-style count-in
+    // Treat 4/4 as a special case, for jazz-style count-in, 2-bar pattern:
+    // 1-2-1234
 
     if( beatsInMeasure == 4 && oneBeat == 4 )
       {
+        pattern[0] = "R1+1";
         pattern[1] = "X4 R4 X4 R4 X4 X4 X4 X8 R8";
       }
     else
       {
-        // To handle meters such as 6/8, 12/8:
+        // To handle meters such as 6/8, 12/8, 10/4, etc.
+        // we don't want the musician to have to count so high,
+        // so we break down the measures into groups.
 
         if( beatsInMeasure % 3 == 0 )
           {
@@ -19506,12 +19511,13 @@ public void playCountIn()
             beatsInMeasure = 5;
           }
 
-
-
         StringBuffer buffer[] =
           {
             new StringBuffer(), new StringBuffer()
           };
+
+        // Accumulate percussion hits for two tracks,
+        // based on the number of measures and beats per measure.
 
         for( int measure = 0; measure < measures; measure++ )
           {
@@ -19529,8 +19535,8 @@ public void playCountIn()
           }
         pattern[0] = buffer[0].toString();
         pattern[1] = buffer[1].toString();
-      }
-
+        }
+    
     DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
 
     DrumRuleDisplay drumRule[] =
@@ -19541,6 +19547,8 @@ public void playCountIn()
                             drumPattern, se)
       };
 
+    // Add the created rules to the drum pattern and play it.
+
     drumPattern.addRule(drumRule[0]);
     drumPattern.addRule(drumRule[1]);
 
@@ -19550,9 +19558,12 @@ public void playCountIn()
 
     int beatsInCount = measures * beatsInMeasure;
 
+    // Wait for count-in pattern to be played before playing score.
+    // Otherwise pattern play will be interrupted immediately when score
+    // start playing.
+
     int trimMs = 45;    // To close gap between count-in and start of tune
 
-    // Wait for count-in pattern to be played before playing score
     long sleepMs = (long) (beatsInCount * millisecondsPerMinute / tempo) - trimMs;
 
     try
