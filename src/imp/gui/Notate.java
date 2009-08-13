@@ -19490,7 +19490,7 @@ public void playCountIn()
 
     if( beatsInMeasure == 4 && oneBeat == 4 )
       {
-        String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X8";
+        String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X32";
         DrumRuleDisplay drumRule1 =
             new DrumRuleDisplay(pattern1, instrument[1], this, this.cm,
                             drumPattern, se);
@@ -19550,8 +19550,8 @@ public void playCountIn()
               }
 
           // Handle the very last beat.
-          buffer[0].append("R8 ");
-          buffer[1].append("X8 ");
+          buffer[0].append("R32 ");
+          buffer[1].append("X32 ");
 
     String pattern[] =
          {
