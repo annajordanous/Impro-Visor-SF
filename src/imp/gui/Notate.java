@@ -19591,7 +19591,7 @@ public void playCountIn()
     // Otherwise pattern play will be interrupted immediately when score
     // start playing.
 
-    long trimMs = 250;
+    long trimMs = 300;
 
     long sleepMs = (long) (beatsInCount * millisecondsPerMinute / apparentTempo) - trimMs;
 

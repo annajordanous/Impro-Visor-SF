@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/ImproVisor.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/com/PlayScoreCommand.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/BassPatternDisplay.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/ChordPatternDisplay.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/DrumPatternDisplay.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/DrumRuleDisplay.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/ExtractionEditor.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/MiniStave.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/Notate.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/gui/Stave.java</file>
+        <file>file:/Users/keller/NetBeansProjects/impro-visor6/src/imp/util/LeadsheetPreview.java</file>
+    </open-files>
 </project-private>

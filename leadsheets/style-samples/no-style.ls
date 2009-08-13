@@ -48,26 +48,4 @@ Gm9 | C13b9 | F13 D7#5#9 | Gm9 C13b9 |
     (key -1)
     (stave treble)
 )
- c+4+8 r4 a8 g8 f8
-
- e8 ab8 f8 c8 db8 r8 g8 d8
-
- eb8 a8 b4 f+8 r8 d+8 c+8
-
- f+4 eb+8 d+8 a8 gb8 r4
-
- c8 f8 e8 r8 g8 c+8 e+8/3 bb+8/3 g+8/3
-
- db+8 d+8 b8 r8 g#8 d8 f8 b8
-
- f+8 d+8 eb+4 d+8 r8 a8 c+8
-
- g#4 f#8 d8 f2
-
- g8/3 e8/3 bb8/3 r8 d+8 f+4+8 bb+8
-
- e+8 c+8 g4 db8 c8 eb8 r8
-
- c8 d8 f8 r8 f#8 bb8 eb+8 d+8
-
- f+8 db+8 c+8 a8 g8 db+8 e+8 c+8
+ r1+1+1+1+1+1+1+1+1+1+1+1
