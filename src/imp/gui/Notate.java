@@ -8432,16 +8432,18 @@ public class Notate
             }
         });
 
-        countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        countInPanel.setMaximumSize(new java.awt.Dimension(40, 42));
-        countInPanel.setMinimumSize(new java.awt.Dimension(40, 42));
-        countInPanel.setPreferredSize(new java.awt.Dimension(40, 42));
-        countInPanel.setLayout(new javax.swing.BoxLayout(countInPanel, javax.swing.BoxLayout.LINE_AXIS));
+        countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count In", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        countInPanel.setToolTipText("Check to count in two measures before tune is played.");
+        countInPanel.setMaximumSize(new java.awt.Dimension(50, 42));
+        countInPanel.setMinimumSize(new java.awt.Dimension(50, 42));
+        countInPanel.setPreferredSize(new java.awt.Dimension(50, 42));
+        countInPanel.setLayout(new java.awt.GridBagLayout());
 
+        countInCheckBox.setToolTipText("Check to count in two measures before tune is played.");
         countInCheckBox.setMaximumSize(new java.awt.Dimension(28, 25));
         countInCheckBox.setMinimumSize(new java.awt.Dimension(28, 25));
         countInCheckBox.setPreferredSize(new java.awt.Dimension(28, 25));
-        countInPanel.add(countInCheckBox);
+        countInPanel.add(countInCheckBox, new java.awt.GridBagConstraints());
 
         playToolBar.add(countInPanel);
 
@@ -8708,9 +8710,9 @@ public class Notate
         tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tempoSet.setToolTipText("Set the tempo for the sheet in beats per minute.");
         tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        tempoSet.setMaximumSize(new java.awt.Dimension(60, 20));
-        tempoSet.setMinimumSize(new java.awt.Dimension(20, 20));
-        tempoSet.setPreferredSize(new java.awt.Dimension(50, 20));
+        tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
+        tempoSet.setMinimumSize(new java.awt.Dimension(40, 20));
+        tempoSet.setPreferredSize(new java.awt.Dimension(40, 20));
         tempoSet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tempoSetActionPerformed(evt);
@@ -8732,7 +8734,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 30;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(3, 5, 5, 0);
         tempoPanel.add(tempoSet, gridBagConstraints);
@@ -8762,8 +8764,8 @@ public class Notate
 
         transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
         transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        transposeSpinner.setMinimumSize(new java.awt.Dimension(50, 28));
-        transposeSpinner.setPreferredSize(new java.awt.Dimension(50, 28));
+        transposeSpinner.setMinimumSize(new java.awt.Dimension(40, 28));
+        transposeSpinner.setPreferredSize(new java.awt.Dimension(40, 28));
         transposeSpinner.setValue(0);
         transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -8772,12 +8774,12 @@ public class Notate
         });
         playToolBar.add(transposeSpinner);
 
-        partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars per Chorus", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars/Chorus", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
-        partBarsPanel.setMaximumSize(new java.awt.Dimension(90, 50));
-        partBarsPanel.setMinimumSize(new java.awt.Dimension(90, 50));
+        partBarsPanel.setMaximumSize(new java.awt.Dimension(70, 50));
+        partBarsPanel.setMinimumSize(new java.awt.Dimension(70, 50));
         partBarsPanel.setOpaque(false);
-        partBarsPanel.setPreferredSize(new java.awt.Dimension(90, 50));
+        partBarsPanel.setPreferredSize(new java.awt.Dimension(70, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
         partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12));
@@ -19484,6 +19486,10 @@ public void playCountIn()
 
     int oneBeat = metre[1];
 
+    double tempoFactor = oneBeat/4.0;
+
+    double apparentTempo = tempo*tempoFactor;
+
     DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
     // Treat 4/4 as a special case, for jazz-style count-in, 2-bar pattern:
     // 1-2-1234
@@ -19503,15 +19509,17 @@ public void playCountIn()
         // we don't want the musician to have to count so high,
         // so we break down the measures into groups.
 
-        if( beatsInMeasure % 3 == 0 )
+        if( beatsInMeasure % 3 == 0 && beatsInMeasure > 3 )
           {
             measures *= (beatsInMeasure / 3);
-            beatsInMeasure = 3;
+            beatsInMeasure = 1;
+            apparentTempo /= 3;
           }
-        else if( beatsInMeasure % 5 == 0 )
+        else if( beatsInMeasure % 5 == 0 && beatsInMeasure > 5)
           {
             measures *= (beatsInMeasure / 5);
-            beatsInMeasure = 5;
+            beatsInMeasure = 1;
+            apparentTempo /= 5;
           }
 
         StringBuffer buffer[] =
@@ -19573,7 +19581,7 @@ public void playCountIn()
       drumPattern.addRule(drumRule[1]);
       }
 
-    drumPattern.playMe(0.5, 0, tempo);
+    drumPattern.playMe(0.5, 0, apparentTempo);
 
     double millisecondsPerMinute = 60000;
 
@@ -19583,9 +19591,9 @@ public void playCountIn()
     // Otherwise pattern play will be interrupted immediately when score
     // start playing.
 
-    long trimMs = 90;
+    long trimMs = 250;
 
-    long sleepMs = (long) (beatsInCount * millisecondsPerMinute / tempo) - trimMs;
+    long sleepMs = (long) (beatsInCount * millisecondsPerMinute / apparentTempo) - trimMs;
 
     try
       {
@@ -19594,7 +19602,7 @@ public void playCountIn()
     catch( InterruptedException e )
       {
       }
-
+    stopPlaying();;
   }
 
 
