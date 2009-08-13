@@ -19465,14 +19465,11 @@ public void playCountIn()
   {
     String instrument[] =
       {
-        "Acoustic Bass Drum", "Side Stick"
+        "High Tom", "Side Stick"
+
+      // possible alternates:
       // "Low Bongo", "Hi Bongo"
       // "Acoustic Bass Drum", "Acoustic Snare"
-      };
-
-    String pattern[] =
-      {
-        "", ""
       };
 
     StyleEditor se = new StyleEditor(this, this.cm);
@@ -19487,13 +19484,18 @@ public void playCountIn()
 
     int oneBeat = metre[1];
 
+    DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
     // Treat 4/4 as a special case, for jazz-style count-in, 2-bar pattern:
     // 1-2-1234
 
     if( beatsInMeasure == 4 && oneBeat == 4 )
       {
-        pattern[0] = "R1+1";
-        pattern[1] = "X4 R4 X4 R4 X4 X4 X4 X8 R8";
+        String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X8";
+        DrumRuleDisplay drumRule1 =
+            new DrumRuleDisplay(pattern1, instrument[1], this, this.cm,
+                            drumPattern, se);
+
+        drumPattern.addRule(drumRule1);
       }
     else
       {
@@ -19520,7 +19522,7 @@ public void playCountIn()
         // Accumulate percussion hits for two tracks,
         // based on the number of measures and beats per measure.
 
-        for( int measure = 0; measure < measures; measure++ )
+        for( int measure = 0; measure < measures-1; measure++ )
           {
             // Handle downbeat
 
@@ -19534,24 +19536,42 @@ public void playCountIn()
                 buffer[1].append("X8 R8 ");
               }
           }
-        pattern[0] = buffer[0].toString();
-        pattern[1] = buffer[1].toString();
-        }
-    
-    DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
 
-    DrumRuleDisplay drumRule[] =
-      {
-        new DrumRuleDisplay(pattern[0], instrument[0], this, this.cm,
+        // Handle the last measure specially
+
+            buffer[0].append("X8 R8 ");
+            buffer[1].append("R4 ");
+
+            // Handle other beats
+            for( int beat = 1; beat < beatsInMeasure-1; beat++ )
+              {
+                buffer[0].append("R4 ");
+                buffer[1].append("X8 R8 ");
+              }
+
+          // Handle the very last beat.
+          buffer[0].append("R8 ");
+          buffer[1].append("X8 ");
+
+    String pattern[] =
+         {
+         buffer[0].toString(),
+         buffer[1].toString()
+         };
+
+       DrumRuleDisplay drumRule[] =
+         {
+         new DrumRuleDisplay(pattern[0], instrument[0], this, this.cm,
                             drumPattern, se),
-        new DrumRuleDisplay(pattern[1], instrument[1], this, this.cm,
+         new DrumRuleDisplay(pattern[1], instrument[1], this, this.cm,
                             drumPattern, se)
-      };
+         };
 
-    // Add the created rules to the drum pattern and play it.
+      // Add the created rules to the drum pattern.
 
-    drumPattern.addRule(drumRule[0]);
-    drumPattern.addRule(drumRule[1]);
+      drumPattern.addRule(drumRule[0]);
+      drumPattern.addRule(drumRule[1]);
+      }
 
     drumPattern.playMe(0.5, 0, tempo);
 
@@ -19563,9 +19583,7 @@ public void playCountIn()
     // Otherwise pattern play will be interrupted immediately when score
     // start playing.
 
-    int trimMs = 45;    // To close gap between count-in and start of tune
-
-    long sleepMs = (long) (beatsInCount * millisecondsPerMinute / tempo) - trimMs;
+    long sleepMs = (long) (beatsInCount * millisecondsPerMinute / tempo);
 
     try
       {
