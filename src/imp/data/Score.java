@@ -125,6 +125,11 @@ public class Score implements Constants, Serializable {
     private ChordPart chordProg;
 
     /**
+     * The count-in Progression
+     */
+    private ChordPart countInProg = null;
+
+    /**
      * The tempo of the Score
      */
     private double tempo;
@@ -202,7 +207,12 @@ public class Score implements Constants, Serializable {
         addPart();
         chordProg = new ChordPart(length);
     }
-    
+
+    public void setCountIn(ChordPart countInProg)
+    {
+        this.countInProg = countInProg;
+    }
+
     public int getTransposition()
     {
       return transposition;
@@ -596,6 +606,9 @@ public class Score implements Constants, Serializable {
         newScore.setChordVolume(getChordVolume());
         newScore.setMelodyVolume(getMelodyVolume());
         newScore.setMasterVolume(getMasterVolume());
+
+        newScore.countInProg = countInProg == null ? null : countInProg.copy();
+        
         return newScore;
     }
     
@@ -751,33 +764,14 @@ public class Score implements Constants, Serializable {
      */
     public Sequence sequence(short ppqn, int transposition)
                                 throws InvalidMidiDataException {
-        Sequence seq = new Sequence(Sequence.PPQ, ppqn);
-        long time = 0;
-
-        Track chordTrack = seq.createTrack();
-        Track melodyTrack = seq.createTrack();
 
         int endIndex = chordProg.size();    // correct?
 
-        ListIterator<MelodyPart> i = partList.listIterator();
-        while(i.hasNext()) {
-            long melTime = i.next().sequence(seq, melodyChannel, time, melodyTrack, transposition, endIndex);
-            long chTime = chordProg.sequence(seq, 1, time, chordTrack, transposition, true, endIndex);
-            if(chTime > melTime)
-                time = chTime;
-            else
-                time = melTime;
-        }
-
-        //System.out.println("seq = " + seq);
-
-        // Find the longest track, and put a Stop event at the end of it
-        MidiSynth.endSequence(seq);
-        Trace.log(3, "done sequencing");
-        return seq;
+        return sequence(ppqn, transposition, true, endIndex);
     }
 
-    /**
+
+   /**
      * Creates and returns a MIDI sequence out of the Score.
      * Calls Part.sequence on each Part and (for now) creates a new channel
      * for each Part.  This means that you can only have 16 Parts, which
@@ -791,14 +785,30 @@ public class Score implements Constants, Serializable {
         // to trace sequencing
         // System.out.println("Score: sequence, start 0, endLimitIndex = " + endLimitIndex);
         Sequence seq = new Sequence(Sequence.PPQ, ppqn);
+
         long time = 0;
         
         Track chordTrack = seq.createTrack();
         Track melodyTrack = seq.createTrack();
 
+        if( countInProg != null )
+        {
+        // Handle count-in sequence
+
+        if( endLimitIndex != -1 )
+          {
+            endLimitIndex += countInProg.size();
+          }
+
+        new MelodyPart(countInProg.size()).sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
+        time = countInProg.sequence(seq, 1, time, chordTrack, 0, true, endLimitIndex);
+        }
+
         ListIterator<MelodyPart> i = partList.listIterator();
         while(i.hasNext() && Style.limitNotReached(time, endLimitIndex) )
         {
+            // sequence the chord progression in parallel with each melody chorus
+            
             long melTime = i.next().sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
             long chTime = chordProg.sequence(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
             if(chTime > melTime)

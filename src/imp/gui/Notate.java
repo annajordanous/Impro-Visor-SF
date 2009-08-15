@@ -19453,17 +19453,17 @@ private void pasteMelody(Part part, Stave stave)
   {
       if( countInCheckBox.isSelected() )
         {
-          playCountIn();
+          score.setCountIn(makeCountIn());
         }
       
       playScore(0);
   }
 
   /**
-   * Play count-in pattern if one is specified
+   * Construct count-in pattern if one is specified
    */
 
-public void playCountIn()
+public ChordPart makeCountIn()
   {
     String instrument[] =
       {
@@ -19496,7 +19496,7 @@ public void playCountIn()
 
     if( beatsInMeasure == 4 && oneBeat == 4 )
       {
-        String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X32";
+        String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X4";
         DrumRuleDisplay drumRule1 =
             new DrumRuleDisplay(pattern1, instrument[1], this, this.cm,
                             drumPattern, se);
@@ -19530,7 +19530,7 @@ public void playCountIn()
         // Accumulate percussion hits for two tracks,
         // based on the number of measures and beats per measure.
 
-        for( int measure = 0; measure < measures-1; measure++ )
+        for( int measure = 0; measure < measures; measure++ )
           {
             // Handle downbeat
 
@@ -19545,21 +19545,6 @@ public void playCountIn()
               }
           }
 
-        // Handle the last measure specially
-
-            buffer[0].append("X8 R8 ");
-            buffer[1].append("R4 ");
-
-            // Handle other beats
-            for( int beat = 1; beat < beatsInMeasure-1; beat++ )
-              {
-                buffer[0].append("R4 ");
-                buffer[1].append("X8 R8 ");
-              }
-
-          // Handle the very last beat.
-          buffer[0].append("R32 ");
-          buffer[1].append("X32 ");
 
     String pattern[] =
          {
@@ -19581,31 +19566,11 @@ public void playCountIn()
       drumPattern.addRule(drumRule[1]);
       }
 
-    drumPattern.playMe(0.5, 0, apparentTempo);
-
-    double millisecondsPerMinute = 60000;
-
-    int beatsInCount = measures * beatsInMeasure;
-
-    // Wait for count-in pattern to be played before playing score.
-    // Otherwise pattern play will be interrupted immediately when score
-    // start playing.
-
-    long trimMs = 300;
-
-    long sleepMs = (long) (beatsInCount * millisecondsPerMinute / apparentTempo) - trimMs;
-
-    try
-      {
-        Thread.sleep(sleepMs);
-      }
-    catch( InterruptedException e )
-      {
-      }
-    stopPlaying();;
+    return drumPattern.makeCountIn(0.5, 0, apparentTempo);
   }
 
 
+ 
   public void playScore(int startAt)
     {
     if( getPlaying() == MidiPlayListener.Status.PAUSED )

@@ -1004,9 +1004,70 @@ public class DrumPatternDisplay
 /**
  * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
  *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
- ("rule*/
+ */
 
 public boolean playMe(double swingVal, int loopCount, double tempo)
+{
+    return playMe(swingVal, loopCount, tempo, new Score(4));
+}
+
+/**
+ * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
+ *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
+ */
+
+public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
+  {
+    canPlay();
+
+    if( checkStatus() )
+      {
+        try
+          {
+            String p = this.getPattern();
+            Polylist rule = Notate.parseListFromString(p);
+            //System.out.println("pattern = " + p + "\nrule = " + rule);
+            if( rule.isEmpty() )
+              {
+                cannotPlay();
+                return null;
+              }
+            Style tempStyle = Style.makeStyle(rule);
+            tempStyle.setSwing(swingVal);
+            tempStyle.setAccompanimentSwing(swingVal);
+
+            String chord = "NC"; // styleParent.getChord();
+
+            ChordPart c = new ChordPart();
+
+            boolean muteChord = styleParent.isChordMuted();
+
+            int duration = tempStyle.getDrumPatternDuration();
+            c.addChord(chord, duration);
+            c.setStyle(tempStyle);
+
+            return c;
+           }
+        catch( Exception e )
+          {
+            cannotPlay();
+            return null;
+          }
+      }
+    else
+      {
+        cannotPlay();
+        return null;
+      }
+  }
+
+
+/**
+ * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
+ *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
+ */
+
+public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
     canPlay();
 
@@ -1033,7 +1094,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
-            Score s = new Score(4);
             if( muteChord )
               {
                 s.setChordVolume(0);
