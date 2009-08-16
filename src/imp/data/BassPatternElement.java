@@ -415,12 +415,12 @@ public Object getText()
         case PITCH:
             if( isDirectional() )
               {
-                return Polylist.list("X", getDegreeString(), getDurationString());
+                return Polylist.list("X", getDegreeString(), getDurationString(),
+                                     getDirectionString());
               }
             else
               {
-                return Polylist.list("X", getDegreeString(), getDurationString(),
-                                     getDirectionString());
+                return Polylist.list("X", getDegreeString(), getDurationString());
               }
       }
   }

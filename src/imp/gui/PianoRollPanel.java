@@ -422,7 +422,7 @@ public void mouseDragged(MouseEvent e)
 
         // Copy bar in case of collision with modified new bar
 
-        PianoRollBar tempBar = new PianoRollBar(bar);
+        PianoRollBar tempBar = bar.copy();
 
         long movement = pixelsToSlots(x - lastX)*movementAmplifier;
 

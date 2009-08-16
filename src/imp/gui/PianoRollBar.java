@@ -88,6 +88,16 @@ public PianoRollBar(PianoRollBar bar)
     this.borderColor = bar.borderColor;
     }
 
+/**
+ * Copy is over-riddent in PianoRollBassBar
+ @return
+ */
+
+public PianoRollBar copy()
+{
+    return new PianoRollBar(this);
+}
+
 public boolean isResizable()
 {
     return resizable;

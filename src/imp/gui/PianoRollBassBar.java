@@ -37,6 +37,24 @@ public class PianoRollBassBar extends PianoRollBar
         this.element = element;
     }
 
+    /*
+     * Copy constructor
+     */
+
+public PianoRollBassBar(PianoRollBassBar bar)
+    {
+        this(bar.startSlot, bar.element, bar.pianoRoll);
+    }
+
+/**
+ * Over-rides copy in PianoRollBar
+ */
+
+public PianoRollBassBar copy()
+{
+    return new PianoRollBassBar(this);
+}
+
     public void setBassParameters(BassPatternElement.BassNoteType noteType, int duration, BassPatternElement.AccidentalType accidental, int degree, BassPatternElement.DirectionType direction)
     {
         element.setNoteType(noteType);
