@@ -920,6 +920,11 @@ public void paint(Graphics g)
 
         directionButtonGroup.add(downDirection);
         downDirection.setText("Down");
+        downDirection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downDirectionActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -1948,6 +1953,10 @@ private void loopDelaySliderStateChanged(javax.swing.event.ChangeEvent evt) {//G
         loopPlayer.setGap(loopDelaySlider.getValue());
     }
 }//GEN-LAST:event_loopDelaySliderStateChanged
+
+private void downDirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downDirectionActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_downDirectionActionPerformed
 
 
 private boolean checkPixelBeatConstraint()

@@ -1112,7 +1112,7 @@ public class Notate
                 //return;
             }
 
-        int slotDelay =
+        int slotDelay = getScore().getCountInOffset() +
                 (int)(midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
         
         int slotInPlayback = midiSynth.getSlot() - slotDelay;
@@ -19449,15 +19449,70 @@ private void pasteMelody(Part part, Stave stave)
         
     }//GEN-LAST:event_playAllMIActionPerformed
 
+ public void establishCountIn()
+ {
+ score.setCountIn(countInCheckBox.isSelected() ? makeCountIn() : null );
+ }
+
+ public void noCountIn()
+ {
+ score.noCountIn();
+ }
+
  public void playScore()
   {
-      if( countInCheckBox.isSelected() )
-        {
-          score.setCountIn(makeCountIn());
-        }
-      
-      playScore(0);
+     establishCountIn();
+     playScoreBody(0);
   }
+
+ 
+ public void playScore(int startAt)
+    {
+     noCountIn();
+     playScoreBody(startAt);
+    }
+
+ 
+public void playScoreBody(int startAt)
+    {
+    if( getPlaying() == MidiPlayListener.Status.PAUSED )
+      {
+
+      Trace.log(2, "Notate: playScore() - unpausing");
+
+      pauseScore();
+
+      }
+    else
+      {
+
+      Trace.log(2, "Notate: playScore() - starting or restarting playback");
+
+      // makes playback indicator always visible
+      // set to false upon user scroll
+
+      autoScrollOnPlayback = true;
+
+
+      if( getPlaying() == MidiPlayListener.Status.STOPPED )
+        {
+        // possible loss of precision below: check this
+        startAt = (int)playbackManager.getMicrosecondsFromSlider();
+
+        clearKeyboard();
+        clearVoicingEntryTF();
+        resetChordDisplay();
+        }
+
+      // reset playback offset
+
+      initCurrentPlaybackTab(0, 0);
+
+
+      getCurrentStave().play(startAt);
+      }
+    }
+
 
   /**
    * Construct count-in pattern if one is specified
@@ -19571,46 +19626,6 @@ public ChordPart makeCountIn()
 
 
  
-  public void playScore(int startAt)
-    {
-    if( getPlaying() == MidiPlayListener.Status.PAUSED )
-      {
-
-      Trace.log(2, "Notate: playScore() - unpausing");
-
-      pauseScore();
-
-      }
-    else
-      {
-
-      Trace.log(2, "Notate: playScore() - starting or restarting playback");
-
-      // makes playback indicator always visible
-      // set to false upon user scroll
-
-      autoScrollOnPlayback = true;
-
-
-      if( getPlaying() == MidiPlayListener.Status.STOPPED )
-        {
-        // possible loss of precision below: check this
-        startAt = (int)playbackManager.getMicrosecondsFromSlider();
-        
-        clearKeyboard();
-        clearVoicingEntryTF();
-        resetChordDisplay();
-        }
-
-      // reset playback offset
-
-      initCurrentPlaybackTab(0, 0);
-
-
-      getCurrentStave().play(startAt);
-      }
-    }
-
   public void initCurrentPlaybackTab(int offset)
     {
 

@@ -909,7 +909,7 @@ public class Style
 
   public static boolean limitNotReached(long time, int endLimitIndex)
   {
-  return endLimitIndex == -1 // i.e. play to end
+  return endLimitIndex == ENDSCORE // i.e. play to end
       || time <= magicFactor*endLimitIndex; // limit not reached
   }
 
@@ -1220,7 +1220,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
 
     int numNotes = 1;
 
-    while( (i.hasNext() || next != null) && (endLimitIndex == -1 || index <= endLimitIndex) )
+    while( (i.hasNext() || next != null) && (endLimitIndex == ENDSCORE || index <= endLimitIndex) )
       {
       if( next == null )
         {

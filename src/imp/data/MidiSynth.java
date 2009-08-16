@@ -1,6 +1,8 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
+ * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -203,11 +205,11 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
                  boolean useDrums, int endLimitIndex)
     throws InvalidMidiDataException
   {
-    Trace.log(2,
+    /*Trace.log(0,
               (++playCounter) + ": Starting MIDI sequencer, startTime = " 
               + startIndex + " loopCount = " + loopCount + " endIndex = "
               + endLimitIndex);
-
+    */
     if( sequencer == null )
       {
         setSequencer();
@@ -236,7 +238,7 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
 
         // Clear possible old values
         sequencer.setLoopStartPoint(0);
-        sequencer.setLoopEndPoint(-1);
+        sequencer.setLoopEndPoint(ENDSCORE);
         sequencer.setLoopCount(0);
 
         setSlot(startIndex);
@@ -251,7 +253,7 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
 
         int magicFactor = Style.getMagicFactor();
 
-        if( endLimitIndex > 0 )
+        if( endLimitIndex != ENDSCORE )
           {
           sequencer.setLoopEndPoint(endLimitIndex * magicFactor);
           }
@@ -342,7 +344,7 @@ public void setPlayListener(MidiPlayListener listener)
  */
 public void stop()
   {
-    Trace.log(2, playCounter + ": Stopping MIDI sequencer ");
+    //Trace.log(0, playCounter + ": Stopping MIDI sequencer ");
     playing = false;
     paused = false;
 

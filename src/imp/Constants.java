@@ -857,6 +857,11 @@ public interface Constants {
     public static final String VOICING_REDIRECT_PREFIX = "(uses ";
     public static final String GENERATED_VOICING_NAME = "generated";
     public static final String GENERATED_VOICING_TYPE = "closed";
+
+    /**
+     * Used to indicate score is to be played to end.
+     */
+    public static final int ENDSCORE = -1;
     
 }
 

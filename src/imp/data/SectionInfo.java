@@ -306,7 +306,7 @@ public long sequence(Sequence seq, int ch, long time, Track track,
         endIndex = j.next();
       }
 
-    while( i.hasNext() && (endLimitIndex == -1 || endIndex <= endLimitIndex) )
+    while( i.hasNext() && (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
       {
         Style s = i.next();
         startIndex = endIndex;

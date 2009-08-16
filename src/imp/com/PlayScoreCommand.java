@@ -78,8 +78,6 @@ public class PlayScoreCommand implements Command, Constants {
     
     private int transposition = 0;
 
-    private static final int ENDSCORE = -1;
-
    /**
     * The duration of the accompanying chord for single-note entry
     */
@@ -92,10 +90,9 @@ public class PlayScoreCommand implements Command, Constants {
     }
     
     public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms, MidiPlayListener listener, int loopCount, int transposition, boolean useDrums) {
-        // -1 means to end of score
-
         this(score, startTime, swing, ms, listener, loopCount, transposition, useDrums, ENDSCORE);
     }
+
     public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms, MidiPlayListener listener, int loopCount, int transposition, boolean useDrums, int endLimitIndex) {
         this.score = score;
         this.swing = swing;
@@ -177,6 +174,14 @@ public class PlayScoreCommand implements Command, Constants {
 
         // Note that the value of loopCount is 1 less than the number of loops
         // desired. That is, a value of 0 loops once, 1 loops twice, etc.
+
+        int offset = score.getCountInOffset();
+
+        startTime = startTime == 0 ? 0 : startTime + offset;
+
+        endLimitIndex = endLimitIndex == ENDSCORE ? ENDSCORE : endLimitIndex + offset;
+
+        //System.out.println("from " + startTime + " to " + endLimitIndex);
 
         try { 
             ms.play(score, startTime, loopCount, transposition, useDrums, endLimitIndex);

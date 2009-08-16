@@ -213,6 +213,11 @@ public class Score implements Constants, Serializable {
         this.countInProg = countInProg;
     }
 
+    public void noCountIn()
+    {
+        setCountIn(null);
+    }
+
     public int getTransposition()
     {
       return transposition;
@@ -795,12 +800,14 @@ public class Score implements Constants, Serializable {
         {
         // Handle count-in sequence
 
-        if( endLimitIndex != -1 )
+        int len = getCountInOffset();
+
+        if( endLimitIndex != ENDSCORE )
           {
-            endLimitIndex += countInProg.size();
+            endLimitIndex += len;
           }
 
-        new MelodyPart(countInProg.size()).sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
+        new MelodyPart(len).sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
         time = countInProg.sequence(seq, 1, time, chordTrack, 0, true, endLimitIndex);
         }
 
@@ -811,10 +818,7 @@ public class Score implements Constants, Serializable {
             
             long melTime = i.next().sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
             long chTime = chordProg.sequence(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
-            if(chTime > melTime)
-                time = chTime;
-            else
-                time = melTime;
+            time = Math.max(melTime, chTime);
         }
         
         //System.out.println("seq = " + seq);
@@ -824,7 +828,11 @@ public class Score implements Constants, Serializable {
         Trace.log(3, "done sequencing");
         return seq;
     }
- 
+
+    public int getCountInOffset()
+    {
+        return countInProg == null ? 0 : countInProg.size();
+    }
     
     /**
      * Writes the Score to the BufferedWriter passed to this method

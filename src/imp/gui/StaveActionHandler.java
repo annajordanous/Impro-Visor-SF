@@ -1994,6 +1994,7 @@ public class StaveActionHandler
         switch( e.getKeyCode() )
           {
           case KeyEvent.VK_ENTER:
+            notate.noCountIn();
             stave.playSelection(true, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
             return;
           case KeyEvent.VK_Z:  // not effective?
@@ -2020,6 +2021,7 @@ public class StaveActionHandler
             return;
            */
           case KeyEvent.VK_ENTER:
+            notate.noCountIn();
             stave.playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
             return;
           case KeyEvent.VK_A:

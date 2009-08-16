@@ -5375,7 +5375,12 @@ boolean isaNote(int pitch)
 
   public void playSelection(int startIndex, int stopIndex, int loopCount, boolean useDrums)
   {
-    notate.chordVolumeChanged();
+    if( startIndex != 0 )
+      {
+        notate.noCountIn();
+      }
+
+      notate.chordVolumeChanged();
 
     //System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex);
 
@@ -5386,8 +5391,6 @@ boolean isaNote(int pitch)
     startIndex += chorusStart;
 
     stopIndex += chorusStart;
-
-
 
     notate.initCurrentPlaybackTab(startIndex);
     

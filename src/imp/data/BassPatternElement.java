@@ -427,7 +427,7 @@ public Object getText()
 
 public boolean isDirectional()
   {
-    return direction == DirectionType.ANY;
+    return direction != DirectionType.ANY;
   }
 
 public boolean nonRest()
