@@ -19560,23 +19560,6 @@ public ChordPart makeCountIn()
       }
     else
       {
-        // To handle meters such as 6/8, 12/8, 10/4, etc.
-        // we don't want the musician to have to count so high,
-        // so we break down the measures into groups.
-
-        if( beatsInMeasure % 3 == 0 && beatsInMeasure > 3 )
-          {
-            measures *= (beatsInMeasure / 3);
-            beatsInMeasure = 1;
-            apparentTempo /= 3;
-          }
-        else if( beatsInMeasure % 5 == 0 && beatsInMeasure > 5)
-          {
-            measures *= (beatsInMeasure / 5);
-            beatsInMeasure = 1;
-            apparentTempo /= 5;
-          }
-
         StringBuffer buffer[] =
           {
             new StringBuffer(), new StringBuffer()
