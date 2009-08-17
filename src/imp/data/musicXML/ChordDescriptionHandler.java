@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Nicolas Froment (aka Lasconic), Robert Keller,
+ * Copyright (C) 2009 Nicolas Froment (aka Lasconic), Robert Keller,
  * and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
