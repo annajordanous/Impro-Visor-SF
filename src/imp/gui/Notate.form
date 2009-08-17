@@ -8599,6 +8599,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportAllToMidiActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="exportChorusToMusicXML">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Export Chorus to MusicXML"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create a MusicXML file for the current chorus."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportChorusToMusicXMLActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="loadAdvMI">

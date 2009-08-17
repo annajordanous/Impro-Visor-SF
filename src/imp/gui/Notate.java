@@ -37,6 +37,7 @@ import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
 import imp.data.*;
+import imp.data.musicXML.ChordDescription;
 import imp.cluster.*;
 import imp.com.*;
 import imp.util.*;
@@ -44,6 +45,8 @@ import imp.lickgen.*;
 import imp.util.MidiManager;
 import imp.util.LeadsheetFileView;
 import imp.util.LeadsheetPreview;
+import imp.util.MusicXMLFilter;
+
 
 import polya.*;
 
@@ -63,6 +66,8 @@ import polya.*;
  *
  *
  * @author      Aaron Wolin, Bob Keller
+ *
+ * Music XMLaspects contributed by Lasconic (Nicolas Froment) Aug. 15, 2009.
  *
  * @version     1.0, 28th June 2005
  *
@@ -177,6 +182,14 @@ public class Notate
    */
   public String vocFile = "My.voc";
 
+ /**
+  *
+  * file for musicXML chord description
+  *
+  */
+  public String musicxmlFile = "chord_musicxml.xml";
+
+
   /**
    *
    * Sub-directory for grammars
@@ -240,6 +253,14 @@ public class Notate
    */
   public String midiExt = ".mid";
 
+ /**
+  *
+  * MusicXML extension
+  *
+  */
+  public String musicxmlExt = ".xml";
+
+
   /**
    *
    * Default Filenames
@@ -248,6 +269,9 @@ public class Notate
   public String lsDef = "untitled.ls";
 
   public String midDef = "untitled.mid";
+
+  public String musicxmlDef = "untitled.xml";
+
 
   /**
    *
@@ -493,6 +517,14 @@ public class Notate
    */
   private JFileChooser midfc;
 
+ /**
+  *
+  * The file chooser for opening and saving musicXML files
+  *
+  */
+  private JFileChooser musicxmlfc;
+
+
   /**
    *
    * The file chooser for opening and saving the grammar
@@ -637,6 +669,8 @@ public class Notate
   private File savedVocab;
 
   private File savedMidi;
+
+  private File savedMusicXML;
 
   private String lickTitle = "unnamed";
 
@@ -939,6 +973,8 @@ public class Notate
 
     midfc = new JFileChooser();
 
+    musicxmlfc = new JFileChooser();
+
     grammarfc = new JFileChooser();
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
@@ -1075,6 +1111,17 @@ public class Notate
     midfc.resetChoosableFileFilters();
 
     midfc.addChoosableFileFilter(new MidiFilter());
+
+    musicxmlfc.setCurrentDirectory(leadsheetDir);
+
+    musicxmlfc.setDialogType(JFileChooser.SAVE_DIALOG);
+
+    musicxmlfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+    musicxmlfc.resetChoosableFileFilters();
+
+    musicxmlfc.addChoosableFileFilter(new MusicXMLFilter());
+
 
     grammarfc.setCurrentDirectory(vocabDir); // original
 
@@ -1241,14 +1288,10 @@ public class Notate
       };
 
 
-    // initialize the NetBeans created frame components
-
-    //writeHeadData();  //reads and stores the songs in the tunesWithHeads folder
-
 
     lickgen = new LickGen("vocab" + File.separator + "My.grammar", this); //orig
 
-    //new lickgen = new LickGen(grammarFile, this);
+    ChordDescription.load(vocabDir + File.separator + musicxmlFile);
     
     initComponents();
 
@@ -2223,6 +2266,7 @@ public class Notate
         saveLeadsheetMI = new javax.swing.JMenuItem();
         saveAsLeadsheetMI = new javax.swing.JMenuItem();
         exportAllToMidi = new javax.swing.JMenuItem();
+        exportChorusToMusicXML = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         loadAdvMI = new javax.swing.JMenuItem();
         saveAdvice = new javax.swing.JMenuItem();
@@ -9041,6 +9085,15 @@ public class Notate
             }
         });
         fileMenu.add(exportAllToMidi);
+
+        exportChorusToMusicXML.setText("Export Chorus to MusicXML");
+        exportChorusToMusicXML.setToolTipText("Create a MusicXML file for the current chorus.");
+        exportChorusToMusicXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportChorusToMusicXMLActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exportChorusToMusicXML);
         fileMenu.add(jSeparator2);
 
         loadAdvMI.setText("Load Vocabulary");
@@ -15308,7 +15361,59 @@ public void redrawTriage()
         
     }
     
-    
+      private void exportToMusicXML()
+    {
+ 	    if( savedMusicXML != null )
+ 	      {
+ 	      musicxmlfc.setSelectedFile(savedMusicXML);
+ 	      }
+ 	    else
+ 	      {
+ 	      if( savedLeadsheet != null )
+ 	        {
+ 	        String name = savedLeadsheet.getName();
+ 	        if( name.endsWith(leadsheetExt) )
+ 	          {
+ 	          name = name.substring(0, name.length() - 3);
+ 	          }
+ 	        musicxmlfc.setSelectedFile(new File(name + musicxmlExt));
+ 	        }
+ 	      else
+ 	        {
+ 	    	  musicxmlfc.setSelectedFile(new File(musicxmlDef));
+ 	        }
+ 	      }
+
+ 	    if( musicxmlfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
+ 	      {
+ 	      File file;
+ 	      if( musicxmlfc.getSelectedFile().getName().endsWith(musicxmlExt) )
+ 	        {
+ 	        file = musicxmlfc.getSelectedFile();
+ 	        }
+ 	      else
+ 	        {
+ 	        String fileName = musicxmlfc.getSelectedFile().getAbsolutePath();
+ 	        fileName += musicxmlExt;
+ 	        file = new File(fileName);
+ 	        }
+
+ 	      ExportToMusicXMLCommand exportCmd = new ExportToMusicXMLCommand(file, score , scoreTab.getSelectedIndex(), getTransposition());
+ 	      cm.execute(exportCmd);
+
+ 	      if( exportCmd.getError() instanceof IOException )
+ 	        {
+ 	        JOptionPane.showMessageDialog(this,
+ 	                "There was an IO Exception during saving:\n" + exportCmd.getError().getMessage(),
+ 	                "An error occurred when attmepting to save",
+ 	                JOptionPane.WARNING_MESSAGE);
+ 	        return;
+ 	        }
+
+ 	      savedMusicXML = file;
+ 	      }
+ 	    }
+
     
   private void exportToMidi(int toExport)
     {
@@ -21520,7 +21625,7 @@ public void setKeyboardPlayback(boolean on)
  */
 public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, int slot, int totalSlots)
 {
-    String currentChordName = currentChord.getName();
+    String currentChordName = currentChord == null ? "NC" : currentChord.getName();
     Polylist v;
     
     // Code for keyboard playback.
@@ -23581,6 +23686,14 @@ private void playToolBarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
     keyPressed(evt);
 }//GEN-LAST:event_playToolBarKeyPressed
 
+private void exportChorusToMusicXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportChorusToMusicXMLActionPerformed
+
+    musicxmlfc.setDialogTitle("Export Leadsheet to MusicXML:");
+
+    exportToMusicXML();
+
+}//GEN-LAST:event_exportChorusToMusicXMLActionPerformed
+
 // For key pressed in various places:
 
 public void keyPressed(java.awt.event.KeyEvent evt)
@@ -24976,6 +25089,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem expandMelodyBy2;
     private javax.swing.JMenuItem expandMelodyBy3;
     private javax.swing.JMenuItem exportAllToMidi;
+    private javax.swing.JMenuItem exportChorusToMusicXML;
     private javax.swing.JLabel extEntryLabel;
     private javax.swing.JTextField extEntryTF;
     private javax.swing.JMenu fileMenu;
