@@ -3,6 +3,7 @@
  * This Java Class is part of the Impro-Visor Application
  *
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * XML export code is Copyright (C) 2009, Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

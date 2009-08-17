@@ -217,6 +217,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 				if (unit instanceof Note) {
 					Note note = (Note) unit;
 					int value = note.getRhythmValue();
+					
 					if (!currentlyInTuplet)
 						tupletHandler(note, mp);
 					osw.write("			<note>\n");
@@ -258,6 +259,13 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 
 					osw.write("				<voice>1</voice>\n");
 					osw.write("				<type>" + getType(value) + "</type>\n");
+					
+					int hasDot = getDots(value);
+					if(hasDot > 0){
+						for (int i = 0; i < hasDot; i++) {
+							osw.write("				<dot/>\n");
+						}
+					}
 
 					// Need work. Don't output if in key signature
 					if (note.getAccidental() == Accidental.FLAT) {
@@ -291,7 +299,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 						}
 					}
 					if (note == tupletStartNote) {
-						osw.write("					<tuplet type=\"start\"/>\n");
+						osw.write("					<tuplet type=\"start\" bracket=\"yes\"/>\n");
 					}
 					if (note == tupletEndNote) {
 						osw.write("					<tuplet type=\"stop\"/>\n");
@@ -384,6 +392,8 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 
 	}
 
+
+
 	public void tupletHandler(Note note, MelodyPart part) {
 		int noteValue = note.getRhythmValue();
 
@@ -464,6 +474,14 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		}
 	}
 
+	private static int getDots(int value) {
+		int dots = 0;
+		if (value==DOTTED_EIGHTH || value==DOTTED_QUARTER || value==DOTTED_HALF || value==DOTTED_SIXTEENTH){
+			return 1;
+		}
+		return dots;
+	}
+	
 	static String getType(int value) {
 		switch (value) {
 		case WHOLE:

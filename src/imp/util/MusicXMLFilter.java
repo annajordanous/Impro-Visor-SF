@@ -1,7 +1,8 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2009 Nicolas Froment (aka Lasconic),
+ * Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +26,8 @@ import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * @author MusicXML routines were contributed by Lasconic (Nicolas Froment) Aug. 15, 2009
+ * @author contributed by Lasconic (Nicolas Froment) Aug. 15, 2009,
+ * based on other FileFilters in Impro-Visor.
  */
 
 public class MusicXMLFilter extends FileFilter {
