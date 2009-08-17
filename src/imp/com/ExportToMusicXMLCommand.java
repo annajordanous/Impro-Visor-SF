@@ -1,7 +1,8 @@
-/*
+/**
  * This Java Class is part of the Impro-Visor API.
  *
- * Copyright (C) 2005-2008 by Robert Keller and Harvey Mudd College
+ * Copyright (C) 2009 Nicolas Froment (aka Lasconic),
+ * Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +21,6 @@
 package imp.com;
 
 import imp.Constants;
-import imp.Constants.Accidental;
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.data.ChordSymbol;
@@ -40,7 +40,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
@@ -182,6 +181,8 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			int measureFill = 0;
 			String savePitchForTie = null;
 			boolean measureWritten = false;
+			int unitIndex = 0;
+			Note nextNote = null;
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				if (measureFill == 0) {
 					if (!measureWritten) {
@@ -254,6 +255,11 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 							osw.write("				<tie type=\"start\"/>\n");
 						} else if (note.isTied()) {
 							osw.write("				<tie type=\"stop\"/>\n");
+							//if next note also tied --> start
+							nextNote = getNextNote(list, unitIndex);
+							if (nextNote != null && nextNote.isTied() && !nextNote.firstTied()){
+								osw.write("				<tie type=\"start\"/>\n");
+							}
 						}
 					}
 
@@ -296,6 +302,10 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 							osw.write("					<tied type=\"start\"/>\n");
 						} else if (note.isTied()) {
 							osw.write("					<tied type=\"stop\"/>\n");
+							if (nextNote != null && nextNote.isTied() && !nextNote.firstTied()){
+								osw.write("					<tied type=\"start\"/>\n");
+								nextNote = null;
+							}
 						}
 					}
 					if (note == tupletStartNote) {
@@ -384,6 +394,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 					measureWritten = false;
 					measureIndex++;
 				}
+				unitIndex++;
 			}
 		}
 
@@ -393,6 +404,18 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 	}
 
 
+
+	private Note getNextNote(Vector<Unit> list, int unitIndex) {
+		Note n = null;
+		for (int i = unitIndex+1; i < list.size(); i++) {
+			Unit u = list.get(i);
+			if (u instanceof Note){
+				n = (Note)u;
+				break;
+			}
+		}
+		return n;
+	}
 
 	public void tupletHandler(Note note, MelodyPart part) {
 		int noteValue = note.getRhythmValue();
