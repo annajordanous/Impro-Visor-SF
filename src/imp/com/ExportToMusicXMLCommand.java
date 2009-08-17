@@ -44,6 +44,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
+import polya.Polylist;
+
 /**
  * A Command that exports a score to a midi file
  */
@@ -116,6 +118,12 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		String title = score.getTitle();
 		String composer = score.getComposer();
 		int keySig = score.getKeySignature();
+		Polylist polylist = score.getLayoutList();
+		Object o = polylist.first();
+		long barPerLine = 4;
+		if (o != null & o instanceof Long) {
+			barPerLine = (Long) o;
+		}
 
 		int[] metre = score.getMetre();
 
@@ -149,9 +157,6 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		MelodyPart mp = score.getPart(melodyPartIndex);
 		ChordPart cp = score.getChordProg();
 
-		// System.out.println(mp);
-		// System.out.println(cp);
-
 		int top = metre[0];
 		int bottom = metre[1];
 		int measureLength = 0;
@@ -183,11 +188,14 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			boolean measureWritten = false;
 			int unitIndex = 0;
 			Note nextNote = null;
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			for (Iterator<Unit> iterator = list.iterator(); iterator.hasNext();) {
 				if (measureFill == 0) {
 					if (!measureWritten) {
-						osw.write("		<measure number=\"" + measureIndex + "\">\n");
 						measureWritten = true;
+						osw.write("		<measure number=\"" + measureIndex + "\">\n");
+						if (measureIndex != 1 && measureIndex % barPerLine == 1) {
+							osw.write("		<print new-system=\"yes\"/>\n");
+						}
 						if (measureIndex == 1) {
 							osw.write("			<attributes>\n");
 							osw.write("				<divisions>" + 120 + "</divisions>\n");
@@ -218,7 +226,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 				if (unit instanceof Note) {
 					Note note = (Note) unit;
 					int value = note.getRhythmValue();
-					
+
 					if (!currentlyInTuplet)
 						tupletHandler(note, mp);
 					osw.write("			<note>\n");
@@ -255,9 +263,9 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 							osw.write("				<tie type=\"start\"/>\n");
 						} else if (note.isTied()) {
 							osw.write("				<tie type=\"stop\"/>\n");
-							//if next note also tied --> start
+							// if next note also tied --> start
 							nextNote = getNextNote(list, unitIndex);
-							if (nextNote != null && nextNote.isTied() && !nextNote.firstTied()){
+							if (nextNote != null && nextNote.isTied() && !nextNote.firstTied()) {
 								osw.write("				<tie type=\"start\"/>\n");
 							}
 						}
@@ -265,9 +273,9 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 
 					osw.write("				<voice>1</voice>\n");
 					osw.write("				<type>" + getType(value) + "</type>\n");
-					
+
 					int hasDot = getDots(value);
-					if(hasDot > 0){
+					if (hasDot > 0) {
 						for (int i = 0; i < hasDot; i++) {
 							osw.write("				<dot/>\n");
 						}
@@ -302,7 +310,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 							osw.write("					<tied type=\"start\"/>\n");
 						} else if (note.isTied()) {
 							osw.write("					<tied type=\"stop\"/>\n");
-							if (nextNote != null && nextNote.isTied() && !nextNote.firstTied()){
+							if (nextNote != null && nextNote.isTied() && !nextNote.firstTied()) {
 								osw.write("					<tied type=\"start\"/>\n");
 								nextNote = null;
 							}
@@ -389,7 +397,6 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 						osw.write("				<bar-style>light-heavy</bar-style>\n");
 						osw.write("			</barline>\n");
 					}
-					// System.out.println(score.getLength());
 					osw.write("		</measure>\n");
 					measureWritten = false;
 					measureIndex++;
@@ -403,14 +410,12 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 
 	}
 
-
-
 	private Note getNextNote(Vector<Unit> list, int unitIndex) {
 		Note n = null;
-		for (int i = unitIndex+1; i < list.size(); i++) {
+		for (int i = unitIndex + 1; i < list.size(); i++) {
 			Unit u = list.get(i);
-			if (u instanceof Note){
-				n = (Note)u;
+			if (u instanceof Note) {
+				n = (Note) u;
 				break;
 			}
 		}
@@ -441,7 +446,14 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			currentlyInTuplet = true;
 			tupletValue = 3;
 			Note n = part.getNote(currentUnitTime + EIGHTH);
-			tupletEndNote = n != null ? part.getNote(currentUnitTime + EIGHTH_TRIPLET) : part.getNote(currentUnitTime + 2 * EIGHTH_TRIPLET);
+			if (n != null) {
+				tupletEndNote = part.getNote(currentUnitTime + EIGHTH_TRIPLET);
+				if (tupletEndNote.getRhythmValue() == THIRTYSECOND_TRIPLET) {
+					tupletEndNote = part.getNote(currentUnitTime + EIGHTH_TRIPLET + THIRTYSECOND_TRIPLET);
+				}
+			} else {
+				tupletEndNote = part.getNote(currentUnitTime + 2 * EIGHTH_TRIPLET);
+			}
 		} else if (noteValue == EIGHTH_QUINTUPLET) {
 			currentlyInTuplet = true;
 			tupletValue = 5;
@@ -450,7 +462,14 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			currentlyInTuplet = true;
 			tupletValue = 3;
 			Note n = part.getNote(currentUnitTime + QUARTER);
-			tupletEndNote = n != null ? part.getNote(currentUnitTime + QUARTER_TRIPLET) : part.getNote(currentUnitTime + 2 * QUARTER_TRIPLET);
+			if (n != null) {
+				tupletEndNote = part.getNote(currentUnitTime + QUARTER_TRIPLET);
+				if (tupletEndNote.getRhythmValue() == SIXTEENTH_TRIPLET) {
+					tupletEndNote = part.getNote(currentUnitTime + QUARTER_TRIPLET + SIXTEENTH_TRIPLET);
+				}
+			} else {
+				tupletEndNote = part.getNote(currentUnitTime + 2 * QUARTER_TRIPLET);
+			}
 		} else if (noteValue == QUARTER_QUINTUPLET) {
 			currentlyInTuplet = true;
 			tupletValue = 5;
@@ -459,7 +478,14 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			currentlyInTuplet = true;
 			tupletValue = 3;
 			Note n = part.getNote(currentUnitTime + HALF);
-			tupletEndNote = n != null ? part.getNote(currentUnitTime + HALF_TRIPLET) : part.getNote(currentUnitTime + 2 * HALF_TRIPLET);
+			if (n != null) {
+				tupletEndNote = part.getNote(currentUnitTime + HALF_TRIPLET);
+				if (tupletEndNote.getRhythmValue() == EIGHTH_TRIPLET) {
+					tupletEndNote = part.getNote(currentUnitTime + HALF_TRIPLET + EIGHTH_TRIPLET);
+				}
+			} else {
+				tupletEndNote = part.getNote(currentUnitTime + 2 * HALF_TRIPLET);
+			}
 		}
 		if (currentlyInTuplet) {
 			tupletStartNote = note;
@@ -499,12 +525,12 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 
 	private static int getDots(int value) {
 		int dots = 0;
-		if (value==DOTTED_EIGHTH || value==DOTTED_QUARTER || value==DOTTED_HALF || value==DOTTED_SIXTEENTH){
+		if (value == DOTTED_EIGHTH || value == DOTTED_QUARTER || value == DOTTED_HALF || value == DOTTED_SIXTEENTH) {
 			return 1;
 		}
 		return dots;
 	}
-	
+
 	static String getType(int value) {
 		switch (value) {
 		case WHOLE:
