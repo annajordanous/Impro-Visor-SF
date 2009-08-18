@@ -111,7 +111,6 @@
 		<name>-9b5</name>
 		<name>m9b5</name>
 		<name>h9</name>
-		<name></name>
 		<kind>minor-ninth</kind>
 		<degree>
 			<value>5</value>
@@ -123,7 +122,6 @@
 		<name>-11b5</name>
 		<name>m11b5</name>
 		<name>h11</name>
-		<name></name>
 		<kind>minor-11th</kind>
 		<degree>
 			<value>5</value>
@@ -135,7 +133,6 @@
 		<name>-13b5</name>
 		<name>m13b5</name>
 		<name>h13</name>
-		<name></name>
 		<kind>minor-13th</kind>
 		<degree>
 			<value>5</value>
@@ -363,11 +360,6 @@
 	<cd>
 		<name>mM7</name>
 		<kind>major-minor</kind>
-		<degree>
-			<value>7</value>
-			<alter>0</alter>
-			<type>add</type>
-		</degree>
 	</cd>
 	<cd>
 		<name>mM9</name>

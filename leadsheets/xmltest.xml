@@ -76,12 +76,7 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="">minor-13th</kind>
-				<degree>
-					<degree-value>5</degree-value>
-					<degree-alter>-1</degree-alter>
-					<degree-type>alter</degree-type>
-				</degree>
+				<kind text="">major</kind>
 			</harmony>
 			<note>
 			 	<rest/>
@@ -697,11 +692,6 @@
   				<root-step>C</root-step>
   			</root>
 				<kind text="mM7">major-minor</kind>
-				<degree>
-					<degree-value>7</degree-value>
-					<degree-alter>0</degree-alter>
-					<degree-type>add</degree-type>
-				</degree>
 			</harmony>
 			<note>
 			 	<rest/>

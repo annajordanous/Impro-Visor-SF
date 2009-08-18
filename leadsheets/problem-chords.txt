@@ -1,20 +1,18 @@
 Problem cases (Rendering is in MuseScore)
 
-bar 3	C rendered as Cm13
-
 bar 21	CM13#11    # rendered as a box
 
 bar 39	CmM7 rendered as Cm9Maj7
 
-bar 70	C7b9#11 rendered as 
+bar 70	C7b9#11 rendered as  C
 
-bar 71 C7#9 rendered as C9
+bar 71	C7#9 rendered as C9
 
-bar 77 C9b5 rendered as C13b5
+bar 77	C9b5 rendered as C13b5
 
-bar 79 C13b9#11 rendered as C13#5b9
+bar 79	C13b9#11 rendered as C13#5b9
 
-bar 80 C13#9 rendered as C13+
+bar 80	C13#9 rendered as C13+
 
 
 bar 81 C13#11 rendered as C13#5
