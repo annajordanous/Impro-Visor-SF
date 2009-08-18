@@ -119,11 +119,13 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		String composer = score.getComposer();
 		int keySig = score.getKeySignature();
 		Polylist polylist = score.getLayoutList();
-		Object o = polylist.first();
 		long barPerLine = 4;
-		if (o != null & o instanceof Long) {
+        if( polylist.nonEmpty() ) {
+		  Object o = polylist.first();
+		  if (o != null & o instanceof Long) {
 			barPerLine = (Long) o;
-		}
+		  }
+        }
 
 		int[] metre = score.getMetre();
 

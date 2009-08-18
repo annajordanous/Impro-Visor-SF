@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cds>
 	<cd>
+		<name>Blues</name>
+		<name>Bass</name>
+		<kind>other</kind>
+	</cd>
+	<cd>
 		<name></name>
 		<name>M</name>
 		<name>Major</name>
@@ -71,6 +76,14 @@
 		<kind>major-sixth</kind>
 	</cd>
 	<cd>
+		<name>69</name>
+		<name>M69</name>
+		<kind>major-sixth</kind>
+		<degree>
+			<value>9</value>
+		</degree>
+	</cd>
+	<cd>
 		<name>m6</name>
 		<name>-6</name>
 		<kind>minor-sixth</kind>
@@ -123,6 +136,7 @@
 		<name>sus</name>
 		<name>sus4</name>
 		<name>Msus4</name>
+		<name>quartal</name>
 		<kind>suspended-fourth</kind>
 	</cd>
 	<cd>
