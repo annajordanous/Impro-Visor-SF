@@ -210,8 +210,6 @@ public class StyleEditor
    */
   public StyleEditor(Notate p, CommandManager cm)
     {
-    WindowRegistry.registerWindow(this);
-    
     // Establish Directories
 
     try

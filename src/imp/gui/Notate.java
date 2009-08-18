@@ -48,7 +48,6 @@ import imp.util.LeadsheetFileView;
 import imp.util.LeadsheetPreview;
 import imp.util.MusicXMLFilter;
 
-
 import polya.*;
 
 /**
@@ -720,10 +719,6 @@ public class Notate
 
   private SectionInfo sectionInfo;
 
-  //Added summer 2007, for use with style editor/generator
-  // public SectionInfo getSectionInfoForStyleEditor() {
-  // 	return sectionInfo;
-  // }
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
   
   private DefaultListModel voicingSequenceListModel = new DefaultListModel();
@@ -764,11 +759,11 @@ public class Notate
    */
   private InstrumentChooser melodyInst,  chordInst,  bassInst,  defMelodyInst,  defChordInst,  defBassInst;
 
-  private SourceEditorDialog leadsheetEditor;
+  private SourceEditorDialog leadsheetEditor = null;;
 
-  private SourceEditorDialog grammarEditor;
+  private SourceEditorDialog grammarEditor = null;;
 
-  //private SourceEditorDialog styleEditor; // No longer used
+  private StyleEditor styleEditor = null;
 
   /**
    *
@@ -994,6 +989,7 @@ public class Notate
             SourceEditorDialog.GRAMMAR);
 
     grammarEditor.setRows(GRAMMAR_EDITOR_ROWS);
+
 
     // MIDI Preferences Dialog init
 
@@ -9895,12 +9891,15 @@ public class Notate
     }//GEN-LAST:event_chorusBtnActionPerformed
 
   private void styleGenerator1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleGenerator1ActionPerformed
-    StyleEditor m = new StyleEditor(this, cm);
-    m.setLocationRelativeTo(this);
-    m.pack();
-    m.setLocation(m.getX() + WindowRegistry.defaultXnewWindowStagger,
-            m.getY() + WindowRegistry.defaultYnewWindowStagger);
-    m.setVisible(true);
+
+    StyleEditor se = getStyleEditor();
+    se.setLocationRelativeTo(this);
+    se.pack();
+    se.setLocation(
+            se.getX() + WindowRegistry.defaultXnewWindowStagger,
+            se.getY() + WindowRegistry.defaultYnewWindowStagger);
+    WindowRegistry.registerWindow(se);
+    se.setVisible(true);
   }//GEN-LAST:event_styleGenerator1ActionPerformed
 
     private void savePrefsBtn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePrefsBtn3ActionPerformed
@@ -19635,8 +19634,6 @@ public ChordPart makeCountIn()
       // "Acoustic Bass Drum", "Acoustic Snare"
       };
 
-    StyleEditor se = new StyleEditor(this, this.cm);
-
     double tempo = score.getTempo();
 
     int[] metre = score.getMetre();
@@ -19651,7 +19648,10 @@ public ChordPart makeCountIn()
 
     double apparentTempo = tempo*tempoFactor;
 
-    DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, this.cm, se);
+    StyleEditor se = getStyleEditor();
+
+    DrumPatternDisplay drumPattern = new DrumPatternDisplay(this, cm, se);
+
     // Treat 4/4 as a special case, for jazz-style count-in, 2-bar pattern:
     // 1-2-1234
 
@@ -19659,7 +19659,7 @@ public ChordPart makeCountIn()
       {
         String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X4";
         DrumRuleDisplay drumRule1 =
-            new DrumRuleDisplay(pattern1, instrument[1], this, this.cm,
+            new DrumRuleDisplay(pattern1, instrument[1], this, cm,
                             drumPattern, se);
 
         drumPattern.addRule(drumRule1);
@@ -19698,9 +19698,9 @@ public ChordPart makeCountIn()
 
        DrumRuleDisplay drumRule[] =
          {
-         new DrumRuleDisplay(pattern[0], instrument[0], this, this.cm,
+         new DrumRuleDisplay(pattern[0], instrument[0], this, cm,
                             drumPattern, se),
-         new DrumRuleDisplay(pattern[1], instrument[1], this, this.cm,
+         new DrumRuleDisplay(pattern[1], instrument[1], this, cm,
                             drumPattern, se)
          };
 
@@ -25839,6 +25839,16 @@ public void showNewVoicingDialog()
     {
     return recurrentIteration;
     }
+
+  public StyleEditor getStyleEditor()
+  {
+      if( styleEditor == null )
+      {
+          styleEditor = new StyleEditor(this, cm);
+      }
+
+      return styleEditor;
+  }
 
   }
 

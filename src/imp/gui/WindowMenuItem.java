@@ -65,27 +65,22 @@ public class WindowMenuItem
     number = WindowRegistry.windowNumber++;
 
 
-
-    // on click, call the focus method which brings the window to front
+    // on click, bring the window to front and request focus
 
     menuItem.addActionListener(new ActionListener()
       {
       public void actionPerformed(java.awt.event.ActionEvent evt)
         {
-
+        window.toFront();
         window.requestFocus();
-
         }
-
       });
-
 
 
     // add a mnemonic if it is a known number
 
     switch( number )
       {
-
       case 1:
         menuItem.setMnemonic(java.awt.event.KeyEvent.VK_1);
         break;
@@ -128,22 +123,17 @@ public class WindowMenuItem
 
       default:
         break;
-
       }
-
     }
 
   // get the menu item for this object
   public JMenuItem getMI()
     {
-
     return getMI(null);
-
     }
 
   public JMenuItem getMI(JFrame current)
     {
-
     String title = window.getTitle();
 
     if( title.equals("") )
@@ -166,14 +156,11 @@ public class WindowMenuItem
       }
 
     return menuItem;
-
     }
 
   public JFrame getWindow()
     {
-
     return window;
-
     }
 
   }
