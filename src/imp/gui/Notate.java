@@ -1,9 +1,9 @@
 
 /**
- * This Java Class is part of the Impro-Visor Application
+ * This Java Class is part of the Impro-Visor Application.
  *
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- * XML export code is Copyright (C) 2009, Nicolas Froment (aka Lasconic).
+ * XML export code is also Copyright (C) 2009, Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1704,6 +1704,10 @@ public class Notate
         toCriticMI = new javax.swing.JCheckBoxMenuItem();
         showCriticMI = new javax.swing.JMenuItem();
         useGrammarMI = new javax.swing.JCheckBoxMenuItem();
+        generatorWindowMenu = new javax.swing.JMenu();
+        closeWindowMI1 = new javax.swing.JMenuItem();
+        cascadeMI1 = new javax.swing.JMenuItem();
+        windowMenuSeparator1 = new javax.swing.JSeparator();
         preferencesDialog = new javax.swing.JDialog();
         buttonPanel = new javax.swing.JPanel();
         globalBtn = new javax.swing.JToggleButton();
@@ -4062,6 +4066,39 @@ public class Notate
         grammarMenu.add(useGrammarMI);
 
         generatorMenuBar.add(grammarMenu);
+
+        generatorWindowMenu.setLabel("Window");
+        generatorWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                generatorWindowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        closeWindowMI1.setMnemonic('C');
+        closeWindowMI1.setText("Close Window");
+        closeWindowMI1.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        closeWindowMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowMI1ActionPerformed(evt);
+            }
+        });
+        generatorWindowMenu.add(closeWindowMI1);
+
+        cascadeMI1.setMnemonic('A');
+        cascadeMI1.setText("Cascade Windows");
+        cascadeMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cascadeMI1ActionPerformed(evt);
+            }
+        });
+        generatorWindowMenu.add(cascadeMI1);
+        generatorWindowMenu.add(windowMenuSeparator1);
+
+        generatorMenuBar.add(generatorWindowMenu);
 
         generatorFrame.setJMenuBar(generatorMenuBar);
 
@@ -9893,12 +9930,12 @@ public class Notate
   private void styleGenerator1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleGenerator1ActionPerformed
 
     StyleEditor se = getStyleEditor();
-    se.setLocationRelativeTo(this);
+    // se.setLocationRelativeTo(this);
     se.pack();
-    se.setLocation(
-            se.getX() + WindowRegistry.defaultXnewWindowStagger,
-            se.getY() + WindowRegistry.defaultYnewWindowStagger);
     WindowRegistry.registerWindow(se);
+    se.setLocation(
+            this.getX() + WindowRegistry.defaultXnewWindowStagger,
+            this.getY() + WindowRegistry.defaultYnewWindowStagger);
     se.setVisible(true);
   }//GEN-LAST:event_styleGenerator1ActionPerformed
 
@@ -13761,6 +13798,12 @@ private void updateTempoFromTextField()
         generatorFrame.setLocationRelativeTo(this);
 
         initLocationLickGenerator = true;
+
+        WindowRegistry.registerWindow(generatorFrame);
+
+        generatorFrame.setLocation(
+            (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
+            (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
         }
 
       generatorFrame.setVisible(true);
@@ -23695,6 +23738,32 @@ private void exportChorusToMusicXMLActionPerformed(java.awt.event.ActionEvent ev
 
 }//GEN-LAST:event_exportChorusToMusicXMLActionPerformed
 
+private void generatorWindowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenuMenuSelected
+
+    generatorWindowMenu.removeAll();
+
+        generatorWindowMenu.add(closeWindowMI);
+
+        generatorWindowMenu.add(cascadeMI);
+
+        generatorWindowMenu.add(windowMenuSeparator);
+
+        for(WindowMenuItem w : WindowRegistry.getWindows()) {
+
+            generatorWindowMenu.add(w.getMI(generatorFrame));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        }
+
+        generatorWindowMenu.repaint();
+}//GEN-LAST:event_generatorWindowMenuMenuSelected
+
+private void closeWindowMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI1ActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_closeWindowMI1ActionPerformed
+
+private void cascadeMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI1ActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_cascadeMI1ActionPerformed
+
 // For key pressed in various places:
 
 public void keyPressed(java.awt.event.KeyEvent evt)
@@ -24960,6 +25029,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton cancelLickTitle;
     private javax.swing.JButton cancelTruncate;
     private javax.swing.JMenuItem cascadeMI;
+    private javax.swing.JMenuItem cascadeMI1;
     private javax.swing.JRadioButton cellRadioButton;
     private javax.swing.JCheckBox cells;
     private javax.swing.ButtonGroup chordColorBtnGrp;
@@ -24991,6 +25061,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton clearButton;
     private javax.swing.JButton clearProbsButton;
     private javax.swing.JMenuItem closeWindowMI;
+    private javax.swing.JMenuItem closeWindowMI1;
     private javax.swing.ButtonGroup colorColorBtnGrp;
     private javax.swing.JLabel colorToneLabel;
     private javax.swing.JLabel colorToneProbLabel;
@@ -25110,6 +25181,7 @@ public void showNewVoicingDialog()
     private javax.swing.JFrame generatorFrame;
     private javax.swing.JMenuBar generatorMenuBar;
     private javax.swing.JTabbedPane generatorPane;
+    private javax.swing.JMenu generatorWindowMenu;
     private javax.swing.JButton getAbstractMelodyButton;
     private javax.swing.JButton getSelRhythmButton;
     private javax.swing.JToggleButton globalBtn;
@@ -25573,6 +25645,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem voicingTestMI;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
+    private javax.swing.JSeparator windowMenuSeparator1;
     private javax.swing.JPanel windowParametersPanel;
     private javax.swing.JTextField windowSizeField;
     private javax.swing.JLabel windowSizeLabel;

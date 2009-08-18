@@ -164,6 +164,8 @@ public class WindowRegistry {
     w.setLocation(x, y);
 
     w.requestFocus();
+
+    w.toFront();
     }
   
 }
