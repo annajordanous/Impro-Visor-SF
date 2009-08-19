@@ -81,7 +81,7 @@
 		<kind>dominant-seventh</kind>
 		<degree>
 			<value>9</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -91,12 +91,12 @@
 		<kind>dominant-seventh</kind>
 		<degree>
 			<value>5</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>alter</type>
 		</degree>
 		<degree>
 			<value>9</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -170,6 +170,17 @@
 		<kind>major-ninth</kind>
 	</cd>
 	<cd>
+		<name>M9#11</name>
+		<name>maj9#11</name>
+		<name>Maj9#11</name>
+		<kind>major-ninth</kind>
+		<degree>
+			<value>11</value>
+			<alter>1</alter>
+			<type>add</type>
+		</degree>
+	</cd>
+	<cd>
 		<name>m9</name>
 		<name>-9</name>
 		<kind>minor-ninth</kind>
@@ -206,35 +217,24 @@
 		<kind>suspended-second</kind>
 	</cd>
 	<cd>
-		<name>sus24</name>
-		<name>sus4add9</name>
-		<kind>suspended-second</kind>
-		<degree>
-			<value>4</value>
-			<alter>0</alter>
-			<type>add</type>
-		</degree>
-	</cd>
-	<cd>
 		<name>sus</name>
 		<name>sus4</name>
 		<name>Msus4</name>
 		<kind>suspended-fourth</kind>
 	</cd>
 	<cd>
-		<name>5</name>
-		<kind>power</kind>
-	</cd>
-	<cd>
-		<name>M13#11</name>
-		<name>Maj13#11</name>
-		<name>maj13#11</name>
-		<kind>major-13th</kind>
+		<name>sus24</name>
+		<name>sus4add9</name>
+		<kind>suspended-fourth</kind>
 		<degree>
-			<value>11</value>
-			<alter>1</alter>
+			<value>2</value>
+			<alter>0</alter>
 			<type>add</type>
 		</degree>
+	</cd>
+	<cd>
+		<name>5</name>
+		<kind>power</kind>
 	</cd>
 	<cd>
 		<name>13b5</name>
@@ -268,7 +268,7 @@
 		<kind>dominant-13th</kind>
 		<degree>
 			<value>9</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>alter</type>
 		</degree>
 	</cd>
@@ -282,7 +282,7 @@
 		</degree>
 		<degree>
 			<value>11</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -296,8 +296,8 @@
 		</degree>
 		<degree>
 			<value>11</value>
-			<alter>+1</alter>
-			<type>add</type>
+			<alter>1</alter>
+			<type>alter</type>
 		</degree>
 	</cd>
 	<cd>
@@ -305,13 +305,13 @@
 		<kind>dominant-13th</kind>
 		<degree>
 			<value>9</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>alter</type>
 		</degree>
 		<degree>
 			<value>11</value>
-			<alter>+1</alter>
-			<type>add</type>
+			<alter>1</alter>
+			<type>alter</type>
 		</degree>
 	</cd>
 	<cd>
@@ -329,7 +329,7 @@
 		<kind>suspended-fourth</kind>
 		<degree>
 			<value>7</value>
-			<alter>0</alter>
+			<alter>-1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -339,7 +339,7 @@
 		<kind>suspended-fourth</kind>
 		<degree>
 			<value>7</value>
-			<alter>0</alter>
+			<alter>-1</alter>
 			<type>add</type>
 		</degree>
 		<degree>
@@ -349,12 +349,39 @@
 		</degree>
 	</cd>
 	<cd>
-		<name>69</name>
-		<name>M69</name>
-		<kind>major-sixth</kind>
+		<name>13sus</name>
+		<name>13sus4</name>
+		<kind>suspended-fourth</kind>
+		<degree>
+			<value>7</value>
+			<alter>-1</alter>
+			<type>add</type>
+		</degree>
 		<degree>
 			<value>9</value>
 			<alter>0</alter>
+			<type>add</type>
+		</degree>
+		<degree>
+			<value>13</value>
+			<alter>0</alter>
+			<type>add</type>
+		</degree>
+	</cd>
+	<cd>
+		<name>7b9sus</name>
+		<name>7b9sus4</name>
+		<name>7sus4b9</name>
+		<name>7susb9</name>
+		<kind>suspended-fourth</kind>
+		<degree>
+			<value>7</value>
+			<alter>-1</alter>
+			<type>add</type>
+		</degree>
+		<degree>
+			<value>9</value>
+			<alter>-1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -396,7 +423,7 @@
 	</cd>
 	<cd>
 		<name>Bass</name>
-		<kind>pedal</kind>
+		<kind>other</kind>
 	</cd>
 	<cd>
 		<name>NC</name>
@@ -404,12 +431,59 @@
 	</cd>
 	<cd>
 		<name>Blues</name>
+		<kind>other</kind>
+		<degree>
+			<value>3</value>
+			<alter>-1</alter>
+			<type>add</type>
+		</degree>
+		<degree>
+			<value>4</value>
+			<alter>0</alter>
+			<type>add</type>
+		</degree>
+		<degree>
+			<value>7</value>
+			<alter>-1</alter>
+			<type>add</type>
+		</degree>
+	</cd>
+	<cd>
+		<name>M13#11</name>
+		<name>Maj13#11</name>
+		<name>maj13#11</name>
+		<kind>major-13th</kind>
+		<degree>
+			<value>5</value>
+			<alter>-1</alter>
+			<type>alter</type>
+		</degree>
+	</cd>
+	<cd>
 		<name>M6#11</name>
 		<name>6#11</name>
+		<name>M6b5</name>
+		<kind>major-sixth</kind>
+		<degree>
+			<value>5</value>
+			<alter>-1</alter>
+			<type>alter</type>
+		</degree>
+	</cd>
+	<cd>
 		<name>M69#11</name>
 		<name>69#11</name>
-		<name>M6b5</name>
-		<kind>other</kind>
+		<kind>major-sixth</kind>
+		<degree>
+			<value>9</value>
+			<alter>0</alter>
+			<type>add</type>
+		</degree>
+		<degree>
+			<value>11</value>
+			<alter>1</alter>
+			<type>add</type>
+		</degree>
 	</cd>
 </cds>
 

@@ -2,21 +2,5 @@ Remaining Problem cases (Rendering is in MuseScore)
 
 bar 21	CM13#11    # rendered as a box, even when I type # into MuseScore directly
 
-bar 79	C13b9#11 rendered as C13#5b9
-
-bar 80	C13#9 rendered as C13+
-
-
-bar 82 C13#9#11 rendered as C13#5
-
-
-bar 87 Csus24 rendered as Csus2
-
-bar 92 C7susb9 rendered as C
-
-bar 93 C7b9sus4 rendered as C
-
-bar 98 CBass rendered as C5
-
 In MuseScore, the last line of 4 bars are compressed into a very small space.
 
