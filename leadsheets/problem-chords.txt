@@ -1,19 +1,11 @@
-Problem cases (Rendering is in MuseScore)
+Remaining Problem cases (Rendering is in MuseScore)
 
-bar 21	CM13#11    # rendered as a box
-
-bar 39	CmM7 rendered as Cm9Maj7
-
-bar 70	C7b9#11 rendered as  C
-
-bar 73	C9b5 rendered as C
+bar 21	CM13#11    # rendered as a box, even when I type # into MuseScore directly
 
 bar 79	C13b9#11 rendered as C13#5b9
 
 bar 80	C13#9 rendered as C13+
 
-
-bar 81 C13#11 rendered as C13#5
 
 bar 82 C13#9#11 rendered as C13#5
 

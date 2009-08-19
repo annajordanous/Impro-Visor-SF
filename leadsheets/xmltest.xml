@@ -691,7 +691,7 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="mM7">major-minor</kind>
+				<kind text="mM7">minor-major</kind>
 			</harmony>
 			<note>
 			 	<rest/>
@@ -707,12 +707,7 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="mM9">major-minor</kind>
-				<degree>
-					<degree-value>7</degree-value>
-					<degree-alter>0</degree-alter>
-					<degree-type>add</degree-type>
-				</degree>
+				<kind text="mM9">minor-major</kind>
 				<degree>
 					<degree-value>9</degree-value>
 					<degree-alter>0</degree-alter>
@@ -1260,7 +1255,17 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="7b9#11">major</kind>
+				<kind text="7b9#11">dominant-seventh</kind>
+				<degree>
+					<degree-value>9</degree-value>
+					<degree-alter>-1</degree-alter>
+					<degree-type>add</degree-type>
+				</degree>
+				<degree>
+					<degree-value>11</degree-value>
+					<degree-alter>0</degree-alter>
+					<degree-type>add</degree-type>
+				</degree>
 			</harmony>
 			<note>
 			 	<rest/>
@@ -1314,7 +1319,12 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="9b5">major</kind>
+				<kind text="9b5">dominant-ninth</kind>
+				<degree>
+					<degree-value>5</degree-value>
+					<degree-alter>-1</degree-alter>
+					<degree-type>alter</degree-type>
+				</degree>
 			</harmony>
 			<note>
 			 	<rest/>
@@ -1477,7 +1487,7 @@
 				<kind text="13#11">dominant-13th</kind>
 				<degree>
 					<degree-value>11</degree-value>
-					<degree-alter>0</degree-alter>
+					<degree-alter>1</degree-alter>
 					<degree-type>add</degree-type>
 				</degree>
 			</harmony>

@@ -101,6 +101,15 @@
 		</degree>
 	</cd>
 	<cd>
+		<name>9b5</name>
+		<kind>dominant-ninth</kind>
+		<degree>
+			<value>5</value>
+			<alter>-1</alter>
+			<type>alter</type>
+		</degree>
+	</cd>
+	<cd>
 		<name>-7b5</name>
 		<name>m7b5</name>
 		<name>h7</name>
@@ -250,7 +259,7 @@
 		<kind>dominant-13th</kind>
 		<degree>
 			<value>11</value>
-			<alter>+1</alter>
+			<alter>1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -261,6 +270,20 @@
 			<value>9</value>
 			<alter>+1</alter>
 			<type>alter</type>
+		</degree>
+	</cd>
+	<cd>
+		<name>7b9#11</name>
+		<kind>dominant-seventh</kind>
+		<degree>
+			<value>9</value>
+			<alter>-1</alter>
+			<type>add</type>
+		</degree>
+		<degree>
+			<value>11</value>
+			<alter>+1</alter>
+			<type>add</type>
 		</degree>
 	</cd>
 	<cd>
@@ -359,16 +382,12 @@
 	</cd>
 	<cd>
 		<name>mM7</name>
-		<kind>major-minor</kind>
+		<kind>minor-major</kind>
 	</cd>
 	<cd>
+		<name>m9Maj7</name>
 		<name>mM9</name>
-		<kind>major-minor</kind>
-		<degree>
-			<value>7</value>
-			<alter>0</alter>
-			<type>add</type>
-		</degree>
+		<kind>minor-major</kind>
 		<degree>
 			<value>9</value>
 			<alter>0</alter>
