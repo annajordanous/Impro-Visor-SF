@@ -59,7 +59,9 @@ C13#11 | C13#9#11 | CMsus4 | Csus2 |
 CMsus2 | C2 | Csus24 | Csus | 
 Csus4 | C7sus | C7sus4 | C7susb9 | 
 C7b9sus4 | C9sus | C9sus4 | C13sus | 
-CBlues | CBass | C5 | / | 
+CBlues | CBass | C5 | NC | 
+
+C | C | C | C |
 
 (part
     (type melody)

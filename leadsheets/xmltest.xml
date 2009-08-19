@@ -387,8 +387,8 @@
 				<kind text="M13#11">major-13th</kind>
 				<degree>
 					<degree-value>11</degree-value>
-					<degree-alter>0</degree-alter>
-					<degree-type>alter</degree-type>
+					<degree-alter>1</degree-alter>
+					<degree-type>add</degree-type>
 				</degree>
 			</harmony>
 			<note>
@@ -1239,7 +1239,7 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="7b9">dominant</kind>
+				<kind text="7b9">dominant-seventh</kind>
 				<degree>
 					<degree-value>9</degree-value>
 					<degree-alter>-1</degree-alter>
@@ -1276,7 +1276,7 @@
 				<root>
   				<root-step>C</root-step>
   			</root>
-				<kind text="7#9">dominant</kind>
+				<kind text="7#9">dominant-seventh</kind>
 				<degree>
 					<degree-value>9</degree-value>
 					<degree-alter>0</degree-alter>
@@ -1435,7 +1435,7 @@
 				<degree>
 					<degree-value>11</degree-value>
 					<degree-alter>0</degree-alter>
-					<degree-type>alter</degree-type>
+					<degree-type>add</degree-type>
 				</degree>
 			</harmony>
 			<note>
@@ -1504,7 +1504,7 @@
 				<degree>
 					<degree-value>11</degree-value>
 					<degree-alter>0</degree-alter>
-					<degree-type>alter</degree-type>
+					<degree-type>add</degree-type>
 				</degree>
 			</harmony>
 			<note>
@@ -1828,6 +1828,76 @@
 			</note>
 		</measure>
 		<measure number="100">
+			<direction>
+				<direction-type>
+					<words default-y="100">NC</words>
+				</direction-type>
+			</direction>
+			<note>
+			 	<rest/>
+				<duration>480</duration>
+				<voice>1</voice>
+				<type>whole</type>
+				<notations>
+				</notations>
+			</note>
+		</measure>
+		<measure number="101">
+		<print new-system="yes"/>
+			<harmony print-frame="no">
+				<root>
+  				<root-step>C</root-step>
+  			</root>
+				<kind text="">major</kind>
+			</harmony>
+			<note>
+			 	<rest/>
+				<duration>480</duration>
+				<voice>1</voice>
+				<type>whole</type>
+				<notations>
+				</notations>
+			</note>
+		</measure>
+		<measure number="102">
+			<harmony print-frame="no">
+				<root>
+  				<root-step>C</root-step>
+  			</root>
+				<kind text="">major</kind>
+			</harmony>
+			<note>
+			 	<rest/>
+				<duration>480</duration>
+				<voice>1</voice>
+				<type>whole</type>
+				<notations>
+				</notations>
+			</note>
+		</measure>
+		<measure number="103">
+			<harmony print-frame="no">
+				<root>
+  				<root-step>C</root-step>
+  			</root>
+				<kind text="">major</kind>
+			</harmony>
+			<note>
+			 	<rest/>
+				<duration>480</duration>
+				<voice>1</voice>
+				<type>whole</type>
+				<notations>
+				</notations>
+			</note>
+		</measure>
+		<measure number="104">
+			<harmony print-frame="no">
+				<root>
+  				<root-step>C</root-step>
+  			</root>
+				<kind text="">major</kind>
+			</harmony>
 			<note>
 			 	<rest/>
 				<duration>480</duration>

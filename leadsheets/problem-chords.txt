@@ -6,9 +6,7 @@ bar 39	CmM7 rendered as Cm9Maj7
 
 bar 70	C7b9#11 rendered as  C
 
-bar 71	C7#9 rendered as C9
-
-bar 77	C9b5 rendered as C13b5
+bar 73	C9b5 rendered as C
 
 bar 79	C13b9#11 rendered as C13#5b9
 

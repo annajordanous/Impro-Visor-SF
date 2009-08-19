@@ -68,20 +68,20 @@
 		<kind>augmented-seventh</kind>
 	</cd>
 	<cd>
-		<name>7#9</name>
-		<kind>dominant</kind>
+		<name>7b9</name>
+		<kind>dominant-seventh</kind>
 		<degree>
 			<value>9</value>
-			<alter>+1</alter>
+			<alter>-1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
 	<cd>
-		<name>7b9</name>
-		<kind>dominant</kind>
+		<name>7#9</name>
+		<kind>dominant-seventh</kind>
 		<degree>
 			<value>9</value>
-			<alter>-1</alter>
+			<alter>+1</alter>
 			<type>add</type>
 		</degree>
 	</cd>
@@ -223,8 +223,8 @@
 		<kind>major-13th</kind>
 		<degree>
 			<value>11</value>
-			<alter>+1</alter>
-			<type>alter</type>
+			<alter>1</alter>
+			<type>add</type>
 		</degree>
 	</cd>
 	<cd>
@@ -274,7 +274,7 @@
 		<degree>
 			<value>11</value>
 			<alter>+1</alter>
-			<type>alter</type>
+			<type>add</type>
 		</degree>
 	</cd>
 	<cd>
@@ -288,7 +288,7 @@
 		<degree>
 			<value>11</value>
 			<alter>+1</alter>
-			<type>alter</type>
+			<type>add</type>
 		</degree>
 	</cd>
 	<cd>
