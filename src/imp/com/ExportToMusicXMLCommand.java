@@ -137,7 +137,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		osw.write("		<creator type=\"composer\">" + composer + "</creator>\n");
 		osw.write("		<rights></rights>\n");
 		osw.write("		<encoding>\n");
-		osw.write("			<software>Improvisor 3.40</software>\n");
+		osw.write("			<software>Improvisor 4.07</software>\n");
 		osw.write("			<encoding-date>" + sdf.format(new Date()) + "</encoding-date>\n");
 		osw.write("		</encoding>\n");
 		osw.write("		<source></source>\n");
@@ -569,14 +569,14 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 	 * Undo unsupported for SaveLeadsheetCommand.
 	 */
 	public void undo() {
-		throw new UnsupportedOperationException("Undo unsupported for ExportToMidi.");
+		throw new UnsupportedOperationException("Undo unsupported for Export To MusicXML.");
 	}
 
 	/**
 	 * Redo unsupported for SaveLeadsheetCommand.
 	 */
 	public void redo() {
-		throw new UnsupportedOperationException("Redo unsupported for ExportToMidi.");
+		throw new UnsupportedOperationException("Redo unsupported for Export To MusicXML.");
 	}
 
 	public boolean isUndoable() {
