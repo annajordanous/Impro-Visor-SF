@@ -913,7 +913,7 @@ public class MelodyPart
     {
 
     // to trace sequencing:
-    // System.out.println("MelodyPart: time = " + time + " endLimitIndex = " + endLimitIndex);
+    //System.out.println("Sequencing MelodyPart on track " + track + " time = " + time + " endLimitIndex = " + endLimitIndex);
       
     PartIterator i = iterator();
 
@@ -928,6 +928,7 @@ public class MelodyPart
 
     // the absolute time is advanced and returned by the next sequence
     // function
+
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
       time = ((Note)i.next()).sequence(seq, track, time, ch, volume,

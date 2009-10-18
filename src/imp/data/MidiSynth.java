@@ -65,6 +65,8 @@ private String scoreTitle;
 /** sets the MIDI resolution */
 private final static short DEFAULT_PPQ = 480;
 
+private final static double magic120 = 120.0;
+
 /** end of track */
 private final static int StopType = 47;
 
@@ -81,6 +83,8 @@ private boolean playing = false;
 private MidiPlayListener playListener = null;
 
 private static long playCounter = 0;
+
+private int countInOffset = 0;
 
 public MidiSynth(MidiManager midiManager)
   {
@@ -107,8 +111,29 @@ public void setTempo(float value)
     if( sequencer != null )
       {
         sequencer.setTempoInBPM(value);
+        //System.out.println("setTempo = " + value + " tempoFactor = " + sequencer.getTempoFactor());
       }
   }
+
+public float getTempo()
+  {
+    return sequencer.getTempoInBPM();
+  }
+
+public void setCountInOffset(int countInOffset)
+{
+    this.countInOffset = countInOffset;
+}
+
+public int getCountInOffset()
+{
+    return countInOffset;
+}
+
+public void setPastCountIn()
+{
+    setSlot(countInOffset);
+}
 
 public long getMicrosecond()
   {
@@ -116,7 +141,7 @@ public long getMicrosecond()
       {
         return 0;
       }
-    return (long) (sequencer.getMicrosecondPosition() * 120.0 / tempo);
+    return (long) (sequencer.getMicrosecondPosition() * magic120 / tempo);
   }
 
 public long getTotalMicroseconds()
@@ -125,8 +150,22 @@ public long getTotalMicroseconds()
       {
         return 0;
       }
-    return (long) (sequencer.getMicrosecondLength() * 120.0 / tempo);
+    return (long) (sequencer.getMicrosecondLength() * magic120 / tempo);
   }
+
+public long getCountInMicroseconds()
+  {
+    if( sequencer == null )
+      {
+        return 0;
+      }
+    return (long) ((((double)getCountInOffset()) / getTotalSlots()) * sequencer.getMicrosecondLength());
+  }
+
+public long getSlotsPerMicrosecond()
+{
+    return sequencer.getTickLength();
+}
 
 public void setMicrosecond(long position)
   {
@@ -135,9 +174,13 @@ public void setMicrosecond(long position)
         return;
       }
     midiManager.sendAllSoundsOffMsg();
-    sequencer.setMicrosecondPosition((long) (position * tempo / 120.0));
-    sequencer.setTempoInBPM(tempo);
-  }
+    long value = (long) (position * tempo / magic120);
+
+//System.out.println("setMicrosecond position = " + position + ", value = " + value + ", tempo = " + tempo);
+
+    sequencer.setMicrosecondPosition(value);
+    setTempo(tempo);
+ }
 
 public void setSlot(long slot)
   {
@@ -145,8 +188,14 @@ public void setSlot(long slot)
       {
         return;
       }
-    sequencer.setTickPosition((long) (slot * m_ppqn / BEAT));
-    sequencer.setTempoInBPM(tempo);
+
+    long value = (long) (slot * m_ppqn / BEAT);
+
+    //System.out.println("setSlot = " + slot + " value = " + value + " tempo = " + tempo);
+
+    sequencer.setTickPosition(value);
+    setTempo(tempo);
+
   }
 
 public int getSlot()
@@ -193,7 +242,12 @@ public void play(Score score, long startTime, int loopCount, int transposition,
     play(score, startTime, loopCount, transposition, useDrums);
   }
 
-static int magic_looping_factor = 4; // Why this?
+public void play(Score score, long startIndex, int loopCount, int transposition,
+                 boolean useDrums, int endLimitIndex)
+    throws InvalidMidiDataException
+  {
+    play(score, startIndex, loopCount, transposition, useDrums, endLimitIndex, 0);
+}
 
 
 /**
@@ -202,24 +256,28 @@ static int magic_looping_factor = 4; // Why this?
  * @exception Exception
  */
 public void play(Score score, long startIndex, int loopCount, int transposition,
-                 boolean useDrums, int endLimitIndex)
+                 boolean useDrums, int endLimitIndex, int countInOffset)
     throws InvalidMidiDataException
   {
-    /*Trace.log(0,
+   Trace.log(3,
               (++playCounter) + ": Starting MIDI sequencer, startTime = " 
               + startIndex + " loopCount = " + loopCount + " endIndex = "
               + endLimitIndex);
-    */
+    
     if( sequencer == null )
       {
         setSequencer();
       }
+
+    setCountInOffset(countInOffset);
 
     scoreTitle = score.getTitle();
 
     tempo = (float) score.getTempo();
 
     Sequence seq = score.sequence(m_ppqn, transposition, useDrums, endLimitIndex);
+
+    int magicFactor = Style.getMagicFactor();
 
     if( null != seq )
       {
@@ -234,12 +292,13 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
           }
         sequencer.setSequence(seq);
         sequencer.addMetaEventListener(this);
-        sequencer.setTempoInBPM(tempo);
+
+        setTempo(tempo);
 
         // Clear possible old values
-        sequencer.setLoopStartPoint(0);
-        sequencer.setLoopEndPoint(ENDSCORE);
-        sequencer.setLoopCount(0);
+        //setLoopStartPoint(0);
+        //setLoopEndPoint(ENDSCORE);
+        //setLoopCount(0);
 
         setSlot(startIndex);
 
@@ -251,25 +310,34 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
                 // set end time first, otherwise there might be an exception because
                 // the start time is too large.
 
-        int magicFactor = Style.getMagicFactor();
-
-        if( endLimitIndex != ENDSCORE )
+        if( endLimitIndex == ENDSCORE )
           {
-          sequencer.setLoopEndPoint(endLimitIndex * magicFactor);
+          setLoopEndPoint(ENDSCORE);
+          }
+        else
+          {
+          setLoopEndPoint(endLimitIndex * magicFactor);
           }
 
 
-        sequencer.setLoopStartPoint(startIndex * magicFactor);
+        if( countInOffset > 0 )
+        {
+            setLoopStartPoint((1+ countInOffset) * magicFactor);
+        }
+        else
+        {
+            setLoopStartPoint(startIndex * magicFactor);
+        }
 
         if( loopCount < 0 )
           {
-            sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+            setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
           }
         else if( loopCount > 0 )
           {
             try
               {
-                sequencer.setLoopCount(loopCount);
+                setLoopCount(loopCount);
 
               }
             catch( IllegalArgumentException e )
@@ -294,7 +362,25 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
                                     transposition);
           }
       }
-  }
+}
+
+public void setLoopStartPoint(long point)
+{
+    //System.out.println("setLoopStartPoint " + point);
+    sequencer.setLoopStartPoint(point);
+}
+
+public void setLoopEndPoint(long point)
+{
+    //System.out.println("setLoopEndPoint " + point);
+    sequencer.setLoopEndPoint(point);
+}
+
+public void setLoopCount(int count)
+{
+    //System.out.println("setLoopCount " + count);
+    sequencer.setLoopCount(count);
+}
 
 /**
  * Invoked when a Sequencer has encountered and processed a MetaMessage
@@ -316,7 +402,7 @@ public void pause()
     if( paused )
       {
         sequencer.start();
-        sequencer.setTempoInBPM(tempo);
+        setTempo(tempo); // was sequencer.setTempoInBPM(tempo);
         paused = false;
         playListener.setPlaying(MidiPlayListener.Status.PLAYING, 0);
       }
@@ -344,7 +430,12 @@ public void setPlayListener(MidiPlayListener listener)
  */
 public void stop()
   {
-    //Trace.log(0, playCounter + ": Stopping MIDI sequencer ");
+    if( sequencer != null )
+      {
+      Trace.log(3, playCounter + ": Stopping MIDI sequencer, tempo = " + sequencer.getTempoInBPM()
+          + " loopstart = " + sequencer.getLoopStartPoint()
+          + " loopend = " + sequencer.getLoopEndPoint());
+      }
     playing = false;
     paused = false;
 

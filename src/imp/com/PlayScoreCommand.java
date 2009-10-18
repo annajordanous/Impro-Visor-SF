@@ -179,12 +179,12 @@ public class PlayScoreCommand implements Command, Constants {
 
         startTime = startTime == 0 ? 0 : startTime + offset;
 
-        endLimitIndex = endLimitIndex == ENDSCORE ? ENDSCORE : endLimitIndex + offset;
+        endLimitIndex = endLimitIndex == ENDSCORE ? ENDSCORE : endLimitIndex + offset; // unsure about this!
 
         //System.out.println("from " + startTime + " to " + endLimitIndex);
 
         try { 
-            ms.play(score, startTime, loopCount, transposition, useDrums, endLimitIndex);
+            ms.play(score, startTime, loopCount, transposition, useDrums, endLimitIndex, offset);
         } catch (Exception e) {
             e.printStackTrace();
             return;

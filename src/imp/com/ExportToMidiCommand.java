@@ -27,6 +27,7 @@ import imp.Constants;
 
 /**
  * A Command that exports a score to a midi file
+ * Author: David Morrison
  */
 public class ExportToMidiCommand implements Command, Constants 
 {
@@ -178,8 +179,9 @@ public class ExportToMidiCommand implements Command, Constants
         // The first track contains tempo and time-signature information.
         writeFirstTrack(dos);
         
+System.out.println("writing Sequence of " + tracks.length + " tracks ");
         // Write all of the data tracks
-        for (int i = 0; i < seq.getTracks().length; ++i)
+        for (int i = 0; i <tracks.length; ++i)
         {
             // The chord track is track 0, so if we're only exporting the chords, then ignore
             // everything after i = 0.
@@ -246,9 +248,13 @@ public class ExportToMidiCommand implements Command, Constants
         writeVarLength(0, buffer);
         MidiMessage firstMsg = track.get(0).getMessage();
         buffer.write(firstMsg.getMessage());
+
+        long size = track.size();
+
+System.out.println("writing track of size " + size);
         
         // Write the remaining messages to the buffer.
-        for (int i = 1; i < track.size() - 1; ++i)
+        for (int i = 1; i < size - 1; ++i)
         {           
             // Events are expressed in the following format:
             // <delta-time> <event>

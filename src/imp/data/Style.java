@@ -909,7 +909,7 @@ public class Style
 
   public static boolean limitNotReached(long time, int endLimitIndex)
   {
-  return endLimitIndex == ENDSCORE // i.e. play to end
+  return true || endLimitIndex == ENDSCORE // i.e. play to end
       || time <= magicFactor*endLimitIndex; // limit not reached
   }
 

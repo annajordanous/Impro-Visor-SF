@@ -788,7 +788,7 @@ public class Score implements Constants, Serializable {
     public Sequence sequence(short ppqn, int transposition, boolean useDrums, int endLimitIndex)
                                 throws InvalidMidiDataException {
         // to trace sequencing
-        // System.out.println("Score: sequence, start 0, endLimitIndex = " + endLimitIndex);
+        //System.out.println("Score: sequence, start 0, endLimitIndex = " + endLimitIndex);
         Sequence seq = new Sequence(Sequence.PPQ, ppqn);
 
         long time = 0;
