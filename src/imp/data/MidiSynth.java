@@ -105,19 +105,28 @@ public MidiSynth(MidiManager midiManager, short ppqn)
     midiManager.registerTransmitter(volumeControl);
   }
 
-public void setTempo(float value)
-  {
-    tempo = value;
+
+/**
+ * Apparently the setTempo method of the java sequencer has a bug and we are
+ * advised to use setTempoFactor to control tempo instead of setTempoInBPM
+ * or other.
+ * See http://www.jsresources.org/faq_midi.html#tempo_methods
+ @param fBPM
+ */
+public void setTempo(float fBPM)
+{
     if( sequencer != null )
-      {
-        sequencer.setTempoInBPM(value);
-        //System.out.println("setTempo = " + value + " tempoFactor = " + sequencer.getTempoFactor());
-      }
-  }
+    {
+    float fCurrent = sequencer.getTempoInBPM();
+    float fFactor = fBPM / fCurrent;
+    sequencer.setTempoFactor(fFactor);
+    }
+}
+
 
 public float getTempo()
   {
-    return sequencer.getTempoInBPM();
+    return tempo;
   }
 
 public void setCountInOffset(int countInOffset)
@@ -141,7 +150,7 @@ public long getMicrosecond()
       {
         return 0;
       }
-    return (long) (sequencer.getMicrosecondPosition() * magic120 / tempo);
+    return (long) (sequencer.getMicrosecondPosition() * magic120 / tempo );
   }
 
 public long getTotalMicroseconds()
@@ -150,7 +159,18 @@ public long getTotalMicroseconds()
       {
         return 0;
       }
-    return (long) (sequencer.getMicrosecondLength() * magic120 / tempo);
+    return (long)(getTotalMicrosecondsWithCountIn() * (1 - getCountInFraction()));
+  }
+
+public double getCountInFraction()
+  {
+    if( sequencer == null )
+      {
+        return 0;
+      }
+
+    double fraction = ((double)getCountInOffset()) / getTotalSlots();
+    return fraction;
   }
 
 public long getCountInMicroseconds()
@@ -159,7 +179,16 @@ public long getCountInMicroseconds()
       {
         return 0;
       }
-    return (long) ((((double)getCountInOffset()) / getTotalSlots()) * sequencer.getMicrosecondLength());
+    return (long) (getCountInFraction() * getTotalMicroseconds());
+  }
+
+public long getTotalMicrosecondsWithCountIn()
+  {
+    if( sequencer == null )
+      {
+        return 0;
+      }
+    return (long) (sequencer.getMicrosecondLength() * magic120 / tempo );
   }
 
 public long getSlotsPerMicrosecond()
@@ -176,11 +205,13 @@ public void setMicrosecond(long position)
     midiManager.sendAllSoundsOffMsg();
     long value = (long) (position * tempo / magic120);
 
-//System.out.println("setMicrosecond position = " + position + ", value = " + value + ", tempo = " + tempo);
+    value += getCountInMicroseconds();
+
+    //System.out.println("setMicrosecond position = " + position + ", value = " + value + ", tempo = " + tempo);
 
     sequencer.setMicrosecondPosition(value);
-    setTempo(tempo);
  }
+
 
 public void setSlot(long slot)
   {
@@ -189,13 +220,15 @@ public void setSlot(long slot)
         return;
       }
 
+    if( slot < 0 )
+      {
+        slot = 0;
+      }
     long value = (long) (slot * m_ppqn / BEAT);
 
     //System.out.println("setSlot = " + slot + " value = " + value + " tempo = " + tempo);
 
     sequencer.setTickPosition(value);
-    setTempo(tempo);
-
   }
 
 public int getSlot()
@@ -296,9 +329,11 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
         setTempo(tempo);
 
         // Clear possible old values
-        //setLoopStartPoint(0);
-        //setLoopEndPoint(ENDSCORE);
-        //setLoopCount(0);
+        
+        setLoopStartPoint(0);
+        setLoopEndPoint(ENDSCORE);
+
+        setLoopCount(0);
 
         setSlot(startIndex);
 
@@ -316,7 +351,7 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
           }
         else
           {
-          setLoopEndPoint(endLimitIndex * magicFactor);
+          setLoopEndPoint((endLimitIndex + countInOffset) * magicFactor);
           }
 
 
@@ -368,6 +403,7 @@ public void setLoopStartPoint(long point)
 {
     //System.out.println("setLoopStartPoint " + point);
     sequencer.setLoopStartPoint(point);
+
 }
 
 public void setLoopEndPoint(long point)
@@ -389,20 +425,19 @@ public void setLoopCount(int count)
  */
 public void meta(MetaMessage metaEvent)
   {
-    Trace.log(2, playCounter + ": MidiSynth metaEvent: " + metaEvent);
+    Trace.log(3, playCounter + ": MidiSynth metaEvent: " + metaEvent);
     if( metaEvent.getType() == StopType )
       {
-        stop();
+        stop("meta");
       }
   }
 
 public void pause()
   {
-    Trace.log(2, playCounter + ": Pausing MidiSynth, paused was " + paused);
+    Trace.log(3, playCounter + ": Pausing MidiSynth, paused was " + paused);
     if( paused )
       {
         sequencer.start();
-        setTempo(tempo); // was sequencer.setTempoInBPM(tempo);
         paused = false;
         playListener.setPlaying(MidiPlayListener.Status.PLAYING, 0);
       }
@@ -416,7 +451,7 @@ public void pause()
 
 public void setPlayListener(MidiPlayListener listener)
   {
-    Trace.log(2, playCounter + ": Setting MidiPlayListener ");
+    Trace.log(3, playCounter + ": Setting MidiPlayListener ");
     if( playListener != null )
       {
 
@@ -428,14 +463,18 @@ public void setPlayListener(MidiPlayListener listener)
 /**
  * Stop sequencer object
  */
-public void stop()
+public void stop(String reason)
   {
+    /*
+    System.out.println("Stopping sequencer for reason: " + reason);
+    
     if( sequencer != null )
       {
-      Trace.log(3, playCounter + ": Stopping MIDI sequencer, tempo = " + sequencer.getTempoInBPM()
-          + " loopstart = " + sequencer.getLoopStartPoint()
-          + " loopend = " + sequencer.getLoopEndPoint());
+      showSequencerStatus();
       }
+
+    */
+    
     playing = false;
     paused = false;
 
@@ -444,8 +483,7 @@ public void stop()
       {
         sequencer.stop();
       }
-
-
+    
     // this should be the LAST thing this function does before returning
     if( playListener != null )
       {
@@ -456,7 +494,7 @@ public void stop()
 
 public void close()
   {
-    stop();
+    stop("close");
 
     if( sequencer != null && sequencer.isOpen() )
       {
@@ -750,6 +788,25 @@ public Receiver getReceiver()
 
 }
 
+public void showSequencerStatus()
+{
+System.out.println("Sequencer/sequence status:");
+System.out.println("    isRunning = "            + sequencer.isRunning());
+System.out.println("    Tick Position = "        + sequencer.getTickPosition());
+System.out.println("    Tick Length = "          + sequencer.getTickLength());
+System.out.println("    loopCount = "            + sequencer.getLoopCount());
+System.out.println("    loopStart = "            + sequencer.getLoopStartPoint());
+System.out.println("    loopEnd = "              + sequencer.getLoopEndPoint());
+System.out.println("    tempoInBPM = "           + sequencer.getTempoInBPM());
+System.out.println("    tempoInMPQ = "           + sequencer.getTempoInMPQ());
+System.out.println("    TempoFactor = "          + sequencer.getTempoFactor());
+System.out.println("    Microsecond Position = " + sequencer.getMicrosecondPosition());
+System.out.println("    Microsecond Length = "   + sequencer.getMicrosecondLength());
+System.out.println("    division type = "        + sequencer.getSequence().getDivisionType());
+System.out.println("    resolution = "           + sequencer.getSequence().getResolution());
+System.out.println("    microsecond/tick = "     + sequencer.getMicrosecondLength()/sequencer.getTickLength());
+}
+
 /*
 
 protected void printSeqInfo(Sequence seq) {
@@ -778,7 +835,7 @@ System.out.println("Sequence Microsecond Length = " +
 seq.getMicrosecondLength());
 System.out.println("Sequencer TempoEvent (BPM) = " +
 sequencer.getTempoInBPM());
-System.out.println("Sequencer TempoEvent (MPQ) = " +
+sequencer.System.out.println("Sequencer TempoEvent (MPQ) = " +
 sequencer.getTempoInMPQ());
 System.out.println("Sequencer TempoFactor = " +
 sequencer.getTempoFactor());

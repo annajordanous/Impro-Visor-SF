@@ -265,7 +265,7 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     }//GEN-LAST:event_volSliderStateChanged
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
-        midiSynth.stop();
+        midiSynth.stop("stop button");
     }//GEN-LAST:event_stopBtnActionPerformed
 
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
@@ -282,11 +282,11 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
                 previewTable.setValueAt("", i, 1);
         } else {
             boolean wasPlaying = (getPlaying() == MidiPlayListener.Status.PLAYING);
-            midiSynth.stop();
+            midiSynth.stop("load leadsheet");
             
             previewTableModel.loadScore(file);
             
-            playbackManager.setTotalTime(previewTableModel.score.getTotalTime());
+            playbackManager.setTotalTimeSeconds(previewTableModel.score.getTotalTime());
             previewTableModel.score.setVolumes(midiSynth);
             if( wasPlaying )
               playLeadsheet(0);
@@ -371,7 +371,7 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     }
 
     public void quit() {
-        midiSynth.stop();
+        midiSynth.stop("quit");
     }
 
     

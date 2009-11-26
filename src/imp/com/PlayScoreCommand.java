@@ -42,7 +42,7 @@ public class PlayScoreCommand implements Command, Constants {
     private boolean useDrums = USEDRUMS;
 
     public void stopPlaying() {
-        ms.stop();
+        ms.stop("PlayScoreCommand");
     }
     
     /**

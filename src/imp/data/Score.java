@@ -826,6 +826,8 @@ public class Score implements Constants, Serializable {
         // Find the longest track, and put a Stop event at the end of it
         MidiSynth.endSequence(seq);
         Trace.log(3, "done sequencing");
+
+        //System.out.println("countIn size = " + getCountInOffset());
         return seq;
     }
 

@@ -251,7 +251,7 @@ System.out.println("writing Sequence of " + tracks.length + " tracks ");
 
         long size = track.size();
 
-System.out.println("writing track of size " + size);
+        //System.out.println("writing track of size " + size);
         
         // Write the remaining messages to the buffer.
         for (int i = 1; i < size - 1; ++i)

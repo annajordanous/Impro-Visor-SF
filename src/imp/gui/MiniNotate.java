@@ -5100,7 +5100,7 @@ public class MiniNotate
 
     void stopPlaying() {
         
-        midiSynth.stop();
+        midiSynth.stop("miniNotate");
         
         
     }
@@ -10038,7 +10038,7 @@ System.out.println();
                 pauseBtn.setSelected(false);
                 
                 
-                playbackManager.setTotalTime(score.getTotalTime());
+                playbackManager.setTotalTimeSeconds(score.getTotalTime());
                 
                 getCurrentStave().repaint();
                 
@@ -10864,7 +10864,7 @@ System.out.println();
          *
          */
         
-        playbackManager.setTotalTime(score.getTotalTime());
+        playbackManager.setTotalTimeSeconds(score.getTotalTime());
         
         updateAllStaves();
         

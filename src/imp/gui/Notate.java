@@ -483,7 +483,11 @@ public class Notate
   
   public void setPlaybackStop(int slot)
   {
-    stopPlaybackAtSlot = slot;
+  // Try to finish the beat, but not start a new one
+
+   stopPlaybackAtSlot = BEAT*(1 + (int)Math.floor(((double)slot)/BEAT)) - 1;
+
+  //  stopPlaybackAtSlot = slot;
   }
 
   /**
@@ -1177,6 +1181,7 @@ public class Notate
         int chorusSize = getScore().getLength();
 
         int tab = currentPlaybackTab;
+        
         currentPlaybackTab = slotInPlayback / chorusSize;
         
         //slotInPlayback %= chorusSize;
@@ -1193,7 +1198,7 @@ public class Notate
         // Recurrent generation option
 
             if ( recurrentCheckbox.isSelected()
-                && (slotInPlayback >= midiSynth.getTotalSlots() - gap) )
+                && (slotInPlayback >= totalSlots - gap) )
             {
                 setLickGenStatus("Chorus " + getRecurrentIteration());
                 generateLickButtonActionPerformed(null);
@@ -1211,10 +1216,12 @@ public class Notate
 
         // Stop playback when a specified slot is reached.
         
-        if( slotInPlayback >= stopPlaybackAtSlot )
+        //System.out.println("slotInPlayback = " + slotInPlayback + " vs " + stopPlaybackAtSlot + " = stopPlaybackAtSlot");
+        if( slotInPlayback > stopPlaybackAtSlot )
           {
-          //System.out.println("slotInPlayback = " + slotInPlayback + ", stopPlaybackAtSlot = " + stopPlaybackAtSlot);
-            
+          // The following statement causes problems with looping when count-in is used.
+          // See if we can do without it.
+          
           stopPlaying();
           return;
           }
@@ -11173,6 +11180,11 @@ private String getChordRedirectName(int row)
         value = 2 * Math.round(value / 2);
         
         setTempo((double) value);
+
+        // NOte: score.getTotalTime() includes countIn time
+
+
+        playbackManager.setTotalTimeSeconds(score.getTotalTime());
         
         if(!tempoSlider.getValueIsAdjusting()) {
             
@@ -11374,7 +11386,7 @@ private String getChordRedirectName(int row)
     
     void stopPlaying() {
         
-        midiSynth.stop();
+        midiSynth.stop("stop in Notate");
         
         if(mode == Mode.RECORDING) {
             
@@ -13259,6 +13271,8 @@ public void chordVolumeChanged()
 
       score.setTempo(value);
 
+      //System.out.println("notate setTempo to " + value);
+
       midiSynth.setTempo((float)value);
       }
     else
@@ -13328,7 +13342,7 @@ private void updateTempoFromTextField()
 
       return;
       }
-    tempoSet.setForeground(Color.BLACK);
+    loopSet.setForeground(Color.BLACK);
     }
 
     private void standardToolbarComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_standardToolbarComponentMoved
@@ -19841,7 +19855,7 @@ public ChordPart makeCountIn()
 
           }
 
-        playbackManager.setTotalTime(score.getTotalTime());
+        playbackManager.setTotalTimeSeconds(score.getTotalTime());
 
         getCurrentStave().repaint();
 
@@ -19880,7 +19894,7 @@ public ChordPart makeCountIn()
       if( choice == 0 )
         {
 
-        midiSynth.stop();
+        midiSynth.stop("quit");
 
         adv.showMarkedItems();
 
@@ -24065,7 +24079,7 @@ public void showNewVoicingDialog()
      * update GUI to reflect total time of the score
      *
      */
-    playbackManager.setTotalTime(score.getTotalTime());
+    playbackManager.setTotalTimeSeconds(score.getTotalTime());
 
 
 
