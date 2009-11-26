@@ -129,6 +129,9 @@ public class Notate
   private static int aboutDialogWidth  = 600;
   private static int aboutDialogHeight = 750;
 
+
+ private static int million = 1000000;
+
   /**
    *
    * Tell whether advice is initially open or not.
@@ -11181,10 +11184,10 @@ private String getChordRedirectName(int row)
         
         setTempo((double) value);
 
-        // NOte: score.getTotalTime() includes countIn time
+        // Note: score.getTotalTime() includes countIn time
 
 
-        playbackManager.setTotalTimeSeconds(score.getTotalTime());
+        playbackManager.setTotalTime(million*score.getTotalTime());
         
         if(!tempoSlider.getValueIsAdjusting()) {
             
@@ -19855,7 +19858,7 @@ public ChordPart makeCountIn()
 
           }
 
-        playbackManager.setTotalTimeSeconds(score.getTotalTime());
+        playbackManager.setTotalTime(million*score.getTotalTime());
 
         getCurrentStave().repaint();
 
@@ -24079,7 +24082,7 @@ public void showNewVoicingDialog()
      * update GUI to reflect total time of the score
      *
      */
-    playbackManager.setTotalTimeSeconds(score.getTotalTime());
+    playbackManager.setTotalTime(million*score.getTotalTime());
 
 
 

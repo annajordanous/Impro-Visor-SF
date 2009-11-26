@@ -212,9 +212,26 @@ public void setMicrosecond(long position)
     sequencer.setMicrosecondPosition(value);
  }
 
+public void setFraction(double fraction)
+{
+    int totalSlots = getTotalSlots();
+    long slot = (long)(fraction*totalSlots);
+    //System.out.println("setFraction = " + fraction + " totalSlots = " + totalSlots + " slot = " + slot );
+    setSlot(slot);
+}
+
+public double getFraction()
+{
+    if( sequencer == null )
+    {
+        return 0;
+    }
+    return (double)getSlot()/getTotalSlots();
+}
 
 public void setSlot(long slot)
   {
+    //System.out.println("setSlot = " + slot);
     if( sequencer == null )
       {
         return;
@@ -225,8 +242,6 @@ public void setSlot(long slot)
         slot = 0;
       }
     long value = (long) (slot * m_ppqn / BEAT);
-
-    //System.out.println("setSlot = " + slot + " value = " + value + " tempo = " + tempo);
 
     sequencer.setTickPosition(value);
   }
@@ -248,8 +263,9 @@ public int getTotalSlots()
   {
     if( playing )
       {
-        return (int) Math.floor(
-            BEAT * sequencer.getTickLength() / (double) m_ppqn);
+        double value = BEAT * sequencer.getTickLength() / (double) m_ppqn;
+        //System.out.println("tickLength = " + sequencer.getTickLength() + " value = " + (int) Math.floor(value));
+        return (int) Math.floor(value);
       }
     else
       {
