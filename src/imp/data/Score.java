@@ -695,9 +695,9 @@ public class Score implements Constants, Serializable {
      */
     public int getTotalTime() {
         checkLength();
-        return (int) (length * partList.size() / BEAT / tempo * 60.0);
+        return (int) ((double)getTotalLength() / BEAT / tempo * 60.0);
     }
-    
+
     /**
      * Returns the title of the Score.
      * @return title    the title of the Score
@@ -836,6 +836,11 @@ public class Score implements Constants, Serializable {
         return countInProg == null ? 0 : countInProg.size();
     }
     
+    public int getCountInTime()
+    {
+        return (int)(getCountInOffset() / BEAT / tempo * 60.0);
+    }
+
     /**
      * Writes the Score to the BufferedWriter passed to this method
      * in Leadsheet notation.

@@ -121,6 +121,8 @@ public void setTempo(float fBPM)
     float fFactor = fBPM / fCurrent;
     sequencer.setTempoFactor(fFactor);
     }
+
+    tempo = fBPM;
 }
 
 
@@ -150,7 +152,7 @@ public long getMicrosecond()
       {
         return 0;
       }
-    return (long) (sequencer.getMicrosecondPosition() * magic120 / tempo );
+    return (long) (sequencer.getMicrosecondPosition() * magic120 / getTempo() );
   }
 
 public long getTotalMicroseconds()
@@ -159,8 +161,13 @@ public long getTotalMicroseconds()
       {
         return 0;
       }
-    return (long)(getTotalMicrosecondsWithCountIn() * (1 - getCountInFraction()));
+
+    return (long) (sequencer.getMicrosecondLength()*(1-getCountInFraction()) * magic120 / getTempo());
   }
+
+/**
+ @return the fraction of the countIn over the total length, including countIn
+ */
 
 public double getCountInFraction()
   {
@@ -169,9 +176,23 @@ public double getCountInFraction()
         return 0;
       }
 
-    double fraction = ((double)getCountInOffset()) / getTotalSlots();
+    int totalSlots = getTotalSlots();
+    
+    if( totalSlots == 0 )
+      {
+        return 0;
+      }
+
+    int offset = getCountInOffset();
+
+    double fraction = ((double)offset) / (totalSlots+offset);
+    //System.out.print("countIn Fraction = " + fraction);
     return fraction;
   }
+
+/**
+ @return the length of the countIn in microseconds
+ */
 
 public long getCountInMicroseconds()
   {
@@ -179,7 +200,7 @@ public long getCountInMicroseconds()
       {
         return 0;
       }
-    return (long) (getCountInFraction() * getTotalMicroseconds());
+    return (long) (getCountInFraction() * getTotalMicrosecondsWithCountIn());
   }
 
 public long getTotalMicrosecondsWithCountIn()
@@ -215,7 +236,7 @@ public void setMicrosecond(long position)
 public void setFraction(double fraction)
 {
     int totalSlots = getTotalSlots();
-    long slot = (long)(fraction*totalSlots);
+    long slot = (long)(fraction*totalSlots)  + getCountInOffset();
     //System.out.println("setFraction = " + fraction + " totalSlots = " + totalSlots + " slot = " + slot );
     setSlot(slot);
 }
@@ -226,7 +247,16 @@ public double getFraction()
     {
         return 0;
     }
-    return (double)getSlot()/getTotalSlots();
+
+    int totalSlots = getTotalSlots();
+
+    if( totalSlots == 0 )
+    {
+        return 0;
+    }
+
+
+    return (double)getSlot()/totalSlots;
 }
 
 public void setSlot(long slot)
@@ -246,12 +276,25 @@ public void setSlot(long slot)
     sequencer.setTickPosition(value);
   }
 
+/**
+ @return the slot number, starting after any count-in
+ */
+
 public int getSlot()
   {
     if( playing )
       {
-        return (int) Math.floor(
+        int slot = (int) Math.floor(
             BEAT * sequencer.getTickPosition() / (double) m_ppqn);
+
+        slot -= getCountInOffset();
+
+        if( slot < 0 )
+        {
+            slot = 0;
+        }
+
+        return slot;
       }
     else
       {
@@ -259,13 +302,17 @@ public int getSlot()
       }
   }
 
+/**
+ @return total number of slots, not counting count-in
+ */
+
 public int getTotalSlots()
   {
     if( playing )
       {
         double value = BEAT * sequencer.getTickLength() / (double) m_ppqn;
         //System.out.println("tickLength = " + sequencer.getTickLength() + " value = " + (int) Math.floor(value));
-        return (int) Math.floor(value);
+        return (int) (Math.round(value) - getCountInOffset());
       }
     else
       {

@@ -1163,7 +1163,7 @@ public class Notate
                 //return;
             }
 
-        int slotDelay = getScore().getCountInOffset() +
+        int slotDelay = 
                 (int)(midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
         
         int slotInPlayback = midiSynth.getSlot() - slotDelay;
@@ -8531,6 +8531,11 @@ public class Notate
         countInCheckBox.setMaximumSize(new java.awt.Dimension(28, 25));
         countInCheckBox.setMinimumSize(new java.awt.Dimension(28, 25));
         countInCheckBox.setPreferredSize(new java.awt.Dimension(28, 25));
+        countInCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                countInCheckBoxActionPerformed(evt);
+            }
+        });
         countInPanel.add(countInCheckBox, new java.awt.GridBagConstraints());
 
         playToolBar.add(countInPanel);
@@ -11184,21 +11189,22 @@ private String getChordRedirectName(int row)
         
         setTempo((double) value);
 
-        // Note: score.getTotalTime() includes countIn time
-
-
-        playbackManager.setTotalTime(million*score.getTotalTime());
+        setPlaybackManagerTime();
         
         if(!tempoSlider.getValueIsAdjusting()) {
             
             staveRequestFocus();
-            
-        }
-        
+        }        
     }//GEN-LAST:event_tempoSliderStateChanged
     
-  
-    
+
+    private void setPlaybackManagerTime()
+    {
+        establishCountIn();
+        playbackManager.setTotalTime(million*score.getTotalTime());
+    }
+
+
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
         
         closeWindow();
@@ -19858,7 +19864,7 @@ public ChordPart makeCountIn()
 
           }
 
-        playbackManager.setTotalTime(million*score.getTotalTime());
+        setPlaybackManagerTime();
 
         getCurrentStave().repaint();
 
@@ -23781,6 +23787,10 @@ private void cascadeMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     // TODO add your handling code here:
 }//GEN-LAST:event_cascadeMI1ActionPerformed
 
+private void countInCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countInCheckBoxActionPerformed
+    establishCountIn();
+}//GEN-LAST:event_countInCheckBoxActionPerformed
+
 // For key pressed in various places:
 
 public void keyPressed(java.awt.event.KeyEvent evt)
@@ -24076,18 +24086,13 @@ public void showNewVoicingDialog()
       }
 
 
-
-    /**
-     *
+    /*
      * update GUI to reflect total time of the score
-     *
      */
-    playbackManager.setTotalTime(million*score.getTotalTime());
 
-
+    setPlaybackManagerTime();
 
     updateAllStaves();
-
     }
 
   /**
