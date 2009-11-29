@@ -136,7 +136,7 @@ public class InvertCommand implements Command, Constants {
         
 	if( play && source instanceof MelodyPart && ImproVisor.getPlay() )
 	  {
-          ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
+          ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
 	  // the old way: new PlayPartCommand(((MelodyPart)source)).execute();
 	  }
 

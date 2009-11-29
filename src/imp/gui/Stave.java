@@ -5173,14 +5173,14 @@ boolean isaNote(int pitch)
     Trace.log(2, "applying smart transpose");
     resolvePitch(getSelectionStart(),
             getSelectionEnd(), false, false);
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeMelodyUpHarmonically()
     {
     Trace.log(2, "applying harmonic transpose up");
     resolvePitch(getSelectionStart(), getSelectionEndNote(), true, true);
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeMelodyDownHarmonically()
@@ -5188,7 +5188,7 @@ boolean isaNote(int pitch)
     Trace.log(2, "applying harmonic transpose down");
     resolvePitch(getSelectionStart(),
             getSelectionEndNote(), true, false);
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeMelodyUpSemitone()
@@ -5198,7 +5198,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             true, // up
             false); // not octave
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeMelodyDownSemitone()
@@ -5208,7 +5208,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             false, // down
             false); // not octave
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeMelodyUpOctave()
@@ -5218,7 +5218,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             true, // up
             true); // octave
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeMelodyDownOctave()
@@ -5228,7 +5228,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             false, // down
             true); // octave
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
   void transposeChordsUpSemitone()

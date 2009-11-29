@@ -21154,7 +21154,7 @@ public void rectifySelection()
   {
     Stave stave = getCurrentStave();
     rectifySelection(stave, getCurrentSelectionStart(), getCurrentSelectionEnd());
-    stave.playSelection(false, getLoopCount(), PlayScoreCommand.NODRUMS);
+    stave.playSelection(false, getLoopCount(), PlayScoreCommand.USEDRUMS);
   }
 
     private void beamButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_beamButtonActionPerformed
