@@ -1950,6 +1950,16 @@ public class StaveActionHandler
     }
 
   /**
+   * Play selection
+   */
+
+  public void playSelection()
+  {
+  notate.noCountIn();
+   stave.playSelection(true, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
+  }
+
+  /**
    * Key pressed
    */
   public void keyPressed(KeyEvent e)
@@ -1994,8 +2004,7 @@ public class StaveActionHandler
         switch( e.getKeyCode() )
           {
           case KeyEvent.VK_ENTER:
-            notate.noCountIn();
-            stave.playSelection(true, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
+              playSelection();
             return;
           case KeyEvent.VK_Z:  // not effective?
             undo();

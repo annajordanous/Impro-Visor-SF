@@ -10032,7 +10032,8 @@ public class Notate
 
   private void loopSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopSetActionPerformed
   {//GEN-HEADEREND:event_loopSetActionPerformed
-  
+     staveRequestFocus();
+     getCurrentStave().playSelection(false, getLoopCount());
   }//GEN-LAST:event_loopSetActionPerformed
 
   private void loopButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopButtonActionPerformed
