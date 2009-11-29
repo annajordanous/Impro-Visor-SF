@@ -5410,7 +5410,7 @@ boolean isaNote(int pitch)
     * This value is because we don't want to hold long notes for full duration on entry.
     */
 
-   private int noteMaxPlayValue = BEAT;
+   private int noteMaxPlayValue = BEAT/2;
    
    /**
    * Plays the current selection
@@ -5424,7 +5424,7 @@ boolean isaNote(int pitch)
    */
   public void playSelectionNote(Note note, int selectedIndex)
     {
-    // System.out.println("\nStave: playSelectionNote: selectedIndex = " + selectedIndex + " note = " + note);
+    //System.out.println("\nStave: playSelectionNote: selectedIndex = " + selectedIndex + " note = " + note);
     int i = selectedIndex + 1;
     int stopper = selectedIndex + Math.min(note.getRhythmValue(), noteMaxPlayValue);
 
@@ -5455,6 +5455,8 @@ boolean isaNote(int pitch)
    * @param startIndex       starting index of the selection of notes
    * @param endIndex         ending index of the selection of notes
    */
+
+  /*
   
   public void playRange(int startIndex, int stopIndex, boolean playToEndOfChorus, int loopCount)
   {
@@ -5472,7 +5474,7 @@ boolean isaNote(int pitch)
 
     repaint();   
   }
-
+  */
           
   public String getSaveSelection(String title, ExtractMode mode)
     {

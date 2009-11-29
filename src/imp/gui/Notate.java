@@ -483,14 +483,19 @@ public class Notate
   private int loopCount = 1;
   
   private int stopPlaybackAtSlot = 16*BEAT; // in case StyleEditor used first
-  
+
+  private static int QUANTUM = BEAT/2;
+
   public void setPlaybackStop(int slot)
   {
-  // Try to finish the beat, but not start a new one
+   stopPlaybackAtSlot = slot - 1;
 
-   stopPlaybackAtSlot = BEAT*(1 + (int)Math.floor(((double)slot)/BEAT)) - 1;
+   // Doesn't work well for short notes:
+  // Try to finish the QUANTUM, but not start a new one
 
-  //  stopPlaybackAtSlot = slot;
+  // stopPlaybackAtSlot = QUANTUM*(1 + (int)Math.floor(((double)slot)/QUANTUM)) - 1;
+
+   //System.out.println("setPlabackStop at " + stopPlaybackAtSlot);
   }
 
   /**

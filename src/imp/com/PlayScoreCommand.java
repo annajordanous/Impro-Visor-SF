@@ -128,9 +128,11 @@ public class PlayScoreCommand implements Command, Constants {
     /**
      * Plays the Score
      */
+   
     public void execute() {
-        Trace.log(2, "executing PlayScoreCommand, startTime = "
+        Trace.log(3, "executing PlayScoreCommand, startTime = "
             + startTime + ", endLimitIndex = " + endLimitIndex);
+
         score = score.copy();
 
         // Use plain style for note entry

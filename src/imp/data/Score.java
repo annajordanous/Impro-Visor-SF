@@ -818,7 +818,7 @@ public class Score implements Constants, Serializable {
             
             long melTime = i.next().sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
             long chTime = chordProg.sequence(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
-            time = Math.max(melTime, chTime);
+            time = Math.min(melTime, chTime);
         }
         
         //System.out.println("seq = " + seq);
