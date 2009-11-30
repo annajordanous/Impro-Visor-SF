@@ -5180,6 +5180,7 @@ boolean isaNote(int pitch)
     {
     Trace.log(2, "applying harmonic transpose up");
     resolvePitch(getSelectionStart(), getSelectionEndNote(), true, true);
+    notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
@@ -5188,6 +5189,7 @@ boolean isaNote(int pitch)
     Trace.log(2, "applying harmonic transpose down");
     resolvePitch(getSelectionStart(),
             getSelectionEndNote(), true, false);
+    notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
@@ -5198,6 +5200,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             true, // up
             false); // not octave
+    notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
@@ -5208,6 +5211,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             false, // down
             false); // not octave
+    notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
@@ -5218,6 +5222,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             true, // up
             true); // octave
+    notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
@@ -5228,6 +5233,7 @@ boolean isaNote(int pitch)
             getSelectionEndNote(),
             false, // down
             true); // octave
+    notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
     }
 
@@ -5900,6 +5906,7 @@ public Polylist extractChordNamePolylist(int startIndex, int stopIndex)
     public void mouseEntered(MouseEvent e)
       {
       mouseOver = true;
+      requestFocus();
       }
 
     public void mouseExited(MouseEvent e)

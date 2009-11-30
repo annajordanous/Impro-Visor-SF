@@ -56,7 +56,17 @@ public class PlaybackSliderManager implements MidiPlayListener, ChangeListener, 
     static long million = 1000000;
     static double dmillion = million;
 
-    static int timerInterval = 50; // interval delay for timer, in milliseconds
+    /**
+     * This time is used to update the playback slider.
+     * It is also used to cut off playback at a certain number of slots, which
+     * is why the resolution is so high (1 ms.). Without that, the playback
+     * tends to over-run. The checking for this is done within Notate
+     * (see setPlaybackStop method).
+     *
+     * A better solution for the latter is likely possible using the sequencer
+     * loopEnd parameter, but this will take additional work.
+     */
+    static int timerInterval = 1; // interval delay for timer, in milliseconds
 
     //loat rememberedTempo;
 
@@ -79,8 +89,6 @@ public class PlaybackSliderManager implements MidiPlayListener, ChangeListener, 
 
         slider.addChangeListener(this);
         timer = new javax.swing.Timer(timerInterval, this);
-
-        //rememberedTempo = midiSynth.getTempo();
     }
 
      /**
@@ -98,60 +106,51 @@ public class PlaybackSliderManager implements MidiPlayListener, ChangeListener, 
 
         //System.out.println("slider fraction = " + fraction + ", midiSynth fraction = " + midiSynth.getFraction() + ", new time = " + newValue + " total = " + totalTimeMicroseconds);
 
-        //System.out.println("slider state changed duration " + duration + " newValue = " + newValue);
-
-        //updateTimeSlider(newValueMicroseconds, false, "playback slider state changed");
-
         if(!slider.getValueIsAdjusting())
           {
             //System.out.println("stateChanged, fraction = " + fraction);
 
           midiSynth.setFraction(fraction);
-          setCurrentTimeMicroseconds(newValue); //totalTimeMicroseconds*fraction));
-        
-         ///midiSynth.setMicrosecond(newValueMicroseconds);
-        //System.out.println("slider state Changed, setMicrosecond to newValue = " + newValueMicroseconds);
-        }
+          setCurrentTimeMicroseconds(newValue);
+          }
     }
     
     /**
      * Called on timer firing
      */
 
-    public void actionPerformed(ActionEvent e) {
-        final ActionEvent evt = e;
-        
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if(status != MidiPlayListener.Status.STOPPED) {
+public void actionPerformed(ActionEvent e)
+  {
+    final ActionEvent evt = e;
 
-                    if(!slider.getValueIsAdjusting()) {
+    SwingUtilities.invokeLater(new Runnable()
+    {
 
-                        long microsecond = midiSynth.getMicrosecond();
-                        /*
-                        long countIn = midiSynth.getCountInMicroseconds();
-                        microsecond -= countIn;
-                        if( microsecond < countIn )
-                        {
-                            microsecond = countIn;
-                        }
-                        */
+    public void run()
+      {
+        if( status != MidiPlayListener.Status.STOPPED )
+          {
 
-                        updateTimeSlider(microsecond, true, "timer firing, set time to " + (microsecond/million) + " seconds");
-/*
-                        System.out.println("slot " + midiSynth.getSlot() + ": " +
-                            (midiSynth.getMicrosecond()/dmillion) + " sec, out of "
-                            + (midiSynth.getTotalMicrosecondsWithCountIn()/dmillion));
-*/
-                        if(secondaryListener != null)
-                            secondaryListener.actionPerformed(evt);
-                    }
-                } else {
-                    timer.stop();
-                }
-            }
-        });
-    }
+            if( !slider.getValueIsAdjusting() )
+              {
+
+                long microsecond = midiSynth.getMicrosecond();
+
+                updateTimeSlider(true);
+
+                if( secondaryListener != null )
+                  {
+                    secondaryListener.actionPerformed(evt);
+                  }
+              }
+          }
+        else
+          {
+            timer.stop();
+          }
+      }
+    });
+  }
     
     public long getMicrosecondsFromSlider()
     {
@@ -207,29 +206,20 @@ public class PlaybackSliderManager implements MidiPlayListener, ChangeListener, 
      @param updateSlider
      */
 
-    public void updateTimeSlider(long microseconds, boolean updateSlider, String reason) {
+public void updateTimeSlider(boolean updateSlider)
+  {
+    setCurrentTimeMicroseconds(
+        (long) (midiSynth.getFraction() * totalTimeMicroseconds));
 
-        /*
-        microseconds -= midiSynth.getCountInMicroseconds();
+    if( updateSlider && !slider.getValueIsAdjusting() )
+      {
+        ignoreEvent = true;
+        slider.setValue((int) (midiSynth.getFraction() * slider.getMaximum()));
+        ignoreEvent = false;
 
-        if( microseconds < 0 )
-        {
-            microseconds = 0;
-        }
+      }
+  }
 
-        setCurrentTime(microseconds);
-         */
-
-        setCurrentTimeMicroseconds((long)(midiSynth.getFraction()*totalTimeMicroseconds));
-        if(updateSlider && !slider.getValueIsAdjusting())
-        {
-             ignoreEvent = true;
-             slider.setValue((int)(midiSynth.getFraction()*slider.getMaximum()));
-             ignoreEvent = false;
-
-        }
-    }
-    
     public void setPlaying(MidiPlayListener.Status playing, int transposition) {
         MidiPlayListener.Status oldStatus = status;
         status = playing;

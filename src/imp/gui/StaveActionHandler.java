@@ -501,7 +501,9 @@ public class StaveActionHandler
       return false;
       }
 
-    if( draggingSelectionHandle || stave.selectionLHandle.contains(cursorLocation) || stave.selectionRHandle.contains(cursorLocation) )
+    if( draggingSelectionHandle 
+        || stave.selectionLHandle.contains(cursorLocation)
+        || stave.selectionRHandle.contains(cursorLocation) )
       {
       return true;
       }
@@ -553,6 +555,20 @@ public class StaveActionHandler
       }
      }
 
+
+  /**
+   * The maximum duration a note should sound on entry.
+   */
+
+  private static int MAX_NOTE_ENTRY_LENGTH = BEAT/2;
+
+
+  public static int getEntryDuration(Note note)
+  {
+      return Math.min(note.getRhythmValue(), MAX_NOTE_ENTRY_LENGTH);
+  }
+
+
   /**
    * Add a note as determined by MouseEvent e.
    */
@@ -560,6 +576,11 @@ public class StaveActionHandler
     {
     return addNote(e.getX(), e.getY());
     }
+
+  /**
+   * Add a note as determined by MouseEvent e.
+   * Note that different methods are called, depending on whether or not there is a chord!
+   */
 
   private int addNote(int x, int y)
     {
@@ -591,49 +612,29 @@ public class StaveActionHandler
 
     redoAdvice(selectedIndex);
 
-    stave.playSelectionNote(note, selectedIndex);
+    int duration = getEntryDuration(note);
+
+    notate.noCountIn();
+
+    stave.playSelection(selectedIndex, selectedIndex + duration - 1, 0, false);
 
     return note.getPitch();
 
     }
 
-  private int yPosToKeyPitch(int y, int currentLine)
-    {
-
-    // add new note close to mouse clicked pitch
-   
-    int pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias), currentLine);
-
-    // reset the pitch to the max or min pitch of the Stave if
-    // they are out of bounds
-
-    if( pitch < stave.getMinPitch() )
-      {
-      pitch = stave.getMinPitch();
-      }
-    else if( pitch > stave.getMaxPitch() )
-      {
-      pitch = stave.getMaxPitch();
-      }
-
-    int keysig = stave.getKeySignature();
-
-    // adjust pitch to respect the key signature
-
-    int adjustment = Key.adjustPitchInKey[keysig - MIN_KEY][pitch % OCTAVE];
-
-    pitch += adjustment;
-
-    return pitch;
-    }
-
+  
   /**
    * Add a note as determined by MouseEvent e, within a particular chordal context.
    */
+
   private int addNote(MouseEvent e, Chord chord)
     {
     return addNote(e.getX(), e.getY(), chord, e.isShiftDown());
     }
+
+   /**
+   * Add a note as determined by MouseEvent e, within a particular chordal context.
+   */
 
   private int addNote(int x, int y, Chord chord, boolean shiftDown)
     {
@@ -684,7 +685,9 @@ public class StaveActionHandler
      * approach tone.
      */
     apprch =
-            ((selectedIndex + stave.getOrigPart().getUnitRhythmValue(selectedIndex) == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
+        ((selectedIndex + stave.getOrigPart().getUnitRhythmValue(selectedIndex) 
+            == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
+
 
     Chord nextChord = prog.getNextUniqueChord(selectedIndex);
 
@@ -786,18 +789,55 @@ public class StaveActionHandler
             stave.getOrigPart(), true));
 
     Trace.log(2,
-            "adding new note: " + note.toLeadsheet() + " at " + selectedIndex);
+            "adding new note over chord: " + note.toLeadsheet()
+            + " at " + selectedIndex);
 
     draggingPitch = false;
     draggingNote = false;
     selectingGroup = false;
     
     redoAdvice(selectedIndex);
-    
-    stave.playSelectionNote(note, selectedIndex);
+
+    notate.noCountIn();
+
+    int duration = getEntryDuration(note);
+
+    stave.playSelection(selectedIndex, selectedIndex + duration - 1, 0, false);
+    //stave.playSelectionNote(note, selectedIndex);
 
     return pitch;
     }
+
+  private int yPosToKeyPitch(int y, int currentLine)
+    {
+
+    // add new note close to mouse clicked pitch
+
+    int pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+
+    // reset the pitch to the max or min pitch of the Stave if
+    // they are out of bounds
+
+    if( pitch < stave.getMinPitch() )
+      {
+      pitch = stave.getMinPitch();
+      }
+    else if( pitch > stave.getMaxPitch() )
+      {
+      pitch = stave.getMaxPitch();
+      }
+
+    int keysig = stave.getKeySignature();
+
+    // adjust pitch to respect the key signature
+
+    int adjustment = Key.adjustPitchInKey[keysig - MIN_KEY][pitch % OCTAVE];
+
+    pitch += adjustment;
+
+    return pitch;
+    }
+
 
   /**
    * Basic contains method for an array of integers.

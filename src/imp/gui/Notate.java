@@ -130,7 +130,9 @@ public class Notate
   private static int aboutDialogHeight = 750;
 
 
- private static int million = 1000000;
+   private static int million = 1000000;
+
+   private int loopsRemaining;
 
   /**
    *
@@ -484,18 +486,13 @@ public class Notate
   
   private int stopPlaybackAtSlot = 16*BEAT; // in case StyleEditor used first
 
+  private int startPlaybackAtSlot; // in case StyleEditor used first
+
   private static int QUANTUM = BEAT/2;
 
   public void setPlaybackStop(int slot)
   {
-   stopPlaybackAtSlot = slot - 1;
-
-   // Doesn't work well for short notes:
-  // Try to finish the QUANTUM, but not start a new one
-
-  // stopPlaybackAtSlot = QUANTUM*(1 + (int)Math.floor(((double)slot)/QUANTUM)) - 1;
-
-   //System.out.println("setPlabackStop at " + stopPlaybackAtSlot);
+   stopPlaybackAtSlot = slot;
   }
 
   /**
@@ -1224,16 +1221,14 @@ public class Notate
 
         // Stop playback when a specified slot is reached.
         
-        //System.out.println("slotInPlayback = " + slotInPlayback + " vs " + stopPlaybackAtSlot + " = stopPlaybackAtSlot");
         if( slotInPlayback > stopPlaybackAtSlot )
           {
-          // The following statement causes problems with looping when count-in is used.
-          // See if we can do without it.
+//        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
           
           stopPlaying();
           return;
           }
-
+ 
 
         if( autoScrollOnPlayback && currentPlaybackTab != currTabIndex && showPlayLine() )
           {
@@ -10043,20 +10038,31 @@ public class Notate
 
   private void loopButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopButtonActionPerformed
   {//GEN-HEADEREND:event_loopButtonActionPerformed
-    setToLoop(loopButton.isSelected());
-    if( getToLoop() )
+    if( loopButton.isSelected() )
       {
-      loopButton.setText("<html><center>Straight</center></html>");
-      loopButton.setBackground(Color.RED);
+      setToLoop();
       }
     else
       {
-      stopPlaying();
-      loopButton.setText("<html><center>Loop</center></html>");
-      loopButton.setBackground(Color.GREEN);
+      setToNotLoop();
       }
  
   }//GEN-LAST:event_loopButtonActionPerformed
+
+  private void setToLoop()
+  {
+      toLoop = true;
+      loopButton.setText("<html><center>Straight</center></html>");
+      loopButton.setBackground(Color.RED);
+  }
+
+  private void setToNotLoop()
+  {
+      toLoop = false;
+      stopPlaying();
+      loopButton.setText("<html><center>Loop</center></html>");
+      loopButton.setBackground(Color.GREEN);
+  }
 
     private void generateToolbarBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateToolbarBtnActionPerformed
     {//GEN-HEADEREND:event_generateToolbarBtnActionPerformed
@@ -13271,9 +13277,7 @@ public void chordVolumeChanged()
         if (keyboard != null && keyboard.isVisible())
         {
             keyboard.setPlayback(false);
-            //clearKeyboard();
             clearVoicingEntryTF();
-            //resetChordDisplay();
         }
         
     }//GEN-LAST:event_stopBtnActionPerformed
@@ -17948,9 +17952,7 @@ private void setLayoutPreference(Polylist layout)
 
 
         /* If the tab gets changed during playback, disable autoscrolling
-        
          * since the playback indicator is no longer on the screen
-        
          */
 
         if( getPlaying() != MidiPlayListener.Status.STOPPED )
@@ -18785,22 +18787,18 @@ private void setLayoutPreference(Polylist layout)
     
     
     
-    /**
-     *
-     * Displays an internal frame that allows the user to override the number
-     *
-     * of measures in a line.
-     *
-     */
-    
+/**
+ *
+ * Displays an internal frame that allows the user to override the number
+ *
+ * of measures in a line.
+ *
+ */
     private void overrideMeasPMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overrideMeasPMIActionPerformed
-        
+
         displayOverrideMeasures();
-        
+
     }//GEN-LAST:event_overrideMeasPMIActionPerformed
-    
-    
-    
     
     
     /**
@@ -19272,6 +19270,8 @@ private void pasteMelody(Part part, Stave stave)
         {
         return;  // all rests
         }
+      
+      noCountIn();
 
       cm.execute(new ReverseCommand(getCurrentOrigPart(),
               getCurrentSelectionStart(),
@@ -19304,6 +19304,7 @@ private void pasteMelody(Part part, Stave stave)
         return;  // all rests
         }
 
+      noCountIn();
       cm.execute(new InvertCommand(getCurrentOrigPart(),
               getCurrentSelectionStart(),
               getCurrentSelectionEnd(), true));
@@ -19690,7 +19691,8 @@ public void playScoreBody(int startAt)
 
       initCurrentPlaybackTab(0, 0);
 
-
+      loopsRemaining = getLoopCount();
+      startPlaybackAtSlot = startAt;
       getCurrentStave().play(startAt);
       }
     }
@@ -25909,11 +25911,6 @@ public void showNewVoicingDialog()
       {
       return 0; // don't loop
       }
-    }
-
-  public void setToLoop(boolean value)
-    {
-    toLoop = value;
     }
 
   public boolean getToLoop()

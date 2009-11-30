@@ -477,7 +477,6 @@ public void setLoopEndPoint(long point)
 
 public void setLoopCount(int count)
 {
-    //System.out.println("setLoopCount " + count);
     sequencer.setLoopCount(count);
 }
 

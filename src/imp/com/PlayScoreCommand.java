@@ -157,7 +157,6 @@ public void execute()
               "executing PlayScoreCommand, startTime = " + startTime 
               + ", endLimitIndex = " + endLimitIndex
               + " useDrums = " + useDrums);
-
     score = score.copy();
 
     // Use plain style for note entry
