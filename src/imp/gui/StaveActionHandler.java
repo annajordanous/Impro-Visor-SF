@@ -560,7 +560,7 @@ public class StaveActionHandler
    * The maximum duration a note should sound on entry.
    */
 
-  private static int MAX_NOTE_ENTRY_LENGTH = BEAT/2;
+  private static int MAX_NOTE_ENTRY_LENGTH = BEAT/3;
 
 
   public static int getEntryDuration(Note note)
