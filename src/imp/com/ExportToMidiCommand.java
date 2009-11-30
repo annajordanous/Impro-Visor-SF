@@ -179,7 +179,8 @@ public class ExportToMidiCommand implements Command, Constants
         // The first track contains tempo and time-signature information.
         writeFirstTrack(dos);
         
-System.out.println("writing Sequence of " + tracks.length + " tracks ");
+        //System.out.println("writing Sequence of " + tracks.length + " tracks ");
+        
         // Write all of the data tracks
         for (int i = 0; i <tracks.length; ++i)
         {
