@@ -8157,12 +8157,29 @@ public class Notate
             public void focusGained(java.awt.event.FocusEvent evt) {
                 formFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                formFocusLost(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
         });
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
+                formWindowLostFocus(evt);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -8681,7 +8698,7 @@ public class Notate
         loopPanel.setLayout(new java.awt.GridBagLayout());
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopButton.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        loopButton.setFont(new java.awt.Font("Dialog", 1, 10));
         loopButton.setText("<html><center>Loop</center></html>");
         loopButton.setToolTipText("Toggle playback looping.");
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -8705,7 +8722,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 5);
         loopPanel.add(loopButton, gridBagConstraints);
 
-        loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        loopSet.setFont(new java.awt.Font("Dialog", 1, 12));
         loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         loopSet.setText("2");
         loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
@@ -9042,6 +9059,11 @@ public class Notate
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 scoreTabStateChanged(evt);
+            }
+        });
+        scoreTab.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                scoreTabKeyPressed(evt);
             }
         });
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -9995,7 +10017,7 @@ public class Notate
 
   private void mouseEnteredTabPanel(java.awt.event.MouseEvent evt)//GEN-FIRST:event_mouseEnteredTabPanel
   {//GEN-HEADEREND:event_mouseEnteredTabPanel
-    staveRequestFocus();
+    requestFocusInWindow();
   }//GEN-LAST:event_mouseEnteredTabPanel
 
   private void loopSetMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_loopSetMousePressed
@@ -12218,7 +12240,8 @@ public void chordVolumeChanged()
         resetDrawingPrefs();
         
         preferencesDialog.setVisible(false);
-        
+
+        requestFocusInWindow();
     }//GEN-LAST:event_cancelBtnActionPerformed
     
     
@@ -13471,6 +13494,7 @@ private void updateTempoFromTextField()
     
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         
+        //System.out.println("notate focus gained");
         imp.ImproVisor.windowHasFocus(this);
         
         checkFakeModalDialog();
@@ -15609,10 +15633,9 @@ public void redrawTriage()
     
   void staveRequestFocus()
     {
-
     // Show that textEntry no longer has focus if it had.
 
-    Trace.log(2, "focus to stave");
+    Trace.log(3, "focus to stave");
 
     textEntryLabel.setForeground(Color.red);
 
@@ -15621,7 +15644,20 @@ public void redrawTriage()
     setItemStates();
     }
 
-    
+
+     /**
+      *This override is intended to fix requestFocusInWindow, which was
+      * only worked some of the time, for reasons I don't understand.
+      @return
+      */
+
+    public boolean requestFocusInWindow()
+    {
+        requestFocus();
+
+        boolean value = true; // super.requestFocusInWindow();
+        return value;
+    }
     
     /**
      * Get the ActionHandler for the current Stave.
@@ -16311,7 +16347,8 @@ public void closeWindow()
             
             setCurrentScrollPosition(tempView);
             
-            staveRequestFocus();
+            requestFocusInWindow(); //staveRequestFocus();
+
         }
     }
     
@@ -23801,10 +23838,36 @@ private void countInCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//G
     establishCountIn();
 }//GEN-LAST:event_countInCheckBoxActionPerformed
 
+private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
+
+}//GEN-LAST:event_formFocusLost
+
+private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+    requestFocusInWindow();
+}//GEN-LAST:event_formMouseEntered
+
+private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+   requestFocusInWindow();
+}//GEN-LAST:event_formMouseClicked
+
+private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
+    //System.out.println("notate focus lost");
+}//GEN-LAST:event_formWindowLostFocus
+
+private void scoreTabKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_scoreTabKeyPressed
+    keyPressed(evt);
+}//GEN-LAST:event_scoreTabKeyPressed
+
+private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+    keyPressed(evt);
+}//GEN-LAST:event_formKeyPressed
+
 // For key pressed in various places:
 
 public void keyPressed(java.awt.event.KeyEvent evt)
 {
+//System.out.println("notate key pressed " + evt);
+     requestFocusInWindow();
     getCurrentStaveActionHandler().keyPressed(evt);
 }
 

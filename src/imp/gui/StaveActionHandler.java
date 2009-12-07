@@ -2004,6 +2004,7 @@ public class StaveActionHandler
    */
   public void keyPressed(KeyEvent e)
     {
+  //System.out.println("staveActionHandler keyPressed: " + e);
     if( e.getKeyCode() != KeyEvent.VK_ENTER )
       {
       // Don't trace the shift key alone.

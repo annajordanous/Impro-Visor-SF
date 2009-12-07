@@ -815,6 +815,7 @@ public class Stave
     setSelection(0);
     }
 
+    @Override
   public boolean requestFocusInWindow()
     {
     switch( notate.getMode() )
@@ -830,7 +831,7 @@ public class Stave
         break;
       }
     boolean result = super.requestFocusInWindow();
-    Trace.log(4, "stave has focus");
+    Trace.log(2, "stave has focus");
     return result;
     }
 
@@ -2329,6 +2330,7 @@ public class Stave
 
     public void keyPressed(KeyEvent e)
       {
+    //System.out.println("keyPressed in Stave: " + e);
       if( e.getKeyCode() == e.VK_ESCAPE )
         {
         setVisible(false, false);
@@ -5352,7 +5354,7 @@ boolean isaNote(int pitch)
 
  public void playSelection(boolean playToEndOfChorus, int loopCount)
     {
-     playSelection(playToEndOfChorus, loopCount, PlayScoreCommand.NODRUMS);
+     playSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
     }
 
      /**
