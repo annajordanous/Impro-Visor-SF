@@ -14849,6 +14849,8 @@ public void redrawTriage()
          rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
          }
 
+        // Wait for playing to stop
+
         getCurrentStave().playSelection();
         impro.setPlayEntrySounds(true);
     }

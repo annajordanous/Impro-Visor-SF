@@ -19,7 +19,8 @@ If you would like a stand-alone application, execute
 
     ant zip
 
-That will create a .zip file with containing the java jar "executable" and the necessary support files.
+That will create a .zip file with containing the java jar "executable"
+and the necessary support files.
 
 
 

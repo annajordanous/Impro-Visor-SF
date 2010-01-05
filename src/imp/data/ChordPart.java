@@ -230,12 +230,18 @@ public class ChordPart extends Part implements Serializable{
         newPart.title = title;
         newPart.composer = composer;
         newPart.volume = volume;
-        newPart.instrument = instrument;
+        newPart.setInstrument(instrument);
         newPart.keySig = keySig;
         newPart.setMetre(metre[0], metre[1]);
         newPart.swing = swing;
               
         return newPart;
+    }
+
+    public void setChordInstrument(int instrument)
+    {
+    //System.out.println("chordPart setChordInstrument to " + instrument);
+        super.setInstrument(instrument);
     }
 
     public boolean setStyle(String name) {
@@ -335,7 +341,7 @@ public class ChordPart extends Part implements Serializable{
         newPart.title = title;
         newPart.composer = composer;
         newPart.volume = volume;
-        newPart.instrument = instrument;
+        newPart.setInstrument(instrument);
         newPart.keySig = keySig;
         newPart.setMetre(metre[0], metre[1]);
         newPart.swing = swing;
@@ -354,7 +360,7 @@ public class ChordPart extends Part implements Serializable{
     	ChordPart chords = new ChordPart();
 
         chords.title = in.readLine();
-        chords.instrument = Integer.decode(in.readLine());
+        chords.setInstrument(Integer.decode(in.readLine()));
         chords.volume = Integer.decode(in.readLine());
         chords.keySig = Integer.decode(in.readLine());
 

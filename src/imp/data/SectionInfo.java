@@ -35,7 +35,15 @@ public class SectionInfo implements Constants, Serializable {
     public SectionInfo(ChordPart chords) {
         this.chords = chords;
         Style style = new Style();
-        style.setChordInstrument(chords.getInstrument());
+
+        // RK 1/4/2010 The following was causing problems with countin resetting
+        // the chord instrument, as reported by a user. It is not clear
+        // why this was needed, but it seems to be causing an undesirable
+        // instrument change through an indirect path.
+        // It should be revisited.
+
+        //style.setChordInstrument(chords.getInstrument(), "SectionInfo");
+
         addSection(style, 0);
     }
 

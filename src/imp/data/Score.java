@@ -278,13 +278,16 @@ public class Score implements Constants, Serializable {
         return bassInstrument;
     }
 
-    public void setChordInstrument(int instrument) {
-        chordProg.setInstrument(instrument);
+    public void setChordInstrument(int instrument)
+    {
+    // System.out.println("score setChordInstrument to " + instrument);
+
+        chordProg.setChordInstrument(instrument);
         Style style = chordProg.getStyle();
         if( style != null )
-        {
-          style.setChordInstrument(instrument);
-        }
+          {
+          style.setChordInstrument(instrument, "Score");
+          }
     }
 
    public int getChordInstrument() {
@@ -572,7 +575,6 @@ public class Score implements Constants, Serializable {
         int partNum = index / sizeOfPart; 
         int indexWithinPart = index % sizeOfPart;
         MelodyPart part = partList.get(partNum);
-    //System.out.println("index = " + index +", sizeOfPart = " + sizeOfPart + ", partNum = " + partNum + ", indexWithin = " + indexWithinPart + ", part = " + part);
         return part.getNote(indexWithinPart);
     }
 
@@ -589,7 +591,7 @@ public class Score implements Constants, Serializable {
      * @return Score    a copy of the Score
      */
     public Score copy() {
-        Trace.log(2, "copying Score of size " + size());
+        //Trace.log(2, "copying Score of size " + size());
         Score newScore = new Score(title, tempo);
 	    newScore.setMetre(metre[0], metre[1]);
         Vector<MelodyPart> newPartList = new Vector<MelodyPart>();
@@ -599,7 +601,10 @@ public class Score implements Constants, Serializable {
             newPartList.set(i.nextIndex(), i.next().copy());
         newScore.partList = newPartList;
         newScore.chordProg = chordProg.copy();
-        
+
+        newScore.setChordInstrument(getChordInstrument());
+        newScore.setBassInstrument(getBassInstrument());
+
         newScore.setBassMuted(getBassMuted());
         newScore.setDrumMuted(getDrumMuted());
         newScore.setChordMuted(getChordMuted());

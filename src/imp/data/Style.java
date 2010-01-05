@@ -365,8 +365,9 @@ public class Style
    * Sets the chord instrument.
    * @param inst      an int containing the chord instrument
    */
-  public void setChordInstrument(int inst)
+  public void setChordInstrument(int inst, String caller)
     {
+    //System.out.println("style from " + caller + " setChordInstrument to " + inst);
     chordInstrument = inst;
     }
 
@@ -1356,7 +1357,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
         {
         Polylist L = (Polylist)last;
         NoteSymbol ns = (NoteSymbol)L.second();
-        bassline = bassline.replaceLast(ns); // was bassline.reverse().rest().cons(ns).reverse();
+        bassline = bassline.replaceLast(ns);
         }
 
 
@@ -1366,14 +1367,6 @@ static Polylist midiEvent2polylist(MidiEvent event)
         bassLine.addNote(((NoteSymbol)bassline.first()).toNote());
         bassline = bassline.rest();
         }
-
-/* old
-      // add each note to our bassline melody
-      for( int j = 0; j < bassline.length(); j++ )
-        {
-        bassLine.addNote(((NoteSymbol)bassline.nth(j)).toNote());
-        }
-*/
 
       bassLine.setSwing(accompanimentSwing);
       bassLine.setInstrument(bassInstrument);

@@ -186,7 +186,9 @@ public class Part implements Constants, Serializable {
      * Sets the instrument of this Part.
      * @param instrument        an int representing the instrument
      */
-    public void setInstrument(int instrument) {
+    public void setInstrument(int instrument)
+    {
+    //System.out.println("setting instrumcnt to " + instrument + " in " + this);
         this.instrument = instrument;
     }
 
