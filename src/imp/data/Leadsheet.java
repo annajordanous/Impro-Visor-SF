@@ -724,8 +724,9 @@ public class Leadsheet
           }
         if( !handled )
           {
-          ErrorLog.log(ErrorLog.FATAL,
-                  "Fatal: unidentified item in input: " + ob + " of " + ob.getClass());
+          ErrorLog.log(ErrorLog.SEVERE,
+                  "Unidentified item in input: " + ob + " (of " + ob.getClass() + ")");
+          continue;
           }
         }
       }
