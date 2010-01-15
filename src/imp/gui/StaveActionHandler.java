@@ -583,6 +583,15 @@ public class StaveActionHandler
    */
 
   private int addNote(int x, int y)
+  {
+      return addNote(x, y, true);
+  }
+  /**
+   * Add a note as determined by MouseEvent e.
+   * Note that different methods are called, depending on whether or not there is a chord!
+   */
+
+  private int addNote(int x, int y, boolean play)
     {
 
     clearPasteFrom();
@@ -616,7 +625,10 @@ public class StaveActionHandler
 
     notate.noCountIn();
 
-    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
+    if( play )
+      {
+      stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
+      }
 
     return note.getPitch();
 
@@ -624,19 +636,28 @@ public class StaveActionHandler
 
   
   /**
-   * Add a note as determined by MouseEvent e, within a particular chordal context.
+   * Add and play a note as determined by MouseEvent e, within a particular chordal context.
    */
 
   private int addNote(MouseEvent e, Chord chord)
     {
-    return addNote(e.getX(), e.getY(), chord, e.isShiftDown());
+    return addNote(e, chord, true);
+    }
+
+  /**
+   * Add a note as determined by MouseEvent e, within a particular chordal context.
+   */
+
+  private int addNote(MouseEvent e, Chord chord, boolean play)
+    {
+    return addNote(e.getX(), e.getY(), chord, e.isShiftDown(), play);
     }
 
    /**
    * Add a note as determined by MouseEvent e, within a particular chordal context.
    */
 
-  private int addNote(int x, int y, Chord chord, boolean shiftDown)
+  private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
     {
     //System.out.println("adding note at " + x + ", " + y + " chord = " + chord);
     stave.setSelection(selectedIndex, selectedIndex);
@@ -644,13 +665,13 @@ public class StaveActionHandler
     if( !notate.getSmartEntry() )
       {
       // Simple addition, ignoring chord.
-      return addNote(x, y);
+      return addNote(x, y, play);
       }
     
     /* Default to context-free note addition if there are no chords. */
     if( chord == null || chord.getName().equals("NC") )
       {
-      return addNote(x, y);
+      return addNote(x, y, play);
       }
 
     ChordPart prog = stave.getChordProg();
@@ -802,8 +823,10 @@ public class StaveActionHandler
 
     int duration = getEntryDuration(note);
 
-    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
-    //stave.playSelectionNote(note, selectedIndex);
+    if( play )
+      {
+      stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
+      }
 
     return pitch;
     }
@@ -1276,7 +1299,9 @@ public class StaveActionHandler
             }
           else
             {
-            addNote(e, stave.getChordProg().getCurrentChord(selectedIndex));
+            // Adding note in drawing mode; don't play
+
+            addNote(e, stave.getChordProg().getCurrentChord(selectedIndex), false);
             }
 
           if( firstIndexDrawn == OUT_OF_BOUNDS )
