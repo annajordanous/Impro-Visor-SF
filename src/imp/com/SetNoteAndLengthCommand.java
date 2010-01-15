@@ -76,11 +76,6 @@ public class SetNoteAndLengthCommand implements Command, Constants {
      */
     private Note oldNote;
     
-    /**
-     * whether or not to play the note
-     */
-    private boolean play;
-    
     private Notate notate;
     
     /**
@@ -92,11 +87,10 @@ public class SetNoteAndLengthCommand implements Command, Constants {
      * @param play      play the note
      * @param notate    parent frame, used to elongate score if needed
      */
-    public SetNoteAndLengthCommand(int sI, Note nte, MelodyPart prt, boolean play, Notate notate) {
+    public SetNoteAndLengthCommand(int sI, Note nte, MelodyPart prt, Notate notate) {
         melodyPart = prt;
         note = nte;
         slotIndex = sI;
-        this.play = play;
         this.notate = notate;
     }
 
@@ -104,40 +98,17 @@ public class SetNoteAndLengthCommand implements Command, Constants {
      * Places the Note at the specified position in the MelodyPart.
      */
     public void execute() {
-        Trace.log(2, "executing SetNoteCommand, slotIndex = " + slotIndex);
-
-	if( play && ImproVisor.getPlay() )
-	{
-	    Command playNote = new PlayNoteCommand(note);
-	    playNote.execute();
-	}
+        Trace.log(2, "executing SetNoteAndLengthCommand, slotIndex = " + slotIndex);
 
         int[] metre = melodyPart.getMetre();
         int beatValue = (WHOLE/metre[1]);
         int measureLength = metre[0] * beatValue;
         
         if(note != null && note.getPitch() != REST) 
-        {
+          {
             stopIndex = (slotIndex/measureLength + 2) * measureLength;
 
-/*rk Let's try it without this for awhile
-           Trace.log(2, "in SetNoteCommand, stopIndex = " + stopIndex);
-            
-            if(stopIndex < melodyPart.size()) {
-                for(int i = slotIndex; i < stopIndex; i++) {
-
-                    if(melodyPart.getNote(i) != null && 
-                            melodyPart.getNote(i).getPitch() == REST) {
-                        restsDeleted.push(i);
-//                        melodyPart.delUnit(i); //rk This was causing really ugly behavior. Not sure what this does.
-                    }
-                }
-
-                if(melodyPart.getNextIndex(slotIndex) > stopIndex)
-                    restInserted = true;
-            }
-*/
-        }
+          }
         oldNote = melodyPart.getNote(slotIndex);
         melodyPart.setNoteAndLength(slotIndex, note, notate);
     }

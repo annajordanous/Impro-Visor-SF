@@ -355,7 +355,7 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
                  boolean useDrums, int endLimitIndex, int countInOffset)
     throws InvalidMidiDataException
   {
-   Trace.log(3,
+   Trace.log(2,
               (++playCounter) + ": Starting MIDI sequencer, startTime = " 
               + startIndex + " loopCount = " + loopCount + " endIndex = "
               + endLimitIndex);

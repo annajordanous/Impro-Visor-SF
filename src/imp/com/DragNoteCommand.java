@@ -97,7 +97,7 @@ public class DragNoteCommand implements Command {
         Trace.log(2, "executing DragNoteCommand");
         note = part.getNote(oldSlot);
         part.delUnit(oldSlot);
-        setNote = new SetNoteCommand(newSlot, note, part, false);
+        setNote = new SetNoteCommand(newSlot, note, part);
         setNote.execute();
     }
 

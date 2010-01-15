@@ -76,23 +76,17 @@ public class SetNoteCommand
   private Note oldNote;
 
   /**
-   * whether or not to play the note
-   */
-  private boolean play;
-
-  /**
    * Creates a new Command that can set the Note in a MelodyPart at the
    * specified indices.
    * @param sI        the index of the Note to place
    * @param nte       the Note to place
    * @param prt       the MelodyPart in which to place the Note
    */
-  public SetNoteCommand(int sI, Note nte, MelodyPart prt, boolean play)
+  public SetNoteCommand(int sI, Note nte, MelodyPart prt)
     {
     melodyPart = prt;
     note = nte;
     slotIndex = sI;
-    this.play = play;
     }
 
   /**

@@ -56,7 +56,9 @@ public class MelodyPart
    * which creates a really weird display with 120 sub-divisions, and
    * from which it is hard to recover.
    */
-  public static int MIN_EXTRACT_DURATION = BEAT / 4; // 
+  public static int MIN_EXTRACT_DURATION = BEAT / 4; //
+
+  public static int magicFactor = 4;
 
   /**
    * Lowest pitch in the MelodyPart
@@ -911,7 +913,6 @@ public class MelodyPart
                         int transposition, int endLimitIndex)
           throws InvalidMidiDataException
     {
-
     // to trace sequencing:
     //System.out.println("Sequencing MelodyPart on track " + track + " time = " + time + " endLimitIndex = " + endLimitIndex);
       
@@ -929,9 +930,12 @@ public class MelodyPart
     // the absolute time is advanced and returned by the next sequence
     // function
 
+    endLimitIndex *= magicFactor; 
+
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
-      time = ((Note)i.next()).sequence(seq, track, time, ch, volume,
+      Note note = (Note)i.next();
+      time = note.sequence(seq, track, time, ch, volume,
               transposition, endLimitIndex);
       }
 

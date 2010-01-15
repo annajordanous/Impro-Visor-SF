@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -560,12 +560,12 @@ public class StaveActionHandler
    * The maximum duration a note should sound on entry.
    */
 
-  private static int MAX_NOTE_ENTRY_LENGTH = BEAT/3;
+  private static int MAX_NOTE_ENTRY_LENGTH = BEAT/2;
 
 
   public static int getEntryDuration(Note note)
   {
-      return Math.min(note.getRhythmValue(), MAX_NOTE_ENTRY_LENGTH);
+      return Math.max(0, Math.min(note.getRhythmValue(), MAX_NOTE_ENTRY_LENGTH) - 1);
   }
 
 
@@ -598,7 +598,7 @@ public class StaveActionHandler
     notate.cm.execute(
             new SetNoteCommand(selectedIndex,
             note,
-            stave.getOrigPart(), true));
+            stave.getOrigPart()));
 
     Trace.log(2,
             "adding new note: " + note.toLeadsheet() + " at " + selectedIndex);
@@ -616,7 +616,7 @@ public class StaveActionHandler
 
     notate.noCountIn();
 
-    stave.playSelection(selectedIndex, selectedIndex + duration - 1, 0, false);
+    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
 
     return note.getPitch();
 
@@ -786,7 +786,7 @@ public class StaveActionHandler
     notate.cm.execute(
             new SetNoteCommand(selectedIndex,
             note,
-            stave.getOrigPart(), true));
+            stave.getOrigPart()));
 
     Trace.log(2,
             "adding new note over chord: " + note.toLeadsheet()
@@ -802,7 +802,7 @@ public class StaveActionHandler
 
     int duration = getEntryDuration(note);
 
-    stave.playSelection(selectedIndex, selectedIndex + duration - 1, 0, false);
+    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
     //stave.playSelectionNote(note, selectedIndex);
 
     return pitch;

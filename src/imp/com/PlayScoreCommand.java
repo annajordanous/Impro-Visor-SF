@@ -207,7 +207,7 @@ public void execute()
 
     endLimitIndex = endLimitIndex == ENDSCORE ? ENDSCORE : endLimitIndex + offset; // unsure about this!
 
-    //System.out.println("from " + startTime + " to " + endLimitIndex);
+    //System.out.println("command play from " + startTime + " to " + endLimitIndex);
 
     try
       {

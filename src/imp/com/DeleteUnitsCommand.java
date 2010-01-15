@@ -120,13 +120,13 @@ public class DeleteUnitsCommand implements Command, Constants {
                 if(prevIndex > -1) {
                     if(prevIndex < barSlot) {
                         Command setNote = new SetNoteCommand(barSlot, 
-                                melody.getNote(prevIndex).copy(), melody, false);
+                                melody.getNote(prevIndex).copy(), melody);
                         setNote.execute();
                         melody.delUnit(barSlot);
                     }
                     else {
                         Command setNote = new SetNoteCommand(prevIndex, 
-                                melody.getNote(prevIndex).copy(), melody, false);
+                                melody.getNote(prevIndex).copy(), melody);
                         setNote.execute();
                     }
                 }

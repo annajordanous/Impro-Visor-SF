@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ public class AboutDialog extends javax.swing.JDialog {
         aboutText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         aboutText.setEditable(false);
         aboutText.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        aboutText.setText("\n  Welcome to Improvisation Advisor version 4.10.\n  \n  Authors: \t\n\tBob Keller, Stephen Jones, Aaron Wolin, David Morrison, \n\tMartin Hunt, Steven Gomez, Jim Herold, Brandy McMenamy, \n\tSayuri Soejima, Emma Carlson, Jon Gillick, Kevin Tang,\n\tStephen Lee, Chad Waters, John Goodman,\n\tLasconic (Nicolas Froment)\n\n  For further information and tutorial, please visit the website:\n\n\thttp://www.cs.hmc.edu/~keller/jazz/improvisor\n \n  For free leadsheets and support, please join the Impro-Visor Yahoo! group at:\t\n\n\thttp://launch.groups.yahoo.com/group/impro-visor/\n\n   For source code, please see:\t\n\n\thttps://sourceforge.net/projects/impro-visor/\n\n  Copyright ©2005-2010, Robert Keller and Harvey Mudd College \n \n  This program is FREE software: you can redistribute it and/or modify it\n  under the terms of the GNU General Public License as published by the\n  Free Software Foundation, either version 2 of the License, or any later\n  version. This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  merchantability or fitness for a particular purpose.  See the\n  GNU General Public License for more details, which may be found at:\n\thttp://www.gnu.org/licenses/\n  We hope you enjoy using it!\n");
+        aboutText.setText("\n  Welcome to Improvisation Advisor version 4.11.\n  \n  Authors: \t\n\tBob Keller, Stephen Jones, Aaron Wolin, David Morrison, \n\tMartin Hunt, Steven Gomez, Jim Herold, Brandy McMenamy, \n\tSayuri Soejima, Emma Carlson, Jon Gillick, Kevin Tang,\n\tStephen Lee, Chad Waters, John Goodman, Lasconic\n\n  For further information and tutorial, please visit the website:\n\n\thttp://www.cs.hmc.edu/~keller/jazz/improvisor\n \n  For free leadsheets and support, please join our Yahoo! group:\t\n\n\thttp://launch.groups.yahoo.com/group/impro-visor/\n\n   For source code, please see:\t\n\n\thttps://sourceforge.net/projects/impro-visor/\n\n  Copyright ©2005-2010, Robert Keller and Harvey Mudd College \n \n  This program is FREE software: you can redistribute it and/or modify it\n  under the terms of the GNU General Public License as published by the\n  Free Software Foundation, either version 2 of the License, or any later\n  version. This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  merchantability or fitness for a particular purpose.  See the GNU\n  General Public License for more details, which may be found at:\n\n\thttp://www.gnu.org/licenses/\n\n  We hope you enjoy using it!\n");
         aboutText.setMinimumSize(new java.awt.Dimension(400, 350));
         aboutText.setPreferredSize(new java.awt.Dimension(400, 350));
         gridBagConstraints = new java.awt.GridBagConstraints();

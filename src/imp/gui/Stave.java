@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1536,12 +1536,23 @@ public class Stave
    */
   public int getSelectionEndNote(int selectionEnd)
     {
+
       // System.out.println("selectionEnd = " + ((float)selectionEnd)/BEAT);
     MelodyPart melody = getOrigPart();
     
     ChordPart chords = getChordProg();
 
-    // Find the start of the last note in selection, if any.
+    int start = getSelectionStart();
+    if( selectionEnd == start)
+      {
+      Note note = melody.getNote(start);
+      if( note != null )
+        {
+        return start + StaveActionHandler.getEntryDuration(note); 
+        }
+      }
+
+     // Find the start of the last note in selection, if any.
 
     for( int i = selectionEnd; i >= selectionStart; i-- )
     {
@@ -5415,12 +5426,6 @@ boolean isaNote(int pitch)
 
 
    /**
-    * This value is because we don't want to hold long notes for full duration on entry.
-    */
-
-   private int noteMaxPlayValue = BEAT/2;
-   
-   /**
    * Plays the current selection
    * This is the old way, for which the keyboard does not work.
    * However, it is better for note entry, where we don't need to see the keys
@@ -5430,11 +5435,12 @@ boolean isaNote(int pitch)
    * @param startIndex       starting index of the selection of notes
    * @param endIndex         ending index of the selection of notes
    */
+
   public void playSelectionNote(Note note, int selectedIndex)
     {
     //System.out.println("\nStave: playSelectionNote: selectedIndex = " + selectedIndex + " note = " + note);
     int i = selectedIndex + 1;
-    int stopper = selectedIndex + Math.min(note.getRhythmValue(), noteMaxPlayValue);
+    int stopper = selectedIndex + StaveActionHandler.getEntryDuration(note);
 
        ChordPart chords = getChordProg();
         MelodyPart part = getOrigPart();
@@ -6030,5 +6036,10 @@ public Polylist extractChordNamePolylist(int startIndex, int stopIndex)
     {
     beamingNotes = sense;
     repaint();
+    }
+
+  public int getClefWidth()
+    {
+      return clefWidth;
     }
   }

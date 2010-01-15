@@ -816,6 +816,8 @@ public class Score implements Constants, Serializable {
         time = countInProg.sequence(seq, 1, time, chordTrack, 0, true, endLimitIndex);
         }
 
+        //System.out.println("time = " + time);
+
         ListIterator<MelodyPart> i = partList.listIterator();
         while(i.hasNext() && Style.limitNotReached(time, endLimitIndex) )
         {
@@ -823,14 +825,14 @@ public class Score implements Constants, Serializable {
             
             long melTime = i.next().sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
             long chTime = chordProg.sequence(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
-            time = Math.min(melTime, chTime);
-        }
+            time = Math.max(melTime, chTime);
+       }
         
         //System.out.println("seq = " + seq);
 
         // Find the longest track, and put a Stop event at the end of it
         MidiSynth.endSequence(seq);
-        Trace.log(3, "done sequencing");
+        Trace.log(3, "done sequencing  tickLength = " + seq.getTickLength());
 
         //System.out.println("countIn size = " + getCountInOffset());
         return seq;

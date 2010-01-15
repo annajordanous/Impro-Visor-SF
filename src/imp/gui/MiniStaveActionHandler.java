@@ -561,7 +561,7 @@ public class MiniStaveActionHandler
     notate.cm.execute(
             new SetNoteCommand(selectedIndex,
             note,
-            stave.getOrigPart(), true));
+            stave.getOrigPart()));
 
     Trace.log(2,
             "adding new note: " + note.toLeadsheet() + " at " + selectedIndex);
@@ -758,7 +758,7 @@ public class MiniStaveActionHandler
     notate.cm.execute(
             new SetNoteCommand(selectedIndex,
             note,
-            stave.getOrigPart(), true));
+            stave.getOrigPart()));
 
     Trace.log(2,
             "adding new note: " + note.toLeadsheet() + " at " + selectedIndex);

@@ -142,7 +142,7 @@ public class MidiNoteActionHandler implements Constants, Receiver {
                 // add rests since nothing was played between now and the previous note
                 if(duration > 0) {
                     Note noteToAdd = new Rest(duration);
-                    notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), false, notate));
+                    notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
                 }
 
                 notate.getCurrentStave().setSelectionStart(index);
@@ -160,7 +160,7 @@ public class MidiNoteActionHandler implements Constants, Receiver {
         
         try {
             noteToAdd.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
-            notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), false, notate));
+            notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
         } catch(Exception e) {
             e.printStackTrace();
             System.out.println("ERROR: " + e.getMessage());
@@ -215,7 +215,7 @@ public class MidiNoteActionHandler implements Constants, Receiver {
         } else {
             Note noteToAdd = new Note(note, duration);
             noteToAdd.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
-            notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), false, notate));
+            notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
         }       
         index += duration;
         
