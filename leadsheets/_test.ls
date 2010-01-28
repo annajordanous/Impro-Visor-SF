@@ -785,3 +785,107 @@ Am9 | D13b9 | GM9 | D9sus4 |
  c+8 b2+8 r8 e8
 
  a8 g2+4+8
+(part
+    (type melody)
+    (title )
+    (composer )
+    (instrument 11)
+    (volume 85)
+    (key 1)
+    (stave treble)
+)
+ r4 e+8 d+8 b4+8 a8
+
+ b1
+
+ r4 e+8 d+8 b4+8 g8
+
+ a8 b8 e2+4
+
+ r4 f#+8 e+8 d+4+8 b8
+
+ e+8 d+2+4+8
+
+ r4 e+8 d+8 b4+8 g8
+
+ e+8 d+8 e2 r8 e8
+
+ a8 e8 f8/3 a8/3 c+8/3 e+2
+
+ g#+8 g+8 f+8 e+8 c#+8 d+8 b8 g8
+
+ e4 g8/3 b8/3 d+8/3 f#+8 g+4+8
+
+ b+8 c++8 b+8 a+8 g+8 f+8 eb+8 d+8
+
+ c#+8 d+8 c#+8 d+8 gb+8 e+4+8
+
+ c+8 c#+8 c+8 c#+8 f#+8 eb+4 b8
+
+ d+2+4 r8 b8
+
+ c#+8 d+4 e+8 f#+8 b8 d+4
+
+ d+8 f#+4 b8 e+8 g8 b4
+
+ a8 d+4 g8 b8 d8 a4
+
+ f#8 b4 e8 a8 b-8 e4
+
+ c8 d8 e16 f#16 g16 a16 c+2
+
+ f#+8 b+4 e+8 a+8 b8 e+4
+
+ a8 e+4 b8 d+8 f#8 b4
+
+ a8 e+4 a8 d+8 e8 a4
+
+ e8 f#8 f#+16 e+16 c#+16 c+16 b4+8 a8
+
+ d+8 a8 r4 d+8 a8 c+8 g+8
+
+ ab+8 g+8 f+8 e+8 d+8 b8 ab8 g8
+
+ e4 d+8/3 b8/3 d+8/3 b8 g4+8
+
+ eb4 d+8/3 b8/3 d+8/3 b8 g8 eb4
+
+ d8 c#8 f#8 a8 bb4+8 gb+8
+
+ g+8 e+8 c+8 e8 b8 g#4 a8
+
+ f#1+2
+
+ r4 a8 b8
+
+ c+8 eb+4 c+8 g+4 f+8 eb+8
+
+ c#+8 a2+4 c#+8
+
+ c+2+4 r8 f8
+
+ c8 d8 f8 a8 c+8 bb8 a8 f8
+
+ a#8 c#+4 a#8 e#+4 d#+8 c#+8
+
+ b8 g2+4 b8
+
+ a#2+4 r8 c+8
+
+ f+8 eb+8 c+8 bb8 c+8 ab8 f8 f#8
+
+ g4 b8 d+8 e+2
+
+ f+8 f#+8 e+8 d+8 c+8 b8 g#8 a8
+
+ f#4 c#+8 e+8 f#+2
+
+ g+8 g#+8 f#+8 e+8 d+8 c#+8 a#8 b8
+
+ a2 r8 b8 c+8 d+8
+
+ f+8 eb+8 d+8 c+8 b8 d+4 c+8
+
+ b2+4 r8 g+8
+
+ a+8 e+8 d+8 b8 a8 c+8 e+4
