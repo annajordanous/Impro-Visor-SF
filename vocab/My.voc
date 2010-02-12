@@ -497,8 +497,8 @@
     (pronounce C major)
     (key c)
     (family major)
-    (spell (c8 0.2) e8 g8)
-    (color a8 b8 d8 (f#8 0.01))
+    (spell c8 e8 g8)
+    (color a8 b8 d8 (f#8 0.05))
     (priority e8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 eb8 f8) (g8 f#8 g#8 a8))
     (voicings
@@ -534,8 +534,8 @@
     (pronounce C major six)
     (key c)
     (family major)
-    (spell (c8 0.2) e8 g8 a8)
-    (color d8 b8 (f#8 0.01) (f -1))
+    (spell c8 e8 g8 a8)
+    (color d8 b8 (f#8 0.05))
     (priority e8 a8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8))
     (voicings
@@ -574,7 +574,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 a8 d8)
-    (color b8 (f#8 0.01) (f8 -1))
+    (color b8 (f#8 0.05))
     (priority d8 e8 a8 g8 c8)
     (approach (c8 b8 c#8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8) (d8 c#8 eb8))
     (voicings
@@ -670,7 +670,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 d8)
-    (color a8 (f#8 0.01) (f8 0.0))
+    (color a8)
     (priority d8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 eb8 f8) (g8 f#8 g#8 a8) (d8 c#8 eb8))
     (voicings
@@ -681,7 +681,6 @@
         )
     (extensions CM69)
     (scales
-        (C lydian)
         (C major)
         (C major pentatonic)
         (G major pentatonic)
@@ -717,7 +716,6 @@
     (extensions CMadd9)
     (scales
         (C major)
-        (C lydian)
         (C major pentatonic)
         (G major pentatonic)
         (C major blues)
@@ -777,7 +775,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 b8)
-    (color d8 a8 (f#8 0.01) (f8 -1) (c8 -0.5))
+    (color d8 a8 (f#8 0.05) c8)
     (priority b8 e8 g8 c8)
     (approach (c8 c#8 d8) (e8 eb8 f8) (g8 f#8 g#8) (b8 bb8 c8))
     (voicings
@@ -821,7 +819,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 b8 d8)
-    (color a8 (f#8 0.01) (f8 -1)(c8 -0.5))
+    (color a8 (f#8 0.05) c8)
     (priority b8 e8 d8 g8 c8)
     (approach (c8 c#8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8) (d8 c#8 eb8) (b8 bb8 c8))
     (voicings
@@ -846,8 +844,8 @@
         )
     (extensions CM9#11 CM13)
     (scales
-        (C lydian)
         (C major)
+        (C lydian)
         (C bebop major)
         (C major pentatonic)
         (G major pentatonic)
@@ -952,7 +950,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 b8 d8 a8)
-    (color (f#8 0.01) (f8 -1.0)(c8 -0.5))
+    (color (f#8 0.05) c8)
     (priority a8 b8 e8 d8 g8 c8)
     (approach (c8 c#8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8) (d8 c#8 eb8) (b8 bb8 c8))
     (voicings
@@ -966,8 +964,8 @@
         )
     (extensions CM13#11)
     (scales
-        (C lydian)
         (C major)
+        (C lydian)
         (C major pentatonic)
         (G major pentatonic)
         )
@@ -990,7 +988,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 a8 b8 d8)
-    (color d8 (f#8 0.01) (f8 -1.0)(c8 -0.5))
+    (color d8)
     (priority a8 b8 e8 d8 g8 c8)
     (approach (c8 c#8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8) (d8 c#8 eb8) (b8 bb8 c8))
     (voicings
@@ -1001,8 +999,8 @@
         )
     (extensions CM13#11)
     (scales
-        (C lydian)
         (C major)
+        (C lydian)
         (C major pentatonic)
         (G major pentatonic)
         )
@@ -1015,7 +1013,6 @@
     (key g)
     (family major)
     (spell c8 e8 g8 b8 d8 f#8 a8)
-    (color a8)
     (priority f#8 a8 b8 e8 d8 g8 c8)
     (approach (c8 c#8) (e8 eb8 f8) (g8 g#8) (a8 g#8 bb8) (d8 c#8 eb8) (b8 bb8))
     (voicings
@@ -1583,7 +1580,7 @@
     (key eb)
     (family minor)
     (spell c8 eb8 g8)
-    (color d8 f8 (ab8 0.01) a8 bb8 b8)
+    (color d8 f8 ab8 a8 bb8 b8)
     (priority eb8 g8 c8)
     (approach (c8 b8 c#8 d8) (eb8 d8 e8 f8) (g8 f#8 g#8 a8))
     (voicings
@@ -2259,7 +2256,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8)
-    (color (f#8 0.05) db8 d8 d#8 a8 g#8 (f -0.2))
+    (color f#8 db8 d8 d#8 a8 g#8 f8)
     (priority bb8 e8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 a8 b8))
     (voicings
@@ -2563,7 +2560,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 d8)
-    (color (f#8 0.05) a8 (f -0.2))
+    (color f#8 a8 f8)
     (priority d8 bb8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 a8 b8) (d8 c#8 eb8))
     (voicings
@@ -2720,7 +2717,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 d8 a8)
-    (color (f#8 0.05) (f -0.2))
+    (color f#8 f8)
     (priority a8 d8 bb8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 b8) (d8 c#8 eb8) (a8 g#8))
     (voicings
@@ -2869,7 +2866,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 bb8 d8 ab8)
-    (color (f#8 0.05) (f -0.2))
+    (color f#8 f8)
     (priority ab8 d8 bb8 e8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (ab8 g8 a8) (bb8 a8 b8) (d8 c#8 eb8))
     (voicings
@@ -2988,7 +2985,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 d#8 a8)
-    (color db)
+    (color db8)
     (priority d#8 a8 bb8 e8 g8)
     (approach (c8 b8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 b8) (db8 eb8 c8))
     (voicings
@@ -8096,3 +8093,14 @@
 (lick (notes r4+8 eb+16 d+16 c#+8 f8 g#8 c+8 bb16/3 c+16/3 bb16/3 ab8 f8 f#8 a8 g8 f#8 e8) (sequence Am7 | D7) (name major ii-V Charlie Parker))
 (lick (notes c#+8 a8 f#8 c#8 g#8/3 a8/3 a#8/3 b8 g8 a8 f#4+8) (sequence F#m7 | B7) (name major ii-V Charlie Parker))
 (lick (notes r4+8 eb+4 g8 bb8 eb+8 d+8 c+8 r8 gb4 r8 a8/3 db+8/3 g+8/3) (sequence Cm7 | F7) (name major ii-V Bill Evans))
+(lick (notes r8 f8 f#16/3 g16/3 bb8/3 c+8/3 db+8/3 d+8/3 eb+8/3 db+16/3 d+16/3 db+16/3 f16/3 eb8/3 db16 d16 bb2+4+8) (sequence Eb | Bb) (name blues))
+(lick (notes r8 c8 ab16 a16 bb8 ab16/3 a16/3 ab8/3 c8/3 f8 eb1+8) (sequence F | F7) (name blues))
+(lick (notes r2/3 f+8/3 d+8/3 c+16 f32/3 g32/3 f32/3 c8 f8 c8 ab-16 a-16 f8 r2+4) (sequence F | F7) (name blues))
+(lick (notes r4 f#16/3 g16/3 c8/3 g8/3 gb8/3 c8/3 gb8/3 f8/3 c8/3 f8/3 eb16 e2+4+8+16) (sequence C C7 /) (name blues))
+(lick (notes c+8 ab8 a8/3 c+8/3 d+8/3 f+8/3 f#+8/3 g+8/3 g#+8 f#+8 f+8 e+8 d+8 bb8 a8 g8 e4) (sequence F13 D7#5#9 |) (name 1-6-2-5))
+(lick (notes c+8 d+8 eb+8 f+8 f#+8/3 g#+8/3 f#+8/3 e+8 eb+8 d+4+8 e+8 g+8 a+8 bb+8 c++8) (sequence F13 D7#5#9 |) (name 1-6-2-5))
+(lick (notes f8 eb8 c8 d8 eb4 f8 eb8 f8 g8 a8 bb8 c+8 db+8 a8/3 bb8/3 g8/3) (sequence F13 D7#5#9 |) (name 1-6-2-5))
+(lick (notes g8 a8 bb8 c+8 d+8 eb+8 f+8 f#+8 e+8 d+8 c+8 a8 db+4 e+4) (sequence F13 D7#5#9 |) (name 1-6-2-5))
+(lick (notes g+8 f+8 eb+4 f+8 eb+8 d+4 e+8 f+8 d+8/3 e+8/3 d+8/3 db+4 eb+8 c+8) (sequence F13 D7#5#9 |) (name 1-6-2-5))
+(lick (notes r4 g+16/3 a+16/3 g+16/3 f+8 d+8 b8 bb8 g#8 f4+8 g8 a8 bb8 db+8 eb+8) (sequence F13 D7#5#9 |) (name 1-6-2-5))
+(lick (notes d+4 b8 a8 c+4 d+8/3 eb+8/3 f+8/3 g+8 a+8 bb+8 g+8 a+8 g+8 e+8 g+8) (sequence F13 D7#5#9 |) (name 1-6-2-5))
