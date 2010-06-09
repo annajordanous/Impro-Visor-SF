@@ -89,6 +89,7 @@ public Polylist run(Object data, Notate notate)
     int savedRetryCount = retryCount;
     int maxRetries = 20;
 
+
     while( failure && (retryCount - savedRetryCount) <= maxRetries )
       {
         try
@@ -103,7 +104,7 @@ public Polylist run(Object data, Notate notate)
 
                 if( gen == null )
                   {
-                    throw new Exception();
+                  throw new RuleApplicationException();
                   //return null;
                   }
               }
@@ -112,7 +113,7 @@ public Polylist run(Object data, Notate notate)
             failure = false;
             return terminalString;
           }
-        catch( Exception e )
+        catch( RuleApplicationException e )
           {
           }
       notate.setLickGenStatus("Retrying lick generation (" + (++retryCount) + " cumulative).");
@@ -272,6 +273,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         Polylist next = (Polylist)search.first();
         String type = (String)next.first();
 
+
         /*
          * RULEs and BASEs have the following S-expression format:
          * (<keyword> (<symbol>) (<production>) weight)
@@ -376,18 +378,18 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       // Randomly choose a rule to follow.
       double total = 0.0;
 
-      Vector<Polylist> rules;
+      Vector<Polylist> rulesList;
       Vector<Double> weightArray;
 
       // If any base cases exist, we ignore all rules.
       if( !baseWeights.isEmpty() )
         {
-        rules = new Vector(baseArray);
+        rulesList = new Vector(baseArray);
         weightArray = new Vector(baseWeights);
         }
       else
         {
-        rules = new Vector(ruleArray);
+        rulesList = new Vector(ruleArray);
         weightArray = new Vector(ruleWeights);
         }
 
@@ -410,19 +412,19 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         // for that rule, we choose it and break out of the loop.
         if( rand >= offset && rand < offset + (weightArray.get(i) / total) )
           {
-          for( int j = 0; j < rules.get(i).length(); ++j )
+          for( int j = 0; j < rulesList.get(i).length(); ++j )
             {
             Polylist s = new Polylist();
 
             // Need to do this, because some things in the rule file are already
             // encoded as polylists.
-            if( !(rules.get(i).nth(j) instanceof Polylist) )
+            if( !(rulesList.get(i).nth(j) instanceof Polylist) )
               {
-              s = s.cons(rules.get(i).nth(j));
+              s = s.cons(rulesList.get(i).nth(j));
               }
             else
               {
-              s = (Polylist)rules.get(i).nth(j);
+              s = (Polylist)rulesList.get(i).nth(j);
               }
             gen = gen.cons(s);
             }
