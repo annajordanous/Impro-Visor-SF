@@ -103,6 +103,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
         sourceToEditorButton = new javax.swing.JButton();
 
         setTitle("Editor");
+        setAlwaysOnTop(true);
 
         sourceEditorScrollPane.setMinimumSize(new java.awt.Dimension(600, 20000));
         sourceEditorScrollPane.setPreferredSize(new java.awt.Dimension(600, 20000));

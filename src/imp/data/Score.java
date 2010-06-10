@@ -140,6 +140,8 @@ public class Score implements Constants, Serializable {
     
     private int transposition = 0;
 
+    private int chordFontSize = 16; // Default
+
     private String voicingType = "";
 
     /**
@@ -228,6 +230,16 @@ public class Score implements Constants, Serializable {
       this.transposition = transposition;
     }
     
+    public int getChordFontSize()
+    {
+      return chordFontSize;
+    }
+
+    public void setChordFontSize(int fontSize)
+    {
+      this.chordFontSize = fontSize;
+    }
+
     public int getBarsPerChorus()
     {
       return chordProg.getBars();

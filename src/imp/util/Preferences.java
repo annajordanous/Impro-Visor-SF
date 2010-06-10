@@ -138,6 +138,10 @@ public class Preferences implements imp.Constants
 
   public static final String CDAR_VAL = "10";
 
+  public static final String CHORD_FONT_SIZE = "chord-font-size";
+
+  public static final String CHORD_FONT_SIZE_VAL = "16";
+
   public static final String MAX_NOTES_IN_VOICING = "max-notes-in-voicing";
 
   public static final String MNIV_VAL = "5";
@@ -386,6 +390,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + DEFAULT_STYLE_DIRECTORY + " " + DSD_VAL + ")");
       out.println("(" + VIS_ADV_COMPONENTS + " " + VAC_VAL + ")");
       out.println("(" + CHORD_DIST_ABOVE_ROOT + " " + CDAR_VAL + ")");
+      out.println("(" + CHORD_FONT_SIZE + " " + CHORD_FONT_SIZE_VAL + ")");
       out.println("(" + MAX_NOTES_IN_VOICING + " " + MNIV_VAL + ")");
       out.println("(" + NOTE_COLORING + " " + NC_VAL + ")");
       out.println("(" + SHOW_TRACKING_LINE + " " + STL_VAL + ")");

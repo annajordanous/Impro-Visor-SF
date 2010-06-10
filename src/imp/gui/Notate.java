@@ -2215,6 +2215,7 @@ public class Notate
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
         beamButton = new javax.swing.JToggleButton();
+        chordFontSpinner = new javax.swing.JSpinner();
         addTabBtn = new javax.swing.JButton();
         addTabBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4127,11 +4128,11 @@ public class Notate
         prefsTabBtnGrp.add(globalBtn);
         globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         globalBtn.setText("Global");
-        globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        globalBtn.setHorizontalTextPosition(0);
         globalBtn.setIconTextGap(6);
         globalBtn.setNextFocusableComponent(leadsheetPreferences);
         globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        globalBtn.setVerticalTextPosition(3);
         globalBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 globalBtnActionPerformed(evt);
@@ -4143,10 +4144,10 @@ public class Notate
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
         leadsheetBtn.setSelected(true);
         leadsheetBtn.setText("LeadSheet");
-        leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        leadsheetBtn.setHorizontalTextPosition(0);
         leadsheetBtn.setNextFocusableComponent(chorusPreferences);
         leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        leadsheetBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        leadsheetBtn.setVerticalTextPosition(3);
         leadsheetBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leadsheetBtnActionPerformed(evt);
@@ -4157,10 +4158,10 @@ public class Notate
         prefsTabBtnGrp.add(chorusBtn);
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         chorusBtn.setText("Chorus");
-        chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chorusBtn.setHorizontalTextPosition(0);
         chorusBtn.setNextFocusableComponent(stylePreferences);
         chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        chorusBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chorusBtn.setVerticalTextPosition(3);
         chorusBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chorusBtnActionPerformed(evt);
@@ -4171,11 +4172,11 @@ public class Notate
         prefsTabBtnGrp.add(styleBtn);
         styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         styleBtn.setText("Style");
-        styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        styleBtn.setHorizontalTextPosition(0);
         styleBtn.setIconTextGap(0);
         styleBtn.setNextFocusableComponent(midiPreferences);
         styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        styleBtn.setVerticalTextPosition(3);
         styleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 styleBtnActionPerformed(evt);
@@ -4186,11 +4187,11 @@ public class Notate
         prefsTabBtnGrp.add(midiBtn);
         midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
         midiBtn.setText("MIDI");
-        midiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        midiBtn.setHorizontalTextPosition(0);
         midiBtn.setIconTextGap(0);
         midiBtn.setNextFocusableComponent(contourPreferences);
         midiBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        midiBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        midiBtn.setVerticalTextPosition(3);
         midiBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 midiBtnActionPerformed(evt);
@@ -4201,11 +4202,11 @@ public class Notate
         prefsTabBtnGrp.add(contourBtn);
         contourBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
         contourBtn.setText("Contour");
-        contourBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        contourBtn.setHorizontalTextPosition(0);
         contourBtn.setIconTextGap(0);
         contourBtn.setNextFocusableComponent(globalPreferences);
         contourBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        contourBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        contourBtn.setVerticalTextPosition(3);
         contourBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contourBtnActionPerformed(evt);
@@ -8195,9 +8196,9 @@ public class Notate
 
         standardToolbar.setFloatable(false);
         standardToolbar.setEnabled(false);
-        standardToolbar.setMaximumSize(new java.awt.Dimension(400, 40));
-        standardToolbar.setMinimumSize(new java.awt.Dimension(130, 40));
-        standardToolbar.setPreferredSize(new java.awt.Dimension(130, 40));
+        standardToolbar.setMaximumSize(new java.awt.Dimension(400, 45));
+        standardToolbar.setMinimumSize(new java.awt.Dimension(130, 45));
+        standardToolbar.setPreferredSize(new java.awt.Dimension(130, 45));
         standardToolbar.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentMoved(java.awt.event.ComponentEvent evt) {
                 standardToolbarComponentMoved(evt);
@@ -8425,6 +8426,20 @@ public class Notate
             }
         });
         standardToolbar.add(beamButton);
+
+        chordFontSpinner.setToolTipText("Specifies the chord font size.");
+        chordFontSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        chordFontSpinner.setInheritsPopupMenu(true);
+        chordFontSpinner.setMaximumSize(new java.awt.Dimension(140, 32767));
+        chordFontSpinner.setMinimumSize(new java.awt.Dimension(45, 28));
+        chordFontSpinner.setPreferredSize(new java.awt.Dimension(45, 28));
+        chordFontSpinner.setValue(16);
+        chordFontSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chordFontStateChanged(evt);
+            }
+        });
+        standardToolbar.add(chordFontSpinner);
 
         addTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/addtab.gif"))); // NOI18N
         addTabBtn.setToolTipText("Add a new chorus tab.");
@@ -8826,6 +8841,11 @@ public class Notate
         tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
         tempoSet.setMinimumSize(new java.awt.Dimension(40, 20));
         tempoSet.setPreferredSize(new java.awt.Dimension(40, 20));
+        tempoSet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tempoSetMousePressed(evt);
+            }
+        });
         tempoSet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tempoSetActionPerformed(evt);
@@ -8837,11 +8857,6 @@ public class Notate
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tempoSetFocusLost(evt);
-            }
-        });
-        tempoSet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tempoSetMousePressed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -17010,6 +17025,17 @@ public void closeWindow()
 
     chordDist.setText(Preferences.getPreference(Preferences.CHORD_DIST_ABOVE_ROOT));
 
+    String chordFontSize = Preferences.getPreference(Preferences.CHORD_FONT_SIZE);
+
+    if( !chordFontSize.equals("") )
+      {
+      chordFontSpinner.setValue(Integer.valueOf(chordFontSize));
+      }
+    else
+      {
+      chordFontSpinner.setValue(16); // FIX
+      }
+
     setTrackerDelay(Preferences.getPreference(Preferences.TRACKER_DELAY));
 
     defStyleComboBox.setSelectedItem(Advisor.getStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE)));
@@ -20126,6 +20152,8 @@ public boolean saveAsLeadsheetSwing()
 
                 (new OpenLeadsheetCommand(openLSFC.getSelectedFile(), newScore)).execute();
 
+
+
                 // create a new window and show the score
 
                 Notate newNotate =
@@ -20134,6 +20162,8 @@ public boolean saveAsLeadsheetSwing()
                         this.impro,
                         (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
                         (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+
+                newNotate.setChordFontSizeSpinner(score.getChordFontSize());
             } else {
                 // if not a new window
 
@@ -20219,6 +20249,8 @@ public boolean saveAsLeadsheetSwing()
 
                 cm.changedSinceLastSave(false);
             }
+            
+        setChordFontSizeSpinner(score.getChordFontSize());
         }
 
        staveRequestFocus();
@@ -23864,6 +23896,34 @@ private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_form
     keyPressed(evt);
 }//GEN-LAST:event_formKeyPressed
 
+private void chordFontStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chordFontStateChanged
+    int newSize = Integer.parseInt(chordFontSpinner.getValue().toString());
+    if( newSize < 1 )
+      {
+      newSize = 1;
+      setChordFontSizeSpinner(newSize);
+      }
+    else if( newSize > 200 )
+      {
+      newSize = 200;
+      setChordFontSizeSpinner(newSize);
+      }
+
+    setChordFontSize(newSize);
+}//GEN-LAST:event_chordFontStateChanged
+
+private void setChordFontSize(int newSize)
+{
+    score.setChordFontSize(newSize);
+    setStavesChordFontSize();
+    getCurrentStave().repaint();
+}
+
+private void setChordFontSizeSpinner(int newSize)
+{
+    System.out.println("spinner set to " + newSize);
+}
+
 // For key pressed in various places:
 
 public void keyPressed(java.awt.event.KeyEvent evt)
@@ -24196,9 +24256,19 @@ public void showNewVoicingDialog()
       pane.addStave(staveScrollPane[i].getStave());
 
       pane.repaint();
-
       }
+    }
 
+    /**
+     * Change the chord font size in each Stave.
+     */
+
+    public void setStavesChordFontSize()
+    {
+    for( int i = 0; i < staveScrollPane.length; i++ )
+      {
+      staveScrollPane[i].getStave().setChordFontSize();
+      }
     }
 
   /**
@@ -25133,6 +25203,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField chordDist;
     private javax.swing.JLabel chordDistLabel;
     private javax.swing.JCheckBox chordExtns;
+    private javax.swing.JSpinner chordFontSpinner;
     private javax.swing.JLabel chordIInstLabel;
     private javax.swing.JPanel chordInstPanel;
     private javax.swing.JCheckBox chordMute;

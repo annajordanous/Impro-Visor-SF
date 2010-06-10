@@ -42,7 +42,8 @@ public class Leadsheet
            "comments",
            "stave", "treble", "bass", "grand", "auto", "none", "layout",
            "bass-volume", "drum-volume", "chord-volume", "style", "section",
-           "bass-instrument", "playback-transpose", "show", "year"
+           "bass-instrument", "playback-transpose", "show", "year",
+           "chord-font-size"
   };
 
   static final int TITLE = 0;
@@ -109,6 +110,8 @@ public class Leadsheet
 
   static final int YEAR = 31;
 
+  static final int CHORD_FONT_SIZE = 32;
+
   static final int UNKNOWN = -1;
 
   /**
@@ -137,6 +140,8 @@ public class Leadsheet
     out.write("(" + keyword[VOLUME] + " " + score.getMasterVolume() + ")");
     out.newLine();
     out.write("(" + keyword[PLAYBACK_TRANSPOSE] + " " + score.getTransposition() + ")");
+    out.newLine();
+    out.write("(" + keyword[CHORD_FONT_SIZE] + " " + score.getChordFontSize() + ")");
     out.newLine();
     out.write("(" + keyword[BASS_INSTRUMENT] + " " + score.getBassInstrument() + ")");
     out.newLine();
@@ -299,6 +304,13 @@ public class Leadsheet
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setTransposition(((Long)item.first()).intValue());
+                  }
+                break;
+
+               case CHORD_FONT_SIZE:
+                if( item.nonEmpty() && item.first() instanceof Long )
+                  {
+                  score.setChordFontSize(((Long)item.first()).intValue());
                   }
                 break;
 

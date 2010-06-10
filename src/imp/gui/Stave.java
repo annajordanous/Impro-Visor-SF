@@ -325,7 +325,7 @@ public class Stave
   /**
    * The font for the chord symbols
    */
-  private Font chordFont = new Font("Helvetica", Font.BOLD, 16);
+  private Font chordFont;
 
   /**
    * Flag for if bar numbers should be shown on the Stave
@@ -629,6 +629,8 @@ public class Stave
 
     // set the notate frame
     this.notate = notate;
+
+    chordFont = new Font("Helvetica", Font.BOLD, notate.getScore().getChordFontSize());
 
     // change 'paper' color
     this.setBackground(Color.white);
@@ -6042,4 +6044,9 @@ public Polylist extractChordNamePolylist(int startIndex, int stopIndex)
     {
       return clefWidth;
     }
+
+  public void setChordFontSize()
+  {
+      chordFont = new Font("Helvetica", Font.BOLD, notate.getScore().getChordFontSize());
+  }
   }
