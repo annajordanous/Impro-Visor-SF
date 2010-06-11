@@ -233,6 +233,7 @@ public class ImproVisor implements Constants {
         
         // Make sure to load preferences before loading the advisor
         Preferences.loadPreferences();
+
         advisor = new Advisor();
         
         // Create global clipboards
@@ -290,6 +291,15 @@ public class ImproVisor implements Constants {
         
         // Create a score with default measures in default meter
         Score score = new Score(Notate.defaultBarsPerPart * (BEAT * Notate.defaultMetre));
+
+        String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
+
+        if( fontSizePref.equals("") )
+          {
+          fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
+          }
+
+        score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
 	
 	// Create an array of notate frames and initialize the first frame
         Notate notate = new Notate(score, advisor, this);

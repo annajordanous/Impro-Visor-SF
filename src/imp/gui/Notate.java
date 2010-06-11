@@ -1359,6 +1359,9 @@ public class Notate
 
     setTrackerDelay(Preferences.getPreference(Preferences.TRACKER_DELAY));
 
+    setChordFontSizeSpinner(score.getChordFontSize());
+
+
     //setBars(defaultBarsPerPart);
 
     setBars(score.getBarsPerChorus());
@@ -1817,8 +1820,7 @@ public class Notate
         visAdviceLabel = new javax.swing.JLabel();
         trackCheckBox = new javax.swing.JCheckBox();
         trackCheckBox.setSelected(Boolean.parseBoolean(Preferences.getPreference(Preferences.SHOW_TRACKING_LINE)));
-        jSeparator11 = new javax.swing.JSeparator();
-        jSeparator20 = new javax.swing.JSeparator();
+        defaultChordFontSizeSpinner = new javax.swing.JSpinner();
         cacheTab = new javax.swing.JPanel();
         cachePanel = new javax.swing.JPanel();
         enableCache = new javax.swing.JCheckBox();
@@ -2215,7 +2217,7 @@ public class Notate
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
         beamButton = new javax.swing.JToggleButton();
-        chordFontSpinner = new javax.swing.JSpinner();
+        chordFontSizeSpinner = new javax.swing.JSpinner();
         addTabBtn = new javax.swing.JButton();
         addTabBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5019,18 +5021,24 @@ public class Notate
         gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         appearanceTab.add(trackCheckBox, gridBagConstraints);
+
+        defaultChordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Default Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        defaultChordFontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                defaultChordFontChange(evt);
+            }
+        });
+        defaultChordFontSizeSpinner.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                defaultChordFontSizeSpinnerKeyReleased(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        appearanceTab.add(jSeparator11, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        appearanceTab.add(jSeparator20, gridBagConstraints);
+        appearanceTab.add(defaultChordFontSizeSpinner, gridBagConstraints);
 
         globalTabs.addTab("Appearance", appearanceTab);
 
@@ -8427,19 +8435,19 @@ public class Notate
         });
         standardToolbar.add(beamButton);
 
-        chordFontSpinner.setToolTipText("Specifies the chord font size.");
-        chordFontSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        chordFontSpinner.setInheritsPopupMenu(true);
-        chordFontSpinner.setMaximumSize(new java.awt.Dimension(140, 32767));
-        chordFontSpinner.setMinimumSize(new java.awt.Dimension(45, 28));
-        chordFontSpinner.setPreferredSize(new java.awt.Dimension(45, 28));
-        chordFontSpinner.setValue(16);
-        chordFontSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+        chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
+        chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        chordFontSizeSpinner.setInheritsPopupMenu(true);
+        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(140, 32767));
+        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(45, 28));
+        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(45, 28));
+        chordFontSizeSpinner.setValue(16);
+        chordFontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chordFontStateChanged(evt);
             }
         });
-        standardToolbar.add(chordFontSpinner);
+        standardToolbar.add(chordFontSizeSpinner);
 
         addTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/addtab.gif"))); // NOI18N
         addTabBtn.setToolTipText("Add a new chorus tab.");
@@ -12262,8 +12270,8 @@ public void chordVolumeChanged()
     
     
     private void savePrefsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePrefsBtnActionPerformed
-        
-        savePrefs();
+        Preferences.setPreference(Preferences.DEFAULT_CHORD_FONT_SIZE, "" + newChordFontSize);
+        savePrefs(); 
         
     }//GEN-LAST:event_savePrefsBtnActionPerformed
     
@@ -17005,7 +17013,30 @@ public void closeWindow()
     {
     return (int) (BEAT * quietDoubleFromTextField(gapField, -Double.MAX_VALUE, +Double.MAX_VALUE, 0));
     }
-    
+
+  public static final int DEFAULT_CHORD_FONT_SIZE_VALUE = 16;
+
+
+  /**
+   * Ensure that there is a chord-font-size preference.
+   * Iif there wasn't one, create one.
+   */
+
+  private void ensureChordFontSize()
+    {
+    String chordFontSize = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
+
+    if( chordFontSize.equals("") )
+      {
+      chordFontSize = "" + DEFAULT_CHORD_FONT_SIZE_VALUE;
+      }
+
+    int chordFontSizeValue = Integer.valueOf(chordFontSize);
+
+    Preferences.setPreference(Preferences.DEFAULT_CHORD_FONT_SIZE, "" + chordFontSizeValue);
+
+    defaultChordFontSizeSpinner.setValue(chordFontSizeValue);
+    }
     
   private void setPrefsDialog()
     {
@@ -17025,16 +17056,7 @@ public void closeWindow()
 
     chordDist.setText(Preferences.getPreference(Preferences.CHORD_DIST_ABOVE_ROOT));
 
-    String chordFontSize = Preferences.getPreference(Preferences.CHORD_FONT_SIZE);
-
-    if( !chordFontSize.equals("") )
-      {
-      chordFontSpinner.setValue(Integer.valueOf(chordFontSize));
-      }
-    else
-      {
-      chordFontSpinner.setValue(16); // FIX
-      }
+    ensureChordFontSize();
 
     setTrackerDelay(Preferences.getPreference(Preferences.TRACKER_DELAY));
 
@@ -20163,7 +20185,8 @@ public boolean saveAsLeadsheetSwing()
                         (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
                         (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
 
-                newNotate.setChordFontSizeSpinner(score.getChordFontSize());
+                score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+
             } else {
                 // if not a new window
 
@@ -20898,6 +20921,12 @@ public boolean saveAsLeadsheetSwing()
   public void newScore()
     {
     Score newScore = new Score("");
+    
+    ensureChordFontSize();
+
+    int chordFontSize = Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue();
+
+    newScore.setChordFontSize(chordFontSize);
     
     newScore.setTempo(getDefaultTempo());
 
@@ -23897,7 +23926,7 @@ private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_form
 }//GEN-LAST:event_formKeyPressed
 
 private void chordFontStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chordFontStateChanged
-    int newSize = Integer.parseInt(chordFontSpinner.getValue().toString());
+    int newSize = Integer.parseInt(chordFontSizeSpinner.getValue().toString());
     if( newSize < 1 )
       {
       newSize = 1;
@@ -23912,6 +23941,20 @@ private void chordFontStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIR
     setChordFontSize(newSize);
 }//GEN-LAST:event_chordFontStateChanged
 
+private int newChordFontSize = DEFAULT_CHORD_FONT_SIZE_VALUE;
+
+private void defaultChordFontChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_defaultChordFontChange
+    newChordFontSize = ((Integer)defaultChordFontSizeSpinner.getValue()).intValue();
+}//GEN-LAST:event_defaultChordFontChange
+
+private void defaultChordFontSizeSpinnerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_defaultChordFontSizeSpinnerKeyReleased
+    if( evt.getKeyCode() == KeyEvent.VK_ENTER )
+      {
+      newChordFontSize = ((Integer)defaultChordFontSizeSpinner.getValue()).intValue();
+      savePrefs();
+      }
+}//GEN-LAST:event_defaultChordFontSizeSpinnerKeyReleased
+
 private void setChordFontSize(int newSize)
 {
     score.setChordFontSize(newSize);
@@ -23921,7 +23964,7 @@ private void setChordFontSize(int newSize)
 
 private void setChordFontSizeSpinner(int newSize)
 {
-    System.out.println("spinner set to " + newSize);
+    chordFontSizeSpinner.setValue(newSize);
 }
 
 // For key pressed in various places:
@@ -25203,7 +25246,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField chordDist;
     private javax.swing.JLabel chordDistLabel;
     private javax.swing.JCheckBox chordExtns;
-    private javax.swing.JSpinner chordFontSpinner;
+    private javax.swing.JSpinner chordFontSizeSpinner;
     private javax.swing.JLabel chordIInstLabel;
     private javax.swing.JPanel chordInstPanel;
     private javax.swing.JCheckBox chordMute;
@@ -25288,6 +25331,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField defVocabFile;
     private javax.swing.JLabel defVocabFileLabel;
     private javax.swing.JPanel defVolumes;
+    private javax.swing.JSpinner defaultChordFontSizeSpinner;
     private javax.swing.JCheckBox defaultDrawingMutedCheckBox;
     private javax.swing.JPanel defaultStaveTypePanel;
     private javax.swing.JTextField defaultTempoTF;
@@ -25448,7 +25492,6 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator14;
     private javax.swing.JSeparator jSeparator15;
@@ -25456,7 +25499,6 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator17;
     private javax.swing.JSeparator jSeparator18;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator20;
     private javax.swing.JSeparator jSeparator21;
     private javax.swing.JSeparator jSeparator22;
     private javax.swing.JSeparator jSeparator23;

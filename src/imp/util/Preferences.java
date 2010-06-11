@@ -138,10 +138,6 @@ public class Preferences implements imp.Constants
 
   public static final String CDAR_VAL = "10";
 
-  public static final String CHORD_FONT_SIZE = "chord-font-size";
-
-  public static final String CHORD_FONT_SIZE_VAL = "16";
-
   public static final String MAX_NOTES_IN_VOICING = "max-notes-in-voicing";
 
   public static final String MNIV_VAL = "5";
@@ -172,6 +168,10 @@ public class Preferences implements imp.Constants
   public static final String BASS_STRING = "2";
   public static final String GRAND_STRING = "3";
   public static final String AUTO_STRING = "4";
+
+  public static final String DEFAULT_CHORD_FONT_SIZE = "default-chord-font-size";
+
+  public static final int DEFAULT_CHORD_FONT_SIZE_VALUE = 16;
 
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
@@ -250,17 +250,25 @@ public class Preferences implements imp.Constants
           nextPref = nextPref.rest();
           nextPref.setFirst(value);
 
-          // Now we need to save the new Polylist
-          savePreferences();
-          return;
+          break;
           }
         }
 
       search = search.rest();
       }
 
+    if( search.isEmpty() )
+      {
+      // Add new preference that was not there
 
-    ErrorLog.log(ErrorLog.WARNING, "Preference " + pref + " does not exist");
+      Polylist newPref = Polylist.list(pref, value);
+
+      // System.out.println("adding preference" + newPref);
+      prefs = prefs.cons(newPref);
+      }
+
+    // Now we need to save the new Polylist
+    savePreferences();
     }
 
   public static String getPreference(String pref)
@@ -288,7 +296,7 @@ public class Preferences implements imp.Constants
       search = search.rest();
       }
 
-    ErrorLog.log(ErrorLog.WARNING, "Preference " + pref + " does not exist");
+    //ErrorLog.log(ErrorLog.WARNING, "Preference " + pref + " does not exist");
     return "";
     }
   
@@ -390,7 +398,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + DEFAULT_STYLE_DIRECTORY + " " + DSD_VAL + ")");
       out.println("(" + VIS_ADV_COMPONENTS + " " + VAC_VAL + ")");
       out.println("(" + CHORD_DIST_ABOVE_ROOT + " " + CDAR_VAL + ")");
-      out.println("(" + CHORD_FONT_SIZE + " " + CHORD_FONT_SIZE_VAL + ")");
+      out.println("(" + DEFAULT_CHORD_FONT_SIZE + " " + DEFAULT_CHORD_FONT_SIZE_VALUE + ")");
       out.println("(" + MAX_NOTES_IN_VOICING + " " + MNIV_VAL + ")");
       out.println("(" + NOTE_COLORING + " " + NC_VAL + ")");
       out.println("(" + SHOW_TRACKING_LINE + " " + STL_VAL + ")");
@@ -433,11 +441,16 @@ public static boolean getAlwaysUse(int index)
      */
     public void execute()
       {
+      // FIX: This is executed multiple time for what should be one save. Why??
+
+      // System.out.println("saving prefs = " + prefs);
       Polylist out = prefs;
       while( out.nonEmpty() )
         {
         file.println(out.first());
         out = out.rest();
+
+
         }
       }
 
