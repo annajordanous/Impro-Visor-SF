@@ -8438,9 +8438,9 @@ public class Notate
         chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
         chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         chordFontSizeSpinner.setInheritsPopupMenu(true);
-        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(140, 32767));
-        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(45, 28));
-        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(45, 28));
+        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(75, 45));
+        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(75, 45));
+        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(75, 45));
         chordFontSizeSpinner.setValue(16);
         chordFontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -8900,8 +8900,9 @@ public class Notate
 
         transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
         transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        transposeSpinner.setMinimumSize(new java.awt.Dimension(55, 28));
-        transposeSpinner.setPreferredSize(new java.awt.Dimension(55, 28));
+        transposeSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
+        transposeSpinner.setMinimumSize(new java.awt.Dimension(70, 45));
+        transposeSpinner.setPreferredSize(new java.awt.Dimension(70, 45));
         transposeSpinner.setValue(0);
         transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -9007,8 +9008,9 @@ public class Notate
 
         parallaxSpinner.setToolTipText("Sets the vertical parallax for mouse clicks on staves.");
         parallaxSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parallax", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        parallaxSpinner.setMinimumSize(new java.awt.Dimension(55, 28));
-        parallaxSpinner.setPreferredSize(new java.awt.Dimension(55, 28));
+        parallaxSpinner.setMaximumSize(new java.awt.Dimension(55, 45));
+        parallaxSpinner.setMinimumSize(new java.awt.Dimension(55, 45));
+        parallaxSpinner.setPreferredSize(new java.awt.Dimension(55, 45));
         playToolBar.add(parallaxSpinner);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
