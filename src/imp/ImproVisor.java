@@ -24,7 +24,10 @@ package imp;
 import java.io.*;
 
 import javax.swing.JFileChooser;
-        
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+import java.awt.DisplayMode;
+
 import imp.data.*;
 import imp.com.*;
 import imp.gui.*;
@@ -300,11 +303,14 @@ public class ImproVisor implements Constants {
           }
 
         score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
-	
-	// Create an array of notate frames and initialize the first frame
+
+ 	// Create an array of notate frames and initialize the first frame
         Notate notate = new Notate(score, advisor, this);
+
+        notate.setNotateFrameHeight(notate);
+
         currentWindow = notate;
-        
+
         if (leadsheet != null) {
             //notate.setupLeadsheetDirectory();
             File f = new File("leadsheets/" + leadsheet);

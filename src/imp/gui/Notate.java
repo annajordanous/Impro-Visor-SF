@@ -1302,8 +1302,10 @@ public class Notate
     lickgen = new LickGen("vocab" + File.separator + "My.grammar", this); //orig
 
     ChordDescription.load(vocabDir + File.separator + musicxmlFile);
+
     
     initComponents();
+
 
     populateNotateGrammarMenu();
 
@@ -1421,8 +1423,21 @@ public class Notate
     dialog.getRootPane().setDefaultButton(button);
     }
 
+
+  /**
+   * Additional initializations not covered by the IDE-generated code
+   */
+
   public void postInitComponents()
     {
+    // Set the size of this Notate frame
+    // replaced by RK: 6/13/2010: this.setSize(fWidth, fHeight);
+
+    // Set height to full screen
+
+    setNotateFrameHeight(this);
+
+
     voicingTestFrame.pack();
 
     voicingTestFrame.setSize(875, 525);
@@ -1455,7 +1470,6 @@ public class Notate
 
     // resize the frames and make the appropriate frames visible
 
-    this.setSize(fWidth, fHeight);
 
     adviceFrame.setSize(400, 500);
 
@@ -16500,99 +16514,81 @@ public void closeWindow()
     
     
     
-    public void updateStyle() {
-        Style style = (Style)styleList.getSelectedValue();
-        
-        if( style == null ) return; // FIX!
-        
-        swingTF.setText("" + style.getSwing());
-                
-        Style sectionStyle = sectionInfo.getStyle(sectionList.getSelectedIndex());
-        
-        if(sectionStyle == null || !style.getName().equals(sectionStyle.getName())) 
+public void updateStyle()
+  {
+    Style style = (Style) styleList.getSelectedValue();
+
+    if( style == null )
+      {
+        return; // FIX!
+      }
+    swingTF.setText("" + style.getSwing());
+
+    Style sectionStyle = sectionInfo.getStyle(sectionList.getSelectedIndex());
+
+    if( sectionStyle == null || !style.getName().equals(sectionStyle.getName()) )
+      {
+        //         System.out.println("updateStyle called with style = " + style);
+
+        sectionInfo.addSection(style, sectionInfo.getStyleIndex(
+            sectionList.getSelectedIndex()));
+
+        sectionList.repaint();
+      }
+  }
+
+
+/** 
+ * Set up the metre and length of the leadsheet.  This needs to be separated out
+ * because we handle things differently depending on whether we're opening a new leadsheet
+ * or just changing the current leadsheet.
+ */
+    
+private boolean saveMetre()
+  {
+    try
+      {
+
+        int timeSignatureTop = Integer.parseInt(timeSignatureTopTF.getText());
+
+        int timeSignatureBottom = Integer.parseInt(
+            timeSignatureBottomTF.getText());
+
+        if( timeSignatureTop < MIN_TS || timeSignatureTop > MAX_TS )
+          {
+           ErrorLog.log(ErrorLog.COMMENT, "Beats per measure must be between " + MIN_TS + " and "
+                + MAX_TS + ".");
+
+            return false;
+          }
+
+        if( !isPowerOf2(timeSignatureBottom) || timeSignatureBottom < MIN_TS
+            || timeSignatureBottom > MAX_TS )
           {
 
- //         System.out.println("updateStyle called with style = " + style);      
-            
-            sectionInfo.addSection(style, sectionInfo.getStyleIndex(sectionList.getSelectedIndex()));
-            
-            sectionList.repaint();
-            
-        }
-        
-    }
-    
-    
-    
-    private boolean saveMetre() {
-        
-        
-        
-        // Here we set up the metre and length of the leadsheet.  This needs to be separated out
-        
-        // because we handle things differently depending on whether we're opening a new leadsheet
-        
-        // or just changing the current leadsheet.
-        
-        try {
-            
-            int timeSignatureTop = Integer.parseInt(timeSignatureTopTF.getText());
-            
-            int timeSignatureBottom = Integer.parseInt(timeSignatureBottomTF.getText());
-            
-            
-            
-            if (timeSignatureTop < MIN_TS || timeSignatureTop > MAX_TS) {
-                
-                ErrorLog.log(ErrorLog.COMMENT, "Beats per measure must be between " + MIN_TS + " and "
-                        
-                        + MAX_TS + ".");
-                
-                return false;
-                
-            }
-            
-            
-            
-            if (!isPowerOf2(timeSignatureBottom) || timeSignatureBottom < MIN_TS ||
-                    
-                    timeSignatureBottom > MAX_TS) {
-                
-                ErrorLog.log(ErrorLog.COMMENT, "Beat value must be a power of two between " + MIN_TS + " and " + MAX_TS + ".");
-                
-                return false;
-                
-            }
-            
-            
-            
-            beatValue = ((BEAT * 4)/timeSignatureBottom);
-            
-            measureLength = beatValue * timeSignatureTop;
-            
-            
-            
-            initMetreAndLength(timeSignatureTop, timeSignatureBottom, false);
-            
-        }
-        
-        
-        
-        catch (NumberFormatException e) {
-            
-            ErrorLog.log(ErrorLog.COMMENT, "Invalid time signature entered: " + timeSignatureTopTF.getText() + "/"
-                    
-                    + timeSignatureBottomTF.getText() + ".");
-            
+            ErrorLog.log(ErrorLog.COMMENT,
+                         "Beat value must be a power of two between " + MIN_TS + " and " + MAX_TS + ".");
+
             return false;
-            
-        }
-        
-        
-        
-        return true;
-        
-    }
+          }
+
+        beatValue = ((BEAT * 4) / timeSignatureBottom);
+
+        measureLength = beatValue * timeSignatureTop;
+
+        initMetreAndLength(timeSignatureTop, timeSignatureBottom, false);
+      }
+    catch( NumberFormatException e )
+      {
+
+        ErrorLog.log(ErrorLog.COMMENT, "Invalid time signature entered: " + timeSignatureTopTF.getText() + "/"
+            + timeSignatureBottomTF.getText() + ".");
+
+        return false;
+      }
+
+    return true;
+  }
     
     
     
@@ -20155,129 +20151,145 @@ public boolean saveAsLeadsheetSwing()
    * it through the dialog
    *
    */
-    public void openLeadsheet(boolean openCorpus) {
-        if (openLSFC.getCurrentDirectory().getAbsolutePath().equals("/")) {
-            openLSFC.setCurrentDirectory(leadsheetDir);
-        }
+public void openLeadsheet(boolean openCorpus)
+  {
+    if( openLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
+      {
+        openLSFC.setCurrentDirectory(leadsheetDir);
+      }
 
-        // stopPlaying(); experimental
+    // stopPlaying(); experimental
 
-        // show open file dialog
+    // show open file dialog
 
-        if (openLSFC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            // if user wants to open in a new window (via checkbox in dialog)
+    if( openLSFC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
+      {
+        // if user wants to open in a new window (via checkbox in dialog)
 
-            if (lsOpenPreview.getCheckbox().isSelected()) {
-                // load the file
+        if( lsOpenPreview.getCheckbox().isSelected() )
+          {
+            // load the file
 
-                Score newScore = new Score();
+            Score newScore = new Score();
 
-                (new OpenLeadsheetCommand(openLSFC.getSelectedFile(), newScore)).execute();
+            score.setChordFontSize(Integer.valueOf(Preferences.getPreference(
+                Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+
+            (new OpenLeadsheetCommand(openLSFC.getSelectedFile(), newScore)).execute();
 
 
 
-                // create a new window and show the score
+            // create a new window and show the score
 
-                Notate newNotate =
-                        new Notate(newScore,
-                        this.adv,
-                        this.impro,
-                        (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
-                        (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+            Notate newNotate =
+                new Notate(newScore,
+                           this.adv,
+                           this.impro,
+                           (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
+                           (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
 
-                score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+            setNotateFrameHeight(newNotate);
+          }
+        else
+          {
+            // if not a new window
 
-            } else {
-                // if not a new window
+            boolean redisplay = true;
 
-                boolean redisplay = true;
+            while( redisplay )
+              {
+                redisplay = false;
 
-                while (redisplay) {
-                    redisplay = false;
+                // check to see if we will lose changes
 
-                    // check to see if we will lose changes
+                if( unsavedChanges() )
+                  {
+                    // if we are going to lose changes, prompt the user
 
-                    if (unsavedChanges()) {
-                        // if we are going to lose changes, prompt the user
+                    Object[] options =
+                      {
+                        "<html><b><u>Y</u>es</b>, save these modifications</html>",
+                        "<html><b><u>N</u>o</b>, do not save these modifications</html>",
+                        "<html><b>Cancel</b>, do not open a different leadsheet</html>"
+                      };
 
-                        Object[] options = {"<html><b><u>Y</u>es</b>, save these modifications</html>",
-                            "<html><b><u>N</u>o</b>, do not save these modifications</html>",
-                            "<html><b>Cancel</b>, do not open a different leadsheet</html>"
-                        };
+                    UnsavedChanges dialog =
+                        new UnsavedChanges(this,
+                                           "Save modifications before opening " + lsOpenPreview.getTitle() + "?",
+                                           options);
 
-                        UnsavedChanges dialog =
-                                new UnsavedChanges(this,
-                                "Save modifications before opening " + lsOpenPreview.getTitle() + "?",
-                                options);
+                    dialog.setVisible(true);
 
-                        dialog.setVisible(true);
+                    dialog.dispose();
 
-                        dialog.dispose();
+                    UnsavedChanges.Value choice = dialog.getValue();
 
-                        UnsavedChanges.Value choice = dialog.getValue();
+                    switch( choice )
+                      {
+                        case YES:   // save before opening
 
-                        switch (choice) {
-                            case YES:   // save before opening
+                            if( !saveLeadsheet() )
+                              {
+                                redisplay = true;
+                              }
 
-                                if (!saveLeadsheet()) {
-                                    redisplay = true;
-                                }
+                            break;
 
-                                break;
+                        case NO:    // open without saving
 
-                            case NO:    // open without saving
+                            break;
 
-                                break;
+                        case CANCEL:// don't open
 
-                            case CANCEL:// don't open
+                            return;
+                      }
+                  }
+              }
 
-                                return;
-                        }
-                    }
+            //get the contours of all leadsheets in the directory
+            if( openCorpus )
+              {
+                File file = openLSFC.getSelectedFile();
+                setLickGenStatus("Learning from directory containing: " + file);
+                /* Note: If these are not called as a thread, annoying paintImmediately messages
+                can be avoided, although heap space can become an issue. */
+                System.gc();
+                getAllContours(file);
+                setupLeadsheet(file, true);
+                setLickGenStatus("Done learning from corpus: " + file);
+                /*
+                try {
+                new Thread() {
+                public void run() {
+                getAllContours(openLSFC.getSelectedFile());
+                setupLeadsheet(openLSFC.getSelectedFile(), true);
                 }
-
-                //get the contours of all leadsheets in the directory
-                if (openCorpus) {
-                    File file = openLSFC.getSelectedFile();
-                    setLickGenStatus("Learning from directory containing: " + file);
-/* Note: If these are not called as a thread, annoying paintImmediately messages
-   can be avoided, although heap space can become an issue. */
-                    System.gc();
-                    getAllContours(file);
-                    setupLeadsheet(file, true);
-                    setLickGenStatus("Done learning from corpus: " + file);
-/*
-                    try {
-                    new Thread() {
-                        public void run() {
-                            getAllContours(openLSFC.getSelectedFile());
-                            setupLeadsheet(openLSFC.getSelectedFile(), true);
-                        }
-                    }.start();
-                    }
-                    catch (Exception e) {
-                        //this is a normal bug
-*/
- 
+                }.start();
                 }
-                else {
-                    // open the file
-                    setupLeadsheet(openLSFC.getSelectedFile(), false);
-                }
-                // clear undo/redo history
+                catch (Exception e) {
+                //this is a normal bug
+                 */
 
-                cm.clearHistory();
+              }
+            else
+              {
+                // open the file
+                setupLeadsheet(openLSFC.getSelectedFile(), false);
+              }
+            // clear undo/redo history
 
-                // mark sheet as saved in it's current state (no unsaved changes)
+            cm.clearHistory();
 
-                cm.changedSinceLastSave(false);
-            }
-            
+            // mark sheet as saved in it's current state (no unsaved changes)
+
+            cm.changedSinceLastSave(false);
+          }
+
         setChordFontSizeSpinner(score.getChordFontSize());
-        }
+      }
 
-       staveRequestFocus();
-    }
+    staveRequestFocus();
+  }
     
   /**
    *
@@ -20330,9 +20342,9 @@ public boolean saveAsLeadsheetSwing()
 
             // Note that learning is only occurring with 4/4 time files currently!!
             
-            // if (newScore.getMetre()[1] == 4 && newScore.getMetre()[0] == 4)
+            // if (newNotate.getMetre()[1] == 4 && newNotate.getMetre()[0] == 4)
               {
-                //System.out.println(newScore.getTitle());
+                //System.out.println(newNotate.getTitle());
                 getAllMeasures(newScore);
                 setLickGenStatus("Reading leadsheet from file " + file);
             }
@@ -20463,7 +20475,7 @@ public boolean saveAsLeadsheetSwing()
 
                     savedLeadsheet = file;
                     setCursor(new Cursor(Cursor.WAIT_CURSOR));
-                    //setupScore(newScore);
+                    //setupScore(newNotate);
 
                     ChordPart chords = newScore.getChordProg();
                     MelodyPart melody = newScore.getPart(0);
@@ -20915,10 +20927,10 @@ public boolean saveAsLeadsheetSwing()
    *
    */
     public void newMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMIActionPerformed
-      newScore();
+      newNotate();
     }//GEN-LAST:event_newMIActionPerformed
 
-  public void newScore()
+  public void newNotate()
     {
     Score newScore = new Score("");
     
@@ -20942,11 +20954,29 @@ public boolean saveAsLeadsheetSwing()
             (int)this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
             (int)this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
 
+    setNotateFrameHeight(newNotate);
+
     // set the menu and button states
 
     setItemStates();
-
     }
+
+
+  /**
+   * Set the height of specified notate frame so that it fills the screen.
+   * This seems to work fine when the dock is at the right, but when
+   * it is at the bottom, for some reason vertical staggering does not happen.
+   @param notate
+   */
+  
+  public void setNotateFrameHeight(Notate notate)
+  {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
+    DisplayMode dm = gs[0].getDisplayMode();
+//System.out.println("height = " + dm.getHeight() + ", y = " + notate.getY());
+    notate.setSize(fWidth, dm.getHeight() - notate.getY());
+  }
 
     private void trackerDelayTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trackerDelayTextFieldActionPerformed
     {//GEN-HEADEREND:event_trackerDelayTextFieldActionPerformed
