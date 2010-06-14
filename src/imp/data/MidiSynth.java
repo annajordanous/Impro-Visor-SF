@@ -335,7 +335,7 @@ public void play(Score score, long startTime, int loopCount, int transposition,
                  boolean useDrums)
     throws InvalidMidiDataException
   {
-    play(score, startTime, loopCount, transposition, useDrums);
+    play(score, startTime, loopCount, transposition, useDrums, -1); // RK 6/11/2010 The last parameter was omitted, causing an infinite loop. I hope this value makes sense.
   }
 
 public void play(Score score, long startIndex, int loopCount, int transposition,

@@ -577,8 +577,16 @@ public class MelodyPart
       {
       int j = i.nextIndex();
 
+     try {
       Note n = (Note)i.next();
       tieThis(j, n, 0);
+     }
+     catch(Exception e)
+       {
+         // RK 6/11/2010 Getting exception here on MIDI entry.
+         // This might not be the best solution, however.
+       return;
+       }
       }
     }
 

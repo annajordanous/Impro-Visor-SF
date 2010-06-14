@@ -453,6 +453,8 @@ public class MidiManager implements Constants {
         int numReceivers = 0;
         
         public void send(MidiMessage message, long timeStamp) {
+            try
+            {
             for(Receiver r : receiver) {
                 try {
                     r.send(message, timeStamp);
@@ -461,6 +463,13 @@ public class MidiManager implements Constants {
                         receiver.remove(null);
                     }
                 }
+            }
+            }
+            catch(java.util.ConcurrentModificationException e)
+            {
+                // RK 6/11/2010 Getting exceptions here at the end.
+                // This silently catches them.
+                return;
             }
         }
 

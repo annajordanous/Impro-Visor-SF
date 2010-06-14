@@ -1250,6 +1250,11 @@ public class Notate
               return;
               }
 
+            if( !earlyScrollBtn.isSelected() )
+              {
+              p.height += 1; //  Use for Early Scroll: RK 6/13/2010
+              }
+            
             Rectangle r = getCurrentScrollPosition();
 
             if( !r.contains(p) )
@@ -2227,7 +2232,6 @@ public class Notate
         delTabBtn = new javax.swing.JButton();
         preferencesBtn = new javax.swing.JButton();
         programStatusTF = new javax.swing.JTextField();
-        helpBtn = new javax.swing.JButton();
         playToolBar = new javax.swing.JToolBar();
         countInPanel = new javax.swing.JPanel();
         countInCheckBox = new javax.swing.JCheckBox();
@@ -2255,6 +2259,7 @@ public class Notate
         partBarsTF1 = new javax.swing.JTextField();
         trackerDelayPanel = new javax.swing.JPanel();
         trackerDelayTextField2 = new javax.swing.JTextField();
+        earlyScrollBtn = new javax.swing.JToggleButton();
         parallaxSpinner = new javax.swing.JSpinner();
         textEntryToolBar = new javax.swing.JToolBar();
         textEntryLabel = new javax.swing.JLabel();
@@ -2271,7 +2276,6 @@ public class Notate
         aboutMI = new javax.swing.JMenuItem();
         jSeparator22 = new javax.swing.JSeparator();
         newMI = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JSeparator();
         openLeadsheetMI = new javax.swing.JMenuItem();
         revertToSavedMI = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JSeparator();
@@ -2302,7 +2306,6 @@ public class Notate
         pasteMelodyMI = new javax.swing.JMenuItem();
         pasteChordsMI = new javax.swing.JMenuItem();
         pasteBothMI = new javax.swing.JMenuItem();
-        jSeparator15 = new javax.swing.JSeparator();
         pasteOverMI = new javax.swing.JCheckBoxMenuItem();
         jSeparator16 = new javax.swing.JSeparator();
         enterMelodyMI = new javax.swing.JMenuItem();
@@ -2339,7 +2342,6 @@ public class Notate
         viewMenu = new javax.swing.JMenu();
         oneAutoMI = new javax.swing.JMenuItem();
         autoAdjustMI = new javax.swing.JCheckBoxMenuItem();
-        jSeparator4 = new javax.swing.JSeparator();
         showTitlesMI = new javax.swing.JCheckBoxMenuItem();
         showEmptyTitlesMI = new javax.swing.JCheckBoxMenuItem();
         barNumsMI = new javax.swing.JCheckBoxMenuItem();
@@ -8398,7 +8400,7 @@ public class Notate
         standardToolbar.add(colorationButton);
 
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
-        smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11));
+        smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         smartEntryButton.setSelected(true);
         smartEntryButton.setText("<html><center>Simple</center></html>");
         smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
@@ -8417,7 +8419,7 @@ public class Notate
         standardToolbar.add(smartEntryButton);
 
         beamButton.setBackground(new java.awt.Color(51, 255, 255));
-        beamButton.setFont(new java.awt.Font("Arial", 0, 11));
+        beamButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         beamButton.setSelected(true);
         beamButton.setText("<html><center>No Beam</center></html>");
         beamButton.setToolTipText("Beam multiple notes shorter than quarter-note.");
@@ -8517,20 +8519,6 @@ public class Notate
             }
         });
         standardToolbar.add(programStatusTF);
-
-        helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/help.gif"))); // NOI18N
-        helpBtn.setToolTipText("Open the Help dialog.");
-        helpBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        helpBtn.setMaximumSize(new java.awt.Dimension(30, 30));
-        helpBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        helpBtn.setOpaque(true);
-        helpBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        helpBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpBtnActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(helpBtn);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -8714,10 +8702,10 @@ public class Notate
         playToolBar.add(playbackPanel);
 
         loopPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Looping", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        loopPanel.setMaximumSize(new java.awt.Dimension(110, 50));
+        loopPanel.setMaximumSize(new java.awt.Dimension(90, 50));
         loopPanel.setMinimumSize(new java.awt.Dimension(90, 50));
         loopPanel.setOpaque(false);
-        loopPanel.setPreferredSize(new java.awt.Dimension(90, 63));
+        loopPanel.setPreferredSize(new java.awt.Dimension(90, 50));
         loopPanel.setLayout(new java.awt.GridBagLayout());
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
@@ -8726,10 +8714,10 @@ public class Notate
         loopButton.setToolTipText("Toggle playback looping.");
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        loopButton.setMaximumSize(new java.awt.Dimension(40, 20));
-        loopButton.setMinimumSize(new java.awt.Dimension(38, 20));
+        loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
+        loopButton.setMinimumSize(new java.awt.Dimension(30, 20));
         loopButton.setOpaque(true);
-        loopButton.setPreferredSize(new java.awt.Dimension(38, 20));
+        loopButton.setPreferredSize(new java.awt.Dimension(30, 20));
         loopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loopButtonActionPerformed(evt);
@@ -8792,7 +8780,7 @@ public class Notate
         playToolBar.add(loopPanel);
 
         masterVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        masterVolumePanel.setMaximumSize(new java.awt.Dimension(140, 50));
+        masterVolumePanel.setMaximumSize(new java.awt.Dimension(130, 50));
         masterVolumePanel.setMinimumSize(new java.awt.Dimension(100, 50));
         masterVolumePanel.setOpaque(false);
         masterVolumePanel.setPreferredSize(new java.awt.Dimension(120, 50));
@@ -8836,10 +8824,10 @@ public class Notate
         playToolBar.add(masterVolumePanel);
 
         tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (Beats per Minute)\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        tempoPanel.setMaximumSize(new java.awt.Dimension(160, 63));
-        tempoPanel.setMinimumSize(new java.awt.Dimension(160, 63));
+        tempoPanel.setMaximumSize(new java.awt.Dimension(160, 50));
+        tempoPanel.setMinimumSize(new java.awt.Dimension(160, 50));
         tempoPanel.setOpaque(false);
-        tempoPanel.setPreferredSize(new java.awt.Dimension(160, 63));
+        tempoPanel.setPreferredSize(new java.awt.Dimension(160, 50));
         tempoPanel.setLayout(new java.awt.GridBagLayout());
 
         tempoSet.setFont(new java.awt.Font("Dialog", 1, 12));
@@ -9006,6 +8994,25 @@ public class Notate
 
         playToolBar.add(trackerDelayPanel);
 
+        earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
+        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        earlyScrollBtn.setSelected(true);
+        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
+        earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        earlyScrollBtn.setFocusable(false);
+        earlyScrollBtn.setHorizontalTextPosition(0);
+        earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setOpaque(true);
+        earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                earlyScrollBtnActionPerformed(evt);
+            }
+        });
+        playToolBar.add(earlyScrollBtn);
+
         parallaxSpinner.setToolTipText("Sets the vertical parallax for mouse clicks on staves.");
         parallaxSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parallax", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
         parallaxSpinner.setMaximumSize(new java.awt.Dimension(55, 45));
@@ -9131,7 +9138,6 @@ public class Notate
             }
         });
         fileMenu.add(newMI);
-        fileMenu.add(jSeparator1);
 
         openLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetMI.setMnemonic('o');
@@ -9374,7 +9380,6 @@ public class Notate
             }
         });
         editMenu.add(pasteBothMI);
-        editMenu.add(jSeparator15);
 
         pasteOverMI.setSelected(true);
         pasteOverMI.setText("Always Overwrite when Pasting");
@@ -9673,7 +9678,6 @@ public class Notate
             }
         });
         viewMenu.add(autoAdjustMI);
-        viewMenu.add(jSeparator4);
 
         showTitlesMI.setSelected(true);
         showTitlesMI.setText("Show Leadsheet Title");
@@ -10176,12 +10180,6 @@ public class Notate
     {
     score.getChordProg().getSectionInfo().reloadStyles();
     }
-
-    private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
-
-      openHelpDialog();
-        
-    }//GEN-LAST:event_helpBtnActionPerformed
 
     private void helpAboutMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutMIActionPerformed
       showAboutDialog();       
@@ -18096,7 +18094,7 @@ private void setLayoutPreference(Polylist layout)
     
     
     public void setCurrentScrollPosition(Rectangle r) {
-        
+   //System.out.println("setCurrentScrollPosition(" + r + ")");
         int maxwidth = staveScrollPane[currTabIndex].getStave().getPanelWidth();
         
         int curwidth = (int) staveScrollPane[currTabIndex].getViewport().getExtentSize().getWidth();
@@ -23957,6 +23955,21 @@ private void defaultChordFontSizeSpinnerKeyReleased(java.awt.event.KeyEvent evt)
       }
 }//GEN-LAST:event_defaultChordFontSizeSpinnerKeyReleased
 
+private void earlyScrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earlyScrollBtnActionPerformed
+    if( earlyScrollBtn.isSelected() )
+        {
+        earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
+        earlyScrollBtn.setText("<html><center>Early<br>Scroll</center></html>");
+        earlyScrollBtn.setSelected(true);
+        }
+      else
+        {
+        earlyScrollBtn.setBackground(Color.red);
+        earlyScrollBtn.setText("<html><center>Late<br>Scroll</center></html>");
+        earlyScrollBtn.setSelected(false);
+        }
+}//GEN-LAST:event_earlyScrollBtnActionPerformed
+
 private void setChordFontSize(int newSize)
 {
     score.setChordFontSize(newSize);
@@ -25360,6 +25373,7 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane duplicateLickScroll;
     private javax.swing.JTextPane duplicateLickText;
     private javax.swing.JLabel durationLabel;
+    private javax.swing.JToggleButton earlyScrollBtn;
     private javax.swing.JCheckBox echoMidiCheckBox;
     private javax.swing.JMenuItem editGrammarMI;
     private javax.swing.JMenu editMenu;
@@ -25424,7 +25438,6 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel greenLabel;
     private javax.swing.JRadioButton greenOtherBtn;
     private javax.swing.JMenuItem helpAboutMI;
-    private javax.swing.JButton helpBtn;
     private javax.swing.JMenuItem helpMI;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JTextField highRangeTF;
@@ -25493,10 +25506,8 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator14;
-    private javax.swing.JSeparator jSeparator15;
     private javax.swing.JSeparator jSeparator16;
     private javax.swing.JSeparator jSeparator17;
     private javax.swing.JSeparator jSeparator18;
@@ -25509,7 +25520,6 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator30;
     private javax.swing.JSeparator jSeparator31;
     private javax.swing.JSeparator jSeparator32;
-    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
