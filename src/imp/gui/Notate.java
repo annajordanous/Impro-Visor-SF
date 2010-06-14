@@ -3992,7 +3992,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(reverseProbabilityField, gridBagConstraints);
 
-        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         disclaimer.setText("<html>The Solo Generator is work in progress. The idea is to generate a solo by using a theme several times in different places.</html>");
         disclaimer.setMaximumSize(new java.awt.Dimension(600, 60));
