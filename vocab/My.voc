@@ -1580,7 +1580,7 @@
     (key eb)
     (family minor)
     (spell c8 eb8 g8)
-    (color d8 f8 ab8 a8 bb8 b8)
+    (color d8 f8 (ab8 0.001) (gb8 0.01) (a8 0.01) (bb8 0.01) (b8 0.02))
     (priority eb8 g8 c8)
     (approach (c8 b8 c#8 d8) (eb8 d8 e8 f8) (g8 f#8 g#8 a8))
     (voicings
@@ -1615,7 +1615,7 @@
     (key bb)
     (family minor7)
     (spell c8 eb8 g8 bb8)
-    (color d8 f8 a8)
+    (color d8 f8 (a8 0.05) )
     (priority eb8 bb8 g8 c8)
     (approach (c8 b8 c#8 d8) (eb8 d8 e8 f8) (g8 f#8 g#8) (bb8 a8 b8))
     (voicings
@@ -2256,7 +2256,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8)
-    (color f#8 db8 d8 d#8 a8 g#8 f8)
+    (color a8 (f#8 0.01) (db8 0.1) (d8 0.05)  (d# 0.01) (g# 0.01) (f8 0.01))
     (priority bb8 e8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 a8 b8))
     (voicings
@@ -2717,7 +2717,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 d8 a8)
-    (color f#8 f8)
+    (color db f#8)
     (priority a8 d8 bb8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 b8) (d8 c#8 eb8) (a8 g#8))
     (voicings
@@ -2844,10 +2844,10 @@
     (pronounce C seven flat six)
     (key f)
     (family dominant)
-    (spell c8 e8 ab8 bb8)
+    (spell c8 e8 g8 ab8 bb8)
     (color f#8 d8 db8 d#8)
     (priority ab8 bb8 e8 c8 g8)
-    (approach (c8 b8 c#8) (e8 f8 eb8) (ab8 g8 a8) (bb8 a8 b8))
+    (approach (c8 b8 c#8) (e8 f8 eb8) (ab8 a8) (bb8 a8 b8))
     (voicings
         (left-hand-A (type closed)(notes e8 ab8 bb8)(extension))
         (left-hand-B (type closed)(notes bb8 e+8 ab+8)(extension))
