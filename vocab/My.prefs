@@ -1,3 +1,4 @@
+(default-chord-font-size 16)
 (advice-cache-size 10)
 (always-use-buttons nnnn)
 (cache-enabled false)
@@ -23,4 +24,3 @@
 (show-tracking-line true)
 (tracker-delay 0)
 (visible-advice-components 1023)
-(chord-font-size 16)
