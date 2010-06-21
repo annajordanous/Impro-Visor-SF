@@ -1,4 +1,3 @@
-
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
@@ -1150,6 +1149,11 @@ public class Notate
 
     defBassInst = new InstrumentChooser();
 
+    // Use to decide whether to trigger scrolling early.
+    // Declare final, as it is accessed from inner class
+
+    final int earlyScrollMargin = 160;
+
     repainter = new ActionListener()
     {
       public void actionPerformed(ActionEvent evt)
@@ -1233,65 +1237,74 @@ public class Notate
           playbackGoToTab(currentPlaybackTab);
           }
 
+        Stave stave = getCurrentStave();
+
         // only draw the playback indicator if it is on the current tab
 
         if( currentPlaybackTab == currTabIndex )
           {
-
-          staveScrollPane[currentPlaybackTab].getStave().repaintDuringPlayback(slotInChorus);
+          stave.repaintDuringPlayback(slotInChorus);
 
           if( autoScrollOnPlayback && showPlayLine() )
             {
 
-            Rectangle p = getCurrentStave().getPlayLine();
+            Rectangle playline = stave.getPlayLine();
 
-            if( p.height == 0 )
+            if( playline.height == 0 )
               {
               return;
               }
-
-            if( !earlyScrollBtn.isSelected() )
-              {
-              p.height += 1; //  Use for Early Scroll: RK 6/13/2010
-              }
             
-            Rectangle r = getCurrentScrollPosition();
+            Rectangle viewport = getCurrentScrollPosition();
 
-            if( !r.contains(p) )
+            // It should be noted that the early scroll button has an invverted sense.
+
+            boolean earlyScroll = !earlyScrollBtn.isSelected();
+
+            Rectangle adjustedPlayline = (Rectangle)playline.clone();
+
+            if( earlyScroll
+             && viewport.getY() + viewport.getHeight() + earlyScrollMargin < stave.getHeight() )
+              {
+              adjustedPlayline.y += earlyScrollMargin;
+              }
+
+            if( !viewport.contains(playline) )
               {
               // If out of view, try adjusting x-coordinate first
 
-              int adjust = getCurrentStave().leftMargin + 10;
+              int adjust = stave.leftMargin + 10;
 
-              if( r.width < adjust )
+              if( viewport.width < adjust )
                 {
                 adjust = 0;
                 }
 
-              r.x = p.x - adjust;
+              viewport.x = playline.x - adjust;
 
-              if( r.x < 0 )
+              if( viewport.x < 0 )
                 {
-                r.x = 0;
+                viewport.x = 0;
                 }
+              }
 
               // If still out of view, try adjusting the y-coordinate
 
-              if( !r.contains(p) )
+              if( !viewport.contains(adjustedPlayline) )
                 {
-                r.y = p.y;
+                viewport.y = playline.y;
 
-                if( p.y < 0 )
+                if( playline.y < 0 )
                   {
-                  p.y = 0;
+                  playline.y = 0;
                   }
                 }
 
-              if( r.contains(p) )
+              if( viewport.contains(playline) )
                 {
-                setCurrentScrollPosition(r);
+                setCurrentScrollPosition(viewport);
                 }
-              }
+              
             }
           }
         }
