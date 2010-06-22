@@ -498,7 +498,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8)
-    (color a8 b8 d8 (f#8 0.05))
+    (color a8 b8 d8 (f#8 0.005))
     (priority e8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 eb8 f8) (g8 f#8 g#8 a8))
     (voicings
@@ -535,7 +535,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 a8)
-    (color d8 b8 (f#8 0.05))
+    (color d8 b8 (f#8 0.005))
     (priority e8 a8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8))
     (voicings
@@ -775,7 +775,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 b8)
-    (color d8 a8 (f#8 0.05) c8)
+    (color d8 a8 (f#8 0.01))
     (priority b8 e8 g8 c8)
     (approach (c8 c#8 d8) (e8 eb8 f8) (g8 f#8 g#8) (b8 bb8 c8))
     (voicings
@@ -819,7 +819,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 b8 d8)
-    (color a8 (f#8 0.05) c8)
+    (color a8 (f#8 0.01))
     (priority b8 e8 d8 g8 c8)
     (approach (c8 c#8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8) (d8 c#8 eb8) (b8 bb8 c8))
     (voicings
@@ -950,7 +950,7 @@
     (key c)
     (family major)
     (spell c8 e8 g8 b8 d8 a8)
-    (color (f#8 0.05) c8)
+    (color (f#8 0.01))
     (priority a8 b8 e8 d8 g8 c8)
     (approach (c8 c#8) (e8 eb8 f8) (g8 f#8 g#8) (a8 g#8 bb8) (d8 c#8 eb8) (b8 bb8 c8))
     (voicings
@@ -1615,7 +1615,7 @@
     (key bb)
     (family minor7)
     (spell c8 eb8 g8 bb8)
-    (color d8 f8 (a8 0.05) )
+    (color d8 f8 (a8 0.01) )
     (priority eb8 bb8 g8 c8)
     (approach (c8 b8 c#8 d8) (eb8 d8 e8 f8) (g8 f#8 g#8) (bb8 a8 b8))
     (voicings
@@ -1920,7 +1920,7 @@
     (key bb)
     (family minor7)
     (spell c8 eb8 g8 bb8 d8 f8)
-    (color a8)
+    (color (a8 0.01))
     (priority f8 eb8 bb8 d8 g8 c8)
     (approach (c8 b8 c#8) (eb8 e8) (g8 f#8 g#8) (bb8 a8 b8) (d8 c#8) (f8 e8 f#8))
     (voicings
@@ -1943,7 +1943,7 @@
     (key bb)
     (family minor7)
     (spell c8 eb8 g8 bb8 f8)
-    (color a8 d8)
+    (color (a8 0.01) d8)
     (priority f8 eb8 bb8 g8 c8)
     (approach (c8 b8 c#8) (eb8 e8) (g8 f#8 g#8) (bb8 a8 b8) (f8 e8 f#8))
     (voicings
@@ -2256,7 +2256,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8)
-    (color a8 (f#8 0.01) (db8 0.1) (d8 0.05)  (d# 0.01) (g# 0.01) (f8 0.01))
+    (color (a8 0.1) (f#8 0.01) (db8 0.05) (d8 0.05)  (d# 0.01) (g# 0.01) (f8 0.001))
     (priority bb8 e8 g8 c8)
     (approach (c8 b8 c#8 d8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 a8 b8))
     (voicings
@@ -2353,7 +2353,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 db8 d#8)
-    (color a8 ab8 f#8)
+    (color (a8 0.01) (ab8 0.01) (f#8 0.01))
     (priority d#8 db8 bb8 e8 c8)
     (approach (c8 b8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 a8 b8) (db8 d8 eb8) (d#8 d8))
     (voicings
@@ -2560,7 +2560,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 d8)
-    (color f#8 a8 f8)
+    (color a8 (f#8 0.01) (g# 0.01) (f8 0.01))
     (priority d8 bb8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 a8 b8) (d8 c#8 eb8))
     (voicings
@@ -2717,7 +2717,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 d8 a8)
-    (color db f#8)
+    (color (db8 0.01) (f#8 0.01))
     (priority a8 d8 bb8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 b8) (d8 c#8 eb8) (a8 g#8))
     (voicings
@@ -2752,7 +2752,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 a8)
-    (color d8 f#8)
+    (color d8 (f#8 0.01))
     (priority a8 bb8 e8 g8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 b8) (a8 g#8))
     (voicings
@@ -2936,7 +2936,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g8 bb8 db8 a8)
-    (color f#8 d#8)
+    (color (f#8 0.01) d#8)
     (priority db8 a8 bb8 e8 c8)
     (approach (c8 b8) (e8 f8 eb8) (g8 f#8 g#8) (bb8 b8) (db8 d8 eb8))
     (voicings
@@ -3582,7 +3582,7 @@
 (chord
     (name C-)
     (pronounce)
-    (same Cm)
+    (same Cm7)
     )
 (chord
     (name C-7)
@@ -3638,6 +3638,36 @@
     (name C-M9)
     (pronounce)
     (same CmM9)
+    )
+(chord
+    (name C7+4)
+    (pronounce)
+    (same C7#11)
+    )
+(chord
+    (name C9+4)
+    (pronounce)
+    (same C9#11)
+    )
+(chord
+    (name C13+4)
+    (pronounce)
+    (same C13#11)
+    )
+(chord
+    (name CM7+4)
+    (pronounce)
+    (same CM7#11)
+    )
+(chord
+    (name CM9+4)
+    (pronounce)
+    (same CM9#11)
+    )
+(chord
+    (name CM13+4)
+    (pronounce)
+    (same CM13#11)
     )
 (cell (notes b4 ab8 gb8 eb8) (name blues) (chords Ab7))
 (cell (notes r4 bb8 bb8 b16/3 bb16/3 ab16/3 f8 eb8 f8) (name blues) (chords Bb))
