@@ -8,6 +8,7 @@
 (tempo 180.0)
 (volume 127)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 31)
 (drum-volume 48)
@@ -391,6 +392,38 @@ Gm9 | C13b9 | F13 D7#5#9 | Gm9 C13b9 |
  a8 g8 bb8 a8 c+8 d+8 g#8 c+8
 
  r2 c+8 a8 g8 e8
+(part
+    (type melody)
+    (title Dave Liebman)
+    (composer )
+    (instrument 56)
+    (volume 85)
+    (key -1)
+    (stave treble)
+)
+ d+4 r4 b16 c+16 d+16 eb+16 f+16 d+16 b16 g16
+
+ bb16 c+16 e+16 f+16 d+4+8 b8 d+8 g+8
+
+ gb+8 eb+2+8 a8 d8
+
+ g8 c+8 bb4 r4+8 eb8
+
+ e16 f16 g16 ab4+16 r2
+
+ e16 g#16 b16 d+16 f+8 bb+8 r8 g#+2+8
+
+ d+8 r2+4
+
+ eb+16 f+16 r8 c+16 f+8/3+32/3 f#+4 d+16/3 bb16/3 f16/3 f#16/3 bb16/3
+
+ d+4 e+8 d+8 bb8 a8 g8 a8
+
+ c+8 e+8 db+2+4
+
+ r4 eb+4 d+8 c+8 d+8 c+2
+
+ a8 e4 db4
 (part
     (type melody)
     (title You)

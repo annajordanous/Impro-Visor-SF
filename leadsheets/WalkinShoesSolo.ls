@@ -8,6 +8,7 @@
 (tempo 160.0)
 (volume 127)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
@@ -36,9 +37,9 @@
 (section (style swing)) 
 
 Eb | Ab7 | Eb | Gm7b5 C7b9 | 
-Fm7 | Am7 D7 | Gm7#5 Gbm7 | / Fm7 E7#9 / | 
+Fm7 | Am7 D7 | Gm7#5 Gbm7 | Fm7 E7#9 | 
 Eb | Ab7 | Eb | Gm7b5 C7b9 | 
-Fm7 | Am7 D7 | Gm7#5 Gbm7 | / Fm7 E7#9 Ab7 | 
+Fm7 | Am7 D7 | Gm7#5 Gbm7 | Fm7 / E7#9 Ab7 | 
 G7 | / | Cm6 | / | 
 Cm7 | F7 | Fm7 | Bb7 | 
 Eb | Ab7 Ao7 | Eb Ab | Gm7b5 C7b9 | 
@@ -46,8 +47,8 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
 (part
     (type melody)
-    (title )
-    (composer )
+    (title Chorus 1)
+    (composer Bob Keller)
     (instrument 67)
     (volume 85)
     (key -3)
@@ -67,7 +68,7 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
  bb8 c+8 g8 f8 db+8 cb8 a8 ab8
 
- gb4 ab8/3 c+8/3 eb+8/3 ab+8 e+8 r8 d+8
+ f4 ab8/3 c+8/3 eb+8/3 ab+8 e+8 r8 d+8
 
  eb+8 bb4 bb8 eb+8 d+8 c+8 gb8
 
@@ -83,7 +84,7 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
  g8 eb+4 c+8 db+8 a8 ab8 gb8
 
- e4 c+8 bb8 r4+8 gb8
+ eb4 c+8 bb8 r4+8 gb8
 
  f16 g16 a16 b16 e+8 r2 d+8
 
@@ -118,8 +119,8 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
  f8 r8 ab8/3 c+8/3 d+8/3 g+8 d+4 b8
 (part
     (type melody)
-    (title )
-    (composer )
+    (title Chorus 2)
+    (composer Bob Keller)
     (instrument 56)
     (volume 85)
     (key -3)
@@ -139,7 +140,7 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
  eb+8 bb8 g8 f8 e8 db+8 r8 b8
 
- db+8 b8 ab8 eb8 ab8 g8 r8 f8
+ d+8 bb8 ab8 eb8 ab8 g8 r8 f8
 
  d8 eb8 d8 eb8 g8 bb8 g8/3 bb8/3 c+8/3
 
@@ -155,7 +156,7 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
  g8 bb4 g8 gb8 db+4 b8
 
- ab8 gb8 c+8 bb8 ab8 g8 gb8 e8
+ ab8 f8 c+8 bb8 ab8 g8 gb8 e8
 
  f8 r8 a8 c+8 d+8 e+8 f+8 e+8
 
@@ -190,8 +191,8 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
  c+8 d+8 cb8 bb2+8
 (part
     (type melody)
-    (title )
-    (composer )
+    (title Chorus 3)
+    (composer Bob Keller)
     (instrument 11)
     (volume 85)
     (key -3)
@@ -211,7 +212,7 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
  bb8 g4 f8 eb8 gb8 a8 db+8
 
- b8 ab8 r8 g8 e8 g8 bb8 d+8
+ c+8 ab8 r8 g8 e8 g8 bb8 d+8
 
  eb+4 r8 eb+8 g+8 f+8 eb+8 bb8
 
@@ -227,7 +228,7 @@ Fm7b5 C9 | Fm7 Bb7b5 | Eb | Bb7 |
 
  f8 r8 c+8 bb8 db+8 eb+8 cb8 a8
 
- gb4 bb8 c+8 c#+8 bb4 ab8
+ f4 bb8 c+8 c#+8 bb4 ab8
 
  f2+4 r4
 
