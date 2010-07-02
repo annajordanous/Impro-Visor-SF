@@ -76,6 +76,8 @@ public class Notate
         implements Constants, MidiPlayListener
   {
 
+  LickgenFrame generatorFrame1;
+
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
   static int GRAMMAR_EDITOR_ROWS = 10000;
@@ -467,7 +469,7 @@ public class Notate
 
   private ExtractMode saveSelectionMode = ExtractMode.LICK;
 
-  Vector<JTextField[]> lickPrefs = new Vector<JTextField[]>();
+  //Vector<JTextField[]> lickPrefs = new Vector<JTextField[]>();
 
   private int themeLength = 8;
 
@@ -1018,7 +1020,7 @@ public class Notate
 
     setStepInput(false);
 
-    criticDialog = new CriticDialog(generatorFrame);
+    criticDialog = new CriticDialog(generatorFrame1);
 
     // Establish Directories
 
@@ -1204,7 +1206,7 @@ public class Notate
 
         // Recurrent generation option
 
-            if ( recurrentCheckbox.isSelected()
+            if ( generatorFrame1.getRecurrent()  // recurrentCheckbox.isSelected()
                 && (slotInPlayback >= totalSlots - gap) )
             {
                 setLickGenStatus("Chorus " + getRecurrentIteration());
@@ -1320,6 +1322,8 @@ public class Notate
     initComponents();
 
 
+    generatorFrame1 = new LickgenFrame(this);
+
     populateNotateGrammarMenu();
 
     postInitComponents();
@@ -1399,9 +1403,9 @@ public class Notate
             preferencesDialog.setVisible(false);
             }
 
-          if( generatorFrame.isVisible() && generatorFrame.isActive() )
+          if( generatorFrame1.isVisible() && generatorFrame1.isActive() )
             {
-            generatorFrame.setVisible(false);
+            generatorFrame1.setVisible(false);
             }
 
           if( voicingTestFrame.isVisible() && voicingTestFrame.isActive() )
@@ -1475,9 +1479,9 @@ public class Notate
 
     preferencesDialog.setLocationRelativeTo(this);
 
-    generatorFrame.pack();
+    generatorFrame1.pack();
     
-    resetTriageParameters(false);
+    generatorFrame1.resetTriageParameters(false);
 
     // NOTE: This is tricky, because the IDE doesn't do it for you.
 
@@ -4005,7 +4009,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(reverseProbabilityField, gridBagConstraints);
 
-        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         disclaimer.setText("<html>The Solo Generator is work in progress. The idea is to generate a solo by using a theme several times in different places.</html>");
         disclaimer.setMaximumSize(new java.awt.Dimension(600, 60));
@@ -4159,11 +4163,11 @@ public class Notate
         prefsTabBtnGrp.add(globalBtn);
         globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         globalBtn.setText("Global");
-        globalBtn.setHorizontalTextPosition(0);
+        globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         globalBtn.setIconTextGap(6);
         globalBtn.setNextFocusableComponent(leadsheetPreferences);
         globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        globalBtn.setVerticalTextPosition(3);
+        globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         globalBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 globalBtnActionPerformed(evt);
@@ -4175,10 +4179,10 @@ public class Notate
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
         leadsheetBtn.setSelected(true);
         leadsheetBtn.setText("LeadSheet");
-        leadsheetBtn.setHorizontalTextPosition(0);
+        leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leadsheetBtn.setNextFocusableComponent(chorusPreferences);
         leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        leadsheetBtn.setVerticalTextPosition(3);
+        leadsheetBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         leadsheetBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leadsheetBtnActionPerformed(evt);
@@ -4189,10 +4193,10 @@ public class Notate
         prefsTabBtnGrp.add(chorusBtn);
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         chorusBtn.setText("Chorus");
-        chorusBtn.setHorizontalTextPosition(0);
+        chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chorusBtn.setNextFocusableComponent(stylePreferences);
         chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        chorusBtn.setVerticalTextPosition(3);
+        chorusBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         chorusBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chorusBtnActionPerformed(evt);
@@ -4203,11 +4207,11 @@ public class Notate
         prefsTabBtnGrp.add(styleBtn);
         styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         styleBtn.setText("Style");
-        styleBtn.setHorizontalTextPosition(0);
+        styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         styleBtn.setIconTextGap(0);
         styleBtn.setNextFocusableComponent(midiPreferences);
         styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        styleBtn.setVerticalTextPosition(3);
+        styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         styleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 styleBtnActionPerformed(evt);
@@ -4218,11 +4222,11 @@ public class Notate
         prefsTabBtnGrp.add(midiBtn);
         midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
         midiBtn.setText("MIDI");
-        midiBtn.setHorizontalTextPosition(0);
+        midiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         midiBtn.setIconTextGap(0);
         midiBtn.setNextFocusableComponent(contourPreferences);
         midiBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        midiBtn.setVerticalTextPosition(3);
+        midiBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         midiBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 midiBtnActionPerformed(evt);
@@ -4233,11 +4237,11 @@ public class Notate
         prefsTabBtnGrp.add(contourBtn);
         contourBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
         contourBtn.setText("Contour");
-        contourBtn.setHorizontalTextPosition(0);
+        contourBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         contourBtn.setIconTextGap(0);
         contourBtn.setNextFocusableComponent(globalPreferences);
         contourBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        contourBtn.setVerticalTextPosition(3);
+        contourBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         contourBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contourBtnActionPerformed(evt);
@@ -8427,7 +8431,7 @@ public class Notate
         standardToolbar.add(colorationButton);
 
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
-        smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11));
         smartEntryButton.setSelected(true);
         smartEntryButton.setText("<html><center>Simple</center></html>");
         smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
@@ -8446,7 +8450,7 @@ public class Notate
         standardToolbar.add(smartEntryButton);
 
         beamButton.setBackground(new java.awt.Color(51, 255, 255));
-        beamButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        beamButton.setFont(new java.awt.Font("Arial", 0, 11));
         beamButton.setSelected(true);
         beamButton.setText("<html><center>No Beam</center></html>");
         beamButton.setToolTipText("Beam multiple notes shorter than quarter-note.");
@@ -9022,12 +9026,12 @@ public class Notate
         playToolBar.add(trackerDelayPanel);
 
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
-        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11));
         earlyScrollBtn.setSelected(true);
         earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
         earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         earlyScrollBtn.setFocusable(false);
-        earlyScrollBtn.setHorizontalTextPosition(0);
+        earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.setOpaque(true);
@@ -10304,7 +10308,11 @@ public class Notate
     }//GEN-LAST:event_sectionListValueChanged
 
     private void toCriticMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMIActionPerformed
+    toCritic();
+    }//GEN-LAST:event_toCriticMIActionPerformed
 
+    public void toCritic()
+  {
       if( toCriticMI.isSelected() )
         {
 
@@ -10319,9 +10327,8 @@ public class Notate
         getCurrentStave().unlockSelectionWidth();
 
         }
-        
-    }//GEN-LAST:event_toCriticMIActionPerformed
 
+    }
     private void stepInputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepInputBtnActionPerformed
 
       setStepInput(stepInputBtn.isSelected());
@@ -10803,7 +10810,7 @@ private String getChordRedirectName(int row)
 
     }//GEN-LAST:event_saveGrammarMIActionPerformed
 
- private void saveGrammarAs()
+ public void saveGrammarAs()
   {
     grammarfc.setDialogTitle("Save Grammar As");
 
@@ -10825,7 +10832,7 @@ private String getChordRedirectName(int row)
 
     if( grammarfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
       {
-        saveTriageParameters();
+        generatorFrame1.saveTriageParameters();
 
         if( grammarfc.getSelectedFile().getName().endsWith(
             GrammarFilter.EXTENSION) )
@@ -10843,7 +10850,7 @@ private String getChordRedirectName(int row)
           }
       }
 
-    generatorFrame.toFront();
+    generatorFrame1.toFront();
 
  }
 
@@ -10880,10 +10887,10 @@ private String getChordRedirectName(int row)
     {
       lickgen.loadGrammar(grammarFile);
 
-      resetTriageParameters(true);
+      generatorFrame1.resetTriageParameters(true);
     }
 
-    private void openGrammar()
+    public void openGrammar()
     {
       grammarfc.setDialogTitle("Load Grammar File");
 
@@ -10903,7 +10910,7 @@ private String getChordRedirectName(int row)
         }
 
       grammarfc.setCurrentDirectory(oldDirectory);
-      generatorFrame.toFront();
+      generatorFrame1.toFront();
     }
 
     private void openGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGrammarMIActionPerformed
@@ -11560,7 +11567,7 @@ private String getChordRedirectName(int row)
         
     }//GEN-LAST:event_windowMenuMenuSelected
     
-    
+ 
     
     private void chordToneDecayFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_chordToneDecayFieldFocusLost
 
@@ -11659,24 +11666,33 @@ private String getChordRedirectName(int row)
             FillProbsButtonActionPerformed(null);
         
     }
+
+    void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)
+    {
+
+    }
     
-    
+ 
     
     private void chordToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chordToneWeightFieldActionPerformed
     {
-    verifyTriageFields();
+/*
+ verifyTriageFields();
 
     if( autoFill )
       {
         FillProbsButtonActionPerformed(null);
       }
-
+*/
     }//GEN-LAST:event_chordToneWeightFieldActionPerformed
 
+ 
     private void scaleComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_scaleComboBoxActionPerformed
 
     {//GEN-HEADEREND:event_scaleComboBoxActionPerformed
-       String root = (String) rootComboBox.getSelectedItem();
+
+        /*
+         String root = (String) rootComboBox.getSelectedItem();
 
        String type = (String) scaleComboBox.getSelectedItem();
 
@@ -11703,8 +11719,9 @@ private String getChordRedirectName(int row)
           {
             FillProbsButtonActionPerformed(null);
           }
+         */
     }//GEN-LAST:event_scaleComboBoxActionPerformed
-    
+
     
     
     private void saveLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveLickButtonActionPerformed
@@ -11762,21 +11779,21 @@ private String getChordRedirectName(int row)
 
         rhythmString = rhythmString.reverse();
 
-        setRhythmFieldText(rhythmString.toString());
+        generatorFrame1.setRhythmFieldText(rhythmString.toString());
     }//GEN-LAST:event_getSelRhythmButtonActionPerformed
 
 
     /**
      * Sets the abstract melody field (formerly called "rhythm" field).
      @param string
-     */
     
-    private void setRhythmFieldText(String string)
+    public void setRhythmFieldText(String string)
     {
     rhythmField.setText(string);
     rhythmField.setCaretPosition(0);
     rhythmScrollPane.getViewport().setViewPosition(new Point(0,0));
     }
+     */
 
 
     public void setLickGenStatus(String string)
@@ -12374,8 +12391,8 @@ public void chordVolumeChanged()
         currentGenTab = tab;
         //generatorScrollPane.setViewportView(tab);
         
-        generatorFrame.pack();
-        generatorFrame.repaint();
+        generatorFrame1.pack();
+        generatorFrame1.repaint();
         
     }
     
@@ -13061,7 +13078,7 @@ public void chordVolumeChanged()
         
         redrawTriage();
         
-        generatorFrame.pack();
+        generatorFrame1.pack();
         
     }//GEN-LAST:event_totalBeatsFieldActionPerformed
     
@@ -13087,7 +13104,7 @@ public void chordVolumeChanged()
         
         redrawTriage();
         
-        generatorFrame.pack();
+        generatorFrame1.pack();
         
     }//GEN-LAST:event_totalBeatsFieldFocusLost
     
@@ -13262,21 +13279,21 @@ public void chordVolumeChanged()
     }//GEN-LAST:event_minIntervalFieldenterLickKeyPressed
     
     
-    
+
     private void clearProbsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearProbsButtonActionPerformed
 
     {//GEN-HEADEREND:event_clearProbsButtonActionPerformed
-        
+/*
         for (int i = 0; i < lickPrefs.size(); ++i)
             
             for (int j = 0; j < 12; ++j)
                 
                 lickPrefs.get(i)[j].setText("0.0");
-        
+ */
     }//GEN-LAST:event_clearProbsButtonActionPerformed
+  
     
-    
-    
+    /*
     private void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_FillProbsButtonActionPerformed
 
     {//GEN-HEADEREND:event_FillProbsButtonActionPerformed
@@ -13308,7 +13325,7 @@ public void chordVolumeChanged()
             }
         
     }//GEN-LAST:event_FillProbsButtonActionPerformed
-    
+    */
     
     
     /**
@@ -13655,7 +13672,7 @@ private void updateTempoFromTextField()
         if (r.charAt(r.length() - 1) != ')')
             r = r.concat(")");
         
-        setRhythmFieldText(r);
+        generatorFrame1.setRhythmFieldText(r);
 
         Polylist rhythm = new Polylist();
         StringReader rhythmReader = new StringReader(r);
@@ -13678,12 +13695,12 @@ private void updateTempoFromTextField()
 
         if( useGrammar )
           {
-            setRhythmFieldText(
+            generatorFrame1.setRhythmFieldText(
                 lickgen.generateRhythmFromGrammar(totalSlots).toString());
           }
         else
           {
-            setRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
+            generatorFrame1.setRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
                                                             minDuration,
                                                             maxDuration,
                                                             restProb).toString());
@@ -13895,28 +13912,28 @@ private void updateTempoFromTextField()
     {//GEN-HEADEREND:event_lickGeneratorMIActionPerformed
       redrawTriage();
 
-      redoScales();
+      generatorFrame1.redoScales();
 
-      resetTriageParameters(true);
+      generatorFrame1.resetTriageParameters(true);
 
-      generatorFrame.pack();
+      generatorFrame1.pack();
 
       // center dialog only the first time it is shown
 
       if( !initLocationLickGenerator )
         {
-        generatorFrame.setLocationRelativeTo(this);
+        generatorFrame1.setLocationRelativeTo(this);
 
         initLocationLickGenerator = true;
 
-        WindowRegistry.registerWindow(generatorFrame);
+        WindowRegistry.registerWindow(generatorFrame1);
 
-        generatorFrame.setLocation(
+        generatorFrame1.setLocation(
             (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
             (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
         }
 
-      generatorFrame.setVisible(true);
+      generatorFrame1.setVisible(true);
 
       entryMuteActionPerformed(null);
     }//GEN-LAST:event_lickGeneratorMIActionPerformed
@@ -14076,8 +14093,13 @@ private void updateTempoFromTextField()
         saveLick(saveSelection);        
     }//GEN-LAST:event_okSaveButtonActionPerformed
     
-    
-    
+
+ public void resetTriageParameters(boolean menu)
+  {
+  generatorFrame1.resetTriageParameters(menu);
+  }
+
+/*
 public void resetTriageParameters(boolean menu)
   {
     minPitchField.setText(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
@@ -14209,13 +14231,13 @@ public void saveTriageParameters()
 
     lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
   }
-
+*/
 
 /**
  * Redraw the triage frame based on where we are and how much of the current chord
  *progression we're examining.
  */
-
+/*
 public void redrawTriage()
   {
     lickSavedLabel.setText("");
@@ -14437,7 +14459,7 @@ public void redrawTriage()
 
     // We have to call validate before anything will appear on the screen.
 
-    generatorFrame.validate();
+    generatorFrame1.validate();
 
     // If we have auto-fill turned on, then calculate the new probabilities
 
@@ -14470,16 +14492,16 @@ public void redrawTriage()
 
       }
 
-    // This causes the frame to be resized, which is annoying: generatorFrame.pack();
+    // This causes the frame to be resized, which is annoying: generatorFrame1.pack();
   }
-
+*/
     
     
     // Return an array of labels that have appropriate enharmonics
     
     // for the black notes.
     
-    private String[] getNoteLabels(int location)
+    public String[] getNoteLabels(int location)
     
     {
         
@@ -14584,10 +14606,10 @@ public void redrawTriage()
     }
     
     
-    
+ /*
     // Make sure that the values in the probability fields are between 0.0 and 1.0
     
-    private void verifyProbs()
+    public void verifyProbs()
     
     {
         
@@ -14598,7 +14620,7 @@ public void redrawTriage()
                 doubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 1.0);
         
     }
-    
+ */
     
     
     // Make sure the user has entered acceptable values for each of the other fields
@@ -14608,6 +14630,11 @@ public void redrawTriage()
     private void verifyTriageFields()
     
     {
+
+        generatorFrame1.verifyTriageFields();
+        generatorFrame1.setTotalBeats(totalBeats);
+
+        /*
         
         toCriticMIActionPerformed(null);
         
@@ -14643,18 +14670,20 @@ public void redrawTriage()
                 Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue),
                 
                 Math.min(totalBeats, Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue)));
-*/
+
         totalBeats = Math.round(totalBeats);
         
         totalSlots = (int)(BEAT*totalBeats);
 
         //System.out.println("getting totalBeats = " + totalBeats + ", totalSlots = " + totalSlots);
 
+        */
+
         getCurrentStave().repaint();
     }
     
     
-    
+  /*
     private Vector<double[]> readProbs()
     
     {
@@ -14684,7 +14713,7 @@ public void redrawTriage()
         
         
     }
-    
+  */
     
     
     private void saveLick(String saveSelection)
@@ -14719,7 +14748,7 @@ public void redrawTriage()
     
     
     
-    private void triageLick(String lickName, int grade) {
+    public void triageLick(String lickName, int grade) {
         
         String saveSelection = getCurrentStave().getSaveSelection(lickName, Stave.ExtractMode.LICK, grade);
         
@@ -14745,7 +14774,7 @@ public void redrawTriage()
         return ((x > 0) && ((x & (x - 1)) == 0));
     }
     
-    private MelodyPart generateTheme() {
+    public MelodyPart generateTheme() {
         themeLength = BEAT*intFromTextField(themeLengthField, 0, score.getLength() / BEAT, themeLength);
         Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
         
@@ -14768,7 +14797,7 @@ public void redrawTriage()
         return lick;
     }
     
-    private void generateSolo(MelodyPart theme) {
+    public void generateSolo(MelodyPart theme) {
         int length = theme.getSize();
         themeLength = length;
         MelodyPart solo = new MelodyPart(length);
@@ -14856,7 +14885,7 @@ public void redrawTriage()
             return null;
         }
         
-        lickgen.setProbs(readProbs());
+        lickgen.setProbs(generatorFrame1.readProbs());
         MelodyPart lick;
         
         int len = lickgen.parseLength(rhythm);
@@ -14905,7 +14934,7 @@ public void redrawTriage()
         impro.setPlayEntrySounds(true);
     }
     
-     private void generateLick(Polylist rhythm) {
+     public void generateLick(Polylist rhythm) {
         MelodyPart lick = makeLick(rhythm);
         if(useHeadCheckBox.isSelected())
             adjustLickToHead(lick);
@@ -15263,11 +15292,9 @@ public void redrawTriage()
     
     totalSlots = (int)(totalBeats * BEAT);
     
-    //System.out.println("setting field totalBeats = " + totalBeats + ", totalSlots = " + totalSlots);
+    generatorFrame1.redrawTriage();
 
-    totalBeatsField.setText("" + totalBeats);
-
-    redrawTriage();
+    generatorFrame1.setTotalBeats(totalBeats);
     }
     
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
@@ -16329,8 +16356,13 @@ public void closeWindow()
     static double doubleFromTextField(javax.swing.JTextField field, double low, double high, double error)
     
     {
-        
-        return doubleFromStringInRange(field.getText(), low, high, error);
+        String text = field.getText().trim();
+
+        if( text.equals("") )
+          {
+            text = "0";
+          }
+        return doubleFromStringInRange(text, low, high, error);
         
     }
     
@@ -16346,8 +16378,13 @@ public void closeWindow()
     static double quietDoubleFromTextField(javax.swing.JTextField field, double low, double high, double error)
     
     {
-        
-        return quietDoubleFromStringInRange(field.getText(), low, high, error);
+        String text = field.getText().trim();
+
+        if( text.equals("") )
+          {
+            text = "0";
+          }
+        return quietDoubleFromStringInRange(text, low, high, error);
         
     }
     
@@ -20388,7 +20425,11 @@ public void openLeadsheet(boolean openCorpus)
         }
         allMeasures = false;
     }
-  
+
+        public Vector<String> getMelodyData(int chorusNumber)
+              {
+                  return getMelodyData(score, chorusNumber);
+              }
     
     /*Returns a vector of Strings representing a section of the melody of a
      *chorus and containing the notes in the section     */
@@ -22674,6 +22715,7 @@ private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent e
         //grammarEditor.performEditorToSourceButton(null); // was commented out
 
         lickgen.loadGrammar(grammarFile);
+        generatorFrame1.resetTriageParameters(false);
         Grammar g = lickgen.getGrammar();
         Polylist rules = g.getRules();
 
@@ -22767,13 +22809,13 @@ private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent e
         if (production.contains("CHORDS")) {
             production = production.substring(0, production.indexOf("CHORDS"));
         }
-        setRhythmFieldText(production.toString());
+        generatorFrame1.setRhythmFieldText(production.toString());
     }
 
     }
 
 
-private void toGrammar()
+public void toGrammar()
   {
     String outFile = getGrammarFileName();
 
@@ -22804,12 +22846,13 @@ private void toGrammar()
     refreshGrammarEditor();
   }
 
+// Hopefully this is never called, Jon.
     //write the number of beats to slide so the data analysis can read it - probably won't need to be called
     private void writeBeatsToSlide(int beatsToSlide) {
         try {
-            File file = new File("C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data");
+            File file = new File("C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data");    // FIX!!!
             if (!file.exists()) {
-                BufferedWriter out = new BufferedWriter(new FileWriter("C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data", true));
+                BufferedWriter out = new BufferedWriter(new FileWriter("C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data", true));// FIX!!!
                 out.write(Integer.toString(beatsToSlide) + "\n");
                 out.close();
             }
@@ -23581,10 +23624,10 @@ public void refreshGrammarEditor()
 }
 
 private void generateLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLickButtonActionPerformed
-      generate();
+     generate(lickgen);
 }//GEN-LAST:event_generateLickButtonActionPerformed
 
-private void generate()
+public void generate(LickGen lickgen)
 {
     setLickGenStatus("Generating melody ...");
 
@@ -23635,7 +23678,7 @@ private void generate()
     if( rhythm == null || useOutlines == false )
       {
 
-        if( useGrammar )
+        if( true ) // useGrammar )
           {
             rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
           }
@@ -23650,7 +23693,7 @@ private void generate()
 
     if( rhythm != null )
       {
-        setRhythmFieldText(Formatting.prettyFormat(rhythm));
+        generatorFrame1.setRhythmFieldText(Formatting.prettyFormat(rhythm));
       }
 
     if( nothingWasSelected )
@@ -23891,7 +23934,7 @@ private void loadBaseGrammarBtnActionPerformed(java.awt.event.ActionEvent evt) {
 }//GEN-LAST:event_loadBaseGrammarBtnActionPerformed
 
 private void testGenerationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testGenerationActionPerformed
-    generate();
+ //   generate();
 }//GEN-LAST:event_testGenerationActionPerformed
 
 private void transposeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_transposeSpinnerStateChanged
@@ -23926,7 +23969,7 @@ private void generatorWindowMenuMenuSelected(javax.swing.event.MenuEvent evt) {/
 
         for(WindowMenuItem w : WindowRegistry.getWindows()) {
 
-            generatorWindowMenu.add(w.getMI(generatorFrame));      // these are static, and calling getMI updates the name on them too in case the window title changed
+            generatorWindowMenu.add(w.getMI(generatorFrame1));      // these are static, and calling getMI updates the name on them too in case the window title changed
         }
 
         generatorWindowMenu.repaint();
@@ -24042,7 +24085,7 @@ private void notateGrammarMenuAction(java.awt.event.ActionEvent evt) {
     lickgen.loadGrammar(grammarFile);
 }
 
-private void openCorpus()
+public void openCorpus()
 {
     openLeadsheet(true);
 }
@@ -24082,7 +24125,7 @@ private void populateNotateGrammarMenu()
  * Clear productions saved in file.
  */
 
-private void clearAccumulatedProductions()
+public void clearAccumulatedProductions()
 {
     String outFile = getGrammarFileName();
     File f = new File(outFile);
@@ -26183,5 +26226,30 @@ public void showNewVoicingDialog()
       return styleEditor;
   }
 
+  public ChordPart getChordProg()
+  {
+      return score.getChordProg();
   }
+
+  public void setLickTitle(String title)
+  {
+      enterLickTitle.setText(title);
+  }
+
+  public int getTotalSlots()
+  {
+      return totalSlots;
+  }
+
+  public int getSelectedIndex()
+  {
+      return scoreTab.getSelectedIndex();
+  }
+
+  public void redrawTriage()
+  {
+      generatorFrame1.redrawTriage();
+  }
+
+}
 

@@ -89,7 +89,7 @@ public class LickGen
     public Vector<double[]> probs;  // Array of note probabilities
     private Grammar grammar;
     private double[] pitchUsed = new double[TOTALPITCHES];
-    private Polylist preferredScale = new Polylist();
+    private Polylist preferredScale = Polylist.nil;
     Vector<String> chordUsed = new Vector<String>();
     Vector<Integer> chordUsedSection = new Vector<Integer>();    // Indices that are global to an instance
     int position = 0;
@@ -621,7 +621,7 @@ public class LickGen
         soloistLoaded = false;
         //System.out.println("in loadGrammar, no soloist file named:" + soloistFileName);
         }
-        notate.resetTriageParameters(false);
+        //notate.resetTriageParameters(false); Now done in notate
     }
 
     public void saveGrammar(String grammarFile) {
@@ -650,17 +650,36 @@ public class LickGen
         grammar.clearParams();
     }
 
+
     /**
-     *
      * Get the normalized values in our probability array.
      */
+
     public Vector<double[]> getProbs() {
         return probs;
     }
 
+    public void showProbs(String msg)
+  {
+        System.out.println(msg);
+        for( int i = 0; i < probs.size(); i++ )
+          {
+            double[] row = probs.get(i);
+            System.out.print("row " + i + ": " + row.length + " elements: ");
+            for( int j = 0; j < row.length; j++ )
+              {
+                System.out.print(" " + row[j]);
+              }
+
+        System.out.println();
+        }
+    }
+
+
     /**
-     * Sets note probabilites according to the values specified in the input array.
+     * Set note probabilites according to the values specified in the input array.
      */
+
     public void setProbs(Vector<double[]> p) {
         // Clear out all the old probabilities
         probs.clear();
@@ -694,6 +713,7 @@ public class LickGen
     @param length
     @return
      */
+
 public Vector<double[]> fillProbs(ChordPart chordProg, double chordToneProb,
                                   double scaleToneProb, double colorToneProb,
                                   double chordToneDecayRate,
@@ -1484,7 +1504,7 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
     }
 
     public void setPreferredScale(String r, String s) {
-        preferredScale = new Polylist();
+        preferredScale = Polylist.nil;
         preferredScale = preferredScale.cons(s);
         preferredScale = preferredScale.cons(r);
 

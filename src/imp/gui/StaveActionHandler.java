@@ -1703,7 +1703,7 @@ public class StaveActionHandler
     // checks to see if the advice frame is opened and the chord for
     // the selected index has changed or if the next chord is different
 
-    notate.redrawTriage();
+    //notate.redrawTriage(); // Needed?
 
     if( !ImproVisor.getShowAdvice() )
       {
