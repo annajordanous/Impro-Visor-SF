@@ -10146,7 +10146,7 @@ public class Notate
 
     private void generateToolbarBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateToolbarBtnActionPerformed
     {//GEN-HEADEREND:event_generateToolbarBtnActionPerformed
-      generateLickButtonActionPerformed(null);
+      generate(lickgen);
     }//GEN-LAST:event_generateToolbarBtnActionPerformed
 
     private void pasteThemeBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pasteThemeBtnActionPerformed
