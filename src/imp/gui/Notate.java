@@ -76,7 +76,7 @@ public class Notate
         implements Constants, MidiPlayListener
   {
 
-  LickgenFrame generatorFrame1;
+  LickgenFrame lickgenFrame;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -1020,7 +1020,7 @@ public class Notate
 
     setStepInput(false);
 
-    criticDialog = new CriticDialog(generatorFrame1);
+    criticDialog = new CriticDialog(lickgenFrame);
 
     // Establish Directories
 
@@ -1206,7 +1206,7 @@ public class Notate
 
         // Recurrent generation option
 
-            if ( generatorFrame1.getRecurrent()  // recurrentCheckbox.isSelected()
+            if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
                 && (slotInPlayback >= totalSlots - gap) )
             {
                 setLickGenStatus("Chorus " + getRecurrentIteration());
@@ -1322,7 +1322,7 @@ public class Notate
     initComponents();
 
 
-    generatorFrame1 = new LickgenFrame(this);
+    lickgenFrame = new LickgenFrame(this);
 
     populateNotateGrammarMenu();
 
@@ -1403,9 +1403,9 @@ public class Notate
             preferencesDialog.setVisible(false);
             }
 
-          if( generatorFrame1.isVisible() && generatorFrame1.isActive() )
+          if( lickgenFrame.isVisible() && lickgenFrame.isActive() )
             {
-            generatorFrame1.setVisible(false);
+            lickgenFrame.setVisible(false);
             }
 
           if( voicingTestFrame.isVisible() && voicingTestFrame.isActive() )
@@ -1479,9 +1479,9 @@ public class Notate
 
     preferencesDialog.setLocationRelativeTo(this);
 
-    generatorFrame1.pack();
+    lickgenFrame.pack();
     
-    generatorFrame1.resetTriageParameters(false);
+    lickgenFrame.resetTriageParameters(false);
 
     // NOTE: This is tricky, because the IDE doesn't do it for you.
 
@@ -10832,7 +10832,7 @@ private String getChordRedirectName(int row)
 
     if( grammarfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
       {
-        generatorFrame1.saveTriageParameters();
+        lickgenFrame.saveTriageParameters();
 
         if( grammarfc.getSelectedFile().getName().endsWith(
             GrammarFilter.EXTENSION) )
@@ -10850,7 +10850,7 @@ private String getChordRedirectName(int row)
           }
       }
 
-    generatorFrame1.toFront();
+    lickgenFrame.toFront();
 
  }
 
@@ -10887,7 +10887,7 @@ private String getChordRedirectName(int row)
     {
       lickgen.loadGrammar(grammarFile);
 
-      generatorFrame1.resetTriageParameters(true);
+      lickgenFrame.resetTriageParameters(true);
     }
 
     public void openGrammar()
@@ -10910,7 +10910,7 @@ private String getChordRedirectName(int row)
         }
 
       grammarfc.setCurrentDirectory(oldDirectory);
-      generatorFrame1.toFront();
+      lickgenFrame.toFront();
     }
 
     private void openGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGrammarMIActionPerformed
@@ -11779,7 +11779,7 @@ private String getChordRedirectName(int row)
 
         rhythmString = rhythmString.reverse();
 
-        generatorFrame1.setRhythmFieldText(rhythmString.toString());
+        lickgenFrame.setRhythmFieldText(rhythmString.toString());
     }//GEN-LAST:event_getSelRhythmButtonActionPerformed
 
 
@@ -12391,8 +12391,8 @@ public void chordVolumeChanged()
         currentGenTab = tab;
         //generatorScrollPane.setViewportView(tab);
         
-        generatorFrame1.pack();
-        generatorFrame1.repaint();
+        lickgenFrame.pack();
+        lickgenFrame.repaint();
         
     }
     
@@ -13078,7 +13078,7 @@ public void chordVolumeChanged()
         
         redrawTriage();
         
-        generatorFrame1.pack();
+        lickgenFrame.pack();
         
     }//GEN-LAST:event_totalBeatsFieldActionPerformed
     
@@ -13104,7 +13104,7 @@ public void chordVolumeChanged()
         
         redrawTriage();
         
-        generatorFrame1.pack();
+        lickgenFrame.pack();
         
     }//GEN-LAST:event_totalBeatsFieldFocusLost
     
@@ -13672,7 +13672,7 @@ private void updateTempoFromTextField()
         if (r.charAt(r.length() - 1) != ')')
             r = r.concat(")");
         
-        generatorFrame1.setRhythmFieldText(r);
+        lickgenFrame.setRhythmFieldText(r);
 
         Polylist rhythm = new Polylist();
         StringReader rhythmReader = new StringReader(r);
@@ -13695,12 +13695,12 @@ private void updateTempoFromTextField()
 
         if( useGrammar )
           {
-            generatorFrame1.setRhythmFieldText(
+            lickgenFrame.setRhythmFieldText(
                 lickgen.generateRhythmFromGrammar(totalSlots).toString());
           }
         else
           {
-            generatorFrame1.setRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
+            lickgenFrame.setRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
                                                             minDuration,
                                                             maxDuration,
                                                             restProb).toString());
@@ -13912,28 +13912,28 @@ private void updateTempoFromTextField()
     {//GEN-HEADEREND:event_lickGeneratorMIActionPerformed
       redrawTriage();
 
-      generatorFrame1.redoScales();
+      lickgenFrame.redoScales();
 
-      generatorFrame1.resetTriageParameters(true);
+      lickgenFrame.resetTriageParameters(true);
 
-      generatorFrame1.pack();
+      lickgenFrame.pack();
 
       // center dialog only the first time it is shown
 
       if( !initLocationLickGenerator )
         {
-        generatorFrame1.setLocationRelativeTo(this);
+        lickgenFrame.setLocationRelativeTo(this);
 
         initLocationLickGenerator = true;
 
-        WindowRegistry.registerWindow(generatorFrame1);
+        WindowRegistry.registerWindow(lickgenFrame);
 
-        generatorFrame1.setLocation(
+        lickgenFrame.setLocation(
             (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
             (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
         }
 
-      generatorFrame1.setVisible(true);
+      lickgenFrame.setVisible(true);
 
       entryMuteActionPerformed(null);
     }//GEN-LAST:event_lickGeneratorMIActionPerformed
@@ -14096,7 +14096,7 @@ private void updateTempoFromTextField()
 
  public void resetTriageParameters(boolean menu)
   {
-  generatorFrame1.resetTriageParameters(menu);
+  lickgenFrame.resetTriageParameters(menu);
   }
 
 /*
@@ -14459,7 +14459,7 @@ public void redrawTriage()
 
     // We have to call validate before anything will appear on the screen.
 
-    generatorFrame1.validate();
+    lickgenFrame.validate();
 
     // If we have auto-fill turned on, then calculate the new probabilities
 
@@ -14492,7 +14492,7 @@ public void redrawTriage()
 
       }
 
-    // This causes the frame to be resized, which is annoying: generatorFrame1.pack();
+    // This causes the frame to be resized, which is annoying: lickgenFrame.pack();
   }
 */
     
@@ -14631,8 +14631,8 @@ public void redrawTriage()
     
     {
 
-        generatorFrame1.verifyTriageFields();
-        generatorFrame1.setTotalBeats(totalBeats);
+        lickgenFrame.verifyTriageFields();
+        lickgenFrame.setTotalBeats(totalBeats);
 
         /*
         
@@ -14885,7 +14885,7 @@ public void redrawTriage()
             return null;
         }
         
-        lickgen.setProbs(generatorFrame1.readProbs());
+        lickgen.setProbs(lickgenFrame.readProbs());
         MelodyPart lick;
         
         int len = lickgen.parseLength(rhythm);
@@ -15292,9 +15292,9 @@ public void redrawTriage()
     
     totalSlots = (int)(totalBeats * BEAT);
     
-    generatorFrame1.redrawTriage();
+    lickgenFrame.redrawTriage();
 
-    generatorFrame1.setTotalBeats(totalBeats);
+    lickgenFrame.setTotalBeats(totalBeats);
     }
     
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
@@ -22715,7 +22715,7 @@ private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent e
         //grammarEditor.performEditorToSourceButton(null); // was commented out
 
         lickgen.loadGrammar(grammarFile);
-        generatorFrame1.resetTriageParameters(false);
+        lickgenFrame.resetTriageParameters(false);
         Grammar g = lickgen.getGrammar();
         Polylist rules = g.getRules();
 
@@ -22809,7 +22809,7 @@ private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent e
         if (production.contains("CHORDS")) {
             production = production.substring(0, production.indexOf("CHORDS"));
         }
-        generatorFrame1.setRhythmFieldText(production.toString());
+        lickgenFrame.setRhythmFieldText(production.toString());
     }
 
     }
@@ -23693,7 +23693,7 @@ public void generate(LickGen lickgen)
 
     if( rhythm != null )
       {
-        generatorFrame1.setRhythmFieldText(Formatting.prettyFormat(rhythm));
+        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
       }
 
     if( nothingWasSelected )
@@ -23969,7 +23969,7 @@ private void generatorWindowMenuMenuSelected(javax.swing.event.MenuEvent evt) {/
 
         for(WindowMenuItem w : WindowRegistry.getWindows()) {
 
-            generatorWindowMenu.add(w.getMI(generatorFrame1));      // these are static, and calling getMI updates the name on them too in case the window title changed
+            generatorWindowMenu.add(w.getMI(lickgenFrame));      // these are static, and calling getMI updates the name on them too in case the window title changed
         }
 
         generatorWindowMenu.repaint();
@@ -26248,7 +26248,7 @@ public void showNewVoicingDialog()
 
   public void redrawTriage()
   {
-      generatorFrame1.redrawTriage();
+      lickgenFrame.redrawTriage();
   }
 
 }
