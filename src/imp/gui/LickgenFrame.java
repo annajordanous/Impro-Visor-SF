@@ -2384,6 +2384,16 @@ public void setRhythmFieldText(String string)
         notate.generateLick(rhythm);
 }//GEN-LAST:event_fillMelodyButtonActionPerformed
 
+    
+        public MelodyPart fillMelody(int beatValue, 
+            Polylist rhythmString, ChordPart chordProg,
+            int start) {
+            
+            return lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval,
+                               beatValue, leapProb, rhythmString, chordProg,
+                               start, avoidRepeats);
+        }
+
     private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAbstractMelodyButtonActionPerformed
 
 
@@ -2436,24 +2446,9 @@ public void setRhythmFieldText(String string)
                                                                i == 0);
                 if( production != null )
                   {
-                      /* No longer used:
-                      if (addProductionBtn.isSelected()) {
-                      //write production to grammar
-                      addProduction(production, measureWindow, 0.2);
-                      }
-                       */
-
-                      /* now the only option if (writeProductionBtn.isSelected()) */
-                      {
-                        //int counter = 0;
-                        //for(int j = 0; j < window; j++) {
-                        //    if(j == 0) counter += numMeasures;
-                        // }
-                        //System.out.println("i: " + i);
-                        writeProduction(production, measureWindow,
+                         writeProduction(production, measureWindow,
                                         (i * slotsPerSection) + (window * BEAT),
                                         true);
-                      }
                   }
               }
 
@@ -3933,35 +3928,35 @@ public void saveTriageParameters()
 }//GEN-LAST:event_pasteThemeBtnActionPerformed
 
                         private void openGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openGrammarMI1ActionPerformed
-                            // TODO add your handling code here:
+                           notate.openGrammar();
                         }//GEN-LAST:event_openGrammarMI1ActionPerformed
 
                         private void showLogMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogMI1ActionPerformed
-                            // TODO add your handling code here:
+                           notate.openLog();
                         }//GEN-LAST:event_showLogMI1ActionPerformed
 
                         private void saveGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGrammarMI1ActionPerformed
-                            // TODO add your handling code here:
+                           notate.saveGrammarAs();
                         }//GEN-LAST:event_saveGrammarMI1ActionPerformed
 
                         private void editGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGrammarMI1ActionPerformed
-                            // TODO add your handling code here:
+                            notate.editGrammar();
                         }//GEN-LAST:event_editGrammarMI1ActionPerformed
 
                         private void reloadGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadGrammarMI1ActionPerformed
-                            // TODO add your handling code here:
+                            notate.loadGrammar();
                         }//GEN-LAST:event_reloadGrammarMI1ActionPerformed
 
                         private void toCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMI1ActionPerformed
-                            // TODO add your handling code here:
+                           notate.toCritic();
                         }//GEN-LAST:event_toCriticMI1ActionPerformed
 
                         private void showCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCriticMI1ActionPerformed
-                            // TODO add your handling code here:
+                            notate.showCritic();
                         }//GEN-LAST:event_showCriticMI1ActionPerformed
 
                         private void useGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useGrammarMI1ActionPerformed
-                            // TODO add your handling code here:
+                            notate.useGrammarAction();
                         }//GEN-LAST:event_useGrammarMI1ActionPerformed
 
                         private void grammarMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenu1ActionPerformed

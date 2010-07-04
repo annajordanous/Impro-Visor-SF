@@ -10191,8 +10191,13 @@ public class Notate
     }//GEN-LAST:event_generateThemeButtonActionPerformed
 
     private void showCriticMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCriticMIActionPerformed
-      criticDialog.setVisible(true);
+     showCritic();
     }//GEN-LAST:event_showCriticMIActionPerformed
+
+  public void showCritic()
+  {
+       criticDialog.setVisible(true);
+  }
 
   private boolean initLocationStyleEditor = false;
 
@@ -10857,6 +10862,11 @@ private String getChordRedirectName(int row)
     private void useGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useGrammarMIActionPerformed
 
     {//GEN-HEADEREND:event_useGrammarMIActionPerformed
+    useGrammarAction();
+    }//GEN-LAST:event_useGrammarMIActionPerformed
+
+ public void useGrammarAction()
+  {
       useGrammar = useGrammarMI.isSelected();
 
       minDurationField.setEnabled(!useGrammar);
@@ -10864,18 +10874,21 @@ private String getChordRedirectName(int row)
       maxDurationField.setEnabled(!useGrammar);
 
       restProbField.setEnabled(!useGrammar);
-    }//GEN-LAST:event_useGrammarMIActionPerformed
-
+ }
     private void editGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_editGrammarMIActionPerformed
 
     {//GEN-HEADEREND:event_editGrammarMIActionPerformed
+      editGrammar();
+    }//GEN-LAST:event_editGrammarMIActionPerformed
+
+    public void editGrammar()
+    {
       grammarEditor.fillEditor();
       grammarEditor.setSize(new Dimension(650, 600));
       grammarEditor.setLocationRelativeTo(this);
       grammarEditor.setVisible(true);
-      grammarEditor.toFront();        
-    }//GEN-LAST:event_editGrammarMIActionPerformed
-
+      grammarEditor.toFront();
+    }
     private void reloadGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reloadGrammarMIActionPerformed
 
     {//GEN-HEADEREND:event_reloadGrammarMIActionPerformed
@@ -10883,7 +10896,7 @@ private String getChordRedirectName(int row)
         
     }//GEN-LAST:event_reloadGrammarMIActionPerformed
 
-    private void loadGrammar()
+    public void loadGrammar()
     {
       lickgen.loadGrammar(grammarFile);
 
@@ -13583,80 +13596,61 @@ private void updateTempoFromTextField()
     
     
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
-        
+
         Stave stave = getCurrentStave();
-        
-        if(getMode() != Mode.DRAWING) {
-            
+
+        if( getMode() != Mode.DRAWING )
+          {
             setMode(Mode.DRAWING);
-            
+
             preDrawingEntryMuted = entryMute.isSelected();
-            
+
             entryMute.setSelected(drawingEntryMuted);
-            
+
             entryMuteActionPerformed(null);
-            
-            
-            
-            drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("graphics/toolbar/cursor.gif")));
-            
-        } else {
-            
+
+            drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                "graphics/toolbar/cursor.gif")));
+          }
+        else
+          {
             setMode(Mode.NORMAL);
-            
+
             stave.clearCurvePoints();
-            
-            
-            
+
             entryMute.setSelected(preDrawingEntryMuted);
-            
+
             entryMuteActionPerformed(null);
-            
-            
-            
-            drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("graphics/toolbar/pencil.gif")));
-            
-        }
-        
-        
-        
+
+            drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                "graphics/toolbar/pencil.gif")));
+          }
+
         stave.requestFocusInWindow();
-        
+
         stave.getActionHandler().setCursor();
-        
-        stave.repaint();
-        
+
+        stave.repaint();        
     }//GEN-LAST:event_drawButtonActionPerformed
-    
-    
-    
     
     
     private void advicePMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advicePMIActionPerformed
         
         adviceMIActionPerformed(null);
-        
+
     }//GEN-LAST:event_advicePMIActionPerformed
-    
-    
+        
     
     private void playMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playMenuActionPerformed
-        
-// TODO add your handling code here:
-        
+    
     }//GEN-LAST:event_playMenuActionPerformed
     
     
     
     private void newBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBtnActionPerformed
-        
-// TODO add your handling code here:
-        
+   
     }//GEN-LAST:event_newBtnActionPerformed
-    
-    
-    
-    
+        
     
     private void fillMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fillMelodyButtonActionPerformed
 
@@ -13700,10 +13694,11 @@ private void updateTempoFromTextField()
           }
         else
           {
-            lickgenFrame.setRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
-                                                            minDuration,
-                                                            maxDuration,
-                                                            restProb).toString());
+            lickgenFrame.setRhythmFieldText(
+                lickgen.generateRandomRhythm(totalSlots,
+                                             minDuration,
+                                             maxDuration,
+                                             restProb).toString());
           }
     }//GEN-LAST:event_genRhythmButtonActionPerformed
     
@@ -13726,16 +13721,12 @@ private void updateTempoFromTextField()
     
     
     private void programStatusTFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_programStatusTFFocusLost
-        
-// TODO add your handling code here:
-        
+         
     }//GEN-LAST:event_programStatusTFFocusLost
     
     
     
     private void programStatusTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programStatusTFActionPerformed
-        
-// TODO add your handling code here:
         
     }//GEN-LAST:event_programStatusTFActionPerformed
     
@@ -13745,9 +13736,8 @@ private void updateTempoFromTextField()
 
     {//GEN-HEADEREND:event_exportAllToMidiActionPerformed
         midfc.setDialogTitle("Export Leadsheet to Midi:");
-        
+
         exportToMidi(ALL);
-    
     }//GEN-LAST:event_exportAllToMidiActionPerformed
     
     
@@ -13755,17 +13745,13 @@ private void updateTempoFromTextField()
     private void fileMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fileMenuActionPerformed
 
     {//GEN-HEADEREND:event_fileMenuActionPerformed
-        
-// TODO add your handling code here:
-        
+          
     }//GEN-LAST:event_fileMenuActionPerformed
     
     
     
     private void enterMeasuresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterMeasuresActionPerformed
-        
-// TODO add your handling code here:
-        
+    
     }//GEN-LAST:event_enterMeasuresActionPerformed
     
     
@@ -13827,17 +13813,13 @@ private void updateTempoFromTextField()
     
     
     private void duplicateLickDialogKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_duplicateLickDialogKeyPressed
-        
-// TODO add your handling code here:
-        
+   
     }//GEN-LAST:event_duplicateLickDialogKeyPressed
     
     
     
     private void duplicateLickDialogComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_duplicateLickDialogComponentShown
-        
-// TODO add your handling code here:
-        
+
     }//GEN-LAST:event_duplicateLickDialogComponentShown
     
     
@@ -13855,9 +13837,7 @@ private void updateTempoFromTextField()
     private void colorTonesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_colorTonesActionPerformed
 
     {//GEN-HEADEREND:event_colorTonesActionPerformed
-        
-// TODO add your handling code here:
-        
+     
     }//GEN-LAST:event_colorTonesActionPerformed
     
     
@@ -14779,8 +14759,10 @@ public void redrawTriage()
         Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
         
         verifyTriageFields();
-        MelodyPart lick = lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                leapProb, rhythm, chordProg, 0, avoidRepeats);
+        MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+
+            //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+            //    leapProb, rhythm, chordProg, 0, avoidRepeats);
         
         Part.PartIterator i = lick.iterator();
         String theme = "";
@@ -14843,8 +14825,11 @@ public void redrawTriage()
                 solo.pasteSlots(adjustedTheme, i);
             } else {
                 Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
-                MelodyPart lick = lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                        leapProb, rhythm, chordProg, 0, avoidRepeats);
+
+                MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+
+                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+                    //    leapProb, rhythm, chordProg, 0, avoidRepeats);
                 
                 Part.PartIterator j = lick.iterator();
                 while (j.hasNext())
@@ -14859,9 +14844,13 @@ public void redrawTriage()
         }
         if (score.getLength() - solo.getSize() != 0) {
             Polylist rhythm = lickgen.generateRhythmFromGrammar(score.getLength() - solo.getSize());
-            MelodyPart lick = lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                    leapProb, rhythm, chordProg, 0, avoidRepeats);
-            Part.PartIterator j = lick.iterator();
+
+            MelodyPart lick =  lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+
+                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+                    //leapProb, rhythm, chordProg, 0, avoidRepeats);
+
+             Part.PartIterator j = lick.iterator();
             while (j.hasNext())
                 solo.addNote(NoteSymbol.toNote(j.next().toLeadsheet()));
         }
@@ -14900,10 +14889,9 @@ public void redrawTriage()
         // Fill in a melody according to the provided rhythm.
         // FIX - Currently, the lick generator doesn't support half beats; thus,
         // it can only generate things in terms of number of quarter notes.
-        // This is why BEAT is getting passed into the generator
-        return lickgen.fillMelody(minPitch, maxPitch, minInterval,
-                maxInterval, BEAT, leapProb, rhythm, chordProg,
-                getCurrentSelectionStart(), avoidRepeats);
+        // This is why BEAT is getting passed into the generator.
+
+        return lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
     }
     
     private void putLick(MelodyPart lick) {
@@ -23655,9 +23643,12 @@ public void generate(LickGen lickgen)
 
     if( useOutlines )
       {
-        lickgen.getFillMelodyParameters(minPitch, maxPitch, minInterval,
-                                        maxInterval, BEAT, leapProb, chordProg,
-                                        0, avoidRepeats);
+        lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+
+            // lickgen.getFillMelodyParameters(minPitch, maxPitch, minInterval,
+            //                           maxInterval, BEAT, leapProb, chordProg,
+            //                           0, avoidRepeats);
+
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
         if( solo != null )
           {
@@ -26251,5 +26242,9 @@ public void showNewVoicingDialog()
       lickgenFrame.redrawTriage();
   }
 
+  public void openLog()
+  {
+      logDialog.setVisible(true);
+  }
 }
 

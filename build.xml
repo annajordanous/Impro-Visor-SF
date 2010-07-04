@@ -309,9 +309,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="cleanTest" depends="init" description="removes class files from test directory">
-    <delete>
-        <fileset dir="${testDir}" includes="**/*.class" />
-    </delete>
 </target>
 
 <target name="cleanDist" depends="init" description="removes dist directory">

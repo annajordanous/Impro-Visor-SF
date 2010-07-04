@@ -914,8 +914,9 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
         }
         else return false;
     }
-    
-    public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
+
+ 
+        public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
             int maxInterval,
             int beatValue, double leapProb,
             Polylist rhythmString, ChordPart chordProg,
