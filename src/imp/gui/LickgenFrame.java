@@ -3264,7 +3264,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_maxPitchFieldActionPerformed
 
     private void maxPitchFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxPitchFieldGetsFocus
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_maxPitchFieldGetsFocus
 
     private void maxPitchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxPitchFieldFocusLost
@@ -3273,7 +3273,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_maxPitchFieldFocusLost
 
     private void maxPitchFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maxPitchFieldenterLickKeyPressed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_maxPitchFieldenterLickKeyPressed
 
     private void minPitchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minPitchFieldActionPerformed
@@ -3282,7 +3282,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_minPitchFieldActionPerformed
 
     private void minPitchFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minPitchFieldGetsFocus
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_minPitchFieldGetsFocus
 
     private void minPitchFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minPitchFieldFocusLost
@@ -3291,7 +3291,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_minPitchFieldFocusLost
 
     private void minPitchFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minPitchFieldenterLickKeyPressed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_minPitchFieldenterLickKeyPressed
 
     private void minIntervalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minIntervalFieldActionPerformed
@@ -3300,7 +3300,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_minIntervalFieldActionPerformed
 
     private void minIntervalFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minIntervalFieldGetsFocus
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_minIntervalFieldGetsFocus
 
     private void minIntervalFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minIntervalFieldFocusLost
@@ -3309,7 +3309,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_minIntervalFieldFocusLost
 
     private void minIntervalFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minIntervalFieldenterLickKeyPressed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_minIntervalFieldenterLickKeyPressed
 
     private void maxIntervalFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxIntervalFieldActionPerformed
@@ -3318,7 +3318,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_maxIntervalFieldActionPerformed
 
     private void maxIntervalFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxIntervalFieldGetsFocus
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_maxIntervalFieldGetsFocus
 
     private void maxIntervalFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxIntervalFieldFocusLost
@@ -3327,7 +3327,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_maxIntervalFieldFocusLost
 
     private void maxIntervalFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_maxIntervalFieldenterLickKeyPressed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_maxIntervalFieldenterLickKeyPressed
 
     private void minDurationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minDurationFieldActionPerformed
@@ -3336,7 +3336,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_minDurationFieldActionPerformed
 
     private void minDurationFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minDurationFieldGetsFocus
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_minDurationFieldGetsFocus
 
     private void minDurationFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_minDurationFieldFocusLost
@@ -3345,7 +3345,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_minDurationFieldFocusLost
 
     private void minDurationFieldenterLickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minDurationFieldenterLickKeyPressed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_minDurationFieldenterLickKeyPressed
 
     private void maxDurationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxDurationFieldActionPerformed
@@ -3354,7 +3354,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     }//GEN-LAST:event_maxDurationFieldActionPerformed
 
     private void maxDurationFieldGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxDurationFieldGetsFocus
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_maxDurationFieldGetsFocus
 
     private void maxDurationFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_maxDurationFieldFocusLost
@@ -3434,7 +3434,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 }//GEN-LAST:event_recurrentCheckboxActionPerformed
 
     private void gapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gapFieldActionPerformed
-        // TODO add your handling code here:
+
 }//GEN-LAST:event_gapFieldActionPerformed
 
     private void regenerateHeadDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenerateHeadDataBtnActionPerformed
