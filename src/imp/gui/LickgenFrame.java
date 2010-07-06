@@ -11,6 +11,7 @@
 package imp.gui;
 
 import imp.cluster.*;
+import imp.com.*;
 
 import imp.data.*;
 import imp.Directories;
@@ -97,6 +98,8 @@ private int recurrentIteration = 1;
 
 private LickGen lickgen;
 
+private CommandManager cm;
+
 /**
  * Vector of JTextField arrays, used to display probabilities used in lick generation
  */
@@ -108,13 +111,16 @@ private Vector<JTextField[]> lickPrefs = new Vector<JTextField[]>();
  */
 private boolean allMeasures = false;
 
-/** Creates new form LickgenFrame */
-public LickgenFrame(Notate notate)
+/**
+ * Creates new LickgenFrame
+ */
+
+public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
   {
 
     this.notate = notate;
-
-    lickgen = new LickGen("vocab" + File.separator + "My.grammar", notate);
+    this.lickgen = lickgen;
+    this.cm = cm;
 
     initComponents();
   }
@@ -2396,6 +2402,12 @@ public void setRhythmFieldText(String string)
 
     private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAbstractMelodyButtonActionPerformed
 
+getAbstractMelody();
+
+  }
+
+ public void getAbstractMelody()
+  {
 
     if( !allMeasures )
       {
@@ -2577,7 +2589,8 @@ public void setRhythmFieldText(String string)
         setRhythmFieldText(production.toString());
       }
 
-  }
+ }
+
 
     /**
      * write the number of beats to slide so the data analysis can read it -
@@ -3892,30 +3905,30 @@ public void saveTriageParameters()
                             MelodyPart theme;
                             if( themeField.getText().equals("") )
                               {
-                                theme = notate.generateTheme();
+                                theme = generateTheme();
                               }
                             else
                               {
                                 theme = new MelodyPart(
                                     themeField.getText().trim());
                               }
-                            notate.generateSolo(theme);
+                            generateSolo(theme, cm);
 }//GEN-LAST:event_generateSoloButtonActionPerformed
 
                         private void generateThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateThemeButtonActionPerformed
-                            notate.generateTheme();
+                            generateTheme();
 }//GEN-LAST:event_generateThemeButtonActionPerformed
 
                         private void genSoloThemeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genSoloThemeBtnActionPerformed
-                            MelodyPart theme = notate.generateTheme();
-                            notate.generateSolo(theme);
+                            MelodyPart theme = generateTheme();
+                            generateSolo(theme, cm);
 }//GEN-LAST:event_genSoloThemeBtnActionPerformed
 
                         private void pasteThemeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteThemeBtnActionPerformed
                             MelodyPart sel =
                                 notate.getCurrentStave().getDisplayPart().extract(
                                 notate.getCurrentSelectionStart(),
-                                                                                  notate.getCurrentSelectionEnd());
+                                notate.getCurrentSelectionEnd());
                             Part.PartIterator i = sel.iterator();
                             String theme = "";
                             while( i.hasNext() )
@@ -4107,6 +4120,74 @@ private void triageLick(String lickName, int grade)
     notate.triageLick(lickName, grade);
   }
 
+  public boolean getRecurrent()
+  {
+      return recurrentCheckbox.isSelected();
+  }
+
+  public void setTotalBeats(double beats)
+  {
+  totalBeats = beats;
+  totalBeatsField.setText("" + beats);
+  }
+
+  public boolean toCriticSelected()
+  {
+      return toCriticMI1.isSelected();
+  }
+
+  public boolean useGrammarSelected()
+  {
+      return useGrammarMI1.isSelected();
+  }
+
+ public boolean rectifySelected()
+  {
+     return rectifyCheckBox.isSelected();
+  }
+
+ public boolean useHeadSelected()
+  {
+     return useHeadCheckBox.isSelected();
+ }
+
+ public boolean useSoloistSelected()
+  {
+     return useSoloistCheckBox.isSelected();
+ }
+
+public int getGap()
+  {
+    return (int) (BEAT * Notate.quietDoubleFromTextField(gapField, -Double.MAX_VALUE,
+                                                  +Double.MAX_VALUE, 0));
+  }
+
+public int getWindowSize()
+  {
+    return Integer.parseInt(windowSizeField.getText());
+}
+
+public int getWindowSlide()
+  {
+    return Integer.parseInt(windowSlideField.getText());
+}
+
+public int getNumClusterReps()
+  {
+    return Integer.parseInt(numClusterRepsField.getText());
+}
+
+public boolean useMarkovSelected()
+  {
+      return useMarkovCheckbox.isSelected();
+  }
+
+
+public int getMarkovFieldLength()
+  {
+    return Integer.parseInt(MarkovLengthField.getText());
+}
+
   public void redoScales()
     {
     DefaultComboBoxModel dcbm = (DefaultComboBoxModel)scaleComboBox.getModel();
@@ -4129,15 +4210,119 @@ private void triageLick(String lickName, int grade)
       }
     }
 
-  public boolean getRecurrent()
-  {
-      return recurrentCheckbox.isSelected();
-  }
 
-  public void setTotalBeats(double beats)
-  {
-  totalBeats = beats;
-  totalBeatsField.setText("" + beats);
-  }
+
+public MelodyPart generateTheme() {
+        themeLength = BEAT*Notate.intFromTextField(themeLengthField, 0, notate.getScoreLength() / BEAT, themeLength);
+        Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
+
+        verifyTriageFields();
+        MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
+
+            //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+            //    leapProb, rhythm, chordProg, 0, avoidRepeats);
+
+        Part.PartIterator i = lick.iterator();
+        String theme = "";
+        while (i.hasNext())
+        {
+          Unit unit = i.next();
+          if( unit != null )
+          {
+            theme += unit.toLeadsheet() + " ";
+          }
+        }
+
+        themeField.setText(theme);
+        return lick;
+    }
+
+    public void generateSolo(MelodyPart theme, CommandManager cm) {
+        int length = theme.getSize();
+        themeLength = length;
+        MelodyPart solo = new MelodyPart(length);
+        imp.ImproVisor.setPlayEntrySounds(false);
+        themeProb = Notate.doubleFromTextField(themeProbabilityField, 0, 1, themeProb);
+        transposeProb = Notate.doubleFromTextField(transposeProbabilityField, 0, 1, transposeProb);
+        invertProb = Notate.doubleFromTextField(invertProbabilityField, 0, 1, invertProb);
+        reverseProb = Notate.doubleFromTextField(reverseProbabilityField, 0, 1, reverseProb);
+
+        solo.pasteSlots(theme, 0);
+        for (int i = length; i <= notate.getScoreLength() - length; i += length) {
+            if (Notate.bernoulli(themeProb)) {
+                MelodyPart adjustedTheme = theme.copy();
+                if (Notate.bernoulli(transposeProb)) {
+                    ChordPart chordProg = notate.getChordProg();
+                    int rise = PitchClass.findRise(PitchClass.getPitchClass(chordProg.getCurrentChord(0).getRoot()),
+                            PitchClass.getPitchClass(chordProg.getCurrentChord(i).getRoot()));
+                    int index = 0;
+                    Note n = adjustedTheme.getNote(index);
+                    while (n.getPitch() == REST) {
+                        index += n.getRhythmValue();
+                        n = adjustedTheme.getNote(index);
+                    }
+                    if (n.getPitch() >= (minPitch + maxPitch) / 2 && rise > 0)
+                        cm.execute(new ShiftPitchesCommand(-1 * (12 - rise), adjustedTheme,
+                                0, length, 0, 128, notate.getScore().getKeySignature()));
+                    else if (n.getPitch() < (minPitch + maxPitch) / 2 && rise < 0)
+                        cm.execute(new ShiftPitchesCommand((12 + rise), adjustedTheme,
+                                0, length, 0, 128, notate.getScore().getKeySignature()));
+                    else
+                        cm.execute(new ShiftPitchesCommand(rise, adjustedTheme, 0, length, 0, 128, notate.getScore().getKeySignature()));
+                }
+
+                if (Notate.bernoulli(invertProb))
+                    cm.execute(new InvertCommand(adjustedTheme, 0, length, false));
+
+                if (Notate.bernoulli(reverseProb))
+                    cm.execute(new ReverseCommand(adjustedTheme, 0, length, false));
+
+                ChordPart themeChords = notate.getChordProg().extract(i, i + length);
+                cm.execute(new ResolvePitchesCommand(adjustedTheme, 0, length, themeChords, false, false));
+
+                solo.setSize(solo.getSize() + length);
+                solo.pasteSlots(adjustedTheme, i);
+            } else {
+                Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
+
+                MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
+
+                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+                    //    leapProb, rhythm, chordProg, 0, avoidRepeats);
+
+                Part.PartIterator j = lick.iterator();
+                while (j.hasNext())
+                {
+                  Unit unit = j.next();
+                  if( unit != null )
+                    {
+                    solo.addNote(NoteSymbol.toNote(unit.toLeadsheet()));
+                    }
+                }
+            }
+        }
+        if (notate.getScore().getLength() - solo.getSize() != 0) {
+            Polylist rhythm = lickgen.generateRhythmFromGrammar(notate.getScore().getLength() - solo.getSize());
+
+            MelodyPart lick =  fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
+
+                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
+                    //leapProb, rhythm, chordProg, 0, avoidRepeats);
+
+             Part.PartIterator j = lick.iterator();
+            while (j.hasNext())
+                solo.addNote(NoteSymbol.toNote(j.next().toLeadsheet()));
+        }
+        notate.setCurrentSelectionStart(0);
+
+        // Experimental: Resolve pitches in entire solo: seems to improve things, but
+        // may generate some repeated notes.
+        cm.execute(new ResolvePitchesCommand(solo, 0, solo.getSize(), notate.getChordProg(), false, false));
+
+        notate.pasteMelody(solo);
+
+
+        imp.ImproVisor.setPlayEntrySounds(true);
+    }
 
 }

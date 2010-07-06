@@ -4,7 +4,7 @@
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009, Nicolas Froment (aka Lasconic).
  *
- * Impro-Visor is free software; you can redistribute it and/or modify
+ * Impro-Visor is free software; you can redistribute it and/or modifyc
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
@@ -1183,7 +1183,7 @@ public class Notate
         
         // Gap between the start of next generation and end of previous playback.
         
-        int gap = getGap();
+        int gap = lickgenFrame.getGap();
         
         //slotInPlayback += playbackOffset;
 
@@ -1210,7 +1210,7 @@ public class Notate
                 && (slotInPlayback >= totalSlots - gap) )
             {
                 setLickGenStatus("Chorus " + getRecurrentIteration());
-                generateLickButtonActionPerformed(null);
+                generate(lickgen);
             }
 
         // if( midiSynth.finishedPlaying() ) original
@@ -1322,7 +1322,7 @@ public class Notate
     initComponents();
 
 
-    lickgenFrame = new LickgenFrame(this);
+    lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
 
@@ -1615,146 +1615,6 @@ public class Notate
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        generatorFrame = new javax.swing.JFrame();
-        generatorPane = new javax.swing.JTabbedPane();
-        lickGenPanel = new javax.swing.JPanel();
-        rhythmPanel = new javax.swing.JPanel();
-        rhythmScrollPane = new javax.swing.JScrollPane();
-        rhythmField = new javax.swing.JTextArea();
-        lickGenerationButtonsPanel = new javax.swing.JPanel();
-        generateLickButton = new javax.swing.JButton();
-        genRhythmButton = new javax.swing.JButton();
-        fillMelodyButton = new javax.swing.JButton();
-        getAbstractMelodyButton = new javax.swing.JButton();
-        getSelRhythmButton = new javax.swing.JButton();
-        playLickButton = new javax.swing.JButton();
-        stopLickButton = new javax.swing.JButton();
-        saveLickButton = new javax.swing.JButton();
-        lickgenParametersPanel = new javax.swing.JPanel();
-        pitchLabel = new javax.swing.JLabel();
-        maxLabel = new javax.swing.JLabel();
-        maxPitchField = new javax.swing.JTextField();
-        minLabel = new javax.swing.JLabel();
-        minPitchField = new javax.swing.JTextField();
-        intervalLabel = new javax.swing.JLabel();
-        minIntervalField = new javax.swing.JTextField();
-        maxIntervalField = new javax.swing.JTextField();
-        durationLabel = new javax.swing.JLabel();
-        minDurationField = new javax.swing.JTextField();
-        maxDurationField = new javax.swing.JTextField();
-        totalBeatsField = new javax.swing.JTextField();
-        totalBeatsLabel = new javax.swing.JLabel();
-        restProbLabel = new javax.swing.JLabel();
-        restProbField = new javax.swing.JTextField();
-        leapProbLabel = new javax.swing.JLabel();
-        leapProbField = new javax.swing.JTextField();
-        avoidRepeatsCheckbox = new javax.swing.JCheckBox();
-        recurrentCheckbox = new javax.swing.JCheckBox();
-        gapField = new javax.swing.JTextField();
-        rectifyCheckBox = new javax.swing.JCheckBox();
-        useSoloistCheckBox = new javax.swing.JCheckBox();
-        useHeadCheckBox = new javax.swing.JCheckBox();
-        regenerateHeadDataBtn = new javax.swing.JButton();
-        toneProbabilityPanel = new javax.swing.JPanel();
-        chordToneProbLabel = new javax.swing.JLabel();
-        colorToneProbLabel = new javax.swing.JLabel();
-        scaleToneProbLabel = new javax.swing.JLabel();
-        chordToneDecayRateLabel = new javax.swing.JLabel();
-        chordToneWeightField = new javax.swing.JTextField();
-        colorToneWeightField = new javax.swing.JTextField();
-        scaleToneWeightField = new javax.swing.JTextField();
-        chordToneDecayField = new javax.swing.JTextField();
-        scaleChoicePanel = new javax.swing.JPanel();
-        scaleLabel = new javax.swing.JLabel();
-        typeLabel = new javax.swing.JLabel();
-        scaleComboBox = new javax.swing.JComboBox();
-        rootLabel = new javax.swing.JLabel();
-        rootComboBox = new javax.swing.JComboBox();
-        lickGradeButtonsPanel = new javax.swing.JPanel();
-        lickSavedLabel = new javax.swing.JLabel();
-        gradeLabel = new javax.swing.JLabel();
-        saveLickTF = new javax.swing.JTextField();
-        saveLickWithLabelLabel = new javax.swing.JLabel();
-        grade1Btn = new javax.swing.JButton();
-        grade1Btn.setUI(new MetalButtonUI());
-        grade2Btn = new javax.swing.JButton();
-        grade2Btn.setUI(new MetalButtonUI());
-        grade3Btn = new javax.swing.JButton();
-        grade3Btn.setUI(new MetalButtonUI());
-        grade4Btn = new javax.swing.JButton();
-        grade4Btn.setUI(new MetalButtonUI());
-        grade5Btn = new javax.swing.JButton();
-        grade5Btn.setUI(new MetalButtonUI());
-        grade6Btn = new javax.swing.JButton();
-        grade6Btn.setUI(new MetalButtonUI());
-        grade7Btn = new javax.swing.JButton();
-        grade7Btn.setUI(new MetalButtonUI());
-        grade8Btn = new javax.swing.JButton();
-        grade8Btn.setUI(new MetalButtonUI());
-        grade9Btn = new javax.swing.JButton();
-        grade9Btn.setUI(new MetalButtonUI());
-        grade10Btn = new javax.swing.JButton();
-        grade10Btn.setUI(new MetalButtonUI());
-        ProbFillClearPanel = new javax.swing.JPanel();
-        clearProbsButton = new javax.swing.JButton();
-        FillProbsButton = new javax.swing.JButton();
-        autoFillCheckBox = new javax.swing.JCheckBox();
-        pitchProbabilitiesPanel = new javax.swing.JPanel();
-        chordProbPanel = new javax.swing.JPanel();
-        grammarLearningPanel = new javax.swing.JPanel();
-        finalLabel = new javax.swing.JLabel();
-        windowParametersPanel = new javax.swing.JPanel();
-        windowSizeLabel = new javax.swing.JLabel();
-        windowSlideLabel = new javax.swing.JLabel();
-        numClusterRepsLabel = new javax.swing.JLabel();
-        windowSizeField = new javax.swing.JTextField();
-        windowSlideField = new javax.swing.JTextField();
-        numClusterRepsField = new javax.swing.JTextField();
-        useMarkovCheckbox = new javax.swing.JCheckBox();
-        MarkovLengthField = new javax.swing.JTextField();
-        loadBaseGrammarBtn = new javax.swing.JButton();
-        saveGrammarAsButton = new javax.swing.JButton();
-        openCorpusBtn = new javax.swing.JButton();
-        toGrammarBtn = new javax.swing.JButton();
-        learningStep0Label = new javax.swing.JLabel();
-        testGeneration = new javax.swing.JButton();
-        soloGenPanel = new javax.swing.JPanel();
-        generateSoloButton = new javax.swing.JButton();
-        generateThemeButton = new javax.swing.JButton();
-        themeField = new javax.swing.JTextField();
-        themeProbabilityField = new javax.swing.JTextField();
-        themeProbabilityField.setText(themeProb + "");
-        themeLengthField = new javax.swing.JTextField();
-        themeLengthField.setText(themeLength + "");
-        themeLengthLabel = new javax.swing.JLabel();
-        themeProbLabel = new javax.swing.JLabel();
-        themeLabel = new javax.swing.JLabel();
-        genSoloThemeBtn = new javax.swing.JButton();
-        transposeProbLabel = new javax.swing.JLabel();
-        InvertProbLabel = new javax.swing.JLabel();
-        ReverseProbLabel = new javax.swing.JLabel();
-        pasteThemeBtn = new javax.swing.JButton();
-        transposeProbabilityField = new javax.swing.JTextField();
-        transposeProbabilityField.setText(transposeProb + "");
-        invertProbabilityField = new javax.swing.JTextField();
-        invertProbabilityField.setText(invertProb + "");
-        reverseProbabilityField = new javax.swing.JTextField();
-        reverseProbabilityField.setText(reverseProb + "");
-        disclaimer = new javax.swing.JLabel();
-        generatorMenuBar = new javax.swing.JMenuBar();
-        grammarMenu = new javax.swing.JMenu();
-        openGrammarMI = new javax.swing.JMenuItem();
-        showLogMI = new javax.swing.JMenuItem();
-        saveGrammarMI = new javax.swing.JMenuItem();
-        editGrammarMI = new javax.swing.JMenuItem();
-        reloadGrammarMI = new javax.swing.JMenuItem();
-        toCriticMI = new javax.swing.JCheckBoxMenuItem();
-        showCriticMI = new javax.swing.JMenuItem();
-        useGrammarMI = new javax.swing.JCheckBoxMenuItem();
-        generatorWindowMenu = new javax.swing.JMenu();
-        closeWindowMI1 = new javax.swing.JMenuItem();
-        cascadeMI1 = new javax.swing.JMenuItem();
-        windowMenuSeparator1 = new javax.swing.JSeparator();
         preferencesDialog = new javax.swing.JDialog();
         buttonPanel = new javax.swing.JPanel();
         globalBtn = new javax.swing.JToggleButton();
@@ -2405,1746 +2265,6 @@ public class Notate
         helpMI = new javax.swing.JMenuItem();
         jSeparator32 = new javax.swing.JSeparator();
         helpAboutMI = new javax.swing.JMenuItem();
-
-        generatorFrame.setTitle("Lick Generator");
-        generatorFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        generatorPane.setMinimumSize(new java.awt.Dimension(900, 700));
-        generatorPane.setPreferredSize(new java.awt.Dimension(950, 700));
-
-        lickGenPanel.setLayout(new java.awt.GridBagLayout());
-
-        rhythmPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Abstract Melody", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        rhythmPanel.setMinimumSize(new java.awt.Dimension(850, 200));
-        rhythmPanel.setPreferredSize(new java.awt.Dimension(850, 200));
-        rhythmPanel.setLayout(new java.awt.GridBagLayout());
-
-        rhythmScrollPane.setBorder(null);
-        rhythmScrollPane.setMinimumSize(new java.awt.Dimension(223, 180));
-        rhythmScrollPane.setPreferredSize(new java.awt.Dimension(223, 180));
-
-        rhythmField.setColumns(20);
-        rhythmField.setLineWrap(true);
-        rhythmField.setRows(500);
-        rhythmField.setBorder(null);
-        rhythmField.setMinimumSize(new java.awt.Dimension(800, 100));
-        rhythmField.setPreferredSize(new java.awt.Dimension(800, 1000));
-        rhythmScrollPane.setViewportView(rhythmField);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.2;
-        rhythmPanel.add(rhythmScrollPane, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.5;
-        lickGenPanel.add(rhythmPanel, gridBagConstraints);
-
-        lickGenerationButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lick Generation and Extraction", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        lickGenerationButtonsPanel.setMinimumSize(new java.awt.Dimension(400, 230));
-        lickGenerationButtonsPanel.setPreferredSize(new java.awt.Dimension(420, 230));
-        lickGenerationButtonsPanel.setLayout(new java.awt.GridBagLayout());
-
-        generateLickButton.setText("Generate Melody");
-        generateLickButton.setToolTipText("Generate a melody using the current grammar.");
-        generateLickButton.setMaximumSize(new java.awt.Dimension(135, 29));
-        generateLickButton.setMinimumSize(new java.awt.Dimension(135, 29));
-        generateLickButton.setOpaque(true);
-        generateLickButton.setPreferredSize(new java.awt.Dimension(135, 29));
-        generateLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateLickButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(generateLickButton, gridBagConstraints);
-
-        genRhythmButton.setText("Generate Abstract Melody Only");
-        genRhythmButton.setToolTipText("Generate the rhythm pattern for a lick, without the actual notes.");
-        genRhythmButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                genRhythmButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(genRhythmButton, gridBagConstraints);
-
-        fillMelodyButton.setText("Fill Abstract Melody");
-        fillMelodyButton.setToolTipText("Fill the notes for the given pattern.");
-        fillMelodyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fillMelodyButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(fillMelodyButton, gridBagConstraints);
-
-        getAbstractMelodyButton.setText("Extract Abstract Melody");
-        getAbstractMelodyButton.setToolTipText("Extract the rhythm from the leadsheet.");
-        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getAbstractMelodyButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(getAbstractMelodyButton, gridBagConstraints);
-
-        getSelRhythmButton.setText("Extract Rhythm");
-        getSelRhythmButton.setToolTipText("Extract the rhythm from the leadsheet.");
-        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                getSelRhythmButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(getSelRhythmButton, gridBagConstraints);
-
-        playLickButton.setText("Play");
-        playLickButton.setToolTipText("Play the lick again.");
-        playLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playLickButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(playLickButton, gridBagConstraints);
-
-        stopLickButton.setText("Stop");
-        stopLickButton.setToolTipText("Stop playing.");
-        stopLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopLickButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(stopLickButton, gridBagConstraints);
-
-        saveLickButton.setText("Save");
-        saveLickButton.setToolTipText("Save the lick in the vocabulary.");
-        saveLickButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveLickButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(2, 2, 2, 2);
-        lickGenerationButtonsPanel.add(saveLickButton, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.6;
-        lickGenPanel.add(lickGenerationButtonsPanel, gridBagConstraints);
-
-        lickgenParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Generation Parameters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        lickgenParametersPanel.setMinimumSize(new java.awt.Dimension(420, 220));
-        lickgenParametersPanel.setPreferredSize(new java.awt.Dimension(420, 220));
-        lickgenParametersPanel.setLayout(new java.awt.GridBagLayout());
-
-        pitchLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        pitchLabel.setText("Pitch");
-        pitchLabel.setToolTipText("Pitch of a note in the lick\n");
-        pitchLabel.setPreferredSize(new java.awt.Dimension(80, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 2, 10);
-        lickgenParametersPanel.add(pitchLabel, gridBagConstraints);
-
-        maxLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        maxLabel.setText("Max");
-        maxLabel.setToolTipText("");
-        maxLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        maxLabel.setMaximumSize(new java.awt.Dimension(200, 15));
-        maxLabel.setMinimumSize(new java.awt.Dimension(150, 15));
-        maxLabel.setPreferredSize(new java.awt.Dimension(150, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        lickgenParametersPanel.add(maxLabel, gridBagConstraints);
-
-        maxPitchField.setFont(new java.awt.Font("Dialog", 0, 14));
-        maxPitchField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        maxPitchField.setToolTipText("The maximum pitch in a generated lick.");
-        maxPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
-        maxPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxPitchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxPitchFieldActionPerformed(evt);
-            }
-        });
-        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                maxPitchFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                maxPitchFieldFocusLost(evt);
-            }
-        });
-        maxPitchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                maxPitchFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 10);
-        lickgenParametersPanel.add(maxPitchField, gridBagConstraints);
-
-        minLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        minLabel.setText("Min");
-        minLabel.setToolTipText("");
-        minLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        minLabel.setMaximumSize(new java.awt.Dimension(30, 15));
-        minLabel.setMinimumSize(new java.awt.Dimension(30, 15));
-        minLabel.setPreferredSize(new java.awt.Dimension(30, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        lickgenParametersPanel.add(minLabel, gridBagConstraints);
-
-        minPitchField.setFont(new java.awt.Font("Dialog", 0, 14));
-        minPitchField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        minPitchField.setToolTipText("The minimum pitch in a generated lick.");
-        minPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
-        minPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minPitchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                minPitchFieldActionPerformed(evt);
-            }
-        });
-        minPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                minPitchFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                minPitchFieldFocusLost(evt);
-            }
-        });
-        minPitchField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                minPitchFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 10);
-        lickgenParametersPanel.add(minPitchField, gridBagConstraints);
-
-        intervalLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        intervalLabel.setText("Interval");
-        intervalLabel.setToolTipText("The maximum interval between two pitches in the lick");
-        intervalLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        intervalLabel.setPreferredSize(new java.awt.Dimension(80, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 2, 10);
-        lickgenParametersPanel.add(intervalLabel, gridBagConstraints);
-
-        minIntervalField.setFont(new java.awt.Font("Dialog", 0, 14));
-        minIntervalField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        minIntervalField.setToolTipText("The minimum interval from one note to the next, if not a leap.");
-        minIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
-        minIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minIntervalField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                minIntervalFieldActionPerformed(evt);
-            }
-        });
-        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                minIntervalFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                minIntervalFieldFocusLost(evt);
-            }
-        });
-        minIntervalField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                minIntervalFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 10);
-        lickgenParametersPanel.add(minIntervalField, gridBagConstraints);
-
-        maxIntervalField.setFont(new java.awt.Font("Dialog", 0, 14));
-        maxIntervalField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        maxIntervalField.setToolTipText("The maximum interval from one note to the next, if not a leap.");
-        maxIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
-        maxIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxIntervalField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxIntervalFieldActionPerformed(evt);
-            }
-        });
-        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                maxIntervalFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                maxIntervalFieldFocusLost(evt);
-            }
-        });
-        maxIntervalField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                maxIntervalFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 10);
-        lickgenParametersPanel.add(maxIntervalField, gridBagConstraints);
-
-        durationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        durationLabel.setText("Duration");
-        durationLabel.setToolTipText("Duration of beats in generated lick\n");
-        durationLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        durationLabel.setPreferredSize(new java.awt.Dimension(80, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 2, 10);
-        lickgenParametersPanel.add(durationLabel, gridBagConstraints);
-
-        minDurationField.setFont(new java.awt.Font("Dialog", 0, 14));
-        minDurationField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        minDurationField.setToolTipText("The minimum duration of a generated note.");
-        minDurationField.setEnabled(false);
-        minDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
-        minDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minDurationField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                minDurationFieldActionPerformed(evt);
-            }
-        });
-        minDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                minDurationFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                minDurationFieldFocusLost(evt);
-            }
-        });
-        minDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                minDurationFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickgenParametersPanel.add(minDurationField, gridBagConstraints);
-
-        maxDurationField.setFont(new java.awt.Font("Dialog", 0, 14));
-        maxDurationField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        maxDurationField.setToolTipText("The minimum duration of a generated note.");
-        maxDurationField.setEnabled(false);
-        maxDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
-        maxDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxDurationField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxDurationFieldActionPerformed(evt);
-            }
-        });
-        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                maxDurationFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                maxDurationFieldFocusLost(evt);
-            }
-        });
-        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                maxDurationFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickgenParametersPanel.add(maxDurationField, gridBagConstraints);
-
-        totalBeatsField.setFont(new java.awt.Font("Dialog", 0, 14));
-        totalBeatsField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        totalBeatsField.setToolTipText("The number of beats in the lick.");
-        totalBeatsField.setMinimumSize(new java.awt.Dimension(60, 24));
-        totalBeatsField.setPreferredSize(new java.awt.Dimension(60, 24));
-        totalBeatsField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                totalBeatsFieldActionPerformed(evt);
-            }
-        });
-        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                totalBeatsFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                totalBeatsFieldFocusLost(evt);
-            }
-        });
-        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                totalBeatsFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 10);
-        lickgenParametersPanel.add(totalBeatsField, gridBagConstraints);
-
-        totalBeatsLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        totalBeatsLabel.setText("Generate Beats");
-        totalBeatsLabel.setToolTipText("The total number of beats for the lick.");
-        totalBeatsLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        totalBeatsLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 2, 10);
-        lickgenParametersPanel.add(totalBeatsLabel, gridBagConstraints);
-
-        restProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        restProbLabel.setText("Rest Probability");
-        restProbLabel.setToolTipText("The probability of generating a rest");
-        restProbLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        restProbLabel.setPreferredSize(new java.awt.Dimension(80, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 2, 10);
-        lickgenParametersPanel.add(restProbLabel, gridBagConstraints);
-
-        restProbField.setFont(new java.awt.Font("Dialog", 0, 14));
-        restProbField.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        restProbField.setToolTipText("The probability of a rest vs. a note.");
-        restProbField.setEnabled(false);
-        restProbField.setMinimumSize(new java.awt.Dimension(60, 24));
-        restProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        restProbField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                restProbFieldActionPerformed(evt);
-            }
-        });
-        restProbField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                restProbFieldGetsFocus(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                restProbFieldFocusLost(evt);
-            }
-        });
-        restProbField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                restProbFieldenterLickKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 10);
-        lickgenParametersPanel.add(restProbField, gridBagConstraints);
-
-        leapProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        leapProbLabel.setText("Leap Probability");
-        leapProbLabel.setMaximumSize(new java.awt.Dimension(220, 16));
-        leapProbLabel.setMinimumSize(new java.awt.Dimension(220, 16));
-        leapProbLabel.setPreferredSize(new java.awt.Dimension(220, 16));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 2, 0);
-        lickgenParametersPanel.add(leapProbLabel, gridBagConstraints);
-
-        leapProbField.setToolTipText("The probability of making a leap outside the maximum interval.");
-        leapProbField.setMaximumSize(new java.awt.Dimension(60, 2147483647));
-        leapProbField.setMinimumSize(new java.awt.Dimension(60, 24));
-        leapProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        leapProbField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leapProbFieldActionPerformed(evt);
-            }
-        });
-        leapProbField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                leapProbFieldFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickgenParametersPanel.add(leapProbField, gridBagConstraints);
-
-        avoidRepeatsCheckbox.setSelected(true);
-        avoidRepeatsCheckbox.setToolTipText("Avoid generating repeated pitches");
-        avoidRepeatsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        avoidRepeatsCheckbox.setLabel("Avoid repeat pitches");
-        avoidRepeatsCheckbox.setMaximumSize(new java.awt.Dimension(150, 22));
-        avoidRepeatsCheckbox.setMinimumSize(new java.awt.Dimension(150, 22));
-        avoidRepeatsCheckbox.setPreferredSize(new java.awt.Dimension(150, 22));
-        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                avoidRepeatsCheckboxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        lickgenParametersPanel.add(avoidRepeatsCheckbox, gridBagConstraints);
-
-        recurrentCheckbox.setToolTipText("If checked, keep generating licks until stop is pressed. Licks may be recovered using undo. This will eventually fill up memory.\n");
-        recurrentCheckbox.setLabel("Recurrent gap (beats):");
-        recurrentCheckbox.setMaximumSize(new java.awt.Dimension(175, 23));
-        recurrentCheckbox.setMinimumSize(new java.awt.Dimension(170, 23));
-        recurrentCheckbox.setPreferredSize(new java.awt.Dimension(170, 23));
-        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recurrentCheckboxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickgenParametersPanel.add(recurrentCheckbox, gridBagConstraints);
-
-        gapField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        gapField.setText("2.0");
-        gapField.setToolTipText("Sets the leading gap between when the next lick is generated and the previous one ends.");
-        gapField.setMaximumSize(new java.awt.Dimension(30, 2147483647));
-        gapField.setMinimumSize(new java.awt.Dimension(60, 24));
-        gapField.setPreferredSize(new java.awt.Dimension(60, 24));
-        gapField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gapFieldActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 10);
-        lickgenParametersPanel.add(gapField, gridBagConstraints);
-
-        rectifyCheckBox.setText("Rectify\n");
-        rectifyCheckBox.setToolTipText("Rectify the generated melody.\n");
-        rectifyCheckBox.setMaximumSize(new java.awt.Dimension(110, 23));
-        rectifyCheckBox.setMinimumSize(new java.awt.Dimension(110, 23));
-        rectifyCheckBox.setPreferredSize(new java.awt.Dimension(110, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        lickgenParametersPanel.add(rectifyCheckBox, gridBagConstraints);
-
-        useSoloistCheckBox.setText("Use Soloist");
-        useSoloistCheckBox.setMaximumSize(new java.awt.Dimension(100, 23));
-        useSoloistCheckBox.setMinimumSize(new java.awt.Dimension(170, 23));
-        useSoloistCheckBox.setPreferredSize(new java.awt.Dimension(170, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickgenParametersPanel.add(useSoloistCheckBox, gridBagConstraints);
-
-        useHeadCheckBox.setLabel("Use Head");
-        useHeadCheckBox.setMaximumSize(new java.awt.Dimension(100, 23));
-        useHeadCheckBox.setMinimumSize(new java.awt.Dimension(100, 23));
-        useHeadCheckBox.setPreferredSize(new java.awt.Dimension(100, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickgenParametersPanel.add(useHeadCheckBox, gridBagConstraints);
-
-        regenerateHeadDataBtn.setText("Regenerate Head Data");
-        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regenerateHeadDataBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        lickgenParametersPanel.add(regenerateHeadDataBtn, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.4;
-        lickGenPanel.add(lickgenParametersPanel, gridBagConstraints);
-
-        toneProbabilityPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pitch Category Weights", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        toneProbabilityPanel.setMinimumSize(new java.awt.Dimension(420, 90));
-        toneProbabilityPanel.setPreferredSize(new java.awt.Dimension(420, 90));
-        toneProbabilityPanel.setLayout(new java.awt.GridBagLayout());
-
-        chordToneProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        chordToneProbLabel.setText("<html>Chord <br>Tone</html");
-        chordToneProbLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        chordToneProbLabel.setPreferredSize(new java.awt.Dimension(65, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        toneProbabilityPanel.add(chordToneProbLabel, gridBagConstraints);
-
-        colorToneProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        colorToneProbLabel.setText("<html>Color<br>Tone</html>");
-        colorToneProbLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        colorToneProbLabel.setPreferredSize(new java.awt.Dimension(65, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        toneProbabilityPanel.add(colorToneProbLabel, gridBagConstraints);
-
-        scaleToneProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        scaleToneProbLabel.setText("<html>Scale <br>Tone</html>");
-        scaleToneProbLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        scaleToneProbLabel.setPreferredSize(new java.awt.Dimension(65, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        toneProbabilityPanel.add(scaleToneProbLabel, gridBagConstraints);
-
-        chordToneDecayRateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        chordToneDecayRateLabel.setText("<html><align=center>Chord Tone <br> Decay Rate </align></html>");
-        chordToneDecayRateLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        chordToneDecayRateLabel.setMinimumSize(new java.awt.Dimension(120, 32));
-        chordToneDecayRateLabel.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        toneProbabilityPanel.add(chordToneDecayRateLabel, gridBagConstraints);
-
-        chordToneWeightField.setToolTipText("The amount of weight to give to chord tones (vs. scale or color tones).");
-        chordToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
-        chordToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneWeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordToneWeightFieldActionPerformed(evt);
-            }
-        });
-        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                chordToneWeightFieldFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        toneProbabilityPanel.add(chordToneWeightField, gridBagConstraints);
-
-        colorToneWeightField.setToolTipText("The amount of weight to give to color tones (vs. chord or scale tones).");
-        colorToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
-        colorToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        colorToneWeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorToneWeightFieldActionPerformed(evt);
-            }
-        });
-        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                colorToneWeightFieldFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        toneProbabilityPanel.add(colorToneWeightField, gridBagConstraints);
-
-        scaleToneWeightField.setToolTipText("The amount of weight to give to scale tones (vs. chord or color tones).");
-        scaleToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
-        scaleToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scaleToneWeightFieldActionPerformed(evt);
-            }
-        });
-        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                scaleToneWeightFieldFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        toneProbabilityPanel.add(scaleToneWeightField, gridBagConstraints);
-
-        chordToneDecayField.setToolTipText("Decrease chord tone probability by this amount for each tone.");
-        chordToneDecayField.setMinimumSize(new java.awt.Dimension(40, 24));
-        chordToneDecayField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneDecayField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordToneDecayFieldActionPerformed(evt);
-            }
-        });
-        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                chordToneDecayFieldFocusLost(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        toneProbabilityPanel.add(chordToneDecayField, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.4;
-        lickGenPanel.add(toneProbabilityPanel, gridBagConstraints);
-
-        scaleChoicePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Tone Type", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        scaleChoicePanel.setMinimumSize(new java.awt.Dimension(420, 100));
-        scaleChoicePanel.setPreferredSize(new java.awt.Dimension(420, 100));
-        scaleChoicePanel.setLayout(new java.awt.GridBagLayout());
-
-        scaleLabel.setText("Scale:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 20);
-        scaleChoicePanel.add(scaleLabel, gridBagConstraints);
-
-        typeLabel.setText("Type:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        scaleChoicePanel.add(typeLabel, gridBagConstraints);
-
-        scaleComboBox.setToolTipText("The type of scale to use in scale tones. The default is the first scale associated with the chord.\n");
-        scaleComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                scaleComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        scaleChoicePanel.add(scaleComboBox, gridBagConstraints);
-
-        rootLabel.setText("Root:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        scaleChoicePanel.add(rootLabel, gridBagConstraints);
-
-        rootComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#", "Gb", "G", "G#/Ab", "A", "A#/Bb", "B" }));
-        rootComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rootComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        scaleChoicePanel.add(rootComboBox, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.4;
-        lickGenPanel.add(scaleChoicePanel, gridBagConstraints);
-
-        lickGradeButtonsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lick Saving and Grading", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        lickGradeButtonsPanel.setMaximumSize(new java.awt.Dimension(500, 125));
-        lickGradeButtonsPanel.setMinimumSize(new java.awt.Dimension(420, 100));
-        lickGradeButtonsPanel.setPreferredSize(new java.awt.Dimension(420, 100));
-        lickGradeButtonsPanel.setLayout(new java.awt.GridBagLayout());
-
-        lickSavedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lickSavedLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lickSavedLabel.setMinimumSize(new java.awt.Dimension(0, 200));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 100;
-        gridBagConstraints.weightx = 1.0;
-        lickGradeButtonsPanel.add(lickSavedLabel, gridBagConstraints);
-
-        gradeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        gradeLabel.setText("Save Lick with Grade:");
-        gradeLabel.setToolTipText("Provides a grade for the quality of lick. Used in machine learning experiments.");
-        gradeLabel.setMaximumSize(new java.awt.Dimension(130, 14));
-        gradeLabel.setMinimumSize(new java.awt.Dimension(120, 14));
-        gradeLabel.setPreferredSize(new java.awt.Dimension(120, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 2, 0);
-        lickGradeButtonsPanel.add(gradeLabel, gridBagConstraints);
-
-        saveLickTF.setText("<Generated Lick>");
-        saveLickTF.setMinimumSize(new java.awt.Dimension(270, 25));
-        saveLickTF.setPreferredSize(new java.awt.Dimension(270, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 10;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        lickGradeButtonsPanel.add(saveLickTF, gridBagConstraints);
-
-        saveLickWithLabelLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        saveLickWithLabelLabel.setText("Save Lick with Label:");
-        saveLickWithLabelLabel.setToolTipText("The label that will be used when graded licks are saved.");
-        saveLickWithLabelLabel.setMinimumSize(new java.awt.Dimension(120, 14));
-        saveLickWithLabelLabel.setPreferredSize(new java.awt.Dimension(120, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 10, 2, 0);
-        lickGradeButtonsPanel.add(saveLickWithLabelLabel, gridBagConstraints);
-
-        grade1Btn.setText("1");
-        grade1Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade1Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade1Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade1Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade1BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickGradeButtonsPanel.add(grade1Btn, gridBagConstraints);
-
-        grade2Btn.setText("2");
-        grade2Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade2Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade2Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade2Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade2BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade2Btn, gridBagConstraints);
-
-        grade3Btn.setText("3");
-        grade3Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade3Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade3Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade3Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade3BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade3Btn, gridBagConstraints);
-
-        grade4Btn.setText("4");
-        grade4Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade4Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade4Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade4Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade4BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade4Btn, gridBagConstraints);
-
-        grade5Btn.setText("5");
-        grade5Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade5Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade5Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade5Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade5BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 9;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade5Btn, gridBagConstraints);
-
-        grade6Btn.setText("6");
-        grade6Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade6Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade6Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade6Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade6BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 10;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade6Btn, gridBagConstraints);
-
-        grade7Btn.setText("7");
-        grade7Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade7Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade7Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade7Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade7BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 11;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade7Btn, gridBagConstraints);
-
-        grade8Btn.setText("8");
-        grade8Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade8Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade8Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade8Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade8BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 12;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade8Btn, gridBagConstraints);
-
-        grade9Btn.setText("9");
-        grade9Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade9Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade9Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade9Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade9BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 13;
-        gridBagConstraints.gridy = 1;
-        lickGradeButtonsPanel.add(grade9Btn, gridBagConstraints);
-
-        grade10Btn.setText("10");
-        grade10Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        grade10Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        grade10Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade10Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grade10BtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 14;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        lickGradeButtonsPanel.add(grade10Btn, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        lickGenPanel.add(lickGradeButtonsPanel, gridBagConstraints);
-
-        ProbFillClearPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pitch Probabilities Fill and Clear", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        ProbFillClearPanel.setMinimumSize(new java.awt.Dimension(420, 67));
-        ProbFillClearPanel.setPreferredSize(new java.awt.Dimension(420, 67));
-        ProbFillClearPanel.setLayout(new java.awt.GridBagLayout());
-
-        clearProbsButton.setToolTipText("Clear all pitch probabilities.");
-        clearProbsButton.setLabel("Clear All Probabilities");
-        clearProbsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearProbsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        ProbFillClearPanel.add(clearProbsButton, gridBagConstraints);
-
-        FillProbsButton.setText("Fill");
-        FillProbsButton.setToolTipText("Fill pitch probabilities from chords.\n");
-        FillProbsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FillProbsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        ProbFillClearPanel.add(FillProbsButton, gridBagConstraints);
-
-        autoFillCheckBox.setSelected(true);
-        autoFillCheckBox.setText("Auto-Fill");
-        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                autoFillCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 1.0;
-        ProbFillClearPanel.add(autoFillCheckBox, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.6;
-        lickGenPanel.add(ProbFillClearPanel, gridBagConstraints);
-
-        pitchProbabilitiesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pitch Probabilities by Chord", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        pitchProbabilitiesPanel.setMinimumSize(new java.awt.Dimension(950, 200));
-        pitchProbabilitiesPanel.setPreferredSize(new java.awt.Dimension(950, 200));
-        pitchProbabilitiesPanel.setLayout(new java.awt.GridBagLayout());
-
-        chordProbPanel.setMinimumSize(new java.awt.Dimension(800, 50));
-        chordProbPanel.setPreferredSize(new java.awt.Dimension(800, 400));
-        chordProbPanel.setLayout(new java.awt.BorderLayout());
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        pitchProbabilitiesPanel.add(chordProbPanel, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.5;
-        lickGenPanel.add(pitchProbabilitiesPanel, gridBagConstraints);
-
-        generatorPane.addTab("Lick Generator", lickGenPanel);
-
-        grammarLearningPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grammar Learning", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        grammarLearningPanel.setMinimumSize(new java.awt.Dimension(500, 300));
-        grammarLearningPanel.setPreferredSize(new java.awt.Dimension(500, 500));
-        grammarLearningPanel.setLayout(new java.awt.GridBagLayout());
-
-        finalLabel.setBackground(Color.green
-        );
-        finalLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        finalLabel.setText("<html>You can try your grammar at generation immediately without further loading, on the current or any other leadsheet,<br>however it will not appear in the main window until you restart the program.</html>");
-        finalLabel.setMaximumSize(new java.awt.Dimension(400, 9999));
-        finalLabel.setMinimumSize(new java.awt.Dimension(400, 40));
-        finalLabel.setPreferredSize(new java.awt.Dimension(400, 40));
-        finalLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 12;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(finalLabel, gridBagConstraints);
-
-        windowParametersPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Step 3: (Optional) Set the parameters below:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 14))); // NOI18N
-        windowParametersPanel.setMinimumSize(new java.awt.Dimension(500, 148));
-        windowParametersPanel.setLayout(new java.awt.GridBagLayout());
-
-        windowSizeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        windowSizeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        windowSizeLabel.setText("Window Size (beats)");
-        windowSizeLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        windowSizeLabel.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        windowSizeLabel.setMinimumSize(new java.awt.Dimension(120, 30));
-        windowSizeLabel.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
-        windowParametersPanel.add(windowSizeLabel, gridBagConstraints);
-
-        windowSlideLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        windowSlideLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        windowSlideLabel.setText("Window Slide (beats)");
-        windowSlideLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        windowSlideLabel.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        windowSlideLabel.setMinimumSize(new java.awt.Dimension(120, 30));
-        windowSlideLabel.setPreferredSize(new java.awt.Dimension(120, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
-        windowParametersPanel.add(windowSlideLabel, gridBagConstraints);
-
-        numClusterRepsLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        numClusterRepsLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        numClusterRepsLabel.setText("Number of Representatives per Cluster");
-        numClusterRepsLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        numClusterRepsLabel.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        numClusterRepsLabel.setMinimumSize(new java.awt.Dimension(400, 30));
-        numClusterRepsLabel.setPreferredSize(new java.awt.Dimension(400, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
-        windowParametersPanel.add(numClusterRepsLabel, gridBagConstraints);
-
-        windowSizeField.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        windowSizeField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        windowSizeField.setText("4");
-        windowSizeField.setToolTipText("The number of beats for the size of the window");
-        windowSizeField.setMaximumSize(null);
-        windowSizeField.setMinimumSize(new java.awt.Dimension(60, 30));
-        windowSizeField.setPreferredSize(new java.awt.Dimension(60, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        windowParametersPanel.add(windowSizeField, gridBagConstraints);
-
-        windowSlideField.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        windowSlideField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        windowSlideField.setText("2");
-        windowSlideField.setToolTipText("The number of beats to slide window by");
-        windowSlideField.setMaximumSize(null);
-        windowSlideField.setMinimumSize(new java.awt.Dimension(60, 30));
-        windowSlideField.setPreferredSize(new java.awt.Dimension(60, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        windowParametersPanel.add(windowSlideField, gridBagConstraints);
-
-        numClusterRepsField.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        numClusterRepsField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        numClusterRepsField.setText("12");
-        numClusterRepsField.setToolTipText("The number of beats for the size of the window");
-        numClusterRepsField.setMaximumSize(null);
-        numClusterRepsField.setMinimumSize(new java.awt.Dimension(100, 30));
-        numClusterRepsField.setPreferredSize(new java.awt.Dimension(60, 30));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        windowParametersPanel.add(numClusterRepsField, gridBagConstraints);
-
-        useMarkovCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        useMarkovCheckbox.setSelected(true);
-        useMarkovCheckbox.setText("Use Markov (ordered connection of phrases) Chain length:");
-        useMarkovCheckbox.setToolTipText("Use Markov chains when adding productions to Grammar");
-        useMarkovCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        useMarkovCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        useMarkovCheckbox.setMinimumSize(new java.awt.Dimension(435, 30));
-        useMarkovCheckbox.setPreferredSize(new java.awt.Dimension(435, 30));
-        useMarkovCheckbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useMarkovCheckboxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        windowParametersPanel.add(useMarkovCheckbox, gridBagConstraints);
-
-        MarkovLengthField.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        MarkovLengthField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        MarkovLengthField.setText("3");
-        MarkovLengthField.setToolTipText("The number of previous states on which the Markov chain depends.");
-        MarkovLengthField.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        MarkovLengthField.setMinimumSize(new java.awt.Dimension(100, 30));
-        MarkovLengthField.setPreferredSize(new java.awt.Dimension(60, 30));
-        MarkovLengthField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MarkovLengthFieldActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        windowParametersPanel.add(MarkovLengthField, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 0.02;
-        grammarLearningPanel.add(windowParametersPanel, gridBagConstraints);
-
-        loadBaseGrammarBtn.setBackground(Color.yellow
-        );
-        loadBaseGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        loadBaseGrammarBtn.setText("<html><b>Step 1</b>: Load the grammar on which you wish to build, such as Bare.grammar.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you do nothing, Impro-Visor will build on whatever grammar is current.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This step also clears any accumulated productions from prior use of the learning tool.</html>  ");
-        loadBaseGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        loadBaseGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        loadBaseGrammarBtn.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        loadBaseGrammarBtn.setMinimumSize(new java.awt.Dimension(105, 60));
-        loadBaseGrammarBtn.setOpaque(true);
-        loadBaseGrammarBtn.setPreferredSize(new java.awt.Dimension(173, 60));
-        loadBaseGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadBaseGrammarBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(loadBaseGrammarBtn, gridBagConstraints);
-
-        saveGrammarAsButton.setBackground(Color.yellow
-        );
-        saveGrammarAsButton.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        saveGrammarAsButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        saveGrammarAsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        saveGrammarAsButton.setLabel("<html><b>Step 2</b>: <b>IMPORTANT</b>: This step will use <b>Save as ...</b> in the Grammar menu to save your new grammar under a new name, <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; in case you want to return to the old grammar.\n<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; It will also ask you to save your leadsheet if you need it, as the leadsheet window will be used as a workspace.</html>  ");
-        saveGrammarAsButton.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        saveGrammarAsButton.setOpaque(true);
-        saveGrammarAsButton.setPreferredSize(new java.awt.Dimension(173, 60));
-        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveGrammarAsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(saveGrammarAsButton, gridBagConstraints);
-
-        openCorpusBtn.setBackground(Color.orange);
-        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        openCorpusBtn.setActionCommand("<html><b>Step 5</b>: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.</html>");
-        openCorpusBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        openCorpusBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        openCorpusBtn.setLabel("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. \n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The process is over when the last chorus of that leadsheet appears.</html>");
-        openCorpusBtn.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        openCorpusBtn.setMinimumSize(new java.awt.Dimension(240, 75));
-        openCorpusBtn.setOpaque(true);
-        openCorpusBtn.setPreferredSize(new java.awt.Dimension(240, 75));
-        openCorpusBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openCorpusBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(openCorpusBtn, gridBagConstraints);
-
-        toGrammarBtn.setBackground(Color.green);
-        toGrammarBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        toGrammarBtn.setText("<html><b>Step 5</b>: Click this button to create and save the grammar and Soloist file. \n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are two <b>other alternatives</b> at this point:\n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a, Quit by closing the window, with no changes.\n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. Return to Step 4 and learn from other corpuses of solos.\n</html>");
-        toGrammarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        toGrammarBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        toGrammarBtn.setMaximumSize(new java.awt.Dimension(9999, 70));
-        toGrammarBtn.setMinimumSize(new java.awt.Dimension(240, 75));
-        toGrammarBtn.setOpaque(true);
-        toGrammarBtn.setPreferredSize(new java.awt.Dimension(240, 75));
-        toGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toGrammarBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(toGrammarBtn, gridBagConstraints);
-        toGrammarBtn.getAccessibleContext().setAccessibleName("Add Accumulation to Grammar and Create Grammar (and Soloist) File\n");
-
-        learningStep0Label.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        learningStep0Label.setText("<html>Please follow these steps to learn a new grammar from a corpus of solos as a folder of leadsheets. <br>Click the rectangular buttons below from top to bottom.</html>  ");
-        learningStep0Label.setMaximumSize(new java.awt.Dimension(2147483647, 90));
-        learningStep0Label.setMinimumSize(new java.awt.Dimension(400, 85));
-        learningStep0Label.setPreferredSize(new java.awt.Dimension(400, 85));
-        learningStep0Label.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(learningStep0Label, gridBagConstraints);
-
-        testGeneration.setBackground(Color.green);
-        testGeneration.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        testGeneration.setText("<html><b>Step 6</b>: Press this button to generate solos with your Learned grammar</html>");
-        testGeneration.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        testGeneration.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        testGeneration.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        testGeneration.setMaximumSize(new java.awt.Dimension(9999, 9999));
-        testGeneration.setMinimumSize(new java.awt.Dimension(240, 29));
-        testGeneration.setOpaque(true);
-        testGeneration.setPreferredSize(new java.awt.Dimension(240, 29));
-        testGeneration.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                testGenerationActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 13;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 0.05;
-        grammarLearningPanel.add(testGeneration, gridBagConstraints);
-
-        generatorPane.addTab("Grammar Learning", grammarLearningPanel);
-
-        soloGenPanel.setLayout(new java.awt.GridBagLayout());
-
-        generateSoloButton.setText("Generate Solo");
-        generateSoloButton.setMaximumSize(new java.awt.Dimension(100, 30));
-        generateSoloButton.setMinimumSize(new java.awt.Dimension(100, 30));
-        generateSoloButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        generateSoloButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateSoloButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(generateSoloButton, gridBagConstraints);
-
-        generateThemeButton.setText("Generate Theme");
-        generateThemeButton.setMaximumSize(new java.awt.Dimension(100, 30));
-        generateThemeButton.setMinimumSize(new java.awt.Dimension(100, 30));
-        generateThemeButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        generateThemeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateThemeButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(generateThemeButton, gridBagConstraints);
-
-        themeField.setEditable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        soloGenPanel.add(themeField, gridBagConstraints);
-
-        themeProbabilityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        soloGenPanel.add(themeProbabilityField, gridBagConstraints);
-
-        themeLengthField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        soloGenPanel.add(themeLengthField, gridBagConstraints);
-
-        themeLengthLabel.setText("Theme Length (beats):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(themeLengthLabel, gridBagConstraints);
-
-        themeProbLabel.setText("Probability to use Theme:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        soloGenPanel.add(themeProbLabel, gridBagConstraints);
-
-        themeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        themeLabel.setText("Theme as an Abstract Melody:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(themeLabel, gridBagConstraints);
-
-        genSoloThemeBtn.setText("Generate Solo and Theme");
-        genSoloThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
-        genSoloThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
-        genSoloThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        genSoloThemeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                genSoloThemeBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(genSoloThemeBtn, gridBagConstraints);
-
-        transposeProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        transposeProbLabel.setText("     Transposition Probability:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(transposeProbLabel, gridBagConstraints);
-
-        InvertProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        InvertProbLabel.setText("     Inversion Probability:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(InvertProbLabel, gridBagConstraints);
-
-        ReverseProbLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        ReverseProbLabel.setText("     Reversal Probability:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(ReverseProbLabel, gridBagConstraints);
-
-        pasteThemeBtn.setText("Paste Selection");
-        pasteThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
-        pasteThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
-        pasteThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
-        pasteThemeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pasteThemeBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(pasteThemeBtn, gridBagConstraints);
-
-        transposeProbabilityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(transposeProbabilityField, gridBagConstraints);
-
-        invertProbabilityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(invertProbabilityField, gridBagConstraints);
-
-        reverseProbabilityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
-        soloGenPanel.add(reverseProbabilityField, gridBagConstraints);
-
-        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18));
-        disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        disclaimer.setText("<html>The Solo Generator is work in progress. The idea is to generate a solo by using a theme several times in different places.</html>");
-        disclaimer.setMaximumSize(new java.awt.Dimension(600, 60));
-        disclaimer.setMinimumSize(new java.awt.Dimension(600, 40));
-        disclaimer.setPreferredSize(new java.awt.Dimension(600, 40));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.ipady = 60;
-        soloGenPanel.add(disclaimer, gridBagConstraints);
-
-        generatorPane.addTab("Solo Generator", soloGenPanel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        generatorFrame.getContentPane().add(generatorPane, gridBagConstraints);
-
-        generatorMenuBar.setMinimumSize(new java.awt.Dimension(115, 23));
-
-        grammarMenu.setMnemonic('G');
-        grammarMenu.setText("Grammar Options");
-        grammarMenu.setToolTipText("Edit or change the current grammar file.");
-        grammarMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grammarMenuActionPerformed(evt);
-            }
-        });
-
-        openGrammarMI.setText("Load Grammar");
-        openGrammarMI.setToolTipText("Selects which grammar file to used.");
-        openGrammarMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openGrammarMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(openGrammarMI);
-
-        showLogMI.setText("Show Log");
-        showLogMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showLogMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(showLogMI);
-
-        saveGrammarMI.setText("Save Grammar As ...");
-        saveGrammarMI.setToolTipText("Saves the grammar file under a specified name.");
-        saveGrammarMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveGrammarMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(saveGrammarMI);
-
-        editGrammarMI.setText("Edit Grammar");
-        editGrammarMI.setToolTipText("Edit the current grammar using a text editor.");
-        editGrammarMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editGrammarMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(editGrammarMI);
-
-        reloadGrammarMI.setText("Reload Grammar");
-        reloadGrammarMI.setToolTipText("Reloads the grammar file.");
-        reloadGrammarMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reloadGrammarMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(reloadGrammarMI);
-
-        toCriticMI.setText("Send Licks to Critic");
-        toCriticMI.setToolTipText("Copies licks in a special format for learning by critic (a separate tool).");
-        toCriticMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toCriticMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(toCriticMI);
-
-        showCriticMI.setText("Show Critic Exporter");
-        showCriticMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showCriticMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(showCriticMI);
-
-        useGrammarMI.setText("Use Grammar");
-        useGrammarMI.setToolTipText("Indicates whether or not a grammar should be used in lick generation. Without this, generation will be governed only by probabilities set in the fields below.");
-        useGrammarMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useGrammarMIActionPerformed(evt);
-            }
-        });
-        grammarMenu.add(useGrammarMI);
-
-        generatorMenuBar.add(grammarMenu);
-
-        generatorWindowMenu.setLabel("Window");
-        generatorWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                generatorWindowMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-        });
-
-        closeWindowMI1.setMnemonic('C');
-        closeWindowMI1.setText("Close Window");
-        closeWindowMI1.setToolTipText("Closes the current window (exits program if there are no other windows)");
-        closeWindowMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeWindowMI1ActionPerformed(evt);
-            }
-        });
-        generatorWindowMenu.add(closeWindowMI1);
-
-        cascadeMI1.setMnemonic('A');
-        cascadeMI1.setText("Cascade Windows");
-        cascadeMI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cascadeMI1ActionPerformed(evt);
-            }
-        });
-        generatorWindowMenu.add(cascadeMI1);
-        generatorWindowMenu.add(windowMenuSeparator1);
-
-        generatorMenuBar.add(generatorWindowMenu);
-
-        generatorFrame.setJMenuBar(generatorMenuBar);
 
         preferencesDialog.setTitle("Preferences");
         preferencesDialog.setFocusCycleRoot(false);
@@ -8195,19 +6315,6 @@ public class Notate
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
         setName("notateFrame"); // NOI18N
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                formFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                formFocusLost(evt);
-            }
-        });
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -8227,6 +6334,19 @@ public class Notate
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+        });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                formFocusLost(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
             }
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -10149,51 +8269,6 @@ public class Notate
       generate(lickgen);
     }//GEN-LAST:event_generateToolbarBtnActionPerformed
 
-    private void pasteThemeBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pasteThemeBtnActionPerformed
-    {//GEN-HEADEREND:event_pasteThemeBtnActionPerformed
-      MelodyPart sel =
-              getCurrentStave().getDisplayPart().extract(getCurrentSelectionStart(),
-              getCurrentSelectionEnd());
-      Part.PartIterator i = sel.iterator();
-      String theme = "";
-      while( i.hasNext() )
-        {
-        theme += i.next().toLeadsheet() + " ";
-        }
-
-      themeField.setText(theme);
-      themeLengthField.setText(sel.getSize() / BEAT + "");
-    }//GEN-LAST:event_pasteThemeBtnActionPerformed
-
-    private void genSoloThemeBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_genSoloThemeBtnActionPerformed
-    {//GEN-HEADEREND:event_genSoloThemeBtnActionPerformed
-      MelodyPart theme = generateTheme();
-      generateSolo(theme);
-    }//GEN-LAST:event_genSoloThemeBtnActionPerformed
-
-    private void generateSoloButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateSoloButtonActionPerformed
-    {//GEN-HEADEREND:event_generateSoloButtonActionPerformed
-      MelodyPart theme;
-      if( themeField.getText().equals("") )
-        {
-        theme = generateTheme();
-        }
-      else
-        {
-        theme = new MelodyPart(themeField.getText().trim());
-        }
-      generateSolo(theme);
-    }//GEN-LAST:event_generateSoloButtonActionPerformed
-
-    private void generateThemeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateThemeButtonActionPerformed
-    {//GEN-HEADEREND:event_generateThemeButtonActionPerformed
-      generateTheme();
-    }//GEN-LAST:event_generateThemeButtonActionPerformed
-
-    private void showCriticMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCriticMIActionPerformed
-     showCritic();
-    }//GEN-LAST:event_showCriticMIActionPerformed
-
   public void showCritic()
   {
        criticDialog.setVisible(true);
@@ -10312,13 +8387,9 @@ public class Notate
         
     }//GEN-LAST:event_sectionListValueChanged
 
-    private void toCriticMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMIActionPerformed
-    toCritic();
-    }//GEN-LAST:event_toCriticMIActionPerformed
-
     public void toCritic()
   {
-      if( toCriticMI.isSelected() )
+      if( lickgenFrame.toCriticSelected() )
         {
 
         getCurrentStave().lockSelectionWidth(16 * EIGHTH);
@@ -10345,22 +8416,6 @@ public class Notate
       addRest();
         
     }//GEN-LAST:event_addRestMIActionPerformed
-
-    private void leapProbFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_leapProbFieldFocusLost
-
-    {//GEN-HEADEREND:event_leapProbFieldFocusLost
-
-      verifyTriageFields();
-        
-    }//GEN-LAST:event_leapProbFieldFocusLost
-
-    private void leapProbFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leapProbFieldActionPerformed
-
-    {//GEN-HEADEREND:event_leapProbFieldActionPerformed
-
-      verifyTriageFields();
-        
-    }//GEN-LAST:event_leapProbFieldActionPerformed
 
     private void styleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_styleListValueChanged
 
@@ -10402,87 +8457,6 @@ public class Notate
       duplicateLickDialog.setVisible(false);
         
     }//GEN-LAST:event_overwriteLickButtonActionPerformed
-
-    private void grade10BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade10BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade10BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 10);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade10BtnActionPerformed
-
-    private void grade9BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade9BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade9BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 9);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade9BtnActionPerformed
-
-    private void grade8BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade8BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade8BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 8);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade8BtnActionPerformed
-
-    private void grade7BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade7BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade7BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 7);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade7BtnActionPerformed
-
-    private void grade6BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade6BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade6BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 6);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade6BtnActionPerformed
-
-    private void grade5BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade5BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade5BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 5);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade5BtnActionPerformed
-
-    private void grade4BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade4BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade4BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 4);
-      generateLickButtonActionPerformed(null);
-    }//GEN-LAST:event_grade4BtnActionPerformed
-
-    private void grade3BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade3BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade3BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 3);
-      generateLickButtonActionPerformed(null);
-        
-    }//GEN-LAST:event_grade3BtnActionPerformed
-
-    private void grade2BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade2BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade2BtnActionPerformed
-
-      triageLick(saveLickTF.getText(), 2);
-      generateLickButtonActionPerformed(null);
-        
-    }//GEN-LAST:event_grade2BtnActionPerformed
-
-    private void grade1BtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_grade1BtnActionPerformed
-
-    {//GEN-HEADEREND:event_grade1BtnActionPerformed
-      triageLick(saveLickTF.getText(), 1);
-      generateLickButtonActionPerformed(null);        
-    }//GEN-LAST:event_grade1BtnActionPerformed
 
     private void insertVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertVoicingButtonActionPerformed
      
@@ -10808,13 +8782,6 @@ private String getChordRedirectName(int row)
   return null;
   }
 
-    private void saveGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveGrammarMIActionPerformed
-
-    {//GEN-HEADEREND:event_saveGrammarMIActionPerformed
-      saveGrammarAs();
-
-    }//GEN-LAST:event_saveGrammarMIActionPerformed
-
  public void saveGrammarAs()
   {
     grammarfc.setDialogTitle("Save Grammar As");
@@ -10859,28 +8826,17 @@ private String getChordRedirectName(int row)
 
  }
 
-    private void useGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useGrammarMIActionPerformed
-
-    {//GEN-HEADEREND:event_useGrammarMIActionPerformed
-    useGrammarAction();
-    }//GEN-LAST:event_useGrammarMIActionPerformed
-
  public void useGrammarAction()
   {
-      useGrammar = useGrammarMI.isSelected();
-
+      useGrammar = lickgenFrame.useGrammarSelected();
+/* REVISIT:
       minDurationField.setEnabled(!useGrammar);
 
       maxDurationField.setEnabled(!useGrammar);
 
       restProbField.setEnabled(!useGrammar);
+ */
  }
-    private void editGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_editGrammarMIActionPerformed
-
-    {//GEN-HEADEREND:event_editGrammarMIActionPerformed
-      editGrammar();
-    }//GEN-LAST:event_editGrammarMIActionPerformed
-
     public void editGrammar()
     {
       grammarEditor.fillEditor();
@@ -10889,13 +8845,6 @@ private String getChordRedirectName(int row)
       grammarEditor.setVisible(true);
       grammarEditor.toFront();
     }
-    private void reloadGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reloadGrammarMIActionPerformed
-
-    {//GEN-HEADEREND:event_reloadGrammarMIActionPerformed
-    loadGrammar();
-        
-    }//GEN-LAST:event_reloadGrammarMIActionPerformed
-
     public void loadGrammar()
     {
       lickgen.loadGrammar(grammarFile);
@@ -10925,12 +8874,6 @@ private String getChordRedirectName(int row)
       grammarfc.setCurrentDirectory(oldDirectory);
       lickgenFrame.toFront();
     }
-
-    private void openGrammarMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGrammarMIActionPerformed
-
-    {//GEN-HEADEREND:event_openGrammarMIActionPerformed
-        openGrammar();
-    }//GEN-LAST:event_openGrammarMIActionPerformed
 
     private static int VoicingTableChordColumn     = 0;
     private static int VoicingTableNameColumn      = 1;
@@ -11241,17 +9184,7 @@ private String getChordRedirectName(int row)
     }//GEN-LAST:event_voicingTestMIActionPerformed
     
     
-    
-    private void rootComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rootComboBoxActionPerformed
-
-    {//GEN-HEADEREND:event_rootComboBoxActionPerformed
         
-        lickgen.setPreferredScale((String)rootComboBox.getSelectedItem(), (String)scaleComboBox.getSelectedItem());
-        
-        redrawTriage();
-        
-    }//GEN-LAST:event_rootComboBoxActionPerformed
-    
     
     
     private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
@@ -11581,91 +9514,17 @@ private String getChordRedirectName(int row)
     }//GEN-LAST:event_windowMenuMenuSelected
     
  
-    
-    private void chordToneDecayFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_chordToneDecayFieldFocusLost
-
-    {//GEN-HEADEREND:event_chordToneDecayFieldFocusLost
         
-        verifyTriageFields();
+    
         
-        if (autoFill)
-            
-            FillProbsButtonActionPerformed(null);
+    
         
-    }//GEN-LAST:event_chordToneDecayFieldFocusLost
     
-    
-    
-    private void chordToneDecayFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chordToneDecayFieldActionPerformed
-
-    {//GEN-HEADEREND:event_chordToneDecayFieldActionPerformed
         
-        verifyTriageFields();
+    
         
-        if (autoFill)
-            
-            FillProbsButtonActionPerformed(null);
+    
         
-    }//GEN-LAST:event_chordToneDecayFieldActionPerformed
-    
-    
-    
-    private void scaleToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_scaleToneWeightFieldFocusLost
-    
-    {
-        
-        verifyTriageFields();
-        
-        if (autoFill)
-            
-            FillProbsButtonActionPerformed(null);
-        
-    }//GEN-LAST:event_scaleToneWeightFieldFocusLost
-    
-    
-    
-    private void scaleToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_scaleToneWeightFieldActionPerformed
-    
-    {
-        
-        verifyTriageFields();
-        
-        if (autoFill)
-            
-            FillProbsButtonActionPerformed(null);
-        
-        
-        
-    }//GEN-LAST:event_scaleToneWeightFieldActionPerformed
-    
-    
-    
-    private void colorToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_colorToneWeightFieldFocusLost
-    
-    {
-        
-        verifyTriageFields();
-        
-        if (autoFill)
-            
-            FillProbsButtonActionPerformed(null);
-        
-    }//GEN-LAST:event_colorToneWeightFieldFocusLost
-    
-    
-    
-    private void colorToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_colorToneWeightFieldActionPerformed
-    
-    {
-        
-        verifyTriageFields();
-        
-        if (autoFill)
-            
-            FillProbsButtonActionPerformed(null);
-        
-    }//GEN-LAST:event_colorToneWeightFieldActionPerformed
-    
     
     
     private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
@@ -11687,64 +9546,9 @@ private String getChordRedirectName(int row)
     
  
     
-    private void chordToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chordToneWeightFieldActionPerformed
-    {
-/*
- verifyTriageFields();
-
-    if( autoFill )
-      {
-        FillProbsButtonActionPerformed(null);
-      }
-*/
-    }//GEN-LAST:event_chordToneWeightFieldActionPerformed
-
  
-    private void scaleComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_scaleComboBoxActionPerformed
-
-    {//GEN-HEADEREND:event_scaleComboBoxActionPerformed
-
-        /*
-         String root = (String) rootComboBox.getSelectedItem();
-
-       String type = (String) scaleComboBox.getSelectedItem();
-
-        if( root == null || type == null )
-          {
-            return;
-          }
-
-        if( type.equals("None") || type.equals("Use First Scale") )
-          {
-            rootComboBox.setEnabled(false);
-          }
-        else
-          {
-            rootComboBox.setEnabled(true);
-          }
-
-        lickgen.setPreferredScale((String) rootComboBox.getSelectedItem(),
-                                  (String) scaleComboBox.getSelectedItem());
-
-        redrawTriage();
-
-        if( autoFill )
-          {
-            FillProbsButtonActionPerformed(null);
-          }
-         */
-    }//GEN-LAST:event_scaleComboBoxActionPerformed
-
     
-    
-    private void saveLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveLickButtonActionPerformed
-
-    {//GEN-HEADEREND:event_saveLickButtonActionPerformed
-        enterLickTitle.setText("<Generated Lick>");
         
-        openSaveLickFrame();        
-    }//GEN-LAST:event_saveLickButtonActionPerformed
-    
     
     
     private void openGeneratorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGeneratorButtonActionPerformed
@@ -11756,45 +9560,6 @@ private String getChordRedirectName(int row)
     }//GEN-LAST:event_openGeneratorButtonActionPerformed
     
     
-    private void getSelRhythmButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_getSelRhythmButtonActionPerformed
-
-    {//GEN-HEADEREND:event_getSelRhythmButtonActionPerformed
-        int selStart = getCurrentSelectionStart();
-
-        int selEnd = getCurrentSelectionEnd();
-
-        MelodyPart part = getCurrentOrigPart();
-
-        int current = selStart;
-
-        Polylist rhythmString = new Polylist();
-
-        while( current <= selEnd )
-          {
-
-            StringBuffer sb = new StringBuffer();
-
-            int value = part.getNote(current).
-                getDurationString(sb,  part.getNote(current).getRhythmValue());
-
-            int rhythm = 0;
-
-            if( part.getNote(current).getPitch() == REST )
-              {
-                rhythmString = rhythmString.cons("R" + sb.substring(1));
-              }
-            else
-              {
-                rhythmString = rhythmString.cons("X" + sb.substring(1));
-              }
-            current += part.getNote(current).getRhythmValue();
-          }
-
-        rhythmString = rhythmString.reverse();
-
-        lickgenFrame.setRhythmFieldText(rhythmString.toString());
-    }//GEN-LAST:event_getSelRhythmButtonActionPerformed
-
 
     /**
      * Sets the abstract melody field (formerly called "rhythm" field).
@@ -12333,15 +10098,7 @@ public void chordVolumeChanged()
     }//GEN-LAST:event_savePrefsBtnActionPerformed
     
     
-    
-    private void stopLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopLickButtonActionPerformed
-
-    {//GEN-HEADEREND:event_stopLickButtonActionPerformed
         
-        stopPlaying();
-        
-    }//GEN-LAST:event_stopLickButtonActionPerformed
-    
     
     
     private Component currentPrefTab = null;
@@ -12937,408 +10694,77 @@ public void chordVolumeChanged()
     }
     
     
-    
-    private void autoFillCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_autoFillCheckBoxActionPerformed
-
-    {//GEN-HEADEREND:event_autoFillCheckBoxActionPerformed
-      autoFill = autoFillCheckBox.isSelected();
-
-      if( autoFill )
-        {
-        redrawTriage();
-        }        
-    }//GEN-LAST:event_autoFillCheckBoxActionPerformed
-    
-    
-    
-    private void playLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playLickButtonActionPerformed
-
-    {//GEN-HEADEREND:event_playLickButtonActionPerformed
         
-        getCurrentStave().playSelection(false, getLoopCount());
-        
-    }//GEN-LAST:event_playLickButtonActionPerformed
-    
     
-    
-    private void minPitchFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_minPitchFieldActionPerformed
-
-    {//GEN-HEADEREND:event_minPitchFieldActionPerformed
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_minPitchFieldActionPerformed
-    
     
-    
-    private void minPitchFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minPitchFieldGetsFocus
-
-    {//GEN-HEADEREND:event_minPitchFieldGetsFocus
-        
-// TODO add your handling code here:
         
-    }//GEN-LAST:event_minPitchFieldGetsFocus
-    
-    
     
-    private void minPitchFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minPitchFieldFocusLost
-
-    {//GEN-HEADEREND:event_minPitchFieldFocusLost
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_minPitchFieldFocusLost
-    
-    
     
-    private void minPitchFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_minPitchFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_minPitchFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_minPitchFieldenterLickKeyPressed
-    
     
-    
-    private void maxPitchFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_maxPitchFieldActionPerformed
-
-    {//GEN-HEADEREND:event_maxPitchFieldActionPerformed
-        
-        verifyTriageFields();
         
-    }//GEN-LAST:event_maxPitchFieldActionPerformed
     
-    
-    
-    private void maxPitchFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxPitchFieldGetsFocus
-
-    {//GEN-HEADEREND:event_maxPitchFieldGetsFocus
-        
-// TODO add your handling code here:
         
-    }//GEN-LAST:event_maxPitchFieldGetsFocus
     
-    
-    
-    private void maxPitchFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxPitchFieldFocusLost
-
-    {//GEN-HEADEREND:event_maxPitchFieldFocusLost
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_maxPitchFieldFocusLost
-    
     
-    
-    private void maxPitchFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_maxPitchFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_maxPitchFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_maxPitchFieldenterLickKeyPressed
-    
     
-    
-    private void minDurationFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_minDurationFieldActionPerformed
-
-    {//GEN-HEADEREND:event_minDurationFieldActionPerformed
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_minDurationFieldActionPerformed
-    
     
-    
-    private void minDurationFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minDurationFieldGetsFocus
-
-    {//GEN-HEADEREND:event_minDurationFieldGetsFocus
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_minDurationFieldGetsFocus
-    
     
-    
-    private void minDurationFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minDurationFieldFocusLost
-
-    {//GEN-HEADEREND:event_minDurationFieldFocusLost
-        
-        verifyTriageFields();
         
-    }//GEN-LAST:event_minDurationFieldFocusLost
-    
-    
     
-    private void minDurationFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_minDurationFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_minDurationFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_minDurationFieldenterLickKeyPressed
-    
-    
     
-    private void totalBeatsFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_totalBeatsFieldActionPerformed
-
-    {//GEN-HEADEREND:event_totalBeatsFieldActionPerformed
-        
-        verifyTriageFields();
-        
-        setCurrentSelectionEnd(getCurrentSelectionStart() + totalSlots - 1);
-        
-        redrawTriage();
-        
-        lickgenFrame.pack();
         
-    }//GEN-LAST:event_totalBeatsFieldActionPerformed
     
-    
-    
-    private void totalBeatsFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_totalBeatsFieldGetsFocus
-
-    {//GEN-HEADEREND:event_totalBeatsFieldGetsFocus
-        
-// TODO add your handling code here:
         
-    }//GEN-LAST:event_totalBeatsFieldGetsFocus
     
-    
-    
-    private void totalBeatsFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_totalBeatsFieldFocusLost
-
-    {//GEN-HEADEREND:event_totalBeatsFieldFocusLost
-        
-        verifyTriageFields();
-        
-        setCurrentSelectionEnd(getCurrentSelectionStart() + totalSlots - 1);
         
-        redrawTriage();
-        
-        lickgenFrame.pack();
-        
-    }//GEN-LAST:event_totalBeatsFieldFocusLost
-    
     
-    
-    private void totalBeatsFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_totalBeatsFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_totalBeatsFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_totalBeatsFieldenterLickKeyPressed
-    
     
-    
-    private void maxIntervalFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_maxIntervalFieldActionPerformed
-
-    {//GEN-HEADEREND:event_maxIntervalFieldActionPerformed
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_maxIntervalFieldActionPerformed
-    
     
-    
-    private void maxIntervalFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxIntervalFieldGetsFocus
-
-    {//GEN-HEADEREND:event_maxIntervalFieldGetsFocus
-        
-// TODO add your handling code here:
         
-    }//GEN-LAST:event_maxIntervalFieldGetsFocus
-    
-    
     
-    private void maxIntervalFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxIntervalFieldFocusLost
-
-    {//GEN-HEADEREND:event_maxIntervalFieldFocusLost
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_maxIntervalFieldFocusLost
-    
-    
     
-    private void maxIntervalFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_maxIntervalFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_maxIntervalFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_maxIntervalFieldenterLickKeyPressed
-    
     
-    
-    private void maxDurationFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_maxDurationFieldActionPerformed
-
-    {//GEN-HEADEREND:event_maxDurationFieldActionPerformed
-        
-        verifyTriageFields();
         
-    }//GEN-LAST:event_maxDurationFieldActionPerformed
     
-    
-    
-    private void maxDurationFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxDurationFieldGetsFocus
-
-    {//GEN-HEADEREND:event_maxDurationFieldGetsFocus
-        
-// TODO add your handling code here:
         
-    }//GEN-LAST:event_maxDurationFieldGetsFocus
     
-    
-    
-    private void maxDurationFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxDurationFieldFocusLost
-
-    {//GEN-HEADEREND:event_maxDurationFieldFocusLost
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_maxDurationFieldFocusLost
-    
     
-    
-    private void maxDurationFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_maxDurationFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_maxDurationFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_maxDurationFieldenterLickKeyPressed
-    
     
-    
-    private void restProbFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_restProbFieldActionPerformed
-
-    {//GEN-HEADEREND:event_restProbFieldActionPerformed
-        
-        verifyTriageFields();
         
-    }//GEN-LAST:event_restProbFieldActionPerformed
-    
-    
     
-    private void restProbFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_restProbFieldGetsFocus
-
-    {//GEN-HEADEREND:event_restProbFieldGetsFocus
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_restProbFieldGetsFocus
-    
-    
     
-    private void restProbFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_restProbFieldFocusLost
-
-    {//GEN-HEADEREND:event_restProbFieldFocusLost
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_restProbFieldFocusLost
-    
     
-    
-    private void restProbFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_restProbFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_restProbFieldenterLickKeyPressed
-        
         
-        
-    }//GEN-LAST:event_restProbFieldenterLickKeyPressed
-    
-    
     
-    private void minIntervalFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_minIntervalFieldActionPerformed
-
-    {//GEN-HEADEREND:event_minIntervalFieldActionPerformed
         
-        verifyTriageFields();
-        
-    }//GEN-LAST:event_minIntervalFieldActionPerformed
-    
     
-    
-    private void minIntervalFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minIntervalFieldGetsFocus
-
-    {//GEN-HEADEREND:event_minIntervalFieldGetsFocus
-        
-// TODO add your handling code here:
         
-    }//GEN-LAST:event_minIntervalFieldGetsFocus
     
-    
-    
-    private void minIntervalFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minIntervalFieldFocusLost
-
-    {//GEN-HEADEREND:event_minIntervalFieldFocusLost
-        
-        verifyTriageFields();
         
-    }//GEN-LAST:event_minIntervalFieldFocusLost
     
-    
-    
-    private void minIntervalFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_minIntervalFieldenterLickKeyPressed
-
-    {//GEN-HEADEREND:event_minIntervalFieldenterLickKeyPressed
         
-// TODO add your handling code here:
-        
-    }//GEN-LAST:event_minIntervalFieldenterLickKeyPressed
     
+        
     
-
-    private void clearProbsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearProbsButtonActionPerformed
-
-    {//GEN-HEADEREND:event_clearProbsButtonActionPerformed
-/*
-        for (int i = 0; i < lickPrefs.size(); ++i)
-            
-            for (int j = 0; j < 12; ++j)
-                
-                lickPrefs.get(i)[j].setText("0.0");
- */
-    }//GEN-LAST:event_clearProbsButtonActionPerformed
   
     
-    /*
-    private void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_FillProbsButtonActionPerformed
-
-    {//GEN-HEADEREND:event_FillProbsButtonActionPerformed
-        
-        if (getCurrentSelectionStart() == -1)
-            
-            return;
-        
-        
-        
-        Vector<double[]> probs = lickgen.fillProbs(chordProg,
-                
-                chordToneWeight, scaleToneWeight, colorToneWeight, chordToneDecayRate,
-                
-                getCurrentSelectionStart(), totalSlots);
-        
-        
-        
-        for (int i = 0; i < probs.size(); ++i)
-            
-            for (int j = 0; j < 12; ++j)
-                
-            {
-            
-            String p = ((Double)probs.get(i)[j]).toString();
-            
-            lickPrefs.get(i)[j].setText(p.substring(0, Math.min(p.length(), 5)));
-            
-            }
-        
-    }//GEN-LAST:event_FillProbsButtonActionPerformed
-    */
+    /*    */
     
     
     /**
@@ -13651,57 +11077,9 @@ private void updateTempoFromTextField()
    
     }//GEN-LAST:event_newBtnActionPerformed
         
-    
-    private void fillMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fillMelodyButtonActionPerformed
-
-    {//GEN-HEADEREND:event_fillMelodyButtonActionPerformed
-        String r = rhythmField.getText().trim();
-        if( r.equals("") )
-          {
-          return; // no text specified
-          }
-        if (r.charAt(0) != '(')
-            r = "(".concat(r);
         
-        if (r.charAt(r.length() - 1) != ')')
-            r = r.concat(")");
+    
         
-        lickgenFrame.setRhythmFieldText(r);
-
-        Polylist rhythm = new Polylist();
-        StringReader rhythmReader = new StringReader(r);
-        Tokenizer in = new Tokenizer(rhythmReader);
-        Object ob = null;
-        
-        while ((ob = in.nextSexp()) != Tokenizer.eof)
-            if (ob instanceof Polylist)
-                rhythm = (Polylist)ob;
-        
-        generateLick(rhythm);
-    }//GEN-LAST:event_fillMelodyButtonActionPerformed
-    
-    
-    
-    private void genRhythmButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_genRhythmButtonActionPerformed
-
-    {//GEN-HEADEREND:event_genRhythmButtonActionPerformed
-        verifyTriageFields();
-
-        if( useGrammar )
-          {
-            lickgenFrame.setRhythmFieldText(
-                lickgen.generateRhythmFromGrammar(totalSlots).toString());
-          }
-        else
-          {
-            lickgenFrame.setRhythmFieldText(
-                lickgen.generateRandomRhythm(totalSlots,
-                                             minDuration,
-                                             maxDuration,
-                                             restProb).toString());
-          }
-    }//GEN-LAST:event_genRhythmButtonActionPerformed
-    
     
     
     private void adviceWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_adviceWindowClosing
@@ -14716,7 +12094,7 @@ public void redrawTriage()
                 
                 saveAdviceActionPerformed(null);        // automatically save advice
                 
-                lickSavedLabel.setText("Lick saved!");
+                // lickSavedLabel.setText("Lick saved!");
                 
             }
             
@@ -14732,7 +12110,7 @@ public void redrawTriage()
         
         String saveSelection = getCurrentStave().getSaveSelection(lickName, Stave.ExtractMode.LICK, grade);
         
-        if(toCriticMI.isSelected()) {
+        if(lickgenFrame.toCriticSelected()) {
             
             criticDialog.add(saveSelection, grade);
             
@@ -14754,117 +12132,8 @@ public void redrawTriage()
         return ((x > 0) && ((x & (x - 1)) == 0));
     }
     
-    public MelodyPart generateTheme() {
-        themeLength = BEAT*intFromTextField(themeLengthField, 0, score.getLength() / BEAT, themeLength);
-        Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
-        
-        verifyTriageFields();
-        MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-
-            //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-            //    leapProb, rhythm, chordProg, 0, avoidRepeats);
-        
-        Part.PartIterator i = lick.iterator();
-        String theme = "";
-        while (i.hasNext())
-        {
-          Unit unit = i.next();
-          if( unit != null )
-          {
-            theme += unit.toLeadsheet() + " ";
-          }
-        }
-        
-        themeField.setText(theme);
-        return lick;
-    }
     
-    public void generateSolo(MelodyPart theme) {
-        int length = theme.getSize();
-        themeLength = length;
-        MelodyPart solo = new MelodyPart(length);
-        impro.setPlayEntrySounds(false);
-        themeProb = doubleFromTextField(themeProbabilityField, 0, 1, themeProb);
-        transposeProb = doubleFromTextField(transposeProbabilityField, 0, 1, transposeProb);
-        invertProb = doubleFromTextField(invertProbabilityField, 0, 1, invertProb);
-        reverseProb = doubleFromTextField(reverseProbabilityField, 0, 1, reverseProb);
-        
-        solo.pasteSlots(theme, 0);
-        for (int i = length; i <= score.getLength() - length; i += length) {
-            if (bernoulli(themeProb)) {
-                MelodyPart adjustedTheme = theme.copy();
-                if (bernoulli(transposeProb)) {
-                    int rise = PitchClass.findRise(PitchClass.getPitchClass(chordProg.getCurrentChord(0).getRoot()),
-                            PitchClass.getPitchClass(chordProg.getCurrentChord(i).getRoot()));
-                    int index = 0;
-                    Note n = adjustedTheme.getNote(index);
-                    while (n.getPitch() == REST) {
-                        index += n.getRhythmValue();
-                        n = adjustedTheme.getNote(index);
-                    }
-                    if (n.getPitch() >= (minPitch + maxPitch) / 2 && rise > 0)
-                        cm.execute(new ShiftPitchesCommand(-1 * (12 - rise), adjustedTheme,
-                                0, length, 0, 128, score.getKeySignature()));
-                    else if (n.getPitch() < (minPitch + maxPitch) / 2 && rise < 0)
-                        cm.execute(new ShiftPitchesCommand((12 + rise), adjustedTheme,
-                                0, length, 0, 128, score.getKeySignature()));
-                    else
-                        cm.execute(new ShiftPitchesCommand(rise, adjustedTheme, 0, length, 0, 128, score.getKeySignature()));
-                }
-                
-                if (bernoulli(invertProb))
-                    cm.execute(new InvertCommand(adjustedTheme, 0, length, false));
-                
-                if (bernoulli(reverseProb))
-                    cm.execute(new ReverseCommand(adjustedTheme, 0, length, false));
-                
-                ChordPart themeChords = chordProg.extract(i, i + length);
-                cm.execute(new ResolvePitchesCommand(adjustedTheme, 0, length, themeChords, false, false));
-                
-                solo.setSize(solo.getSize() + length);
-                solo.pasteSlots(adjustedTheme, i);
-            } else {
-                Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
 
-                MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-
-                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                    //    leapProb, rhythm, chordProg, 0, avoidRepeats);
-                
-                Part.PartIterator j = lick.iterator();
-                while (j.hasNext())
-                {
-                  Unit unit = j.next();
-                  if( unit != null )
-                    {
-                    solo.addNote(NoteSymbol.toNote(unit.toLeadsheet()));
-                    }
-                }
-            }
-        }
-        if (score.getLength() - solo.getSize() != 0) {
-            Polylist rhythm = lickgen.generateRhythmFromGrammar(score.getLength() - solo.getSize());
-
-            MelodyPart lick =  lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-
-                    //lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval, BEAT,
-                    //leapProb, rhythm, chordProg, 0, avoidRepeats);
-
-             Part.PartIterator j = lick.iterator();
-            while (j.hasNext())
-                solo.addNote(NoteSymbol.toNote(j.next().toLeadsheet()));
-        }
-        setCurrentSelectionStart(0);
-        
-        // Experimental: Resolve pitches in entire solo: seems to improve things, but
-        // may generate some repeated notes.
-        cm.execute(new ResolvePitchesCommand(solo, 0, solo.getSize(), chordProg, false, false));
-
-        pasteMelody(solo);
-        
-
-        impro.setPlayEntrySounds(true);
-    }
     
     private MelodyPart makeLick(Polylist rhythm) {
         verifyTriageFields();
@@ -14911,7 +12180,7 @@ public void redrawTriage()
         impro.setPlayEntrySounds(false);
         pasteMelody(lick);
 
-        if( rectifyCheckBox.isSelected() )
+        if( lickgenFrame.rectifySelected() )
          {
          rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
          }
@@ -14924,7 +12193,7 @@ public void redrawTriage()
     
      public void generateLick(Polylist rhythm) {
         MelodyPart lick = makeLick(rhythm);
-        if(useHeadCheckBox.isSelected())
+        if(lickgenFrame.useHeadSelected())
             adjustLickToHead(lick);
         putLick(lick);
     }
@@ -15242,6 +12511,7 @@ public void redrawTriage()
     redrawTriage();
     }
 
+  /*
   public void redoScales()
     {
     DefaultComboBoxModel dcbm = (DefaultComboBoxModel)scaleComboBox.getModel();
@@ -15263,7 +12533,7 @@ public void redrawTriage()
       scales = scales.rest();
       }
     }
-    
+ */
     
     
   public void updateSelection()
@@ -17043,11 +14313,6 @@ private boolean saveMetre()
      trackerDelayTextField2.setText(text);
     }
     
-  public int getGap()
-    {
-    return (int) (BEAT * quietDoubleFromTextField(gapField, -Double.MAX_VALUE, +Double.MAX_VALUE, 0));
-    }
-
   public static final int DEFAULT_CHORD_FONT_SIZE_VALUE = 16;
 
 
@@ -18489,7 +15754,7 @@ private void setLayoutPreference(Polylist layout)
         break;
 
       case KeyEvent.VK_U:
-        generateLickButtonActionPerformed(null);
+        generate(lickgen);
         break;
 
       case KeyEvent.VK_V:
@@ -19236,7 +16501,7 @@ private void pasteMelody(Part part, Stave stave)
     
     
     
-    private void pasteMelody(Part part) {
+    public void pasteMelody(Part part) {
         
         pasteMelody(part, getCurrentStave());
         
@@ -20402,7 +17667,7 @@ public void openLeadsheet(boolean openCorpus)
             //get the abstract melodies of all except the head
             //if(i != 0) {
             selectAll2();
-            getAbstractMelodyButtonActionPerformed(null);
+            lickgenFrame.getAbstractMelody();
             //}
             //get the exact melodies
             //if (i == HEAD) {
@@ -20425,8 +17690,8 @@ public void openLeadsheet(boolean openCorpus)
         MelodyPart melPart = s.getPart(chorusNumber).copy();
         Vector sections = new Vector<String>();
         int numSlots = melPart.getSize();
-        int slotsPerSection = Integer.parseInt(windowSizeField.getText()) * BEAT;
-        int windowSlide = Integer.parseInt(windowSlideField.getText()) * BEAT;
+        int slotsPerSection = lickgenFrame.getWindowSize()* BEAT;
+        int windowSlide = lickgenFrame.getWindowSlide() * BEAT;
         //loop through sections
         for(int window = 0; window < slotsPerSection; window += windowSlide) {
         //for (int i = 0; (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= melPart.getSize(); i++) {
@@ -21318,7 +18583,7 @@ public void openLeadsheet(boolean openCorpus)
 
     private void generateLickInSelectionActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateLickInSelectionActionPerformed
     {//GEN-HEADEREND:event_generateLickInSelectionActionPerformed
-     generateLickButtonActionPerformed(null);
+     generate(lickgen);
 }//GEN-LAST:event_generateLickInSelectionActionPerformed
 
     private void resolvePitchesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_resolvePitchesActionPerformed
@@ -21379,18 +18644,6 @@ private void alwaysUseStaveActionPerformed(java.awt.event.ActionEvent evt) {//GE
       setStavePreferenceFromButtons();
 
 }//GEN-LAST:event_alwaysUseStaveActionPerformed
-
-private void avoidRepeatsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avoidRepeatsCheckboxActionPerformed
-avoidRepeats = avoidRepeatsCheckbox.isSelected();
-}//GEN-LAST:event_avoidRepeatsCheckboxActionPerformed
-
-private void recurrentCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recurrentCheckboxActionPerformed
-recurrentIteration = 1;
-}//GEN-LAST:event_recurrentCheckboxActionPerformed
-
-private void gapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gapFieldActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_gapFieldActionPerformed
 
 private void newVoicingCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingCancelButtonActionPerformed
 newVoicingDialog.setVisible(false);
@@ -22625,709 +19878,6 @@ public void voicingFrameKeyPressed(KeyEvent e)
 
 
 
-private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAbstractMelodyButtonActionPerformed
-
-    //MelodyPart part = getCurrentOrigPart().copy();
-    //MelodyPart p = part.extract(14760, 14760+479);
-    //System.out.println(p.getSize());
-    //System.exit(0);
-
-    if(!allMeasures) {
-        melodyData = getMelodyData(score, scoreTab.getSelectedIndex());
-    }
-
-    int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
-    int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
-
-    int beatsToSlide = Integer.parseInt(windowSlideField.getText());
-
-    //int measureWindow = 2;
-
-    int selStart = getCurrentSelectionStart();
-
-    int selEnd = getCurrentSelectionEnd();
-
-    for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow; measureWindow++) {
-
-        //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
-
-        int slotsPerMeasure = BEAT;
-
-        int slotsPerSection = slotsPerMeasure * measureWindow;
-
-        int start = selStart - (selStart % slotsPerMeasure);
-
-        int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
-
-        int numMeasures = (end + 1 - start) / slotsPerSection;
-
-        //System.out.println("Num Measures: " + numMeasures);
-
-
-
-        //writeBeatsToSlide(beatsToSlide);
-        //loop through places to start the measure window
-        for (int window = 0; window < measureWindow; window += beatsToSlide) {
-
-
-
-            //extract all sections of size measureWindow
-            for (int i = 0; (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection; i++) {
-                //System.out.println("Window: " + window);
-                //System.out.println("i: " + i);
-                String production = addMeasureToAbstractMelody(start + (i * slotsPerSection) + (window * BEAT), measureWindow, i == 0);
-                if (production != null) {
-                    /* No longer used:
-                    if (addProductionBtn.isSelected()) {
-                        //write production to grammar
-                        addProduction(production, measureWindow, 0.2);
-                    }
-                     */
-
-                    /* now the only option if (writeProductionBtn.isSelected()) */
-
-                    {
-                        //int counter = 0;
-                        //for(int j = 0; j < window; j++) {
-                        //    if(j == 0) counter += numMeasures;
-                       // }
-                        //System.out.println("i: " + i);
-                        writeProduction(production, measureWindow, (i * slotsPerSection) + (window * BEAT) , true);
-                    }
-                }
-            }
-
-        }
-
-        //grammarEditor.fillEditor(); // was commented out
-        //grammarEditor.performEditorToSourceButton(null); // was commented out
-
-        lickgen.loadGrammar(grammarFile);
-        lickgenFrame.resetTriageParameters(false);
-        Grammar g = lickgen.getGrammar();
-        Polylist rules = g.getRules();
-
-        Vector<Polylist> ruleList = new Vector<Polylist>();
-        for (Polylist L = rules; L.nonEmpty(); L = L.rest()) {
-            ruleList.add((Polylist) L.first());
-        }
-        Collections.sort(ruleList, new PolylistComparer());
-
-        Vector<Polylist> newRules = new Vector<Polylist>();
-
-
-        Polylist previous = Polylist.nil;
-        float accumulatedProbability = 0;
-
-
-        //Note - rules must have form similar to (rule (V4) (N4) 0.22)
-
-        for (Enumeration<Polylist> e = ruleList.elements(); e.hasMoreElements();) {
-            Polylist current = e.nextElement();
-            if (current.first().equals("rule") || current.first().equals("base")) {
-                if ((!previous.equals(Polylist.nil)) && current.allButLast().equals(previous.allButLast())) {
-                    accumulatedProbability += ((Number) current.last()).floatValue();
-                    int round = (int)(accumulatedProbability * 100);
-                    accumulatedProbability = (float)(round / 100.0);
-                } else {
-                    if (previous.nonEmpty()) {
-                        newRules.addElement(Polylist.list(previous.first(), previous.second(), previous.third(), accumulatedProbability));
-                    }
-                    accumulatedProbability = ((Number) current.last()).floatValue();
-                    previous = current;
-                }
-            }
-            else {
-                newRules.addElement(current);
-            }
-        }
-        if (previous.nonEmpty()) {
-            newRules.addElement(Polylist.list(previous.first(), previous.second(), previous.third(), accumulatedProbability));
-        }
-
-
-        try {
-            File f = new File(grammarFile);
-            if (f.exists()) {
-                System.gc();
-                boolean deleted = f.delete();
-                while (!deleted) {
-                    deleted = f.delete();
-                    //System.out.println(deleted);
-                    }
-                }
-
-            File f_out = new File(grammarFile);
-            FileWriter out = new FileWriter(f_out, true);
-            
-            setLickGenStatus("Writing " + newRules.size() + " grammar rules to " + grammarFile);
-
-            for (int i = 0; i < newRules.size(); i++) {
-                out.write(newRules.get(i).toString() + "\n");
-            }
-            out.close();
-
-            refreshGrammarEditor();
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-      }
-
-        //Enter the whole selection into the window
-    int slotsPerMeasure = BEAT;
-    int start = selStart - (selStart % slotsPerMeasure);
-    int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
-    int measureWindow = (end - start) / BEAT;
-    //System.out.println("measureWindow: " + measureWindow);
-    //extract whole selection of size measureWindow
-    String production = addMeasureToAbstractMelody(start, measureWindow, false);
-
-    if (production != null) {
-        if (production.contains("STARTER")) {
-            production = production.replace("STARTER", "");
-        }
-        if (production.contains("ENDTIED")) {
-            production = production.replace("ENDTIED ", "");
-        }
-        if (production.contains("STARTTIED")) {
-            production = production.replace("STARTTIED ", "");
-        }
-        if (production.contains("CHORDS")) {
-            production = production.substring(0, production.indexOf("CHORDS"));
-        }
-        lickgenFrame.setRhythmFieldText(production.toString());
-    }
-
-    }
-
-
-public void toGrammar()
-  {
-    String outFile = getGrammarFileName();
-
-    File f = new File(outFile);
-
-    String inFile = f.getParentFile().getPath() + File.separator + Directories.accumulatedProductions;
-
-    File in = new File(inFile);
-
-    if( !in.exists() )
-      {
-      setLickGenStatus("Can't do this step as " + inFile + " does not exist.");
-      return;
-      }
-
-    //System.out.println("Writing productions to grammar file: " + outFile);
-    setLickGenStatus("Writing productions to grammar file: " + outFile);
-    CreateGrammar.create(chordProg,
-                         inFile,
-                         outFile,
-                         Integer.parseInt(numClusterRepsField.getText()),
-                         useMarkovCheckbox.isSelected(),
-                         Integer.parseInt(MarkovLengthField.getText()),
-                         this);
-    //System.out.println("Done writing productions to grammar file: " + outFile);
-    setLickGenStatus("Done writing productions to grammar file: " + outFile);
-
-    refreshGrammarEditor();
-  }
-
-// Hopefully this is never called, Jon.
-    //write the number of beats to slide so the data analysis can read it - probably won't need to be called
-    private void writeBeatsToSlide(int beatsToSlide) {
-        try {
-            File file = new File("C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data");    // FIX!!!
-            if (!file.exists()) {
-                BufferedWriter out = new BufferedWriter(new FileWriter("C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data", true));// FIX!!!
-                out.write(Integer.toString(beatsToSlide) + "\n");
-                out.close();
-            }
-        } catch (IOException e) {
-            System.out.println("IO EXCEPTION!");
-        }
-    }
-
-    //add the production to file
-    private void writeProduction(String production, int measureWindow, int location, boolean writeExactMelody) {
-        
-        if (production.equals(null)) {
-            //System.out.println("Nothing added here.");
-            return;
-        }
-        
-        String chords = "";
-        
-        if(production.contains("CHORDS")) {
-            chords = production.substring(production.indexOf("CHORDS"));
-            production = production.substring(0,production.indexOf("CHORDS"));
-        }
-        
-        
-        try {
-            File f = new File(getGrammarFileName());
-            String dir = f.getParentFile().getPath();
-            BufferedWriter out = new BufferedWriter(new FileWriter(dir + File.separator + Directories.accumulatedProductions, true));
-            if(!writeExactMelody) out.write(
-                    "(rule (Seg" + measureWindow + ") " + production + " ) " + chords + "\n");
-            else {
-                //check that index of exact melody matches index of abstract melody
-                //then concatenate the two and write them to the file
-                String melodyToWrite;
-                String exactMelody = null; //= melodyData.get(location);
-                String[] splitMel; // = exactMelody.split(" ");
-                //if(!splitMel[0].equals(Integer.toString(location))) {
-                    boolean foundMatch = false;
-                    for(int i = 0; i < melodyData.size(); i++) {
-                        splitMel = melodyData.get(i).split(" ");
-                        if(splitMel[0].equals(Integer.toString(location))) {
-                            exactMelody = melodyData.get(i);
-                            foundMatch = true;
-                            break;
-                        }
-                    }
-                    if(foundMatch == false) System.out.println("Weird. This shouldn't happen: " + location );
-                //}
-                if(scoreTab.getSelectedIndex() == 0) //head
-                    melodyToWrite = "Head " + exactMelody;
-                else
-                    melodyToWrite = "Chorus" + (scoreTab.getSelectedIndex() + 1) + " " + exactMelody;
-                
-                out.write("(rule (Seg" + measureWindow + ") " + production + " ) " + 
-                        melodyToWrite + " " + chords + "\n");
-            }
-            out.close();
-        } catch (IOException e) {
-            System.out.println("IO EXCEPTION!");
-        }
-    }
-
-//add the production to the grammar file
-    private void addProduction(String production, int measureWindow, double prob) {
-        try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(getGrammarFileName(), true));
-            out.write("(rule (Seg" + measureWindow + ") " + production + " " + prob + ") \n");
-            out.close();
-        } catch (IOException e) {
-            System.out.println("IO EXCEPTION!");
-        }
-    }
-    
-    public String addMeasureToAbstractMelody(int selStart, int measureWindow, boolean isSongStart) {
-        //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
-        int slotsPerSection = BEAT * measureWindow;
-        //boolean isSongStart = (selStart == 0);
-        int selEnd = selStart + slotsPerSection;
-        MelodyPart part = getCurrentOrigPart().copy();
-
-        //System.out.println("\nSelStart " + selStart);
-        //System.out.println("SelEnd " + selEnd);
-        
-        
-        if(part.melodyIsEmpty(selStart, slotsPerSection)) {
-            //if this is empty, the last measure is empty,
-            //and the rest of the chorus is empty, return null
-            if( part.getFreeSlotsFromEnd() >= (part.size() - selEnd)  &&
-                    part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection)){
-                return null;
-            }
-            //otherwise return a section of rests
-            else {
-                StringBuffer sb = new StringBuffer();
-                Note n = new Note(72,1);
-                n.getDurationString(sb, slotsPerSection);
-                String returnString = "((slope 0 0 R" + sb.substring(1) + "))";
-                if(isSongStart) returnString = returnString.concat("STARTER");
-                return returnString;
-            }
-        }
-        
-        int current = selStart;
-
-        Polylist rhythmString = new Polylist();
-
-        //pitches of notes in measure not including rests
-        Vector<Integer> notes = new Vector<Integer>();
-
-        //System.out.println("selStart: " + selStart);
-        //System.out.println(part.getPrevNote(current));
-        //System.out.print("rhythm of prevnote: " + part.getPrevNote(current).getRhythmValue());
-        //System.out.println("slots per section: " + slotsPerSection);
-        //System.out.println("Prev index: " + part.getPrevIndex(current));
-        //if(part.getPrevNote(current) != null) System.out.println("not null.");
-        //System.out.println("thing: " + (slotsPerSection - part.getPrevIndex(current) % slotsPerSection));
-        
-        boolean tiedAtStart = false, tiedAtEnd = false;  
-        
-        //untie first note if it is tied from last measure         
-        if (part.getPrevNote(current) != null && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(current)/*slotsPerSection - part.getPrevIndex(current) % slotsPerSection*/) {
-            
-            tiedAtStart = true;
-            //System.out.println("Got here.");
-            //
-            //untie and set the previous note
-            Note untiedNote = part.getPrevNote(current).copy();
-            int originalRhythmVal = untiedNote.getRhythmValue();
-            int rhythmVal = slotsPerSection - part.getPrevIndex(current) % slotsPerSection;
-            untiedNote.setRhythmValue(rhythmVal);
-            part.setNote(part.getPrevIndex(current), untiedNote);
-
-            //set the current note
-            rhythmVal = originalRhythmVal - rhythmVal;
-            Note currNote = part.getPrevNote(current).copy();
-            currNote.setRhythmValue(rhythmVal);
-            part.setNote(current, currNote);
-        }
-
-
-        //untie notes at end of measure and beginning of next measure
-        if (part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(selEnd)) {
-            tiedAtEnd = true;
-            //System.out.println("Untying notes at end.");
-            int tracker = part.getPrevIndex(selEnd);
-            Note untiedNote = part.getNote(tracker).copy();
-            int originalRhythmVal = untiedNote.getRhythmValue();
-            int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
-            untiedNote.setRhythmValue(rhythmVal);
-            part.setNote(tracker, untiedNote);
-            int secondRhythmVal = originalRhythmVal - rhythmVal;
-            untiedNote = part.getNote(tracker).copy();
-            untiedNote.setRhythmValue(secondRhythmVal);
-            part.setNote(selEnd, untiedNote);
-        }
-
-
-        if (!part.getPrevNote(selStart + 1).equals(null)) {
-            if ((part.getPrevIndex(selStart + 1) != selStart) && !(part.getPrevNote(selStart + 1).isRest())) {
-                //System.out.println("prev index: " + part.getPrevIndex(selStart + 1) + "note: " + part.getPrevNote(selStart + 1).getPitch());
-                return null;
-            }
-        }
-
-        //if(part.melodyIsEmpty(selStart, slotsPerSection)) {
-        //    if(selStart - slotsPerSection >= slotsPerSection && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection))
-       // }
-        while (current < selEnd) {
-
-            //if the is a null note, make it a rest
-            if (part.getNote(current) == null) {
-                int next = part.getNextIndex(current);
-                Note n = Note.makeRest(next - current);
-                part.setNote(current, n);
-            }
-
-            StringBuffer sb = new StringBuffer();
-
-
-            int value = part.getNote(current).getDurationString(sb, part.getNote(current).getRhythmValue());
-
-            int pitch = part.getNote(current).getPitch();
-
-            int rhythm = 0;
-
-
-
-            if (part.getNote(current).getPitch() == REST) {
-                rhythmString = rhythmString.cons("R" + sb.substring(1));
-            } else {
-
-                //add pitch to notes
-                notes.add(pitch);
-                //get note type
-                char notetype;
-                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch, chordProg);
-                switch (notetone[0]) {
-                    case LickGen.CHORD:
-                        notetype = 'C';
-                        break;
-                    case LickGen.COLOR:
-                        notetype = 'L';
-                        break;
-                    default:
-                        notetype = 'X';
-                        break;
-                }
-                if (notetype == 'X' && part.getNextNote(current) != null) {
-
-                    int nextPitch = part.getNextNote(current).getPitch();
-                    int nextIndex = part.getNextIndex(current);
-                    if (nextIndex <= selEnd) {
-                        int pitchdiff = nextPitch - pitch;
-                        if (Math.abs(pitchdiff) == 1) {
-                            notetype = 'A';
-                        }
-                    }
-                }
-                rhythmString = rhythmString.cons(notetype + sb.substring(1));
-            }
-
-
-            current = part.getNextIndex(current);
-
-        }
-
-        rhythmString = rhythmString.reverse();
-
-        /*
-        //add in goal notes to the rhythmString
-        Polylist goalString = new Polylist();
-        for (Polylist L = rhythmString; L.length() > 1; L = L.rest()) {
-
-            String first = (String) L.first();
-            String duration = first.substring(1);
-
-            //get duration of slots of the first note
-            int slots = Key.getDuration(duration);
-
-            String second = (String) L.rest().first();
-
-            //make chord tone goal note if followed by rest
-            if (second.startsWith("R") && first.startsWith("C")) {
-                first = first.replace('C', 'G');
-            }
-
-            //make chord tone quarter note or longer a goal note
-            if (first.startsWith("C") && slots >= 120) {
-                first = first.replace('C', 'G');
-            }
-
-            //make color tone quarter note or longer a goal note
-            //if (first.startsWith("L") && slots >= 120) {
-            //    first = first.replace('L', 'G');
-            //}
-            
-            //make random quarter note or longer a goal note
-            if(first.startsWith("X") && slots >= 120) {
-                first = first.replace('X', 'G');
-            }
-
-            goalString = goalString.cons(first);
-
-            //check last note
-            if (L.length() == 2) {
-                String lastDuration = second.substring(1);
-
-                //get duration of slots of the first note
-                int lastSlots = Key.getDuration(lastDuration);
-
-
-                //make chord tone quarter note or longer a goal note
-                if (second.startsWith("C") && lastSlots >= 120) {
-                    second = second.replace('C', 'G');
-                }
-
-                //make color tone quarter note or longer a goal note
-                //if (second.startsWith("L") && lastSlots >= 120) {
-                //    second = second.replace('L', 'G');
-                //}
-                goalString = goalString.cons(second);
-            }
-        }
-
-        //set rhythm string to have replaced the correct notes with goal notes
-        goalString = goalString.reverse();
-        rhythmString = goalString;
-        
-        */
-        //process intervals
-        Vector<Integer> intervals = new Vector<Integer>();
-        intervals.add(0);
-        for (int i = 1; i < notes.size(); i++) {
-            intervals.add(notes.get(i) - notes.get(i - 1));
-        }
-        //System.out.println("Intervals: " + intervals.size());
-        //test intervals
-        //for (int i = 0; i < intervals.size(); i++) {
-        //    System.out.println("Interval: " + intervals.get(i));
-        //}
-
-        //process slopes
-        Vector<int[]> slopes = new Vector<int[]>();
-        int[] slope = new int[3];
-        int tracker = 0;
-        
-        
-        //get the slope from the note before this section to the first note in the measure
-            int prevIndex = part.getPrevIndex(selStart);
-            Note lastNote = part.getNote(prevIndex);
-            while(lastNote != null && lastNote.isRest()) {
-                prevIndex = part.getPrevIndex(prevIndex);
-                lastNote = part.getNote(prevIndex);
-            }
-            int lastpitch = 0;
-            if(lastNote != null && !lastNote.isRest())
-                lastpitch = lastNote.getPitch();
-            int pitch = notes.get(0);
-            int pitchChange;
-            if(lastpitch == 0) pitchChange = 0;
-            else pitchChange = pitch - lastpitch;
-            int minPitchChange = 0, maxPitchChange = 0;
-            //avoid random notes and repeated notes
-            if(pitchChange != 0) {
-                if(pitchChange == 1) {
-                    minPitchChange = 1; maxPitchChange = 2;
-                }
-                else if(pitchChange == -1) {
-                    minPitchChange = -2; maxPitchChange = -1; 
-                }
-                else {
-                    minPitchChange = pitchChange -1;
-                    maxPitchChange = pitchChange +1;
-                }
-            }
-        
-        //if there is only 1 note, return it with its slope 
-        if (intervals.size() <= 1) {
-            
-            String rhythm = rhythmString.toString();
-            rhythm = rhythm.substring(1,rhythm.length()-1);
-            
-            //handle case of only 1 note
-            if(rhythm.equals("")) {
-                char thisPitch = lickgen.getNoteType(selStart, notes.get(0), notes.get(0), chordProg);
-                String len = Note.getDurationString(slotsPerSection);
-                rhythm = thisPitch+len;
-            }
-            String returnString = 
-                    "((slope " + minPitchChange + " " + maxPitchChange + " " + rhythm + "))";
-            if(isSongStart) returnString = returnString.concat("STARTER");
-            if(tiedAtEnd) returnString = returnString.concat(" ENDTIED");
-            if(tiedAtStart) returnString = returnString.concat(" STARTTIED");
-            return returnString;
-        }
-        
-        for (int i = 0; i < intervals.size(); i++) {
-            tracker = i;
-            if (intervals.get(i) != 0) {
-                i = intervals.size();
-            }
-        }
-
-            
-        //direction is -1 if slope is going down, 0 for repeated note, 1 for up
-        int direction = 0;
-        if (intervals.get(tracker) > 0) 
-           direction = 1;
-        else if (intervals.get(tracker) < 0)
-            direction = -1;
-        //initialize stuff - first note is in its own slope
-        slope[0] = minPitchChange;
-        slope[1] = maxPitchChange;
-        slope[2] = 1;
-        slopes.add(slope.clone());
-        
-        slope[0] = intervals.get(1);
-        slope[1] = intervals.get(1);
-        slope[2] = 0;
-        for (int i = 1; i < intervals.size(); i++) {
-            //slope was going up but not any more
-            if (direction == 1 && intervals.get(i) <= 0) {
-                if(intervals.get(i) == 0)
-                    direction = 0;
-                else
-                    direction = -1;
-                if(slope[2] != 0)
-                    slopes.add(slope.clone());
-                
-                slope[0] = intervals.get(i);
-                slope[1] = intervals.get(i);
-                slope[2] = 1;
-                //slope was going down but not any more
-            } else if (direction == -1 && intervals.get(i) >= 0) {
-                if(intervals.get(i) == 0)
-                    direction = 0;
-                else
-                    direction = 1;
-                if(slope[2] != 0)
-                slopes.add(slope.clone());
-                slope[0] = intervals.get(i);
-                slope[1] = intervals.get(i);
-                slope[2] = 1;
-                //slope was 0 but not any more
-            } else if(direction == 0 && intervals.get(i) != 0) { 
-                if(intervals.get(i) > 0)
-                    direction = 1;
-                else
-                    direction = -1;
-                if(slope[2] != 0)
-                    slopes.add(slope.clone());
-                slope[0] = intervals.get(i);
-                slope[1] = intervals.get(i);
-                slope[2] = 1;
-            } else {
-                slope[2]++;
-                if (intervals.get(i) > slope[1]) {
-                    slope[1] = intervals.get(i);
-                }
-                if (intervals.get(i) < slope[0]) {
-                    slope[0] = intervals.get(i);
-                }
-            }
-
-            if (i == intervals.size() - 1) {
-                if(slope[2] != 0)
-                    slopes.add(slope.clone());
-            }
-        }
-
-        //add in slopes
-        StringBuffer strbuf = new StringBuffer();
-        strbuf.append("(");
-        Polylist tempString = rhythmString;
-        for (int i = 0; i < slopes.size(); i++) {
-            slope = slopes.get(i);
-            strbuf.append("(slope " + slope[0] + " " + slope[1] + " ");
-            int j = 0;
-            //get all of notes if last slope
-            if (i == slopes.size() - 1) {
-                while (tempString.nonEmpty()) {
-                    strbuf.append(tempString.first().toString() + " ");
-                    tempString = tempString.rest();
-                }
-            } else {
-                while (j < slope[2]) {
-                    String temp = tempString.first().toString();
-                    strbuf.append(temp + " ");
-                    //System.out.println(strbuf.toString());
-                    tempString = tempString.rest();
-                    if (temp.charAt(0) != 'R') {
-                        j++;
-                    }
-                }
-            }
-            strbuf.deleteCharAt(strbuf.length() - 1);
-            strbuf.append(")");
-        }
-        strbuf.append(")");
-
-        //System.out.println("Abstract melody: " + strbuf.toString() + " Start: " + selStart + " End: " + selEnd);
-        
-        
-        //if we are writing to file, write the chords, start data, and tie data
-        /* Now the only option: if (writeProductionBtn.isSelected()) */
-
-        {
-            
-            //Mark measure as 'songStarter' if it is the first of a song
-            if(isSongStart) {
-                strbuf.append("STARTER");
-            }
-            strbuf.append("CHORDS ");
-            
-            ChordPart chords = chordProg.extract(selStart, selStart + slotsPerSection-1);
-            Vector chordList = chords.getUnitList();
-            if(chordList.isEmpty()) System.out.println("No chords");
-            for(int i = 0; i < chordList.size(); i++) {
-                String nextChord = ((Chord)chordList.get(i)).toLeadsheet();
-                strbuf.append(nextChord + " ");
-            }
-        }
-        
-        return strbuf.toString();
- 
-}//GEN-LAST:event_getAbstractMelodyButtonActionPerformed
-
     
 private void chordRootTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordRootTFActionPerformed
 
@@ -23611,10 +20161,6 @@ public void refreshGrammarEditor()
     grammarEditor.performEditorToSourceButton(null);
 }
 
-private void generateLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLickButtonActionPerformed
-     generate(lickgen);
-}//GEN-LAST:event_generateLickButtonActionPerformed
-
 public void generate(LickGen lickgen)
 {
     setLickGenStatus("Generating melody ...");
@@ -23639,7 +20185,7 @@ public void generate(LickGen lickgen)
 
     Polylist rhythm = null;
 
-    boolean useOutlines = useSoloistCheckBox.isSelected();
+    boolean useOutlines = lickgenFrame.useSoloistSelected();
 
     if( useOutlines )
       {
@@ -23653,7 +20199,7 @@ public void generate(LickGen lickgen)
         if( solo != null )
           {
             rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
-            if( useHeadCheckBox.isSelected() )
+            if( lickgenFrame.useHeadSelected() )
               {
                 adjustLickToHead(solo);
               }
@@ -23869,14 +20415,6 @@ private void pauseMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 pauseBtnActionPerformed(null);
 }//GEN-LAST:event_pauseMIActionPerformed
 
-private void toGrammarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toGrammarBtnActionPerformed
-      toGrammar();
-}//GEN-LAST:event_toGrammarBtnActionPerformed
-
-private void MarkovLengthFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MarkovLengthFieldActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_MarkovLengthFieldActionPerformed
-
 
 private void notateGrammarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notateGrammarMenuActionPerformed
  
@@ -23894,39 +20432,6 @@ private void notateGrammarMenuMenuSelected(javax.swing.event.MenuEvent evt) {//G
 private void adviceTabbedPaneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adviceTabbedPaneKeyPressed
     // TODO add your handling code here:
 }//GEN-LAST:event_adviceTabbedPaneKeyPressed
-
-private void useMarkovCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useMarkovCheckboxActionPerformed
-   
-}//GEN-LAST:event_useMarkovCheckboxActionPerformed
-
-private void showLogMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogMIActionPerformed
-     logDialog.setVisible(true);
-}//GEN-LAST:event_showLogMIActionPerformed
-
-private void saveGrammarAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGrammarAsButtonActionPerformed
-   saveGrammarAs();
-}//GEN-LAST:event_saveGrammarAsButtonActionPerformed
-
-private void grammarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenuActionPerformed
-    saveGrammarAs();
-}//GEN-LAST:event_grammarMenuActionPerformed
-
-private void openCorpusBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openCorpusBtnActionPerformed
-    openCorpus();
-}//GEN-LAST:event_openCorpusBtnActionPerformed
-
-private void regenerateHeadDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenerateHeadDataBtnActionPerformed
-    writeHeadData();
-}//GEN-LAST:event_regenerateHeadDataBtnActionPerformed
-
-private void loadBaseGrammarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBaseGrammarBtnActionPerformed
-    openGrammar();
-    clearAccumulatedProductions();
-}//GEN-LAST:event_loadBaseGrammarBtnActionPerformed
-
-private void testGenerationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testGenerationActionPerformed
- //   generate();
-}//GEN-LAST:event_testGenerationActionPerformed
 
 private void transposeSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_transposeSpinnerStateChanged
 setPlayTransposed();
@@ -23947,32 +20452,6 @@ private void exportChorusToMusicXMLActionPerformed(java.awt.event.ActionEvent ev
     exportToMusicXML();
 
 }//GEN-LAST:event_exportChorusToMusicXMLActionPerformed
-
-private void generatorWindowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenuMenuSelected
-
-    generatorWindowMenu.removeAll();
-
-        generatorWindowMenu.add(closeWindowMI);
-
-        generatorWindowMenu.add(cascadeMI);
-
-        generatorWindowMenu.add(windowMenuSeparator);
-
-        for(WindowMenuItem w : WindowRegistry.getWindows()) {
-
-            generatorWindowMenu.add(w.getMI(lickgenFrame));      // these are static, and calling getMI updates the name on them too in case the window title changed
-        }
-
-        generatorWindowMenu.repaint();
-}//GEN-LAST:event_generatorWindowMenuMenuSelected
-
-private void closeWindowMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI1ActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_closeWindowMI1ActionPerformed
-
-private void cascadeMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI1ActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_cascadeMI1ActionPerformed
 
 private void countInCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countInCheckBoxActionPerformed
     establishCountIn();
@@ -25020,7 +21499,7 @@ public void showNewVoicingDialog()
       resolvePitches.setEnabled(true);
 
 
-      generateLickButton.setEnabled(true);
+      // REVISIT generateLickButton.setEnabled(true);
 
 
       saveSelectionAsLick.setEnabled(true);
@@ -25226,7 +21705,7 @@ public void showNewVoicingDialog()
 
     saveSelectionAsLick.setEnabled(false);
     
-    generateLickButton.setEnabled(false);
+    // REVISIT generateLickButton.setEnabled(false);
 
     }
 
@@ -25256,11 +21735,6 @@ public void showNewVoicingDialog()
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton FillProbsButton;
-    private javax.swing.JLabel InvertProbLabel;
-    private javax.swing.JTextField MarkovLengthField;
-    private javax.swing.JPanel ProbFillClearPanel;
-    private javax.swing.JLabel ReverseProbLabel;
     private javax.swing.JMenuItem aboutMI;
     private javax.swing.JButton acceptTruncate;
     private javax.swing.JMenuItem addRestMI;
@@ -25290,10 +21764,8 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel approachToneLabel;
     private javax.swing.JCheckBox approachTones;
     private javax.swing.JCheckBoxMenuItem autoAdjustMI;
-    private javax.swing.JCheckBox autoFillCheckBox;
     private javax.swing.JRadioButton autoStave;
     private javax.swing.JRadioButton autoStaveBtn;
-    private javax.swing.JCheckBox avoidRepeatsCheckbox;
     private javax.swing.JCheckBoxMenuItem barNumsMI;
     private javax.swing.JLabel bassInstLabel;
     private javax.swing.JPanel bassInstPanel;
@@ -25331,7 +21803,6 @@ public void showNewVoicingDialog()
     private javax.swing.JButton cancelLickTitle;
     private javax.swing.JButton cancelTruncate;
     private javax.swing.JMenuItem cascadeMI;
-    private javax.swing.JMenuItem cascadeMI1;
     private javax.swing.JRadioButton cellRadioButton;
     private javax.swing.JCheckBox cells;
     private javax.swing.ButtonGroup chordColorBtnGrp;
@@ -25343,18 +21814,13 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel chordInstPanel;
     private javax.swing.JCheckBox chordMute;
     private javax.swing.JPanel chordPanel;
-    private javax.swing.JPanel chordProbPanel;
     private javax.swing.JLabel chordRootLabel;
     private javax.swing.JTextField chordRootTF;
     private javax.swing.JLabel chordSearchLabel;
     private javax.swing.JTextField chordSearchTF;
     private javax.swing.JCheckBox chordSubs;
     private javax.swing.JPanel chordTabPanel;
-    private javax.swing.JTextField chordToneDecayField;
-    private javax.swing.JLabel chordToneDecayRateLabel;
     private javax.swing.JLabel chordToneLabel;
-    private javax.swing.JLabel chordToneProbLabel;
-    private javax.swing.JTextField chordToneWeightField;
     private javax.swing.JCheckBox chordTones;
     private javax.swing.JSlider chordVolume;
     private javax.swing.JToggleButton chorusBtn;
@@ -25362,13 +21828,9 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem chorusPrefsMI;
     private javax.swing.JPanel chorusSpecificPanel;
     private javax.swing.JButton clearButton;
-    private javax.swing.JButton clearProbsButton;
     private javax.swing.JMenuItem closeWindowMI;
-    private javax.swing.JMenuItem closeWindowMI1;
     private javax.swing.ButtonGroup colorColorBtnGrp;
     private javax.swing.JLabel colorToneLabel;
-    private javax.swing.JLabel colorToneProbLabel;
-    private javax.swing.JTextField colorToneWeightField;
     private javax.swing.JCheckBox colorTones;
     private javax.swing.JToggleButton colorationButton;
     private javax.swing.JLabel commentsLabel;
@@ -25435,7 +21897,6 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel deleteVoicingLabel;
     private javax.swing.JButton deleteVoicingOKButton;
     private javax.swing.JPanel devicesTab;
-    private javax.swing.JLabel disclaimer;
     private javax.swing.JButton drawButton;
     private javax.swing.JCheckBox drawChordTonesCheckBox;
     private javax.swing.JCheckBox drawColorTonesCheckBox;
@@ -25449,10 +21910,8 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel duplicateLickLabel;
     private javax.swing.JScrollPane duplicateLickScroll;
     private javax.swing.JTextPane duplicateLickText;
-    private javax.swing.JLabel durationLabel;
     private javax.swing.JToggleButton earlyScrollBtn;
     private javax.swing.JCheckBox echoMidiCheckBox;
-    private javax.swing.JMenuItem editGrammarMI;
     private javax.swing.JMenu editMenu;
     private javax.swing.JCheckBox enableCache;
     private javax.swing.JMenuItem enterBothMI;
@@ -25470,43 +21929,16 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel extEntryLabel;
     private javax.swing.JTextField extEntryTF;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JButton fillMelodyButton;
-    private javax.swing.JLabel finalLabel;
     private javax.swing.JToggleButton freezeLayoutButton;
-    private javax.swing.JTextField gapField;
-    private javax.swing.JButton genRhythmButton;
-    private javax.swing.JButton genSoloThemeBtn;
     private javax.swing.JPanel generalContourTab;
-    private javax.swing.JButton generateLickButton;
     private javax.swing.JMenuItem generateLickInSelection;
-    private javax.swing.JButton generateSoloButton;
-    private javax.swing.JButton generateThemeButton;
     private javax.swing.JButton generateToolbarBtn;
     private javax.swing.ButtonGroup generatorButtonGroup;
-    private javax.swing.JFrame generatorFrame;
-    private javax.swing.JMenuBar generatorMenuBar;
-    private javax.swing.JTabbedPane generatorPane;
-    private javax.swing.JMenu generatorWindowMenu;
-    private javax.swing.JButton getAbstractMelodyButton;
-    private javax.swing.JButton getSelRhythmButton;
     private javax.swing.JToggleButton globalBtn;
     private javax.swing.JPanel globalPreferences;
     private javax.swing.JMenuItem globalPrefsMI;
     private javax.swing.JTabbedPane globalTabs;
-    private javax.swing.JButton grade10Btn;
-    private javax.swing.JButton grade1Btn;
-    private javax.swing.JButton grade2Btn;
-    private javax.swing.JButton grade3Btn;
-    private javax.swing.JButton grade4Btn;
-    private javax.swing.JButton grade5Btn;
-    private javax.swing.JButton grade6Btn;
-    private javax.swing.JButton grade7Btn;
-    private javax.swing.JButton grade8Btn;
-    private javax.swing.JButton grade9Btn;
-    private javax.swing.JLabel gradeLabel;
     private javax.swing.ButtonGroup grammarExtractionButtonGroup;
-    private javax.swing.JPanel grammarLearningPanel;
-    private javax.swing.JMenu grammarMenu;
     private javax.swing.JRadioButton grandStave;
     private javax.swing.JRadioButton grandStaveBtn;
     private javax.swing.JRadioButton greenApproachBtn;
@@ -25524,9 +21956,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton ignoreDuplicate;
     private javax.swing.JMenuItem insertRestMeasure;
     private javax.swing.JButton insertVoicingButton;
-    private javax.swing.JLabel intervalLabel;
     private javax.swing.JMenuItem invertMelody;
-    private javax.swing.JTextField invertProbabilityField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -25628,32 +22058,19 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem leadsheetPrefsMI;
     private javax.swing.JPanel leadsheetSpecificPanel;
     private javax.swing.JLabel leadsheetTitleLabel;
-    private javax.swing.JTextField leapProbField;
-    private javax.swing.JLabel leapProbLabel;
-    private javax.swing.JLabel learningStep0Label;
-    private javax.swing.JPanel lickGenPanel;
-    private javax.swing.JPanel lickGenerationButtonsPanel;
     private javax.swing.JMenuItem lickGeneratorMI;
-    private javax.swing.JPanel lickGradeButtonsPanel;
     private javax.swing.JRadioButton lickRadioButton;
-    private javax.swing.JLabel lickSavedLabel;
     private javax.swing.JLabel lickTItleLabel;
-    private javax.swing.JPanel lickgenParametersPanel;
     private javax.swing.JCheckBox licks;
     private javax.swing.JLabel lineLabel;
     private javax.swing.JLabel lineLabel1;
     private javax.swing.JMenuItem loadAdvMI;
-    private javax.swing.JButton loadBaseGrammarBtn;
     private javax.swing.JToggleButton loopButton;
     private javax.swing.JPanel loopPanel;
     private javax.swing.JTextField loopSet;
     private javax.swing.JTextField lowRangeTF;
     private javax.swing.JTextField lowRangeTF2;
     private javax.swing.JPanel masterVolumePanel;
-    private javax.swing.JTextField maxDurationField;
-    private javax.swing.JTextField maxIntervalField;
-    private javax.swing.JLabel maxLabel;
-    private javax.swing.JTextField maxPitchField;
     private javax.swing.JLabel measErrorLabel;
     private javax.swing.JCheckBoxMenuItem measureCstrLinesMI;
     private javax.swing.JLabel measureLabel;
@@ -25681,10 +22098,6 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel midiPreferences;
     private javax.swing.JMenuItem midiPrefsMI;
     private javax.swing.JFrame midiStyleSpec;
-    private javax.swing.JTextField minDurationField;
-    private javax.swing.JTextField minIntervalField;
-    private javax.swing.JLabel minLabel;
-    private javax.swing.JTextField minPitchField;
     private javax.swing.JButton mixerBtn;
     private javax.swing.JDialog mixerDialog;
     private javax.swing.JButton newBtn;
@@ -25702,8 +22115,6 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel newVoicingTypeLabel;
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
-    private javax.swing.JTextField numClusterRepsField;
-    private javax.swing.JLabel numClusterRepsLabel;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
     private javax.swing.JPanel okcancelPanel;
@@ -25712,9 +22123,7 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel okcancelPanel3;
     private javax.swing.JMenuItem oneAutoMI;
     private javax.swing.JButton openBtn;
-    private javax.swing.JButton openCorpusBtn;
     private javax.swing.JButton openGeneratorButton;
-    private javax.swing.JMenuItem openGrammarMI;
     private javax.swing.JMenuItem openLeadsheetEditorMI;
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.ButtonGroup otherColorBtnGrp;
@@ -25735,16 +22144,12 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem pasteChordsMI;
     private javax.swing.JMenuItem pasteMelodyMI;
     private javax.swing.JCheckBoxMenuItem pasteOverMI;
-    private javax.swing.JButton pasteThemeBtn;
     private javax.swing.JToggleButton pauseBtn;
     private javax.swing.JMenuItem pausePlayMI;
     private javax.swing.JButton pianoKeyboardButton;
     private javax.swing.JMenuItem pianoKeyboardMI;
-    private javax.swing.JLabel pitchLabel;
-    private javax.swing.JPanel pitchProbabilitiesPanel;
     private javax.swing.JMenuItem playAllMI;
     private javax.swing.JButton playBtn;
-    private javax.swing.JButton playLickButton;
     private javax.swing.JMenu playMenu;
     private javax.swing.JToolBar playToolBar;
     private javax.swing.JButton playVoicingButton;
@@ -25771,8 +22176,6 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel rangeToLabel;
     private javax.swing.JLabel rangeToLabel2;
     private javax.swing.JButton recordBtn;
-    private javax.swing.JCheckBox rectifyCheckBox;
-    private javax.swing.JCheckBox recurrentCheckbox;
     private javax.swing.JRadioButton redApproachBtn;
     private javax.swing.JRadioButton redChordBtn;
     private javax.swing.JRadioButton redColorBtn;
@@ -25781,50 +22184,30 @@ public void showNewVoicingDialog()
     private javax.swing.JButton redoBtn;
     private javax.swing.JMenuItem redoMI;
     private javax.swing.JMenuItem redoPMI;
-    private javax.swing.JButton regenerateHeadDataBtn;
     private javax.swing.JButton reloadDevices;
-    private javax.swing.JMenuItem reloadGrammarMI;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton resetBtn1;
     private javax.swing.JButton resetBtn2;
     private javax.swing.JButton resetBtn3;
     private javax.swing.JMenuItem resolvePitches;
-    private javax.swing.JTextField restProbField;
-    private javax.swing.JLabel restProbLabel;
     private javax.swing.JMenuItem reverseMelody;
-    private javax.swing.JTextField reverseProbabilityField;
     private javax.swing.JMenuItem revertToSavedMI;
-    private javax.swing.JTextArea rhythmField;
-    private javax.swing.JPanel rhythmPanel;
-    private javax.swing.JScrollPane rhythmScrollPane;
-    private javax.swing.JComboBox rootComboBox;
     private javax.swing.JCheckBox rootEqualBassCheckbox;
     private javax.swing.JLabel rootEqualBassLabel;
-    private javax.swing.JLabel rootLabel;
     private javax.swing.JLabel rootRangeLabel;
     private javax.swing.JMenuItem saveAdvice;
     private javax.swing.JMenuItem saveAsAdvice;
     private javax.swing.JMenuItem saveAsLeadsheetMI;
     private javax.swing.JButton saveBtn;
     private javax.swing.JButton saveDuplicate;
-    private javax.swing.JButton saveGrammarAsButton;
-    private javax.swing.JMenuItem saveGrammarMI;
     private javax.swing.JMenuItem saveLeadsheetMI;
-    private javax.swing.JButton saveLickButton;
     private javax.swing.JFrame saveLickFrame;
-    private javax.swing.JTextField saveLickTF;
-    private javax.swing.JLabel saveLickWithLabelLabel;
     private javax.swing.JButton savePrefsBtn;
     private javax.swing.JButton savePrefsBtn1;
     private javax.swing.JButton savePrefsBtn2;
     private javax.swing.JButton savePrefsBtn3;
     private javax.swing.JMenuItem saveSelectionAsLick;
     private javax.swing.ButtonGroup saveTypeButtonGroup;
-    private javax.swing.JPanel scaleChoicePanel;
-    private javax.swing.JComboBox scaleComboBox;
-    private javax.swing.JLabel scaleLabel;
-    private javax.swing.JLabel scaleToneProbLabel;
-    private javax.swing.JTextField scaleToneWeightField;
     private javax.swing.JCheckBox scaleTones;
     private javax.swing.JTabbedPane scoreTab;
     private javax.swing.JTextField scoreTitleTF;
@@ -25840,19 +22223,15 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem selectAllMI;
     private javax.swing.JButton setMeasureButton;
     private javax.swing.JToggleButton showAdviceButton;
-    private javax.swing.JMenuItem showCriticMI;
     private javax.swing.JCheckBoxMenuItem showEmptyTitlesMI;
-    private javax.swing.JMenuItem showLogMI;
     private javax.swing.JCheckBoxMenuItem showTitlesMI;
     private javax.swing.JToggleButton smartEntryButton;
-    private javax.swing.JPanel soloGenPanel;
     private javax.swing.JToolBar standardToolbar;
     private javax.swing.ButtonGroup staveButtonGroup;
     private javax.swing.JPanel staveButtonPanel;
     private javax.swing.ButtonGroup staveChoiceButtonGroup;
     private javax.swing.JToggleButton stepInputBtn;
     private javax.swing.JButton stopBtn;
-    private javax.swing.JButton stopLickButton;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JToggleButton styleBtn;
     private javax.swing.JMenuItem styleGenerator1;
@@ -25869,26 +22248,14 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField tempoSet;
     private javax.swing.JSlider tempoSlider;
     private javax.swing.JTextField tempoTF;
-    private javax.swing.JButton testGeneration;
     private javax.swing.JTextField textEntry;
     private javax.swing.JLabel textEntryLabel;
     private javax.swing.JToolBar textEntryToolBar;
-    private javax.swing.JTextField themeField;
-    private javax.swing.JLabel themeLabel;
-    private javax.swing.JTextField themeLengthField;
-    private javax.swing.JLabel themeLengthLabel;
-    private javax.swing.JLabel themeProbLabel;
-    private javax.swing.JTextField themeProbabilityField;
     private javax.swing.JTextField timeSignatureBottomTF;
     private javax.swing.JLabel timeSignatureLabel;
     private javax.swing.JPanel timeSignaturePanel;
     private javax.swing.JTextField timeSignatureTopTF;
-    private javax.swing.JCheckBoxMenuItem toCriticMI;
-    private javax.swing.JButton toGrammarBtn;
-    private javax.swing.JPanel toneProbabilityPanel;
     private javax.swing.JPanel toolbarPanel;
-    private javax.swing.JTextField totalBeatsField;
-    private javax.swing.JLabel totalBeatsLabel;
     private javax.swing.JCheckBox trackCheckBox;
     private javax.swing.JLabel trackerDelayLabel;
     private javax.swing.JPanel trackerDelayPanel;
@@ -25905,21 +22272,14 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem transposeMelodyUpOctave;
     private javax.swing.JMenuItem transposeMelodyUpSemitone;
     private javax.swing.JMenu transposeMenu;
-    private javax.swing.JLabel transposeProbLabel;
-    private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JSpinner transposeSpinner;
     private javax.swing.JRadioButton trebleStave;
     private javax.swing.JRadioButton trebleStaveBtn;
     private javax.swing.JDialog truncatePartDialog;
     private javax.swing.JLabel truncatePartLabel;
-    private javax.swing.JLabel typeLabel;
     private javax.swing.JButton undoBtn;
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
-    private javax.swing.JCheckBoxMenuItem useGrammarMI;
-    private javax.swing.JCheckBox useHeadCheckBox;
-    private javax.swing.JCheckBox useMarkovCheckbox;
-    private javax.swing.JCheckBox useSoloistCheckBox;
     private javax.swing.JMenu utilitiesMenu;
     private javax.swing.JMenu viewMenu;
     private javax.swing.JLabel visAdviceLabel;
@@ -25944,12 +22304,6 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem voicingTestMI;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
-    private javax.swing.JSeparator windowMenuSeparator1;
-    private javax.swing.JPanel windowParametersPanel;
-    private javax.swing.JTextField windowSizeField;
-    private javax.swing.JLabel windowSizeLabel;
-    private javax.swing.JTextField windowSlideField;
-    private javax.swing.JLabel windowSlideLabel;
     // End of variables declaration//GEN-END:variables
   
   public int getIgnoreDuplicateLick()
@@ -26004,7 +22358,7 @@ public void showNewVoicingDialog()
   public void reloadGrammar()
     {
 
-    reloadGrammarMIActionPerformed(null);
+    lickgen.loadGrammar(grammarFile);
 
     }
 
@@ -26068,7 +22422,7 @@ public void showNewVoicingDialog()
 
     }
 
-  private boolean bernoulli(double prob)
+  public static boolean bernoulli(double prob)
     {
     return Math.random() > (1. - prob);
     }
@@ -26246,5 +22600,43 @@ public void showNewVoicingDialog()
   {
       logDialog.setVisible(true);
   }
+
+  public int getScoreLength()
+  {
+      return score.getLength();
+  }
+
+
+public void toGrammar()
+  {
+    String outFile = getGrammarFileName();
+
+    File f = new File(outFile);
+
+    String inFile = f.getParentFile().getPath() + File.separator + Directories.accumulatedProductions;
+
+    File in = new File(inFile);
+
+    if( !in.exists() )
+      {
+      setLickGenStatus("Can't do this step as " + inFile + " does not exist.");
+      return;
+      }
+
+    //System.out.println("Writing productions to grammar file: " + outFile);
+    setLickGenStatus("Writing productions to grammar file: " + outFile);
+    CreateGrammar.create(chordProg,
+                         inFile,
+                         outFile,
+                         lickgenFrame.getNumClusterReps(),
+                         lickgenFrame.useMarkovSelected(),
+                         lickgenFrame.getMarkovFieldLength(),
+                         this);
+    //System.out.println("Done writing productions to grammar file: " + outFile);
+    setLickGenStatus("Done writing productions to grammar file: " + outFile);
+
+    refreshGrammarEditor();
+  }
+
 }
 

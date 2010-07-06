@@ -160,11 +160,12 @@ public class LoadAdviceCommand implements Command, Runnable {
         }
 
         adv.setRules(rules.reverse());
-
+/* REVISIT
         if(parent != null) {
             parent.redoScales();
             parent.resetTriageParameters(true);
         }
+*/
 
         if(hideSplash)
             hideLoadDialog();
