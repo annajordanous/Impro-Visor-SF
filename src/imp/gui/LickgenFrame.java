@@ -253,6 +253,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         InvertProbLabel = new javax.swing.JLabel();
         ReverseProbLabel = new javax.swing.JLabel();
         pasteThemeBtn = new javax.swing.JButton();
+        playSoloBtn = new javax.swing.JButton();
         stopSoloPlayBtn = new javax.swing.JButton();
         transposeProbabilityField = new javax.swing.JTextField();
         transposeProbabilityField.setText(transposeProb + "");
@@ -1852,6 +1853,24 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(pasteThemeBtn, gridBagConstraints);
 
+        playSoloBtn.setLabel("Play Solo");
+        playSoloBtn.setMaximumSize(new java.awt.Dimension(100, 30));
+        playSoloBtn.setMinimumSize(new java.awt.Dimension(100, 30));
+        playSoloBtn.setPreferredSize(new java.awt.Dimension(100, 30));
+        playSoloBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playSoloBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        soloGenPanel.add(playSoloBtn, gridBagConstraints);
+
         stopSoloPlayBtn.setLabel("Stop Playing");
         stopSoloPlayBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         stopSoloPlayBtn.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -1863,7 +1882,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -1901,9 +1920,9 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         disclaimer.setText("<html>The Solo Generator is work in progress. <br><br>The idea is to generate a solo by using a theme several times,<br> in different places within the solo.\n<br><br>\nThe theme itself can be generated, or it can be imported as the current selection in the leadsheet.\n<br><br>\nThe theme may also be reversed, inverted, or transposed<br> by specifying non-zero probabilities bewlo.\n\n</html>");
-        disclaimer.setMaximumSize(new java.awt.Dimension(600, 60));
-        disclaimer.setMinimumSize(new java.awt.Dimension(600, 40));
-        disclaimer.setPreferredSize(new java.awt.Dimension(600, 40));
+        disclaimer.setMaximumSize(new java.awt.Dimension(600, 200));
+        disclaimer.setMinimumSize(new java.awt.Dimension(600, 200));
+        disclaimer.setPreferredSize(new java.awt.Dimension(600, 200));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 0.5;
@@ -4044,6 +4063,10 @@ public void closeWindow()
                             stopPlaying();
                         }//GEN-LAST:event_stopSoloPlayBtnActionPerformed
 
+                        private void playSoloBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playSoloBtnActionPerformed
+                            playSelection();
+                        }//GEN-LAST:event_playSoloBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
     private javax.swing.JLabel InvertProbLabel;
@@ -4118,6 +4141,7 @@ public void closeWindow()
     private javax.swing.JLabel pitchLabel;
     private javax.swing.JPanel pitchProbabilitiesPanel;
     private javax.swing.JButton playLickButton;
+    private javax.swing.JButton playSoloBtn;
     private javax.swing.JCheckBox rectifyCheckBox;
     private javax.swing.JCheckBox recurrentCheckbox;
     private javax.swing.JButton regenerateHeadDataBtn;
