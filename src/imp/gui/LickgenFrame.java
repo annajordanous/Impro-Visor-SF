@@ -275,7 +275,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         cascadeMI2 = new javax.swing.JMenuItem();
         windowMenuSeparator2 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Lick Generator Controls");
         setAlwaysOnTop(true);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -1700,7 +1700,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
 
         soloGenPanel.setLayout(new java.awt.GridBagLayout());
 
-        generateSoloButton.setText("Generate Solo");
+        generateSoloButton.setText("Generate Solo from Current Theme");
         generateSoloButton.setMaximumSize(new java.awt.Dimension(100, 30));
         generateSoloButton.setMinimumSize(new java.awt.Dimension(100, 30));
         generateSoloButton.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -1718,7 +1718,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(generateSoloButton, gridBagConstraints);
 
-        generateThemeButton.setText("Generate Theme");
+        generateThemeButton.setText("Generate New Theme Only");
         generateThemeButton.setMaximumSize(new java.awt.Dimension(100, 30));
         generateThemeButton.setMinimumSize(new java.awt.Dimension(100, 30));
         generateThemeButton.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -1778,8 +1778,8 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         soloGenPanel.add(themeProbLabel, gridBagConstraints);
 
-        themeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
-        themeLabel.setText("Theme as an Abstract Melody:");
+        themeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        themeLabel.setText("Theme in Leadsheet notation");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -1833,7 +1833,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(ReverseProbLabel, gridBagConstraints);
 
-        pasteThemeBtn.setText("Paste Selection");
+        pasteThemeBtn.setText("Paste Curent Selection as Theme");
         pasteThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -3977,15 +3977,36 @@ public void saveTriageParameters()
                         }//GEN-LAST:event_grammarMenu1ActionPerformed
 
                         private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
-                            // TODO add your handling code here:
+                            closeWindow();
                         }//GEN-LAST:event_closeWindowMI2ActionPerformed
+public void closeWindow()
+  {
+  this.setVisible(false);
+
+  WindowRegistry.unregisterWindow(this);
+  }
 
                         private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
-                            // TODO add your handling code here:
+                                    WindowRegistry.cascadeWindows(this);
                         }//GEN-LAST:event_cascadeMI2ActionPerformed
 
                         private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
-                            // TODO add your handling code here:
+
+    generatorWindowMenu1.removeAll();
+
+        generatorWindowMenu1.add(closeWindowMI2);
+
+        generatorWindowMenu1.add(cascadeMI2);
+
+        generatorWindowMenu1.add(windowMenuSeparator2);
+
+        for(WindowMenuItem w : WindowRegistry.getWindows()) {
+
+            generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        }
+
+        generatorWindowMenu1.repaint();
+
                         }//GEN-LAST:event_generatorWindowMenu1MenuSelected
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

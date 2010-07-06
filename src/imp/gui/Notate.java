@@ -9513,24 +9513,9 @@ private String getChordRedirectName(int row)
         
     }//GEN-LAST:event_windowMenuMenuSelected
     
- 
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-    
-    private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
-    
+
+private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)   
     {
-        
         verifyTriageFields();
         
         if (autoFill)
@@ -9543,13 +9528,6 @@ private String getChordRedirectName(int row)
     {
 
     }
-    
- 
-    
- 
-    
-        
-    
     
     private void openGeneratorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGeneratorButtonActionPerformed
 
