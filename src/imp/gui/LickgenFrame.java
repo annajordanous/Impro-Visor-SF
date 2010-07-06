@@ -253,6 +253,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         InvertProbLabel = new javax.swing.JLabel();
         ReverseProbLabel = new javax.swing.JLabel();
         pasteThemeBtn = new javax.swing.JButton();
+        stopSoloPlayBtn = new javax.swing.JButton();
         transposeProbabilityField = new javax.swing.JTextField();
         transposeProbabilityField.setText(transposeProb + "");
         invertProbabilityField = new javax.swing.JTextField();
@@ -1711,7 +1712,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -1729,7 +1730,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -1779,7 +1780,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         soloGenPanel.add(themeProbLabel, gridBagConstraints);
 
         themeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        themeLabel.setText("Theme in Leadsheet notation");
+        themeLabel.setText("Theme in Leadsheet notation:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -1799,7 +1800,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -1833,7 +1834,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(ReverseProbLabel, gridBagConstraints);
 
-        pasteThemeBtn.setText("Paste Curent Selection as Theme");
+        pasteThemeBtn.setText("Use Current Selection in Leadsheet Window as Theme");
         pasteThemeBtn.setMaximumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setMinimumSize(new java.awt.Dimension(100, 30));
         pasteThemeBtn.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -1844,12 +1845,30 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(pasteThemeBtn, gridBagConstraints);
+
+        stopSoloPlayBtn.setLabel("Stop Playing");
+        stopSoloPlayBtn.setMaximumSize(new java.awt.Dimension(100, 30));
+        stopSoloPlayBtn.setMinimumSize(new java.awt.Dimension(100, 30));
+        stopSoloPlayBtn.setPreferredSize(new java.awt.Dimension(100, 30));
+        stopSoloPlayBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopSoloPlayBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
+        soloGenPanel.add(stopSoloPlayBtn, gridBagConstraints);
 
         transposeProbabilityField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1878,14 +1897,16 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 5);
         soloGenPanel.add(reverseProbabilityField, gridBagConstraints);
 
-        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        disclaimer.setBackground(new java.awt.Color(255, 255, 0));
+        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        disclaimer.setText("<html>The Solo Generator is work in progress. The idea is to generate a solo by using a theme several times in different places.</html>");
+        disclaimer.setText("<html>The Solo Generator is work in progress. <br><br>The idea is to generate a solo by using a theme several times,<br> in different places within the solo.\n<br><br>\nThe theme itself can be generated, or it can be imported as the current selection in the leadsheet.\n<br><br>\nThe theme may also be reversed, inverted, or transposed<br> by specifying non-zero probabilities bewlo.\n\n</html>");
         disclaimer.setMaximumSize(new java.awt.Dimension(600, 60));
         disclaimer.setMinimumSize(new java.awt.Dimension(600, 40));
         disclaimer.setPreferredSize(new java.awt.Dimension(600, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.ipady = 60;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 0.5;
         soloGenPanel.add(disclaimer, gridBagConstraints);
 
         generatorPane.addTab("Solo Generator", soloGenPanel);
@@ -3256,15 +3277,23 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 }//GEN-LAST:event_getSelRhythmButtonActionPerformed
 
     private void playLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playLickButtonActionPerformed
-
-        notate.getCurrentStave().playSelection(false, notate.getLoopCount());
+    playSelection();
+        
     }//GEN-LAST:event_playLickButtonActionPerformed
 
+ private void playSelection()
+    {
+    notate.getCurrentStave().playSelection(false, notate.getLoopCount());
+    }
     private void stopLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopLickButtonActionPerformed
 
-        notate.stopPlaying();
+        stopPlaying();
     }//GEN-LAST:event_stopLickButtonActionPerformed
 
+public void stopPlaying()
+  {
+  notate.stopPlaying();
+  }
     private void saveLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveLickButtonActionPerformed
         notate.setLickTitle("<Generated Lick>");
 
@@ -3913,6 +3942,7 @@ public void saveTriageParameters()
                                     themeField.getText().trim());
                               }
                             generateSolo(theme, cm);
+                            playSelection();
 }//GEN-LAST:event_generateSoloButtonActionPerformed
 
                         private void generateThemeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateThemeButtonActionPerformed
@@ -3922,6 +3952,7 @@ public void saveTriageParameters()
                         private void genSoloThemeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genSoloThemeBtnActionPerformed
                             MelodyPart theme = generateTheme();
                             generateSolo(theme, cm);
+                            playSelection();
 }//GEN-LAST:event_genSoloThemeBtnActionPerformed
 
                         private void pasteThemeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteThemeBtnActionPerformed
@@ -4008,6 +4039,10 @@ public void closeWindow()
         generatorWindowMenu1.repaint();
 
                         }//GEN-LAST:event_generatorWindowMenu1MenuSelected
+
+                        private void stopSoloPlayBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSoloPlayBtnActionPerformed
+                            stopPlaying();
+                        }//GEN-LAST:event_stopSoloPlayBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
@@ -4109,6 +4144,7 @@ public void closeWindow()
     private javax.swing.JMenuItem showLogMI1;
     private javax.swing.JPanel soloGenPanel;
     private javax.swing.JButton stopLickButton;
+    private javax.swing.JButton stopSoloPlayBtn;
     private javax.swing.JButton testGeneration;
     private javax.swing.JTextField themeField;
     private javax.swing.JLabel themeLabel;
