@@ -29,7 +29,7 @@ import imp.util.Trace;
  * This is a singleton class to hold information about Notate and StyleEditor
  * windows.
  *
- * @author keller
+ * @author Martin Hunt, Robert Keller
  */
 
 public class WindowRegistry {
@@ -106,7 +106,6 @@ public class WindowRegistry {
       Trace.log(2, "Window unregistered: " + w);
       
       
-      
       for(WindowMenuItem i : window) {
           
           if(i.getWindow() == w) {
@@ -114,11 +113,8 @@ public class WindowRegistry {
               window.remove(i);
               
               break;
-              
-          }
-          
+           }
       }
-      
       
       
       if(window.size() == 0) {

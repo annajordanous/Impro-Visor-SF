@@ -277,8 +277,14 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         cascadeMI2 = new javax.swing.JMenuItem();
         windowMenuSeparator2 = new javax.swing.JSeparator();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lick Generator Controls");
         setAlwaysOnTop(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                closeWindow(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         generatorPane.setMinimumSize(new java.awt.Dimension(900, 700));
@@ -3699,15 +3705,18 @@ public void saveTriageParameters()
     lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
   }
 
+private void verifyAndFill()
+  {
+  verifyTriageFields();
 
+  if( autoFill )
+    {
+    FillProbsButtonActionPerformed(null);
+    }
+  }
 
     private void chordToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordToneWeightFieldActionPerformed
-        verifyTriageFields();
-
-        if( autoFill )
-          {
-            FillProbsButtonActionPerformed(null);
-          }
+        verifyAndFill();
         }//GEN-LAST:event_chordToneWeightFieldActionPerformed
 
         private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_chordToneWeightFieldFocusLost
@@ -3715,61 +3724,27 @@ public void saveTriageParameters()
         }//GEN-LAST:event_chordToneWeightFieldFocusLost
 
         private void colorToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorToneWeightFieldActionPerformed
-            verifyTriageFields();
-
-            if( autoFill )
-              {
-                FillProbsButtonActionPerformed(null);
-              }
+        verifyAndFill();
             }//GEN-LAST:event_colorToneWeightFieldActionPerformed
 
             private void colorToneWeightFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_colorToneWeightFieldFocusLost
-                verifyTriageFields();
-
-                if( autoFill )
-                  {
-                    FillProbsButtonActionPerformed(null);
-                  }
+         verifyAndFill();
                 }//GEN-LAST:event_colorToneWeightFieldFocusLost
 
                 private void scaleToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleToneWeightFieldActionPerformed
-                    verifyTriageFields();
-
-                    if( autoFill )
-                      {
-                        FillProbsButtonActionPerformed(null);
-                      }
-
-
+        verifyAndFill();
                     }//GEN-LAST:event_scaleToneWeightFieldActionPerformed
 
                     private void scaleToneWeightFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_scaleToneWeightFieldFocusLost
-                        verifyTriageFields();
-
-                        if( autoFill )
-                          {
-                            FillProbsButtonActionPerformed(null);
-                          }
+        verifyAndFill();
                         }//GEN-LAST:event_scaleToneWeightFieldFocusLost
 
                         private void chordToneDecayFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordToneDecayFieldActionPerformed
-
-                            verifyTriageFields();
-
-                            if( autoFill )
-                              {
-                                FillProbsButtonActionPerformed(null);
-                              }
+        verifyAndFill();
                         }//GEN-LAST:event_chordToneDecayFieldActionPerformed
 
                         private void chordToneDecayFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_chordToneDecayFieldFocusLost
-
-                            verifyTriageFields();
-
-                            if( autoFill )
-                              {
-                                FillProbsButtonActionPerformed(null);
-                              }
+        verifyAndFill();
                         }//GEN-LAST:event_chordToneDecayFieldFocusLost
 
                         private void scaleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxActionPerformed
@@ -3813,63 +3788,49 @@ public void saveTriageParameters()
                             redrawTriage();
                         }//GEN-LAST:event_rootComboBoxActionPerformed
 
+private void triageAndGenerate(int number)
+  {
+  triageLick(saveLickTF.getText(), number);
+  generateLickButtonActionPerformed(null);
+}
                         private void grade1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade1BtnActionPerformed
-                            triageLick(saveLickTF.getText(), 1);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(1);
 }//GEN-LAST:event_grade1BtnActionPerformed
 
                         private void grade2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade2BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 2);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(2);
                         }//GEN-LAST:event_grade2BtnActionPerformed
 
                         private void grade3BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade3BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 3);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(3);
                         }//GEN-LAST:event_grade3BtnActionPerformed
 
                         private void grade4BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade4BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 4);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(3);
 }//GEN-LAST:event_grade4BtnActionPerformed
 
                         private void grade5BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade5BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 5);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(5);
 }//GEN-LAST:event_grade5BtnActionPerformed
 
                         private void grade6BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade6BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 6);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(6);
 }//GEN-LAST:event_grade6BtnActionPerformed
 
                         private void grade7BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade7BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 7);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(7);
 }//GEN-LAST:event_grade7BtnActionPerformed
 
                         private void grade8BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade8BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 8);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(8);
 }//GEN-LAST:event_grade8BtnActionPerformed
 
                         private void grade9BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade9BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 9);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(9);
 }//GEN-LAST:event_grade9BtnActionPerformed
 
                         private void grade10BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grade10BtnActionPerformed
-
-                            triageLick(saveLickTF.getText(), 10);
-                            generateLickButtonActionPerformed(null);
+                            triageAndGenerate(10);
 }//GEN-LAST:event_grade10BtnActionPerformed
 
                         private void clearProbsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearProbsButtonActionPerformed
@@ -3889,7 +3850,6 @@ public void saveTriageParameters()
                               {
                                 return;
                               }
-
 
                             Vector<double[]> probs = lickgen.fillProbs(
                                 notate.getChordProg(),
@@ -4066,6 +4026,10 @@ public void closeWindow()
                         private void playSoloBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playSoloBtnActionPerformed
                             playSelection();
                         }//GEN-LAST:event_playSoloBtnActionPerformed
+
+                        private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
+                            closeWindow();
+                        }//GEN-LAST:event_closeWindow
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
@@ -4401,7 +4365,6 @@ public MelodyPart generateTheme() {
         cm.execute(new ResolvePitchesCommand(solo, 0, solo.getSize(), notate.getChordProg(), false, false));
 
         notate.pasteMelody(solo);
-
 
         imp.ImproVisor.setPlayEntrySounds(true);
     }
