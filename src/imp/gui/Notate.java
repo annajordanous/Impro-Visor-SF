@@ -351,7 +351,7 @@ public class Notate
    * An array of Parts in the Score to be displayed
    *
    */
-  protected Vector<MelodyPart> partArray;
+  protected PartList partList;
 
   /**
    *
@@ -466,8 +466,6 @@ public class Notate
   private boolean cancelTruncation = true;
 
   private ExtractMode saveSelectionMode = ExtractMode.LICK;
-
-  //Vector<JTextField[]> lickPrefs = new Vector<JTextField[]>();
 
   private int themeLength = 8;
 
@@ -10369,305 +10367,288 @@ public void chordVolumeChanged()
     
     
     
-    public class VoicingTableModel extends AbstractTableModel {
-        
-        private String[] columnNames = {"Chord","Name","Type","Voicing", "Extension"};
-        
-        private Class[] columnClasses = {ChordSymbol.class,
-        
-        String.class,
-        
-        String.class,
-        
-        Polylist.class,
-        
-        Polylist.class};
-        
-        
-        
-        private String chordRoot = "";
-        
-        
-        
-        private Vector<Polylist> data = new Vector<Polylist>();
-        
-        
-        
-        public VoicingTableModel() {
-            
-            data.add(Polylist.list("","","","","",false));
-            
-        }
-        
-        
-        
-        public void setChordRoot(String root, String bass, NoteSymbol low, NoteSymbol high) {
-            
-            chordRoot = root;
-            
-            Style s = score.getChordProg().getStyle().copy();
-            
-            s.setChordHigh(high);
-            
-            s.setChordLow(low);
-            
-            data = Advisor.getVoicingTable(chordRoot,bass,s);
-            
-            fireTableDataChanged();
-            
-        }
-        
-        
-        
-        public String getChordRoot() {
-            
-            return chordRoot;
-            
-        }
-        
-        
-        
-        public int getColumnCount() {
-            
-            return columnNames.length;
-            
-        }
-        
-        
-        
-        public String getColumnName(int col) {
-            
-            return columnNames[col];
-            
-        }
-        
-        
-        
-        public Class getColumnClass(int col) {
-            
-            return columnClasses[col];
-            
-        }
-        
-        
-        
-        public int getRowCount() {
-            
-            return data.size();
-            
-        }
-        
-        
-        
-        public Object getValueAt(int row, int col) {
-            
-            Object o = data.get(row).nth(col);
-            
-            if(o instanceof Polylist && !((Polylist)o).nonEmpty())
-                
-                return "";
-            
-            else
-                
-                return o;
-            
-        }
-        
-    }
-    
-    
-    
-    public class StyleListModel extends AbstractListModel {
-        private Polylist styles = null;
-        
-        public int getSize() {
-            styles = Advisor.getAllStyles();
-            if(styles == null)
-                return 0;
-            return styles.length();
-            
-        }
-        
-        
-        
-        public Object getElementAt(int index) {
-            
-            return (Style)((Polylist)styles.nth(index)).second();
-            
-        }
-        
-        
-        
-        public void reset() {
-            
-            fireContentsChanged(this,0,getSize());
-            
-        }
-        
-        
-        
-    }
-    
-    
-    
-    public class SectionListModel extends AbstractListModel {
-        
-        public int getSize() {
-            
-            /**
-             *
-             * Stephen TODO: null pointer exception raised here
-             *
-             */
-            
-            if(sectionInfo == null)
-                
-                return 0;
-            
-            return sectionInfo.size();
-            
-        }
-        
-        
-        
-        public Object getElementAt(int index) {
-            
-            return sectionInfo.getInfo(index);
-            
-        }
-        
-        
-        
-        public void reset() {
-            
-            sectionInfo = score.getChordProg().getSectionInfo().copy();
-            
-            refresh();
-            
-        }
-        
-        
-        
-        public void refresh() {
-            
-            fireContentsChanged(this,0,sectionInfo.size());
-            
-            int index = sectionList.getSelectedIndex();
-            
-            if(index > -1)  {
-                
-                styleList.setSelectedValue(sectionInfo.getStyle(index),true);
-                
-                measureTF.setText(String.valueOf(sectionInfo.getSectionMeasure(index)));
-                
-            }
-            
-            delSectionButton.setEnabled(sectionInfo.size() > 1);
-            
-            setNewSectionEnabled();
-            
-        }
-        
-    }
-    
-    
-    
-    public class StyleComboBoxModel extends AbstractListModel implements ComboBoxModel {
-        
-        Polylist styles; 
-        int len;
+public class VoicingTableModel
+    extends AbstractTableModel
+{
 
-        public int getSize() {
-            styles = Advisor.getAllStyles();
-            
-            if(styles == null)
-                return 0;
-            
-            len = styles.length();
+private String[] columnNames =
+  {
+    "Chord", "Name", "Type", "Voicing", "Extension"
+  };
 
-            return len;
-        }
-        
-        
-        public Object getElementAt(int index) {
-            
-            return (Style)((Polylist)styles.nth(index)).second();
-        }
-        
-        private Object selectedItem = null;
-        
+private Class[] columnClasses =
+  {
+    ChordSymbol.class,
+    String.class,
+    String.class,
+    Polylist.class,
+    Polylist.class
+  };
 
-        public void setSelectedItem(Object anItem) {
-            
-            selectedItem = anItem;
-        }
+private String chordRoot = "";
 
+private Vector<Polylist> data = new Vector<Polylist>();
+
+
+public VoicingTableModel()
+  {
+
+    data.add(Polylist.list("", "", "", "", "", false));
+  }
+
+public void setChordRoot(String root, String bass, NoteSymbol low,
+                         NoteSymbol high)
+  {
+
+    chordRoot = root;
+
+    Style s = score.getChordProg().getStyle().copy();
+
+    s.setChordHigh(high);
+
+    s.setChordLow(low);
+
+    data = Advisor.getVoicingTable(chordRoot, bass, s);
+
+    fireTableDataChanged();
+
+  }
         
-        public Object getSelectedItem() {
-            
-            return selectedItem;
-            
-        }
-        
-    }
+ public String getChordRoot()
+  {
+    return chordRoot;
+  }
+
+public int getColumnCount()
+  {
+    return columnNames.length;
+  }
+
+public String getColumnName(int col)
+  {
+    return columnNames[col];
+  }
+
+public Class getColumnClass(int col)
+  {
+    return columnClasses[col];
+  }
+
+public int getRowCount()
+  {
+    return data.size();
+  }
+
+public Object getValueAt(int row, int col)
+  {
+    Object o = data.get(row).nth(col);
+
+    if( o instanceof Polylist && !((Polylist) o).nonEmpty() )
+      {
+        return "";
+      }
+    else
+      {
+        return o;
+      }
+  }
+}
     
     
-    
-    public class MidiDeviceChooser extends AbstractListModel implements ComboBoxModel {
+ public class StyleListModel
+    extends AbstractListModel
+{
+
+private Polylist styles = null;
+
+public int getSize()
+  {
+    styles = Advisor.getAllStyles();
+    if( styles == null )
+      {
+        return 0;
+      }
+    return styles.length();
+
+  }
+
+public Object getElementAt(int index)
+  {
+
+    return (Style) ((Polylist) styles.nth(index)).second();
+
+  }
+
+public void reset()
+  {
+
+    fireContentsChanged(this, 0, getSize());
+
+  }
+
+}
+
+public class SectionListModel
+    extends AbstractListModel
+{
+
+public int getSize()
+  {
+
+    /**
+     *
+     * Stephen TODO: null pointer exception raised here
+     *
+     */
+    if( sectionInfo == null )
+      {
+        return 0;
+      }
+
+    return sectionInfo.size();
+
+  }
+
+public Object getElementAt(int index)
+  {
+
+    return sectionInfo.getInfo(index);
+
+  }
+
+public void reset()
+  {
+
+    sectionInfo = score.getChordProg().getSectionInfo().copy();
+
+    refresh();
+
+  }
+
+public void refresh()
+  {
+
+    fireContentsChanged(this, 0, sectionInfo.size());
+
+    int index = sectionList.getSelectedIndex();
+
+    if( index > -1 )
+      {
+
+        styleList.setSelectedValue(sectionInfo.getStyle(index), true);
+
+        measureTF.setText(String.valueOf(sectionInfo.getSectionMeasure(index)));
+
+      }
+
+    delSectionButton.setEnabled(sectionInfo.size() > 1);
+
+    setNewSectionEnabled();
+
+  }
+
+}
+
+public class StyleComboBoxModel
+    extends AbstractListModel
+    implements ComboBoxModel
+{
+
+Polylist styles;
+
+int len;
+
+public int getSize()
+  {
+    styles = Advisor.getAllStyles();
+
+    if( styles == null )
+      {
+        return 0;
+      }
+
+    len = styles.length();
+
+    return len;
+  }
+
+public Object getElementAt(int index)
+  {
+
+    return (Style) ((Polylist) styles.nth(index)).second();
+  }
+
+private Object selectedItem = null;
+
+public void setSelectedItem(Object anItem)
+  {
+
+    selectedItem = anItem;
+  }
+
+public Object getSelectedItem()
+  {
+
+    return selectedItem;
+
+  }
+
+}
+
+public class MidiDeviceChooser
+    extends AbstractListModel
+    implements ComboBoxModel
+{
+
+private Vector<MidiDevice.Info> devices;
+
+private Object selectedItem = null;
+
+public MidiDeviceChooser(Vector<MidiDevice.Info> devices)
+  {
+
+    this.devices = devices;
+
+  }
+
+public int getSize()
+  {
+
+    return devices.size();
+
+  }
+
+public Object getElementAt(int index)
+  {
+
+    Object o = devices.elementAt(index);
+
+    if( o == null )
+      {
+
+        return midiManager.defaultDeviceLabel;
+
+      }
+
+    return o;
+
+  }
+
+public void setSelectedItem(Object anItem)
+  {
+
+    selectedItem = anItem;
+
+  }
+
+public Object getSelectedItem()
+  {
+
+    return selectedItem;
+
+  }
         
-        private Vector<MidiDevice.Info> devices;
-        
-        private Object selectedItem = null;
-        
-        
-        
-        public MidiDeviceChooser(Vector<MidiDevice.Info> devices) {
-            
-            this.devices = devices;
-            
-        }
-        
-        
-        
-        public int getSize() {
-            
-            return devices.size();
-            
-        }
-        
-        
-        
-        public Object getElementAt(int index) {
-            
-            Object o = devices.elementAt(index);
-            
-            if(o == null) {
-                
-                return midiManager.defaultDeviceLabel;
-                
-            }
-            
-            return o;
-            
-        }
-        
-        
-        
-        public void setSelectedItem(Object anItem) {
-            
-            selectedItem = anItem;
-            
-        }
-        
-        
-        
-        public Object getSelectedItem() {
-            
-            return selectedItem;
-            
-        }
-        
-    }
+}
     
     
         
@@ -11427,408 +11408,6 @@ private void updateTempoFromTextField()
         saveLick(saveSelection);        
     }//GEN-LAST:event_okSaveButtonActionPerformed
     
-
- public void resetTriageParameters(boolean menu)
-  {
-  lickgenFrame.resetTriageParameters(menu);
-  }
-
-/*
-public void resetTriageParameters(boolean menu)
-  {
-    minPitchField.setText(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
-
-    minPitch = Integer.parseInt(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
-
-    maxPitchField.setText(lickgen.getParameter(LickGen.MAX_PITCH_STRING));
-
-    maxPitch = Integer.parseInt(lickgen.getParameter(LickGen.MAX_PITCH_STRING));
-
-    minDurationField.setText(lickgen.getParameter(LickGen.MIN_DURATION));
-
-    minDuration = Integer.parseInt(lickgen.getParameter(LickGen.MIN_DURATION));
-
-    maxDurationField.setText(lickgen.getParameter(LickGen.MAX_DURATION));
-
-    maxDuration = Integer.parseInt(lickgen.getParameter(LickGen.MAX_DURATION));
-
-    minIntervalField.setText(lickgen.getParameter(LickGen.MIN_INTERVAL));
-
-    minInterval = Integer.parseInt(lickgen.getParameter(LickGen.MIN_INTERVAL));
-
-    maxIntervalField.setText(lickgen.getParameter(LickGen.MAX_INTERVAL));
-
-    maxInterval = Integer.parseInt(lickgen.getParameter(LickGen.MAX_INTERVAL));
-
-    restProbField.setText(lickgen.getParameter(LickGen.REST_PROB));
-
-    restProb = Double.parseDouble(lickgen.getParameter(LickGen.REST_PROB));
-
-    leapProbField.setText(lickgen.getParameter(LickGen.LEAP_PROB));
-
-    leapProb = Double.parseDouble(lickgen.getParameter(LickGen.LEAP_PROB));
-
-    chordToneWeightField.setText(lickgen.getParameter(LickGen.CHORD_TONE_WEIGHT));
-
-    chordToneWeight = Double.parseDouble(lickgen.getParameter(
-        LickGen.CHORD_TONE_WEIGHT));
-
-    colorToneWeightField.setText(lickgen.getParameter(LickGen.COLOR_TONE_WEIGHT));
-
-    colorToneWeight = Double.parseDouble(lickgen.getParameter(
-        LickGen.COLOR_TONE_WEIGHT));
-
-    scaleToneWeightField.setText(lickgen.getParameter(LickGen.SCALE_TONE_WEIGHT));
-
-    scaleToneWeight = Double.parseDouble(lickgen.getParameter(
-        LickGen.SCALE_TONE_WEIGHT));
-
-    chordToneDecayField.setText(lickgen.getParameter(LickGen.CHORD_TONE_DECAY));
-
-    chordToneDecayRate = Double.parseDouble(lickgen.getParameter(
-        LickGen.CHORD_TONE_DECAY));
-
-    autoFillCheckBox.setSelected(Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.AUTO_FILL)));
-
-    autoFill = Boolean.parseBoolean(lickgen.getParameter(LickGen.AUTO_FILL));
-
-    boolean rectify = Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.RECTIFY));
-
-    rectifyCheckBox.setSelected(rectify);
-
-    useGrammarMI.setSelected(Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.USE_GRAMMAR)));
-
-    useGrammar = Boolean.parseBoolean(lickgen.getParameter(LickGen.USE_GRAMMAR));
-
-    avoidRepeats = Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.AVOID_REPEATS));
-
-    if( menu )
-      {
-        int rootIndex = ((DefaultComboBoxModel) rootComboBox.getModel()).getIndexOf(
-            lickgen.getParameter(LickGen.SCALE_ROOT));
-
-        int scaleIndex = ((DefaultComboBoxModel) scaleComboBox.getModel()).getIndexOf(
-            lickgen.getParameter(LickGen.SCALE_TYPE));
-
-        rootComboBox.setSelectedIndex(rootIndex);
-
-        scaleComboBox.setSelectedIndex(scaleIndex);
-
-        lickgen.setPreferredScale(lickgen.getParameter(LickGen.SCALE_ROOT),
-                                  lickgen.getParameter(LickGen.SCALE_TYPE));
-      }
-
-  }
-
-
-public void saveTriageParameters()
-  {
-    lickgen.clearParams();
-
-    lickgen.setParameter(LickGen.MIN_PITCH_STRING, minPitch);
-
-    lickgen.setParameter(LickGen.MAX_PITCH_STRING, maxPitch);
-
-    lickgen.setParameter(LickGen.MIN_DURATION, minDuration);
-
-    lickgen.setParameter(LickGen.MAX_DURATION, maxDuration);
-
-    lickgen.setParameter(LickGen.MIN_INTERVAL, minInterval);
-
-    lickgen.setParameter(LickGen.MAX_INTERVAL, maxInterval);
-
-    lickgen.setParameter(LickGen.REST_PROB, restProb);
-
-    lickgen.setParameter(LickGen.LEAP_PROB, leapProb);
-
-    lickgen.setParameter(LickGen.CHORD_TONE_WEIGHT, chordToneWeight);
-
-    lickgen.setParameter(LickGen.COLOR_TONE_WEIGHT, colorToneWeight);
-
-    lickgen.setParameter(LickGen.SCALE_TONE_WEIGHT, scaleToneWeight);
-
-    lickgen.setParameter(LickGen.CHORD_TONE_DECAY, chordToneDecayRate);
-
-    lickgen.setParameter(LickGen.AUTO_FILL, autoFill);
-
-    lickgen.setParameter(LickGen.RECTIFY, rectifyCheckBox.isSelected());
-
-    lickgen.setParameter(LickGen.USE_GRAMMAR, useGrammar);
-
-    lickgen.setParameter(LickGen.AVOID_REPEATS, avoidRepeats);
-
-    lickgen.setParameter(LickGen.SCALE_ROOT, rootComboBox.getSelectedItem());
-
-    lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
-  }
-*/
-
-/**
- * Redraw the triage frame based on where we are and how much of the current chord
- *progression we're examining.
- */
-/*
-public void redrawTriage()
-  {
-    lickSavedLabel.setText("");
-
-    chordProbPanel.removeAll();
-
-    GridBagLayout gbl = new GridBagLayout();
-
-    JPanel panel = new JPanel(gbl);
-
-    // We need to keep track of both the chords we've already looked at
-    // and the old probability values.
-
-    Vector<String> chordUsed = new Vector<String>();
-
-    Vector<JTextField[]> oldProbs = (Vector<JTextField[]>) lickPrefs.clone();
-
-
-    int start = getCurrentSelectionStart();
-
-    if( start == -1 )
-      {
-        return;
-      }
-
-    int end = start + totalSlots;
-
-
-    // Add the locations of every chord change in the section that we're
-    // examining.
-
-    Vector<Integer> chordChanges = new Vector<Integer>();
-
-    chordChanges.add(start);
-
-
-    int next = chordProg.getNextUniqueChordIndex(start);
-
-    while( next < end && next != -1 )
-      {
-        chordChanges.add(next);
-
-        next = chordProg.getNextUniqueChordIndex(next);
-      }
-
-    // Clear out the old values.
-
-    lickPrefs.clear();
-
-
-    // Loop through every chord
-
-    for( int i = 0; i < chordChanges.size(); ++i )
-      {
-
-        // If we've added stuff for this chord already, move on; otherwise,
-
-        // add it to the list of chords that we've processed.
-
-        if( chordUsed.contains(
-            chordProg.getCurrentChord(chordChanges.get(i)).getName()) )
-          {
-            continue;
-          }
-        else
-          {
-            chordUsed.add(
-                chordProg.getCurrentChord(chordChanges.get(i)).getName());
-          }
-
-        // Add in a label specifing which chord these text boxes correspond to.
-
-        GridBagConstraints labelConstraints = new GridBagConstraints();
-
-        labelConstraints.gridx = 0;
-
-        labelConstraints.gridwidth = 4;
-
-        labelConstraints.gridy = (i * 3);
-
-        labelConstraints.fill = GridBagConstraints.HORIZONTAL;
-
-        labelConstraints.ipadx = 5;
-
-        labelConstraints.insets = new Insets(5, 5, 5, 5);
-
-        labelConstraints.weightx = 1.0;
-
-
-        JLabel label = new JLabel(
-            chordProg.getCurrentChord(chordChanges.get(i)).getName() + " probabilities:");
-
-        panel.add(label, labelConstraints);
-
-
-
-        // Create a new array of text boxes and note labels
-
-        JTextField[] prefs = new JTextField[12];
-
-        String[] notes = getNoteLabels(chordChanges.get(i));
-
-
-
-        // Since there are twelve chromatic pitches we need to consider,
-
-        // loop through twelve times.
-
-        for( int j = 0; j < 12; ++j )
-          {
-            // First we need to draw the note labels; set up the drawing constraints
-
-            // for them.  They get added to every other row, just above the text
-
-            // boxes we're about to draw.
-
-            GridBagConstraints lbc = new GridBagConstraints();
-
-            lbc.anchor = GridBagConstraints.CENTER;
-
-            lbc.gridx = j;
-
-            lbc.gridy = (i * 3) + 1;
-
-            lbc.fill = GridBagConstraints.NONE;
-
-            lbc.ipadx = 15;
-
-            lbc.weightx = 1.0;
-
-
-
-            JLabel l = new JLabel(notes[j], JLabel.CENTER);
-
-            panel.add(l, lbc);
-
-
-
-            // Create the text field and set the value to the old value, if
-
-            // it exists.
-
-            prefs[j] = new JTextField(1);
-
-            prefs[j].setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-
-            if( oldProbs.size() > i )
-              {
-                prefs[j].setText(oldProbs.get(i)[j].getText() + "");
-              }
-            else
-              {
-                prefs[j].setText("1.0");
-              }
-
-
-
-            // Add event listeners to watch this field's input; we
-
-            // need to make sure that we don't allow bad strings to be
-
-            // input.
-
-            prefs[j].addActionListener(new java.awt.event.ActionListener()
-            {
-
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-              {
-
-                verifyProbs();
-
-              }
-
-            });
-
-            prefs[j].addFocusListener(new java.awt.event.FocusAdapter()
-            {
-
-            public void focusLost(java.awt.event.FocusEvent evt)
-              {
-
-                verifyProbs();
-
-              }
-
-            });
-
-
-
-            // Add the new box just below its corresponding label.
-
-            GridBagConstraints gbc = new GridBagConstraints();
-
-            gbc.gridx = j;
-
-            gbc.gridy = (i * 3) + 2;
-
-            gbc.fill = GridBagConstraints.NONE;
-
-            gbc.ipadx = 25;
-
-            gbc.weightx = 1.0;
-
-            panel.add(prefs[j], gbc);
-
-          }
-
-        lickPrefs.add(prefs);
-
-      }
-
-    JScrollPane sp = new JScrollPane(panel);
-
-    sp.getVerticalScrollBar().setUnitIncrement(10);
-
-    chordProbPanel.add(sp);
-
-    chordProbPanel.setPreferredSize(new Dimension(600, 200));
-
-    // We have to call validate before anything will appear on the screen.
-
-    lickgenFrame.validate();
-
-    // If we have auto-fill turned on, then calculate the new probabilities
-
-    if( autoFill )
-      {
-        FillProbsButtonActionPerformed(null);
-      }
-    // Otherwise, we need to store the old ones and use those instead, but we need
-    // to make sure that we don't try to write into text fields that aren't there.
-    else
-      {
-
-        Vector<double[]> probs = new Vector<double[]>();
-
-        for( int i = 0; i < lickPrefs.size(); ++i )
-          {
-
-            double[] p = new double[12];
-
-            for( int j = 0; j < 12; ++j )
-              {
-                p[j] = quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, 1.0, 0.0);
-              }
-
-            probs.add(p);
-
-          }
-
-        lickgen.setProbs(probs);
-
-      }
-
-    // This causes the frame to be resized, which is annoying: lickgenFrame.pack();
-  }
-*/
     
     
     // Return an array of labels that have appropriate enharmonics
@@ -11957,8 +11536,7 @@ public void redrawTriage()
  */
     
     
-    // Make sure the user has entered acceptable values for each of the other fields
-    
+    // Make sure the user has entered acceptable values for each of the other fields   
     // in the triage frame.
     
     private void verifyTriageFields()
@@ -11968,87 +11546,10 @@ public void redrawTriage()
         lickgenFrame.verifyTriageFields();
         lickgenFrame.setTotalBeats(totalBeats);
 
-        /*
-        
-        toCriticMIActionPerformed(null);
-        
-        
-        
-        minPitch = intFromTextField(minPitchField, MIN_PITCH, maxPitch, minPitch);
-        
-        maxPitch = intFromTextField(maxPitchField, minPitch, MAX_PITCH, maxPitch);
-        
-        minInterval = intFromTextField(minIntervalField, MIN_INTERVAL_SIZE, maxInterval, minInterval);
-        
-        maxInterval = intFromTextField(maxIntervalField, minInterval, MAX_INTERVAL_SIZE, maxInterval);
-        
-        minDuration = intFromTextField(minDurationField, maxDuration, MIN_NOTE_DURATION, minDuration);
-        
-        maxDuration = intFromTextField(maxDurationField, MAX_NOTE_DURATION, minDuration, maxDuration);
-        
-        restProb = doubleFromTextField(restProbField, 0.0, 1.0, restProb);
-        
-        leapProb = doubleFromTextField(leapProbField, 0.0, 1.0, leapProb);
-        
-        chordToneWeight = doubleFromTextField(chordToneWeightField, 0.0, Double.POSITIVE_INFINITY, chordToneWeight);
-        
-        scaleToneWeight = doubleFromTextField(scaleToneWeightField, 0.0, Double.POSITIVE_INFINITY, scaleToneWeight);
-        
-        colorToneWeight = doubleFromTextField(colorToneWeightField, 0.0, Double.POSITIVE_INFINITY, colorToneWeight);
-        
-        chordToneDecayRate = doubleFromTextField(chordToneDecayField, 0.0, Double.POSITIVE_INFINITY, chordToneDecayRate);
-        
-        totalBeats = doubleFromTextField(totalBeatsField, 0.0,Double.POSITIVE_INFINITY, 0.0);
-        /*
-                
-                Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue),
-                
-                Math.min(totalBeats, Integer.parseInt(partBarsTF1.getText()) * score.getMetre()[0] - (getCurrentSelectionStart() / beatValue)));
-
-        totalBeats = Math.round(totalBeats);
-        
-        totalSlots = (int)(BEAT*totalBeats);
-
-        //System.out.println("getting totalBeats = " + totalBeats + ", totalSlots = " + totalSlots);
-
-        */
-
+ 
         getCurrentStave().repaint();
     }
-    
-    
-  /*
-    private Vector<double[]> readProbs()
-    
-    {
         
-        Vector<double[]> probs = new Vector<double[]>();
-        
-        for (int i = 0; i < lickPrefs.size(); ++i)
-            
-        {
-            
-            double[] p = new double[12];
-            
-            for (int j = 0; j < 12; ++j)
-                
-                p[j] = quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 0.0);
-            
-            
-            
-            probs.add(p);
-            
-        }
-        
-        
-        
-        return probs;
-        
-        
-        
-    }
-  */
-    
     
     private void saveLick(String saveSelection)
     
@@ -12694,7 +12195,7 @@ public void redrawTriage()
                     new SetChordsCommand(getCurrentSelectionStart(),
                     parseListFromString(enteredText),
                     chordProg,
-                    partArray.get(currTabIndex) ));
+                    partList.get(currTabIndex) ));
             }
           else
             {
@@ -15397,7 +14898,7 @@ private void setLayoutPreference(Polylist layout)
 
       int keySig = getCurrentStave().getKeySignature();
 
-      if( partArray != null )
+      if( partList != null )
         {
         score.addPart();
         }
@@ -16276,7 +15777,7 @@ private void setLayoutPreference(Polylist layout)
                         
                         chordProg,
                         
-                        partArray.get(currTabIndex) ));
+                        partList.get(currTabIndex) ));
                 
                 
                 
@@ -16380,7 +15881,7 @@ private void setLayoutPreference(Polylist layout)
                         
                         null,
                         
-                        partArray.get(currTabIndex) ));
+                        partList.get(currTabIndex) ));
                 
                 
                 
@@ -20705,12 +20206,8 @@ public void showNewVoicingDialog()
 
     // setup the arrays
 
-    partArray = new Vector<MelodyPart>();
+    partList = new PartList(size);
     
-    // this next line shouldn't be necessary, since the constructor is supposed
-    // to accept an integer parameter to set the size. go figure!
-    
-    partArray.setSize(size);
 
     // set the chord progression for the score
 
@@ -20776,18 +20273,18 @@ public void showNewVoicingDialog()
 
       // Setup the Stave component in the pane
 
-      partArray.set(i, score.getPart(i));
+      partList.add(score.getPart(i));
 
-      Stave stave = new Stave(partArray.get(i).getStaveType(), this,
+      Stave stave = new Stave(partList.get(i).getStaveType(), this,
               score.getTitle());
 
       pane.setStave(stave);
 
       stave.setChordProg(chordProg);
 
-      stave.setPart(partArray.get(i));
+      stave.setPart(partList.get(i));
 
-      stave.setKeySignature(partArray.get(i).getKeySignature());
+      stave.setKeySignature(partList.get(i).getKeySignature());
 
       stave.setMetre(score.getMetre()[0], score.getMetre()[1]);
 
