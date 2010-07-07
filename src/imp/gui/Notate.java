@@ -1,8 +1,8 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- * XML export code is also Copyright (C) 2009, Nicolas Froment (aka Lasconic).
+ * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import java.awt.event.*;
 import javax.sound.midi.*;
 import javax.swing.*;
 import javax.swing.tree.*;
-import javax.swing.plaf.metal.*;
 import javax.swing.table.*;
 import java.io.*;
 import java.util.*;
@@ -68,9 +67,8 @@ import polya.*;
  *
  * Music XMLaspects contributed by Lasconic (Nicolas Froment) Aug. 15, 2009.
  *
- * @version     1.0, 28th June 2005
- *
  */
+
 public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
@@ -297,15 +295,15 @@ public class Notate
 
   protected Polylist adviceList;
 
-  Vector<Object> adviceMenuItemsScales;
+  ArrayList<Object> adviceMenuItemsScales;
 
-  Vector<Object> adviceMenuItemsCells;
+  ArrayList<Object> adviceMenuItemsCells;
 
-  Vector<Object> adviceMenuItemsIdioms;
+  ArrayList<Object> adviceMenuItemsIdioms;
 
-  Vector<Object> adviceMenuItemsLicks;
+  ArrayList<Object> adviceMenuItemsLicks;
 
-  Vector<Object> adviceMenuItemsQuotes;
+  ArrayList<Object> adviceMenuItemsQuotes;
 
   /**
    *
@@ -21088,15 +21086,14 @@ public void showNewVoicingDialog()
         setStatus("");
 
         return;
-
         }
 
 
-      adviceMenuItemsScales = new Vector<Object>();
-      adviceMenuItemsCells = new Vector<Object>();
-      adviceMenuItemsIdioms = new Vector<Object>();
-      adviceMenuItemsLicks = new Vector<Object>();
-      adviceMenuItemsQuotes = new Vector<Object>();
+      adviceMenuItemsScales = new ArrayList<Object>();
+      adviceMenuItemsCells  = new ArrayList<Object>();
+      adviceMenuItemsIdioms = new ArrayList<Object>();
+      adviceMenuItemsLicks  = new ArrayList<Object>();
+      adviceMenuItemsQuotes = new ArrayList<Object>();
 
       polylistToMenus(adviceList);
 
