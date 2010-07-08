@@ -1904,10 +1904,10 @@ public static Style getStyle(String name)
   return s;
   }
 
-public static Vector<Polylist> getVoicingTable(String chordRoot, String bass,
+public static ArrayList<Polylist> getVoicingTable(String chordRoot, String bass,
                                                Style style)
   {
-  Vector<Polylist> data = new Vector<Polylist>();
+  ArrayList<Polylist> data = new ArrayList<Polylist>();
 
   PolylistEnum cenum = chords.elements();
   while( cenum.hasMoreElements() )
@@ -1997,6 +1997,7 @@ public static Vector<Polylist> getVoicingTable(String chordRoot, String bass,
 
   return data;
   }
+
 
 Polylist makeVoicing(String id, String type, Polylist notes, Polylist extension)
 {

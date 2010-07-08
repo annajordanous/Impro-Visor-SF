@@ -404,8 +404,6 @@ public class Notate
    */
   private LickGen lickgen;
   
-  private Vector<String> headData;
-  
   private ArrayList<String> melodyData = new ArrayList<String>();
 
 
@@ -10387,7 +10385,7 @@ private Class[] columnClasses =
 
 private String chordRoot = "";
 
-private Vector<Polylist> data = new Vector<Polylist>();
+private ArrayList<Polylist> data = new ArrayList<Polylist>();
 
 
 public VoicingTableModel()
@@ -17281,57 +17279,7 @@ public void WriteLeadsheetToFile(File file) {
         
     }
  
-     /* 
-     * Normalizes a vector of segments to start on 0
-     */ 
-    private Vector<int[]> normalizePhrase(Vector<int[]> segments) {
-        Vector<int[]> normalSegments = new Vector<int[]>();
-        int firstPitch = segments.get(0)[0];
-        for(int i=0; i<segments.size(); i++) {
-           int[] nextNote = segments.get(i);
-           nextNote[0] -= firstPitch;
-           normalSegments.add(nextNote);
-        }
-        return normalSegments;
-    }
     
-    /*
-     * Translates a midi number to a note character
-     */
-
-    public String translateMidi(int value) {
-        int midiValue = value % 12;
-        switch (midiValue) {
-            case 0:
-                return "C";
-            case 1:
-                return "C#";
-            case 2:
-                return "D";
-            case 3:
-                return "D#";
-            case 4:
-                return "E";
-            case 5:
-                return "F";
-            case 6:
-                return "F#";
-            case 7:
-                return "G";
-            case 8:
-                return "G#";
-            case 9:
-                return "A";
-            case 10:
-                return "A#";
-            case 11:
-                return "B";
-            default:
-                System.out.println("Midi number bad.");
-                return "";
-        }
-    }
-
     /* Takes index and finds last index with note in it
      */
     public int getLastNoteIndex(int slot, MelodyPart melpart) {
