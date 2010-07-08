@@ -1,6 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This Java Class is part of the Impro-Visor Application.
+ *
+ * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ *
+ * Impro-Visor is free software; you can redistribute it and/or modifyc
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Impro-Visor is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * merchantability or fitness for a particular purpose.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Impro-Visor; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 /*
@@ -8,6 +24,7 @@
  *
  * Created on Jun 24, 2010, 4:57:53 PM
  */
+
 package imp.gui;
 
 import imp.cluster.*;
@@ -25,15 +42,13 @@ import javax.swing.*;
 import javax.swing.plaf.metal.*;
 import javax.swing.JScrollPane;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.*;
 
 import polya.*;
 
 /**
  *
- * @author keller
+ * @author Robert Keller
  */
 public class LickgenFrame
     extends javax.swing.JFrame
@@ -54,7 +69,7 @@ private Notate notate;
 
 private Vector<String> headData;
 
-private Vector<String> melodyData = new Vector<String>();
+private ArrayList<String> melodyData = new ArrayList<String>();
 
 private double roundTo = BEAT;
 
@@ -279,7 +294,6 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Lick Generator Controls");
-        setAlwaysOnTop(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 closeWindow(evt);
@@ -1786,7 +1800,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         soloGenPanel.add(themeProbLabel, gridBagConstraints);
 
-        themeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        themeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         themeLabel.setText("Theme in Leadsheet notation:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1923,7 +1937,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         soloGenPanel.add(reverseProbabilityField, gridBagConstraints);
 
         disclaimer.setBackground(new java.awt.Color(255, 255, 0));
-        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         disclaimer.setText("<html>The Solo Generator is work in progress. <br><br>The idea is to generate a solo by using a theme several times,<br> in different places within the solo.\n<br><br>\nThe theme itself can be generated, or it can be imported as the current selection in the leadsheet.\n<br><br>\nThe theme may also be reversed, inverted, or transposed<br> by specifying non-zero probabilities bewlo.\n\n</html>");
         disclaimer.setMaximumSize(new java.awt.Dimension(600, 200));
