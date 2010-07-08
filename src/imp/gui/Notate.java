@@ -406,7 +406,7 @@ public class Notate
   
   private Vector<String> headData;
   
-  private Vector<String> melodyData = new Vector<String>();
+  private ArrayList<String> melodyData = new ArrayList<String>();
 
 
   private static LogDialog logDialog = new LogDialog(false);
@@ -17135,7 +17135,7 @@ public void openLeadsheet(boolean openCorpus)
         allMeasures = true;
         
         int HEAD = 0;                
-        melodyData = new Vector<String>();      
+        melodyData = new ArrayList<String>();
             
         for (int i = 0; i < staveScrollPane.length; i++) {
             //System.out.println("Chorus " + i+1 + ":");
@@ -17156,16 +17156,16 @@ public void openLeadsheet(boolean openCorpus)
         allMeasures = false;
     }
 
-        public Vector<String> getMelodyData(int chorusNumber)
+        public ArrayList<String> getMelodyData(int chorusNumber)
               {
                   return getMelodyData(score, chorusNumber);
               }
     
     /*Returns a vector of Strings representing a section of the melody of a
      *chorus and containing the notes in the section     */
-    public Vector<String> getMelodyData(Score s, int chorusNumber) {
+    public ArrayList<String> getMelodyData(Score s, int chorusNumber) {
         MelodyPart melPart = s.getPart(chorusNumber).copy();
-        Vector sections = new Vector<String>();
+        ArrayList<String> sections = new ArrayList<String>();
         int numSlots = melPart.getSize();
         int slotsPerSection = lickgenFrame.getWindowSize()* BEAT;
         int windowSlide = lickgenFrame.getWindowSlide() * BEAT;

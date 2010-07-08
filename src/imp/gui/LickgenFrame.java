@@ -67,8 +67,6 @@ private double reverseProb = 0.1;
 
 private Notate notate;
 
-private Vector<String> headData;
-
 private ArrayList<String> melodyData = new ArrayList<String>();
 
 private double roundTo = BEAT;
@@ -1636,11 +1634,11 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         grammarLearningPanel.add(saveGrammarAsButton, gridBagConstraints);
 
         openCorpusBtn.setBackground(Color.orange);
-        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
+        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        openCorpusBtn.setText("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. </b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>The process is over when the last chorus of that leadsheet appears</b>.</html>");
         openCorpusBtn.setActionCommand("<html><b>Step 5</b>: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.</html>");
         openCorpusBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openCorpusBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        openCorpusBtn.setLabel("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. \n<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The process is over when the last chorus of that leadsheet appears.</html>");
         openCorpusBtn.setMaximumSize(new java.awt.Dimension(9999, 9999));
         openCorpusBtn.setMinimumSize(new java.awt.Dimension(240, 75));
         openCorpusBtn.setOpaque(true);
@@ -3913,6 +3911,7 @@ private void triageAndGenerate(int number)
 
                         private void openCorpusBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openCorpusBtnActionPerformed
                             notate.openCorpus();
+                            toFront();
 }//GEN-LAST:event_openCorpusBtnActionPerformed
 
                         private void toGrammarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toGrammarBtnActionPerformed
