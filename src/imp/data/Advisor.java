@@ -62,7 +62,7 @@ static String title3 =
 static String title4 =
         " with related first chord type (or extending this chord type)";
 
-static Vector<String> styleWarnings = new Vector<String>();
+static ArrayList<String> styleWarnings = new ArrayList<String>();
 
 private int interChordTolerance = 3; // half-beats, used in matching
 
@@ -127,9 +127,9 @@ private static int numChords;
 // Used for collapsing or expanding advice to fit different time signatures.
 int[] metre = new int[2];
 
-static Vector<Polylist> ruleArray;
+static ArrayList<Polylist> ruleArray;
 
-static Vector<Boolean> markArray;
+static ArrayList<Boolean> markArray;
 
 // FIX:  Some or all of these strings should move to Constants
 static final String ADVICE = "advice";
@@ -245,8 +245,8 @@ public void setRules(Polylist rules)
   // Save all rules in an array for indexing in culling items
 
   int rulesLength = rules.length();
-  ruleArray = new Vector<Polylist>(rulesLength, 5000);
-  markArray = new Vector<Boolean>(rulesLength, 5000);
+  ruleArray = new ArrayList<Polylist>(rulesLength);
+  markArray = new ArrayList<Boolean>(rulesLength);
   PolylistEnum it = rules.elements();
 
   // Put all rule items in array for subsequent indexing.
@@ -385,7 +385,7 @@ public void addRules()
   int numRules = ruleArray.size();
   for( int serial = 0; serial < numRules; serial++ )
     {
-    addOneRule(ruleArray.elementAt(serial),
+    addOneRule(ruleArray.get(serial),
             serial, false, true); // don't check for duplicates
     }
 
@@ -3212,7 +3212,7 @@ String getType(String chordName)
 
 public static boolean getMark(int i)
   {
-  return markArray.elementAt(i).equals(Boolean.TRUE);
+  return markArray.get(i).equals(Boolean.TRUE);
   }
 
 
@@ -3220,9 +3220,9 @@ public void setMark(int i)
   {
   if( !getMark(i) )
     {
-    Trace.log(2, "Marking item " + i + ": " + ruleArray.elementAt(i));
+    Trace.log(2, "Marking item " + i + ": " + ruleArray.get(i));
     markArray.set(i, Boolean.TRUE);
-    addOneRule(ruleArray.elementAt(i), i, true, false);	// re do the element
+    addOneRule(ruleArray.get(i), i, true, false);	// re do the element
     }
   }
 
@@ -3231,7 +3231,7 @@ public void unsetMark(int i)
   {
   if( getMark(i) )
     {
-    Trace.log(2, "Unmarking item " + i + ": " + ruleArray.elementAt(i));
+    Trace.log(2, "Unmarking item " + i + ": " + ruleArray.get(i));
     markArray.set(i, Boolean.FALSE);
 //			 FIX     ruleArray.set(i, (Polylist)((Polylist)ruleArray.elementAt(i)).second());  // remove mark
     }
@@ -3246,7 +3246,7 @@ public void showMarkedItems()
     {
     if( getMark(i) )
       {
-      System.out.println("item " + i + ": " + ruleArray.elementAt(i));
+      System.out.println("item " + i + ": " + ruleArray.get(i));
       }
     }
   }
@@ -3275,10 +3275,10 @@ public void saveRules(PrintStream out)
   {
   
   // print scales first
-  Enumeration v = ruleArray.elements();
-  for( int i = 0; v.hasMoreElements(); i++ )
+  ListIterator v = ruleArray.listIterator();
+  for( int i = 0; v.hasNext(); i++ )
     {
-    Object ob = v.nextElement();
+    Object ob = v.next();
     if( ob instanceof Polylist )
       {
       Polylist listob = (Polylist)ob;
@@ -3300,10 +3300,10 @@ public void saveRules(PrintStream out)
   }
 
   // Then print everything else
-  v = ruleArray.elements();
-  for( int i = 0; v.hasMoreElements(); i++ )
+  v = ruleArray.listIterator();
+  for( int i = 0; v.hasNext(); i++ )
     {
-    Object ob = v.nextElement();
+    Object ob = v.next();
     if( ob instanceof Polylist )
       {
       Polylist listob = (Polylist)ob;
@@ -3343,10 +3343,10 @@ public void saveRules(PrintStream out)
 
 public static void saveStyles(PrintWriter out)
   {
-  Enumeration v = ruleArray.elements();
-  for( int i = 0; v.hasMoreElements(); i++ )
+  ListIterator v = ruleArray.listIterator();
+  for( int i = 0; v.hasNext(); i++ )
     {
-    Object ob = v.nextElement();
+    Object ob = v.next();
     if( ob instanceof Polylist )
       {
       Polylist listob = (Polylist)ob;
@@ -3494,10 +3494,10 @@ public static void pprint(PrintStream out, Polylist L, String tab)
  */
 public void showRules(PrintStream out)
   {
-  Enumeration v = ruleArray.elements();
-  for( int i = 0; v.hasMoreElements(); i++ )
+  ListIterator v = ruleArray.listIterator();
+  for( int i = 0; v.hasNext(); i++ )
     {
-    out.println("" + i + " " + v.nextElement());
+    out.println("" + i + " " + v.next());
     }
   }
 
