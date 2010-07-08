@@ -2650,33 +2650,10 @@ getAbstractMelody();
  }
 
 
-    /**
-     * write the number of beats to slide so the data analysis can read it -
-     * probably won't need to be called
-     @param beatsToSlide
-     */
-private void writeBeatsToSlide(int beatsToSlide)
-  {
-    try
-      {
-        File file = new File(
-            "C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data");
-        if( !file.exists() )
-          {
-            BufferedWriter out = new BufferedWriter(new FileWriter(
-                "C:/Documents and Settings/keller/Desktop/Improvisor339/Contours/Measures.data",
-                                                                   true));
-            out.write(Integer.toString(beatsToSlide) + "\n");
-            out.close();
-          }
-      }
-    catch( IOException e )
-      {
-        System.out.println("IO EXCEPTION!");
-      }
-  }
+/**
+ * add the production to file
+ */
 
-//add the production to file
 private void writeProduction(String production, int measureWindow, int location,
                              boolean writeExactMelody)
   {
