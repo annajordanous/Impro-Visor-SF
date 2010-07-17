@@ -136,6 +136,8 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
     this.cm = cm;
 
     initComponents();
+    //So the images for the complexity graphs get initialized properly
+    ((ComplexityWindow)attributeChoosingPanel).initImageBuffers();
   }
 
 /** This method is called from within the constructor to
@@ -275,6 +277,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         reverseProbabilityField = new javax.swing.JTextField();
         reverseProbabilityField.setText(reverseProb + "");
         disclaimer = new javax.swing.JLabel();
+        attributeChoosingPanel = new ComplexityWindow();
         generatorMenuBar1 = new javax.swing.JMenuBar();
         grammarMenu1 = new javax.swing.JMenu();
         openGrammarMI1 = new javax.swing.JMenuItem();
@@ -1634,7 +1637,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         grammarLearningPanel.add(saveGrammarAsButton, gridBagConstraints);
 
         openCorpusBtn.setBackground(Color.orange);
-        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        openCorpusBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         openCorpusBtn.setText("<html><b>Step 4</b>: Select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Note: Selecting any leadsheet file in a folder is equivalent to selecting the entire folder. </b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>The process is over when the last chorus of that leadsheet appears</b>.</html>");
         openCorpusBtn.setActionCommand("<html><b>Step 5</b>: Next select a corpus of solos from which to learn. Each solo is a leadsheet file.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Selecting any file any a folder is equivalent to selecting the entire folder.  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The leadsheet you selected will be left in the window at the end. The process is over when the last chorus appears.</html>");
         openCorpusBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -1947,6 +1950,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         soloGenPanel.add(disclaimer, gridBagConstraints);
 
         generatorPane.addTab("Solo Generator", soloGenPanel);
+        generatorPane.addTab("Complexity Attributes", attributeChoosingPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4027,6 +4031,7 @@ public void closeWindow()
     private javax.swing.JTextField MarkovLengthField;
     private javax.swing.JPanel ProbFillClearPanel;
     private javax.swing.JLabel ReverseProbLabel;
+    private javax.swing.JPanel attributeChoosingPanel;
     private javax.swing.JCheckBox autoFillCheckBox;
     private javax.swing.JCheckBox avoidRepeatsCheckbox;
     private javax.swing.JMenuItem cascadeMI2;
