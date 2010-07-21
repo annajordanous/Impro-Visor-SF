@@ -113,6 +113,11 @@ private LickGen lickgen;
 
 private CommandManager cm;
 
+// Complexity graph variables
+public int attrTotal; //total number of beats to represent
+public int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
+
+
 /**
  * Vector of JTextField arrays, used to display probabilities used in lick generation
  */
@@ -130,15 +135,27 @@ private boolean allMeasures = false;
 
 public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
   {
-
     this.notate = notate;
     this.lickgen = lickgen;
     this.cm = cm;
 
+    attrTotal = 60;
+    attrGranularity = 2;
+
     initComponents();
     //So the images for the complexity graphs get initialized properly
-    ((ComplexityWindow)attributeChoosingPanel).initImageBuffers();
-  }
+    initImageBuffers();
+}
+
+public void initImageBuffers() {
+    ((ComplexityPanel)overallComplexityPanel).initBuffer(Color.ORANGE);
+    ((ComplexityPanel)densityPanel).initBuffer(Color.PINK);
+    ((ComplexityPanel)varietyPanel).initBuffer(Color.GREEN);
+    ((ComplexityPanel)syncopationPanel).initBuffer(Color.BLUE);
+    ((ComplexityPanel)consonancePanel).initBuffer(Color.MAGENTA);
+    ((ComplexityPanel)leapSizePanel).initBuffer(Color.CYAN);
+    ((ComplexityPanel)directionChangePanel).initBuffer(Color.RED);
+}
 
 /** This method is called from within the constructor to
  * initialize the form.
@@ -277,7 +294,32 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         reverseProbabilityField = new javax.swing.JTextField();
         reverseProbabilityField.setText(reverseProb + "");
         disclaimer = new javax.swing.JLabel();
-        attributeChoosingPanel = new ComplexityWindow();
+        attributeChoosingPanel = new javax.swing.JPanel();
+        graphViewScrollPanel = new javax.swing.JScrollPane();
+        graphViewPanel = new javax.swing.JPanel();
+        globalViewPanel = new javax.swing.JPanel();
+        globalComplexityScrollPane = new javax.swing.JScrollPane();
+        overallComplexityPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        overallControlPanel = new javax.swing.JPanel();
+        specificAttributePanel = new javax.swing.JPanel();
+        densityScrollPane = new javax.swing.JScrollPane();
+        densityPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        densityControlPanel = new javax.swing.JPanel();
+        varietyScrollPane = new javax.swing.JScrollPane();
+        varietyPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        varietyControlPanel = new javax.swing.JPanel();
+        syncopationScrollPane = new javax.swing.JScrollPane();
+        syncopationPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        syncopationControlPanel = new javax.swing.JPanel();
+        consonanceScrollPane = new javax.swing.JScrollPane();
+        consonancePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        consonanceControlPanel = new javax.swing.JPanel();
+        leapSizeScrollPane = new javax.swing.JScrollPane();
+        leapSizePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        leapSizeControlPanel = new javax.swing.JPanel();
+        directionChangeScrollPane = new javax.swing.JScrollPane();
+        directionChangePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        directionChangeControlPanel = new javax.swing.JPanel();
         generatorMenuBar1 = new javax.swing.JMenuBar();
         grammarMenu1 = new javax.swing.JMenu();
         openGrammarMI1 = new javax.swing.JMenuItem();
@@ -1950,6 +1992,459 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
         soloGenPanel.add(disclaimer, gridBagConstraints);
 
         generatorPane.addTab("Solo Generator", soloGenPanel);
+
+        attributeChoosingPanel.setLayout(new java.awt.GridBagLayout());
+
+        graphViewScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        graphViewPanel.setLayout(new java.awt.GridBagLayout());
+
+        globalViewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Overall Complexity"));
+        globalViewPanel.setPreferredSize(new java.awt.Dimension(695, 245));
+        globalViewPanel.setLayout(new java.awt.GridBagLayout());
+
+        globalComplexityScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        globalComplexityScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        overallComplexityPanel.setBackground(new java.awt.Color(255, 255, 255));
+        overallComplexityPanel.setPreferredSize(overallComplexityPanel.getSize());
+        overallComplexityPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        overallComplexityPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        overallComplexityPanel.setLayout(null);
+        globalComplexityScrollPane.setViewportView(overallComplexityPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        globalViewPanel.add(globalComplexityScrollPane, gridBagConstraints);
+
+        overallControlPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout overallControlPanelLayout = new javax.swing.GroupLayout(overallControlPanel);
+        overallControlPanel.setLayout(overallControlPanelLayout);
+        overallControlPanelLayout.setHorizontalGroup(
+            overallControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 181, Short.MAX_VALUE)
+        );
+        overallControlPanelLayout.setVerticalGroup(
+            overallControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 208, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 6);
+        globalViewPanel.add(overallControlPanel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        graphViewPanel.add(globalViewPanel, gridBagConstraints);
+
+        specificAttributePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Specific Attributes"));
+        specificAttributePanel.setPreferredSize(new java.awt.Dimension(666, 1400));
+        specificAttributePanel.setLayout(new java.awt.GridBagLayout());
+
+        densityScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        densityScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        densityPanel.setPreferredSize(densityPanel.getSize());
+        densityPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        densityPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+
+        javax.swing.GroupLayout densityPanelLayout = new javax.swing.GroupLayout(densityPanel);
+        densityPanel.setLayout(densityPanelLayout);
+        densityPanelLayout.setHorizontalGroup(
+            densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 723, Short.MAX_VALUE)
+        );
+        densityPanelLayout.setVerticalGroup(
+            densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+
+        densityScrollPane.setViewportView(densityPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        specificAttributePanel.add(densityScrollPane, gridBagConstraints);
+
+        densityControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Density"));
+        densityControlPanel.setPreferredSize(new java.awt.Dimension(185, 235));
+
+        javax.swing.GroupLayout densityControlPanelLayout = new javax.swing.GroupLayout(densityControlPanel);
+        densityControlPanel.setLayout(densityControlPanelLayout);
+        densityControlPanelLayout.setHorizontalGroup(
+            densityControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        densityControlPanelLayout.setVerticalGroup(
+            densityControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 6);
+        specificAttributePanel.add(densityControlPanel, gridBagConstraints);
+
+        varietyScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        varietyScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        varietyPanel.setPreferredSize(varietyPanel.getSize());
+        varietyPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        varietyPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+
+        javax.swing.GroupLayout varietyPanelLayout = new javax.swing.GroupLayout(varietyPanel);
+        varietyPanel.setLayout(varietyPanelLayout);
+        varietyPanelLayout.setHorizontalGroup(
+            varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 723, Short.MAX_VALUE)
+        );
+        varietyPanelLayout.setVerticalGroup(
+            varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+
+        varietyScrollPane.setViewportView(varietyPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        specificAttributePanel.add(varietyScrollPane, gridBagConstraints);
+
+        varietyControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rhythmic Variety"));
+
+        javax.swing.GroupLayout varietyControlPanelLayout = new javax.swing.GroupLayout(varietyControlPanel);
+        varietyControlPanel.setLayout(varietyControlPanelLayout);
+        varietyControlPanelLayout.setHorizontalGroup(
+            varietyControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        varietyControlPanelLayout.setVerticalGroup(
+            varietyControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 6);
+        specificAttributePanel.add(varietyControlPanel, gridBagConstraints);
+
+        syncopationScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        syncopationScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        syncopationPanel.setPreferredSize(densityPanel.getSize());
+        syncopationPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        syncopationPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+
+        javax.swing.GroupLayout syncopationPanelLayout = new javax.swing.GroupLayout(syncopationPanel);
+        syncopationPanel.setLayout(syncopationPanelLayout);
+        syncopationPanelLayout.setHorizontalGroup(
+            syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 723, Short.MAX_VALUE)
+        );
+        syncopationPanelLayout.setVerticalGroup(
+            syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+
+        syncopationScrollPane.setViewportView(syncopationPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        specificAttributePanel.add(syncopationScrollPane, gridBagConstraints);
+
+        syncopationControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Syncopation"));
+
+        javax.swing.GroupLayout syncopationControlPanelLayout = new javax.swing.GroupLayout(syncopationControlPanel);
+        syncopationControlPanel.setLayout(syncopationControlPanelLayout);
+        syncopationControlPanelLayout.setHorizontalGroup(
+            syncopationControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        syncopationControlPanelLayout.setVerticalGroup(
+            syncopationControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 6);
+        specificAttributePanel.add(syncopationControlPanel, gridBagConstraints);
+
+        consonanceScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        consonanceScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        consonancePanel.setPreferredSize(densityPanel.getSize());
+        consonancePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        consonancePanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+
+        javax.swing.GroupLayout consonancePanelLayout = new javax.swing.GroupLayout(consonancePanel);
+        consonancePanel.setLayout(consonancePanelLayout);
+        consonancePanelLayout.setHorizontalGroup(
+            consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 723, Short.MAX_VALUE)
+        );
+        consonancePanelLayout.setVerticalGroup(
+            consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+
+        consonanceScrollPane.setViewportView(consonancePanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        specificAttributePanel.add(consonanceScrollPane, gridBagConstraints);
+
+        consonanceControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Consonance"));
+
+        javax.swing.GroupLayout consonanceControlPanelLayout = new javax.swing.GroupLayout(consonanceControlPanel);
+        consonanceControlPanel.setLayout(consonanceControlPanelLayout);
+        consonanceControlPanelLayout.setHorizontalGroup(
+            consonanceControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        consonanceControlPanelLayout.setVerticalGroup(
+            consonanceControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 6);
+        specificAttributePanel.add(consonanceControlPanel, gridBagConstraints);
+
+        leapSizeScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        leapSizeScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        leapSizePanel.setPreferredSize(densityPanel.getSize());
+        leapSizePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        leapSizePanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+
+        javax.swing.GroupLayout leapSizePanelLayout = new javax.swing.GroupLayout(leapSizePanel);
+        leapSizePanel.setLayout(leapSizePanelLayout);
+        leapSizePanelLayout.setHorizontalGroup(
+            leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 723, Short.MAX_VALUE)
+        );
+        leapSizePanelLayout.setVerticalGroup(
+            leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+
+        leapSizeScrollPane.setViewportView(leapSizePanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        specificAttributePanel.add(leapSizeScrollPane, gridBagConstraints);
+
+        leapSizeControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Leap Size"));
+
+        javax.swing.GroupLayout leapSizeControlPanelLayout = new javax.swing.GroupLayout(leapSizeControlPanel);
+        leapSizeControlPanel.setLayout(leapSizeControlPanelLayout);
+        leapSizeControlPanelLayout.setHorizontalGroup(
+            leapSizeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        leapSizeControlPanelLayout.setVerticalGroup(
+            leapSizeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 6);
+        specificAttributePanel.add(leapSizeControlPanel, gridBagConstraints);
+
+        directionChangeScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        directionChangeScrollPane.setPreferredSize(new java.awt.Dimension(666, 220));
+
+        directionChangePanel.setPreferredSize(densityPanel.getSize());
+        directionChangePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+        directionChangePanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                mouseEventHandler(evt);
+            }
+        });
+
+        javax.swing.GroupLayout directionChangePanelLayout = new javax.swing.GroupLayout(directionChangePanel);
+        directionChangePanel.setLayout(directionChangePanelLayout);
+        directionChangePanelLayout.setHorizontalGroup(
+            directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 723, Short.MAX_VALUE)
+        );
+        directionChangePanelLayout.setVerticalGroup(
+            directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+
+        directionChangeScrollPane.setViewportView(directionChangePanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        specificAttributePanel.add(directionChangeScrollPane, gridBagConstraints);
+
+        directionChangeControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Direction Change Frequency"));
+
+        javax.swing.GroupLayout directionChangeControlPanelLayout = new javax.swing.GroupLayout(directionChangeControlPanel);
+        directionChangeControlPanel.setLayout(directionChangeControlPanelLayout);
+        directionChangeControlPanelLayout.setHorizontalGroup(
+            directionChangeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        directionChangeControlPanelLayout.setVerticalGroup(
+            directionChangeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 194, Short.MAX_VALUE)
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 6);
+        specificAttributePanel.add(directionChangeControlPanel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.weightx = 1.0;
+        graphViewPanel.add(specificAttributePanel, gridBagConstraints);
+
+        graphViewScrollPanel.setViewportView(graphViewPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        attributeChoosingPanel.add(graphViewScrollPanel, gridBagConstraints);
+
         generatorPane.addTab("Complexity Attributes", attributeChoosingPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4025,6 +4520,10 @@ public void closeWindow()
                             closeWindow();
                         }//GEN-LAST:event_closeWindow
 
+                        private void mouseEventHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEventHandler
+                            ((ComplexityPanel)evt.getSource()).mouseHandler(evt);
+                        }//GEN-LAST:event_mouseEventHandler
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
     private javax.swing.JLabel InvertProbLabel;
@@ -4044,6 +4543,15 @@ public void closeWindow()
     private javax.swing.JMenuItem closeWindowMI2;
     private javax.swing.JLabel colorToneProbLabel;
     private javax.swing.JTextField colorToneWeightField;
+    private javax.swing.JPanel consonanceControlPanel;
+    private javax.swing.JPanel consonancePanel;
+    private javax.swing.JScrollPane consonanceScrollPane;
+    private javax.swing.JPanel densityControlPanel;
+    private javax.swing.JPanel densityPanel;
+    private javax.swing.JScrollPane densityScrollPane;
+    private javax.swing.JPanel directionChangeControlPanel;
+    private javax.swing.JPanel directionChangePanel;
+    private javax.swing.JScrollPane directionChangeScrollPane;
     private javax.swing.JLabel disclaimer;
     private javax.swing.JLabel durationLabel;
     private javax.swing.JMenuItem editGrammarMI1;
@@ -4060,6 +4568,8 @@ public void closeWindow()
     private javax.swing.JMenu generatorWindowMenu1;
     private javax.swing.JButton getAbstractMelodyButton;
     private javax.swing.JButton getSelRhythmButton;
+    private javax.swing.JScrollPane globalComplexityScrollPane;
+    private javax.swing.JPanel globalViewPanel;
     private javax.swing.JButton grade10Btn;
     private javax.swing.JButton grade1Btn;
     private javax.swing.JButton grade2Btn;
@@ -4073,10 +4583,15 @@ public void closeWindow()
     private javax.swing.JLabel gradeLabel;
     private javax.swing.JPanel grammarLearningPanel;
     private javax.swing.JMenu grammarMenu1;
+    private javax.swing.JPanel graphViewPanel;
+    private javax.swing.JScrollPane graphViewScrollPanel;
     private javax.swing.JLabel intervalLabel;
     private javax.swing.JTextField invertProbabilityField;
     private javax.swing.JTextField leapProbField;
     private javax.swing.JLabel leapProbLabel;
+    private javax.swing.JPanel leapSizeControlPanel;
+    private javax.swing.JPanel leapSizePanel;
+    private javax.swing.JScrollPane leapSizeScrollPane;
     private javax.swing.JLabel learningStep0Label;
     private javax.swing.JPanel lickGenPanel;
     private javax.swing.JPanel lickGenerationButtonsPanel;
@@ -4096,6 +4611,8 @@ public void closeWindow()
     private javax.swing.JLabel numClusterRepsLabel;
     private javax.swing.JButton openCorpusBtn;
     private javax.swing.JMenuItem openGrammarMI1;
+    private javax.swing.JPanel overallComplexityPanel;
+    private javax.swing.JPanel overallControlPanel;
     private javax.swing.JButton pasteThemeBtn;
     private javax.swing.JLabel pitchLabel;
     private javax.swing.JPanel pitchProbabilitiesPanel;
@@ -4126,8 +4643,12 @@ public void closeWindow()
     private javax.swing.JMenuItem showCriticMI1;
     private javax.swing.JMenuItem showLogMI1;
     private javax.swing.JPanel soloGenPanel;
+    private javax.swing.JPanel specificAttributePanel;
     private javax.swing.JButton stopLickButton;
     private javax.swing.JButton stopSoloPlayBtn;
+    private javax.swing.JPanel syncopationControlPanel;
+    private javax.swing.JPanel syncopationPanel;
+    private javax.swing.JScrollPane syncopationScrollPane;
     private javax.swing.JButton testGeneration;
     private javax.swing.JTextField themeField;
     private javax.swing.JLabel themeLabel;
@@ -4147,6 +4668,9 @@ public void closeWindow()
     private javax.swing.JCheckBox useHeadCheckBox;
     private javax.swing.JCheckBox useMarkovCheckbox;
     private javax.swing.JCheckBox useSoloistCheckBox;
+    private javax.swing.JPanel varietyControlPanel;
+    private javax.swing.JPanel varietyPanel;
+    private javax.swing.JScrollPane varietyScrollPane;
     private javax.swing.JSeparator windowMenuSeparator2;
     private javax.swing.JPanel windowParametersPanel;
     private javax.swing.JTextField windowSizeField;
