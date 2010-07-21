@@ -297,6 +297,8 @@ public void initImageBuffers() {
         attributeChoosingPanel = new javax.swing.JPanel();
         graphViewScrollPanel = new javax.swing.JScrollPane();
         graphViewPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         globalViewPanel = new javax.swing.JPanel();
         globalComplexityScrollPane = new javax.swing.JScrollPane();
         overallComplexityPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
@@ -1980,9 +1982,9 @@ public void initImageBuffers() {
         soloGenPanel.add(reverseProbabilityField, gridBagConstraints);
 
         disclaimer.setBackground(new java.awt.Color(255, 255, 0));
-        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        disclaimer.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         disclaimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        disclaimer.setText("<html>The Solo Generator is work in progress. <br><br>The idea is to generate a solo by using a theme several times,<br> in different places within the solo.\n<br><br>\nThe theme itself can be generated, or it can be imported as the current selection in the leadsheet.\n<br><br>\nThe theme may also be reversed, inverted, or transposed<br> by specifying non-zero probabilities bewlo.\n\n</html>");
+        disclaimer.setText("<html>The Solo Generator is work in progress. <br><br>The idea is to generate a solo by using a theme several times,<br> in different places within the solo. <br><br> The theme itself can be generated, or it can be imported as the current selection in the leadsheet. <br><br> The theme may also be reversed, inverted, or transposed<br> by specifying non-zero probabilities below.  </html>");
         disclaimer.setMaximumSize(new java.awt.Dimension(600, 200));
         disclaimer.setMinimumSize(new java.awt.Dimension(600, 200));
         disclaimer.setPreferredSize(new java.awt.Dimension(600, 200));
@@ -1995,9 +1997,42 @@ public void initImageBuffers() {
 
         attributeChoosingPanel.setLayout(new java.awt.GridBagLayout());
 
+        graphViewScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         graphViewScrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         graphViewPanel.setLayout(new java.awt.GridBagLayout());
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setPreferredSize(new java.awt.Dimension(965, 75));
+
+        jLabel1.setText("<html>Here is where you can shape the phrasing curve of a generated solo. Click and drag the curve to specify an upper bound <br>on complexity.Shift-click and drag to specify the lower bound. Change the complexity of either the entire piece<br> (using the Overall Complexity curve), or change the complexity of specific attributes by checking \"Let me adjust attributes\". </html>");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 961, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 921, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(28, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 71, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        graphViewPanel.add(jPanel1, gridBagConstraints);
 
         globalViewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Overall Complexity"));
         globalViewPanel.setPreferredSize(new java.awt.Dimension(695, 245));
@@ -2037,7 +2072,7 @@ public void initImageBuffers() {
         overallControlPanel.setLayout(overallControlPanelLayout);
         overallControlPanelLayout.setHorizontalGroup(
             overallControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 181, Short.MAX_VALUE)
+            .addGap(0, 187, Short.MAX_VALUE)
         );
         overallControlPanelLayout.setVerticalGroup(
             overallControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2055,7 +2090,7 @@ public void initImageBuffers() {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
@@ -2084,7 +2119,7 @@ public void initImageBuffers() {
         densityPanel.setLayout(densityPanelLayout);
         densityPanelLayout.setHorizontalGroup(
             densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 747, Short.MAX_VALUE)
         );
         densityPanelLayout.setVerticalGroup(
             densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2110,7 +2145,7 @@ public void initImageBuffers() {
         densityControlPanel.setLayout(densityControlPanelLayout);
         densityControlPanelLayout.setHorizontalGroup(
             densityControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
         densityControlPanelLayout.setVerticalGroup(
             densityControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2145,7 +2180,7 @@ public void initImageBuffers() {
         varietyPanel.setLayout(varietyPanelLayout);
         varietyPanelLayout.setHorizontalGroup(
             varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 747, Short.MAX_VALUE)
         );
         varietyPanelLayout.setVerticalGroup(
             varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2170,7 +2205,7 @@ public void initImageBuffers() {
         varietyControlPanel.setLayout(varietyControlPanelLayout);
         varietyControlPanelLayout.setHorizontalGroup(
             varietyControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
         varietyControlPanelLayout.setVerticalGroup(
             varietyControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2205,7 +2240,7 @@ public void initImageBuffers() {
         syncopationPanel.setLayout(syncopationPanelLayout);
         syncopationPanelLayout.setHorizontalGroup(
             syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 747, Short.MAX_VALUE)
         );
         syncopationPanelLayout.setVerticalGroup(
             syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2230,7 +2265,7 @@ public void initImageBuffers() {
         syncopationControlPanel.setLayout(syncopationControlPanelLayout);
         syncopationControlPanelLayout.setHorizontalGroup(
             syncopationControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
         syncopationControlPanelLayout.setVerticalGroup(
             syncopationControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2265,7 +2300,7 @@ public void initImageBuffers() {
         consonancePanel.setLayout(consonancePanelLayout);
         consonancePanelLayout.setHorizontalGroup(
             consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 747, Short.MAX_VALUE)
         );
         consonancePanelLayout.setVerticalGroup(
             consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2290,7 +2325,7 @@ public void initImageBuffers() {
         consonanceControlPanel.setLayout(consonanceControlPanelLayout);
         consonanceControlPanelLayout.setHorizontalGroup(
             consonanceControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
         consonanceControlPanelLayout.setVerticalGroup(
             consonanceControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2325,7 +2360,7 @@ public void initImageBuffers() {
         leapSizePanel.setLayout(leapSizePanelLayout);
         leapSizePanelLayout.setHorizontalGroup(
             leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 747, Short.MAX_VALUE)
         );
         leapSizePanelLayout.setVerticalGroup(
             leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2350,7 +2385,7 @@ public void initImageBuffers() {
         leapSizeControlPanel.setLayout(leapSizeControlPanelLayout);
         leapSizeControlPanelLayout.setHorizontalGroup(
             leapSizeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
         leapSizeControlPanelLayout.setVerticalGroup(
             leapSizeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2385,7 +2420,7 @@ public void initImageBuffers() {
         directionChangePanel.setLayout(directionChangePanelLayout);
         directionChangePanelLayout.setHorizontalGroup(
             directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 723, Short.MAX_VALUE)
+            .addGap(0, 747, Short.MAX_VALUE)
         );
         directionChangePanelLayout.setVerticalGroup(
             directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2410,7 +2445,7 @@ public void initImageBuffers() {
         directionChangeControlPanel.setLayout(directionChangeControlPanelLayout);
         directionChangeControlPanelLayout.setHorizontalGroup(
             directionChangeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 179, Short.MAX_VALUE)
+            .addGap(0, 185, Short.MAX_VALUE)
         );
         directionChangeControlPanelLayout.setVerticalGroup(
             directionChangeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2428,7 +2463,7 @@ public void initImageBuffers() {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 1.0;
@@ -4587,6 +4622,8 @@ public void closeWindow()
     private javax.swing.JScrollPane graphViewScrollPanel;
     private javax.swing.JLabel intervalLabel;
     private javax.swing.JTextField invertProbabilityField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField leapProbField;
     private javax.swing.JLabel leapProbLabel;
     private javax.swing.JPanel leapSizeControlPanel;
