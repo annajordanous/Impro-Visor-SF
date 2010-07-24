@@ -38,6 +38,7 @@ import imp.lickgen.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseEvent;
 import java.io.*;
 
 import javax.swing.*;
@@ -117,8 +118,11 @@ private LickGen lickgen;
 private CommandManager cm;
 
 // Complexity graph variables
-public int attrTotal; //total number of beats to represent
-public int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
+private int attrTotal; //total number of beats to represent
+private int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
+private ArrayList<ComplexityPanel> complexityPanels;
+/** Denotes the number of attributes that need to be factored into the computation of complexity */
+private int numValidAttrs;
 
 
 /**
@@ -142,15 +146,26 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
     this.lickgen = lickgen;
     this.cm = cm;
 
-    attrTotal = 60;
-    attrGranularity = 2;
+    attrTotal = 60; //TODO: take this from the actual selected section of the piece
+    attrGranularity = 2; //default
 
     initComponents();
+
     //So the images for the complexity graphs get initialized properly
-    initImageBuffers();
+    initComplexityImages();
 }
 
-public void initImageBuffers() {
+private void initComplexityImages() {
+    complexityPanels = new ArrayList<ComplexityPanel>(7);
+    complexityPanels.add((ComplexityPanel)overallComplexityPanel);
+    complexityPanels.add((ComplexityPanel)densityPanel);
+    complexityPanels.add((ComplexityPanel)varietyPanel);
+    complexityPanels.add((ComplexityPanel)syncopationPanel);
+    complexityPanels.add((ComplexityPanel)consonancePanel);
+    complexityPanels.add((ComplexityPanel)leapSizePanel);
+    complexityPanels.add((ComplexityPanel)directionChangePanel);
+    numValidAttrs = 7;
+
     ((ComplexityPanel)overallComplexityPanel).initBuffer(Color.ORANGE);
     ((ComplexityPanel)densityPanel).initBuffer(Color.PINK);
     ((ComplexityPanel)varietyPanel).initBuffer(Color.GREEN);
@@ -299,7 +314,21 @@ public void initImageBuffers() {
         disclaimer = new javax.swing.JLabel();
         attributeChoosingPanel = new javax.swing.JPanel();
         complexityInfoPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        complexityInfoLabel = new javax.swing.JLabel();
+        globalControlPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        numBarsSelected = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        granularityComboBox = new javax.swing.JComboBox();
+        manageSpecificCheckBox = new javax.swing.JCheckBox();
+        resetButton = new javax.swing.JButton();
+        loadSoloProfileButton = new javax.swing.JButton();
+        saveSoloProfileButton = new javax.swing.JButton();
+        complexityGenerateMelodyButton = new javax.swing.JButton();
+        complexityAbstractMelodyButton = new javax.swing.JButton();
+        complexityFillAbstractButton = new javax.swing.JButton();
+        complexityAbstractMelodyScrollPane = new javax.swing.JScrollPane();
+        complexityAbstractTextArea = new javax.swing.JTextArea();
         graphViewScrollPane = new javax.swing.JScrollPane();
         graphViewPanel = new javax.swing.JPanel();
         overallComplexityLabel = new javax.swing.JLabel();
@@ -318,13 +347,47 @@ public void initImageBuffers() {
         directionChangePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
         complexityControlScrollPane = new javax.swing.JScrollPane();
         controlPanel = new javax.swing.JPanel();
-        overallControlPanel = new javax.swing.JPanel();
+        overallComplexityControlPanel = new javax.swing.JPanel();
+        upperBoundMaxLabel1 = new javax.swing.JLabel();
+        lowerBoundMinLabel1 = new javax.swing.JLabel();
+        overallUpperMax = new javax.swing.JTextField();
+        overallLowerMin = new javax.swing.JTextField();
         densityControlPanel = new javax.swing.JPanel();
+        densityDoNotCompute = new javax.swing.JCheckBox();
+        upperBoundMaxLabel = new javax.swing.JLabel();
+        lowerBoundMinLabel = new javax.swing.JLabel();
+        densityUpperMax = new javax.swing.JTextField();
+        densityLowerMin = new javax.swing.JTextField();
         varietyControlPanel = new javax.swing.JPanel();
+        varietyDoNotCompute = new javax.swing.JCheckBox();
+        upperBoundMaxLabel2 = new javax.swing.JLabel();
+        lowerBoundMinLabel2 = new javax.swing.JLabel();
+        varietyUpperMax = new javax.swing.JTextField();
+        varietyLowerMin = new javax.swing.JTextField();
         syncopationControlPanel = new javax.swing.JPanel();
+        syncopationDoNotCompute = new javax.swing.JCheckBox();
+        upperBoundMaxLabel3 = new javax.swing.JLabel();
+        lowerBoundMinLabel3 = new javax.swing.JLabel();
+        syncopationUpperMax = new javax.swing.JTextField();
+        syncopationLowerMin = new javax.swing.JTextField();
         consonanceControlPanel = new javax.swing.JPanel();
+        consonanceDoNotCompute = new javax.swing.JCheckBox();
+        upperBoundMaxLabel4 = new javax.swing.JLabel();
+        lowerBoundMinLabel4 = new javax.swing.JLabel();
+        consonanceUpperMax = new javax.swing.JTextField();
+        consonanceLowerMin = new javax.swing.JTextField();
         leapSizeControlPanel = new javax.swing.JPanel();
+        leapSizeDoNotCompute = new javax.swing.JCheckBox();
+        upperBoundMaxLabel5 = new javax.swing.JLabel();
+        lowerBoundMinLabel5 = new javax.swing.JLabel();
+        leapSizeUpperMax = new javax.swing.JTextField();
+        leapSizeLowerMin = new javax.swing.JTextField();
         directionChangeControlPanel = new javax.swing.JPanel();
+        directionChangeDoNotCompute = new javax.swing.JCheckBox();
+        upperBoundMaxLabel6 = new javax.swing.JLabel();
+        lowerBoundMinLabel6 = new javax.swing.JLabel();
+        directionChangeUpperMax = new javax.swing.JTextField();
+        directionChangeLowerMin = new javax.swing.JTextField();
         generatorMenuBar1 = new javax.swing.JMenuBar();
         grammarMenu1 = new javax.swing.JMenu();
         openGrammarMI1 = new javax.swing.JMenuItem();
@@ -2001,28 +2064,28 @@ public void initImageBuffers() {
         attributeChoosingPanel.setLayout(new java.awt.GridBagLayout());
 
         complexityInfoPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        complexityInfoPanel.setPreferredSize(new java.awt.Dimension(10, 100));
+        complexityInfoPanel.setPreferredSize(new java.awt.Dimension(10, 75));
 
-        jLabel1.setText("<html>Here is where you can shape the phrasing curve of a generated solo. Click and drag the curve to specify an upper bound <br>on complexity.Shift-click and drag to specify the lower bound. Change the complexity of either the entire piece<br> (using the Overall Complexity curve), or change the complexity of specific attributes by checking \"Let me adjust attributes\". </html>");
+        complexityInfoLabel.setText("<html>Here is where you can shape the phrasing curve of a generated solo. Click and drag the curve to specify an upper bound on complexity. Shift-click and drag to specify the lower bound. Change the complexity of the entire piece using the Overall Complexity curve, or change the complexity of specific attributes by checking \"Manage specific attributes\". </html>");
 
         javax.swing.GroupLayout complexityInfoPanelLayout = new javax.swing.GroupLayout(complexityInfoPanel);
         complexityInfoPanel.setLayout(complexityInfoPanelLayout);
         complexityInfoPanelLayout.setHorizontalGroup(
             complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
+            .addGap(0, 962, Short.MAX_VALUE)
             .addGroup(complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(complexityInfoPanelLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 921, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(27, Short.MAX_VALUE)))
+                    .addComponent(complexityInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 921, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(29, Short.MAX_VALUE)))
         );
         complexityInfoPanelLayout.setVerticalGroup(
             complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 89, Short.MAX_VALUE)
+            .addGap(0, 88, Short.MAX_VALUE)
             .addGroup(complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(complexityInfoPanelLayout.createSequentialGroup()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(18, Short.MAX_VALUE)))
+                    .addComponent(complexityInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(17, Short.MAX_VALUE)))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2035,8 +2098,150 @@ public void initImageBuffers() {
         gridBagConstraints.weighty = 0.01;
         attributeChoosingPanel.add(complexityInfoPanel, gridBagConstraints);
 
+        globalControlPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        globalControlPanel.setMinimumSize(new java.awt.Dimension(1157, 0));
+        globalControlPanel.setPreferredSize(globalControlPanel.getPreferredSize());
+        globalControlPanel.setLayout(new java.awt.GridBagLayout());
+
+        jLabel2.setText("Number of Bars Selected:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
+        globalControlPanel.add(jLabel2, gridBagConstraints);
+
+        numBarsSelected.setText("4");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        globalControlPanel.add(numBarsSelected, gridBagConstraints);
+
+        jLabel4.setText("Granularity (in beats):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
+        globalControlPanel.add(jLabel4, gridBagConstraints);
+
+        granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4", "6", "8" }));
+        granularityComboBox.setSelectedItem(1);
+        granularityComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                granularityComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        globalControlPanel.add(granularityComboBox, gridBagConstraints);
+
+        manageSpecificCheckBox.setText("Manage specific attributes");
+        manageSpecificCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageSpecificCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
+        globalControlPanel.add(manageSpecificCheckBox, gridBagConstraints);
+
+        resetButton.setText("Reset to Default");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        globalControlPanel.add(resetButton, gridBagConstraints);
+
+        loadSoloProfileButton.setText("Load a Profile");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        globalControlPanel.add(loadSoloProfileButton, gridBagConstraints);
+
+        saveSoloProfileButton.setText("Save this Profile");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        globalControlPanel.add(saveSoloProfileButton, gridBagConstraints);
+
+        complexityGenerateMelodyButton.setText("Generate Melody");
+        complexityGenerateMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                complexityGenerateMelodyButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 7);
+        globalControlPanel.add(complexityGenerateMelodyButton, gridBagConstraints);
+
+        complexityAbstractMelodyButton.setText("Generate Abstract Melody Only");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 7);
+        globalControlPanel.add(complexityAbstractMelodyButton, gridBagConstraints);
+
+        complexityFillAbstractButton.setText("Fill Abstract Melody");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 8);
+        globalControlPanel.add(complexityFillAbstractButton, gridBagConstraints);
+
+        complexityAbstractTextArea.setColumns(20);
+        complexityAbstractTextArea.setRows(5);
+        complexityAbstractMelodyScrollPane.setViewportView(complexityAbstractTextArea);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.45;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
+        globalControlPanel.add(complexityAbstractMelodyScrollPane, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.2;
+        attributeChoosingPanel.add(globalControlPanel, gridBagConstraints);
+
+        graphViewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solo Profile Curves", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
         graphViewScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        graphViewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        graphViewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         graphViewPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -2047,7 +2252,6 @@ public void initImageBuffers() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         graphViewPanel.add(overallComplexityLabel, gridBagConstraints);
 
-        overallComplexityPanel.setBackground(new java.awt.Color(255, 255, 255));
         overallComplexityPanel.setMinimumSize(new java.awt.Dimension(0, 200));
         overallComplexityPanel.setPreferredSize(overallComplexityPanel.getSize());
         overallComplexityPanel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -2092,11 +2296,11 @@ public void initImageBuffers() {
         densityPanel.setLayout(densityPanelLayout);
         densityPanelLayout.setHorizontalGroup(
             densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
         densityPanelLayout.setVerticalGroup(
             densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2130,11 +2334,11 @@ public void initImageBuffers() {
         varietyPanel.setLayout(varietyPanelLayout);
         varietyPanelLayout.setHorizontalGroup(
             varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
         varietyPanelLayout.setVerticalGroup(
             varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2168,11 +2372,11 @@ public void initImageBuffers() {
         syncopationPanel.setLayout(syncopationPanelLayout);
         syncopationPanelLayout.setHorizontalGroup(
             syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
         syncopationPanelLayout.setVerticalGroup(
             syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2206,11 +2410,11 @@ public void initImageBuffers() {
         consonancePanel.setLayout(consonancePanelLayout);
         consonancePanelLayout.setHorizontalGroup(
             consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
         consonancePanelLayout.setVerticalGroup(
             consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2244,11 +2448,11 @@ public void initImageBuffers() {
         leapSizePanel.setLayout(leapSizePanelLayout);
         leapSizePanelLayout.setHorizontalGroup(
             leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
         leapSizePanelLayout.setVerticalGroup(
             leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2282,11 +2486,11 @@ public void initImageBuffers() {
         directionChangePanel.setLayout(directionChangePanelLayout);
         directionChangePanelLayout.setHorizontalGroup(
             directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 734, Short.MAX_VALUE)
         );
         directionChangePanelLayout.setVerticalGroup(
             directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 51, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2301,64 +2505,147 @@ public void initImageBuffers() {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.8;
         gridBagConstraints.weighty = 0.9;
         attributeChoosingPanel.add(graphViewScrollPane, gridBagConstraints);
-        graphViewScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                JViewport controls, graphs;
-                controls = complexityControlScrollPane.getViewport();
-                graphs = graphViewScrollPane.getViewport();
-                controls.setViewPosition(graphs.getViewPosition());
-            }
-        });
 
+        complexityControlScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Profile Controls", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
         complexityControlScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        complexityControlScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        complexityControlScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         complexityControlScrollPane.setPreferredSize(getPreferredSize());
 
-        controlPanel.setPreferredSize(new java.awt.Dimension(185, 1505));
+        controlPanel.setPreferredSize(new java.awt.Dimension(185, 1515));
         controlPanel.setLayout(new java.awt.GridBagLayout());
 
-        overallControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Overall Complexity"));
-        overallControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        overallComplexityControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Overall Complexity"));
+        overallComplexityControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
+        overallComplexityControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        overallComplexityControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout overallControlPanelLayout = new javax.swing.GroupLayout(overallControlPanel);
-        overallControlPanel.setLayout(overallControlPanelLayout);
-        overallControlPanelLayout.setHorizontalGroup(
-            overallControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        overallControlPanelLayout.setVerticalGroup(
-            overallControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        upperBoundMaxLabel1.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        overallComplexityControlPanel.add(upperBoundMaxLabel1, gridBagConstraints);
+
+        lowerBoundMinLabel1.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        overallComplexityControlPanel.add(lowerBoundMinLabel1, gridBagConstraints);
+
+        overallUpperMax.setText("125");
+        overallUpperMax.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                overallUpperMaxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        overallComplexityControlPanel.add(overallUpperMax, gridBagConstraints);
+
+        overallLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        overallComplexityControlPanel.add(overallLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.14;
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 3, 0);
-        controlPanel.add(overallControlPanel, gridBagConstraints);
+        controlPanel.add(overallComplexityControlPanel, gridBagConstraints);
 
         densityControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Density"));
+        densityControlPanel.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        densityControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
         densityControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        densityControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout densityControlPanelLayout = new javax.swing.GroupLayout(densityControlPanel);
-        densityControlPanel.setLayout(densityControlPanelLayout);
-        densityControlPanelLayout.setHorizontalGroup(
-            densityControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        densityControlPanelLayout.setVerticalGroup(
-            densityControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        densityDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
+        densityDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                densityDoNotComputeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        densityControlPanel.add(densityDoNotCompute, gridBagConstraints);
+
+        upperBoundMaxLabel.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        densityControlPanel.add(upperBoundMaxLabel, gridBagConstraints);
+
+        lowerBoundMinLabel.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        densityControlPanel.add(lowerBoundMinLabel, gridBagConstraints);
+
+        densityUpperMax.setText("125");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        densityControlPanel.add(densityUpperMax, gridBagConstraints);
+
+        densityLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        densityControlPanel.add(densityLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2371,18 +2658,68 @@ public void initImageBuffers() {
         controlPanel.add(densityControlPanel, gridBagConstraints);
 
         varietyControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Rhythmic Variety"));
+        varietyControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
         varietyControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        varietyControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout varietyControlPanelLayout = new javax.swing.GroupLayout(varietyControlPanel);
-        varietyControlPanel.setLayout(varietyControlPanelLayout);
-        varietyControlPanelLayout.setHorizontalGroup(
-            varietyControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        varietyControlPanelLayout.setVerticalGroup(
-            varietyControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        varietyDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
+        varietyDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                varietyDoNotComputeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        varietyControlPanel.add(varietyDoNotCompute, gridBagConstraints);
+
+        upperBoundMaxLabel2.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        varietyControlPanel.add(upperBoundMaxLabel2, gridBagConstraints);
+
+        lowerBoundMinLabel2.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        varietyControlPanel.add(lowerBoundMinLabel2, gridBagConstraints);
+
+        varietyUpperMax.setText("125");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        varietyControlPanel.add(varietyUpperMax, gridBagConstraints);
+
+        varietyLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        varietyControlPanel.add(varietyLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2395,18 +2732,68 @@ public void initImageBuffers() {
         controlPanel.add(varietyControlPanel, gridBagConstraints);
 
         syncopationControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Syncopation"));
+        syncopationControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
         syncopationControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        syncopationControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout syncopationControlPanelLayout = new javax.swing.GroupLayout(syncopationControlPanel);
-        syncopationControlPanel.setLayout(syncopationControlPanelLayout);
-        syncopationControlPanelLayout.setHorizontalGroup(
-            syncopationControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        syncopationControlPanelLayout.setVerticalGroup(
-            syncopationControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        syncopationDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
+        syncopationDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                syncopationDoNotComputeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        syncopationControlPanel.add(syncopationDoNotCompute, gridBagConstraints);
+
+        upperBoundMaxLabel3.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        syncopationControlPanel.add(upperBoundMaxLabel3, gridBagConstraints);
+
+        lowerBoundMinLabel3.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        syncopationControlPanel.add(lowerBoundMinLabel3, gridBagConstraints);
+
+        syncopationUpperMax.setText("125");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        syncopationControlPanel.add(syncopationUpperMax, gridBagConstraints);
+
+        syncopationLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        syncopationControlPanel.add(syncopationLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2419,18 +2806,68 @@ public void initImageBuffers() {
         controlPanel.add(syncopationControlPanel, gridBagConstraints);
 
         consonanceControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Consonance"));
+        consonanceControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
         consonanceControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        consonanceControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout consonanceControlPanelLayout = new javax.swing.GroupLayout(consonanceControlPanel);
-        consonanceControlPanel.setLayout(consonanceControlPanelLayout);
-        consonanceControlPanelLayout.setHorizontalGroup(
-            consonanceControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        consonanceControlPanelLayout.setVerticalGroup(
-            consonanceControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        consonanceDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
+        consonanceDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consonanceDoNotComputeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        consonanceControlPanel.add(consonanceDoNotCompute, gridBagConstraints);
+
+        upperBoundMaxLabel4.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        consonanceControlPanel.add(upperBoundMaxLabel4, gridBagConstraints);
+
+        lowerBoundMinLabel4.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        consonanceControlPanel.add(lowerBoundMinLabel4, gridBagConstraints);
+
+        consonanceUpperMax.setText("125");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        consonanceControlPanel.add(consonanceUpperMax, gridBagConstraints);
+
+        consonanceLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        consonanceControlPanel.add(consonanceLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2443,18 +2880,68 @@ public void initImageBuffers() {
         controlPanel.add(consonanceControlPanel, gridBagConstraints);
 
         leapSizeControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Leap Size"));
+        leapSizeControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
         leapSizeControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        leapSizeControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout leapSizeControlPanelLayout = new javax.swing.GroupLayout(leapSizeControlPanel);
-        leapSizeControlPanel.setLayout(leapSizeControlPanelLayout);
-        leapSizeControlPanelLayout.setHorizontalGroup(
-            leapSizeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        leapSizeControlPanelLayout.setVerticalGroup(
-            leapSizeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        leapSizeDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
+        leapSizeDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leapSizeDoNotComputeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        leapSizeControlPanel.add(leapSizeDoNotCompute, gridBagConstraints);
+
+        upperBoundMaxLabel5.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        leapSizeControlPanel.add(upperBoundMaxLabel5, gridBagConstraints);
+
+        lowerBoundMinLabel5.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        leapSizeControlPanel.add(lowerBoundMinLabel5, gridBagConstraints);
+
+        leapSizeUpperMax.setText("125");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        leapSizeControlPanel.add(leapSizeUpperMax, gridBagConstraints);
+
+        leapSizeLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        leapSizeControlPanel.add(leapSizeLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2467,18 +2954,68 @@ public void initImageBuffers() {
         controlPanel.add(leapSizeControlPanel, gridBagConstraints);
 
         directionChangeControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Direction Changes"));
+        directionChangeControlPanel.setMinimumSize(new java.awt.Dimension(12, 27));
         directionChangeControlPanel.setPreferredSize(new java.awt.Dimension(185, 215));
+        directionChangeControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout directionChangeControlPanelLayout = new javax.swing.GroupLayout(directionChangeControlPanel);
-        directionChangeControlPanel.setLayout(directionChangeControlPanelLayout);
-        directionChangeControlPanelLayout.setHorizontalGroup(
-            directionChangeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
-        );
-        directionChangeControlPanelLayout.setVerticalGroup(
-            directionChangeControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 182, Short.MAX_VALUE)
-        );
+        directionChangeDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
+        directionChangeDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                directionChangeDoNotComputeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        directionChangeControlPanel.add(directionChangeDoNotCompute, gridBagConstraints);
+
+        upperBoundMaxLabel6.setText("<html>Upper Bound<br>Max (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        directionChangeControlPanel.add(upperBoundMaxLabel6, gridBagConstraints);
+
+        lowerBoundMinLabel6.setText("<html>Lower Bound<br>Min (0-100):</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 9, 0);
+        directionChangeControlPanel.add(lowerBoundMinLabel6, gridBagConstraints);
+
+        directionChangeUpperMax.setText("125");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        directionChangeControlPanel.add(directionChangeUpperMax, gridBagConstraints);
+
+        directionChangeLowerMin.setText("0");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        directionChangeControlPanel.add(directionChangeLowerMin, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2494,13 +3031,21 @@ public void initImageBuffers() {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 0.9;
         attributeChoosingPanel.add(complexityControlScrollPane, gridBagConstraints);
+        complexityControlScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                JViewport controls, graphs;
+                controls = complexityControlScrollPane.getViewport();
+                graphs = graphViewScrollPane.getViewport();
+                graphs.setViewPosition(controls.getViewPosition());
+            }
+        });
 
-        generatorPane.addTab("Complexity Attributes", attributeChoosingPanel);
+        generatorPane.addTab("Solo Profile", attributeChoosingPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4576,8 +5121,123 @@ public void closeWindow()
                         }//GEN-LAST:event_closeWindow
 
                         private void mouseEventHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEventHandler
-                            ((ComplexityPanel)evt.getSource()).mouseHandler(evt);
+                            //If the action originated in the overall complexity panel
+                            if (((ComplexityPanel)evt.getSource()).equals(overallComplexityPanel)) {
+                                if (!manageSpecificCheckBox.isSelected()) {
+                                    //TODO: make the motion of the other curves dependent on their current position
+                                    for (int i = 0; i<complexityPanels.size(); i++) {
+                                        complexityPanels.get(i).mouseHandler(evt);
+                                    }
+                                }
+                                //if manageSpecific is selected, then overall curve can't be manipulated, for now
+                            }
+                            else { // source is not the overall complexity curve
+                                if (manageSpecificCheckBox.isSelected()) {
+                                    if (((ComplexityPanel) evt.getSource()).compute()) {
+                                        int oldY, newY;
+                                        if (((MouseEvent)evt).isShiftDown()) {
+                                            oldY = ((ComplexityPanel)overallComplexityPanel).getBarUpper(evt.getX());
+                                        }
+                                        else {
+                                            oldY = ((ComplexityPanel) overallComplexityPanel).getBarLower(evt.getX());
+                                        }
+                                        newY = ((oldY-evt.getY())/numValidAttrs); //number to add to new y
+                                        System.out.println("numattrs: "+numValidAttrs);
+                                        System.out.println("newY: "+newY);
+                                        ((ComplexityPanel) evt.getSource()).mouseHandler(evt);
+                                        evt.translatePoint(0, newY);
+                                        ((ComplexityPanel)overallComplexityPanel).mouseHandler(evt);
+                                    }
+                                }
+                            }
                         }//GEN-LAST:event_mouseEventHandler
+
+                        private void manageSpecificCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageSpecificCheckBoxActionPerformed
+                            if (manageSpecificCheckBox.isSelected()) {}
+                            //ungray specific attrs!
+                        }//GEN-LAST:event_manageSpecificCheckBoxActionPerformed
+
+                        private void granularityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_granularityComboBoxActionPerformed
+                            attrGranularity = Integer.parseInt((String)granularityComboBox.getSelectedItem());
+                            for (int i = 0; i<complexityPanels.size(); i++) {
+                                complexityPanels.get(i).redraw(attrGranularity);
+                            }
+                        }//GEN-LAST:event_granularityComboBoxActionPerformed
+
+                        private void complexityGenerateMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityGenerateMelodyButtonActionPerformed
+                            // TODO obtain complexity vals from each curve that is valid and assign them to something
+                            //notate.generate(lickGen);
+                        }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
+
+                        private void densityDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_densityDoNotComputeActionPerformed
+                            if (((JCheckBox)evt.getSource()).isSelected()) {
+                                ((ComplexityPanel)densityPanel).setCompute(false);
+                                numValidAttrs--;
+                            }
+                            else {
+                                ((ComplexityPanel)densityPanel).setCompute(true);
+                                numValidAttrs++;
+                            }
+                        }//GEN-LAST:event_densityDoNotComputeActionPerformed
+
+                        private void varietyDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varietyDoNotComputeActionPerformed
+                            if (((JCheckBox)evt.getSource()).isSelected()) {
+                                ((ComplexityPanel)varietyPanel).setCompute(false);
+                                numValidAttrs--;
+                            }
+                            else {
+                                ((ComplexityPanel)varietyPanel).setCompute(true);
+                                numValidAttrs++;
+                            }
+                        }//GEN-LAST:event_varietyDoNotComputeActionPerformed
+
+                        private void syncopationDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncopationDoNotComputeActionPerformed
+                            if (((JCheckBox)evt.getSource()).isSelected()) {
+                                ((ComplexityPanel)syncopationPanel).setCompute(false);
+                                numValidAttrs--;
+                            }
+                            else {
+                                ((ComplexityPanel)syncopationPanel).setCompute(true);
+                                numValidAttrs++;
+                            }
+                        }//GEN-LAST:event_syncopationDoNotComputeActionPerformed
+
+                        private void consonanceDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consonanceDoNotComputeActionPerformed
+                            if (((JCheckBox)evt.getSource()).isSelected()) {
+                                ((ComplexityPanel)consonancePanel).setCompute(false);
+                                numValidAttrs--;
+                            }
+                            else {
+                                ((ComplexityPanel)consonancePanel).setCompute(true);
+                                numValidAttrs++;
+                            }
+                        }//GEN-LAST:event_consonanceDoNotComputeActionPerformed
+
+                        private void leapSizeDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leapSizeDoNotComputeActionPerformed
+                            if (((JCheckBox)evt.getSource()).isSelected()) {
+                                ((ComplexityPanel)leapSizePanel).setCompute(false);
+                                numValidAttrs--;
+                            }
+                            else {
+                                ((ComplexityPanel)leapSizePanel).setCompute(true);
+                                numValidAttrs++;
+                            }
+                        }//GEN-LAST:event_leapSizeDoNotComputeActionPerformed
+
+                        private void directionChangeDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionChangeDoNotComputeActionPerformed
+                            if (((JCheckBox)evt.getSource()).isSelected()) {
+                                ((ComplexityPanel)directionChangePanel).setCompute(false);
+                                numValidAttrs--;
+                            }
+                            else {
+                                ((ComplexityPanel)directionChangePanel).setCompute(true);
+                                numValidAttrs++;
+                            }
+                        }//GEN-LAST:event_directionChangeDoNotComputeActionPerformed
+
+                        private void overallUpperMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overallUpperMaxActionPerformed
+                            //set the uppermax of this panel
+                        }//GEN-LAST:event_overallUpperMaxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
@@ -4598,18 +5258,33 @@ public void closeWindow()
     private javax.swing.JMenuItem closeWindowMI2;
     private javax.swing.JLabel colorToneProbLabel;
     private javax.swing.JTextField colorToneWeightField;
+    private javax.swing.JButton complexityAbstractMelodyButton;
+    private javax.swing.JScrollPane complexityAbstractMelodyScrollPane;
+    private javax.swing.JTextArea complexityAbstractTextArea;
     private javax.swing.JScrollPane complexityControlScrollPane;
+    private javax.swing.JButton complexityFillAbstractButton;
+    private javax.swing.JButton complexityGenerateMelodyButton;
+    private javax.swing.JLabel complexityInfoLabel;
     private javax.swing.JPanel complexityInfoPanel;
     private javax.swing.JPanel consonanceControlPanel;
+    private javax.swing.JCheckBox consonanceDoNotCompute;
     private javax.swing.JLabel consonanceLabel;
+    private javax.swing.JTextField consonanceLowerMin;
     private javax.swing.JPanel consonancePanel;
+    private javax.swing.JTextField consonanceUpperMax;
     private javax.swing.JPanel controlPanel;
     private javax.swing.JPanel densityControlPanel;
+    private javax.swing.JCheckBox densityDoNotCompute;
     private javax.swing.JLabel densityLabel;
+    private javax.swing.JTextField densityLowerMin;
     private javax.swing.JPanel densityPanel;
+    private javax.swing.JTextField densityUpperMax;
     private javax.swing.JPanel directionChangeControlPanel;
+    private javax.swing.JCheckBox directionChangeDoNotCompute;
     private javax.swing.JLabel directionChangeLabel;
+    private javax.swing.JTextField directionChangeLowerMin;
     private javax.swing.JPanel directionChangePanel;
+    private javax.swing.JTextField directionChangeUpperMax;
     private javax.swing.JLabel disclaimer;
     private javax.swing.JLabel durationLabel;
     private javax.swing.JMenuItem editGrammarMI1;
@@ -4626,6 +5301,7 @@ public void closeWindow()
     private javax.swing.JMenu generatorWindowMenu1;
     private javax.swing.JButton getAbstractMelodyButton;
     private javax.swing.JButton getSelRhythmButton;
+    private javax.swing.JPanel globalControlPanel;
     private javax.swing.JButton grade10Btn;
     private javax.swing.JButton grade1Btn;
     private javax.swing.JButton grade2Btn;
@@ -4639,16 +5315,21 @@ public void closeWindow()
     private javax.swing.JLabel gradeLabel;
     private javax.swing.JPanel grammarLearningPanel;
     private javax.swing.JMenu grammarMenu1;
+    private javax.swing.JComboBox granularityComboBox;
     private javax.swing.JPanel graphViewPanel;
     private javax.swing.JScrollPane graphViewScrollPane;
     private javax.swing.JLabel intervalLabel;
     private javax.swing.JTextField invertProbabilityField;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField leapProbField;
     private javax.swing.JLabel leapProbLabel;
     private javax.swing.JPanel leapSizeControlPanel;
+    private javax.swing.JCheckBox leapSizeDoNotCompute;
     private javax.swing.JLabel leapSizeLabel;
+    private javax.swing.JTextField leapSizeLowerMin;
     private javax.swing.JPanel leapSizePanel;
+    private javax.swing.JTextField leapSizeUpperMax;
     private javax.swing.JLabel learningStep0Label;
     private javax.swing.JPanel lickGenPanel;
     private javax.swing.JPanel lickGenerationButtonsPanel;
@@ -4656,6 +5337,15 @@ public void closeWindow()
     private javax.swing.JLabel lickSavedLabel;
     private javax.swing.JPanel lickgenParametersPanel;
     private javax.swing.JButton loadBaseGrammarBtn;
+    private javax.swing.JButton loadSoloProfileButton;
+    private javax.swing.JLabel lowerBoundMinLabel;
+    private javax.swing.JLabel lowerBoundMinLabel1;
+    private javax.swing.JLabel lowerBoundMinLabel2;
+    private javax.swing.JLabel lowerBoundMinLabel3;
+    private javax.swing.JLabel lowerBoundMinLabel4;
+    private javax.swing.JLabel lowerBoundMinLabel5;
+    private javax.swing.JLabel lowerBoundMinLabel6;
+    private javax.swing.JCheckBox manageSpecificCheckBox;
     private javax.swing.JTextField maxDurationField;
     private javax.swing.JTextField maxIntervalField;
     private javax.swing.JLabel maxLabel;
@@ -4664,13 +5354,16 @@ public void closeWindow()
     private javax.swing.JTextField minIntervalField;
     private javax.swing.JLabel minLabel;
     private javax.swing.JTextField minPitchField;
+    private javax.swing.JLabel numBarsSelected;
     private javax.swing.JTextField numClusterRepsField;
     private javax.swing.JLabel numClusterRepsLabel;
     private javax.swing.JButton openCorpusBtn;
     private javax.swing.JMenuItem openGrammarMI1;
+    private javax.swing.JPanel overallComplexityControlPanel;
     private javax.swing.JLabel overallComplexityLabel;
     private javax.swing.JPanel overallComplexityPanel;
-    private javax.swing.JPanel overallControlPanel;
+    private javax.swing.JTextField overallLowerMin;
+    private javax.swing.JTextField overallUpperMax;
     private javax.swing.JButton pasteThemeBtn;
     private javax.swing.JLabel pitchLabel;
     private javax.swing.JPanel pitchProbabilitiesPanel;
@@ -4680,6 +5373,7 @@ public void closeWindow()
     private javax.swing.JCheckBox recurrentCheckbox;
     private javax.swing.JButton regenerateHeadDataBtn;
     private javax.swing.JMenuItem reloadGrammarMI1;
+    private javax.swing.JButton resetButton;
     private javax.swing.JTextField restProbField;
     private javax.swing.JLabel restProbLabel;
     private javax.swing.JTextField reverseProbabilityField;
@@ -4693,6 +5387,7 @@ public void closeWindow()
     private javax.swing.JButton saveLickButton;
     private javax.swing.JTextField saveLickTF;
     private javax.swing.JLabel saveLickWithLabelLabel;
+    private javax.swing.JButton saveSoloProfileButton;
     private javax.swing.JPanel scaleChoicePanel;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
@@ -4704,8 +5399,11 @@ public void closeWindow()
     private javax.swing.JButton stopLickButton;
     private javax.swing.JButton stopSoloPlayBtn;
     private javax.swing.JPanel syncopationControlPanel;
+    private javax.swing.JCheckBox syncopationDoNotCompute;
     private javax.swing.JLabel syncopationLabel;
+    private javax.swing.JTextField syncopationLowerMin;
     private javax.swing.JPanel syncopationPanel;
+    private javax.swing.JTextField syncopationUpperMax;
     private javax.swing.JButton testGeneration;
     private javax.swing.JTextField themeField;
     private javax.swing.JLabel themeLabel;
@@ -4721,13 +5419,23 @@ public void closeWindow()
     private javax.swing.JLabel transposeProbLabel;
     private javax.swing.JTextField transposeProbabilityField;
     private javax.swing.JLabel typeLabel;
+    private javax.swing.JLabel upperBoundMaxLabel;
+    private javax.swing.JLabel upperBoundMaxLabel1;
+    private javax.swing.JLabel upperBoundMaxLabel2;
+    private javax.swing.JLabel upperBoundMaxLabel3;
+    private javax.swing.JLabel upperBoundMaxLabel4;
+    private javax.swing.JLabel upperBoundMaxLabel5;
+    private javax.swing.JLabel upperBoundMaxLabel6;
     private javax.swing.JCheckBoxMenuItem useGrammarMI1;
     private javax.swing.JCheckBox useHeadCheckBox;
     private javax.swing.JCheckBox useMarkovCheckbox;
     private javax.swing.JCheckBox useSoloistCheckBox;
     private javax.swing.JPanel varietyControlPanel;
+    private javax.swing.JCheckBox varietyDoNotCompute;
     private javax.swing.JLabel varietyLabel;
+    private javax.swing.JTextField varietyLowerMin;
     private javax.swing.JPanel varietyPanel;
+    private javax.swing.JTextField varietyUpperMax;
     private javax.swing.JSeparator windowMenuSeparator2;
     private javax.swing.JPanel windowParametersPanel;
     private javax.swing.JTextField windowSizeField;
