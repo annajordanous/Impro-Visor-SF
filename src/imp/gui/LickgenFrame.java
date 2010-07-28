@@ -118,11 +118,10 @@ private LickGen lickgen;
 private CommandManager cm;
 
 // Complexity graph variables
+private ComplexityWindowController complexityController;
 private int attrTotal; //total number of beats to represent
 private int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
-private ArrayList<ComplexityPanel> complexityPanels;
-/** Denotes the number of attributes that need to be factored into the computation of complexity */
-private int numValidAttrs;
+
 
 
 /**
@@ -156,48 +155,29 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
 }
 
 private void initComplexityImages() {
-    complexityPanels = new ArrayList<ComplexityPanel>(7);
-    complexityPanels.add((ComplexityPanel)overallComplexityPanel);
-    complexityPanels.add((ComplexityPanel)densityPanel);
-    complexityPanels.add((ComplexityPanel)varietyPanel);
-    complexityPanels.add((ComplexityPanel)syncopationPanel);
-    complexityPanels.add((ComplexityPanel)consonancePanel);
-    complexityPanels.add((ComplexityPanel)leapSizePanel);
-    complexityPanels.add((ComplexityPanel)directionChangePanel);
-    numValidAttrs = 6;
+    complexityController = new ComplexityWindowController(
+            (ComplexityPanel) overallComplexityPanel, (ComplexityPanel) densityPanel,
+            (ComplexityPanel) varietyPanel, (ComplexityPanel) syncopationPanel,
+            (ComplexityPanel) consonancePanel, (ComplexityPanel) leapSizePanel,
+            (ComplexityPanel) directionChangePanel);
 
-    ((ComplexityPanel)overallComplexityPanel).initBuffer(new Color(255, 140, 0));
-    ((ComplexityPanel)densityPanel).initBuffer(new Color(154, 205, 0));
-    ((ComplexityPanel)varietyPanel).initBuffer(new Color(102, 205, 170));
-    ((ComplexityPanel)syncopationPanel).initBuffer(new Color(3, 168, 158));
-    ((ComplexityPanel)consonancePanel).initBuffer(new Color(191, 239, 255));
-    ((ComplexityPanel)leapSizePanel).initBuffer(new Color(28, 134, 238));
-    ((ComplexityPanel)directionChangePanel).initBuffer(new Color(131, 111, 255));
+    complexityController.getPanels().get(0).setTextFields(overallLowerMin, overallUpperMax);
+    complexityController.getPanels().get(1).setTextFields(densityLowerMin, densityUpperMax);
+    complexityController.getPanels().get(2).setTextFields(varietyLowerMin, varietyUpperMax);
+    complexityController.getPanels().get(3).setTextFields(syncopationLowerMin, syncopationUpperMax);
+    complexityController.getPanels().get(4).setTextFields(consonanceLowerMin, consonanceUpperMax);
+    complexityController.getPanels().get(5).setTextFields(leapSizeLowerMin, leapSizeUpperMax);
+    complexityController.getPanels().get(6).setTextFields(directionChangeLowerMin, directionChangeUpperMax);
 
-    ((ComplexityPanel)overallComplexityPanel).setTextFields(overallLowerMin, overallUpperMax);
-    ((ComplexityPanel)densityPanel).setTextFields(densityLowerMin, densityUpperMax);
-    ((ComplexityPanel)varietyPanel).setTextFields(varietyLowerMin, varietyUpperMax);
-    ((ComplexityPanel)syncopationPanel).setTextFields(syncopationLowerMin, syncopationUpperMax);
-    ((ComplexityPanel)consonancePanel).setTextFields(consonanceLowerMin, consonanceUpperMax);
-    ((ComplexityPanel)leapSizePanel).setTextFields(leapSizeLowerMin, leapSizeUpperMax);
-    ((ComplexityPanel)directionChangePanel).setTextFields(directionChangeLowerMin, directionChangeUpperMax);
+    complexityController.getPanels().get(0).setCheckBox(new JCheckBox());
+    complexityController.getPanels().get(1).setCheckBox(densityDoNotCompute);
+    complexityController.getPanels().get(2).setCheckBox(varietyDoNotCompute);
+    complexityController.getPanels().get(3).setCheckBox(syncopationDoNotCompute);
+    complexityController.getPanels().get(4).setCheckBox(consonanceDoNotCompute);
+    complexityController.getPanels().get(5).setCheckBox(leapSizeDoNotCompute);
+    complexityController.getPanels().get(6).setCheckBox(directionChangeDoNotCompute);
 
-
-    ((ComplexityPanel)overallComplexityPanel).setCheckBox(new JCheckBox());
-    ((ComplexityPanel)densityPanel).setCheckBox(densityDoNotCompute);
-    ((ComplexityPanel)varietyPanel).setCheckBox(varietyDoNotCompute);
-    ((ComplexityPanel)syncopationPanel).setCheckBox(syncopationDoNotCompute);
-    ((ComplexityPanel)consonancePanel).setCheckBox(consonanceDoNotCompute);
-    ((ComplexityPanel)leapSizePanel).setCheckBox(leapSizeDoNotCompute);
-    ((ComplexityPanel)directionChangePanel).setCheckBox(directionChangeDoNotCompute);
-
-    overallComplexityPanel.setEnabled(true);
-    for (int i = 1; i < complexityPanels.size(); i++) {
-        complexityPanels.get(i).upperLimitField.setEnabled(false);
-        complexityPanels.get(i).lowerLimitField.setEnabled(false);
-        complexityPanels.get(i).noComputeBox.setEnabled(false);
-        complexityPanels.get(i).setEnabled(false);
-    }
+    complexityController.initController(manageSpecificCheckBox, granularityComboBox);
 }
 
 /** This method is called from within the constructor to
@@ -2157,11 +2137,6 @@ private void initComplexityImages() {
 
         granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4", "6", "8" }));
         granularityComboBox.setSelectedItem(1);
-        granularityComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                granularityComboBoxActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -2171,11 +2146,6 @@ private void initComplexityImages() {
         globalControlPanel.add(granularityComboBox, gridBagConstraints);
 
         manageSpecificCheckBox.setText("Manage specific attributes");
-        manageSpecificCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                manageSpecificCheckBoxActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -2617,7 +2587,7 @@ private void initComplexityImages() {
         densityDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
         densityDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                densityDoNotComputeActionPerformed(evt);
+                noComputeBoxCheckedAction(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2691,7 +2661,7 @@ private void initComplexityImages() {
         varietyDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
         varietyDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                varietyDoNotComputeActionPerformed(evt);
+                noComputeBoxCheckedAction(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2765,7 +2735,7 @@ private void initComplexityImages() {
         syncopationDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
         syncopationDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                syncopationDoNotComputeActionPerformed(evt);
+                noComputeBoxCheckedAction(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2839,7 +2809,7 @@ private void initComplexityImages() {
         consonanceDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
         consonanceDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                consonanceDoNotComputeActionPerformed(evt);
+                noComputeBoxCheckedAction(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2913,7 +2883,7 @@ private void initComplexityImages() {
         leapSizeDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
         leapSizeDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leapSizeDoNotComputeActionPerformed(evt);
+                noComputeBoxCheckedAction(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2987,7 +2957,7 @@ private void initComplexityImages() {
         directionChangeDoNotCompute.setText("<html>Do not compute<br>this attribute</html>");
         directionChangeDoNotCompute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                directionChangeDoNotComputeActionPerformed(evt);
+                noComputeBoxCheckedAction(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -5147,143 +5117,24 @@ public void closeWindow()
                         }//GEN-LAST:event_closeWindow
 
                         private void mouseEventHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEventHandler
-                            //If the action originated in the overall complexity panel
-                            if (((ComplexityPanel)evt.getSource()).equals(overallComplexityPanel)) {
-                                if (!manageSpecificCheckBox.isSelected()) {
-                                    //TODO: make the motion of the other curves dependent on their current position
-                                    for (int i = 0; i<complexityPanels.size(); i++) {
-                                        complexityPanels.get(i).mouseHandler(evt);
-                                    }
-                                }
-                                //if manageSpecific is selected, then overall curve can't be manipulated, for now
-                            }
-                            else { // source is not the overall complexity curve
-                                if (manageSpecificCheckBox.isSelected()) {
-                                    if (((ComplexityPanel) evt.getSource()).compute()) {
-                                        int oldY, newY;
-                                        Double toAdd;
-                                        if (((MouseEvent)evt).isShiftDown()) {
-                                            oldY = ((ComplexityPanel)overallComplexityPanel).getBarLower(evt.getX());
-                                        }
-                                        else {
-                                            oldY = ((ComplexityPanel) overallComplexityPanel).getBarUpper(evt.getX());
-                                        }
-                                        newY = evt.getY();
-                                        Double attrs = ((Integer)numValidAttrs).doubleValue();
-                                        toAdd = ((oldY-newY)*((attrs-1)/attrs)); //number to add to new y
-
-                                        ((ComplexityPanel) evt.getSource()).mouseHandler(evt);
-                                        evt.translatePoint(0, toAdd.intValue());
-                                        ((ComplexityPanel)overallComplexityPanel).mouseHandler(evt);
-                                    }
-                                }
-                            }
+                            complexityController.mouseHandler(evt);
                         }//GEN-LAST:event_mouseEventHandler
-
-                        private void manageSpecificCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageSpecificCheckBoxActionPerformed
-                            if (manageSpecificCheckBox.isSelected()) {
-                                overallComplexityPanel.setEnabled(false);
-                                ((ComplexityPanel)overallComplexityPanel).upperLimitField.setEnabled(false);
-                                ((ComplexityPanel)overallComplexityPanel).lowerLimitField.setEnabled(false);
-                                for(int i = 1; i<complexityPanels.size(); i++) {
-                                    complexityPanels.get(i).upperLimitField.setEnabled(true);
-                                    complexityPanels.get(i).lowerLimitField.setEnabled(true);
-                                    complexityPanels.get(i).noComputeBox.setEnabled(true);
-                                    complexityPanels.get(i).setEnabled(true);
-                                }
-                            //ungray specific attrs!
-                            }
-                            if (!manageSpecificCheckBox.isSelected()) {
-                               overallComplexityPanel.setEnabled(true);
-                               ((ComplexityPanel)overallComplexityPanel).upperLimitField.setEnabled(true);
-                               ((ComplexityPanel)overallComplexityPanel).lowerLimitField.setEnabled(true);
-                               for(int i = 1; i<complexityPanels.size(); i++) {
-                                    complexityPanels.get(i).upperLimitField.setEnabled(false);
-                                    complexityPanels.get(i).lowerLimitField.setEnabled(false);
-                                    complexityPanels.get(i).noComputeBox.setEnabled(false);
-                                    complexityPanels.get(i).setEnabled(false);
-                               }
-                            }
-                            //re-gray specific attrs!
-                        }//GEN-LAST:event_manageSpecificCheckBoxActionPerformed
-
-                        private void granularityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_granularityComboBoxActionPerformed
-                            attrGranularity = Integer.parseInt((String)granularityComboBox.getSelectedItem());
-                            for (int i = 0; i<complexityPanels.size(); i++) {
-                                complexityPanels.get(i).redraw(attrGranularity);
-                            }
-                        }//GEN-LAST:event_granularityComboBoxActionPerformed
 
                         private void complexityGenerateMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityGenerateMelodyButtonActionPerformed
                             // TODO obtain complexity vals from each curve that is valid and assign them to something
                             //notate.generate(lickGen);
+                            //populate window with abstract melody
                         }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
 
-                        private void densityDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_densityDoNotComputeActionPerformed
+                        private void noComputeBoxCheckedAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noComputeBoxCheckedAction
+                            int attrs = complexityController.getNumValidAttrs();
                             if (((JCheckBox)evt.getSource()).isSelected()) {
-                                ((ComplexityPanel)densityPanel).setCompute(false);
-                                numValidAttrs--;
+                                complexityController.setNumValidAttrs(attrs--);
                             }
                             else {
-                                ((ComplexityPanel)densityPanel).setCompute(true);
-                                numValidAttrs++;
+                                complexityController.setNumValidAttrs(attrs--);
                             }
-                        }//GEN-LAST:event_densityDoNotComputeActionPerformed
-
-                        private void varietyDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_varietyDoNotComputeActionPerformed
-                            if (((JCheckBox)evt.getSource()).isSelected()) {
-                                ((ComplexityPanel)varietyPanel).setCompute(false);
-                                numValidAttrs--;
-                            }
-                            else {
-                                ((ComplexityPanel)varietyPanel).setCompute(true);
-                                numValidAttrs++;
-                            }
-                        }//GEN-LAST:event_varietyDoNotComputeActionPerformed
-
-                        private void syncopationDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncopationDoNotComputeActionPerformed
-                            if (((JCheckBox)evt.getSource()).isSelected()) {
-                                ((ComplexityPanel)syncopationPanel).setCompute(false);
-                                numValidAttrs--;
-                            }
-                            else {
-                                ((ComplexityPanel)syncopationPanel).setCompute(true);
-                                numValidAttrs++;
-                            }
-                        }//GEN-LAST:event_syncopationDoNotComputeActionPerformed
-
-                        private void consonanceDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consonanceDoNotComputeActionPerformed
-                            if (((JCheckBox)evt.getSource()).isSelected()) {
-                                ((ComplexityPanel)consonancePanel).setCompute(false);
-                                numValidAttrs--;
-                            }
-                            else {
-                                ((ComplexityPanel)consonancePanel).setCompute(true);
-                                numValidAttrs++;
-                            }
-                        }//GEN-LAST:event_consonanceDoNotComputeActionPerformed
-
-                        private void leapSizeDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leapSizeDoNotComputeActionPerformed
-                            if (((JCheckBox)evt.getSource()).isSelected()) {
-                                ((ComplexityPanel)leapSizePanel).setCompute(false);
-                                numValidAttrs--;
-                            }
-                            else {
-                                ((ComplexityPanel)leapSizePanel).setCompute(true);
-                                numValidAttrs++;
-                            }
-                        }//GEN-LAST:event_leapSizeDoNotComputeActionPerformed
-
-                        private void directionChangeDoNotComputeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionChangeDoNotComputeActionPerformed
-                            if (((JCheckBox)evt.getSource()).isSelected()) {
-                                ((ComplexityPanel)directionChangePanel).setCompute(false);
-                                numValidAttrs--;
-                            }
-                            else {
-                                ((ComplexityPanel)directionChangePanel).setCompute(true);
-                                numValidAttrs++;
-                            }
-                        }//GEN-LAST:event_directionChangeDoNotComputeActionPerformed
+                        }//GEN-LAST:event_noComputeBoxCheckedAction
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;

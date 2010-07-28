@@ -33,8 +33,6 @@ public class ComplexityPanel extends JPanel  {
     /** A list of the starting coordinate of each bar, size is the number of bars */
     private ArrayList<BarDimensions> bars;
     private Color color;
-    /** Indicates whether or not the user wants Impro-Visor to compute this attribute */
-    private boolean compute;
     /** Indicates whether or not this component is enabled or disabled */
     private boolean enabled;
     /** User-defined min and max bounds on the curve */
@@ -45,18 +43,15 @@ public class ComplexityPanel extends JPanel  {
     /** Width of each bar in the graph */
     private static final int BAR_WIDTH = 30; //set for every graph
     private static final int TOTAL_HEIGHT = 200;
+    private static final int GAP = 5;
 
     /** Alpha composite for painting a transparent grayed out image for disabled graphs */
     private AlphaComposite composite;
 
     public ComplexityPanel(int gran, int tot) {
-        compute = true;
         upperY = 25;
         lowerY = TOTAL_HEIGHT-25;
         barHeight = lowerY-upperY;
-        //Default: set the graph to its full height
-        maxUpper = upperY;
-        minLower = lowerY;
         totalNumBeats = tot;
         granularity = gran;
         int numBars = totalNumBeats/granularity;
@@ -79,23 +74,53 @@ public class ComplexityPanel extends JPanel  {
 
         lowerLimitField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                minLower = Integer.parseInt(lowerLimitField.getText());
-                minLower = -1*(minLower-150)+upperY;
-                resizeLowerBars();
+                int min = Integer.parseInt(lowerLimitField.getText());
+                if (min < 0) {
+                    min = 0;
+                    lowerLimitField.setText(Integer.toString(min));
+                }
+                min = -1*(min-150)+upperY;
+                if(min < maxUpper + GAP) {
+                    min = maxUpper+GAP;
+                    lowerLimitField.setText(Integer.toString(-1*((min-upperY)-150)));
+                }
+                minLower = min;
+                resizeBars();
                 drawAll();
             }
         });
         upperLimitField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                maxUpper = Integer.parseInt(upperLimitField.getText());
-                maxUpper = -1*(maxUpper-150)+upperY;
-                resizeUpperBars();
+                int max = Integer.parseInt(upperLimitField.getText());
+                if (max > 150) {
+                    max = 150;
+                    upperLimitField.setText(Integer.toString(max));
+                }
+                max = -1*(max-150)+upperY;
+                if (max > minLower-GAP) {
+                    max = minLower-GAP;
+                    upperLimitField.setText(Integer.toString(-1*((max-upperY)-150)));
+                }
+                maxUpper = max;
+                resizeBars();
                 drawAll();
             }
         });
     }
     public void setCheckBox(JCheckBox box) {
         noComputeBox = box;
+        noComputeBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!toCompute()) {
+                    upperLimitField.setEnabled(false);
+                    lowerLimitField.setEnabled(false);
+                }
+                else {
+                    upperLimitField.setEnabled(true);
+                    lowerLimitField.setEnabled(true);
+                }
+            }
+        });
     }
     public void initBuffer(Color c) {
         this.buffer = this.createImage(width, TOTAL_HEIGHT);
@@ -105,24 +130,15 @@ public class ComplexityPanel extends JPanel  {
     public void setGraphics() {
         graphics = (Graphics2D) buffer.getGraphics();
     }
-    public boolean compute() {
-        return compute;
-    }
-    public void setCompute(boolean c) {
-        compute = c;
-    }
     @Override
     public void setEnabled(boolean e) {
         enabled = e;
     }
-
-    public void redraw(int newGran) {
-        granularity = newGran;
-        int numBars = totalNumBeats/granularity;
-        width = numBars*BAR_WIDTH;
-        instantiateBars(numBars);
-        setSize(width, TOTAL_HEIGHT);
-        update(graphics);
+    public boolean toCompute() {
+        if (noComputeBox.isSelected()) {
+            return false;
+        }
+        return true;
     }
 
     private void instantiateBars(int numBars) {
@@ -133,17 +149,23 @@ public class ComplexityPanel extends JPanel  {
             bars.add(d);
         }
     }
-    /**
-     * Override the paint method to draw the buffer image on this panel's graphics.
-     * This method is called implicitly whenever repaint() is called.
-     */
-    @Override
-    public void paint(Graphics g) {
-//        System.out.println("Paint called.");
-        drawAll();
-        g.drawImage(buffer, 0, 0 , null);
+
+    /** Returns an ArrayList of ArrayLists of two elements representing the upper and lower bounds of
+      * each bar in the graph. Used for computing the complexity specified by the user */
+    public ArrayList<ArrayList> valueRange() {
+        ArrayList allVals = new ArrayList(bars.size());
+        Integer lower, upper;
+        for (int i = 0; i<bars.size(); i++) {
+            ArrayList pair = new ArrayList(2);
+            lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
+            upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
+            pair.add(lower);
+            pair.add(upper);
+        }
+        return allVals;
     }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Updates the positions of all the bars on the screen.
      */
@@ -171,63 +193,85 @@ public class ComplexityPanel extends JPanel  {
         graphics.drawRect(0, lowerY, width, TOTAL_HEIGHT); //Chord box
         graphics.drawRect(0, 0, width - 1, TOTAL_HEIGHT - 1);
 
-        if (!noComputeBox.isSelected()) {
-            if (!enabled) {
-                graphics.setComposite(composite);
-                graphics.setColor(new Color(230, 230, 230));
-                graphics.fillRect(0, 0, width, TOTAL_HEIGHT);
-                graphics.setComposite(oldComp);
-            }
-        }
-        else { //Do not compute this attribute, paint a different gray mask over it
+        if (!toCompute()) {
             graphics.setComposite(composite);
-            graphics.setColor(new Color(190, 190, 190));
+            graphics.setColor(new Color(190, 190, 190)); //dark gray for non-computed attributes
             graphics.fillRect(0, 0, width, TOTAL_HEIGHT);
             graphics.setComposite(oldComp);
         }
+        else if (!enabled) {
+            graphics.setComposite(composite);
+            graphics.setColor(new Color(230, 230, 230)); //lighter gray for disabled attributes
+            graphics.fillRect(0, 0, width, TOTAL_HEIGHT);
+            graphics.setComposite(oldComp);
+        }
+
+        repaint();
+    }
+    /** Redraws the number of bars when the user specifies a new granularity */
+    public void redraw(int newGran) {
+        clear();
+        granularity = newGran;
+        int numBars = totalNumBeats/granularity;
+        width = numBars*BAR_WIDTH;
+        instantiateBars(numBars);
+        setSize(width, TOTAL_HEIGHT);
+        update(graphics);
         repaint();
     }
 
     private void drawBarNumbers() {
         for (int i = 0; i < bars.size(); i++) {
-            graphics.drawString(((Integer)i).toString(), bars.get(i).getBarStart(), upperY-2);
+            graphics.drawString(((Integer)i).toString(), bars.get(i).getBarStart(), upperY-GAP);
         }
     }
-
+    /**
+     * Override the paint method to draw the buffer image on this panel's graphics.
+     * This method is called implicitly whenever repaint() is called.
+     */
+    @Override
+    public void paint(Graphics g) {
+        drawAll();
+        g.drawImage(buffer, 0, 0 , null);
+    }
     private void clear() {
-//        System.out.println("clear");
         graphics.clearRect(0, upperY, width, lowerY);
     }
     @Override
     public void update(Graphics g) {
-//        System.out.println("Update");
         paint(g);
     }
 
-    public void resizeUpperBars() {
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+    /** Resizes the upper limit of all the bars when the max range is changed so
+     * none of the bars exceed the max value */
+    public void resizeBars() {
         for (int i = 0; i < bars.size(); i++) {
+            if (bars.get(i).getUpperBound() > minLower)
+                bars.get(i).setUpperBound(minLower-GAP);
             if (bars.get(i).getUpperBound() < maxUpper)
                 bars.get(i).setUpperBound(maxUpper);
-        }
-    }
-    public void resizeLowerBars() {
-        for (int i = 0; i < bars.size(); i++) {
+            if (bars.get(i).getLowerBound() < maxUpper)
+                bars.get(i).setLowerBound(maxUpper+GAP);
             if (bars.get(i).getLowerBound() > minLower)
                 bars.get(i).setLowerBound(minLower);
         }
     }
-
     /**
      * Adjusts the Upper bound position of a single bar in the graph
      */
     public void moveUpperBound(int bar, int y) {
         clear();
-        if (y > bars.get(bar).getLowerBound()) {
-            bars.get(bar).setUpperBound(bars.get(bar).getLowerBound()-2);
+        if (y < maxUpper) {
+            y = maxUpper;
+        } else if (y > minLower) {
+            y = minLower - GAP;
+        } else if (y > bars.get(bar).getLowerBound()) {
+            y = bars.get(bar).getLowerBound() - GAP;
         }
-        else {
-            bars.get(bar).setUpperBound(y);
-        }
+        bars.get(bar).setUpperBound(y);
         repaint();
     }
     /**
@@ -235,26 +279,28 @@ public class ComplexityPanel extends JPanel  {
      */
     public void moveLowerBound(int bar, int y) {
         clear();
-        if (y < bars.get(bar).getUpperBound()) {
-            bars.get(bar).setLowerBound(bars.get(bar).getUpperBound()+2);
+        if (y > minLower) {
+            y = minLower;
+        } else if (y < maxUpper) {
+            y = maxUpper + GAP;
+        } else if (y < bars.get(bar).getUpperBound()) {
+            y = bars.get(bar).getUpperBound() + GAP;
         }
-        else {
-            bars.get(bar).setLowerBound(y);
-        }
+        bars.get(bar).setLowerBound(y);
         repaint();
     }
-
+    /** Gets the upper edge of a specific bar */
     public int getBarUpper(int x) {
         int bar = determineBar(x);
         return bars.get(bar).getUpperBound();
     }
+    /** Gets the lower edge of a specific bar */
     public int getBarLower(int x) {
         int bar = determineBar(x);
         return bars.get(bar).getLowerBound();
     }
-
     /**
-     * Given an x coordinate, determines which bar is closest
+     * Given an x coordinate, determines which bar is closest to where the mouse is
      */
     public int determineBar(int x) {
         return (x - 1) / BAR_WIDTH;
@@ -268,14 +314,8 @@ public class ComplexityPanel extends JPanel  {
                 && !(e.getX() < 0 || e.getY() < 0)) {
             int bar = determineBar(e.getX());
             int yCoord = e.getY();
-            if (yCoord > minLower) {
-                yCoord = minLower;
-            }
-            else if(yCoord < maxUpper) {
-                yCoord = maxUpper;
-            }
             //Holding down the shift key moves the lower bound
-            if (e.isShiftDown()) { 
+            if (e.isShiftDown()) { // lower bound
                 moveLowerBound(bar, yCoord);
             }
             else { 
