@@ -119,6 +119,7 @@ private CommandManager cm;
 
 // Complexity graph variables
 private ComplexityWindowController complexityController;
+private int beatsPerBar;
 private int attrTotal; //total number of beats to represent
 private int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
 
@@ -145,8 +146,10 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
     this.lickgen = lickgen;
     this.cm = cm;
 
-    attrTotal = 60; //TODO: take this from the actual selected section of the piece
-    attrGranularity = 2; //default
+    //beatsPerBar = notate.getCurrentOrigPart().getMetre()[0]; //get the top number in the time sig
+    beatsPerBar = 4; //default for now, since it appears there's no way to get the actual time sig at init time
+    attrTotal = 288; //max size of a selection (one chorus)
+    attrGranularity = 1; //default
 
     initComponents();
 
@@ -155,7 +158,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
 }
 
 private void initComplexityImages() {
-    complexityController = new ComplexityWindowController(
+    complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
             (ComplexityPanel) overallComplexityPanel, (ComplexityPanel) densityPanel,
             (ComplexityPanel) varietyPanel, (ComplexityPanel) syncopationPanel,
             (ComplexityPanel) consonancePanel, (ComplexityPanel) leapSizePanel,
@@ -177,7 +180,9 @@ private void initComplexityImages() {
     complexityController.getPanels().get(5).setCheckBox(leapSizeDoNotCompute);
     complexityController.getPanels().get(6).setCheckBox(directionChangeDoNotCompute);
 
-    complexityController.initController(manageSpecificCheckBox, granularityComboBox);
+    complexityController.initController(beatsPerBar, manageSpecificCheckBox, granularityComboBox);
+
+    //numBeatsSelected.setText(Integer.toString((int)totalBeats*32)); //HACK, MAKE THIS BETTER
 }
 
 /** This method is called from within the constructor to
@@ -322,7 +327,7 @@ private void initComplexityImages() {
         complexityInfoLabel = new javax.swing.JLabel();
         globalControlPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        numBarsSelected = new javax.swing.JLabel();
+        numBeatsSelected = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         granularityComboBox = new javax.swing.JComboBox();
         manageSpecificCheckBox = new javax.swing.JCheckBox();
@@ -332,24 +337,24 @@ private void initComplexityImages() {
         complexityGenerateMelodyButton = new javax.swing.JButton();
         complexityAbstractMelodyButton = new javax.swing.JButton();
         complexityFillAbstractButton = new javax.swing.JButton();
-        complexityAbstractMelodyScrollPane = new javax.swing.JScrollPane();
-        complexityAbstractTextArea = new javax.swing.JTextArea();
+        complexityRhythmScrollPane = new javax.swing.JScrollPane();
+        complexityRhythmField = new javax.swing.JTextArea();
         graphViewScrollPane = new javax.swing.JScrollPane();
         graphViewPanel = new javax.swing.JPanel();
         overallComplexityLabel = new javax.swing.JLabel();
-        overallComplexityPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        overallComplexityPanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         densityLabel = new javax.swing.JLabel();
-        densityPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        densityPanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         varietyLabel = new javax.swing.JLabel();
-        varietyPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        varietyPanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         syncopationLabel = new javax.swing.JLabel();
-        syncopationPanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        syncopationPanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         consonanceLabel = new javax.swing.JLabel();
-        consonancePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        consonancePanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         leapSizeLabel = new javax.swing.JLabel();
-        leapSizePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        leapSizePanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         directionChangeLabel = new javax.swing.JLabel();
-        directionChangePanel = new imp.gui.ComplexityPanel(attrGranularity, attrTotal);
+        directionChangePanel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
         complexityControlScrollPane = new javax.swing.JScrollPane();
         controlPanel = new javax.swing.JPanel();
         overallComplexityControlPanel = new javax.swing.JPanel();
@@ -2108,7 +2113,7 @@ private void initComplexityImages() {
         globalControlPanel.setPreferredSize(globalControlPanel.getPreferredSize());
         globalControlPanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel2.setText("Number of Bars Selected:");
+        jLabel2.setText("Number of Beats Selected:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -2116,15 +2121,13 @@ private void initComplexityImages() {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
         globalControlPanel.add(jLabel2, gridBagConstraints);
-
-        numBarsSelected.setText("4");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        globalControlPanel.add(numBarsSelected, gridBagConstraints);
+        globalControlPanel.add(numBeatsSelected, gridBagConstraints);
 
         jLabel4.setText("Granularity (in beats):");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2135,8 +2138,9 @@ private void initComplexityImages() {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
         globalControlPanel.add(jLabel4, gridBagConstraints);
 
-        granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4", "6", "8" }));
-        granularityComboBox.setSelectedItem(1);
+        granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4" }));
+        granularityComboBox.setSelectedIndex(0);
+        granularityComboBox.setSelectedItem(2);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -2198,6 +2202,11 @@ private void initComplexityImages() {
         globalControlPanel.add(complexityGenerateMelodyButton, gridBagConstraints);
 
         complexityAbstractMelodyButton.setText("Generate Abstract Melody Only");
+        complexityAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                complexityAbstractMelodyButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
@@ -2208,6 +2217,11 @@ private void initComplexityImages() {
         globalControlPanel.add(complexityAbstractMelodyButton, gridBagConstraints);
 
         complexityFillAbstractButton.setText("Fill Abstract Melody");
+        complexityFillAbstractButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                complexityFillAbstractButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 2;
@@ -2217,9 +2231,11 @@ private void initComplexityImages() {
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 7);
         globalControlPanel.add(complexityFillAbstractButton, gridBagConstraints);
 
-        complexityAbstractTextArea.setColumns(20);
-        complexityAbstractTextArea.setRows(5);
-        complexityAbstractMelodyScrollPane.setViewportView(complexityAbstractTextArea);
+        complexityRhythmScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        complexityRhythmField.setColumns(20);
+        complexityRhythmField.setRows(5);
+        complexityRhythmScrollPane.setViewportView(complexityRhythmField);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -2229,7 +2245,7 @@ private void initComplexityImages() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.66;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        globalControlPanel.add(complexityAbstractMelodyScrollPane, gridBagConstraints);
+        globalControlPanel.add(complexityRhythmScrollPane, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -5121,8 +5137,11 @@ public void closeWindow()
                         }//GEN-LAST:event_mouseEventHandler
 
                         private void complexityGenerateMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityGenerateMelodyButtonActionPerformed
-                            // TODO obtain complexity vals from each curve that is valid and assign them to something
-                            //notate.generate(lickGen);
+                            verifyBeats();
+
+                            //TODO: obtain complexity values and apply them -- rule expander comes in here
+                            notate.generate(lickgen);
+                            //we may have to modify what the lickgen has in order to change the abstract melody
                             //populate window with abstract melody
                         }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
 
@@ -5135,6 +5154,71 @@ public void closeWindow()
                                 complexityController.setNumValidAttrs(attrs--);
                             }
                         }//GEN-LAST:event_noComputeBoxCheckedAction
+
+                        private void complexityAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityAbstractMelodyButtonActionPerformed
+                            verifyBeats();
+
+                            //TODO: obtain complexity values and apply them -- rule expander comes in here
+                            
+                            if (useGrammar) {
+                                setAbstractRhythmFieldText(
+                                        lickgen.generateRhythmFromGrammar(notate.getTotalSlots()).toString());
+                            } else {
+                                setAbstractRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
+                                        minDuration,
+                                        maxDuration,
+                                        restProb).toString());
+                            }
+                        }//GEN-LAST:event_complexityAbstractMelodyButtonActionPerformed
+
+                        private void complexityFillAbstractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityFillAbstractButtonActionPerformed
+                            verifyBeats();
+
+                            String r = complexityRhythmField.getText().trim();
+                            if (r.equals("")) {
+                                return; // no text specified
+                            }
+                            if (r.charAt(0) != '(') {
+                                r = "(".concat(r);
+                            }
+
+                            if (r.charAt(r.length() - 1) != ')') {
+                                r = r.concat(")");
+                            }
+
+                            setAbstractRhythmFieldText(r);
+
+                            Polylist rhythm = new Polylist();
+                            StringReader rhythmReader = new StringReader(r);
+                            Tokenizer in = new Tokenizer(rhythmReader);
+                            Object ob = null;
+
+                            while ((ob = in.nextSexp()) != Tokenizer.eof) {
+                                if (ob instanceof Polylist) {
+                                    rhythm = (Polylist) ob;
+                                }
+                            }
+
+                            notate.generateLick(rhythm);
+                        }//GEN-LAST:event_complexityFillAbstractButtonActionPerformed
+
+    public void setAbstractRhythmFieldText(String string) {
+        complexityRhythmField.setText(string);
+        complexityRhythmField.setCaretPosition(0);
+        complexityRhythmScrollPane.getViewport().setViewPosition(new Point(0, 0));
+    }
+    
+    public void verifyBeats() {
+        totalBeats = notate.doubleFromTextField(totalBeatsField, 0.0,
+                Double.POSITIVE_INFINITY, 0.0);
+        totalBeats = Math.round(totalBeats);
+        totalSlots = (int) (BEAT * totalBeats);
+        notate.getCurrentStave().repaint();
+
+        //complexityController.update((int)totalBeats, attrGranularity);
+        //overallComplexityPanel.setSize(newSize, 200);
+        numBeatsSelected.setText(Integer.toString((int)totalBeats));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
@@ -5156,13 +5240,13 @@ public void closeWindow()
     private javax.swing.JLabel colorToneProbLabel;
     private javax.swing.JTextField colorToneWeightField;
     private javax.swing.JButton complexityAbstractMelodyButton;
-    private javax.swing.JScrollPane complexityAbstractMelodyScrollPane;
-    private javax.swing.JTextArea complexityAbstractTextArea;
     private javax.swing.JScrollPane complexityControlScrollPane;
     private javax.swing.JButton complexityFillAbstractButton;
     private javax.swing.JButton complexityGenerateMelodyButton;
     private javax.swing.JLabel complexityInfoLabel;
     private javax.swing.JPanel complexityInfoPanel;
+    private javax.swing.JTextArea complexityRhythmField;
+    private javax.swing.JScrollPane complexityRhythmScrollPane;
     private javax.swing.JPanel consonanceControlPanel;
     private javax.swing.JCheckBox consonanceDoNotCompute;
     private javax.swing.JLabel consonanceLabel;
@@ -5251,7 +5335,7 @@ public void closeWindow()
     private javax.swing.JTextField minIntervalField;
     private javax.swing.JLabel minLabel;
     private javax.swing.JTextField minPitchField;
-    private javax.swing.JLabel numBarsSelected;
+    private javax.swing.JLabel numBeatsSelected;
     private javax.swing.JTextField numClusterRepsField;
     private javax.swing.JLabel numClusterRepsLabel;
     private javax.swing.JButton openCorpusBtn;
@@ -5351,10 +5435,13 @@ private void triageLick(String lickName, int grade)
       return recurrentCheckbox.isSelected();
   }
 
-  public void setTotalBeats(double beats)
-  {
-  totalBeats = beats;
-  totalBeatsField.setText("" + beats);
+  public void setTotalBeats(double beats) {
+        totalBeats = beats;
+        totalBeatsField.setText("" + beats);
+        String b = Integer.toString((int) beats);
+        numBeatsSelected.setText(b);
+        complexityController.updateBeats((int)beats);
+        //graphViewScrollPane.setSize(overallComplexityPanel.getWidth(), graphViewPanel.getHeight());
   }
 
   public boolean toCriticSelected()

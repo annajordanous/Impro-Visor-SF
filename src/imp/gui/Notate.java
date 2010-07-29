@@ -13320,7 +13320,9 @@ public void updateStyle()
       }
   }
 
-
+public int getTimeSigTop() {
+    return Integer.parseInt(timeSignatureTopTF.getText());
+}
 /** 
  * Set up the metre and length of the leadsheet.  This needs to be separated out
  * because we handle things differently depending on whether we're opening a new leadsheet

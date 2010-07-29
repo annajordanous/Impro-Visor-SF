@@ -30,6 +30,7 @@ public class ComplexityPanel extends JPanel  {
     private int granularity;
     /** Total number of beats in the section of music to generate over */
     private int totalNumBeats;
+    private int beatsPerBar;
     /** A list of the starting coordinate of each bar, size is the number of bars */
     private ArrayList<BarDimensions> bars;
     private Color color;
@@ -48,10 +49,11 @@ public class ComplexityPanel extends JPanel  {
     /** Alpha composite for painting a transparent grayed out image for disabled graphs */
     private AlphaComposite composite;
 
-    public ComplexityPanel(int gran, int tot) {
+    public ComplexityPanel(int time, int gran, int tot) {
         upperY = 25;
         lowerY = TOTAL_HEIGHT-25;
         barHeight = lowerY-upperY;
+        beatsPerBar = time;
         totalNumBeats = tot;
         granularity = gran;
         int numBars = totalNumBeats/granularity;
@@ -127,8 +129,15 @@ public class ComplexityPanel extends JPanel  {
         this.setGraphics();
         color = c;
     }
+    @Override
+    public int getWidth() {
+        return width;
+    }
     public void setGraphics() {
         graphics = (Graphics2D) buffer.getGraphics();
+    }
+    public void setTime(int time) {
+        beatsPerBar = time;
     }
     @Override
     public void setEnabled(boolean e) {
@@ -143,8 +152,8 @@ public class ComplexityPanel extends JPanel  {
 
     private void instantiateBars(int numBars) {
         BarDimensions d;
-        bars = new ArrayList<BarDimensions>(numBars);
-        for(int i = 0; i <= width; i+=BAR_WIDTH) {
+        bars = new ArrayList<BarDimensions>();
+        for(int i = 0; i < width; i+=BAR_WIDTH) {
             d = new BarDimensions(i, barHeight/2+upperY, lowerY); //TODO: give each bar a different starting height
             bars.add(d);
         }
@@ -209,20 +218,76 @@ public class ComplexityPanel extends JPanel  {
         repaint();
     }
     /** Redraws the number of bars when the user specifies a new granularity */
-    public void redraw(int newGran) {
+    public void redrawBeats(int newBeats) {
         clear();
+        //int oldBeats = totalNumBeats;
+        totalNumBeats = newBeats;
+        int numBars = totalNumBeats/granularity;
+        width = numBars*BAR_WIDTH;
+
+        instantiateBars(numBars);
+
+        this.setSize(width, TOTAL_HEIGHT);
+        update(graphics);
+        repaint();
+    }
+
+    /** Redraws the number of bars when the user specifies a new granularity.
+      * Preserves the old complexity curve, but with different spacing */
+    public void redrawGran(int newGran) {
+        clear();
+        int i, index;
+        int newUpper, newLower;
+        ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>();
+        int oldGran = granularity;
+        
+        //Less fine resolution--average values
+        if (newGran>oldGran) {
+            int div = newGran/oldGran;
+            index = 0;
+            for (i = 0; i<bars.size(); i+=div) {
+                newUpper = 0;
+                newLower = 0;
+                for (int j = i; j<i+div; j++) {
+                    System.out.println("j: "+j);
+                    newUpper += bars.get(j).getUpperBound();
+                    newLower += bars.get(j).getLowerBound();
+                }
+                newList.add(new BarDimensions(index, newUpper/div, newLower/div));
+                index+=BAR_WIDTH;
+            }
+        }
+        //Finer resolution, simply doubly the values
+        else {
+            int div = oldGran/newGran;
+            index = 0;
+            int k = 0;
+            for (i = 0; i<bars.size(); i++) {
+                for (int j = k; j<k+div; j++) {
+                    newList.add(new BarDimensions(index, bars.get(i).getUpperBound(), bars.get(i).getLowerBound()));
+                    index+=BAR_WIDTH;
+                }
+                k += div;
+            }
+        }
+        bars = newList;
         granularity = newGran;
         int numBars = totalNumBeats/granularity;
         width = numBars*BAR_WIDTH;
-        instantiateBars(numBars);
-        setSize(width, TOTAL_HEIGHT);
+
+        this.setSize(width, TOTAL_HEIGHT);
         update(graphics);
         repaint();
     }
 
     private void drawBarNumbers() {
+        int div = beatsPerBar/granularity;
+        int num = 1;
         for (int i = 0; i < bars.size(); i++) {
-            graphics.drawString(((Integer)i).toString(), bars.get(i).getBarStart(), upperY-GAP);
+            if((i)%div == 0) {
+                graphics.drawString(((Integer)num).toString(), bars.get(i).getBarStart(), upperY-GAP);
+                num++;
+            }
         }
     }
     /**
@@ -243,7 +308,7 @@ public class ComplexityPanel extends JPanel  {
     }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
     /** Resizes the upper limit of all the bars when the max range is changed so
      * none of the bars exceed the max value */

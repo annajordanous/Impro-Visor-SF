@@ -3,17 +3,18 @@
  */
 package imp.gui;
 
+import java.util.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 /**
  * Manages communication between the user interface and individual complexity windows. Maintains references
  * to all the complexity graphs.
+ *
  * @author Julia Botev
  */
 public class ComplexityWindowController {
@@ -23,12 +24,14 @@ public class ComplexityWindowController {
     private ArrayList<ComplexityPanel> complexityPanels;
     /** Denotes the number of attributes that need to be factored into the computation of complexity */
     private int numValidAttrs;
+    private int beatsPerBar;
+    private int totalNumBeats;
     private int attrGranularity;
     public JCheckBox manageSpecific;
     public JComboBox granBox;
 
     /** panels will always be of length 7 */
-    public ComplexityWindowController(ComplexityPanel... panels) {
+    public ComplexityWindowController(int beats, int gran, ComplexityPanel... panels) {
         if (panels.length != 7) {
             System.out.println("Incorrect number of panels passed to complexity window constructor!");
         }
@@ -46,16 +49,20 @@ public class ComplexityWindowController {
                 complexityPanels.add(i, panels[i]);
             }
             numValidAttrs = 6;
+            totalNumBeats = beats;
+            attrGranularity = gran;
         }
     }
 
-    public void initController(JCheckBox specific, JComboBox gran) {
+    public void initController(int time, JCheckBox specific, JComboBox gran) {
+        beatsPerBar = time;
         overallComplexityPanel.setEnabled(true);
             for (int i = 1; i < complexityPanels.size(); i++) {
                 complexityPanels.get(i).upperLimitField.setEnabled(false);
                 complexityPanels.get(i).lowerLimitField.setEnabled(false);
                 complexityPanels.get(i).noComputeBox.setEnabled(false);
                 complexityPanels.get(i).setEnabled(false);
+                complexityPanels.get(i).setTime(beatsPerBar);
             }
 
             manageSpecific = specific;
@@ -92,13 +99,14 @@ public class ComplexityWindowController {
                 public void actionPerformed(ActionEvent e) {
                     attrGranularity = Integer.parseInt((String) granBox.getSelectedItem());
                     for (int i = 0; i < complexityPanels.size(); i++) {
-                        complexityPanels.get(i).redraw(attrGranularity);
+                        complexityPanels.get(i).redrawGran(attrGranularity);
                     }
                 }
             });
             initBuffers();
     }
 
+    /** Initializes the off-screen buffers and colors of the graphs */
     public void initBuffers() {
         overallComplexityPanel.initBuffer(new Color(255, 140, 0));
         densityPanel.initBuffer(new Color(154, 205, 0));
@@ -107,6 +115,23 @@ public class ComplexityWindowController {
         consonancePanel.initBuffer(new Color(191, 239, 255));
         leapSizePanel.initBuffer(new Color(28, 134, 238));
         directionChangePanel.initBuffer(new Color(131, 111, 255));
+    }
+
+    /** Takes a new number of beats and redraws the graphs */
+    public int updateBeats(int beats) {
+        totalNumBeats = beats;
+        for(int i = 0; i<complexityPanels.size(); i++) {
+            complexityPanels.get(i).redrawBeats(totalNumBeats);
+        }
+        return overallComplexityPanel.getWidth();
+    }
+    /** Takes a new granularity and redraws the graphs */
+    public int updateGran(int gran) {
+        attrGranularity = gran;
+        for(int i = 0; i<complexityPanels.size(); i++) {
+            complexityPanels.get(i).redrawGran(attrGranularity);
+        }
+        return overallComplexityPanel.getWidth();
     }
 
     public ArrayList<ComplexityPanel> getPanels() {
