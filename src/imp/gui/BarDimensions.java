@@ -10,16 +10,19 @@ package imp.gui;
  * @author Julia Botev
  */
 public class BarDimensions {
-    private int barStart, UpperBound, lowerBound;
+    private int barStart, upperBound, lowerBound;
 
     public BarDimensions(int b, int t, int l) {
         barStart = b;
-        UpperBound = t;
+        upperBound = t;
         lowerBound = l;
     }
 
+    public void setBarStart(int b) {
+        barStart = b;
+    }
     public void setUpperBound(int t) {
-        UpperBound = t;
+        upperBound = t;
     }
 
     public void setLowerBound(int l) {
@@ -31,7 +34,7 @@ public class BarDimensions {
     }
 
     public int getUpperBound() {
-        return UpperBound;
+        return upperBound;
     }
 
     public int getLowerBound() {

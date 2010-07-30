@@ -136,10 +136,10 @@ public class ComplexityPanel extends JPanel  {
         return width;
     }
     public int getMinLower() {
-        return minLower;
+        return minLower-upperY;
     }
     public int getMaxUpper() {
-        return maxUpper;
+        return maxUpper-upperY;
     }
     public void setMinLower(int min) {
         minLower = min;
@@ -212,6 +212,26 @@ public class ComplexityPanel extends JPanel  {
         }
         return toReturn;
     }
+    /** Re-instates the bar array with new dimensions--used to load a profile curve.
+     *  lowers.length == uppers.length always */
+    public void reInitBars(int[] lowers, int[] uppers){
+        int xCoord = 0; // the barStart variable for each barDimension in the array
+        bars = new ArrayList<BarDimensions>(lowers.length);
+        for(int i = 0; i<lowers.length; i++) {
+            //System.out.println("in reinit bars: xCoord: "+xCoord+" upper: "+uppers[i]+" lower: "+lowers[i]);
+            bars.add(new BarDimensions(xCoord, uppers[i], lowers[i]));
+            xCoord += BAR_WIDTH;
+        }
+        //System.out.println("about to draw all in reInitBars");
+    }
+    /** For loading a profile */
+    public void reInitPanel(int beatsPer, int numBeats, int gran, int totalWidth) {
+        clear();
+        beatsPerBar = beatsPer;
+        totalNumBeats = numBeats;
+        granularity = gran;
+        width = totalWidth;
+    }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -256,16 +276,48 @@ public class ComplexityPanel extends JPanel  {
 
         repaint();
     }
-    /** Redraws the number of bars when the user specifies a new granularity */
+    /** Redraws the number of bars when the user specifies a new number of beats
+     *  preserves the exact dimensions of the current curve by truncating it, or
+     *  adding more curve at same height as the last bar. */
     public void redrawBeats(int newBeats) {
         clear();
-        //int oldBeats = totalNumBeats;
+        int i;
+        int oldBeats = totalNumBeats;
+        ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>(newBeats);
+
+        System.out.println("newBeats: "+newBeats+" oldbeats: "+oldBeats);
+
+        //fewer beats than before--truncate the curve
+        if (newBeats < oldBeats) {
+            System.out.println("in the newbeats < oldBeats");
+            for(i = 0; i<newBeats; i++) {
+                newList.add(i, bars.get(i));
+            }
+            bars = newList;
+        }
+        //more beats than before--extend the existing curve
+        else if (newBeats > oldBeats) {
+            System.out.println("in the newbeats > oldBeats");
+            for(i = 0; i<oldBeats; i++) {
+                newList.add(i, bars.get(i));
+            }
+            int xCoord = bars.get(oldBeats-1).getBarStart()+BAR_WIDTH;
+
+            BarDimensions dim;
+            for (i = oldBeats; i<newBeats; i++) {
+                System.out.println("i: "+i);
+                System.out.println("newBar start: "+xCoord);
+                dim = new BarDimensions(xCoord, bars.get(oldBeats-1).getUpperBound(),
+                        bars.get(oldBeats-1).getLowerBound());
+                newList.add(i, dim);
+                xCoord += BAR_WIDTH;
+            }
+            bars = newList;
+        }
+
         totalNumBeats = newBeats;
         int numBars = totalNumBeats/granularity;
         width = numBars*BAR_WIDTH;
-
-        instantiateBars(numBars);
-
         this.setSize(width, TOTAL_HEIGHT);
         update(graphics);
         repaint();

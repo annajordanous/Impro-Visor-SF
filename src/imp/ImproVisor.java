@@ -320,7 +320,12 @@ public class ImproVisor implements Constants {
             }
             catch (Exception ij) { System.out.println(ij); }
         }
-        
+
+//        ComplexityFrame attributeFrame = new ComplexityFrame();
+//        attributeFrame.setVisible(true);
+//
+//
+
         if(Trace.atLevel(3)) {
             advisor.listChords(System.out);	// option to list all chord types
         }

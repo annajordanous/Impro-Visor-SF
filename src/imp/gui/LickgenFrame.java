@@ -125,7 +125,8 @@ private int beatsPerBar;
 private int attrTotal; //total number of beats to represent
 private int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
 
-
+private JFileChooser compOpenFileChooser;
+private JFileChooser compSaveFileChooser;
 
 /**
  * Vector of JTextField arrays, used to display probabilities used in lick generation
@@ -184,7 +185,8 @@ private void initComplexityImages() {
 
     complexityController.initController(beatsPerBar, manageSpecificCheckBox, granularityComboBox);
 
-    //numBeatsSelected.setText(Integer.toString((int)totalBeats*32)); //HACK, MAKE THIS BETTER
+    compOpenFileChooser = new JFileChooser();
+    compSaveFileChooser = new JFileChooser();
 }
 
 /** This method is called from within the constructor to
@@ -2158,6 +2160,11 @@ private void initComplexityImages() {
         globalControlPanel.add(resetButton, gridBagConstraints);
 
         loadSoloProfileButton.setText("Load a Profile");
+        loadSoloProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadSoloProfileButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -5210,14 +5217,22 @@ public void closeWindow()
                         private void saveSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSoloProfileButtonActionPerformed
                             System.out.println("Save button pressed.\n");
                             try {
-                                File test = complexityController.saveComplexityWindow(
-                                        "/home/research/NetBeansProjects/profiles", "testProfile");
-                                //System.out.print(complexityController.convertComplexityWindow());
+                                File test = complexityController.saveComplexityWindow("/home/research/NetBeansProjects/profiles", "testProfile");
                             }
                             catch(java.io.IOException e) {
                                 System.out.println("File not found oooooohhh noooes!!!!1");
                             }
                         }//GEN-LAST:event_saveSoloProfileButtonActionPerformed
+
+                        private void loadSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadSoloProfileButtonActionPerformed
+                            System.out.println("load button pressed.");
+                            try {
+                                complexityController.loadComplexityWindow("/home/research/NetBeansProjects/profiles/testProfile.soloProfile");
+                            }
+                            catch(java.io.IOException e) {
+                                System.out.println("File not found oooooohhh noooes!!!!1");
+                            }
+                        }//GEN-LAST:event_loadSoloProfileButtonActionPerformed
 
     public void setComplexityRhythmFieldText(String string) {
         complexityRhythmField.setText(string);

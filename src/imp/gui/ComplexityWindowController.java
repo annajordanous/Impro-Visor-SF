@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 
 import polya.*;
 
@@ -208,30 +209,32 @@ public class ComplexityWindowController {
             }
         }
     }
-    /** Creates a file with the specified name and returns it, .soloProfile is the extension */
+
+    /** 
+     * Creates a file with the specified name and returns it, .soloProfile is the extension
+     */
     public File saveComplexityWindow(String pathname, String filename) throws FileNotFoundException, IOException {
         String newPath = pathname + "/" + filename + ".soloProfile";
         File toReturn = new File(newPath);
         FileOutputStream stream = new FileOutputStream(toReturn);
         String windowInfo = convertComplexityWindowToString(); //turn essential info into a string
         stream.write(windowInfo.getBytes()); //write that string to the file
+        toReturn.setReadOnly(); //non-modifiable file
         return toReturn;
     }
 
+    /**
+     *  Loads the file denoted by pathname to instantiate a saved complexity window.
+     */
     public void loadComplexityWindow(String pathname) throws FileNotFoundException, IOException {
-        FileInputStream stream = new FileInputStream(pathname);
+        BufferedReader reader = new BufferedReader(new FileReader(pathname));
         String info = "";
-        int next = stream.read();
-        // -1 denotes EOF
-        while(next != -1) {
-            info += next;
-            next = stream.read();
-        }
+        info = reader.readLine(); //should be one line
         convertStringToComplexityWindow(info);
     }
 
-
-    /** Converts essential info about the window into a String for saving.
+    /**
+     * Converts essential info about the window into a String for saving.
      *  What needs to be saved: total width, numBars, granularity, individual curve values,
      *  values of each min and max range text field, whether or not a curve is to be computed
      */
@@ -250,9 +253,8 @@ public class ComplexityWindowController {
                 Polylist.list("width", totalWidth));
 
         // List 2: combined attribute graph info
-        Polylist back = Polylist.list("specificAttrs");
-        // individual attribute graph info
-        Polylist inner = new Polylist();
+        Polylist back = new Polylist();
+        Polylist inner = new Polylist(); // individual attribute graph info
 
         for (int i = complexityPanels.size()-1; i>=0; i--) {
            inner = Polylist.list(complexityPanels.get(i).getName(),
@@ -263,88 +265,112 @@ public class ComplexityWindowController {
                    Polylist.list("upperBounds", Polylist.PolylistFromArray(complexityPanels.get(i).upperBounds())));
            back = Polylist.cons(inner, back);
         }
+        back = Polylist.cons("specificAttrs", back);
         info = Polylist.cons(front, back);
         String toReturn = info.toString();
         return toReturn;
     }
 
+
+    /**
+     * Takes a complexity Panel S-Expression and turns it into a re-drawn set of complexity panels
+     */
     private void convertStringToComplexityWindow(String s) {
+        //System.out.println("s: "+ s);
         Polylist info = Polylist.PolylistFromString(s);
-        PolylistEnum itr, itr2, itr3;
+        PolylistEnum itr, itr2, itr3, itrGlobal;
+        int oldTotalBeats = 0;
+        int oldWidth = 0;
 
         String label = "";
-        Object next, next2;
+        Object next, next2, nextGlobal;
 
         //iterate over the first polylist--the global info
-        itr = new PolylistEnum((Polylist)info.first());
-        next = itr.nextElement();
-        if (next instanceof String && ((String)next).equals("globals")) {
-            while (itr.hasMoreElements()) {
-                next = itr.nextElement();
-                if (next instanceof Polylist) {
-                    if (((Polylist)next).first() instanceof String) {
-                        if (((String)((Polylist)next).first()).equals("numValidAttrs")) {
-                            numValidAttrs = (Integer)((Polylist)next).last();
+        //System.out.println("info.first(): "+ info.first().toString());
+        itr = new PolylistEnum((Polylist)info.first()); //grabs the entire list
+        next = itr.nextElement(); //first half of the list--globals
+        itrGlobal = new PolylistEnum((Polylist)next);
+        nextGlobal = itrGlobal.nextElement();
+        //System.out.println("first next: "+nextGlobal.toString());
+        if (nextGlobal instanceof String && ((String)nextGlobal).equals("globalInfo")) {
+            while (itrGlobal.hasMoreElements()) {
+                //System.out.println("\n\n******parsing globals******\n\n");
+                nextGlobal = itrGlobal.nextElement();
+                if (nextGlobal instanceof Polylist) {
+                    if (((Polylist)nextGlobal).first() instanceof String) {
+                        if (((String)((Polylist)nextGlobal).first()).equals("numValidAttrs")) {
+                            numValidAttrs = ((Long)((Polylist)nextGlobal).last()).intValue();
+                            //System.out.println("num valid attrs: "+numValidAttrs);
                         }
-                        else if(((String) ((Polylist) next).first()).equals("beatsPerBar")) {
-                            beatsPerBar = (Integer)((Polylist)next).last();
+                        else if(((String) ((Polylist) nextGlobal).first()).equals("beatsPerBar")) {
+                            beatsPerBar = ((Long)((Polylist)nextGlobal).last()).intValue();
+                            //System.out.println("beats per bar: "+beatsPerBar);
                         }
-                        else if(((String) ((Polylist) next).first()).equals("totalNumBeats")) {
-                            totalNumBeats = (Integer)((Polylist)next).last();
+                        else if(((String) ((Polylist) nextGlobal).first()).equals("totalNumBeats")) {
+                            oldTotalBeats = ((Long)((Polylist)nextGlobal).last()).intValue();
+                            //System.out.println("oldTotalBeats: "+oldTotalBeats);
                         }
-                        else if(((String) ((Polylist) next).first()).equals("granularity")) {
-                            attrGranularity = (Integer)((Polylist)next).last();
+                        else if(((String) ((Polylist) nextGlobal).first()).equals("granularity")) {
+                            attrGranularity = ((Long)((Polylist)nextGlobal).last()).intValue();
+                            //System.out.println("gran: "+attrGranularity);
                         }
-                        else if(((String) ((Polylist) next).first()).equals("width")) {
-                            totalWidth = (Integer)((Polylist)next).last();
+                        else if(((String) ((Polylist) nextGlobal).first()).equals("width")) {
+                            oldWidth = ((Long)((Polylist)nextGlobal).last()).intValue();
+                            //System.out.println("width: "+oldWidth);
                         }
                         else {
-                            System.out.println("Error: poorly formed soloProfile file");
+                            //System.out.println("Error: poorly formed soloProfile file");
                         }
                     }
                 }
             }
         }
-        itr = ((Polylist)info.rest()).elements(); //second half of the list, contains specific attr info
+        //itr = new PolylistEnum((Polylist)info.rest()); //second half of the list, contains specific attr info
         next = itr.nextElement();
         if (next instanceof String && ((String)next).equals("specificAttrs")) {
-            for (int i = 0; i<complexityPanels.size(); i++) {
-                int[] lowers, uppers;
-                next = itr.nextElement();
-                itr2 = ((Polylist)next).elements(); //iterator for internal lists
-                next2 = itr.nextElement(); //name of the panel
+            for (int i = 0; i<complexityPanels.size(); i++) { //traverse each panel
+                int[] lowers = new int[1]; //lower and upper bounds for each panel
+                int[] uppers = new int[1]; //init to size 1 to appease the compiler
+                next = itr.nextElement(); //list of specific panel attributes
+                itr2 = new PolylistEnum((Polylist)next); //iterator for internal lists
+                next2 = itr2.nextElement(); //name of the panel
                 while (itr2.hasMoreElements()) {
-                    next2 = itr2.nextElement();
+                    next2 = itr2.nextElement(); //first variable pair
                     if (next2 instanceof Polylist) {
-                        if (((Polylist)next).first() instanceof String){
-                            if (((String)((Polylist)next).first()).equals("minLower")) {
-                                complexityPanels.get(i).setMinLower((Integer)((Polylist)next).last());
+                        if (((Polylist)next2).first() instanceof String){
+                            if (((String)((Polylist)next2).first()).equals("minLower")) {
+                                //System.out.println("minlower"+((Long)((Polylist)next2).last()).intValue());
+                                complexityPanels.get(i).setMinLower(((Long)((Polylist)next2).last()).intValue());
                             }
-                            if (((String)((Polylist)next).first()).equals("maxUpper")) {
-                                complexityPanels.get(i).setMaxUpper((Integer)((Polylist)next).last());
+                            else if(((String) ((Polylist) next2).first()).equals("maxUpper")) {
+                                complexityPanels.get(i).setMaxUpper(((Long)((Polylist)next2).last()).intValue());
+                                //System.out.println("maxUpper"+((Long)((Polylist)next2).last()).intValue());
                             }
-                            if (((String)((Polylist)next).first()).equals("compute")) {
+                            else if(((String) ((Polylist) next2).first()).equals("compute")) {
+                                //System.out.println("compute: "+(String)((Polylist)next2).last());
                                 // Do not compute box was checked, check it again
-                                if(!Boolean.valueOf((String)((Polylist)next).last())) {
+                                if(!Boolean.valueOf((String)((Polylist)next2).last())) {
                                     complexityPanels.get(i).noComputeBox.setSelected(true);
                                 }
                             }
-                            if (((String)((Polylist)next).first()).equals("lowerBounds")) {
+                            else if(((String) ((Polylist) next2).first()).equals("lowerBounds")) {
                                 //TODO: turn list into array, then at end of this method, redraw the graphs
-                                itr3 = ((Polylist)((Polylist)next).last()).elements();
-                                lowers = new int[((Polylist)((Polylist)next).last()).length()];
+                                itr3 = new PolylistEnum((Polylist)((Polylist)next2).last());
+                                lowers = new int[((Polylist)((Polylist)next2).last()).length()];
                                 int j = 0;
                                 while(itr3.hasMoreElements()) {
-                                    lowers[j] = (Integer)itr3.nextElement();
+                                    lowers[j] = ((Long)itr3.nextElement()).intValue();
+                                    j++;
                                 }
                             }
-                            if (((String)((Polylist)next).first()).equals("upperBounds")) {
+                            else if(((String) ((Polylist) next2).first()).equals("upperBounds")) {
                                 //TODO: turn list into array, then at end of this method, redraw the graphs
-                                itr3 = ((Polylist)((Polylist)next).last()).elements();
-                                uppers = new int[((Polylist)((Polylist)next).last()).length()];
+                                itr3 = new PolylistEnum((Polylist)((Polylist)next2).last());
+                                uppers = new int[((Polylist)((Polylist)next2).last()).length()];
                                 int j = 0;
                                 while(itr3.hasMoreElements()) {
-                                    uppers[j] = (Integer)itr3.nextElement();
+                                    uppers[j] = ((Long)itr3.nextElement()).intValue();
+                                    j++;
                                 }
                             }
                             else {
@@ -353,7 +379,10 @@ public class ComplexityWindowController {
                         }
                     }
                 }
-                //TODO: draw this particular panel
+
+                complexityPanels.get(i).reInitPanel(beatsPerBar, oldTotalBeats, attrGranularity, oldWidth);
+                complexityPanels.get(i).reInitBars(lowers, uppers);
+                complexityPanels.get(i).redrawBeats(totalNumBeats);
             }
         }
     }
