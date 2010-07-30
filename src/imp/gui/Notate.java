@@ -19449,6 +19449,7 @@ public void generate(LickGen lickgen)
     if( rhythm != null )
       {
         lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
+        lickgenFrame.setComplexityRhythmFieldText(Formatting.prettyFormat(rhythm));
       }
 
     if( nothingWasSelected )

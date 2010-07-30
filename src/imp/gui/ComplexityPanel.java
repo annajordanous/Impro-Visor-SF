@@ -40,14 +40,16 @@ public class ComplexityPanel extends JPanel  {
     private int maxUpper, minLower;
     public JTextField upperLimitField, lowerLimitField;
     public JCheckBox noComputeBox;
+    /** Alpha composite for painting a transparent grayed out image for disabled graphs */
+    private AlphaComposite composite;
+    /** Name for this panel--used for saving */
+    private String name;
 
     /** Width of each bar in the graph */
     private static final int BAR_WIDTH = 30; //set for every graph
     private static final int TOTAL_HEIGHT = 200;
     private static final int GAP = 5;
 
-    /** Alpha composite for painting a transparent grayed out image for disabled graphs */
-    private AlphaComposite composite;
 
     public ComplexityPanel(int time, int gran, int tot) {
         upperY = 25;
@@ -133,6 +135,20 @@ public class ComplexityPanel extends JPanel  {
     public int getWidth() {
         return width;
     }
+    public int getMinLower() {
+        return minLower;
+    }
+    public int getMaxUpper() {
+        return maxUpper;
+    }
+    public void setMinLower(int min) {
+        minLower = min;
+        lowerLimitField.setText(Integer.toString(-1*((min-upperY)-150)));
+    }
+    public void setMaxUpper(int max) {
+        maxUpper = max;
+        upperLimitField.setText(Integer.toString(-1*((max-upperY)-150)));
+    }
     public void setGraphics() {
         graphics = (Graphics2D) buffer.getGraphics();
     }
@@ -142,6 +158,14 @@ public class ComplexityPanel extends JPanel  {
     @Override
     public void setEnabled(boolean e) {
         enabled = e;
+    }
+    @Override
+    public void setName(String n) {
+        name = n;
+    }
+    @Override
+    public String getName() {
+        return name;
     }
     public boolean toCompute() {
         if (noComputeBox.isSelected()) {
@@ -172,6 +196,21 @@ public class ComplexityPanel extends JPanel  {
             pair.add(upper);
         }
         return allVals;
+    }
+
+    public Integer[] lowerBounds() {
+        Integer[] toReturn = new Integer[bars.size()];
+        for (int i = 0; i<bars.size(); i++) {
+            toReturn[i] = bars.get(i).getLowerBound();
+        }
+        return toReturn;
+    }
+    public Integer[] upperBounds() {
+        Integer[] toReturn = new Integer[bars.size()];
+        for (int i = 0; i<bars.size(); i++) {
+            toReturn[i] = bars.get(i).getUpperBound();
+        }
+        return toReturn;
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////

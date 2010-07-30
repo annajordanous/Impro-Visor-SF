@@ -40,6 +40,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
@@ -2075,28 +2077,16 @@ private void initComplexityImages() {
 
         complexityInfoPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         complexityInfoPanel.setPreferredSize(new java.awt.Dimension(10, 75));
+        complexityInfoPanel.setLayout(new java.awt.GridBagLayout());
 
         complexityInfoLabel.setText("<html>Here is where you can shape the phrasing curve of a generated solo. Click and drag the curve to specify an upper bound on complexity. Shift-click and drag to specify the lower bound. Change the complexity of the entire piece using the Overall Complexity curve, or change the complexity of specific attributes by checking \"Manage specific attributes\". </html>");
-
-        javax.swing.GroupLayout complexityInfoPanelLayout = new javax.swing.GroupLayout(complexityInfoPanel);
-        complexityInfoPanel.setLayout(complexityInfoPanelLayout);
-        complexityInfoPanelLayout.setHorizontalGroup(
-            complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 962, Short.MAX_VALUE)
-            .addGroup(complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(complexityInfoPanelLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(complexityInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 921, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(29, Short.MAX_VALUE)))
-        );
-        complexityInfoPanelLayout.setVerticalGroup(
-            complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 88, Short.MAX_VALUE)
-            .addGroup(complexityInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(complexityInfoPanelLayout.createSequentialGroup()
-                    .addComponent(complexityInfoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(17, Short.MAX_VALUE)))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 848;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        complexityInfoPanel.add(complexityInfoLabel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -2105,7 +2095,6 @@ private void initComplexityImages() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.01;
         attributeChoosingPanel.add(complexityInfoPanel, gridBagConstraints);
 
         globalControlPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -2119,14 +2108,14 @@ private void initComplexityImages() {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 7, 0, 10);
         globalControlPanel.add(jLabel2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 10);
         globalControlPanel.add(numBeatsSelected, gridBagConstraints);
 
         jLabel4.setText("Granularity (in beats):");
@@ -2139,7 +2128,6 @@ private void initComplexityImages() {
         globalControlPanel.add(jLabel4, gridBagConstraints);
 
         granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4" }));
-        granularityComboBox.setSelectedIndex(0);
         granularityComboBox.setSelectedItem(2);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2156,7 +2144,7 @@ private void initComplexityImages() {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.25;
-        gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 7, 5, 0);
         globalControlPanel.add(manageSpecificCheckBox, gridBagConstraints);
 
         resetButton.setText("Reset to Default");
@@ -2166,6 +2154,7 @@ private void initComplexityImages() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.14;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         globalControlPanel.add(resetButton, gridBagConstraints);
 
         loadSoloProfileButton.setText("Load a Profile");
@@ -2175,15 +2164,22 @@ private void initComplexityImages() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.14;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         globalControlPanel.add(loadSoloProfileButton, gridBagConstraints);
 
         saveSoloProfileButton.setText("Save this Profile");
+        saveSoloProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveSoloProfileButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.13;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         globalControlPanel.add(saveSoloProfileButton, gridBagConstraints);
 
         complexityGenerateMelodyButton.setText("Generate Melody");
@@ -2198,7 +2194,7 @@ private void initComplexityImages() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 7);
+        gridBagConstraints.insets = new java.awt.Insets(5, 15, 0, 7);
         globalControlPanel.add(complexityGenerateMelodyButton, gridBagConstraints);
 
         complexityAbstractMelodyButton.setText("Generate Abstract Melody Only");
@@ -2228,7 +2224,7 @@ private void initComplexityImages() {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.33;
-        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 7);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 5, 7);
         globalControlPanel.add(complexityFillAbstractButton, gridBagConstraints);
 
         complexityRhythmScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -2244,7 +2240,7 @@ private void initComplexityImages() {
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.66;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 4, 0);
         globalControlPanel.add(complexityRhythmScrollPane, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2253,7 +2249,7 @@ private void initComplexityImages() {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.2;
+        gridBagConstraints.weighty = 0.13;
         attributeChoosingPanel.add(globalControlPanel, gridBagConstraints);
 
         graphViewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Solo Profile Curves", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
@@ -2317,7 +2313,7 @@ private void initComplexityImages() {
         );
         densityPanelLayout.setVerticalGroup(
             densityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 51, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2355,7 +2351,7 @@ private void initComplexityImages() {
         );
         varietyPanelLayout.setVerticalGroup(
             varietyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 51, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2393,7 +2389,7 @@ private void initComplexityImages() {
         );
         syncopationPanelLayout.setVerticalGroup(
             syncopationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 51, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2431,7 +2427,7 @@ private void initComplexityImages() {
         );
         consonancePanelLayout.setVerticalGroup(
             consonancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 51, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2469,7 +2465,7 @@ private void initComplexityImages() {
         );
         leapSizePanelLayout.setVerticalGroup(
             leapSizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 51, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2507,7 +2503,7 @@ private void initComplexityImages() {
         );
         directionChangePanelLayout.setVerticalGroup(
             directionChangePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 51, Short.MAX_VALUE)
+            .addGap(0, 59, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -5140,6 +5136,11 @@ public void closeWindow()
                             verifyBeats();
 
                             //TODO: obtain complexity values and apply them -- rule expander comes in here
+                            ArrayList attrs = complexityController.getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
+                            //not be computed, it's entry in the ArrayList is null
+
+                            // ************************ RULE EXPANDER STUFF GOES HERE *******************
+
                             notate.generate(lickgen);
                             //we may have to modify what the lickgen has in order to change the abstract melody
                             //populate window with abstract melody
@@ -5159,12 +5160,16 @@ public void closeWindow()
                             verifyBeats();
 
                             //TODO: obtain complexity values and apply them -- rule expander comes in here
-                            
+                            ArrayList attrs = complexityController.getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
+                            //not be computed, it's entry in the ArrayList is null
+
+                            // ************************ RULE EXPANDER STUFF GOES HERE *******************
+
                             if (useGrammar) {
-                                setAbstractRhythmFieldText(
+                                setComplexityRhythmFieldText(
                                         lickgen.generateRhythmFromGrammar(notate.getTotalSlots()).toString());
                             } else {
-                                setAbstractRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
+                                setComplexityRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
                                         minDuration,
                                         maxDuration,
                                         restProb).toString());
@@ -5186,7 +5191,7 @@ public void closeWindow()
                                 r = r.concat(")");
                             }
 
-                            setAbstractRhythmFieldText(r);
+                            setComplexityRhythmFieldText(r);
 
                             Polylist rhythm = new Polylist();
                             StringReader rhythmReader = new StringReader(r);
@@ -5202,7 +5207,19 @@ public void closeWindow()
                             notate.generateLick(rhythm);
                         }//GEN-LAST:event_complexityFillAbstractButtonActionPerformed
 
-    public void setAbstractRhythmFieldText(String string) {
+                        private void saveSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSoloProfileButtonActionPerformed
+                            System.out.println("Save button pressed.\n");
+                            try {
+                                File test = complexityController.saveComplexityWindow(
+                                        "/home/research/NetBeansProjects/profiles", "testProfile");
+                                //System.out.print(complexityController.convertComplexityWindow());
+                            }
+                            catch(java.io.IOException e) {
+                                System.out.println("File not found oooooohhh noooes!!!!1");
+                            }
+                        }//GEN-LAST:event_saveSoloProfileButtonActionPerformed
+
+    public void setComplexityRhythmFieldText(String string) {
         complexityRhythmField.setText(string);
         complexityRhythmField.setCaretPosition(0);
         complexityRhythmScrollPane.getViewport().setViewPosition(new Point(0, 0));
