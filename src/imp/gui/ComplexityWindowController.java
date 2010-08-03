@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 
 import polya.*;
 
@@ -34,6 +33,7 @@ public class ComplexityWindowController {
     private int totalWidth; // width of the graph at any given time
     public JCheckBox manageSpecific;
     public JComboBox granBox;
+
 
     /** panels will always be of length 7 */
     public ComplexityWindowController(int beats, int gran, ComplexityPanel... panels) {
@@ -120,6 +120,7 @@ public class ComplexityWindowController {
                 }
             }
         });
+
         initBuffers();
     }
 
@@ -213,9 +214,8 @@ public class ComplexityWindowController {
     /** 
      * Creates a file with the specified name and returns it, .soloProfile is the extension
      */
-    public File saveComplexityWindow(String pathname, String filename) throws FileNotFoundException, IOException {
-        String newPath = pathname + "/" + filename + ".soloProfile";
-        File toReturn = new File(newPath);
+    public File saveComplexityWindow(String pathname) throws FileNotFoundException, IOException {
+        File toReturn = new File(pathname);
         FileOutputStream stream = new FileOutputStream(toReturn);
         String windowInfo = convertComplexityWindowToString(); //turn essential info into a string
         stream.write(windowInfo.getBytes()); //write that string to the file

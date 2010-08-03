@@ -34,6 +34,7 @@ import imp.data.*;
 import imp.Directories;
 
 import imp.lickgen.*;
+import imp.util.ErrorLog;
 
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
@@ -51,6 +52,8 @@ import java.util.*;
 import javax.swing.event.ChangeListener;
 
 import polya.*;
+import imp.util.ProfileFilter;
+
 
 /**
  *
@@ -120,13 +123,18 @@ private LickGen lickgen;
 private CommandManager cm;
 
 // Complexity graph variables
-private ComplexityWindowController complexityController;
+private int numControllers;
+private int curController;
+private ComplexityWindowController[] compControllers;
+
 private int beatsPerBar;
 private int attrTotal; //total number of beats to represent
 private int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
 
-private JFileChooser compOpenFileChooser;
-private JFileChooser compSaveFileChooser;
+private String profileExt; //file extension for soloProfiles
+private File defaultProfile; // default profile curve for the reset button
+private JFileChooser saveCWFC;
+private JFileChooser openCWFC;
 
 /**
  * Vector of JTextField arrays, used to display probabilities used in lick generation
@@ -156,11 +164,40 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
 
     initComponents();
 
+
+    numControllers = 1;
+    curController = 0;
+    compControllers = new ComplexityWindowController[numControllers];
     //So the images for the complexity graphs get initialized properly
-    initComplexityImages();
+    initCompFileChoosers();
+    compControllers[curController] = initComplexityImages();
 }
 
-private void initComplexityImages() {
+private void initCompFileChoosers() {
+    ProfileFilter pFilter = new ProfileFilter();
+    profileExt = ProfileFilter.EXTENSION;
+    defaultProfile = new File(Notate.basePath+"profiles/default."+profileExt);
+    defaultProfile.setReadOnly();
+
+    saveCWFC = new JFileChooser();
+    openCWFC = new JFileChooser();
+
+    saveCWFC.setDialogType(JFileChooser.SAVE_DIALOG);
+    saveCWFC.setDialogTitle("Save Solo Profile");
+    saveCWFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    saveCWFC.resetChoosableFileFilters();
+    saveCWFC.addChoosableFileFilter(pFilter);
+
+    openCWFC.setDialogType(JFileChooser.OPEN_DIALOG);
+    openCWFC.setDialogTitle("Open Solo Profile");
+    openCWFC.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    openCWFC.resetChoosableFileFilters();
+    openCWFC.addChoosableFileFilter(pFilter);
+}
+
+private ComplexityWindowController initComplexityImages() {
+    ComplexityWindowController complexityController;
+
     complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
             (ComplexityPanel) overallComplexityPanel, (ComplexityPanel) densityPanel,
             (ComplexityPanel) varietyPanel, (ComplexityPanel) syncopationPanel,
@@ -185,8 +222,40 @@ private void initComplexityImages() {
 
     complexityController.initController(beatsPerBar, manageSpecificCheckBox, granularityComboBox);
 
-    compOpenFileChooser = new JFileChooser();
-    compSaveFileChooser = new JFileChooser();
+    return complexityController;
+}
+/**
+ * Adjust the number of Complexity Controllers according to how many chorus tabs are now on the screen.
+ * If the new size is greater than the current size, add more Complexity Controllers until the sizes are equal,
+ * and set the current controller to the highest index.
+ * @param size the new number of stave scroll panes
+ */
+public void stavesInited(int size) {
+    ComplexityWindowController[] newCont = new ComplexityWindowController[size];
+    int i;
+    //a tab was added to the score
+    if (size > numControllers) {
+        for (i = 0; i<numControllers; i++) {
+            newCont[i] = compControllers[i];
+        }
+        for (i = numControllers; i < size; i++) {
+            newCont[i] = initComplexityImages();
+        }
+        compControllers = newCont;
+    }
+    //a tab was removed from the score
+    else if(size < numControllers) {
+        for (i = 0; i<size; i++) {
+            newCont[i] = compControllers[i];
+        }
+        compControllers = newCont;
+    }
+    numControllers = size;
+    curController = size-1; //the most recently added chorus denotes the current index
+
+//    graphViewScrollPane.repaint();
+//    complexityControlScrollPane.repaint();
+    attributeChoosingPanel.repaint();
 }
 
 /** This method is called from within the constructor to
@@ -5136,14 +5205,14 @@ public void closeWindow()
                         }//GEN-LAST:event_closeWindow
 
                         private void mouseEventHandler(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseEventHandler
-                            complexityController.mouseHandler(evt);
+                            compControllers[curController].mouseHandler(evt);
                         }//GEN-LAST:event_mouseEventHandler
 
                         private void complexityGenerateMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityGenerateMelodyButtonActionPerformed
                             verifyBeats();
 
                             //TODO: obtain complexity values and apply them -- rule expander comes in here
-                            ArrayList attrs = complexityController.getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
+                            ArrayList attrs = compControllers[curController].getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
                             //not be computed, it's entry in the ArrayList is null
 
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
@@ -5154,12 +5223,12 @@ public void closeWindow()
                         }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
 
                         private void noComputeBoxCheckedAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noComputeBoxCheckedAction
-                            int attrs = complexityController.getNumValidAttrs();
+                            int attrs = compControllers[curController].getNumValidAttrs();
                             if (((JCheckBox)evt.getSource()).isSelected()) {
-                                complexityController.setNumValidAttrs(attrs--);
+                                compControllers[curController].setNumValidAttrs(attrs--);
                             }
                             else {
-                                complexityController.setNumValidAttrs(attrs--);
+                                compControllers[curController].setNumValidAttrs(attrs--);
                             }
                         }//GEN-LAST:event_noComputeBoxCheckedAction
 
@@ -5167,7 +5236,7 @@ public void closeWindow()
                             verifyBeats();
 
                             //TODO: obtain complexity values and apply them -- rule expander comes in here
-                            ArrayList attrs = complexityController.getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
+                            ArrayList attrs = compControllers[curController].getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
                             //not be computed, it's entry in the ArrayList is null
 
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
@@ -5216,21 +5285,60 @@ public void closeWindow()
 
                         private void saveSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSoloProfileButtonActionPerformed
                             System.out.println("Save button pressed.\n");
+                            saveCWFC.setCurrentDirectory(defaultProfile);
+
                             try {
-                                File test = complexityController.saveComplexityWindow("/home/research/NetBeansProjects/profiles", "testProfile");
+                                //System.out.println("Pathname: "+)
+                                if (saveCWFC.showSaveDialog(attributeChoosingPanel) == JFileChooser.APPROVE_OPTION) {
+                                    File toSave = saveCWFC.getSelectedFile();
+                                    if (!toSave.exists()) {
+                                        System.out.println("file does not exist");
+                                        return;
+                                    }
+                                    if (toSave.equals(defaultProfile)) {
+                                        //show exception dialog: default profile can not be over-written
+                                        ErrorLog.log(ErrorLog.WARNING, "Default profile cannot be over-written");
+                                        saveSoloProfileButtonActionPerformed(evt);
+                                    }
+                                    else if (toSave.getName().endsWith(profileExt)) {
+                                        compControllers[curController].saveComplexityWindow(toSave.getAbsolutePath());
+                                    }
+                                    else {
+                                        String newPath = toSave.getAbsolutePath() + "." + profileExt;
+                                        compControllers[curController].saveComplexityWindow(newPath);
+                                    }
+                                }
                             }
                             catch(java.io.IOException e) {
-                                System.out.println("File not found oooooohhh noooes!!!!1");
+                                System.out.println("IO exception: "+e.toString());
+                                //show a dialog saying the file was not found
+                                ErrorLog.log(ErrorLog.WARNING, "File not found.");
                             }
                         }//GEN-LAST:event_saveSoloProfileButtonActionPerformed
 
                         private void loadSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadSoloProfileButtonActionPerformed
                             System.out.println("load button pressed.");
-                            try {
-                                complexityController.loadComplexityWindow("/home/research/NetBeansProjects/profiles/testProfile.soloProfile");
-                            }
-                            catch(java.io.IOException e) {
-                                System.out.println("File not found oooooohhh noooes!!!!1");
+                            openCWFC.setCurrentDirectory(defaultProfile);
+
+                            if (openCWFC.showOpenDialog(attributeChoosingPanel) == JFileChooser.APPROVE_OPTION) {
+                                File toOpen = openCWFC.getSelectedFile();
+                                if (!toOpen.exists()) { //avoids the file not found exception
+                                    ErrorLog.log(ErrorLog.WARNING, "File does not exist, choose a different file.");
+                                    loadSoloProfileButtonActionPerformed(evt); //give the user a second chance
+                                }
+                                else if (!toOpen.getName().endsWith(profileExt)) {
+                                    ErrorLog.log(ErrorLog.WARNING, "File is not a Solo Profile, choose a different file.");
+                                    loadSoloProfileButtonActionPerformed(evt); //give the user a second chance
+                                }
+                                else { //file does exist, open it
+                                    try {
+                                        compControllers[curController].loadComplexityWindow(toOpen.getAbsolutePath());
+                                    } catch (FileNotFoundException ex) {
+                                        Logger.getLogger(LickgenFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(LickgenFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
                             }
                         }//GEN-LAST:event_loadSoloProfileButtonActionPerformed
 
@@ -5247,7 +5355,7 @@ public void closeWindow()
         totalSlots = (int) (BEAT * totalBeats);
         notate.getCurrentStave().repaint();
 
-        //complexityController.update((int)totalBeats, attrGranularity);
+        //compControllers[curController].update((int)totalBeats, attrGranularity);
         //overallComplexityPanel.setSize(newSize, 200);
         numBeatsSelected.setText(Integer.toString((int)totalBeats));
     }
@@ -5472,7 +5580,7 @@ private void triageLick(String lickName, int grade)
         totalBeatsField.setText("" + beats);
         String b = Integer.toString((int) beats);
         numBeatsSelected.setText(b);
-        complexityController.updateBeats((int)beats);
+        compControllers[curController].updateBeats((int)beats);
         //graphViewScrollPane.setSize(overallComplexityPanel.getWidth(), graphViewPanel.getHeight());
   }
 

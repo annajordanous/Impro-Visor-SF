@@ -285,11 +285,11 @@ public class ComplexityPanel extends JPanel  {
         int oldBeats = totalNumBeats;
         ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>(newBeats);
 
-        System.out.println("newBeats: "+newBeats+" oldbeats: "+oldBeats);
+        //System.out.println("newBeats: "+newBeats+" oldbeats: "+oldBeats);
 
         //fewer beats than before--truncate the curve
         if (newBeats < oldBeats) {
-            System.out.println("in the newbeats < oldBeats");
+            //System.out.println("in the newbeats < oldBeats");
             for(i = 0; i<newBeats; i++) {
                 newList.add(i, bars.get(i));
             }
@@ -297,7 +297,7 @@ public class ComplexityPanel extends JPanel  {
         }
         //more beats than before--extend the existing curve
         else if (newBeats > oldBeats) {
-            System.out.println("in the newbeats > oldBeats");
+            //System.out.println("in the newbeats > oldBeats");
             for(i = 0; i<oldBeats; i++) {
                 newList.add(i, bars.get(i));
             }
@@ -305,8 +305,8 @@ public class ComplexityPanel extends JPanel  {
 
             BarDimensions dim;
             for (i = oldBeats; i<newBeats; i++) {
-                System.out.println("i: "+i);
-                System.out.println("newBar start: "+xCoord);
+                //System.out.println("i: "+i);
+                //System.out.println("newBar start: "+xCoord);
                 dim = new BarDimensions(xCoord, bars.get(oldBeats-1).getUpperBound(),
                         bars.get(oldBeats-1).getLowerBound());
                 newList.add(i, dim);
@@ -340,7 +340,7 @@ public class ComplexityPanel extends JPanel  {
                 newUpper = 0;
                 newLower = 0;
                 for (int j = i; j<i+div; j++) {
-                    System.out.println("j: "+j);
+                    //System.out.println("j: "+j);
                     newUpper += bars.get(j).getUpperBound();
                     newLower += bars.get(j).getLowerBound();
                 }

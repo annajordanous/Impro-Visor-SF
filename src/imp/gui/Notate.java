@@ -163,7 +163,7 @@ public class Notate
    * The current working path, same as the application normally.
    *
    */
-  String basePath;
+  public static String basePath;
 
   /**
    *
@@ -14783,14 +14783,9 @@ private void setLayoutPreference(Polylist layout)
     }//GEN-LAST:event_loadAdvMIActionPerformed
     
        
-    /**
-     *
+    /*
      * Checks to see if the tabs in scoreTab have changed states, and sets the
-     *
-     *
-     *
      * current tabbed index if so.
-     *
      */
     
     private void scoreTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scoreTabStateChanged
@@ -19960,6 +19955,7 @@ public void showNewVoicingDialog()
     currTabIndex = 0;
 
     staveScrollPane = new StaveScrollPane[size];
+    lickgenFrame.stavesInited(size); //make sure that the complexity windows sync with new chorus tabs
 
 
     // initialize each array with the appropriate part and as a grand stave
@@ -19968,7 +19964,7 @@ public void showNewVoicingDialog()
       {
 
       // construct the specific scoreBG and staveScrollPane
-
+      System.out.println("new tab added? inside for loop");
       StaveScrollPane pane = new StaveScrollPane(i);
 
       staveScrollPane[i] = pane;
@@ -21819,7 +21815,6 @@ public void showNewVoicingDialog()
   {
       return score.getLength();
   }
-
 
 public void toGrammar()
   {
