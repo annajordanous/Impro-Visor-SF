@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import polya.Polylist;
 
 /**
  * Handling code for any sort of user-adjustable complexity attribute panel.
@@ -24,7 +25,7 @@ public class ComplexityPanel extends JPanel  {
     private int upperY, lowerY;
     /** User-defined min and max bounds on the curve, realized as a gray box on screen */
     private int maxUpper, minLower;
-    /** Max height of any given bar in the graph, total height - upperY + lowerY */
+    /** Max height of any given bar in the graph, lowerY - upperY */
     private int barHeight;
     /** Unit of musical duration that corresponds to each bar, i.e. half bar, full bar, single beat */
     private int granularity;
@@ -222,25 +223,6 @@ public class ComplexityPanel extends JPanel  {
         return true;
     }
 
-////////////////////////////////////////// Computing Attributes ////////////////////////////////////////////////////////
-
-
-    /**
-     * Returns an ArrayList of ArrayLists of two elements representing the upper and lower bounds of
-     * each bar in the graph. Used for computing the complexity specified by the user
-     */
-    public ArrayList<ArrayList> valueRange() {
-        ArrayList allVals = new ArrayList(bars.size());
-        Integer lower, upper;
-        for (int i = 0; i<bars.size(); i++) {
-            ArrayList pair = new ArrayList(2);
-            lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
-            upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
-            pair.add(lower);
-            pair.add(upper);
-        }
-        return allVals;
-    }
 
 ////////////////////////////////////////// Saving and Loading ////////////////////////////////////////////////////////
 
@@ -337,26 +319,28 @@ public class ComplexityPanel extends JPanel  {
         clear();
         int i;
         int oldBeats = totalNumBeats;
-        ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>(newBeats);
+        //don't forget to account for granularity
+        ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>(newBeats/granularity);
 
         //fewer beats than before--truncate the curve
         if (newBeats < oldBeats) {
-            for(i = 0; i<newBeats; i++) {
+            //System.out.println("in redraw beats, old beats: "+oldBeats+" new beats: "+newBeats+"gran: "+granularity);
+            for(i = 0; i<newBeats/granularity; i++) {
                 newList.add(i, bars.get(i));
             }
             bars = newList;
         }
         //more beats than before--extend the existing curve
         else if (newBeats > oldBeats) {
-            for(i = 0; i<oldBeats; i++) {
+            for(i = 0; i<bars.size(); i++) {
                 newList.add(i, bars.get(i));
             }
-            int xCoord = bars.get(oldBeats-1).getBarStart()+BAR_WIDTH;
+            int xCoord = bars.get(bars.size()-1).getBarStart()+BAR_WIDTH;
 
             BarDimensions dim;
-            for (i = oldBeats; i<newBeats; i++) {
-                dim = new BarDimensions(xCoord, bars.get(oldBeats-1).getUpperBound(),
-                        bars.get(oldBeats-1).getLowerBound());
+            for (i = bars.size(); i<newBeats/granularity; i++) {
+                dim = new BarDimensions(xCoord, bars.get(bars.size()-1).getUpperBound(),
+                        bars.get(bars.size()-1).getLowerBound());
                 newList.add(i, dim);
                 xCoord += BAR_WIDTH;
             }
@@ -379,41 +363,58 @@ public class ComplexityPanel extends JPanel  {
         clear();
         int i, index;
         int newUpper, newLower;
+        int numBars;
         ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>();
         int oldGran = granularity;
         
         //Less fine resolution--average values
-        if (newGran>oldGran) {
+        if (newGran > oldGran) {
             int div = newGran/oldGran;
             index = 0;
             for (i = 0; i<bars.size(); i+=div) {
                 newUpper = 0;
                 newLower = 0;
                 for (int j = i; j<i+div; j++) {
-                    //System.out.println("j: "+j);
-                    newUpper += bars.get(j).getUpperBound();
-                    newLower += bars.get(j).getLowerBound();
+                    if (j < bars.size()) {
+                        newUpper += bars.get(j).getUpperBound();
+                        newLower += bars.get(j).getLowerBound();
+                    }
+                    //If it is added later that odd-numbered beats can have granularities that don't divide evenly into
+                    //them, then uncomment this:
+//                    else { //for odd-numbered beats, to avoid an index out of bounds exception
+//                        newUpper += bars.get(bars.size()-1).getUpperBound();
+//                        newLower += bars.get(bars.size()-1).getLowerBound();
+//                    }
                 }
                 newList.add(new BarDimensions(index, newUpper/div, newLower/div));
                 index+=BAR_WIDTH;
             }
         }
         //Finer resolution, simply doubly the values
-        else {
+        else if (newGran < oldGran) {
             int div = oldGran/newGran;
+
+            numBars = totalNumBeats/granularity;
+            if (totalNumBeats % newGran > 0) {
+                numBars += totalNumBeats % newGran;
+            }
+
             index = 0;
             int k = 0;
             for (i = 0; i<bars.size(); i++) {
                 for (int j = k; j<k+div; j++) {
-                    newList.add(new BarDimensions(index, bars.get(i).getUpperBound(), bars.get(i).getLowerBound()));
-                    index+=BAR_WIDTH;
+                    //also this:
+                    //if (j < numBars) { //don't exceed the number of beats, matters if the beat count is odd
+                        newList.add(new BarDimensions(index, bars.get(i).getUpperBound(), bars.get(i).getLowerBound()));
+                        index+=BAR_WIDTH;
+                    //}
                 }
                 k += div;
             }
         }
         bars = newList;
         granularity = newGran;
-        int numBars = totalNumBeats/granularity;
+        numBars = totalNumBeats/granularity;
         width = numBars*BAR_WIDTH;
 
         this.setSize(width, TOTAL_HEIGHT);
@@ -451,7 +452,7 @@ public class ComplexityPanel extends JPanel  {
     }
 
 
-////////////////////////////////////////// Graph Manipulation and Listening ////////////////////////////////////////////////
+//////////////s//////////////////////////// Graph Manipulation and Listening ////////////////////////////////////////////////
 
     /**
      * Resizes the upper limit of all the bars when the max range is changed so
@@ -537,4 +538,59 @@ public class ComplexityPanel extends JPanel  {
             }
         }
     }
+
+
+////////////////////////////////////////// Computing Attributes ////////////////////////////////////////////////////////
+
+    /**
+     * An exponent for the purpose of rule expanding is 1 + K/(max-min)
+     * @return an ArrayList of exponents
+     */
+    public ArrayList<double> calcExponents(int k) {
+        ArrayList list = new ArrayList(bars.size());
+        double lower, upper, exp;
+
+        for (int i = 0; i<bars.size(); i++) {
+            lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
+            upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
+            exp = (1+(k/(upper-lower)));
+            list.add(exp);
+        }
+        return list;
+    }
+
+    /**
+     * Averages for each section of the graph for the purpose of rule expanding is ((max-min)/2)/150, where 0<=avg<=1
+     * @return an ArrayList of averages
+     */
+    public ArrayList<int> calcAverages() {
+        ArrayList list = new ArrayList(bars.size());
+        double lower, upper, avg;
+
+        for (int i = 0; i<bars.size(); i++) {
+            lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
+            upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
+            avg = ((upper-lower)/2)/150;
+            list.add(avg);
+        }
+        return list;
+    }
+
+//    /**
+//     * Returns an ArrayList of ArrayLists of two elements representing the upper and lower bounds of
+//     * each bar in the graph. Used for computing the complexity specified by the user
+//     */
+//    public ArrayList<double> valueRange() {
+//        ArrayList allVals = new ArrayList(bars.size());
+//        Integer lower, upper;
+//        for (int i = 0; i<bars.size(); i++) {
+//            ArrayList pair = new ArrayList(2);
+//            lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
+//            upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
+//            pair.add(lower);
+//            pair.add(upper);
+//        }
+//        return allVals;
+//    }
+
 }

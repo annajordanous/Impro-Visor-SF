@@ -41,6 +41,7 @@ public class ComplexityWindowController {
     public JCheckBox manageSpecific;
     /** Controls what granularity the graphs are displayed with. */
     public JComboBox granBox;
+    private boolean updatingGran; //hack to not have the gran box adjustment trigger the action listener
 
 
     /** 
@@ -69,6 +70,9 @@ public class ComplexityWindowController {
             totalWidth = overallComplexityPanel.getWidth();
         }
     }
+
+////////////////////////////////////////// Initializers ////////////////////////////////////////////////////////
+
     /**
      * Initializes which panels are enabled in the beginning and adds listeners for manage specific toggling and
      * the granularity drop-down menu.
@@ -124,13 +128,14 @@ public class ComplexityWindowController {
                 }
             }
         });
+        updatingGran = false; //not currently updating
         granBox = gran;
         granBox.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
-                attrGranularity = Integer.parseInt((String) granBox.getSelectedItem());
-                for (int i = 0; i < complexityPanels.size(); i++) {
-                    complexityPanels.get(i).redrawGran(attrGranularity);
+                if (!updatingGran) {
+                    //System.out.println("gran action performed, gran is: "+granBox.getSelectedItem());
+                    int gran = (Integer)granBox.getSelectedItem();
+                    updateGran(gran);
                 }
             }
         });
@@ -151,28 +156,8 @@ public class ComplexityWindowController {
         directionChangePanel.initBuffer(new Color(131, 111, 255));
     }
 
-    /** 
-     * Takes a new number of beats and redraws the graphs.
-     */
-    public int updateBeats(int beats) {
-        totalNumBeats = beats;
-        for(int i = 0; i<complexityPanels.size(); i++) {
-            complexityPanels.get(i).redrawBeats(totalNumBeats);
-        }
-        totalWidth = overallComplexityPanel.getWidth();
-        return totalWidth;
-    }
-    /** 
-     * Takes a new granularity and redraws the graphs.
-     */
-    public int updateGran(int gran) {
-        attrGranularity = gran;
-        for(int i = 0; i<complexityPanels.size(); i++) {
-            complexityPanels.get(i).redrawGran(attrGranularity);
-        }
-        totalWidth = overallComplexityPanel.getWidth();
-        return totalWidth;
-    }
+////////////////////////////////////////// Getters and Setters ////////////////////////////////////////////////////////
+
     /**
      * @return the ArrayList of complexity panels belonging to this specific controller
      */
@@ -195,22 +180,86 @@ public class ComplexityWindowController {
         }
     }
 
-    /**
-     * Assembles a list of attribute ranges of each attribute to be calculated.
-     * If an attribute is to be left out, its value is null. Excludes the overall complexity curve.
+////////////////////////////////////////// Granularity and Selection Changes ///////////////////////////////////////////////////
+
+    /** 
+     * Takes a new number of beats and redraws the graphs.
      */
-    public ArrayList<ArrayList> getAttributeRanges() {
-        ArrayList<ArrayList> attrs = new ArrayList<ArrayList>(6);
-        for (int i = 1; i<complexityPanels.size(); i++) {
-            if(complexityPanels.get(i).toCompute()) {
-                attrs.add(complexityPanels.get(i).valueRange());
+    public void updateBeats(int beats) {
+        if (totalNumBeats == beats) { return; }
+        else if(beats > 0) {
+            //System.out.println("beats: "+beats);
+            totalNumBeats = beats;
+            //System.out.println("gran before update gran: "+attrGranularity);
+            updateGranBox();
+            //System.out.println("gran after update gran: "+attrGranularity);
+            for (int i = 0; i < complexityPanels.size(); i++) {
+                complexityPanels.get(i).redrawBeats(totalNumBeats);
             }
-            else {
-                attrs.add(null);
-            }
+            totalWidth = overallComplexityPanel.getWidth();
         }
-        return attrs;
+        else {
+            totalNumBeats = 0;
+            updateGranBox();
+        }
     }
+    /** 
+     * Takes a new granularity and redraws the graphs.
+     */
+    public int updateGran(int gran) {
+        //System.out.println("in update gran, gran is: "+gran);
+        //if (attrGranularity == gran) { return totalWidth; }
+        attrGranularity = gran;
+        for(int i = 0; i<complexityPanels.size(); i++) {
+            complexityPanels.get(i).redrawGran(attrGranularity);
+        }
+        totalWidth = overallComplexityPanel.getWidth();
+        return totalWidth;
+    }
+    /**
+     * Updates the granularity combo box depending on certain characteristics of the leadsheet
+     */
+    public void updateGranBox() {
+        updatingGran = true;
+
+        //System.out.println("updating gran box");
+
+        granBox.removeAllItems();
+
+        if (totalNumBeats == 0) { 
+            updatingGran = false;
+            return;
+        }
+        granBox.addItem(new Integer(1));    //item at index 0 will always be 1
+        if (totalNumBeats == 1) {} // only one item in the combo box
+        else if(beatsPerBar % 2 == 0 && totalNumBeats % 2 == 0) { //meters of 2 or 4
+            granBox.addItem(new Integer(2));
+            if (beatsPerBar % 4 == 0 && totalNumBeats % 4 == 0 && totalNumBeats >=4) {
+                granBox.addItem(new Integer(4));
+            }
+        }//meters of 3
+        else if (beatsPerBar % 3 == 0 && totalNumBeats % 3 == 0 && totalNumBeats >=3) {
+            granBox.addItem(new Integer(3));
+            if (beatsPerBar % 6 == 0 && totalNumBeats % 6 == 0 && totalNumBeats >=6) {
+                granBox.addItem(new Integer(6));
+            }
+        }//meters of 5
+        else if (beatsPerBar % 5 == 0 && totalNumBeats % 5 == 0 && totalNumBeats >=5) {
+            granBox.addItem(new Integer(5));
+        }
+
+        if (!granBox.selectWithKeyChar(Integer.toString(attrGranularity).charAt(0))) {
+            //System.out.println("gran was: "+attrGranularity);
+            granBox.selectWithKeyChar('1'); //default--set to highest granularity if the previous gran isn't valid anymore
+            attrGranularity = 1;
+            //update all the panels with this granularity
+            updateGran(attrGranularity);
+        }
+        updatingGran = false;
+    }
+
+
+////////////////////////////////////////// Mouse Handler ////////////////////////////////////////////////////////
 
     /**
      * Moves all the curves in relation to each other. If the overall curve is changed, the specific curves are
@@ -221,6 +270,8 @@ public class ComplexityWindowController {
         int oldY, newY;
         Double toAdd;
         int dif = totalWidth - evt.getX();
+
+        if (totalNumBeats <= 0) { return; } //don't register any mouse clicks
 
         if (dif <= 0) { //if x is outside the bounds of the graph, translate the point
             evt.translatePoint((dif-1), 0);
@@ -274,6 +325,9 @@ public class ComplexityWindowController {
         }
     }
 
+
+////////////////////////////////////////// Saving, Loading, and Reseting ///////////////////////////////////////
+
     /**
      * Resets the curves and all text fields to their default settings.
      */
@@ -286,7 +340,6 @@ public class ComplexityWindowController {
             complexityPanels.get(i).repaint();
         }
     }
-
 
     /** 
      * Creates a file with the specified name and returns it, .soloProfile is the extension
@@ -463,4 +516,67 @@ public class ComplexityWindowController {
             }
         }
     }
+
+////////////////////////////////////////// Attribute Computation ////////////////////////////////////////////////////////
+
+    /**
+     * @return a list of the names of the panels that are to be computed, excluding overall complexity.
+     */
+    public ArrayList<String> validNames() {
+        ArrayList<String> names = new ArrayList<String>(numValidAttrs);
+        for (int i = 1; i < numValidAttrs; i++) {
+            if (!complexityPanels.get(i).noComputeBox.isSelected()) {
+                names.add(complexityPanels.get(i).getName());
+            }
+        }
+        return names;
+    }
+
+    /**
+     * Computes exponents for each valid attribute, excluding overall complexity.
+     * @return a list of exponents for each attribute
+     */
+    public ArrayList<ArrayList> exponents() {
+        int k = 10; // a constant for calculating the exponents
+
+        ArrayList<ArrayList> exps = new ArrayList<ArrayList>(numValidAttrs);
+        for (int i = 1; i < numValidAttrs; i++) {
+            if (!complexityPanels.get(i).noComputeBox.isSelected()) {
+                exps.add(complexityPanels.get(i).calcExponents(k));
+            }
+        }
+        return exps;
+    }
+
+    /**
+     * Computes averages for each valid attribute, excluding overall complexity.
+     * Averages are between 0 and 1.
+     * @return a list of averages for each attribute
+     */
+    public ArrayList<ArrayList> averages() {
+        ArrayList<ArrayList> avgs = new ArrayList<ArrayList>(numValidAttrs);
+        for (int i = 1; i < numValidAttrs; i++) {
+            if (!complexityPanels.get(i).noComputeBox.isSelected()) {
+                avgs.add(complexityPanels.get(i).calcAverages());
+            }
+        }
+        return avgs;
+    }
+
+//    /**
+//     * Assembles a list of attribute ranges of each attribute to be calculated.
+//     * If an attribute is to be left out, its value is null. Excludes the overall complexity curve.
+//     */
+//    public ArrayList<ArrayList> getAttributeRanges() {
+//        ArrayList<ArrayList> attrs = new ArrayList<ArrayList>(6);
+//        for (int i = 1; i<complexityPanels.size(); i++) {
+//            if(complexityPanels.get(i).toCompute()) {
+//                attrs.add(complexityPanels.get(i).valueRange());
+//            }
+//            else {
+//                attrs.add(null);
+//            }
+//        }
+//        return attrs;
+//    }
 }

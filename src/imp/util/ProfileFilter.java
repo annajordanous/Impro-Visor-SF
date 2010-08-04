@@ -13,7 +13,7 @@ import javax.swing.filechooser.*;
  * @author research
  */
 public class ProfileFilter extends FileFilter {
-    public static String EXTENSION = ".soloProfile";
+    public static String EXTENSION = "soloProfile";
 
     public boolean accept(File f) {
 

@@ -2261,8 +2261,8 @@ public void replacePanels(int index) {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
         globalControlPanel.add(jLabel4, gridBagConstraints);
 
-        granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "4" }));
-        granularityComboBox.setSelectedItem(2);
+        granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "5" }));
+        granularityComboBox.setSelectedItem(1);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -5283,15 +5283,17 @@ public void closeWindow()
                         private void complexityGenerateMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityGenerateMelodyButtonActionPerformed
                             verifyBeats();
 
-                            //TODO: obtain complexity values and apply them -- rule expander comes in here
-                            ArrayList attrs = compControllers[curController].getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
-                            //not be computed, it's entry in the ArrayList is null
-
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
+                            //get rules from notate probably
+//                            PrologGrammar grammar = new PrologGrammar(compControllers[i].validNames(), compControllers[i].exponents(),
+//                                    compControllers[i].averages(), attrGranularity, beatsPerBar, rules);
+                            //Polylist list = grammar.run();
+                            //notate.generateLick(list); //grammar.run() returns a polylist, simply generate the melody
+                            //setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
+
+
 
                             notate.generate(lickgen);
-                            //we may have to modify what the lickgen has in order to change the abstract melody
-                            //populate window with abstract melody
                         }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
 
                         /**
@@ -5314,11 +5316,12 @@ public void closeWindow()
                         private void complexityAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityAbstractMelodyButtonActionPerformed
                             verifyBeats();
 
-                            //TODO: obtain complexity values and apply them -- rule expander comes in here
-                            ArrayList attrs = compControllers[curController].getAttributeRanges(); //gets valid complexity vals, if an attribute is selected to
-                            //not be computed, it's entry in the ArrayList is null
-
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
+//                            PrologGrammar grammar = new PrologGrammar(compControllers[i].validNames(), compControllers[i].exponents(),
+//                                    compControllers[i].averages(), attrGranularity, beatsPerBar, rules);
+                            //Polylist list = grammar.run();
+                            //setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
+
 
                             if (useGrammar) {
                                 setComplexityRhythmFieldText(
@@ -5343,7 +5346,6 @@ public void closeWindow()
                             if (r.charAt(0) != '(') {
                                 r = "(".concat(r);
                             }
-
                             if (r.charAt(r.length() - 1) != ')') {
                                 r = r.concat(")");
                             }
@@ -5360,9 +5362,10 @@ public void closeWindow()
                                     rhythm = (Polylist) ob;
                                 }
                             }
-
                             notate.generateLick(rhythm);
                         }//GEN-LAST:event_complexityFillAbstractButtonActionPerformed
+
+
                         /**
                          * Saves a profile curve.
                          */
