@@ -13,41 +13,49 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- * Handling code for any sort of user-adjustable complexity panel.
+ * Handling code for any sort of user-adjustable complexity attribute panel.
  * @author Julia Botev
  */
 public class ComplexityPanel extends JPanel  {
 
-    /** Buffer for off-screen buffering of the image */
-    private Image buffer;
-    /** Graphics component for off-screen buffering of the image */
-    private Graphics2D graphics;
+    /** Width of the entire graph, varies depending on the number of beats selected */
     private int width;
     /** Bounds of the chord and bar number boxes */
     private int upperY, lowerY;
+    /** User-defined min and max bounds on the curve, realized as a gray box on screen */
+    private int maxUpper, minLower;
+    /** Max height of any given bar in the graph, total height - upperY + lowerY */
     private int barHeight;
     /** Unit of musical duration that corresponds to each bar, i.e. half bar, full bar, single beat */
     private int granularity;
     /** Total number of beats in the section of music to generate over */
     private int totalNumBeats;
+    /** Number of beats per bar in the music, essentially the time signature */
     private int beatsPerBar;
-    /** A list of the starting coordinate of each bar, size is the number of bars */
-    private ArrayList<BarDimensions> bars;
-    private Color color;
     /** Indicates whether or not this component is enabled or disabled */
     private boolean enabled;
-    /** User-defined min and max bounds on the curve */
-    private int maxUpper, minLower;
+    /** Name for this panel--used for saving */
+    private String name;
+
+    /** Buffer for off-screen buffering of the image */
+    private Image buffer;
+    /** Graphics component for off-screen buffering of the image */
+    private Graphics2D graphics;
+    /** A list of the starting coordinate and lower and upper bounds of each bar, size is the number of bars */
+    private ArrayList<BarDimensions> bars;
+    /** The color of this particular graph */
+    private Color color;
     public JTextField upperLimitField, lowerLimitField;
     public JCheckBox noComputeBox;
     /** Alpha composite for painting a transparent grayed out image for disabled graphs */
     private AlphaComposite composite;
-    /** Name for this panel--used for saving */
-    private String name;
 
+    //Immutables
+    /** Total height of the entire graph window, including the bar number and chord sections */
+    public static final int TOTAL_HEIGHT = 200;
     /** Width of each bar in the graph */
     private static final int BAR_WIDTH = 30; //set for every graph
-    private static final int TOTAL_HEIGHT = 200;
+    /** Gap that must be maintained between the lower and upper bounds of a complexity curve */
     private static final int GAP = 5;
 
 
@@ -70,6 +78,14 @@ public class ComplexityPanel extends JPanel  {
         composite = AlphaComposite.getInstance(type, alpha);
     }
 
+////////////////////////////////////////// Initializing Methods ////////////////////////////////////////////////////////
+
+    /**
+     * Sets the upper and lower text fields that denote the upper and lower limits on this complexity graph,
+     * and defines their listeners.
+     * @param lower the lower limit text field
+     * @param upper the upper limit text field
+     */
     public void setTextFields(JTextField lower, JTextField upper) {
         lowerLimitField = lower;
         upperLimitField = upper;
@@ -111,6 +127,10 @@ public class ComplexityPanel extends JPanel  {
             }
         });
     }
+    /**
+     * Sets the checkbox that denotes whether or not to compute this attribute.
+     * @param box a JCheckBox
+     */
     public void setCheckBox(JCheckBox box) {
         noComputeBox = box;
         noComputeBox.addActionListener(new ActionListener() {
@@ -126,20 +146,55 @@ public class ComplexityPanel extends JPanel  {
             }
         });
     }
+    /**
+     * Initializes the off-screen buffer that draws the graph image onto the graph panel.
+     * @param c the color of the graph.
+     */
     public void initBuffer(Color c) {
         this.buffer = this.createImage(width, TOTAL_HEIGHT);
         this.setGraphics();
         color = c;
     }
+    /**
+     * Fills the bar arraylist initially with a starting position, and an upper and lower bound, the initial curve is flat.
+     * @param numBars the number of bars to initialize the arraylist with
+     */
+    public void instantiateBars(int numBars) {
+        BarDimensions d;
+        bars = new ArrayList<BarDimensions>();
+        for(int i = 0; i < width; i+=BAR_WIDTH) {
+            d = new BarDimensions(i, barHeight/2+upperY, lowerY); //TODO: give each bar a different starting height
+            bars.add(d);
+        }
+    }
+
+
+////////////////////////////////////////// Getters and Setters ////////////////////////////////////////////////////////
+
     @Override
     public int getWidth() {
         return width;
     }
+    @Override
+    public void setName(String n) {
+        name = n;
+    }
+    @Override
+    public String getName() {
+        return name;
+    }
+    public int getGran() {
+        return granularity;
+    }
+    public void setGran(int gran) {
+        granularity = gran;
+    }
+
     public int getMinLower() {
-        return minLower-upperY;
+        return minLower;
     }
     public int getMaxUpper() {
-        return maxUpper-upperY;
+        return maxUpper;
     }
     public void setMinLower(int min) {
         minLower = min;
@@ -159,14 +214,7 @@ public class ComplexityPanel extends JPanel  {
     public void setEnabled(boolean e) {
         enabled = e;
     }
-    @Override
-    public void setName(String n) {
-        name = n;
-    }
-    @Override
-    public String getName() {
-        return name;
-    }
+
     public boolean toCompute() {
         if (noComputeBox.isSelected()) {
             return false;
@@ -174,17 +222,13 @@ public class ComplexityPanel extends JPanel  {
         return true;
     }
 
-    private void instantiateBars(int numBars) {
-        BarDimensions d;
-        bars = new ArrayList<BarDimensions>();
-        for(int i = 0; i < width; i+=BAR_WIDTH) {
-            d = new BarDimensions(i, barHeight/2+upperY, lowerY); //TODO: give each bar a different starting height
-            bars.add(d);
-        }
-    }
+////////////////////////////////////////// Computing Attributes ////////////////////////////////////////////////////////
 
-    /** Returns an ArrayList of ArrayLists of two elements representing the upper and lower bounds of
-      * each bar in the graph. Used for computing the complexity specified by the user */
+
+    /**
+     * Returns an ArrayList of ArrayLists of two elements representing the upper and lower bounds of
+     * each bar in the graph. Used for computing the complexity specified by the user
+     */
     public ArrayList<ArrayList> valueRange() {
         ArrayList allVals = new ArrayList(bars.size());
         Integer lower, upper;
@@ -197,6 +241,8 @@ public class ComplexityPanel extends JPanel  {
         }
         return allVals;
     }
+
+////////////////////////////////////////// Saving and Loading ////////////////////////////////////////////////////////
 
     public Integer[] lowerBounds() {
         Integer[] toReturn = new Integer[bars.size()];
@@ -212,8 +258,10 @@ public class ComplexityPanel extends JPanel  {
         }
         return toReturn;
     }
-    /** Re-instates the bar array with new dimensions--used to load a profile curve.
-     *  lowers.length == uppers.length always */
+    /**
+     * Re-instates the bar array with new dimensions--used to load a profile curve.
+     * lowers.length == uppers.length always
+     */
     public void reInitBars(int[] lowers, int[] uppers){
         int xCoord = 0; // the barStart variable for each barDimension in the array
         bars = new ArrayList<BarDimensions>(lowers.length);
@@ -224,7 +272,9 @@ public class ComplexityPanel extends JPanel  {
         }
         //System.out.println("about to draw all in reInitBars");
     }
-    /** For loading a profile */
+    /**
+     * Re-initializes the panel with new specifications. Used for loading from a file.
+     */
     public void reInitPanel(int beatsPer, int numBeats, int gran, int totalWidth) {
         clear();
         beatsPerBar = beatsPer;
@@ -233,12 +283,13 @@ public class ComplexityPanel extends JPanel  {
         width = totalWidth;
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////// Image Drawing ////////////////////////////////////////////////////////
+
     /**
      * Updates the positions of all the bars on the screen.
      */
     private void drawAll() {
-        Composite oldComp = graphics.getComposite();
+        Composite oldComp = graphics.getComposite(); //save the old composite in case the screen needs to be greyed out
         graphics.setColor(Color.WHITE);
         graphics.fillRect(0, 0, width, TOTAL_HEIGHT);
 
@@ -257,39 +308,39 @@ public class ComplexityPanel extends JPanel  {
         //draw bar numbers
         drawBarNumbers();
         graphics.drawRect(0, 0, width, upperY); //Bar Number box
-        //draw chords
+        //TODO: draw chords
         graphics.drawRect(0, lowerY, width, TOTAL_HEIGHT); //Chord box
-        graphics.drawRect(0, 0, width - 1, TOTAL_HEIGHT - 1);
+        graphics.drawRect(0, 0, width - 1, TOTAL_HEIGHT - 1); //box to surround the whole graph
 
+        //dark gray for non-computed attributes
         if (!toCompute()) {
             graphics.setComposite(composite);
-            graphics.setColor(new Color(190, 190, 190)); //dark gray for non-computed attributes
+            graphics.setColor(new Color(190, 190, 190)); 
             graphics.fillRect(0, 0, width, TOTAL_HEIGHT);
             graphics.setComposite(oldComp);
         }
+        //lighter gray for disabled attributes
         else if (!enabled) {
             graphics.setComposite(composite);
-            graphics.setColor(new Color(230, 230, 230)); //lighter gray for disabled attributes
+            graphics.setColor(new Color(230, 230, 230)); 
             graphics.fillRect(0, 0, width, TOTAL_HEIGHT);
             graphics.setComposite(oldComp);
         }
-
         repaint();
     }
-    /** Redraws the number of bars when the user specifies a new number of beats
-     *  preserves the exact dimensions of the current curve by truncating it, or
-     *  adding more curve at same height as the last bar. */
+    /**
+     * Redraws the number of bars when the user specifies a new number of beats
+     * preserves the exact dimensions of the current curve by truncating it, or
+     * adding more curve at the same height as the last bar.
+     */
     public void redrawBeats(int newBeats) {
         clear();
         int i;
         int oldBeats = totalNumBeats;
         ArrayList<BarDimensions> newList = new ArrayList<BarDimensions>(newBeats);
 
-        //System.out.println("newBeats: "+newBeats+" oldbeats: "+oldBeats);
-
         //fewer beats than before--truncate the curve
         if (newBeats < oldBeats) {
-            //System.out.println("in the newbeats < oldBeats");
             for(i = 0; i<newBeats; i++) {
                 newList.add(i, bars.get(i));
             }
@@ -297,7 +348,6 @@ public class ComplexityPanel extends JPanel  {
         }
         //more beats than before--extend the existing curve
         else if (newBeats > oldBeats) {
-            //System.out.println("in the newbeats > oldBeats");
             for(i = 0; i<oldBeats; i++) {
                 newList.add(i, bars.get(i));
             }
@@ -305,8 +355,6 @@ public class ComplexityPanel extends JPanel  {
 
             BarDimensions dim;
             for (i = oldBeats; i<newBeats; i++) {
-                //System.out.println("i: "+i);
-                //System.out.println("newBar start: "+xCoord);
                 dim = new BarDimensions(xCoord, bars.get(oldBeats-1).getUpperBound(),
                         bars.get(oldBeats-1).getLowerBound());
                 newList.add(i, dim);
@@ -323,8 +371,10 @@ public class ComplexityPanel extends JPanel  {
         repaint();
     }
 
-    /** Redraws the number of bars when the user specifies a new granularity.
-      * Preserves the old complexity curve, but with different spacing */
+    /**
+     * Redraws the number of bars when the user specifies a new granularity.
+     * Preserves the old complexity curve, but with different spacing
+     */
     public void redrawGran(int newGran) {
         clear();
         int i, index;
@@ -370,7 +420,9 @@ public class ComplexityPanel extends JPanel  {
         update(graphics);
         repaint();
     }
-
+    /**
+     * Draws bar numbers above the graph, whose positions vary depending on the granularity selected.
+     */
     private void drawBarNumbers() {
         int div = beatsPerBar/granularity;
         int num = 1;
@@ -399,10 +451,12 @@ public class ComplexityPanel extends JPanel  {
     }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////// Graph Manipulation and Listening ////////////////////////////////////////////////
 
-    /** Resizes the upper limit of all the bars when the max range is changed so
-     * none of the bars exceed the max value */
+    /**
+     * Resizes the upper limit of all the bars when the max range is changed so
+     * none of the bars exceed the max value.
+     */
     public void resizeBars() {
         for (int i = 0; i < bars.size(); i++) {
             if (bars.get(i).getUpperBound() > minLower)
@@ -431,7 +485,7 @@ public class ComplexityPanel extends JPanel  {
         repaint();
     }
     /**
-     * Adjusts the lower bound position of a single bar in the graph
+     * Adjusts the lower bound position of a single bar in the graph.
      */
     public void moveLowerBound(int bar, int y) {
         clear();
@@ -445,12 +499,16 @@ public class ComplexityPanel extends JPanel  {
         bars.get(bar).setLowerBound(y);
         repaint();
     }
-    /** Gets the upper edge of a specific bar */
+    /** 
+     * Gets the upper edge of a specific bar
+     */
     public int getBarUpper(int x) {
         int bar = determineBar(x);
         return bars.get(bar).getUpperBound();
     }
-    /** Gets the lower edge of a specific bar */
+    /** 
+     * Gets the lower edge of a specific bar
+     */
     public int getBarLower(int x) {
         int bar = determineBar(x);
         return bars.get(bar).getLowerBound();

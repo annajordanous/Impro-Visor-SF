@@ -127,13 +127,19 @@ private int numControllers;
 private int curController;
 private ComplexityWindowController[] compControllers;
 
+/** Number of beats per measure in the piece */
 private int beatsPerBar;
-private int attrTotal; //total number of beats to represent
-private int attrGranularity; //granularity at which to look at the bars, i.e. how many beats per division
-
-private String profileExt; //file extension for soloProfiles
-private File defaultProfile; // default profile curve for the reset button
+/** Total number of beats to represent in the solo curve graph */
+private int attrTotal;
+/** Granularity at which to look at the bars, i.e. how many beats per division */
+private int attrGranularity; 
+/** File extension for solo profiles */
+private String profileExt;
+/** Default profile curve for the reset button */
+private File defaultProfile;
+/** JFile Chooser for saving solo profiles */
 private JFileChooser saveCWFC;
+/** JFile Chooser for opening solo profiles */
 private JFileChooser openCWFC;
 
 /**
@@ -150,7 +156,6 @@ private boolean allMeasures = false;
 /**
  * Creates new LickgenFrame
  */
-
 public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
   {
     this.notate = notate;
@@ -173,11 +178,13 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
     compControllers[curController] = initComplexityImages();
 }
 
+/**
+ * Initializes the solo profile file choosers.
+ */
 private void initCompFileChoosers() {
     ProfileFilter pFilter = new ProfileFilter();
     profileExt = ProfileFilter.EXTENSION;
     defaultProfile = new File(Notate.basePath+"profiles/default."+profileExt);
-    defaultProfile.setReadOnly();
 
     saveCWFC = new JFileChooser();
     openCWFC = new JFileChooser();
@@ -195,14 +202,31 @@ private void initCompFileChoosers() {
     openCWFC.addChoosableFileFilter(pFilter);
 }
 
+/**
+ * Initializes a complexity window controller for the array of controllers, a new one is made each
+ * time a chorus tab is added.
+ * @return a new complexity window controller with all the default settings
+ */
 private ComplexityWindowController initComplexityImages() {
     ComplexityWindowController complexityController;
 
-    complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
+    if (numControllers == 1) {
+        complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
             (ComplexityPanel) overallComplexityPanel, (ComplexityPanel) densityPanel,
             (ComplexityPanel) varietyPanel, (ComplexityPanel) syncopationPanel,
             (ComplexityPanel) consonancePanel, (ComplexityPanel) leapSizePanel,
             (ComplexityPanel) directionChangePanel);
+    }
+    else {
+        complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
+            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity));
+    }
 
     complexityController.getPanels().get(0).setTextFields(overallLowerMin, overallUpperMax);
     complexityController.getPanels().get(1).setTextFields(densityLowerMin, densityUpperMax);
@@ -224,14 +248,16 @@ private ComplexityWindowController initComplexityImages() {
 
     return complexityController;
 }
+
 /**
- * Adjust the number of Complexity Controllers according to how many chorus tabs are now on the screen.
+ * Adjust the number of Complexity Controllers when a user adds or removes a chorus tab.
  * If the new size is greater than the current size, add more Complexity Controllers until the sizes are equal,
  * and set the current controller to the highest index.
  * @param size the new number of stave scroll panes
  */
-public void stavesInited(int size) {
+public void stavesAdded(int size) {
     ComplexityWindowController[] newCont = new ComplexityWindowController[size];
+    int oldCurIndex = curController;
     int i;
     //a tab was added to the score
     if (size > numControllers) {
@@ -253,9 +279,46 @@ public void stavesInited(int size) {
     numControllers = size;
     curController = size-1; //the most recently added chorus denotes the current index
 
-//    graphViewScrollPane.repaint();
-//    complexityControlScrollPane.repaint();
+    //TODO: reinit the comp window to reflect this specific chorus
+    replacePanels(curController);
+
+    //compControllers[oldCurIndex].setVisible(false);
+    //compControllers[curController].setVisible(true);
     attributeChoosingPanel.repaint();
+}
+
+/**
+ * Adjusts the Complexity Window to be viewed when the user switches between chorus tabs.
+ * @param index the new Complexity Window to switch to
+ */
+public void stavesChanged(int index) {
+    if (curController != index) {
+        int oldCurIndex = curController;
+
+        curController = index;
+        //TODO: reinit the comp window in question
+        replacePanels(curController);
+        verifyBeats();
+        compControllers[curController].updateBeats(attrTotal);  //why won't this resize properly????
+
+        //compControllers[oldCurIndex].setVisible(false);
+        //compControllers[curController].setVisible(true);
+
+        attributeChoosingPanel.repaint();
+    }
+}
+public void replacePanels(int index) {
+    ArrayList<ComplexityPanel> list = compControllers[index].getPanels();
+    overallComplexityPanel = list.get(0);
+    densityPanel = list.get(1);
+    varietyPanel = list.get(2);
+    syncopationPanel = list.get(3);
+    consonancePanel = list.get(4);
+    leapSizePanel = list.get(5);
+    directionChangePanel = list.get(6);
+    for (int i = 0; i<list.size(); i++) {
+        list.get(i).repaint();
+    }
 }
 
 /** This method is called from within the constructor to
@@ -404,7 +467,7 @@ public void stavesInited(int size) {
         jLabel4 = new javax.swing.JLabel();
         granularityComboBox = new javax.swing.JComboBox();
         manageSpecificCheckBox = new javax.swing.JCheckBox();
-        resetButton = new javax.swing.JButton();
+        defaultButton = new javax.swing.JButton();
         loadSoloProfileButton = new javax.swing.JButton();
         saveSoloProfileButton = new javax.swing.JButton();
         complexityGenerateMelodyButton = new javax.swing.JButton();
@@ -2218,7 +2281,12 @@ public void stavesInited(int size) {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 5, 0);
         globalControlPanel.add(manageSpecificCheckBox, gridBagConstraints);
 
-        resetButton.setText("Reset to Default");
+        defaultButton.setText("Default Curve");
+        defaultButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -2226,7 +2294,7 @@ public void stavesInited(int size) {
         gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.14;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        globalControlPanel.add(resetButton, gridBagConstraints);
+        globalControlPanel.add(defaultButton, gridBagConstraints);
 
         loadSoloProfileButton.setText("Load a Profile");
         loadSoloProfileButton.addActionListener(new java.awt.event.ActionListener() {
@@ -5208,6 +5276,10 @@ public void closeWindow()
                             compControllers[curController].mouseHandler(evt);
                         }//GEN-LAST:event_mouseEventHandler
 
+                        /**
+                         * Generates a melody from the solo profile window. Takes the attribute ranges into account
+                         * and uses the new rule expander paradigm.
+                         */
                         private void complexityGenerateMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityGenerateMelodyButtonActionPerformed
                             verifyBeats();
 
@@ -5222,6 +5294,10 @@ public void closeWindow()
                             //populate window with abstract melody
                         }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
 
+                        /**
+                         * If the no compute box is checked for a specific attribute, change the number of attributes to compute.
+                         * @param evt
+                         */
                         private void noComputeBoxCheckedAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noComputeBoxCheckedAction
                             int attrs = compControllers[curController].getNumValidAttrs();
                             if (((JCheckBox)evt.getSource()).isSelected()) {
@@ -5231,7 +5307,10 @@ public void closeWindow()
                                 compControllers[curController].setNumValidAttrs(attrs--);
                             }
                         }//GEN-LAST:event_noComputeBoxCheckedAction
-
+                        /**
+                         * Generates an abstract melody from the solo profile window. Takes the attribute ranges into account
+                         * and uses the new rule expander paradigm.
+                         */
                         private void complexityAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityAbstractMelodyButtonActionPerformed
                             verifyBeats();
 
@@ -5251,7 +5330,9 @@ public void closeWindow()
                                         restProb).toString());
                             }
                         }//GEN-LAST:event_complexityAbstractMelodyButtonActionPerformed
-
+                        /**
+                         * Fills the abstract melody in the abstract melody rhythm text field.
+                         */
                         private void complexityFillAbstractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_complexityFillAbstractButtonActionPerformed
                             verifyBeats();
 
@@ -5282,25 +5363,18 @@ public void closeWindow()
 
                             notate.generateLick(rhythm);
                         }//GEN-LAST:event_complexityFillAbstractButtonActionPerformed
-
+                        /**
+                         * Saves a profile curve.
+                         */
                         private void saveSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSoloProfileButtonActionPerformed
                             System.out.println("Save button pressed.\n");
                             saveCWFC.setCurrentDirectory(defaultProfile);
 
                             try {
-                                //System.out.println("Pathname: "+)
                                 if (saveCWFC.showSaveDialog(attributeChoosingPanel) == JFileChooser.APPROVE_OPTION) {
                                     File toSave = saveCWFC.getSelectedFile();
-                                    if (!toSave.exists()) {
-                                        System.out.println("file does not exist");
-                                        return;
-                                    }
-                                    if (toSave.equals(defaultProfile)) {
-                                        //show exception dialog: default profile can not be over-written
-                                        ErrorLog.log(ErrorLog.WARNING, "Default profile cannot be over-written");
-                                        saveSoloProfileButtonActionPerformed(evt);
-                                    }
-                                    else if (toSave.getName().endsWith(profileExt)) {
+                                    toSave.setWritable(true);
+                                    if (toSave.getName().endsWith(profileExt)) {
                                         compControllers[curController].saveComplexityWindow(toSave.getAbsolutePath());
                                     }
                                     else {
@@ -5315,7 +5389,9 @@ public void closeWindow()
                                 ErrorLog.log(ErrorLog.WARNING, "File not found.");
                             }
                         }//GEN-LAST:event_saveSoloProfileButtonActionPerformed
-
+                        /**
+                         * Loads a profile curve.
+                         */
                         private void loadSoloProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadSoloProfileButtonActionPerformed
                             System.out.println("load button pressed.");
                             openCWFC.setCurrentDirectory(defaultProfile);
@@ -5341,13 +5417,27 @@ public void closeWindow()
                                 }
                             }
                         }//GEN-LAST:event_loadSoloProfileButtonActionPerformed
+                        /**
+                         * Resets graphs to flat lines, clears all check boxes and text fields.
+                         */
+                        private void defaultButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultButtonActionPerformed
+                            manageSpecificCheckBox.setSelected(false);
+                            manageSpecificCheckBox.getActionListeners()[0].actionPerformed(evt);
+                            compControllers[curController].reset();
+                        }//GEN-LAST:event_defaultButtonActionPerformed
 
+    /**
+     * Called by Notate when the melody is changed in the solo profile window.
+     * @param string the melody to display
+     */
     public void setComplexityRhythmFieldText(String string) {
         complexityRhythmField.setText(string);
         complexityRhythmField.setCaretPosition(0);
         complexityRhythmScrollPane.getViewport().setViewPosition(new Point(0, 0));
     }
-    
+    /**
+     * Checks how many beats are selected in the current leadsheet.
+     */
     public void verifyBeats() {
         totalBeats = notate.doubleFromTextField(totalBeatsField, 0.0,
                 Double.POSITIVE_INFINITY, 0.0);
@@ -5355,8 +5445,6 @@ public void closeWindow()
         totalSlots = (int) (BEAT * totalBeats);
         notate.getCurrentStave().repaint();
 
-        //compControllers[curController].update((int)totalBeats, attrGranularity);
-        //overallComplexityPanel.setSize(newSize, 200);
         numBeatsSelected.setText(Integer.toString((int)totalBeats));
     }
 
@@ -5394,6 +5482,7 @@ public void closeWindow()
     private javax.swing.JPanel consonancePanel;
     private javax.swing.JTextField consonanceUpperMax;
     private javax.swing.JPanel controlPanel;
+    private javax.swing.JButton defaultButton;
     private javax.swing.JPanel densityControlPanel;
     private javax.swing.JCheckBox densityDoNotCompute;
     private javax.swing.JLabel densityLabel;
@@ -5494,7 +5583,6 @@ public void closeWindow()
     private javax.swing.JCheckBox recurrentCheckbox;
     private javax.swing.JButton regenerateHeadDataBtn;
     private javax.swing.JMenuItem reloadGrammarMI1;
-    private javax.swing.JButton resetButton;
     private javax.swing.JTextField restProbField;
     private javax.swing.JLabel restProbLabel;
     private javax.swing.JTextField reverseProbabilityField;

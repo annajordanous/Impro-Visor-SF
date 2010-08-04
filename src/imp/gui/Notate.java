@@ -14802,10 +14802,9 @@ private void setLayoutPreference(Polylist layout)
 
 
         // update the current tab index
-
         currTabIndex = scoreTab.getSelectedIndex();
 
-
+        lickgenFrame.stavesChanged(currTabIndex); //make sure to update which tab the complexity window is looking at
 
         /* If the tab gets changed during playback, disable autoscrolling
          * since the playback indicator is no longer on the screen
@@ -19955,7 +19954,7 @@ public void showNewVoicingDialog()
     currTabIndex = 0;
 
     staveScrollPane = new StaveScrollPane[size];
-    lickgenFrame.stavesInited(size); //make sure that the complexity windows sync with new chorus tabs
+    lickgenFrame.stavesAdded(size); //make sure that the complexity windows sync with new chorus tabs
 
 
     // initialize each array with the appropriate part and as a grand stave
@@ -19964,7 +19963,6 @@ public void showNewVoicingDialog()
       {
 
       // construct the specific scoreBG and staveScrollPane
-      System.out.println("new tab added? inside for loop");
       StaveScrollPane pane = new StaveScrollPane(i);
 
       staveScrollPane[i] = pane;

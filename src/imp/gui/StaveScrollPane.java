@@ -54,7 +54,6 @@ public StaveScrollPane(int index)
 {
   myIndex = index;
   BG = new JPanel();
-  System.out.println("stave scroll pane added");
 }
 
 public void setStave(Stave stave)

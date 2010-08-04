@@ -22,20 +22,30 @@ import polya.*;
  */
 public class ComplexityWindowController {
 
+    /** Graph panels controlled by this controller. */
     ComplexityPanel overallComplexityPanel, densityPanel, varietyPanel,
             syncopationPanel, consonancePanel, leapSizePanel, directionChangePanel;
+    /** An ArrayList of those graph panels. */
     private ArrayList<ComplexityPanel> complexityPanels;
     /** Denotes the number of attributes that need to be factored into the computation of complexity */
     private int numValidAttrs;
+    /** Number of beats per measure, basically the time signature of the piece. */
     private int beatsPerBar;
+    /** Total number of beats currently selected over which the complexity curve should apply. */
     private int totalNumBeats;
+    /** Granularity of the attributes. */
     private int attrGranularity;
-    private int totalWidth; // width of the graph at any given time
+    /** Width of the graphs at any given time. */
+    private int totalWidth;
+    /** Check box that toggles which graphs are enabled: overall complexity or the specific attributes. */
     public JCheckBox manageSpecific;
+    /** Controls what granularity the graphs are displayed with. */
     public JComboBox granBox;
 
 
-    /** panels will always be of length 7 */
+    /** 
+     * Complexity Window Controller constructor, the array panels will always be of length seven.
+     */
     public ComplexityWindowController(int beats, int gran, ComplexityPanel... panels) {
         if (panels.length != 7) {
             System.out.println("Incorrect number of panels passed to complexity window constructor!");
@@ -59,7 +69,13 @@ public class ComplexityWindowController {
             totalWidth = overallComplexityPanel.getWidth();
         }
     }
-
+    /**
+     * Initializes which panels are enabled in the beginning and adds listeners for manage specific toggling and
+     * the granularity drop-down menu.
+     * @param time the number of beats per measure
+     * @param specific the checkbox to toggle which attributes are being managed: overall or specific
+     * @param gran the current granularity
+     */
     public void initController(int time, JCheckBox specific, JComboBox gran) {
         beatsPerBar = time;
         overallComplexityPanel.setEnabled(true);
@@ -84,7 +100,7 @@ public class ComplexityWindowController {
         manageSpecific.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                if (manageSpecific.isSelected()) {
+                if (manageSpecific.isSelected()) { //ungray specific attrs!
                     overallComplexityPanel.setEnabled(false);
                     overallComplexityPanel.upperLimitField.setEnabled(false);
                     ((ComplexityPanel) overallComplexityPanel).lowerLimitField.setEnabled(false);
@@ -94,9 +110,8 @@ public class ComplexityWindowController {
                         complexityPanels.get(i).noComputeBox.setEnabled(true);
                         complexityPanels.get(i).setEnabled(true);
                     }
-                    //ungray specific attrs!
                 }
-                if (!manageSpecific.isSelected()) {
+                if (!manageSpecific.isSelected()) { //re-gray specific attrs!
                     overallComplexityPanel.setEnabled(true);
                     overallComplexityPanel.upperLimitField.setEnabled(true);
                     overallComplexityPanel.lowerLimitField.setEnabled(true);
@@ -107,7 +122,6 @@ public class ComplexityWindowController {
                         complexityPanels.get(i).setEnabled(false);
                     }
                 }
-                //re-gray specific attrs!
             }
         });
         granBox = gran;
@@ -124,7 +138,9 @@ public class ComplexityWindowController {
         initBuffers();
     }
 
-    /** Initializes the off-screen buffers and colors of the graphs */
+    /** 
+     * Initializes the off-screen buffers and colors of the graphs.
+     */
     public void initBuffers() {
         overallComplexityPanel.initBuffer(new Color(255, 140, 0));
         densityPanel.initBuffer(new Color(154, 205, 0));
@@ -135,7 +151,9 @@ public class ComplexityWindowController {
         directionChangePanel.initBuffer(new Color(131, 111, 255));
     }
 
-    /** Takes a new number of beats and redraws the graphs */
+    /** 
+     * Takes a new number of beats and redraws the graphs.
+     */
     public int updateBeats(int beats) {
         totalNumBeats = beats;
         for(int i = 0; i<complexityPanels.size(); i++) {
@@ -144,7 +162,9 @@ public class ComplexityWindowController {
         totalWidth = overallComplexityPanel.getWidth();
         return totalWidth;
     }
-    /** Takes a new granularity and redraws the graphs */
+    /** 
+     * Takes a new granularity and redraws the graphs.
+     */
     public int updateGran(int gran) {
         attrGranularity = gran;
         for(int i = 0; i<complexityPanels.size(); i++) {
@@ -153,23 +173,35 @@ public class ComplexityWindowController {
         totalWidth = overallComplexityPanel.getWidth();
         return totalWidth;
     }
-
+    /**
+     * @return the ArrayList of complexity panels belonging to this specific controller
+     */
     public ArrayList<ComplexityPanel> getPanels() {
         return complexityPanels;
     }
-
+    /**
+     * @return the number of attributes that are set to be computed
+     */
     public int getNumValidAttrs() {
         return numValidAttrs;
     }
-
     public void setNumValidAttrs(int attrs) {
         numValidAttrs = attrs;
     }
-    /** Assembles a list of attribute ranges of each attribute to be calculated.
-      * If an attribute is to be left out, its value is null */
+
+    public void setVisible(boolean vis) {
+        for (int i = 0; i<7; i++) {
+            complexityPanels.get(i).setVisible(vis);
+        }
+    }
+
+    /**
+     * Assembles a list of attribute ranges of each attribute to be calculated.
+     * If an attribute is to be left out, its value is null. Excludes the overall complexity curve.
+     */
     public ArrayList<ArrayList> getAttributeRanges() {
-        ArrayList<ArrayList> attrs = new ArrayList<ArrayList>(7);
-        for (int i = 0; i<complexityPanels.size(); i++) {
+        ArrayList<ArrayList> attrs = new ArrayList<ArrayList>(6);
+        for (int i = 1; i<complexityPanels.size(); i++) {
             if(complexityPanels.get(i).toCompute()) {
                 attrs.add(complexityPanels.get(i).valueRange());
             }
@@ -180,20 +212,51 @@ public class ComplexityWindowController {
         return attrs;
     }
 
+    /**
+     * Moves all the curves in relation to each other. If the overall curve is changed, the specific curves are
+     * adjusted accordingly, and vice versa. The specific curves do not affect each other, but do affect the overall curve.
+     * Holding the shift key down moves the lower bounds of a curve.
+     */
     public void mouseHandler(MouseEvent evt) {
+        int oldY, newY;
+        Double toAdd;
+        int dif = totalWidth - evt.getX();
+
+        if (dif <= 0) { //if x is outside the bounds of the graph, translate the point
+            evt.translatePoint((dif-1), 0);
+        }
+        else if (dif > totalWidth) { //x is negative or 0
+            evt.translatePoint((0-evt.getX()), 0);
+        }
+
         //If the action originated in the overall complexity panel
         if (((ComplexityPanel) evt.getSource()).equals(overallComplexityPanel)) {
             if (!manageSpecific.isSelected()) {
-                //TODO: make the motion of the other curves dependent on their current position
+                ((ComplexityPanel) evt.getSource()).mouseHandler(evt); //move the overall curve
+
+                newY = evt.getY();
+                Double attrs = ((Integer) numValidAttrs).doubleValue(); //number of attributes
+
+                //the other curves are adjusted depending on their current position
                 for (int i = 0; i < complexityPanels.size(); i++) {
-                    complexityPanels.get(i).mouseHandler(evt);
+                    if (!complexityPanels.get(i).noComputeBox.isSelected()) {
+                        if (((MouseEvent) evt).isShiftDown()) {
+                            oldY = complexityPanels.get(i).getBarLower(evt.getX());
+                        } else {
+                            oldY = complexityPanels.get(i).getBarUpper(evt.getX());
+                        }
+                        toAdd = ((oldY - newY) * ((attrs - 1) / attrs)); //number to add to new y
+
+                        evt.translatePoint(0, toAdd.intValue());
+                        complexityPanels.get(i).mouseHandler(evt);
+                        evt.translatePoint(0, -toAdd.intValue()); //reset the mouse event to move the other curves
+                    }
                 }
             }
-        } else { // source is not the overall complexity curve
+        } else { // overall complexity curve is not the source
             if (manageSpecific.isSelected()) {
                 if (!((ComplexityPanel) evt.getSource()).noComputeBox.isSelected()) {
-                    int oldY, newY;
-                    Double toAdd;
+
                     if (((MouseEvent) evt).isShiftDown()) {
                         oldY = ((ComplexityPanel) overallComplexityPanel).getBarLower(evt.getX());
                     } else {
@@ -210,6 +273,20 @@ public class ComplexityWindowController {
             }
         }
     }
+
+    /**
+     * Resets the curves and all text fields to their default settings.
+     */
+    public void reset() {
+        for (int i = 0; i<complexityPanels.size(); i++) {
+            complexityPanels.get(i).instantiateBars(totalNumBeats); //set all bars to flat
+            complexityPanels.get(i).setMinLower(175);
+            complexityPanels.get(i).setMaxUpper(25);
+            complexityPanels.get(i).noComputeBox.setSelected(false);
+            complexityPanels.get(i).repaint();
+        }
+    }
+
 
     /** 
      * Creates a file with the specified name and returns it, .soloProfile is the extension
