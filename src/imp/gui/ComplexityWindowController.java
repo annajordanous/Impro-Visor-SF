@@ -3,11 +3,13 @@
  */
 package imp.gui;
 
+import java.awt.event.ItemEvent;
 import java.io.*;
 import java.util.*;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -68,6 +70,8 @@ public class ComplexityWindowController {
             totalNumBeats = beats;
             attrGranularity = gran;
             totalWidth = overallComplexityPanel.getWidth();
+
+//            updatingGran = false; //not currently updating
         }
     }
 
@@ -128,18 +132,19 @@ public class ComplexityWindowController {
                 }
             }
         });
-        updatingGran = false; //not currently updating
         granBox = gran;
-        granBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        granBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                System.out.println("item state changed, updating gran is: " + updatingGran);
                 if (!updatingGran) {
-                    //System.out.println("gran action performed, gran is: "+granBox.getSelectedItem());
-                    int gran = (Integer)granBox.getSelectedItem();
-                    updateGran(gran);
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        int gran = (Integer) granBox.getSelectedItem();
+                        updateGran(gran);
+                    }
                 }
             }
-        });
 
+        });
         initBuffers();
     }
 
@@ -186,9 +191,9 @@ public class ComplexityWindowController {
      * Takes a new number of beats and redraws the graphs.
      */
     public void updateBeats(int beats) {
+        System.out.println("beats: "+beats);
         if (totalNumBeats == beats) { return; }
         else if(beats > 0) {
-            //System.out.println("beats: "+beats);
             totalNumBeats = beats;
             //System.out.println("gran before update gran: "+attrGranularity);
             updateGranBox();
@@ -222,15 +227,29 @@ public class ComplexityWindowController {
     public void updateGranBox() {
         updatingGran = true;
 
-        //System.out.println("updating gran box");
+        System.out.println("before remove, updating gran box is: "+updatingGran);
+        System.out.println("before remove, item count is: "+granBox.getItemCount());
+        System.out.println("item at 0: "+granBox.getItemAt(0));
 
-        granBox.removeAllItems();
+        //granBox.removeAllItems();
+        if (granBox.getItemCount() > 1) {
+            int count = granBox.getItemCount();
+            for (int i=count-1; i>0; i--) {
+                System.out.println("item at index: "+i+" is: "+granBox.getItemAt(i));
+                updatingGran = true;
+                granBox.removeItemAt(i);
+            }
+            granBox.validate();
+        }
 
-        if (totalNumBeats == 0) { 
+        //granBox.addItem(new Integer(1));    //item at index 0 will always be 1
+
+        if (totalNumBeats == 0) {
+            System.out.println("totalnumbeats is 0");
             updatingGran = false;
             return;
         }
-        granBox.addItem(new Integer(1));    //item at index 0 will always be 1
+        
         if (totalNumBeats == 1) {} // only one item in the combo box
         else if(beatsPerBar % 2 == 0 && totalNumBeats % 2 == 0) { //meters of 2 or 4
             granBox.addItem(new Integer(2));
@@ -536,10 +555,10 @@ public class ComplexityWindowController {
      * Computes exponents for each valid attribute, excluding overall complexity.
      * @return a list of exponents for each attribute
      */
-    public ArrayList<ArrayList> exponents() {
-        int k = 10; // a constant for calculating the exponents
+    public ArrayList<ArrayList<Double>> exponents() {
+        int k = 30; // a constant for calculating the exponents, 2*GAP
 
-        ArrayList<ArrayList> exps = new ArrayList<ArrayList>(numValidAttrs);
+        ArrayList<ArrayList<Double>> exps = new ArrayList<ArrayList<Double>>(numValidAttrs);
         for (int i = 1; i < numValidAttrs; i++) {
             if (!complexityPanels.get(i).noComputeBox.isSelected()) {
                 exps.add(complexityPanels.get(i).calcExponents(k));
@@ -553,8 +572,8 @@ public class ComplexityWindowController {
      * Averages are between 0 and 1.
      * @return a list of averages for each attribute
      */
-    public ArrayList<ArrayList> averages() {
-        ArrayList<ArrayList> avgs = new ArrayList<ArrayList>(numValidAttrs);
+    public ArrayList<ArrayList<Double>> averages() {
+        ArrayList<ArrayList<Double>> avgs = new ArrayList<ArrayList<Double>>(numValidAttrs);
         for (int i = 1; i < numValidAttrs; i++) {
             if (!complexityPanels.get(i).noComputeBox.isSelected()) {
                 avgs.add(complexityPanels.get(i).calcAverages());

@@ -57,7 +57,7 @@ public class ComplexityPanel extends JPanel  {
     /** Width of each bar in the graph */
     private static final int BAR_WIDTH = 30; //set for every graph
     /** Gap that must be maintained between the lower and upper bounds of a complexity curve */
-    private static final int GAP = 5;
+    private static final int GAP = 15;
 
 
     public ComplexityPanel(int time, int gran, int tot) {
@@ -429,7 +429,7 @@ public class ComplexityPanel extends JPanel  {
         int num = 1;
         for (int i = 0; i < bars.size(); i++) {
             if((i)%div == 0) {
-                graphics.drawString(((Integer)num).toString(), bars.get(i).getBarStart(), upperY-GAP);
+                graphics.drawString(((Integer)num).toString(), bars.get(i).getBarStart()+5, upperY-5);
                 num++;
             }
         }
@@ -479,7 +479,7 @@ public class ComplexityPanel extends JPanel  {
             y = maxUpper;
         } else if (y > minLower) {
             y = minLower - GAP;
-        } else if (y > bars.get(bar).getLowerBound()) {
+        } else if (y > bars.get(bar).getLowerBound()-GAP) {
             y = bars.get(bar).getLowerBound() - GAP;
         }
         bars.get(bar).setUpperBound(y);
@@ -494,7 +494,7 @@ public class ComplexityPanel extends JPanel  {
             y = minLower;
         } else if (y < maxUpper) {
             y = maxUpper + GAP;
-        } else if (y < bars.get(bar).getUpperBound()) {
+        } else if (y < bars.get(bar).getUpperBound()+GAP) {
             y = bars.get(bar).getUpperBound() + GAP;
         }
         bars.get(bar).setLowerBound(y);
@@ -546,7 +546,7 @@ public class ComplexityPanel extends JPanel  {
      * An exponent for the purpose of rule expanding is 1 + K/(max-min)
      * @return an ArrayList of exponents
      */
-    public ArrayList<double> calcExponents(int k) {
+    public ArrayList<Double> calcExponents(int k) {
         ArrayList list = new ArrayList(bars.size());
         double lower, upper, exp;
 
@@ -554,7 +554,7 @@ public class ComplexityPanel extends JPanel  {
             lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
             upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
             exp = (1+(k/(upper-lower)));
-            list.add(exp);
+            list.add(new Double(exp));
         }
         return list;
     }
@@ -563,7 +563,7 @@ public class ComplexityPanel extends JPanel  {
      * Averages for each section of the graph for the purpose of rule expanding is ((max-min)/2)/150, where 0<=avg<=1
      * @return an ArrayList of averages
      */
-    public ArrayList<int> calcAverages() {
+    public ArrayList<Double> calcAverages() {
         ArrayList list = new ArrayList(bars.size());
         double lower, upper, avg;
 
@@ -571,7 +571,7 @@ public class ComplexityPanel extends JPanel  {
             lower = -1*((bars.get(i).getLowerBound()-upperY)-150);
             upper = -1*((bars.get(i).getUpperBound()-upperY)-150);
             avg = ((upper-lower)/2)/150;
-            list.add(avg);
+            list.add(new Double(avg));
         }
         return list;
     }

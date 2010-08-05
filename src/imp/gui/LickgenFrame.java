@@ -32,6 +32,7 @@ import imp.com.*;
 
 import imp.data.*;
 import imp.Directories;
+import imp.attributes.PrologGrammar;
 
 import imp.lickgen.*;
 import imp.util.ErrorLog;
@@ -50,6 +51,7 @@ import javax.swing.JScrollPane;
 
 import java.util.*;
 import javax.swing.event.ChangeListener;
+import javax.swing.DefaultComboBoxModel;
 
 import polya.*;
 import imp.util.ProfileFilter;
@@ -210,23 +212,41 @@ private void initCompFileChoosers() {
 private ComplexityWindowController initComplexityImages() {
     ComplexityWindowController complexityController;
 
-    if (numControllers == 1) {
+    System.out.println("init complexity images called");
+
+    //if (numControllers == 1) {
         complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
             (ComplexityPanel) overallComplexityPanel, (ComplexityPanel) densityPanel,
             (ComplexityPanel) varietyPanel, (ComplexityPanel) syncopationPanel,
             (ComplexityPanel) consonancePanel, (ComplexityPanel) leapSizePanel,
             (ComplexityPanel) directionChangePanel);
-    }
-    else {
-        complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity),
-            new imp.gui.ComplexityPanel(beatsPerBar, attrTotal, attrGranularity));
-    }
+    //}
+//    else {
+//        ComplexityPanel panel1 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//        ComplexityPanel panel2 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//        ComplexityPanel panel3 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//        ComplexityPanel panel4 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//        ComplexityPanel panel5 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//        ComplexityPanel panel6 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//        ComplexityPanel panel7 = new imp.gui.ComplexityPanel(beatsPerBar, 1, attrGranularity);
+//
+//        initNewCompPanel(panel1);
+//        initNewCompPanel(panel2);
+//        initNewCompPanel(panel3);
+//        initNewCompPanel(panel4);
+//        initNewCompPanel(panel5);
+//        initNewCompPanel(panel6);
+//        initNewCompPanel(panel7);
+//
+//        complexityController = new ComplexityWindowController(1, attrGranularity,
+//            panel1,
+//            panel2,
+//            panel3,
+//            panel4,
+//            panel5,
+//            panel6,
+//            panel7);
+//    }
 
     complexityController.getPanels().get(0).setTextFields(overallLowerMin, overallUpperMax);
     complexityController.getPanels().get(1).setTextFields(densityLowerMin, densityUpperMax);
@@ -247,6 +267,35 @@ private ComplexityWindowController initComplexityImages() {
     complexityController.initController(beatsPerBar, manageSpecificCheckBox, granularityComboBox);
 
     return complexityController;
+}
+
+private void initNewCompPanel(ComplexityPanel panel) {
+
+    panel = new imp.gui.ComplexityPanel(beatsPerBar, attrGranularity, attrTotal);
+    panel.setMinimumSize(new java.awt.Dimension(0, 200));
+    panel.setPreferredSize(panel.getSize());
+    panel.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            mouseEventHandler(evt);
+        }
+    });
+    panel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+        public void mouseDragged(java.awt.event.MouseEvent evt) {
+            mouseEventHandler(evt);
+        }
+    });
+
+    panel.setLayout(null);
+
+// Code of sub-components and layout - not shown here
+    GridBagConstraints gridBagConstraints;
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 0.14;
+    graphViewPanel.add(panel, gridBagConstraints);
 }
 
 /**
@@ -2261,8 +2310,9 @@ public void replacePanels(int index) {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 10);
         globalControlPanel.add(jLabel4, gridBagConstraints);
 
-        granularityComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "5" }));
-        granularityComboBox.setSelectedItem(1);
+        Integer[] ints = new Integer[1];
+        ints[0] = new Integer(1);
+        granularityComboBox.setModel(new DefaultComboBoxModel(ints));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -5284,12 +5334,14 @@ public void closeWindow()
                             verifyBeats();
 
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
-                            //get rules from notate probably
-//                            PrologGrammar grammar = new PrologGrammar(compControllers[i].validNames(), compControllers[i].exponents(),
-//                                    compControllers[i].averages(), attrGranularity, beatsPerBar, rules);
-                            //Polylist list = grammar.run();
-                            //notate.generateLick(list); //grammar.run() returns a polylist, simply generate the melody
-                            //setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
+                            Polylist rules = lickgen.getGrammar().getRules();
+                            PrologGrammar grammar = new PrologGrammar(compControllers[curController].validNames(),
+                                    compControllers[curController].exponents(),
+                                    compControllers[curController].averages(),
+                                    attrGranularity, beatsPerBar, rules);
+                            Polylist list = grammar.run();
+                            notate.generateLick(list); //grammar.run() returns a polylist, simply generate the melody
+                            setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
 
 
 
@@ -5317,10 +5369,13 @@ public void closeWindow()
                             verifyBeats();
 
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
-//                            PrologGrammar grammar = new PrologGrammar(compControllers[i].validNames(), compControllers[i].exponents(),
-//                                    compControllers[i].averages(), attrGranularity, beatsPerBar, rules);
-                            //Polylist list = grammar.run();
-                            //setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
+                            Polylist rules = lickgen.getGrammar().getRules();
+                            PrologGrammar grammar = new PrologGrammar(compControllers[curController].validNames(),
+                                    compControllers[curController].exponents(),
+                                    compControllers[curController].averages(),
+                                    attrGranularity, beatsPerBar, rules);
+                            Polylist list = grammar.run();
+                            setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
 
 
                             if (useGrammar) {
