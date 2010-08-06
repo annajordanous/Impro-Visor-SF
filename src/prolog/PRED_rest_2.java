@@ -1,14 +1,3 @@
-package prolog;
-
-package prolog;
-
-package prolog;
-
-package prolog;
-
-package prolog;
-
-package prolog;
 
 package prolog;
 
