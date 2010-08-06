@@ -135,7 +135,7 @@ public class ComplexityWindowController {
         granBox = gran;
         granBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                System.out.println("item state changed, updating gran is: " + updatingGran);
+                //System.out.println("item state changed, updating gran is: " + updatingGran);
                 if (!updatingGran) {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
                         int gran = (Integer) granBox.getSelectedItem();
@@ -191,7 +191,7 @@ public class ComplexityWindowController {
      * Takes a new number of beats and redraws the graphs.
      */
     public void updateBeats(int beats) {
-        System.out.println("beats: "+beats);
+        //System.out.println("beats: "+beats);
         if (totalNumBeats == beats) { return; }
         else if(beats > 0) {
             totalNumBeats = beats;
@@ -227,15 +227,15 @@ public class ComplexityWindowController {
     public void updateGranBox() {
         updatingGran = true;
 
-        System.out.println("before remove, updating gran box is: "+updatingGran);
-        System.out.println("before remove, item count is: "+granBox.getItemCount());
-        System.out.println("item at 0: "+granBox.getItemAt(0));
+        //System.out.println("before remove, updating gran box is: "+updatingGran);
+        //System.out.println("before remove, item count is: "+granBox.getItemCount());
+        //System.out.println("item at 0: "+granBox.getItemAt(0));
 
         //granBox.removeAllItems();
         if (granBox.getItemCount() > 1) {
             int count = granBox.getItemCount();
             for (int i=count-1; i>0; i--) {
-                System.out.println("item at index: "+i+" is: "+granBox.getItemAt(i));
+                //System.out.println("item at index: "+i+" is: "+granBox.getItemAt(i));
                 updatingGran = true;
                 granBox.removeItemAt(i);
             }
@@ -245,7 +245,7 @@ public class ComplexityWindowController {
         //granBox.addItem(new Integer(1));    //item at index 0 will always be 1
 
         if (totalNumBeats == 0) {
-            System.out.println("totalnumbeats is 0");
+            //System.out.println("totalnumbeats is 0");
             updatingGran = false;
             return;
         }
@@ -268,7 +268,7 @@ public class ComplexityWindowController {
         }
 
         if (!granBox.selectWithKeyChar(Integer.toString(attrGranularity).charAt(0))) {
-            //System.out.println("gran was: "+attrGranularity);
+            ////System.out.println("gran was: "+attrGranularity);
             granBox.selectWithKeyChar('1'); //default--set to highest granularity if the previous gran isn't valid anymore
             attrGranularity = 1;
             //update all the panels with this granularity

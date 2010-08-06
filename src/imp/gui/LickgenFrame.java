@@ -212,7 +212,7 @@ private void initCompFileChoosers() {
 private ComplexityWindowController initComplexityImages() {
     ComplexityWindowController complexityController;
 
-    System.out.println("init complexity images called");
+    //System.out.println("init complexity images called");
 
     //if (numControllers == 1) {
         complexityController = new ComplexityWindowController(attrTotal, attrGranularity,
@@ -5345,7 +5345,7 @@ public void closeWindow()
 
 
 
-                            notate.generate(lickgen);
+                            //notate.generate(lickgen);
                         }//GEN-LAST:event_complexityGenerateMelodyButtonActionPerformed
 
                         /**
@@ -5378,15 +5378,15 @@ public void closeWindow()
                             setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
 
 
-                            if (useGrammar) {
-                                setComplexityRhythmFieldText(
-                                        lickgen.generateRhythmFromGrammar(notate.getTotalSlots()).toString());
-                            } else {
-                                setComplexityRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
-                                        minDuration,
-                                        maxDuration,
-                                        restProb).toString());
-                            }
+//                            if (useGrammar) {
+//                                setComplexityRhythmFieldText(
+//                                        lickgen.generateRhythmFromGrammar(notate.getTotalSlots()).toString());
+//                            } else {
+//                                setComplexityRhythmFieldText(lickgen.generateRandomRhythm(totalSlots,
+//                                        minDuration,
+//                                        maxDuration,
+//                                        restProb).toString());
+//                            }
                         }//GEN-LAST:event_complexityAbstractMelodyButtonActionPerformed
                         /**
                          * Fills the abstract melody in the abstract melody rhythm text field.
