@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -41,14 +39,14 @@ public class PRED_pick_random_normalized_4 extends Predicate {
     }
 
     public Predicate exec(Prolog engine) {
-    // pick_random_normalized([A|B],[C|D],E,F):-'$dummy_2_rule_expander.pro'(B,C,G,F,E,D,A)
+    // pick_random_normalized([A|B],[C|D],E,F):-'$dummy_2_rule_expander.pro'(E,B,C,A,F,G,D)
         engine.setB0();
         Term a1, a2, a3, a4, a5, a6, a7, a8;
         a1 = arg1;
         a2 = arg2;
         a3 = arg3;
         a4 = arg4;
-    // pick_random_normalized([A|B],[C|D],E,F):-['$dummy_2_rule_expander.pro'(B,C,G,F,E,D,A)]
+    // pick_random_normalized([A|B],[C|D],E,F):-['$dummy_2_rule_expander.pro'(E,B,C,A,F,G,D)]
         a1 = a1.dereference();
         if (a1.isList()){
             Term[] args = {((ListTerm)a1).car(), ((ListTerm)a1).cdr()};
@@ -73,6 +71,6 @@ public class PRED_pick_random_normalized_4 extends Predicate {
         } else {
             return engine.fail();
         }
-        return new PRED_$dummy_2_rule_expander$002Epro_7(a6, a7, new VariableTerm(engine), a4, a3, a8, a5, cont);
+        return new PRED_$dummy_2_rule_expander$002Epro_7(a3, a6, a7, a5, a4, new VariableTerm(engine), a8, cont);
     }
 }

@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -7,7 +5,7 @@ import jp.ac.kobe_u.cs.prolog.builtin.*;
  PLEASE DO NOT EDIT!
 */
 /**
- <code>'$init'/0</code> defined in tester.pro<br>
+ <code>'$init'/0</code> defined in rule_expander.pro<br>
  @author Mutsunori Banbara (banbara@kobe-u.ac.jp)
  @author Naoyuki Tamura (tamura@kobe-u.ac.jp)
  @version 1.0
@@ -15,32 +13,36 @@ import jp.ac.kobe_u.cs.prolog.builtin.*;
 public class PRED_$init_0 extends Predicate {
     static SymbolTerm s1 = SymbolTerm.makeSymbol("user");
     static SymbolTerm s2 = SymbolTerm.makeSymbol("/", 2);
-    static SymbolTerm s3 = SymbolTerm.makeSymbol("notation");
-    static IntegerTerm si4 = new IntegerTerm(3);
+    static SymbolTerm s3 = SymbolTerm.makeSymbol("recorded");
+    static IntegerTerm si4 = new IntegerTerm(2);
     static Term[] s5 = {s3, si4};
     static StructureTerm s6 = new StructureTerm(s2, s5);
-    static SymbolTerm s7 = SymbolTerm.makeSymbol("attr_memo");
-    static IntegerTerm si8 = new IntegerTerm(2);
-    static Term[] s9 = {s7, si8};
-    static StructureTerm s10 = new StructureTerm(s2, s9);
-    static SymbolTerm s11 = SymbolTerm.makeSymbol("symbol_duration_memo");
-    static Term[] s12 = {s11, si8};
-    static StructureTerm s13 = new StructureTerm(s2, s12);
-    static SymbolTerm s14 = SymbolTerm.makeSymbol("attr_median_diff");
-    static Term[] s15 = {s14, si8};
-    static StructureTerm s16 = new StructureTerm(s2, s15);
-    static SymbolTerm s17 = SymbolTerm.makeSymbol("rule");
-    static IntegerTerm si18 = new IntegerTerm(4);
-    static Term[] s19 = {s17, si18};
-    static StructureTerm s20 = new StructureTerm(s2, s19);
-    static SymbolTerm s21 = SymbolTerm.makeSymbol("recorded");
-    static Term[] s22 = {s21, si8};
-    static StructureTerm s23 = new StructureTerm(s2, s22);
-    static Term[] s24 = {s21, si4};
-    static StructureTerm s25 = new StructureTerm(s2, s24);
-    static SymbolTerm s26 = SymbolTerm.makeSymbol("flagged");
-    static Term[] s27 = {s26, si8};
+    static IntegerTerm si7 = new IntegerTerm(3);
+    static Term[] s8 = {s3, si7};
+    static StructureTerm s9 = new StructureTerm(s2, s8);
+    static SymbolTerm s10 = SymbolTerm.makeSymbol("flagged");
+    static Term[] s11 = {s10, si4};
+    static StructureTerm s12 = new StructureTerm(s2, s11);
+    static SymbolTerm s13 = SymbolTerm.makeSymbol("setvalues");
+    static Term[] s14 = {s13, si4};
+    static StructureTerm s15 = new StructureTerm(s2, s14);
+    static SymbolTerm s16 = SymbolTerm.makeSymbol("attr_memo");
+    static Term[] s17 = {s16, si4};
+    static StructureTerm s18 = new StructureTerm(s2, s17);
+    static SymbolTerm s19 = SymbolTerm.makeSymbol("attr_median_diff");
+    static Term[] s20 = {s19, si4};
+    static StructureTerm s21 = new StructureTerm(s2, s20);
+    static SymbolTerm s22 = SymbolTerm.makeSymbol("notation");
+    static Term[] s23 = {s22, si4};
+    static StructureTerm s24 = new StructureTerm(s2, s23);
+    static SymbolTerm s25 = SymbolTerm.makeSymbol("rule");
+    static IntegerTerm si26 = new IntegerTerm(4);
+    static Term[] s27 = {s25, si26};
     static StructureTerm s28 = new StructureTerm(s2, s27);
+    static SymbolTerm s29 = SymbolTerm.makeSymbol("java_random_obj");
+    static IntegerTerm si30 = new IntegerTerm(1);
+    static Term[] s31 = {s29, si30};
+    static StructureTerm s32 = new StructureTerm(s2, s31);
 
     public PRED_$init_0(Predicate cont) {
         this.cont = cont;
@@ -59,17 +61,18 @@ public class PRED_$init_0 extends Predicate {
     }
 
     public Predicate exec(Prolog engine) {
-    // '$init':-'$new_indexing_hash'(user,notation/3,A),'$new_indexing_hash'(user,attr_memo/2,B),'$new_indexing_hash'(user,symbol_duration_memo/2,C),'$new_indexing_hash'(user,attr_median_diff/2,D),'$new_indexing_hash'(user,rule/4,E),'$new_indexing_hash'(user,recorded/2,F),'$new_indexing_hash'(user,recorded/3,G),'$new_indexing_hash'(user,flagged/2,H)
+    // '$init':-'$new_indexing_hash'(user,recorded/2,A),'$new_indexing_hash'(user,recorded/3,B),'$new_indexing_hash'(user,flagged/2,C),'$new_indexing_hash'(user,setvalues/2,D),'$new_indexing_hash'(user,attr_memo/2,E),'$new_indexing_hash'(user,attr_median_diff/2,F),'$new_indexing_hash'(user,notation/2,G),'$new_indexing_hash'(user,rule/4,H),'$new_indexing_hash'(user,java_random_obj/1,I)
         engine.setB0();
-        Predicate p1, p2, p3, p4, p5, p6, p7;
-    // '$init':-['$new_indexing_hash'(user,notation/3,A),'$new_indexing_hash'(user,attr_memo/2,B),'$new_indexing_hash'(user,symbol_duration_memo/2,C),'$new_indexing_hash'(user,attr_median_diff/2,D),'$new_indexing_hash'(user,rule/4,E),'$new_indexing_hash'(user,recorded/2,F),'$new_indexing_hash'(user,recorded/3,G),'$new_indexing_hash'(user,flagged/2,H)]
-        p1 = new PRED_$new_indexing_hash_3(s1, s28, new VariableTerm(engine), cont);
-        p2 = new PRED_$new_indexing_hash_3(s1, s25, new VariableTerm(engine), p1);
-        p3 = new PRED_$new_indexing_hash_3(s1, s23, new VariableTerm(engine), p2);
-        p4 = new PRED_$new_indexing_hash_3(s1, s20, new VariableTerm(engine), p3);
-        p5 = new PRED_$new_indexing_hash_3(s1, s16, new VariableTerm(engine), p4);
-        p6 = new PRED_$new_indexing_hash_3(s1, s13, new VariableTerm(engine), p5);
-        p7 = new PRED_$new_indexing_hash_3(s1, s10, new VariableTerm(engine), p6);
-        return new PRED_$new_indexing_hash_3(s1, s6, new VariableTerm(engine), p7);
+        Predicate p1, p2, p3, p4, p5, p6, p7, p8;
+    // '$init':-['$new_indexing_hash'(user,recorded/2,A),'$new_indexing_hash'(user,recorded/3,B),'$new_indexing_hash'(user,flagged/2,C),'$new_indexing_hash'(user,setvalues/2,D),'$new_indexing_hash'(user,attr_memo/2,E),'$new_indexing_hash'(user,attr_median_diff/2,F),'$new_indexing_hash'(user,notation/2,G),'$new_indexing_hash'(user,rule/4,H),'$new_indexing_hash'(user,java_random_obj/1,I)]
+        p1 = new PRED_$new_indexing_hash_3(s1, s32, new VariableTerm(engine), cont);
+        p2 = new PRED_$new_indexing_hash_3(s1, s28, new VariableTerm(engine), p1);
+        p3 = new PRED_$new_indexing_hash_3(s1, s24, new VariableTerm(engine), p2);
+        p4 = new PRED_$new_indexing_hash_3(s1, s21, new VariableTerm(engine), p3);
+        p5 = new PRED_$new_indexing_hash_3(s1, s18, new VariableTerm(engine), p4);
+        p6 = new PRED_$new_indexing_hash_3(s1, s15, new VariableTerm(engine), p5);
+        p7 = new PRED_$new_indexing_hash_3(s1, s12, new VariableTerm(engine), p6);
+        p8 = new PRED_$new_indexing_hash_3(s1, s9, new VariableTerm(engine), p7);
+        return new PRED_$new_indexing_hash_3(s1, s6, new VariableTerm(engine), p8);
     }
 }

@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -35,11 +33,11 @@ public class PRED_rand_float_1 extends Predicate {
     }
 
     public Predicate exec(Prolog engine) {
-    // rand_float(A):-'$dummy_0_rule_expander.pro'(B,A)
+    // rand_float(A):-'$dummy_0_rule_expander.pro'(A,B)
         engine.setB0();
         Term a1;
         a1 = arg1;
-    // rand_float(A):-['$dummy_0_rule_expander.pro'(B,A)]
-        return new PRED_$dummy_0_rule_expander$002Epro_2(new VariableTerm(engine), a1, cont);
+    // rand_float(A):-['$dummy_0_rule_expander.pro'(A,B)]
+        return new PRED_$dummy_0_rule_expander$002Epro_2(a1, new VariableTerm(engine), cont);
     }
 }

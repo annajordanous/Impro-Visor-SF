@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -71,7 +69,7 @@ class PRED_$dummy_3_rule_expander$002Epro_7_sub_1 extends PRED_$dummy_3_rule_exp
 
 class PRED_$dummy_3_rule_expander$002Epro_7_1 extends PRED_$dummy_3_rule_expander$002Epro_7 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-G=<E,!,B=D
+    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-F=<G,!,E=B
         Term a1, a2, a3, a4, a5, a6, a7, a8;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -82,16 +80,16 @@ class PRED_$dummy_3_rule_expander$002Epro_7_1 extends PRED_$dummy_3_rule_expande
         a6 = engine.aregs[6];
         a7 = engine.aregs[7];
         cont = engine.cont;
-    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-['$get_level'(H),'$less_or_equal'(G,E),'$cut'(H),'$unify'(B,D)]
+    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-['$get_level'(H),'$less_or_equal'(F,G),'$cut'(H),'$unify'(E,B)]
         a8 = new VariableTerm(engine);
         //START inline expansion of $get_level(a(8))
         if (! a8.unify(new IntegerTerm(engine.B0), engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
-        //START inline expansion of $less_or_equal(a(7),a(5))
+        //START inline expansion of $less_or_equal(a(6),a(7))
         try {
-            if (Arithmetic.evaluate(a7).arithCompareTo(Arithmetic.evaluate(a5)) > 0) {
+            if (Arithmetic.evaluate(a6).arithCompareTo(Arithmetic.evaluate(a7)) > 0) {
                 return engine.fail();
             }
         } catch (BuiltinException e) {
@@ -107,8 +105,8 @@ class PRED_$dummy_3_rule_expander$002Epro_7_1 extends PRED_$dummy_3_rule_expande
             engine.cut(((IntegerTerm) a8).intValue());
         }
         //END inline expansion
-        //START inline expansion of $unify(a(2),a(4))
-        if (! a2.unify(a4, engine.trail)) {
+        //START inline expansion of $unify(a(5),a(2))
+        if (! a5.unify(a2, engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
@@ -118,7 +116,7 @@ class PRED_$dummy_3_rule_expander$002Epro_7_1 extends PRED_$dummy_3_rule_expande
 
 class PRED_$dummy_3_rule_expander$002Epro_7_2 extends PRED_$dummy_3_rule_expander$002Epro_7 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-C is G-E,pick_random_normalized(A,F,C,B)
+    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-D is F-G,pick_random_normalized(C,A,D,E)
         Term a1, a2, a3, a4, a5, a6, a7;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -129,10 +127,10 @@ class PRED_$dummy_3_rule_expander$002Epro_7_2 extends PRED_$dummy_3_rule_expande
         a6 = engine.aregs[6];
         a7 = engine.aregs[7];
         cont = engine.cont;
-    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-['$minus'(G,E,C),pick_random_normalized(A,F,C,B)]
-        //START inline expansion of $minus(a(7),a(5),a(3))
+    // '$dummy_3_rule_expander.pro'(A,B,C,D,E,F,G):-['$minus'(F,G,D),pick_random_normalized(C,A,D,E)]
+        //START inline expansion of $minus(a(6),a(7),a(4))
         try {
-            if (! a3.unify(Arithmetic.evaluate(a7).subtract(Arithmetic.evaluate(a5)), engine.trail)) {
+            if (! a4.unify(Arithmetic.evaluate(a6).subtract(Arithmetic.evaluate(a7)), engine.trail)) {
                 return engine.fail();
             }
         } catch (BuiltinException e) {
@@ -140,6 +138,6 @@ class PRED_$dummy_3_rule_expander$002Epro_7_2 extends PRED_$dummy_3_rule_expande
             throw e;
         }
         //END inline expansion
-        return new PRED_pick_random_normalized_4(a1, a6, a3, a2, cont);
+        return new PRED_pick_random_normalized_4(a3, a1, a4, a5, cont);
     }
 }

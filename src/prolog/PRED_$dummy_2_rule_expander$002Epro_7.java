@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -72,7 +70,7 @@ class PRED_$dummy_2_rule_expander$002Epro_7_sub_1 extends PRED_$dummy_2_rule_exp
 
 class PRED_$dummy_2_rule_expander$002Epro_7_1 extends PRED_$dummy_2_rule_expander$002Epro_7 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-F=[],!,D=B
+    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-G=[],!,E=C
         Term a1, a2, a3, a4, a5, a6, a7, a8;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -83,15 +81,15 @@ class PRED_$dummy_2_rule_expander$002Epro_7_1 extends PRED_$dummy_2_rule_expande
         a6 = engine.aregs[6];
         a7 = engine.aregs[7];
         cont = engine.cont;
-    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-['$get_level'(H),'$unify'(F,[]),'$cut'(H),'$unify'(D,B)]
+    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-['$get_level'(H),'$unify'(G,[]),'$cut'(H),'$unify'(E,C)]
         a8 = new VariableTerm(engine);
         //START inline expansion of $get_level(a(8))
         if (! a8.unify(new IntegerTerm(engine.B0), engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
-        //START inline expansion of $unify(a(6),s(1))
-        if (! a6.unify(s1, engine.trail)) {
+        //START inline expansion of $unify(a(7),s(1))
+        if (! a7.unify(s1, engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
@@ -103,8 +101,8 @@ class PRED_$dummy_2_rule_expander$002Epro_7_1 extends PRED_$dummy_2_rule_expande
             engine.cut(((IntegerTerm) a8).intValue());
         }
         //END inline expansion
-        //START inline expansion of $unify(a(4),a(2))
-        if (! a4.unify(a2, engine.trail)) {
+        //START inline expansion of $unify(a(5),a(3))
+        if (! a5.unify(a3, engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
@@ -114,7 +112,7 @@ class PRED_$dummy_2_rule_expander$002Epro_7_1 extends PRED_$dummy_2_rule_expande
 
 class PRED_$dummy_2_rule_expander$002Epro_7_2 extends PRED_$dummy_2_rule_expander$002Epro_7 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-'$dummy_3_rule_expander.pro'(A,D,C,B,G,F,E)
+    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-'$dummy_3_rule_expander.pro'(G,C,B,F,E,A,D)
         Term a1, a2, a3, a4, a5, a6, a7;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -125,7 +123,7 @@ class PRED_$dummy_2_rule_expander$002Epro_7_2 extends PRED_$dummy_2_rule_expande
         a6 = engine.aregs[6];
         a7 = engine.aregs[7];
         cont = engine.cont;
-    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-['$dummy_3_rule_expander.pro'(A,D,C,B,G,F,E)]
-        return new PRED_$dummy_3_rule_expander$002Epro_7(a1, a4, a3, a2, a7, a6, a5, cont);
+    // '$dummy_2_rule_expander.pro'(A,B,C,D,E,F,G):-['$dummy_3_rule_expander.pro'(G,C,B,F,E,A,D)]
+        return new PRED_$dummy_3_rule_expander$002Epro_7(a7, a3, a2, a6, a5, a1, a4, cont);
     }
 }

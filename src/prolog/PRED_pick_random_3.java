@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -39,18 +37,18 @@ public class PRED_pick_random_3 extends Predicate {
     }
 
     public Predicate exec(Prolog engine) {
-    // pick_random(A,B,C):-normalize(A,D),rand_float(E),pick_random_normalized(D,B,E,F),'$dummy_1_rule_expander.pro'(C,G,B,F,A,H)
+    // pick_random(A,B,C):-normalize(A,D),rand_float(E),pick_random_normalized(D,B,E,F),'$dummy_1_rule_expander.pro'(F,A,B,G,C,H)
         engine.setB0();
         Term a1, a2, a3, a4, a5, a6;
         Predicate p1, p2, p3;
         a1 = arg1;
         a2 = arg2;
         a3 = arg3;
-    // pick_random(A,B,C):-[normalize(A,D),rand_float(E),pick_random_normalized(D,B,E,F),'$dummy_1_rule_expander.pro'(C,G,B,F,A,H)]
+    // pick_random(A,B,C):-[normalize(A,D),rand_float(E),pick_random_normalized(D,B,E,F),'$dummy_1_rule_expander.pro'(F,A,B,G,C,H)]
         a4 = new VariableTerm(engine);
         a5 = new VariableTerm(engine);
         a6 = new VariableTerm(engine);
-        p1 = new PRED_$dummy_1_rule_expander$002Epro_6(a3, new VariableTerm(engine), a2, a6, a1, new VariableTerm(engine), cont);
+        p1 = new PRED_$dummy_1_rule_expander$002Epro_6(a6, a1, a2, new VariableTerm(engine), a3, new VariableTerm(engine), cont);
         p2 = new PRED_pick_random_normalized_4(a4, a2, a5, a6, p1);
         p3 = new PRED_rand_float_1(a5, p2);
         return new PRED_normalize_2(a1, a4, p3);

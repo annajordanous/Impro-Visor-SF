@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -164,7 +162,7 @@ class PRED_modify_weights_4_2 extends PRED_modify_weights_4 {
 
 class PRED_modify_weights_4_3 extends PRED_modify_weights_4 {
     public Predicate exec(Prolog engine) {
-    // modify_weights([A|B],C,D,E):-A=[F,G],'$dummy_4_rule_expander.pro'(B,H,I,J,K,G,F,L,M,C,D,E,N)
+    // modify_weights([A|B],C,D,E):-A=[F,G],'$dummy_4_rule_expander.pro'(E,H,D,G,I,J,C,K,L,F,M,B,N)
         Term a1, a2, a3, a4, a5, a6, a7, a8, a9, a10;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -172,7 +170,7 @@ class PRED_modify_weights_4_3 extends PRED_modify_weights_4 {
         a3 = engine.aregs[3];
         a4 = engine.aregs[4];
         cont = engine.cont;
-    // modify_weights([A|B],C,D,E):-['$unify'(A,[F,G]),'$dummy_4_rule_expander.pro'(B,H,I,J,K,G,F,L,M,C,D,E,N)]
+    // modify_weights([A|B],C,D,E):-['$unify'(A,[F,G]),'$dummy_4_rule_expander.pro'(E,H,D,G,I,J,C,K,L,F,M,B,N)]
         a1 = a1.dereference();
         if (a1.isList()){
             Term[] args = {((ListTerm)a1).car(), ((ListTerm)a1).cdr()};
@@ -194,6 +192,6 @@ class PRED_modify_weights_4_3 extends PRED_modify_weights_4 {
             return engine.fail();
         }
         //END inline expansion
-        return new PRED_$dummy_4_rule_expander$002Epro_13(a6, new VariableTerm(engine), new VariableTerm(engine), new VariableTerm(engine), new VariableTerm(engine), a8, a7, new VariableTerm(engine), new VariableTerm(engine), a2, a3, a4, new VariableTerm(engine), cont);
+        return new PRED_$dummy_4_rule_expander$002Epro_13(a4, new VariableTerm(engine), a3, a8, new VariableTerm(engine), new VariableTerm(engine), a2, new VariableTerm(engine), new VariableTerm(engine), a7, new VariableTerm(engine), a6, new VariableTerm(engine), cont);
     }
 }

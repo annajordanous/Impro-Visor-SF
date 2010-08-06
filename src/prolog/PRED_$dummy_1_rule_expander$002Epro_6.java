@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -68,7 +66,7 @@ class PRED_$dummy_1_rule_expander$002Epro_6_sub_1 extends PRED_$dummy_1_rule_exp
 
 class PRED_$dummy_1_rule_expander$002Epro_6_1 extends PRED_$dummy_1_rule_expander$002Epro_6 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-A=D
+    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-E=A
         Term a1, a2, a3, a4, a5, a6;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -78,9 +76,9 @@ class PRED_$dummy_1_rule_expander$002Epro_6_1 extends PRED_$dummy_1_rule_expande
         a5 = engine.aregs[5];
         a6 = engine.aregs[6];
         cont = engine.cont;
-    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-['$unify'(A,D)]
-        //START inline expansion of $unify(a(1),a(4))
-        if (! a1.unify(a4, engine.trail)) {
+    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-['$unify'(E,A)]
+        //START inline expansion of $unify(a(5),a(1))
+        if (! a5.unify(a1, engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
@@ -90,7 +88,7 @@ class PRED_$dummy_1_rule_expander$002Epro_6_1 extends PRED_$dummy_1_rule_expande
 
 class PRED_$dummy_1_rule_expander$002Epro_6_2 extends PRED_$dummy_1_rule_expander$002Epro_6 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-remove(D,C,E,F,B),pick_random(B,F,A)
+    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-remove(A,C,B,D,F),pick_random(F,D,E)
         Term a1, a2, a3, a4, a5, a6;
         Predicate p1;
         Predicate cont;
@@ -101,8 +99,8 @@ class PRED_$dummy_1_rule_expander$002Epro_6_2 extends PRED_$dummy_1_rule_expande
         a5 = engine.aregs[5];
         a6 = engine.aregs[6];
         cont = engine.cont;
-    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-[remove(D,C,E,F,B),pick_random(B,F,A)]
-        p1 = new PRED_pick_random_3(a2, a6, a1, cont);
-        return new PRED_remove_5(a4, a3, a5, a6, a2, p1);
+    // '$dummy_1_rule_expander.pro'(A,B,C,D,E,F):-[remove(A,C,B,D,F),pick_random(F,D,E)]
+        p1 = new PRED_pick_random_3(a6, a4, a5, cont);
+        return new PRED_remove_5(a1, a3, a2, a4, a6, p1);
     }
 }

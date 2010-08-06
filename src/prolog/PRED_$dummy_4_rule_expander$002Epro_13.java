@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -94,7 +92,7 @@ class PRED_$dummy_4_rule_expander$002Epro_13_sub_1 extends PRED_$dummy_4_rule_ex
 
 class PRED_$dummy_4_rule_expander$002Epro_13_1 extends PRED_$dummy_4_rule_expander$002Epro_13 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-assoc_and_pop(G,J,E,D),!,abs(E-F,H),attr_median_diff(G,B),M is H/B,pow(2,M,I),C is K/I,modify_weights(A,D,C,L)
+    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-assoc_and_pop(J,G,K,E),!,abs(K-D,F),attr_median_diff(J,H),B is F/H,pow(2,B,M),I is C/M,modify_weights(L,E,I,A)
         Term a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17;
         Predicate p1, p2, p3, p4, p5, p6, p7;
         Predicate cont;
@@ -112,33 +110,33 @@ class PRED_$dummy_4_rule_expander$002Epro_13_1 extends PRED_$dummy_4_rule_expand
         a12 = engine.aregs[12];
         a13 = engine.aregs[13];
         cont = engine.cont;
-    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-['$get_level'(N),assoc_and_pop(G,J,E,D),'$cut'(N),abs(E-F,H),call(user:attr_median_diff(G,B)),'$float_quotient'(H,B,M),pow(2,M,I),'$float_quotient'(K,I,C),modify_weights(A,D,C,L)]
+    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-['$get_level'(N),assoc_and_pop(J,G,K,E),'$cut'(N),abs(K-D,F),call(user:attr_median_diff(J,H)),'$float_quotient'(F,H,B),pow(2,B,M),'$float_quotient'(C,M,I),modify_weights(L,E,I,A)]
         a14 = new VariableTerm(engine);
         //START inline expansion of $get_level(a(14))
         if (! a14.unify(new IntegerTerm(engine.B0), engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
-        Term[] y1 = {a5, a6};
+        Term[] y1 = {a11, a4};
         a15 = new StructureTerm(s1, y1);
-        Term[] y2 = {a7, a2};
+        Term[] y2 = {a10, a8};
         a16 = new StructureTerm(s4, y2);
         Term[] y3 = {s3, a16};
         a17 = new StructureTerm(s2, y3);
-        p1 = new PRED_modify_weights_4(a1, a4, a3, a12, cont);
-        p2 = new PRED_$float_quotient_3(a11, a9, a3, p1);
-        p3 = new PRED_pow_3(si5, a13, a9, p2);
-        p4 = new PRED_$float_quotient_3(a8, a2, a13, p3);
+        p1 = new PRED_modify_weights_4(a12, a5, a9, a1, cont);
+        p2 = new PRED_$float_quotient_3(a3, a13, a9, p1);
+        p3 = new PRED_pow_3(si5, a2, a13, p2);
+        p4 = new PRED_$float_quotient_3(a6, a8, a2, p3);
         p5 = new PRED_call_1(a17, p4);
-        p6 = new PRED_abs_2(a15, a8, p5);
+        p6 = new PRED_abs_2(a15, a6, p5);
         p7 = new PRED_$cut_1(a14, p6);
-        return new PRED_assoc_and_pop_4(a7, a10, a5, a4, p7);
+        return new PRED_assoc_and_pop_4(a10, a7, a11, a5, p7);
     }
 }
 
 class PRED_$dummy_4_rule_expander$002Epro_13_2 extends PRED_$dummy_4_rule_expander$002Epro_13 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-modify_weights(A,J,K,L)
+    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-modify_weights(L,G,C,A)
         Term a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13;
         Predicate cont;
         a1 = engine.aregs[1];
@@ -155,7 +153,7 @@ class PRED_$dummy_4_rule_expander$002Epro_13_2 extends PRED_$dummy_4_rule_expand
         a12 = engine.aregs[12];
         a13 = engine.aregs[13];
         cont = engine.cont;
-    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-[modify_weights(A,J,K,L)]
-        return new PRED_modify_weights_4(a1, a10, a11, a12, cont);
+    // '$dummy_4_rule_expander.pro'(A,B,C,D,E,F,G,H,I,J,K,L,M):-[modify_weights(L,G,C,A)]
+        return new PRED_modify_weights_4(a12, a7, a3, a1, cont);
     }
 }

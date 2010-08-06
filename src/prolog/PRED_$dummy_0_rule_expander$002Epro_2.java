@@ -1,5 +1,3 @@
-package prolog;
-
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
@@ -61,25 +59,25 @@ class PRED_$dummy_0_rule_expander$002Epro_2_sub_1 extends PRED_$dummy_0_rule_exp
 
 class PRED_$dummy_0_rule_expander$002Epro_2_1 extends PRED_$dummy_0_rule_expander$002Epro_2 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_0_rule_expander.pro'(A,B):-java_random_obj(A),!,java_method(A,nextDouble,B)
+    // '$dummy_0_rule_expander.pro'(A,B):-java_random_obj(B),!,java_method(B,nextDouble,A)
         Term a1, a2, a3, a4, a5;
         Predicate p1, p2;
         Predicate cont;
         a1 = engine.aregs[1];
         a2 = engine.aregs[2];
         cont = engine.cont;
-    // '$dummy_0_rule_expander.pro'(A,B):-['$get_level'(C),call(user:java_random_obj(A)),'$cut'(C),java_method(A,nextDouble,B)]
+    // '$dummy_0_rule_expander.pro'(A,B):-['$get_level'(C),call(user:java_random_obj(B)),'$cut'(C),java_method(B,nextDouble,A)]
         a3 = new VariableTerm(engine);
         //START inline expansion of $get_level(a(3))
         if (! a3.unify(new IntegerTerm(engine.B0), engine.trail)) {
             return engine.fail();
         }
         //END inline expansion
-        Term[] y1 = {a1};
+        Term[] y1 = {a2};
         a4 = new StructureTerm(s3, y1);
         Term[] y2 = {s2, a4};
         a5 = new StructureTerm(s1, y2);
-        p1 = new PRED_java_method_3(a1, s4, a2, cont);
+        p1 = new PRED_java_method_3(a2, s4, a1, cont);
         p2 = new PRED_$cut_1(a3, p1);
         return new PRED_call_1(a5, p2);
     }
@@ -87,20 +85,20 @@ class PRED_$dummy_0_rule_expander$002Epro_2_1 extends PRED_$dummy_0_rule_expande
 
 class PRED_$dummy_0_rule_expander$002Epro_2_2 extends PRED_$dummy_0_rule_expander$002Epro_2 {
     public Predicate exec(Prolog engine) {
-    // '$dummy_0_rule_expander.pro'(A,B):-java_constructor('java.util.Random',A),assert(java_random_obj(A)),java_method(A,nextDouble,B)
+    // '$dummy_0_rule_expander.pro'(A,B):-java_constructor('java.util.Random',B),assert(java_random_obj(B)),java_method(B,nextDouble,A)
         Term a1, a2, a3, a4;
         Predicate p1, p2;
         Predicate cont;
         a1 = engine.aregs[1];
         a2 = engine.aregs[2];
         cont = engine.cont;
-    // '$dummy_0_rule_expander.pro'(A,B):-[java_constructor('java.util.Random',A),assert(user:java_random_obj(A)),java_method(A,nextDouble,B)]
-        Term[] y1 = {a1};
+    // '$dummy_0_rule_expander.pro'(A,B):-[java_constructor('java.util.Random',B),assert(user:java_random_obj(B)),java_method(B,nextDouble,A)]
+        Term[] y1 = {a2};
         a3 = new StructureTerm(s3, y1);
         Term[] y2 = {s2, a3};
         a4 = new StructureTerm(s1, y2);
-        p1 = new PRED_java_method_3(a1, s4, a2, cont);
+        p1 = new PRED_java_method_3(a2, s4, a1, cont);
         p2 = new PRED_assert_1(a4, p1);
-        return new PRED_java_constructor_2(s5, a1, p2);
+        return new PRED_java_constructor_2(s5, a2, p2);
     }
 }
