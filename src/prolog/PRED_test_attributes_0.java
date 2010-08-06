@@ -1,3 +1,9 @@
+package prolog;
+
+import prolog.PRED_test_dir_change_0;
+import prolog.PRED_test_density_0;
+import prolog.PRED_test_leap_0;
+import prolog.PRED_test_variety_0;
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*

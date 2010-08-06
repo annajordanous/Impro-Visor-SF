@@ -1,3 +1,7 @@
+package prolog;
+
+import prolog.PRED_map_modify_weights_4;
+import prolog.PRED_matrix_transpose_2;
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*

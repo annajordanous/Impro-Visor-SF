@@ -1,3 +1,6 @@
+package prolog;
+
+import prolog.PRED_unfoldr_fn_3;
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*

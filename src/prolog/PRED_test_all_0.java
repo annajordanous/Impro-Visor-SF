@@ -1,3 +1,12 @@
+package prolog;
+
+import prolog.PRED_test_range_0;
+import prolog.PRED_test_metric_value_0;
+import prolog.PRED_test_factors_of_two_0;
+import prolog.PRED_test_onset_list_helper_0;
+import prolog.PRED_test_syncopation_lh_0;
+import prolog.PRED_test_syncopation_measure_lh_0;
+import prolog.PRED_test_split_onsets_0;
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*

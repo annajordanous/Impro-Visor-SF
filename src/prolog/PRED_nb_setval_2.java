@@ -1,3 +1,6 @@
+package prolog;
+
+import prolog.PRED_retractall_nonvar_1;
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*

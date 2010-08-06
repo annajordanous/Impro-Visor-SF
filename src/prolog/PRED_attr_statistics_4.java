@@ -1,3 +1,7 @@
+package prolog;
+
+import prolog.PRED_map_fast_3;
+import prolog.PRED_transpose_attrs_2;
 import jp.ac.kobe_u.cs.prolog.lang.*;
 import jp.ac.kobe_u.cs.prolog.builtin.*;
 /*
