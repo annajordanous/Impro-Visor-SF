@@ -7,7 +7,7 @@ import prolog.*;
 import polya.*;
 
 public class PrologGrammar {
-    PrologControl prolog;
+    protected PrologControl prolog;
     protected static ListTerm NIL = new ListTerm(SymbolTerm.makeSymbol( "" ),
 						 SymbolTerm.makeSymbol( "[]" ));
 
@@ -22,11 +22,11 @@ public class PrologGrammar {
 	SymbolTerm      name;
 	ListTerm        exponentList, avgList;
 
-        prolog = new PrologControl();
+	prolog = new PrologControl();
+        System.out.println("constructor: prolog control: "+prolog);
 
 	assertFunctor("time_step", 	new Term[] {new IntegerTerm(timeStep)});
 	assertFunctor("measure_length", new Term[] {new IntegerTerm(measureLength)});
-	assertRules(rules);
 
 	// for each exponent and avg, assert it:
         for(int i = 0; i < attributeNames.size(); i++)
@@ -38,18 +38,57 @@ public class PrologGrammar {
 	    assertFunctor("exponent",new Term[]{exponentList});
 	    assertFunctor("avg"     ,new Term[]{avgList});
 	}
+
+	// Call rule_initialize on the rules.
+	Predicate init = new PRED_initialize_rules_4();
+	Term ruleArg = rulesToList(rules);
+	Term[] args = {ruleArg,
+		       new VariableTerm(),
+		       new VariableTerm(),
+		       new VariableTerm()};
+
+	prolog.setPredicate(init, args);
+	if (! prolog.call())	// this runs the predicate, and returns true iff
+				// it succeeds.
+	    System.out.println("Rule initialization failed!");
     }
 
-    public Polylist run() {
-        Predicate test = new PRED_test_0();
-        
-        return null;
+        // run an already initialized PrologGrammar
+    public Polylist run(int duration) {
+
+	Predicate run = new PRED_run_grammar_2();
+	Term output = new VariableTerm();
+        System.out.println("run -- prolog control: "+prolog);
+
+	prolog.setPredicate(
+	    run,new Term[]{ new IntegerTerm(duration),
+			     output});
+
+        return listTermToPolylist((ListTerm)output);
+    }
+
+    // convert a ListTerm into a Polylist of strings
+    protected static Polylist listTermToPolylist(ListTerm L) {
+	Polylist list = Polylist.nil;
+	Term elem;
+	Term nilSym = SymbolTerm.makeSymbol("[]");
+
+	if (L.equals(NIL))
+	    return list;
+
+	do {
+	    list = list.cons(L.car());
+	} while (! L.cdr().equals(nilSym));
+
+	return list;
     }
 
     public void assertFunctor(String name, Term[] body) {
-	StructureTerm[] arg =
+        System.out.println("body length: "+body.length);
+        System.out.println("prolog control: "+prolog);
+	Term[] arg =
 	    {new StructureTerm(
-		SymbolTerm.makeSymbol(name),
+		SymbolTerm.makeSymbol(name, body.length),
 		body)};
 	prolog.setPredicate(new PRED_assert_1(),
 			    arg);
@@ -71,36 +110,30 @@ public class PrologGrammar {
     }
 
 
-    static public ListTerm polyListToSymbolListTerm(Polylist poly) {
-	if (poly.isEmpty())
+
+    protected ListTerm rulesToList(Polylist rules) {
+	if(rules.isEmpty())
 	    return NIL;
 
-	return new ListTerm(
-	    SymbolTerm.makeSymbol((String) poly.first()),
-	    polyListToSymbolListTerm(poly.rest()));
-    }
+	Polylist rule = (Polylist) (rules.first());
+	String   type = (String)   (rule.first());
 
-    protected void assertRules(Polylist rules) {
-        for(String rule = (String) rules.first();
-            rules.nonEmpty();
-            rules = rules.rest())
-        {
-            if (! rule.equals("rule"))
-                continue;
-            assertFunctor("rule", makeRuleArgs(rules));
+	if (! rule.equals("rule"))
+	    return rulesToList(rules.rest());
 
-        }
+	// convert the rule into a list
+	return new ListTerm(ruleToFunctor(rule),
+			    rulesToList(rules.rest()));
     }
 
     // Makes the argument list for a rule.
     // Returns: a list of Terms representing the rule.  Since we don't have
     // gensym, we have to leave the expression without a variable.  This wil
-    protected static Term[] makeRuleArgs(Polylist ruleList) {
+    protected StructureTerm ruleToFunctor(Polylist ruleList) {
         Term name;
 	ListTerm expansion;
 	DoubleTerm weight;
 	Term expression;
-
 
         PolylistEnum rule     = new PolylistEnum(ruleList);
         SymbolTerm ruleSymbol = SymbolTerm.makeSymbol(
@@ -110,11 +143,12 @@ public class PrologGrammar {
         if (maybeName instanceof String) //  not a production.
         {
 	    name       = SymbolTerm.makeSymbol((String) maybeName);
-	    expansion  = polyListToSymbolListTerm((Polylist) rule.nextElement());
+	    expansion  = convertPolylistExpansion((Polylist) rule.nextElement());
 	    weight     = new DoubleTerm((Double) rule.nextElement());
 	    expression = SymbolTerm.makeSymbol("true");
 
-	    return new Term[] {name, expansion, weight, expression};
+	    return new StructureTerm( (SymbolTerm) name,
+				      new Term[]{expansion, weight, expression});
 	}
 
         // otherwise, it is a production.
@@ -127,13 +161,30 @@ public class PrologGrammar {
 	// production term into a functor of the name and a generated
 	// symbol.
 
-	Term[]  expansionAndExpression  = productionExpansion((Polylist) rule.nextElement());
+	Term[] expansionAndExpression =
+	    productionExpansion((Polylist) rule.nextElement());
 	expansion  = (ListTerm) expansionAndExpression[0];
 	expression = expansionAndExpression[1];
+
 	weight     = new DoubleTerm((Double) rule.nextElement());
 
-	return new Term[] {name, expansion, weight, expression};
+	// return the functor form
+	return new StructureTerm(
+	    SymbolTerm.makeSymbol( "rule"),
+	    new Term[] {name, expansion, weight, expression});
 
+    }
+
+    // converts a polylist expansion into a ListTerm.  It changes the Improvisor
+    // note notation into t(<type>, <duration>) functors.
+    public ListTerm convertPolylistExpansion(Polylist poly) {
+	if (poly.isEmpty())
+	    return NIL;
+
+	return new ListTerm(
+
+	    SymbolTerm.makeSymbol((String) poly.first()),
+	    convertPolylistExpansion(poly.rest()));
     }
 
 
@@ -197,4 +248,7 @@ public class PrologGrammar {
 
     }
 
+    public static void main(String[] args) {
+	return;
+    }
 }
