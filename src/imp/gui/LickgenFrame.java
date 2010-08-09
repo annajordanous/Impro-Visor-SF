@@ -5339,7 +5339,8 @@ public void closeWindow()
                                     compControllers[curController].exponents(),
                                     compControllers[curController].averages(),
                                     attrGranularity, beatsPerBar, rules);
-                            Polylist list = grammar.run();
+                            int dur = compControllers[curController].getTotalNumBeats() * notate.getBeatValue();
+                            Polylist list = grammar.run(dur);
                             notate.generateLick(list); //grammar.run() returns a polylist, simply generate the melody
                             setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
 
@@ -5374,7 +5375,9 @@ public void closeWindow()
                                     compControllers[curController].exponents(),
                                     compControllers[curController].averages(),
                                     attrGranularity, beatsPerBar, rules);
-                            Polylist list = grammar.run();
+                            //num slots this selection takes up
+                            int dur = compControllers[curController].getTotalNumBeats() * notate.getBeatValue();
+                            Polylist list = grammar.run(dur);
                             setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
 
 

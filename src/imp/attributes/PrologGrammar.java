@@ -23,7 +23,9 @@ public class PrologGrammar {
 	ListTerm        exponentList, avgList;
 
 	prolog = new PrologControl();
-        System.out.println("constructor: prolog control: "+prolog);
+//        System.out.println("constructor: prolog control: "+prolog);
+//        System.out.println("rules? : "+rules.toString());
+
 
 	assertFunctor("time_step", 	new Term[] {new IntegerTerm(timeStep)});
 	assertFunctor("measure_length", new Term[] {new IntegerTerm(measureLength)});
@@ -61,8 +63,9 @@ public class PrologGrammar {
         System.out.println("run -- prolog control: "+prolog);
 
 	prolog.setPredicate(
-	    run,new Term[]{ new IntegerTerm(duration),
+	    run, new Term[]{ new IntegerTerm(duration),
 			     output});
+        System.out.println(output.toJava().toString());
 
         return listTermToPolylist((ListTerm)output);
     }
@@ -70,7 +73,6 @@ public class PrologGrammar {
     // convert a ListTerm into a Polylist of strings
     protected static Polylist listTermToPolylist(ListTerm L) {
 	Polylist list = Polylist.nil;
-	Term elem;
 	Term nilSym = SymbolTerm.makeSymbol("[]");
 
 	if (L.equals(NIL))
@@ -83,9 +85,9 @@ public class PrologGrammar {
 	return list;
     }
 
-    public void assertFunctor(String name, Term[] body) {
-        System.out.println("body length: "+body.length);
-        System.out.println("prolog control: "+prolog);
+    private void assertFunctor(String name, Term[] body) {
+        //System.out.println("body length: "+body.length);
+        //System.out.println("prolog control: "+prolog);
 	Term[] arg =
 	    {new StructureTerm(
 		SymbolTerm.makeSymbol(name, body.length),
@@ -111,15 +113,16 @@ public class PrologGrammar {
 
 
 
-    protected ListTerm rulesToList(Polylist rules) {
+    private ListTerm rulesToList(Polylist rules) {
 	if(rules.isEmpty())
 	    return NIL;
 
 	Polylist rule = (Polylist) (rules.first());
 	String   type = (String)   (rule.first());
 
-	if (! rule.equals("rule"))
+	if (!type.equals("rule")) {
 	    return rulesToList(rules.rest());
+        }
 
 	// convert the rule into a list
 	return new ListTerm(ruleToFunctor(rule),
@@ -154,7 +157,7 @@ public class PrologGrammar {
         // otherwise, it is a production.
 	VariableTerm argument = new VariableTerm();
 	name = new StructureTerm(
-	    SymbolTerm.makeSymbol((String) ((Polylist) maybeName).first()),
+	    SymbolTerm.makeSymbol((String) ((Polylist) maybeName).first(), 1),
 	    new Term[] {argument});
 
         // convert the expansion correctly.  This means turning the Polylist
@@ -163,14 +166,14 @@ public class PrologGrammar {
 
 	Term[] expansionAndExpression =
 	    productionExpansion((Polylist) rule.nextElement());
-	expansion  = (ListTerm) expansionAndExpression[0];
-	expression = expansionAndExpression[1];
+	expansion  = (ListTerm) expansionAndExpression[1];
+	expression = expansionAndExpression[0];
 
 	weight     = new DoubleTerm((Double) rule.nextElement());
 
 	// return the functor form
 	return new StructureTerm(
-	    SymbolTerm.makeSymbol( "rule"),
+	    SymbolTerm.makeSymbol("rule", 4),
 	    new Term[] {name, expansion, weight, expression});
 
     }
@@ -223,7 +226,7 @@ public class PrologGrammar {
 	    generateExpression((Polylist) elem, newVar, oldVar),
 	    new ListTerm(	//  make the expansion
 		new StructureTerm(
-		    SymbolTerm.makeSymbol((String) ((Polylist) elem).first()),
+		    SymbolTerm.makeSymbol((String) ((Polylist) elem).first(), 1),
 		    new Term[] {newVar}),
 		expansionAccum));
     }
@@ -232,19 +235,23 @@ public class PrologGrammar {
 						      VariableTerm newVar,
 						      VariableTerm oldVar) {
 
+        //System.out.println("in generateExpression, production is: "+production.toString());
+        //System.out.println("in generateExpression, production.rest() is: "+production.rest().toString());
+        //System.out.println("in generateExpression, production.rest().third is: "+production.rest().third().toString());
+
 	// production is of the form (- X constant). Get the constant:
-	Double constant = (Double) production.third();
+	Double constant = ((Long)((Polylist)production.second()).third()).doubleValue();
 
 	// make the expression "X-const" as a Prolog structure.
 	StructureTerm expression = new StructureTerm(
-	    SymbolTerm.makeSymbol("-"),
+	    SymbolTerm.makeSymbol("-", 2),
 	    new Term[] {oldVar,
 			new DoubleTerm(constant)});
 
 	// make the functor "is(Y,X-const)" aka "Y is X-const"
 	return new StructureTerm(
-	    SymbolTerm.makeSymbol("is"),
-	    new Term[] {newVar,expression});
+	    SymbolTerm.makeSymbol("is", 2),
+	    new Term[] {newVar, expression});
 
     }
 

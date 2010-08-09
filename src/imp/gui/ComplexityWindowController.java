@@ -185,6 +185,10 @@ public class ComplexityWindowController {
         }
     }
 
+    public int getTotalNumBeats() {
+        return totalNumBeats;
+    }
+
 ////////////////////////////////////////// Granularity and Selection Changes ///////////////////////////////////////////////////
 
     /** 

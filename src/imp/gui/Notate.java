@@ -21814,6 +21814,10 @@ public void showNewVoicingDialog()
       return score.getLength();
   }
 
+  public int getBeatValue() {
+      return beatValue;
+  }
+
 public void toGrammar()
   {
     String outFile = getGrammarFileName();
