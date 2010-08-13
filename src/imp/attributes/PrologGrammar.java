@@ -8,8 +8,9 @@ import polya.*;
 
 public class PrologGrammar {
     protected PrologControl prolog;
-    protected static ListTerm NIL = new ListTerm(SymbolTerm.makeSymbol( "" ),
-						 SymbolTerm.makeSymbol( "[]" ));
+    protected static final Term NIL_SYM = SymbolTerm.makeSymbol( "[]" );
+    protected static final ListTerm NIL = new ListTerm(SymbolTerm.makeSymbol( "" ),
+						 NIL_SYM);
 
 
     public PrologGrammar(ArrayList<String> attributeNames,
@@ -34,11 +35,11 @@ public class PrologGrammar {
         for(int i = 0; i < attributeNames.size(); i++)
         {
 	    name         = SymbolTerm.makeSymbol(attributeNames.get(i));
-            exponentList = doubleArrayListToTerm(exponents.get(i));
-            avgList      = doubleArrayListToTerm(avgs.get(i));
 
-	    assertFunctor("exponent",new Term[]{exponentList});
-	    assertFunctor("avg"     ,new Term[]{avgList});
+	    assertFunctor("exponent",new Term[]{name,
+                                                new JavaObjectTerm(exponents.get(i))});
+	    assertFunctor("avg"     ,new Term[]{name
+                                              , new JavaObjectTerm(avgs.get(i))});
 	}
 
 	// Call rule_initialize on the rules.
@@ -63,8 +64,14 @@ public class PrologGrammar {
         System.out.println("run -- prolog control: "+prolog);
 
 	prolog.setPredicate(
-	    run, new Term[]{ new IntegerTerm(duration),
+	    run, new Term[]{ new DoubleTerm((double) duration),
 			     output});
+
+        if (! prolog.call()) // run the predicate.  if it fails, return nil.
+            return Polylist.nil;
+
+        // debugging output of the result
+        System.out.println(output);
         System.out.println(output.toJava().toString());
 
         return listTermToPolylist((ListTerm)output);
@@ -73,14 +80,13 @@ public class PrologGrammar {
     // convert a ListTerm into a Polylist of strings
     protected static Polylist listTermToPolylist(ListTerm L) {
 	Polylist list = Polylist.nil;
-	Term nilSym = SymbolTerm.makeSymbol("[]");
 
 	if (L.equals(NIL))
 	    return list;
 
 	do {
 	    list = list.cons(L.car());
-	} while (! L.cdr().equals(nilSym));
+	} while (! L.cdr().equals(NIL_SYM));
 
 	return list;
     }
@@ -113,20 +119,22 @@ public class PrologGrammar {
 
 
 
-    private ListTerm rulesToList(Polylist rules) {
+    private Term rulesToList(Polylist rules) {
 	if(rules.isEmpty())
-	    return NIL;
+	    return NIL_SYM;
 
 	Polylist rule = (Polylist) (rules.first());
 	String   type = (String)   (rule.first());
 
-	if (!type.equals("rule")) {
-	    return rulesToList(rules.rest());
-        }
-
+	if (type.equals("rule") || type.equals("base")) {
 	// convert the rule into a list
 	return new ListTerm(ruleToFunctor(rule),
 			    rulesToList(rules.rest()));
+
+        }
+
+        // nonvalid type, ignore.
+        return rulesToList(rules.rest());
     }
 
     // Makes the argument list for a rule.
@@ -134,28 +142,43 @@ public class PrologGrammar {
     // gensym, we have to leave the expression without a variable.  This wil
     protected StructureTerm ruleToFunctor(Polylist ruleList) {
         Term name;
-	ListTerm expansion;
+	Term expansion;
 	DoubleTerm weight;
 	Term expression;
 
-        PolylistEnum rule     = new PolylistEnum(ruleList);
-        SymbolTerm ruleSymbol = SymbolTerm.makeSymbol(
-	    (String) rule.nextElement());
-        Object maybeName      = rule.nextElement();
+        PolylistEnum rule     = new PolylistEnum(ruleList.rest());
+        Polylist maybeName    = (Polylist) rule.nextElement();
 
-        if (maybeName instanceof String) //  not a production.
+        if (maybeName.length() == 1) //  not a production.
         {
-	    name       = SymbolTerm.makeSymbol((String) maybeName);
+	    name       = SymbolTerm.makeSymbol((String) maybeName.first());
 	    expansion  = convertPolylistExpansion((Polylist) rule.nextElement());
 	    weight     = new DoubleTerm((Double) rule.nextElement());
 	    expression = SymbolTerm.makeSymbol("true");
 
-	    return new StructureTerm( (SymbolTerm) name,
-				      new Term[]{expansion, weight, expression});
+	    return new StructureTerm(SymbolTerm.makeSymbol("rule",4),
+                    		     new Term[]{name, expansion, weight, expression});
 	}
 
         // otherwise, it is a production.
-	VariableTerm argument = new VariableTerm();
+
+        // if it is the base case of a production,
+        Polylist givenExpansion = (Polylist) rule.nextElement();
+        if (givenExpansion.isEmpty()) {
+            name = new StructureTerm(
+                    SymbolTerm.makeSymbol((String) maybeName.first(), 1),
+                    new Term[] { new DoubleTerm((Double) maybeName.second())});
+            return new StructureTerm(SymbolTerm.makeSymbol("rule",4),
+                new Term[] {
+                  name,
+                  NIL_SYM,
+                  new DoubleTerm(1.0),
+                  SymbolTerm.makeSymbol("true")});
+        }
+
+        // if it is the recursive case of a production,
+
+        VariableTerm argument = new VariableTerm();
 	name = new StructureTerm(
 	    SymbolTerm.makeSymbol((String) ((Polylist) maybeName).first(), 1),
 	    new Term[] {argument});
@@ -164,12 +187,15 @@ public class PrologGrammar {
 	// production term into a functor of the name and a generated
 	// symbol.
 
+
 	Term[] expansionAndExpression =
-	    productionExpansion((Polylist) rule.nextElement());
-	expansion  = (ListTerm) expansionAndExpression[1];
+	    convertProductionExpansion((Polylist) givenExpansion, argument);
+	expansion  = expansionAndExpression[1];
 	expression = expansionAndExpression[0];
 
-	weight     = new DoubleTerm((Double) rule.nextElement());
+        Object untypedWeight = rule.nextElement();
+        System.out.println(untypedWeight);
+        weight     = new DoubleTerm((Double) untypedWeight);
 
 	// return the functor form
 	return new StructureTerm(
@@ -178,11 +204,10 @@ public class PrologGrammar {
 
     }
 
-    // converts a polylist expansion into a ListTerm.  It changes the Improvisor
-    // note notation into t(<type>, <duration>) functors.
-    public ListTerm convertPolylistExpansion(Polylist poly) {
+    // converts a polylist expansion into a ListTerm.
+    public Term convertPolylistExpansion(Polylist poly) {
 	if (poly.isEmpty())
-	    return NIL;
+	    return NIL_SYM;
 
 	return new ListTerm(
 
@@ -190,18 +215,22 @@ public class PrologGrammar {
 	    convertPolylistExpansion(poly.rest()));
     }
 
+    // converts a polylist expansion of a production into a ListTerm.
+    public static Term[] convertProductionExpansion(Polylist exp
+                                                  , VariableTerm arg) {
 
-    public static Term[] productionExpansion(Polylist exp) {
-	return productionExpansionHelper(exp, NIL, NIL);
+        return productionExpansionHelper(exp, NIL_SYM, NIL_SYM, arg);
     }
 
-    public static Term[] productionExpansionHelper(
+    
+    protected static Term[] productionExpansionHelper(
 	Polylist expansion,
 	Term expressionAccum,
-	Term expansionAccum) {
+	Term expansionAccum,
+        VariableTerm oldVar) {
 
 	if(expansion.isEmpty())
-	    return new Term[] {expressionAccum, expansionAccum};
+            return new Term[] {expressionAccum, expansionAccum};
 
 	Object elem = expansion.first();
 
@@ -210,14 +239,14 @@ public class PrologGrammar {
 		expansion.rest(),
 		expressionAccum,
 		new ListTerm(SymbolTerm.makeSymbol((String) elem),
-			     expansionAccum));
+			     expansionAccum),
+                oldVar);
 	}
 
 
 
         // otherwise, it is a production.
 	// make a new variable for the recursive argument
-	VariableTerm oldVar = new VariableTerm();
 	VariableTerm newVar = new VariableTerm();
 
 	return productionExpansionHelper(
@@ -228,30 +257,39 @@ public class PrologGrammar {
 		new StructureTerm(
 		    SymbolTerm.makeSymbol((String) ((Polylist) elem).first(), 1),
 		    new Term[] {newVar}),
-		expansionAccum));
+		expansionAccum),
+            oldVar);
     }
 
     protected static StructureTerm generateExpression(Polylist production,
 						      VariableTerm newVar,
 						      VariableTerm oldVar) {
 
-        //System.out.println("in generateExpression, production is: "+production.toString());
-        //System.out.println("in generateExpression, production.rest() is: "+production.rest().toString());
-        //System.out.println("in generateExpression, production.rest().third is: "+production.rest().third().toString());
-
 	// production is of the form (- X constant). Get the constant:
 	Double constant = ((Long)((Polylist)production.second()).third()).doubleValue();
 
-	// make the expression "X-const" as a Prolog structure.
+
+        // make sure it's greater than zero.
+        StructureTerm baseCase = new StructureTerm(
+                SymbolTerm.makeSymbol(">", 2),
+                new Term[] {oldVar,
+                            new DoubleTerm(0)});
+
+        // make the expression "X-const" as a Prolog structure.
 	StructureTerm expression = new StructureTerm(
 	    SymbolTerm.makeSymbol("-", 2),
 	    new Term[] {oldVar,
 			new DoubleTerm(constant)});
 
 	// make the functor "is(Y,X-const)" aka "Y is X-const"
-	return new StructureTerm(
+	StructureTerm recurse = new StructureTerm(
 	    SymbolTerm.makeSymbol("is", 2),
 	    new Term[] {newVar, expression});
+
+        // the expression we call is the base case and the recursion case
+        return new StructureTerm(
+                SymbolTerm.makeSymbol(",", 2),
+                new Term[] {baseCase, recurse});
 
     }
 
