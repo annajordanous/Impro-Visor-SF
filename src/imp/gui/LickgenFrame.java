@@ -5335,13 +5335,14 @@ public void closeWindow()
 
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
                             Polylist rules = lickgen.getGrammar().getRules();
-                            PrologGrammar grammar = new PrologGrammar(compControllers[curController].validNames(),
+                            PrologGrammar grammar = new PrologGrammar(
+                                    compControllers[curController].validNames(),
                                     compControllers[curController].exponents(),
                                     compControllers[curController].averages(),
                                     attrGranularity, beatsPerBar, rules);
                             int dur = compControllers[curController].getTotalNumBeats() * notate.getBeatValue();
-                            Polylist list = grammar.run(dur);
-                            notate.generateLick(list); //grammar.run() returns a polylist, simply generate the melody
+                            Polylist list = grammar.run(dur);  //grammar.run() returns the melody.
+                            notate.generateLick(list); 
                             setComplexityRhythmFieldText(list.toString()); //put the abstract melody in the text window
 
 
@@ -5371,7 +5372,8 @@ public void closeWindow()
 
                             // ************************ RULE EXPANDER STUFF GOES HERE *******************
                             Polylist rules = lickgen.getGrammar().getRules();
-                            PrologGrammar grammar = new PrologGrammar(compControllers[curController].validNames(),
+                            PrologGrammar grammar = new PrologGrammar(
+                                    compControllers[curController].validNames(),
                                     compControllers[curController].exponents(),
                                     compControllers[curController].averages(),
                                     attrGranularity, beatsPerBar, rules);
