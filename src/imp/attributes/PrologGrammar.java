@@ -167,7 +167,7 @@ public class PrologGrammar {
         if (givenExpansion.isEmpty()) {
             name = new StructureTerm(
                     SymbolTerm.makeSymbol((String) maybeName.first(), 1),
-                    new Term[] { new DoubleTerm((Double) maybeName.second())});
+                    new Term[] { new DoubleTerm((Long)maybeName.second())});
             return new StructureTerm(SymbolTerm.makeSymbol("rule",4),
                 new Term[] {
                   name,
