@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     <property name="impDir"                 value="src/imp"                  />
     <property name="jmDir"                  value="src/jm"                   />
     <property name="polyaDir"               value="src/polya"                />
-    <property name="prologDir"              value="src/prolog"               />
     <property name="testDir"                value="test"                     />
     <property name="buildDir"               value="build"                    />
     <property name="lsDir"                  value="leadsheets"               />
@@ -127,27 +126,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     </javac>
 </target>
 
-<target name="prolog" depends="init" description="compile prolog">
-    <javac srcdir="${prologDir}" destdir = "${buildDir}" debug="true" includeantruntime="false">
-        <classpath refid="base.classpath" />
-        <include name="**/*.java"/>
-        <exclude name="**/package-info.java"/>
-    </javac>
-</target>
-
 <target name="buildPolya" depends="buildInit,polya" description="compile polya in build">
     <copy todir="${buildDir}">
         <fileset dir="${srcDir}">
             <include name="polya/**/*.class" />
-            <exclude name="**/package-info.java" />
-        </fileset>
-    </copy>
-</target>
-
-<target name="buildProlog" depends="buildInit,polya" description="compile prolog in build">
-    <copy todir="${buildDir}">
-        <fileset dir="${srcDir}">
-            <include name="prolog/**/*.class" />
             <exclude name="**/package-info.java" />
         </fileset>
     </copy>
@@ -162,10 +144,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     </copy>
 </target>
 
-<target name="compile" depends="polya,prolog,imp,jm" description="compile the source">
+<target name="compile" depends="polya,imp,jm" description="compile the source">
 </target>
 
-<target name="build" depends="buildPolya,buildProlog,buildImp,buildJm" description="build the source in build">
+<target name="build" depends="buildPolya,buildImp,buildJm" description="build the source in build">
 </target>
 
 <target name="dist" depends="distInit,build" description="make a distribution">
