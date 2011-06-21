@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ package imp;
  * To use this interface, import imp.Constants and make sure your class
  * implements Constants.  Then you can just use BEAT, REST, etc. in your
  * code.
+ * Includes additions by Ryan Wieghard to support Outside playing.
  */
 
 public interface Constants {
@@ -38,14 +39,16 @@ public interface Constants {
     public static final int DEFAULT_BEAT_DENOMINATOR = 4;
     
     /**
-     * defines how many slots a BEAT takes up
+     * the number of slots in a single beat
      */
+    
     public static final int BEAT = 120;
 
     /** Note: All of the following must have no fractional remainder,
      *  Hence no SIXTYFOURTH for example. SIXTYFOURTH_TRIPLET is possible
      *  in principle, but we don't have an image for it yet.
      */
+    
     public static final int WHOLE                = 480; // slots in a whole note
     public static final int HALF                 = WHOLE/2;              // 240
     public static final int QUARTER              = WHOLE/4;              // 120
@@ -107,7 +110,7 @@ public interface Constants {
    };
   
  /**
-   * Note: These must be in ascending order for binary search to work.
+   * Note: These  must be in ascending order for binary search to work.
    * Rests are not dotted.
    */ 
   static int[] knownRestValue =
@@ -842,6 +845,7 @@ public interface Constants {
 			       T_APPROACH = 'A',
 			       T_REST = 'R',
                                T_RANDOM = 'X',
+                               T_OUTSIDE = 'Y',
                                T_BASS = 'B',
                                T_GOAL = 'G';
    

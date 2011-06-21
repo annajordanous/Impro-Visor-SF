@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,12 +35,14 @@ import polya.*;
 
 /**
  @author David Morrison
+ * Includes additions by Ryan Wieghard to support Outside playing.
  */
 
-public class LickGen
-        implements Constants {
+public class LickGen implements Constants 
+{
     // Some notes are initialized to these pitch values; use really big numbers to
     // stay out of the way of midi numbers.
+
     public static final int NOTE = 1000;
     public static final int CHORD = 1001;
     public static final int SCALE = 1002;
@@ -48,8 +50,12 @@ public class LickGen
     public static final int APPROACH = 1004;
     public static final int RANDOM = 1005;
     public static final int BASS = 1006;
-    public static final int GOAL = 1007;// Parameter strings
+    public static final int GOAL = 1007;
+    public static final int OUTSIDE = 1008;
+    
+    // Parameter strings
     // Strings used as labels in the grammar file
+    
     public static final String MIN_PITCH_STRING = "min-pitch";
     public static final String MAX_PITCH_STRING = "max-pitch";
     public static final String MIN_INTERVAL = "min-interval";
@@ -1430,13 +1436,99 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
                             addNote(note, lick, rhythmString, avoidRepeats, "random", item);
                         }
                         break;
+                        /*
+                    case OUTSIDE:
+                        // Right now this does the exact same thing random does.
+                         {
+                            int low = Math.max(minPitch, oldPitch - maxInterval);
+                            int high = Math.min(maxPitch, oldPitch + maxInterval);
+                            System.out.println("you have reached Case OutSide in fill melody");
+                            while (true) {
+                                pitch = randomNote(low, high);
+                                if (!(pitch > oldPitch - minInterval && pitch < oldPitch + minInterval)) {
+                                    break;
+                                }
+                            }
+                            note.setPitch(pitch);
+                            oldPitch = pitch;
+                            addNote(note, lick, rhythmString, avoidRepeats, "random", item);
+                        }
+                        break;
+
+                         */
+                      
+                    case OUTSIDE:
+                        // Transposes a semitone from the default
+                         {
+                            if (bernoulli(leapProb)) {
+                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) {
+                                    oldPitch = Math.min(oldPitch + 12, maxPitch);
+                                } else {
+                                    oldPitch = Math.max(oldPitch - 12, minPitch);
+                                }
+                            }
+                            boolean validNote = false;
+
+                            for (int i = 0; i < NOTE_GEN_LIMIT; ++i) {
+                                validNote = false;
+                                pitch = getRandomNote(oldPitch, minInterval, maxInterval,
+                                        minPitch, maxPitch, section);
+                                String pitchString =
+                                        PitchClass.getPitchClassFromMidi(pitch).toString();
+                                validNote = checkNote(position, pitch, pitchString, chordProg, type);
+                                if ((!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote) {
+                                    break;
+                                }
+                            }
+                            //System.out.println("Color Chord Pitch: "+ pitch);
+                            pitch = pitch + 1; //adds one to what the default returns
+                            //System.out.println("Color Chord Pitch Plus one: " + pitch);
+                            note.setPitch(pitch);
+                            addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                        }
+                        break;
+                        
+                             /*
+                    case OUTSIDE:
+                        // Transposes a minor third from default
+                         {
+                            if (bernoulli(leapProb)) {
+                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) {
+                                    oldPitch = Math.min(oldPitch + 12, maxPitch);
+                                } else {
+                                    oldPitch = Math.max(oldPitch - 12, minPitch);
+                                }
+                            }
+                            boolean validNote = false;
+
+                            for (int i = 0; i < NOTE_GEN_LIMIT; ++i) {
+                                validNote = false;
+                                pitch = getRandomNote(oldPitch, minInterval, maxInterval,
+                                        minPitch, maxPitch, section);
+                                String pitchString =
+                                        PitchClass.getPitchClassFromMidi(pitch).toString();
+                                validNote = checkNote(position, pitch, pitchString, chordProg, type);
+                                if ((!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote) {
+                                    break;
+                                }
+                            }
+                            //System.out.println("Color Chord Pitch: "+ pitch);
+                            pitch = pitch + 1; //adds one to what the default returns
+                            //System.out.println("Color Chord Pitch Plus one: " + pitch);
+                            note.setPitch(pitch);
+                            addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                        }
+                        break;
+                        */
+    
+
 
                     default:
                         // If it's not a rest or approach tone, treat it normally.
                         // What is "normally"??
                          {
                             if (bernoulli(leapProb)) {
-                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) {
+                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) { //drop an octave
                                     oldPitch = Math.min(oldPitch + 12, maxPitch);
                                 } else {
                                     oldPitch = Math.max(oldPitch - 12, minPitch);
@@ -1939,6 +2031,9 @@ private boolean checkNote(int pos, int pitch, String pitchString,
                 break;
             case T_RANDOM:
                 note = new Note(RANDOM, Accidental.NATURAL, duration);
+                break;
+            case T_OUTSIDE:
+                note = new Note(OUTSIDE, Accidental.NATURAL, duration);
                 break;
             case T_REST:
                 note = Note.makeRest(duration);
