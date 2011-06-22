@@ -20,6 +20,7 @@
 
 package imp.com;
 
+import imp.RecentFiles;
 import imp.data.*;
 import imp.util.*;
 import java.io.*;
@@ -77,6 +78,8 @@ public class SaveLeadsheetCommand implements Command {
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             Leadsheet.saveLeadSheet(out, score);
             out.close();
+            RecentFiles recent = new RecentFiles(file.getAbsolutePath());
+            recent.writeNewFile();
             ProgramStatus.setStatus("Lead sheet saved.");
             if(cm != null)
                 cm.changedSinceLastSave(false);

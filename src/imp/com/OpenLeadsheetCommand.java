@@ -20,6 +20,7 @@
 
 package imp.com;
 
+import imp.RecentFiles;
 import imp.data.*;
 import imp.util.*;
 import polya.*;
@@ -73,6 +74,8 @@ public class OpenLeadsheetCommand implements Command {
         
         try {
             leadStream = new FileInputStream(file);
+            RecentFiles recFile = new RecentFiles(file.getAbsolutePath());
+            recFile.writeNewFile();
         }
         catch(Exception e) {
             ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + file);

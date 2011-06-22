@@ -2162,6 +2162,7 @@ public class Notate
         jSeparator22 = new javax.swing.JSeparator();
         newMI = new javax.swing.JMenuItem();
         openLeadsheetMI = new javax.swing.JMenuItem();
+        openRecentLeadsheetMI = new javax.swing.JMenuItem();
         revertToSavedMI = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JSeparator();
         saveLeadsheetMI = new javax.swing.JMenuItem();
@@ -7150,7 +7151,6 @@ public class Notate
         earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.setOpaque(true);
         earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.setSize(new java.awt.Dimension(40, 35));
         earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 earlyScrollBtnActionPerformed(evt);
@@ -7295,6 +7295,14 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
+        openRecentLeadsheetMI.setText("Open Recent");
+        openRecentLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openRecentLeadsheetMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openRecentLeadsheetMI);
+
         revertToSavedMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         revertToSavedMI.setText("Revert to Saved Leadsheet");
         revertToSavedMI.setToolTipText("Revert leadsheet to saved version, discarding any changes.");
@@ -7307,9 +7315,7 @@ public class Notate
         fileMenu.add(jSeparator6);
 
         saveLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveLeadsheetMI.setMnemonic('s');
-        saveLeadsheetMI.setText("Save Leadsheet");
-        saveLeadsheetMI.setToolTipText("Save the current leadsheet.");
+        saveLeadsheetMI.setText("Save");
         saveLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveLeadsheetMIActionPerformed(evt);
@@ -19738,6 +19744,15 @@ private void earlyScrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GE
         }
 }//GEN-LAST:event_earlyScrollBtnActionPerformed
 
+private void openRecentLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openRecentLeadsheetMIActionPerformed
+    openRecentMenu();
+}//GEN-LAST:event_openRecentLeadsheetMIActionPerformed
+
+public void openRecentMenu()
+{
+    
+}
+
 private void setChordFontSize(int newSize)
 {
     score.setChordFontSize(newSize);
@@ -21333,6 +21348,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton openGeneratorButton;
     private javax.swing.JMenuItem openLeadsheetEditorMI;
     private javax.swing.JMenuItem openLeadsheetMI;
+    private javax.swing.JMenuItem openRecentLeadsheetMI;
     private javax.swing.ButtonGroup otherColorBtnGrp;
     private javax.swing.JLabel otherLabel;
     protected javax.swing.JFrame overrideFrame;

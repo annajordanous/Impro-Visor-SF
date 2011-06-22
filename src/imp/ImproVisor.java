@@ -311,15 +311,20 @@ public class ImproVisor implements Constants {
 
         currentWindow = notate;
 
-        if (leadsheet != null) {
             //notate.setupLeadsheetDirectory();
-            File f = new File("leadsheets/" + leadsheet);
-            System.out.println(f.exists());
-            try {
-                notate.setupLeadsheet(f, false);
+            RecentFiles recFiles = new RecentFiles();
+            String pathName = recFiles.getPathName();
+            if(pathName != null)
+            {
+                File f = new File(pathName);
+                if(f.exists())
+                {
+                    try {
+                        notate.setupLeadsheet(f, false);
+                    }
+                    catch (Exception ij) {  }
+                }
             }
-            catch (Exception ij) { System.out.println(ij); }
-        }
 
 //        ComplexityFrame attributeFrame = new ComplexityFrame();
 //        attributeFrame.setVisible(true);
