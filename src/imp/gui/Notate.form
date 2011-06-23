@@ -6176,10 +6176,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Open Recent"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openRecentLeadsheetMIActionPerformed"/>
-              </Events>
             </MenuItem>
+            <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet"/>
+              </Properties>
+              <Events>
+                <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentFileMenu"/>
+              </Events>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mostRecentLeadsheetMI">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Most Recent Leadsheet"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mostRecentLeadsheetMIActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="revertToSavedMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
