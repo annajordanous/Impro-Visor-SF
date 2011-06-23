@@ -12063,7 +12063,7 @@ private void updateTempoFromTextField()
     private void openBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBtnActionPerformed
         
         openLeadsheet(false);
-        
+
     }//GEN-LAST:event_openBtnActionPerformed
     
     
@@ -14394,6 +14394,13 @@ private boolean saveMetre()
     setItemStates();
     
     repaint();
+    
+    // For illustration purposes:
+    
+    // ChordPart chordPart = score.getChordProg();
+            
+    // System.out.println("chord symbols: " + chordPart.getChordSymbols()); 
+    // System.out.println("chord durations: " + chordPart.getChordDurations());       
  }
     
   /**

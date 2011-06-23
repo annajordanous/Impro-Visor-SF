@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,10 @@
 package imp.data;
 
 import java.io.*;
-
 import javax.sound.midi.*;
+import java.util.ArrayList;
 
 import imp.util.*;
-
 import polya.*;
 
 /**
@@ -75,15 +74,17 @@ public class ChordPart extends Part implements Serializable{
         setUnit(slotIndex, chord);
     }
     
+  @Override
     public void setSize(int size) {
         super.setSize(size);
         sectionInfo.setSize(size);
     }
     
+  @Override
     public int getMeasureLength() {
-        int beatValue = WHOLE/metre[1];
+        int beatVal = WHOLE/metre[1];
         int beatsPerBar = metre[0];
-        return beatsPerBar * beatValue;
+        return beatsPerBar * beatVal;
     }
     
     /**
@@ -268,10 +269,18 @@ public class ChordPart extends Part implements Serializable{
         sectionInfo = si;
     }
 
-    public long sequence(Sequence seq, int ch, long time, Track track, int transposition, boolean useDrums, int endLimitIndex)
-                                        throws InvalidMidiDataException {
+    public long sequence(Sequence seq, 
+                         int ch, 
+                         long time, 
+                         Track track, 
+                         int transposition, 
+                         boolean useDrums, 
+                         int endLimitIndex)
+                 throws InvalidMidiDataException 
+     {
     // to trace sequencing info:
-   // System.out.println("ChordPart time = " + time + ", endLimitIndex = " + endLimitIndex);
+    // System.out.println("ChordPart time = " + time + ", endLimitIndex = " + endLimitIndex);
+      
         return sectionInfo.sequence(seq,ch,time,track, transposition, useDrums, endLimitIndex);
     }
 
@@ -381,4 +390,41 @@ public class ChordPart extends Part implements Serializable{
     		
     	return chords;
     }
+    
+    /**
+     * Get the ChordSymbols of this ChordPart as an ArrayList<ChordSymbol>
+    @return 
+    */
+    
+    public ArrayList<ChordSymbol> getChordSymbols()
+     {
+      ArrayList<ChordSymbol> result = new ArrayList<ChordSymbol>();
+        
+        PartIterator i = iterator();
+        while(i.hasNext()) 
+           {
+            Chord chord = (Chord)i.next();
+           result.add(chord.getChordSymbol());
+          }
+     System.out.println(result);
+     return result;
+     }
+    
+    /**
+     * Get the durations of chords of this ChordPart as an ArrayList<ChordSymbol>
+    @return 
+    */
+    
+    public ArrayList<Integer> getChordDurations()
+     {
+      ArrayList<Integer> result = new ArrayList<Integer>();
+        
+        PartIterator i = iterator();
+        while(i.hasNext()) 
+           {
+            Chord chord = (Chord)i.next();
+           result.add(chord.getRhythmValue());
+          }
+     return result;
+     }
 }

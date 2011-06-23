@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,7 +196,10 @@ public class Leadsheet
     readLeadSheet(in, score, Preferences.getAlwaysUseStave(), Preferences.getStaveTypeFromPreferences());
     }
   
-  public static void readLeadSheet(Tokenizer in, Score score, boolean overrideStaveType, StaveType useStaveType)
+  public static void readLeadSheet(Tokenizer in, 
+                                   Score score, 
+                                   boolean overrideStaveType, 
+                                   StaveType useStaveType)
     {
     //System.out.println("override = " + overrideStaveType + ", type = " + useStaveType);
     
@@ -756,7 +759,12 @@ public class Leadsheet
     // Jim: Uncomment this to see note classifications on standard out
 
     //classifyNotes(score.getPart(0), score.getChordProg());
-
+    
+    // Thee following two lines are only for testing:
+    
+    //System.out.println("chord symbols: " + chords.getChordSymbols()); 
+    //System.out.println("chord durations: " + chords.getChordDurations()); 
+ 
     } // readLeadsheet
 
   public static Polylist extractChordsAndMelody(Polylist chordsAndMelody)
