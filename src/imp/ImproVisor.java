@@ -298,9 +298,9 @@ public class ImproVisor implements Constants {
         String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
 
         if( fontSizePref.equals("") )
-          {
-          fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
-          }
+        {
+            fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
+        }
 
         score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
 
@@ -310,10 +310,9 @@ public class ImproVisor implements Constants {
         notate.setNotateFrameHeight(notate);
 
         currentWindow = notate;
-
-            //notate.setupLeadsheetDirectory();
+        
             RecentFiles recFiles = new RecentFiles();
-            String pathName = recFiles.getPathName();
+            String pathName = recFiles.getFirstPathName();
             if(pathName != null)
             {
                 File f = new File(pathName);

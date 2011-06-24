@@ -6172,11 +6172,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetMIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="openRecentLeadsheetMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Open Recent"/>
-              </Properties>
-            </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Open Recent Leadsheet"/>
