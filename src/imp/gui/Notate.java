@@ -2165,6 +2165,8 @@ public class Notate
         openLeadsheetMI = new javax.swing.JMenuItem();
         openRecentLeadsheetMenu = new javax.swing.JMenu();
         mostRecentLeadsheetMI = new javax.swing.JMenuItem();
+        openRecentLeadsheetNewWindowMenu = new javax.swing.JMenu();
+        mostRecentLeadsheetNewWindowMI = new javax.swing.JMenuItem();
         revertToSavedMI = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JSeparator();
         saveLeadsheetMI = new javax.swing.JMenuItem();
@@ -7297,7 +7299,7 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
-        openRecentLeadsheetMenu.setText("Open Recent Leadsheet");
+        openRecentLeadsheetMenu.setText("Open Recent Leadsheet(same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
@@ -7317,6 +7319,27 @@ public class Notate
         openRecentLeadsheetMenu.add(mostRecentLeadsheetMI);
 
         fileMenu.add(openRecentLeadsheetMenu);
+
+        openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheete(new window)");
+        openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        mostRecentLeadsheetNewWindowMI.setText("Most Recent Leadsheets(new window)");
+        mostRecentLeadsheetNewWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostRecentLeadsheetNewWindowMIActionPerformed(evt);
+            }
+        });
+        openRecentLeadsheetNewWindowMenu.add(mostRecentLeadsheetNewWindowMI);
+
+        fileMenu.add(openRecentLeadsheetNewWindowMenu);
 
         revertToSavedMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         revertToSavedMI.setText("Revert to Saved Leadsheet");
@@ -19841,6 +19864,94 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
   }
 }//GEN-LAST:event_populateRecentFileMenu
 
+private void mostRecentLeadsheetNewWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostRecentLeadsheetNewWindowMIActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_mostRecentLeadsheetNewWindowMIActionPerformed
+
+private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentLeadsheetNewWindow
+      RecentFiles recFiles = new RecentFiles();
+      String filenames[] = {"No Recent Leadsheets to Open"};;
+      if(recFiles.getSize() == 0 || recFiles.getSize() == 1)
+      {
+          openRecentLeadsheetNewWindowMenu.removeAll();
+
+      for( String name: filenames )
+       {
+         final JMenuItem item = new JMenuItem(name);
+
+
+            openRecentLeadsheetNewWindowMenu.add(item);
+        } 
+      }
+      else
+      {
+          filenames = recFiles.convertToArray();
+          openRecentLeadsheetNewWindowMenu.removeAll();
+
+        for( String name: filenames )
+        {
+
+            final JMenuItem item = new JMenuItem(name);
+
+            item.addActionListener(
+            new ActionListener()
+            {
+            public void actionPerformed(ActionEvent evt)
+            {
+                File selected = new File(item.getText());
+                if(selected.exists())
+                {
+                    try{
+                        openInNewWindow(selected);
+                    }
+                    catch(Exception ij){
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            } // end of ActionListener embedded
+            );
+            openRecentLeadsheetNewWindowMenu.add(item);
+        }
+        openRecentLeadsheetNewWindowMenu.add(new JSeparator());
+        JMenuItem clear = new JMenuItem("clear all recent history");
+        openRecentLeadsheetNewWindowMenu.add(clear);
+        clear.addActionListener(
+        new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent evt)
+                    {
+                        try{
+                            BufferedWriter recentFiles = new BufferedWriter(new FileWriter("vocab/RecentFiles.txt"));
+                            recentFiles.write("");
+                            recentFiles.close();
+                        } catch(Exception e){
+
+                        }
+                    }
+                }
+                );
+      }
+}//GEN-LAST:event_populateRecentLeadsheetNewWindow
+
+public void openInNewWindow(File selectedFile)
+{
+    Score newScore = new Score();
+    score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+    (new OpenLeadsheetCommand(selectedFile, newScore)).execute();
+    //create a new window and show the score
+    Notate newNotate = new Notate(newScore,
+                                  this.adv,
+                                  this.impro,
+                                  (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
+                                  (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+
+            setNotateFrameHeight(newNotate);
+}
+
 private void setChordFontSize(int newSize)
 {
     score.setChordFontSize(newSize);
@@ -21411,6 +21522,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton mixerBtn;
     private javax.swing.JDialog mixerDialog;
     private javax.swing.JMenuItem mostRecentLeadsheetMI;
+    private javax.swing.JMenuItem mostRecentLeadsheetNewWindowMI;
     private javax.swing.JButton newBtn;
     private javax.swing.JMenuItem newMI;
     private javax.swing.JButton newSectionButton;
@@ -21438,6 +21550,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem openLeadsheetEditorMI;
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenu openRecentLeadsheetMenu;
+    private javax.swing.JMenu openRecentLeadsheetNewWindowMenu;
     private javax.swing.ButtonGroup otherColorBtnGrp;
     private javax.swing.JLabel otherLabel;
     protected javax.swing.JFrame overrideFrame;

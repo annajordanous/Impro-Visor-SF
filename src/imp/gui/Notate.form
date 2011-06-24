@@ -6174,7 +6174,7 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet"/>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet(same window)"/>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentFileMenu"/>
@@ -6186,6 +6186,24 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mostRecentLeadsheetMIActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="openRecentLeadsheetNewWindowMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheete(new window)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentLeadsheetNewWindow"/>
+              </Events>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mostRecentLeadsheetNewWindowMI">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Most Recent Leadsheets(new window)"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mostRecentLeadsheetNewWindowMIActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>

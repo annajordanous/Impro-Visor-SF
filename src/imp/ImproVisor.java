@@ -292,25 +292,6 @@ public class ImproVisor implements Constants {
             
         }
         
-        // Create a score with default measures in default meter
-        Score score = new Score(Notate.defaultBarsPerPart * (BEAT * Notate.defaultMetre));
-
-        String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
-
-        if( fontSizePref.equals("") )
-        {
-            fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
-        }
-
-        score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
-
- 	// Create an array of notate frames and initialize the first frame
-        Notate notate = new Notate(score, advisor, this);
-
-        notate.setNotateFrameHeight(notate);
-
-        currentWindow = notate;
-        
             RecentFiles recFiles = new RecentFiles();
             String pathName = recFiles.getFirstPathName();
             if(pathName != null)
@@ -318,11 +299,46 @@ public class ImproVisor implements Constants {
                 File f = new File(pathName);
                 if(f.exists())
                 {
+                    Score score = new Score(Notate.defaultBarsPerPart * (BEAT*Notate.defaultMetre));
                     try {
-                        notate.setupLeadsheet(f, false);
+                        Score newScore = new Score();
+
+                        score.setChordFontSize(Integer.valueOf(Preferences.getPreference(
+                        Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+                        (new OpenLeadsheetCommand(f, newScore)).execute();
+                        Notate newNotate =
+                        new Notate(newScore,
+                            advisor,
+                            this);
+
+                        newNotate.setNotateFrameHeight(newNotate);
                     }
-                    catch (Exception ij) {  }
+                    catch (Exception ij) {
+                        ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + f);
+                        return;
+                    }
                 }
+            }
+            else
+            {
+                // Create a score with default measures in default meter
+                Score score = new Score(Notate.defaultBarsPerPart * (BEAT * Notate.defaultMetre));
+
+                String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
+
+                if( fontSizePref.equals("") )
+                {
+                    fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
+                }
+
+                score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
+
+                // Create an array of notate frames and initialize the first frame
+                Notate notate = new Notate(score, advisor, this);
+
+                notate.setNotateFrameHeight(notate);
+
+                currentWindow = notate;
             }
 
 //        ComplexityFrame attributeFrame = new ComplexityFrame();
