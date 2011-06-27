@@ -66,7 +66,7 @@ public class RecentFiles {
     
     public RecentFiles(String pathName)
     {
-        filename = "vocab/RecentFiles.txt";
+        filename = "vocab" + File.separator + "RecentFiles.txt";
         stk = new Stack();
         tempStk = new Stack();
         path = pathName;
@@ -77,7 +77,7 @@ public class RecentFiles {
     
     public RecentFiles()
     {
-        filename = "vocab/RecentFiles.txt";
+        filename = "vocab" + File.separator + "RecentFiles.txt";
         stk = new Stack();
         tempStk= new Stack();
         MAX_RECENT_FILES = 11;

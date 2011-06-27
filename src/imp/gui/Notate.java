@@ -14494,9 +14494,17 @@ private boolean saveMetre()
     {
     // External MIDI numbers are 1 greater than the values used here.
 
-    try
+    String correctFormat = text.trim();
+    if(correctFormat.length()==2)
+    {
+        if(correctFormat.substring(0,1).equals("+"))
+        {
+            correctFormat = correctFormat.substring(1);
+        }
+    }
+      try
       {
-      int value = Integer.decode(text);
+      int value = Integer.decode(correctFormat);
       if( value >= MIN_KEY && value <= MAX_KEY )
         {
         return value;
