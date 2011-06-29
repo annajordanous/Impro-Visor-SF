@@ -154,13 +154,23 @@ public void actionPerformed(ActionEvent e)
     
     public long getMicrosecondsFromSlider()
     {
-          return (long)getSliderFraction()*midiSynth.getTotalMicroseconds();
+          return (long)((getSliderFraction())*(midiSynth.getTotalMicroseconds()));
     }
 
     public double getSliderFraction()
     {
         double fraction = ((double)slider.getValue())/slider.getMaximum();
         return fraction;
+    }
+    
+    public long getTotalTime()
+    {
+        return totalTimeMicroseconds;
+    }
+    
+    public int getTotalTimeSeconds()
+    {
+        return (int)Math.round((double)totalTimeMicroseconds/million);
     }
 
     /**
@@ -196,7 +206,7 @@ public void actionPerformed(ActionEvent e)
      */
 
     public void setCurrentTimeMicroseconds(long microseconds) {
-        currentTimeLabel.setText(formatSecond((int)(microseconds/million)));
+        currentTimeLabel.setText(formatSecond((int)Math.round((double)(microseconds/million))));
     }
 
     /**

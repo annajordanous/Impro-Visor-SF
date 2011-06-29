@@ -1227,8 +1227,7 @@ public class Notate
           stopPlaying();
           return;
           }
- 
-
+        
         if( autoScrollOnPlayback && currentPlaybackTab != currTabIndex && showPlayLine() )
           {
           playbackGoToTab(currentPlaybackTab);
@@ -2127,6 +2126,8 @@ public class Notate
         recordBtn = new javax.swing.JButton();
         stepInputBtn = new javax.swing.JToggleButton();
         mixerBtn = new javax.swing.JButton();
+        chordStepBackButton = new javax.swing.JButton();
+        chordStepForwardButton = new javax.swing.JButton();
         playbackPanel = new javax.swing.JPanel();
         playbackTime = new javax.swing.JLabel();
         playbackTotalTime = new javax.swing.JLabel();
@@ -6795,6 +6796,38 @@ public class Notate
         });
         playToolBar.add(mixerBtn);
 
+        chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
+        chordStepBackButton.setToolTipText("Play the entire leadsheet.");
+        chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chordStepBackButton.setFocusable(false);
+        chordStepBackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chordStepBackButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        chordStepBackButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        chordStepBackButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        chordStepBackButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chordStepBackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordStepBackButtonActionPerformed(evt);
+            }
+        });
+        playToolBar.add(chordStepBackButton);
+
+        chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
+        chordStepForwardButton.setToolTipText("Play the entire leadsheet.");
+        chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chordStepForwardButton.setFocusable(false);
+        chordStepForwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chordStepForwardButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        chordStepForwardButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        chordStepForwardButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        chordStepForwardButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chordStepForwardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordStepForwardButtonActionPerformed(evt);
+            }
+        });
+        playToolBar.add(chordStepForwardButton);
+
         playbackPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Playback Location", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         playbackPanel.setMaximumSize(new java.awt.Dimension(180, 50));
         playbackPanel.setMinimumSize(new java.awt.Dimension(120, 50));
@@ -7049,21 +7082,26 @@ public class Notate
         });
         playToolBar.add(transposeSpinner);
 
-        partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars/Chorus", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
         partBarsPanel.setMaximumSize(new java.awt.Dimension(70, 50));
         partBarsPanel.setMinimumSize(new java.awt.Dimension(70, 50));
         partBarsPanel.setOpaque(false);
-        partBarsPanel.setPreferredSize(new java.awt.Dimension(70, 50));
+        partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
-        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12));
+        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         partBarsTF1.setMaximumSize(new java.awt.Dimension(60, 15));
         partBarsTF1.setMinimumSize(new java.awt.Dimension(60, 15));
         partBarsTF1.setPreferredSize(new java.awt.Dimension(60, 15));
+        partBarsTF1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                partBarsTF1MousePressed(evt);
+            }
+        });
         partBarsTF1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 partBarsTF1ActionPerformed(evt);
@@ -7088,20 +7126,15 @@ public class Notate
                 partBarsTF1KeyReleased(evt);
             }
         });
-        partBarsTF1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                partBarsTF1MousePressed(evt);
-            }
-        });
         partBarsPanel.add(partBarsTF1, java.awt.BorderLayout.CENTER);
 
         playToolBar.add(partBarsPanel);
 
-        trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tracker Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         trackerDelayPanel.setMaximumSize(new java.awt.Dimension(80, 63));
         trackerDelayPanel.setMinimumSize(new java.awt.Dimension(80, 63));
         trackerDelayPanel.setOpaque(false);
-        trackerDelayPanel.setPreferredSize(new java.awt.Dimension(80, 45));
+        trackerDelayPanel.setPreferredSize(new java.awt.Dimension(50, 45));
         trackerDelayPanel.setLayout(new java.awt.BorderLayout());
 
         trackerDelayTextField2.setFont(new java.awt.Font("Dialog", 1, 12));
@@ -7237,6 +7270,11 @@ public class Notate
 
         scoreTab.setBackground(new java.awt.Color(255, 255, 255));
         scoreTab.setOpaque(true);
+        scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                mouseEnteredTabPanel(evt);
+            }
+        });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 scoreTabStateChanged(evt);
@@ -7245,11 +7283,6 @@ public class Notate
         scoreTab.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 scoreTabKeyPressed(evt);
-            }
-        });
-        scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                mouseEnteredTabPanel(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -12122,7 +12155,7 @@ private void updateTempoFromTextField()
         
     }//GEN-LAST:event_transposeBothDownSemitoneActionPerformed
     
-    
+
     
     public void transposeChordsDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsDownSemitoneActionPerformed
         
@@ -15429,7 +15462,7 @@ private void setLayoutPreference(Polylist layout)
       case KeyEvent.VK_I:
         playAllMIActionPerformed(null);
         break;
-
+          
       case KeyEvent.VK_K:
         stopPlayMIActionPerformed(null);
         break;
@@ -19945,6 +19978,52 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
       }
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
 
+private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
+        int currChordIndex = midiSynth.getSlot();
+        int nextChordIndex = chordProg.getNextUniqueChordIndex(currChordIndex);
+        midiSynth.setSlot((long)nextChordIndex);
+        //Stave currStave = getCurrentStave();
+        //currStave.setSelection(nextChordIndex, nextChordIndex+90);
+        switch(isPlaying)
+        {
+            case PLAYING:
+                midiSynth.pause();
+                break;
+            case PAUSED:
+                break;
+            case STOPPED:
+                playScoreBody(0);
+                midiSynth.pause();
+                break;
+        }
+        //currStave.playSelection();
+        //playScoreBody(nextChordIndex);
+        //midiSynth.pause();
+}//GEN-LAST:event_chordStepForwardButtonActionPerformed
+
+private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
+        int currChordIndex = midiSynth.getSlot();
+        int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
+        midiSynth.setSlot((long)prevChordIndex);
+        //Stave currStave = getCurrentStave();
+        //currStave.setSelection(prevChordIndex, prevChordIndex+90);
+        switch(isPlaying)
+        {
+            case PLAYING:
+                midiSynth.pause();
+                break;
+            case PAUSED:
+                break;
+            case STOPPED:
+                playScoreBody(0);
+                midiSynth.pause();
+                break;
+        }
+        //currStave.playSelection();
+        //playScoreBody(prevChordIndex);
+        //midiSynth.pause();
+}//GEN-LAST:event_chordStepBackButtonActionPerformed
+
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
@@ -21247,6 +21326,8 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField chordRootTF;
     private javax.swing.JLabel chordSearchLabel;
     private javax.swing.JTextField chordSearchTF;
+    private javax.swing.JButton chordStepBackButton;
+    private javax.swing.JButton chordStepForwardButton;
     private javax.swing.JCheckBox chordSubs;
     private javax.swing.JPanel chordTabPanel;
     private javax.swing.JLabel chordToneLabel;

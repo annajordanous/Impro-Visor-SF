@@ -792,7 +792,7 @@ public class Part implements Constants, Serializable {
             return size;     // What to do in this case?
         return nextIndex;
     }
-
+    
     /**
      * Returns the rhythm value of a unit starting at the unitIndex.
      * This function can be called on an empty slot to see what

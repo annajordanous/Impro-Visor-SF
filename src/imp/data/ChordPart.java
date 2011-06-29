@@ -198,6 +198,27 @@ public class ChordPart extends Part implements Serializable{
     return nextChordIndex;
     }
     
+    public int getPrevUniqueChordIndex(int slotIndex)
+    {
+        if(slotIndex < 0 || slotIndex >= size)
+            return -1;
+        int currentChordIndex = getCurrentChordIndex(slotIndex);
+        Chord currentChord = getChord(currentChordIndex);
+        Chord prevChord = currentChord;
+        int prevChordIndex = currentChordIndex;
+        
+        while(prevChord.getName().equals(currentChord.getName()))
+        {
+            prevChordIndex = getPrevIndex(prevChordIndex);
+            if(prevChordIndex<= -1)
+            {
+                return -1;
+            }
+            prevChord = getChord(prevChordIndex);
+        }
+        return prevChordIndex;
+    }
+    
     /**
      * Returns the Chord after the indicated slot index.
      * @param slotIndex         the index to start searching at
