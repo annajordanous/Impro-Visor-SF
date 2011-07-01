@@ -6796,7 +6796,7 @@ public class Notate
         });
         playToolBar.add(mixerBtn);
 
-        chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
+        chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversed.png"))); // NOI18N
         chordStepBackButton.setToolTipText("Play the entire leadsheet.");
         chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepBackButton.setFocusable(false);
@@ -7090,7 +7090,7 @@ public class Notate
         partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
-        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12));
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -8711,6 +8711,18 @@ public class Notate
         return;
         }
      }
+    
+    public void playChordAtIndex(int index)
+    {
+        Chord chordToPlay = chordProg.getChord(index);
+        Style currStyle = ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+        Score tempScore = new Score();
+        tempScore.addPart();
+        tempScore.getPart(0).addRest(new Rest(chordToPlay.getRhythmValue()));
+        tempScore.getChordProg().addChord(chordToPlay);
+        tempScore.getChordProg().setStyle(currStyle);
+        new PlayScoreCommand(tempScore, 0, false, 0, getTransposition(), false, 4*BEAT).execute();
+    }
     
     private void playVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playVoicingButtonActionPerformed
       String c = getChordRootTFText();
@@ -15466,6 +15478,14 @@ private void setLayoutPreference(Polylist layout)
       case KeyEvent.VK_K:
         stopPlayMIActionPerformed(null);
         break;
+          
+      case KeyEvent.VK_M:
+          chordStepForwardButtonActionPerformed(null);
+          break;
+          
+      case KeyEvent.VK_N:
+          chordStepBackButtonActionPerformed(null);
+          break;
 
       case KeyEvent.VK_R:
         addRest();
@@ -19977,51 +19997,114 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
                 );
       }
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
-
+private int currChordIndex = 0;
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
-        int currChordIndex = midiSynth.getSlot();
-        int nextChordIndex = chordProg.getNextUniqueChordIndex(currChordIndex);
-        midiSynth.setSlot((long)nextChordIndex);
-        //Stave currStave = getCurrentStave();
-        //currStave.setSelection(nextChordIndex, nextChordIndex+90);
-        switch(isPlaying)
+
+        //System.out.println(currChordIndex);
+        int nextChordIndex = chordProg.getNextChordIndex(currChordIndex);
+        if(currChordIndex != -1)
         {
-            case PLAYING:
-                midiSynth.pause();
-                break;
-            case PAUSED:
-                break;
-            case STOPPED:
-                playScoreBody(0);
-                midiSynth.pause();
-                break;
+            midiSynth.setSlot((long)currChordIndex);
+            switch(isPlaying)
+            {
+                case PLAYING:
+                    midiSynth.pause();
+                    break;
+                case PAUSED:
+                    break;
+                case STOPPED:
+                    currChordIndex = 0;
+                    nextChordIndex = chordProg.getNextChordIndex(currChordIndex);
+                    playScoreBody(0);
+                    midiSynth.pause();
+                    midiSynth.setSlot(0);
+                    break;
+            }
+            playChordAtIndex(currChordIndex);
+            try 
+            { 
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException e)   
+            {      
+                System.out.println("Sleep interrupted:" + e);      
+            }
+            playScoreBody(0);
+            midiSynth.pause();
+            midiSynth.setSlot((long)currChordIndex);
+            currChordIndex = nextChordIndex;
         }
-        //currStave.playSelection();
-        //playScoreBody(nextChordIndex);
-        //midiSynth.pause();
+        else
+        {
+            switch(isPlaying)
+            {
+                case PLAYING:
+                    midiSynth.pause();
+                    break;
+                case PAUSED:
+                    break;
+                case STOPPED:
+                    playScoreBody(0);
+                    midiSynth.pause();
+                    break;
+            }
+            currChordIndex = 0;
+            nextChordIndex = chordProg.getNextChordIndex(currChordIndex);
+            playChordAtIndex(currChordIndex);
+            try 
+            { 
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException e)   
+            {      
+                System.out.println("Sleep interrupted:" + e);      
+            }
+            playScoreBody(0);
+            midiSynth.pause();
+            midiSynth.setSlot((long)currChordIndex);
+            currChordIndex = nextChordIndex;
+        }
 }//GEN-LAST:event_chordStepForwardButtonActionPerformed
 
 private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
-        int currChordIndex = midiSynth.getSlot();
+        currChordIndex = midiSynth.getSlot();
         int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
-        midiSynth.setSlot((long)prevChordIndex);
-        //Stave currStave = getCurrentStave();
-        //currStave.setSelection(prevChordIndex, prevChordIndex+90);
-        switch(isPlaying)
+        if(currChordIndex != -1)
         {
-            case PLAYING:
-                midiSynth.pause();
-                break;
-            case PAUSED:
-                break;
-            case STOPPED:
-                playScoreBody(0);
-                midiSynth.pause();
-                break;
+            midiSynth.setSlot((long)prevChordIndex);
+            switch(isPlaying)
+            {
+                case PLAYING:
+                    midiSynth.pause();
+                    break;
+                case PAUSED:
+                    break;
+                case STOPPED:
+                    prevChordIndex = 0;
+                    playScoreBody(0);
+                    midiSynth.pause();
+                    midiSynth.setSlot(0);
+                    break;
+            }
+            currChordIndex = prevChordIndex;
         }
-        //currStave.playSelection();
-        //playScoreBody(prevChordIndex);
-        //midiSynth.pause();
+        else
+        {
+            switch(isPlaying)
+            {
+                case PLAYING:
+                    midiSynth.pause();
+                    break;
+                case PAUSED:
+                    break;
+                case STOPPED:
+                    playScoreBody(0);
+                    midiSynth.pause();
+                    break;
+            }
+            currChordIndex = 0;
+            prevChordIndex = 0;
+        }
 }//GEN-LAST:event_chordStepBackButtonActionPerformed
 
 public void openInNewWindow(File selectedFile)

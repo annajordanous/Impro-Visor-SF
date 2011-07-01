@@ -227,6 +227,15 @@ public class ChordPart extends Part implements Serializable{
     public Chord getNextChord(int slotIndex) {
         return (Chord)getNextUnit(slotIndex);
     }
+    
+    /**
+     * Returns the Chord after the indicated slot index.
+     * @param slotIndex         the index to start searching at
+     * @return Chord            the Chord after the specified index
+     */
+    public int getNextChordIndex(int slotIndex) {
+        return getNextUniqueChordIndex(slotIndex);
+    }
 
     /**
      * Returns the Chord before the indicated slot index.

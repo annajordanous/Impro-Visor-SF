@@ -8090,7 +8090,7 @@
             <Component class="javax.swing.JButton" name="chordStepBackButton">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/toolbar/play.gif"/>
+                  <Image iconType="3" name="/imp/gui/graphics/icons/playReversed.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
