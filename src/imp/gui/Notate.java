@@ -683,6 +683,8 @@ public class Notate
    *
    */
   private MidiSynth midiSynth = null; // one midiSynth is created for each Notote instance for volume control and MIDI sequencing
+  
+  private MidiSynth midiSynth2 = null;
 
   private MidiManager midiManager = null; // reference to global midiManager contained in ImproVisor
 
@@ -1008,6 +1010,8 @@ public class Notate
 
 
     midiSynth = new MidiSynth(midiManager);
+    
+    midiSynth2 = new MidiSynth(midiManager);
 
     midiRecorder = new MidiNoteActionHandler(this);
 
@@ -8720,8 +8724,13 @@ public class Notate
         tempScore.addPart();
         tempScore.getPart(0).addRest(new Rest(chordToPlay.getRhythmValue()));
         tempScore.getChordProg().addChord(chordToPlay);
-        tempScore.getChordProg().setStyle(currStyle);
-        new PlayScoreCommand(tempScore, 0, false, 0, getTransposition(), false, 4*BEAT).execute();
+        tempScore.getChordProg().setStyle("no-style");
+        try
+        {
+            midiSynth2.play(tempScore, 0, 0, 0, false, 960, 0);
+        } catch(Exception e){
+            //not exactly sure what to put here
+        }
     }
     
     private void playVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playVoicingButtonActionPerformed
@@ -19999,74 +20008,55 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
 private int currChordIndex = 0;
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
-
-        //System.out.println(currChordIndex);
-        int nextChordIndex = chordProg.getNextChordIndex(currChordIndex);
-        if(currChordIndex != -1)
+        int currIndex = 0;
+        int nextChordIndex =0;
+        switch(isPlaying)
         {
-            midiSynth.setSlot((long)currChordIndex);
-            switch(isPlaying)
-            {
-                case PLAYING:
-                    midiSynth.pause();
-                    break;
-                case PAUSED:
-                    break;
-                case STOPPED:
-                    currChordIndex = 0;
-                    nextChordIndex = chordProg.getNextChordIndex(currChordIndex);
-                    playScoreBody(0);
-                    midiSynth.pause();
-                    midiSynth.setSlot(0);
-                    break;
-            }
-            playChordAtIndex(currChordIndex);
-            try 
-            { 
-                Thread.sleep(1000);
-            }
-            catch(InterruptedException e)   
-            {      
-                System.out.println("Sleep interrupted:" + e);      
-            }
-            playScoreBody(0);
-            midiSynth.pause();
-            midiSynth.setSlot((long)currChordIndex);
-            currChordIndex = nextChordIndex;
+            case PLAYING:
+                currIndex = midiSynth.getSlot();
+                nextChordIndex = chordProg.getNextChordIndex(currIndex);
+                midiSynth.pause();
+                if(nextChordIndex != -1)
+                {
+                    midiSynth.setSlot((long)nextChordIndex);
+                }
+                else
+                {
+                    midiSynth.setSlot((long)0);
+                }
+                break;
+            case PAUSED:
+                currIndex = midiSynth.getSlot();
+                nextChordIndex = chordProg.getNextChordIndex(currIndex);
+                if(nextChordIndex != -1)
+                {
+                    midiSynth.setSlot((long)nextChordIndex);
+                }
+                else
+                {
+                    midiSynth.setSlot((long)0);
+                }
+                break;
+            case STOPPED:
+                currIndex = 0;
+                nextChordIndex= currIndex;
+                playScoreBody(0);
+                midiSynth.pause();
+                midiSynth.setSlot(0);
+                break;
+        }
+        if(nextChordIndex != -1)
+        {
+            playChordAtIndex(nextChordIndex);
         }
         else
         {
-            switch(isPlaying)
-            {
-                case PLAYING:
-                    midiSynth.pause();
-                    break;
-                case PAUSED:
-                    break;
-                case STOPPED:
-                    playScoreBody(0);
-                    midiSynth.pause();
-                    break;
-            }
-            currChordIndex = 0;
-            nextChordIndex = chordProg.getNextChordIndex(currChordIndex);
-            playChordAtIndex(currChordIndex);
-            try 
-            { 
-                Thread.sleep(1000);
-            }
-            catch(InterruptedException e)   
-            {      
-                System.out.println("Sleep interrupted:" + e);      
-            }
-            playScoreBody(0);
-            midiSynth.pause();
-            midiSynth.setSlot((long)currChordIndex);
-            currChordIndex = nextChordIndex;
+            
         }
 }//GEN-LAST:event_chordStepForwardButtonActionPerformed
 
 private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
+        int currChordIndex = 0;
         currChordIndex = midiSynth.getSlot();
         int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
         if(currChordIndex != -1)
