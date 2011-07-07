@@ -599,7 +599,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
-        clickRoadMap(evt.getX(), evt.getY());
+        clickRoadMap(evt);
         roadMapScrollPane.requestFocus();
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
@@ -792,22 +792,27 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapPanel.placeBricks();
     }
         
-    public void clickRoadMap(int x, int y)
+    public void clickRoadMap(java.awt.event.MouseEvent evt)
     {       
-        int index = roadMapPanel.getBrickIndexAt(x, y);
+        int index = roadMapPanel.getBrickIndexAt(evt.getX(), evt.getY());
         
         System.out.println("Clicked Brick " + index);
         
         if(index == -1)
             deselectBricks(); 
-        else
-            selectBrick(index);
+        else {
+            if(evt.isShiftDown()) 
+                selectBricks(index);
+            else
+                selectBrick(index);
+                
+        }
         
     }
     
-    public void selectBrick(int index)
+    public void selectBricks(int index)
     {
-        if(selectionStart == -1)
+        if(selectionStart == -1 && selectionEnd == -1)
             selectionStart = selectionEnd = index;
         else {
             if(index < selectionStart)
@@ -828,8 +833,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
         }
         
         roadMapPanel.drawKeyMap();
-        activateButtons();
+        activateButtons();   
+    }
+    
+    public void selectBrick(int index)
+    {
+        deselectBricks();
+        selectionStart = selectionEnd = index;
+        roadMapPanel.getBrick(index).setSelected(true);
+        roadMapPanel.drawBrick(index);
         
+        roadMapPanel.drawKeyMap();
+        activateButtons();
     }
     
     public void deselectBricks()
@@ -838,6 +853,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
             deselectBricks(selectionStart, selectionEnd);
             selectionStart = selectionEnd = -1;
         }
+        
+        roadMapPanel.drawKeyMap();
         deactivateButtons();
     }
     
@@ -845,9 +862,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         for(int i = start; i <= end; ) {
             roadMapPanel.getBrick(i).setSelected(false);
+            roadMapPanel.drawBrick(i);
             i++;
         }
-        roadMapPanel.updateBricks();
     }
     
     public void deleteSelection()
@@ -1019,7 +1036,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         scaleComboBox.addItem("x1");
         
-        ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd+1);
+        ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
         boolean valid;
         for( int i = 2; i <= 5 ; i++ ) {
             
@@ -1090,7 +1107,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         System.out.println("Scale: " + scale);
         
-        for( GraphicBrick brick : roadMapPanel.getBricks(selectionStart, selectionEnd+1))
+        for( GraphicBrick brick : roadMapPanel.getBricks(selectionStart, selectionEnd))
             brick.adjustDuration(scale);
         
         roadMapPanel.placeBricks();
@@ -1102,7 +1119,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         System.out.println("Copy!");
         if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd + 1);
+            ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
             
             clipboard = cloneBricks(bricks);
         }
@@ -1113,7 +1130,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         System.out.println("Cut!");
         if(selectionStart != -1 && selectionEnd != -1) {
-            clipboard = roadMapPanel.removeBricks(selectionStart, selectionEnd + 1);
+            clipboard = roadMapPanel.removeBricks(selectionStart, selectionEnd);
             roadMapPanel.placeBricks();
         }
     }

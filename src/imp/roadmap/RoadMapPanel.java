@@ -353,7 +353,7 @@ public class RoadMapPanel extends JPanel{
     
     public ArrayList<GraphicBrick> getBricks(int start, int end)
     {
-        return new ArrayList(roadMap.subList(start, end));
+        return new ArrayList(roadMap.subList(start, end+1));
     }
     
     public ArrayList<GraphicBrick> getBricks()
