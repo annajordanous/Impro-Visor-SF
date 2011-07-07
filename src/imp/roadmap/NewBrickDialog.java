@@ -106,8 +106,6 @@ private PreviewPanel previewPanel;
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-//        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(imp.roadmap.RoadMapApp.class).getContext().getResourceMap(NewBrickDialog.class);
-//        nameLabel.setText(resourceMap.getString("nameLabel.text")); // NOI18N
         nameLabel.setName("nameLabel"); // NOI18N
         getContentPane().add(nameLabel, new java.awt.GridBagConstraints());
 

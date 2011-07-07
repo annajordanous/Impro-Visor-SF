@@ -76,8 +76,6 @@ public class NewBrickPanel extends javax.swing.JPanel {
         setName("Form"); // NOI18N
         setLayout(new java.awt.GridBagLayout());
 
-//        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(imp.roadmap.RoadMapApp.class).getContext().getResourceMap(NewBrickPanel.class);
-//        nameLabel.setText(resourceMap.getString("nameLabel.text")); // NOI18N
         nameLabel.setName("nameLabel"); // NOI18N
         add(nameLabel, new java.awt.GridBagConstraints());
 
