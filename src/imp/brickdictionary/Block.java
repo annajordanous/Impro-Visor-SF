@@ -13,7 +13,10 @@ public class Block {
     protected long duration;      // how long block lasts (not in absolute units)
     protected long key;           // key is pitch-class relative to C, e.g. C=0, 
                                   // D=2, B=11, etc.
-    protected String mode = null; // Broad quality of block (e.g. M, m, or 7)
+    protected String mode = null; // Broad quality of block (e.g. Major, Minor, 
+                                  // or Dominant)
+    
+    protected boolean isEnd;
     
     // Normal constructor for block
     public Block(String blockname, long blockkey, String mode) {
@@ -69,6 +72,9 @@ public class Block {
         return this.mode;
     }
     
+    public String getType() {
+        return this.mode;
+    }
     // Transposes all the components of a block
     // Overridden by the corresponding method in Brick or Chord
     public void transpose(long diff) {
@@ -86,7 +92,11 @@ public class Block {
         duration = duration * factor;
     }
     
-    public void reduceDuration(long factor) {
-        duration = duration / factor;
+    public boolean isSectionEnd() {
+        return isEnd;
+    }
+    
+    public void setSectionEnd(Boolean value) {
+        isEnd = value;
     }
 }

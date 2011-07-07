@@ -13,7 +13,6 @@ public class Chord extends Block{
     // Type of chord, ie. "m7b5" or "7"
     private String quality;
     private long slashChord;
-    private boolean isEnd;
     
     // Constructor for chord
     // Uses parseChordName to interpret chord's name, finding root (key) and
@@ -76,9 +75,6 @@ public class Chord extends Block{
         return false;
     }
     
-    public boolean isSectionEnd() {
-        return isEnd;
-    }
     
     @Override
     public List<Block> getSubBlocks() {

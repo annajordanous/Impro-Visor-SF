@@ -93,7 +93,7 @@ public class Brick extends Block {
      * @param brickList, subblocks for a brick
      */
     public Brick(String name, long key, String type, List<Block> brickList) {
-        super(name, key, brickList.get(brickList.lastIndexOf(key)).getMode());
+        super(name, key, modeHelper(brickList, key)); //TODO account for not finding key
         this.type = type;
         subBlocks = new ArrayList<Block>();
         
@@ -113,6 +113,14 @@ public class Brick extends Block {
         }
     }
   
+    private static String modeHelper(List<Block> brickList, long key)
+    {
+        int ind = brickList.lastIndexOf(key);
+        if( ind != -1)
+            return brickList.get(ind).getMode();
+        else
+            return brickList.get(brickList.size()-1).getMode();
+    }
        
     /** transpose / 1
      * Takes a brick and transposes all of its elements up by the difference
@@ -247,6 +255,7 @@ public class Brick extends Block {
     }
     
     // Get a brick's type (e.g. cadence, turnaround, etc.)
+    @Override
     public String getType() {
         return this.type;
     }
@@ -311,21 +320,6 @@ public class Brick extends Block {
         
     }
     
-    public void reduceDuration(long factor) {
-        duration = 0;
-        
-        List<Block> currentSubBlocks = getSubBlocks();
-        Iterator<Block> subBlockIter = currentSubBlocks.iterator();
-        
-        while(subBlockIter.hasNext())
-        {
-            Block currentBlock = subBlockIter.next();
-            currentBlock.reduceDuration(factor);
-            duration += currentBlock.duration;
-        }
-        
-    }
-    
     // Create new brick from an original with specified duration
     public void adjustBrickDuration(long newDuration) {
         float newDurFloat = newDuration;
@@ -355,20 +349,6 @@ public class Brick extends Block {
         
         this.subBlocks = adjustedSubBlocks;
         this.duration = this.getDuration();
-    }
-    
-    public boolean checkJoinability(Brick second) {
-        boolean joinable = false;
-        
-        ArrayList<Chord> firstList = this.flattenBlock();
-        ArrayList<Chord> secondList = second.flattenBlock();
-        
-        Chord firstToCheck = firstList.get(firstList.size() - 1);
-        Chord secondToCheck = secondList.get(secondList.size() - 1);
-        
-        
-        
-        return joinable;
     }
     
     @Override
@@ -415,7 +395,7 @@ public class Brick extends Block {
     }
     
     public void reduceDurations() {
-        reduceDuration(getReductionFactor());
+        adjustDuration(-getReductionFactor());
     }
     
     public long getReductionFactor()
@@ -442,4 +422,9 @@ public class Brick extends Block {
                     
         return gcd(b, r);
     }
+    
+    @Override
+    public void setSectionEnd(Boolean value) {
+        subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
+}
 }

@@ -102,6 +102,21 @@ public class BrickLibrary {
         }
     }
     
+    public static Boolean isValidKey(String keyName) {
+        return keyName.equals("C") || keyName.equals("B#") || 
+                keyName.equals("C#") || keyName.equals("Db") ||
+                keyName.equals("D") ||
+                keyName.equals("D#") || keyName.equals("Eb") ||
+                keyName.equals("E") || keyName.equals("Fb") ||
+                keyName.equals("F") || keyName.equals("E#") ||
+                keyName.equals("F#") || keyName.equals("Gb") ||
+                keyName.equals("G") ||
+                keyName.equals("G#") || keyName.equals("Ab") ||
+                keyName.equals("A") ||
+                keyName.equals("A#") || keyName.equals("Bb")||
+                keyName.equals("B") || keyName.equals("Cb");
+    }
+    
     // Convert brick's key (as a string) to a long indicating semitones above C
     public static long keyNameToNum(String keyName) {
         if(keyName.equals("C") || keyName.equals("B#"))
