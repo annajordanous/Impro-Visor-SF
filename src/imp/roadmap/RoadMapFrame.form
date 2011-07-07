@@ -436,8 +436,8 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Brick Dictionary" toolTip="Dictionary of available bricks.&#xa;">
-                <Property name="tabTitle" type="java.lang.String" value="Brick Dictionary" noResource="true"/>
-                <Property name="tabToolTip" type="java.lang.String" value="Dictionary of available bricks.&#xa;" noResource="true"/>
+                <Property name="tabTitle" type="java.lang.String" value="Brick Dictionary"/>
+                <Property name="tabToolTip" type="java.lang.String" value="Dictionary of available bricks.&#xa;"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -477,7 +477,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Chords" toolTip="Enter individual chords by name.&#xa;">
                 <Property name="tabTitle" type="java.lang.String" value="Chords"/>
-                <Property name="tabToolTip" type="java.lang.String" value="Enter individual chords by name.&#xa;" noResource="true"/>
+                <Property name="tabToolTip" type="java.lang.String" value="Enter individual chords by name.&#xa;"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

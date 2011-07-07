@@ -43,13 +43,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private CYKParser cykParser;
     
-    private ArrayList<GraphicBrick> draggedBricks = new ArrayList<GraphicBrick>();
+    private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
     private int selectionStart = -1;
     private int selectionEnd = -1;
     
+    private ArrayList<GraphicBrick> clipboard = new ArrayList();
+    
     private Object[] durationChoices = {1920,1440,960,480,240,120};
     
-    private int bufferWidth  = 400;
+    private int bufferWidth  = 1024;
     private int bufferHeight = 200;
     
     private int RMbufferWidth  = 2048;
@@ -603,17 +605,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
         //System.out.println("roadMapDragged");
-        if(evt.isShiftDown())
-            System.out.println("SHIFT DOWN");
-        
         dragSelectedBricks(evt.getX(), evt.getY());
 }//GEN-LAST:event_roadMapScrollPaneroadMapDragged
 
     private void roadMapScrollPaneroadMapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapKeyPressed
         System.out.println(evt.getKeyCode());
         switch (evt.getKeyCode()) {
-            case 127: deleteSelection();        break;
-            default:                            break;
+            case 127: deleteSelection();                                break;
+            case 67: if(evt.isMetaDown()) copySelection();              break;
+            case 86: if(evt.isMetaDown()) pasteSelection();             break;
+            case 88: if(evt.isMetaDown()) cutSelection();               break;
+            default:                                                    break;
         }
 }//GEN-LAST:event_roadMapScrollPaneroadMapKeyPressed
 
@@ -773,10 +775,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void setPreviewKey()
     {
         String key = (String)keySpinner.getValue();
-        previewPanel.setKey( key );
-        
-        if( key.equals("C") )
-            keySpinner.setValue("C");
+        if(BrickLibrary.isValidKey(key))
+            previewPanel.setKey( key );
     }
     
     public void setPreviewDuration()
@@ -823,11 +823,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         for(int i = selectionStart; i <= selectionEnd; ) {
             roadMapPanel.getBrick(i).selected = true;
+            roadMapPanel.drawBrick(i);
             i++;
         }
         
+        roadMapPanel.drawKeyMap();
         activateButtons();
-        roadMapPanel.draw();
         
     }
     
@@ -843,10 +844,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void deselectBricks(int start, int end)
     {
         for(int i = start; i <= end; ) {
-            roadMapPanel.getBrick(i).selected = false;
+            roadMapPanel.getBrick(i).setSelected(false);
             i++;
         }
-        roadMapPanel.drawBricks();
+        roadMapPanel.updateBricks();
     }
     
     public void deleteSelection()
@@ -919,7 +920,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void transposeBrick(GraphicBrick brick, long diff)
     {
         brick.transpose(diff);
-        roadMapPanel.draw();
+        roadMapPanel.updateBricks();
     }
     
     public void transposeSelection(long diff)
@@ -1072,7 +1073,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         System.out.println("Attempting to scale selection");
         
         if(!scaleComboBox.isEnabled())
-            System.out.println("NOT ENABLED, DAMMIT");
+            System.out.println("Scale Combo Box not enabled");
         
         if(selectionStart == -1 || selectionEnd == -1 || !scaleComboBox.isEnabled())
             return;
@@ -1094,11 +1095,47 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         roadMapPanel.placeBricks();
         //setScaleComboBox();
-        
-        
+                
+    }
+    
+    public void copySelection()
+    {
+        System.out.println("Copy!");
+        if(selectionStart != -1 && selectionEnd != -1) {
+            ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd + 1);
+            
+            clipboard = cloneBricks(bricks);
+        }
             
     }
     
+    public void cutSelection()
+    {
+        System.out.println("Cut!");
+        if(selectionStart != -1 && selectionEnd != -1) {
+            clipboard = roadMapPanel.removeBricks(selectionStart, selectionEnd + 1);
+            roadMapPanel.placeBricks();
+        }
+    }
+    
+    public void pasteSelection()
+    {
+        System.out.println("Paste!");
+        
+        roadMapPanel.addAll(cloneBricks(clipboard));
+        
+        roadMapPanel.placeBricks();
+    }
+    
+    public ArrayList<GraphicBrick> cloneBricks(ArrayList<GraphicBrick> bricks)
+    {
+        ArrayList<GraphicBrick> newBricks = new ArrayList();
+        
+        for(GraphicBrick brick : bricks)
+                newBricks.add(new GraphicBrick(brick));
+        
+        return newBricks;
+    }
      
     public void initLibraryTree()
     {

@@ -21,7 +21,7 @@ public class GraphicBrick {
     public static int CUTOFF_POINT = LINE_LENGTH + RoadMapPanel.X_OFFSET;
     public static int X_OFFSET = RoadMapPanel.X_OFFSET;
     public static int LINE_SPACING = RoadMapPanel.LINE_SPACING;
-    
+        
     public static Color[] KEY_COLORS = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255),  // Db
                                         new Color(200, 255, 100), // D
@@ -53,11 +53,11 @@ public class GraphicBrick {
     private Block brick;
     
     
-public GraphicBrick()
+    public GraphicBrick()
     {
-     }
+    }
 
-public GraphicBrick(Block brick)
+    public GraphicBrick(Block brick)
     {
         name = brick.getName();
         
@@ -66,7 +66,20 @@ public GraphicBrick(Block brick)
         this.brick = brick;
         
         duration = brick.getDuration();
+    }
+    
+    public GraphicBrick(GraphicBrick brick)
+    {
+        name = brick.name;
         
+        key = brick.key;
+        
+        if(brick.brick instanceof Brick)
+            this.brick = new Brick((Brick)brick.brick);
+        else
+            this.brick = new Chord((Chord)brick.brick);
+        
+        duration = brick.duration;
     }
     
     public void draw(Graphics g)
@@ -81,57 +94,20 @@ public GraphicBrick(Block brick)
         else
             g.setColor(BG_COLOR);
 
-        g.fillRect(x+1, y+1, ((int)duration*MEASURE_LENGTH)/480-1, 3*BLOCK_HEIGHT-1);
-
-        g.setColor(LINE_COLOR);
-
-        ArrayList<Chord> chords = (ArrayList) brick.flattenBlock();
-
-        if( chords.size() > 1 )   // distinguish between chords and bricks
-        {                               // possibly unideal
-            //Key
-            g.drawRect(x, y, ((int)duration*MEASURE_LENGTH)/480, BLOCK_HEIGHT);
-            g.drawString(keyName(), x+5, y+BLOCK_HEIGHT/2+5);
-
-            //Name
-            g.drawRect(x, y+BLOCK_HEIGHT, ((int)duration*MEASURE_LENGTH)/480, BLOCK_HEIGHT);
-            g.drawString(name, x+5, y+3*BLOCK_HEIGHT/2+5);
-        }
-        int xOffset = 0;
-
-        for( int ind = 0; ind < chords.size(); )  //not using iterators because the index accesses two lists
-            {                                     //this will change when we use chords
-            String chordName = chords.get(ind).getName();
-            int length = (int)(chords.get(ind).getDuration() * MEASURE_LENGTH)/480;
-            g.drawRect(x+xOffset, y+2*BLOCK_HEIGHT, length, BLOCK_HEIGHT);
-            g.drawString(chordName, x+xOffset+5, y+5*BLOCK_HEIGHT/2+5);
-
-            xOffset += length;
-            ++ind;
-            }
-    }
-       
-    public void drawAt(Graphics g, int x, int y)
-    {
-        drawBackground(g);
-        drawLines(g);
-        
-        /*
-        if(selected)
-            g.setColor(SELECTED_COLOR);
-        else
-            g.setColor(BG_COLOR);
-
         int totalLength = ((int)duration*MEASURE_LENGTH)/480;
         
-        g.fillRect(x+1, y+1, totalLength - 1, 3*BLOCK_HEIGHT-1);
+        g.fillRect(x, y, totalLength, 3*BLOCK_HEIGHT);
 
-        g.setColor(LINE_COLOR);
+        g.setColor(KEY_COLORS[(int)key]);
+        
+        g.fillRect(x, y, totalLength, BLOCK_HEIGHT);
 
         ArrayList<Chord> chords = (ArrayList) brick.flattenBlock();
 
         if( chords.size() > 1 )   // distinguish between chords and bricks
         {                               // possibly unideal
+            g.setColor(TEXT_COLOR);
+            
             //Key
             g.drawRect(x, y, totalLength, BLOCK_HEIGHT);
             g.drawString(keyName(), x+5, y+BLOCK_HEIGHT/2+5);
@@ -142,21 +118,24 @@ public GraphicBrick(Block brick)
         }
         int xOffset = 0;
 
-        for( Iterator<Chord> it = chords.iterator(); it.hasNext(); )  
-        {
-            Chord chord = it.next();
-            String chordName = chord.getName();
+        for( Chord chord : chords )
+        {      
+            g.setColor(LINE_COLOR);
             int length = (int)(chord.getDuration() * MEASURE_LENGTH)/480;
             g.drawRect(x+xOffset, y+2*BLOCK_HEIGHT, length, BLOCK_HEIGHT);
+            
+            g.setColor(TEXT_COLOR);
+            String chordName = chord.getName();
             g.drawString(chordName, x+xOffset+5, y+5*BLOCK_HEIGHT/2+5);
 
             xOffset += length;
         }
-        
-        if( x + xOffset > CUTOFF_POINT )
-            drawAt(g, x - LINE_LENGTH, y + 3*BLOCK_HEIGHT + LINE_SPACING);
-         * 
-         */
+    }
+       
+    public void drawAt(Graphics g, int x, int y)
+    {
+        drawBackground(g);
+        drawLines(g);
     }  
     
     private void drawLines(Graphics g)
@@ -174,7 +153,7 @@ public GraphicBrick(Block brick)
         
         if(isBrick) {
             g.setColor(textColor);
-            g.drawString(keyName(), x+5, y+BLOCK_HEIGHT/2+5);
+            //g.drawString(keyName(), x+5, y+BLOCK_HEIGHT/2+5);
             g.drawString(name, x+5, y+3*BLOCK_HEIGHT/2+5);
         }
         
@@ -193,7 +172,7 @@ public GraphicBrick(Block brick)
                 System.out.println("Breaking line");
                 
                 if(isBrick) {
-                    g.drawLine(xOffset, yOffset, CUTOFF_POINT, yOffset);
+                    //g.drawLine(xOffset, yOffset, CUTOFF_POINT, yOffset);
                     g.drawLine(xOffset, yOffset+BLOCK_HEIGHT, CUTOFF_POINT, yOffset+BLOCK_HEIGHT);
                 }
                 
@@ -207,7 +186,7 @@ public GraphicBrick(Block brick)
             }
             
             if(isBrick) {
-                g.drawLine(xOffset, yOffset, xOffset+length, yOffset);
+                //g.drawLine(xOffset, yOffset, xOffset+length, yOffset);
                 g.drawLine(xOffset, yOffset+BLOCK_HEIGHT, xOffset+length, yOffset+BLOCK_HEIGHT);
             }
 
@@ -226,6 +205,8 @@ public GraphicBrick(Block brick)
         
         g.drawLine(xOffset, yOffset, xOffset, yOffset+3*BLOCK_HEIGHT);
         g.drawLine(xOffset-2, yOffset, xOffset-2, yOffset+3*BLOCK_HEIGHT);
+        if(brick.isSectionEnd())
+            g.drawLine(xOffset-6, yOffset, xOffset-6, yOffset+3*BLOCK_HEIGHT);
     }
     
     private void drawBackground(Graphics g)
@@ -234,7 +215,6 @@ public GraphicBrick(Block brick)
         int yOffset = y;
         int length = ((int)duration * MEASURE_LENGTH)/480;
         
-        Color keyColor = KEY_COLORS[(int)key];
         Color bgColor = BG_COLOR;
         
         if(selected)
@@ -245,10 +225,6 @@ public GraphicBrick(Block brick)
             g.setColor(bgColor);
             g.fillRect(xOffset, yOffset, CUTOFF_POINT-xOffset, 3*BLOCK_HEIGHT);
             
-            g.setColor(keyColor);
-            g.fillRect(xOffset, yOffset, CUTOFF_POINT-xOffset, BLOCK_HEIGHT);
-            
-            
             length -= CUTOFF_POINT - xOffset;
             
             xOffset = X_OFFSET;
@@ -257,9 +233,6 @@ public GraphicBrick(Block brick)
         
         g.setColor(bgColor);
         g.fillRect(xOffset, yOffset, length, 3*BLOCK_HEIGHT);
-        
-        g.setColor(keyColor);
-        g.fillRect(xOffset, yOffset, length, BLOCK_HEIGHT);
     }
     
     public void setDuration(long duration)
@@ -322,8 +295,7 @@ public GraphicBrick(Block brick)
         System.out.println(bricks);
         ArrayList<GraphicBrick> pieces = new ArrayList<GraphicBrick>();
         
-        for(Iterator<Block> it = bricks.iterator(); it.hasNext(); )
-        {
+        for(Iterator<Block> it = bricks.iterator(); it.hasNext(); ) {
             pieces.add(new GraphicBrick(it.next()));
         }
         
@@ -336,8 +308,7 @@ public GraphicBrick(Block brick)
         
         ArrayList<GraphicBrick> pieces = new ArrayList<GraphicBrick>();
         
-        for(Iterator<Block> it = bricks.iterator(); it.hasNext(); )
-        {
+        for(Iterator<Block> it = bricks.iterator(); it.hasNext(); ) {
             pieces.add(new GraphicBrick(it.next()));
         }
         
@@ -377,9 +348,7 @@ public GraphicBrick(Block brick)
         int xOffset = this.x;
         int yOffset = this.y;
 
-        for( Iterator<Chord> it = chords.iterator(); it.hasNext(); )  
-        {
-            Chord chord = it.next();
+        for( Chord chord : chords ) {
             int length = (int)(chord.getDuration() * MEASURE_LENGTH)/480;
             
             //System.out.println("Checking " + xOffset + " " + yOffset);
