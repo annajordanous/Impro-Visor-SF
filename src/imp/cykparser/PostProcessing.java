@@ -3,6 +3,7 @@ package imp.cykparser;
 import imp.brickdictionary.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * purpose: gain further information from list of blocks
@@ -26,12 +27,13 @@ public class PostProcessing {
         // Initialize key and duration of current block
         long currentKey = -1;
         long currentDuration = 0;
+        String currentMode = "";
         
         for(Block b : blocks) {
             
             // If two consecutive blocks in same key, add new block's duration 
             // to total
-            if(currentKey == b.getKey()) {
+            if(currentKey == b.getKey() && currentMode.equals(b.getMode())) {
                 currentDuration += b.getDuration();
             }
             else {
@@ -44,45 +46,7 @@ public class PostProcessing {
                 // Create new entry for the next key
                 currentKey = b.getKey();
                 currentDuration = b.getDuration();
-            }
-        }
-        
-        if(currentKey != -1)
-            keymap.add( new long[]{currentKey, currentDuration} );
-        
-        return keymap;
-    }
-    
-    /** mergeBlockKeys
-     * Method groups consecutive block of same key for overarching key sections
-     * @param blocks : ArrayList of blocks (like output from CYKParser)
-     * @return keymap : ArrayList of long[] (size 2), each containing key and 
-     *                  its corresponding total duration
-     */
-    public static ArrayList<long[]> mergeBlockKeys(ArrayList<Block> blocks) {
-        ArrayList<long[]> keymap = new ArrayList<long[]>();
-        
-        // Initialize key and duration of current block
-        long currentKey = -1;
-        long currentDuration = 0;
-        
-        for(Block b : blocks) {
-            
-            // If two consecutive blocks in same key, add new block's duration 
-            // to total
-            if(currentKey == b.getKey()) {
-                currentDuration += b.getDuration();
-            }
-            else {
-                // Check if still using key that was initialiized
-                if(currentKey >= 0) {
-                    // End of current key -- add to the list
-                    long[] entry = {currentKey, currentDuration};
-                    keymap.add(entry);
-                }
-                // Create new entry for the next key
-                currentKey = b.getKey();
-                currentDuration = b.getDuration();
+                currentMode = b.getMode();
             }
         }
         
@@ -103,58 +67,33 @@ public class PostProcessing {
         // places
         ArrayList<Block> alteredList = new ArrayList<Block>();
         
-        // Initialization of brick that will be compared to one immediately 
-        // after it
-        Brick brickToCheck = null;
-        
-        for(Block b : blocks) {
-            if(b instanceof Brick) {
-                // Flatten the block so we can easily look at specific chords
-                ArrayList<Chord> chordList = (ArrayList)b.flattenBlock();
+        for(int i = 0; i < blocks.size(); i++) {
                 
-                // Check if brick is not null and if it resolves to first chord 
-                // of current brick
-                if(brickToCheck != null && brickToCheck.getKey() == 
-                        chordList.get(0).getKey()) {
-                    String brickName = brickToCheck.getName();
-                    
-                    // Replace the word "Approach" in its name (if it's there)
-                    // with "Launcher" 
-                    if(brickName.contains("Approach")) {
-                        brickName.replace("Approach", "Launcher");
-                        brickToCheck.setName(brickName);
-                    }
-                    // Otherwise, just append "Launcher" to the end
-                    else {
-                        brickName = brickName + "Launcher";
-                    }
-                    // Change the type from approach to launcher and add to list
-                    brickToCheck.setType("Launcher");
-                    alteredList.add(brickToCheck);
-                    brickToCheck = null;
-                }
-                // If it doesn't resolve, add to list unaltered and clear brick 
-                // so later comparisions don't get messed up
-                else {
-                    alteredList.add(brickToCheck);
-                    brickToCheck = null;
-                }
-                
-                // Check if current brick is an approach at the end of a section
-                // If so, save the brick to compare to the next one for 
-                // resolution
-                if(chordList.get(chordList.size() - 1).isSectionEnd() && 
-                        ((Brick)b).getType().equals("Approach")) {
-                    brickToCheck = (Brick)b;
-                }
-                // If not, add it to the list
+            if(blocks.get(i) instanceof Brick) {
+                Brick b = (Brick)blocks.get(i);
+                ArrayList<Chord> chordList = new ArrayList<Chord>();
+                if(i != blocks.size() - 1) 
+                    chordList = (ArrayList<Chord>)blocks.get(i + 1).flattenBlock();
                 else
+                    chordList = (ArrayList<Chord>)blocks.get(0).flattenBlock();
+                    
+                String brickName = b.getName();
+                if(b.getType().equals("Approach") /*&& b.isSectionEnd()*/ && 
+                        b.getKey() == chordList.get(0).getKey()) {
+                    if(brickName.contains("Approach")) 
+                        brickName.replace("Approach", "Launcher");
+                    else
+                        brickName = brickName + "-Launcher";
+                    b.setName(brickName);
+                    b.setType("Launcher");
                     alteredList.add(b);
+                    }
+                    else 
+                        alteredList.add(b);
+                }
+                else
+                    alteredList.add(blocks.get(i));
             }
-            // If it's a chord, just add it in
-            else
-                alteredList.add(b);
-        }
         
         return alteredList;
     }
