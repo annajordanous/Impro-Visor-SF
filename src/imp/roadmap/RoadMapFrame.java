@@ -599,7 +599,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
-        clickRoadMap(evt);
+        int index = roadMapPanel.getBrickIndexAt(evt.getX(), evt.getY());
+        
+        if(index != -1) {
+            if(evt.isShiftDown())
+                selectBricks(index);
+            else
+                selectBrick(index);
+        } else
+            deselectBricks();
+        
         roadMapScrollPane.requestFocus();
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
@@ -669,7 +678,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_exitMIhandler
 
-    public void initBuffer()
+    /** InitBuffer <p>
+     *  
+     * Initializes the buffers for the roadmap and preview panel.
+     */
+    private void initBuffer()
     {
         buffer = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
         bufferNewBrick = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
@@ -682,7 +695,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
     }
     
 
-    
+    /** setBackground <p>
+     * Paints the image white.
+     * 
+     * @param image, an Image
+     */
     public void setBackground(Image image)
     {
         Graphics graphics = image.getGraphics();
@@ -690,6 +707,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         graphics.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
     }
     
+    /** setBackgrounds <p>
+     * Sets the background of each buffer.
+     */
     public void setBackgrounds()
     {
         setBackground(buffer);
@@ -697,6 +717,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         setBackground(bufferNewBrick);
     }
        
+    /** dragSelectedBricks <p>
+     * Implements dragging behavior.
+     * 
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse
+     */
     public void dragSelectedBricks(int x, int y)
     {   
         int index = roadMapPanel.getBrickIndexAt(x, y);
@@ -718,6 +744,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         }
     }
     
+    /** dropCurrentBrick <p>
+     * Implements dropping behavior.
+     * 
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse
+     */
     public void dropCurrentBrick(int x, int y)
     {   
         if( !draggedBricks.isEmpty() ) {
@@ -732,6 +764,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         System.out.println("Selection from " + selectionStart + " to " + selectionEnd);
     }
     
+    /** dragFromPreview <p>
+     * Implements dragging behavior from the preview window.
+     * 
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse
+     */
     public void dragFromPreview(int x, int y) 
     {        
         if( draggedBricks.isEmpty() ) {
@@ -746,12 +784,21 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dragSelectedBricks(x + libraryTabbedPane.getX(), y + previewScrollPane.getY());
     }
     
+    /** dropFromPreivew <p>
+     * Implements dropping behavior from the preview window;
+     * 
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse 
+     */
     public void dropFromPreview(int x, int y)
     {
         dropCurrentBrick(x + libraryTabbedPane.getX(), y + previewScrollPane.getY());
         activateButtons();
     }
     
+    /** setPreview <p>
+     * Sets the preview brick, as well as its duration and key.
+     */
     public void setPreview()
     {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)libraryTree.getSelectionPath().getLastPathComponent();
@@ -769,6 +816,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         }
     }
     
+    /** setPreviewKey <p>
+     * Sets the key of the brick in the preview pane to the key chosen by
+     * the key spinner.
+     */
     public void setPreviewKey()
     {
         String key = (String)keySpinner.getValue();
@@ -776,12 +827,19 @@ public class RoadMapFrame extends javax.swing.JFrame {
             previewPanel.setKey( key );
     }
     
+    /** setPreviewDuration <p>
+     * Sets the duration of the brick in the preview pane to the key chosen by
+     * the duration combo box.
+     */
     public void setPreviewDuration()
     {
         previewPanel.setDuration((Integer)durationChoices[durationComboBox.getSelectedIndex()]);
         previewPanel.draw();
     }
     
+    /** addChord <p>
+     * Adds the chord inputted in the chord field to the roadmap.
+     */
     public void addChord()
     {
         Chord chord = new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]);
@@ -789,24 +847,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapPanel.placeBricks();
     }
         
-    public void clickRoadMap(java.awt.event.MouseEvent evt)
-    {       
-        int index = roadMapPanel.getBrickIndexAt(evt.getX(), evt.getY());
-        
-        System.out.println("Clicked Brick " + index);
-        
-        if(index == -1)
-            deselectBricks(); 
-        else {
-            if(evt.isShiftDown()) 
-                selectBricks(index);
-            else
-                selectBrick(index);
-                
-        }
-        
-    }
-    
+    /** selectBricks <p>
+     * Adds the brick at index to the selection, either extending the selection
+     * or reducing it depending on whether the brick is selected.
+     * 
+     * @param index, the index of the brick to be selected
+     */
     public void selectBricks(int index)
     {
         if(selectionStart == -1 && selectionEnd == -1)
@@ -832,6 +878,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         activateButtons();   
     }
     
+    /** selectBrick <p>
+     * Selects only the brick at index, deselecting all other bricks.
+     * 
+     * @param index, the index of the brick to be selected 
+     */
     public void selectBrick(int index)
     {
         deselectBricks();
@@ -843,6 +894,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         activateButtons();
     }
     
+    /** deselectBricks <p>
+     * Deselects all bricks.
+     */
     public void deselectBricks()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
@@ -854,6 +908,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         deactivateButtons();
     }
     
+    /** deselectBricks <p>
+     * deselects the bricks between index start and end, inclusive.
+     * 
+     * @param start
+     * @param end 
+     */
     public void deselectBricks(int start, int end)
     {
         for(int i = start; i <= end; ) {
