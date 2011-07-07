@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.FontMetrics;
 import java.awt.Image;
+import javax.swing.Scrollable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import imp.brickdictionary.*;
@@ -232,6 +233,12 @@ public class RoadMapPanel extends JPanel{
             g.fillRect(xOffset, yOffset, length, LINE_HEIGHT/3);
             
             g.setColor(LINE_COLOR);
+            g.drawLine(xOffset, yOffset, xOffset+length, yOffset);
+            g.drawLine(xOffset, yOffset + LINE_HEIGHT/3,
+                    xOffset+length, yOffset + LINE_HEIGHT/3);
+            g.drawLine(xOffset + length, yOffset,
+                    xOffset + length, yOffset + LINE_HEIGHT/3);
+
             g.drawString(keyName, x+2, y + 15); // TODO: use font metrics
             
             x = xOffset + length;
@@ -242,14 +249,21 @@ public class RoadMapPanel extends JPanel{
     
     public void drawGrid()
     {
-        
         Graphics g = buffer.getGraphics();
-        g.setColor(GRID_BG_COLOR);
-        g.fillRect(X_OFFSET, Y_OFFSET, BARS_PER_LINE * MEASURE_LENGTH, numLines * (LINE_HEIGHT+LINE_SPACING));
-        for(int i = 0; i <= BARS_PER_LINE; ) {
-            g.setColor(GRID_LINE_COLOR);
-            g.drawLine(X_OFFSET + i*MEASURE_LENGTH, Y_OFFSET-5, X_OFFSET + i*MEASURE_LENGTH, Y_OFFSET + numLines * (LINE_HEIGHT + LINE_SPACING)+5);
-            i++;
+        
+        for(int i = 0; i < numLines; i++) {
+            g.setColor(GRID_BG_COLOR);
+            g.fillRect(X_OFFSET, Y_OFFSET + i*(LINE_HEIGHT + LINE_SPACING),
+                    BARS_PER_LINE * MEASURE_LENGTH, LINE_HEIGHT);
+            
+            for(int j = 0; j <= BARS_PER_LINE; ) {
+                g.setColor(GRID_LINE_COLOR);
+                g.drawLine(X_OFFSET + j*MEASURE_LENGTH,
+                        Y_OFFSET + i*(LINE_HEIGHT + LINE_SPACING) - 5,
+                        X_OFFSET + j*MEASURE_LENGTH,
+                        Y_OFFSET + (i+1)*LINE_HEIGHT + i*LINE_SPACING + 5);
+                j++;
+            }
         }
         
         setSize(WIDTH, numLines * (LINE_HEIGHT+LINE_SPACING));

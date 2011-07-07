@@ -646,10 +646,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_scaleComboBoxscaleChanged
 
     private void scaleComboBoxscaleChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChosen
-        System.out.println("Combo event!");
-        //setScaleComboBox();
         scaleSelection();
-        System.out.println("End combo event!");
+        scaleComboBox.setSelectedItem("x1");
 }//GEN-LAST:event_scaleComboBoxscaleChosen
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
@@ -706,7 +704,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
             
             if( index != -1 ) {
                 if(!roadMapPanel.getBrick(index).selected) {
-                    deselectBricks();
                     selectBrick(index);
                 } else if(selectionStart != -1 && selectionEnd != -1)
                     draggedBricks = roadMapPanel.removeBricks(selectionStart, selectionEnd);
@@ -820,7 +817,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
             else if (index > selectionEnd)
                 selectionEnd = index;
             else {
-                deselectBricks();
                 selectBrick(index);
             }
         }
@@ -891,7 +887,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             
             selectionEnd = selectionStart;
             
-            selectBrick(selectionStart + newBricks.size() - 1);
+            selectBricks(selectionStart + newBricks.size() - 1);
             
             roadMapPanel.placeBricks();
         }
@@ -963,7 +959,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             bricks = analyze(bricks);
             
             roadMapPanel.addAll(selectionStart, bricks);
-            selectBrick(selectionStart + bricks.size() - 1);
+            selectBricks(selectionStart + bricks.size() - 1);
         } else {
             bricks = roadMapPanel.removeBricks();
             
@@ -1018,7 +1014,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         roadMapPanel.addAll(selectionStart, newBricks);
         selectionEnd = selectionStart;
-        selectBrick(selectionStart + newBricks.size() - 1);
+        selectBricks(selectionStart + newBricks.size() - 1);
         
         roadMapPanel.placeBricks();
     }
