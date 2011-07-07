@@ -99,11 +99,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogNameLabel = new javax.swing.JLabel();
         dialogKeyLabel = new javax.swing.JLabel();
         dialogKeySpinner = new javax.swing.JSpinner();
-        roadmapMenuBar = new javax.swing.JMenuBar();
-        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
-        javax.swing.JMenu helpMenu = new javax.swing.JMenu();
-        javax.swing.JMenuItem helpMenuItem = new javax.swing.JMenuItem();
         mainPanel = new javax.swing.JPanel();
         libraryPanel = new javax.swing.JPanel();
         libraryLabel = new javax.swing.JLabel();
@@ -127,6 +122,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleComboBox = new javax.swing.JComboBox();
         newBrickButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
+        roadmapMenuBar = new javax.swing.JMenuBar();
+        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        javax.swing.JMenu helpMenu = new javax.swing.JMenu();
+        javax.swing.JMenuItem helpMenuItem = new javax.swing.JMenuItem();
 
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 100));
         addBrickDialog.setModal(true);
@@ -184,37 +184,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         addBrickDialog.getContentPane().add(dialogKeySpinner, gridBagConstraints);
 
-        roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
-
-        fileMenu.setFont(new java.awt.Font("Lucida Grande", 0, 12));
-        fileMenu.setMaximumSize(new java.awt.Dimension(100, 40));
-        fileMenu.setMinimumSize(new java.awt.Dimension(100, 30));
-        fileMenu.setName("fileMenu"); // NOI18N
-        fileMenu.setPreferredSize(new java.awt.Dimension(100, 20));
-
-        exitMenuItem.setLabel("Quit"); // NOI18N
-        exitMenuItem.setName("exitMenuItem"); // NOI18N
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMIhandler(evt);
-            }
-        });
-        fileMenu.add(exitMenuItem);
-
-        roadmapMenuBar.add(fileMenu);
-
-        helpMenu.setFont(new java.awt.Font("Lucida Grande", 0, 12));
-        helpMenu.setMaximumSize(new java.awt.Dimension(100, 40));
-        helpMenu.setName("helpMenu"); // NOI18N
-        helpMenu.setPreferredSize(new java.awt.Dimension(100, 30));
-
-        helpMenuItem.setLabel("Help"); // NOI18N
-        helpMenuItem.setName("helpMenuItem"); // NOI18N
-        helpMenu.add(helpMenuItem);
-
-        roadmapMenuBar.add(helpMenu);
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Form"); // NOI18N
 
         mainPanel.setName("mainPanel"); // NOI18N
@@ -492,6 +461,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleLabel.setName("scaleLabel"); // NOI18N
         toolBar.add(scaleLabel);
 
+        scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
         scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 32767));
         scaleComboBox.setMinimumSize(new java.awt.Dimension(60, 40));
@@ -558,8 +528,42 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.05;
         mainPanel.add(toolBar, gridBagConstraints);
 
+        roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
+
+        fileMenu.setText("File"); // NOI18N
+        fileMenu.setMaximumSize(new java.awt.Dimension(100, 40));
+        fileMenu.setMinimumSize(new java.awt.Dimension(50, 20));
+        fileMenu.setName("fileMenu"); // NOI18N
+        fileMenu.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        exitMenuItem.setLabel("Quit"); // NOI18N
+        exitMenuItem.setName("exitMenuItem"); // NOI18N
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMIhandler(evt);
+            }
+        });
+        fileMenu.add(exitMenuItem);
+
+        roadmapMenuBar.add(fileMenu);
+
+        helpMenu.setText("Help"); // NOI18N
+        helpMenu.setToolTipText("Help"); // NOI18N
+        helpMenu.setMaximumSize(new java.awt.Dimension(100, 40));
+        helpMenu.setMinimumSize(new java.awt.Dimension(50, 20));
+        helpMenu.setName("helpMenu"); // NOI18N
+        helpMenu.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        helpMenuItem.setLabel("Help"); // NOI18N
+        helpMenuItem.setName("helpMenuItem"); // NOI18N
+        helpMenu.add(helpMenuItem);
+
+        roadmapMenuBar.add(helpMenu);
+
+        setJMenuBar(roadmapMenuBar);
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
 
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
         setPreview();
