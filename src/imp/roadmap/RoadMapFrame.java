@@ -247,10 +247,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
         scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
-        scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 32767));
-        scaleComboBox.setMinimumSize(new java.awt.Dimension(60, 40));
+        scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
+        scaleComboBox.setMinimumSize(new java.awt.Dimension(60, 30));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
-        scaleComboBox.setPreferredSize(new java.awt.Dimension(60, 40));
+        scaleComboBox.setPreferredSize(new java.awt.Dimension(60, 30));
         scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scaleComboBoxscaleComboReleased(evt);
