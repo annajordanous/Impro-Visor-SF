@@ -94,11 +94,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         addBrickDialog = new javax.swing.JDialog();
-        dialogAcceptButton = new javax.swing.JButton();
-        dialogNameField = new javax.swing.JTextField();
         dialogNameLabel = new javax.swing.JLabel();
         dialogKeyLabel = new javax.swing.JLabel();
+        dialogNameField = new javax.swing.JTextField();
         dialogKeySpinner = new javax.swing.JSpinner();
+        dialogAcceptButton = new javax.swing.JButton();
         toolBar = new javax.swing.JToolBar();
         deleteButton = new javax.swing.JButton();
         flattenButton = new javax.swing.JButton();
@@ -123,61 +123,58 @@ public class RoadMapFrame extends javax.swing.JFrame {
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem helpMenuItem = new javax.swing.JMenuItem();
 
-        addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 100));
-        addBrickDialog.setModal(true);
+        addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
         addBrickDialog.setName("addBrickDialog"); // NOI18N
+        addBrickDialog.setPreferredSize(new java.awt.Dimension(200, 110));
         addBrickDialog.setResizable(false);
+        addBrickDialog.setSize(new java.awt.Dimension(200, 110));
         addBrickDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        dialogNameLabel.setText("Name:"); // NOI18N
+        dialogNameLabel.setName("dialogNameLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 0, 0);
+        addBrickDialog.getContentPane().add(dialogNameLabel, gridBagConstraints);
+
+        dialogKeyLabel.setText("Key:"); // NOI18N
+        dialogKeyLabel.setName("dialogKeyLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
+        addBrickDialog.getContentPane().add(dialogKeyLabel, gridBagConstraints);
+
+        dialogNameField.setText("BrickName"); // NOI18N
+        dialogNameField.setName("dialogNameField"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 3);
+        addBrickDialog.getContentPane().add(dialogNameField, gridBagConstraints);
+
+        dialogKeySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
+        dialogKeySpinner.setName("dialogKeySpinner"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 3);
+        addBrickDialog.getContentPane().add(dialogKeySpinner, gridBagConstraints);
+
+        dialogAcceptButton.setText("Accept"); // NOI18N
         dialogAcceptButton.setName("dialogAcceptButton"); // NOI18N
         dialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogAcceptButtondialogAccepted(evt);
+                dialogAccepted(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 3, 0);
         addBrickDialog.getContentPane().add(dialogAcceptButton, gridBagConstraints);
-
-        dialogNameField.setName("dialogNameField"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        addBrickDialog.getContentPane().add(dialogNameField, gridBagConstraints);
-
-        dialogNameLabel.setName("dialogNameLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        addBrickDialog.getContentPane().add(dialogNameLabel, gridBagConstraints);
-
-        dialogKeyLabel.setName("dialogKeyLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        addBrickDialog.getContentPane().add(dialogKeyLabel, gridBagConstraints);
-
-        dialogKeySpinner.setName("dialogKeySpinner"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        addBrickDialog.getContentPane().add(dialogKeySpinner, gridBagConstraints);
 
         setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(830, 600));
@@ -374,7 +371,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         libraryScrollPane.setViewportView(libraryTree);
 
-        libraryTabbedPane.addTab("Brick Dictionary", null, libraryScrollPane, "Dictionary of available bricks.\n"); // NOI18N
+        libraryTabbedPane.addTab("Brick Dictionary", null, libraryScrollPane, "Dictionary of available bricks.\n");
 
         chordPanel.setName("chordPanel"); // NOI18N
         chordPanel.setLayout(new java.awt.GridBagLayout());
@@ -422,7 +419,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         chordPanel.add(addChordButton, gridBagConstraints);
 
-        libraryTabbedPane.addTab("Chords", null, chordPanel, "Enter individual chords by name.\n"); // NOI18N
+        libraryTabbedPane.addTab("Chords", null, chordPanel, "Enter individual chords by name.\n");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -660,6 +657,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_scaleComboBoxscaleChosen
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
+        System.out.println("New Brick Button Pressed");
         dialogNameField.setText("NewBrick");
         dialogKeySpinner.setValue("C");
         addBrickDialog.setVisible(true);
@@ -669,14 +667,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
         analyzeSelection();
 }//GEN-LAST:event_analyzeButtonPressed
 
-    private void dialogAcceptButtondialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogAcceptButtondialogAccepted
-        addBrickDialog.setVisible(false);
-        makeBrickFromSelection();
-}//GEN-LAST:event_dialogAcceptButtondialogAccepted
-
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
         // TODO add your handling code here:
     }//GEN-LAST:event_exitMIhandler
+
+    private void dialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogAccepted
+        addBrickDialog.setVisible(false);
+        makeBrickFromSelection();
+    }//GEN-LAST:event_dialogAccepted
 
     /** InitBuffer <p>
      *  
