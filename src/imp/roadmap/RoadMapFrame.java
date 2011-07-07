@@ -100,6 +100,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogKeyLabel = new javax.swing.JLabel();
         dialogKeySpinner = new javax.swing.JSpinner();
         mainPanel = new javax.swing.JPanel();
+        toolBar = new javax.swing.JToolBar();
+        deleteButton = new javax.swing.JButton();
+        flattenButton = new javax.swing.JButton();
+        breakButton = new javax.swing.JButton();
+        scaleLabel = new javax.swing.JLabel();
+        scaleComboBox = new javax.swing.JComboBox();
+        newBrickButton = new javax.swing.JButton();
+        analyzeButton = new javax.swing.JButton();
+        roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         libraryPanel = new javax.swing.JPanel();
         libraryLabel = new javax.swing.JLabel();
         libraryTabbedPane = new javax.swing.JTabbedPane();
@@ -113,15 +122,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         durationLabel = new javax.swing.JLabel();
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
         durationComboBox = new javax.swing.JComboBox(durationChoices);
-        roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
-        toolBar = new javax.swing.JToolBar();
-        deleteButton = new javax.swing.JButton();
-        flattenButton = new javax.swing.JButton();
-        breakButton = new javax.swing.JButton();
-        scaleLabel = new javax.swing.JLabel();
-        scaleComboBox = new javax.swing.JComboBox();
-        newBrickButton = new javax.swing.JButton();
-        analyzeButton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -184,225 +184,22 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         addBrickDialog.getContentPane().add(dialogKeySpinner, gridBagConstraints);
 
+        setMinimumSize(new java.awt.Dimension(830, 600));
         setName("Form"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1030, 600));
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        mainPanel.setMinimumSize(new java.awt.Dimension(800, 600));
         mainPanel.setName("mainPanel"); // NOI18N
-        mainPanel.setPreferredSize(new java.awt.Dimension(800, 400));
+        mainPanel.setPreferredSize(new java.awt.Dimension(1000, 800));
         mainPanel.setLayout(new java.awt.GridBagLayout());
-
-        libraryPanel.setMinimumSize(new java.awt.Dimension(230, 0));
-        libraryPanel.setName("libraryPanel"); // NOI18N
-        libraryPanel.setPreferredSize(new java.awt.Dimension(230, 400));
-        libraryPanel.setLayout(new java.awt.GridBagLayout());
-
-        libraryLabel.setName("libraryLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        libraryPanel.add(libraryLabel, gridBagConstraints);
-
-        libraryTabbedPane.setName("libraryTabbedPane"); // NOI18N
-
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        libraryTree.setModel(libraryTreeModel);
-        libraryTree.setName("libraryTree"); // NOI18N
-        libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                libraryTreeSelected(evt);
-            }
-        });
-        jScrollPane1.setViewportView(libraryTree);
-
-        libraryTabbedPane.addTab("Bricks", jScrollPane1);
-
-        jPanel1.setName("jPanel1"); // NOI18N
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-
-        chordField.setName("chordField"); // NOI18N
-        chordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordFieldActionPerformed(evt);
-            }
-        });
-        chordField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                chordFieldFocusGained(evt);
-            }
-        });
-        chordField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                chordFieldKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanel1.add(chordField, gridBagConstraints);
-
-        addChordButton.setText("Enter Chord"); // NOI18N
-        addChordButton.setToolTipText("Enter this chord into roadmap."); // NOI18N
-        addChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        addChordButton.setMinimumSize(new java.awt.Dimension(40, 40));
-        addChordButton.setName("addChordButton"); // NOI18N
-        addChordButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        addChordButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addChordButtonPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        jPanel1.add(addChordButton, gridBagConstraints);
-
-        libraryTabbedPane.addTab("Chords", jPanel1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.9;
-        libraryPanel.add(libraryTabbedPane, gridBagConstraints);
-
-        keyLabel.setName("keyLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        libraryPanel.add(keyLabel, gridBagConstraints);
-
-        keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
-        keySpinner.setToolTipText("Select the key for this brick."); // NOI18N
-        keySpinner.setName("keySpinner"); // NOI18N
-        keySpinner.setPreferredSize(new java.awt.Dimension(76, 28));
-        keySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                keySpinnerChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.02;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        libraryPanel.add(keySpinner, gridBagConstraints);
-
-        durationLabel.setName("durationLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        libraryPanel.add(durationLabel, gridBagConstraints);
-
-        previewScrollPane.setDoubleBuffered(true);
-        previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
-        previewScrollPane.setName("previewScrollPane"); // NOI18N
-        previewScrollPane.setPreferredSize(new java.awt.Dimension(200, 100));
-        previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                previewScrollPanepreviewPaneReleased(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                previewScrollPanepreviewPaneClicked(evt);
-            }
-        });
-        previewScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                previewScrollPanepreviewPaneDragged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 200;
-        gridBagConstraints.ipady = 100;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        libraryPanel.add(previewScrollPane, gridBagConstraints);
-
-        durationComboBox.setSelectedItem(480);
-        durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
-        durationComboBox.setName("durationComboBox"); // NOI18N
-        durationComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                durationComboBoxdurationChosen(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.02;
-        libraryPanel.add(durationComboBox, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        mainPanel.add(libraryPanel, gridBagConstraints);
-
-        roadMapScrollPane.setMinimumSize(new java.awt.Dimension(600, 600));
-        roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
-        roadMapScrollPane.setPreferredSize(new java.awt.Dimension(600, 600));
-        roadMapScrollPane.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                roadMapScrollPaneroadMapMouseWheelMoved(evt);
-            }
-        });
-        roadMapScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                roadMapScrollPaneroadMapReleased(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                roadMapScrollPaneroadMapClicked(evt);
-            }
-        });
-        roadMapScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                roadMapScrollPaneroadMapDragged(evt);
-            }
-        });
-        roadMapScrollPane.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                roadMapScrollPaneroadMapKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                roadMapScrollPaneroadMapKeyReleased(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.9;
-        gridBagConstraints.weighty = 0.95;
-        mainPanel.add(roadMapScrollPane, gridBagConstraints);
 
         toolBar.setFloatable(false);
         toolBar.setRollover(true);
+        toolBar.setMaximumSize(new java.awt.Dimension(100, 60));
+        toolBar.setMinimumSize(new java.awt.Dimension(500, 50));
         toolBar.setName("toolBar"); // NOI18N
+        toolBar.setPreferredSize(new java.awt.Dimension(500, 50));
 
         deleteButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         deleteButton.setText("Delete"); // NOI18N
@@ -523,10 +320,237 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.05;
         mainPanel.add(toolBar, gridBagConstraints);
+
+        roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        roadMapScrollPane.setToolTipText("The roadmap.\n"); // NOI18N
+        roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 800));
+        roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
+        roadMapScrollPane.setPreferredSize(new java.awt.Dimension(800, 900));
+        roadMapScrollPane.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                roadMapScrollPaneroadMapMouseWheelMoved(evt);
+            }
+        });
+        roadMapScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                roadMapScrollPaneroadMapReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                roadMapScrollPaneroadMapClicked(evt);
+            }
+        });
+        roadMapScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                roadMapScrollPaneroadMapDragged(evt);
+            }
+        });
+        roadMapScrollPane.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                roadMapScrollPaneroadMapKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                roadMapScrollPaneroadMapKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.weighty = 0.95;
+        mainPanel.add(roadMapScrollPane, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(mainPanel, gridBagConstraints);
+
+        libraryPanel.setMinimumSize(new java.awt.Dimension(230, 0));
+        libraryPanel.setName("libraryPanel"); // NOI18N
+        libraryPanel.setPreferredSize(new java.awt.Dimension(230, 400));
+        libraryPanel.setLayout(new java.awt.GridBagLayout());
+
+        libraryLabel.setName("libraryLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        libraryPanel.add(libraryLabel, gridBagConstraints);
+
+        libraryTabbedPane.setName("libraryTabbedPane"); // NOI18N
+        libraryTabbedPane.setPreferredSize(new java.awt.Dimension(300, 451));
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        libraryTree.setModel(libraryTreeModel);
+        libraryTree.setMaximumSize(new java.awt.Dimension(300, 1000));
+        libraryTree.setMinimumSize(new java.awt.Dimension(200, 200));
+        libraryTree.setName("libraryTree"); // NOI18N
+        libraryTree.setPreferredSize(new java.awt.Dimension(200, 600));
+        libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                libraryTreeSelected(evt);
+            }
+        });
+        jScrollPane1.setViewportView(libraryTree);
+
+        libraryTabbedPane.addTab("Bricks", jScrollPane1);
+
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        chordField.setName("chordField"); // NOI18N
+        chordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordFieldActionPerformed(evt);
+            }
+        });
+        chordField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                chordFieldFocusGained(evt);
+            }
+        });
+        chordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                chordFieldKeyPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel1.add(chordField, gridBagConstraints);
+
+        addChordButton.setText("Enter Chord"); // NOI18N
+        addChordButton.setToolTipText("Enter this chord into roadmap."); // NOI18N
+        addChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        addChordButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        addChordButton.setName("addChordButton"); // NOI18N
+        addChordButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        addChordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addChordButtonPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(addChordButton, gridBagConstraints);
+
+        libraryTabbedPane.addTab("Chords", jPanel1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.8;
+        libraryPanel.add(libraryTabbedPane, gridBagConstraints);
+
+        keyLabel.setName("keyLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        libraryPanel.add(keyLabel, gridBagConstraints);
+
+        keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
+        keySpinner.setToolTipText("Select the key for this brick."); // NOI18N
+        keySpinner.setName("keySpinner"); // NOI18N
+        keySpinner.setPreferredSize(new java.awt.Dimension(76, 28));
+        keySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                keySpinnerChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        libraryPanel.add(keySpinner, gridBagConstraints);
+
+        durationLabel.setName("durationLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        libraryPanel.add(durationLabel, gridBagConstraints);
+
+        previewScrollPane.setDoubleBuffered(true);
+        previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
+        previewScrollPane.setMinimumSize(new java.awt.Dimension(200, 100));
+        previewScrollPane.setName("previewScrollPane"); // NOI18N
+        previewScrollPane.setPreferredSize(new java.awt.Dimension(200, 100));
+        previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                previewScrollPanepreviewPaneReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                previewScrollPanepreviewPaneClicked(evt);
+            }
+        });
+        previewScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                previewScrollPanepreviewPaneDragged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        libraryPanel.add(previewScrollPane, gridBagConstraints);
+
+        durationComboBox.setSelectedItem(480);
+        durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
+        durationComboBox.setName("durationComboBox"); // NOI18N
+        durationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                durationComboBoxdurationChosen(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
+        libraryPanel.add(durationComboBox, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(libraryPanel, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
@@ -561,6 +585,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadmapMenuBar.add(helpMenu);
 
         setJMenuBar(roadmapMenuBar);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
