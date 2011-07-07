@@ -177,6 +177,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         addBrickDialog.getContentPane().add(dialogKeySpinner, gridBagConstraints);
 
+        setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(830, 600));
         setName("Form"); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -347,13 +348,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.9;
         gridBagConstraints.weighty = 0.95;
         getContentPane().add(roadMapScrollPane, gridBagConstraints);
 
-        libraryTabbedPane.setMinimumSize(new java.awt.Dimension(150, 200));
+        libraryTabbedPane.setMinimumSize(new java.awt.Dimension(300, 200));
         libraryTabbedPane.setName("libraryTabbedPane"); // NOI18N
         libraryTabbedPane.setPreferredSize(new java.awt.Dimension(300, 500));
 
@@ -424,7 +424,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.8;
@@ -432,9 +434,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
         keySpinner.setToolTipText("Select the key for this brick."); // NOI18N
-        keySpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick Key, Chord Root\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
+        keySpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Key, Root\n\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
         keySpinner.setName("keySpinner"); // NOI18N
-        keySpinner.setPreferredSize(new java.awt.Dimension(76, 28));
+        keySpinner.setPreferredSize(new java.awt.Dimension(76, 54));
         keySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 keySpinnerChanged(evt);
@@ -442,7 +444,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.1;
@@ -452,18 +454,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         durationComboBox.setSelectedItem(480);
         durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
-        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick and Chord Duration\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
-        durationComboBox.setMinimumSize(new java.awt.Dimension(52, 45));
+        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
+        durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         durationComboBox.setName("durationComboBox"); // NOI18N
-        durationComboBox.setPreferredSize(new java.awt.Dimension(52, 45));
+        durationComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
         durationComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 durationComboBoxdurationChosen(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.1;
@@ -473,9 +475,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         previewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick Preview\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
         previewScrollPane.setDoubleBuffered(true);
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
-        previewScrollPane.setMinimumSize(new java.awt.Dimension(200, 100));
+        previewScrollPane.setMinimumSize(new java.awt.Dimension(800, 80));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
-        previewScrollPane.setPreferredSize(new java.awt.Dimension(200, 100));
+        previewScrollPane.setPreferredSize(new java.awt.Dimension(800, 80));
+        previewScrollPane.setSize(new java.awt.Dimension(800, 80));
         previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 previewScrollPanepreviewPaneReleased(evt);
@@ -490,13 +493,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 4, 4, 4);
         getContentPane().add(previewScrollPane, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
