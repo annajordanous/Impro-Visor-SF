@@ -2247,6 +2247,7 @@ public class Notate
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
@@ -7991,6 +7992,14 @@ public class Notate
 
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText("Utilities");
+
+        jMenuItem1.setText("Road Map");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RoadMapMIaction(evt);
+            }
+        });
+        utilitiesMenu.add(jMenuItem1);
 
         openLeadsheetEditorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetEditorMI.setMnemonic('l');
@@ -20097,6 +20106,14 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
         }
 }//GEN-LAST:event_chordStepBackButtonActionPerformed
 
+imp.roadmap.RoadMapFrame roadmapFrame;
+
+private void RoadMapMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoadMapMIaction
+    roadmapFrame = new imp.roadmap.RoadMapFrame();
+    roadmapFrame.setSize(800, 600); // FIX
+    roadmapFrame.setVisible(true);
+}//GEN-LAST:event_RoadMapMIaction
+
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
@@ -21567,6 +21584,7 @@ public void showNewVoicingDialog()
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jList4;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel15;
