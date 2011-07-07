@@ -1,0 +1,908 @@
+// Custom bricks and misc
+
+(Brick Plagal-Minor Minor Cadence C
+	(Chord Fm 1)
+	(Chord C 1))
+
+(Brick Dropback-Minor Minor Dropback C
+	(Chord Cm 1)
+	(Chord Am7b5 1))
+
+(Brick Raindrop Minor Misc C
+	(Chord Em 1)
+	(Chord Ebdim 1))
+
+(Brick Reverse-Raindrop Minor Misc C
+	(Chord Dm 1)
+	(Chord Ebdim 1))
+
+(Brick Straight-Approach-Minor Minor Approach C
+	(Chord Dm7b5 1)
+	(Chord G7 1))
+
+(Brick Sad-Straight Minor Cadence C
+	(Brick Straight-Approach-Minor C 2)
+	(Chord Cm7 2))
+
+(Brick Upslide Major Misc C
+	(Chord CM7 1)
+	(Chord Dbdim 1))
+
+// On-off
+
+(Brick On-Off-To-bII Major On-Off C
+	(Chord C 1)
+	(Chord Db7 1))
+
+(Brick On-Off-To-II Major On-Off C
+	(Chord C 1)
+	(Chord D7 1))
+
+(Brick On-Off-To-bIII Major On-Off C
+	(Chord C 1)
+	(Chord Eb7 1))
+
+(Brick On-Off-To-III Major On-Off C
+	(Chord C 1)
+	(Chord E7 1))
+
+(Brick On-Off-To-IV Major On-Off C
+	(Chord C 1)
+	(Chord F7 1))
+
+(Brick On-Off-To-bV Major On-Off C
+	(Chord C 1)
+	(Chord Gb7 1))
+
+(Brick On-Off-To-bVI Major On-Off C
+	(Chord C 1)
+	(Chord Ab7 1))
+
+(Brick On-Off-To-VI Major On-Off C
+	(Chord C 1)
+	(Chord A7 1))
+
+(Brick On-Off-To-bVII Major On-Off C
+	(Chord C 1)
+	(Chord Bb7 1))
+
+(Brick On-Off-To-VII Major On-Off C
+	(Chord C 1)
+	(Chord B7 1))
+
+(Brick On-Off-Minor-To-bII Minor On-Off C
+	(Chord Cm 1)
+	(Chord Db7 1))
+
+(Brick On-Off-Minor-To-II Minor On-Off C
+	(Chord Cm 1)
+	(Chord D7 1))
+
+(Brick On-Off-Minor-To-bIII Minor On-Off C
+	(Chord Cm 1)
+	(Chord Eb7 1))
+
+(Brick On-Off-Minor-To-III Minor On-Off C
+	(Chord Cm 1)
+	(Chord E7 1))
+
+/*
+(Brick On-Off-Minor-To-IV Minor On-Off C
+	(Chord Cm 1)
+	(Chord F7 1))
+*/
+
+(Brick On-Off-Minor-To-bV Minor On-Off C
+	(Chord Cm 1)
+	(Chord Gb7 1))
+
+(Brick On-Off-Minor-To-V Minor On-Off C
+        (Chord Cm 1)
+        (Chord G7 1))
+
+(Brick On-Off-Minor-To-bVI Minor On-Off C
+	(Chord Cm 1)
+	(Chord Ab7 1))
+
+(Brick On-Off-Minor-To-VI Minor On-Off C
+	(Chord Cm 1)
+	(Chord A7 1))
+
+(Brick On-Off-Minor-To-bVII Minor On-Off C
+	(Chord Cm 1)
+	(Chord Bb7 1))
+
+(Brick On-Off-Minor-To-VII Minor On-Off C
+	(Chord Cm 1)
+	(Chord B7 1))
+
+(Brick On-Off-On-To-bII Major On-Off C
+	(Brick On-Off-To-bII C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-II Major On-Off C
+	(Brick On-Off-To-II C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-bIII Major On-Off C
+	(Brick On-Off-To-bIII C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-III Major On-Off C
+	(Brick On-Off-To-III C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-IV Major On-Off C
+	(Brick On-Off-To-IV C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-bV Major On-Off C
+	(Brick On-Off-To-bV C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-bVI Major On-Off C
+	(Brick On-Off-To-bVI C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-VI Major On-Off C
+	(Brick On-Off-To-VI C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-bVII Major On-Off C
+	(Brick On-Off-To-bVII C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-To-VII Major On-Off C
+	(Brick On-Off-To-VII C 2)
+	(Chord C 2))
+
+(Brick On-Off-On-Minor-To-bII Minor On-Off C
+	(Brick On-Off-Minor-To-bII C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-II Minor On-Off C
+	(Brick On-Off-Minor-To-II C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bIII Minor On-Off C
+	(Brick On-Off-Minor-To-bIII C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-III Minor On-Off C
+	(Brick On-Off-Minor-To-III C 2)
+	(Chord Cm 2))
+
+/*
+(Brick On-Off-On-Minor-To-IV Minor On-Off C
+	(Brick On-Off-Minor-To-IV C 2)
+	(Chord Cm 2))
+*/
+
+(Brick On-Off-On-Minor-To-bV Minor On-Off C
+	(Brick On-Off-Minor-To-bV C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-V Minor On-Off C
+	(Brick On-Off-Minor-To-V C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bVI Minor On-Off C
+	(Brick On-Off-Minor-To-bVI C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-VI Minor On-Off C
+	(Brick On-Off-Minor-To-VI C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bVII Minor On-Off C
+	(Brick On-Off-Minor-To-bVII C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-VII Minor On-Off C
+	(Brick On-Off-Minor-To-VII C 2)
+	(Chord Cm 2))
+
+(Brick On-Off-Major-To-bII Major On-Off C
+        (Chord CM 2)
+        (Chord DbM 2))
+
+(Brick On-Off-Major-To-II Major On-Off C
+        (Chord CM 2)
+        (Chord DM 2))
+
+(Brick On-Off-Major-To-bIII Major On-Off C
+        (Chord CM 2)
+        (Chord EbM 2))
+
+(Brick On-Off-Major-To-III Major On-Off C
+        (Chord CM 2)
+        (Chord EM 2))
+
+(Brick On-Off-Major-To-IV Major On-Off C
+        (Chord CM 2)
+        (Chord FM 2))
+
+(Brick On-Off-Major-To-bV Major On-Off C
+        (Chord CM 2)
+        (Chord GbM 2))
+
+(Brick On-Off-Major-To-V Major On-Off C
+        (Chord CM 2)
+        (Chord GM 2))
+
+(Brick On-Off-Major-To-bVI Major On-Off C
+        (Chord CM 2)
+        (Chord AbM 2))
+
+(Brick On-Off-Major-To-VI Major On-Off C
+        (Chord CM 2)
+        (Chord AM 2))
+
+(Brick On-Off-Major-To-bVII Major On-Off C
+        (Chord CM 2)
+        (Chord BbM 2))
+
+(Brick On-Off-Major-To-VII Major On-Off C
+        (Chord CM 2)
+        (Chord BM 2))
+
+(Brick On-Off-On-Major-To-bII Major On-Off C
+        (Brick On-Off-Major-To-bII C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-II Major On-Off C
+        (Brick On-Off-Major-To-II C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-bIII Major On-Off C
+        (Brick On-Off-Major-To-bIII C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-III Major On-Off C
+        (Brick On-Off-Major-To-III C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-IV Major On-Off C
+        (Brick On-Off-Major-To-IV C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-bV Major On-Off C
+        (Brick On-Off-Major-To-bV C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-V Major On-Off C
+        (Brick On-Off-Major-To-V C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-bVI Major On-Off C
+        (Brick On-Off-Major-To-bVI C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-VI Major On-Off C
+        (Brick On-Off-Major-To-VI C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-bVII Major On-Off C
+        (Brick On-Off-Major-To-bVII C 2)
+        (Chord CM 2))
+
+(Brick On-Off-On-Major-To-VII Major On-Off C
+        (Brick On-Off-Major-To-VII C 2)
+        (Chord CM 2))
+
+
+(Brick On-Off-Minor-To-bII-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord DbM7 2))
+
+(Brick On-Off-Minor-To-II-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord DM7 2))
+
+(Brick On-Off-Minor-To-bIII-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord EbM7 2))
+
+(Brick On-Off-Minor-To-III-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord EM7 2))
+
+(Brick On-Off-Minor-To-IV-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord FM7 2))
+
+(Brick On-Off-Minor-To-bV-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord GbM7 2))
+
+(Brick On-Off-Minor-To-V-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord GM7 2))
+
+(Brick On-Off-Minor-To-bVI-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord AbM7 2))
+
+(Brick On-Off-Minor-To-VI-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord AM7 2))
+
+(Brick On-Off-Minor-To-bVII-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord BbM7 2))
+
+(Brick On-Off-Minor-To-VII-Major Minor On-Off C
+        (Chord Cm 2)
+        (Chord BM7 2))
+
+(Brick On-Off-On-Minor-To-bII-Major Minor On-Off C
+        (Brick On-Off-Minor-To-bII-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-II-Major Minor On-Off C
+        (Brick On-Off-Minor-To-II-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bIII-Major Minor On-Off C
+        (Brick On-Off-Minor-To-bIII-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-III-Major Minor On-Off C
+        (Brick On-Off-Minor-To-III-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-IV-Major Minor On-Off C
+        (Brick On-Off-Minor-To-IV-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bV-Major Minor On-Off C
+        (Brick On-Off-Minor-To-bV-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-V-Major Minor On-Off C
+        (Brick On-Off-Minor-To-V-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bVI-Major Minor On-Off C
+        (Brick On-Off-Minor-To-bVI-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-VI-Major Minor On-Off C
+        (Brick On-Off-Minor-To-VI-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-bVII-Major Minor On-Off C
+        (Brick On-Off-Minor-To-bVII-Major C 2)
+        (Chord Cm 2))
+
+(Brick On-Off-On-Minor-To-VII-Major Minor On-Off C
+        (Brick On-Off-Minor-To-VII-Major C 2)
+        (Chord Cm 2))
+
+// Launchers
+
+/*
+(Brick Launcher Launcher C
+	(Chord Dm7 1)
+	(Chord G7 1))
+
+(Brick LauncherMinor Launcher C
+	(Chord Dm7b5 1)
+	(Chord G7 1))
+
+(Brick SlowLauncher Launcher C
+	(Brick Launcher G 2)
+	(Brick Launcher C 2))
+
+(Brick BootstrapLauncher Launcher C
+	(Chord CM7 1)
+	(Chord C7 1))
+
+(Brick LightAndDayLauncher Launcher C
+	(Chord F#dim 1)
+	(Chord Fm7 1))
+
+(Brick NowhereLauncher Launcher C
+	(Chord Dm7 1)
+	(Chord Ab7 1)
+	(Chord G7 2))
+
+(Brick SidewinderLauncher Launcher C
+	(Chord EbM7 1)
+	(Chord G7 1))
+*/
+
+// Approaches and cadences
+
+(Brick Straight-Approach Major Approach C
+	(Chord Dm7 1)
+	(Chord G7 1))
+
+(Brick Straight3 Major Cadence C
+	(Brick Straight-Approach C 2)
+	(Chord CM7 1))
+
+(Brick Straight4 Major Cadence C
+	(Brick Straight-Approach C 2)
+	(Chord CM7 2))
+
+(Brick Perfect Major Cadence C
+	(Chord G7 1)
+	(Chord CM7 1))
+
+(Brick Yardbird Major Cadence C
+        (Brick Straight-Approach Eb 2)
+	(Chord CM7 2))
+
+(Brick Amen Major Cadence C
+	(Chord FM7 1)
+	(Chord CM7 1))
+
+(Brick Body-And-Soul-Approach Major Approach C
+	(Chord Dm 1)
+	(Chord A7 1)
+	(Brick Straight-Approach C 2))
+
+(Brick Body-And-Soul Major Cadence C
+	(Brick Body-And-Soul-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Dizzy Major Cadence C
+	(Brick Straight-Approach Gb 2)
+	(Chord CM7 2))
+
+(Brick Dizzy-Substitution-Approach Major Approach C
+	(Chord Dm 2)
+	(Brick Straight-Approach Gb 2))
+
+(Brick Dizzy-Substitution Major Cadence C
+	(Brick Dizzy-Substitution-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Dogleg-Approach Major Approach C
+	(Brick Straight-Approach G 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Dogleg Major Cadence C
+	(Brick Dogleg-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Extended-Approach Major Approach C
+	(Chord A7 1)
+	(Brick Straight-Approach C 2))
+
+(Brick Extended Major Cadence C
+	(Brick Extended-Approach C 3)
+	(Chord CM7 1))
+
+(Brick Green-Dolphin-Street-Approach Major Approach C
+	(Chord D7/C 1)
+	(Chord DbM7/C 1))
+
+(Brick Green-Dolphin-Street Major Cadence C
+	(Brick Green-Dolphin-Street-Approach C 2)
+	(Chord CM7 2))
+
+(Brick Happenstance Major Cadence C
+	(Brick Straight-Approach E 2)
+	(Chord CM7 2))
+
+(Brick Long-Approach Major Approach C
+	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Long Major Cadence C
+	(Brick Long-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Moment's-Approach Major Approach C
+	(Brick Straight-Approach B 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Moment's Major Cadence C
+	(Brick Moment's-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Night-And-Day-Approach Major Approach C
+	(Chord AbM7 1)
+	(Chord G7 1))
+
+(Brick Night-And-Day Major Cadence C
+	(Brick Night-And-Day-Approach C 2)
+	(Chord CM7 2))
+
+(Brick Nobody's Minor Cadence C
+	(Chord CM7 1)
+	(Chord E7 1)
+	(Chord Am 2))
+
+(Brick Nowhere-Approach Major Approach C
+	(Chord Ab7 1)
+	(Chord G7 1))
+
+(Brick Nowhere Major Cadence C
+	(Brick Nowhere-Approach C 2)
+	(Chord CM7 2))
+
+(Brick Overrun Major Cadence C
+	(Brick Straight3 C 3)
+	(Chord FM7 1))
+
+(Brick Pullback-Approach Major Approach C
+	(Brick Straight-Approach C 2)
+	(Brick Long-Approach C 4))
+
+(Brick Pullback Major Cadence C
+	(Brick Pullback-Approach C 6)
+	(Chord CM7 2))
+
+(Brick Rainbow Major Cadence C
+	(Chord CM7 1)
+	(Chord Em 1)
+	(Chord FM7 2))
+
+(Brick Rainbow-Variant Major Cadence C
+	(Chord CM7 1)
+	(Chord E7 1)
+	(Chord FM7 2))
+
+(Brick Rainy-Approach Major Approach C
+	(Brick Raindrop C 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Rainy Major Cadence C
+	(Brick Rainy-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Sad-Approach Minor Approach C
+	(Chord Dm7b5 1)
+	(Chord G7alt 1))
+
+(Brick Sad Minor Cadence C
+	(Brick Sad-Approach C 2)
+	(Chord CmM7 2))
+
+(Brick Satin-Approach Major Approach C
+	(Brick Straight-Approach G 2)
+	(Brick Straight-Approach Gb 2))
+
+(Brick Satin Major Cadence C
+	(Brick Satin-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Spring-Approach Major Approach C
+	(Chord Bm7b5 1)
+	(Chord B7 1)
+	(Brick Long-Approach C 4))
+
+(Brick Spring Major Cadence C
+	(Brick Spring-Approach C 6)
+	(Chord CM7 2))
+
+(Brick Stablemates-Approach Major Approach C
+	(Brick Straight-Approach Db 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Stablemates Major Cadence C
+	(Brick Stablemates-Approach C 4)
+	(Chord CM7 4))
+
+(Brick Starlight-Approach Major Approach C
+	(Chord F#m7b5 1)
+	(Chord B7 1)
+	(Brick Long-Approach C 4))
+
+(Brick Starlight Major Cadence C
+	(Brick Starlight-Approach C 6)
+	(Chord CM7 2))
+
+(Brick Starlight-Variant-Approach Major Approach C
+	(Chord F#m7b5 1)
+	(Chord Fm 1)
+	(Brick Rainy-Approach C 4))
+
+(Brick Starlight-Variant Major Cadence C
+	(Brick Starlight-Variant-Approach C 6)
+	(Chord CM7 2))
+
+(Brick Tritone-Substitution-Approach Major Approach C
+	(Chord Dm 1)
+	(Chord Db7 1))
+
+(Brick Tritone-Substitution Major Cadence C
+	(Brick Tritone-Substitution-Approach C 2)
+	(Chord CM7 2))
+
+(Brick Flat-Two Major Cadence C
+        (Chord DbM7 1)
+        (Chord CM7 1))
+
+(Brick Two-Goes-Approach Major Approach C
+	(Brick Straight-Approach C 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Two-Goes Major Cadence C
+	(Brick Two-Goes-Approach C 4)
+	(Chord CM7 2))
+
+(Brick Yardbird-Substitution-Approach Major Approach C
+	(Chord Dm 2)
+	(Brick Straight-Approach Eb 2))
+
+(Brick Yardbird-Substitution Major Cadence C
+	(Brick Yardbird-Substitution-Approach C 4)
+	(Chord CM7 4))
+
+// Dropbacks and related
+
+(Brick Dropback Major Dropback C
+	(Chord CM7 1)
+	(Chord A7 1))
+
+(Brick Straight-Cadence-With-Dropback Major Misc C
+        (Brick Straight-Approach C 2)
+        (Brick Dropback C 2))
+
+(Brick Chromatic-Dropback Major Dropback C
+	(Brick Night-And-Day-Approach E 2)
+	(Brick Nowhere-Approach D 2))
+
+(Brick Somewhere Major Dropback C
+	(Chord Bb7 1)
+	(Chord A7 2)
+	(Chord D7 2))
+
+(Brick Sad-Somewhere Minor Dropback C
+	(Brick Straight-Approach-Minor C 2)
+	(Chord D7 1))
+
+(Brick Dropback-To-Five Major Dropback C
+	(Brick Somewhere C 5)
+	(Chord G7 1))
+
+(Brick Starlight-Dropback Major Dropback C
+	(Brick Straight-Approach E 2)
+	(Brick Straight-Approach D 2))
+
+(Brick TINGLe Major Dropback C
+	(Chord CM7 1)
+	(Chord F7 1)
+	(Brick Nowhere-Approach D 2))
+
+(Brick TTFA Major Dropback C
+	(Chord CM7 1)
+	(Chord F7 1)
+	(Brick Straight-Approach D 2))
+
+// Metabricks
+
+(Brick Autumnal-Approach Minor Approach C
+	(Brick Straight-Approach C 2)
+	(Brick Sad-Approach A 2))
+
+(Brick Autumnal Minor Cadence C
+	(Brick Autumnal-Approach C 4)
+	(Chord Am 4))
+
+(Brick Autumn-Leaves-Opening Minor Opening C
+	(Brick Overrun C 4)
+	(Brick Sad A 3)
+	(Chord A7 1))
+
+(Brick Coltrane Major Cadence C 
+    	(Chord Dm7 2) 
+    	(Brick Perfect Ab 2) 
+    	(Brick Perfect E 2) 
+    	(Brick Perfect C 2))
+
+(Brick Donna-Lee-Opening Major Opening C
+	(Chord CM7 2)
+	(Chord D7 2)
+	(Brick Straight4 C 4))
+
+(Brick Four-Star-Approach Major Approach C
+	(Chord FM7 2)
+	(Brick Straight-Approach E 2)
+	(Brick Long-Approach C 8))
+
+(Brick Four-Star-Ending Major Cadence C
+	(Brick Four-Star-Approach C 12)
+	(Chord CM7 4))
+
+(Brick Honeysuckle-Bridge Major Approach C 
+	(Brick Straight4 F 4) 
+	(Brick Straight-Approach G 2) 
+	(Brick Straight-Approach C 2))
+
+(Brick ITCHY-Opening Major Opening C
+	(Chord CM7 2)
+	(Brick Straight-Approach D 2)
+	(Chord Dm 2)
+	(Brick Straight-Approach E 2))
+
+(Brick Pennies-Approach Major Approach C
+	(Chord F 1)
+        (Chord Bb7 1)
+	(Brick Dropback C 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Pennies-Ending Major Cadence C
+	(Brick Pennies-Approach C 6)
+	(Chord CM7 2))
+
+(Brick Rhythm-Changes-Bridge Major Approach C
+	(Brick Dogleg-Approach D 4)
+	(Brick Dogleg-Approach C 4))
+
+(Brick Sharp-Fourpenny-Approach Major Approach C
+	(Chord F#m7b5 2)
+	(Brick Yardbird C 4)
+	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach C 4))
+
+(Brick Sharp-Fourpenny-Ending Major Cadence C
+	(Brick Sharp-Fourpenny-Approach C 12)
+	(Chord CM7 4))
+
+(Brick Sixpenny-Approach Major Approach C
+	(Chord Am 2)
+	(Brick Yardbird C 4)
+	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach C 4))
+
+(Brick Sixpenny-Ending Major Cadence C
+	(Brick Sixpenny-Approach C 12)
+	(Chord CM7 4))
+
+(Brick Supertension-Ending Dominant Cadence C
+	(Brick Straight-Approach C 2)
+	(Chord C7#4 2))
+
+(Brick Surprise-Sad-Ending Minor Cadence C
+	(Brick Straight-Approach C 2)
+	(Chord Cm 2))
+
+(Brick Surprise-Straight-Ending Major Cadence C
+	(Brick Sad-Approach C 2)
+	(Chord CM7 2))
+
+(Brick Twopenny-Approach Major Approach C
+	(Chord Dm 2)
+	(Brick Yardbird C 4)
+	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach C 4))
+
+(Brick Twopenny-Ending Major Cadence C
+	(Brick Twopenny-Approach C 12)
+	(Chord CM7 4))
+
+// Turnarounds
+
+(Brick Dropback-Turnaround Major Turnaround C
+	(Brick Dropback-To-Five C 6)
+	(Chord C 1))
+
+(Brick Foggy Major Turnaround C
+	(Chord CM7 1)
+	(Chord Eb7 1)
+	(Brick Straight-Approach C 2))
+
+(Brick II-n-Back Minor Turnaround C
+	(Brick Reverse-Raindrop C 2)
+	(Chord Em 2))
+
+(Brick Ladybird Major Turnaround C
+	(Chord CM7 1)
+	(Chord Eb7 1)
+	(Chord AbM7 1)
+	(Chord Db7 1))
+
+(Brick Ladybird-Variant Major Turnaround C
+	(Chord CM7 1)
+	(Chord EbM7 1)
+	(Chord AbM7 1)
+	(Chord DbM7 1))
+
+(Brick Nowhere-Turnaround Major Turnaround C
+	(Brick Dropback C 2)
+	(Brick Nowhere-Approach C 2))
+
+(Brick Pennies Major Turnaround C
+	(Chord CM7 1)
+	(Chord Dm 1)
+	(Brick Raindrop C 2)
+	(Brick Straight-Approach C 4))
+
+(Brick POT-Altered Major Turnaround C
+	(Chord C 1)
+	(Chord Am 1)
+	(Brick Straight-Approach C 2))
+
+(Brick POT Major Turnaround C
+	(Brick Dropback C 2)
+	(Brick Straight-Approach C 2))
+
+(Brick POT-Minor Minor Turnaround C
+	(Brick Dropback-Minor C 2)
+	(Brick Sad-Approach C 2))
+
+(Brick Rhythm-Turnaround Major Turnaround C
+	(Brick Upslide C 2)
+	(Brick Reverse-Raindrop C 2))
+
+(Brick Suspended-POT Major Turnaround C
+	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach C 2))
+
+(Brick To-IV-n-Back Major Turnaround C
+	(Chord CM7 1)
+	(Brick Perfect F 2)
+	(Chord F#dim 1))
+
+(Brick To-IV-n-Bird-SPOT Major Turnaround C
+	(Chord CM7 1)
+	(Brick Perfect F 2)
+	(Chord Bb7 1)
+	(Brick Suspended-POT C 4))
+
+(Brick To-IV-n-Hack Major Turnaround C
+	(Chord CM7 1)
+	(Brick Perfect F 2)
+	(Chord B7 1))
+
+(Brick To-IV-n-Mack Major Turnaround C
+	(Chord CM7 1)
+	(Brick Perfect F 2)
+	(Chord Fm 1))
+
+(Brick To-IV-n-Yak Major Turnaround C
+	(Chord CM7 1)
+	(Brick Perfect F 2)
+	(Chord Bb7 1))
+
+(Brick Whoopee Major Turnaround C
+	(Brick Upslide C 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Yardbird-Turnaround Major Turnaround C
+        (Chord CM7 2)
+	(Brick Straight-Approach Eb 2))
+
+// Turnaround cadences
+
+(Brick Foggy-Cadence Major Cadence C
+        (Chord Eb7 1)
+	(Brick Straight-Approach C 2)
+        (Chord CM7 1))
+
+(Brick Ladybird-Cadence Major Cadence C
+	(Chord Eb7 1)
+	(Chord AbM7 1)
+	(Chord Db7 1)
+        (Chord CM7 1))
+
+(Brick Ladybird-Variant-Cadence Major Cadence C
+	(Chord EbM7 1)
+	(Chord AbM7 1)
+	(Chord DbM7 1)
+        (Chord CM7 1))
+
+(Brick Nowhere-Turnaround-Cadence Major Cadence C
+        (Chord A7 1)
+	(Brick Nowhere-Approach C 2)
+        (Chord CM7 1))
+
+(Brick Pennies-Cadence Major Cadence C
+	(Chord Dm 2)
+	(Brick Raindrop C 2)
+	(Brick Straight-Approach C 2)
+        (Chord CM7 2))
+
+(Brick Rhythm-Turnaround-Cadence Major Cadence C
+	(Chord Dbdim 1)
+        (Brick Reverse-Raindrop C 2)
+	(Chord CM7 1))
+
+(Brick Whoopee-Cadence Major Cadence C
+	(Chord Dbdim 1)
+	(Brick Straight3 C 3))
