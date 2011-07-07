@@ -39,9 +39,10 @@ import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.cluster.*;
 import imp.com.*;
-import imp.RecentFiles;
-import imp.util.*;
 import imp.lickgen.*;
+import imp.RecentFiles;
+import imp.roadmap.RoadMapFrame;
+import imp.util.*;
 import imp.util.MidiManager;
 import imp.util.LeadsheetFileView;
 import imp.util.LeadsheetPreview;
@@ -74,6 +75,11 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
+  RoadMapFrame roadmapFrame;
+  
+  static int roadmapFrameInitialWidth = 1000;
+  static int roadmapFrameInitialHeight = 800;
+
 
   LickgenFrame lickgenFrame;
 
@@ -20106,11 +20112,10 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
         }
 }//GEN-LAST:event_chordStepBackButtonActionPerformed
 
-imp.roadmap.RoadMapFrame roadmapFrame;
 
 private void RoadMapMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoadMapMIaction
-    roadmapFrame = new imp.roadmap.RoadMapFrame();
-    roadmapFrame.setSize(800, 600); // FIX
+    roadmapFrame = new RoadMapFrame();
+    roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
     roadmapFrame.setVisible(true);
 }//GEN-LAST:event_RoadMapMIaction
 
