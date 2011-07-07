@@ -69,7 +69,7 @@ public class TreeNode {
      * @param chord, a Chord
      * @param c, a long describing the Chord's cost
      */
-        public TreeNode(Chord chord, long c, long s)
+        public TreeNode(Chord chord, double c, long s)
     {
         child1 = null;
         child2 = null;
@@ -179,7 +179,25 @@ public class TreeNode {
         start = c1.getStart();
     }
     
-   
+   /** overlapCopy
+     * Makes a copy of a TreeNode's contents with the last chord set to duration
+     * 0. Used to facilitate the creation and parsing of overlapping bricks.
+     * @return a copy of a TreeNode with the last chord at 0 duration
+     */
+    public TreeNode overlapCopy()
+    {
+        TreeNode newNode;
+        if (child1 == null && child2 == null) {
+            Chord zeroChord = new Chord(block.getName(), 0, true);
+            newNode = new TreeNode(zeroChord, cost + 5, start);
+        }
+        else {
+            newNode = new TreeNode(symbol, block.getType(), mode, 
+                    child1, child2.overlapCopy(), cost + 5, block.getKey());
+        }
+        return newNode;
+    }
+    
     // Getters for the data members of a TreeNode
     public TreeNode getFirstChild()
     {

@@ -1,5 +1,6 @@
 /** file: CYKParser.java
- * @author Xanda Schofield
+ * @author Impro-Visor Team 2011
+ *         Rober Keller, Zack Merritt, Xanda Schofield, August Toman-Yih
  * purpose: parsing chords using the CYK algorithm
  */
 package imp.cykparser;
@@ -92,73 +93,9 @@ public class CYKParser
         cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
     }
     
-    /** newRule
-     * newRule allows the addition of a rule to the CYKParser's rule library
-     * @param binary: rule type indicator (true = binary, false = unary)
-     * @param rule: a String to be parsed into a rule
-     */
-    public void newRule(boolean binary, String rule) {
-        if (binary) {
-            BinaryProduction newRule = new BinaryProduction(rule);
-            nonterminalRules.add(newRule);
-        } else {
-            UnaryProduction newRule = new UnaryProduction(rule);
-        }
-        
-        tableFilled = false;
-    }
-    
-    /** readChords
-     * Reads in chords and durations from a .txt file to make Chord 
-     * objects to parse. 
-     * @param filename: the name of a chord input file, a String 
-     */
-    public void readChords(String filename)
-    {
-        chords.clear();
-        FileReader in = null;
-        try {
-            in = new FileReader(filename);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        BufferedReader chordsIn = new BufferedReader(in);
-        try {
-            while (chordsIn.ready()) {
-                String newChord = chordsIn.readLine();
-                String[] chordChunks = newChord.split(" ");
-                if (chordChunks.length == 2) {
-
-                    chords.add(new Chord(chordChunks[0], 
-                            Integer.parseInt(chordChunks[1])));
-
-                } else if (chordChunks.length == 3) {
-
-                    chords.add(new Chord(chordChunks[0], 
-                            Integer.parseInt(chordChunks[1]), 
-                            chordChunks[2].equals("@")));
-                } else if (newChord.length() != 0) {
-                    Error e1 = new Error(newChord + " is not a chord.");
-                    System.err.println(e1);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        int size = chords.size();
-        cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
-        tableFilled = false;
-        
-    }
-    
     /** readChordsls
-     * Reads in chords without durations from a leadsheet file
-     * @param filename , a String
+     * Reads in chords from a .ls file
+     * @param filename: a path to a leadsheet file
      */
     public void readChordsls(String filename)
     {
@@ -190,7 +127,7 @@ public class CYKParser
         
     }
     
-    // FILLER CODE - NOT PARSING CORRECTLY YET //
+      // FILLER CODE - NOT PARSING CORRECTLY YET //
     /** addChords
      * Takes in a string from the chord part of a leadsheet and pulls out chords
      * 
@@ -205,40 +142,6 @@ public class CYKParser
                 chords.add(newChord);
             }
         }
-    }
-    /** populateRules
-     * Reads in binary productions from a .txt file
-     * @param filename: the name of a productions file, a String
-     */
-    public void populateRules(String filename) 
-    {
-        FileReader in = null;
-        try {
-            in = new FileReader(filename);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        // read in input line by line
-        BufferedReader rulesIn = new BufferedReader(in);
-        try {
-            while (rulesIn.ready()) {
-                String newRule = rulesIn.readLine();
-                String[] ruleChunks = newRule.split(" ");
-                if (ruleChunks.length == 8) {
-                    newRule(true, newRule);
-                } else if (ruleChunks.length != 0) {
-                    Error e2 = new Error(newRule + " is not a rule.");
-                    System.err.println(e2);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        tableFilled = false;
-        
     }
     
     /** createRules
@@ -390,124 +293,6 @@ public class CYKParser
             
     }
     
-    /** printSolutions
-     * printSolutions takes a filled-in table in a CYKParser and prints all 
-     * possible parse trees with their respective costs. It then returns the 
-     * best parse tree (the lowest cost one).
-     */
-    public String printSolution(BrickLibrary lib) {
-        
-        // First, we assemble the table of minimum-value nodes.
-        assert(tableFilled);
-        int size = this.chords.size();
-        TreeNode[][] minVals = new TreeNode[size][size];
-        
-	// If this is an empty table, we're done	
-	if (size == 0)
-	    return new ArrayList<Block>().toString();
-        
-	// This loops through every occupied cell in the cykTable and finds 
-        // the lowest-cost Node in the list, for the construction of optimal
-        // trees later.
-        for (int row = 0; row < size; row++) {
-            for (int col = row; col < size; col++) {
-                if (cykTable[row][col].isEmpty()) {
-                    minVals[row][col] = new TreeNode();
-                }
-                else {
-                    ListIterator node = cykTable[row][col].listIterator();
-                    minVals[row][col] = (TreeNode) node.next();
-                    while (node.hasNext()) {
-                        TreeNode nextNode = (TreeNode) node.next();
-                        if (nextNode.getCost() < minVals[row][col].getCost())
-                            minVals[row][col] = nextNode;
-                    }
-                }
-            }
-        }
-        
-        
-        // This is a cost-minimization algorithm looking for the lowest cost
-        // way to account for the chords in order with possible brick parses.
-        for (int i = size - 2; i >= 0; i--) {
-            for (int j = i + 1; j < size; j++) {
-                for (int k = i + 1; k <= j; k++) {
-                    if (minVals[i][k-1].getCost() + minVals[k][j].getCost() 
-                            < minVals[i][j].getCost()){
-                        minVals[i][j] = new TreeNode(minVals[i][k-1], minVals[k][j]);
-                    }
-                }
-                    
-            }
-        }
-
-        // The shortest path in the top right cell gets printed as the best
-        // explanation for the whole chord progression
-        return minVals[0][size - 1].toString();
-            
-    }
-    
-    private ArrayList<TreeNode> findSolutions(BrickLibrary lib) {
-        // First, we assemble the table of minimum-value nodes.
-        assert(tableFilled);
-        int size = this.chords.size();
-        ArrayList<TreeNode>[][] minVals = 
-                (ArrayList<TreeNode>[][]) new ArrayList[size][size];
-        
-        
-        // This loops through every occupied cell in the cykTable and finds 
-        // the lowest-cost Node(s) in the list, for the construction of optimal
-        // trees later.
-        for (int row = 0; row < size; row++) {
-            for (int col = row; col < size; col++) {
-                minVals[row][col] = new ArrayList<TreeNode>();
-                if (!(cykTable[row][col].isEmpty())) {
-                    for(TreeNode node : cykTable[row][col]) {
-                        if (minVals[row][col].isEmpty())
-                            minVals[row][col].add(node);
-                        else if (node.getCost() < 
-                                minVals[row][col].get(0).getCost()) {
-                            minVals[row][col].clear();
-                            minVals[row][col].add(node);
-                        }
-                        else if (node.getCost() == 
-                                minVals[row][col].get(0).getCost()) {
-                            minVals[row][col].add(node);
-                        }
-                    }
-                }
-            }
-        }
-        
-        // This fills a table with possible parses, building up to the top right
-        // corner for a total parse. It limits each cell's number of possible
-        // parses to the number of chords in the parser.
-        for (int i = size - 2; i >= 0; i--) {
-            for (int j = i + 1; j < size; j++) {
-                for (int k = i + 1; k <= j; k++) {
-                    for (TreeNode node1 : minVals[i][k-1]) {
-                        for (TreeNode node2 : minVals[k][j]) {
-                            if (minVals[i][j].isEmpty() || 
-                                    minVals[i][j].size() < size &&
-                                    node1.getCost() + node2.getCost() 
-                                        < minVals[i][j].get(0).getCost()) {
-                                TreeNode newNode = new TreeNode(node1, node2);
-                                minVals[i][j].add(newNode);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        Collections.sort(minVals[0][size-1], new NodeComparator());
-
-    
-        // The shortest path in the top right cell gets printed as the best
-        // explanation for the whole chord progression
-        System.err.println(minVals[0][size-1]);
-        return minVals[0][size - 1];
-    }
     
     /** findTerminal
      * findTerminal is a helper function which, for a given index i takes the
@@ -535,6 +320,8 @@ public class CYKParser
 
         cykTable[row][col] = new LinkedList<TreeNode>();
         
+        LinkedList<TreeNode> overlaps = new LinkedList<TreeNode>();
+        
         // We make sure that the code loops through the different possible cell
         // pairs, starting at the leftmost and topmost.
         for(int index = 0; index < (col - row); index++) {
@@ -560,17 +347,30 @@ public class CYKParser
                         
                         long newKey = rule.checkProduction(symbol1, 
                                                            symbol2, edict);
+                        // If newKey comes up with an appropriate key distance,
+                        // make a new TreeNode for the current two TreeNodes.
                         if (!(newKey < 0)) {
                             TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
                                     symbol1, symbol2, rule.getCost(), newKey);
                             cykTable[row][col].add(newNode);
                             
+                            // Additionally, if this block could overlap with 
+                            // another later one, then we store a TreeNode 
+                            // with a 0-duration final chord to put in the 
+                            // table later.
+                            
+                            if (!(rule.getType().equals("On-Off")) && !(symbol2.isSectionEnd()))
+                                overlaps.add(newNode.overlapCopy());
                         }
                     }
                 }
             }
         }
+        // TreeNodes in overlaps, due to the zero duration of the last chord, 
+        // justify one fewer chords than those in [row][col]. They are placed
+        // one cell to the left.
+        cykTable[row][col-1].addAll(overlaps);
     }
     /** parse / 2
      * A method taking in blocks and a BrickLibrary and parsing them, returning
@@ -592,77 +392,4 @@ public class CYKParser
         fillTable();
         return findSolution(lib);
     }
-    
-    public void testFiles() throws IOException {
-        String name = "testfiles/test" + ((System.currentTimeMillis() / 100000) 
-                - 13000000) + ".txt";
-        try {
-            File dir = new File("pseudo-leadsheets");
-            String[] filenames = dir.list();
-            
-            FileWriter fstream = new FileWriter(name);
-            BufferedWriter out = new BufferedWriter(fstream);
-            BrickLibrary lib = BrickLibrary.processDictionary();
-            createRules(lib);
-            long time1;
-            long time2;
-            for (String file : filenames) {
-                if (!file.startsWith(".")) {
-                    System.err.println("Testing " + file + ": ");
-                    time1 = System.currentTimeMillis();
-                    readChords("pseudo-leadsheets/" + file);
-                    fillTable();
-                    out.write(file + "\n\n" + printSolution(lib) + "\n\n");
-                    time2 = System.currentTimeMillis();
-                    System.err.println("took "+ (time2 - time1) + " ms");
-                }
-            }
-            out.close();
-        } catch (Exception e){ //Catch exception if any
-                System.err.println("Error: " + e.getMessage());
-        }
-            
-    }
-            
-    // Testing code
-    public static void main(String[] args) throws IOException 
-    {   
-        CYKParser parser = new CYKParser();
-        
-        /*
-        try {
-            File dir = new File("pseudo-leadsheets");
-            String[] filenames = dir.list();
-            BrickLibrary lib = BrickLibrary.processDictionary();
-            parser.createRules(lib);
-            long time1;
-            long time2;
-            for (String file : filenames) {
-                if (!file.startsWith(".")) {
-                    System.err.println("Testing " + file + ": ");
-                    time1 = System.currentTimeMillis();
-                    parser.readChords("pseudo-leadsheets/" + file);
-                    parser.fillTable();
-                    parser.findSolutions(lib);
-                    time2 = System.currentTimeMillis();
-                    System.err.println("took " + (time2 - time1) + " ms");
-                }
-            }
-        } catch (Exception e){ //Catch exception if any
-                System.err.println("Error: " + e.getMessage());
-        }
-        */
-        
-        parser.testFiles();
-    }
 }
-
-/****************************************
- *            TO DO LIST                *
- ****************************************
- * 
- * - Get durations to read in correctly
- *(-)Get additional results from the CYK table?
- * - Overlapping cadences need to work, too
- * 
- */

@@ -39,8 +39,7 @@ public class EquivalenceDictionary {
         try {
             in = new FileReader(filename);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
         }
         // read in equivalence classes as lines
         BufferedReader equivIn = new BufferedReader(in);
@@ -54,8 +53,7 @@ public class EquivalenceDictionary {
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
         }
     }
     

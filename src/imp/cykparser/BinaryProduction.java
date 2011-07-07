@@ -13,17 +13,17 @@ import imp.brickdictionary.*;
 
 
 
-public class BinaryProduction extends AbstractProduction {
+public class BinaryProduction {
     
     public static final int TOTAL_SEMITONES = 12;
     // BRICK_COSTS in order: 
-    public static final int NONBRICK = 100;
+    public static final int NONBRICK = 1000;
     public static final int CADENCE = 30;
-    public static final int APPROACH = 40;
+    public static final int APPROACH = 45;
     public static final int DROPBACK = 30;
     public static final int TURNAROUND = 20;
     public static final int LAUNCHER = 30;
-    public static final int ONOFF = 50;
+    public static final int ONOFF = 55;
     public static final int MISC = 40;
     
     
@@ -37,8 +37,8 @@ public class BinaryProduction extends AbstractProduction {
     private long dur1;          // the relative duration of the first symbol
     private long dur2;          // the relative duration of the second symbol
     private int cost;           // how much the header brick costs
-    private String mode = "";
-    private boolean toPrint;
+    private String mode = "";   // the mode of the brick in the production
+    private boolean toPrint;    // whether the brick is a user-side viewable one
     
     /** String Constructor (deprecated)
      * Takes in a String with all the information for a Binary rule and splits
@@ -61,6 +61,15 @@ public class BinaryProduction extends AbstractProduction {
     }
     
     // NOTE: Assumes it's a production in C
+    /** Binary Production / 6
+     * Standard constructor based upon two blocks and production data
+     * @param h, the head symbol (a String)
+     * @param t, the type of production (a String)
+     * @param b1, the first composing Block
+     * @param b2, the second composing Block
+     * @param p, whether the production results in a printable Brick
+     * @param m, the mode (a String)
+     */
     public BinaryProduction(String h, String t, Block b1, Block b2, boolean p,
             String m)
     {
@@ -85,6 +94,16 @@ public class BinaryProduction extends AbstractProduction {
         cost = typeToCost(type);
     }
     
+    /** BinaryProduction / 6
+     * An alternate constructor for building off of previously created productions
+     * 
+     * @param h, the head symbol (a String)
+     * @param t, the type of brick (a String)
+     * @param pStart, the first composing production (a BinaryProduction)
+     * @param b, the Block to add in this production
+     * @param p, whether this brick is printable
+     * @param m, the mode of the brick (a String)
+     */
     public BinaryProduction(String h, String t, BinaryProduction pStart, Block b, 
             boolean p, String m) {
         head = h;
@@ -110,7 +129,6 @@ public class BinaryProduction extends AbstractProduction {
      * Returns the header symbol for the production
      * @return a String of the head
      */
-    @Override
     public String getHead() {
         return head;
     }
@@ -119,17 +137,12 @@ public class BinaryProduction extends AbstractProduction {
      * Returns the reconstructed body of the rule
      * @return a String of the body  
      */
-    @Override
     public String getBody() {
         return key1 + " " + name1 + " " + dur1 + " " +
                key2 + " " + name2 + " " + dur2 + " " + cost;
     }
     
-    /** getCost
-     * Gets the cost of a given block produced by this production
-     * @return an int of the cost
-     */
-    @Override
+    // Getters for BinaryProductions.
     public int getCost() {
         return cost;
     }
@@ -211,11 +224,5 @@ public class BinaryProduction extends AbstractProduction {
             return MISC;
         else return NONBRICK;
     }
-    
-    /** Old code for unary productions **/
-    @Override
-    public boolean isUnary() { return false; }
-    @Override
-    public boolean isBinary() { return true; }
     
 }

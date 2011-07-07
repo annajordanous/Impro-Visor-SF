@@ -14,6 +14,45 @@ public class PostProcessing {
         "Highjump", "Bauble", "Bootstrap", "Stella", "Backslider", 
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder"};
     
+        /** findKeys
+     * Method groups consecutive block of same key for overarching key sections
+     * @param blocks : ArrayList of blocks (like output from CYKParser)
+     * @return keymap : ArrayList of long[] (size 2), each containing key and 
+     *                  its corresponding total duration
+     */
+    public static ArrayList<long[]> findKeys(ArrayList<Block> blocks) {
+        ArrayList<long[]> keymap = new ArrayList<long[]>();
+        
+        // Initialize key and duration of current block
+        long currentKey = -1;
+        long currentDuration = 0;
+        
+        for(Block b : blocks) {
+            
+            // If two consecutive blocks in same key, add new block's duration 
+            // to total
+            if(currentKey == b.getKey()) {
+                currentDuration += b.getDuration();
+            }
+            else {
+                // Check if still using key that was initialiized
+                if(currentKey >= 0) {
+                    // End of current key -- add to the list
+                    long[] entry = {currentKey, currentDuration};
+                    keymap.add(entry);
+                }
+                // Create new entry for the next key
+                currentKey = b.getKey();
+                currentDuration = b.getDuration();
+            }
+        }
+        
+        if(currentKey != -1)
+            keymap.add( new long[]{currentKey, currentDuration} );
+        
+        return keymap;
+    }
+    
     /** mergeBlockKeys
      * Method groups consecutive block of same key for overarching key sections
      * @param blocks : ArrayList of blocks (like output from CYKParser)
@@ -46,6 +85,9 @@ public class PostProcessing {
                 currentDuration = b.getDuration();
             }
         }
+        
+        if(currentKey != -1)
+            keymap.add( new long[]{currentKey, currentDuration} );
         
         return keymap;
     }
@@ -124,23 +166,71 @@ public class PostProcessing {
      * @return joinList : ArrayList of joins between blocks
      */
     public static ArrayList<String> findJoins(ArrayList<Block> blocks) {
-        
-        // Convert list to array
-        String[] joinArray = new String[blocks.size() - 1];
+
+        String[] joinArray = null;
+        if(blocks.size() >= 1) {
+            joinArray = new String[blocks.size() - 1];
+        }
+        else {
+            System.err.println("Can't find joins in ArrayList of size 0");
+            return null;
+        }
         for(int i = 0; i < blocks.size() - 1; i++) {
             Block b = blocks.get(i);
             Block c = blocks.get(i + 1);
             // Check if current and next block are both bricks
             if (b instanceof Brick && c instanceof Brick) {
+                if(checkJoinability(((Brick)b), ((Brick)c))) {
                     // If so, find the difference between the two keys 
                     long keyDiff = (c.getKey() - b.getKey() + 12) % 12;
                     joinArray[i] = joinLookup(keyDiff);
+                }
+                else
+                    joinArray[i] = "";
             }
             else
                 joinArray[i] = "";
         }
         ArrayList<String> joinList = new ArrayList(Arrays.asList(joinArray));
         return joinList;
+    }
+    
+    public static boolean checkJoinability(Brick first, Brick second) {
+        boolean joinable = false;
+        
+        ArrayList<Chord> firstList = first.flattenBlock();
+        ArrayList<Chord> secondList = second.flattenBlock();
+        
+        Chord firstToCheck = firstList.get(firstList.size() - 1);
+        Chord secondToCheck = secondList.get(0);
+        
+        EquivalenceDictionary dict = new EquivalenceDictionary();
+        dict.loadDictionary(CYKParser.DICTIONARY_NAME);
+        
+        ArrayList<String> firstEquivs = 
+                dict.checkEquivalence(firstToCheck.getQuality());
+        ArrayList<String> secondEquivs =
+                dict.checkEquivalence(secondToCheck.getQuality());
+        
+        String firstMode = first.getMode();
+        String secondMode = second.getMode();
+        
+        boolean firstStable = false;
+        boolean secondStable = false;
+        
+        if(firstEquivs.contains(firstMode)) {
+            firstStable = true;
+        }
+        
+        if(secondEquivs.contains(secondMode)) {
+            secondStable = true;
+        }
+        
+        if(firstStable && !secondStable) {
+            joinable = true;
+        }
+        
+        return joinable;
     }
     
     /** joinLookup
