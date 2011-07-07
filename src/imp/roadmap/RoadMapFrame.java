@@ -245,7 +245,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel1.add(chordField, gridBagConstraints);
 
+        addChordButton.setText("Enter Chord"); // NOI18N
+        addChordButton.setToolTipText("Enter this chord into roadmap."); // NOI18N
+        addChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        addChordButton.setMinimumSize(new java.awt.Dimension(40, 40));
         addChordButton.setName("addChordButton"); // NOI18N
+        addChordButton.setPreferredSize(new java.awt.Dimension(100, 30));
         addChordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addChordButtonPressed(evt);
@@ -255,7 +260,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
         jPanel1.add(addChordButton, gridBagConstraints);
 
         libraryTabbedPane.addTab("Chords", jPanel1);
@@ -265,7 +272,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.9;
         libraryPanel.add(libraryTabbedPane, gridBagConstraints);
 
         keyLabel.setName("keyLabel"); // NOI18N
@@ -277,6 +285,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryPanel.add(keyLabel, gridBagConstraints);
 
         keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
+        keySpinner.setToolTipText("Select the key for this brick."); // NOI18N
         keySpinner.setName("keySpinner"); // NOI18N
         keySpinner.setPreferredSize(new java.awt.Dimension(76, 28));
         keySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -289,6 +298,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         libraryPanel.add(keySpinner, gridBagConstraints);
 
@@ -329,6 +340,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryPanel.add(previewScrollPane, gridBagConstraints);
 
         durationComboBox.setSelectedItem(480);
+        durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
         durationComboBox.setName("durationComboBox"); // NOI18N
         durationComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -338,7 +350,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
         libraryPanel.add(durationComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -382,15 +398,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.weighty = 0.95;
         mainPanel.add(roadMapScrollPane, gridBagConstraints);
 
         toolBar.setFloatable(false);
         toolBar.setRollover(true);
         toolBar.setName("toolBar"); // NOI18N
 
+        deleteButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         deleteButton.setText("Delete"); // NOI18N
+        deleteButton.setToolTipText("Delete the selected bricks and chords."); // NOI18N
         deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         deleteButton.setFocusable(false);
         deleteButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -406,7 +424,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(deleteButton);
 
+        flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         flattenButton.setText("Flatten"); // NOI18N
+        flattenButton.setToolTipText("Flatten selected bricks into their constituent chords."); // NOI18N
+        flattenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         flattenButton.setFocusable(false);
         flattenButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         flattenButton.setMaximumSize(new java.awt.Dimension(70, 30));
@@ -421,7 +442,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(flattenButton);
 
+        breakButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         breakButton.setText("Break"); // NOI18N
+        breakButton.setToolTipText("Break this brick into constitutent parts."); // NOI18N
+        breakButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         breakButton.setFocusable(false);
         breakButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         breakButton.setMaximumSize(new java.awt.Dimension(70, 30));
@@ -439,8 +463,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleLabel.setName("scaleLabel"); // NOI18N
         toolBar.add(scaleLabel);
 
+        scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 32767));
+        scaleComboBox.setMinimumSize(new java.awt.Dimension(60, 40));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
+        scaleComboBox.setPreferredSize(new java.awt.Dimension(60, 40));
         scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scaleComboBoxscaleComboReleased(evt);
@@ -458,7 +485,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(scaleComboBox);
 
+        newBrickButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         newBrickButton.setText("New Brick"); // NOI18N
+        newBrickButton.setToolTipText("Define a new brick in the dictionary."); // NOI18N
+        newBrickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         newBrickButton.setFocusable(false);
         newBrickButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         newBrickButton.setMaximumSize(new java.awt.Dimension(70, 30));
@@ -473,6 +503,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(newBrickButton);
 
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
+        analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
         analyzeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         analyzeButton.setLabel("Analyze"); // NOI18N
@@ -520,7 +553,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
-
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
