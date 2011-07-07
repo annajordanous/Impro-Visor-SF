@@ -148,9 +148,6 @@
       <Dimension value="[830, 600]"/>
     </Property>
     <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1030, 600]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="roadmapMenuBar"/>
@@ -384,7 +381,7 @@
         <Property name="toolTipText" type="java.lang.String" value="The roadmap.&#xa;" noResource="true"/>
         <Property name="verticalScrollBarPolicy" type="int" value="22"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[800, 800]"/>
+          <Dimension value="[600, 400]"/>
         </Property>
         <Property name="name" type="java.lang.String" value="roadMapScrollPane" noResource="true"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -410,42 +407,36 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
-    <Component class="javax.swing.JLabel" name="libraryLabel">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="libraryLabel" noResource="true"/>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="1" gridY="1" gridWidth="2" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="19" weightX="0.0" weightY="0.0"/>
-        </Constraint>
-      </Constraints>
-    </Component>
     <Container class="javax.swing.JTabbedPane" name="libraryTabbedPane">
       <Properties>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[150, 200]"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="libraryTabbedPane" noResource="true"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[300, 451]"/>
+          <Dimension value="[300, 500]"/>
         </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="1" gridY="2" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.1" weightY="0.8"/>
+          <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.1" weightY="0.8"/>
         </Constraint>
       </Constraints>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+        <Container class="javax.swing.JScrollPane" name="libraryScrollPane">
           <Properties>
-            <Property name="name" type="java.lang.String" value="jScrollPane1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="libraryScrollPane" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Bricks">
-                <Property name="tabTitle" type="java.lang.String" value="Bricks"/>
+              <JTabbedPaneConstraints tabName="Brick Dictionary" toolTip="Dictionary of available bricks.&#xa;">
+                <Property name="tabTitle" type="java.lang.String" value="Brick Dictionary" noResource="true"/>
+                <Property name="tabToolTip" type="java.lang.String" value="Dictionary of available bricks.&#xa;" noResource="true"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -477,14 +468,15 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="chordPanel">
           <Properties>
-            <Property name="name" type="java.lang.String" value="jPanel1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="chordPanel" noResource="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Chords">
+              <JTabbedPaneConstraints tabName="Chords" toolTip="Enter individual chords by name.&#xa;">
                 <Property name="tabTitle" type="java.lang.String" value="Chords"/>
+                <Property name="tabToolTip" type="java.lang.String" value="Enter individual chords by name.&#xa;" noResource="true"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -612,6 +604,13 @@
     </Component>
     <Container class="javax.swing.JScrollPane" name="previewScrollPane">
       <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder justification="2" title="Brick Preview&#xa;">
+              <Font PropertyName="font" name="Lucida Grande" size="11" style="0"/>
+            </TitledBorder>
+          </Border>
+        </Property>
         <Property name="doubleBuffered" type="boolean" value="true"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[32767, 100]"/>
@@ -634,7 +633,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="1" gridY="5" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="5" insetsBottom="0" insetsRight="5" anchor="11" weightX="0.1" weightY="0.1"/>
+          <GridBagConstraints gridX="1" gridY="5" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="4" insetsBottom="4" insetsRight="4" anchor="11" weightX="0.1" weightY="0.1"/>
         </Constraint>
       </Constraints>
 
