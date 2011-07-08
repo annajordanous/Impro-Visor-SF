@@ -139,7 +139,7 @@ public class TreeNode {
         block = new Brick(sym, k, type, subBlocks, m);
 
         cost = co;
-        if (type.equals(""))
+        if (type.equals(CYKParser.NONBRICK))
             toPrint = false;
         else toPrint = true;
 
@@ -257,6 +257,11 @@ public class TreeNode {
     public boolean isSectionEnd()
     {
         return isEnd;
+    }
+    
+    public boolean toShow()
+    {
+        return toPrint;
     }
     
     // Gets the significant types of blocks from a TreeNode.

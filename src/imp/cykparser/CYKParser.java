@@ -1,6 +1,5 @@
 /** file: CYKParser.java
- * @author Impro-Visor Team 2011
- *         Rober Keller, Zack Merritt, Xanda Schofield, August Toman-Yih
+ * @author Xanda Schofield
  * purpose: parsing chords using the CYK algorithm
  */
 package imp.cykparser;
@@ -94,8 +93,8 @@ public class CYKParser
     }
     
     /** readChordsls
-     * Reads in chords from a .ls file
-     * @param filename: a path to a leadsheet file
+     * Reads in chords without durations from a leadsheet file
+     * @param filename , a String
      */
     public void readChordsls(String filename)
     {
@@ -186,17 +185,20 @@ public class CYKParser
             // being the name of the previous production and one being the next
             // subBlock. The last rule gets the name of the final Brick.
             else {
+                // first rule
                 currentName = name + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];
                 prods[0] = new BinaryProduction(currentName, NONBRICK,
                         subBlocks.get(0), subBlocks.get(1), false, mode);
                 nonterminalRules.add(prods[0]);
+                // second through next to last rules
                 for (int i = 2; i < size - 1; i++) {
                     currentName = name + i;
                     prods[i-1] = new BinaryProduction(currentName, 
                             NONBRICK, prods[i-2], subBlocks.get(i), false, mode);
                     nonterminalRules.add(prods[i-1]);
                 }
+                // final rule
                 prods[size-2] = new BinaryProduction(name, b.getType(),
                         prods[size-3], subBlocks.get(size-1), true, mode);
                 nonterminalRules.add(prods[size-2]);
@@ -257,20 +259,19 @@ public class CYKParser
         // trees later.
         for (int row = 0; row < size; row++) {
             for (int col = row; col < size; col++) {
-                if (cykTable[row][col].isEmpty()) {
+                
                     minVals[row][col] = new TreeNode();
-                }
-                else {
+
                     ListIterator node = cykTable[row][col].listIterator();
-                    minVals[row][col] = (TreeNode) node.next();
                     while (node.hasNext()) {
                         TreeNode nextNode = (TreeNode) node.next();
-                        if (nextNode.getCost() < minVals[row][col].getCost())
+                    if (nextNode.toShow() &&
+                            nextNode.getCost() < minVals[row][col].getCost())
                             minVals[row][col] = nextNode;
+                 
                     }
                 }
             }
-        }
         
         
         // This is a cost-minimization algorithm looking for the lowest cost
