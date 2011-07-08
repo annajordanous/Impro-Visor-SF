@@ -648,6 +648,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             case 67: if(evt.isMetaDown()) copySelection();              break;
             case 86: if(evt.isMetaDown()) pasteSelection();             break;
             case 88: if(evt.isMetaDown()) cutSelection();               break;
+            case 65: if(evt.isMetaDown()) selectAllBricks();            break;
             case 10: toggleSectionBreak();                              break;
             default:                                                    break;
         }
@@ -1109,6 +1110,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
         }
         
         return bricks;
+    }
+
+    public ArrayList<Chord> getChordsInSelection()
+    {
+        ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
+        ArrayList<Chord> chords = new ArrayList();
+        for( GraphicBrick brick : bricks ) {
+            chords.addAll(brick.getBlock().flattenBlock());
+        }
+
+        return chords;
     }
     
     public void flattenSelection()
