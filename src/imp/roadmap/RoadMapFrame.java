@@ -1057,8 +1057,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         for( Iterator<Block> it = blocks.iterator(); it.hasNext(); ) {
             Block block = it.next();
-            if(it.hasNext())
-               block.setSectionEnd(false);
+            //if(it.hasNext())
+               //block.setSectionEnd(false);
             bricks.add(new GraphicBrick(block));
         }
         
