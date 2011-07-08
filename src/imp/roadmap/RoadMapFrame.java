@@ -1059,7 +1059,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             Block block = it.next();
             if(it.hasNext())
                block.setSectionEnd(false);
-            bricks.add(new GraphicBrick(it.next()));
+            bricks.add(new GraphicBrick(block));
         }
         
         return bricks;

@@ -432,6 +432,6 @@ public class Brick extends Block {
     @Override
     public boolean isSectionEnd()
     {
-        return isEnd;
+        return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
 }
