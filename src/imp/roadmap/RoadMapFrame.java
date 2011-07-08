@@ -621,6 +621,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             case 67: if(evt.isMetaDown()) copySelection();              break;
             case 86: if(evt.isMetaDown()) pasteSelection();             break;
             case 88: if(evt.isMetaDown()) cutSelection();               break;
+            case 10: toggleSectionBreak();                              break;
             default:                                                    break;
         }
 }//GEN-LAST:event_roadMapScrollPaneroadMapKeyPressed
@@ -1054,8 +1055,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         ArrayList<GraphicBrick> bricks = new ArrayList<GraphicBrick>();
         
-        for( Iterator<Block> it = blocks.iterator(); it.hasNext(); )
+        for( Iterator<Block> it = blocks.iterator(); it.hasNext(); ) {
+            Block block = it.next();
+            if(it.hasNext())
+               block.setSectionEnd(false);
             bricks.add(new GraphicBrick(it.next()));
+        }
         
         return bricks;
     }
@@ -1196,6 +1201,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapPanel.addAll(cloneBricks(clipboard));
         
         roadMapPanel.placeBricks();
+    }
+   
+    private void toggleSectionBreak()
+    {
+        System.out.println("Section breaking");
+        
+        if(selectionEnd != -1) {
+            boolean value = roadMapPanel.getBrick(selectionEnd).isSectionEnd();
+            roadMapPanel.getBrick(selectionEnd).setSectionEnd(!value);
+            roadMapPanel.drawBrick(selectionEnd);
+            roadMapPanel.drawKeyMap();
+        }
     }
     
     public ArrayList<GraphicBrick> cloneBricks(ArrayList<GraphicBrick> bricks)

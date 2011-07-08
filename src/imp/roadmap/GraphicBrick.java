@@ -397,5 +397,13 @@ public class GraphicBrick {
         this.selected = selected;
     }
     
-
+    public void setSectionEnd(boolean value)
+    {
+        brick.setSectionEnd(value);
+    }
+    
+    public boolean isSectionEnd()
+    {
+        return brick.isSectionEnd();
+    }
 }
