@@ -25,6 +25,7 @@ import java.io.*;
 import javax.sound.midi.*;
 import java.util.ArrayList;
 
+import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import polya.*;
 
@@ -457,4 +458,27 @@ public class ChordPart extends Part implements Serializable{
           }
      return result;
      }
+    
+  /**
+   * Populate a RoadMapFrame with this ChordPart
+   * @param roadmap 
+   */
+    
+  public void toRoadMapFrame(RoadMapFrame roadmap)
+    {
+        ArrayList<ChordSymbol> chordSymbols = getChordSymbols();
+        ArrayList<Integer> durations = getChordDurations();
+        
+        PartIterator i = iterator();
+        while(i.hasNext()) 
+           {
+            Chord chord = (Chord)i.next();
+            imp.brickdictionary.Chord dictChord = 
+                    new imp.brickdictionary.Chord(chord.getChordSymbol().toString(), 
+                                                  chord.getRhythmValue());
+            roadmap.addChord(dictChord);
+          }
+      
+    }
+
 }

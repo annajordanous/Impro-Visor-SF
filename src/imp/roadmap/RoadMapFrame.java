@@ -19,6 +19,7 @@ import java.util.Iterator;
 import imp.brickdictionary.*;
 import java.io.IOException;
 import imp.cykparser.*;
+import imp.gui.Notate;
 import imp.util.ErrorLog;
 
 
@@ -28,6 +29,12 @@ import imp.util.ErrorLog;
  */
 
 public class RoadMapFrame extends javax.swing.JFrame {
+    
+    /**
+     * Communication with leadsheet and score is done through Notate frame.
+     */
+    
+    private Notate notate;
     
     private Image buffer;
     private Image bufferRoadMap;
@@ -61,7 +68,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
 
     /** Creates new form AltRoadMapFrame */
-    public RoadMapFrame() {
+    public RoadMapFrame(Notate notate) {
+        
+        this.notate = notate;
+        
         previewPanel = new PreviewPanel(this);
         roadMapPanel = new RoadMapPanel(this);
         newBrickDialog = new NewBrickDialog(this);
@@ -839,9 +849,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
     /** addChord <p>
      * Adds the chord inputted in the chord field to the roadmap.
      */
+    
     public void addChord()
     {
-        Chord chord = new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]);
+        addChord(new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
+    }
+        
+    /** addChord <p>
+     * Adds the argument chord to the roadmap.
+     */
+    
+    public void addChord(Chord chord)
+    {
         roadMapPanel.add(new GraphicBrick(chord));
         roadMapPanel.placeBricks();
     }

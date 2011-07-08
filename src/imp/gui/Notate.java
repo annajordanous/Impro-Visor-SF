@@ -75,7 +75,7 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
-  RoadMapFrame roadmapFrame;
+  RoadMapFrame roadmapFrame = null;
   
   static int roadmapFrameInitialWidth = 1000;
   static int roadmapFrameInitialHeight = 800;
@@ -20114,8 +20114,10 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
 
 
 private void RoadMapMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoadMapMIaction
-    roadmapFrame = new RoadMapFrame();
+    roadmapFrame = new RoadMapFrame(this);
+
     roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
+    chordPartToRoadMapFrame(roadmapFrame);
     roadmapFrame.setVisible(true);
 }//GEN-LAST:event_RoadMapMIaction
 
@@ -22249,6 +22251,12 @@ public void toGrammar()
     setLickGenStatus("Done writing productions to grammar file: " + outFile);
 
     refreshGrammarEditor();
+  }
+
+public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
+  {
+      ChordPart chordPart = score.getChordProg();
+      chordPart.toRoadMapFrame(roadmap);
   }
 
 }
