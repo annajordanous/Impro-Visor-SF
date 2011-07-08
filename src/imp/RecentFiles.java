@@ -36,7 +36,8 @@ import java.util.Stack;
  * RecentFiles keeps track of the recent leadsheets that the user has opened.
  * This class writes a text file to the 'vocab' folder in order to keep track of
  * the previous leadsheets opened.
- * @author ImproVisor
+ * @author Amos Byon
+ * @version 1.0
  */
 public class RecentFiles {
     /**

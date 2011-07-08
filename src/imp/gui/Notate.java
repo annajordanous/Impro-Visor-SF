@@ -7343,7 +7343,7 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
-        openRecentLeadsheetMenu.setText("Open Recent Leadsheet(same window)");
+        openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
@@ -7364,7 +7364,7 @@ public class Notate
 
         fileMenu.add(openRecentLeadsheetMenu);
 
-        openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheete(new window)");
+        openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
@@ -8731,6 +8731,10 @@ public class Notate
         }
      }
     
+    /**
+     * Plays the chord at the given index.
+     * @param index 
+     */
     public void playChordAtIndex(int index)
     {
         Chord chordToPlay = chordProg.getChord(index);
@@ -19997,7 +20001,7 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
             openRecentLeadsheetNewWindowMenu.add(item);
         }
         openRecentLeadsheetNewWindowMenu.add(new JSeparator());
-        JMenuItem clear = new JMenuItem("clear all recent history");
+        JMenuItem clear = new JMenuItem("Clear All Recent History");
         openRecentLeadsheetNewWindowMenu.add(clear);
         clear.addActionListener(
         new ActionListener()
@@ -20157,9 +20161,23 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
         int currChordIndex = 0;
         currChordIndex = midiSynth.getSlot();
         int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
+        if(currChordIndex >= chordProg.getSize())
+        {
+            int modedIndex = currChordIndex%chordProg.getSize();
+            int prevChordMod = chordProg.getPrevUniqueChordIndex(modedIndex);
+            int interval;
+            if(prevChordMod != -1)
+            {
+                interval = modedIndex - prevChordMod;
+            }
+            else
+            {
+                interval = 0;
+            }
+            prevChordIndex = currChordIndex - interval;
+        }
         if(currChordIndex != -1)
         {
-            midiSynth.setSlot((long)prevChordIndex);
             switch(isPlaying)
             {
                 case PLAYING:
@@ -20174,6 +20192,7 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
                     midiSynth.setSlot(0);
                     break;
             }
+            midiSynth.setSlot((long)prevChordIndex);
             currChordIndex = prevChordIndex;
         }
         else

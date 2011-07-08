@@ -6174,7 +6174,7 @@
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet(same window)"/>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (same window)"/>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentFileMenu"/>
@@ -6192,7 +6192,7 @@
             </Menu>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetNewWindowMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Recent Leadsheete(new window)"/>
+                <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (new window)"/>
               </Properties>
               <Events>
                 <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="populateRecentLeadsheetNewWindow"/>
