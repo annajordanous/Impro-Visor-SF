@@ -119,6 +119,8 @@ public class BrickLibrary {
     
     // Convert brick's key (as a string) to a long indicating semitones above C
     public static long keyNameToNum(String keyName) {
+        if(keyName.equals(""))
+            return -1;
         if(keyName.equals("C") || keyName.equals("B#"))
             return 0;
         if(keyName.equals("C#") || keyName.equals("Db"))
@@ -186,9 +188,11 @@ public class BrickLibrary {
 //            return "Bb";
 //        if(keyNum == 11)
 //            return "B";
+        else if (keyNum == -1)
+            return "";
         else
         {
-            System.err.println("keyNameToNum: Incorrect key formatting " 
+            System.err.println("keyNumToName: Incorrect key formatting " 
                     + keyNum);
             System.exit(-1);
             return "";

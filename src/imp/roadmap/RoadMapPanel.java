@@ -214,7 +214,10 @@ public class RoadMapPanel extends JPanel{
             int length = ((int)dur*MEASURE_LENGTH)/480;
             
             while( xOffset + length > cutoffPoint ) {
-                g.setColor(KEY_COLORS[(int)key]);
+                if (key == Chord.NC)
+                    g.setColor(Color.WHITE);
+                else
+                    g.setColor(KEY_COLORS[(int)key]);
                 g.fillRect(xOffset + 1, yOffset,
                      cutoffPoint - xOffset, LINE_HEIGHT/3);
                 
@@ -229,7 +232,10 @@ public class RoadMapPanel extends JPanel{
                 yOffset += LINE_HEIGHT + LINE_SPACING;
             }
             
-            g.setColor(KEY_COLORS[(int)key]);
+            if (key == Chord.NC)
+                g.setColor(Color.WHITE);
+            else
+                g.setColor(KEY_COLORS[(int)key]);
             g.fillRect(xOffset, yOffset, length, LINE_HEIGHT/3);
             
             g.setColor(LINE_COLOR);

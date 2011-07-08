@@ -8,11 +8,14 @@ import java.util.List;
  * purpose: Definition definition
  * @author Zachary Merritt
  */
+
+
 public class Chord extends Block{
     
     // Type of chord, ie. "m7b5" or "7"
     private String quality;
     private long slashChord;
+    public static final long NC = -1;
     
     // Constructor for chord
     // Uses parseChordName to interpret chord's name, finding root (key) and
@@ -108,7 +111,11 @@ public class Chord extends Block{
     // Extract chord's root (key) and quality from its name
     private void parseChordName() {
         String chordName = this.getName();
-        if(chordName.length() > 1 && (chordName.charAt(1) == 'b'|| 
+        if(chordName.startsWith("NC")) {
+            this.key = -1;
+            this.quality = "";
+        }
+        else if(chordName.length() > 1 && (chordName.charAt(1) == 'b'|| 
                 chordName.charAt(1) == '#'))
         {
             String chordKeyString = chordName.substring(0, 2);

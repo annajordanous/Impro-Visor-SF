@@ -25,6 +25,7 @@ public class BinaryProduction {
     public static final int LAUNCHER = 30;
     public static final int ONOFF = 55;
     public static final int MISC = 40;
+    public static final long NC = -1;
     
     
     // The block is assumed to be in the key of C, represented as the long 0.
@@ -173,7 +174,8 @@ public class BinaryProduction {
         long start = a.getStart();
         
         
-        if (modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
+        if (a.getKey() != NC && b.getKey() != NC &&
+                modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 d.checkEquivalence(a.getSymbol()).contains(name1) && 
                 d.checkEquivalence(b.getSymbol()).contains(name2) &&
                 !(a.isSectionEnd())

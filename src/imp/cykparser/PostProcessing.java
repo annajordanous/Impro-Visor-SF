@@ -37,12 +37,10 @@ public class PostProcessing {
                 currentDuration += b.getDuration();
             }
             else {
-                // Check if still using key that was initialiized
-                if(currentKey >= 0) {
-                    // End of current key -- add to the list
-                    long[] entry = {currentKey, currentDuration};
-                    keymap.add(entry);
-                }
+                // End of current key -- add to the list
+                long[] entry = {currentKey, currentDuration};
+                keymap.add(entry);
+
                 // Create new entry for the next key
                 currentKey = b.getKey();
                 currentDuration = b.getDuration();
@@ -50,8 +48,7 @@ public class PostProcessing {
             }
         }
         
-        if(currentKey != -1)
-            keymap.add( new long[]{currentKey, currentDuration} );
+        keymap.add( new long[]{currentKey, currentDuration} );
         
         return keymap;
     }
