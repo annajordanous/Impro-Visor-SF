@@ -425,6 +425,13 @@ public class Brick extends Block {
     
     @Override
     public void setSectionEnd(Boolean value) {
+        isEnd = value;
         subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
-}
+    }
+    
+    @Override
+    public boolean isSectionEnd()
+    {
+        return isEnd;
+    }
 }
