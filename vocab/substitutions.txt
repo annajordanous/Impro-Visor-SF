@@ -2,15 +2,28 @@
 (equiv Cm6 Cm69 CmM7 CmM9 CmM13)
 (equiv Cm7b6 Am6)
 
-(sub  C Em Em7 Am Am6 Am7 C+ Caug)
+(sub  C Em Em7 Am Am6 Am7 C+ Caug C7)
 (sub C7 C7alt C7+ C7aug Caug7 C7#5 C7#5#9 C7#9b13 C7b9 C7b9b13 C7#9 C9 
      C13 C13b9 C13#9 C7#11 C9#11 C13#11 C7b5 C9b5 C7b9#11 C13b9#11 C7add13 C7add6
      C7sus4 C9sus4 C7b9sus4
      Gb7 Gb9 Gb7#11 G9#11
      Eb7 
      A7
+     Eo Go Bbo Dbo
+     Eo7 Go7 Bbo7 Dbo7
+     Cm7
+     )
+(sub C9 C9#11 C13 C13#11 
+     Em7b5
+     Gm
      )
 
+(sub C7b9 C13b9 C13b9#11)
+
 (sub C6 Am7)
-(sub Cm Cm7 Cm6 Cm9 Cm11 Cm13)
-(sub Cm7 Cm7b5 Cm9 Cm9b5 Cm13)
+(sub Cm Cm7 Cm6 Cm9 Cm11 Cm13 Am7b5)
+(sub Cm7 Cm7b5 Cm9 Cm11 Cm9b5 Cm13 C7 C7alt)
+(sub Cm9 Cm9b5 Cm11 Cm13)
+(sub Cm11 Cm13)
+
+(sub Co7 Ebo7 Gbo7 Ao7 Ab7 B7 D7 F7)
