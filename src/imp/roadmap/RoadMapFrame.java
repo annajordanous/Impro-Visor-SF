@@ -116,6 +116,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
         newBrickButton = new javax.swing.JButton();
+        selectAllBricksButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         libraryTabbedPane = new javax.swing.JTabbedPane();
@@ -135,9 +136,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
         addBrickDialog.setName("addBrickDialog"); // NOI18N
-        addBrickDialog.setPreferredSize(new java.awt.Dimension(200, 110));
         addBrickDialog.setResizable(false);
-        addBrickDialog.setSize(new java.awt.Dimension(200, 110));
         addBrickDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         dialogNameLabel.setText("Name:"); // NOI18N
@@ -296,7 +295,25 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(newBrickButton);
 
-        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        selectAllBricksButton.setText("Select All"); // NOI18N
+        selectAllBricksButton.setToolTipText("Select all bricks.\n"); // NOI18N
+        selectAllBricksButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        selectAllBricksButton.setFocusable(false);
+        selectAllBricksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        selectAllBricksButton.setMaximumSize(new java.awt.Dimension(70, 30));
+        selectAllBricksButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        selectAllBricksButton.setName("selectAllBricksButton"); // NOI18N
+        selectAllBricksButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        selectAllBricksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectAllBricksButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllBricksButtonPressed(evt);
+            }
+        });
+        toolBar.add(selectAllBricksButton);
+
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
         analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
@@ -687,6 +704,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         makeBrickFromSelection();
     }//GEN-LAST:event_dialogAccepted
 
+    private void selectAllBricksButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllBricksButtonPressed
+        selectAllBricks();
+    }//GEN-LAST:event_selectAllBricksButtonPressed
+
     /** InitBuffer <p>
      *  
      * Initializes the buffers for the roadmap and preview panel.
@@ -894,6 +915,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         roadMapPanel.drawKeyMap();
         activateButtons();   
+    }
+    
+    public void selectAllBricks()
+    {
+        selectionStart = 0;
+        selectBricks(roadMapPanel.getNumBlocks()-1);
     }
     
     /** selectBrick <p>
@@ -1336,6 +1363,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
+    private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }

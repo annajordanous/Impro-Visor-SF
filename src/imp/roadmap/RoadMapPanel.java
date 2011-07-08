@@ -383,4 +383,9 @@ public class RoadMapPanel extends JPanel{
             roadMap.add(gBrick);
         }
     }
+    
+    public int getNumBlocks()
+    {
+        return roadMap.size();
+    }
 }
