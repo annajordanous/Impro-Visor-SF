@@ -198,6 +198,11 @@ public class TreeNode {
         return newNode;
     }
     
+    public boolean isOverlap()
+    {
+        return block.isOverlap();
+    }
+    
     // Getters for the data members of a TreeNode
     public TreeNode getFirstChild()
     {

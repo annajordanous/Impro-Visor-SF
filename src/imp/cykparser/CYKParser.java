@@ -360,7 +360,9 @@ public class CYKParser
                             // with a 0-duration final chord to put in the 
                             // table later.
                             
-                            if (!(rule.getType().equals("On-Off")) && !(symbol2.isSectionEnd()))
+                            if (!(rule.getType().equals("On-Off")) && 
+                                    !(symbol2.isSectionEnd()) &&
+                                    !(symbol2.isOverlap()))
                                 overlaps.add(newNode.overlapCopy());
                         }
                     }

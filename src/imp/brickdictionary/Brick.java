@@ -164,6 +164,11 @@ public class Brick extends Block {
         return this.subBlocks;
     }
     
+    @Override
+    public boolean isOverlap() {
+        return subBlocks.get(subBlocks.size() - 1).isOverlap();
+    }
+    
     /** addSubBlocks / 2
      * Constructs the subblocks of a brick by reading in a PolyList and using 
      * a BrickLibrary to convert it to bricks with appropriate subbricks.

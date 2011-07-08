@@ -62,6 +62,11 @@ public class Block {
         return this.duration;
     }
     
+    
+    public boolean isOverlap() {
+        return (duration == 0);
+    }
+    
     // Returns the subBlocks of a given block
     // Overridden by the corresponding method in Brick or Chord
     public List<Block> getSubBlocks() {
