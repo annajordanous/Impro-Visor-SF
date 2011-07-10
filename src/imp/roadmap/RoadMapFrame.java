@@ -34,7 +34,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
      * Communication with leadsheet and score is done through Notate frame.
      */
     
-    private Notate notate;
+    private Notate notate = null;
+    
+    /**
+     * auxNotate is a separate notate window for converting the roadmap
+     * to a leadsheet.
+     */
+    
+    private Notate auxNotate = null;;
     
     private Image buffer;
     private Image bufferRoadMap;
@@ -118,6 +125,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         newBrickButton = new javax.swing.JButton();
         selectAllBricksButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
+        sendToNotateButton = new javax.swing.JButton();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         libraryTabbedPane = new javax.swing.JTabbedPane();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -295,7 +303,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(newBrickButton);
 
-        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         selectAllBricksButton.setText("Select All"); // NOI18N
         selectAllBricksButton.setToolTipText("Select all bricks.\n"); // NOI18N
         selectAllBricksButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -313,7 +321,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(selectAllBricksButton);
 
-        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
         analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
@@ -330,6 +338,23 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(analyzeButton);
+
+        sendToNotateButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        sendToNotateButton.setText("To Leadsheet"); // NOI18N
+        sendToNotateButton.setToolTipText("Send the selection to the leadsheet window."); // NOI18N
+        sendToNotateButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        sendToNotateButton.setFocusable(false);
+        sendToNotateButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sendToNotateButton.setMaximumSize(new java.awt.Dimension(90, 30));
+        sendToNotateButton.setMinimumSize(new java.awt.Dimension(90, 30));
+        sendToNotateButton.setPreferredSize(new java.awt.Dimension(90, 30));
+        sendToNotateButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        sendToNotateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendToNotateButtonPressed(evt);
+            }
+        });
+        toolBar.add(sendToNotateButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -708,6 +733,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void selectAllBricksButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllBricksButtonPressed
         selectAllBricks();
     }//GEN-LAST:event_selectAllBricksButtonPressed
+
+    private void sendToNotateButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToNotateButtonPressed
+        sendSelectionToNotate();
+    }//GEN-LAST:event_sendToNotateButtonPressed
 
     /** InitBuffer <p>
      *  
@@ -1111,7 +1140,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         return bricks;
     }
-
+    
     public ArrayList<Chord> getChordsInSelection()
     {
         ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
@@ -1376,6 +1405,44 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
     private javax.swing.JButton selectAllBricksButton;
+    private javax.swing.JButton sendToNotateButton;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
+
+/**
+  * Sends the currently-selected blocks to a new Notate window called auxNotate.
+  *
+  * If not blocks are selected, selects them all first.
+  *
+  * If the road map is empty, does nothing.
+  */
+    
+public void sendSelectionToNotate()
+{
+        if( roadMapPanel.getNumBlocks() < 1 )
+          {
+            return;
+          }
+        if( !somethingSelected() )
+          {
+            selectAllBricks();
+          }
+        imp.data.ChordPart chordPart = new imp.data.ChordPart();
+        chordPart.fromRoadMapFrame(this);
+        imp.data.Score score = new imp.data.Score(chordPart);
+        auxNotate = notate.newNotateWithScore(score);
+        auxNotate.setVisible(true);
+}
+
+/**
+ * returns true if some bricks are selected
+ * otherwise false.
+ */
+
+    public boolean somethingSelected()
+    {
+        return selectionStart < selectionEnd;
+    }
+
+
 }

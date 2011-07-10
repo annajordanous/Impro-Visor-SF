@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
+import java.util.Iterator;
 import polya.*;
 
 /**
@@ -480,5 +481,27 @@ public class ChordPart extends Part implements Serializable{
           }
       
     }
+
+  /**
+   * Add chords in the current selection in RoadMapFrame to this ChordPart.
+   */
+    
+  public void fromRoadMapFrame(RoadMapFrame roadmap)
+    {
+        ArrayList<imp.brickdictionary.Chord> chords = roadmap.getChordsInSelection();
+        
+        Iterator<imp.brickdictionary.Chord> i = chords.iterator();
+        
+        while( i.hasNext() )
+        {
+            imp.brickdictionary.Chord chord = i.next();
+            String name = chord.getName();
+            int duration = chord.getDuration().intValue();
+            addChord(name, duration);
+            
+        }
+        
+     }
+
 
 }

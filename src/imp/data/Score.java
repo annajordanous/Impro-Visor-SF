@@ -210,6 +210,13 @@ public class Score implements Constants, Serializable {
         chordProg = new ChordPart(length);
     }
 
+    public Score(ChordPart chordPart) {
+        this();
+        addPart();
+        setLength(chordPart.size());
+        chordProg = chordPart;
+    }
+
     public void setCountIn(ChordPart countInProg)
     {
         this.countInProg = countInProg;

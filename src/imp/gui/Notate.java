@@ -12675,7 +12675,8 @@ private void updateTempoFromTextField()
   
   private boolean slotIsSelected()
     {
-    return getCurrentStave().somethingSelected();
+    Stave stave = getCurrentStave();
+    return stave != null && stave.somethingSelected();
     }
 
     
@@ -20238,6 +20239,22 @@ public void openInNewWindow(File selectedFile)
             setNotateFrameHeight(newNotate);
 }
 
+public Notate newNotateWithScore(Score newScore)
+{
+    score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+    //create a new window and show the score
+    Notate newNotate = new Notate(newScore,
+                                  this.adv,
+                                  this.impro,
+                                  (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
+                                  (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+    newNotate.setupScore(newScore);
+    setNotateFrameHeight(newNotate);
+            
+    return newNotate;
+}
+
+
 private void setChordFontSize(int newSize)
 {
     score.setChordFontSize(newSize);
@@ -20430,7 +20447,6 @@ public void showNewVoicingDialog()
    */
   public void setupArrays()
     {
-
     int size = score.size();
 
     if( size <= 0 )
@@ -22359,6 +22375,15 @@ public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
   {
       ChordPart chordPart = score.getChordProg();
       chordPart.toRoadMapFrame(roadmap);
+  }
+
+public void chordPartFromRoadMapFrame(RoadMapFrame roadmap)
+  {
+      ChordPart chordPart = new ChordPart();
+      score = new Score(chordPart);
+      chordPart.fromRoadMapFrame(roadmap);
+      repaint();
+ 
   }
 
 }
