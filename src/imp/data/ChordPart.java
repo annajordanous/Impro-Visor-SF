@@ -486,7 +486,7 @@ public class ChordPart extends Part implements Serializable{
    * Add chords in the current selection in RoadMapFrame to this ChordPart.
    */
     
-  public void fromRoadMapFrame(RoadMapFrame roadmap)
+  public void addFromRoadMapFrame(RoadMapFrame roadmap)
     {
         ArrayList<imp.brickdictionary.Chord> chords = roadmap.getChordsInSelection();
         

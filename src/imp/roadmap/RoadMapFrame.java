@@ -1417,22 +1417,25 @@ public class RoadMapFrame extends javax.swing.JFrame {
   * If the road map is empty, does nothing.
   */
     
-public void sendSelectionToNotate()
-{
-        if( roadMapPanel.getNumBlocks() < 1 )
-          {
+    public void sendSelectionToNotate() {
+        if (roadMapPanel.getNumBlocks() < 1) {
             return;
-          }
-        if( !somethingSelected() )
-          {
+        }
+        if (!somethingSelected()) {
             selectAllBricks();
-          }
-        imp.data.ChordPart chordPart = new imp.data.ChordPart();
-        chordPart.fromRoadMapFrame(this);
-        imp.data.Score score = new imp.data.Score(chordPart);
-        auxNotate = notate.newNotateWithScore(score);
+        }
+
+        if (auxNotate == null) {
+            imp.data.ChordPart chordPart = new imp.data.ChordPart();
+            chordPart.addFromRoadMapFrame(this);
+            imp.data.Score score = new imp.data.Score(chordPart);
+            auxNotate = notate.newNotateWithScore(score);
+        } else {
+            auxNotate.addToChordPartFromRoadMapFrame(this);
+        }
         auxNotate.setVisible(true);
-}
+
+    }
 
 /**
  * returns true if some bricks are selected

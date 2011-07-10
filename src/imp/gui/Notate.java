@@ -22371,19 +22371,29 @@ public void toGrammar()
     refreshGrammarEditor();
   }
 
+
+/**
+ * Open a new RoadMapFrame and transfer all chords in the chorus to it.
+ * @param roadmap 
+ */
+
 public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
   {
       ChordPart chordPart = score.getChordProg();
       chordPart.toRoadMapFrame(roadmap);
   }
 
-public void chordPartFromRoadMapFrame(RoadMapFrame roadmap)
+
+/**
+ * Add selected bars from roadmap to the current Score displayed.
+ * @param roadmap 
+ */
+
+public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
   {
-      ChordPart chordPart = new ChordPart();
-      score = new Score(chordPart);
-      chordPart.fromRoadMapFrame(roadmap);
+      score.fromRoadMapFrame(roadmap);
+      setBars(score.getBarsPerChorus());
       repaint();
- 
   }
 
 }

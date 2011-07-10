@@ -26,6 +26,7 @@ import java.io.*;
 import javax.sound.midi.*;
 
 import imp.Constants;
+import imp.roadmap.RoadMapFrame;
 import imp.util.Trace;
 import imp.util.Preferences;
 import polya.*;
@@ -1015,4 +1016,15 @@ public class Score implements Constants, Serializable {
             m.makeSwing(chordProg.getSectionInfo());
         }
     }
+    
+  /**
+   * Add chords in the current selection in RoadMapFrame to this Score.
+   */
+    
+  public void fromRoadMapFrame(RoadMapFrame roadmap)
+    {
+        chordProg.addFromRoadMapFrame(roadmap);
+        setLength(chordProg.size());
+    }
+
 }
