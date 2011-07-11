@@ -48,7 +48,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private Image buffer;
     private Image bufferRoadMap;
-    private Image bufferNewBrick;
     
     private PreviewPanel previewPanel;
     
@@ -59,8 +58,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private CYKParser cykParser;
     
     private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
-    private int selectionStart = -1;
-    private int selectionEnd = -1;
     
     private ArrayList<Block> clipboard = new ArrayList();
     
@@ -75,7 +72,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private DefaultTreeModel libraryTreeModel;
     
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
-
+    private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
 
     /** Creates new form AltRoadMapFrame */
     public RoadMapFrame(Notate notate) {
@@ -277,11 +274,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scaleComboBoxscaleComboReleased(evt);
-            }
-        });
-        scaleComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                scaleComboBoxscaleChanged(evt);
             }
         });
         scaleComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -719,7 +711,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
             case 86: if(evt.isMetaDown()) pasteSelection();             break;
             case 88: if(evt.isMetaDown()) cutSelection();               break;
             case 65: if(evt.isMetaDown()) selectAllBricks();            break;
-            case 90: if(evt.isMetaDown()) undo();
+            case 90: if(evt.isMetaDown()) undo();                       break;
+            case 89: if(evt.isMetaDown()) redo();                       break;
             case 10: toggleSectionBreak();                              break;
             default:                                                    break;
         }
@@ -746,10 +739,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void scaleComboBoxscaleComboReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleComboReleased
         System.out.println("Combo released");
 }//GEN-LAST:event_scaleComboBoxscaleComboReleased
-
-    private void scaleComboBoxscaleChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChanged
-        //TODO delete
-}//GEN-LAST:event_scaleComboBoxscaleChanged
 
     private void scaleComboBoxscaleChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChosen
         scaleSelection();
@@ -799,7 +788,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void initBuffer()
     {
         buffer = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
-        bufferNewBrick = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
         bufferRoadMap = new java.awt.image.BufferedImage(RMbufferWidth, RMbufferHeight, BufferedImage.TYPE_INT_RGB);
         previewPanel.setBuffer(buffer);
         roadMapPanel.setBuffer(bufferRoadMap);
@@ -833,18 +821,36 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
         roadMapHistory.add(ss);
-        System.out.println("Saving State: " + ss);
+        roadMapFuture.clear();
     }
     
-    private void revertState()
+    private void stepStateBack()
     {
-        RoadMapSnapShot ss = roadMapHistory.removeLast();
-        roadMapPanel.setRoadMap(ss.getRoadMap());
+        if(roadMapHistory.peek() != null) {
+            RoadMapSnapShot ss = roadMapHistory.removeLast();
+            roadMapPanel.setRoadMap(ss.getRoadMap());
+            roadMapFuture.add(ss);
+        }
+    }
+    
+    private void stepStateForward()
+    {
+        if(roadMapFuture.peek() != null) {
+            RoadMapSnapShot ss = roadMapFuture.removeLast();
+            roadMapPanel.setRoadMap(ss.getRoadMap());
+            roadMapHistory.add(ss);
+        }
     }
     
     private void undo()
     {
-        revertState();
+        stepStateBack();
+        roadMapPanel.placeBricks();
+    }
+    
+    private void redo()
+    {
+        stepStateForward();
         roadMapPanel.placeBricks();
     }
        
@@ -928,8 +934,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         saveState("Cut");
         System.out.println("Cut!");
-        if(selectionStart != -1 && selectionEnd != -1)
-            clipboard = roadMapPanel.removeSelection();
+        clipboard = roadMapPanel.removeSelection();
         roadMapPanel.placeBricks();
     }
     
@@ -946,8 +951,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void copySelection()
     {
         System.out.println("Copy!");
-        if(selectionStart != -1 && selectionEnd != -1)
-            clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
+        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
             
     }
     

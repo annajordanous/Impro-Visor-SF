@@ -32,6 +32,6 @@ public class RoadMapSnapShot {
     
     public String toString()
     {
-        return name + " " + roadMap;
+        return name;
     }
 }
