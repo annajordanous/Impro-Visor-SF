@@ -1,16 +1,14 @@
-package imp.roadmap;
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+package imp.roadmap;
 
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.FontMetrics;
 import java.awt.Image;
-import javax.swing.Scrollable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import imp.brickdictionary.*;
@@ -18,7 +16,7 @@ import imp.cykparser.PostProcessing;
 
 /**
  *
- * @author August Toman-Yih
+ * @author ImproVisor
  */
 public class RoadMapPanel extends JPanel{
     
@@ -29,6 +27,7 @@ public class RoadMapPanel extends JPanel{
     public static int LINE_HEIGHT = 60;
     public static int MEASURE_LENGTH = 80;
     public static int LINE_SPACING = 20;
+    public static int BEATS_PER_MEASURE = 480;
     
     public static Color GRID_LINE_COLOR = new Color(150,150,150);
     public static Color GRID_BG_COLOR = new Color(225,225,225);
@@ -49,19 +48,291 @@ public class RoadMapPanel extends JPanel{
     
     public int numLines = 1;
     
+    public int selectionStart = -1;
+    public int selectionEnd = -1;
+    
     private Image buffer;
     
-    private ArrayList<GraphicBrick> roadMap = new ArrayList();
-    private ArrayList<String> joinList = new ArrayList();
-    private ArrayList<long[]> keyMap = new ArrayList();
+    private RoadMap roadMap = new RoadMap();
+    private ArrayList<GraphicBrick> graphicMap = new ArrayList();
     
     RoadMapFrame view;
-
+    
     /** Creates new form RoadMapPanel */
     public RoadMapPanel(RoadMapFrame view)
     {
         this.view = view;
     }
+    
+    public RoadMap getRoadMap()
+    {
+        return roadMap;
+    }
+    
+    public int getNumBlocks()
+    {
+        return roadMap.size();
+    }
+    
+    public void placeBricks()
+    {
+        int currentX = 0;// X_OFFSET;
+        int currentY = Y_OFFSET;
+        //int currentBars = 0;
+        numLines = 1;
+               
+        for( GraphicBrick brick : graphicMap ) {
+            brick.setPos(currentX+X_OFFSET, currentY);
+            
+            currentX += (brick.getBrick().getDuration() * MEASURE_LENGTH)/480;
+            
+            while( currentX >= BARS_PER_LINE*MEASURE_LENGTH ) {
+                currentX = currentX - (BARS_PER_LINE*MEASURE_LENGTH);
+                currentY += LINE_HEIGHT + LINE_SPACING;
+                numLines++;
+            }
+        }
+        updateBricks();
+    }
+    
+    public void updateBricks()
+    {
+        draw();
+    }
+    
+    public void addBlock(Block block)
+    {
+        roadMap.add(block);
+        graphicMap.add(new GraphicBrick(block));
+    }
+    
+    public void addBlocks(ArrayList<Block> blocks)
+    {
+        roadMap.addAll(blocks);
+        graphicMap.addAll(makeBricks(blocks));
+    }
+    
+    public void addBlocks(int ind, ArrayList<Block> blocks)
+    {
+        roadMap.addAll(ind, blocks);
+        graphicMap.addAll(ind, makeBricks(blocks));
+    }
+    
+    public ArrayList<GraphicBrick> makeBricks(ArrayList<Block> blocks)
+    {
+        ArrayList<GraphicBrick> bricks = new ArrayList();
+        
+        for( Block block : blocks )
+            bricks.add(new GraphicBrick(block));
+        
+        return bricks;
+    }
+    
+    public ArrayList<Block> makeBlocks(ArrayList<GraphicBrick> bricks)
+    {
+        ArrayList<Block> blocks = new ArrayList();
+        
+        for( GraphicBrick brick : bricks )
+            blocks.add(brick.getBrick());
+        
+        return blocks;
+    }
+    
+    public ArrayList<Block> getSelection()
+    {
+        if(selectionStart != -1 && selectionEnd != -1)
+            return getBlocks(selectionStart, selectionEnd+1);
+        return new ArrayList();
+    }
+    
+    public ArrayList<Block> removeSelection()
+    {
+        if(selectionStart != -1 && selectionEnd != -1)
+            return removeBlocks(selectionStart, selectionEnd+1);
+        return new ArrayList();
+    }
+    
+    public ArrayList<Block> getBlocks(int start, int end)
+    {
+        return roadMap.getBricks(start, end);
+    }
+    
+    public ArrayList<Block> removeBlocks()
+    {
+        graphicMap.clear();
+        return roadMap.removeBricks();
+    }
+    
+    public ArrayList<Block> removeBlocks(int start, int end)
+    {
+        ArrayList<Block> blocks = roadMap.removeBricks(start, end);
+        graphicMap.subList(start, end).clear();
+        return blocks;
+    }
+    
+    public void selectBricks(int index)
+    {
+        if(selectionStart == -1 && selectionEnd == -1)
+            selectionStart = selectionEnd = index;
+        else {
+            if(index < selectionStart)
+                selectionStart = index;
+            else if (index > selectionEnd)
+                selectionEnd = index;
+            else {
+                selectBrick(index);
+            }
+        }
+        
+
+        for(int i = selectionStart; i <= selectionEnd; ) {
+            graphicMap.get(i).setSelected(true);
+            drawBrick(i);
+            i++;
+        }
+        
+        drawKeyMap();
+    }
+    
+    public void selectBrick(int index)
+    {
+        deselectBricks();
+        selectionStart = selectionEnd = index;
+        graphicMap.get(index).setSelected(true);
+        drawBrick(index);
+        
+        drawKeyMap();
+    }
+    
+    public void selectAll()
+    {
+        selectionStart = selectionEnd = 0;
+        selectBricks(graphicMap.size()-1);
+    }
+    
+    public void deselectBricks()
+    {
+        for(GraphicBrick brick : graphicMap)
+            brick.setSelected(false);
+        
+        draw();
+        
+        selectionStart = selectionEnd = -1;
+    }
+  
+    
+    public void analyzeSelection()
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            ArrayList<Block> bricks = view.analyze(removeSelection());
+            addBlocks(selectionStart, bricks);
+            selectionEnd = selectionStart;
+            selectBricks(selectionStart + bricks.size() - 1);
+        } else {
+            ArrayList<Block> blocks = view.analyze(removeBlocks());
+            addBlocks(blocks);
+        }
+        placeBricks();
+    }
+    
+    public void transposeSelection(long diff)
+    {
+        if(selectionStart != -1 && selectionEnd != -1)
+            for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
+                block.transpose(diff);
+    }
+    
+    public void scaleSelection(long scale)
+    {
+        if(selectionStart != -1 && selectionEnd != -1)
+            for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
+                block.adjustDuration(scale);
+        placeBricks();
+    }
+    
+    public void deleteSelection()
+    {
+        if(selectionStart != -1 && selectionEnd != -1)
+            deleteRange(selectionStart, selectionEnd+1);
+        selectionStart = selectionEnd = -1;
+    }
+    
+    public void deleteRange(int start, int end)
+    {
+        roadMap.removeBricks(start, end);
+        graphicMap.subList(start, end).clear();
+        placeBricks();
+    }
+    
+    public void breakSelection()
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd + 1);
+            ArrayList<Block> newBlocks = new ArrayList();
+            
+            graphicMap.subList(selectionStart, selectionEnd + 1).clear();
+            
+            for( Block block : blocks )
+                newBlocks.addAll(block.getSubBlocks());
+            
+            roadMap.addAll(selectionStart, newBlocks);
+            graphicMap.addAll(selectionStart, makeBricks(newBlocks));
+            
+            selectionEnd = selectionStart;
+            
+            selectBricks(selectionStart + newBlocks.size() - 1);
+            
+            placeBricks();
+        }       
+    }
+    
+    public void flattenSelection()
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd+1);
+            ArrayList<Block> newBlocks = new ArrayList(RoadMap.getChords(blocks));
+            
+            graphicMap.subList(selectionStart, selectionEnd + 1).clear();
+            
+            roadMap.addAll(selectionStart, newBlocks);
+            graphicMap.addAll(selectionStart, makeBricks(newBlocks));
+            
+            selectionEnd = selectionStart;
+            
+            selectBricks(selectionStart + newBlocks.size() - 1);
+            
+            placeBricks();
+        }
+    }
+    
+    public Brick makeBrickFromSelection(String name, long key)
+    {
+        if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
+            ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd+1);
+            graphicMap.subList(selectionStart, selectionEnd+1).clear();
+            Brick newBrick = new Brick(name, key, "UserDefined", blocks, "Major");
+
+            
+            roadMap.add(selectionStart, newBrick);
+            graphicMap.add(selectionStart, new GraphicBrick(newBrick));
+            
+            selectBrick(selectionStart);
+            placeBricks();
+            return newBrick;
+        }
+        return null;
+    }
+       
+    public void dropBricks(int index, ArrayList<GraphicBrick> bricks)
+    {
+        graphicMap.addAll(index, bricks);
+        roadMap.addAll(index, makeBlocks(bricks));
+        System.out.println(roadMap.size()+ " - " + graphicMap.size());
+        selectionStart = selectionEnd = index;
+        selectBricks(index + bricks.size() - 1);
+    }
+    
+    /* Drawing and junk */
     
     public void setBuffer(Image buffer)
     {
@@ -70,85 +341,53 @@ public class RoadMapPanel extends JPanel{
     
     public void draw()
     {
+       System.out.println(roadMap.size() + " " + graphicMap.size());
+        
        view.setBackground(buffer);
        drawGrid();
        drawBricks();
+       drawKeyMap();
        repaint();
     }
     
-    /**
-    * Override the paint method to draw the buffer image on this panel's graphics.
-    * This method is called implicitly whenever repaint() is called.
-    */
-    @Override
-    public void paint(Graphics g) 
+    public void drawGrid()
     {
-        g.drawImage(buffer, 0, 0, null);
-    }
-    
-    public void add(GraphicBrick brick)
-    {
-        roadMap.add(brick);
-        //durations.add(brick.duration);
-    }
-    
-    public void addAll(int index, ArrayList<GraphicBrick> bricks)
-    {
-        roadMap.addAll(index, bricks);
-    }
-    
-    public void addAll( ArrayList<GraphicBrick> bricks)
-    {
-        roadMap.addAll(bricks);
-    }
-    
-    public void insert(int index, GraphicBrick brick)
-    {
-        roadMap.add(index, brick);
-        placeBricks();
-    }
-  
-    public void placeBricks()
-    {
-        int currentX = 0;// X_OFFSET;
-        int currentY = Y_OFFSET;
-        //int currentBars = 0;
-        numLines = 1;
-               
-        for( Iterator<GraphicBrick> it = roadMap.iterator(); it.hasNext(); ) {
-            GraphicBrick brick = it.next();
-            brick.setPos(currentX+X_OFFSET, currentY);
+        Graphics g = buffer.getGraphics();
+        
+        for(int i = 0; i < numLines; i++) {
+            g.setColor(GRID_BG_COLOR);
+            g.fillRect(X_OFFSET, Y_OFFSET + i*(LINE_HEIGHT + LINE_SPACING),
+                    BARS_PER_LINE * MEASURE_LENGTH, LINE_HEIGHT);
             
-            currentX += (brick.duration() * MEASURE_LENGTH)/480;
-            
-            while( currentX >= BARS_PER_LINE*MEASURE_LENGTH ) {
-                currentX = currentX - (BARS_PER_LINE*MEASURE_LENGTH);
-                currentY += LINE_HEIGHT + LINE_SPACING;
-                numLines++;
+            for(int j = 0; j <= BARS_PER_LINE; ) {
+                g.setColor(GRID_LINE_COLOR);
+                g.drawLine(X_OFFSET + j*MEASURE_LENGTH,
+                        Y_OFFSET + i*(LINE_HEIGHT + LINE_SPACING) - 5,
+                        X_OFFSET + j*MEASURE_LENGTH,
+                        Y_OFFSET + (i+1)*LINE_HEIGHT + i*LINE_SPACING + 5);
+                j++;
             }
-
         }
         
-        updateBricks();
+        setSize(WIDTH, numLines * (LINE_HEIGHT+LINE_SPACING));
     }
-        
-    public void updateBricks()
+    
+    public void drawBrick(int ind)
     {
-        ArrayList<Block> blocks = getBlockList();
-        
-        joinList = PostProcessing.findJoins(blocks);
-        keyMap = PostProcessing.findKeys(blocks);
-        
-        draw();
+        graphicMap.get(ind).draw(buffer.getGraphics());
+        repaint();
     }
     
     public void drawBricks()
     {        
-        
         Graphics g = buffer.getGraphics();
         
-        for( int ind = 0; ind < roadMap.size(); ind++ ) {
-            GraphicBrick brick = roadMap.get(ind);           
+        ArrayList<String> joinList = roadMap.getJoins();
+        
+        //System.out.println(roadMap.getBricks().size() + " " + joinList.size());
+        
+        for( int ind = 0; ind < graphicMap.size(); ind++ ) {
+            GraphicBrick brick = graphicMap.get(ind);           
             brick.draw(g);
             
             if(ind > 0 && !joinList.get(ind-1).isEmpty()) {
@@ -159,10 +398,16 @@ public class RoadMapPanel extends JPanel{
         drawKeyMap();
     }
     
-    public void drawBrick(int ind)
+    public void drawBricksAt(ArrayList<GraphicBrick> bricks, int x, int y)
     {
-        roadMap.get(ind).draw(buffer.getGraphics());
-        repaint();
+        Graphics g = buffer.getGraphics();
+        
+        int xOffset = x;
+        
+        for(GraphicBrick brick : bricks) {
+            brick.drawAt(g, xOffset, y);
+            xOffset+=brick.getLength();
+        }
     }
     
     public void drawJoin(String name, int x, int y)
@@ -193,7 +438,7 @@ public class RoadMapPanel extends JPanel{
         
         int cutoffPoint = X_OFFSET + BARS_PER_LINE*MEASURE_LENGTH;
         
-        for( long[] keyPair : keyMap ) {
+        for( long[] keyPair : roadMap.getKeyMap() ) {
             long key = keyPair[0];
             String keyName = BrickLibrary.keyNumToName(key);
             long dur = keyPair[1];
@@ -211,7 +456,7 @@ public class RoadMapPanel extends JPanel{
             g.drawLine(xOffset,yOffset,xOffset,yOffset+LINE_HEIGHT/3);
             
             
-            int length = ((int)dur*MEASURE_LENGTH)/480;
+            int length = ((int)dur*MEASURE_LENGTH)/BEATS_PER_MEASURE;
             
             while( xOffset + length > cutoffPoint ) {
                 if (key == Chord.NC)
@@ -253,66 +498,13 @@ public class RoadMapPanel extends JPanel{
             
     }
     
-    public void drawGrid()
-    {
-        Graphics g = buffer.getGraphics();
-        
-        for(int i = 0; i < numLines; i++) {
-            g.setColor(GRID_BG_COLOR);
-            g.fillRect(X_OFFSET, Y_OFFSET + i*(LINE_HEIGHT + LINE_SPACING),
-                    BARS_PER_LINE * MEASURE_LENGTH, LINE_HEIGHT);
-            
-            for(int j = 0; j <= BARS_PER_LINE; ) {
-                g.setColor(GRID_LINE_COLOR);
-                g.drawLine(X_OFFSET + j*MEASURE_LENGTH,
-                        Y_OFFSET + i*(LINE_HEIGHT + LINE_SPACING) - 5,
-                        X_OFFSET + j*MEASURE_LENGTH,
-                        Y_OFFSET + (i+1)*LINE_HEIGHT + i*LINE_SPACING + 5);
-                j++;
-            }
-        }
-        
-        setSize(WIDTH, numLines * (LINE_HEIGHT+LINE_SPACING));
-    }
-    
-    public GraphicBrick getBrick(int index)
-    {
-        return roadMap.get(index);
-    }
-    
-    public ArrayList<Block> getBlockList()
-    {
-        ArrayList<Block> blocks = new ArrayList<Block>();
-        
-        for(Iterator<GraphicBrick> it = roadMap.iterator(); it.hasNext();) {
-            blocks.add(it.next().getBlock());
-        }
-        
-        return blocks;
-    }
-    
-    public GraphicBrick getBrickAt(int x, int y)
-    {
-        for ( Iterator<GraphicBrick> it = roadMap.iterator(); it.hasNext(); ) {
-            GraphicBrick brick = it.next();
-            
-            if( brick.contains(x, y) )
-                return brick;
-        }
-        return null;
-    }
-    
     public int getBrickIndexAt(int x, int y)
     {
         int index = 0;
-        for ( Iterator<GraphicBrick> it = roadMap.iterator(); it.hasNext(); ) {
-            GraphicBrick brick = it.next();
-            
+        for ( GraphicBrick brick : graphicMap) {
             if( brick.contains(x, y) )
                 return index;
-            
             index++;
-            
         }
         return -1;
     }
@@ -320,14 +512,9 @@ public class RoadMapPanel extends JPanel{
     public int getSlotAt(int x, int y)
     {
         int index = 0;
-        for ( Iterator<GraphicBrick> it = roadMap.iterator(); it.hasNext(); )
-        {
-            GraphicBrick brick = it.next();
-            
+        for ( GraphicBrick brick : graphicMap ) {
             if( brick.contains(x, y) )
-            {
                 return index;
-            }
             
             if( y < brick.y() )
                 return index;
@@ -338,60 +525,14 @@ public class RoadMapPanel extends JPanel{
         return index;
     }
     
-    public GraphicBrick removeBrickAt(int x, int y)
+    /**
+    * Override the paint method to draw the buffer image on this panel's graphics.
+    * This method is called implicitly whenever repaint() is called.
+    */
+    @Override
+    public void paint(Graphics g) 
     {
-        GraphicBrick brick = getBrickAt(x,y);
-        removeBrick(brick);
-        return brick;
+        g.drawImage(buffer, 0, 0, null);
     }
     
-    public void removeBrick(GraphicBrick brick)
-    {
-        roadMap.remove(brick);
-        //placeBricks();
-    }
-    
-    public void removeBrick(int index)
-    {
-        roadMap.remove(index);
-        //placeBricks();
-    }
-    
-    public ArrayList<GraphicBrick> removeBricks(int start, int end)
-    {
-        ArrayList bricks = new ArrayList(roadMap.subList(start, end+1));
-        roadMap.subList(start, end+1).clear();
-        return bricks;
-    }
-    
-    public ArrayList<GraphicBrick> removeBricks()
-    {
-        ArrayList bricks = new ArrayList(roadMap);
-        roadMap.clear();
-        return bricks;
-    }
-    
-    public ArrayList<GraphicBrick> getBricks(int start, int end)
-    {
-        return new ArrayList(roadMap.subList(start, end+1));
-    }
-    
-    public ArrayList<GraphicBrick> getBricks()
-    {
-        return roadMap;
-    }
-    
-    public void addBlocks(ArrayList<Block> blocks) //not accurate name
-    {
-        roadMap.clear();
-        for(Iterator<Block> it = blocks.iterator(); it.hasNext(); ) {
-            GraphicBrick gBrick = new GraphicBrick(it.next());
-            roadMap.add(gBrick);
-        }
-    }
-    
-    public int getNumBlocks()
-    {
-        return roadMap.size();
-    }
 }

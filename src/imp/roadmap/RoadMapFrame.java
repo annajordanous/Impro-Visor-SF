@@ -53,8 +53,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private RoadMapPanel roadMapPanel;
     
-    private NewBrickDialog newBrickDialog;
-    
     private BrickLibrary brickLibrary;
     
     private CYKParser cykParser;
@@ -63,7 +61,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private int selectionStart = -1;
     private int selectionEnd = -1;
     
-    private ArrayList<GraphicBrick> clipboard = new ArrayList();
+    private ArrayList<Block> clipboard = new ArrayList();
     
     private Object[] durationChoices = {1920,1440,960,480,240,120};
     
@@ -83,7 +81,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         previewPanel = new PreviewPanel(this);
         roadMapPanel = new RoadMapPanel(this);
-        newBrickDialog = new NewBrickDialog(this);
         
         try {
             brickLibrary = BrickLibrary.processDictionary();
@@ -266,6 +263,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleLabel.setName("scaleLabel"); // NOI18N
         toolBar.add(scaleLabel);
 
+        scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "/5", "/4", "/3", "/2", "x1", "x2", "x3", "x4", "x5" }));
+        scaleComboBox.setSelectedIndex(4);
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
         scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
@@ -325,7 +324,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(selectAllBricksButton);
 
-        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
         analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
@@ -635,7 +634,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_libraryTreeSelected
 
     private void chordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordFieldActionPerformed
-        addChord();
+        addChordFromPreview();
         chordField.selectAll();
 }//GEN-LAST:event_chordFieldActionPerformed
 
@@ -653,7 +652,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_chordFieldKeyPressed
 
     private void addChordButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addChordButtonPressed
-        addChord();
+        addChordFromPreview();
 }//GEN-LAST:event_addChordButtonPressed
 
     private void keySpinnerChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_keySpinnerChanged
@@ -661,6 +660,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_keySpinnerChanged
 
     private void previewScrollPanepreviewPaneReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneReleased
+        System.out.println("Preview released");
         dropFromPreview(evt.getX(), evt.getY());
 }//GEN-LAST:event_previewScrollPanepreviewPaneReleased
 
@@ -670,7 +670,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_previewScrollPanepreviewPaneClicked
 
     private void previewScrollPanepreviewPaneDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneDragged
-        //System.out.println("Preview Dragged");
+        System.out.println("Preview Dragged");
         dragFromPreview(evt.getX(), evt.getY());
 }//GEN-LAST:event_previewScrollPanepreviewPaneDragged
 
@@ -683,12 +683,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapMouseWheelMoved
 
     private void roadMapScrollPaneroadMapReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapReleased
-        //System.out.println("Mouse released");
+        System.out.println("Mouse released");
         dropCurrentBrick(evt.getX(), evt.getY());
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
         int index = roadMapPanel.getBrickIndexAt(evt.getX(), evt.getY());
+        
+        System.out.println("Clicked brick "+index);
         
         if(index != -1) {
             if(evt.isShiftDown())
@@ -702,7 +704,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
-        //System.out.println("roadMapDragged");
+        System.out.println("roadMapDragged");
         dragSelectedBricks(evt.getX(), evt.getY());
 }//GEN-LAST:event_roadMapScrollPaneroadMapDragged
 
@@ -742,7 +744,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_scaleComboBoxscaleComboReleased
 
     private void scaleComboBoxscaleChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChanged
-        //scaleSelection();
+        //TODO delete
 }//GEN-LAST:event_scaleComboBoxscaleChanged
 
     private void scaleComboBoxscaleChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChosen
@@ -796,7 +798,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         bufferNewBrick = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
         bufferRoadMap = new java.awt.image.BufferedImage(RMbufferWidth, RMbufferHeight, BufferedImage.TYPE_INT_RGB);
         previewPanel.setBuffer(buffer);
-        newBrickDialog.setBuffer(bufferNewBrick);
         roadMapPanel.setBuffer(bufferRoadMap);
         roadMapPanel.draw();
         previewPanel.draw();
@@ -822,7 +823,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         setBackground(buffer);
         setBackground(bufferRoadMap);
-        setBackground(bufferNewBrick);
     }
        
     /** dragSelectedBricks <p>
@@ -834,21 +834,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void dragSelectedBricks(int x, int y)
     {   
         int index = roadMapPanel.getBrickIndexAt(x, y);
+        System.out.println("Drag detected");
         if( draggedBricks.isEmpty() ) {
-            
+            System.out.println("Grabbing bricks");
             if( index != -1 ) {
-                if(!roadMapPanel.getBrick(index).selected) {
-                    selectBrick(index);
-                } else if(selectionStart != -1 && selectionEnd != -1)
-                    draggedBricks = roadMapPanel.removeBricks(selectionStart, selectionEnd);
+                draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelection());
             }
         }
         
         if( !draggedBricks.isEmpty() ) {
-            GraphicBrick brick = draggedBricks.get(0);
-            brick.setPos(x,y);
             roadMapPanel.draw();
-            brick.drawNoWrap(bufferRoadMap.getGraphics());
+            roadMapPanel.drawBricksAt(draggedBricks, x, y);
         }
     }
     
@@ -860,16 +856,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void dropCurrentBrick(int x, int y)
     {   
+        System.out.println("Drop detected");
         if( !draggedBricks.isEmpty() ) {
+            System.out.println("Dropping bricks");
             int index = roadMapPanel.getSlotAt(x, y);
-            roadMapPanel.addAll(index, draggedBricks);
-            selectionStart = index;
-            selectionEnd = index+draggedBricks.size()-1;
+            roadMapPanel.dropBricks(index, draggedBricks);
             draggedBricks.clear();
-            
         }
         roadMapPanel.placeBricks();
-        System.out.println("Selection from " + selectionStart + " to " + selectionEnd);
     }
     
     /** dragFromPreview <p>
@@ -881,11 +875,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void dragFromPreview(int x, int y) 
     {        
         if( draggedBricks.isEmpty() ) {
-            deselectBricks();
+            roadMapPanel.deselectBricks();
             
             if (previewPanel.currentBrick != null) {
-                previewPanel.currentBrick.selected = true;
-                draggedBricks.add(previewPanel.currentBrick);
+                draggedBricks.add(previewPanel.getBrick());
                 setPreview();
             }
         }
@@ -948,21 +941,19 @@ public class RoadMapFrame extends javax.swing.JFrame {
     /** addChord <p>
      * Adds the chord inputted in the chord field to the roadmap.
      */
-    
-    public void addChord()
-    {
-        addChord(new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
-    }
-        
-    /** addChord <p>
-     * Adds the argument chord to the roadmap.
-     */
-    
     public void addChord(Chord chord)
     {
-        roadMapPanel.add(new GraphicBrick(chord));
+        roadMapPanel.addBlock(chord);
         roadMapPanel.placeBricks();
     }
+    
+    
+    public void addChordFromPreview()
+    {
+        roadMapPanel.addBlock(new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
+        roadMapPanel.placeBricks();
+    }
+  
         
     /** selectBricks <p>
      * Adds the brick at index to the selection, either extending the selection
@@ -972,33 +963,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void selectBricks(int index)
     {
-        if(selectionStart == -1 && selectionEnd == -1)
-            selectionStart = selectionEnd = index;
-        else {
-            if(index < selectionStart)
-                selectionStart = index;
-            else if (index > selectionEnd)
-                selectionEnd = index;
-            else {
-                selectBrick(index);
-            }
-        }
-        
-
-        for(int i = selectionStart; i <= selectionEnd; ) {
-            roadMapPanel.getBrick(i).selected = true;
-            roadMapPanel.drawBrick(i);
-            i++;
-        }
-        
-        roadMapPanel.drawKeyMap();
+        roadMapPanel.selectBricks(index);
         activateButtons();   
     }
     
     public void selectAllBricks()
     {
-        selectionStart = 0;
-        selectBricks(roadMapPanel.getNumBlocks()-1);
+        roadMapPanel.selectAll();
+        activateButtons();
     }
     
     /** selectBrick <p>
@@ -1008,12 +980,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void selectBrick(int index)
     {
-        deselectBricks();
-        selectionStart = selectionEnd = index;
-        roadMapPanel.getBrick(index).setSelected(true);
-        roadMapPanel.drawBrick(index);
-        
-        roadMapPanel.drawKeyMap();
+        roadMapPanel.selectBrick(index);
         activateButtons();
     }
     
@@ -1022,244 +989,60 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void deselectBricks()
     {
-        if(selectionStart != -1 && selectionEnd != -1) {
-            deselectBricks(selectionStart, selectionEnd);
-            selectionStart = selectionEnd = -1;
-        }
-        
-        roadMapPanel.drawKeyMap();
+        roadMapPanel.deselectBricks();
         deactivateButtons();
-    }
-    
-    /** deselectBricks <p>
-     * deselects the bricks between index start and end, inclusive.
-     * 
-     * @param start
-     * @param end 
-     */
-    public void deselectBricks(int start, int end)
-    {
-        for(int i = start; i <= end; ) {
-            roadMapPanel.getBrick(i).setSelected(false);
-            roadMapPanel.drawBrick(i);
-            i++;
-        }
     }
     
     public void deleteSelection()
     {
-        System.out.println("Deleting between " + selectionStart + " and " + selectionEnd);
-        if(selectionStart != -1 && selectionEnd != -1) {
-            roadMapPanel.removeBricks(selectionStart, selectionEnd);
-            selectionStart = selectionEnd = -1;
-            roadMapPanel.placeBricks();
-        }
+        roadMapPanel.deleteSelection();
         deactivateButtons();
     }
     
     public void breakSelection()
     {
-        if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<GraphicBrick> bricks = roadMapPanel.removeBricks(selectionStart, selectionEnd);
-            ArrayList<GraphicBrick> newBricks = new ArrayList();
-            
-            for( Iterator<GraphicBrick> it = bricks.iterator(); it.hasNext(); )
-                newBricks.addAll(it.next().seperate());
-            
-            roadMapPanel.addAll(selectionStart, newBricks);
-            
-            selectionEnd = selectionStart;
-            
-            selectBricks(selectionStart + newBricks.size() - 1);
-            
-            roadMapPanel.placeBricks();
-        }
+        roadMapPanel.breakSelection();
     }
     
     public void makeBrickFromSelection()
     {
-        if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
-            ArrayList<GraphicBrick> bricks = roadMapPanel.removeBricks(selectionStart, selectionEnd);
-                       
-            //makeNewBrick(analyze(bricks));
-            
-            long key = BrickLibrary.keyNameToNum((String) dialogKeySpinner.getValue());
-            
-            GraphicBrick brick = makeNewBrick(bricks, key, dialogNameField.getText());
-            
-            roadMapPanel.insert(selectionStart, brick);
-            
-            selectionEnd = selectionStart;
-            
-            brick.setSelected(true);
-        }
+        long key = BrickLibrary.keyNameToNum((String) dialogKeySpinner.getValue());
+        String name = dialogNameField.getText();
+        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key);
+        addToLibrary(newBrick);
     }
-    
-    public GraphicBrick makeNewBrick(ArrayList<GraphicBrick> bricks, long key, String name)
-    {
-        ArrayList<Block> blocks = new ArrayList();
-        for( Iterator<GraphicBrick> it = bricks.iterator(); it.hasNext(); )
-            blocks.add(it.next().getBlock());
-        
-        Brick newBlock = new Brick(name, key, "UserDefined", blocks);
 
-        addToLibrary(newBlock);
-        
-        return new GraphicBrick(newBlock);
-    }
-    
-    public void setBrickKey(GraphicBrick brick, long key)
-    {
-        brick.setKey(key);
-    }
-    
-    public void transposeBrick(GraphicBrick brick, long diff)
-    {
-        brick.transpose(diff);
-        roadMapPanel.updateBricks();
-    }
-    
     public void transposeSelection(long diff)
     {
-        if( selectionStart != -1 && selectionEnd != -1 ) {
-            for( int ind = selectionStart; ind <= selectionEnd; ) {
-                transposeBrick(roadMapPanel.getBrick(ind), 12-diff%12);
-                ind++;
-            }
-        }
+        roadMapPanel.transposeSelection(diff);
     }
     
     public void analyzeSelection()
     {
-        ArrayList<GraphicBrick> bricks;
-        
-        if( selectionStart != -1 && selectionEnd != -1 ) {
-            bricks = roadMapPanel.removeBricks(selectionStart, selectionEnd);
-            selectionEnd = selectionStart;
-            
-            System.out.println(bricks);
-            
-            bricks = analyze(bricks);
-            
-            roadMapPanel.addAll(selectionStart, bricks);
-            selectBricks(selectionStart + bricks.size() - 1);
-        } else {
-            bricks = roadMapPanel.removeBricks();
-            
-            System.out.println(bricks);
-            
-            bricks = analyze(bricks);
-            
-            roadMapPanel.addAll(bricks);
-        }
-        
-        roadMapPanel.placeBricks();
-        
+        roadMapPanel.analyzeSelection();
     }
     
-    public ArrayList<GraphicBrick> analyze(ArrayList<GraphicBrick> bricks)
+    public ArrayList<Block> analyze(ArrayList<Block> blocks)
     {
         cykParser = new CYKParser();
-        ArrayList<Block> blocks = getBlocks(bricks);
-        blocks = cykParser.parse(blocks, brickLibrary);
-        return makeBricks(blocks);
-    }
-    
-    public ArrayList<Block> getBlocks(ArrayList<GraphicBrick> bricks)
-    {
-        ArrayList<Block> blocks = new ArrayList<Block>();
-        
-        for( Iterator<GraphicBrick> it = bricks.iterator(); it.hasNext(); )
-            blocks.add(it.next().getBlock());
-        
-        return blocks;
-    }
-    
-    public ArrayList<GraphicBrick> makeBricks(ArrayList<Block> blocks)
-    {
-        ArrayList<GraphicBrick> bricks = new ArrayList<GraphicBrick>();
-        
-        for( Iterator<Block> it = blocks.iterator(); it.hasNext(); ) {
-            Block block = it.next();
-            //if(it.hasNext())
-               //block.setSectionEnd(false);
-            bricks.add(new GraphicBrick(block));
-        }
-        
-        return bricks;
-    }
+        return cykParser.parse(blocks, brickLibrary);
+    }  
     
     public ArrayList<Chord> getChordsInSelection()
     {
-        ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
-        ArrayList<Chord> chords = new ArrayList();
-        for( GraphicBrick brick : bricks ) {
-            chords.addAll(brick.getBlock().flattenBlock());
-        }
-
-        return chords;
+        return RoadMap.getChords(roadMapPanel.getSelection());
     }
     
     public void flattenSelection()
     {
-        ArrayList<GraphicBrick> bricks = roadMapPanel.removeBricks(selectionStart, selectionEnd);
-        ArrayList<GraphicBrick> newBricks = new ArrayList();
-        
-        for( Iterator<GraphicBrick> it = bricks.iterator(); it.hasNext(); )
-        {
-            newBricks.addAll(it.next().flatten());
-        }
-        
-        roadMapPanel.addAll(selectionStart, newBricks);
-        selectionEnd = selectionStart;
-        selectBricks(selectionStart + newBricks.size() - 1);
-        
-        roadMapPanel.placeBricks();
+        roadMapPanel.flattenSelection();
     }
     
     public BrickLibrary getLibrary()
     {
         return brickLibrary;
     }
-    
-    private void setScaleComboBox()
-    {
-        resetScaleComboBox();
         
-        System.out.println("Adding stuff to scale");
-        
-        scaleComboBox.addItem("x1");
-        
-        ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
-        boolean valid;
-        for( int i = 2; i <= 5 ; i++ ) {
-            
-            valid = true;
-            
-            for( GraphicBrick brick : bricks ) {
-                if( ! brick.isValidScale(i) ) {
-                    valid = false;
-                    break;
-                }
-            }
-            
-            if(valid)
-                scaleComboBox.insertItemAt("/"+i,0);
-            
-        }
-        
-        for( int i = 2; i <= 5; i++ )
-            scaleComboBox.addItem("x"+i);
-        
-        System.out.println("Done adding stuff to scale");
-    }
-    
-    private void resetScaleComboBox()
-    {
-        scaleComboBox.removeAllItems();
-        scaleComboBox.setSelectedItem(null);
-    }
-    
     public void deactivateButtons()
     {
         flattenButton.setEnabled(false);
@@ -1271,7 +1054,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     public void activateButtons()
     {
-        setScaleComboBox();
         flattenButton.setEnabled(true);
         deleteButton.setEnabled(true);
         breakButton.setEnabled(true);
@@ -1281,14 +1063,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     public void scaleSelection()
     {
-        System.out.println("Attempting to scale selection");
-        
-        if(!scaleComboBox.isEnabled())
-            System.out.println("Scale Combo Box not enabled");
-        
-        if(selectionStart == -1 || selectionEnd == -1 || !scaleComboBox.isEnabled())
-            return;
-        
         String choice = (String)scaleComboBox.getSelectedItem();
         
         if( choice == null )
@@ -1299,67 +1073,40 @@ public class RoadMapFrame extends javax.swing.JFrame {
         if( choice.charAt(0) == 47) //  / = division
             scale = -scale;
         
-        System.out.println("Scale: " + scale);
-        
-        for( GraphicBrick brick : roadMapPanel.getBricks(selectionStart, selectionEnd))
-            brick.adjustDuration(scale);
-        
-        roadMapPanel.placeBricks();
-        //setScaleComboBox();
+        roadMapPanel.scaleSelection(scale);
                 
     }
     
     public void copySelection()
     {
         System.out.println("Copy!");
-        if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<GraphicBrick> bricks = roadMapPanel.getBricks(selectionStart, selectionEnd);
-            
-            clipboard = cloneBricks(bricks);
-        }
+        if(selectionStart != -1 && selectionEnd != -1)
+            clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
             
     }
     
     public void cutSelection()
     {
         System.out.println("Cut!");
-        if(selectionStart != -1 && selectionEnd != -1) {
-            clipboard = roadMapPanel.removeBricks(selectionStart, selectionEnd);
-            roadMapPanel.placeBricks();
-        }
+        if(selectionStart != -1 && selectionEnd != -1)
+            clipboard = roadMapPanel.removeSelection();
+        roadMapPanel.placeBricks();
     }
     
     public void pasteSelection()
     {
         System.out.println("Paste!");
         
-        roadMapPanel.addAll(cloneBricks(clipboard));
+        roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
         
         roadMapPanel.placeBricks();
     }
    
     private void toggleSectionBreak()
     {
-        System.out.println("Section breaking");
         
-        if(selectionEnd != -1) {
-            boolean value = roadMapPanel.getBrick(selectionEnd).isSectionEnd();
-            roadMapPanel.getBrick(selectionEnd).setSectionEnd(!value);
-            roadMapPanel.drawBrick(selectionEnd);
-            roadMapPanel.drawKeyMap();
-        }
     }
     
-    public ArrayList<GraphicBrick> cloneBricks(ArrayList<GraphicBrick> bricks)
-    {
-        ArrayList<GraphicBrick> newBricks = new ArrayList();
-        
-        for(GraphicBrick brick : bricks)
-                newBricks.add(new GraphicBrick(brick));
-        
-        return newBricks;
-    }
-     
     public void initLibraryTree()
     {
         ArrayList<Brick> bricks = new ArrayList(brickLibrary.getMap());
@@ -1525,7 +1272,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     public boolean somethingSelected()
     {
-        return selectionStart >= 0 && selectionStart <= selectionEnd;
+        return roadMapPanel.getSelection().size() > 0;
     }
 
 

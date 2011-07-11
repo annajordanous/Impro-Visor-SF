@@ -59,7 +59,7 @@ public class PreviewPanel extends JPanel
         if( currentBrick != null )
         {
             System.out.println("Drawing Brick ");
-            currentBrick.drawNoWrap(buffer.getGraphics());
+            currentBrick.drawAt(buffer.getGraphics(),0,0);
         }
         repaint();
     }
@@ -81,20 +81,25 @@ public class PreviewPanel extends JPanel
         currentBrick = new GraphicBrick(brick);
     }
 
+    public GraphicBrick getBrick()
+    {
+        return currentBrick;
+    }
     
     public void setKey(long key)
     {
-        currentKey = key;
         if(currentBrick != null)
-            currentBrick.setKey(currentKey);
+            currentBrick.getBrick().transpose(currentKey - key);
+        currentKey = key;
         draw();
     }
     
     public void setKey(String key)
     {
-        currentKey = BrickLibrary.keyNameToNum(key);
+        long newKey = BrickLibrary.keyNameToNum(key);
         if(currentBrick != null)
-            currentBrick.setKey(currentKey);
+            currentBrick.getBrick().transpose(currentKey - newKey);
+        currentKey = newKey;
         draw();
     }
     
@@ -104,18 +109,5 @@ public class PreviewPanel extends JPanel
         if(protoBrick != null)
             setBrick(protoBrick);
     }
-    
-    public void setBrickName(String name)
-    {
-        currentBrick.setName(name);
-    }
-    
-    public Brick returnBrick()
-    {
-        String name = currentBrick.name();
-        long key = currentBrick.key();
-        String type = currentBrick.type();
-        
-        return new Brick(name,key,type,(ArrayList<Block>)protoBrick.getSubBlocks());
-    }
+
 }
