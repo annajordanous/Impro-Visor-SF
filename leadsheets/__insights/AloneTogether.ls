@@ -39,12 +39,21 @@
 Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
 Dm | Am7b5 D7 | Gm | / | 
 Bm7 E7 | Gm7 C7 | FM7 | Em7b5 A7 | 
-DM7 | Em7 A7b9 | Dm | Em7b5 A7 | 
+DM7 | Em7 A7b9 | 
+(section (style swing)) 
+
+Dm | Em7b5 A7 | 
 Dm | Em7b5 A7 | Dm | Am7b5 D7 | 
 Gm7 | / | Bm7 E7 | Gm7 C7 | 
 FM7 | Em7b5 A7 | DM7 | / | 
+
+(section (style swing)) 
+
 Am7b5 | D7b9 | Gm | / | 
 Gm7b5 | C7 | FM7 | Em7b5 A7 | 
+
+(section (style swing)) 
+
 Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
 Dm | Bb7 A7#9 | Dm | / | 
 

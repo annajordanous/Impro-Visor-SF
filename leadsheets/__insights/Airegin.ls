@@ -41,6 +41,9 @@ Bbm | F7#9 | Bbm | / |
 Bbm | Dm7 G7 | CM7 | C#m7 F#7 | 
 BM7 | Cm7 F7 | BbM7 | / | 
 Bbm7 | Eb7 | AbM7 | Gm7b5 C7 | 
+
+(section (style swing)) 
+
 Fm | C7#9 | Fm | Cm7 F7 | 
 Bbm | F7#9 | Bbm | / | 
 DbM7 | Dm7b5 G7 | Cm7b5 | F7 | 

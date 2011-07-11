@@ -38,13 +38,24 @@
 
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | AbM7 | / | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | Am7 | 
 Dm7 | G7 | CM7 | / | 
+
+(section (style swing)) 
+
 F#m7 | B7 | EM7 | / | 
 Bbm7 | Eb7 | Cm7 | F7 | 
-Bbm7 | Eb7 | AbM7 | F7 | 
+
+(section (style swing)) 
+
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | Gb7#11 | F7 | 
+
+(section (style swing)) 
+
 Bbm7 | Eb7 | AbM7 | / | 
 
 (part
@@ -56,4 +67,4 @@ Bbm7 | Eb7 | AbM7 | / |
     (key 0)
     (stave treble)
 )
- f4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
+ f4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

@@ -38,10 +38,19 @@
 
 CM7 | / | D7#11 | / | 
 Dm7 | G7 | CM7 A7 | Dm7 G7 | 
+
+(section (style swing)) 
+
 CM7 | / | D7#11 | / | 
 Dm7 | G7 | CM7 | C7 | 
+
+(section (style swing)) 
+
 FM7 | / | / | / | 
 D7 | / | Dm7 | G7 | 
+
+(section (style swing)) 
+
 CM7 | / | D7#11 | / | 
 Dm7 | G7 | CM7 A7 | Dm7 G7 | 
 

@@ -38,10 +38,19 @@
 
 Dm7 | / | Bb7#11 | / | 
 Em7b5 | A7 | Dm7 | Em7b5 A7 | 
+
+(section (style swing)) 
+
 Dm7 | / | Bb7#11 | / | 
 Em7b5 | A7 | Dm7 | Dm / Cm7 F7 | 
+
+(section (style swing)) 
+
 BbM7 Gm7 | Cm7 F7 | BbM7 Gm7 | Cm7 F7 | 
 BbM7 Gm7 | Cm7 F7 | BbM7 | Em7b5 A7 | 
+
+(section (style swing)) 
+
 Dm7 | / | Bb7#11 | / | 
 Em7b5 | A7 | Dm7 | Em7b5 A7 | 
 

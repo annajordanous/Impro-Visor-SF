@@ -1,4 +1,4 @@
-(title )
+(title Blues #1)
 (composer )
 (show )
 (year )
@@ -37,7 +37,13 @@
 (section (style swing)) 
 
 CM7 | F7 | CM7 | Gm7 C7 | 
+
+(section (style swing)) 
+
 F7 | F#o | CM7 | A7 | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 
 (part

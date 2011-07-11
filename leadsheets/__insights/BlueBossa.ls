@@ -37,8 +37,17 @@
 (section (style latin)) 
 
 Cm69 | / | Fm9 | / | 
+
+(section (style latin)) 
+
 Dm7b5 | G7#5#9 | Cm69 | / | 
+
+(section (style latin)) 
+
 Ebm9 | Ab13 | DbM9 | / | 
+
+(section (style latin)) 
+
 Dm7b5 | G7#5#9 | Cm69 | Dm7b5 G7#5#9 | 
 
 (part

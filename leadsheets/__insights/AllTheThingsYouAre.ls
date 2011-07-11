@@ -38,12 +38,24 @@
 
 Fm7 | Bbm7 | Eb7 | AbM7 | 
 DbM7 | Dm7 G7 | CM7 | / | 
+
+(section (style swing)) 
+
 Cm7 | Fm7 | Bb7 | EbM7 | 
 AbM7 | Am7b5 D7 | GM7 | / | 
+
+(section (style swing)) 
+
 Am7 | D7 | GM7 | / | 
 F#m7 | B7 | EM7 | C7+ | 
+
+(section (style swing)) 
+
 Fm7 | Bbm7 | Eb7 | AbM7 | 
 DbM7 | Gb7 | Cm7 | F7 | 
+
+(section (style swing)) 
+
 Bbm7 | Eb7 | AbM7 | Gm7b5 C7 | 
 
 (part

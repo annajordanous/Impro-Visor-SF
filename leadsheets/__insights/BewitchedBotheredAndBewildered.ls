@@ -38,10 +38,19 @@
 
 CM7 Am7 | Dm7 G7 | CM7 E7+ | FM7 Bb7 | 
 C/E Ebo7 | Dm7 A7 | Dm7 | G7 | 
+
+(section (style ballad)) 
+
 CM7 Am7 | Dm7 G7 | CM7 E7+ | FM7 Bb7 | 
 C/E Ebo7 | Dm7 A7 | Dm7 G7 | Em7 A7 | 
+
+(section (style ballad)) 
+
 Dm7 | / | Am7 | / | 
 Dm7 | G7 | Em7 Ebo7 | Dm7 G7 | 
+
+(section (style ballad)) 
+
 CM7 Am7 | Dm7 G7 | CM7 E7+ | FM7 Bb7 | 
 C/E Ebo7 | Dm7 G7 | CM7 A7 | Dm7 G7 | 
 

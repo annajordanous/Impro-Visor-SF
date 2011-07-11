@@ -37,8 +37,17 @@
 (section (style swing)) 
 
 CM7 Eb7 | AbM7 Db7 | CM7 Eb7 | D7 Db7 | 
+
+(section (style swing)) 
+
 CM7 Eb7 | AbM7 Db7 | CM7 Ab7 | DbM7 Gb7 | 
+
+(section (style swing)) 
+
 FM7 Ab7 | DbM7 Gb7 | FM7 Eb7 | AbM7 Db7 | 
+
+(section (style swing)) 
+
 CM7 Eb7 | AbM7 Db7 | CM7 Eb7 | AbM7 Db7 | 
 
 (part
