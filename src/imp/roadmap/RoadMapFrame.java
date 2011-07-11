@@ -14,6 +14,7 @@ package imp.roadmap;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.swing.tree.*;
 import java.util.Iterator;
 import imp.brickdictionary.*;
@@ -72,6 +73,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private int RMbufferHeight = 1920;
    
     private DefaultTreeModel libraryTreeModel;
+    
+    private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
 
 
     /** Creates new form AltRoadMapFrame */
@@ -342,7 +345,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(analyzeButton);
 
-        sendToNotateButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        sendToNotateButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         sendToNotateButton.setText("To Leadsheet"); // NOI18N
         sendToNotateButton.setToolTipText("Send the selection to the leadsheet window."); // NOI18N
         sendToNotateButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -365,11 +368,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         playButton.setToolTipText("Play the selection.\n"); // NOI18N
         playButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playButton.setFocusable(false);
+        playButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         playButton.setMaximumSize(new java.awt.Dimension(40, 30));
         playButton.setMinimumSize(new java.awt.Dimension(30, 30));
         playButton.setName("playButton"); // NOI18N
         playButton.setPreferredSize(new java.awt.Dimension(40, 30));
-        playButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         playButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playButtonPressed(evt);
@@ -377,17 +380,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(playButton);
 
-        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
         stopButton.setText("\n"); // NOI18N
         stopButton.setToolTipText("Stop playing the selection.\n"); // NOI18N
         stopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stopButton.setFocusable(false);
+        stopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         stopButton.setMaximumSize(new java.awt.Dimension(40, 30));
         stopButton.setMinimumSize(new java.awt.Dimension(40, 30));
         stopButton.setName("stopButton"); // NOI18N
         stopButton.setPreferredSize(new java.awt.Dimension(35, 30));
-        stopButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopButtonPressed(evt);
@@ -716,6 +719,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             case 86: if(evt.isMetaDown()) pasteSelection();             break;
             case 88: if(evt.isMetaDown()) cutSelection();               break;
             case 65: if(evt.isMetaDown()) selectAllBricks();            break;
+            case 90: if(evt.isMetaDown()) undo();
             case 10: toggleSectionBreak();                              break;
             default:                                                    break;
         }
@@ -824,7 +828,129 @@ public class RoadMapFrame extends javax.swing.JFrame {
         setBackground(buffer);
         setBackground(bufferRoadMap);
     }
+    
+    private void saveState(String name)
+    {
+        RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
+        roadMapHistory.add(ss);
+        System.out.println("Saving State: " + ss);
+    }
+    
+    private void revertState()
+    {
+        RoadMapSnapShot ss = roadMapHistory.removeLast();
+        roadMapPanel.setRoadMap(ss.getRoadMap());
+    }
+    
+    private void undo()
+    {
+        revertState();
+        roadMapPanel.placeBricks();
+    }
        
+    /* -------- Actions -------- */
+    
+    /** addChord <p>
+    * Adds the chord inputted in the chord field to the roadmap.
+    */
+    public void addChord(Chord chord)
+    {
+        saveState("AddChord");
+        roadMapPanel.addBlock(chord);
+        roadMapPanel.placeBricks();
+    }
+    
+    
+    public void addChordFromPreview()
+    {
+        saveState("AddChord");
+        roadMapPanel.addBlock(new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
+        roadMapPanel.placeBricks();
+    }
+    
+    public void deleteSelection()
+    {
+        saveState("Delete");
+        roadMapPanel.deleteSelection();
+        deactivateButtons();
+    }
+    
+    public void breakSelection()
+    {
+        saveState("Break");
+        roadMapPanel.breakSelection();
+    }
+    
+    public void makeBrickFromSelection()
+    {
+        saveState("Merge");
+        long key = BrickLibrary.keyNameToNum((String) dialogKeySpinner.getValue());
+        String name = dialogNameField.getText();
+        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key);
+        addToLibrary(newBrick);
+    }
+
+    public void transposeSelection(long diff)
+    {
+        saveState("Transpose");
+        roadMapPanel.transposeSelection(diff);
+    }
+    
+    public void analyzeSelection()
+    {
+        saveState("Analyze");
+        roadMapPanel.analyzeSelection();
+    }
+    
+    public void flattenSelection()
+    {
+        saveState("Flatten");
+        roadMapPanel.flattenSelection();
+    }
+    
+    public void scaleSelection()
+    {
+        saveState("Scale");
+        String choice = (String)scaleComboBox.getSelectedItem();
+        
+        if( choice == null )
+            return;
+        
+        long scale = choice.charAt(1) - 48; // set to integer
+        
+        if( choice.charAt(0) == 47) //  / = division
+            scale = -scale;
+        
+        roadMapPanel.scaleSelection(scale);       
+    }
+
+    public void cutSelection()
+    {
+        saveState("Cut");
+        System.out.println("Cut!");
+        if(selectionStart != -1 && selectionEnd != -1)
+            clipboard = roadMapPanel.removeSelection();
+        roadMapPanel.placeBricks();
+    }
+    
+    public void pasteSelection()
+    {
+        saveState("Paste");
+        System.out.println("Paste!");
+        
+        roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
+        
+        roadMapPanel.placeBricks();
+    }
+    
+    public void copySelection()
+    {
+        System.out.println("Copy!");
+        if(selectionStart != -1 && selectionEnd != -1)
+            clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
+            
+    }
+    
     /** dragSelectedBricks <p>
      * Implements dragging behavior.
      * 
@@ -836,13 +962,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         int index = roadMapPanel.getBrickIndexAt(x, y);
         System.out.println("Drag detected");
         if( draggedBricks.isEmpty() ) {
+            saveState("Drag");
             System.out.println("Grabbing bricks");
             if( index != -1 ) {
-                draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelection());
+                draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
             }
         }
         
         if( !draggedBricks.isEmpty() ) {
+            roadMapPanel.setInsertLine(x, y);
             roadMapPanel.draw();
             roadMapPanel.drawBricksAt(draggedBricks, x, y);
         }
@@ -862,6 +990,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             int index = roadMapPanel.getSlotAt(x, y);
             roadMapPanel.dropBricks(index, draggedBricks);
             draggedBricks.clear();
+            roadMapPanel.setInsertLine(0);
         }
         roadMapPanel.placeBricks();
     }
@@ -893,6 +1022,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void dropFromPreview(int x, int y)
     {
+        saveState("Drop");
         dropCurrentBrick(x + libraryTabbedPane.getX(), y + previewScrollPane.getY());
         activateButtons();
     }
@@ -937,24 +1067,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         previewPanel.setDuration((Integer)durationChoices[durationComboBox.getSelectedIndex()]);
         previewPanel.draw();
     }
-    
-    /** addChord <p>
-     * Adds the chord inputted in the chord field to the roadmap.
-     */
-    public void addChord(Chord chord)
-    {
-        roadMapPanel.addBlock(chord);
-        roadMapPanel.placeBricks();
-    }
-    
-    
-    public void addChordFromPreview()
-    {
-        roadMapPanel.addBlock(new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
-        roadMapPanel.placeBricks();
-    }
-  
-        
+           
     /** selectBricks <p>
      * Adds the brick at index to the selection, either extending the selection
      * or reducing it depending on whether the brick is selected.
@@ -992,36 +1105,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapPanel.deselectBricks();
         deactivateButtons();
     }
-    
-    public void deleteSelection()
-    {
-        roadMapPanel.deleteSelection();
-        deactivateButtons();
-    }
-    
-    public void breakSelection()
-    {
-        roadMapPanel.breakSelection();
-    }
-    
-    public void makeBrickFromSelection()
-    {
-        long key = BrickLibrary.keyNameToNum((String) dialogKeySpinner.getValue());
-        String name = dialogNameField.getText();
-        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key);
-        addToLibrary(newBrick);
-    }
-
-    public void transposeSelection(long diff)
-    {
-        roadMapPanel.transposeSelection(diff);
-    }
-    
-    public void analyzeSelection()
-    {
-        roadMapPanel.analyzeSelection();
-    }
-    
+       
     public ArrayList<Block> analyze(ArrayList<Block> blocks)
     {
         cykParser = new CYKParser();
@@ -1033,10 +1117,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         return RoadMap.getChords(roadMapPanel.getSelection());
     }
     
-    public void flattenSelection()
-    {
-        roadMapPanel.flattenSelection();
-    }
     
     public BrickLibrary getLibrary()
     {
@@ -1060,48 +1140,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         newBrickButton.setEnabled(true);
         scaleComboBox.setEnabled(true);
     }
-    
-    public void scaleSelection()
-    {
-        String choice = (String)scaleComboBox.getSelectedItem();
-        
-        if( choice == null )
-            return;
-        
-        long scale = choice.charAt(1) - 48; // set to integer
-        
-        if( choice.charAt(0) == 47) //  / = division
-            scale = -scale;
-        
-        roadMapPanel.scaleSelection(scale);
-                
-    }
-    
-    public void copySelection()
-    {
-        System.out.println("Copy!");
-        if(selectionStart != -1 && selectionEnd != -1)
-            clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
-            
-    }
-    
-    public void cutSelection()
-    {
-        System.out.println("Cut!");
-        if(selectionStart != -1 && selectionEnd != -1)
-            clipboard = roadMapPanel.removeSelection();
-        roadMapPanel.placeBricks();
-    }
-    
-    public void pasteSelection()
-    {
-        System.out.println("Paste!");
-        
-        roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
-        
-        roadMapPanel.placeBricks();
-    }
-   
+           
     private void toggleSectionBreak()
     {
         

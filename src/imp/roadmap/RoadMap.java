@@ -43,6 +43,16 @@ public class RoadMap {
     }
     
     /**
+     * Copy constructor
+     * @param roadMap 
+     */
+    public RoadMap(RoadMap roadMap)
+    {
+        blocks = cloneBlocks(roadMap.getBricks());
+        System.out.println(blocks);
+    }
+    
+    /**
      * Returns the number of blocks in the roadmap
      * @return the number of blocks in the roadmap
      */
@@ -238,5 +248,14 @@ public class RoadMap {
     {
         joins = PostProcessing.findJoins(blocks);
         keyMap = PostProcessing.findKeys(blocks);
+    }
+    
+    @Override
+    public String toString()
+    {
+        String output = "Roadmap ";
+        for(Block block : blocks)
+            output += block + " ";
+        return output;
     }
 }

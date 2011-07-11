@@ -51,6 +51,8 @@ public class RoadMapPanel extends JPanel{
     public int selectionStart = -1;
     public int selectionEnd = -1;
     
+    public int insertLineIndex = -1;
+    
     private Image buffer;
     
     private RoadMap roadMap = new RoadMap();
@@ -67,6 +69,13 @@ public class RoadMapPanel extends JPanel{
     public RoadMap getRoadMap()
     {
         return roadMap;
+    }
+    
+    public void setRoadMap(RoadMap roadMap)
+    {
+        this.roadMap = roadMap;
+        graphicMap = makeBricks(roadMap.getBricks());
+        roadMap.process();
     }
     
     public int getNumBlocks()
@@ -149,6 +158,17 @@ public class RoadMapPanel extends JPanel{
     {
         if(selectionStart != -1 && selectionEnd != -1)
             return removeBlocks(selectionStart, selectionEnd+1);
+        return new ArrayList();
+    }
+    
+    public ArrayList<Block> removeSelectionNoUpdate()
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            ArrayList<Block> blocks = new ArrayList(roadMap.getBricks().subList(selectionStart, selectionEnd+1));
+            roadMap.getBricks().subList(selectionStart, selectionEnd+1).clear();
+            graphicMap.subList(selectionStart, selectionEnd+1).clear();
+            return blocks;
+        }
         return new ArrayList();
     }
     
@@ -237,9 +257,14 @@ public class RoadMapPanel extends JPanel{
     
     public void transposeSelection(long diff)
     {
-        if(selectionStart != -1 && selectionEnd != -1)
+        if(selectionStart != -1 && selectionEnd != -1) {
             for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
                 block.transpose(diff);
+            roadMap.process();
+            drawBricks();
+            repaint();
+        }
+        
     }
     
     public void scaleSelection(long scale)
@@ -332,6 +357,43 @@ public class RoadMapPanel extends JPanel{
         selectBricks(index + bricks.size() - 1);
     }
     
+    public int getBrickIndexAt(int x, int y)
+    {
+        int index = 0;
+        for ( GraphicBrick brick : graphicMap) {
+            if( brick.contains(x, y) )
+                return index;
+            index++;
+        }
+        return -1;
+    }
+    
+    public int getSlotAt(int x, int y)
+    {
+        int index = 0;
+        for ( GraphicBrick brick : graphicMap ) {
+            if( brick.contains(x, y) )
+                return index;
+            
+            if( y < brick.y() )
+                return index;
+            
+            index++;
+        }
+        
+        return index;
+    }
+    
+    public void setInsertLine(int x, int y)
+    {
+        insertLineIndex = getSlotAt(x,y);
+    }
+    
+    public void setInsertLine(int index)
+    {
+        insertLineIndex = index;
+    }
+    
     /* Drawing and junk */
     
     public void setBuffer(Image buffer)
@@ -390,8 +452,16 @@ public class RoadMapPanel extends JPanel{
             GraphicBrick brick = graphicMap.get(ind);           
             brick.draw(g);
             
+            int x = brick.x();
+            int y = brick.y();
+            
             if(ind > 0 && !joinList.get(ind-1).isEmpty()) {
-                drawJoin(joinList.get(ind-1), brick.x(), brick.y()+LINE_HEIGHT);
+                drawJoin(joinList.get(ind-1), x, y+LINE_HEIGHT);
+            }
+            
+            if( ind == insertLineIndex ) {
+                g.setColor(Color.RED);
+                g.drawLine(x, y-5, x, y+LINE_HEIGHT+5);
             }
         }
         
@@ -497,34 +567,7 @@ public class RoadMapPanel extends JPanel{
         }
             
     }
-    
-    public int getBrickIndexAt(int x, int y)
-    {
-        int index = 0;
-        for ( GraphicBrick brick : graphicMap) {
-            if( brick.contains(x, y) )
-                return index;
-            index++;
-        }
-        return -1;
-    }
-    
-    public int getSlotAt(int x, int y)
-    {
-        int index = 0;
-        for ( GraphicBrick brick : graphicMap ) {
-            if( brick.contains(x, y) )
-                return index;
-            
-            if( y < brick.y() )
-                return index;
-            
-            index++;
-        }
         
-        return index;
-    }
-    
     /**
     * Override the paint method to draw the buffer image on this panel's graphics.
     * This method is called implicitly whenever repaint() is called.

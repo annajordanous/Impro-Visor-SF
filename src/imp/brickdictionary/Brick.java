@@ -130,7 +130,7 @@ public class Brick extends Block {
      */
     @Override
     public void transpose(long diff) {
-        key = (key + diff)%12;
+        key = (key + diff + 12)%12;
         ListIterator iter = subBlocks.listIterator();
         while (iter.hasNext()){
             Block block = (Block)iter.next();

@@ -99,7 +99,7 @@ public class Chord extends Block{
     // Change chord's root (key) by diff
     @Override
     public void transpose(long diff) {
-        this.key = (this.key + diff)%12;
+        this.key = (this.key + diff + 12)%12;
         this.name = BrickLibrary.keyNumToName(key) + this.quality;
     }
     
