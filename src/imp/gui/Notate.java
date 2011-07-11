@@ -6807,7 +6807,7 @@ public class Notate
         });
         playToolBar.add(mixerBtn);
 
-        chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversed.png"))); // NOI18N
+        chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
         chordStepBackButton.setToolTipText("Play the entire leadsheet.");
         chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepBackButton.setFocusable(false);
@@ -6823,7 +6823,7 @@ public class Notate
         });
         playToolBar.add(chordStepBackButton);
 
-        chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
+        chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
         chordStepForwardButton.setToolTipText("Play the entire leadsheet.");
         chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepForwardButton.setFocusable(false);
@@ -8748,7 +8748,7 @@ public class Notate
         chordToPlay.setRhythmValue(480);
         try
         {
-            midiSynth2.play(tempScore, 0, 0, 0, false, 960, 0);
+            midiSynth2.play(tempScore, 0, 0, 0, false, 480, 0);
         } catch(Exception e){
             //not exactly sure what to put here
         }
