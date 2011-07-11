@@ -129,6 +129,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         analyzeButton = new javax.swing.JButton();
         sendToNotateButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
+        stopButton = new javax.swing.JButton();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         libraryTabbedPane = new javax.swing.JTabbedPane();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -360,15 +361,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         toolBar.add(sendToNotateButton);
 
         playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
+        playButton.setText("\n"); // NOI18N
         playButton.setToolTipText("Play the selection.\n"); // NOI18N
         playButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playButton.setFocusable(false);
-        playButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        playButton.setLabel("Play\n"); // NOI18N
-        playButton.setMaximumSize(new java.awt.Dimension(70, 30));
-        playButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        playButton.setMaximumSize(new java.awt.Dimension(40, 30));
+        playButton.setMinimumSize(new java.awt.Dimension(30, 30));
         playButton.setName("playButton"); // NOI18N
-        playButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        playButton.setPreferredSize(new java.awt.Dimension(40, 30));
         playButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         playButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -376,6 +377,24 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(playButton);
+
+        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
+        stopButton.setText("\n"); // NOI18N
+        stopButton.setToolTipText("Stop playing the selection.\n"); // NOI18N
+        stopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        stopButton.setFocusable(false);
+        stopButton.setMaximumSize(new java.awt.Dimension(40, 30));
+        stopButton.setMinimumSize(new java.awt.Dimension(40, 30));
+        stopButton.setName("stopButton"); // NOI18N
+        stopButton.setPreferredSize(new java.awt.Dimension(35, 30));
+        stopButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        stopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopButtonPressed(evt);
+            }
+        });
+        toolBar.add(stopButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -762,6 +781,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void playButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonPressed
         playSelection();
     }//GEN-LAST:event_playButtonPressed
+
+    private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed
+        stopPlayingSelection();
+    }//GEN-LAST:event_stopButtonPressed
 
     /** InitBuffer <p>
      *  
@@ -1432,6 +1455,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JLabel scaleLabel;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JButton sendToNotateButton;
+    private javax.swing.JButton stopButton;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 
@@ -1488,6 +1512,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
          notate.playAscore(score);
     }
 
+    
+    public void stopPlayingSelection()
+    {
+        notate.stopPlayAscore();
+    }
     
 /**
  * returns true if some bricks are selected

@@ -16687,6 +16687,8 @@ public void playScoreBody(int startAt)
       }
     }
 
+MidiSynth midiSynth3;
+
 /**
  * Play a score, not necessarily the one in this Notate window.
  */
@@ -16696,7 +16698,7 @@ public void playAscore(Score score)
 playAscore(score, 0);
 }
     
-    /**
+/**
  * Play a score, not necessarily the one in this Notate window.
  */
 
@@ -16709,15 +16711,21 @@ public void playAscore(Score score, int loopCount)
   boolean useDrums = true;
   int endLimitIndex = -1; // score.getLength()-1;
   //System.out.println("playing score of length " + score.getLength());
+  midiSynth3 = new MidiSynth(midiManager);
   cm.execute(new PlayScoreCommand(score, 
                                  startTime, 
                                  swing, 
-                                 new MidiSynth(midiManager), 
+                                 midiSynth3, 
                                  this, 
                                  loopCount, 
                                  transposition, 
                                  useDrums,
                                  endLimitIndex));     
+}
+
+public void stopPlayAscore()
+{
+    midiSynth3.stop("stopPlayAscore called");
 }
 
   /**
