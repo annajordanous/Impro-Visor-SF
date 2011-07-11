@@ -423,90 +423,165 @@ public class ChordPart extends Part implements Serializable{
     	return chords;
     }
     
-    /**
-     * Get the ChordSymbols of this ChordPart as an ArrayList<ChordSymbol>
-    @return 
-    */
+/**
+ * Get the ChordSymbols of this ChordPart as an ArrayList<ChordSymbol>
+ * @return 
+ */
     
-    public ArrayList<ChordSymbol> getChordSymbols()
-     {
-      ArrayList<ChordSymbol> result = new ArrayList<ChordSymbol>();
-        
-        PartIterator i = iterator();
-        while(i.hasNext()) 
-           {
-            Chord chord = (Chord)i.next();
-           result.add(chord.getChordSymbol());
-          }
-     System.out.println(result);
-     return result;
-     }
-    
-    /**
-     * Get the durations of chords of this ChordPart as an ArrayList<ChordSymbol>
-    @return 
-    */
-    
-    public ArrayList<Integer> getChordDurations()
-     {
-      ArrayList<Integer> result = new ArrayList<Integer>();
-        
-        PartIterator i = iterator();
-        while(i.hasNext()) 
-           {
-            Chord chord = (Chord)i.next();
-           result.add(chord.getRhythmValue());
-          }
-     return result;
-     }
-    
-  /**
-   * Populate a RoadMapFrame with this ChordPart
-   * @param roadmap 
-   */
-    
-  public void toRoadMapFrame(RoadMapFrame roadmap)
-    {
-        ArrayList<ChordSymbol> chordSymbols = getChordSymbols();
-        ArrayList<Integer> durations = getChordDurations();
-        
-        PartIterator i = iterator();
-        while(i.hasNext()) 
-           {
-            Chord chord = (Chord)i.next();
-            imp.brickdictionary.Chord dictChord = 
-                    new imp.brickdictionary.Chord(chord.getChordSymbol().toString(), 
-                                                  chord.getRhythmValue());
-            roadmap.addChord(dictChord);
-          }
-      
-    }
+public ArrayList<ChordSymbol> getChordSymbols()
+  {
+    ArrayList<ChordSymbol> result = new ArrayList<ChordSymbol>();
 
-  /**
-   * Add chords in the current selection in RoadMapFrame to this ChordPart.
-   */
-    
-  public void addFromRoadMapFrame(RoadMapFrame roadmap)
-    {
-        ArrayList<imp.brickdictionary.Chord> chords = roadmap.getChordsInSelection();
-        
-        Iterator<imp.brickdictionary.Chord> i = chords.iterator();
-        
-        while( i.hasNext() )
-        {
-            imp.brickdictionary.Chord chord = i.next();
-            String name = chord.getName();
-            int duration = chord.getDuration().intValue();
-            if( duration > 0 )
-            {
+    PartIterator i = iterator();
+    while( i.hasNext() )
+      {
+        Chord chord = (Chord) i.next();
+        result.add(chord.getChordSymbol());
+      }
+    return result;
+  }
+
+
+/**
+ * Get the durations of chords of this ChordPart as an ArrayList<ChordSymbol>
+ * @return 
+ */
+
+public ArrayList<Integer> getChordDurations()
+  {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+
+    PartIterator i = iterator();
+    while( i.hasNext() )
+      {
+        Chord chord = (Chord) i.next();
+        result.add(chord.getRhythmValue());
+      }
+    return result;
+  }
+
+
+/**
+ * Get the section starts corresponding to chord symbols,
+ * as an ArrayList of Boolean.
+ * @return 
+ */
+
+public ArrayList<Boolean> getSectionStarts()
+  {
+    ArrayList<Boolean> result = new ArrayList<Boolean>();
+
+    java.util.Enumeration<Integer> startIndices =
+            sectionInfo.getSectionStartIndices().elements();
+
+    int nextStartIndex = startIndices.nextElement();
+
+    int numSlots = slots.size();
+
+    for( int slot = 0; slot < numSlots; slot++ )
+      {
+        if( slots.get(slot) != null )
+          {
+            if( slot == nextStartIndex )
+              {
+                result.add(true);
+                if( startIndices.hasMoreElements() )
+                  {
+                    nextStartIndex = startIndices.nextElement();
+                  }
+              }
+            else
+              {
+                result.add(false);
+                while( slot > nextStartIndex && startIndices.hasMoreElements() )
+                  {
+                    nextStartIndex = startIndices.nextElement();
+                  }
+              }
+          }
+      }
+    return result;
+  }
+
+
+/**
+ * Get the section starts corresponding to chord symbols,
+ * as an ArrayList of Boolean.
+ * This is based on the observation that each section end immediately
+ * precedes a section start, except for the very last end.
+ * @return 
+ */
+
+public ArrayList<Boolean> getSectionEnds()
+  {
+    ArrayList<Boolean> result = new ArrayList<Boolean>();
+
+    Iterator<Boolean> sectionStarts = getSectionStarts().iterator();
+    if( sectionStarts.hasNext() )
+      {
+        // Ignore first start.
+        sectionStarts.next();
+      }
+    while( sectionStarts.hasNext() )
+      {
+        result.add(sectionStarts.next());
+      }
+    result.add(true);
+    return result;
+  }
+
+
+/**
+ * Populate a RoadMapFrame with this ChordPart
+ * @param roadmap 
+ */
+
+public void toRoadMapFrame(RoadMapFrame roadmap)
+  {
+    ArrayList<ChordSymbol> chordSymbols = getChordSymbols();
+    ArrayList<Integer> durations = getChordDurations();
+
+    PartIterator i = iterator();
+    Iterator<Boolean> sectionEnds = getSectionEnds().iterator();
+
+    while( i.hasNext() )
+      {
+        Chord chord = (Chord) i.next();
+
+        imp.brickdictionary.Chord dictChord =
+                new imp.brickdictionary.Chord(chord.getChordSymbol().toString(),
+                                              chord.getRhythmValue());
+
+        dictChord.setSectionEnd(sectionEnds.next());
+
+        roadmap.addChord(dictChord);
+      }
+
+  }
+
+
+/**
+ * Add chords in the current selection in RoadMapFrame to this ChordPart.
+ */
+
+public void addFromRoadMapFrame(RoadMapFrame roadmap)
+  {
+    ArrayList<imp.brickdictionary.Chord> chords = roadmap.getChordsInSelection();
+
+    Iterator<imp.brickdictionary.Chord> i = chords.iterator();
+
+    while( i.hasNext() )
+      {
+        imp.brickdictionary.Chord chord = i.next();
+        String name = chord.getName();
+        int duration = chord.getDuration().intValue();
+        if( duration > 0 )
+          {
             // Note: 0 duration causes addUnit to fail.
 
-                addChord(name, duration);
-            }
-            
-        }
-        
-     }
-
+            addChord(name, duration);
+          }
+      }
+  }
 
 }

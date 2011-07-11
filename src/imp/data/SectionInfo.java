@@ -331,4 +331,49 @@ public long sequence(Sequence seq, int ch, long time, Track track,
        }
     return time;
   }
+
+/**
+ * Determine whether a given index corresponds to the start of a Section.
+ * This is done by iterating through styleIndices, accumulating slot counts,
+ * until either the given index coincides with the start of a slot or
+ * the accumulated count exceeds the index.
+ * @param index
+ * @return 
+ */
+public boolean isSectionStart(int index)
+{
+    int accumulatedSlots = 0;
+    ListIterator<Integer> j = styleIndices.listIterator();
+    while( j.hasNext() && index >= accumulatedSlots )
+    {
+        if( index == accumulatedSlots )
+        {
+            return true;
+        }
+        accumulatedSlots += j.next();
+    }
+    return false;
+  
+}
+
+public Vector<Integer> getSectionStartIndices()
+{
+    return styleIndices;
+}
+
+public String toString()
+  {
+    ListIterator<Style> i = styles.listIterator();
+    ListIterator<Integer> j = styleIndices.listIterator();
+    StringBuilder buffer = new StringBuilder();
+    while( i.hasNext() )
+    {
+        buffer.append("(");
+        buffer.append(i.next().toString());
+        buffer.append(" ");
+        buffer.append(j.next().toString());
+        buffer.append(") ");
+    }
+    return buffer.toString();
+  }
 }
