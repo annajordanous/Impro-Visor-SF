@@ -19,6 +19,8 @@ import java.util.Iterator;
 import imp.brickdictionary.*;
 import java.io.IOException;
 import imp.cykparser.*;
+import imp.data.ChordPart;
+import imp.data.Score;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 
@@ -126,6 +128,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         selectAllBricksButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
         sendToNotateButton = new javax.swing.JButton();
+        playButton = new javax.swing.JButton();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         libraryTabbedPane = new javax.swing.JTabbedPane();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -321,7 +324,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(selectAllBricksButton);
 
-        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
         analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
@@ -355,6 +358,24 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(sendToNotateButton);
+
+        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        playButton.setToolTipText("Play the selection.\n"); // NOI18N
+        playButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        playButton.setFocusable(false);
+        playButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        playButton.setLabel("Play\n"); // NOI18N
+        playButton.setMaximumSize(new java.awt.Dimension(70, 30));
+        playButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        playButton.setName("playButton"); // NOI18N
+        playButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        playButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonPressed(evt);
+            }
+        });
+        toolBar.add(playButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -737,6 +758,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void sendToNotateButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToNotateButtonPressed
         sendSelectionToNotate();
     }//GEN-LAST:event_sendToNotateButtonPressed
+
+    private void playButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonPressed
+        playSelection();
+    }//GEN-LAST:event_playButtonPressed
 
     /** InitBuffer <p>
      *  
@@ -1399,6 +1424,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane libraryTabbedPane;
     private javax.swing.JTree libraryTree;
     private javax.swing.JButton newBrickButton;
+    private javax.swing.JButton playButton;
     private javax.swing.JScrollPane previewScrollPane;
     private javax.swing.JScrollPane roadMapScrollPane;
     private javax.swing.JMenuBar roadmapMenuBar;
@@ -1428,15 +1454,41 @@ public class RoadMapFrame extends javax.swing.JFrame {
         if (auxNotate == null) {
             imp.data.ChordPart chordPart = new imp.data.ChordPart();
             chordPart.addFromRoadMapFrame(this);
-            imp.data.Score score = new imp.data.Score(chordPart);
+            Score score = new Score(chordPart);
             auxNotate = notate.newNotateWithScore(score);
         } else {
             auxNotate.addToChordPartFromRoadMapFrame(this);
         }
         auxNotate.setVisible(true);
+        auxNotate.playScore();
 
     }
 
+/**
+  * Plays the currently-selected blocks. The style is determined from the
+  * Notate window where this roadmap was opened.
+  *
+  * If not blocks are selected, selects them all first.
+  *
+  * If the road map is empty, does nothing.
+  */
+    
+    public void playSelection() {
+        if (roadMapPanel.getNumBlocks() < 1) {
+            return;
+        }
+        if (!somethingSelected()) {
+            selectAllBricks();
+        }
+
+         ChordPart chordPart = new imp.data.ChordPart();
+         chordPart.addFromRoadMapFrame(this);
+         Score score = new imp.data.Score(chordPart);
+         
+         notate.playAscore(score);
+    }
+
+    
 /**
  * returns true if some bricks are selected
  * otherwise false.
@@ -1444,7 +1496,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     public boolean somethingSelected()
     {
-        return selectionStart < selectionEnd;
+        return selectionStart >= 0 && selectionStart <= selectionEnd;
     }
 
 

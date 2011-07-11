@@ -16687,6 +16687,38 @@ public void playScoreBody(int startAt)
       }
     }
 
+/**
+ * Play a score, not necessarily the one in this Notate window.
+ */
+
+public void playAscore(Score score)
+{
+playAscore(score, 0);
+}
+    
+    /**
+ * Play a score, not necessarily the one in this Notate window.
+ */
+
+public void playAscore(Score score, int loopCount)
+{
+  score.setStyle("no-style");
+  int startTime = 0;
+  boolean swing = true;
+  int transposition = 0;
+  boolean useDrums = true;
+  int endLimitIndex = -1; // score.getLength()-1;
+  //System.out.println("playing score of length " + score.getLength());
+  cm.execute(new PlayScoreCommand(score, 
+                                 startTime, 
+                                 swing, 
+                                 new MidiSynth(midiManager), 
+                                 this, 
+                                 loopCount, 
+                                 transposition, 
+                                 useDrums,
+                                 endLimitIndex));     
+}
 
   /**
    * Construct count-in pattern if one is specified

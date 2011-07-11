@@ -497,7 +497,12 @@ public class ChordPart extends Part implements Serializable{
             imp.brickdictionary.Chord chord = i.next();
             String name = chord.getName();
             int duration = chord.getDuration().intValue();
-            addChord(name, duration);
+            if( duration > 0 )
+            {
+            // Note: 0 duration causes addUnit to fail.
+
+                addChord(name, duration);
+            }
             
         }
         

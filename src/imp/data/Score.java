@@ -1000,7 +1000,7 @@ public class Score implements Constants, Serializable {
         }
         return enh;
     }
-
+    
     /**
      * Calls makeSwing on each individual Part.
      */
@@ -1017,6 +1017,17 @@ public class Score implements Constants, Serializable {
         }
     }
     
+
+    /**
+     * Set the style of this score
+     */
+    
+    public void setStyle(String styleName)
+    {
+        chordProg.setStyle(styleName);
+    }
+
+
   /**
    * Add chords in the current selection in RoadMapFrame to this Score.
    */

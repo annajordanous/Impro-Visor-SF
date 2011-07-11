@@ -542,6 +542,8 @@ public class Part implements Constants, Serializable {
 
     /**
      * Adds a Unit to the end of the Part, extending the length as it goes.
+     * Note that 0 duration units should not be added, as they will cause this
+     * to fail.
      * @param unit      the Unit to add
      */
     public void addUnit(Unit unit) {
@@ -551,8 +553,9 @@ public class Part implements Constants, Serializable {
         int index = size;
         int newSize = size + rv;
         size = newSize;
-        slots.setSize(size);
 
+        slots.setSize(size);
+        
         if(slots.get(index) == null)
             unitCount++;
         

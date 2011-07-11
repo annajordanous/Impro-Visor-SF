@@ -322,7 +322,7 @@ public int getTotalSlots()
 
 public boolean finishedPlaying()
   {
-    return sequencer.getTickPosition() >= sequencer.getTickLength();
+    return sequencer == null || sequencer.getTickPosition() >= sequencer.getTickLength();
   }
 
 public void play(Score score, long startTime, int loopCount, int transposition)
