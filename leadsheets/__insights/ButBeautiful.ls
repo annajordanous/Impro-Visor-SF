@@ -1,11 +1,11 @@
-(title Bernie's Tune)
-(composer Bernie Miller)
+(title But Beautiful)
+(composer Jimmy Van Heusen)
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key -1)
-(tempo 160.0)
+(key 0)
+(tempo 100.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,7 +15,7 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style swing
+(style ballad
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
@@ -31,28 +31,28 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -1)
+    (key 0)
 )
 
-(section (style swing)) 
+(section (style ballad)) 
 
-Dm | / | Bb7#11 | / | 
-Em7b5 | A7 | Dm | Em7b5 A7 | 
+GM7 | Bm7b5 E7 | Am7 | C#m7b5 F#7 | 
+GM7 | Bm7b5 E7 | A7 | / | 
 
-(section (style swing)) 
+(section (style ballad)) 
 
-Dm | / | Bb7#11 | / | 
-Em7b5 | A7 | Dm | / / Cm7 F7 | 
+Am7 D7 | Bm7 Em7 | Am7 D7 | GM7 B7 | 
+Em7 | A7 | Am7 | D7 | 
 
-(section (style swing)) 
+(section (style ballad)) 
 
-BbM7 Gm7 | Cm7 F7 | BbM7 Gm7 | Cm7 F7 | 
-BbM7 Gm7 | Cm7 F7 | BbM7 | Em7b5 A7 | 
+GM7 | Bm7b5 E7 | Am7 | C#m7b5 F#7 | 
+GM7 | Bm7b5 E7 | A7 | / | 
 
-(section (style swing)) 
+(section (style ballad)) 
 
-Dm | / | Bb7#11 | / | 
-Em7b5 | A7 | Dm | Em7b5 A7 | 
+Am7 D7 | Bm7 Em7 | Am7 / F#m7b5 B7 | Em7 F7 | 
+Bm7 Em7 | Am7 D7 | GM7 | Am7 D7 | 
 
 (part
     (type melody)
@@ -60,11 +60,7 @@ Em7b5 | A7 | Dm | Em7b5 A7 |
     (composer )
     (instrument 73)
     (volume 85)
-    (key -1)
+    (key 0)
     (stave treble)
 )
- r8 a8 r1+1+1+1+1+2+4
-
- r1+1
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ a2+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4

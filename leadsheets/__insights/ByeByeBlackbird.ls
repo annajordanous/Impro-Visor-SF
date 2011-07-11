@@ -1,18 +1,18 @@
-(title Bernie's Tune)
-(composer Bernie Miller)
+(title Bye Bye Blackbird)
+(composer Ray Henderson)
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key -1)
+(key 0)
 (tempo 160.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style swing
@@ -31,40 +31,38 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -1)
+    (key 0)
 )
 
 (section (style swing)) 
 
-Dm | / | Bb7#11 | / | 
-Em7b5 | A7 | Dm | Em7b5 A7 | 
+NC | Gm7 C7 | F6 | / | 
+F/A | Abo | Gm7 C7 | Am7 D7 | 
 
 (section (style swing)) 
 
-Dm | / | Bb7#11 | / | 
-Em7b5 | A7 | Dm | / / Cm7 F7 | 
+Gm | Gm+ | Gm6 | Gm7 | 
+Db7#11 | Gm7 C7 | FM7 | / | 
 
 (section (style swing)) 
 
-BbM7 Gm7 | Cm7 F7 | BbM7 Gm7 | Cm7 F7 | 
-BbM7 Gm7 | Cm7 F7 | BbM7 | Em7b5 A7 | 
+Cm7 F7 | Bm7 E7 | Bbm7 Eb7 | Am7 D7 | 
+Gm7 | / | Abm7 Db7 | Gm7 C7 | 
 
 (section (style swing)) 
 
-Dm | / | Bb7#11 | / | 
-Em7b5 | A7 | Dm | Em7b5 A7 | 
+FM7 | / | Gm7 C7 | Am7b5 D7 | 
+Gm7 | C7 | FM7 | / | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 73)
+    (instrument 11)
     (volume 85)
-    (key -1)
+    (key 0)
     (stave treble)
 )
- r8 a8 r1+1+1+1+1+2+4
+ r4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
 
- r1+1
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1
