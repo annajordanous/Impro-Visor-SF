@@ -19,7 +19,7 @@ public class RoadMap {
     private ArrayList<Block> blocks;
     
     /** Key map in the form of key, duration pairs */
-    private ArrayList<long[]> keyMap = new ArrayList();
+    private ArrayList<KeySpan> keyMap = new ArrayList();
     
     /** List of joins between each brick */
     private ArrayList<String> joins = new ArrayList();
@@ -66,7 +66,7 @@ public class RoadMap {
      * @return 
      * Keymap
      */
-    public ArrayList<long[]> getKeyMap()
+    public ArrayList<KeySpan> getKeyMap()
     {
         return keyMap;
     }

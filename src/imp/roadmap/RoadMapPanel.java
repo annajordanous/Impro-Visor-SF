@@ -4,13 +4,8 @@
  */
 package imp.roadmap;
 
-import java.awt.Color;
 import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.BasicStroke;
-import java.awt.FontMetrics;
-import java.awt.Image;
+import java.awt.*;
 import java.util.ArrayList;
 import imp.brickdictionary.*;
 import java.util.Random;
@@ -65,19 +60,30 @@ public class RoadMapPanel extends JPanel{
     {
         int currentX = 0;// X_OFFSET;
         int currentY = settings.yOffset;
-        //int currentBars = 0;
+        int currentBeats = 0;
         numLines = 1;
                
         for( GraphicBrick brick : graphicMap ) {
-            brick.setPos(currentX+settings.xOffset, currentY);
             
-            currentX += settings.getBlockLength(brick.getBrick());
+            currentX = settings.getLength(currentBeats);
+            currentY = settings.yOffset;
+            numLines = 0;
             
             while( currentX >= settings.getLineLength() ) {
                 currentX = currentX - (settings.getLineLength());
                 currentY += settings.lineHeight + settings.lineSpacing;
                 numLines++;
             }
+            brick.setPos(currentX+settings.xOffset, currentY);
+            currentBeats += brick.getBrick().getDuration();
+            
+            //currentX += settings.getBlockLength(brick.getBrick());
+            
+            //while( currentX >= settings.getLineLength() ) {
+            //    currentX = currentX - (settings.getLineLength());
+            //    currentY += settings.lineHeight + settings.lineSpacing;
+            //    numLines++;
+            //}
         }
         updateBricks();
     }
@@ -490,6 +496,34 @@ public class RoadMapPanel extends JPanel{
     
     public void drawKeyMap()
     {
+        /*
+        Graphics g = buffer.getGraphics();
+        
+        int blockHeight = settings.getBlockHeight();
+        
+        long currentBeats = 0;
+        
+        for( KeySpan keySpan : roadMap.getKeyMap() ) {
+            long key = keySpan.getKey();
+            String keyName = BrickLibrary.keyNumToName(key) + keySpan.getMode();
+            long dur = keySpan.getDuration();
+            
+            Point startPos = settings.getPosFromBeats(currentBeats);
+            int x = (int)startPos.x;
+            int y = (int)startPos.y;
+            
+            g.drawLine(x, y, x, y+blockHeight);
+            
+            g.setColor(settings.textColor);
+            g.drawString(keyName, x, y);
+            
+            long num = currentBeats % settings.getCutoffBeat() + dur;
+            
+            
+            currentBeats += dur;
+        }*/
+        
+        
         Graphics g = buffer.getGraphics();
         
         int x = settings.xOffset;
@@ -498,10 +532,10 @@ public class RoadMapPanel extends JPanel{
         int cutoffLine = settings.getCutoff();
         int blockHeight = settings.getBlockHeight();
         
-        for( long[] keyPair : roadMap.getKeyMap() ) {
-            long key = keyPair[0];
-            String keyName = BrickLibrary.keyNumToName(key);
-            long dur = keyPair[1];
+        for( KeySpan keySpan : roadMap.getKeyMap() ) {
+            long key = keySpan.getKey();
+            String keyName = BrickLibrary.keyNumToName(key) + keySpan.getMode();
+            long dur = keySpan.getDuration();
           
             
             if( cutoffLine - x < 5 ) {

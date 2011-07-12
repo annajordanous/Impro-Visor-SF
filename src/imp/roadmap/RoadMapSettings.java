@@ -6,6 +6,7 @@ package imp.roadmap;
 
 import imp.brickdictionary.*;
 import java.awt.*;
+import java.awt.Point;
 
 /**
  *
@@ -41,7 +42,8 @@ public class RoadMapSettings {
                                         new Color(100, 170, 255)};// B
     
     public BasicStroke brickOutline = new BasicStroke(2);
-    public BasicStroke line         = new BasicStroke(1);
+    public BasicStroke basicLine    = new BasicStroke(1);
+    public BasicStroke cursorLine   = new BasicStroke(2);
     
     public int getBlockLength(Block block)
     {
@@ -58,6 +60,11 @@ public class RoadMapSettings {
         return xOffset + getLineLength();
     }
     
+    public long getCutoffBeat()
+    {
+        return beatsPerMeasure*barsPerLine;
+    }
+    
     public int getLineLength()
     {
         return barsPerLine * measureLength;
@@ -71,5 +78,20 @@ public class RoadMapSettings {
     public Color getKeyColor(long key)
     {
         return keyColors[(int)key];
+    }
+    
+    public int getLines(long beats)
+    {
+        return (int) (beats/getCutoffBeat());
+    }
+    
+    public Point getPosFromBeats(long beats)
+    {
+        int line = (int)getCutoffBeat();
+        int numLines = (int)beats/line;
+        int y = yOffset + numLines * (lineHeight + lineSpacing);
+        int x = xOffset + getLength(beats % line);
+        
+        return new Point(x,y);
     }
 }

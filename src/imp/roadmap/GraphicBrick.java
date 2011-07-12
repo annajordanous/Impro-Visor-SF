@@ -207,7 +207,7 @@ public class GraphicBrick {
             Chord chord = it.next();
             int length = settings.getBlockLength(chord);
             
-            g2d.setStroke(settings.line);
+            g2d.setStroke(settings.basicLine);
             g2d.drawString(chord.getName(), xOffset+5, yOffset+5*blockHeight/2+5);
             g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset, yOffset+settings.lineHeight);
             
@@ -228,7 +228,7 @@ public class GraphicBrick {
                 yOffset += settings.lineHeight + settings.lineSpacing;
             }
             
-            g2d.setStroke(settings.line);
+            g2d.setStroke(settings.basicLine);
             if(isBrick) {
                 g2d.drawLine(xOffset, yOffset+blockHeight, xOffset+length, yOffset+blockHeight);
             }
@@ -240,7 +240,7 @@ public class GraphicBrick {
             
             xOffset += length;
             
-            g2d.setStroke(settings.line);
+            g2d.setStroke(settings.basicLine);
             g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset, yOffset+3*blockHeight);
             
             if(xOffset >= cutoffLine && it.hasNext()) {
