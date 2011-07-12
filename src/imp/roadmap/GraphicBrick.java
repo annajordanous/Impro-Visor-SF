@@ -14,34 +14,23 @@ import imp.brickdictionary.*;
  * @author August Toman-Yih
  */
 public class GraphicBrick {
-    
-    //TODO make these all dependent on which roadmap
-    public static int BLOCK_HEIGHT = RoadMapPanel.LINE_HEIGHT/3;
-    public static int MEASURE_LENGTH = RoadMapPanel.MEASURE_LENGTH;
-    public static int LINE_LENGTH = RoadMapPanel.BARS_PER_LINE*MEASURE_LENGTH;
-    public static int CUTOFF_POINT = LINE_LENGTH + RoadMapPanel.X_OFFSET;
-    public static int X_OFFSET = RoadMapPanel.X_OFFSET;
-    public static int LINE_SPACING = RoadMapPanel.LINE_SPACING;
-    public static int BEATS_PER_MEASURE = 480;
-            
-    public static Color LINE_COLOR = Color.BLACK;
-    public static Color SELECTED_COLOR = new Color(181, 213, 255);
-    public static Color BG_COLOR = Color.WHITE;
-    public static Color TEXT_COLOR = Color.BLACK;
-    
+        
     private Block block;
     private int x = 0;
     private int y = 0;
     private boolean isSelected = false;
+    
+    private RoadMapSettings settings;
     
     /**
      * Constructor to create a GraphicBrick from a block
      * @param block 
      * block to be graphically represented
      */
-    public GraphicBrick(Block block)
+    public GraphicBrick(Block block, RoadMapSettings settings)
     {
         this.block = block;
+        this.settings = settings;
     }
     
     public Block getBrick()
@@ -104,7 +93,9 @@ public class GraphicBrick {
      */
     public boolean contains(int x, int y)
     {
-        if( x > CUTOFF_POINT || x < X_OFFSET )
+        int cutoffLine = settings.getCutoff();
+        
+        if( x > cutoffLine || x < settings.xOffset )
             return false;
         
         ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
@@ -113,19 +104,19 @@ public class GraphicBrick {
         int yOffset = this.y;
 
         for( Chord chord : chords ) {
-            int length = (int)(chord.getDuration() * MEASURE_LENGTH)/BEATS_PER_MEASURE;
+            int length = settings.getBlockLength(chord);
             
             if ( x > xOffset && x < xOffset + length && 
-                    y > yOffset && y < yOffset + 3*BLOCK_HEIGHT)
+                    y > yOffset && y < yOffset + settings.lineHeight)
                 return true;
             
-            while ( xOffset + length >= CUTOFF_POINT )
+            while ( xOffset + length >= cutoffLine )
             {
-                xOffset -= LINE_LENGTH;
-                yOffset += 3*BLOCK_HEIGHT + LINE_SPACING;
+                xOffset -= settings.getLineLength();
+                yOffset += settings.lineHeight + settings.lineSpacing;
                 
                 if ( x > xOffset && x < xOffset + length && 
-                    y > yOffset && y < yOffset + 3*BLOCK_HEIGHT)
+                    y > yOffset && y < yOffset + settings.lineHeight)
                     return true;
             }
             
@@ -138,7 +129,7 @@ public class GraphicBrick {
     
     public int getLength()
     {
-        return (int)(MEASURE_LENGTH * block.getDuration())/BEATS_PER_MEASURE;
+        return settings.getBlockLength(block);
     }
     
     /* Drawing and junk lies below */
@@ -161,26 +152,27 @@ public class GraphicBrick {
     {
         int xOffset = x;
         int yOffset = y;
-        int length = (int)(block.getDuration() * MEASURE_LENGTH)/BEATS_PER_MEASURE;
+        int cutoffLine = settings.getCutoff();
+        int length = getLength();
         
-        Color bgColor = BG_COLOR;
+        Color bgColor = settings.brickBGColor;
         
         if(isSelected)
-            bgColor = SELECTED_COLOR;
+            bgColor = settings.selectedColor;
 
-        while ( xOffset + length > CUTOFF_POINT ) {
+        while ( xOffset + length > cutoffLine ) {
             
             g.setColor(bgColor);
-            g.fillRect(xOffset, yOffset, CUTOFF_POINT-xOffset, 3*BLOCK_HEIGHT);
+            g.fillRect(xOffset, yOffset, cutoffLine-xOffset, settings.lineHeight);
             
-            length -= CUTOFF_POINT - xOffset;
+            length -= cutoffLine - xOffset;
             
-            xOffset = X_OFFSET;
-            yOffset += 3*BLOCK_HEIGHT + LINE_SPACING;
+            xOffset = settings.xOffset;
+            yOffset += settings.lineHeight + settings.lineSpacing;
         }
         
         g.setColor(bgColor);
-        g.fillRect(xOffset, yOffset, length, 3*BLOCK_HEIGHT);
+        g.fillRect(xOffset, yOffset, length, settings.lineHeight);
     }
     
     /**
@@ -191,65 +183,77 @@ public class GraphicBrick {
     {
         ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
         
+        Graphics2D g2d = (Graphics2D)g;
+        
         int xOffset = this.x;
         int yOffset = this.y;
         boolean isBrick = chords.size() > 1;
+        int cutoffLine = settings.getCutoff();
+        int blockHeight = settings.getBlockHeight();
         
-        Color textColor = TEXT_COLOR;
+        Color textColor = settings.textColor;
         
         if(isBrick) {
-            g.setColor(textColor);
-            g.drawString(block.getName(), x+5, y+3*BLOCK_HEIGHT/2+5);
+            g2d.setColor(textColor);
+            g2d.drawString(block.getName(), x+5, y+settings.lineHeight/2+5);
         }
+        g2d.setStroke(settings.brickOutline);
         
-        g.setColor(LINE_COLOR);
-        g.drawLine(xOffset, yOffset, xOffset, yOffset+3*BLOCK_HEIGHT);
+        g2d.setColor(settings.lineColor);
+        g2d.drawLine(xOffset, yOffset+blockHeight, xOffset, yOffset+settings.lineHeight);
         
         for( Iterator<Chord> it = chords.iterator(); it.hasNext(); )  
         {
             Chord chord = it.next();
-            int length = (int)(chord.getDuration() * MEASURE_LENGTH)/BEATS_PER_MEASURE;
+            int length = settings.getBlockLength(chord);
             
-            g.drawString(chord.getName(), xOffset+5, yOffset+5*BLOCK_HEIGHT/2+5);
-            g.drawLine(xOffset, yOffset+2*BLOCK_HEIGHT, xOffset, yOffset+3*BLOCK_HEIGHT);
+            g2d.setStroke(settings.line);
+            g2d.drawString(chord.getName(), xOffset+5, yOffset+5*blockHeight/2+5);
+            g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset, yOffset+settings.lineHeight);
             
-            while ( xOffset + length > CUTOFF_POINT ) {
+            while ( xOffset + length > cutoffLine ) {
                 System.out.println("Breaking line");
                 
                 if(isBrick) 
-                    g.drawLine(xOffset, yOffset+BLOCK_HEIGHT, CUTOFF_POINT, yOffset+BLOCK_HEIGHT);
+                    g.drawLine(xOffset, yOffset+blockHeight, cutoffLine, yOffset+blockHeight);
                 
-                g.drawLine(xOffset, yOffset+2*BLOCK_HEIGHT, CUTOFF_POINT, yOffset+2*BLOCK_HEIGHT);
-                g.drawLine(xOffset, yOffset+3*BLOCK_HEIGHT, CUTOFF_POINT, yOffset+3*BLOCK_HEIGHT);
+                g2d.drawLine(xOffset, yOffset+2*blockHeight, cutoffLine, yOffset+2*blockHeight);
                 
-                length -= CUTOFF_POINT - xOffset;
+                g2d.setStroke(settings.brickOutline);
+                g2d.drawLine(xOffset, yOffset+3*blockHeight, cutoffLine, yOffset+3*blockHeight);
                 
-                xOffset = X_OFFSET;
-                yOffset += 3*BLOCK_HEIGHT + LINE_SPACING;
+                length -= cutoffLine - xOffset;
+                
+                xOffset = settings.xOffset;
+                yOffset += settings.lineHeight + settings.lineSpacing;
             }
             
+            g2d.setStroke(settings.line);
             if(isBrick) {
-                //g.drawLine(xOffset, yOffset, xOffset+length, yOffset);
-                g.drawLine(xOffset, yOffset+BLOCK_HEIGHT, xOffset+length, yOffset+BLOCK_HEIGHT);
+                g2d.drawLine(xOffset, yOffset+blockHeight, xOffset+length, yOffset+blockHeight);
             }
 
-            g.drawLine(xOffset, yOffset+2*BLOCK_HEIGHT, xOffset+length, yOffset+2*BLOCK_HEIGHT);
-            g.drawLine(xOffset, yOffset+3*BLOCK_HEIGHT, xOffset+length, yOffset+3*BLOCK_HEIGHT);
+            g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset+length, yOffset+2*blockHeight);
+            
+            g2d.setStroke(settings.brickOutline);
+            g2d.drawLine(xOffset, yOffset+3*blockHeight, xOffset+length, yOffset+3*blockHeight);
             
             xOffset += length;
             
-            g.drawLine(xOffset, yOffset+2*BLOCK_HEIGHT, xOffset, yOffset+3*BLOCK_HEIGHT);
+            g2d.setStroke(settings.line);
+            g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset, yOffset+3*blockHeight);
             
-            if(xOffset >= CUTOFF_POINT && it.hasNext()) {
-                xOffset = X_OFFSET;
-                yOffset += 3*BLOCK_HEIGHT+LINE_SPACING;
+            if(xOffset >= cutoffLine && it.hasNext()) {
+                xOffset = settings.xOffset;
+                yOffset += settings.lineHeight+settings.lineSpacing;
             }
         }
         
-        g.drawLine(xOffset, yOffset, xOffset, yOffset+3*BLOCK_HEIGHT);
-        g.drawLine(xOffset-2, yOffset, xOffset-2, yOffset+3*BLOCK_HEIGHT);
+        g2d.setStroke(settings.brickOutline);
+        g2d.drawLine(xOffset, yOffset+blockHeight, xOffset, yOffset+settings.lineHeight);
+        //g2d.drawLine(xOffset-2, yOffset, xOffset-2, yOffset+settings.lineHeight);
         if(block.isSectionEnd())
-            g.drawLine(xOffset-6, yOffset, xOffset-6, yOffset+3*BLOCK_HEIGHT);
+            g2d.drawLine(xOffset-6, yOffset+blockHeight, xOffset-6, yOffset+settings.lineHeight);
     }
     
     /**
@@ -261,43 +265,43 @@ public class GraphicBrick {
     public void drawAt(Graphics g, int x, int y)
     {
         if(isSelected)
-            g.setColor(SELECTED_COLOR);
+            g.setColor(settings.selectedColor);
         else
-            g.setColor(BG_COLOR);
+            g.setColor(settings.brickBGColor);
 
-        int totalLength = (int)(block.getDuration()*MEASURE_LENGTH)/BEATS_PER_MEASURE;
-        
-        g.fillRect(x, y, totalLength, 3*BLOCK_HEIGHT);
+        int totalLength = settings.getBlockLength(block);
+        int blockHeight = settings.getBlockHeight();
+        g.fillRect(x, y, totalLength, settings.lineHeight);
 
-        g.setColor(RoadMapPanel.KEY_COLORS[(int)block.getKey()]);
+        g.setColor(settings.getKeyColor(block.getKey()));
         
-        g.fillRect(x, y, totalLength, BLOCK_HEIGHT);
+        g.fillRect(x, y, totalLength, blockHeight);
 
         ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
 
         if( chords.size() > 1 )   // distinguish between chords and bricks
         {                               // possibly unideal
-            g.setColor(TEXT_COLOR);
+            g.setColor(settings.textColor); //TODO use metrics
             
             //Key
-            g.drawRect(x, y, totalLength, BLOCK_HEIGHT);
-            g.drawString(block.getKeyName(), x+5, y+BLOCK_HEIGHT/2+5);
+            g.drawRect(x, y, totalLength, blockHeight);
+            g.drawString(block.getKeyName(), x+5, y+blockHeight/2+5);
 
             //Name
-            g.drawRect(x, y+BLOCK_HEIGHT, totalLength, BLOCK_HEIGHT);
-            g.drawString(block.getName(), x+5, y+3*BLOCK_HEIGHT/2+5);
+            g.drawRect(x, y+blockHeight, totalLength, blockHeight);
+            g.drawString(block.getName(), x+5, y+3*blockHeight/2+5);
         }
         int xOffset = 0;
 
         for( Chord chord : chords )
         {      
-            g.setColor(LINE_COLOR);
-            int length = (int)(chord.getDuration() * MEASURE_LENGTH)/480;
-            g.drawRect(x+xOffset, y+2*BLOCK_HEIGHT, length, BLOCK_HEIGHT);
+            g.setColor(settings.lineColor);
+            int length = settings.getBlockLength(chord);
+            g.drawRect(x+xOffset, y+2*blockHeight, length, blockHeight);
             
-            g.setColor(TEXT_COLOR);
+            g.setColor(settings.textColor); //TODO use metrics
             String chordName = chord.getName();
-            g.drawString(chordName, x+xOffset+5, y+5*BLOCK_HEIGHT/2+5);
+            g.drawString(chordName, x+xOffset+5, y+5*blockHeight/2+5);
 
             xOffset += length;
         }

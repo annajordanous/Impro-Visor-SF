@@ -71,6 +71,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
    
     private DefaultTreeModel libraryTreeModel;
     
+    private RoadMapSettings settings = new RoadMapSettings();
+    
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
 
@@ -115,6 +117,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogNameField = new javax.swing.JTextField();
         dialogKeySpinner = new javax.swing.JSpinner();
         dialogAcceptButton = new javax.swing.JButton();
+        optionsDialog = new javax.swing.JDialog();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         toolBar = new javax.swing.JToolBar();
         deleteButton = new javax.swing.JButton();
         flattenButton = new javax.swing.JButton();
@@ -127,6 +133,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         sendToNotateButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
+        jSlider1 = new javax.swing.JSlider();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         libraryTabbedPane = new javax.swing.JTabbedPane();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -143,6 +150,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem helpMenuItem = new javax.swing.JMenuItem();
 
+        addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
         addBrickDialog.setName("addBrickDialog"); // NOI18N
         addBrickDialog.setResizable(false);
@@ -193,6 +201,19 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 3, 0);
         addBrickDialog.getContentPane().add(dialogAcceptButton, gridBagConstraints);
+
+        optionsDialog.setTitle("Settings"); // NOI18N
+        optionsDialog.setName("optionsDialog"); // NOI18N
+
+        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
+
+        jPanel1.setName("jPanel1"); // NOI18N
+        jTabbedPane1.addTab("tab1", jPanel1); // NOI18N
+
+        jPanel2.setName("jPanel2"); // NOI18N
+        jTabbedPane1.addTab("tab2", jPanel2); // NOI18N
+
+        optionsDialog.getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(830, 600));
@@ -389,6 +410,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(stopButton);
+
+        jSlider1.setMaximum(200);
+        jSlider1.setMinimum(60);
+        jSlider1.setName("jSlider1"); // NOI18N
+        jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                scaleSliderChanged(evt);
+            }
+        });
+        toolBar.add(jSlider1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -781,6 +812,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         stopPlayingSelection();
     }//GEN-LAST:event_stopButtonPressed
 
+    private void scaleSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scaleSliderChanged
+        settings.measureLength = jSlider1.getValue();
+    }//GEN-LAST:event_scaleSliderChanged
+
     /** InitBuffer <p>
      *  
      * Initializes the buffers for the roadmap and preview panel.
@@ -815,6 +850,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         setBackground(buffer);
         setBackground(bufferRoadMap);
+    }
+    
+    public RoadMapSettings getSettings()
+    {
+        return settings;
     }
     
     private void saveState(String name)
@@ -1232,11 +1272,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JLabel dialogNameLabel;
     private javax.swing.JComboBox durationComboBox;
     private javax.swing.JButton flattenButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JSlider jSlider1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JSpinner keySpinner;
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTabbedPane libraryTabbedPane;
     private javax.swing.JTree libraryTree;
     private javax.swing.JButton newBrickButton;
+    private javax.swing.JDialog optionsDialog;
     private javax.swing.JButton playButton;
     private javax.swing.JScrollPane previewScrollPane;
     private javax.swing.JScrollPane roadMapScrollPane;
@@ -1261,7 +1306,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         if (roadMapPanel.getNumBlocks() < 1) {
             return;
         }
-        if (!somethingSelected()) {
+        if (!roadMapPanel.hasSelection()) {
             selectAllBricks();
         }
 
@@ -1291,7 +1336,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         if (roadMapPanel.getNumBlocks() < 1) {
             return;
         }
-        if (!somethingSelected()) {
+        if (!roadMapPanel.hasSelection()) {
             selectAllBricks();
         }
 
@@ -1305,18 +1350,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     public void stopPlayingSelection()
     {
-        notate.stopPlayAscore();
+        if(roadMapPanel.hasSelection())
+            notate.stopPlayAscore();
     }
-    
-/**
- * returns true if some bricks are selected
- * otherwise false.
- */
-
-    public boolean somethingSelected()
-    {
-        return roadMapPanel.getSelection().size() > 0;
-    }
-
 
 }

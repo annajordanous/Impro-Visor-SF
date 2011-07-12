@@ -78,7 +78,7 @@ public class PreviewPanel extends JPanel
             protoBrick = new Chord((Chord)brick);
         
         brick.adjustDuration(currentDuration);
-        currentBrick = new GraphicBrick(brick);
+        currentBrick = new GraphicBrick(brick, view.getSettings());
     }
 
     public GraphicBrick getBrick()
