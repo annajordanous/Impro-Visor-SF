@@ -1,0 +1,28 @@
+(diatonic Major C
+	(C)
+	(D m)
+	(E m)
+	(F)
+	(G 7)
+	(A m)
+	(B dim))
+
+(diatonic Minor C
+	(C m)
+	(D m7b5)
+	(Eb)
+	(F m)
+	(F)
+	(G 7)
+        (G m7)
+	(Ab)
+	(A m7b5)
+	(Bb 7)
+	(B dim))
+
+(diatonic Dominant C
+	(C 7)
+	(F 7)
+	(G m7)
+	(G 7))
+	

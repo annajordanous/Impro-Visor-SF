@@ -22,7 +22,7 @@
 
 (Brick Sad-Straight Minor Cadence C
 	(Brick Straight-Approach-Minor C 2)
-	(Chord Cm7 2))
+	(Chord Cm 2))
 
 (Brick Upslide Major Misc C
 	(Chord CM7 1)
@@ -814,17 +814,25 @@
 	(Brick Straight-Approach C 4))
 
 (Brick POT-Altered Major Turnaround C
-	(Chord C 1)
-	(Chord Am 1)
+	(Brick Dropback C 2)
 	(Brick Straight-Approach C 2))
 
 (Brick POT Major Turnaround C
-	(Brick Dropback C 2)
+	(Chord C 1)
+        (Chord Am 1)
 	(Brick Straight-Approach C 2))
 
 (Brick POT-Minor Minor Turnaround C
 	(Brick Dropback-Minor C 2)
 	(Brick Sad-Approach C 2))
+
+(Brick Short-POT Major Turnaround C
+        (Chord C 2)
+        (Brick Straight-Approach C 2))
+
+(Brick Short-POT-Minor Minor Turnaround C
+        (Chord C 2)
+        (Brick Straight-Approach-Minor C 2))
 
 (Brick Rhythm-Turnaround Major Turnaround C
 	(Brick Upslide C 2)
