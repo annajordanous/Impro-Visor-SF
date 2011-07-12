@@ -1,9 +1,14 @@
 
 package imp.cykparser;
 import imp.brickdictionary.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import polya.*;
 
 /**
  * purpose: gain further information from list of blocks
@@ -11,11 +16,12 @@ import java.util.Collections;
  */
 public class PostProcessing {
     
-    private static final String[] JOINS = {"Homer", "Cherokee", "Woody", 
-        "Highjump", "Bauble", "Bootstrap", "Stella", "Backslider", 
-        "Half Nelson", "Sidewinder", "New Horizon", "Downwinder"};
+    private static final int OCTAVE = 12;
+    private static final String[] JOINS = {"Bootstrap", "Stella", "Backslider", 
+        "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
+        "Cherokee", "Woody", "Highjump", "Bauble"};
     
-        /** findKeys
+     /** findKeys
      * Method groups consecutive block of same key for overarching key sections
      * @param blocks : ArrayList of blocks (like output from CYKParser)
      * @return keymap : ArrayList of long[] (size 2), each containing key and 
@@ -65,32 +71,46 @@ public class PostProcessing {
         ArrayList<Block> alteredList = new ArrayList<Block>();
         
         for(int i = 0; i < blocks.size(); i++) {
-                
+            
+            // If the current block is a brick, check if it could be a launcher
             if(blocks.get(i) instanceof Brick) {
                 Brick b = (Brick)blocks.get(i);
                 ArrayList<Chord> chordList = new ArrayList<Chord>();
+                
+                // If the brick is not the last one in the list, get chords from
+                // next block
                 if(i != blocks.size() - 1) 
                     chordList = (ArrayList<Chord>)blocks.get(i + 1).flattenBlock();
+                // Otherwise, loop around and get chords from first block
                 else
                     chordList = (ArrayList<Chord>)blocks.get(0).flattenBlock();
                     
                 String brickName = b.getName();
-                if(b.getType().equals("Approach") /*&& b.isSectionEnd()*/ && 
-                        b.getKey() == chordList.get(0).getKey()) {
+                
+                // Check if brick is an approach that resolves to next block
+                if(b.getType().equals("Approach") && b.isSectionEnd() && 
+                        doesResolve(b, chordList.get(0))) {
+                    // If the name has "Approach", replace it with "Launcher"
                     if(brickName.contains("Approach")) 
                         brickName.replace("Approach", "Launcher");
+                    // If not, append "-Launcher" to the end
                     else
                         brickName = brickName + "-Launcher";
                     b.setName(brickName);
                     b.setType("Launcher");
+                    
+                    // Add altered brick to the list
                     alteredList.add(b);
                     }
-                    else 
-                        alteredList.add(b);
-                }
-                else
-                    alteredList.add(blocks.get(i));
+                // If brick is not an approach or does not resolve, add it to 
+                // the list 
+                else 
+                    alteredList.add(b);
             }
+            // If the block is a chord, add it to the list
+            else
+                alteredList.add(blocks.get(i));
+        }
         
         return alteredList;
     }
@@ -118,7 +138,16 @@ public class PostProcessing {
             if (b instanceof Brick && c instanceof Brick) {
                 if(checkJoinability(((Brick)b), ((Brick)c))) {
                     // If so, find the difference between the two keys 
-                    long keyDiff = (c.getKey() - b.getKey() + 12) % 12;
+                    ArrayList<Chord> chordList = 
+                            (ArrayList<Chord>) c.flattenBlock();
+                    long firstDominantKey = (c.getKey() + 7)%OCTAVE;
+                    for(Chord j : chordList) {
+                        if(j.getQuality().equals("7")) {
+                            firstDominantKey = j.getKey();
+                            break;
+                        }
+                    }
+                    long keyDiff = (firstDominantKey - b.getKey() + 12) % 12;
                     joinArray[i] = joinLookup(keyDiff);
                 }
                 else
@@ -158,7 +187,11 @@ public class PostProcessing {
             firstStable = true;
         }
         
-        if(secondEquivs.contains(secondMode)) {
+        if(second.getType().equals("Approach") || second.getType().equals("Cadence")) {
+            secondStable = false;
+        }
+        
+        else if(secondEquivs.contains(secondMode)) {
             secondStable = true;
         }
         
@@ -186,16 +219,235 @@ public class PostProcessing {
         }
     }
     
-    /** keyCheck
-     * More in depth check to see if two blocks are in the same key
-     * @param b1 : first block
-     * @param b2 : second block
-     * @return sameKey : boolean telling whether in same key or not
+    
+    
+    /** chordKeyFind
+     * Check to see if chord is diatonically within current ambient key
+     * @param b1 : block directly before chord
+     * @param c: chord to be checked
+     * @param b2 : block directly after chord
+     * @return keyAndMode : the key and mode of Chord c
      */
-    public static boolean keyCheck(Block b1, Block b2) {
-        // TO DO: figure out where this will be useful before you write it
-        boolean sameKey = false;
+    
+    /*
+    public static String[] chordKeyFind(Block b1, Chord c, Block b2) {
+        String[] keyAndMode = new String[2];
         
-        return sameKey;
+        Long preKey = b1.getKey();
+        Long postKey = b2.getKey();
+        
+        String preMode = b1.getMode();
+        String postMode = b2.getMode();
+        
+        boolean isInKey = false;
+        
+        if(preKey == postKey && preMode.equals(postMode)) {
+            
+            isInKey = diatonicChordCheck(c, preKey, preMode);
+            
+            if(isInKey) {
+                String keyString = BrickLibrary.keyNumToName(preKey);
+                keyAndMode = new String[]{keyString, preMode};
+            }
+            else {
+                String keyString = BrickLibrary.keyNumToName(c.getKey());
+                String mode = findModeFromQuality(c.getQuality());
+                
+                keyAndMode = new String[]{keyString, mode};
+            }
+        }
+        else {
+            //Default to using b1 for comparison
+            // TO DO : change to after instead of before
+            keyAndMode = chordKeyFind(b1, c);
+        }
+        
+        return keyAndMode;
+    }
+     * 
+     */
+    
+    /** chordKeyFind
+     * Check to see if chord is diatonically within current ambient key
+     * @param b : block directly before chord
+     * @param c: chord to be checked
+     * @return keyAndMode : the key and mode of Chord c
+     */
+    
+    /*
+    public static String[] chordKeyFind(Block b, Chord c) {
+        String[] keyAndMode = new String[2];
+        
+        Long preKey = b.getKey();
+        String preMode;
+        
+        if(!b.getMode().isEmpty()) {
+            preMode = b.getMode();
+        }
+        else {
+            preMode = findModeFromQuality(((Chord)b).getQuality());            
+        }
+        
+        boolean isInKey = false;
+        
+        isInKey = diatonicChordCheck(c, preKey, preMode);
+        
+        
+        if(isInKey) {
+            String keyString = BrickLibrary.keyNumToName(preKey);
+            keyAndMode = new String[]{keyString, preMode};
+        }
+        
+        return keyAndMode;
+    }
+    
+     * 
+     */
+    
+    /**diatonicChordCheck
+     * Checks to see if chord fits diatonically within key
+     * @param c : chord to be checked
+     * @param key : key that chord is checked against
+     * @param mode : String that determines qualities of chords in key
+     * @return isInKey : whether or not chord is in key
+     * @throws IOException 
+     */
+    
+    /*
+    public static boolean diatonicChordCheck(Chord c, Long key, String mode) {
+        FileInputStream fis = null;
+        try {
+            boolean isInKey = false;
+            fis = new FileInputStream("vocab/diatonic.txt");
+            Tokenizer in = new Tokenizer(fis);
+            in.slashSlashComments(true);
+            in.slashStarComments(true);
+            Object token;
+            while((token = in.nextSexp()) != Tokenizer.eof) {
+                if(token instanceof Polylist) {
+                    Polylist contents = (Polylist)token;
+                    if (contents.length() < 4) {
+                        Error e = new Error("Not enough arguments in Polylist: ");
+                        System.err.println(e.getMessage() + contents.toString());
+                    }
+                    else {
+                        String polylistTag = contents.first().toString();
+                        contents = contents.rest();
+                        
+                        if (polylistTag.equals("diatonic")) {
+                            String diatonicMode = contents.first().toString();
+                            contents = contents.rest();
+                            String diatonicKey = contents.first().toString();
+                            contents = contents.rest();
+                            if (diatonicMode.equals(mode)) {
+                                Long diff = key - 
+                                        BrickLibrary.keyNameToNum(diatonicKey);
+                                while(contents.nonEmpty()) {
+                                    Polylist diatonicElement = 
+                                            (Polylist) contents.first();
+                                    Long elementKey = BrickLibrary.keyNameToNum
+                                            (diatonicElement.first().toString());
+                                    String elementQuality = 
+                                            diatonicElement.last().toString();
+                                    elementKey = (elementKey + diff)%OCTAVE;
+                                    if(c.getKey() == elementKey && 
+                                            c.getQuality().equals(elementQuality)) {
+                                        isInKey = true;
+                                        return isInKey;
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            Error e = new Error("No diatonic tag on Polylist: ");
+                            System.err.println(e.getMessage() + polylistTag);
+                        }
+                    }
+                }
+            }
+            return isInKey;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PostProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PostProcessing.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return false;
+    }
+     * 
+     */
+    
+    /** doesResolve
+     * Check if brick resolves to a certain block
+     * @param b1 : brick to be checked
+     * @param b2 : possible tonic of b1
+     * @return resolves : whether or not b1 resolves to b2
+     */
+    
+       public static boolean doesResolve(Brick b1, Block b2) {
+        boolean resolves = false;
+
+        if (b2 instanceof Brick) {
+            Brick b2Brick = (Brick) b2;
+            String b2Mode = b2.getMode();
+            Long relative;
+
+            if (b2Mode.equals("Major")) {
+                relative = (b2.getKey() - 3) % OCTAVE;
+            } else if (b2Mode.equals("Minor")) {
+                relative = (b2.getKey() + 3) % OCTAVE;
+            } else {
+                relative = (b2.getKey() + 5) % OCTAVE;
+            }
+
+            if (b1.getKey() == b2.getKey() && b1.getMode().equals(b2Mode)) {
+                resolves = true;
+            } else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
+                resolves = true;
+            }
+        } else {
+            String b2Mode = findModeFromQuality(((Chord) b2).getQuality());
+            Long relative;
+
+            if (b2Mode.equals("Major")) {
+                relative = (b2.getKey() - 3) % OCTAVE;
+            } else if (b2Mode.equals("Minor")) {
+                relative = (b2.getKey() + 3) % OCTAVE;
+            } else {
+                relative = (b2.getKey() + 5) % OCTAVE;
+            }
+
+            if (b1.getKey() == b2.getKey() && b1.getMode().equals(b2Mode)) {
+                resolves = true;
+            } else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
+                resolves = true;
+            }
+        }
+
+        return resolves;
+    }
+
+    /** findModeFromQuality
+     * Find mode of a block using quality of a chord
+     * @param quality : String used to find mode
+     * @return mode : String that determines overall tonicity of block
+     */
+    public static String findModeFromQuality(String quality) {
+        String mode;
+
+        if (quality.startsWith("M") || quality.equals("")) {
+            mode = "Major";
+        } else if (quality.startsWith("7")) {
+            mode = "Dominant";
+        } else {
+            mode = "Minor";
+        }
+
+        return mode;
     }
 }
+     
