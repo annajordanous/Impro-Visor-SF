@@ -269,9 +269,11 @@ public class RoadMapPanel extends JPanel{
     
     public void scaleSelection(long scale)
     {
-        if(selectionStart != -1 && selectionEnd != -1)
+        if(selectionStart != -1 && selectionEnd != -1) {
             for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
                 block.adjustDuration(scale);
+            roadMap.process();
+        }
         placeBricks();
     }
     
