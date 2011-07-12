@@ -546,8 +546,12 @@
 	(Brick Rainy-Approach C 4)
 	(Chord CM7 4))
 
+(Brick Sad-Approach Minor Approach C
+	(Chord Dm7b5 1)
+	(Chord G7alt 1))
+
 (Brick Sad Minor Cadence C
-	(Brick Straight-Approach C 2)
+	(Brick Sad-Approach C 2)
 	(Chord CmM7 2))
 
 (Brick Satin-Approach Major Approach C
@@ -641,7 +645,7 @@
 	(Chord D7 2))
 
 (Brick Sad-Somewhere Minor Dropback C
-	(Brick Straight-Approach C 2)
+	(Brick Sad-Approach C 2)
 	(Chord D7 1))
 
 (Brick Dropback-To-Five Major Dropback C
@@ -666,7 +670,7 @@
 
 (Brick Autumnal-Approach Minor Approach C
 	(Brick Straight-Approach C 2)
-	(Brick Straight-Approach A 2))
+	(Brick Sad-Approach A 2))
 
 (Brick Autumnal Minor Cadence C
 	(Brick Autumnal-Approach C 4)
@@ -746,6 +750,14 @@
 	(Brick Straight-Approach C 2)
 	(Chord C7#4 2))
 
+(Brick Surprise-Minor Minor Cadence C
+	(Brick Straight-Approach C 2)
+	(Chord Cm 2))
+
+(Brick Surprise-Major Major Cadence C
+	(Brick Sad-Approach C 2)
+	(Chord CM7 2))
+
 (Brick Twopenny-Approach Major Approach C
 	(Chord Dm 2)
 	(Brick Yardbird C 4)
@@ -804,15 +816,15 @@
 
 (Brick POT-Minor Minor Turnaround C
 	(Brick Dropback-Minor C 2)
-	(Brick Straight-Approach C 2))
+	(Brick Sad-Approach C 2))
 
 (Brick Short-POT Major Turnaround C
         (Chord C 2)
-	(Brick Straight-Approach C 2))
+        (Brick Straight-Approach C 2))
 
 (Brick Short-POT-Minor Minor Turnaround C
-        (Chord Cm 2)
-        (Brick Straight-Approach C 2))
+        (Chord C 2)
+        (Brick Sad-Approach C 2))
 
 (Brick Rhythm-Turnaround Major Turnaround C
 	(Brick Upslide C 2)
