@@ -24,37 +24,34 @@ public class PostProcessing {
      /** findKeys
      * Method groups consecutive block of same key for overarching key sections
      * @param blocks : ArrayList of blocks (like output from CYKParser)
-     * @return keymap : ArrayList of long[] (size 2), each containing key and 
-     *                  its corresponding total duration
+     * @return keymap : ArrayList of KeySpans, each containing key, mode, and 
+     *                  a corresponding total duration
      */
-    public static ArrayList<long[]> findKeys(ArrayList<Block> blocks) {
-        ArrayList<long[]> keymap = new ArrayList<long[]>();
+    public static ArrayList<KeySpan> findKeys(ArrayList<Block> blocks) {
+        ArrayList<KeySpan> keymap = new ArrayList<KeySpan>();
         
-        // Initialize key and duration of current block
-        long currentKey = -1;
-        long currentDuration = 0;
-        String currentMode = "";
+        // Initialize key, mode, and duration of current block
+        KeySpan current = new KeySpan();
         
         for(Block b : blocks) {
             
             // If two consecutive blocks in same key, add new block's duration 
             // to total
-            if(currentKey == b.getKey() && currentMode.equals(b.getMode())) {
-                currentDuration += b.getDuration();
+            if(current.getKey() == b.getKey() && 
+                    current.getMode().equals(b.getMode())) {
+                current.setDuration(current.getDuration() + b.getDuration());
             }
             else {
                 // End of current key -- add to the list
-                long[] entry = {currentKey, currentDuration};
+                KeySpan entry = current;
                 keymap.add(entry);
 
                 // Create new entry for the next key
-                currentKey = b.getKey();
-                currentDuration = b.getDuration();
-                currentMode = b.getMode();
+                current = new KeySpan(b.getKey(), b.getMode(), b.getDuration());
             }
         }
         
-        keymap.add( new long[]{currentKey, currentDuration} );
+        keymap.add(current);
         
         return keymap;
     }
@@ -92,7 +89,7 @@ public class PostProcessing {
                         doesResolve(b, chordList.get(0))) {
                     // If the name has "Approach", replace it with "Launcher"
                     if(brickName.contains("Approach")) 
-                        brickName.replace("Approach", "Launcher");
+                        brickName = brickName.replace("Approach", "Launcher");
                     // If not, append "-Launcher" to the end
                     else
                         brickName = brickName + "-Launcher";
@@ -226,7 +223,7 @@ public class PostProcessing {
      * @param b1 : block directly before chord
      * @param c: chord to be checked
      * @param b2 : block directly after chord
-     * @return keyAndMode : the key and mode of Chord c
+     * @return km : the key and mode of Chord c
      */
     
     /*
