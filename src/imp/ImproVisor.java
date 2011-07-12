@@ -302,16 +302,16 @@ public class ImproVisor implements Constants {
                     Score score = new Score(Notate.defaultBarsPerPart * (BEAT*Notate.defaultMetre));
                     try {
                         Score newScore = new Score();
-
                         score.setChordFontSize(Integer.valueOf(Preferences.getPreference(
                         Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
                         (new OpenLeadsheetCommand(f, newScore)).execute();
                         Notate newNotate =
                         new Notate(newScore,
-                            advisor,
-                            this);
+                                   advisor,
+                                   this);
 
                         newNotate.setNotateFrameHeight(newNotate);
+                        newNotate.setSavedLeadsheet(f);
                     }
                     catch (Exception ij) {
                         ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + f);

@@ -12563,7 +12563,7 @@ private void updateTempoFromTextField()
    * Give focus to the current Stave.
    */
     
-  void staveRequestFocus()
+  public void staveRequestFocus()
     {
     // Show that textEntry no longer has focus if it had.
 
@@ -17672,6 +17672,16 @@ public void WriteLeadsheetToFile(File file) {
 //System.out.println("height = " + dm.getHeight() + ", y = " + notate.getY());
     notate.setSize(fWidth, dm.getHeight() - notate.getY());
   }
+  
+  public void setSavedLeadsheet(File f)
+  {
+      savedLeadsheet = f;
+  }
+  
+  public boolean countInCheckboxIsSelected()
+  {
+      return countInCheckBox.isSelected();
+  }
 
     private void trackerDelayTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trackerDelayTextFieldActionPerformed
     {//GEN-HEADEREND:event_trackerDelayTextFieldActionPerformed
@@ -20061,98 +20071,43 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
                 );
       }
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
-private int currChordIndex = 0;
+private boolean skippedBack = false;
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
         int currIndex = 0;
         int nextChordIndex =0;
         int indexOfChordToPlay = 0;
         int modedIndex=0;
         int increment=0;
-        switch(isPlaying)
+        if(skippedBack)
         {
-            case PLAYING:
-                midiSynth.pause();
-                currIndex = midiSynth.getSlot();
-                nextChordIndex = chordProg.getNextChordIndex(currIndex);
-                if(currIndex > chordProg.getSize())
-                {
-                    modedIndex = currIndex%chordProg.getSize();
-                    indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
-                    increment = indexOfChordToPlay - modedIndex;
-                    nextChordIndex = currIndex+increment;
-                    indexOfChordToPlay = nextChordIndex % chordProg.getSize();
-                    if(nextChordIndex >= -1 && increment >=0)
-                    {
-                        midiSynth.setSlot((long)nextChordIndex);
-                    }
-                    else
-                    {
-                        indexOfChordToPlay = (indexOfChordToPlay+1) % chordProg.getSize();
-                        nextChordIndex = nextChordIndex+1;
-                        midiSynth.setSlot((long)nextChordIndex);
-                    }
-                }
-                else
-                {
-                    if(nextChordIndex >= 0)
-                    {
-                        midiSynth.setSlot((long)nextChordIndex);
-                    }
-                    else
-                    {
-                        midiSynth.setSlot((long)0);
-                    }
-                    indexOfChordToPlay = nextChordIndex;
-                }
-                break;
-            case PAUSED:
-                currIndex = midiSynth.getSlot();
-                nextChordIndex = chordProg.getNextChordIndex(currIndex);
-                if(currIndex >= chordProg.getSize())
-                {
-                    modedIndex = currIndex%chordProg.getSize();
-                    indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
-                    increment = indexOfChordToPlay - modedIndex;
-                    nextChordIndex = currIndex+increment;
-                    indexOfChordToPlay = nextChordIndex % chordProg.getSize();
-                    if(nextChordIndex >= -1 && increment >=0)
-                    {
-                        midiSynth.setSlot((long)nextChordIndex);
-                    }
-                    else
-                    {
-                        indexOfChordToPlay = (indexOfChordToPlay+1) % chordProg.getSize();
-                        nextChordIndex = nextChordIndex+1;
-                        midiSynth.setSlot((long)nextChordIndex);
-                    }
-                }
-                else
-                {
-                    if(nextChordIndex >= 0)
-                    {
-                        midiSynth.setSlot((long)nextChordIndex);
-                    }
-                    else
-                    {
-                        midiSynth.setSlot((long)0);
-                    }
-                    indexOfChordToPlay = nextChordIndex;
-                }
-                break;
-            case STOPPED:
-                Stave tempStave = getCurrentStave();
-                if(tempStave.getSelectionStart() >= 0)
-                {
-                    currIndex = tempStave.getSelectionStart() + ((chordProg.getSize())*(currTabIndex));
-                    nextChordIndex = chordProg.getNextChordIndex(currIndex);
-                    playScoreBody(currIndex);
+            currIndex = midiSynth.getSlot();
+            if(currIndex > chordProg.getSize())
+            {
+                modedIndex = currIndex % chordProg.getSize();
+                midiSynth.setSlot(currIndex);
+                playChordAtIndex(modedIndex);
+            }
+            else
+            {
+                midiSynth.setSlot(currIndex);
+                playChordAtIndex(modedIndex);
+            }
+            skippedBack = false;
+        }
+        else
+        {
+            switch(isPlaying)
+            {
+                case PLAYING:
                     midiSynth.pause();
-                    if(currIndex >= chordProg.getSize())
+                    currIndex = midiSynth.getSlot();
+                    nextChordIndex = chordProg.getNextChordIndex(currIndex);
+                    if(currIndex > chordProg.getSize())
                     {
-                        modedIndex = currIndex % chordProg.getSize();
+                        modedIndex = currIndex%chordProg.getSize();
                         indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
                         increment = indexOfChordToPlay - modedIndex;
-                        nextChordIndex = currIndex + increment;
+                        nextChordIndex = currIndex+increment;
                         indexOfChordToPlay = nextChordIndex % chordProg.getSize();
                         if(nextChordIndex >= -1 && increment >=0)
                         {
@@ -20160,7 +20115,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                         }
                         else
                         {
-                            indexOfChordToPlay = (indexOfChordToPlay+1)%chordProg.getSize();
+                            indexOfChordToPlay = (indexOfChordToPlay+1) % chordProg.getSize();
                             nextChordIndex = nextChordIndex+1;
                             midiSynth.setSlot((long)nextChordIndex);
                         }
@@ -20177,29 +20132,104 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                         }
                         indexOfChordToPlay = nextChordIndex;
                     }
-                }
-                else
-                {
-                    currIndex = 0;
-                    nextChordIndex= currIndex;
-                    playScoreBody(0);
-                    midiSynth.pause();
-                    midiSynth.setSlot(0);
-                    indexOfChordToPlay = nextChordIndex;
-                }
-                break;
-        }
-        if(nextChordIndex != -1)
-        {
-            playChordAtIndex(indexOfChordToPlay);
-        }
-        else
-        {
+                    break;
+                case PAUSED:
+                    currIndex = midiSynth.getSlot();
+                    nextChordIndex = chordProg.getNextChordIndex(currIndex);
+                    if(currIndex >= chordProg.getSize())
+                    {
+                        modedIndex = currIndex%chordProg.getSize();
+                        indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
+                        increment = indexOfChordToPlay - modedIndex;
+                        nextChordIndex = currIndex+increment;
+                        indexOfChordToPlay = nextChordIndex % chordProg.getSize();
+                        if(nextChordIndex >= -1 && increment >=0)
+                        {
+                            midiSynth.setSlot((long)nextChordIndex);
+                        }
+                        else
+                        {
+                            indexOfChordToPlay = (indexOfChordToPlay+1) % chordProg.getSize();
+                            nextChordIndex = nextChordIndex+1;
+                            midiSynth.setSlot((long)nextChordIndex);
+                        }
+                    }
+                    else
+                    {
+                        if(nextChordIndex >= 0)
+                        {
+                            midiSynth.setSlot((long)nextChordIndex);
+                        }
+                        else
+                        {
+                            midiSynth.setSlot((long)0);
+                        }
+                        indexOfChordToPlay = nextChordIndex;
+                    }
+                    break;
+                case STOPPED:
+                    Stave tempStave = getCurrentStave();
+                    if(tempStave.getSelectionStart() >= 0)
+                    {
+                        currIndex = tempStave.getSelectionStart() + ((chordProg.getSize())*(currTabIndex));
+                        playScoreBody(currIndex);
+                        midiSynth.pause();
+                        if(currIndex >= chordProg.getSize())
+                        {
+                            modedIndex = currIndex % chordProg.getSize();
+                            indexOfChordToPlay = chordProg.getCurrentChordIndex(modedIndex);
+                            increment = indexOfChordToPlay - modedIndex;
+                            nextChordIndex = currIndex + increment;
+                            indexOfChordToPlay = nextChordIndex % chordProg.getSize();
+                            if(nextChordIndex >= -1)
+                            {
+                                midiSynth.setSlot((long)nextChordIndex);
+                            }
+                            else
+                            {
+                                indexOfChordToPlay = (indexOfChordToPlay+1)%chordProg.getSize();
+                                nextChordIndex = nextChordIndex+1;
+                                midiSynth.setSlot((long)nextChordIndex);
+                            }
+                        }
+                        else
+                        {
+                            nextChordIndex = chordProg.getCurrentChordIndex(currIndex);
+                            if(nextChordIndex >= 0)
+                            {
+                                midiSynth.setSlot((long)nextChordIndex);
+                            }
+                            else
+                            {
+                                midiSynth.setSlot((long)0);
+                            }
+                            indexOfChordToPlay = nextChordIndex;
+                        }
+                    }
+                    else
+                    {
+                        currIndex = 0;
+                        nextChordIndex= currIndex;
+                        playScoreBody(0);
+                        midiSynth.pause();
+                        midiSynth.setSlot(0);
+                        indexOfChordToPlay = nextChordIndex;
+                    }
+                    break;
+            }
+            if(nextChordIndex != -1)
+            {
+                playChordAtIndex(indexOfChordToPlay);
+            }
+            else
+            {
+            }
         }
 }//GEN-LAST:event_chordStepForwardButtonActionPerformed
 
 private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
         int currChordIndex = 0;
+        skippedBack = true;
         currChordIndex = midiSynth.getSlot();
         int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
         if(currChordIndex >= chordProg.getSize())
@@ -20250,8 +20280,6 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
                     midiSynth.pause();
                     break;
             }
-            currChordIndex = 0;
-            prevChordIndex = 0;
         }
 }//GEN-LAST:event_chordStepBackButtonActionPerformed
 
