@@ -295,12 +295,7 @@ public class Brick extends Block {
         // is a brick, recursively flatten.
         while(iter.hasNext()) {
             Block currentBlock = iter.next();
-            if(currentBlock instanceof Chord) {
-                chordList.add((Chord)currentBlock);
-            }
-            else if (currentBlock instanceof Brick) {
-                chordList.addAll(currentBlock.flattenBlock());
-            }
+            chordList.addAll(currentBlock.flattenBlock());
         }
         
         return chordList;

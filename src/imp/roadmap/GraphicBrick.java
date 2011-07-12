@@ -68,6 +68,16 @@ public class GraphicBrick {
     }
     
     /**
+     * set the x and y coordinates of the brick
+     * @param point the point
+     */
+    public void setPos(Point point)
+    {
+        this.x = point.x;
+        this.y = point.y;
+    }
+    
+    /**
      * returns whether or not the brick is currently selected
      * @return whether the brick is selected
      */
@@ -148,7 +158,7 @@ public class GraphicBrick {
      * Draws the background of the brick
      * @param g graphics on which to draw
      */
-    private void drawBackground(Graphics g)
+    private void drawBackground(Graphics g) //TODO fix to use beats instead of just coordinates
     {
         int xOffset = x;
         int yOffset = y;
@@ -179,7 +189,7 @@ public class GraphicBrick {
      * Draws the lines of the brick
      * @param g graphics on which to draw
      */
-    private void drawLines(Graphics g)
+    private void drawLines(Graphics g) //TODO fix to use beats instead of just coordinates
     {
         ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
         

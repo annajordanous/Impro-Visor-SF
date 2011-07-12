@@ -1187,7 +1187,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
            
     private void toggleSectionBreak()
     {
-        
+        roadMapPanel.toggleSection();
     }
     
     public void initLibraryTree()

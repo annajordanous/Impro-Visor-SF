@@ -70,6 +70,11 @@ public class RoadMapSettings {
         return barsPerLine * measureLength;
     }
     
+    public int getLineOffset()
+    {
+        return lineHeight + lineSpacing;
+    }
+    
     public int getBlockHeight()
     {
         return lineHeight/3;
@@ -82,7 +87,8 @@ public class RoadMapSettings {
     
     public int getLines(long beats)
     {
-        return (int) (beats/getCutoffBeat());
+        int lines = (int) (beats/getCutoffBeat());
+        return lines;
     }
     
     public Point getPosFromBeats(long beats)
