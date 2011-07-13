@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,14 +29,18 @@ import imp.Constants;
 
 /**
  *
- * @author Martin Hunt
+ * @author Martin Hunt. Robert Keller added countInOffset stuff 7/12/2010
  */
+
 public class MidiNoteActionHandler implements Constants, Receiver {
     Notate notate;
+    Score score;
     Sequencer sequencer = null;
+    int countInOffset;
     
-    public MidiNoteActionHandler(Notate notate) {
+    public MidiNoteActionHandler(Notate notate, Score score) {
         this.notate = notate;
+        this.score = score;
     }
     
     
@@ -122,6 +126,8 @@ public class MidiNoteActionHandler implements Constants, Receiver {
         notePlaying = false;
         notate.getCurrentStave().setSelectionStart(0);
         notate.getCurrentStave().setSelectionEnd(0);
+        
+        countInOffset = score.getCountInOffset();
     }
     
     void handleNoteOn(int note, int velocity, int channel) {
@@ -137,23 +143,26 @@ public class MidiNoteActionHandler implements Constants, Receiver {
 
             // this try is here because a function a few steps up in the call hierarchy tends to capture error messages
             try {
-                index = snapSlots(tickToSlots(noteOff));
+                index = snapSlots(tickToSlots(noteOff)) - countInOffset;
 
                 // add rests since nothing was played between now and the previous note
-                if(duration > 0) {
+                if(duration > 0 && index >= 0 ) {
                     Note noteToAdd = new Rest(duration);
                     notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
                 }
 
-                notate.getCurrentStave().setSelectionStart(index);
-                notate.getCurrentStave().setSelectionEnd(index);
+                if( index >= 0 )
+                  {
+                  notate.getCurrentStave().setSelectionStart(index);
+                  notate.getCurrentStave().setSelectionEnd(index);
+                  }
             } catch(Exception e) {
                 e.printStackTrace();
             }
         }
         
         noteOn = lastEvent;
-        index = snapSlots(tickToSlots(noteOn));
+        index = snapSlots(tickToSlots(noteOn)) - countInOffset;
         
         // add current note
         Note noteToAdd = new Note(note, SNAPTO);
@@ -207,7 +216,8 @@ public class MidiNoteActionHandler implements Constants, Receiver {
         noteOff = lastEvent;
         notePlaying = false;
 
-        int index = snapSlots(tickToSlots(noteOn));
+        int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+        
         int duration = snapSlots(tickToSlots(noteOn, noteOff));
         
         if(duration == 0) {

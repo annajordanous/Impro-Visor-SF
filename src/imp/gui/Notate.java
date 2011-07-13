@@ -1019,7 +1019,7 @@ public class Notate
     
     midiSynth2 = new MidiSynth(midiManager);
 
-    midiRecorder = new MidiNoteActionHandler(this);
+    midiRecorder = new MidiNoteActionHandler(this, score);
 
     midiStepInput = new MidiStepEntryActionHandler(this);
 
