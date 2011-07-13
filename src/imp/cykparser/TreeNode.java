@@ -9,8 +9,7 @@ package imp.cykparser;
 
 import java.util.*;
 import imp.brickdictionary.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 /** TreeNode
  *
  * A class designed to track possible parse trees while running CYK. TreeNodes
@@ -20,15 +19,14 @@ import java.util.logging.Logger;
 public class TreeNode {
     
     // An int cost for a default chord
-    public static final long CHORD_COST = 1000;
-    public static final long CHORD_SUB_COST = 1050;
+    public static final double CHORD_COST = 1000;
+    public static final double CHORD_SUB_COST = 1050;
     
     // Constructors for TreeNodes
     
     /** Default Constructor / 0
      * 
      * Constructs an empty TreeNode
-     * 
      */
     public TreeNode()
     {
@@ -96,6 +94,9 @@ public class TreeNode {
     /** Chord Constructor / 5
      * Takes in a chord and makes a TreeNode with cost c, but for a substituted
      * chord name and root
+     * 
+     * @param name, a String describing the replacement chord quality
+     * @param k, a long describing the replacement chord key
      * @param chord, a Chord
      * @param c, a long describing the Chord's cost
      */
@@ -115,42 +116,17 @@ public class TreeNode {
         start = s;
         isSub = true;
     }    
-        
-    /** Terminal Constructor / 4
-     * 
-     * Constructs a TreeNode for a terminal
-     * 
-     * s = symbol name, a string
-     * c = chords, a list of strings
-     * d = durations, a list of ints
-     */
-    public TreeNode(String sym, ArrayList<Chord> c, double co, long k, long s)
-    {
-        child1 = null;
-        child2 = null;
-        symbol = sym;
-        mode = "";
-        chords = new ArrayList<Chord>();
-        chords.addAll(c);
-        
-        ArrayList<Block> subBlocks = new ArrayList<Block>();
-        subBlocks.addAll(c);
-        
-        block = new Brick(sym, k, "", subBlocks);
-        cost = co;
-        toPrint = true;
-        isEnd = false;
-        start = s;
-        isSub = false;
-    }
     
-    /** Nonterminal Constructor / 5
-     * 
-     * Constructs a TreeNode for a nonterminal
-     * 
-     * s = symbol name, a string
-     * c1 = first child TreeNode
-     * c2 = second child TreeNode
+    /** TreeNode / 7
+     * Makes a TreeNode for a nonterminal
+     *
+     * @param sym, a String of the Node symbol
+     * @param type, a String of the Node's type
+     * @param m, a String describing the Node's mode
+     * @param c1, the first child TreeNode
+     * @param c2, the second child TreeNode
+     * @param co, the cost
+     * @param k, the key of the block
      */
     public TreeNode(String sym, String type, String m, 
                     TreeNode c1, TreeNode c2, 
@@ -161,21 +137,20 @@ public class TreeNode {
         symbol = sym;
         mode = m;
         
+        
+        chords = new ArrayList<Chord>();
+        chords.addAll(c1.getChords());
+        chords.addAll(c2.getChords());
+        
         ArrayList<Block> subBlocks = new ArrayList<Block>();
         subBlocks.addAll(c1.getBlocks());
         subBlocks.addAll(c2.getBlocks());
                 
-        chords = new ArrayList<Chord>();
-        chords.addAll(c1.getChords());
-        chords.addAll(c2.getChords());
-
         block = new Brick(sym, k, type, subBlocks, m);
         key = k;
 
         cost = co;
-        if (type.equals(CYKParser.NONBRICK))
-            toPrint = false;
-        else toPrint = true;
+        toPrint = !(type.equals(CYKParser.NONBRICK));
 
         isEnd = c2.isSectionEnd();
         isSub = (c1.isSub() || c2.isSub());
@@ -187,6 +162,7 @@ public class TreeNode {
     /** Nonterminal Constructor / 2
      * Creates a TreeNode whose name won't be printed for the purposes
      * of assembling other named TreeNodes.
+     * 
      * @param c1: the first child TreeNode
      * @param c2: the second child TreeNode
      */
@@ -220,6 +196,7 @@ public class TreeNode {
    /** overlapCopy
      * Makes a copy of a TreeNode's contents with the last chord set to duration
      * 0. Used to facilitate the creation and parsing of overlapping bricks.
+     * 
      * @return a copy of a TreeNode with the last chord at 0 duration
      */
     public TreeNode overlapCopy()
@@ -230,12 +207,13 @@ public class TreeNode {
             newNode = new TreeNode(zeroChord, cost + 5, start);
         }
         else {
-            newNode = new TreeNode(symbol, block.getType(), mode, 
-                    child1, child2.overlapCopy(), cost + 5, block.getKey());
+            newNode = new TreeNode(symbol, block.getType(), mode, child1, 
+                    child2.overlapCopy(), cost + CHORD_COST + 5, block.getKey());
         }
         return newNode;
     }
     
+    // Booleans to test a TreeNode
     public boolean isOverlap()
     {
         return block.isOverlap();
@@ -244,6 +222,21 @@ public class TreeNode {
     public boolean isSub()
     {
         return isSub;
+    }
+    
+    public boolean isTerminal()
+    {
+        return !(block instanceof Brick);
+    }
+    
+    public boolean isSectionEnd()
+    {
+        return isEnd;
+    }
+    
+    public boolean toShow()
+    {
+        return toPrint;
     }
     
     // Getters for the data members of a TreeNode
@@ -292,21 +285,6 @@ public class TreeNode {
         return start;
     }
     
-    public boolean isTerminal()
-    {
-        return !(block instanceof Brick);
-    }
-    
-    public boolean isSectionEnd()
-    {
-        return isEnd;
-    }
-    
-    public boolean toShow()
-    {
-        return toPrint;
-    }
-    
     public Block getBlock() {
         return block;
     }
@@ -324,7 +302,7 @@ public class TreeNode {
         
     }
     
-    // Setters for a TreeNode
+    // Setter for a TreeNode
     public void setChildren (TreeNode c1, TreeNode c2)
     {
         child1 = c1;
@@ -383,17 +361,18 @@ public class TreeNode {
     private ArrayList<Chord> chords;  // Chords contained within the node
     private Block block;              // The structure holding all of the
                                       // TreeNode's contents
-    private long key;
+    private long key;                 // the key of the Node's nominal contents
     private double cost;              // Value of the top-level block
     private boolean toPrint;          // Whether the brick name will print
     private long start;               // The start position of the first brick
     private boolean isEnd;            // If the node ends a section
-    private String mode;
-    private boolean isSub;
+    private String mode;              // the mode of the Node's nominal contents
+    private boolean isSub;            // whether the Node has a substitution
                                       
 
 }
 
+// A simple Comparator class to compare TreeNodes by total cost.
 class NodeComparator implements Comparator {
     @Override
     public int compare(Object t1, Object t2) {

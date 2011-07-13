@@ -9,8 +9,6 @@ import imp.brickdictionary.*;
 import polya.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** EquivalenceDictionary
  *
@@ -19,7 +17,11 @@ import java.util.logging.Logger;
  * @author Xanda Schofield
  */
 public class EquivalenceDictionary {
+    // EquivalenceDictionary has one data member, dict. It is a list of
+    // ArrayLists of Chords, where each ArrayList represents an equivalence
+    // class of chords.
     private LinkedList<ArrayList<Chord>> dict;
+    
     
     /** Default constructor
      * Constructs a new EquivalenceDictionary with an empty dict.
@@ -38,13 +40,13 @@ public class EquivalenceDictionary {
         dict.add(rule);
         }
     
-    /**checkEquivalences / 1
+    /** checkEquivalences / 1
      * Takes in a string for a quality and checks its equivalence classes for 
      * an appropriate class.
      * 
-     * @param quality: a String describing a chord quality
-     * @return an ArrayList of possibly qualities equivalent to quality, 
-     * including quality itself
+     * @param c: a Chord whose equivalence is to be checked
+     * @return a SubstituteList of possible chords equivalent to c, 
+     * including c itself.
      */
     public SubstituteList checkEquivalence(Chord c)
     {
@@ -68,6 +70,12 @@ public class EquivalenceDictionary {
         return equivalences;
     }
     
+    /** loadDictionary / 1
+     * Loads only the equivalences into the EquivalenceDictionary.
+     * 
+     * @param filename: a String describing the source file for the equivalence
+     * rules.
+     */
     public void loadDictionary(String filename) {
         FileInputStream fis = null;
         try {
@@ -84,21 +92,26 @@ public class EquivalenceDictionary {
                 {
                     Polylist contents = (Polylist)token;
                     
-                    // Check that polylist has enough fields to be a brick
-                    // Needs BlockType (i.e. "Brick"), name, key, and contents
+                    // Check that polylist has enough fields to be an
+                    // equivalence rule
                     if (contents.length() < 3)
                     {
                         Error e = new Error("Improper formatting for dictionary"
                                 + "rule");
                         System.err.println(e);
-}
+                    }
+                    // for appropriate rules
                     else
                     {
                         String eqCategory = contents.first().toString();
                         contents = contents.rest();
                         
+                        // We only check equivalence rules
                         if (eqCategory.equals("equiv"))
                         {
+                            // Take every equivalent chord and add it to
+                            // the list of equivalent chords, then add
+                            // that as a rule to the dictionary.
                             ArrayList<Chord> newEq = new ArrayList<Chord>();
                             while (contents.nonEmpty())
                             {
@@ -120,12 +133,16 @@ public class EquivalenceDictionary {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+            Error e1 = new Error("Dictionary file not found");
+            System.err.println(e1);
+            System.exit(-1);
         } finally {
             try {
                 fis.close();
             } catch (IOException ex) {
-                Logger.getLogger(CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+                Error e1 = new Error("Dictionary file input stream can't close");
+                System.err.println(e1);
+                System.exit(-1);
             }
         }
     }

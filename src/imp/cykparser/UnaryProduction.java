@@ -5,8 +5,8 @@
 package imp.cykparser;
 
 /** UnaryProduction
- * Deprecated Production class extending AbstractProduction, meant to handle
- * terminals.
+ * Production class meant to deal with finding terminal symbols corresponding
+ * to a given chord. Used to deal with chord substitutions.
  * @author ImproVisor
  */
 
@@ -16,19 +16,23 @@ import polya.*;
 
 public class UnaryProduction {
     
+    // Constants for use
     public static final int NODUR = 0;
-    public final boolean SUBRULE = false;
-    public final boolean EQUIVRULE = true;
    
-    private Chord head;
-    private ArrayList<Chord> terminals;
-    private int cost = 1100;
-    private boolean type;
+    // Data members
+    private Chord head;                     // the chord to replace
+    private ArrayList<Chord> terminals;     // the substitute chords possible
     
+    /** Constructor / 2
+     * Makes a UnaryProduction based on a PolyList describing a substitution
+     * @param h
+     * @param contents 
+     */
     UnaryProduction(String h, Polylist contents)
     {
         head = new Chord(h, NODUR);
         
+        // Each chord following the first one is read in as a subsitution
         terminals = new ArrayList<Chord>(); 
         Chord newChord;
         while (contents.nonEmpty()) {
@@ -38,6 +42,7 @@ public class UnaryProduction {
         }
     }
 
+    // Getters
     public String getHead() {
         return head.toString();
     }
@@ -46,18 +51,14 @@ public class UnaryProduction {
         return terminals.toString();
     }
     
-    public UnaryProduction(String s) {
-        String[] rule = s.split(" ");
-        head = new Chord(rule[0], NODUR);
-        
-        Chord eqChord;
-        for (int i = 1; i < rule.length; i++)
-        {
-            eqChord = new Chord(rule[i], NODUR);
-            terminals.add(eqChord);
-        }
-    }
-    
+    /** checkSubstitution / 1
+     * Checks a given chord against the substitution rule to see if could replace
+     * the head.
+     * 
+     * @param c, a Chord which may or may not be a substitute for the head
+     * @return a SubstituteList containing either the head - if the head could
+     *         have c as a substitute - or no chords at all.
+     */
     public SubstituteList checkSubstitution(Chord c) {
         SubstituteList subs = new SubstituteList();
         
@@ -71,7 +72,5 @@ public class UnaryProduction {
         
         return subs;
     }
-    
-
-   
+      
 }

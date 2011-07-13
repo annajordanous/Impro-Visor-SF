@@ -20,8 +20,8 @@ public class BinaryProduction {
     public static final int NONBRICK = 1000;
     public static final int CADENCE = 30;
     public static final int APPROACH = 45;
-    public static final int DROPBACK = 30;
-    public static final int TURNAROUND = 20;
+    public static final int DROPBACK = 35;
+    public static final int TURNAROUND = 30;
     public static final int LAUNCHER = 30;
     public static final int ONOFF = 55;
     public static final int MISC = 40;
@@ -41,27 +41,7 @@ public class BinaryProduction {
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
     
-    /** String Constructor (deprecated)
-     * Takes in a String with all the information for a Binary rule and splits
-     * it into its constituent components
-     * 
-     * @param s, a String
-     */
-    public BinaryProduction(String s) {
-        String[] rule = s.split(" ", 8);
-        head = rule[0];
-        type = rule[1];
-        key1 = Integer.parseInt(rule[2]);
-        name1 = rule[3];
-        dur1 = Long.parseLong(rule[4]);
-        key2 = Integer.parseInt(rule[5]);
-        name2 = rule[6];
-        dur2 = Long.parseLong(rule[7]);
-        cost = typeToCost(type);
-        toPrint = true;
-    }
     
-    // NOTE: Assumes it's a production in C
     /** Binary Production / 6
      * Standard constructor based upon two blocks and production data
      * @param h, the head symbol (a String)
@@ -70,6 +50,8 @@ public class BinaryProduction {
      * @param b2, the second composing Block
      * @param p, whether the production results in a printable Brick
      * @param m, the mode (a String)
+     * 
+     * Note: this assumes that a production is relative to C.
      */
     public BinaryProduction(String h, String t, Block b1, Block b2, boolean p,
             String m)
@@ -171,14 +153,21 @@ public class BinaryProduction {
      */
     public long checkProduction(TreeNode a, TreeNode b) 
     {
-        
+        // Conditions:
+        // - TreeNodes a and b must have a key
+        // - a must not mark a section end (the block cannot span a section end)
+        // - if the rule is an On-Off, there cannot be any substitutions
+        // - the relative difference in key must be the same for the TreeNodes
+        //   and the two halves of the production
+        // - a and b must have names corresponding to the two composing symbols
+        //   of the production
         if (a.getKey() != NC && b.getKey() != NC && !(a.isSectionEnd()) &&
                 !(type.equals("On-Off") && (a.isSub() || b.isSub())) &&
                 modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 a.getSymbol().equals(name1) && b.getSymbol().equals(name2))   
             return modKeys(b.getKey() - key2);
         
-        // in the event that the production is incorrect (most of the time)
+        // In the event that the production is incorrect (most of the time)
         return -1;
     }
     

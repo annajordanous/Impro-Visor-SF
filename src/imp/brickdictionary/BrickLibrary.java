@@ -241,7 +241,7 @@ public class BrickLibrary {
                     // For reading in dictionary, should only encounter bricks
                     if (blockCategory.equals("Brick"))
                     {
-                        String brickName = contents.first().toString();
+                        String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
                         String brickMode = contents.first().toString();
                         contents = contents.rest();
@@ -281,6 +281,10 @@ public class BrickLibrary {
         return dictionary;
     }
     
+        
+    public static String dashless(String s) {
+        return s.replace('-', ' ');
+    }
     public static void main(String[] args) throws IOException, 
             DictionaryException {
         BrickLibrary dictionary;

@@ -2,6 +2,7 @@
 package imp.brickdictionary;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -199,7 +200,7 @@ public class Brick extends Block {
                 // the necessary new brick.
                 if(blockType.equals("Brick"))
                 {
-                    String brickName = pList.first().toString();
+                    String brickName = BrickLibrary.dashless(pList.first().toString());
                     pList = pList.rest();
                     String brickKeyString = pList.first().toString();
                     pList = pList.rest();
@@ -271,7 +272,7 @@ public class Brick extends Block {
     
     // Sum the durations of a brick's subblocks
     @Override
-    public Long getDuration() {
+    public final Long getDuration() {
         
         long dur = 0;
         for(Block b : this.getSubBlocks())
@@ -440,8 +441,17 @@ public class Brick extends Block {
     }
     
     @Override
-    public boolean isSectionEnd()
+    public final boolean isSectionEnd()
     {
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
+}
+class BrickComparator implements Comparator {
+    @Override
+    public int compare(Object b1, Object b2) {
+        String name1 = ((Brick)b1).getName();
+        String name2 = ((Brick)b2).getName();
+        return name1.compareTo(name2);
+    }
+            
 }

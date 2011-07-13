@@ -6,11 +6,10 @@ package imp.cykparser;
 import java.util.*;
 import imp.brickdictionary.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import polya.*;
 
 /** CYKParser
+ * 
  * Parses a sequence of chords given chords and durations using
  * the CYK algorithm
  */
@@ -98,57 +97,6 @@ public class CYKParser
         cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
     }
     
-    /** readChordsls
-     * Reads in chords without durations from a leadsheet file
-     * @param filename , a String
-     */
-    public void readChordsls(String filename)
-    {
-        chords.clear();
-        FileReader in = null;
-        try {
-            in = new FileReader(filename);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        BufferedReader chordsIn = new BufferedReader(in);
-        try {
-            while (chordsIn.ready()) {
-                String newLine = chordsIn.readLine();
-                if (newLine.contains("|")) {
-                    addChords(newLine);
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(
-                    CYKParser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        int size = chords.size();
-        cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
-        tableFilled = false;
-        
-    }
-    
-      // FILLER CODE - NOT PARSING CORRECTLY YET //
-    /** addChords
-     * Takes in a string from the chord part of a leadsheet and pulls out chords
-     * 
-     * @param newLine, a line from a leadsheet file
-     */
-    public void addChords(String newLine)
-    {
-        String[] chordsList = newLine.split(" ");
-        for (int index = 0; index<chordsList.length; index++) {
-            if (!chordsList[index].matches("[/|]")) {
-                Chord newChord = new Chord(chordsList[index], 480);
-                chords.add(newChord);
-            }
-        }
-    }
-    
     private void loadDictionaries(String filename)
     {
         FileInputStream fis = null;
@@ -216,12 +164,16 @@ public class CYKParser
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+            Error e5 = new Error("File not found");
+            System.err.println(e5);
+            System.exit(-1);
         } finally {
             try {
                 fis.close();
             } catch (IOException ex) {
-                Logger.getLogger(CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+                Error e6 = new Error("File input stream could not close");
+                System.err.println(e6);
+                System.exit(-1);
             }
         }
         
@@ -386,11 +338,17 @@ public class CYKParser
      */
     private void findTerminal(int index, long start)
     {
+        // First, the table cell is initialized and the original terminal placed
+        // in it as a TreeNode.
         cykTable[index][index] = new LinkedList<TreeNode>();
         Chord currentChord = chords.get(index);
         TreeNode currentNode = new TreeNode(currentChord, start);
         cykTable[index][index].add(currentNode);
         
+        
+        // Then, every chord which the terminal could be substituted for is also
+        // added to that same cell as a TreeNode with the original Chord but a
+        // different name for the TreeNode.
         SubstituteList subs = edict.checkEquivalence(currentChord);
         subs.addAll(sdict.checkSubstitution(currentChord));
         for (int i = 0; i < subs.length(); i++)
@@ -420,17 +378,10 @@ public class CYKParser
         // pairs, starting at the leftmost and topmost.
         for(int index = 0; index < (col - row); index++) {
             assert(row+index < this.chords.size());
-            ListIterator iter1 = cykTable[row][row+index].listIterator(0);
             
-            // We loop through all the possible symbols in each cell.
-            while (iter1.hasNext()) {
-                TreeNode symbol1 = (TreeNode) iter1.next();
+            for (TreeNode symbol1 : cykTable[row][row+index]) {
                 
-                ListIterator iter2 = 
-                        cykTable[row+1+index][col].listIterator();
-                
-                while (iter2.hasNext()) {
-                    TreeNode symbol2 = (TreeNode) iter2.next();
+                for (TreeNode symbol2 : cykTable[row+index+1][col]) {
                     
                     ListIterator iterRule = nonterminalRules.listIterator();
 
@@ -444,11 +395,16 @@ public class CYKParser
                         // If newKey comes up with an appropriate key distance,
                         // make a new TreeNode for the current two TreeNodes.
                         if (!(newKey < 0)) {
+                            
+                            // The cost becomes larger for the final TreeNode if
+                            // either the first or second TreeNode uses a chord
+                            // substitute
                             int cost = rule.getCost();
                             if (symbol1.isSub())
                                 cost += 5;
                             if (symbol2.isSub())
                                 cost += 5;
+                            
                             TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
                                     symbol1, symbol2, cost, newKey);
