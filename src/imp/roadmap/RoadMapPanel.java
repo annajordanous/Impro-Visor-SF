@@ -229,8 +229,7 @@ public class RoadMapPanel extends JPanel{
             for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
                 block.transpose(diff);
             roadMap.process();
-            drawBricks();
-            repaint();
+            draw();
         }
         
     }
@@ -359,6 +358,7 @@ public class RoadMapPanel extends JPanel{
         if(selectionStart != -1 && selectionEnd != -1) {
             roadMap.getBrick(selectionEnd).setSectionEnd(!roadMap.getBrick(selectionEnd).isSectionEnd());
             drawBrick(selectionEnd);
+            drawKeyMap();
         }
     }
     
@@ -380,9 +380,7 @@ public class RoadMapPanel extends JPanel{
     }
     
     public void draw()
-    {
-       System.out.println(roadMap.size() + " " + graphicMap.size());
-        
+    { 
        view.setBackground(buffer);
        drawGrid();
        drawBricks();
@@ -431,14 +429,38 @@ public class RoadMapPanel extends JPanel{
             GraphicBrick brick = graphicMap.get(ind);      
             //g.shear((r.nextDouble()-.5)/100, (r.nextDouble()-.5)/100);
             //g.setStroke(new BasicStroke(r.nextFloat()*4));
-            brick.draw(g);
             
             int x = brick.x();
             int y = brick.y();
             
-            if(ind > 0 && !joinList.get(ind-1).isEmpty()) {
-                drawJoin(joinList.get(ind-1), x, y+settings.lineHeight);
+            brick.draw(g);
+            
+            if(ind < joinList.size() && !joinList.get(ind).isEmpty()) { //JOINS
+                String joinName = joinList.get(ind);
+                int length = settings.getBlockLength(brick.getBrick());
+                
+                FontMetrics metrics = g.getFontMetrics();
+                
+                int width = metrics.stringWidth(joinName) + 4;
+                int offset = metrics.getAscent();
+                
+                int joinX = x + length - width;
+                int joinY = y + joinX/settings.getLineLength() * settings.getLineOffset() +
+                        settings.lineHeight;
+                joinX = joinX%settings.getLineLength();
+        
+                g.setColor(settings.brickBGColor);
+                g.setStroke(settings.basicLine);
+                
+                g.fillRect(joinX+2,joinY+2, width, settings.lineSpacing - 4);
+        
+                g.setColor(settings.lineColor);
+                g.drawRect(joinX+2,joinY+2, width, settings.lineSpacing - 4);
+                
+                g.setColor(settings.textColor);
+                g.drawString(joinName,joinX+4, joinY+2+offset);
             }
+                
             
             if( ind == insertLineIndex ) {
                 g.setColor(Color.RED);
@@ -462,25 +484,7 @@ public class RoadMapPanel extends JPanel{
             xOffset+=brick.getLength();
         }
     }
-    
-    public void drawJoin(String name, int x, int y)
-    {
-        Graphics g = buffer.getGraphics();
-        
-        FontMetrics metrics = g.getFontMetrics();
-        
-        int width = metrics.stringWidth(name);
-        int offset = metrics.getAscent();
-        
-        g.setColor(Color.WHITE);
-        
-        g.fillRect(x+2,y+2, width + 4, settings.lineSpacing - 4);
-        
-        g.setColor(Color.BLACK);
-        
-        g.drawRect(x+2,y+2, width + 4, settings.lineSpacing - 4);
-        g.drawString(name,x+4, y+2+offset);
-    }
+
     
     public void drawKeyMap()
     {

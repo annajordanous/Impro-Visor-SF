@@ -814,6 +814,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     private void scaleSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scaleSliderChanged
         settings.measureLength = jSlider1.getValue();
+        roadMapPanel.draw();
     }//GEN-LAST:event_scaleSliderChanged
 
     /** InitBuffer <p>
@@ -859,6 +860,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private void saveState(String name)
     {
+        if(name.equals("Transpose") &&
+                roadMapHistory.getLast().getName().equals("Transpose"))
+            return; //Multiple transpositions should be the same action
+                    //ISSUE: changing multiple bricks in sequence undoes them all
         RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
         roadMapHistory.add(ss);
         roadMapFuture.clear();
@@ -1193,8 +1198,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void initLibraryTree()
     {
         ArrayList<Brick> bricks = new ArrayList(brickLibrary.getMap());
-        
-        //Collections.sort(bricks);
         
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         
