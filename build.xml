@@ -1,9 +1,9 @@
 <project name="Impro-Visor" default="compile" basedir=".">
 
 <description>
-Build-file for Impro-Visor 4.13
+Build-file for Impro-Visor 5
 
-Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
 
 Impro-Visor is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor413"            />
-    <property name="dist-mac"               value="improvisor413-mac"        />
-    <property name="dist-win"               value="improvisor413-win"        />
-    <property name="zipName"                value="improvisor413.zip"        />
-    <property name="zipMacName"             value="improvisor413mac.zip"     />
+    <property name="distDir"                value="improvisor500"            />
+    <property name="dist-mac"               value="improvisor500-mac"        />
+    <property name="dist-win"               value="improvisor500-win"        />
+    <property name="zipName"                value="improvisor500.zip"        />
+    <property name="zipMacName"             value="improvisor500mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
