@@ -45,55 +45,102 @@ public class RoadMapSettings {
     public BasicStroke basicLine    = new BasicStroke(1);
     public BasicStroke cursorLine   = new BasicStroke(2);
     
+    //Not sure if a lot of this belongs here
+    
+    /**
+     * returns the length of the block in the current settings
+     * @param block the block
+     * @return the length
+     */
     public int getBlockLength(Block block)
     {
         return (int) (block.getDuration() * measureLength)/beatsPerMeasure;
     }
     
+    /**
+     * returns the length of a duration in the current settings
+     * @param dur the duration
+     * @return the length
+     */
     public int getLength(long dur)
     {
         return (int) (dur * measureLength)/beatsPerMeasure;
     }
     
+    /**
+     * returns the x cutoff in the current settings
+     * @return the x cutoff
+     */
     public int getCutoff()
     {
         return xOffset + getLineLength();
     }
     
-    public long getCutoffBeat()
+    /**
+     * returns the number of beats per line
+     * @return the number of beats per line
+     */
+    public long getBeatsPerLine()
     {
         return beatsPerMeasure*barsPerLine;
     }
     
+    /**
+     * returns the length of a line
+     * @return the length
+     */
     public int getLineLength()
     {
         return barsPerLine * measureLength;
     }
     
+    /**
+     * returns the distance between each line
+     * @return the distance between each line
+     */
     public int getLineOffset()
     {
         return lineHeight + lineSpacing;
     }
     
+    /**
+     * returns the height of a block
+     * @return the height of a block
+     */
     public int getBlockHeight()
     {
         return lineHeight/3;
     }
     
+    /**
+     * returns the color of the given key
+     * @param key the key
+     * @return the color
+     */
     public Color getKeyColor(long key)
     {
-        return keyColors[(int)key];
+        return keyColors[(int)key % 12];
     }
     
+    /**
+     * returns the number of lines taken up by this number of beats
+     * @param beats number of beats
+     * @return number of lines
+     */
     public int getLines(long beats)
     {
-        int lines = (int) (beats/getCutoffBeat());
+        int lines = (int) (beats/getBeatsPerLine());
         return lines;
     }
     
+    /**
+     * 
+     * @param beats
+     * @return 
+     */
     public Point getPosFromBeats(long beats)
     {
-        int line = (int)getCutoffBeat();
+        int line = (int)getBeatsPerLine();
         int numLines = (int)beats/line;
         int y = yOffset + numLines * (lineHeight + lineSpacing);
         int x = xOffset + getLength(beats % line);

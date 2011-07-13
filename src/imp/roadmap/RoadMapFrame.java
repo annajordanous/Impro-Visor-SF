@@ -208,10 +208,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
         jPanel1.setName("jPanel1"); // NOI18N
-        jTabbedPane1.addTab("tab1", jPanel1); // NOI18N
+        jTabbedPane1.addTab("tab1", jPanel1);
 
         jPanel2.setName("jPanel2"); // NOI18N
-        jTabbedPane1.addTab("tab2", jPanel2); // NOI18N
+        jTabbedPane1.addTab("tab2", jPanel2);
 
         optionsDialog.getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
@@ -375,7 +375,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(sendToNotateButton);
 
-        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playButton.setText("\n"); // NOI18N
         playButton.setToolTipText("Play the selection.\n"); // NOI18N

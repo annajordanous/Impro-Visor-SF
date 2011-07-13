@@ -356,8 +356,10 @@ public class RoadMapPanel extends JPanel{
     
     public void toggleSection()
     {
-        if(selectionStart != -1 && selectionEnd != -1)
+        if(selectionStart != -1 && selectionEnd != -1) {
             roadMap.getBrick(selectionEnd).setSectionEnd(!roadMap.getBrick(selectionEnd).isSectionEnd());
+            drawBrick(selectionEnd);
+        }
     }
     
     public void setInsertLine(int x, int y)
@@ -496,8 +498,14 @@ public class RoadMapPanel extends JPanel{
             
             Color keyColor = settings.brickBGColor;
             
-            if(key != -1)
-                keyColor = settings.getKeyColor(key); //TODO fix coloring for minor keys
+            if(key != -1) {
+                if(keySpan.getMode().equals("Minor"))
+                    keyColor = settings.getKeyColor(key+3);
+                else if (keySpan.getMode().equals("Dominant"))
+                    keyColor = settings.getKeyColor(key+5);
+                else
+                    keyColor = settings.getKeyColor(key);
+            }
             
             Point startPos = settings.getPosFromBeats(currentBeats);
             Point endPos = settings.getPosFromBeats(currentBeats + dur);
@@ -506,8 +514,8 @@ public class RoadMapPanel extends JPanel{
             int endX = (int)endPos.x;
             int endY = (int)endPos.y;
             
-            long num = currentBeats % settings.getCutoffBeat() + dur;
-            int lines = (int) (num / settings.getCutoffBeat());
+            long num = currentBeats % settings.getBeatsPerLine() + dur;
+            int lines = (int) (num / settings.getBeatsPerLine());
             
             if(lines > 0) {
                 g.setColor(keyColor);
