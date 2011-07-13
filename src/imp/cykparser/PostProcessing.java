@@ -98,7 +98,7 @@ public class PostProcessing {
                     
                     // Add altered brick to the list
                     alteredList.add(b);
-                    }
+                }
                 // If brick is not an approach or does not resolve, add it to 
                 // the list 
                 else 
@@ -401,11 +401,11 @@ public class PostProcessing {
                 relative = (b2.getKey() + 5) % OCTAVE;
             }
 
-            if (b1.getKey() == b2.getKey() && b1.getMode().equals(b2Mode)) {
+            if (b1.getKey() == b2.getKey()/* && b1.getMode().equals(b2Mode)*/) {
                 resolves = true;
-            } else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
+            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
                 resolves = true;
-            }
+            }*/
         } else {
             String b2Mode = findModeFromQuality(((Chord) b2).getQuality());
             Long relative;
@@ -418,11 +418,11 @@ public class PostProcessing {
                 relative = (b2.getKey() + 5) % OCTAVE;
             }
 
-            if (b1.getKey() == b2.getKey() && b1.getMode().equals(b2Mode)) {
+            if (b1.getKey() == b2.getKey() /*&& b1.getMode().equals(b2Mode)*/) {
                 resolves = true;
-            } else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
+            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
                 resolves = true;
-            }
+            }*/
         }
 
         return resolves;

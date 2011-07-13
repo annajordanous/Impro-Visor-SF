@@ -91,7 +91,8 @@ public class Chord extends Block{
     @Override
     public List<Chord> flattenBlock() {
         List<Chord> chordList = new ArrayList<Chord>();
-        chordList.add(this);
+        if (this.duration != 0)
+            chordList.add(this);
         
         return chordList;
     }

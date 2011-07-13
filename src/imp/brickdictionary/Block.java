@@ -77,6 +77,10 @@ public class Block {
         return this.mode;
     }
     
+    public void setMode(String s) {
+        this.mode = s;
+    }
+    
     public String getType() {
         return this.mode;
     }

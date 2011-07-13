@@ -174,10 +174,10 @@ public class BinaryProduction {
         long start = a.getStart();
         
         
-        if (a.getKey() != NC && b.getKey() != NC &&
-                modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
-                d.checkEquivalence(a.getSymbol()).contains(name1) && 
-                d.checkEquivalence(b.getSymbol()).contains(name2) &&
+        if ((a.getKey() != NC) && (b.getKey() != NC) &&
+                (modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey())) &&
+                (d.checkEquivalence(a.getSymbol()).contains(name1)) && 
+                (d.checkEquivalence(b.getSymbol()).contains(name2)) &&
                 !(a.isSectionEnd())
                // && positionAppropriate(head, start)
                // && ((dur1 * b.getDuration()) == (dur2 * a.getDuration()) ||

@@ -188,7 +188,7 @@ public class TreeNode {
     {
         TreeNode newNode;
         if (child1 == null && child2 == null) {
-            Chord zeroChord = new Chord(block.getName(), 0, true);
+            Chord zeroChord = new Chord(block.getName(), 0, block.isSectionEnd());
             newNode = new TreeNode(zeroChord, cost + 5, start);
         }
         else {

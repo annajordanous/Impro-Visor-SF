@@ -35,6 +35,7 @@ public class Brick extends Block {
         this.addSubBlocks(contents, bricks);
         type = brickType;
         duration = this.getDuration();
+        isEnd = isSectionEnd();
     }
     
     /** Brick / 5
@@ -53,6 +54,7 @@ public class Brick extends Block {
         subBlocks = contents;
         type = brickType;
         duration = this.getDuration();
+        isEnd = isSectionEnd();
     }
     
 
@@ -84,6 +86,7 @@ public class Brick extends Block {
         type = brick.getType();
         duration = this.getDuration();
         mode = brick.getMode();
+        isEnd = isSectionEnd();
     }
     
     /** Brick / 2
@@ -111,6 +114,7 @@ public class Brick extends Block {
             duration += block.getDuration();
             subBlocks.add(newBlock); 
         }
+        isEnd = isSectionEnd();
     }
   
     private static String modeHelper(List<Block> brickList, long key)
@@ -295,8 +299,10 @@ public class Brick extends Block {
         // is a brick, recursively flatten.
         while(iter.hasNext()) {
             Block currentBlock = iter.next();
+
             chordList.addAll(currentBlock.flattenBlock());
         }
+        chordList.get(chordList.size() - 1).setSectionEnd(isEnd);
         
         return chordList;
     }
@@ -426,7 +432,11 @@ public class Brick extends Block {
     @Override
     public void setSectionEnd(Boolean value) {
         isEnd = value;
-        subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
+        if(this.isOverlap()) {
+            subBlocks.get(subBlocks.size() - 2).setSectionEnd(value);
+        }
+        else
+            subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
     }
     
     @Override
