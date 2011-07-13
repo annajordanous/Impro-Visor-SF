@@ -1,14 +1,8 @@
 
 package imp.cykparser;
 import imp.brickdictionary.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import polya.*;
 
 /**
  * purpose: gain further information from list of blocks
@@ -169,10 +163,10 @@ public class PostProcessing {
         EquivalenceDictionary dict = new EquivalenceDictionary();
         dict.loadDictionary(CYKParser.DICTIONARY_NAME);
         
-        ArrayList<String> firstEquivs = 
-                dict.checkEquivalence(firstToCheck.getQuality());
-        ArrayList<String> secondEquivs =
-                dict.checkEquivalence(secondToCheck.getQuality());
+        SubstituteList firstEquivs = 
+                dict.checkEquivalence(firstToCheck);
+        SubstituteList secondEquivs =
+                dict.checkEquivalence(secondToCheck);
         
         String firstMode = first.getMode();
         String secondMode = second.getMode();

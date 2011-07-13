@@ -8,6 +8,7 @@ import imp.brickdictionary.*;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import polya.*;
 
 /** CYKParser
  * Parses a sequence of chords given chords and durations using
@@ -22,7 +23,7 @@ public class CYKParser
     // Useful constants for the length of a bar and the load file for the
     // equivalence dictionary
     public static final int BAR_DURATION = 480;
-    public static final String DICTIONARY_NAME = "vocab/equivalences.txt";
+    public static final String DICTIONARY_NAME = "vocab/substitutions.txt";
     public static final String NONBRICK = "";
     /**
      * Data Members
@@ -41,6 +42,7 @@ public class CYKParser
     
     // 
     private EquivalenceDictionary edict;
+    private SubstitutionDictionary sdict;
     
     /**
      * CYKParser / 0
@@ -54,7 +56,8 @@ public class CYKParser
         nonterminalRules = new LinkedList<BinaryProduction>();
         tableFilled = false;
         edict = new EquivalenceDictionary();
-        edict.loadDictionary(DICTIONARY_NAME);
+        sdict = new SubstitutionDictionary();
+        loadDictionaries(DICTIONARY_NAME);
     }
     
     /**
@@ -72,7 +75,10 @@ public class CYKParser
         
         cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
         nonterminalRules = new LinkedList<BinaryProduction>();
-        edict.loadDictionary(DICTIONARY_NAME);
+        
+        edict = new EquivalenceDictionary();
+        sdict = new SubstitutionDictionary();
+        loadDictionaries(DICTIONARY_NAME);
     }
     
     /** newChords
@@ -141,6 +147,84 @@ public class CYKParser
                 chords.add(newChord);
             }
         }
+    }
+    
+    private void loadDictionaries(String filename)
+    {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(filename);
+            Tokenizer in = new Tokenizer(fis);
+            in.slashSlashComments(true);
+            in.slashStarComments(true);
+            Object token;
+
+            // Read in S expressions until end of file is reached
+            while ((token = in.nextSexp()) != Tokenizer.eof)
+            {
+                if (token instanceof Polylist) 
+                {
+                    Polylist contents = (Polylist)token;
+                    
+                    // Check that polylist has enough fields to be a brick
+                    // Needs BlockType (i.e. "Brick"), name, key, and contents
+                    if (contents.length() < 3)
+                    {
+                        Error e = new Error("Improper formatting for dictionary"
+                                + "rule");
+                        System.err.println(e);
+                    }
+                    else
+                    {
+                        String eqCategory = contents.first().toString();
+                        contents = contents.rest();
+                        
+                        // For reading in dictionary, should only encounter bricks
+                        if (eqCategory.equals("sub"))
+                        {
+                            String head = contents.first().toString();
+                            contents = contents.rest();
+                            UnaryProduction newSub = 
+                                    new UnaryProduction(head, contents);
+                            sdict.addRule(newSub);
+                        }
+                        else if (eqCategory.equals("equiv"))
+                        {
+                            ArrayList<Chord> newEq = new ArrayList<Chord>();
+                            while (contents.nonEmpty())
+                            {
+                                String chordName = contents.first().toString();
+                                contents = contents.rest();
+                                Chord nextChord = new Chord(chordName, 
+                                                        UnaryProduction.NODUR);
+                                newEq.add(nextChord);
+                            }
+                            edict.addRule(newEq);
+                        }
+                        else
+                        {
+                            Error e4 = new Error("rule not of correct type");
+                            System.err.println(e4);
+                        }
+                    }
+                }
+                else
+                {
+                    Error e2 = new Error("Improper formatting for token");
+                    System.err.println(e2);
+                    System.exit(-1);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException ex) {
+                Logger.getLogger(CYKParser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
     
     /** createRules
@@ -306,6 +390,15 @@ public class CYKParser
         Chord currentChord = chords.get(index);
         TreeNode currentNode = new TreeNode(currentChord, start);
         cykTable[index][index].add(currentNode);
+        
+        SubstituteList subs = edict.checkEquivalence(currentChord);
+        subs.addAll(sdict.checkSubstitution(currentChord));
+        for (int i = 0; i < subs.length(); i++)
+        {
+            currentNode = new TreeNode(subs.getName(i), subs.getKey(i),
+                                                currentChord, start);
+            cykTable[index][index].add(currentNode);
+    }
     }
     
     /** findNonterminal
@@ -347,13 +440,18 @@ public class CYKParser
                                 (BinaryProduction) iterRule.next();
                         
                         long newKey = rule.checkProduction(symbol1, 
-                                                           symbol2, edict);
+                                                           symbol2);
                         // If newKey comes up with an appropriate key distance,
                         // make a new TreeNode for the current two TreeNodes.
                         if (!(newKey < 0)) {
+                            int cost = rule.getCost();
+                            if (symbol1.isSub())
+                                cost += 5;
+                            if (symbol2.isSub())
+                                cost += 5;
                             TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
-                                    symbol1, symbol2, rule.getCost(), newKey);
+                                    symbol1, symbol2, cost, newKey);
                             cykTable[row][col].add(newNode);
                             
                             // Additionally, if this block could overlap with 

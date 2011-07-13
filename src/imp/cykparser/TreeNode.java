@@ -21,6 +21,7 @@ public class TreeNode {
     
     // An int cost for a default chord
     public static final long CHORD_COST = 1000;
+    public static final long CHORD_SUB_COST = 1050;
     
     // Constructors for TreeNodes
     
@@ -38,9 +39,11 @@ public class TreeNode {
         chords = new ArrayList<Chord>();
         cost = Double.POSITIVE_INFINITY; // To ensure it isn't added to a parse
         mode = null;
+        key = -1;
         toPrint = false;
         isEnd = false;
         start = 0;
+        isSub = false;
     }
     
     /** Chord Constructor / 2
@@ -54,13 +57,16 @@ public class TreeNode {
         child1 = null;
         child2 = null;
         block = chord;
+        mode = chord.getMode();
         chords = new ArrayList<Chord>();
         chords.add(chord);
-        symbol = chord.getSymbol();
+        key = block.getKey();
+        symbol = chord.getQuality();
         cost = CHORD_COST;
         toPrint = true;
         isEnd = chord.isSectionEnd();
         start = s;
+        isSub = false;
     }
     
     /** Chord Constructor / 3
@@ -68,6 +74,7 @@ public class TreeNode {
      * 
      * @param chord, a Chord
      * @param c, a long describing the Chord's cost
+     * @param s, the start position in a piece
      */
         public TreeNode(Chord chord, double c, long s)
     {
@@ -77,13 +84,38 @@ public class TreeNode {
         mode = chord.getMode();
         chords = new ArrayList<Chord>();
         chords.add(chord);
-        symbol = chord.getSymbol();
+        key = block.getKey();
+        symbol = chord.getQuality();
         cost = c;
         toPrint = true;
         isEnd = chord.isSectionEnd();
         start = s;
+        isSub = false;
     }
     
+    /** Chord Constructor / 5
+     * Takes in a chord and makes a TreeNode with cost c, but for a substituted
+     * chord name and root
+     * @param chord, a Chord
+     * @param c, a long describing the Chord's cost
+     */
+        public TreeNode(String name, long k, Chord chord, long s)
+    {
+        child1 = null;
+        child2 = null;
+        block = chord;
+        mode = chord.getMode();
+        chords = new ArrayList<Chord>();
+        chords.add(chord);
+        key = k;
+        symbol = name;
+        cost = CHORD_SUB_COST;
+        toPrint = true;
+        isEnd = chord.isSectionEnd();
+        start = s;
+        isSub = true;
+    }    
+        
     /** Terminal Constructor / 4
      * 
      * Constructs a TreeNode for a terminal
@@ -109,6 +141,7 @@ public class TreeNode {
         toPrint = true;
         isEnd = false;
         start = s;
+        isSub = false;
     }
     
     /** Nonterminal Constructor / 5
@@ -137,6 +170,7 @@ public class TreeNode {
         chords.addAll(c2.getChords());
 
         block = new Brick(sym, k, type, subBlocks, m);
+        key = k;
 
         cost = co;
         if (type.equals(CYKParser.NONBRICK))
@@ -144,6 +178,7 @@ public class TreeNode {
         else toPrint = true;
 
         isEnd = c2.isSectionEnd();
+        isSub = (c1.isSub() || c2.isSub());
 
         start = c1.getStart();
     }
@@ -172,10 +207,13 @@ public class TreeNode {
         subBlocks.addAll(c2.getBlocks());
         
         block = new Brick("", c2.getKey(), "", subBlocks, "");
+        key = c2.getKey();
         
         cost = child1.getCost() + child2.getCost();
         toPrint = false;
         isEnd = c2.isSectionEnd();
+        isSub = (c1.isSub() || c2.isSub());
+
         start = c1.getStart();
     }
     
@@ -201,6 +239,11 @@ public class TreeNode {
     public boolean isOverlap()
     {
         return block.isOverlap();
+    }
+    
+    public boolean isSub()
+    {
+        return isSub;
     }
     
     // Getters for the data members of a TreeNode
@@ -262,6 +305,10 @@ public class TreeNode {
     public boolean toShow()
     {
         return toPrint;
+    }
+    
+    public Block getBlock() {
+        return block;
     }
     
     // Gets the significant types of blocks from a TreeNode.
@@ -336,11 +383,13 @@ public class TreeNode {
     private ArrayList<Chord> chords;  // Chords contained within the node
     private Block block;              // The structure holding all of the
                                       // TreeNode's contents
+    private long key;
     private double cost;              // Value of the top-level block
     private boolean toPrint;          // Whether the brick name will print
     private long start;               // The start position of the first brick
     private boolean isEnd;            // If the node ends a section
     private String mode;
+    private boolean isSub;
                                       
 
 }

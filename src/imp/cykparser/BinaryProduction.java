@@ -169,21 +169,13 @@ public class BinaryProduction {
      * @return an int representing the difference between the two chords (-1 if
      * failed, otherwise 0 through 11)
      */
-    public long checkProduction(TreeNode a, TreeNode b, EquivalenceDictionary d) 
+    public long checkProduction(TreeNode a, TreeNode b) 
     {
-        long start = a.getStart();
         
-        
-        if ((a.getKey() != NC) && (b.getKey() != NC) &&
-                (modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey())) &&
-                (d.checkEquivalence(a.getSymbol()).contains(name1)) && 
-                (d.checkEquivalence(b.getSymbol()).contains(name2)) &&
-                !(a.isSectionEnd())
-               // && positionAppropriate(head, start)
-               // && ((dur1 * b.getDuration()) == (dur2 * a.getDuration()) ||
-               // type.equals("Cadence") )
-                )
-            
+        if (a.getKey() != NC && b.getKey() != NC && !(a.isSectionEnd()) &&
+                !(type.equals("On-Off") && (a.isSub() || b.isSub())) &&
+                modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
+                a.getSymbol().equals(name1) && b.getSymbol().equals(name2))   
             return modKeys(b.getKey() - key2);
         
         // in the event that the production is incorrect (most of the time)
@@ -193,19 +185,6 @@ public class BinaryProduction {
     // Helper function - returns i mod 12 and assures it is be positive
     private long modKeys(long i) {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
-    }
-    
-    private boolean positionAppropriate(String head, long start) {
-        if (head.equals("Launcher") && start%(480*4) == (480*3))
-            return true;
-        else if (head.equals("Dropback"))
-            return true;
-        else if (head.equals("Approach") && start%(480*4) != (480*3))
-            return true;
-        else if (head.equals("Cadence") && start%(480*2) == 0)
-            return true;
-        else 
-            return false;
     }
             
     

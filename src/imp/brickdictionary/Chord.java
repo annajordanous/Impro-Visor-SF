@@ -23,7 +23,6 @@ public class Chord extends Block{
     public Chord(String chordName, long duration) {
         super(chordName);
         this.duration = duration;
-        this.slashChord = 0;
         this.parseChordName();
         isEnd = false;
     }
@@ -31,7 +30,6 @@ public class Chord extends Block{
     public Chord(String chordName, long duration, boolean sectionend) {
         super(chordName);
         this.duration = duration;
-        this.slashChord = 0;
         this.parseChordName();
         isEnd = sectionend;
     }
@@ -74,7 +72,7 @@ public class Chord extends Block{
     }
     
     public boolean isSlashChord() {
-        if (this.slashChord != 0) return true;
+        if (this.slashChord != this.key) return true;
         return false;
     }
     
@@ -100,13 +98,30 @@ public class Chord extends Block{
     // Change chord's root (key) by diff
     @Override
     public void transpose(long diff) {
-        this.key = (this.key + diff + 12)%12;
-        this.name = BrickLibrary.keyNumToName(key) + this.quality;
+        this.key = moduloSteps(this.key + diff);
+        this.slashChord = moduloSteps(this.slashChord + diff);
+        this.name = BrickLibrary.keyNumToName(key) + this.getQuality();
+    }
+    
+    public String transposeName(long diff) {
+        transpose(diff);
+        String tranName = this.name.intern();
+        transpose(-1*diff);
+        return tranName;
     }
     
     @Override
     public String toString() {
         return name + " " + duration;
+    }
+    
+    
+    public long matches(Chord c) {
+        if (c.getQuality().equals(quality) || 
+                (c.isSlashChord() && 
+                c.getQuality().split("/")[0].equals(quality)))
+            return moduloSteps(c.getKey() - key );
+        return NC;
     }
     
     // Extract chord's root (key) and quality from its name
@@ -138,6 +153,7 @@ public class Chord extends Block{
                 this.quality = "";
         }
         
+        this.slashChord = this.key;
         String[] qualitySplit = this.quality.split("/", 2);
         if (qualitySplit.length > 1) {
             quality = qualitySplit[0];
@@ -147,4 +163,10 @@ public class Chord extends Block{
         this.mode = this.quality;
             
     }
+    
+    public long moduloSteps(long l) {
+        return (l + 12)%12;
+}
+    
+    
 }
