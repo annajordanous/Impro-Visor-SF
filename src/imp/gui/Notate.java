@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
@@ -4909,6 +4909,7 @@ public class Notate
         overrideFrame.getContentPane().add(measErrorLabel, gridBagConstraints);
 
         voicingTestFrame.setTitle("Chord Voicing Utility");
+        voicingTestFrame.setAlwaysOnTop(true);
         voicingTestFrame.getRootPane().setDefaultButton(buildTableButton);
         voicingTestFrame.setSize(600, 400);
         voicingTestFrame.getContentPane().setLayout(new java.awt.GridLayout(1, 0));
@@ -12649,7 +12650,7 @@ private void updateTempoFromTextField()
     {
     getCurrentStave().setSelectionStart(index);
 
-    getCurrentStaveActionHandler().redoAdvice(index);
+    getCurrentStaveActionHandler().redoAdvice(index);  // unnecessary?
     }
     
     
@@ -12666,8 +12667,22 @@ private void updateTempoFromTextField()
     }
     
     
-    
   /**
+   *
+   * Set the current Selection end.
+   *
+   */
+  
+  void setCurrentSelectionStartAndEnd(int index)
+    {
+    Stave stave = getCurrentStave();
+    stave.setSelectionStart(index);
+    stave.setSelectionEnd(index);
+    }
+    
+    
+    
+ /**
    *
    * Indicate whether a slot is current selected or not.
    *
@@ -12679,7 +12694,8 @@ private void updateTempoFromTextField()
     return stave != null && stave.somethingSelected();
     }
 
-    
+ 
+  
     
   /**
    *
@@ -16960,6 +16976,13 @@ public ChordPart makeCountIn()
     {
     return midiSynth;
     }
+  
+  
+  public Sequencer getSequencer()
+    {
+    return midiSynth.getSequencer();
+    }
+
 
   /**
    *
@@ -17609,6 +17632,8 @@ public void WriteLeadsheetToFile(File file) {
     scoreTab.setSelectedIndex(currTabIndex);
     
     setTransposition(score.getTransposition());
+    
+    midiRecorder = new MidiNoteActionHandler(this, score);
     }
 
   public boolean adviceIsShowing()
@@ -22462,6 +22487,12 @@ public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
       score.fromRoadMapFrame(roadmap);
       setBars(score.getBarsPerChorus());
       repaint();
+  }
+
+
+public void execute(Command command)
+  {
+    cm.execute(command);
   }
 
 }

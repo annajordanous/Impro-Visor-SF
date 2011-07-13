@@ -119,19 +119,20 @@ public class MidiNoteActionHandler implements Constants, Receiver {
     static final int SNAPTO = BEAT / 4;
     
     void start() {
-        this.sequencer = notate.getMidiSynth().getSequencer();
+        this.sequencer = notate.getSequencer();
         while((noteOn = getTick()) < 0) {}
         resolution = sequencer.getSequence().getResolution();
         noteOff = noteOn = getTick();
         notePlaying = false;
-        notate.getCurrentStave().setSelectionStart(0);
-        notate.getCurrentStave().setSelectionEnd(0);
+        notate.setCurrentSelectionStartAndEnd(0);
         
         countInOffset = score.getCountInOffset();
     }
     
     void handleNoteOn(int note, int velocity, int channel) {
         // System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
+        
+        MelodyPart melodyPart = notate.getCurrentOrigPart();
         
         // new note played, so finish up previous notes or insert rests up to the current note
         int index;
@@ -148,16 +149,15 @@ public class MidiNoteActionHandler implements Constants, Receiver {
                 // add rests since nothing was played between now and the previous note
                 if(duration > 0 && index >= 0 ) {
                     Note noteToAdd = new Rest(duration);
-                    notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
+                    notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, melodyPart, notate));
                 }
 
                 if( index >= 0 )
                   {
-                  notate.getCurrentStave().setSelectionStart(index);
-                  notate.getCurrentStave().setSelectionEnd(index);
+                  notate.setCurrentSelectionStartAndEnd(index);
                   }
             } catch(Exception e) {
-                e.printStackTrace();
+                //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiNoteActionHandler: " + e);
             }
         }
         
@@ -168,11 +168,10 @@ public class MidiNoteActionHandler implements Constants, Receiver {
         Note noteToAdd = new Note(note, SNAPTO);
         
         try {
-            noteToAdd.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
-            notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
+            noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
+            notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, melodyPart, notate));
         } catch(Exception e) {
-            e.printStackTrace();
-            System.out.println("ERROR: " + e.getMessage());
+            //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiNoteActionHandler: " + e);
         }
         
         notate.repaint();
@@ -191,7 +190,7 @@ public class MidiNoteActionHandler implements Constants, Receiver {
     }
     
     int microsecondsToSlots(long duration) {
-        double tempo = notate.getScore().getTempo();
+        double tempo = score.getTempo();
         return (int) (duration / 1000000.0 * (tempo / 60) * BEAT);
     }
 
@@ -224,13 +223,12 @@ public class MidiNoteActionHandler implements Constants, Receiver {
             
         } else {
             Note noteToAdd = new Note(note, duration);
-            noteToAdd.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
-            notate.cm.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
+            noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
+            notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
         }       
         index += duration;
         
-        notate.getCurrentStave().setSelectionStart(index);
-        notate.getCurrentStave().setSelectionEnd(index);
+        notate.setCurrentSelectionStartAndEnd(index);
         
  //       System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
         

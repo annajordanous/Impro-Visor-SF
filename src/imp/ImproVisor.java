@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,6 @@ package imp;
 import java.io.*;
 
 import javax.swing.JFileChooser;
-import java.awt.GraphicsEnvironment;
-import java.awt.GraphicsDevice;
-import java.awt.DisplayMode;
 
 import imp.data.*;
 import imp.com.*;
@@ -39,12 +36,12 @@ import imp.util.*;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 1.12
+ * @version 5
  */
 
 public class ImproVisor implements Constants {
     
-    public static String version = "3.36";
+    public static String version = "5";
 
     private static String ruleFilePath;
     private static String ruleFileDir;

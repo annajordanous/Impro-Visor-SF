@@ -3943,6 +3943,7 @@
     <Container class="javax.swing.JFrame" name="voicingTestFrame">
       <Properties>
         <Property name="title" type="java.lang.String" value="Chord Voicing Utility"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="voicingTestFrame.getRootPane().setDefaultButton(buildTableButton);&#xa;voicingTestFrame.setSize(600, 400);"/>
