@@ -469,7 +469,7 @@ StaveActionHandler(Stave stave, Notate notate)
 
   penCursor = makeCursor("graphics/toolbar/pencilCursor.png", "Pencil", true);
   
-  noteCursor = makeCursor("graphics/noteCursor.png", "Note", false);
+  noteCursor = defaultCursor; // makeCursor("graphics/noteCursor.png", "Note", false);
  }
 
 
@@ -828,8 +828,9 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
   // add new note close to mouse clicked pitch
 
   int pitch =
-    ((lastToneApproach && !apprch) ? lastApproachPitch : yPosToAnyPitch(y,
-                                                                        currentLine));
+    (lastToneApproach && !apprch) ? 
+         lastApproachPitch 
+       : yPosToAnyPitch(y - (notate.getParallax() + parallaxBias), currentLine);
 
   // reset the pitch to the max or min pitch of the Stave if
   // they are out of bounds
