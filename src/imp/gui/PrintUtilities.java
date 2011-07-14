@@ -104,7 +104,7 @@ public class PrintUtilities implements Printable {
         double pageHeight = pf.getImageableHeight();        //  height of printer page
         double pageWidth = pf.getImageableWidth();          //  width of printer page
         double scale = pageWidth / panelWidth;
-        int totalNumPages = (int) Math.ceil(scale * panelHeight / pageHeight);
+        int totalNumPages = (int) Math.ceil(scale * panelHeight / pageHeight)-1;
         
         // make sure not print empty pages
         if (pageIndex >= totalNumPages) {
