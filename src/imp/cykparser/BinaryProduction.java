@@ -17,7 +17,7 @@ public class BinaryProduction {
     
     public static final int TOTAL_SEMITONES = 12;
     // BRICK_COSTS in order: 
-    public static final int NONBRICK = 100;
+    public static final int NONBRICK = 1000;
     public static final int CADENCE = 30;
     public static final int APPROACH = 45;
     public static final int DROPBACK = 35;
@@ -162,6 +162,7 @@ public class BinaryProduction {
         // - a and b must have names corresponding to the two composing symbols
         //   of the production
         if (a.getKey() != NC && b.getKey() != NC && !(a.isSectionEnd()) &&
+                !a.isOverlap() && !b.isOverlap() &&
                 !(type.equals("On-Off") && (a.isSub() || b.isSub())) &&
                 modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 a.getSymbol().equals(name1) && b.getSymbol().equals(name2))   

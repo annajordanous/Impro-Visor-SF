@@ -19,9 +19,9 @@ import imp.brickdictionary.*;
 public class TreeNode {
     
     // An int cost for a default chord
-    public static final double CHORD_COST = 100;
-    public static final double CHORD_SUB_COST = 150;
-    public static final double OVERLAP_COST = 150;
+    public static final double CHORD_COST = 1000;
+    public static final double CHORD_SUB_COST = 1050;
+    public static final double OVERLAP_COST = 1050;
     
     // Constructors for TreeNodes
     
