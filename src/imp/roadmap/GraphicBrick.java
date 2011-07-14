@@ -142,7 +142,7 @@ public class GraphicBrick {
         return settings.getBlockLength(block);
     }
     
-    /* Drawing and junk lies below */
+    /* Drawing and junk lies below. DANGER: Extreme ugliness ahead */
     
     /**
      * Draws the brick at its current position
@@ -150,121 +150,132 @@ public class GraphicBrick {
      */
     public void draw(Graphics g)
     {
-        drawBackground(g);
-        drawLines(g);
+        // I split this up like this because drawing junk is a pain in the monk
+        // - August
+        drawBrick(g);
+        drawChords(g);
     }
     
     /**
-     * Draws the background of the brick
+     * Draws the background and outline of the brick
      * @param g graphics on which to draw
      */
-    private void drawBackground(Graphics g) //TODO fix to use beats instead of just coordinates
-    {
-        int xOffset = x;
-        int yOffset = y;
-        int cutoffLine = settings.getCutoff();
-        int length = getLength();
-        
-        Color bgColor = settings.brickBGColor;
-        
-        if(isSelected)
+    private void drawBrick(Graphics g)
+    {   
+        Color bgColor;
+        if(!isSelected)
+            bgColor = settings.brickBGColor;
+        else
             bgColor = settings.selectedColor;
-
-        while ( xOffset + length > cutoffLine ) {
-            
-            g.setColor(bgColor);
-            g.fillRect(xOffset, yOffset, cutoffLine-xOffset, settings.lineHeight);
-            
-            length -= cutoffLine - xOffset;
-            
-            xOffset = settings.xOffset;
-            yOffset += settings.lineHeight + settings.lineSpacing;
-        }
         
-        g.setColor(bgColor);
-        g.fillRect(xOffset, yOffset, length, settings.lineHeight);
-    }
-    
-    /**
-     * Draws the lines of the brick
-     * @param g graphics on which to draw
-     */
-    private void drawLines(Graphics g) //TODO fix to use beats instead of just coordinates
-    {
-        ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
+        int[] wrap = settings.wrap(x+settings.getBlockLength(block));
+        int endX = wrap[0];
+        int lines = wrap[1];
+        int blockHeight = settings.getBlockHeight();
+        int cutoff = settings.getCutoff();
         
         Graphics2D g2d = (Graphics2D)g;
-        
-        int xOffset = this.x;
-        int yOffset = this.y;
-        boolean isBrick = chords.size() > 1;
-        int cutoffLine = settings.getCutoff();
-        int blockHeight = settings.getBlockHeight();
-        
-        Color textColor = settings.textColor;
-        
-        if(isBrick) {
-            g2d.setColor(textColor);
-            g2d.drawString(block.getName(), x+5, y+settings.lineHeight/2+5);
-        }
         g2d.setStroke(settings.brickOutline);
+        g2d.setColor(bgColor);
+        
+        if(lines > 0) {
+            g2d.fillRect(x, y+blockHeight, cutoff - x, 2*blockHeight);
+            
+            g2d.setColor(settings.lineColor);
+            g2d.drawLine(x, y+blockHeight, x, y+3*blockHeight);
+            g2d.drawLine(x, y+3*blockHeight, cutoff, y+3*blockHeight);
+            
+            for( int line = 1; line < lines; line++ ) {
+                int currentY = y+line*settings.getLineOffset();
+                g2d.setColor(bgColor);
+                g2d.fillRect(settings.xOffset,
+                        currentY + blockHeight,
+                        settings.getLineLength(), 2*blockHeight);
+                
+                g2d.setColor(settings.lineColor);
+                g2d.drawLine(settings.xOffset, currentY + 3*blockHeight,
+                        cutoff, currentY + 3*blockHeight);
+            }
+            int currentY = y+lines*settings.getLineOffset();
+            
+            g2d.setColor(bgColor);
+            g2d.fillRect(settings.xOffset,
+                    currentY + blockHeight,
+                    endX-settings.xOffset, 2*blockHeight);
+            
+            g2d.setColor(settings.lineColor);
+            g2d.drawLine(settings.xOffset, currentY + 3*blockHeight,
+                    endX, currentY + 3*blockHeight);
+            g2d.drawLine(endX, currentY + blockHeight, endX, currentY + 3*blockHeight);
+        } else {
+            g2d.fillRect(x, y+blockHeight, endX - x, 2*blockHeight);
+            
+            g2d.setColor(settings.lineColor);
+            g2d.drawLine(x, y+blockHeight, x, y+3*blockHeight);
+            g2d.drawLine(x, y + 3*blockHeight,
+                    endX, y + 3*blockHeight);
+            g2d.drawLine(endX, y + blockHeight, endX, y + 3*blockHeight);
+        }
+    }
+    
+    /**
+     * Draws the chords of the brick
+     * @param g graphics on which to draw
+     */
+    private void drawChords(Graphics g)
+    {
+        ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
+ 
+        int blockHeight = settings.getBlockHeight();
+        int cutoff = settings.getCutoff();
+        int xOffset = settings.xOffset;
+        
+        Graphics2D g2d = (Graphics2D)g;
+        FontMetrics metrics = g2d.getFontMetrics();
+        int fontOffset = (blockHeight + metrics.getAscent())/2;
+        long currentBeats = 0;
+        
+        if(chords.size() > 1) {
+            g2d.setColor(settings.textColor);
+            g2d.drawString(block.getName(), x+2, y+blockHeight + fontOffset);
+        }
+        
+        g2d.setStroke(settings.basicLine);
         
         g2d.setColor(settings.lineColor);
-        g2d.drawLine(xOffset, yOffset+blockHeight, xOffset, yOffset+settings.lineHeight);
         
-        for( Iterator<Chord> it = chords.iterator(); it.hasNext(); )  
-        {
-            Chord chord = it.next();
+        for( Chord chord : chords ) {
+            int[] wrap = settings.wrap(x + settings.getLength(currentBeats));
+            int currentX = wrap[0];
+            int currentY = y + wrap[1] * settings.getLineOffset() + 2*blockHeight;
+            
             int length = settings.getBlockLength(chord);
+            int[] endWrap = settings.wrap(currentX + length);
+            int endX = endWrap[0];
+            int lines = endWrap[1];
             
-            g2d.setStroke(settings.basicLine);
-            g2d.drawString(chord.getName(), xOffset+5, yOffset+5*blockHeight/2+5);
-            g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset, yOffset+settings.lineHeight);
+            g2d.setColor(settings.textColor);
+            g2d.drawString(chord.getName(), currentX+2, currentY + fontOffset);
             
-            while ( xOffset + length > cutoffLine ) {
-                System.out.println("Breaking line");
+            g2d.setColor(settings.lineColor);
+            if(lines > 0) {
+                g2d.drawLine(currentX, currentY, cutoff, currentY);
                 
-                if(isBrick) 
-                    g.drawLine(xOffset, yOffset+blockHeight, cutoffLine, yOffset+blockHeight);
+                for(int line = 1; line < lines; line++) {
+                    g2d.drawLine(xOffset, currentY + line*settings.getLineOffset(),
+                            cutoff, currentY + line*settings.getLineOffset());
+                }
                 
-                g2d.drawLine(xOffset, yOffset+2*blockHeight, cutoffLine, yOffset+2*blockHeight);
-                
-                g2d.setStroke(settings.brickOutline);
-                g2d.drawLine(xOffset, yOffset+3*blockHeight, cutoffLine, yOffset+3*blockHeight);
-                
-                length -= cutoffLine - xOffset;
-                
-                xOffset = settings.xOffset;
-                yOffset += settings.lineHeight + settings.lineSpacing;
+                g2d.drawLine(xOffset, currentY + lines*settings.getLineOffset(),
+                        endX, currentY + lines*settings.getLineOffset());
+            } else {
+                g2d.drawRect(currentX, currentY, length, blockHeight);
             }
             
-            g2d.setStroke(settings.basicLine);
-            if(isBrick) {
-                g2d.drawLine(xOffset, yOffset+blockHeight, xOffset+length, yOffset+blockHeight);
-            }
-
-            g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset+length, yOffset+2*blockHeight);
-            
-            g2d.setStroke(settings.brickOutline);
-            g2d.drawLine(xOffset, yOffset+3*blockHeight, xOffset+length, yOffset+3*blockHeight);
-            
-            xOffset += length;
-            
-            g2d.setStroke(settings.basicLine);
-            g2d.drawLine(xOffset, yOffset+2*blockHeight, xOffset, yOffset+3*blockHeight);
-            
-            if(xOffset >= cutoffLine && it.hasNext()) {
-                xOffset = settings.xOffset;
-                yOffset += settings.lineHeight+settings.lineSpacing;
-            }
+            currentBeats += chord.getDuration();
         }
-        
-        g2d.setStroke(settings.brickOutline);
-        g2d.drawLine(xOffset, yOffset+blockHeight, xOffset, yOffset+settings.lineHeight);
-        //g2d.drawLine(xOffset-2, yOffset, xOffset-2, yOffset+settings.lineHeight);
-        if(block.isSectionEnd())
-            g2d.drawLine(xOffset-6, yOffset+blockHeight, xOffset-6, yOffset+settings.lineHeight);
     }
+    
     
     /**
      * Draws the bricks at a specified location without wrapping

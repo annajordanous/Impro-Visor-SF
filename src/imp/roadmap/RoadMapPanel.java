@@ -213,6 +213,7 @@ public class RoadMapPanel extends JPanel{
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             ArrayList<Block> bricks = view.analyze(removeSelection());
+            
             addBlocks(selectionStart, bricks);
             selectionEnd = selectionStart;
             selectBricks(selectionStart + bricks.size() - 1);
@@ -423,7 +424,7 @@ public class RoadMapPanel extends JPanel{
         
         ArrayList<String> joinList = roadMap.getJoins();
         
-        //System.out.println(roadMap.getBricks().size() + " " + joinList.size());
+        System.out.println(joinList);
         //Random r = new Random();
         for( int ind = 0; ind < graphicMap.size(); ind++ ) {
             GraphicBrick brick = graphicMap.get(ind);      
@@ -492,6 +493,9 @@ public class RoadMapPanel extends JPanel{
         Graphics g = buffer.getGraphics();
         
         int blockHeight = settings.getBlockHeight();
+        
+        FontMetrics metrics = g.getFontMetrics();
+        int fontOffset = (blockHeight + metrics.getAscent())/2;
         
         long currentBeats = 0;
         
@@ -562,7 +566,7 @@ public class RoadMapPanel extends JPanel{
             g.drawLine(x, y, x, y+blockHeight);
             
             g.setColor(settings.textColor);
-            g.drawString(keyName, x+2, y+10); //TODO use font metrics
+            g.drawString(keyName, x+2, y+fontOffset); //TODO use font metrics
             
             currentBeats += dur;
         }

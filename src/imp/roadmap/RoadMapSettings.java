@@ -147,4 +147,16 @@ public class RoadMapSettings {
         
         return new Point(x,y);
     }
+    
+    /**
+     * Wraps x coordinate
+     * @param x
+     * @return the new x coordinate, the number of lines
+     */
+    public int[] wrap(int x)
+    {
+        int lines = (x - xOffset)/getLineLength();
+        int endX = xOffset + ((x - xOffset) % getLineLength());
+        return new int[]{endX, lines};
+    }
 }

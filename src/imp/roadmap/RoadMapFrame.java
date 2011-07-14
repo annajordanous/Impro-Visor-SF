@@ -55,7 +55,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private BrickLibrary brickLibrary;
     
-    private CYKParser cykParser;
+    private CYKParser cykParser = new CYKParser();
     
     private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
     
@@ -814,7 +814,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     private void scaleSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scaleSliderChanged
         settings.measureLength = jSlider1.getValue();
-        roadMapPanel.draw();
+        roadMapPanel.placeBricks();
     }//GEN-LAST:event_scaleSliderChanged
 
     /** InitBuffer <p>
@@ -1046,7 +1046,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             int index = roadMapPanel.getSlotAt(x, y);
             roadMapPanel.dropBricks(index, draggedBricks);
             draggedBricks.clear();
-            roadMapPanel.setInsertLine(0);
+            roadMapPanel.setInsertLine(-1);
         }
         roadMapPanel.placeBricks();
     }
@@ -1165,7 +1165,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public ArrayList<Block> analyze(ArrayList<Block> blocks)
     {
         cykParser = new CYKParser();
-        return cykParser.parse(blocks, brickLibrary);
+        long startTime = System.currentTimeMillis();
+        ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
+        long endTime = System.currentTimeMillis();
+        System.err.println("Analysis: " + (endTime - startTime) + "ms");
+        
+        
+        return result;
     }  
     
     public ArrayList<Chord> getChordsInSelection()
