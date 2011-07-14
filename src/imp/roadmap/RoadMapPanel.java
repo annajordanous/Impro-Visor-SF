@@ -52,7 +52,7 @@ public class RoadMapPanel extends JPanel{
         return roadMap.size();
     }
     
-    public void placeBricks()
+    public void placeBricks() //TODO implement line breaks for section breaks
     {
         long currentBeats = 0;
                
