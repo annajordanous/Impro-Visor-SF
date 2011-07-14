@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package imp.roadmap;
 
 import javax.swing.JPanel;
@@ -12,7 +8,7 @@ import java.util.Random;
 
 /**
  *
- * @author ImproVisor
+ * @author August Toman-Yih
  */
 public class RoadMapPanel extends JPanel{
    
@@ -322,7 +318,6 @@ public class RoadMapPanel extends JPanel{
     {
         graphicMap.addAll(index, bricks);
         roadMap.addAll(index, makeBlocks(bricks));
-        System.out.println(roadMap.size()+ " - " + graphicMap.size());
         selectionStart = selectionEnd = index;
         selectBricks(index + bricks.size() - 1);
     }
@@ -424,8 +419,7 @@ public class RoadMapPanel extends JPanel{
         
         ArrayList<String> joinList = roadMap.getJoins();
         
-        System.out.println(joinList);
-        //Random r = new Random();
+        //Random r = new Random(System.nanoTime());
         for( int ind = 0; ind < graphicMap.size(); ind++ ) {
             GraphicBrick brick = graphicMap.get(ind);      
             //g.shear((r.nextDouble()-.5)/100, (r.nextDouble()-.5)/100);
@@ -562,11 +556,11 @@ public class RoadMapPanel extends JPanel{
                 g.drawLine(x,y+settings.getBlockHeight(),endPos.x,y+settings.getBlockHeight());
             }
             
-            g.drawLine(endX, endY, endX, endY+settings.getBlockHeight()); //TODO make not go onto next line
+            g.drawLine(endX, endY, endX, endY+settings.getBlockHeight());
             g.drawLine(x, y, x, y+blockHeight);
             
             g.setColor(settings.textColor);
-            g.drawString(keyName, x+2, y+fontOffset); //TODO use font metrics
+            g.drawString(keyName, x+2, y+fontOffset);
             
             currentBeats += dur;
         }

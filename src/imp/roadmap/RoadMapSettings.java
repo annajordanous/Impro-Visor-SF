@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package imp.roadmap;
 
 import imp.brickdictionary.*;
@@ -10,7 +6,7 @@ import java.awt.Point;
 
 /**
  *
- * @author ImproVisor
+ * @author August Toman-Yih
  */
 public class RoadMapSettings {
     public int xOffset = 50;

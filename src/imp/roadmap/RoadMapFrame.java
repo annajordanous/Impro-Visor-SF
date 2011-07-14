@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * AltRoadMapFrame.java
  *
  * Created on Jul 6, 2011, 12:32:17 PM
@@ -76,6 +71,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
 
+    private RoadMapFrame() {} // Not for you.
+    
     /** Creates new form AltRoadMapFrame */
     public RoadMapFrame(Notate notate) {
         
@@ -654,7 +651,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    // <editor-fold defaultstate="collapsed" desc="Events">
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
         setPreview();
 }//GEN-LAST:event_libraryTreeSelected
@@ -686,17 +683,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_keySpinnerChanged
 
     private void previewScrollPanepreviewPaneReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneReleased
-        System.out.println("Preview released");
         dropFromPreview(evt.getX(), evt.getY());
 }//GEN-LAST:event_previewScrollPanepreviewPaneReleased
 
     private void previewScrollPanepreviewPaneClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneClicked
-        System.out.println("Preview Clicked");
         previewPanel.draw();
 }//GEN-LAST:event_previewScrollPanepreviewPaneClicked
 
     private void previewScrollPanepreviewPaneDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneDragged
-        System.out.println("Preview Dragged");
         dragFromPreview(evt.getX(), evt.getY());
 }//GEN-LAST:event_previewScrollPanepreviewPaneDragged
 
@@ -709,7 +703,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapMouseWheelMoved
 
     private void roadMapScrollPaneroadMapReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapReleased
-        System.out.println("Mouse released");
         dropCurrentBrick(evt.getX(), evt.getY());
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
@@ -730,12 +723,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
-        System.out.println("roadMapDragged");
         dragSelectedBricks(evt.getX(), evt.getY());
 }//GEN-LAST:event_roadMapScrollPaneroadMapDragged
 
     private void roadMapScrollPaneroadMapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapKeyPressed
-        System.out.println(evt.getKeyCode());
         switch (evt.getKeyCode()) {
             case 127: deleteSelection();                                break;
             case 67: if(evt.isMetaDown()) copySelection();              break;
@@ -768,7 +759,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_breakButtonPressed
 
     private void scaleComboBoxscaleComboReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleComboReleased
-        System.out.println("Combo released");
 }//GEN-LAST:event_scaleComboBoxscaleComboReleased
 
     private void scaleComboBoxscaleChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChosen
@@ -777,7 +767,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_scaleComboBoxscaleChosen
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
-        System.out.println("New Brick Button Pressed");
         dialogNameField.setText("NewBrick");
         dialogKeySpinner.setValue("C");
         addBrickDialog.setVisible(true);
@@ -816,7 +805,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         settings.measureLength = jSlider1.getValue();
         roadMapPanel.placeBricks();
     }//GEN-LAST:event_scaleSliderChanged
-
+//</editor-fold>
+    
     /** InitBuffer <p>
      *  
      * Initializes the buffers for the roadmap and preview panel.
@@ -880,8 +870,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         if(roadMapHistory.peek() != null) {
             RoadMapSnapShot ss = roadMapHistory.removeLast();
+            roadMapFuture.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
             roadMapPanel.setRoadMap(ss.getRoadMap());
-            roadMapFuture.add(ss);
         }
     }
     
@@ -889,20 +879,24 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         if(roadMapFuture.peek() != null) {
             RoadMapSnapShot ss = roadMapFuture.removeLast();
+            roadMapHistory.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
             roadMapPanel.setRoadMap(ss.getRoadMap());
-            roadMapHistory.add(ss);
         }
     }
     
     private void undo()
     {
         stepStateBack();
+        //System.out.println("History: " + roadMapHistory);
+        //System.out.println("Future: " + roadMapFuture);
         roadMapPanel.placeBricks();
     }
     
     private void redo()
     {
         stepStateForward();
+        //System.out.println("History: " + roadMapHistory);
+        //System.out.println("Future: " + roadMapFuture);
         roadMapPanel.placeBricks();
     }
        

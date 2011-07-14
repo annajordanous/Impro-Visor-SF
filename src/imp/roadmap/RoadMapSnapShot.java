@@ -14,10 +14,8 @@ public class RoadMapSnapShot {
     
     public RoadMapSnapShot(String name, RoadMap roadMap)
     {
-        System.out.println("New RMSS from " + roadMap);
         this.name = name;
         this.roadMap = new RoadMap(roadMap);
-        System.out.println("From " + roadMap + "\nto " + this.roadMap);
     }
     
     public RoadMap getRoadMap()
@@ -30,6 +28,7 @@ public class RoadMapSnapShot {
         return name;
     }
     
+    @Override
     public String toString()
     {
         return name;
