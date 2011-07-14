@@ -56,6 +56,41 @@ public class PrintUtilities implements Printable {
     public PrintUtilities(Component componentToBePrinted) {
         this.componentToBePrinted = componentToBePrinted;
     }
+    
+        public void setComponent(Component c)
+      {
+        componentToBePrinted = c;
+      }
+  
+    public static void printMultipleComponents(Component componentArray[]) {
+        PrintUtilities utility = new PrintUtilities();
+        PrintService[] pservices = PrinterJob.lookupPrintServices();
+        
+        PrinterJob printJob = PrinterJob.getPrinterJob();
+        printJob.setPrintable(utility);
+        
+       if (printJob.printDialog()) 
+         {
+         for( Component component: componentArray )
+            {
+            utility.setComponent(component);
+            try 
+              {
+                printJob.print();
+              }
+            catch(PrinterException pe) 
+              {
+                System.out.println("Error printing: " + pe);
+              }
+            }
+         }
+    }
+  
+    public PrintUtilities() {
+    }
+
+    
+
   
     public void print() {
         PrintService[] pservices = PrinterJob.lookupPrintServices();

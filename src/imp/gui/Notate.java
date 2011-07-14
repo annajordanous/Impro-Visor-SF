@@ -16452,6 +16452,8 @@ private void pasteMelody(Part part, Stave stave)
       PrintUtilities.printComponent(getCurrentStave());
 
 
+      // printAllStaves();
+      
       getCurrentStave().setShowAllCL(tempShowAllCL);
 
       getCurrentStave().setShowMeasureCL(tempShowMeasureCL);
@@ -16463,6 +16465,25 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));      
     }//GEN-LAST:event_printMIActionPerformed
 
+ /**
+   * Print all staves, rather than just the current one.
+   */
+    
+ private void printAllStaves()
+   {
+   // Make array of staves, then print each one.
+     
+   Stave component[] = new Stave[staveScrollPane.length];
+   
+   for( int i = 0; i < staveScrollPane.length; i++ )
+     {
+       component[i] = staveScrollPane[i].getStave();
+     }
+   
+   PrintUtilities.printMultipleComponents(component);
+   }
+ 
+ 
   /**
    *
    * Displays the construction lines on the score if checked in the menu
