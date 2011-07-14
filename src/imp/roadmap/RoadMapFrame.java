@@ -823,12 +823,19 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     private void initBuffer()
     {
+      try 
+        {
         buffer = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
         bufferRoadMap = new java.awt.image.BufferedImage(RMbufferWidth, RMbufferHeight, BufferedImage.TYPE_INT_RGB);
         previewPanel.setBuffer(buffer);
         roadMapPanel.setBuffer(bufferRoadMap);
         roadMapPanel.draw();
         previewPanel.draw();
+        }
+      catch( java.lang.OutOfMemoryError e)
+        {
+        ErrorLog.log(ErrorLog.SEVERE, "Out of memory. It will not be possible to continue.");
+        }
     }
     
 
