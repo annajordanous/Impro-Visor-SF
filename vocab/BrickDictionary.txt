@@ -906,6 +906,18 @@
 	(Brick Straight-Approach C 2)
         (Chord CM7 2))
 
+(Brick POT-Altered-Cadence Major Turnaround C
+	(Brick POT-Altered C 4)
+	(Chord C 1))
+
+(Brick POT-Cadence Major Turnaround C
+	(Brick POT C 4)
+	(Chord C 1))
+
+(Brick POT-Minor-Cadence Minor Turnaround C
+	(Brick POT-Minor C 4)
+	(Chord Cm 1))
+
 (Brick Rhythm-Turnaround-Cadence Major Cadence C
 	(Chord Dbdim 1)
         (Brick Reverse-Raindrop C 2)

@@ -22,7 +22,7 @@ public class CYKParser
     // Useful constants for the length of a bar and the load file for the
     // equivalence dictionary
     public static final int BAR_DURATION = 480;
-    public static final String DICTIONARY_NAME = "vocab/substitutions.txt";
+    public static final String DICTIONARY_NAME = "vocab/substitutions_sameroot.txt";
     public static final String NONBRICK = "";
     /**
      * Data Members
@@ -324,12 +324,36 @@ public class CYKParser
             }
         }
     
+        // System.err.print(printTable());
         // The shortest path in the top right cell gets printed as the best
         // explanation for the whole chord progression
         return PostProcessing.findLaunchers(minVals[0][size - 1].toBlocks());
             
     }
     
+    public String printTable() {
+        String output = new String();
+        
+        for (int i = 0; i < cykTable.length; i++)
+            for (int j = i; j < cykTable.length; j++)
+            {
+                output += "(" + i + ", " + j + ")\n";
+                for (TreeNode t : cykTable[i][j])
+                {
+                    output += t.getSymbol() + " in " 
+                            + BrickLibrary.keyNumToName(t.getKey()) + " ";
+                    if (!t.isTerminal())
+                        output += t.getFirstChild().getSymbol() + " in " + 
+                                  BrickLibrary.keyNumToName(t.getFirstChild().getKey()) 
+                                  + ", " + t.getSecondChild().getSymbol() + " in " +
+                                  BrickLibrary.keyNumToName(t.getSecondChild().getKey());
+                    
+                    output += "\n";
+                }         
+                output += "----------------------\n";
+            }
+        return output;
+    }
     
     /** findTerminal
      * findTerminal is a helper function which, for a given index i takes the
@@ -379,9 +403,15 @@ public class CYKParser
         for(int index = 0; index < (col - row); index++) {
             assert(row+index < this.chords.size());
             
-            for (TreeNode symbol1 : cykTable[row][row+index]) {
+            ListIterator iter1 = cykTable[row][row+index].listIterator();
+            
+            while(iter1.hasNext()) {
+                TreeNode symbol1 = (TreeNode)iter1.next();
                 
-                for (TreeNode symbol2 : cykTable[row+index+1][col]) {
+                ListIterator iter2 = cykTable[row+index+1][col].listIterator();
+            
+                while(iter2.hasNext()) {
+                    TreeNode symbol2 = (TreeNode)iter2.next();
                     
                     ListIterator iterRule = nonterminalRules.listIterator();
 
@@ -404,6 +434,8 @@ public class CYKParser
                                 cost += 5;
                             if (symbol2.isSub())
                                 cost += 5;
+                            if (symbol2.isOverlap())
+                                cost += TreeNode.OVERLAP_COST;
                             
                             TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 

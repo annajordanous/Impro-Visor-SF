@@ -19,8 +19,9 @@ import imp.brickdictionary.*;
 public class TreeNode {
     
     // An int cost for a default chord
-    public static final double CHORD_COST = 1000;
-    public static final double CHORD_SUB_COST = 1050;
+    public static final double CHORD_COST = 100;
+    public static final double CHORD_SUB_COST = 150;
+    public static final double OVERLAP_COST = 150;
     
     // Constructors for TreeNodes
     
@@ -137,15 +138,14 @@ public class TreeNode {
         symbol = sym;
         mode = m;
         
+        ArrayList<Block> subBlocks = new ArrayList<Block>();
+        subBlocks.addAll(c1.getBlocks());
+        subBlocks.addAll(c2.getBlocks());
         
         chords = new ArrayList<Chord>();
         chords.addAll(c1.getChords());
         chords.addAll(c2.getChords());
         
-        ArrayList<Block> subBlocks = new ArrayList<Block>();
-        subBlocks.addAll(c1.getBlocks());
-        subBlocks.addAll(c2.getBlocks());
-                
         block = new Brick(sym, k, type, subBlocks, m);
         key = k;
 
@@ -196,7 +196,6 @@ public class TreeNode {
    /** overlapCopy
      * Makes a copy of a TreeNode's contents with the last chord set to duration
      * 0. Used to facilitate the creation and parsing of overlapping bricks.
-     * 
      * @return a copy of a TreeNode with the last chord at 0 duration
      */
     public TreeNode overlapCopy()
@@ -208,7 +207,7 @@ public class TreeNode {
         }
         else {
             newNode = new TreeNode(symbol, block.getType(), mode, child1, 
-                    child2.overlapCopy(), cost + CHORD_COST + 5, block.getKey());
+                    child2.overlapCopy(), cost + OVERLAP_COST + 5, block.getKey());
         }
         return newNode;
     }

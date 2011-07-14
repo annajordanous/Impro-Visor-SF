@@ -17,11 +17,11 @@ public class BinaryProduction {
     
     public static final int TOTAL_SEMITONES = 12;
     // BRICK_COSTS in order: 
-    public static final int NONBRICK = 1000;
+    public static final int NONBRICK = 100;
     public static final int CADENCE = 30;
     public static final int APPROACH = 45;
     public static final int DROPBACK = 35;
-    public static final int TURNAROUND = 30;
+    public static final int TURNAROUND = 20;
     public static final int LAUNCHER = 30;
     public static final int ONOFF = 55;
     public static final int MISC = 40;

@@ -76,6 +76,9 @@ public class Chord extends Block{
         return false;
     }
     
+    public boolean isOverlap() {
+        return (duration == 0);
+    }
     
     @Override
     public List<Block> getSubBlocks() {
