@@ -1,10 +1,10 @@
 
 package imp.brickdictionary;
-import java.util.HashMap;
 import java.util.Collection;
 import polya.*;
 import java.io.*;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * purpose: Methods relating to the brick library (dictionary)
@@ -15,12 +15,12 @@ public class BrickLibrary {
     private static final String[] KEY_NAME_ARRAY = {"C", "Db", "D", "Eb", "E",
         "F", "Gb", "G", "Ab", "A", "Bb", "B"};
     
-    private HashMap<String, Brick> brickMap;
+    private LinkedHashMap<String, Brick> brickMap;
     
     // Construct BrickLibrary as a HashMap associating a brick's name with its
     // contents
     public BrickLibrary() {
-        brickMap = new HashMap<String, Brick>();
+        brickMap = new LinkedHashMap<String, Brick>();
     }
     
     public String[] getNames() {
@@ -33,8 +33,6 @@ public class BrickLibrary {
         {
             throw new DictionaryException("Dictionary already contains " 
                     + brick.getName());
-            
-            //System.err.println("Dictionary already contains " + brick.getName());
         }
         else
             this.brickMap.put(brick.name, brick);
@@ -51,10 +49,6 @@ public class BrickLibrary {
         else
         {
             throw new DictionaryException("Dictionary does not contain " + s);
-            
-//            Error e = new Error("Dictionary does not contain " + s);
-//            System.err.println(e);
-//            return null;
         }
     }
     
@@ -69,10 +63,6 @@ public class BrickLibrary {
         else
         {
             throw new DictionaryException("Dictionary does not contain " + s);
-            
-//            Error e = new Error("Dictionary does not contain " + s);
-//            System.err.println(e);
-//            return null;
         }
     }
     
@@ -151,10 +141,6 @@ public class BrickLibrary {
                     + keyName);
             System.exit(-1);
             return 0;
-//            Error e = new Error("keyNameToNum: Incorrect key formatting "
-//                    + keyName);
-//            System.err.println(e);
-//            return -1;
         }
     }
     
@@ -163,31 +149,6 @@ public class BrickLibrary {
         if(keyNum >= 0 && keyNum < 12) {
             return KEY_NAME_ARRAY[(int)keyNum];
         }
-        
-//        if(keyNum == 0)
-//            return "C";
-//        if(keyNum == 1)
-//            return "Db";
-//        if(keyNum == 2)
-//            return "D";
-//        if(keyNum == 3)
-//            return "Eb";
-//        if(keyNum == 4)
-//            return "E";
-//        if(keyNum == 5)
-//            return "F";
-//        if(keyNum == 6)
-//            return "Gb";
-//        if(keyNum == 7)
-//            return "G";
-//        if(keyNum == 8)
-//            return "Ab";
-//        if(keyNum == 9)
-//            return "A";
-//        if(keyNum == 10)
-//            return "Bb";
-//        if(keyNum == 11)
-//            return "B";
         else if (keyNum == -1)
             return "";
         else
@@ -196,11 +157,6 @@ public class BrickLibrary {
                     + keyNum);
             System.exit(-1);
             return "";
-            
-//            Error e = new Error("keyNumToName: Incorrect key formatting " + 
-//                    keyNum);
-//            System.err.println(e);
-//            return "";
         }
     }
         
@@ -229,9 +185,6 @@ public class BrickLibrary {
                 {
                     throw new DictionaryException("Improper formatting for "
                             + "Polylist");
-                    
-//                    Error e = new Error("Improper formatting for Polylist");
-//                    System.err.println(e);
                 }
                 else
                 {
@@ -262,19 +215,12 @@ public class BrickLibrary {
                     {
                         throw new DictionaryException("blockCategory not of "
                                 + "correct type");
-                        
-//                        Error e4 = new Error("blockCategory not of correct type");
-//                        System.err.println(e4);
                     }
                 }
             }
             else
             {
                 throw new DictionaryException("Improper formatting for token");
-                
-//                Error e2 = new Error("Improper formatting for token");
-//                System.err.println(e2);
-//                System.exit(-1);
             }
         }
         
@@ -291,9 +237,5 @@ public class BrickLibrary {
         dictionary = BrickLibrary.processDictionary();
         
         dictionary.printDictionary();
-        
-//        Brick testBrick = dictionary.getBrick("II-n-Back", 0);
-//        testBrick.adjustBrickDuration(8);
-//        testBrick.printBrick();
     }
 }
