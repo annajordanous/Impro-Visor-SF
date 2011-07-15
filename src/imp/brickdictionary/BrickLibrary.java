@@ -255,7 +255,7 @@ public class BrickLibrary {
 
         for (Polylist contents : polymap.values()) {
             contents = contents.rest();
-            String brickName = contents.first().toString();
+            String brickName = dashless(contents.first().toString());
             contents = contents.rest();
             if (!dictionary.hasBrick(brickName)) {
                 String brickMode = contents.first().toString();

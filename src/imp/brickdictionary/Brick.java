@@ -355,7 +355,7 @@ public class Brick extends Block {
                             }
                             else if (polymap.containsKey(subBrickName)) {
                                 Polylist tokens = polymap.get(subBrickName);
-                                String brickName = subBrickName;
+                                String brickName = BrickLibrary.dashless(subBrickName);
                                 tokens = tokens.rest();
                                 tokens = tokens.rest();
                                 String brickMode = tokens.first().toString();
@@ -367,10 +367,10 @@ public class Brick extends Block {
                                 long brickKeyNum = 
                                         BrickLibrary.keyNameToNum(brickKeyString);
                 
-                                Brick libBrick = new Brick(brickName, brickKeyNum,
+                                subBrick = new Brick(brickName, brickKeyNum,
                                     brickType, tokens, bricks, brickMode, polymap);
-                                bricks.addBrick(libBrick);
-                                subBrick = bricks.getBrick(subBrickName, subBrickKeyNum, dur);
+                                subBrick.transpose(subBrickKeyNum - brickKeyNum);
+                                subBrick.adjustDuration(dur);
                             }
                             else
                             {
