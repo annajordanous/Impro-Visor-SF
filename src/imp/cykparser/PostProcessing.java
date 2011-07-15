@@ -133,7 +133,6 @@ public class PostProcessing {
     
      /** findJoins
      * A method that finds joins between bricks
-     * Note: There has to be a more elegant way to do this
      * @param blocks : ArrayList of Blocks (Chords or Bricks)
      * @return joinList : ArrayList of joins between blocks
      */
@@ -152,18 +151,24 @@ public class PostProcessing {
             Block c = blocks.get(i + 1);
             // Check if current and next block are both bricks
             if (b instanceof Brick && c instanceof Brick) {
+                // Check that the two bricks are joinable
                 if(checkJoinability(((Brick)b), ((Brick)c))) {
-                    // If so, find the difference between the two keys 
+                    ArrayList<Block> subList = 
+                            (ArrayList<Block>) c.getSubBlocks();
+                    Block firstBlock = subList.get(0);
                     ArrayList<ChordBlock> chordList = 
-                            (ArrayList<ChordBlock>) c.flattenBlock();
-                    long firstDominantKey = (c.getKey() + 7)%OCTAVE;
+                            (ArrayList<ChordBlock>)firstBlock.flattenBlock();
+                    // Default to dominant of brick's overall key
+                    long domKey = (c.getKey() + 7) % OCTAVE;
+                    // keyDiff used in joinLookup is based on last dominant in 
+                    // first subblock
                     for(ChordBlock j : chordList) {
-                        if(j.getQuality().equals("7")) {
-                            firstDominantKey = j.getKey();
-                            break;
+                        if(j.getQuality().equals("7"))
+                        {
+                            domKey = j.getKey();
                         }
                     }
-                    long keyDiff = (firstDominantKey - b.getKey() + 12) % 12;
+                    long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
                     joinArray[i] = joinLookup(keyDiff);
                 }
                 else
@@ -203,7 +208,9 @@ public class PostProcessing {
             firstStable = true;
         }
         
-        if(second.getType().equals("Approach") || second.getType().equals("Cadence")) {
+        if(second.getType().equals("Approach") || 
+                second.getType().equals("Cadence") || 
+                second.getType().equals("Launcher")) {
             secondStable = false;
         }
         
