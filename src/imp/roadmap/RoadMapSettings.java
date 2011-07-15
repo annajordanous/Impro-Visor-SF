@@ -44,6 +44,7 @@ public class RoadMapSettings {
     public Color textColor = Color.BLACK;
     public Color selectedColor = new Color(181, 213, 255);
     public Color brickBGColor = Color.WHITE;
+    public Color joinBGColor = Color.WHITE;
     
     public Color[] keyColors = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255), // Db
@@ -175,5 +176,12 @@ public class RoadMapSettings {
         int lines = (x - xOffset)/getLineLength();
         int endX = xOffset + ((x - xOffset) % getLineLength());
         return new int[]{endX, lines};
+    }
+    
+    public long[] wrapBeats(long b)
+    {
+        long lines = getLines(b);
+        long endX = (b%getBeatsPerLine());
+        return new long[]{endX, lines};
     }
 }

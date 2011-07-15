@@ -188,6 +188,7 @@ public class GraphicBrick {
         int[] wrap = settings.wrap(x+settings.getBlockLength(block));
         int endX = wrap[0];
         int lines = wrap[1];
+        int endY = y+lines*settings.getLineOffset();
         int blockHeight = settings.getBlockHeight();
         int cutoff = settings.getCutoff();
         
@@ -213,17 +214,16 @@ public class GraphicBrick {
                 g2d.drawLine(settings.xOffset, currentY + 3*blockHeight,
                         cutoff, currentY + 3*blockHeight);
             }
-            int currentY = y+lines*settings.getLineOffset();
             
             g2d.setColor(bgColor);
             g2d.fillRect(settings.xOffset,
-                    currentY + blockHeight,
+                    endY + blockHeight,
                     endX-settings.xOffset, 2*blockHeight);
             
             g2d.setColor(settings.lineColor);
-            g2d.drawLine(settings.xOffset, currentY + 3*blockHeight,
-                    endX, currentY + 3*blockHeight);
-            g2d.drawLine(endX, currentY + blockHeight, endX, currentY + 3*blockHeight);
+            g2d.drawLine(settings.xOffset, endY + 3*blockHeight,
+                    endX, endY + 3*blockHeight);
+            g2d.drawLine(endX, endY + blockHeight, endX, endY + 3*blockHeight);
         } else {
             g2d.fillRect(x, y+blockHeight, endX - x, 2*blockHeight);
             
@@ -233,6 +233,8 @@ public class GraphicBrick {
                     endX, y + 3*blockHeight);
             g2d.drawLine(endX, y + blockHeight, endX, y + 3*blockHeight);
         }
+        if(block.isSectionEnd())
+            g2d.drawLine(endX-3, endY + blockHeight, endX-3, endY + 3*blockHeight);
     }
     
     /**

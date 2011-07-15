@@ -47,13 +47,15 @@ public class PostProcessing {
         
         // Initialize key, mode, and duration of current block
         KeySpan current = new KeySpan();
+        boolean sectionEnd = false;
         
         for(Block b : blocks) {
             
             // If two consecutive blocks in same key, add new block's duration 
             // to total
             if(current.getKey() == b.getKey() && 
-                    current.getMode().equals(b.getMode())) {
+                    current.getMode().equals(b.getMode()) &&
+                    !sectionEnd) {
                 current.setDuration(current.getDuration() + b.getDuration());
             }
             else {
@@ -64,6 +66,8 @@ public class PostProcessing {
                 // Create new entry for the next key
                 current = new KeySpan(b.getKey(), b.getMode(), b.getDuration());
             }
+            
+            sectionEnd = b.isSectionEnd();
         }
         
         keymap.add(current);

@@ -46,6 +46,8 @@ public class RoadMapPanel extends JPanel{
     private RoadMap roadMap = new RoadMap();
     private ArrayList<GraphicBrick> graphicMap = new ArrayList();
     
+    private ArrayList<Long> sectionBreaks = new ArrayList();
+    
     RoadMapSettings settings;
     
     RoadMapFrame view;
@@ -77,12 +79,28 @@ public class RoadMapPanel extends JPanel{
     public void placeBricks() //TODO implement line breaks for section breaks
     {
         long currentBeats = 0;
-               
+        long lines = 0;
+        long lineBeats = 0;
+        
         for( GraphicBrick brick : graphicMap ) {
-            brick.setPos(settings.getPosFromBeats(currentBeats));
+            int x = settings.getLength(lineBeats) + settings.xOffset;
+            int y = (int)(lines*settings.getLineOffset()) + settings.yOffset;
+            brick.setPos(x,y);
+            
             currentBeats += brick.getBrick().getDuration();
+            lineBeats += brick.getBrick().getDuration();
+            
+            long[] wrap = settings.wrapBeats(lineBeats);
+            lineBeats = wrap[0];
+            lines += wrap[1];
+            
+            if(brick.getBrick().isSectionEnd()) {
+                lineBeats = 0;
+                lines++;
+                sectionBreaks.add(currentBeats);
+            }
         }
-        numLines = settings.getLines(currentBeats)+1;
+        numLines = (int)lines+1;
         updateBricks();
     }
     
@@ -212,7 +230,7 @@ public class RoadMapPanel extends JPanel{
         selectBricks(graphicMap.size()-1);
         
         // This is just for testing purposes. It should be eliminated later.
-        System.out.println("selected " + roadMap.toString());
+        //System.out.println("selected " + roadMap.toString());
 
     }
     
@@ -379,7 +397,9 @@ public class RoadMapPanel extends JPanel{
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             roadMap.getBrick(selectionEnd).setSectionEnd(!roadMap.getBrick(selectionEnd).isSectionEnd());
+            roadMap.process();
             drawBrick(selectionEnd);
+            placeBricks();
             drawKeyMap();
         }
     }
@@ -470,7 +490,7 @@ public class RoadMapPanel extends JPanel{
                         settings.lineHeight;
                 joinX = joinX%settings.getLineLength();
         
-                g.setColor(settings.brickBGColor);
+                g.setColor(settings.joinBGColor);
                 g.setStroke(settings.basicLine);
                 
                 g.fillRect(joinX+2,joinY+2, width, settings.lineSpacing - 4);
@@ -512,14 +532,37 @@ public class RoadMapPanel extends JPanel{
         
         Graphics g = buffer.getGraphics();
         
-        int blockHeight = settings.getBlockHeight();
-        
-        FontMetrics metrics = g.getFontMetrics();
-        int fontOffset = (blockHeight + metrics.getAscent())/2;
-        
         long currentBeats = 0;
+        long lines = 0;
+        long lineBeats = 0;
+        
+        //Iterator<Long> number = sectionBreaks.iterator();
         
         for( KeySpan keySpan : roadMap.getKeyMap() ) {
+            drawKeySpan(keySpan, settings.xOffset + settings.getLength(lineBeats),
+                    settings.yOffset + (int)(settings.getLineOffset() * lines), g);
+            
+            currentBeats += keySpan.getDuration();
+            lineBeats += keySpan.getDuration();
+            
+            long[] wrap = settings.wrapBeats(lineBeats);
+            lineBeats = wrap[0];
+            lines += wrap[1];
+            
+            if(sectionBreaks.contains(currentBeats)) {
+                lineBeats = 0;
+                lines++;
+                sectionBreaks.add(currentBeats);
+            }
+        }
+            
+    }
+    
+    public void drawKeySpan(KeySpan keySpan, int x, int y, Graphics g)
+    {
+            int blockHeight = settings.getBlockHeight();
+            FontMetrics metrics = g.getFontMetrics();
+            int fontOffset = (blockHeight + metrics.getAscent())/2;
             long key = keySpan.getKey();
             String keyName = BrickLibrary.keyNumToName(key) + keySpan.getMode();
             long dur = keySpan.getDuration();
@@ -535,33 +578,30 @@ public class RoadMapPanel extends JPanel{
                     keyColor = settings.getKeyColor(key);
             }
             
-            Point startPos = settings.getPosFromBeats(currentBeats);
-            Point endPos = settings.getPosFromBeats(currentBeats + dur);
-            int x = (int)startPos.x;
-            int y = (int)startPos.y;
-            int endX = (int)endPos.x;
-            int endY = (int)endPos.y;
+            int[] wrap = settings.wrap(x+settings.getLength(keySpan.getDuration()));
+
+            int endX = wrap[0];
+            int endY = y+wrap[1]*settings.getLineOffset();
             
-            long num = currentBeats % settings.getBeatsPerLine() + dur;
-            int lines = (int) (num / settings.getBeatsPerLine());
+            int lines = wrap[1];
             
             if(lines > 0) {
                 g.setColor(keyColor);
-                g.fillRect(x, y, settings.getCutoff() - x, settings.getBlockHeight());
+                g.fillRect(x, y, settings.getCutoff() - x, blockHeight);
                 g.fillRect(settings.xOffset, endY,
-                        endX-settings.xOffset, settings.getBlockHeight());
+                        endX-settings.xOffset, blockHeight);
                 
                 g.setColor(settings.lineColor);
                 g.drawLine(x,y,settings.getCutoff(),y);
-                g.drawLine(x,y+settings.getBlockHeight(),settings.getCutoff(),y+settings.getBlockHeight());
+                g.drawLine(x,y+blockHeight,settings.getCutoff(),y+blockHeight);
                 
                 g.drawLine(settings.xOffset, endY, endX, endY);
-                g.drawLine(settings.xOffset, endY+settings.getBlockHeight(),
-                                       endX, endY+settings.getBlockHeight());
+                g.drawLine(settings.xOffset, endY+blockHeight,
+                                       endX, endY+blockHeight);
                 for(int line = 1; line < lines; line++) {
                     g.setColor(keyColor);
                     g.fillRect(settings.xOffset, y+line*settings.getLineOffset(),
-                            settings.getLineLength(), settings.getBlockHeight());
+                            settings.getLineLength(), blockHeight);
                     
                     g.setColor(settings.lineColor);
                     g.drawLine(settings.xOffset,
@@ -569,28 +609,24 @@ public class RoadMapPanel extends JPanel{
                             settings.getCutoff(),
                             y+line*settings.getLineOffset());
                     g.drawLine(settings.xOffset,
-                            y+line*settings.getLineOffset() + settings.getBlockHeight(),
+                            y+line*settings.getLineOffset() + blockHeight,
                             settings.getCutoff(),
-                            y+line*settings.getLineOffset() + settings.getBlockHeight());
+                            y+line*settings.getLineOffset() + blockHeight);
                 }
             } else {
                 g.setColor(keyColor);
-                g.fillRect(x,y, endX - x, settings.getBlockHeight());
+                g.fillRect(x,y, endX - x, blockHeight);
                 
                 g.setColor(settings.textColor);
-                g.drawLine(x,y,endPos.x,y);
-                g.drawLine(x,y+settings.getBlockHeight(),endPos.x,y+settings.getBlockHeight());
+                g.drawLine(x,y,endX,y);
+                g.drawLine(x,y+blockHeight,endX,y+blockHeight);
             }
             
-            g.drawLine(endX, endY, endX, endY+settings.getBlockHeight());
+            g.drawLine(endX, endY, endX, endY+blockHeight);
             g.drawLine(x, y, x, y+blockHeight);
             
             g.setColor(settings.textColor);
             g.drawString(keyName, x+2, y+fontOffset);
-            
-            currentBeats += dur;
-        }
-            
     }
         
     /**

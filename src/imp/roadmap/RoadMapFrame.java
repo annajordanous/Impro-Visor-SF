@@ -172,6 +172,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         deleteMenuItem = new javax.swing.JMenuItem();
         flattenMenuItem = new javax.swing.JMenuItem();
         breakMenuItem = new javax.swing.JMenuItem();
+        sectionBreakMenuItem = new javax.swing.JMenuItem();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
@@ -438,7 +439,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jSlider1.setMaximum(200);
         jSlider1.setMinimum(60);
         jSlider1.setToolTipText("Slide to adjust visual width of bricks."); // NOI18N
-        jSlider1.setBorder(javax.swing.BorderFactory.createTitledBorder("Feature Width")); // NOI18N
+        jSlider1.setBorder(javax.swing.BorderFactory.createTitledBorder("Feature Width"));
         jSlider1.setMaximumSize(new java.awt.Dimension(32767, 40));
         jSlider1.setMinimumSize(new java.awt.Dimension(50, 40));
         jSlider1.setName("jSlider1"); // NOI18N
@@ -770,6 +771,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(breakMenuItem);
 
+        sectionBreakMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        sectionBreakMenuItem.setText("Add Section Break"); // NOI18N
+        sectionBreakMenuItem.setName("sectionBreakMenuItem"); // NOI18N
+        sectionBreakMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectionBreakMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(sectionBreakMenuItem);
+
         roadmapMenuBar.add(editMenu);
 
         setJMenuBar(roadmapMenuBar);
@@ -967,6 +978,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void breakMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_breakMenuItemActionPerformed
         breakSelection();
     }//GEN-LAST:event_breakMenuItemActionPerformed
+
+    private void sectionBreakMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectionBreakMenuItemActionPerformed
+        toggleSectionBreak();
+    }//GEN-LAST:event_sectionBreakMenuItemActionPerformed
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1343,21 +1358,35 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
     public void deactivateButtons()
     {
-        flattenButton.setEnabled(false);
-        deleteButton.setEnabled(false);
-        breakButton.setEnabled(false);
-        newBrickButton.setEnabled(false);
-        scaleComboBox.setEnabled(false);
+        setButtonEnabled(false);
     }
     
     public void activateButtons()
     {
-        flattenButton.setEnabled(true);
-        deleteButton.setEnabled(true);
-        breakButton.setEnabled(true);
-        newBrickButton.setEnabled(true);
-        scaleComboBox.setEnabled(true);
+        setButtonEnabled(true);
     }
+    
+    public void setButtonEnabled(boolean value)
+    {
+        cutMenuItem.setEnabled(value);
+        copyMenuItem.setEnabled(value);
+        pasteMenuItem.setEnabled(value);
+        
+        sectionBreakMenuItem.setEnabled(value);
+        
+        flattenButton.setEnabled(value);
+        flattenMenuItem.setEnabled(value);
+        
+        deleteButton.setEnabled(value);
+        deleteMenuItem.setEnabled(value);
+        
+        breakButton.setEnabled(value);
+        breakMenuItem.setEnabled(value);
+        
+        newBrickButton.setEnabled(value);
+        scaleComboBox.setEnabled(value);
+    }
+    
            
     private void toggleSectionBreak()
     {
@@ -1471,6 +1500,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
+    private javax.swing.JMenuItem sectionBreakMenuItem;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
     private javax.swing.JButton sendToNotateButton;

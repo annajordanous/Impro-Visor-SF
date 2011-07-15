@@ -464,6 +464,8 @@ public class Brick extends Block {
     @Override
     public final boolean isSectionEnd()
     {
+        if(this.isOverlap())
+            return subBlocks.get(subBlocks.size() - 2).isSectionEnd();
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
 
