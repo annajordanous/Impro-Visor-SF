@@ -94,6 +94,7 @@ public class PreviewPanel extends JPanel
             protoBrick = new ChordBlock((ChordBlock)brick);
         
         brick.adjustDuration(currentDuration);
+        brick.transpose(currentKey);
         currentBrick = new GraphicBrick(brick, view.getSettings());
     }
 
@@ -114,7 +115,7 @@ public class PreviewPanel extends JPanel
     {
         long newKey = BrickLibrary.keyNameToNum(key);
         if(currentBrick != null)
-            currentBrick.getBrick().transpose(currentKey - newKey);
+            currentBrick.getBrick().transpose(newKey - currentKey);
         currentKey = newKey;
         draw();
     }

@@ -480,8 +480,7 @@ public class Brick extends Block {
         List<Block> currentSubBlocks = getSubBlocks();
         Iterator<Block> subBlockIter = currentSubBlocks.iterator();
         
-        while(subBlockIter.hasNext())
-        {
+        while(subBlockIter.hasNext()) {
             Block currentBlock = subBlockIter.next();
             currentBlock.adjustDuration(scale);
             duration += currentBlock.duration;

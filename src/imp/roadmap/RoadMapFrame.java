@@ -129,6 +129,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogNameField = new javax.swing.JTextField();
         dialogKeySpinner = new javax.swing.JSpinner();
         dialogAcceptButton = new javax.swing.JButton();
+        dialogModeComboBox = new javax.swing.JComboBox();
         optionsDialog = new javax.swing.JDialog();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -178,6 +179,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
         addBrickDialog.setName("addBrickDialog"); // NOI18N
         addBrickDialog.setResizable(false);
+        addBrickDialog.setSize(new java.awt.Dimension(220, 110));
         addBrickDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         dialogNameLabel.setText("Name:"); // NOI18N
@@ -197,6 +199,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogNameField.setText("BrickName"); // NOI18N
         dialogNameField.setName("dialogNameField"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 3);
@@ -204,6 +207,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         dialogKeySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
         dialogKeySpinner.setName("dialogKeySpinner"); // NOI18N
+        dialogKeySpinner.setPreferredSize(new java.awt.Dimension(60, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -222,9 +226,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 3, 0);
         addBrickDialog.getContentPane().add(dialogAcceptButton, gridBagConstraints);
+
+        dialogModeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Major", "Minor", "Dominant" }));
+        dialogModeComboBox.setName("dialogModeComboBox"); // NOI18N
+        dialogModeComboBox.setPreferredSize(new java.awt.Dimension(120, 27));
+        dialogModeComboBox.setSize(new java.awt.Dimension(60, 27));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        addBrickDialog.getContentPane().add(dialogModeComboBox, gridBagConstraints);
 
         optionsDialog.setTitle("Settings"); // NOI18N
         optionsDialog.setName("optionsDialog"); // NOI18N
@@ -836,7 +849,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_durationComboBoxdurationChosen
 
     private void roadMapScrollPaneroadMapMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapMouseWheelMoved
-        transposeSelection(evt.getWheelRotation());
+        transposeSelection(-evt.getWheelRotation());
 }//GEN-LAST:event_roadMapScrollPaneroadMapMouseWheelMoved
 
     private void roadMapScrollPaneroadMapReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapReleased
@@ -1115,7 +1128,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         saveState("Merge");
         long key = BrickLibrary.keyNameToNum((String) dialogKeySpinner.getValue());
         String name = dialogNameField.getText();
-        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key);
+        String mode = (String)dialogModeComboBox.getSelectedItem();
+        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key, mode);
         addToLibrary(newBrick);
     }
 
@@ -1473,6 +1487,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JButton dialogAcceptButton;
     private javax.swing.JLabel dialogKeyLabel;
     private javax.swing.JSpinner dialogKeySpinner;
+    private javax.swing.JComboBox dialogModeComboBox;
     private javax.swing.JTextField dialogNameField;
     private javax.swing.JLabel dialogNameLabel;
     private javax.swing.JComboBox durationComboBox;

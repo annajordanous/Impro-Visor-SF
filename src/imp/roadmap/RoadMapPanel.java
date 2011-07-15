@@ -340,12 +340,12 @@ public class RoadMapPanel extends JPanel{
         }
     }
     
-    public Brick makeBrickFromSelection(String name, long key)
+    public Brick makeBrickFromSelection(String name, long key, String mode)
     {
         if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
             ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd+1);
             graphicMap.subList(selectionStart, selectionEnd+1).clear();
-            Brick newBrick = new Brick(name, key, "UserDefined", blocks, "Major");
+            Brick newBrick = new Brick(name, key, "UserDefined", blocks, mode);
 
             
             roadMap.add(selectionStart, newBrick);
@@ -485,10 +485,10 @@ public class RoadMapPanel extends JPanel{
                 int width = metrics.stringWidth(joinName) + 4;
                 int offset = metrics.getAscent();
                 
-                int joinX = x + length - width;
+                int joinX = x + length - width - 4 - settings.xOffset;
                 int joinY = y + joinX/settings.getLineLength() * settings.getLineOffset() +
                         settings.lineHeight;
-                joinX = joinX%settings.getLineLength();
+                joinX = joinX%settings.getLineLength() + settings.xOffset;
         
                 g.setColor(settings.joinBGColor);
                 g.setStroke(settings.basicLine);

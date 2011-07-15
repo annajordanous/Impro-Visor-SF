@@ -99,14 +99,16 @@ public class ChordBlock extends Block{
         return false;
     }
     
+    @Override
     public boolean isOverlap() {
         return (duration == 0);
     }
     
     @Override
     public List<Block> getSubBlocks() {
-    ArrayList<Block> subBlocks = new ArrayList<Block>();
-        subBlocks.add(this);
+        ArrayList<Block> subBlocks = new ArrayList<Block>();
+        if (this.duration != 0)
+            subBlocks.add(this);
         return subBlocks;
     }
     
