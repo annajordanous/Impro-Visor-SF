@@ -256,10 +256,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         deleteButton.setFocusable(false);
         deleteButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        deleteButton.setMaximumSize(new java.awt.Dimension(70, 30));
-        deleteButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        deleteButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        deleteButton.setMinimumSize(new java.awt.Dimension(50, 30));
         deleteButton.setName("deleteButton"); // NOI18N
-        deleteButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        deleteButton.setPreferredSize(new java.awt.Dimension(50, 30));
         deleteButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,10 +274,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         flattenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         flattenButton.setFocusable(false);
         flattenButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        flattenButton.setMaximumSize(new java.awt.Dimension(70, 30));
-        flattenButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        flattenButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        flattenButton.setMinimumSize(new java.awt.Dimension(50, 30));
         flattenButton.setName("flattenButton"); // NOI18N
-        flattenButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        flattenButton.setPreferredSize(new java.awt.Dimension(50, 30));
         flattenButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         flattenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -292,10 +292,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         breakButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         breakButton.setFocusable(false);
         breakButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        breakButton.setMaximumSize(new java.awt.Dimension(70, 30));
-        breakButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        breakButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        breakButton.setMinimumSize(new java.awt.Dimension(50, 30));
         breakButton.setName("breakButton"); // NOI18N
-        breakButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        breakButton.setPreferredSize(new java.awt.Dimension(50, 30));
         breakButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         breakButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -312,9 +312,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
         scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
-        scaleComboBox.setMinimumSize(new java.awt.Dimension(60, 30));
+        scaleComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
-        scaleComboBox.setPreferredSize(new java.awt.Dimension(60, 30));
+        scaleComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
         scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scaleComboBoxscaleComboReleased(evt);
@@ -369,10 +369,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         analyzeButton.setFocusable(false);
         analyzeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         analyzeButton.setLabel("Analyze"); // NOI18N
-        analyzeButton.setMaximumSize(new java.awt.Dimension(70, 30));
-        analyzeButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        analyzeButton.setMaximumSize(new java.awt.Dimension(60, 30));
+        analyzeButton.setMinimumSize(new java.awt.Dimension(60, 30));
         analyzeButton.setName("analyzeButton"); // NOI18N
-        analyzeButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        analyzeButton.setPreferredSize(new java.awt.Dimension(60, 30));
         analyzeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         analyzeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,6 +390,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         sendToNotateButton.setMaximumSize(new java.awt.Dimension(90, 30));
         sendToNotateButton.setMinimumSize(new java.awt.Dimension(90, 30));
         sendToNotateButton.setPreferredSize(new java.awt.Dimension(90, 30));
+        sendToNotateButton.setSize(new java.awt.Dimension(90, 30));
         sendToNotateButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         sendToNotateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -436,7 +437,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         jSlider1.setMaximum(200);
         jSlider1.setMinimum(60);
+        jSlider1.setToolTipText("Slide to adjust visual width of bricks."); // NOI18N
+        jSlider1.setBorder(javax.swing.BorderFactory.createTitledBorder("Feature Width")); // NOI18N
+        jSlider1.setMaximumSize(new java.awt.Dimension(32767, 40));
+        jSlider1.setMinimumSize(new java.awt.Dimension(50, 40));
         jSlider1.setName("jSlider1"); // NOI18N
+        jSlider1.setPreferredSize(new java.awt.Dimension(100, 40));
         jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 scaleSliderChanged(evt);
@@ -455,7 +461,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setToolTipText("The roadmap.\n"); // NOI18N
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        roadMapScrollPane.setMinimumSize(new java.awt.Dimension(600, 400));
+        roadMapScrollPane.setMinimumSize(new java.awt.Dimension(700, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
         roadMapScrollPane.setPreferredSize(new java.awt.Dimension(800, 900));
         roadMapScrollPane.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
