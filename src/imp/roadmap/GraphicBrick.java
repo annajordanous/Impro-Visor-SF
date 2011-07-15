@@ -159,6 +159,14 @@ public class GraphicBrick {
         return settings.getBlockLength(block);
     }
     
+    private String trimString(String string, int length, FontMetrics metrics)
+    {
+        int stringLength = metrics.stringWidth(string);
+        if(stringLength < length)
+            return string;
+        return string.substring(0, (string.length() * length)/stringLength);
+    }
+    
     /* Drawing and junk lies below. DANGER: Extreme ugliness ahead */
     
     /**
@@ -240,6 +248,7 @@ public class GraphicBrick {
                     endX, y + 3*blockHeight);
             g2d.drawLine(endX, y + blockHeight, endX, y + 3*blockHeight);
         }
+        g2d.setStroke(settings.basicLine);
         if(block.isSectionEnd())
             g2d.drawLine(endX-3, endY + blockHeight, endX-3, endY + 3*blockHeight);
     }
@@ -263,7 +272,8 @@ public class GraphicBrick {
         
         if(chords.size() > 1) {
             g2d.setColor(settings.textColor);
-            g2d.drawString(block.getName(), x+2, y+blockHeight + fontOffset);
+            String name = trimString(block.getName(),cutoff - x, metrics);
+            g2d.drawString(name, x+2, y+blockHeight + fontOffset);
         }
         
         g2d.setStroke(settings.basicLine);

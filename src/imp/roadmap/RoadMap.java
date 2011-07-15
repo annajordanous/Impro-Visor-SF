@@ -69,7 +69,6 @@ public class RoadMap {
     public RoadMap(RoadMap roadMap)
     {
         blocks = cloneBlocks(roadMap.getBricks());
-        System.out.println(blocks);
     }
     
     /**
@@ -144,7 +143,8 @@ public class RoadMap {
     {
         ArrayList bricks = new ArrayList(blocks);
         blocks.clear();
-        process();
+        keyMap.clear();
+        joins.clear();
         return bricks;
     }
     

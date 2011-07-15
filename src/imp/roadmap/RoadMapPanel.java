@@ -254,7 +254,7 @@ public class RoadMapPanel extends JPanel{
     public void analyzeSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<Block> bricks = view.analyze(removeSelection());
+            ArrayList<Block> bricks = view.analyze(removeSelectionNoUpdate());
             
             addBlocks(selectionStart, bricks);
             selectionEnd = selectionStart;
@@ -326,10 +326,8 @@ public class RoadMapPanel extends JPanel{
     public void flattenSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd+1);
+            ArrayList<Block> blocks = removeSelectionNoUpdate();
             ArrayList<Block> newBlocks = new ArrayList(RoadMap.getChords(blocks));
-            
-            graphicMap.subList(selectionStart, selectionEnd + 1).clear();
             
             roadMap.addAll(selectionStart, newBlocks);
             graphicMap.addAll(selectionStart, makeBricks(newBlocks));
@@ -495,10 +493,10 @@ public class RoadMapPanel extends JPanel{
                 g.setColor(settings.joinBGColor);
                 g.setStroke(settings.basicLine);
                 
-                g.fillRect(joinX+2,joinY+2, width, settings.lineSpacing - 4);
+                g.fillRect(joinX+2,joinY+2, width, offset + 2);
         
                 g.setColor(settings.lineColor);
-                g.drawRect(joinX+2,joinY+2, width, settings.lineSpacing - 4);
+                g.drawRect(joinX+2,joinY+2, width, offset + 2);
                 
                 g.setColor(settings.textColor);
                 g.drawString(joinName,joinX+4, joinY+2+offset);
@@ -562,8 +560,12 @@ public class RoadMapPanel extends JPanel{
     
     public void drawKeySpan(KeySpan keySpan, int x, int y, Graphics g)
     {
+            Graphics2D g2d = (Graphics2D)g;
+        
+            g2d.setStroke(settings.brickOutline);
+            
             int blockHeight = settings.getBlockHeight();
-            FontMetrics metrics = g.getFontMetrics();
+            FontMetrics metrics = g2d.getFontMetrics();
             int fontOffset = (blockHeight + metrics.getAscent())/2;
             long key = keySpan.getKey();
             String keyName = BrickLibrary.keyNumToName(key) + keySpan.getMode();
@@ -583,52 +585,56 @@ public class RoadMapPanel extends JPanel{
             int[] wrap = settings.wrap(x+settings.getLength(keySpan.getDuration()));
 
             int endX = wrap[0];
-            int endY = y+wrap[1]*settings.getLineOffset();
-            
             int lines = wrap[1];
             
+            if(endX == settings.xOffset) {  // This is to prevent the last line
+                endX = settings.getCutoff();              // from being on the next line
+                lines--;
+            }
+            int endY = y+lines*settings.getLineOffset();
+            
             if(lines > 0) {
-                g.setColor(keyColor);
-                g.fillRect(x, y, settings.getCutoff() - x, blockHeight);
-                g.fillRect(settings.xOffset, endY,
+                g2d.setColor(keyColor);
+                g2d.fillRect(x, y, settings.getCutoff() - x, blockHeight);
+                g2d.fillRect(settings.xOffset, endY,
                         endX-settings.xOffset, blockHeight);
                 
-                g.setColor(settings.lineColor);
-                g.drawLine(x,y,settings.getCutoff(),y);
-                g.drawLine(x,y+blockHeight,settings.getCutoff(),y+blockHeight);
+                g2d.setColor(settings.lineColor);
+                g2d.drawLine(x,y,settings.getCutoff(),y);
+                g2d.drawLine(x,y+blockHeight,settings.getCutoff(),y+blockHeight);
                 
-                g.drawLine(settings.xOffset, endY, endX, endY);
-                g.drawLine(settings.xOffset, endY+blockHeight,
+                g2d.drawLine(settings.xOffset, endY, endX, endY);
+                g2d.drawLine(settings.xOffset, endY+blockHeight,
                                        endX, endY+blockHeight);
                 for(int line = 1; line < lines; line++) {
-                    g.setColor(keyColor);
-                    g.fillRect(settings.xOffset, y+line*settings.getLineOffset(),
+                    g2d.setColor(keyColor);
+                    g2d.fillRect(settings.xOffset, y+line*settings.getLineOffset(),
                             settings.getLineLength(), blockHeight);
                     
-                    g.setColor(settings.lineColor);
-                    g.drawLine(settings.xOffset,
+                    g2d.setColor(settings.lineColor);
+                    g2d.drawLine(settings.xOffset,
                             y+line*settings.getLineOffset(),
                             settings.getCutoff(),
                             y+line*settings.getLineOffset());
-                    g.drawLine(settings.xOffset,
+                    g2d.drawLine(settings.xOffset,
                             y+line*settings.getLineOffset() + blockHeight,
                             settings.getCutoff(),
                             y+line*settings.getLineOffset() + blockHeight);
                 }
             } else {
-                g.setColor(keyColor);
-                g.fillRect(x,y, endX - x, blockHeight);
+                g2d.setColor(keyColor);
+                g2d.fillRect(x,y, endX - x, blockHeight);
                 
-                g.setColor(settings.textColor);
-                g.drawLine(x,y,endX,y);
-                g.drawLine(x,y+blockHeight,endX,y+blockHeight);
+                g2d.setColor(settings.textColor);
+                g2d.drawLine(x,y,endX,y);
+                g2d.drawLine(x,y+blockHeight,endX,y+blockHeight);
             }
             
-            g.drawLine(endX, endY, endX, endY+blockHeight);
-            g.drawLine(x, y, x, y+blockHeight);
+            g2d.drawLine(endX, endY, endX, endY+blockHeight);
+            g2d.drawLine(x, y, x, y+blockHeight);
             
-            g.setColor(settings.textColor);
-            g.drawString(keyName, x+2, y+fontOffset);
+            g2d.setColor(settings.textColor);
+            g2d.drawString(keyName, x+2, y+fontOffset);
     }
         
     /**
