@@ -76,11 +76,13 @@ public class RoadMapPanel extends JPanel{
         return roadMap.size();
     }
     
-    public void placeBricks() //TODO implement line breaks for section breaks
+    public void placeBricks()
     {
         long currentBeats = 0;
         long lines = 0;
         long lineBeats = 0;
+        
+        sectionBreaks.clear();
         
         for( GraphicBrick brick : graphicMap ) {
             int x = settings.getLength(lineBeats) + settings.xOffset;

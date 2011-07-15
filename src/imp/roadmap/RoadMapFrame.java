@@ -110,7 +110,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
                 
         initComponents();
         
-        initBuffer();        
+        initBuffer();  
+        
+        deactivateButtons();
     }
 
     /** This method is called from within the constructor to
