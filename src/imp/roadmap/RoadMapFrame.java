@@ -496,13 +496,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryTabbedPane.setName("libraryTabbedPane"); // NOI18N
         libraryTabbedPane.setPreferredSize(new java.awt.Dimension(300, 500));
 
+        libraryScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        libraryScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         libraryScrollPane.setName("libraryScrollPane"); // NOI18N
 
         libraryTree.setModel(libraryTreeModel);
-        libraryTree.setMaximumSize(new java.awt.Dimension(300, 1000));
-        libraryTree.setMinimumSize(new java.awt.Dimension(200, 200));
-        libraryTree.setName("libraryTree"); // NOI18N
-        libraryTree.setPreferredSize(new java.awt.Dimension(200, 600));
+        libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
+        libraryTree.setMaximumSize(new java.awt.Dimension(400, 2000));
+        libraryTree.setMinimumSize(new java.awt.Dimension(400, 2000));
+        libraryTree.setName("Bricks"); // NOI18N
+        libraryTree.setPreferredSize(new java.awt.Dimension(400, 2000));
+        libraryTree.setSize(new java.awt.Dimension(400, 2000));
         libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
@@ -516,6 +520,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         chordPanel.setName("chordPanel"); // NOI18N
         chordPanel.setLayout(new java.awt.GridBagLayout());
 
+        chordField.setToolTipText("Enter one chord at a time.\n"); // NOI18N
         chordField.setName("chordField"); // NOI18N
         chordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
