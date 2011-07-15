@@ -1,7 +1,7 @@
 /**
  * Polya library: Implements Lisp-like structures in Java.
  *
- * Copyright (C) 2009 Robert Keller
+ * Copyright (C) 2009-2011 Robert Keller
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
