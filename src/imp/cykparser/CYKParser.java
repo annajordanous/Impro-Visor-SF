@@ -22,6 +22,7 @@
 package imp.cykparser;
 import java.util.*;
 import imp.brickdictionary.*;
+import imp.util.ErrorLog;
 import java.io.*;
 import polya.*;
 
@@ -137,9 +138,8 @@ public class CYKParser
                     // Needs BlockType (i.e. "Brick"), name, key, and contents
                     if (contents.length() < 3)
                     {
-                        Error e = new Error("Improper formatting for dictionary"
-                                + "rule");
-                        System.err.println(e);
+                        ErrorLog.log(ErrorLog.SEVERE, "Improper substitution "
+                                + "dictionary format", true);
                     }
                     else
                     {
@@ -170,29 +170,25 @@ public class CYKParser
                         }
                         else
                         {
-                            Error e4 = new Error("rule not of correct type");
-                            System.err.println(e4);
+                            ErrorLog.log(ErrorLog.WARNING, 
+                                    "Incorrect rule type " + eqCategory, true);
                         }
                     }
                 }
                 else
                 {
-                    Error e2 = new Error("Improper formatting for token");
-                    System.err.println(e2);
-                    System.exit(-1);
+                    ErrorLog.log(ErrorLog.WARNING, "Improper formatting for "
+                            + "a token " + token.toString(), true);
                 }
             }
         } catch (FileNotFoundException ex) {
-            Error e5 = new Error("File not found");
-            System.err.println(e5);
-            System.exit(-1);
+            ErrorLog.log(ErrorLog.SEVERE, "Substitution dictionary not found", 
+                    true);
         } finally {
             try {
                 fis.close();
             } catch (IOException ex) {
-                Error e6 = new Error("File input stream could not close");
-                System.err.println(e6);
-                System.exit(-1);
+                ErrorLog.log(ErrorLog.FATAL, "Filestream cannot close", true);
             }
         }
         
@@ -223,7 +219,8 @@ public class CYKParser
             // else. Any brick composed of one or fewer subBricks should not 
             // be used.
             if (size < 2)
-                System.err.println("Error: bad brick.");
+                ErrorLog.log(ErrorLog.WARNING, "Error: brick of size " + size, 
+                        true);
                     
             // Perfect case: a Brick of two subBricks. Only one rule is needed,
             // a BinaryProduction with the name of the resulting brick as its 

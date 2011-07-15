@@ -22,6 +22,7 @@
 
 package imp.brickdictionary;
 
+import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -266,14 +267,8 @@ public class Brick extends Block {
                     }
                     else
                     {
-                        System.err.print("Duration not of type long " + durObj);
-                        System.exit(-1);
-                        
-//                        throw new DictionaryException("Duration not of type "
-//                                + "Long");
-                        
-//                        Error e3 = new Error("Duration not of type Long");
-//                        System.err.println(e3);
+                        ErrorLog.log(ErrorLog.FATAL, brickName + ": " +
+                                "Duration not of type long: " + durObj, true);
                     }
                 }
                 
@@ -292,14 +287,8 @@ public class Brick extends Block {
                     }
                     else
                     {
-                        System.err.print("Duration not of type long " + durObj);
-                        System.exit(-1);
-                        
-//                        throw new DictionaryException("Duration not of type "
-//                                + "Long");
-                        
-//                        Error e3 = new Error("Duration not of type Long");
-//                        System.err.println(e3);
+                        ErrorLog.log(ErrorLog.FATAL, chordName + ": " +
+                                "Duration not of type long: " + durObj, true);
                     }
                 }
             }
@@ -347,8 +336,7 @@ public class Brick extends Block {
                             long dur = (Long)durObj;
                             long subBrickKeyNum = 
                                     BrickLibrary.keyNameToNum(subBrickKeyString);
-                            Brick subBrick;
-                            
+                            Brick subBrick = null;
                             if (bricks.hasBrick(subBrickName)) {
                                 subBrick = 
                                         bricks.getBrick(subBrickName, subBrickKeyNum, dur);
@@ -374,24 +362,20 @@ public class Brick extends Block {
                             }
                             else
                             {
-                                throw new DictionaryException("Dictionary does not contain " + subBrickName);
+                                ErrorLog.log(ErrorLog.FATAL, "Dictionary does "
+                                        + "not contain " + subBrickName, true);
                             }
 
                             subBlockList.add(subBrick);
                         } catch (DictionaryException ex) {
-                            Logger.getLogger(Brick.class.getName()).log(Level.SEVERE, null, ex);
+                            ErrorLog.log(ErrorLog.FATAL, name + ": Cannot read "
+                                    + "in subblocks", true);
                         }
                     }
                     else
                     {
-                        System.err.print("Duration not of type long " + durObj);
-                        System.exit(-1);
-                        
-//                        throw new DictionaryException("Duration not of type "
-//                                + "Long");
-                        
-//                        Error e3 = new Error("Duration not of type Long");
-//                        System.err.println(e3);
+                        ErrorLog.log(ErrorLog.FATAL, subBrickName + ": " +
+                                "Duration not of type long: " + durObj, true);;
                     }
                 }
                 
@@ -410,8 +394,8 @@ public class Brick extends Block {
                     }
                     else
                     {
-                        System.err.print("Duration not of type long " + durObj);
-                        System.exit(-1);
+                        ErrorLog.log(ErrorLog.FATAL, chordName + ": " +
+                                "Duration not of type long: " + durObj, true);
                         
 //                        throw new DictionaryException("Duration not of type "
 //                                + "Long");

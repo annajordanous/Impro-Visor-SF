@@ -21,6 +21,7 @@
 
 package imp.cykparser;
 import imp.brickdictionary.*;
+import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -143,7 +144,8 @@ public class PostProcessing {
             joinArray = new String[blocks.size() - 1];
         }
         else {
-            System.err.println("Can't find joins in ArrayList of size 0");
+            ErrorLog.log(ErrorLog.WARNING, "Cannot find joins in an ArrayList "
+                    + "of size 0");
             return null;
         }
         for(int i = 0; i < blocks.size() - 1; i++) {
@@ -235,9 +237,7 @@ public class PostProcessing {
             return JOINS[(int)keyDiff];
         else
         {
-            System.err.println("joinLookup: incorrect keyDiff formatting " 
-                    + keyDiff);
-            System.exit(-1);
+            ErrorLog.log(ErrorLog.FATAL, "Difference between keys is incorrect");
             return "";
         }
     }

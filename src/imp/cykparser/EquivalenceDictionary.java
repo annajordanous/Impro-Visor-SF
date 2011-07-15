@@ -23,6 +23,7 @@ package imp.cykparser;
 
 import java.io.*;
 import imp.brickdictionary.*;
+import imp.util.ErrorLog;
 import polya.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -114,9 +115,8 @@ public class EquivalenceDictionary {
                     // equivalence rule
                     if (contents.length() < 3)
                     {
-                        Error e = new Error("Improper formatting for dictionary"
-                                + "rule");
-                        System.err.println(e);
+                        ErrorLog.log(ErrorLog.WARNING, 
+                                "Error: incorrect equivalence", true);
                     }
                     // for appropriate rules
                     else
@@ -145,22 +145,17 @@ public class EquivalenceDictionary {
                 }
                 else
                 {
-                    Error e2 = new Error("Improper formatting for token");
-                    System.err.println(e2);
-                    System.exit(-1);
+                    ErrorLog.log(ErrorLog.WARNING, 
+                            "Improper formatting for a token", true);
                 }
             }
         } catch (FileNotFoundException ex) {
-            Error e1 = new Error("Dictionary file not found");
-            System.err.println(e1);
-            System.exit(-1);
+            ErrorLog.log(ErrorLog.SEVERE, "Dictionary file not found", true);
         } finally {
             try {
                 fis.close();
             } catch (IOException ex) {
-                Error e1 = new Error("Dictionary file input stream can't close");
-                System.err.println(e1);
-                System.exit(-1);
+                ErrorLog.log(ErrorLog.FATAL, "Filestream cannot close", true);
             }
         }
     }

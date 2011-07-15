@@ -21,6 +21,7 @@
 
 
 package imp.brickdictionary;
+import imp.util.ErrorLog;
 import java.util.Collection;
 import polya.*;
 import java.io.*;
@@ -49,18 +50,18 @@ public class BrickLibrary {
     }
     
     // Add a brick to the dictionary
-    public void addBrick(Brick brick) throws DictionaryException {
+    public void addBrick(Brick brick) {
         if(brickMap.containsKey(brick.getName()))
         {
-            throw new DictionaryException("Dictionary already contains " 
-                    + brick.getName());
+            ErrorLog.log(ErrorLog.WARNING, "Dictionary already contains " +
+                    brick.getName(), true);
         }
         else
             this.brickMap.put(brick.name, brick);
     }
     
     // Get a brick from the dictionary.
-    public Brick getBrick(String s, long k) throws DictionaryException {
+    public Brick getBrick(String s, long k) {
         if(brickMap.containsKey(s))
         {
             Brick brick = new Brick(brickMap.get(s));
@@ -69,11 +70,13 @@ public class BrickLibrary {
         }
         else
         {
-            throw new DictionaryException("Dictionary does not contain " + s);
+            ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                    s, true);
+            return null;
         }
     }
     
-    public Brick getBrick(String s, long k, long d) throws DictionaryException {
+    public Brick getBrick(String s, long k, long d) {
         if(brickMap.containsKey(s))
         {
             Brick brick = new Brick(brickMap.get(s));
@@ -83,7 +86,9 @@ public class BrickLibrary {
         }
         else
         {
-            throw new DictionaryException("Dictionary does not contain " + s);
+            ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                    s, true);
+            return null;
         }
     }
     
@@ -179,16 +184,13 @@ public class BrickLibrary {
             return "";
         else
         {
-            System.err.println("keyNumToName: Incorrect key formatting " 
-                    + keyNum);
-            System.exit(-1);
+            ErrorLog.log(ErrorLog.FATAL, "Incorrect key number: " + keyNum);
             return "";
         }
     }
         
     // Read in dictionary file, parse into bricks, and build the dictionary
-    public static BrickLibrary processDictionary() throws IOException, 
-            DictionaryException {
+    public static BrickLibrary processDictionary() throws IOException {
         
         FileInputStream fis = new FileInputStream("vocab/BrickDictionary.txt");
         Tokenizer in = new Tokenizer(fis);
@@ -210,8 +212,8 @@ public class BrickLibrary {
                 // Needs BlockType (i.e. "Brick"), name, key, and contents
                 if (contents.length() < 4)
                 {
-                    throw new DictionaryException("Improper formatting for "
-                            + "Polylist");
+                    ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
+                            + "a BrickDictionary Polylist", true);
                 }
                 else
                 {
@@ -242,14 +244,15 @@ public class BrickLibrary {
                     }
                     else
                     {
-                        throw new DictionaryException("blockCategory not of "
-                                + "correct type");
+                        ErrorLog.log(ErrorLog.WARNING, "Improper type for"
+                            + "a BrickDictionary Polylist", true);
                     }
                 }
             }
             else
             {
-                throw new DictionaryException("Improper formatting for token");
+                ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
+                    + "a Polylist token", true);
             }
         }
 
@@ -278,8 +281,8 @@ public class BrickLibrary {
     public static String dashless(String s) {
         return s.replace('-', ' ');
     }
-    public static void main(String[] args) throws IOException, 
-            DictionaryException {
+    public static void main(String[] args) throws IOException 
+            {
         BrickLibrary dictionary;
         dictionary = BrickLibrary.processDictionary();
         
