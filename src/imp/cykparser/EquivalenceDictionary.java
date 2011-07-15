@@ -78,7 +78,8 @@ public class EquivalenceDictionary {
                 {
                     for (ChordBlock sub : rule)
                     {
-                        equivalences.add(sub, diff);
+                        if (sub.matches(c) < 0)
+                            equivalences.add(sub, diff);
             }
                     break;
         }
