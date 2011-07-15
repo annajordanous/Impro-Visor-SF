@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import imp.brickdictionary.*;
 import java.util.Random;
 
+
 /**
  *
  * @author August Toman-Yih
@@ -188,6 +189,10 @@ public class RoadMapPanel extends JPanel{
     {
         selectionStart = selectionEnd = 0;
         selectBricks(graphicMap.size()-1);
+        
+        // This is just for testing purposes. It should be eliminated later.
+        System.out.println("selected " + roadMap.toString());
+
     }
     
     public void deselectBricks()

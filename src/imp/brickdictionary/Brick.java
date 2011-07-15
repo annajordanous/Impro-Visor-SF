@@ -445,7 +445,29 @@ public class Brick extends Block {
     {
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
-}
+
+/** 
+ * Returns a Polylist representation of a Brick.
+ * @return 
+ */
+    
+@Override
+public Polylist toPolylist()
+  {
+    PolylistBuffer buffer = new PolylistBuffer();
+    
+    for( Block b: getSubBlocks() )
+      {
+        buffer.append(b.toPolylist());
+      }
+    
+    return Polylist.list("brick", name, duration, key, mode, isEnd, buffer.toPolylist().cons("subblocks"));
+  }
+
+} // end of class Brick
+
+
+
 class BrickComparator implements Comparator {
     @Override
     public int compare(Object b1, Object b2) {

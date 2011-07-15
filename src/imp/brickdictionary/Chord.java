@@ -4,6 +4,8 @@ package imp.brickdictionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import polya.Polylist;
+
 /**
  * purpose: Definition definition
  * @author Zachary Merritt
@@ -171,5 +173,14 @@ public class Chord extends Block{
         return (l + 12)%12;
 }
     
+/**
+ * returns a Polylist representation of a ChordBlock
+ * @return 
+ */
     
+public Polylist toPolylist()
+  {
+    return Polylist.list("chord", name, duration, quality, slashChord, NC, key, mode, isEnd);
+  }
+   
 }

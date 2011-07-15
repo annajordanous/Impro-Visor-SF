@@ -10,6 +10,9 @@ import java.util.List;
 import imp.cykparser.PostProcessing;
 import imp.brickdictionary.*;
 
+import polya.Polylist;
+import polya.PolylistBuffer;
+
 /**
  *
  * @author August Toman-Yih
@@ -250,6 +253,7 @@ public class RoadMap {
         keyMap = PostProcessing.findKeys(blocks);
     }
     
+/* Old version    
     @Override
     public String toString()
     {
@@ -258,4 +262,62 @@ public class RoadMap {
             output += block + " ";
         return output;
     }
+ */  
+    
+    /**
+     * The String representation of a RoadMap is String version of
+     * the Polylist version.
+     * @return 
+     */
+    
+    @Override
+    public String toString()
+    {
+    return toPolylist().toString();
+    }
+  
+   /**
+     * The Polylist representation of a RoadMap captures the essential
+     * elements as a single polylist. It includes the blocks,
+     * joins, and keymap in that order.
+     * @return 
+     */
+    
+    
+    public Polylist toPolylist()
+      {
+        PolylistBuffer buffer = new PolylistBuffer();
+        
+        buffer.append("roadmap");
+        
+        PolylistBuffer innerBuffer = new PolylistBuffer();
+        
+        for( Block b: blocks )
+          {
+            innerBuffer.append(b.toPolylist());
+          }
+        
+        buffer.append(innerBuffer.toPolylist().cons("blocks"));
+        
+        innerBuffer = new PolylistBuffer();
+        
+        for( String s: joins )
+          {
+            innerBuffer.append(s);
+          }
+        
+        buffer.append(innerBuffer.toPolylist().cons("joins"));
+        
+        innerBuffer = new PolylistBuffer();
+        
+        for( KeySpan k: keyMap )
+          {
+            innerBuffer.append(k.toPolylist());
+          }
+        
+        buffer.append(innerBuffer.toPolylist().cons("keymap"));
+        
+        return buffer.toPolylist();
+      }
+   
 }

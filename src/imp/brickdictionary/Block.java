@@ -3,6 +3,8 @@ package imp.brickdictionary;
 
 import java.util.List;
 
+import polya.Polylist;
+
 /**
  * purpose: Block definition
  * @author Zachary Merritt
@@ -108,4 +110,15 @@ public class Block {
     public void setSectionEnd(Boolean value) {
         isEnd = value;
     }
+    
+/**
+ * This will be overriden in derived classes
+ * @return 
+ */
+    
+public Polylist toPolylist()
+  {
+    return Polylist.list("block");
+  }
+
 }

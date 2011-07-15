@@ -1,6 +1,8 @@
 
 package imp.brickdictionary;
 
+import polya.Polylist;
+
 /**
  * purpose: Object for key/mode pairs with durations -- mainly for drawing
  * @author Zachary Merritt
@@ -45,4 +47,25 @@ public class KeySpan {
     public void setDuration(long d) {
         duration = d;
     }
+    
+    /** 
+     * Returns a Polylist representation of a KeySpan.
+     * @return 
+     */
+    
+    public Polylist toPolylist()
+      {
+        return keymode.toPolylist().addToEnd(duration);
+      }
+    
+     /** 
+     * Returns a String representation of a KaySpan.
+     * @return 
+     */
+    
+    public String toString()
+      {
+        return toPolylist().toString();
+      }
+   
 }
