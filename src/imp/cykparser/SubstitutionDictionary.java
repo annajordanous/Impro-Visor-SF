@@ -39,7 +39,7 @@ public class SubstitutionDictionary {
      * @return a SubstituteList of all the chords that c could have replaced
      *         in a chord brick
      */
-    public SubstituteList checkSubstitution(Chord c) {
+    public SubstituteList checkSubstitution(ChordBlock c) {
         SubstituteList subs = new SubstituteList();
         for (UnaryProduction u : subList) {
             subs.addAll(u.checkSubstitution(c));

@@ -20,8 +20,8 @@ public class UnaryProduction {
     public static final int NODUR = 0;
    
     // Data members
-    private Chord head;                     // the chord to replace
-    private ArrayList<Chord> terminals;     // the substitute chords possible
+    private ChordBlock head;                     // the chord to replace
+    private ArrayList<ChordBlock> terminals;     // the substitute chords possible
     
     /** Constructor / 2
      * Makes a UnaryProduction based on a PolyList describing a substitution
@@ -30,13 +30,13 @@ public class UnaryProduction {
      */
     UnaryProduction(String h, Polylist contents)
     {
-        head = new Chord(h, NODUR);
+        head = new ChordBlock(h, NODUR);
         
         // Each chord following the first one is read in as a subsitution
-        terminals = new ArrayList<Chord>(); 
-        Chord newChord;
+        terminals = new ArrayList<ChordBlock>(); 
+        ChordBlock newChord;
         while (contents.nonEmpty()) {
-            newChord = new Chord(contents.first().toString(), NODUR);
+            newChord = new ChordBlock(contents.first().toString(), NODUR);
             terminals.add(newChord);
             contents = contents.rest();
         }
@@ -59,11 +59,11 @@ public class UnaryProduction {
      * @return a SubstituteList containing either the head - if the head could
      *         have c as a substitute - or no chords at all.
      */
-    public SubstituteList checkSubstitution(Chord c) {
+    public SubstituteList checkSubstitution(ChordBlock c) {
         SubstituteList subs = new SubstituteList();
         
         long diff;
-        for (Chord sub : terminals) {
+        for (ChordBlock sub : terminals) {
             diff = sub.matches(c);
             if (diff >= 0) {
                 subs.add(head, diff);

@@ -35,7 +35,7 @@ public class TreeNode {
         child2 = null;
         symbol = null;
         block = null;
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         cost = Double.POSITIVE_INFINITY; // To ensure it isn't added to a parse
         mode = null;
         key = -1;
@@ -51,13 +51,13 @@ public class TreeNode {
      * @param chord, a Chord
      * @param s, the start position in a piece
      */
-    public TreeNode(Chord chord, long s)
+    public TreeNode(ChordBlock chord, long s)
     {
         child1 = null;
         child2 = null;
         block = chord;
         mode = chord.getMode();
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = block.getKey();
         symbol = chord.getQuality();
@@ -75,13 +75,13 @@ public class TreeNode {
      * @param c, a long describing the Chord's cost
      * @param s, the start position in a piece
      */
-        public TreeNode(Chord chord, double c, long s)
+        public TreeNode(ChordBlock chord, double c, long s)
     {
         child1 = null;
         child2 = null;
         block = chord;
         mode = chord.getMode();
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = block.getKey();
         symbol = chord.getQuality();
@@ -101,13 +101,13 @@ public class TreeNode {
      * @param chord, a Chord
      * @param c, a long describing the Chord's cost
      */
-        public TreeNode(String name, long k, Chord chord, long s)
+        public TreeNode(String name, long k, ChordBlock chord, long s)
     {
         child1 = null;
         child2 = null;
         block = chord;
         mode = chord.getMode();
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = k;
         symbol = name;
@@ -142,7 +142,7 @@ public class TreeNode {
         subBlocks.addAll(c1.getBlocks());
         subBlocks.addAll(c2.getBlocks());
         
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         chords.addAll(c1.getChords());
         chords.addAll(c2.getChords());
         
@@ -174,7 +174,7 @@ public class TreeNode {
         symbol = null;
         mode = "";
         
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         chords.addAll(c1.getChords());
         chords.addAll(c2.getChords());
         
@@ -202,7 +202,7 @@ public class TreeNode {
     {
         TreeNode newNode;
         if (child1 == null && child2 == null) {
-            Chord zeroChord = new Chord(block.getName(), 0, block.isSectionEnd());
+            ChordBlock zeroChord = new ChordBlock(block.getName(), 0, block.isSectionEnd());
             newNode = new TreeNode(zeroChord, cost + 5, start);
         }
         else {
@@ -259,7 +259,7 @@ public class TreeNode {
         return mode;
     }
     
-    public ArrayList<Chord> getChords()
+    public ArrayList<ChordBlock> getChords()
     {
         return chords;
     }
@@ -357,7 +357,7 @@ public class TreeNode {
     private TreeNode child1;          // First nonterminal from a tree
     private TreeNode child2;          // Second nonterminal from a tree
     private String symbol;            // Nonterminal symbol of current node
-    private ArrayList<Chord> chords;  // Chords contained within the node
+    private ArrayList<ChordBlock> chords;  // Chords contained within the node
     private Block block;              // The structure holding all of the
                                       // TreeNode's contents
     private long key;                 // the key of the Node's nominal contents

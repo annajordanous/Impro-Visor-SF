@@ -93,7 +93,7 @@ public class Block {
     
     // Returns the individual chords that constitute this block
     // Overridden by the corresponding method in Brick or Chord
-    public List<Chord> flattenBlock() {
+    public List<ChordBlock> flattenBlock() {
         return null;
     }
     

@@ -153,7 +153,7 @@ public class RoadMap {
      * @return 
      * list of chords
      */
-    public ArrayList<Chord> getChords()
+    public ArrayList<ChordBlock> getChords()
     {
         return getChords(blocks);
     }
@@ -167,7 +167,7 @@ public class RoadMap {
      * @return 
      * list of chords
      */
-    public ArrayList<Chord> getChordsInRange(int start, int end)
+    public ArrayList<ChordBlock> getChordsInRange(int start, int end)
     {
         return getChords(blocks.subList(start, end));
     }
@@ -179,9 +179,9 @@ public class RoadMap {
      * @return 
      * list of chords
      */
-    public static ArrayList<Chord> getChords(List<Block> blocks)
+    public static ArrayList<ChordBlock> getChords(List<Block> blocks)
     {
-        ArrayList<Chord> chords = new ArrayList();
+        ArrayList<ChordBlock> chords = new ArrayList();
         for( Block block : blocks )
             chords.addAll(block.flattenBlock());
         return chords;
@@ -193,8 +193,8 @@ public class RoadMap {
         for( Block block : blocks ) {
             if( block instanceof Brick )
                 clones.add(new Brick((Brick)block));
-            if( block instanceof Chord )
-                clones.add(new Chord((Chord)block));
+            if( block instanceof ChordBlock )
+                clones.add(new ChordBlock((ChordBlock)block));
         }
         return clones;
     }

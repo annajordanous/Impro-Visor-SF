@@ -1041,7 +1041,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     /** addChord <p>
     * Adds the chord inputted in the chord field to the roadmap.
     */
-    public void addChord(Chord chord)
+    public void addChord(ChordBlock chord)
     {
         saveState("AddChord");
         roadMapPanel.addBlock(chord);
@@ -1052,7 +1052,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void addChordFromPreview()
     {
         saveState("AddChord");
-        roadMapPanel.addBlock(new Chord(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
+        roadMapPanel.addBlock(new ChordBlock(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
         roadMapPanel.placeBricks();
     }
     
@@ -1304,7 +1304,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         return result;
     }  
     
-    public ArrayList<Chord> getChordsInSelection()
+    public ArrayList<ChordBlock> getChordsInSelection()
     {
         return RoadMap.getChords(roadMapPanel.getSelection());
     }

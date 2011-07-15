@@ -4,7 +4,7 @@
  */
 package imp.cykparser;
 
-import imp.brickdictionary.Chord;
+import imp.brickdictionary.ChordBlock;
 import java.util.ArrayList;
 
 /** SubstituteList
@@ -49,7 +49,7 @@ public class SubstituteList {
      * @param c, a Chord
      * @param diff, the transposition required of the Chord
      */
-    public void add(Chord c, long diff) {
+    public void add(ChordBlock c, long diff) {
         names.add(c.getSymbol());
         keys.add(modKeys(c.getKey() + diff));
     }

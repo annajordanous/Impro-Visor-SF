@@ -60,15 +60,15 @@ public class BinaryProduction {
         type = t;
         key1 = b1.getKey();
         dur1 = b1.getDuration();   
-        if (b1 instanceof Chord) 
-            name1 = ((Chord)b1).getSymbol();
+        if (b1 instanceof ChordBlock) 
+            name1 = ((ChordBlock)b1).getSymbol();
         else
             name1 = b1.getName();
         
         key2 = b2.getKey();
         dur2 = b2.getDuration();
-        if (b2 instanceof Chord) 
-            name2 = ((Chord)b2).getSymbol();
+        if (b2 instanceof ChordBlock) 
+            name2 = ((ChordBlock)b2).getSymbol();
         else
             name2 = b2.getName();
         
@@ -97,8 +97,8 @@ public class BinaryProduction {
         
         key2 = b.getKey();
         dur2 = b.getDuration();
-        if (b instanceof Chord) {
-            name2 = ((Chord)b).getSymbol();
+        if (b instanceof ChordBlock) {
+            name2 = ((ChordBlock)b).getSymbol();
         }
         else {
             name2 = b.getName();

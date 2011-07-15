@@ -74,8 +74,8 @@ public class PreviewPanel extends JPanel
     {
         if (brick instanceof Brick)
             protoBrick = new Brick((Brick)brick);
-        else if (brick instanceof Chord)
-            protoBrick = new Chord((Chord)brick);
+        else if (brick instanceof ChordBlock)
+            protoBrick = new ChordBlock((ChordBlock)brick);
         
         brick.adjustDuration(currentDuration);
         currentBrick = new GraphicBrick(brick, view.getSettings());

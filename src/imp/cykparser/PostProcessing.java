@@ -66,15 +66,15 @@ public class PostProcessing {
             // If the current block is a brick, check if it could be a launcher
             if(blocks.get(i) instanceof Brick) {
                 Brick b = (Brick)blocks.get(i);
-                ArrayList<Chord> chordList = new ArrayList<Chord>();
+                ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
                 
                 // If the brick is not the last one in the list, get chords from
                 // next block
                 if(i != blocks.size() - 1) 
-                    chordList = (ArrayList<Chord>)blocks.get(i + 1).flattenBlock();
+                    chordList = (ArrayList<ChordBlock>)blocks.get(i + 1).flattenBlock();
                 // Otherwise, loop around and get chords from first block
                 else
-                    chordList = (ArrayList<Chord>)blocks.get(0).flattenBlock();
+                    chordList = (ArrayList<ChordBlock>)blocks.get(0).flattenBlock();
                     
                 String brickName = b.getName();
                 
@@ -129,10 +129,10 @@ public class PostProcessing {
             if (b instanceof Brick && c instanceof Brick) {
                 if(checkJoinability(((Brick)b), ((Brick)c))) {
                     // If so, find the difference between the two keys 
-                    ArrayList<Chord> chordList = 
-                            (ArrayList<Chord>) c.flattenBlock();
+                    ArrayList<ChordBlock> chordList = 
+                            (ArrayList<ChordBlock>) c.flattenBlock();
                     long firstDominantKey = (c.getKey() + 7)%OCTAVE;
-                    for(Chord j : chordList) {
+                    for(ChordBlock j : chordList) {
                         if(j.getQuality().equals("7")) {
                             firstDominantKey = j.getKey();
                             break;
@@ -154,11 +154,11 @@ public class PostProcessing {
     public static boolean checkJoinability(Brick first, Brick second) {
         boolean joinable = false;
         
-        ArrayList<Chord> firstList = first.flattenBlock();
-        ArrayList<Chord> secondList = second.flattenBlock();
+        ArrayList<ChordBlock> firstList = first.flattenBlock();
+        ArrayList<ChordBlock> secondList = second.flattenBlock();
         
-        Chord firstToCheck = firstList.get(firstList.size() - 1);
-        Chord secondToCheck = secondList.get(0);
+        ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
+        ChordBlock secondToCheck = secondList.get(0);
         
         EquivalenceDictionary dict = new EquivalenceDictionary();
         dict.loadDictionary(CYKParser.DICTIONARY_NAME);
@@ -401,7 +401,7 @@ public class PostProcessing {
                 resolves = true;
             }*/
         } else {
-            String b2Mode = findModeFromQuality(((Chord) b2).getQuality());
+            String b2Mode = findModeFromQuality(((ChordBlock) b2).getQuality());
             Long relative;
 
             if (b2Mode.equals("Major")) {

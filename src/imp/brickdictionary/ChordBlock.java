@@ -12,7 +12,7 @@ import polya.Polylist;
  */
 
 
-public class Chord extends Block{
+public class ChordBlock extends Block{
     
     // Type of chord, ie. "m7b5" or "7"
     private String quality;
@@ -22,21 +22,21 @@ public class Chord extends Block{
     // Constructor for chord
     // Uses parseChordName to interpret chord's name, finding root (key) and
     // quality
-    public Chord(String chordName, long duration) {
+    public ChordBlock(String chordName, long duration) {
         super(chordName);
         this.duration = duration;
         this.parseChordName();
         isEnd = false;
     }
     
-    public Chord(String chordName, long duration, boolean sectionend) {
+    public ChordBlock(String chordName, long duration, boolean sectionend) {
         super(chordName);
         this.duration = duration;
         this.parseChordName();
         isEnd = sectionend;
     }
     
-    public Chord(Chord chord) {
+    public ChordBlock(ChordBlock chord) {
         super(chord.name);
         this.duration = chord.duration;
         this.parseChordName();
@@ -92,8 +92,8 @@ public class Chord extends Block{
     // Return a one member list of this chord
     // Overrides corresponding methid in Block
     @Override
-    public List<Chord> flattenBlock() {
-        List<Chord> chordList = new ArrayList<Chord>();
+    public List<ChordBlock> flattenBlock() {
+        List<ChordBlock> chordList = new ArrayList<ChordBlock>();
         if (this.duration != 0)
             chordList.add(this);
         
@@ -121,7 +121,7 @@ public class Chord extends Block{
     }
     
     
-    public long matches(Chord c) {
+    public long matches(ChordBlock c) {
         if (c.getQuality().equals(quality) || 
                 (c.isSlashChord() && 
                 c.getQuality().split("/")[0].equals(quality)))

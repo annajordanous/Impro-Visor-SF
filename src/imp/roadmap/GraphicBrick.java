@@ -104,12 +104,12 @@ public class GraphicBrick {
         if( x > cutoffLine || x < settings.xOffset )
             return false;
         
-        ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
+        ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
         
         int xOffset = this.x;
         int yOffset = this.y;
 
-        for( Chord chord : chords ) {
+        for( ChordBlock chord : chords ) {
             int length = settings.getBlockLength(chord);
             
             if ( x > xOffset && x < xOffset + length && 
@@ -220,7 +220,7 @@ public class GraphicBrick {
      */
     private void drawChords(Graphics g)
     {
-        ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
+        ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
  
         int blockHeight = settings.getBlockHeight();
         int cutoff = settings.getCutoff();
@@ -240,7 +240,7 @@ public class GraphicBrick {
         
         g2d.setColor(settings.lineColor);
         
-        for( Chord chord : chords ) {
+        for( ChordBlock chord : chords ) {
             int[] wrap = settings.wrap(x + settings.getLength(currentBeats));
             int currentX = wrap[0];
             int currentY = y + wrap[1] * settings.getLineOffset() + 2*blockHeight;
@@ -294,7 +294,7 @@ public class GraphicBrick {
         
         g.fillRect(x, y, totalLength, blockHeight);
 
-        ArrayList<Chord> chords = (ArrayList) block.flattenBlock();
+        ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
 
         if( chords.size() > 1 )   // distinguish between chords and bricks
         {                               // possibly unideal
@@ -310,7 +310,7 @@ public class GraphicBrick {
         }
         int xOffset = 0;
 
-        for( Chord chord : chords )
+        for( ChordBlock chord : chords )
         {      
             g.setColor(settings.lineColor);
             int length = settings.getBlockLength(chord);

@@ -20,14 +20,14 @@ public class EquivalenceDictionary {
     // EquivalenceDictionary has one data member, dict. It is a list of
     // ArrayLists of Chords, where each ArrayList represents an equivalence
     // class of chords.
-    private LinkedList<ArrayList<Chord>> dict;
+    private LinkedList<ArrayList<ChordBlock>> dict;
     
     
     /** Default constructor
      * Constructs a new EquivalenceDictionary with an empty dict.
      */
     public EquivalenceDictionary() {
-        dict = new LinkedList<ArrayList<Chord>>();
+        dict = new LinkedList<ArrayList<ChordBlock>>();
     }
     
     /** loadDictionary
@@ -36,7 +36,7 @@ public class EquivalenceDictionary {
      * 
      * @param filename, a String
      */
-    public void addRule(ArrayList<Chord> rule) {
+    public void addRule(ArrayList<ChordBlock> rule) {
         dict.add(rule);
         }
     
@@ -48,18 +48,18 @@ public class EquivalenceDictionary {
      * @return a SubstituteList of possible chords equivalent to c, 
      * including c itself.
      */
-    public SubstituteList checkEquivalence(Chord c)
+    public SubstituteList checkEquivalence(ChordBlock c)
     {
         SubstituteList equivalences = new SubstituteList();
         
-        for (ArrayList<Chord> rule : dict)
+        for (ArrayList<ChordBlock> rule : dict)
         {
-            for (Chord eq : rule)
+            for (ChordBlock eq : rule)
             {
                 long diff = eq.matches(c);
                 if (diff >= 0)
                 {
-                    for (Chord sub : rule)
+                    for (ChordBlock sub : rule)
                     {
                         equivalences.add(sub, diff);
             }
@@ -112,12 +112,12 @@ public class EquivalenceDictionary {
                             // Take every equivalent chord and add it to
                             // the list of equivalent chords, then add
                             // that as a rule to the dictionary.
-                            ArrayList<Chord> newEq = new ArrayList<Chord>();
+                            ArrayList<ChordBlock> newEq = new ArrayList<ChordBlock>();
                             while (contents.nonEmpty())
                             {
                                 String chordName = contents.first().toString();
                                 contents = contents.rest();
-                                Chord nextChord = new Chord(chordName, 
+                                ChordBlock nextChord = new ChordBlock(chordName, 
                                                         UnaryProduction.NODUR);
                                 newEq.add(nextChord);
                             }

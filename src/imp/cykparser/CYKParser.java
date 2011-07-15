@@ -27,7 +27,7 @@ public class CYKParser
     /**
      * Data Members
      */
-    private ArrayList<Chord> chords;         // list of chords
+    private ArrayList<ChordBlock> chords;         // list of chords
     
     private LinkedList<TreeNode>[][] cykTable; // table for CYK analysis
     private boolean tableFilled;               // test for full table
@@ -50,7 +50,7 @@ public class CYKParser
      */
     public CYKParser()
     {
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         cykTable = null;
         nonterminalRules = new LinkedList<BinaryProduction>();
         tableFilled = false;
@@ -65,9 +65,9 @@ public class CYKParser
      * @param c: chords, an ArrayList of Strings
      * @param d: durations, an ArrayList of Integers (the int wrapper class)
      */
-    public CYKParser(ArrayList<Chord> c)
+    public CYKParser(ArrayList<ChordBlock> c)
     {
-        chords = new ArrayList<Chord>();
+        chords = new ArrayList<ChordBlock>();
         chords.addAll(c);
         int size = chords.size();
         tableFilled = false;
@@ -86,7 +86,7 @@ public class CYKParser
      * @param d: durations to correspond with the chords in c
      */
     
-    public void newChords(ArrayList<Chord> c)
+    public void newChords(ArrayList<ChordBlock> c)
     {
         int size = c.size();
         
@@ -138,12 +138,12 @@ public class CYKParser
                         }
                         else if (eqCategory.equals("equiv"))
                         {
-                            ArrayList<Chord> newEq = new ArrayList<Chord>();
+                            ArrayList<ChordBlock> newEq = new ArrayList<ChordBlock>();
                             while (contents.nonEmpty())
                             {
                                 String chordName = contents.first().toString();
                                 contents = contents.rest();
-                                Chord nextChord = new Chord(chordName, 
+                                ChordBlock nextChord = new ChordBlock(chordName, 
                                                         UnaryProduction.NODUR);
                                 newEq.add(nextChord);
                             }
@@ -365,7 +365,7 @@ public class CYKParser
         // First, the table cell is initialized and the original terminal placed
         // in it as a TreeNode.
         cykTable[index][index] = new LinkedList<TreeNode>();
-        Chord currentChord = chords.get(index);
+        ChordBlock currentChord = chords.get(index);
         TreeNode currentNode = new TreeNode(currentChord, start);
         cykTable[index][index].add(currentNode);
         
@@ -471,7 +471,7 @@ public class CYKParser
     public ArrayList<Block> parse(ArrayList<Block> blocks, BrickLibrary lib) {
         
         // Load in chords
-        ArrayList<Chord> ch = new ArrayList<Chord>();
+        ArrayList<ChordBlock> ch = new ArrayList<ChordBlock>();
         for (Block b: blocks)
             ch.addAll(b.flattenBlock());
         newChords(ch);

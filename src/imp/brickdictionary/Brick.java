@@ -78,8 +78,8 @@ public class Brick extends Block {
                 
             }
             else {
-                newBlock = new Chord(block.getName(), 
-                                     ((Chord)block).getDuration());
+                newBlock = new ChordBlock(block.getName(), 
+                                     ((ChordBlock)block).getDuration());
             }
             subBlocks.add(newBlock); 
         }
@@ -110,7 +110,7 @@ public class Brick extends Block {
                 newBlock = new Brick((Brick) block);
             }
             else {
-                newBlock = new Chord((Chord) block);
+                newBlock = new ChordBlock((ChordBlock) block);
             }
             duration += block.getDuration();
             subBlocks.add(newBlock); 
@@ -243,7 +243,7 @@ public class Brick extends Block {
                     if(durObj instanceof Long)
                     {
                         long dur = (Long)durObj;
-                        Chord subBlockChord = new Chord(chordName, dur);
+                        ChordBlock subBlockChord = new ChordBlock(chordName, dur);
                         subBlockList.add(subBlockChord);
                     }
                     else
@@ -277,8 +277,8 @@ public class Brick extends Block {
         long dur = 0;
         for(Block b : this.getSubBlocks())
         {
-            if(b instanceof Chord)
-                dur += ((Chord)b).getDuration();
+            if(b instanceof ChordBlock)
+                dur += ((ChordBlock)b).getDuration();
             else if (b instanceof Brick)
                 dur += ((Brick)b).getDuration();
         }
@@ -289,8 +289,8 @@ public class Brick extends Block {
     // Returns the individual chords that constitute this brick
     // Overrides corresponding method in Block
     @Override
-    public ArrayList<Chord> flattenBlock() {
-        ArrayList<Chord> chordList = new ArrayList<Chord>();
+    public ArrayList<ChordBlock> flattenBlock() {
+        ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
         
         ArrayList<Block> currentList = this.getSubBlocks();
         
@@ -339,8 +339,8 @@ public class Brick extends Block {
         while(subBlockIter.hasNext())
         {
             Block currentBlock = subBlockIter.next();
-            if(currentBlock instanceof Chord) {
-                ((Chord)currentBlock).changeChordDuration(ratio);
+            if(currentBlock instanceof ChordBlock) {
+                ((ChordBlock)currentBlock).changeChordDuration(ratio);
                 adjustedSubBlocks.add(currentBlock);
             }
             else if (currentBlock instanceof Brick) {
@@ -390,9 +390,9 @@ public class Brick extends Block {
                         + currentBrickKeyString + " " + dur);
             }
             
-            else if (currentBlock instanceof Chord)
+            else if (currentBlock instanceof ChordBlock)
             {
-                Chord currentChord = (Chord)currentBlock;
+                ChordBlock currentChord = (ChordBlock)currentBlock;
                 String currentChordName = currentChord.getName();
                 Long currentDuration = currentChord.getDuration();
                 System.err.println("\t" + currentChordName + " " 
@@ -407,11 +407,11 @@ public class Brick extends Block {
     
     public long getReductionFactor()
     {
-        ArrayList<Chord> chords = flattenBlock();
+        ArrayList<ChordBlock> chords = flattenBlock();
         long currentGCD = subBlocks.get(0).duration;
         long currentDur;
         
-        for( Iterator<Chord> it = chords.iterator(); it.hasNext(); ) {
+        for( Iterator<ChordBlock> it = chords.iterator(); it.hasNext(); ) {
             currentDur = it.next().duration;
             System.out.print("("+currentGCD+","+currentDur+") = ");
             currentGCD = gcd(currentGCD, currentDur);

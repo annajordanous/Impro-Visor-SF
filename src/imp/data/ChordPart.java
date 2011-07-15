@@ -548,8 +548,8 @@ public void toRoadMapFrame(RoadMapFrame roadmap)
       {
         Chord chord = (Chord) i.next();
 
-        imp.brickdictionary.Chord dictChord =
-                new imp.brickdictionary.Chord(chord.getChordSymbol().toString(),
+        imp.brickdictionary.ChordBlock dictChord =
+                new imp.brickdictionary.ChordBlock(chord.getChordSymbol().toString(),
                                               chord.getRhythmValue());
 
         dictChord.setSectionEnd(sectionEnds.next());
@@ -566,13 +566,13 @@ public void toRoadMapFrame(RoadMapFrame roadmap)
 
 public void addFromRoadMapFrame(RoadMapFrame roadmap)
   {
-    ArrayList<imp.brickdictionary.Chord> chords = roadmap.getChordsInSelection();
+    ArrayList<imp.brickdictionary.ChordBlock> chords = roadmap.getChordsInSelection();
 
-    Iterator<imp.brickdictionary.Chord> i = chords.iterator();
+    Iterator<imp.brickdictionary.ChordBlock> i = chords.iterator();
 
     while( i.hasNext() )
       {
-        imp.brickdictionary.Chord chord = i.next();
+        imp.brickdictionary.ChordBlock chord = i.next();
         String name = chord.getName();
         int duration = chord.getDuration().intValue();
         if( duration > 0 )
