@@ -101,9 +101,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         } catch (IOException e) {
             ErrorLog.log(ErrorLog.FATAL, "Error opening brick dictionary");
             System.exit(-1);
-        } catch (DictionaryException de) {
-            ErrorLog.log(ErrorLog.FATAL, "Error processing brick dictionary");
-            System.exit(-1);
         }
         
         initLibraryTree();
@@ -1276,17 +1273,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void setPreview()
     {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)libraryTree.getSelectionPath().getLastPathComponent();
-        try {
-            if( node.isLeaf() ) {
-                Brick brick = brickLibrary.getBrick(node.toString(), 0);
 
-                previewPanel.setBrick( brick );
+        if( node.isLeaf() ) {
+            Brick brick = brickLibrary.getBrick(node.toString(), 0);
 
-                setPreviewKey();
-                setPreviewDuration();
-            }
-        } catch( DictionaryException de) {
-            
+            previewPanel.setBrick( brick );
+
+            setPreviewKey();
+            setPreviewDuration();
         }
     }
     
@@ -1448,14 +1442,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private void addToLibrary(Brick brick)
     {
-        try {
-            Brick scaledBrick = new Brick(brick);
-            scaledBrick.reduceDurations();
-            brickLibrary.addBrick(scaledBrick);
-            addToLibraryTree(brick.getName());
-        } catch( DictionaryException de ) {
-            System.err.println("Could not add brick " + brick.getName() + " to Library");
-        }
+        Brick scaledBrick = new Brick(brick);
+        scaledBrick.reduceDurations();
+        brickLibrary.addBrick(scaledBrick);
+        addToLibraryTree(brick.getName());
+        
     }
     
     private void addToLibraryTree(String name)

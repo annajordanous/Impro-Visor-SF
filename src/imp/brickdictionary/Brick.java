@@ -253,17 +253,13 @@ public class Brick extends Block {
                     pList = pList.rest();
                     if(durObj instanceof Long)
                     {
-                        try {
-                            long dur = (Long)durObj;
-                            long brickKeyNum = 
-                                    BrickLibrary.keyNameToNum(brickKeyString);
-                            Brick subBrick = 
-                                    bricks.getBrick(brickName, brickKeyNum, dur);
+                        long dur = (Long)durObj;
+                        long brickKeyNum = 
+                                BrickLibrary.keyNameToNum(brickKeyString);
+                        Brick subBrick = 
+                                bricks.getBrick(brickName, brickKeyNum, dur);
 
-                            subBlockList.add(subBrick);
-                        } catch (DictionaryException ex) {
-                            Logger.getLogger(Brick.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        subBlockList.add(subBrick);
                     }
                     else
                     {
@@ -332,45 +328,40 @@ public class Brick extends Block {
                     pList = pList.rest();
                     if(durObj instanceof Long)
                     {
-                        try {
-                            long dur = (Long)durObj;
-                            long subBrickKeyNum = 
-                                    BrickLibrary.keyNameToNum(subBrickKeyString);
-                            Brick subBrick = null;
-                            if (bricks.hasBrick(subBrickName)) {
-                                subBrick = 
-                                        bricks.getBrick(subBrickName, subBrickKeyNum, dur);
-                            }
-                            else if (polymap.containsKey(subBrickName)) {
-                                Polylist tokens = polymap.get(subBrickName);
-                                String brickName = BrickLibrary.dashless(subBrickName);
-                                tokens = tokens.rest();
-                                tokens = tokens.rest();
-                                String brickMode = tokens.first().toString();
-                                tokens = tokens.rest();
-                                String brickType = tokens.first().toString();
-                                tokens = tokens.rest();
-                                String brickKeyString = tokens.first().toString();
-                                tokens = tokens.rest();
-                                long brickKeyNum = 
-                                        BrickLibrary.keyNameToNum(brickKeyString);
-                
-                                subBrick = new Brick(brickName, brickKeyNum,
-                                    brickType, tokens, bricks, brickMode, polymap);
-                                subBrick.transpose(subBrickKeyNum - brickKeyNum);
-                                subBrick.adjustDuration(dur);
-                            }
-                            else
-                            {
-                                ErrorLog.log(ErrorLog.FATAL, "Dictionary does "
-                                        + "not contain " + subBrickName, true);
-                            }
-
-                            subBlockList.add(subBrick);
-                        } catch (DictionaryException ex) {
-                            ErrorLog.log(ErrorLog.FATAL, name + ": Cannot read "
-                                    + "in subblocks", true);
+                        long dur = (Long)durObj;
+                        long subBrickKeyNum = 
+                                BrickLibrary.keyNameToNum(subBrickKeyString);
+                        Brick subBrick = null;
+                        if (bricks.hasBrick(subBrickName)) {
+                            subBrick = 
+                                    bricks.getBrick(subBrickName, subBrickKeyNum, dur);
                         }
+                        else if (polymap.containsKey(subBrickName)) {
+                            Polylist tokens = polymap.get(subBrickName);
+                            String brickName = BrickLibrary.dashless(subBrickName);
+                            tokens = tokens.rest();
+                            tokens = tokens.rest();
+                            String brickMode = tokens.first().toString();
+                            tokens = tokens.rest();
+                            String brickType = tokens.first().toString();
+                            tokens = tokens.rest();
+                            String brickKeyString = tokens.first().toString();
+                            tokens = tokens.rest();
+                            long brickKeyNum = 
+                                    BrickLibrary.keyNameToNum(brickKeyString);
+
+                            subBrick = new Brick(brickName, brickKeyNum,
+                                brickType, tokens, bricks, brickMode, polymap);
+                            subBrick.transpose(subBrickKeyNum - brickKeyNum);
+                            subBrick.adjustDuration(dur);
+                        }
+                        else
+                        {
+                            ErrorLog.log(ErrorLog.FATAL, "Dictionary does "
+                                    + "not contain " + subBrickName, true);
+                        }
+
+                        subBlockList.add(subBrick);
                     }
                     else
                     {
