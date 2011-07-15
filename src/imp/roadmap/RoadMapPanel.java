@@ -96,7 +96,7 @@ public class RoadMapPanel extends JPanel{
             lineBeats = wrap[0];
             lines += wrap[1];
             
-            if(brick.getBrick().isSectionEnd()) {
+            if(brick.getBrick().isSectionEnd() && lineBeats != 0) {
                 lineBeats = 0;
                 lines++;
                 sectionBreaks.add(currentBeats);

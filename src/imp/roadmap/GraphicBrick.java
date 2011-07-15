@@ -185,12 +185,19 @@ public class GraphicBrick {
         else
             bgColor = settings.selectedColor;
         
+        int blockHeight = settings.getBlockHeight();
+        int cutoff = settings.getCutoff();
+        
         int[] wrap = settings.wrap(x+settings.getBlockLength(block));
         int endX = wrap[0];
         int lines = wrap[1];
+        
+        if(endX == settings.xOffset) {  // This is to prevent the last line
+            endX = cutoff;              // from being on the next line
+            lines--;
+        }
+        
         int endY = y+lines*settings.getLineOffset();
-        int blockHeight = settings.getBlockHeight();
-        int cutoff = settings.getCutoff();
         
         Graphics2D g2d = (Graphics2D)g;
         g2d.setStroke(settings.brickOutline);
