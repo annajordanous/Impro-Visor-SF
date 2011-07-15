@@ -25,6 +25,7 @@ package imp.brickdictionary;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -49,16 +50,38 @@ public class Brick extends Block {
      * @param brickType, a String
      * @param contents, a Polylist describing bricks and chords
      * @param bricks, a BrickLibrary
+     * @param m, the mode (a String)
      */
-        public Brick(String brickName, long brickKey, String brickType, 
-            Polylist contents, BrickLibrary bricks, String m) {
-        super(brickName, brickKey, m);
-        subBlocks = new ArrayList<Block>();
-        this.addSubBlocks(contents, bricks);
-        type = brickType;
-        duration = this.getDuration();
-        isEnd = isSectionEnd();
-    }
+     public Brick(String brickName, long brickKey, String brickType, 
+         Polylist contents, BrickLibrary bricks, String m) {
+         super(brickName, brickKey, m);
+         subBlocks = new ArrayList<Block>();
+         this.addSubBlocks(contents, bricks);
+         type = brickType;
+         duration = this.getDuration();
+         isEnd = isSectionEnd();
+     }
+     
+    /** Brick / 7
+     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
+     * to build the definition of the brick.
+     * 
+     * @param brickName, a String
+     * @param brickKey, a long
+     * @param brickType, a String
+     * @param contents, a Polylist describing bricks and chords
+     * @param bricks, a BrickLibrary
+     */
+     public Brick(String brickName, long brickKey, String brickType, 
+             Polylist contents, BrickLibrary bricks, String m, 
+             LinkedHashMap<String, Polylist> polymap) {
+         super(brickName, brickKey, m);
+         subBlocks = new ArrayList<Block>();
+         this.addSubBlocks(contents, bricks, polymap);
+         type = brickType;
+         duration = this.getDuration();
+         isEnd = isSectionEnd();
+     }
     
     /** Brick / 5
      * As with the constructor above, but without taking in a BrickLibrary for
@@ -235,6 +258,124 @@ public class Brick extends Block {
                                     BrickLibrary.keyNameToNum(brickKeyString);
                             Brick subBrick = 
                                     bricks.getBrick(brickName, brickKeyNum, dur);
+
+                            subBlockList.add(subBrick);
+                        } catch (DictionaryException ex) {
+                            Logger.getLogger(Brick.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else
+                    {
+                        System.err.print("Duration not of type long " + durObj);
+                        System.exit(-1);
+                        
+//                        throw new DictionaryException("Duration not of type "
+//                                + "Long");
+                        
+//                        Error e3 = new Error("Duration not of type Long");
+//                        System.err.println(e3);
+                    }
+                }
+                
+                // If a subblock is a chord, make an appropriate Chord object
+                else if(blockType.equals("Chord"))
+                {
+                    String chordName = pList.first().toString();
+                    pList = pList.rest();
+                    Object durObj = pList.first();
+                    pList = pList.rest();
+                    if(durObj instanceof Long)
+                    {
+                        long dur = (Long)durObj;
+                        ChordBlock subBlockChord = new ChordBlock(chordName, dur);
+                        subBlockList.add(subBlockChord);
+                    }
+                    else
+                    {
+                        System.err.print("Duration not of type long " + durObj);
+                        System.exit(-1);
+                        
+//                        throw new DictionaryException("Duration not of type "
+//                                + "Long");
+                        
+//                        Error e3 = new Error("Duration not of type Long");
+//                        System.err.println(e3);
+                    }
+                }
+            }
+        }
+        
+        subBlocks.addAll(subBlockList);
+    }
+    
+        /** addSubBlocks / 2
+     * Constructs the subblocks of a brick by reading in a PolyList and using 
+     * a BrickLibrary to convert it to bricks with appropriate subbricks.
+     * 
+     * @param contents, a PolyList of subbricks
+     * @param bricks, a BrickLibrary
+     */
+    private void addSubBlocks(Polylist contents, BrickLibrary bricks, 
+            LinkedHashMap<String, Polylist> polymap) {
+        
+        List<Block> subBlockList = new ArrayList<Block>();
+        
+        while(contents.nonEmpty())
+        {
+            Object obj = contents.first();
+            contents = contents.rest();
+            if(obj instanceof Polylist)
+            {
+                Polylist pList = (Polylist)obj;
+                String blockType = pList.first().toString();
+                pList = pList.rest();
+                
+                // If a subblock is a brick, split it into components and then
+                // look up the corresponding brick in the library to construct
+                // the necessary new brick.
+                if(blockType.equals("Brick"))
+                {
+                    String subBrickName = BrickLibrary.dashless(pList.first().toString());
+                    pList = pList.rest();
+                    String subBrickKeyString = pList.first().toString();
+                    pList = pList.rest();
+                    Object durObj = pList.first();
+                    pList = pList.rest();
+                    if(durObj instanceof Long)
+                    {
+                        try {
+                            long dur = (Long)durObj;
+                            long subBrickKeyNum = 
+                                    BrickLibrary.keyNameToNum(subBrickKeyString);
+                            Brick subBrick;
+                            
+                            if (bricks.hasBrick(subBrickName)) {
+                                subBrick = 
+                                        bricks.getBrick(subBrickName, subBrickKeyNum, dur);
+                            }
+                            else if (polymap.containsKey(subBrickName)) {
+                                Polylist tokens = polymap.get(subBrickName);
+                                String brickName = subBrickName;
+                                tokens = tokens.rest();
+                                tokens = tokens.rest();
+                                String brickMode = tokens.first().toString();
+                                tokens = tokens.rest();
+                                String brickType = tokens.first().toString();
+                                tokens = tokens.rest();
+                                String brickKeyString = tokens.first().toString();
+                                tokens = tokens.rest();
+                                long brickKeyNum = 
+                                        BrickLibrary.keyNameToNum(brickKeyString);
+                
+                                Brick libBrick = new Brick(brickName, brickKeyNum,
+                                    brickType, tokens, bricks, brickMode, polymap);
+                                bricks.addBrick(libBrick);
+                                subBrick = bricks.getBrick(subBrickName, subBrickKeyNum, dur);
+                            }
+                            else
+                            {
+                                throw new DictionaryException("Dictionary does not contain " + subBrickName);
+                            }
 
                             subBlockList.add(subBrick);
                         } catch (DictionaryException ex) {

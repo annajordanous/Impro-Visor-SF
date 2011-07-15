@@ -379,38 +379,6 @@
         (Brick On-Off-Minor-To-VII-Major C 2)
         (Chord Cm 2))
 
-// Launchers
-
-/*
-(Brick Launcher Launcher C
-	(Chord Dm7 1)
-	(Chord G7 1))
-
-(Brick LauncherMinor Launcher C
-	(Chord Dm7b5 1)
-	(Chord G7 1))
-
-(Brick SlowLauncher Launcher C
-	(Brick Launcher G 2)
-	(Brick Launcher C 2))
-
-(Brick BootstrapLauncher Launcher C
-	(Chord CM7 1)
-	(Chord C7 1))
-
-(Brick LightAndDayLauncher Launcher C
-	(Chord F#dim 1)
-	(Chord Fm7 1))
-
-(Brick NowhereLauncher Launcher C
-	(Chord Dm7 1)
-	(Chord Ab7 1)
-	(Chord G7 2))
-
-(Brick SidewinderLauncher Launcher C
-	(Chord EbM7 1)
-	(Chord G7 1))
-*/
 
 // Approaches and cadences
 
@@ -418,11 +386,11 @@
 	(Chord Dm7 1)
 	(Chord G7 1))
 
-(Brick Straight3 Major Cadence C
+(Brick Straight-3 Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 1))
 
-(Brick Straight4 Major Cadence C
+(Brick Straight-4 Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
@@ -525,7 +493,7 @@
 	(Chord CM7 2))
 
 (Brick Overrun Major Cadence C
-	(Brick Straight3 C 3)
+	(Brick Straight-3 C 3)
 	(Chord FM7 1))
 
 (Brick Pullback-Approach Major Approach C
@@ -647,6 +615,10 @@
 	(Brick Night-And-Day-Approach E 2)
 	(Brick Nowhere-Approach D 2))
 
+(Brick Long-Dropback Major Dropback C
+        (Brick Straight-3 C 3)
+        (Brick Extended C 4))
+        
 (Brick Somewhere Major Dropback C
 	(Chord Bb7 1)
 	(Chord A7 2)
@@ -698,7 +670,7 @@
 (Brick Donna-Lee-Opening Major Opening C
 	(Chord CM7 2)
 	(Chord D7 2)
-	(Brick Straight4 C 4))
+	(Brick Straight-4 C 4))
 
 (Brick Four-Star-Approach Major Approach C
 	(Chord FM7 2)
@@ -710,7 +682,7 @@
 	(Chord CM7 4))
 
 (Brick Honeysuckle-Bridge Major Approach C 
-	(Brick Straight4 F 4) 
+	(Brick Straight-4 F 4) 
 	(Brick Straight-Approach G 2) 
 	(Brick Straight-Approach C 2))
 
@@ -925,4 +897,4 @@
 
 (Brick Whoopee-Cadence Major Cadence C
 	(Chord Dbdim 1)
-	(Brick Straight3 C 3))
+	(Brick Straight-3 C 3))

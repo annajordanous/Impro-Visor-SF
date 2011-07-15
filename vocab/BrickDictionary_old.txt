@@ -16,6 +16,14 @@
 	(Chord Dm 1)
 	(Chord Ebdim 1))
 
+(Brick Straight-Approach-Minor Minor Approach C
+	(Chord Dm7b5 1)
+	(Chord G7 1))
+
+(Brick Sad-Straight Minor Cadence C
+	(Brick Straight-Approach-Minor C 2)
+	(Chord Cm7 2))
+
 (Brick Upslide Major Misc C
 	(Chord CM7 1)
 	(Chord Dbdim 1))
@@ -410,11 +418,11 @@
 	(Chord Dm7 1)
 	(Chord G7 1))
 
-(Brick Straight3 Major Cadence C
+(Brick Straight-3 Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 1))
 
-(Brick Straight4 Major Cadence C
+(Brick Straight-4 Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
@@ -517,7 +525,7 @@
 	(Chord CM7 2))
 
 (Brick Overrun Major Cadence C
-	(Brick Straight3 C 3)
+	(Brick Straight-3 C 3)
 	(Chord FM7 1))
 
 (Brick Pullback-Approach Major Approach C
@@ -639,13 +647,18 @@
 	(Brick Night-And-Day-Approach E 2)
 	(Brick Nowhere-Approach D 2))
 
+(Brick Long-Dropback Major Dropback C
+        (Brick Straight-3 C 3)
+        (Brick Extended C 4))
+        
+
 (Brick Somewhere Major Dropback C
 	(Chord Bb7 1)
 	(Chord A7 2)
 	(Chord D7 2))
 
 (Brick Sad-Somewhere Minor Dropback C
-	(Brick Sad-Approach C 2)
+	(Brick Straight-Approach-Minor C 2)
 	(Chord D7 1))
 
 (Brick Dropback-To-Five Major Dropback C
@@ -690,7 +703,7 @@
 (Brick Donna-Lee-Opening Major Opening C
 	(Chord CM7 2)
 	(Chord D7 2)
-	(Brick Straight4 C 4))
+	(Brick Straight-4 C 4))
 
 (Brick Four-Star-Approach Major Approach C
 	(Chord FM7 2)
@@ -702,7 +715,7 @@
 	(Chord CM7 4))
 
 (Brick Honeysuckle-Bridge Major Approach C 
-	(Brick Straight4 F 4) 
+	(Brick Straight-4 F 4) 
 	(Brick Straight-Approach G 2) 
 	(Brick Straight-Approach C 2))
 
@@ -898,6 +911,18 @@
 	(Brick Straight-Approach C 2)
         (Chord CM7 2))
 
+(Brick POT-Altered-Cadence Major Turnaround C
+	(Brick POT-Altered C 4)
+	(Chord C 1))
+
+(Brick POT-Cadence Major Turnaround C
+	(Brick POT C 4)
+	(Chord C 1))
+
+(Brick POT-Minor-Cadence Minor Turnaround C
+	(Brick POT-Minor C 4)
+	(Chord Cm 1))
+
 (Brick Rhythm-Turnaround-Cadence Major Cadence C
 	(Chord Dbdim 1)
         (Brick Reverse-Raindrop C 2)
@@ -905,4 +930,4 @@
 
 (Brick Whoopee-Cadence Major Cadence C
 	(Chord Dbdim 1)
-	(Brick Straight3 C 3))
+	(Brick Straight-3 C 3))

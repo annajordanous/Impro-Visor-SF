@@ -87,6 +87,11 @@ public class BrickLibrary {
         }
     }
     
+    public boolean hasBrick(String s)
+    {
+        return (brickMap.containsKey(s));
+    }
+    
     public Collection<Brick> getMap() {
         return brickMap.values();
     }
@@ -192,6 +197,7 @@ public class BrickLibrary {
         Object token;
         
         BrickLibrary dictionary = new BrickLibrary();
+        LinkedHashMap<String, Polylist> polymap = new LinkedHashMap<String, Polylist>();
         
         // Read in S expressions until end of file is reached
         while ((token = in.nextSexp()) != Tokenizer.eof)
@@ -217,20 +223,22 @@ public class BrickLibrary {
                     {
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
-                        String brickMode = contents.first().toString();
+                      /*String brickMode = contents.first().toString();
                         contents = contents.rest();
                         String brickType = contents.first().toString();
                         contents = contents.rest();
                         String brickKeyString = contents.first().toString();
                         contents = contents.rest();
                         long brickKeyNum = keyNameToNum(brickKeyString);
-                        
+                       
                         // Create new brick using info gathered from text and
                         // add to dictionary
                         Brick currentBrick = new Brick(brickName, brickKeyNum,
                                 brickType, contents, dictionary, brickMode);
                         dictionary.addBrick(currentBrick);
+                       */
                         
+                        polymap.put(brickName, (Polylist)token);
                     }
                     else
                     {
@@ -244,7 +252,25 @@ public class BrickLibrary {
                 throw new DictionaryException("Improper formatting for token");
             }
         }
-        
+
+        for (Polylist contents : polymap.values()) {
+            contents = contents.rest();
+            String brickName = contents.first().toString();
+            contents = contents.rest();
+            if (!dictionary.hasBrick(brickName)) {
+                String brickMode = contents.first().toString();
+                contents = contents.rest();
+                String brickType = contents.first().toString();
+                contents = contents.rest();
+                String brickKeyString = contents.first().toString();
+                contents = contents.rest();
+                long brickKeyNum = keyNameToNum(brickKeyString);
+                
+                Brick currentBrick = new Brick(brickName, brickKeyNum,
+                           brickType, contents, dictionary, brickMode, polymap);
+                dictionary.addBrick(currentBrick);
+            }
+        }
         return dictionary;
     }
     
