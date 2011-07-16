@@ -6934,10 +6934,25 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="SEMICOLON"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Road Map"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RoadMapMIaction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+SEMICOLON"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Road Map &amp; Analysis"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open road map and analyze entire chorus.&#xa;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapAnalysisAction"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="openLeadsheetEditorMI">

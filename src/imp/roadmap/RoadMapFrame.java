@@ -1335,6 +1335,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         activateButtons();
     }
     
+    public void analyzeAllBricks()
+      {
+      selectAllBricks();
+      analyzeSelection();
+      }
+    
     /** selectBrick <p>
      * Selects only the brick at index, deselecting all other bricks.
      * 
