@@ -77,7 +77,7 @@ public class Notate
   {
   RoadMapFrame roadmapFrame = null;
   
-  static int roadmapFrameInitialWidth = 1000;
+  static int roadmapFrameInitialWidth = 1060;
   static int roadmapFrameInitialHeight = 800;
 
 

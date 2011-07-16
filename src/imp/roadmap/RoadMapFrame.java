@@ -96,7 +96,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         previewPanel = new PreviewPanel(this);
         roadMapPanel = new RoadMapPanel(this);
         
-        try {
+         try {
             brickLibrary = BrickLibrary.processDictionary();
         } catch (IOException e) {
             ErrorLog.log(ErrorLog.FATAL, "Error opening brick dictionary");
@@ -110,6 +110,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         initBuffer();  
         
         deactivateButtons();
+        
+        //roadMapScrollPane.setViewportView(roadMapPanel);
+        //roadMapScrollPane.revalidate();
     }
 
     /** This method is called from within the constructor to
@@ -474,7 +477,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setToolTipText("The roadmap.\n"); // NOI18N
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        roadMapScrollPane.setMinimumSize(new java.awt.Dimension(700, 400));
+        roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
         roadMapScrollPane.setPreferredSize(new java.awt.Dimension(800, 900));
         roadMapScrollPane.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
@@ -1008,6 +1011,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         bufferRoadMap = new java.awt.image.BufferedImage(RMbufferWidth, RMbufferHeight, BufferedImage.TYPE_INT_RGB);
         previewPanel.setBuffer(buffer);
         roadMapPanel.setBuffer(bufferRoadMap);
+        
+        
+        roadMapScrollPane.setViewportView(roadMapPanel);
+        
+        // If these statements are missing, scrollbars don't appear!
+        
+        roadMapPanel.setPreferredSize(new Dimension(RMbufferWidth, RMbufferHeight));
+        roadMapScrollPane.revalidate();
+
         roadMapPanel.draw();
         previewPanel.draw();
         }
