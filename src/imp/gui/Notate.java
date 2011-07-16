@@ -6512,7 +6512,7 @@ public class Notate
         standardToolbar.add(openGeneratorButton);
 
         generateToolbarBtn.setBackground(new java.awt.Color(255, 204, 0));
-        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         generateToolbarBtn.setText("Generate");
         generateToolbarBtn.setToolTipText("Generate melody over selected chords.");
         generateToolbarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6529,7 +6529,7 @@ public class Notate
         standardToolbar.add(generateToolbarBtn);
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
-        freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11));
+        freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         freezeLayoutButton.setText("<html><center>Freeze</center></html>");
         freezeLayoutButton.setToolTipText("Freeze or thaw the current layout");
         freezeLayoutButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6546,7 +6546,7 @@ public class Notate
         standardToolbar.add(freezeLayoutButton);
 
         colorationButton.setBackground(new java.awt.Color(153, 204, 255));
-        colorationButton.setFont(new java.awt.Font("Arial", 0, 11));
+        colorationButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         colorationButton.setText("<html><center>B/W</center></html>");
         colorationButton.setToolTipText("Turn note coloration off or on.");
         colorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6905,7 +6905,7 @@ public class Notate
         loopPanel.setLayout(new java.awt.GridBagLayout());
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopButton.setFont(new java.awt.Font("Dialog", 1, 10));
+        loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         loopButton.setText("<html><center>Loop</center></html>");
         loopButton.setToolTipText("Toggle playback looping.");
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6925,6 +6925,7 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 5);
         loopPanel.add(loopButton, gridBagConstraints);
@@ -6979,19 +6980,19 @@ public class Notate
         masterVolumePanel.setMaximumSize(new java.awt.Dimension(130, 50));
         masterVolumePanel.setMinimumSize(new java.awt.Dimension(100, 50));
         masterVolumePanel.setOpaque(false);
-        masterVolumePanel.setPreferredSize(new java.awt.Dimension(120, 50));
+        masterVolumePanel.setPreferredSize(new java.awt.Dimension(130, 50));
         masterVolumePanel.setLayout(new java.awt.GridBagLayout());
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
-        allMuteToolBarBtn.setFont(new java.awt.Font("Dialog", 1, 10));
+        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
         allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         allMuteToolBarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(30, 20));
-        allMuteToolBarBtn.setMinimumSize(new java.awt.Dimension(32, 20));
+        allMuteToolBarBtn.setMinimumSize(new java.awt.Dimension(30, 20));
         allMuteToolBarBtn.setOpaque(true);
-        allMuteToolBarBtn.setPreferredSize(new java.awt.Dimension(32, 20));
+        allMuteToolBarBtn.setPreferredSize(new java.awt.Dimension(30, 20));
         allMuteToolBarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 allMuteToolBarBtnActionPerformed(evt);
@@ -6999,7 +7000,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weightx = 0.3;
         masterVolumePanel.add(allMuteToolBarBtn, gridBagConstraints);
 
         allVolumeToolBarSlider.setMajorTickSpacing(5);
@@ -7014,7 +7015,7 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weightx = 0.7;
         masterVolumePanel.add(allVolumeToolBarSlider, gridBagConstraints);
 
         playToolBar.add(masterVolumePanel);

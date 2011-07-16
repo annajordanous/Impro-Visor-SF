@@ -146,6 +146,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         selectAllBricksButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
         sendToNotateButton = new javax.swing.JButton();
+        loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         jSlider1 = new javax.swing.JSlider();
@@ -379,7 +380,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(selectAllBricksButton);
 
-        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
         analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
@@ -406,7 +407,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         sendToNotateButton.setMaximumSize(new java.awt.Dimension(90, 30));
         sendToNotateButton.setMinimumSize(new java.awt.Dimension(90, 30));
         sendToNotateButton.setPreferredSize(new java.awt.Dimension(90, 30));
-        sendToNotateButton.setSize(new java.awt.Dimension(90, 30));
         sendToNotateButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         sendToNotateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -414,6 +414,26 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(sendToNotateButton);
+
+        loopToggleButton.setBackground(new java.awt.Color(0, 255, 0));
+        loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        loopToggleButton.setText("Loop"); // NOI18N
+        loopToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        loopToggleButton.setFocusable(false);
+        loopToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        loopToggleButton.setMaximumSize(new java.awt.Dimension(60, 30));
+        loopToggleButton.setMinimumSize(new java.awt.Dimension(60, 30));
+        loopToggleButton.setName("loopToggleButton"); // NOI18N
+        loopToggleButton.setOpaque(true);
+        loopToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
+        loopToggleButton.setSize(new java.awt.Dimension(60, 30));
+        loopToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        loopToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loopToggleButtonPressed(evt);
+            }
+        });
+        toolBar.add(loopToggleButton);
 
         playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
@@ -997,6 +1017,20 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void sectionBreakMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectionBreakMenuItemActionPerformed
         toggleSectionBreak();
     }//GEN-LAST:event_sectionBreakMenuItemActionPerformed
+
+    private void loopToggleButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loopToggleButtonPressed
+        if( loopToggleButton.isSelected() )
+          {
+            loopToggleButton.setText("No Loop");
+            loopToggleButton.setBackground(Color.RED);
+          }
+        else
+          {
+            loopToggleButton.setText("Loop");
+            loopToggleButton.setBackground(Color.GREEN);
+            stopPlayingSelection();
+          }
+    }//GEN-LAST:event_loopToggleButtonPressed
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1516,6 +1550,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTabbedPane libraryTabbedPane;
     private javax.swing.JTree libraryTree;
+    private javax.swing.JToggleButton loopToggleButton;
     private javax.swing.JButton newBrickButton;
     private javax.swing.JDialog optionsDialog;
     private javax.swing.JMenuItem pasteMenuItem;
@@ -1585,7 +1620,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
          chordPart.addFromRoadMapFrame(this);
          Score score = new imp.data.Score(chordPart);
          
-         notate.playAscore(score);
+         if( loopToggleButton.isSelected() )
+           {
+           notate.playAscore(score, -1);
+           }
+         else
+           {
+           notate.playAscore(score, 0);
+             
+           }
     }
 
     
