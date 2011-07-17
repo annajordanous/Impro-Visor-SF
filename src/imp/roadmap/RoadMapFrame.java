@@ -1622,11 +1622,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
          
          if( loopToggleButton.isSelected() )
            {
-           notate.playAscore(score, -1);
+           notate.playAscoreInCurrentStyle(score, -1);
            }
          else
            {
-           notate.playAscore(score, 0);
+           notate.playAscoreInCurrentStyle(score, 0);
              
            }
     }

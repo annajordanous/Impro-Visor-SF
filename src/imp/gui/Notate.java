@@ -8688,6 +8688,18 @@ public class Notate
     }//GEN-LAST:event_insertVoicingButtonActionPerformed
 
     /**
+     * Get the Style of the currently-playing score.
+     * Not exactly clear what this means when a score has multiple sections,
+     * each with its own style.
+     */
+    
+    public Style getCurrentStyle()
+      {
+      return ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+      }
+    
+    
+    /**
      * Plays a string of pitches as a chord over a given symbol.
      *
      @param v
@@ -8699,8 +8711,7 @@ public class Notate
         return;
         }
 
-      Style currentStyle =
-              ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+      Style currentStyle = getCurrentStyle();
 
       StringReader voicingReader = new StringReader(v);
 
@@ -16741,6 +16752,7 @@ MidiSynth midiSynth3;
 
 /**
  * Play a score, not necessarily the one in this Notate window.
+ * Use the "no-style" style, with no looping.
  */
 
 public void playAscore(Score score)
@@ -16750,11 +16762,32 @@ playAscore(score, 0);
     
 /**
  * Play a score, not necessarily the one in this Notate window.
+ * Use the "no-style" style.
  */
 
 public void playAscore(Score score, int loopCount)
 {
-  score.setStyle("no-style");
+  playAscore(score, "no-style", loopCount);
+ }
+
+/**
+ * Play a score, not necessarily the one in this Notate window.
+ * Use the "no-style" style.
+ */
+
+public void playAscoreInCurrentStyle(Score score, int loopCount)
+{
+  playAscore(score, getCurrentStyle().getName(), loopCount);
+ }
+
+
+/**
+ * Play a score with a specified style, not necessarily the one in this Notate window.
+ */
+
+public void playAscore(Score score, String style, int loopCount)
+{
+  score.setStyle(style);
   int startTime = 0;
   boolean swing = true;
   int transposition = 0;
@@ -18528,6 +18561,7 @@ public void populateChordSelMenu()
       }
     chordSelectionMenu.add("cancel insert");
 }
+
 
 /**
  * Removes duplicats from a Polylist (for making future chords list in keyboard
