@@ -226,8 +226,9 @@ public class CYKParser
             // a BinaryProduction with the name of the resulting brick as its 
             // head and each of the subBricks in its body.
             else if (size == 2) {
-                BinaryProduction p = new BinaryProduction(name, b.getType(),
-                        subBlocks.get(0), subBlocks.get(1), true, mode);
+                BinaryProduction p = new BinaryProduction(name, b.getType(), 
+                                         b.getKey(), subBlocks.get(0), 
+                                         subBlocks.get(1), true, mode);
                     nonterminalRules.add(p);
             }
             
@@ -240,18 +241,18 @@ public class CYKParser
                 // first rule
                 currentName = name + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];
-                prods[0] = new BinaryProduction(currentName, NONBRICK,
+                prods[0] = new BinaryProduction(currentName, NONBRICK, b.getKey(),
                         subBlocks.get(0), subBlocks.get(1), false, mode);
                 nonterminalRules.add(prods[0]);
                 // second through next to last rules
                 for (int i = 2; i < size - 1; i++) {
                     currentName = name + i;
-                    prods[i-1] = new BinaryProduction(currentName, 
-                            NONBRICK, prods[i-2], subBlocks.get(i), false, mode);
+                    prods[i-1] = new BinaryProduction(currentName, NONBRICK,
+                            b.getKey(), prods[i-2], subBlocks.get(i), false, mode);
                     nonterminalRules.add(prods[i-1]);
                 }
                 // final rule
-                prods[size-2] = new BinaryProduction(name, b.getType(),
+                prods[size-2] = new BinaryProduction(name, b.getType(), b.getKey(),
                         prods[size-3], subBlocks.get(size-1), true, mode);
                 nonterminalRules.add(prods[size-2]);
             }

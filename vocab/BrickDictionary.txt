@@ -275,6 +275,12 @@
 	(Chord Em 1)
 	(Chord FM7 2))
 
+(Brick Rainbow-Overrun Major Cadence C
+        (Chord CM7 1)
+        (Chord E7 1)
+        (Chord FM7 1)
+        (Chord Bb7 1))
+
 (Brick Rainbow-Variant Major Cadence C
 	(Chord CM7 1)
 	(Chord E7 1)

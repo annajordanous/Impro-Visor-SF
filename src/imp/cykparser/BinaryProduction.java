@@ -45,7 +45,7 @@ public class BinaryProduction {
     public static final long NC = -1;
     
     
-    // The block is assumed to be in the key of C, represented as the long 0.
+    // All production rules are put into the key of C.
     private String head;        // the header symbol of the rule
     private String type;        // the type of brick the rule describes
     private long key1;          // the first symbol's key in a C-based block
@@ -70,19 +70,19 @@ public class BinaryProduction {
      * 
      * Note: this assumes that a production is relative to C.
      */
-    public BinaryProduction(String h, String t, Block b1, Block b2, boolean p,
+    public BinaryProduction(String h, String t, long k, Block b1, Block b2, boolean p,
             String m)
     {
         head = h;
         type = t;
-        key1 = b1.getKey();
+        key1 = modKeys(b1.getKey() - k);
         dur1 = b1.getDuration();   
         if (b1 instanceof ChordBlock) 
             name1 = ((ChordBlock)b1).getSymbol();
         else
             name1 = b1.getName();
         
-        key2 = b2.getKey();
+        key2 = modKeys(b2.getKey() - k);
         dur2 = b2.getDuration();
         if (b2 instanceof ChordBlock) 
             name2 = ((ChordBlock)b2).getSymbol();
@@ -104,15 +104,15 @@ public class BinaryProduction {
      * @param p, whether this brick is printable
      * @param m, the mode of the brick (a String)
      */
-    public BinaryProduction(String h, String t, BinaryProduction pStart, Block b, 
-            boolean p, String m) {
+    public BinaryProduction(String h, String t, long k, BinaryProduction pStart, 
+            Block b, boolean p, String m) {
         head = h;
         type = t;
         key1 = 0;
         name1 = pStart.getHead();
         dur1 = pStart.getDur();
         
-        key2 = b.getKey();
+        key2 = modKeys(b.getKey() - k);
         dur2 = b.getDuration();
         if (b instanceof ChordBlock) {
             name2 = ((ChordBlock)b).getSymbol();
