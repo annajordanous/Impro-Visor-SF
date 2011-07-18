@@ -571,14 +571,16 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
 
     while( i.hasNext() )
       {
-        ChordBlock chord = i.next();
+        ChordBlock chordBlock = i.next();
+        
+        Chord chord = new Chord(chordBlock);
+        
         String name = chord.getName();
-        int duration = chord.getDuration().intValue();
-        if( duration > 0 )
+        if( chord.getRhythmValue() > 0 )
           {
             // Note: 0 duration causes addUnit to fail.
 
-            addChord(name, duration);
+            addChord(chord);
           }
       }
   }
