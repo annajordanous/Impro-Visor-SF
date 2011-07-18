@@ -3,7 +3,8 @@
 	(Chord CM7 1))
 
 (Brick Autumn-Leaves-Opening Minor Opening C
-	(Brick Overrun C 4)
+	(Brick Straight-3 C 3)
+        (Chord FM7 1)
 	(Brick Sad A 3)
 	(Chord A7 1))
 
@@ -203,9 +204,9 @@
 	(Brick Nowhere-Approach C 2)
         (Chord CM7 1))
 
-(Brick Overrun Major Cadence C
-	(Brick Straight-3 C 3)
-	(Chord FM7 1))
+// (Brick Overrun Major Cadence C
+// 	  (Brick Straight-3 C 3)
+//        (Chord FM7 1))
 
 (Brick POT Major Turnaround C
 	(Chord C 1)
@@ -275,7 +276,7 @@
 	(Chord Em 1)
 	(Chord FM7 2))
 
-(Brick Rainbow-Overrun Major Cadence C
+(Brick Rainbow-Variant-Dominant-Overrun Major Cadence C
         (Chord CM7 1)
         (Chord E7 1)
         (Chord FM7 1)

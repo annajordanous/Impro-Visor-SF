@@ -42,7 +42,7 @@ public class TreeNode {
     // An int cost for a default chord
     public static final double CHORD_COST = 1000;
     public static final double CHORD_SUB_COST = 1050;
-    public static final double OVERLAP_COST = 1050;
+    public static final double OVERLAP_COST = 100;
     
     // Constructors for TreeNodes
     

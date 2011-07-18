@@ -25,6 +25,7 @@ import imp.util.ErrorLog;
 import java.util.Collection;
 import polya.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -272,7 +273,35 @@ public class BrickLibrary {
                 Brick currentBrick = new Brick(brickName, brickKeyNum,
                            brickType, contents, dictionary, brickMode, polymap);
                 dictionary.addBrick(currentBrick);
+                
+                // special rule for creating overruns
+                if (brickType.equals("Cadence")) {
+                    String overrunName = brickName + " Overrun";
+                    long overrunKeyNum = brickKeyNum;
+                    String overrunType = "Overrun";
+                    String overrunMode = brickMode;
+                    
+                    // take blocks from regular cadence and add the next chord
+                    // in the circle of fifths with the same quality as the
+                    // resolution
+                    ArrayList<Block> overrunBlocks = new ArrayList<Block>();
+                    overrunBlocks.addAll(currentBrick.getSubBlocks());
+                    ArrayList<ChordBlock> chords = currentBrick.flattenBlock();
+                    ChordBlock prevChord = chords.get(chords.size() - 1);
+                    ChordBlock overrunChord = 
+                               new ChordBlock(prevChord.transposeName(5), 
+                                              prevChord.getDuration());
+                    overrunBlocks.add(overrunChord);
+                    
+                    // make a new brick from this list of blocks
+                    Brick overrun = new Brick(overrunName, overrunKeyNum,
+                            overrunType, overrunBlocks, overrunMode);
+                    dictionary.addBrick(overrun);
+                }
             }
+            
+            
+            
         }
         return dictionary;
     }

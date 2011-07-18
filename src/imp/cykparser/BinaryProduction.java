@@ -34,13 +34,14 @@ public class BinaryProduction {
     
     public static final int TOTAL_SEMITONES = 12;
     // BRICK_COSTS in order: 
-    public static final int NONBRICK = 1000;
+    public static final int NONBRICK = 2000;
+    public static final int OVERRUN = 30;
     public static final int CADENCE = 30;
     public static final int APPROACH = 45;
     public static final int DROPBACK = 35;
     public static final int TURNAROUND = 20;
     public static final int LAUNCHER = 30;
-    public static final int ONOFF = 55;
+    public static final int ONOFF = 1000;
     public static final int MISC = 40;
     public static final long NC = -1;
     
@@ -209,6 +210,8 @@ public class BinaryProduction {
             return ONOFF;
         else if (s.equals("Misc"))
             return MISC;
+        else if (s.equals("Overrun"))
+            return OVERRUN;
         else return NONBRICK;
     }
     
