@@ -20205,7 +20205,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                     midiSynth.pause();
                     currIndex = midiSynth.getSlot();
                     nextChordIndex = chordProg.getNextChordIndex(currIndex);
-                    if(currIndex > chordProg.getSize())
+                    if(currIndex >= chordProg.getSize())
                     {
                         modedIndex = currIndex%chordProg.getSize();
                         indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
@@ -20228,12 +20228,13 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                         if(nextChordIndex >= 0)
                         {
                             midiSynth.setSlot((long)nextChordIndex);
+                            indexOfChordToPlay = nextChordIndex;
                         }
                         else
                         {
                             midiSynth.setSlot((long)0);
+                            playChordAtIndex(0);
                         }
-                        indexOfChordToPlay = nextChordIndex;
                     }
                     break;
                 case PAUSED:
@@ -20262,12 +20263,13 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                         if(nextChordIndex >= 0)
                         {
                             midiSynth.setSlot((long)nextChordIndex);
+                            indexOfChordToPlay = nextChordIndex;
                         }
                         else
                         {
                             midiSynth.setSlot((long)0);
+                            playChordAtIndex(0);
                         }
-                        indexOfChordToPlay = nextChordIndex;
                     }
                     break;
                 case STOPPED:
