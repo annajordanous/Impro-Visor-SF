@@ -25,6 +25,8 @@ package imp.brickdictionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import imp.data.Chord;
+
 import polya.Polylist;
 
 /**
@@ -62,7 +64,15 @@ public class ChordBlock extends Block{
         this.duration = chord.duration;
         this.parseChordName();
     }
+
+    public ChordBlock(Chord chord) {
+        super(chord.getName());
+        duration = chord.getRhythmValue();
+        this.parseChordName();
+    }
     
+ 
+
     // Get duration of current chord
     @Override
     public Long getDuration() {

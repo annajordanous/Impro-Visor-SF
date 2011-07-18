@@ -25,6 +25,7 @@ import java.io.*;
 import javax.sound.midi.*;
 import java.util.ArrayList;
 
+import imp.brickdictionary.ChordBlock;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import java.util.Iterator;
@@ -548,9 +549,7 @@ public void toRoadMapFrame(RoadMapFrame roadmap)
       {
         Chord chord = (Chord) i.next();
 
-        imp.brickdictionary.ChordBlock dictChord =
-                new imp.brickdictionary.ChordBlock(chord.getChordSymbol().toString(),
-                                              chord.getRhythmValue());
+        ChordBlock dictChord = new ChordBlock(chord);
 
         dictChord.setSectionEnd(sectionEnds.next());
 
@@ -572,7 +571,7 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
 
     while( i.hasNext() )
       {
-        imp.brickdictionary.ChordBlock chord = i.next();
+        ChordBlock chord = i.next();
         String name = chord.getName();
         int duration = chord.getDuration().intValue();
         if( duration > 0 )
