@@ -144,8 +144,8 @@ public class PostProcessing {
             joinArray = new String[blocks.size() - 1];
         }
         else {
-            ErrorLog.log(ErrorLog.WARNING, "Cannot find joins in an ArrayList "
-                    + "of size 0");
+            //ErrorLog.log(ErrorLog.WARNING, "Cannot find joins in an ArrayList "
+            //        + "of size 0");
             return null;
         }
         for(int i = 0; i < blocks.size() - 1; i++) {
