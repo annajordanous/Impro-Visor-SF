@@ -3645,7 +3645,17 @@
     (same C7#11)
     )
 (chord
+    (name C7#4)
+    (pronounce)
+    (same C7#11)
+    )
+(chord
     (name C9+4)
+    (pronounce)
+    (same C9#11)
+    )
+(chord
+    (name C9#4)
     (pronounce)
     (same C9#11)
     )
@@ -3655,7 +3665,17 @@
     (same C13#11)
     )
 (chord
+    (name C13#4)
+    (pronounce)
+    (same C13#11)
+    )
+(chord
     (name CM7+4)
+    (pronounce)
+    (same CM7#11)
+    )
+(chord
+    (name CM7#4)
     (pronounce)
     (same CM7#11)
     )
@@ -3665,7 +3685,17 @@
     (same CM9#11)
     )
 (chord
+    (name CM9#4)
+    (pronounce)
+    (same CM9#11)
+    )
+(chord
     (name CM13+4)
+    (pronounce)
+    (same CM13#11)
+    )
+(chord
+    (name CM13#4)
     (pronounce)
     (same CM13#11)
     )
