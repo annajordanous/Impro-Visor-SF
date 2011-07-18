@@ -2253,8 +2253,9 @@ public class Notate
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        emptyRoadMapMI = new javax.swing.JMenuItem();
+        roadMapThisMI = new javax.swing.JMenuItem();
+        roadMapThisAnalyze = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
@@ -6512,7 +6513,7 @@ public class Notate
         standardToolbar.add(openGeneratorButton);
 
         generateToolbarBtn.setBackground(new java.awt.Color(255, 204, 0));
-        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11));
         generateToolbarBtn.setText("Generate");
         generateToolbarBtn.setToolTipText("Generate melody over selected chords.");
         generateToolbarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6529,7 +6530,7 @@ public class Notate
         standardToolbar.add(generateToolbarBtn);
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
-        freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11));
         freezeLayoutButton.setText("<html><center>Freeze</center></html>");
         freezeLayoutButton.setToolTipText("Freeze or thaw the current layout");
         freezeLayoutButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6546,7 +6547,7 @@ public class Notate
         standardToolbar.add(freezeLayoutButton);
 
         colorationButton.setBackground(new java.awt.Color(153, 204, 255));
-        colorationButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        colorationButton.setFont(new java.awt.Font("Arial", 0, 11));
         colorationButton.setText("<html><center>B/W</center></html>");
         colorationButton.setToolTipText("Turn note coloration off or on.");
         colorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6905,7 +6906,7 @@ public class Notate
         loopPanel.setLayout(new java.awt.GridBagLayout());
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        loopButton.setFont(new java.awt.Font("Arial", 0, 11));
         loopButton.setText("<html><center>Loop</center></html>");
         loopButton.setToolTipText("Toggle playback looping.");
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6984,7 +6985,7 @@ public class Notate
         masterVolumePanel.setLayout(new java.awt.GridBagLayout());
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
-        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11));
         allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
         allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -7232,7 +7233,7 @@ public class Notate
         textEntryLabel.setText("Textual Entry ");
         textEntryToolBar.add(textEntryLabel);
 
-        textEntry.setFont(new java.awt.Font("Dialog", 0, 14));
+        textEntry.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textEntry.addActionListener(new java.awt.event.ActionListener() {
@@ -8002,24 +8003,33 @@ public class Notate
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText("Utilities");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
-        jMenuItem1.setText("Road Map");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        emptyRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.CTRL_MASK));
+        emptyRoadMapMI.setText("Empty Road Map\n");
+        emptyRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RoadMapMIaction(evt);
+                EmptyRoadMapAction(evt);
             }
         });
-        utilitiesMenu.add(jMenuItem1);
+        utilitiesMenu.add(emptyRoadMapMI);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.SHIFT_MASK));
-        jMenuItem2.setText("Road Map & Analysis");
-        jMenuItem2.setToolTipText("Open road map and analyze entire chorus.\n");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        roadMapThisMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
+        roadMapThisMI.setText("Road Map this");
+        roadMapThisMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roadMapAnalysisAction(evt);
+                roadMapThisMIaction(evt);
             }
         });
-        utilitiesMenu.add(jMenuItem2);
+        utilitiesMenu.add(roadMapThisMI);
+
+        roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.SHIFT_MASK));
+        roadMapThisAnalyze.setText("Road Map this & Analyze");
+        roadMapThisAnalyze.setToolTipText("Open road map and analyze entire chorus.\n");
+        roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roadMapThisAnalyzeAction(evt);
+            }
+        });
+        utilitiesMenu.add(roadMapThisAnalyze);
 
         openLeadsheetEditorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetEditorMI.setMnemonic('l');
@@ -20377,18 +20387,25 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_chordStepBackButtonActionPerformed
 
 
-private void RoadMapMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoadMapMIaction
+private void EmptyRoadMapAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmptyRoadMapAction
+    roadmapFrame = new RoadMapFrame(this);
+
+    roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
+    roadmapFrame.setVisible(true);
+}//GEN-LAST:event_EmptyRoadMapAction
+
+private void roadMapThisMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapThisMIaction
     roadmapFrame = new RoadMapFrame(this);
 
     roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
     chordPartToRoadMapFrame(roadmapFrame);
     roadmapFrame.setVisible(true);
-}//GEN-LAST:event_RoadMapMIaction
+}//GEN-LAST:event_roadMapThisMIaction
 
-private void roadMapAnalysisAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapAnalysisAction
-    RoadMapMIaction(null);
+private void roadMapThisAnalyzeAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapThisAnalyzeAction
+    roadMapThisMIaction(null);
     roadmapFrame.analyzeAllBricks();
-}//GEN-LAST:event_roadMapAnalysisAction
+}//GEN-LAST:event_roadMapThisAnalyzeAction
 
 public void openInNewWindow(File selectedFile)
 {
@@ -21804,6 +21821,7 @@ public void showNewVoicingDialog()
     private javax.swing.JToggleButton earlyScrollBtn;
     private javax.swing.JCheckBox echoMidiCheckBox;
     private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem emptyRoadMapMI;
     private javax.swing.JCheckBox enableCache;
     private javax.swing.JMenuItem enterBothMI;
     private javax.swing.JMenuItem enterChordsMI;
@@ -21875,8 +21893,6 @@ public void showNewVoicingDialog()
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jList4;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel15;
@@ -22089,6 +22105,8 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem resolvePitches;
     private javax.swing.JMenuItem reverseMelody;
     private javax.swing.JMenuItem revertToSavedMI;
+    private javax.swing.JMenuItem roadMapThisAnalyze;
+    private javax.swing.JMenuItem roadMapThisMI;
     private javax.swing.JCheckBox rootEqualBassCheckbox;
     private javax.swing.JLabel rootEqualBassLabel;
     private javax.swing.JLabel rootRangeLabel;

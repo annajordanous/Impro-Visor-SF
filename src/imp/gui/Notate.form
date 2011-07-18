@@ -6932,27 +6932,38 @@
             <Property name="text" type="java.lang.String" value="Utilities"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="emptyRoadMapMI">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+SEMICOLON"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Empty Road Map&#xa;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyRoadMapAction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="roadMapThisMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="SEMICOLON"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Road Map"/>
+                <Property name="text" type="java.lang.String" value="Road Map this"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RoadMapMIaction"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapThisMIaction"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="roadMapThisAnalyze">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+SEMICOLON"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Road Map &amp; Analysis"/>
+                <Property name="text" type="java.lang.String" value="Road Map this &amp; Analyze"/>
                 <Property name="toolTipText" type="java.lang.String" value="Open road map and analyze entire chorus.&#xa;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapAnalysisAction"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapThisAnalyzeAction"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="openLeadsheetEditorMI">
