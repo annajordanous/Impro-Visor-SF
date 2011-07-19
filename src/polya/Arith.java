@@ -327,4 +327,25 @@ public class Arith
     return new Long( ((Long)v1).longValue() 
                    % ((Long)v2).longValue());
     }
+  
+  /**
+   * Convert a long (as used for fixed precision values in Polya) to an
+   * int, assuming no digits will be lost. If digits will be lost, this will
+   * throw an IllegalArgumentException
+   * @param value
+   * @return 
+   */
+  static public int long2int(long value)
+    {
+    if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) 
+       {
+       throw new IllegalArgumentException
+            ("Loss of precision converting " + value + " to int");
+       }
+    else
+      {
+        return (int) value;
+      }
+
+    }
   }

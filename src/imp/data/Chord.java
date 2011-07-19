@@ -128,16 +128,7 @@ public class Chord implements Constants, Unit, Serializable {
     public Chord(ChordBlock block)
       {
         this.symbol = ChordSymbol.makeChordSymbol(block.getName());
-        long dur = block.getDuration();
-        if (dur < Integer.MIN_VALUE || dur > Integer.MAX_VALUE) 
-          {
-          // Should never happen.
-          throw new IllegalArgumentException
-            ("Chord duration " + dur 
-             + " cannot be cast to int without changing its value.");
-            }
-        this.rhythmValue = (int)dur;
-        
+        rhythmValue = polya.Arith.long2int(block.getDuration());
       }
     
     /**
