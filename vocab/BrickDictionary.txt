@@ -403,6 +403,10 @@
 	(Brick Starlight-Approach C 6)
 	(Chord CM7 2))
 
+(Brick Starlight-Dominant Dominant Cadence C
+	(Brick Starlight-Approach C 6)
+	(Chord C7 2))
+
 (Brick Starlight-Approach Major Approach C
 	(Chord F#m7b5 1)
 	(Chord B7 1)
@@ -412,7 +416,7 @@
 	(Brick Straight-Approach E 2)
 	(Brick Straight-Approach D 2))
 
-(Brick Starlight-Variant Major Cadence C
+(Brick Starlight-N&D-Variant Major Cadence C
 	(Brick Starlight-Variant-Approach C 6)
 	(Chord CM7 2))
 
