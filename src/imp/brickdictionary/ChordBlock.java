@@ -198,7 +198,7 @@ public class ChordBlock extends Block{
             slashChord = BrickLibrary.keyNameToNum(qualitySplit[1]);
         }
         
-        this.mode = this.quality;
+        this.mode = this.findModeFromQuality();
             
     }
     
@@ -215,5 +215,24 @@ public Polylist toPolylist()
   {
     return Polylist.list("chord", name, duration, quality, slashChord, NC, key, mode, isEnd);
   }
+
+/** findModeFromQuality
+     * Find mode of a block using quality of a chord
+     * @param quality : String used to find mode
+     * @return mode : String that determines overall tonicity of block
+     */
+    public String findModeFromQuality() {
+        String m;
+        String q = this.getQuality();
+        
+        if(q.startsWith("M") || q.equals("") || q.startsWith("6"))
+            m = "Major";
+        else if(q.startsWith("7"))
+            m = "Dominant";
+        else
+            m = "Minor";
+        
+        return m;
+    }
    
 }

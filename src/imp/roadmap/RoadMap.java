@@ -134,6 +134,19 @@ public class RoadMap {
         return new ArrayList(blocks.subList(start, end));
     }
     
+    public void setBlocks(ArrayList<Block> b)
+    {
+        this.blocks = b;
+    }
+    
+    public void setKeyMap(ArrayList<KeySpan> km) {
+        this.keyMap = km;
+    }
+    
+    public void setJoins(ArrayList<String> j) {
+        this.joins = j;
+    }
+    
     /**
      * removes and returns all bricks in the roadmap
      * @return 
@@ -267,7 +280,9 @@ public class RoadMap {
     public void process()
     {
         joins = PostProcessing.findJoins(blocks);
-        keyMap = PostProcessing.findKeys(blocks);
+        keyMap = PostProcessing.findKeys(this);
+//        this.setBlocks(newMap.getBricks());
+//        this.setKeyMap(newMap.getKeyMap());
     }
     
 /* Old version    
