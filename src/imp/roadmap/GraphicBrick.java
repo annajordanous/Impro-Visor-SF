@@ -23,7 +23,6 @@ package imp.roadmap;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import imp.brickdictionary.*;
 
 /**
@@ -196,7 +195,6 @@ public class GraphicBrick {
     {
         // I split this up like this because drawing junk is a pain in the monk
         // - August
-        System.out.println("Chord "+selected+" is selected");
         drawBrick(g);
         drawChords(g);
     }

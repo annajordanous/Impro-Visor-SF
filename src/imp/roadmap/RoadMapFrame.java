@@ -187,6 +187,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
+        addBrickDialog.setModal(true);
         addBrickDialog.setName("addBrickDialog"); // NOI18N
         addBrickDialog.setResizable(false);
         addBrickDialog.setSize(new java.awt.Dimension(220, 110));
@@ -1272,7 +1273,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void cutSelection()
     {
         saveState("Cut");
-        System.out.println("Cut!");
         clipboard = roadMapPanel.removeSelection();
         roadMapPanel.placeBricks();
     }
@@ -1280,7 +1280,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void pasteSelection()
     {
         saveState("Paste");
-        System.out.println("Paste!");
         
         roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
         
@@ -1289,7 +1288,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     public void copySelection()
     {
-        System.out.println("Copy!");
         clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
             
     }
@@ -1303,10 +1301,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void dragSelectedBricks(int x, int y)
     {   
         int index = roadMapPanel.getBrickIndexAt(x, y);
-        System.out.println("Drag detected");
         if( draggedBricks.isEmpty() ) {
             saveState("Drag");
-            System.out.println("Grabbing bricks");
             if( index != -1 ) {
                 draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
             }
@@ -1327,9 +1323,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void dropCurrentBrick(int x, int y)
     {   
-        System.out.println("Drop detected");
         if( !draggedBricks.isEmpty() ) {
-            System.out.println("Dropping bricks");
             int index = roadMapPanel.getSlotAt(x, y);
             roadMapPanel.dropBricks(index, draggedBricks);
             draggedBricks.clear();
