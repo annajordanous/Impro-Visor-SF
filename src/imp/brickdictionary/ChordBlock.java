@@ -63,6 +63,7 @@ public class ChordBlock extends Block{
         super(chord.name);
         this.duration = chord.duration;
         this.parseChordName();
+        isEnd = chord.isEnd;
     }
 
     public ChordBlock(Chord chord) {

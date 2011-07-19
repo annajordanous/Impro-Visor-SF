@@ -217,11 +217,16 @@ public class RoadMap {
         return chords;
     }
     
+    /**
+     * 
+     * @param blocks
+     * @return 
+     */
     public static ArrayList<Block> cloneBlocks(ArrayList<Block> blocks)
     {
         ArrayList<Block> clones = new ArrayList();
         for( Block block : blocks ) {
-            if( block instanceof Brick )
+            if( block instanceof Brick ) 
                 clones.add(new Brick((Brick)block));
             if( block instanceof ChordBlock )
                 clones.add(new ChordBlock((ChordBlock)block));

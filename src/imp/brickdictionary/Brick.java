@@ -123,8 +123,7 @@ public class Brick extends Block {
                 
             }
             else {
-                newBlock = new ChordBlock(block.getName(), 
-                                     ((ChordBlock)block).getDuration());
+                newBlock = new ChordBlock((ChordBlock) block);
             }
             subBlocks.add(newBlock); 
         }
