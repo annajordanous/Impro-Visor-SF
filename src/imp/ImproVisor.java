@@ -307,6 +307,7 @@ public class ImproVisor implements Constants {
                                    advisor,
                                    this);
 
+                        newNotate.setupLeadsheet(f, false);  // added by RK 7/18/2011
                         newNotate.setNotateFrameHeight(newNotate);
                         newNotate.setSavedLeadsheet(f);
                     }
