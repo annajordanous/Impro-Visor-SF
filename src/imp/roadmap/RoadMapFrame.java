@@ -1077,7 +1077,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_chordDialogNameFieldActionPerformed
 
     private void libraryTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryTreeMouseClicked
-        System.out.println("Library clicked " + evt.getClickCount());
+        int clicks = evt.getClickCount();
+        TreePath path = libraryTree.getPathForLocation(evt.getX(), evt.getY());
+        if(path != null && previewPanel.getBrick() != null && clicks ==2) {
+            dragFromPreview(0,0);
+            dropFromPreview(0,0);
+        }
     }//GEN-LAST:event_libraryTreeMouseClicked
 //</editor-fold>
     

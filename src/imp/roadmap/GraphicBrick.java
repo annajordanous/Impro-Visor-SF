@@ -378,7 +378,7 @@ public class GraphicBrick {
 
         if( chords.size() > 1 )   // distinguish between chords and bricks
         {                               // possibly unideal
-            g.setColor(settings.textColor); //TODO use metrics
+            g.setColor(settings.textColor);
             
             //Key
             g.drawRect(x, y, totalLength, blockHeight);
@@ -396,7 +396,7 @@ public class GraphicBrick {
             int length = settings.getBlockLength(chord);
             g.drawRect(x+xOffset, y+2*blockHeight, length, blockHeight);
             
-            g.setColor(settings.textColor); //TODO use metrics
+            g.setColor(settings.textColor);
             String chordName = chord.getName();
             g.drawString(chordName, x+xOffset+5, y+5*blockHeight/2+5);
 

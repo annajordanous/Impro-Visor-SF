@@ -134,15 +134,27 @@ public class RoadMap {
         return new ArrayList(blocks.subList(start, end));
     }
     
+    /**
+     * Sets the blocks to b
+     * @param b the new blocks
+     */
     public void setBlocks(ArrayList<Block> b)
     {
         this.blocks = b;
     }
     
+    /**
+     * Sets the keymap to km
+     * @param km the new keymap
+     */
     public void setKeyMap(ArrayList<KeySpan> km) {
         this.keyMap = km;
     }
     
+    /**
+     * Sets the joins to j
+     * @param j the joins
+     */
     public void setJoins(ArrayList<String> j) {
         this.joins = j;
     }
@@ -218,9 +230,9 @@ public class RoadMap {
     }
     
     /**
-     * 
-     * @param blocks
-     * @return 
+     * Deep copies a list of blocks
+     * @param blocks to be copied
+     * @return resultant blocks
      */
     public static ArrayList<Block> cloneBlocks(ArrayList<Block> blocks)
     {
@@ -282,6 +294,9 @@ public class RoadMap {
         process();
     }
     
+    /**
+     * Updates the keymap and join list.
+     */
     public void process()
     {
         joins = PostProcessing.findJoins(blocks);
@@ -310,7 +325,7 @@ public class RoadMap {
     @Override
     public String toString()
     {
-    return toPolylist().toString();
+        return toPolylist().toString();
     }
   
    /**
