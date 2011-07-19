@@ -22,6 +22,7 @@
 package imp.gui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 import java.awt.print.*;
 import javax.print.*;
@@ -48,13 +49,18 @@ import javax.print.*;
 
 public class PrintUtilities implements Printable {
     private Component componentToBePrinted;
-    
+    private int counter = -1;
+    private int tracker = 0;
+    BufferedImage img;
     public static void printComponent(Component c) {
         new PrintUtilities(c).print();
     }
   
     public PrintUtilities(Component componentToBePrinted) {
         this.componentToBePrinted = componentToBePrinted;
+        img = new BufferedImage(componentToBePrinted.getWidth(), componentToBePrinted.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = img.getGraphics();
+        componentToBePrinted.paint(graphics);
     }
     
         public void setComponent(Component c)
@@ -133,29 +139,52 @@ public class PrintUtilities implements Printable {
         
         // for faster printing, turn off double buffering
         disableDoubleBuffering(componentToBePrinted);
+        BufferedImage subImage = img.getSubimage(0,tracker,1000,500);
+        tracker=500*pageIndex;
         Dimension d = componentToBePrinted.getSize();       //  get size of document
         double panelWidth = d.width;                        //  width in pixels
         double panelHeight = d.height;                      //  height in pixels
         double pageHeight = pf.getImageableHeight();        //  height of printer page
         double pageWidth = pf.getImageableWidth();          //  width of printer page
+        //System.out.println("panelWidth" +panelWidth);
+        //System.out.println("panelHeight" +panelHeight);
+        //System.out.println("pageWidth" +pageWidth);
+        //System.out.println("pageHeight" +pageHeight);
         double scale = pageWidth / panelWidth;
-        int totalNumPages = (int) Math.ceil(scale * panelHeight / pageHeight)-1;
+        //System.out.println("Scale" +scale);
+        //System.out.println("pageIndex" + pageIndex);
+        //System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        //int totalNumPages = (int) Math.ceil(scale * panelHeight / pageHeight)-1;
+        int totalNumPages = ((int) Math.ceil(panelHeight/500));
         
         // make sure not print empty pages
         if (pageIndex >= totalNumPages) {
             response = NO_SUCH_PAGE;
         } else {
-            // shift Graphic to line up with beginning of print-imageable region
-            g2.translate(pf.getImageableX(), pf.getImageableY());
-            // shift Graphic to line up with beginning of next page to print
-            g2.translate(0f, -pageIndex * pageHeight);
-            // scale the page so the width fits...
             g2.scale(scale, scale);
-            componentToBePrinted.paint(g2); //repaint the page for printing
-            enableDoubleBuffering(componentToBePrinted);
-            response = Printable.PAGE_EXISTS;
+            g2.translate(pf.getImageableX(), pf.getImageableY()+10);
+            //if(pageIndex == 0)
+            //{
+                g2.translate(0, -pageIndex*pageHeight);
+            //}
+            //else
+            //{
+            //    g2.translate(0f, (-pageIndex*pageHeight)+700);
+            //}
+            int topOfNextPage = (int)(pageIndex*pageHeight);
+            g2.drawImage(subImage, null, 0,topOfNextPage);
+            response= Printable.PAGE_EXISTS;
+            // shift Graphic to line up with beginning of print-imageable region
+            //g2.translate(pf.getImageableX(), pf.getImageableY());
+            // shift Graphic to line up with beginning of next page to print
+            //g2.translate(0f, -pageIndex * pageHeight);
+            // scale the page so the width fits...
+            //g2.scale(scale, scale);
+            //componentToBePrinted.paint(g2); //repaint the page for printing
+            //enableDoubleBuffering(componentToBePrinted);
+            //response = Printable.PAGE_EXISTS;
         }
-        
+        counter++;
         return response;
     }
 
