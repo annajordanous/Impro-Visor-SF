@@ -1,13 +1,13 @@
 // Brick types
 
-(brick-type Approach 45)
-(brick-type Cadence 30)
-(brick-type Overrun 30)
-(brick-type Opening 25)
-(brick-type Dropback 35)
+(brick-type Approach   45)
+(brick-type Cadence    30)
+(brick-type Dropback   30)
+(brick-type Overrun    30)
+(brick-type On-Off   1000)
+(brick-type Opening    25)
 (brick-type Turnaround 20)
-(brick-type Misc 40)
-(brick-type On-Off 1000)
+(brick-type Misc       40)
 
 // Major bricks
 
@@ -92,6 +92,10 @@
 (Brick Extended Major Cadence C
 	(Brick Extended-Approach C 3)
 	(Chord CM7 1))
+
+(Brick Extended-Major-Cadence-with-Overrun Major Cadence C
+	(Brick Extended C 4)
+	(Chord F 1))
 
 (Brick Extended-Approach Major Approach C
 	(Chord A7 1)
