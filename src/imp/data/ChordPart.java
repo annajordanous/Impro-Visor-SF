@@ -527,7 +527,7 @@ public ArrayList<Boolean> getSectionEnds()
       {
         result.add(sectionStarts.next());
       }
-    result.add(true);
+    result.add(false);  // RK changed 7/18/2011
     return result;
   }
 

@@ -1085,6 +1085,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         score.getChordProg().toRoadMapFrame(this); 
         
+        // restartPlayingSelection();
                  
         //roadMapPanel.placeBricks();
         }
@@ -1435,6 +1436,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
       {
       selectAllBricks();
       analyzeSelection();
+      deselectBricks();
       }
     
     /** selectBrick <p>
@@ -1699,6 +1701,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         if(roadMapPanel.hasSelection())
             notate.stopPlayAscore();
+    }
+    
+    public void restartPlayingSelection()
+    {
+        stopPlayingSelection();
+        playSelection();
     }
 
 }
