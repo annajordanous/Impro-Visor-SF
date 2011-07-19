@@ -81,7 +81,7 @@ public class TreeNode {
         chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = block.getKey();
-        symbol = chord.getQuality();
+        symbol = chord.getSymbol();
         cost = CHORD_COST;
         toPrint = true;
         isEnd = chord.isSectionEnd();
@@ -105,7 +105,7 @@ public class TreeNode {
         chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = block.getKey();
-        symbol = chord.getQuality();
+        symbol = chord.getSymbol();
         cost = c;
         toPrint = true;
         isEnd = chord.isSectionEnd();

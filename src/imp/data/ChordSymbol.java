@@ -305,6 +305,33 @@ System.out.println("validity check failed for " + chordSymbol);
     public PitchClass getRoot() {
         return root;
     }
+    
+    
+    /**
+     * Returns the ChordSymbol's generic quality, accounting for polychords
+     * and slash chord
+     * @return a String of the ChordSymbol's quality.
+     */
+    public String getQuality() {
+        if (this.polybase != null)
+            return this.polybase.getQuality();
+        
+        String quality = this.name;
+        if (quality.length() > 1 && 
+                (quality.charAt(1) == 'b' || quality.charAt(1) == '#'))
+            quality = quality.substring(2);
+        else
+            quality = quality.substring(1);
+        
+        if (isSlashChord())
+        {
+            String[] qualitySplit = quality.split(SLASHSTRING);
+            quality = qualitySplit[0];
+        }
+        
+        return quality;
+    }
+    
 
     /**
      * Returns the ChordSymbol's root as String

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import imp.data.Chord;
+import imp.Constants;
 import polya.Arith;
 
 import polya.Polylist;
@@ -36,22 +37,27 @@ import polya.Polylist;
  */
 
 
-public class ChordBlock extends Block{
+public class ChordBlock extends Block {
     
     // Type of chord, ie. "m7b5" or "7"
     private Chord chord;
     private long NC = -1;
+    private String BACKSLASH = "\\";
+    private String SLASHCHAR = "/";
     private boolean NO_SLASH = false;
     private boolean SLASH = true;
     
     // Constructor for chord
     // Uses parseChordName to interpret chord's name, finding root (key) and
     // quality
-    public ChordBlock(String chordName, int duration) {
+    public ChordBlock (String chordName, int duration) {
         super(chordName);
         this.duration = duration;
         chord = new Chord(chordName, duration);
-        key = fixRoot(chord.getRoot());
+        if (chordName.contains(BACKSLASH))
+            key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+        else
+            key = fixRoot(chord.getRoot());
         isEnd = false;
         mode = this.findModeFromQuality();
     }
@@ -60,7 +66,10 @@ public class ChordBlock extends Block{
         super(chordName);
         this.duration = duration;
         chord = new Chord(chordName, this.duration);
-        key = fixRoot(chord.getRoot());
+        if (chordName.contains(BACKSLASH))
+            key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+        else
+            key = fixRoot(chord.getRoot());
         isEnd = sectionend;
         mode = findModeFromQuality();
     }
@@ -69,7 +78,10 @@ public class ChordBlock extends Block{
         super(ch.name);
         this.duration = ch.duration;
         chord = new Chord(ch.name, this.duration);
-        key = fixRoot(chord.getRoot());
+        if (ch.name.contains(BACKSLASH))
+            key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+        else
+            key = fixRoot(chord.getRoot());
         isEnd = ch.isSectionEnd();
         mode = findModeFromQuality();
         isEnd = ch.isEnd;
@@ -79,7 +91,10 @@ public class ChordBlock extends Block{
         super(ch.getName());
         duration = ch.getRhythmValue();
         chord = ch.copy();
-        key = fixRoot(chord.getRoot());
+        if (ch.getName().contains(BACKSLASH))
+            key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
+        else
+            key = fixRoot(chord.getRoot());
         mode = findModeFromQuality();
     }
     
@@ -109,13 +124,13 @@ public class ChordBlock extends Block{
     public String getQuality() {
         if (name.equals(Chord.NOCHORD))
             return name;
-        return parseChordName(SLASH);
+        return parseChordName();
     }
     
     public String getSymbol() {
         if (name.equals(Chord.NOCHORD))
             return name;
-        return parseChordName(NO_SLASH);
+        return chord.getChordSymbol().getQuality();
     }
     
     public boolean isSlashChord() {
@@ -176,10 +191,10 @@ public class ChordBlock extends Block{
     }
     
     // Extract chord's root (key) and quality from its name
-    private String parseChordName(boolean slash) {
+    private String parseChordName() {
         String chordName = this.getName();
         String quality;
-
+        
         if(chordName.length() > 1 && (chordName.charAt(1) == 'b'|| 
                 chordName.charAt(1) == '#'))
         {
@@ -202,13 +217,9 @@ public class ChordBlock extends Block{
                 quality = "";
         }
         
-        if (this.isSlashChord() && !slash) {
-            String[] qualitySplit = quality.split("/");
-            quality = qualitySplit[0];
-        }
-    
         return quality;
     }
+
     
     public long moduloSteps(long l) {
         return (l + 12)%12;
