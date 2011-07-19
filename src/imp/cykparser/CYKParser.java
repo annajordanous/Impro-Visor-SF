@@ -228,7 +228,7 @@ public class CYKParser
             else if (size == 2) {
                 BinaryProduction p = new BinaryProduction(name, b.getType(), 
                                          b.getKey(), subBlocks.get(0), 
-                                         subBlocks.get(1), true, mode);
+                                         subBlocks.get(1), true, mode, lib);
                     nonterminalRules.add(p);
             }
             
@@ -242,18 +242,18 @@ public class CYKParser
                 currentName = name + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];
                 prods[0] = new BinaryProduction(currentName, NONBRICK, b.getKey(),
-                        subBlocks.get(0), subBlocks.get(1), false, mode);
+                        subBlocks.get(0), subBlocks.get(1), false, mode, lib);
                 nonterminalRules.add(prods[0]);
                 // second through next to last rules
                 for (int i = 2; i < size - 1; i++) {
                     currentName = name + i;
                     prods[i-1] = new BinaryProduction(currentName, NONBRICK,
-                            b.getKey(), prods[i-2], subBlocks.get(i), false, mode);
+                            b.getKey(), prods[i-2], subBlocks.get(i), false, mode, lib);
                     nonterminalRules.add(prods[i-1]);
                 }
                 // final rule
                 prods[size-2] = new BinaryProduction(name, b.getType(), b.getKey(),
-                        prods[size-3], subBlocks.get(size-1), true, mode);
+                        prods[size-3], subBlocks.get(size-1), true, mode, lib);
                 nonterminalRules.add(prods[size-2]);
             }
         
@@ -445,7 +445,7 @@ public class CYKParser
                             // The cost becomes larger for the final TreeNode if
                             // either the first or second TreeNode uses a chord
                             // substitute
-                            int cost = rule.getCost();
+                            long cost = rule.getCost();
                             if (symbol1.isSub())
                                 cost += 5;
                             if (symbol2.isSub())

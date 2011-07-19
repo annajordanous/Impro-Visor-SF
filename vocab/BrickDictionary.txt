@@ -1,3 +1,16 @@
+// Brick types
+
+(brick-type Approach 45)
+(brick-type Cadence 30)
+(brick-type Overrun 30)
+(brick-type Opening 25)
+(brick-type Dropback 35)
+(brick-type Turnaround 20)
+(brick-type Misc 40)
+(brick-type On-Off 1000)
+
+// Major bricks
+
 (Brick Amen Major Cadence C
 	(Chord FM7 1)
 	(Chord CM7 1))
@@ -166,6 +179,10 @@
         (Brick Straight-3 C 3)
         (Brick Extended C 4))
 
+(Brick Minor-Plagal Major Cadence C
+	(Chord Fm 1)
+	(Chord C 1))
+
 (Brick Moment's Major Cadence C
 	(Brick Moment's-Approach C 4)
 	(Chord CM7 4))
@@ -203,10 +220,6 @@
         (Chord A7 1)
 	(Brick Nowhere-Approach C 2)
         (Chord CM7 1))
-
-// (Brick Overrun Major Cadence C
-// 	  (Brick Straight-3 C 3)
-//        (Chord FM7 1))
 
 (Brick POT Major Turnaround C
 	(Chord C 1)
@@ -258,10 +271,6 @@
 (Brick Perfect Major Cadence C
 	(Chord G7 1)
 	(Chord CM7 1))
-
-(Brick Plagal-Minor Minor Cadence C
-	(Chord Fm 1)
-	(Chord C 1))
 
 (Brick Pullback Major Cadence C
 	(Brick Pullback-Approach C 6)

@@ -34,15 +34,6 @@ public class BinaryProduction {
     
     public static final int TOTAL_SEMITONES = 12;
     // BRICK_COSTS in order: 
-    public static final int NONBRICK = 2000;
-    public static final int OVERRUN = 30;
-    public static final int CADENCE = 30;
-    public static final int APPROACH = 45;
-    public static final int DROPBACK = 35;
-    public static final int TURNAROUND = 20;
-    public static final int LAUNCHER = 30;
-    public static final int ONOFF = 1000;
-    public static final int MISC = 40;
     public static final long NC = -1;
     
     
@@ -55,7 +46,7 @@ public class BinaryProduction {
     private String name2;       // the second symbol itself, a quality or brick
     private long dur1;          // the relative duration of the first symbol
     private long dur2;          // the relative duration of the second symbol
-    private int cost;           // how much the header brick costs
+    private long cost;           // how much the header brick costs
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
     
@@ -72,7 +63,7 @@ public class BinaryProduction {
      * Note: this assumes that a production is relative to C.
      */
     public BinaryProduction(String h, String t, long k, Block b1, Block b2, boolean p,
-            String m)
+            String m, BrickLibrary bricks)
     {
         head = h;
         type = t;
@@ -92,7 +83,7 @@ public class BinaryProduction {
         
         toPrint = p;
         mode = m;
-        cost = typeToCost(type);
+        cost = bricks.getCost(type);
     }
     
     /** BinaryProduction / 6
@@ -106,7 +97,7 @@ public class BinaryProduction {
      * @param m, the mode of the brick (a String)
      */
     public BinaryProduction(String h, String t, long k, BinaryProduction pStart, 
-            Block b, boolean p, String m) {
+            Block b, boolean p, String m, BrickLibrary bricks) {
         head = h;
         type = t;
         key1 = 0;
@@ -124,7 +115,7 @@ public class BinaryProduction {
         
         toPrint = p;
         mode = m;
-        cost = typeToCost(type);
+        cost = bricks.getCost(type);
     }
     /** getHead
      * Returns the header symbol for the production
@@ -144,7 +135,7 @@ public class BinaryProduction {
     }
     
     // Getters for BinaryProductions.
-    public int getCost() {
+    public long getCost() {
         return cost;
     }
     
@@ -192,27 +183,6 @@ public class BinaryProduction {
     // Helper function - returns i mod 12 and assures it is be positive
     private long modKeys(long i) {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
-    }
-            
-    
-    private int typeToCost(String s) {
-        if (s.equals("Cadence"))
-            return CADENCE;
-        else if (s.equals("Approach"))
-            return APPROACH;
-        else if (s.equals("Dropback"))
-            return DROPBACK;
-        else if (s.equals("Turnaround"))
-            return TURNAROUND;
-        else if (s.equals("Launcher"))
-            return LAUNCHER;
-        else if (s.equals("On-Off"))
-            return ONOFF;
-        else if (s.equals("Misc"))
-            return MISC;
-        else if (s.equals("Overrun"))
-            return OVERRUN;
-        else return NONBRICK;
     }
     
 }

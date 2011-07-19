@@ -37,13 +37,17 @@ public class BrickLibrary {
     
     private static final String[] KEY_NAME_ARRAY = {"C", "Db", "D", "Eb", "E",
         "F", "Gb", "G", "Ab", "A", "Bb", "B"};
-    
+    private static final long DEFAULT_COST = 40;
+    public static final long NONBRICK = 2000;
+   
     private LinkedHashMap<String, Brick> brickMap;
+    private LinkedHashMap<String, Long> costMap;
     
     // Construct BrickLibrary as a HashMap associating a brick's name with its
     // contents
     public BrickLibrary() {
         brickMap = new LinkedHashMap<String, Brick>();
+        costMap = new LinkedHashMap<String, Long>();
     }
     
     public String[] getNames() {
@@ -122,6 +126,26 @@ public class BrickLibrary {
             Brick currentBrick = this.brickMap.get(brickName);
             currentBrick.printBrick();
         }
+    }
+    
+    public void addType(String t) {
+        costMap.put(t, DEFAULT_COST);
+    }
+    
+    public void addType(String t, long c) {
+        costMap.put(t, c);
+    }
+    
+    public long getCost(String t) {
+        if (hasType(t)) 
+            return costMap.get(t);
+        else {
+            return NONBRICK;
+        }
+    }
+    
+    public boolean hasType(String t) {
+        return costMap.containsKey(t);
     }
     
     public static Boolean isValidKey(String keyName) {
@@ -209,20 +233,47 @@ public class BrickLibrary {
             {
                 Polylist contents = (Polylist)token;
                 
-                // Check that polylist has enough fields to be a brick
+                // Check that polylist has enough fields to be a brick 
                 // Needs BlockType (i.e. "Brick"), name, key, and contents
-                if (contents.length() < 4)
+                if (contents.length() < 3)
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
-                            + "a BrickDictionary Polylist", true);
+                            + " a BrickDictionary Polylist", true);
                 }
+                        
                 else
                 {
                     String blockCategory = contents.first().toString();
                     contents = contents.rest();
                     
+                    if (blockCategory.equals("brick-type"))
+                    {
+                        if (contents.length() != 2 && contents.length() != 1)
+                            ErrorLog.log(ErrorLog.WARNING, "Not a correct"
+                                    + "brick-type declaration");
+                        else {
+                            String type = contents.first().toString();
+                            contents = contents.rest();
+                            if (contents.isEmpty()) {
+                                dictionary.addType(type);
+                            }
+                            else
+                            {
+                                Object cost = contents.first();
+                                if (cost instanceof Long)
+                                    dictionary.addType(type, (Long)cost);
+                                else {
+                                    ErrorLog.log(ErrorLog.WARNING, "Incorrect"
+                                            + "cost for brick type" + type);
+                                    dictionary.addType(type);
+                                }
+                                            
+                            }
+                        }
+                    }
+                    
                     // For reading in dictionary, should only encounter bricks
-                    if (blockCategory.equals("Brick"))
+                    else if (blockCategory.equals("Brick"))
                     {
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
@@ -245,7 +296,7 @@ public class BrickLibrary {
                     }
                     else
                     {
-                        ErrorLog.log(ErrorLog.WARNING, "Improper type for"
+                        ErrorLog.log(ErrorLog.WARNING, "Improper type for "
                             + "a BrickDictionary Polylist", true);
                     }
                 }
@@ -262,10 +313,17 @@ public class BrickLibrary {
             String brickName = dashless(contents.first().toString());
             contents = contents.rest();
             if (!dictionary.hasBrick(brickName)) {
+                
                 String brickMode = contents.first().toString();
                 contents = contents.rest();
+                
                 String brickType = contents.first().toString();
                 contents = contents.rest();
+                if (!dictionary.hasType(brickType))
+                    ErrorLog.log(ErrorLog.WARNING, brickName + " is of "
+                            + "uninitialized type " + brickType + 
+                            "; will register as non-brick");
+                
                 String brickKeyString = contents.first().toString();
                 contents = contents.rest();
                 long brickKeyNum = keyNameToNum(brickKeyString);
