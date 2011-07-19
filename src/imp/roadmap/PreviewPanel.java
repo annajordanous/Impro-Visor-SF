@@ -41,7 +41,7 @@ public class PreviewPanel extends JPanel
     
     
     private long currentKey = 0;
-    private long currentDuration = 480;
+    private int currentDuration = 480;
     
     RoadMapFrame view;
     
@@ -120,7 +120,7 @@ public class PreviewPanel extends JPanel
         draw();
     }
     
-    public void setDuration(long duration)
+    public void setDuration(int duration)
     {
         currentDuration = duration;
         if(protoBrick != null)

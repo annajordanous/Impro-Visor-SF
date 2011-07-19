@@ -33,7 +33,7 @@ import polya.Polylist;
 public class Block {
     
     protected String name;        // block's name
-    protected long duration;      // how long block lasts (not in absolute units)
+    protected int duration;      // how long block lasts (not in absolute units)
     protected long key;           // key is pitch-class relative to C, e.g. C=0, 
                                   // D=2, B=11, etc.
     protected String mode = null; // Broad quality of block (e.g. Major, Minor, 
@@ -81,7 +81,7 @@ public class Block {
     }
     
     // Get block's duration
-    public Long getDuration() {
+    public int getDuration() {
         return this.duration;
     }
     
@@ -120,7 +120,7 @@ public class Block {
     
     // Alters the duration of the total block
     // Overridden by the corresponding method in Brick or Chord
-    public void adjustDuration(long factor) {
+    public void adjustDuration(int factor) {
         duration = duration * factor;
     }
     
@@ -133,7 +133,7 @@ public class Block {
     }
     
 /**
- * This will be overriden in derived classes
+ * This will be overridden in derived classes
  * @return 
  */
     

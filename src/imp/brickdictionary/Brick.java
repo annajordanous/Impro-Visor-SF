@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import polya.*;
 
 /**
@@ -252,7 +250,7 @@ public class Brick extends Block {
                     pList = pList.rest();
                     if(durObj instanceof Long)
                     {
-                        long dur = (Long)durObj;
+                        int dur = Arith.long2int((Long)durObj);
                         long brickKeyNum = 
                                 BrickLibrary.keyNameToNum(brickKeyString);
                         Brick subBrick = 
@@ -276,7 +274,7 @@ public class Brick extends Block {
                     pList = pList.rest();
                     if(durObj instanceof Long)
                     {
-                        long dur = (Long)durObj;
+                        int dur = Arith.long2int((Long)durObj);
                         ChordBlock subBlockChord = new ChordBlock(chordName, dur);
                         subBlockList.add(subBlockChord);
                     }
@@ -327,7 +325,7 @@ public class Brick extends Block {
                     pList = pList.rest();
                     if(durObj instanceof Long)
                     {
-                        long dur = (Long)durObj;
+                        int dur = Arith.long2int((Long)durObj);
                         long subBrickKeyNum = 
                                 BrickLibrary.keyNameToNum(subBrickKeyString);
                         Brick subBrick = null;
@@ -351,7 +349,8 @@ public class Brick extends Block {
 
                             subBrick = new Brick(brickName, brickKeyNum,
                                 brickType, tokens, bricks, brickMode, polymap);
-                            subBrick.transpose(subBrickKeyNum - brickKeyNum);
+                            subBrick.transpose(
+                                    Arith.long2int(subBrickKeyNum - brickKeyNum));
                             subBrick.adjustDuration(dur);
                         }
                         else
@@ -365,7 +364,7 @@ public class Brick extends Block {
                     else
                     {
                         ErrorLog.log(ErrorLog.FATAL, subBrickName + ": " +
-                                "Duration not of type long: " + durObj, true);;
+                                "Duration not of type long: " + durObj, true);
                     }
                 }
                 
@@ -378,7 +377,7 @@ public class Brick extends Block {
                     pList = pList.rest();
                     if(durObj instanceof Long)
                     {
-                        long dur = (Long)durObj;
+                        int dur = Arith.long2int((Long)durObj);
                         ChordBlock subBlockChord = new ChordBlock(chordName, dur);
                         subBlockList.add(subBlockChord);
                     }
@@ -408,9 +407,9 @@ public class Brick extends Block {
     
     // Sum the durations of a brick's subblocks
     @Override
-    public final Long getDuration() {
+    public final int getDuration() {
         
-        long dur = 0;
+        int dur = 0;
         for(Block b : this.getSubBlocks())
         {
             if(b instanceof ChordBlock)
@@ -446,8 +445,9 @@ public class Brick extends Block {
     
     // Change the duration of a brick by recursively altering durations of 
     // subblocks.
+    
     @Override
-    public void adjustDuration(long scale) {
+    public void adjustDuration(int scale) {
         
         duration = 0;
         
@@ -463,7 +463,7 @@ public class Brick extends Block {
     }
     
     // Create new brick from an original with specified duration
-    public void adjustBrickDuration(long newDuration) {
+    public void adjustBrickDuration(int newDuration) {
         float newDurFloat = newDuration;
         float ratio = newDurFloat / this.getDuration();
 
@@ -480,7 +480,7 @@ public class Brick extends Block {
             }
             else if (currentBlock instanceof Brick) {
                 Brick adjustedSubBrick = (Brick)currentBlock;
-                long newDur = 
+                int newDur = 
                         Math.round(ratio * adjustedSubBrick.getDuration());
                 adjustedSubBrick.adjustBrickDuration(newDur);
                 adjustedSubBrick.duration = 
@@ -529,7 +529,7 @@ public class Brick extends Block {
             {
                 ChordBlock currentChord = (ChordBlock)currentBlock;
                 String currentChordName = currentChord.getName();
-                Long currentDuration = currentChord.getDuration();
+                int currentDuration = currentChord.getDuration();
                 System.err.println("\t" + currentChordName + " " 
                         + currentDuration);
             }
@@ -540,11 +540,11 @@ public class Brick extends Block {
         adjustDuration(-getReductionFactor());
     }
     
-    public long getReductionFactor()
+    public int getReductionFactor()
     {
         ArrayList<ChordBlock> chords = flattenBlock();
-        long currentGCD = subBlocks.get(0).duration;
-        long currentDur;
+        int currentGCD = subBlocks.get(0).duration;
+        int currentDur;
         
         for( Iterator<ChordBlock> it = chords.iterator(); it.hasNext(); ) {
             currentDur = it.next().duration;
@@ -556,8 +556,8 @@ public class Brick extends Block {
         return currentGCD;
     }
     
-    public static long gcd(long a, long b) {
-        long r = a%b;
+    public static int gcd(int a, int b) {
+        int r = a%b;
         
         if ( r == 0)
             return b;
@@ -598,7 +598,8 @@ public Polylist toPolylist()
         buffer.append(b.toPolylist());
       }
     
-    return Polylist.list("brick", name, duration, key, mode, isEnd, buffer.toPolylist().cons("subblocks"));
+    return Polylist.list("brick", name, duration, key, mode, isEnd, 
+                         buffer.toPolylist().cons("subblocks"));
   }
 
 } // end of class Brick

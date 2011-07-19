@@ -81,7 +81,7 @@ public class BrickLibrary {
         }
     }
     
-    public Brick getBrick(String s, long k, long d) {
+    public Brick getBrick(String s, long k, int d) {
         if(brickMap.containsKey(s))
         {
             Brick brick = new Brick(brickMap.get(s));

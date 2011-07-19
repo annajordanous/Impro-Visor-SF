@@ -1249,7 +1249,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         if( choice == null )
             return;
         
-        long scale = choice.charAt(1) - 48; // set to integer
+        int scale = choice.charAt(1) - 48; // set to integer
         
         if( choice.charAt(0) == 47) //  / = division
             scale = -scale;
