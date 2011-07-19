@@ -149,6 +149,19 @@ public class RoadMapPanel extends JPanel{
         return blocks;
     }
     
+    public void changeChord(String name)
+    {
+        int chordInd = graphicMap.get(selectionStart).getSelected();
+        Block block = removeSelectionNoUpdate().get(0);
+        ArrayList<Block> newBlocks = new ArrayList(block.flattenBlock());
+        ChordBlock chord = (ChordBlock)newBlocks.get(chordInd);
+        newBlocks.set(chordInd, new ChordBlock(name, chord.getDuration()));
+        
+        addBlocks(selectionStart, newBlocks);
+        selectBrick(selectionStart + chordInd);
+        placeBricks();
+    }
+    
     public ArrayList<Block> getSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1)
@@ -174,6 +187,11 @@ public class RoadMapPanel extends JPanel{
         return new ArrayList();
     }
     
+    public GraphicBrick getBrick(int index)
+    {
+        return graphicMap.get(index);
+    }
+    
     public ArrayList<Block> getBlocks(int start, int end)
     {
         return roadMap.getBricks(start, end);
@@ -190,6 +208,16 @@ public class RoadMapPanel extends JPanel{
         ArrayList<Block> blocks = roadMap.removeBricks(start, end);
         graphicMap.subList(start, end).clear();
         return blocks;
+    }
+    
+    public void selectChord(int brickInd, int chordInd)
+    {
+        selectBrick(brickInd);
+        GraphicBrick brick = getBrick(brickInd);
+        
+        brick.selectChord(chordInd);
+        drawBrick(brickInd);
+        drawKeyMap();
     }
     
     public void selectBricks(int index)
@@ -537,6 +565,7 @@ public class RoadMapPanel extends JPanel{
         long lineBeats = 0;
         
         //Iterator<Long> number = sectionBreaks.iterator();
+        //System.out.println(roadMap.getKeyMap());
         
         for( KeySpan keySpan : roadMap.getKeyMap() ) {
             drawKeySpan(keySpan, settings.xOffset + settings.getLength(lineBeats),

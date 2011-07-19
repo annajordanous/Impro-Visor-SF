@@ -34,6 +34,7 @@ import java.util.Iterator;
 import imp.brickdictionary.*;
 import imp.cykparser.*;
 import imp.data.ChordPart;
+import imp.data.ChordSymbol;
 import imp.data.Leadsheet;
 import imp.data.Score;
 import imp.gui.Notate;
@@ -139,10 +140,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogKeySpinner = new javax.swing.JSpinner();
         dialogAcceptButton = new javax.swing.JButton();
         dialogModeComboBox = new javax.swing.JComboBox();
-        optionsDialog = new javax.swing.JDialog();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        chordChangeDialog = new javax.swing.JDialog();
+        chordDialogNameField = new javax.swing.JTextField();
+        chordDialogAcceptButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         toolBar = new javax.swing.JToolBar();
         deleteButton = new javax.swing.JButton();
         flattenButton = new javax.swing.JButton();
@@ -162,9 +163,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryTabbedPane = new javax.swing.JTabbedPane();
         libraryScrollPane = new javax.swing.JScrollPane();
         libraryTree = new javax.swing.JTree();
-        chordPanel = new javax.swing.JPanel();
-        chordField = new javax.swing.JTextField();
-        addChordButton = new javax.swing.JButton();
         keySpinner = new javax.swing.JSpinner();
         durationComboBox = new javax.swing.JComboBox(durationChoices);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
@@ -185,6 +183,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         flattenMenuItem = new javax.swing.JMenuItem();
         breakMenuItem = new javax.swing.JMenuItem();
         sectionBreakMenuItem = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
@@ -250,18 +249,37 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         addBrickDialog.getContentPane().add(dialogModeComboBox, gridBagConstraints);
 
-        optionsDialog.setTitle("Settings"); // NOI18N
-        optionsDialog.setName("optionsDialog"); // NOI18N
+        chordChangeDialog.setTitle("Settings"); // NOI18N
+        chordChangeDialog.setModal(true);
+        chordChangeDialog.setName("chordChangeDialog"); // NOI18N
+        chordChangeDialog.setPreferredSize(new java.awt.Dimension(100, 100));
+        chordChangeDialog.setResizable(false);
+        chordChangeDialog.setSize(new java.awt.Dimension(100, 100));
 
-        jTabbedPane1.setName("jTabbedPane1"); // NOI18N
+        chordDialogNameField.setText("CM7"); // NOI18N
+        chordDialogNameField.setMinimumSize(new java.awt.Dimension(14, 20));
+        chordDialogNameField.setName("chordDialogNameField"); // NOI18N
+        chordDialogNameField.setPreferredSize(new java.awt.Dimension(42, 20));
+        chordDialogNameField.setSize(new java.awt.Dimension(40, 20));
+        chordDialogNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordDialogNameFieldActionPerformed(evt);
+            }
+        });
+        chordChangeDialog.getContentPane().add(chordDialogNameField, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setName("jPanel1"); // NOI18N
-        jTabbedPane1.addTab("tab1", jPanel1);
+        chordDialogAcceptButton.setText("Accept"); // NOI18N
+        chordDialogAcceptButton.setName("chordDialogAcceptButton"); // NOI18N
+        chordDialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordDialogAcceptButtonActionPerformed(evt);
+            }
+        });
+        chordChangeDialog.getContentPane().add(chordDialogAcceptButton, java.awt.BorderLayout.PAGE_END);
 
-        jPanel2.setName("jPanel2"); // NOI18N
-        jTabbedPane1.addTab("tab2", jPanel2);
-
-        optionsDialog.getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        jLabel1.setText("Chord Name:"); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
+        chordChangeDialog.getContentPane().add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(830, 600));
@@ -577,6 +595,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryTree.setPreferredSize(new java.awt.Dimension(400, 2000));
         libraryTree.setSize(new java.awt.Dimension(400, 2000));
         libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        libraryTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                libraryTreeMouseClicked(evt);
+            }
+        });
         libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 libraryTreeSelected(evt);
@@ -585,55 +608,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryScrollPane.setViewportView(libraryTree);
 
         libraryTabbedPane.addTab("Brick Dictionary", null, libraryScrollPane, "Dictionary of available bricks.\n");
-
-        chordPanel.setName("chordPanel"); // NOI18N
-        chordPanel.setLayout(new java.awt.GridBagLayout());
-
-        chordField.setToolTipText("Enter one chord at a time.\n"); // NOI18N
-        chordField.setName("chordField"); // NOI18N
-        chordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordFieldActionPerformed(evt);
-            }
-        });
-        chordField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                chordFieldFocusGained(evt);
-            }
-        });
-        chordField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                chordFieldKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        chordPanel.add(chordField, gridBagConstraints);
-
-        addChordButton.setText("Enter Chord"); // NOI18N
-        addChordButton.setToolTipText("Enter this chord into roadmap."); // NOI18N
-        addChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        addChordButton.setMinimumSize(new java.awt.Dimension(40, 40));
-        addChordButton.setName("addChordButton"); // NOI18N
-        addChordButton.setPreferredSize(new java.awt.Dimension(100, 30));
-        addChordButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addChordButtonPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        chordPanel.add(addChordButton, gridBagConstraints);
-
-        libraryTabbedPane.addTab("Chords", null, chordPanel, "Enter individual chords by name.\n");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -842,6 +816,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(sectionBreakMenuItem);
 
+        jSeparator4.setName("jSeparator4"); // NOI18N
+        editMenu.add(jSeparator4);
+
         roadmapMenuBar.add(editMenu);
 
         setJMenuBar(roadmapMenuBar);
@@ -851,30 +828,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Events">
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
+        System.out.println("Library tree selected");
         setPreview();
 }//GEN-LAST:event_libraryTreeSelected
-
-    private void chordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordFieldActionPerformed
-        addChordFromPreview();
-        chordField.selectAll();
-}//GEN-LAST:event_chordFieldActionPerformed
-
-    private void chordFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_chordFieldFocusGained
-        chordField.selectAll();
-}//GEN-LAST:event_chordFieldFocusGained
-
-    private void chordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chordFieldKeyPressed
-        switch (evt.getKeyCode()) {
-            //case 38: durationComboBox.setSelectedIndex(durationComboBox.getSelectedIndex()+1); break;
-            //case 40: keySpinner.setValue(keySpinner.getPreviousValue()); break;
-            default:                            break;
-        }
-        System.out.println(evt.getKeyCode());
-}//GEN-LAST:event_chordFieldKeyPressed
-
-    private void addChordButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addChordButtonPressed
-        addChordFromPreview();
-}//GEN-LAST:event_addChordButtonPressed
 
     private void keySpinnerChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_keySpinnerChanged
         setPreviewKey();
@@ -906,16 +862,29 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
         int index = roadMapPanel.getBrickIndexAt(evt.getX(), evt.getY());
-        
-        System.out.println("Clicked brick "+index);
-        
-        if(index != -1) {
-            if(evt.isShiftDown())
-                selectBricks(index);
-            else
-                selectBrick(index);
-        } else
-            deselectBricks();
+        if(evt.getButton() == evt.BUTTON1) {
+
+            System.out.println("Clicked brick "+index);
+
+            if(index != -1) {
+                if(evt.isShiftDown())
+                    selectBricks(index);
+                else if( roadMapPanel.getBrick(index).isSelected()) {
+                    //System.out.println("Selected brick clicked");
+                    int jndex = roadMapPanel.getBrick(index).getChordAt(evt.getX(), evt.getY());
+                    selectChord(index,jndex);
+                } else
+                    selectBrick(index);
+            } else
+                deselectBricks();
+        } else if(evt.getButton() == evt.BUTTON3) {
+            if(index != -1) {
+                int jndex = roadMapPanel.getBrick(index).getChordAt(evt.getX(), evt.getY());
+                selectChord(index,jndex);
+                chordChangeDialog.setLocation(evt.getPoint());
+                chordChangeDialog.setVisible(true);
+            }
+        }
         
         roadMapScrollPane.requestFocus();
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
@@ -1094,6 +1063,22 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void roadMapTextEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapTextEntryActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_roadMapTextEntryActionPerformed
+
+    private void chordDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogAcceptButtonActionPerformed
+        String name = chordDialogNameField.getText();
+        if(ChordSymbol.makeChordSymbol(name) != null) {
+            chordChangeDialog.setVisible(false);
+            changeChord(name);
+        }
+    }//GEN-LAST:event_chordDialogAcceptButtonActionPerformed
+
+    private void chordDialogNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chordDialogNameFieldActionPerformed
+
+    private void libraryTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryTreeMouseClicked
+        System.out.println("Library clicked " + evt.getClickCount());
+    }//GEN-LAST:event_libraryTreeMouseClicked
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1209,15 +1194,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapPanel.addBlock(chord);
         roadMapPanel.placeBricks();
     }
-    
-    
-    public void addChordFromPreview()
-    {
-        saveState("AddChord");
-        roadMapPanel.addBlock(new ChordBlock(chordField.getText(),(Integer)durationChoices[durationComboBox.getSelectedIndex()]));
-        roadMapPanel.placeBricks();
-    }
-    
+        
     public void deleteSelection()
     {
         saveState("Delete");
@@ -1273,6 +1250,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
             scale = -scale;
         
         roadMapPanel.scaleSelection(scale);       
+    }
+    
+    public void changeChord(String name)
+    {
+        saveState("ChordChange");
+        roadMapPanel.changeChord(name);
+    }
+    
+    private void toggleSectionBreak()
+    {
+        saveState("SectionBreak");
+        roadMapPanel.toggleSection();
     }
 
     public void cutSelection()
@@ -1360,7 +1349,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
                 setPreview();
             }
         }
-        dragSelectedBricks(x + libraryTabbedPane.getX(), y + previewScrollPane.getY());
+        dragSelectedBricks(x + previewScrollPane.getX(), y + previewScrollPane.getY());
     }
     
     /** dropFromPreivew <p>
@@ -1372,7 +1361,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void dropFromPreview(int x, int y)
     {
         saveState("Drop");
-        dropCurrentBrick(x + libraryTabbedPane.getX(), y + previewScrollPane.getY());
+        dropCurrentBrick(x + previewScrollPane.getX(), y + previewScrollPane.getY());
         activateButtons();
     }
     
@@ -1450,6 +1439,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         activateButtons();
     }
     
+    public void selectChord(int brickInd, int chordInd)
+    {
+        roadMapPanel.selectChord(brickInd, chordInd);
+        deactivateButtons();
+    }
+    
     /** deselectBricks <p>
      * Deselects all bricks.
      */
@@ -1511,12 +1506,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         newBrickButton.setEnabled(value);
         scaleComboBox.setEnabled(value);
-    }
-    
-           
-    private void toggleSectionBreak()
-    {
-        roadMapPanel.toggleSection();
     }
     
     public void initLibraryTree()
@@ -1583,12 +1572,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog addBrickDialog;
-    private javax.swing.JButton addChordButton;
     private javax.swing.JButton analyzeButton;
     private javax.swing.JButton breakButton;
     private javax.swing.JMenuItem breakMenuItem;
-    private javax.swing.JTextField chordField;
-    private javax.swing.JPanel chordPanel;
+    private javax.swing.JDialog chordChangeDialog;
+    private javax.swing.JButton chordDialogAcceptButton;
+    private javax.swing.JTextField chordDialogNameField;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JButton deleteButton;
@@ -1604,19 +1593,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JSlider featureWidthSlider;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JSpinner keySpinner;
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTabbedPane libraryTabbedPane;
     private javax.swing.JTree libraryTree;
     private javax.swing.JToggleButton loopToggleButton;
     private javax.swing.JButton newBrickButton;
-    private javax.swing.JDialog optionsDialog;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
     private javax.swing.JScrollPane previewScrollPane;

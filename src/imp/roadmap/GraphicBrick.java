@@ -36,6 +36,7 @@ public class GraphicBrick {
     private int x = 0;
     private int y = 0;
     private boolean isSelected = false;
+    private int selected = -1;
     
     private RoadMapSettings settings;
     
@@ -110,8 +111,20 @@ public class GraphicBrick {
     public void setSelected(boolean value)
     {
         isSelected = value;
+        selected = -1;
     }
-         
+    
+    public void selectChord(int index)
+    {
+        isSelected = true;
+        selected = index;
+    }
+    
+    public int getSelected()
+    {
+        return selected;
+    }
+    
     /**
      * Checks if the point x,y is contained within the brick
      * @param x x-coordinate of the point
@@ -120,22 +133,28 @@ public class GraphicBrick {
      */
     public boolean contains(int x, int y)
     {
+        return getChordAt(x,y) != -1;
+    }
+    
+    public int getChordAt(int x, int y)
+    {
         int cutoffLine = settings.getCutoff();
         
         if( x > cutoffLine || x < settings.xOffset )
-            return false;
+            return -1;
         
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
         
         int xOffset = this.x;
         int yOffset = this.y;
+        int ind = 0;
 
         for( ChordBlock chord : chords ) {
             int length = settings.getBlockLength(chord);
             
             if ( x > xOffset && x < xOffset + length && 
                     y > yOffset && y < yOffset + settings.lineHeight)
-                return true;
+                return ind;
             
             while ( xOffset + length >= cutoffLine )
             {
@@ -144,14 +163,14 @@ public class GraphicBrick {
                 
                 if ( x > xOffset && x < xOffset + length && 
                     y > yOffset && y < yOffset + settings.lineHeight)
-                    return true;
+                    return ind;
             }
             
             xOffset += length;
-            
+            ind++;
         }
         
-        return false;
+        return -1;
     }
     
     public int getLength()
@@ -177,6 +196,7 @@ public class GraphicBrick {
     {
         // I split this up like this because drawing junk is a pain in the monk
         // - August
+        System.out.println("Chord "+selected+" is selected");
         drawBrick(g);
         drawChords(g);
     }
@@ -188,7 +208,7 @@ public class GraphicBrick {
     private void drawBrick(Graphics g)
     {   
         Color bgColor;
-        if(!isSelected)
+        if(!isSelected || selected != -1)
             bgColor = settings.brickBGColor;
         else
             bgColor = settings.selectedColor;
@@ -280,6 +300,8 @@ public class GraphicBrick {
         
         g2d.setColor(settings.lineColor);
         
+        int ind = 0;
+        
         for( ChordBlock chord : chords ) {
             int[] wrap = settings.wrap(x + settings.getLength(currentBeats));
             int currentX = wrap[0];
@@ -290,25 +312,43 @@ public class GraphicBrick {
             int endX = endWrap[0];
             int lines = endWrap[1];
             
-            g2d.setColor(settings.textColor);
-            g2d.drawString(chord.getName(), currentX+2, currentY + fontOffset);
-            
             g2d.setColor(settings.lineColor);
             if(lines > 0) {
+                if(selected == ind) {
+                    g2d.setColor(settings.selectedColor);
+                    g2d.fillRect(currentX+1, currentY,
+                            cutoff-currentX-1, blockHeight-1);
+                    g2d.fillRect(xOffset, currentY+lines*settings.getLineOffset(),
+                            endX-xOffset-1, blockHeight-1);
+                    for(int line = 1; line < lines; line++) {
+                        g2d.fillRect(xOffset, currentY + line*settings.getLineOffset(),
+                                cutoff-xOffset, blockHeight-1);
+                    }
+                    g2d.setColor(settings.lineColor);
+                }
+                
                 g2d.drawLine(currentX, currentY, cutoff, currentY);
+                g2d.drawLine(xOffset, currentY + lines*settings.getLineOffset(),
+                        endX, currentY + lines*settings.getLineOffset());
                 
                 for(int line = 1; line < lines; line++) {
                     g2d.drawLine(xOffset, currentY + line*settings.getLineOffset(),
                             cutoff, currentY + line*settings.getLineOffset());
                 }
-                
-                g2d.drawLine(xOffset, currentY + lines*settings.getLineOffset(),
-                        endX, currentY + lines*settings.getLineOffset());
             } else {
+                if(selected == ind) {
+                    g2d.setColor(settings.selectedColor);
+                    g2d.fillRect(currentX+1, currentY+1, length-1, blockHeight-2);
+                    g2d.setColor(settings.lineColor);
+                }
                 g2d.drawRect(currentX, currentY, length, blockHeight);
             }
             
+            g2d.setColor(settings.textColor);
+            g2d.drawString(chord.getName(), currentX+2, currentY + fontOffset);
+            
             currentBeats += chord.getDuration();
+            ind++;
         }
     }
     
