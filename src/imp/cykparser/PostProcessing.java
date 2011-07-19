@@ -57,6 +57,10 @@ public class PostProcessing {
         KeySpan current = new KeySpan();
         ArrayList<Block> blocks = roadmap.getBricks();
         
+        if(blocks.isEmpty()) {
+            return keymap;
+        }
+        
         Block[] blockArray = blocks.toArray(new Block[0]);
 //        current = new KeySpan(blockArray[blockArray.length - 1].getKey(),
 //                blockArray[blockArray.length - 1].getMode(),
@@ -68,7 +72,14 @@ public class PostProcessing {
             
         for(int i = blockArray.length - 2; i >= 0; i--) {
             System.out.println("LoopStart - " + i);
-            if(blockArray[i] instanceof Brick) {
+            if(blockArray[i].isSectionEnd()) {
+                KeySpan entry = current;
+                keymap.add(0, entry);
+                
+                current = new KeySpan(blockArray[i].getKey(),
+                            blockArray[i].getMode(), blockArray[i].getDuration());
+            }
+            else if(blockArray[i] instanceof Brick) {
                 if(current.getKey() == blockArray[i].getKey() &&
                         current.getMode().equals(blockArray[i].getMode())) {
                     System.out.println("First if in Brick - " + i);
@@ -317,7 +328,8 @@ public class PostProcessing {
         boolean firstStable = false;
         boolean secondStable = false;
         
-        if(firstEquivs.contains(firstMode) || first.getType().equals("Cadence")) {
+        if(firstEquivs.contains(firstMode) || 
+                first.getType().equals("Cadence")) {
             firstStable = true;
         }
         
