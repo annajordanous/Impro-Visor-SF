@@ -613,7 +613,7 @@ public class RoadMapPanel extends JPanel{
             Color keyColor = settings.brickBGColor;
             
             if(key != -1) {
-                if(keySpan.getMode().equals("Minor"))
+                if(keySpan.getMode().equals("minor"))
                     keyColor = settings.getKeyColor(key+3);
                 else if (keySpan.getMode().equals("Dominant"))
                     keyColor = settings.getKeyColor(key+5);

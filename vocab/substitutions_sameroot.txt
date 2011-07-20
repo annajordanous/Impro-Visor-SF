@@ -13,6 +13,8 @@
 
 (equiv Cm Cminor Cm7 Cm6 Cm9 Cm11 Cm13)
 
+(equiv Cdim Co)
+
 (sub  C C+ Caug C7 C5)
 
 (sub C7 C7alt C7+ C7aug Caug7 C7#5 C7#5#9 C7#9b13 C7b9 C7b9b13 C7#9 C9 C5

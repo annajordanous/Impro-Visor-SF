@@ -300,9 +300,9 @@ public class RoadMap {
     public void process()
     {
         joins = PostProcessing.findJoins(blocks);
-        keyMap = PostProcessing.findKeys(this);
-//        this.setBlocks(newMap.getBricks());
-//        this.setKeyMap(newMap.getKeyMap());
+        RoadMap newMap = PostProcessing.findKeys(this);
+        this.setBlocks(newMap.getBricks());
+        this.setKeyMap(newMap.getKeyMap());
     }
     
 /* Old version    

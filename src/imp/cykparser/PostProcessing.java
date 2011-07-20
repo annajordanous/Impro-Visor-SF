@@ -50,7 +50,7 @@ public class PostProcessing {
      * @return keymap : ArrayList of KeySpans, each containing key, mode, and 
      *                  a corresponding total duration
      */
-    public static ArrayList<KeySpan> findKeys(RoadMap roadmap) {
+    public static RoadMap findKeys(RoadMap roadmap) {
         ArrayList<KeySpan> keymap = new ArrayList<KeySpan>();
         
         // Initialize key, mode, and duration of current block
@@ -58,7 +58,7 @@ public class PostProcessing {
         ArrayList<Block> blocks = roadmap.getBricks();
         
         if(blocks.isEmpty()) {
-            return keymap;
+            return roadmap;
         }
         
         Block[] blockArray = blocks.toArray(new Block[0]);
@@ -71,24 +71,67 @@ public class PostProcessing {
         current.setDuration(blockArray[blockArray.length - 1].getDuration());
             
         for(int i = blockArray.length - 2; i >= 0; i--) {
-            System.out.println("LoopStart - " + i);
             if(blockArray[i].isSectionEnd()) {
+                if(blockArray[i].getType().equals("Approach") || 
+                        blockArray[i].getType().equals("Launcher")) {
+                    ArrayList<ChordBlock> cFirstList = 
+                            (ArrayList<ChordBlock>)blockArray[i].flattenBlock();
+                    ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
+                    ArrayList<ChordBlock> cSecondList = 
+                            (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
+                    ChordBlock cSecond = cSecondList.get(0);
+                    
+//                    System.out.println("Going into doesResolve");
+                    boolean dR = doesResolve(cFirst, cSecond);
+//                    System.out.println(cFirst.toString() + " resolves to " + 
+//                            cSecond.toString() + "?: " + dR);
+                    if(dR) {
+                        blockArray[i].setMode(cSecond.getMode());
+                    }
+                }
+                
                 KeySpan entry = current;
                 keymap.add(0, entry);
                 
                 current = new KeySpan(blockArray[i].getKey(),
                             blockArray[i].getMode(), blockArray[i].getDuration());
+                
             }
             else if(blockArray[i] instanceof Brick) {
                 if(current.getKey() == blockArray[i].getKey() &&
                         current.getMode().equals(blockArray[i].getMode())) {
-                    System.out.println("First if in Brick - " + i);
                     current.setDuration(current.getDuration() +
                             blockArray[i].getDuration());
                 }
+                else if(blockArray[i].getType().equals("Approach") || 
+                        blockArray[i].getType().equals("Launcher")) {
+                    ArrayList<ChordBlock> cFirstList = 
+                            (ArrayList<ChordBlock>)blockArray[i].flattenBlock();
+                    ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
+                    ArrayList<ChordBlock> cSecondList = 
+                            (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
+                    ChordBlock cSecond = cSecondList.get(0);
+                    
+//                    System.out.println("Going into doesResolve");
+                    boolean dR = doesResolve(cFirst, cSecond);
+//                    System.out.println(cFirst.toString() + " resolves to " + 
+//                            cSecond.toString() + "?: " + dR);
+                    if(dR) {
+                        blockArray[i].setMode(cSecond.getMode());
+                        current.setDuration(current.getDuration() +
+                            blockArray[i].getDuration());
+                    }
+                    else {
+                        KeySpan entry = current;
+                        keymap.add(0, entry);
+
+                        current = new KeySpan(blockArray[i].getKey(), 
+                                blockArray[i].getMode(), 
+                                blockArray[i].getDuration());
+                    }
+                }
                 else {
                 // End of current key -- add to the list
-                    System.out.println("First else in Brick - " + i);
                     KeySpan entry = current;
                     keymap.add(0, entry);
 
@@ -115,22 +158,18 @@ public class PostProcessing {
 //                    }
 //                }
                 if(diatonicChordCheck(c, current.getKey(), current.getMode())) {
-                    System.out.println("Else if in ChordBlock - " + i);
                     current.setDuration(current.getDuration() + c.getDuration());
-                    if(c.getKey() == current.getKey()) {
-                        // Consider this chord "on"
-                        System.out.println("Chord " + c.getName() + " is on");
-                        // blockArray[i] = new Brick(c);
-                    }
-                    else {
-                        // Consider this chord "off"
-                        System.out.println("Chord " + c.getName() + " is off");
-                        // blockArray[i] = new Brick(c, current);
-                    }
+//                    if(c.getKey() == current.getKey()) {
+//                        // Consider this chord "on"
+//                         blockArray[i] = new Brick(c);
+//                    }
+//                    else {
+//                        // Consider this chord "off"
+//                         blockArray[i] = new Brick(c, current);
+//                    }
                 }
                 else {
                     // Start a new key
-                    System.out.println("Else in ChordBlock - " + i);
                     KeySpan entry = current;
                     keymap.add(0, entry);
             
@@ -138,20 +177,19 @@ public class PostProcessing {
                             c.getDuration());
                 }
             }
-            System.out.println("LoopEnd");
         }
         
         keymap.add(0, current);
-//        blocks = new ArrayList<Block>(Arrays.asList(blockArray));
-//        
-//        RoadMap newMap = new RoadMap(blocks);
-//        newMap.setKeyMap(keymap);
-//        
+        blocks = new ArrayList<Block>(Arrays.asList(blockArray));
+        
+        RoadMap newMap = new RoadMap(blocks);
+        newMap.setKeyMap(keymap);
+        
 //        for(KeySpan ks : keymap) {
 //            System.out.println(ks.toString());
 //        }
         
-        return keymap;
+        return newMap;
     }
     
     /** findLaunchers
@@ -547,7 +585,7 @@ public class PostProcessing {
      * @return resolves : whether or not b1 resolves to b2
      */
     
-       public static boolean doesResolve(Block b1, Block b2) {
+       public static boolean doesResolve(Brick b1, Block b2) {
         boolean resolves = false;
 
         if (b2 instanceof Brick) {
@@ -557,7 +595,7 @@ public class PostProcessing {
 
             if (b2Mode.equals("Major")) {
                 relative = (b2.getKey() - 3) % OCTAVE;
-            } else if (b2Mode.equals("Minor")) {
+            } else if (b2Mode.equals("minor")) {
                 relative = (b2.getKey() + 3) % OCTAVE;
             } else {
                 relative = (b2.getKey() + 5) % OCTAVE;
@@ -575,7 +613,7 @@ public class PostProcessing {
 
             if (b2Mode.equals("Major")) {
                 relative = (b2.getKey() - 3) % OCTAVE;
-            } else if (b2Mode.equals("Minor")) {
+            } else if (b2Mode.equals("minor")) {
                 relative = (b2.getKey() + 3) % OCTAVE;
             } else {
                 relative = (b2.getKey() + 5) % OCTAVE;
@@ -590,24 +628,56 @@ public class PostProcessing {
 
         return resolves;
     }
+       
+       /** doesResolve
+     * Check if brick resolves to a certain block
+     * @param b1 : brick to be checked
+     * @param b2 : possible tonic of b1
+     * @return resolves : whether or not b1 resolves to b2
+     */
+    
+       public static boolean doesResolve(ChordBlock b1, Block b2) {
+        boolean resolves = false;
 
-//    /** findModeFromQuality
-//     * Find mode of a block using quality of a chord
-//     * @param quality : String used to find mode
-//     * @return mode : String that determines overall tonicity of block
-//     */
-//    public static String findModeFromQuality(String quality) {
-//        String mode;
-//
-//        if (quality.startsWith("M") || quality.equals("")) {
-//            mode = "Major";
-//        } else if (quality.startsWith("7")) {
-//            mode = "Dominant";
-//        } else {
-//            mode = "Minor";
-//        }
-//
-//        return mode;
-//    }
+        if (b2 instanceof Brick) {
+            Brick b2Brick = (Brick) b2;
+            String b2Mode = b2.getMode();
+            Long relative;
+
+            if (b2Mode.equals("Major")) {
+                relative = (b2.getKey() - 3) % OCTAVE;
+            } else if (b2Mode.equals("minor")) {
+                relative = (b2.getKey() + 3) % OCTAVE;
+            } else {
+                relative = (b2.getKey() + 5) % OCTAVE;
+            }
+
+            if ((b1.getKey() + 5)%OCTAVE == b2.getKey()/* && b1.getMode().equals(b2Mode)*/) {
+                resolves = true;
+            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
+                resolves = true;
+            }*/
+        } else {
+//            String b2Mode = findModeFromQuality(((ChordBlock) b2).getQuality());
+            String b2Mode = ((ChordBlock)b2).findModeFromQuality();
+            Long relative;
+
+            if (b2Mode.equals("Major")) {
+                relative = (b2.getKey() - 3) % OCTAVE;
+            } else if (b2Mode.equals("minor")) {
+                relative = (b2.getKey() + 3) % OCTAVE;
+            } else {
+                relative = (b2.getKey() + 5) % OCTAVE;
+            }
+
+            if ((b1.getKey() + 5)%OCTAVE == b2.getKey() /*&& b1.getMode().equals(b2Mode)*/) {
+                resolves = true;
+            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
+                resolves = true;
+            }*/
+        }
+
+        return resolves;
+    }
 }
      
