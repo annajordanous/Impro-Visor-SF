@@ -23,11 +23,14 @@
 package imp.brickdictionary;
 import imp.util.ErrorLog;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import polya.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 /**
  * purpose: Methods relating to the brick library (dictionary)
@@ -368,6 +371,37 @@ public class BrickLibrary {
     public static String dashless(String s) {
         return s.replace('-', ' ');
     }
+    
+    public void writeDictionary(String filename) {
+        FileWriter fstream;
+        try {
+            fstream = new FileWriter(filename);
+            BufferedWriter out = new BufferedWriter(fstream);
+            
+            out.write("\\\\ Type Definitions\n\n");
+            
+            Set<String> types = costMap.keySet();
+            for (String type : types)
+            {
+                long cost = costMap.get(type);
+                Polylist brickType = Polylist.list("brick-type", type, cost);
+                out.write(brickType.toString());
+                out.write("\n");
+            }
+            
+            out.write("\n\n\\\\ Brick Definitions\n\n");
+            
+            for (Brick brick : brickMap.values())
+            {
+                out.write(brick.toPolylist().toString());
+                out.write("\n\n");
+            }
+            
+        } catch (IOException ex) {
+            ErrorLog.log(ErrorLog.SEVERE, "Could not write dictionary file.");
+        }  
+    }
+    
     public static void main(String[] args) throws IOException 
             {
         BrickLibrary dictionary;

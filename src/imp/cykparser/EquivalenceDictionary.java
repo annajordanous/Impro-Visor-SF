@@ -136,7 +136,7 @@ public class EquivalenceDictionary {
                                 String chordName = contents.first().toString();
                                 contents = contents.rest();
                                 ChordBlock nextChord = new ChordBlock(chordName, 
-                                                        UnaryProduction.NODUR);
+                                                        SubstitutionRule.NODUR);
                                 newEq.add(nextChord);
                             }
                             addRule(newEq);

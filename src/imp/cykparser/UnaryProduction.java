@@ -1,94 +1,103 @@
-/**
- * This Java Class is part of the Impro-Visor Application
- *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
- *
- * Impro-Visor is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * Impro-Visor is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  See the
- * GNU General Public License for more details.
- *
-
- * You should have received a copy of the GNU General Public License
- * along with Impro-Visor; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package imp.cykparser;
+import imp.brickdictionary.*;
 
-/** UnaryProduction
- * Production class meant to deal with finding terminal symbols corresponding
- * to a given chord. Used to deal with chord substitutions.
+/** BinaryProduction
+ *A production rule for a brick music grammar with two nonterminals as the body.
  * 
  * @author Xanda Schofield
  */
 
-import imp.brickdictionary.*;
-import java.util.ArrayList;
-import polya.*;
 
-public class UnaryProduction {
+
+public class UnaryProduction extends AbstractProduction {
     
-    // Constants for use
-    public static final int NODUR = 0;
-   
-    // Data members
-    private ChordBlock head;                     // the chord to replace
-    private ArrayList<ChordBlock> terminals;     // the substitute chords possible
+    public static final int TOTAL_SEMITONES = 12;
     
-    /** Constructor / 2
-     * Makes a UnaryProduction based on a PolyList describing a substitution
-     * @param h
-     * @param contents 
+    // The block is assumed to be in the key of C, represented as the long 0.
+    private String head;        // the header symbol of the rule
+    private String type;        // the type of brick the rule describes
+    private long key;          // the symbol's key in a C-based block
+    private String name;       // the symbol itself, a quality or brick
+    private long cost;           // how much the header brick costs
+    private String mode = "";   // the mode of the brick in the production
+    private boolean toPrint;    // whether the brick is a user-side viewable one
+    
+    
+    // NOTE: Assumes it's a production in C
+    /** Unary Production / 6
+     * Standard constructor based upon a block and production data
+     * @param h, the head symbol (a String)
+     * @param t, the type of production (a String)
+     * @param b, the composing Block
+     * @param p, whether the production results in a printable Brick
+     * @param m, the mode (a String)
      */
-    UnaryProduction(String h, Polylist contents)
+    public UnaryProduction(String h, String t, long k, Block b, boolean p,
+            String m, BrickLibrary bricks)
     {
-        head = new ChordBlock(h, NODUR);
+        head = h;
+        type = t;
+        key = k; 
+        if (b instanceof ChordBlock) 
+            name = ((ChordBlock)b).getSymbol();
+        else
+            name = b.getName();
         
-        // Each chord following the first one is read in as a subsitution
-        terminals = new ArrayList<ChordBlock>(); 
-        ChordBlock newChord;
-        while (contents.nonEmpty()) {
-            newChord = new ChordBlock(contents.first().toString(), NODUR);
-            terminals.add(newChord);
-            contents = contents.rest();
-        }
+        toPrint = p;
+        mode = m;
+        cost = bricks.getCost(type);
     }
-
-    // Getters
+ 
     public String getHead() {
-        return head.toString();
+        return head;
     }
     
-    public String getBody() {
-        return terminals.toString();
-    }
-    
-    /** checkSubstitution / 1
-     * Checks a given chord against the substitution rule to see if could replace
-     * the head.
-     * 
-     * @param c, a Chord which may or may not be a substitute for the head
-     * @return a SubstituteList containing either the head - if the head could
-     *         have c as a substitute - or no chords at all.
+    /** getBody
+     * Returns the reconstructed body of the rule
+     * @return a String of the body  
      */
-    public SubstituteList checkSubstitution(ChordBlock c) {
-        SubstituteList subs = new SubstituteList();
-        
-        long diff;
-        for (ChordBlock sub : terminals) {
-            diff = sub.matches(c);
-            if (diff >= 0) {
-                subs.add(head, diff);
-            }
-        }
-        
-        return subs;
+    public String getBody() {
+        return key + " " + name + " " + cost;
     }
-      
+    
+    // Getters for BinaryProductions.
+    public long getCost() {
+        return cost;
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public String getMode() {
+        return mode;
+    }
+    /** checkProduction
+     * Tests whether a production fits with a given ordered pair of TreeNodes. 
+     * If so, it returns a positive chord difference between these and the 
+     * rule's original key (C). Otherwise, it returns -1.
+     * 
+     * @param t, a TreeNode
+     * @return an long representing the difference between the two chords (-1 if
+     * failed, otherwise 0 through 11)
+     */
+    public long checkProduction(TreeNode t, 
+            EquivalenceDictionary e, SubstitutionDictionary s) 
+    {
+        
+        if (t.getSymbol().equals(name))   
+                return modKeys(t.getKey() - key);
+        // in the event that the production is incorrect (most of the time)
+        return -1;
+    }
+    
+    // Helper function - returns i mod 12 and assures it is be positive
+    private long modKeys(long i) {
+        return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
+    }
+    
 }

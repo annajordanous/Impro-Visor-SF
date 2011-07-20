@@ -44,6 +44,8 @@ public class CYKParser
     public static final int BAR_DURATION = 480;
     public static final String DICTIONARY_NAME = "vocab/substitutions_sameroot.txt";
     public static final String NONBRICK = "";
+    public static final long SUB_COST = 5;
+    
     /**
      * Data Members
      */
@@ -58,6 +60,7 @@ public class CYKParser
     // Nonterminal rules will have the form:
     //    (startSymbol, endSymbol1, endSymbol2)
     private LinkedList<BinaryProduction> nonterminalRules;
+    private LinkedList<UnaryProduction> terminalRules;
     
     // 
     private EquivalenceDictionary edict;
@@ -73,6 +76,7 @@ public class CYKParser
         chords = new ArrayList<ChordBlock>();
         cykTable = null;
         nonterminalRules = new LinkedList<BinaryProduction>();
+        terminalRules = new LinkedList<UnaryProduction>();
         tableFilled = false;
         edict = new EquivalenceDictionary();
         sdict = new SubstitutionDictionary();
@@ -93,6 +97,7 @@ public class CYKParser
         tableFilled = false;
         
         cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
+        terminalRules = new LinkedList<UnaryProduction>();
         nonterminalRules = new LinkedList<BinaryProduction>();
         
         edict = new EquivalenceDictionary();
@@ -151,8 +156,8 @@ public class CYKParser
                         {
                             String head = contents.first().toString();
                             contents = contents.rest();
-                            UnaryProduction newSub = 
-                                    new UnaryProduction(head, contents);
+                            SubstitutionRule newSub = 
+                                    new SubstitutionRule(head, contents);
                             sdict.addRule(newSub);
                         }
                         else if (eqCategory.equals("equiv"))
@@ -163,7 +168,7 @@ public class CYKParser
                                 String chordName = contents.first().toString();
                                 contents = contents.rest();
                                 ChordBlock nextChord = new ChordBlock(chordName, 
-                                                        UnaryProduction.NODUR);
+                                                        SubstitutionRule.NODUR);
                                 newEq.add(nextChord);
                             }
                             edict.addRule(newEq);
@@ -218,10 +223,16 @@ public class CYKParser
             // as terminals and use only binary production rules for everything
             // else. Any brick composed of one or fewer subBricks should not 
             // be used.
-            if (size < 2)
+            if (size < 1)
                 ErrorLog.log(ErrorLog.WARNING, "Error: brick of size " + size, 
                         true);
                     
+            else if (size == 1) {
+                UnaryProduction u = new UnaryProduction(name, b.getType(), 
+                                        b.getKey(), subBlocks.get(0),
+                                        true, mode, lib);
+                terminalRules.add(u);
+            }
             // Perfect case: a Brick of two subBricks. Only one rule is needed,
             // a BinaryProduction with the name of the resulting brick as its 
             // head and each of the subBricks in its body.
@@ -229,7 +240,7 @@ public class CYKParser
                 BinaryProduction p = new BinaryProduction(name, b.getType(), 
                                          b.getKey(), subBlocks.get(0), 
                                          subBlocks.get(1), true, mode, lib);
-                    nonterminalRules.add(p);
+                nonterminalRules.add(p);
             }
             
             // Larger case: a Brick of three or more subBricks. The Brick gets
@@ -396,7 +407,25 @@ public class CYKParser
             currentNode = new TreeNode(subs.getName(i), subs.getKey(i),
                                                 currentChord, start);
             cykTable[index][index].add(currentNode);
-    }
+        }
+        
+        LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
+        
+        for (TreeNode t : cykTable[index][index])
+            for (UnaryProduction rule : terminalRules)
+            {
+                long newKey = rule.checkProduction(t, edict, sdict);
+                if (!(newKey < 0))
+                {
+                    long cost = rule.getCost() + SUB_COST;
+                    TreeNode newNode = new TreeNode(rule.getHead(),
+                                    rule.getType(), rule.getMode(), 
+                                    t, cost, newKey);
+                    unaries.add(newNode);
+                }
+            }
+        cykTable[index][index].addAll(unaries);
+        
     }
     
     /** findNonterminal
@@ -447,9 +476,9 @@ public class CYKParser
                             // substitute
                             long cost = rule.getCost();
                             if (symbol1.isSub())
-                                cost += 5;
+                                cost += SUB_COST;
                             if (symbol2.isSub())
-                                cost += 5;
+                                cost += SUB_COST;
                             if (symbol2.isOverlap())
                                 cost += TreeNode.OVERLAP_COST;
                             
@@ -472,6 +501,22 @@ public class CYKParser
                 }
             }
         }
+        LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
+        
+        for (TreeNode t : cykTable[row][col])
+            for (UnaryProduction rule : terminalRules)
+            {
+                long newKey = rule.checkProduction(t, edict, sdict);
+                if (!(newKey < 0))
+                {
+                    long cost = rule.getCost() + SUB_COST;
+                    TreeNode newNode = new TreeNode(rule.getHead(),
+                                    rule.getType(), rule.getMode(), 
+                                    t, cost, newKey);
+                    unaries.add(newNode);
+                }
+            }
+        cykTable[row][col].addAll(unaries);
         // TreeNodes in overlaps, due to the zero duration of the last chord, 
         // justify one fewer chords than those in [row][col]. They are placed
         // one cell to the left.

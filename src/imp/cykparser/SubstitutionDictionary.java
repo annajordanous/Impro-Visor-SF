@@ -31,21 +31,21 @@ import java.util.LinkedList;
  */
 public class SubstitutionDictionary {
     // The list of rules in the dictionary, subList, is the only data member
-    private LinkedList<UnaryProduction> subList; 
+    private LinkedList<SubstitutionRule> subList; 
     
     // Default constructor: makes an empty dictionary
     public SubstitutionDictionary()
     {
-        subList = new LinkedList<UnaryProduction>();
+        subList = new LinkedList<SubstitutionRule>();
     }
     
     /** addRule / 1
-     * Adds a given UnaryProduction to the list of rules.
+     * Adds a given SubstitutionRule to the list of rules.
      * 
-     * @param u, a UnaryProduction describing a set of unidirectional 
+     * @param u, a SubstitutionRule describing a set of unidirectional 
      *           substitutions
      */
-    public void addRule(UnaryProduction u) {
+    public void addRule(SubstitutionRule u) {
         subList.add(u);
     }
     
@@ -58,7 +58,7 @@ public class SubstitutionDictionary {
      */
     public SubstituteList checkSubstitution(ChordBlock c) {
         SubstituteList subs = new SubstituteList();
-        for (UnaryProduction u : subList) {
+        for (SubstitutionRule u : subList) {
             subs.addAll(u.checkSubstitution(c));
         }
         return subs;

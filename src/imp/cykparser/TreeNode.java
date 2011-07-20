@@ -43,6 +43,7 @@ public class TreeNode {
     public static final double CHORD_COST = 1000;
     public static final double CHORD_SUB_COST = 1050;
     public static final double OVERLAP_COST = 100;
+    public static String MODIFIER = "!";
     
     // Constructors for TreeNodes
     
@@ -139,6 +140,40 @@ public class TreeNode {
         isSub = true;
     }    
     
+        
+    /** TreeNode / 6
+     * Makes a TreeNode for a nonterminal
+     *
+     * @param sym, a String of the Node symbol
+     * @param type, a String of the Node's type
+     * @param m, a String describing the Node's mode
+     * @param t, the TreeNode whose block is the center of this TreeNode
+     * @param co, the cost
+     * @param k, the key of the block
+     */
+    public TreeNode(String sym, String type, String m, 
+                    TreeNode t, double co, long k)
+    {
+        child1 = null;
+        child2 = null;
+        symbol = sym;
+        mode = m;
+        
+        ArrayList<Block> subBlocks = new ArrayList<Block>();
+        subBlocks.addAll(t.getBlocks());
+        
+        chords = new ArrayList<ChordBlock>();
+        chords.addAll(t.getChords());
+        
+        block = new Brick(sym, k, type, subBlocks, m);
+        key = k;
+
+        cost = co;
+        toPrint = !(type.equals(CYKParser.NONBRICK));
+
+        isEnd = t.isSectionEnd();
+        start = t.getStart();
+    }
     /** TreeNode / 7
      * Makes a TreeNode for a nonterminal
      *
@@ -246,7 +281,7 @@ public class TreeNode {
     
     public boolean isTerminal()
     {
-        return !(block instanceof Brick);
+        return (child1 == null);
     }
     
     public boolean isSectionEnd()
@@ -271,6 +306,11 @@ public class TreeNode {
     }
     
     public String getSymbol()
+    {
+        return symbol.split(MODIFIER)[0];
+    }
+    
+    public String getExactSymbol()
     {
         return symbol;
     }
@@ -375,10 +415,10 @@ public class TreeNode {
 
     /******************************************************************/
     // Data members for a TreeNode
-    private TreeNode child1;          // First nonterminal from a tree
-    private TreeNode child2;          // Second nonterminal from a tree
-    private String symbol;            // Nonterminal symbol of current node
-    private ArrayList<ChordBlock> chords;  // Chords contained within the node
+    private TreeNode child1;              // First nonterminal from a tree
+    private TreeNode child2;              // Second nonterminal from a tree
+    private String symbol;                // Nonterminal symbol of current node
+    private ArrayList<ChordBlock> chords; // Chords contained within the node
     private Block block;              // The structure holding all of the
                                       // TreeNode's contents
     private long key;                 // the key of the Node's nominal contents

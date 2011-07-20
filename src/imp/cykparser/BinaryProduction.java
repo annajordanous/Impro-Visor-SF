@@ -30,7 +30,7 @@ import imp.brickdictionary.*;
 
 
 
-public class BinaryProduction {
+public class BinaryProduction extends AbstractProduction {
     
     public static final int TOTAL_SEMITONES = 12;
     // BRICK_COSTS in order: 
@@ -44,8 +44,6 @@ public class BinaryProduction {
     private long key2;          // the second symbol's key in a C-based block
     private String name1;       // the first symbol itself, a quality or brick
     private String name2;       // the second symbol itself, a quality or brick
-    private long dur1;          // the relative duration of the first symbol
-    private long dur2;          // the relative duration of the second symbol
     private long cost;           // how much the header brick costs
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
@@ -68,14 +66,12 @@ public class BinaryProduction {
         head = h;
         type = t;
         key1 = modKeys(b1.getKey() - k);
-        dur1 = b1.getDuration();   
         if (b1 instanceof ChordBlock) 
             name1 = ((ChordBlock)b1).getSymbol();
         else
             name1 = b1.getName();
         
         key2 = modKeys(b2.getKey() - k);
-        dur2 = b2.getDuration();
         if (b2 instanceof ChordBlock) 
             name2 = ((ChordBlock)b2).getSymbol();
         else
@@ -102,10 +98,8 @@ public class BinaryProduction {
         type = t;
         key1 = 0;
         name1 = pStart.getHead();
-        dur1 = pStart.getDur();
         
         key2 = modKeys(b.getKey() - k);
-        dur2 = b.getDuration();
         if (b instanceof ChordBlock) {
             name2 = ((ChordBlock)b).getSymbol();
         }
@@ -130,17 +124,12 @@ public class BinaryProduction {
      * @return a String of the body  
      */
     public String getBody() {
-        return key1 + " " + name1 + " " + dur1 + " " +
-               key2 + " " + name2 + " " + dur2 + " " + cost;
+        return key1 + " " + name1 + " " + key2 + " " + name2 + " " + cost;
     }
     
     // Getters for BinaryProductions.
     public long getCost() {
         return cost;
-    }
-    
-    public long getDur() {
-        return dur1 + dur2;
     }
     
     public String getType() {
@@ -157,7 +146,7 @@ public class BinaryProduction {
      * 
      * @param a, the first TreeNode
      * @param b, the second TreeNode
-     * @return an int representing the difference between the two chords (-1 if
+     * @return a long representing the difference between the two chords (-1 if
      * failed, otherwise 0 through 11)
      */
     public long checkProduction(TreeNode a, TreeNode b) 
