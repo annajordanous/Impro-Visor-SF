@@ -76,6 +76,16 @@ public class RoadMapPanel extends JPanel{
         return roadMap.size();
     }
     
+    public int getSelectionStart()
+    {
+        return selectionStart;
+    }
+    
+    public int getSelectionEnd()
+    {
+        return selectionEnd;
+    }
+    
     public void placeBricks()
     {
         long currentBeats = 0;

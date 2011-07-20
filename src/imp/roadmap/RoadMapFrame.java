@@ -38,6 +38,7 @@ import imp.data.ChordSymbol;
 import imp.data.Leadsheet;
 import imp.data.Score;
 import imp.gui.Notate;
+import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
 
 import polya.Polylist;
@@ -119,6 +120,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         deactivateButtons();
         
+        this.setTitle(notate.getTitle());
+        
+        WindowRegistry.registerWindow(this);
+        
         //roadMapScrollPane.setViewportView(roadMapPanel);
         //roadMapScrollPane.revalidate();
     }
@@ -145,7 +150,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         chordDialogAcceptButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         toolBar = new javax.swing.JToolBar();
-        deleteButton = new javax.swing.JButton();
         flattenButton = new javax.swing.JButton();
         breakButton = new javax.swing.JButton();
         scaleLabel = new javax.swing.JLabel();
@@ -184,6 +188,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         breakMenuItem = new javax.swing.JMenuItem();
         sectionBreakMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        transposeMenu = new javax.swing.JMenu();
+        transposeDownMenuItem = new javax.swing.JMenuItem();
+        transposeUpMenuItem = new javax.swing.JMenuItem();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
@@ -253,7 +260,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         chordChangeDialog.setTitle("Settings"); // NOI18N
         chordChangeDialog.setModal(true);
         chordChangeDialog.setName("chordChangeDialog"); // NOI18N
-        chordChangeDialog.setPreferredSize(new java.awt.Dimension(100, 100));
         chordChangeDialog.setResizable(false);
         chordChangeDialog.setSize(new java.awt.Dimension(100, 100));
 
@@ -293,24 +299,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         toolBar.setMinimumSize(new java.awt.Dimension(500, 50));
         toolBar.setName("toolBar"); // NOI18N
         toolBar.setPreferredSize(new java.awt.Dimension(500, 50));
-
-        deleteButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
-        deleteButton.setText("Delete"); // NOI18N
-        deleteButton.setToolTipText("Delete the selected bricks and chords."); // NOI18N
-        deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        deleteButton.setFocusable(false);
-        deleteButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        deleteButton.setMaximumSize(new java.awt.Dimension(50, 30));
-        deleteButton.setMinimumSize(new java.awt.Dimension(50, 30));
-        deleteButton.setName("deleteButton"); // NOI18N
-        deleteButton.setPreferredSize(new java.awt.Dimension(50, 30));
-        deleteButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonPressed(evt);
-            }
-        });
-        toolBar.add(deleteButton);
 
         flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         flattenButton.setText("Flatten"); // NOI18N
@@ -692,7 +680,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(100, 40));
-        fileMenu.setMinimumSize(new java.awt.Dimension(50, 20));
         fileMenu.setName("fileMenu"); // NOI18N
         fileMenu.setPreferredSize(new java.awt.Dimension(50, 20));
 
@@ -710,7 +697,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         editMenu.setText("Edit"); // NOI18N
         editMenu.setName("editMenu"); // NOI18N
 
-        selectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.META_MASK));
+        selectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         selectAllMenuItem.setText("Select All"); // NOI18N
         selectAllMenuItem.setName("selectAllMenuItem"); // NOI18N
         selectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -723,7 +710,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jSeparator1.setName("jSeparator1"); // NOI18N
         editMenu.add(jSeparator1);
 
-        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.META_MASK));
+        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoMenuItem.setText("Undo"); // NOI18N
         undoMenuItem.setName("undoMenuItem"); // NOI18N
         undoMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -733,7 +720,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(undoMenuItem);
 
-        redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.META_MASK));
+        redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         redoMenuItem.setText("Redo"); // NOI18N
         redoMenuItem.setName("redoMenuItem"); // NOI18N
         redoMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -779,7 +766,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jSeparator3.setName("jSeparator3"); // NOI18N
         editMenu.add(jSeparator3);
 
-        deleteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
+        deleteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
         deleteMenuItem.setText("Delete Brick"); // NOI18N
         deleteMenuItem.setName("deleteMenuItem"); // NOI18N
         deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -808,7 +795,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         editMenu.add(breakMenuItem);
 
         sectionBreakMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
-        sectionBreakMenuItem.setText("Add Section Break"); // NOI18N
+        sectionBreakMenuItem.setText("Toggle Section"); // NOI18N
         sectionBreakMenuItem.setName("sectionBreakMenuItem"); // NOI18N
         sectionBreakMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -821,6 +808,31 @@ public class RoadMapFrame extends javax.swing.JFrame {
         editMenu.add(jSeparator4);
 
         roadmapMenuBar.add(editMenu);
+
+        transposeMenu.setText("Transpose"); // NOI18N
+        transposeMenu.setName("transposeMenu"); // NOI18N
+
+        transposeDownMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
+        transposeDownMenuItem.setText("Transpose Selection Up Semitone"); // NOI18N
+        transposeDownMenuItem.setName("transposeDownMenuItem"); // NOI18N
+        transposeDownMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeDownMenuItemActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeDownMenuItem);
+
+        transposeUpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, 0));
+        transposeUpMenuItem.setText("Transpose Selection Down Semitone"); // NOI18N
+        transposeUpMenuItem.setName("transposeUpMenuItem"); // NOI18N
+        transposeUpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transposeUpMenuItemActionPerformed(evt);
+            }
+        });
+        transposeMenu.add(transposeUpMenuItem);
+
+        roadmapMenuBar.add(transposeMenu);
 
         setJMenuBar(roadmapMenuBar);
 
@@ -862,7 +874,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
-        int index = roadMapPanel.getBrickIndexAt(evt.getX(), evt.getY());
+        int x = evt.getX();
+        int y = evt.getY();
+        int index = roadMapPanel.getBrickIndexAt(x,y);
         if(evt.getButton() == evt.BUTTON1) {
 
             System.out.println("Clicked brick "+index);
@@ -872,7 +886,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
                     selectBricks(index);
                 else if( roadMapPanel.getBrick(index).isSelected()) {
                     //System.out.println("Selected brick clicked");
-                    int jndex = roadMapPanel.getBrick(index).getChordAt(evt.getX(), evt.getY());
+                    int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                     selectChord(index,jndex);
                 } else
                     selectBrick(index);
@@ -880,9 +894,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
                 deselectBricks();
         } else if(evt.getButton() == evt.BUTTON3) {
             if(index != -1) {
-                int jndex = roadMapPanel.getBrick(index).getChordAt(evt.getX(), evt.getY());
+                int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                 selectChord(index,jndex);
-                chordChangeDialog.setLocation(evt.getPoint());
+                chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
                 chordChangeDialog.setVisible(true);
             }
         }
@@ -913,10 +927,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
             default:                            break;
         }
 }//GEN-LAST:event_roadMapScrollPaneroadMapKeyReleased
-
-    private void deleteButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonPressed
-        deleteSelection();
-}//GEN-LAST:event_deleteButtonPressed
 
     private void flattenButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenButtonPressed
         flattenSelection();
@@ -1085,6 +1095,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
             dropFromPreview(0,0);
         }
     }//GEN-LAST:event_libraryTreeMouseClicked
+
+    private void transposeDownMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeDownMenuItemActionPerformed
+        transposeSelection(1);
+    }//GEN-LAST:event_transposeDownMenuItemActionPerformed
+
+    private void transposeUpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeUpMenuItemActionPerformed
+        transposeSelection(-1);
+    }//GEN-LAST:event_transposeUpMenuItemActionPerformed
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1200,6 +1218,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadMapPanel.addBlock(chord);
         roadMapPanel.placeBricks();
     }
+    
+    public void addBlocks(int ind, ArrayList<Block> blocks)
+    {
+        saveState("AddBricks");
+        roadMapPanel.addBlocks(ind, blocks);
+        roadMapPanel.placeBricks();
+    }
         
     public void deleteSelection()
     {
@@ -1281,7 +1306,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         saveState("Paste");
         
-        roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
+        int insertIndex = roadMapPanel.getSelectionStart();
+        
+        ArrayList<Block> blocks = RoadMap.cloneBlocks(clipboard);
+        
+        if(insertIndex != -1) {
+            roadMapPanel.addBlocks(insertIndex,blocks);
+            roadMapPanel.selectionEnd+=blocks.size();
+            roadMapPanel.selectionStart+=blocks.size();
+        } else 
+            roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
         
         roadMapPanel.placeBricks();
     }
@@ -1492,12 +1526,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
         copyMenuItem.setEnabled(value);
         pasteMenuItem.setEnabled(value);
         
+        transposeMenu.setEnabled(value);
+        
         sectionBreakMenuItem.setEnabled(value);
         
         flattenButton.setEnabled(value);
         flattenMenuItem.setEnabled(value);
-        
-        deleteButton.setEnabled(value);
+       
         deleteMenuItem.setEnabled(value);
         
         breakButton.setEnabled(value);
@@ -1579,7 +1614,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JTextField chordDialogNameField;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JButton deleteButton;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JButton dialogAcceptButton;
     private javax.swing.JLabel dialogKeyLabel;
@@ -1618,6 +1652,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JButton sendToNotateButton;
     private javax.swing.JButton stopButton;
     private javax.swing.JToolBar toolBar;
+    private javax.swing.JMenuItem transposeDownMenuItem;
+    private javax.swing.JMenu transposeMenu;
+    private javax.swing.JMenuItem transposeUpMenuItem;
     private javax.swing.JMenuItem undoMenuItem;
     // End of variables declaration//GEN-END:variables
 
