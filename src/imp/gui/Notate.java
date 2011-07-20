@@ -18955,7 +18955,7 @@ public void openKeyboard()
 {
     if( keyboard == null ) 
     {
-        keyboard = new VoicingKeyboard(this);
+        keyboard = new VoicingKeyboard(this, getNewXlocation(), getNewYlocation());
     }
     String current = keyboard.getPresentChordDisplayText();
     if (current.equals(""))

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,29 +23,34 @@ package imp.gui;
 
 import imp.data.NoteSymbol;
 import imp.data.PianoKey;
+
 import java.io.StringReader;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.KeyStroke;
+
 import polya.Polylist;
 import polya.Tokenizer;
-import javax.swing.KeyStroke;
 
 /**
  *
- * @author  Emma
+ * @author  Emma Carlson, 2009
  */
+
 public class VoicingKeyboard extends javax.swing.JFrame {
 
     Notate notate;
     boolean singleNoteMode = false;
     
     /** Creates new form VoicingKeyboard */
-    public VoicingKeyboard(Notate notate) {
+    public VoicingKeyboard(Notate notate, int x, int y) {
         initComponents();
         initKeys();
         this.notate = notate;
         setDelegatedKeys();
         setSize(1045, 285);
+        setLocation(x, y);
+        WindowRegistry.registerWindow(this);
         setVisible(true);       
     }
     
@@ -211,6 +216,10 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         stopPlayMI = new javax.swing.JMenuItem();
         startSelPlayMI = new javax.swing.JMenuItem();
         stopSelPlayMI = new javax.swing.JMenuItem();
+        windowMenu = new javax.swing.JMenu();
+        closeWindowMI = new javax.swing.JMenuItem();
+        cascadeMI = new javax.swing.JMenuItem();
+        windowMenuSeparator = new javax.swing.JSeparator();
 
         setTitle("Keyboard");
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -836,6 +845,40 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         playbackMenu.add(stopSelPlayMI);
 
         jMenuBar1.add(playbackMenu);
+
+        windowMenu.setMnemonic('W');
+        windowMenu.setText("Window");
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        closeWindowMI.setMnemonic('C');
+        closeWindowMI.setText("Close Window");
+        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(closeWindowMI);
+
+        cascadeMI.setMnemonic('A');
+        cascadeMI.setText("Cascade Windows");
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cascadeMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(cascadeMI);
+        windowMenu.add(windowMenuSeparator);
+
+        jMenuBar1.add(windowMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -1982,6 +2025,35 @@ private void pausePlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     
 }//GEN-LAST:event_pausePlayMIActionPerformed
 
+private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
+    
+    closeWindow();
+}//GEN-LAST:event_closeWindowMIActionPerformed
+
+private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
+    
+    WindowRegistry.cascadeWindows(this);
+}//GEN-LAST:event_cascadeMIActionPerformed
+
+private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
+    
+    windowMenu.removeAll();
+    
+    windowMenu.add(closeWindowMI);
+    
+    windowMenu.add(cascadeMI);
+    
+    windowMenu.add(windowMenuSeparator);
+    
+    for(WindowMenuItem w : WindowRegistry.getWindows()) {
+        
+        windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        
+    }
+    
+    windowMenu.repaint();
+}//GEN-LAST:event_windowMenuMenuSelected
+
 private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {                                         
 }                                  
 
@@ -2271,22 +2343,15 @@ private void forcePaint()
   paint(getGraphics());
   }
 
-/**
-* @param args the command line arguments
-*/
-/*public static void main(String args[]) {
-    java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            new VoicingKeyboard().setVisible(true);
-        }
-    });
-}*/
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addToSequenceMI;
+    private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JMenuItem chordModeMI;
     private javax.swing.JLabel chordRootNoteLabel;
     private javax.swing.JMenuItem clearKeyboardMI;
+    private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JLabel ctrlClicktoChangeRootLabel;
     private javax.swing.JLabel ctrlShiftClickExtLabel;
     private javax.swing.JMenuItem downHalfStepMI;
@@ -2402,6 +2467,8 @@ private void forcePaint()
     private javax.swing.JMenuItem upOctaveMI;
     private javax.swing.JMenu voicingModeMenu;
     private javax.swing.JMenu voicingTransposeMenu;
+    private javax.swing.JMenu windowMenu;
+    private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
 /**
@@ -2528,5 +2595,10 @@ private void initKeys()
         return pkeys;
     }
     
-    
+public void closeWindow()
+  {
+  setVisible(false);
+
+  WindowRegistry.unregisterWindow(this);
+  }    
 }
