@@ -167,7 +167,7 @@ private StyleEditor styleEditor;
   /** 
    * Creates new form BeanForm 
    */  
-  public PianoRoll(StyleEditor styleEditor) 
+  public PianoRoll(StyleEditor styleEditor, int x, int y) 
     {
     this.styleEditor = styleEditor;
     grid = new PianoRollGrid(NUMROWS, NUMSLOTS, ROWHEIGHT, ROWCUSHION, this);
@@ -177,8 +177,10 @@ private StyleEditor styleEditor;
     makeRowButtons(rowTitlePanel);
     
     setSize(WINDOWWIDTH, WINDOWHEIGHT);
+    setLocation(x, y);
     setVisible(true);
-    initBuffer();     
+    initBuffer(); 
+    WindowRegistry.registerWindow(this);
     }
   
 
@@ -557,6 +559,11 @@ public void paint(Graphics g)
         loopDelayPanel = new javax.swing.JPanel();
         loopDelaySlider = new javax.swing.JSlider();
         loopToggleButton = new javax.swing.JToggleButton();
+        pianoRollMenuBar = new javax.swing.JMenuBar();
+        windowMenu = new javax.swing.JMenu();
+        closeWindowMI = new javax.swing.JMenuItem();
+        cascadeMI = new javax.swing.JMenuItem();
+        windowMenuSeparator = new javax.swing.JSeparator();
 
         addNewBar.setText("Add a new bar");
         addNewBar.setToolTipText("Add a new bar by clicking");
@@ -1389,6 +1396,42 @@ public void paint(Graphics g)
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(loopToggleButton, gridBagConstraints);
+
+        windowMenu.setMnemonic('W');
+        windowMenu.setText("Window");
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        closeWindowMI.setMnemonic('C');
+        closeWindowMI.setText("Close Window");
+        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(closeWindowMI);
+
+        cascadeMI.setMnemonic('A');
+        cascadeMI.setText("Cascade Windows");
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cascadeMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(cascadeMI);
+        windowMenu.add(windowMenuSeparator);
+
+        pianoRollMenuBar.add(windowMenu);
+
+        setJMenuBar(pianoRollMenuBar);
     }// </editor-fold>//GEN-END:initComponents
 
 /**
@@ -1958,6 +2001,35 @@ private void downDirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     // TODO add your handling code here:
 }//GEN-LAST:event_downDirectionActionPerformed
 
+private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
+    
+    closeWindow();
+}//GEN-LAST:event_closeWindowMIActionPerformed
+
+private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
+    
+    WindowRegistry.cascadeWindows(this);
+}//GEN-LAST:event_cascadeMIActionPerformed
+
+private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
+    
+    windowMenu.removeAll();
+    
+    windowMenu.add(closeWindowMI);
+    
+    windowMenu.add(cascadeMI);
+    
+    windowMenu.add(windowMenuSeparator);
+    
+    for(WindowMenuItem w : WindowRegistry.getWindows()) {
+        
+        windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        
+    }
+    
+    windowMenu.repaint();
+}//GEN-LAST:event_windowMenuMenuSelected
+
 
 private boolean checkPixelBeatConstraint()
 {
@@ -1994,8 +2066,10 @@ PianoRollPanel getPanel()
     private javax.swing.JTextField beatsTextField;
     private javax.swing.JLabel bpmLabel;
     private javax.swing.JButton cancelEditButton;
+    private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JLabel cautionLabelForStylePatterns;
     private javax.swing.JRadioButton chordToneButton;
+    private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuItem copyBar;
     private javax.swing.JMenuItem cutBar;
     private javax.swing.JPanel degreePanel;
@@ -2024,6 +2098,7 @@ PianoRollPanel getPanel()
     private javax.swing.JPanel noteTypePanel;
     private javax.swing.JButton okEditBtn;
     private javax.swing.JMenuItem pasteBar;
+    private javax.swing.JMenuBar pianoRollMenuBar;
     private javax.swing.JPanel pianoRollResolutionsPanel;
     private javax.swing.JScrollPane pianoRollScrollPane;
     private javax.swing.JRadioButton pitch1Button;
@@ -2058,5 +2133,15 @@ PianoRollPanel getPanel()
     private javax.swing.JLabel ticksPerBeatLabel;
     private javax.swing.JTextField ticksPerBeatTextField;
     private javax.swing.JRadioButton upDirection;
+    private javax.swing.JMenu windowMenu;
+    private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
+
+public void closeWindow()
+  {
+  setVisible(false);
+
+  WindowRegistry.unregisterWindow(this);
+  }
+
 }

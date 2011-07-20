@@ -5769,7 +5769,7 @@ public class StyleEditor
   {
     if( pianoRoll == null )
       {
-      pianoRoll = new PianoRoll(this);
+      pianoRoll = new PianoRoll(this, getNewXlocation(), getNewYlocation());
       }    
     exportColumnToPianoRoll(styleEditor, cols, pianoRoll);
   }
@@ -6760,5 +6760,30 @@ public void exportColumnToPianoRoll(PianoRoll pianoRoll)
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
+  
+    
+/**
+ * Get X location for new frame cascaded from original.
+ * @return 
+ */
+
+public int getNewXlocation()
+  {
+    return (int)getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
   }
+
+
+/**
+ * Get Y location for new frame cascaded from original.
+ * @return 
+ */
+
+public int getNewYlocation()
+  {
+    return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
+  }
+
+
+
+}
 
