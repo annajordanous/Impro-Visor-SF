@@ -113,6 +113,11 @@ public class RoadMapPanel extends JPanel{
             }
         }
         numLines = (int)lines+1;
+        
+        setPreferredSize(
+                new Dimension(settings.getCutoff() + settings.xOffset,
+                settings.getLineOffset()*numLines + settings.yOffset));
+        
         updateBricks();
     }
     
@@ -235,10 +240,14 @@ public class RoadMapPanel extends JPanel{
         if(selectionStart == -1 && selectionEnd == -1)
             selectionStart = selectionEnd = index;
         else {
-            if(index < selectionStart)
+            if(index < selectionStart) {
+                getBrick(selectionEnd).setSelected(true);
                 selectionStart = index;
-            else if (index > selectionEnd)
+            }
+            else if (index > selectionEnd) {
+                getBrick(selectionStart).setSelected(true);
                 selectionEnd = index;
+            }
             else {
                 selectBrick(index);
             }

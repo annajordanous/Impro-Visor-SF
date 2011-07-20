@@ -182,7 +182,7 @@ public class GraphicBrick {
         int stringLength = metrics.stringWidth(string);
         if(stringLength < length)
             return string;
-        return string.substring(0, (string.length() * length)/stringLength);
+        return string.substring(0, (string.length() * length)/stringLength - 1);
     }
     
     /* Drawing and junk lies below. DANGER: Extreme ugliness ahead */

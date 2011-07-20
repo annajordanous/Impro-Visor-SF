@@ -495,6 +495,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         featureWidthSlider.setMaximum(200);
         featureWidthSlider.setMinimum(60);
         featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks."); // NOI18N
+        featureWidthSlider.setValue(settings.measureLength);
         featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder("Feature Width"));
         featureWidthSlider.setMaximumSize(new java.awt.Dimension(32767, 40));
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(50, 40));
@@ -920,8 +921,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
-        int x = evt.getX();
-        int y = evt.getY();
+        int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue();
+        int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
+        //System.out.println("Offset: ("+xOffset+","+yOffset+")");
+        int x = evt.getX()+xOffset;
+        int y = evt.getY()+yOffset;
         int index = roadMapPanel.getBrickIndexAt(x,y);
         if(evt.getButton() == evt.BUTTON1) {
 
@@ -930,7 +934,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
             if(index != -1) {
                 if(evt.isShiftDown())
                     selectBricks(index);
-                else if( roadMapPanel.getBrick(index).isSelected()) {
+                else if( roadMapPanel.getBrick(index).isSelected() &&
+                        evt.getClickCount() == 2) {
+                    int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
+                    selectChord(index,jndex);
+                    chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
+                    chordChangeDialog.setVisible(true);
+                } else if( roadMapPanel.getBrick(index).isSelected() ) {
                     //System.out.println("Selected brick clicked");
                     int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                     selectChord(index,jndex);
@@ -939,12 +949,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
             } else
                 deselectBricks();
         } else if(evt.getButton() == evt.BUTTON3) {
-            if(index != -1) {
+            /*if(index != -1) {
                 int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                 selectChord(index,jndex);
                 chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
                 chordChangeDialog.setVisible(true);
-            }
+            }*/
         }
         
         roadMapScrollPane.requestFocus();
@@ -1136,7 +1146,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void libraryTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryTreeMouseClicked
         int clicks = evt.getClickCount();
         TreePath path = libraryTree.getPathForLocation(evt.getX(), evt.getY());
-        if(path != null && previewPanel.getBrick() != null && clicks ==2) {
+        if(path != null && previewPanel.getBrick() != null && clicks%2==0) {
             dragFromPreview(0,0);
             dropFromPreview(0,0);
         }
@@ -1198,8 +1208,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         // If these statements are missing, scrollbars don't appear!
         
-        roadMapPanel.setPreferredSize(new Dimension(RMbufferWidth, RMbufferHeight));
-        roadMapScrollPane.revalidate();
+       //roadMapPanel.setPreferredSize(new Dimension(RMbufferWidth, RMbufferHeight));
+        //roadMapScrollPane.revalidate();
 
         roadMapPanel.draw();
         previewPanel.draw();
