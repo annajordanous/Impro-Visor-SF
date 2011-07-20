@@ -38,10 +38,10 @@ import imp.data.ChordSymbol;
 import imp.data.Leadsheet;
 import imp.data.Score;
 import imp.gui.Notate;
+import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
 
-import polya.Polylist;
 import polya.Tokenizer;
 
 
@@ -94,6 +94,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
+    
+    private static String roadmapTitlePrefix = "RoadMap: ";
 
     private RoadMapFrame() {} // Not for you.
     
@@ -120,7 +122,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         deactivateButtons();
         
-        this.setTitle(notate.getTitle());
+        this.setTitle(roadmapTitlePrefix + notate.getTitle());
         
         WindowRegistry.registerWindow(this);
         
@@ -191,6 +193,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         transposeMenu = new javax.swing.JMenu();
         transposeDownMenuItem = new javax.swing.JMenuItem();
         transposeUpMenuItem = new javax.swing.JMenuItem();
+        windowMenu = new javax.swing.JMenu();
+        closeWindowMI = new javax.swing.JMenuItem();
+        cascadeMI = new javax.swing.JMenuItem();
+        windowMenuSeparator = new javax.swing.JSeparator();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(200, 110));
@@ -834,6 +840,46 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         roadmapMenuBar.add(transposeMenu);
 
+        windowMenu.setMnemonic('W');
+        windowMenu.setText("Window"); // NOI18N
+        windowMenu.setName("windowMenu"); // NOI18N
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        closeWindowMI.setMnemonic('C');
+        closeWindowMI.setText("Close Window"); // NOI18N
+        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)"); // NOI18N
+        closeWindowMI.setName("closeWindowMI"); // NOI18N
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(closeWindowMI);
+
+        cascadeMI.setMnemonic('A');
+        cascadeMI.setText("Cascade Windows"); // NOI18N
+        cascadeMI.setToolTipText("Rearrange windows into a cascade.\n"); // NOI18N
+        cascadeMI.setName("cascadeMI"); // NOI18N
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cascadeMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(cascadeMI);
+
+        windowMenuSeparator.setName("windowMenuSeparator"); // NOI18N
+        windowMenu.add(windowMenuSeparator);
+
+        roadmapMenuBar.add(windowMenu);
+
         setJMenuBar(roadmapMenuBar);
 
         pack();
@@ -1103,6 +1149,35 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void transposeUpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeUpMenuItemActionPerformed
         transposeSelection(-1);
     }//GEN-LAST:event_transposeUpMenuItemActionPerformed
+
+    private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
+        
+        closeWindow();
+    }//GEN-LAST:event_closeWindowMIActionPerformed
+
+    private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
+        
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMIActionPerformed
+
+    private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
+        
+        windowMenu.removeAll();
+        
+        windowMenu.add(closeWindowMI);
+        
+        windowMenu.add(cascadeMI);
+        
+        windowMenu.add(windowMenuSeparator);
+        
+        for(WindowMenuItem w : WindowRegistry.getWindows()) {
+            
+            windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+            
+        }
+        
+        windowMenu.repaint();
+    }//GEN-LAST:event_windowMenuMenuSelected
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1609,9 +1684,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JButton analyzeButton;
     private javax.swing.JButton breakButton;
     private javax.swing.JMenuItem breakMenuItem;
+    private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JDialog chordChangeDialog;
     private javax.swing.JButton chordDialogAcceptButton;
     private javax.swing.JTextField chordDialogNameField;
+    private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
@@ -1656,6 +1733,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenu transposeMenu;
     private javax.swing.JMenuItem transposeUpMenuItem;
     private javax.swing.JMenuItem undoMenuItem;
+    private javax.swing.JMenu windowMenu;
+    private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
 /**
@@ -1678,7 +1757,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             imp.data.ChordPart chordPart = new imp.data.ChordPart();
             chordPart.addFromRoadMapFrame(this);
             Score score = new Score(chordPart);
-            auxNotate = notate.newNotateWithScore(score);
+            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
         } else {
             auxNotate.addToChordPartFromRoadMapFrame(this);
         }
@@ -1732,4 +1811,31 @@ public class RoadMapFrame extends javax.swing.JFrame {
         playSelection();
     }
 
+public void closeWindow()
+  {
+  setVisible(false);
+
+  WindowRegistry.unregisterWindow(this);
+  }
+
+/**
+ * Get X location for new frame cascaded from original.
+ * @return 
+ */
+
+public int getNewXlocation()
+  {
+    return (int)getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
+  }
+
+
+/**
+ * Get Y location for new frame cascaded from original.
+ * @return 
+ */
+
+public int getNewYlocation()
+  {
+    return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
+  }
 }

@@ -1453,14 +1453,6 @@ public class Notate
 
   public void postInitComponents()
     {
-    // Set the size of this Notate frame
-    // replaced by RK: 6/13/2010: this.setSize(fWidth, fHeight);
-
-    // Set height to full screen
-
-    //setNotateFrameHeight(this);
-
-
     voicingTestFrame.pack();
 
     voicingTestFrame.setSize(875, 525);
@@ -16806,7 +16798,12 @@ public void playAscore(Score score, String style, int loopCount)
   boolean useDrums = true;
   int endLimitIndex = -1; // score.getLength()-1;
   //System.out.println("playing score of length " + score.getLength());
-  midiSynth3 = new MidiSynth(midiManager);
+  
+  if( midiSynth3 == null )
+    {
+    midiSynth3 = new MidiSynth(midiManager);
+    }
+  
   cm.execute(new PlayScoreCommand(score, 
                                  startTime, 
                                  swing, 
@@ -17184,6 +17181,29 @@ public boolean saveAsLeadsheetSwing()
     return false;
   }
 
+
+/**
+ * Get X location for new frame cascaded from original.
+ * @return 
+ */
+
+public int getNewXlocation()
+  {
+    return (int)getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
+  }
+
+
+/**
+ * Get Y location for new frame cascaded from original.
+ * @return 
+ */
+
+public int getNewYlocation()
+  {
+    return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
+  }
+
+
   /**
    *
    * Allows a Leadsheet file to be opened.
@@ -17203,6 +17223,7 @@ public boolean saveAsLeadsheetSwing()
    * it through the dialog
    *
    */
+    
 public void openLeadsheet(boolean openCorpus)
   {
     if( openLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
@@ -17237,10 +17258,9 @@ public void openLeadsheet(boolean openCorpus)
                 new Notate(newScore,
                            this.adv,
                            this.impro,
-                           (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
-                           (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+                           getNewXlocation(),
+                           getNewYlocation());
 
-            //setNotateFrameHeight(newNotate);
             newNotate.makeVisible();
            }
         else
@@ -17750,11 +17770,11 @@ public void WriteLeadsheetToFile(File file) {
 
     Notate newNotate =
             new Notate(newScore,
-            this.adv, this.impro,
-            (int)this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
-            (int)this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+                       this.adv, 
+                       this.impro,
+                       getNewXlocation(),
+                       getNewYlocation());
 
-    //setNotateFrameHeight(newNotate);
     newNotate.makeVisible();
 
     // set the menu and button states
@@ -20397,6 +20417,7 @@ private void EmptyRoadMapAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:eve
     roadmapFrame = new RoadMapFrame(this);
 
     roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
+    roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
     roadmapFrame.setVisible(true);
 }//GEN-LAST:event_EmptyRoadMapAction
 
@@ -20404,6 +20425,7 @@ private void roadMapThisMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     roadmapFrame = new RoadMapFrame(this);
 
     roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
+    roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
     chordPartToRoadMapFrame(roadmapFrame);
     roadmapFrame.setVisible(true);
 }//GEN-LAST:event_roadMapThisMIaction
@@ -20422,24 +20444,23 @@ public void openInNewWindow(File selectedFile)
     Notate newNotate = new Notate(newScore,
                                   this.adv,
                                   this.impro,
-                                  (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
-                                  (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
-
-    // setNotateFrameHeight(newNotate);
+                                  getNewXlocation(),
+                                  getNewYlocation());
     newNotate.makeVisible();
 }
 
-public Notate newNotateWithScore(Score newScore)
+public Notate newNotateWithScore(Score newScore, int x, int y)
 {
     score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     //create a new window and show the score
     Notate newNotate = new Notate(newScore,
                                   this.adv,
                                   this.impro,
-                                  (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
-                                  (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+                                  x, 
+                                  y);
+    
     newNotate.setupScore(newScore);
-    //setNotateFrameHeight(newNotate);
+
     newNotate.makeVisible();
     
     return newNotate;
