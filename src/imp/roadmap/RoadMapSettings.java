@@ -30,7 +30,7 @@ import java.awt.*;
  */
 public class RoadMapSettings {
     public int xOffset = 50;
-    public int yOffset = 50;
+    public int yOffset = 70;
     public int barsPerLine = 8;
     public int lineHeight = 60;
     public int measureLength = 80;
@@ -62,6 +62,9 @@ public class RoadMapSettings {
     public BasicStroke brickOutline = new BasicStroke(2);
     public BasicStroke basicLine    = new BasicStroke(1);
     public BasicStroke cursorLine   = new BasicStroke(2);
+    
+    public Font basicFont = new Font("Dialog", Font.PLAIN, 12);
+    public Font titleFont = new Font("Dialog", Font.PLAIN, 24);
     
     //Not sure if a lot of this belongs here
     

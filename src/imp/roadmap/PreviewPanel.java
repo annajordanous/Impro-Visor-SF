@@ -80,8 +80,12 @@ public class PreviewPanel extends JPanel
     
     public void setBuffer(Image buffer)
     {
-        System.out.println(this + " buffer set.");
         this.buffer = buffer;
+    }
+    
+    public void resetBuffer()
+    {
+        this.buffer = null;
     }
     
     public void setBrick(Block brick)

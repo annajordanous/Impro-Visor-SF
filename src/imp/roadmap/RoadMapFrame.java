@@ -65,7 +65,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private Notate auxNotate = null;;
     
-    private Image buffer;
+    private Image bufferPreviewPanel;
     private Image bufferRoadMap;
     
     private PreviewPanel previewPanel;
@@ -96,6 +96,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
     
     private static String roadmapTitlePrefix = "RoadMap: ";
+    
+    public String roadMapTitle = "Untitled Roadmap";
 
     private RoadMapFrame() {} // Not for you.
     
@@ -122,7 +124,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         deactivateButtons();
         
-        this.setTitle(roadmapTitlePrefix + notate.getTitle());
+        roadMapTitle = notate.getTitle();
+        this.setTitle(roadmapTitlePrefix + roadMapTitle);
         
         settings.beatsPerMeasure = notate.getTimeSigTop();
         settings.slotsPerMeasure = notate.getBeatValue()*notate.getTimeSigTop();
@@ -297,6 +300,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jLabel1.setName("jLabel1"); // NOI18N
         chordChangeDialog.getContentPane().add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(830, 600));
         setName("Form"); // NOI18N
@@ -1201,9 +1205,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
       try 
         {
-        buffer = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
+        bufferPreviewPanel = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
         bufferRoadMap = new java.awt.image.BufferedImage(RMbufferWidth, RMbufferHeight, BufferedImage.TYPE_INT_RGB);
-        previewPanel.setBuffer(buffer);
+        previewPanel.setBuffer(bufferPreviewPanel);
         roadMapPanel.setBuffer(bufferRoadMap);
         
         
@@ -1232,11 +1236,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
     }
     
     /** setBackgrounds <p>
-     * Sets the background of each buffer.
+     * Sets the background of each bufferPreviewPanel.
      */
     public void setBackgrounds()
     {
-        setBackground(buffer);
+        setBackground(bufferPreviewPanel);
         setBackground(bufferRoadMap);
     }
     

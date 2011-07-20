@@ -487,6 +487,11 @@ public class RoadMapPanel extends JPanel{
         this.buffer = buffer;
     }
     
+    public void resetBuffer()
+    {
+        this.buffer = null;
+    }
+    
     public void draw()
     { 
        view.setBackground(buffer);
@@ -499,6 +504,10 @@ public class RoadMapPanel extends JPanel{
     public void drawGrid()
     {
         Graphics g = buffer.getGraphics();
+        
+        g.setFont(settings.titleFont);
+        g.setColor(settings.textColor);
+        g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
         
         for(int i = 0; i < numLines; i++) {
             g.setColor(settings.gridBGColor);
