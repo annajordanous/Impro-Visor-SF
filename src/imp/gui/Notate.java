@@ -2,7 +2,7 @@
  * This Java Class is part of the Impro-Visor Application.
  *
  * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
- * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
+ * XML export code is also Copyright (C) 2009-2011 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
  * it under the terms of the GNU General Public License as published by
@@ -75,6 +75,8 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
+  private static boolean firstTime = true;
+  
   RoadMapFrame roadmapFrame = null;
   
   static int roadmapFrameInitialWidth = 1060;
@@ -1434,8 +1436,8 @@ public class Notate
       this.setLocation(x, y);
       }
 
-    setVisible(true);
-    staveRequestFocus();
+    //setVisible(true);
+    //staveRequestFocus();
     
     }
 
@@ -1456,7 +1458,7 @@ public class Notate
 
     // Set height to full screen
 
-    setNotateFrameHeight(this);
+    //setNotateFrameHeight(this);
 
 
     voicingTestFrame.pack();
@@ -17238,8 +17240,9 @@ public void openLeadsheet(boolean openCorpus)
                            (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
                            (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
 
-            setNotateFrameHeight(newNotate);
-          }
+            //setNotateFrameHeight(newNotate);
+            newNotate.makeVisible();
+           }
         else
           {
             // if not a new window
@@ -17751,7 +17754,8 @@ public void WriteLeadsheetToFile(File file) {
             (int)this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
             (int)this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
 
-    setNotateFrameHeight(newNotate);
+    //setNotateFrameHeight(newNotate);
+    newNotate.makeVisible();
 
     // set the menu and button states
 
@@ -17771,7 +17775,7 @@ public void WriteLeadsheetToFile(File file) {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
     DisplayMode dm = gs[0].getDisplayMode();
-//System.out.println("height = " + dm.getHeight() + ", y = " + notate.getY());
+    
     notate.setSize(fWidth, dm.getHeight() - notate.getY());
   }
   
@@ -20421,7 +20425,8 @@ public void openInNewWindow(File selectedFile)
                                   (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
                                   (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
 
-            setNotateFrameHeight(newNotate);
+    // setNotateFrameHeight(newNotate);
+    newNotate.makeVisible();
 }
 
 public Notate newNotateWithScore(Score newScore)
@@ -20434,8 +20439,9 @@ public Notate newNotateWithScore(Score newScore)
                                   (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
                                   (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
     newNotate.setupScore(newScore);
-    setNotateFrameHeight(newNotate);
-            
+    //setNotateFrameHeight(newNotate);
+    newNotate.makeVisible();
+    
     return newNotate;
 }
 
@@ -22589,5 +22595,16 @@ public void execute(Command command)
     cm.execute(command);
   }
 
+/**
+ * Make this Notate frame visible
+ */
+
+public void makeVisible()
+  {
+    setNotateFrameHeight(this);
+    setVisible(true);
+    staveRequestFocus();
+ 
+  }
 }
 

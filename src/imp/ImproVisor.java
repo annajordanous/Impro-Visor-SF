@@ -42,6 +42,9 @@ import imp.util.*;
 public class ImproVisor implements Constants {
     
     public static String version = "5";
+    
+    private static int initialXopen = 0;
+    private static int initialYopen = 0;
 
     private static String ruleFilePath;
     private static String ruleFileDir;
@@ -215,143 +218,148 @@ public class ImproVisor implements Constants {
         this(null);
     }
 
-    /** 
-     * Creates a new instance of ImproVisor. Initializes the clipboard and 
-     * creates a default Notation window with 64 blank, 4/4 
-     * measures.  
-     * @param leadsheet to be initially loaded; if null, will open new leadsheet
-     */
-    private ImproVisor(String leadsheet) {
-        Trace.log(2, "construct ImproVisor");
-       
+/** 
+ * Creates a new instance of ImproVisor. Initializes the clipboard and 
+ * creates a default Notation window with 64 blank, 4/4 
+ * measures.  
+ * @param leadsheet to be initially loaded; if null, will open new leadsheet
+ */
+    
+private ImproVisor(String leadsheet)
+  {
+    Trace.log(2, "construct ImproVisor");
+
 //        try {
 //            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 //        } catch (Exception e) {
 //        }
-        
-        midiManager = new MidiManager();
-        
-        // Make sure to load preferences before loading the advisor
-        Preferences.loadPreferences();
 
-        advisor = new Advisor();
-        
-        // Create global clipboards
-        this.melodyClipboard = new MelodyPart();
-        this.chordsClipboard  = new ChordPart();
-             
-        // Load the default rule file from the Preferences file
-        ruleFilePath = Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE);
-        if (ruleFilePath.lastIndexOf(File.separator) == -1)
-        {
-            ruleFileDir = "";
-            ruleFileName = ruleFilePath;
-        }
+    midiManager = new MidiManager();
+
+    // Make sure to load preferences before loading the advisor
+    Preferences.loadPreferences();
+
+    advisor = new Advisor();
+
+    // Create global clipboards
+    this.melodyClipboard = new MelodyPart();
+    this.chordsClipboard = new ChordPart();
+
+    // Load the default rule file from the Preferences file
+    ruleFilePath = Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE);
+    if( ruleFilePath.lastIndexOf(File.separator) == -1 )
+      {
+        ruleFileDir = "";
+        ruleFileName = ruleFilePath;
+      }
+    else
+      {
+        ruleFileDir = ruleFilePath.substring(0, ruleFilePath.lastIndexOf(File.separator));
+        ruleFileName = ruleFilePath.substring(ruleFilePath.lastIndexOf(File.separator), ruleFilePath.length());
+      }
+
+    LoadAdviceCommand loadAdvice = null;
+
+    Trace.log(2, "Loading: " + ruleFileDir + " :: " + ruleFileName);
+    ruleFile = new File(ruleFileDir, ruleFileName);
+    if( ruleFile.exists() || (ruleFile = new File(ruleFileName)).exists() )
+      {
+        loadAdvice = new LoadAdviceCommand(ruleFile, advisor, null, true, false);
+      }
+    else
+      {
+        JFileChooser fc = new JFileChooser();
+
+        fc.setDialogTitle("Open Vocabulary");
+        ruleFile = new File("vocab");
+        fc.setCurrentDirectory(ruleFile);
+
+        fc.resetChoosableFileFilters();
+        fc.addChoosableFileFilter(new imp.util.AdviceFilter());
+
+        if( fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION )
+          {
+            loadAdvice = new LoadAdviceCommand(fc.getSelectedFile(), advisor, null, true, false);
+          }
+      }
+
+
+    if( loadAdvice != null )
+      {
+        loadAdvice.setLoadDialogText("Loading Vocabulary ...");
+        loadAdvice.execute();
+
+        synchronized(loadAdvice)
+          {
+            while( !loadAdvice.hasLoaded() )
+              {
+                try
+                  {
+                    loadAdvice.wait();
+                  }
+                catch( InterruptedException e )
+                  {
+                  }
+              }
+          }
+
+      }
+    // FIrst open a blank Notate window
+
+    // Create a score with default measures in default meter
+    Score score = new Score(Notate.defaultBarsPerPart * (BEAT * Notate.defaultMetre));
+
+    String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
+
+    if( fontSizePref.equals("") )
+      {
+        fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
+      }
+
+    score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
+
+    // Create an array of notate frames and initialize the first frame
+    
+    Notate notate = new Notate(score, advisor, this, initialXopen, initialYopen);
+
+    // Then deal with recent files
+
+    RecentFiles recFiles = new RecentFiles();
+    String pathName = recFiles.getFirstPathName();
+    if( pathName != null )
+      {
+        File f = new File(pathName);
+        if( f.exists() )
+          {
+            notate.setupLeadsheet(f, false);
+            notate.setSavedLeadsheet(f);
+         }
         else
-        {
-            ruleFileDir = ruleFilePath.substring(0, ruleFilePath.lastIndexOf(File.separator));
-            ruleFileName = ruleFilePath.substring(ruleFilePath.lastIndexOf(File.separator), ruleFilePath.length());
-        }
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + f);
+          }
+      }
+    
+     currentWindow = notate;
 
-        LoadAdviceCommand loadAdvice = null;
-        
-        Trace.log(2, "Loading: " + ruleFileDir + " :: " + ruleFileName);
-        ruleFile = new File(ruleFileDir, ruleFileName);
-        if(ruleFile.exists() || (ruleFile = new File(ruleFileName)).exists()) {
-            loadAdvice = new LoadAdviceCommand(ruleFile, advisor, null, true, false);
-        } else {
-            JFileChooser fc = new JFileChooser();
-            
-            fc.setDialogTitle("Open Vocabulary");
-            ruleFile = new File("vocab");
-            fc.setCurrentDirectory(ruleFile);
-            
-            fc.resetChoosableFileFilters();
-            fc.addChoosableFileFilter(new imp.util.AdviceFilter());
-        
-            if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                loadAdvice = new LoadAdviceCommand(fc.getSelectedFile(), advisor, null, true, false);
-            }
-        }
-        
- 
-            if(loadAdvice != null) {
-            loadAdvice.setLoadDialogText("Loading Vocabulary ...");
-            loadAdvice.execute();
-            
-            synchronized(loadAdvice) {
-                while(!loadAdvice.hasLoaded()) {
-                    try {
-                        loadAdvice.wait();
-                    } catch(InterruptedException e) {}
-                }
-            }
-            
-        }
-        
-            RecentFiles recFiles = new RecentFiles();
-            String pathName = recFiles.getFirstPathName();
-            if(pathName != null)
-            {
-                File f = new File(pathName);
-                if(f.exists())
-                {
-                    Score score = new Score(Notate.defaultBarsPerPart * (BEAT*Notate.defaultMetre));
-                    try {
-                        Score newScore = new Score();
-                        score.setChordFontSize(Integer.valueOf(Preferences.getPreference(
-                        Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
-                        (new OpenLeadsheetCommand(f, newScore)).execute();
-                        Notate newNotate =
-                        new Notate(newScore,
-                                   advisor,
-                                   this);
+     notate.makeVisible();
 
-                        newNotate.setupLeadsheet(f, false);  // added by RK 7/18/2011
-                        newNotate.setNotateFrameHeight(newNotate);
-                        newNotate.setSavedLeadsheet(f);
-                    }
-                    catch (Exception ij) {
-                        ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + f);
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                // Create a score with default measures in default meter
-                Score score = new Score(Notate.defaultBarsPerPart * (BEAT * Notate.defaultMetre));
-
-                String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
-
-                if( fontSizePref.equals("") )
-                {
-                    fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
-                }
-
-                score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
-
-                // Create an array of notate frames and initialize the first frame
-                Notate notate = new Notate(score, advisor, this);
-
-                notate.setNotateFrameHeight(notate);
-
-                currentWindow = notate;
-            }
-
+//        Stuff from Julia Botev that never got integrated.
 //        ComplexityFrame attributeFrame = new ComplexityFrame();
 //        attributeFrame.setVisible(true);
 //
-//
 
-        if(Trace.atLevel(3)) {
-            advisor.listChords(System.out);	// option to list all chord types
-        }
-        
-        if(loadAdvice != null)
-            loadAdvice.hideLoadDialog();
-    }
-        
+    if( Trace.atLevel(3) )
+      {
+        advisor.listChords(System.out);	// option to list all chord types
+      }
+
+    if( loadAdvice != null )
+      {
+        loadAdvice.hideLoadDialog();
+      }
+  }
+       
     static private Notate currentWindow = null;
     static public void windowHasFocus(Notate window) {
         currentWindow = window;
