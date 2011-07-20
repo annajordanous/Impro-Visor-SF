@@ -58,6 +58,7 @@ public class PostProcessing {
         ArrayList<Block> blocks = roadmap.getBricks();
         
         if(blocks.isEmpty()) {
+            roadmap.getKeyMap().clear();
             return roadmap;
         }
         

@@ -22,10 +22,8 @@
 package imp.roadmap;
 
 import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import imp.brickdictionary.*;
-import java.util.ArrayList;
 
 /**
  *
@@ -88,6 +86,8 @@ public class PreviewPanel extends JPanel
     
     public void setBrick(Block brick)
     {
+        RoadMapSettings settings = view.getSettings();
+        
         if (brick instanceof Brick)
             protoBrick = new Brick((Brick)brick);
         else if (brick instanceof ChordBlock)
@@ -95,12 +95,20 @@ public class PreviewPanel extends JPanel
         
         brick.adjustDuration(currentDuration);
         brick.transpose(currentKey);
-        currentBrick = new GraphicBrick(brick, view.getSettings());
+        currentBrick = new GraphicBrick(brick, settings);
+        
+        Dimension size = new Dimension(getHeight(), settings.getBlockLength(brick)+10);
+        setPreferredSize(size);
     }
 
     public GraphicBrick getBrick()
     {
         return currentBrick;
+    }
+    
+    public Block getBlock()
+    {
+        return currentBrick.getBrick();
     }
     
     public void setKey(long key)

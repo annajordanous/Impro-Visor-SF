@@ -80,7 +80,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private ArrayList<Block> clipboard = new ArrayList();
     
-    private Object[] durationChoices = {1920,1440,960,480,240,120};
+    private Object[] durationChoices = {8,7,6,5,4,3,2,1};
     
     private int bufferWidth  = 1024;
     private int bufferHeight = 200;
@@ -123,6 +123,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         deactivateButtons();
         
         this.setTitle(roadmapTitlePrefix + notate.getTitle());
+        
+        settings.beatsPerMeasure = notate.getTimeSigTop();
+        settings.slotsPerMeasure = notate.getBeatValue()*notate.getTimeSigTop();
         
         WindowRegistry.registerWindow(this);
         
@@ -656,6 +659,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         getContentPane().add(durationComboBox, gridBagConstraints);
 
         previewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick Preview\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
+        previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(800, 80));
@@ -686,7 +690,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
         fileMenu.setText("File"); // NOI18N
-        fileMenu.setMaximumSize(new java.awt.Dimension(100, 40));
+        fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
         fileMenu.setName("fileMenu"); // NOI18N
         fileMenu.setPreferredSize(new java.awt.Dimension(50, 20));
 
@@ -1011,7 +1015,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_analyzeButtonPressed
 
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
-        // TODO add your handling code here:
+        closeWindow();
     }//GEN-LAST:event_exitMIhandler
 
     private void dialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogAccepted
@@ -1147,8 +1151,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         int clicks = evt.getClickCount();
         TreePath path = libraryTree.getPathForLocation(evt.getX(), evt.getY());
         if(path != null && previewPanel.getBrick() != null && clicks%2==0) {
-            dragFromPreview(0,0);
-            dropFromPreview(0,0);
+            addBrickFromPreview();
         }
     }//GEN-LAST:event_libraryTreeMouseClicked
 
@@ -1206,11 +1209,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         roadMapScrollPane.setViewportView(roadMapPanel);
         
-        // If these statements are missing, scrollbars don't appear!
-        
-       //roadMapPanel.setPreferredSize(new Dimension(RMbufferWidth, RMbufferHeight));
-        //roadMapScrollPane.revalidate();
-
         roadMapPanel.draw();
         previewPanel.draw();
         }
@@ -1391,16 +1389,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         saveState("Paste");
         
-        int insertIndex = roadMapPanel.getSelectionStart();
-        
         ArrayList<Block> blocks = RoadMap.cloneBlocks(clipboard);
         
-        if(insertIndex != -1) {
-            roadMapPanel.addBlocks(insertIndex,blocks);
-            roadMapPanel.selectionEnd+=blocks.size();
-            roadMapPanel.selectionStart+=blocks.size();
-        } else 
-            roadMapPanel.addBlocks(RoadMap.cloneBlocks(clipboard));
+        roadMapPanel.addBlocksBeforeSelection(blocks);
         
         roadMapPanel.placeBricks();
     }
@@ -1483,6 +1474,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         activateButtons();
     }
     
+    public void addBrickFromPreview()
+    {
+        saveState("Drop");
+        ArrayList<Block> block = new ArrayList();
+        block.add(previewPanel.getBlock());
+        roadMapPanel.addBlocksBeforeSelection(block);
+        roadMapPanel.placeBricks();
+    }
+    
     /** setPreview <p>
      * Sets the preview brick, as well as its duration and key.
      */
@@ -1517,7 +1517,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void setPreviewDuration()
     {
-        previewPanel.setDuration((Integer)durationChoices[durationComboBox.getSelectedIndex()]);
+        previewPanel.setDuration(settings.getSlotsPerBeat()*(Integer)durationChoices[durationComboBox.getSelectedIndex()]);
         previewPanel.draw();
     }
            

@@ -23,7 +23,6 @@ package imp.roadmap;
 
 import imp.brickdictionary.*;
 import java.awt.*;
-import java.awt.Point;
 
 /**
  *
@@ -36,7 +35,8 @@ public class RoadMapSettings {
     public int lineHeight = 60;
     public int measureLength = 80;
     public int lineSpacing = 20;
-    public int beatsPerMeasure = 480;
+    public int slotsPerMeasure = 480;
+    public int beatsPerMeasure = 4;
     
     public Color gridLineColor = new Color(150,150,150);
     public Color gridBGColor = new Color(225,225,225);
@@ -72,7 +72,7 @@ public class RoadMapSettings {
      */
     public int getBlockLength(Block block)
     {
-        return (int) (block.getDuration() * measureLength)/beatsPerMeasure;
+        return (int) (block.getDuration() * measureLength)/slotsPerMeasure;
     }
     
     /**
@@ -82,7 +82,7 @@ public class RoadMapSettings {
      */
     public int getLength(long dur)
     {
-        return (int) (dur * measureLength)/beatsPerMeasure;
+        return (int) (dur * measureLength)/slotsPerMeasure;
     }
     
     /**
@@ -98,9 +98,9 @@ public class RoadMapSettings {
      * returns the number of beats per line
      * @return the number of beats per line
      */
-    public long getBeatsPerLine()
+    public long getSlotsPerLine()
     {
-        return beatsPerMeasure*barsPerLine;
+        return slotsPerMeasure*barsPerLine;
     }
     
     /**
@@ -147,7 +147,7 @@ public class RoadMapSettings {
      */
     public int getLines(long beats)
     {
-        int lines = (int) (beats/getBeatsPerLine());
+        int lines = (int) (beats/getSlotsPerLine());
         return lines;
     }
     
@@ -156,14 +156,19 @@ public class RoadMapSettings {
      * @param beats
      * @return 
      */
-    public Point getPosFromBeats(long beats)
+    public Point getPosFromSlots(long beats)
     {
-        int line = (int)getBeatsPerLine();
+        int line = (int)getSlotsPerLine();
         int numLines = (int)beats/line;
         int y = yOffset + numLines * (lineHeight + lineSpacing);
         int x = xOffset + getLength(beats % line);
         
         return new Point(x,y);
+    }
+    
+    public int getSlotsPerBeat()
+    {
+        return slotsPerMeasure/beatsPerMeasure;
     }
     
     /**
@@ -178,10 +183,10 @@ public class RoadMapSettings {
         return new int[]{endX, lines};
     }
     
-    public long[] wrapBeats(long b)
+    public long[] wrapFromSlots(long b)
     {
         long lines = getLines(b);
-        long endX = (b%getBeatsPerLine());
+        long endX = (b%getSlotsPerLine());
         return new long[]{endX, lines};
     }
 }

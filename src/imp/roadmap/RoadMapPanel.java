@@ -102,7 +102,7 @@ public class RoadMapPanel extends JPanel{
             currentBeats += brick.getBrick().getDuration();
             lineBeats += brick.getBrick().getDuration();
             
-            long[] wrap = settings.wrapBeats(lineBeats);
+            long[] wrap = settings.wrapFromSlots(lineBeats);
             lineBeats = wrap[0];
             lines += wrap[1];
             
@@ -126,6 +126,12 @@ public class RoadMapPanel extends JPanel{
         draw();
     }
     
+    public void rebuildRoadMap()
+    {
+        graphicMap = makeBricks(roadMap.getBricks());
+        placeBricks();
+    }
+    
     public void addBlock(Block block)
     {
         roadMap.add(block);
@@ -144,6 +150,19 @@ public class RoadMapPanel extends JPanel{
         graphicMap.addAll(ind, makeBricks(blocks));
     }
     
+    public void addBlocksBeforeSelection(ArrayList<Block> blocks)
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            roadMap.addAll(selectionStart, blocks);
+            graphicMap.addAll(selectionStart, makeBricks(blocks));
+            selectionStart+=blocks.size();
+            selectionEnd+=blocks.size();
+        } else {
+            roadMap.addAll(blocks);
+            graphicMap.addAll(selectionStart, makeBricks(blocks));
+        }
+    }
+            
     public ArrayList<GraphicBrick> makeBricks(ArrayList<Block> blocks)
     {
         ArrayList<GraphicBrick> bricks = new ArrayList();
@@ -593,7 +612,7 @@ public class RoadMapPanel extends JPanel{
             currentBeats += keySpan.getDuration();
             lineBeats += keySpan.getDuration();
             
-            long[] wrap = settings.wrapBeats(lineBeats);
+            long[] wrap = settings.wrapFromSlots(lineBeats);
             lineBeats = wrap[0];
             lines += wrap[1];
             
