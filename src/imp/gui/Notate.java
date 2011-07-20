@@ -2184,6 +2184,7 @@ public class Notate
         saveAsAdvice = new javax.swing.JMenuItem();
         jSeparator17 = new javax.swing.JSeparator();
         printMI = new javax.swing.JMenuItem();
+        printAllMI = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JSeparator();
         quitMI = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -7227,7 +7228,7 @@ public class Notate
         textEntryLabel.setText("Textual Entry ");
         textEntryToolBar.add(textEntryLabel);
 
-        textEntry.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        textEntry.setFont(new java.awt.Font("Dialog", 0, 14));
         textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textEntry.addActionListener(new java.awt.event.ActionListener() {
@@ -7461,7 +7462,7 @@ public class Notate
         fileMenu.add(jSeparator17);
 
         printMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        printMI.setText("Print Leadsheet");
+        printMI.setText("Print the Current Chorus");
         printMI.setToolTipText("Print the current leadsheet.");
         printMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7469,6 +7470,14 @@ public class Notate
             }
         });
         fileMenu.add(printMI);
+
+        printAllMI.setText("Print All Choruses");
+        printAllMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printAllMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(printAllMI);
         fileMenu.add(jSeparator5);
 
         quitMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -14937,7 +14946,7 @@ private void setLayoutPreference(Polylist layout)
         layoutTF.setText(buffer.toString());
       }
   }
-    
+
     
     /**
      *
@@ -16477,7 +16486,7 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 
-      PrintUtilities.printComponent(getCurrentStave());
+      PrintUtilities.printComponent(getCurrentStave(), lockedMeasures.length);
 
 
       // printAllStaves();
@@ -16502,14 +16511,27 @@ private void pasteMelody(Part part, Stave stave)
    // Make array of staves, then print each one.
      
    Stave component[] = new Stave[staveScrollPane.length];
-   
    for( int i = 0; i < staveScrollPane.length; i++ )
      {
        component[i] = staveScrollPane[i].getStave();
      }
-   
-   PrintUtilities.printMultipleComponents(component);
+   for(int i = 0; i<staveScrollPane.length; i++)
+   {
+       setUpStavesToPrint(component[i]);
    }
+    PrintUtilities.printMultipleComponents(component, lockedMeasures.length);
+   }
+ 
+ private void setUpStavesToPrint(Stave stv)
+ {
+        stv.setShowAllCL(false);
+
+        stv.setShowMeasureCL(false);
+
+        stv.setSelection(OUT_OF_BOUNDS);
+
+        stv.setPrinting(true);
+ }
  
  
   /**
@@ -20435,6 +20457,10 @@ private void roadMapThisAnalyzeAction(java.awt.event.ActionEvent evt) {//GEN-FIR
     roadmapFrame.analyzeAllBricks();
 }//GEN-LAST:event_roadMapThisAnalyzeAction
 
+private void printAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAllMIActionPerformed
+      printAllStaves();     
+}//GEN-LAST:event_printAllMIActionPerformed
+
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
@@ -22107,6 +22133,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenu preferencesMenu;
     private javax.swing.JScrollPane preferencesScrollPane;
     private javax.swing.ButtonGroup prefsTabBtnGrp;
+    private javax.swing.JMenuItem printAllMI;
     private javax.swing.JButton printBtn;
     private javax.swing.JMenuItem printMI;
     private javax.swing.ButtonGroup productionBtnGrp;
