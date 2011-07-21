@@ -86,7 +86,7 @@ public class PreviewPanel extends JPanel
     public void setBrick(Block brick)
     {
         RoadMapSettings settings = view.getSettings();
-        
+              
         if (brick instanceof Brick)
             protoBrick = new Brick((Brick)brick);
         else if (brick instanceof ChordBlock)

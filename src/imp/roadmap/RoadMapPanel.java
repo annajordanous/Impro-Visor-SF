@@ -88,7 +88,7 @@ public class RoadMapPanel extends JPanel{
     
     public void placeBricks()
     {
-        long currentBeats = 0;
+        long currentSlots = 0;
         long lines = 0;
         long lineBeats = 0;
         
@@ -99,7 +99,7 @@ public class RoadMapPanel extends JPanel{
             int y = (int)(lines*settings.getLineOffset()) + settings.yOffset;
             brick.setPos(x,y);
             
-            currentBeats += brick.getBrick().getDuration();
+            currentSlots += brick.getBrick().getDuration();
             lineBeats += brick.getBrick().getDuration();
             
             long[] wrap = settings.wrapFromSlots(lineBeats);
@@ -109,7 +109,7 @@ public class RoadMapPanel extends JPanel{
             if(brick.getBrick().isSectionEnd() && lineBeats != 0) {
                 lineBeats = 0;
                 lines++;
-                sectionBreaks.add(currentBeats);
+                sectionBreaks.add(currentSlots);
             }
         }
         numLines = (int)lines+1;
@@ -466,6 +466,11 @@ public class RoadMapPanel extends JPanel{
             placeBricks();
             drawKeyMap();
         }
+    }
+    
+    public void endSection()
+    {
+        roadMap.getBrick(roadMap.size()-1).setSectionEnd(true);
     }
     
     public void setInsertLine(int x, int y)

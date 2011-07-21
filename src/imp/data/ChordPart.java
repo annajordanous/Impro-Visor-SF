@@ -556,6 +556,8 @@ public void toRoadMapFrame(RoadMapFrame roadmap)
         roadmap.addChord(dictChord);
       }
 
+    roadmap.endSection();
+    
   }
 
 

@@ -1403,6 +1403,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
         saveState("SectionBreak");
         roadMapPanel.toggleSection();
     }
+    
+    public void endSection()
+    {
+        saveState("SectionBreak");
+        roadMapPanel.endSection();
+    }
 
     public void cutSelection()
     {

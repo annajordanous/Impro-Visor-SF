@@ -207,7 +207,8 @@ public class GraphicBrick {
         int cutoff = settings.getCutoff();
         
         int[] wrap = settings.wrap(x+settings.getBlockLength(block));
-        int endX = wrap[0];
+        int endX = wrap[0]; //TODO : this is wrong. use total beats or something
+                            //We should be taking the endpoint from the number of beats somehow
         int lines = wrap[1];
         
         if(endX == settings.xOffset) {  // This is to prevent the last line
@@ -294,7 +295,7 @@ public class GraphicBrick {
             
             int length = settings.getBlockLength(chord);
             int[] endWrap = settings.wrap(currentX + length);
-            int endX = endWrap[0];
+            int endX = endWrap[0]; // TODO : wrong, use total beats or something
             int lines = endWrap[1];
             
             g2d.setColor(settings.lineColor);
