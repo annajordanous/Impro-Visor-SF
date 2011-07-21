@@ -172,6 +172,8 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_CHORD_FONT_SIZE = "default-chord-font-size";
 
   public static final int DEFAULT_CHORD_FONT_SIZE_VALUE = 16;
+  
+  public static final String DEFAULT_STAVES_PER_PAGE = "8";
 
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.

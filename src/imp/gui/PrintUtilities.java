@@ -68,18 +68,37 @@ public class PrintUtilities implements Printable {
      * Arbitrary value for now, will change so that
      * it will get a number from a text field within preferences
      */
-    private int numStavesPerPage=3;
+    private int numStavesPerPage=0;
     
     /**
      * Magic Number that is the height of a single Stave
      */
     private static final int staveHeight = 160;
     
-    public static void printComponent(Component c, int numLines) {
-        new PrintUtilities(c, numLines).print();
+    /**
+     * Magic Number that is the height of a single Grand Stave
+     */
+    private static final int grandStaveHeight = 208;
+    
+    /**
+     * Total number of lines that are currently in the chorus
+     */
+    private int numLines = 0;
+    
+    public static void printComponent(Component c, int numLines, int numStavesPerPage) {
+        new PrintUtilities(c, numLines, numStavesPerPage).print();
     }
   
-    public PrintUtilities(Component componentToBePrinted, int numLines) {
+    public PrintUtilities(Component componentToBePrinted, int numLines, int numStavesPerPage) {
+        this.numLines = numLines;
+        if(numStavesPerPage == 0)
+        {
+            this.numStavesPerPage = 8;
+        }
+        else
+        {
+            this.numStavesPerPage = numStavesPerPage;
+        }
         this.componentToBePrinted = componentToBePrinted;
         int height = numLines*staveHeight;
         img = new BufferedImage(this.componentToBePrinted.getWidth(), height, BufferedImage.TYPE_INT_RGB);
@@ -96,8 +115,8 @@ public class PrintUtilities implements Printable {
         this.componentToBePrinted.paint(graphics);
       }
   
-    public static void printMultipleComponents(Component comp[], int numLines) {  
-        PrintUtilities utility = new PrintUtilities();
+    public static void printMultipleComponents(Component comp[], int numLines, int numStavesPerPage) {  
+        PrintUtilities utility = new PrintUtilities(numLines, numStavesPerPage);
         PrintService[] pservices = PrinterJob.lookupPrintServices();
         
         PrinterJob printJob = PrinterJob.getPrinterJob();
@@ -121,7 +140,16 @@ public class PrintUtilities implements Printable {
         
     }
   
-    public PrintUtilities() {
+    public PrintUtilities(int numLines, int numStavesPerPage) {
+        this.numLines = numLines;
+        if(numStavesPerPage == 0)
+        {
+            this.numStavesPerPage = 8;
+        }
+        else
+        {
+            this.numStavesPerPage = numStavesPerPage;
+        }
     }
 
     
@@ -183,7 +211,11 @@ public class PrintUtilities implements Printable {
         double pageHeight = pf.getImageableHeight();        //  height of printer page
         double pageWidth = pf.getImageableWidth();          //  width of printer page
         double scale = pageWidth / panelWidth;
-        int totalNumPages = ((int) Math.ceil(img.getHeight()/numStavesConverted))+1;
+        int totalNumPages = numLines/numStavesPerPage;
+        if(numLines%numStavesPerPage >0)
+        {
+            totalNumPages++;
+        }
         
         // make sure not print empty pages
         if (pageIndex >= totalNumPages) {

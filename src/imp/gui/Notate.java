@@ -489,6 +489,8 @@ public class Notate
   private int loopCount = 1;
   
   private int stopPlaybackAtSlot = 16*BEAT; // in case StyleEditor used first
+  
+  private int numStavesPP = 0;
 
   private static int QUANTUM = BEAT/2;
 
@@ -1648,6 +1650,7 @@ public class Notate
         voicingLabel = new javax.swing.JLabel();
         voicing = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        stavesPerPageLabel = new javax.swing.JLabel();
         defVolumes = new javax.swing.JPanel();
         defAllPanel = new javax.swing.JPanel();
         defMasterVolSlider = new javax.swing.JSlider();
@@ -1674,6 +1677,7 @@ public class Notate
         trackerDelayTextField = new javax.swing.JTextField();
         defaultTempoTF = new javax.swing.JTextField();
         defTempoLabel = new javax.swing.JLabel();
+        numStavesPerPage = new javax.swing.JTextField();
         appearanceTab = new javax.swing.JPanel();
         visAdvicePanel = new javax.swing.JPanel();
         cells = new javax.swing.JCheckBox();
@@ -2414,7 +2418,7 @@ public class Notate
         globalPreferences.setMinimumSize(new java.awt.Dimension(675, 600));
         globalPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         jLabel2.setText("  Global Program Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2601,14 +2605,24 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 10);
         defaultsTab.add(voicing, gridBagConstraints);
 
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel11.setText("Default Volumes:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         defaultsTab.add(jLabel11, gridBagConstraints);
+
+        stavesPerPageLabel.setText("Staves Per Page:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 0);
+        defaultsTab.add(stavesPerPageLabel, gridBagConstraints);
 
         defAllPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "All", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         defAllPanel.setOpaque(false);
@@ -2738,8 +2752,8 @@ public class Notate
         defVolumes.add(defMelodyVolPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
@@ -2873,6 +2887,14 @@ public class Notate
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         defaultsTab.add(defTempoLabel, gridBagConstraints);
+
+        numStavesPerPage.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 10);
+        defaultsTab.add(numStavesPerPage, gridBagConstraints);
 
         globalTabs.addTab("Defaults", defaultsTab);
 
@@ -3527,7 +3549,7 @@ public class Notate
         chorusPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
         chorusPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         jLabel19.setText("  Chorus Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3649,6 +3671,11 @@ public class Notate
 
         staveChoiceButtonGroup.add(grandStaveBtn);
         grandStaveBtn.setText("grand");
+        grandStaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grandStaveBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.weightx = 1.0;
         staveButtonPanel.add(grandStaveBtn, gridBagConstraints);
@@ -9781,6 +9808,7 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
     private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
         
         setPrefsDialog();
+        numStavesPerPage.setText(Preferences.DEFAULT_STAVES_PER_PAGE);
         
     }//GEN-LAST:event_resetBtnActionPerformed
     
@@ -13589,8 +13617,8 @@ private boolean saveMetre()
             
             String strDist = chordDist.getText();
             
-            
-            
+            numStavesPP = Integer.parseInt(numStavesPerPage.getText());
+                        
             int cache = intFromString(strCache.trim());
             
             double tempo = doubleFromTextField(defaultTempoTF, MIN_TEMPO, MAX_TEMPO, getDefaultTempo());
@@ -14011,7 +14039,7 @@ private boolean saveMetre()
     voicing.setText(Preferences.getPreference(Preferences.MAX_NOTES_IN_VOICING));
 
     chordDist.setText(Preferences.getPreference(Preferences.CHORD_DIST_ABOVE_ROOT));
-
+    
     ensureChordFontSize();
 
     setTrackerDelay(Preferences.getPreference(Preferences.TRACKER_DELAY));
@@ -14335,6 +14363,14 @@ private boolean saveMetre()
       tempStaveType = getCurrentOrigPart().getStaveType();
       }
     setCurrentStaveType(tempStaveType);
+    if(numStavesPP == 0)
+    {
+        numStavesPerPage.setText(Preferences.DEFAULT_STAVES_PER_PAGE);
+    }
+    else
+    {
+        numStavesPerPage.setText(Integer.toString(numStavesPP));
+    }
     }
     
   public int getBreakpoint()
@@ -14365,6 +14401,7 @@ private boolean saveMetre()
       }
 
     newSectionButton.setEnabled((m2 - m1) > 0);
+    
     }
     
     
@@ -16492,7 +16529,7 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 
-      PrintUtilities.printComponent(getCurrentStave(), lockedMeasures.length);
+      PrintUtilities.printComponent(getCurrentStave(), lockedMeasures.length, numStavesPP);
 
 
       // printAllStaves();
@@ -16525,7 +16562,7 @@ private void pasteMelody(Part part, Stave stave)
    {
        setUpStavesToPrint(component[i]);
    }
-    PrintUtilities.printMultipleComponents(component, lockedMeasures.length);
+    PrintUtilities.printMultipleComponents(component, lockedMeasures.length, numStavesPP);
    }
  
  private void setUpStavesToPrint(Stave stv)
@@ -20470,6 +20507,10 @@ private void printAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
       printAllStaves();     
 }//GEN-LAST:event_printAllMIActionPerformed
 
+private void grandStaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grandStaveBtnActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_grandStaveBtnActionPerformed
+
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
@@ -22091,6 +22132,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel newVoicingTypeLabel;
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
+    private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
     private javax.swing.JPanel okcancelPanel;
@@ -22211,6 +22253,7 @@ public void showNewVoicingDialog()
     private javax.swing.ButtonGroup staveButtonGroup;
     private javax.swing.JPanel staveButtonPanel;
     private javax.swing.ButtonGroup staveChoiceButtonGroup;
+    private javax.swing.JLabel stavesPerPageLabel;
     private javax.swing.JToggleButton stepInputBtn;
     private javax.swing.JButton stopBtn;
     private javax.swing.JMenuItem stopPlayMI;
