@@ -17289,7 +17289,7 @@ public void openLeadsheet(boolean openCorpus)
                            getNewXlocation(),
                            getNewYlocation());
 
-            newNotate.makeVisible();
+            newNotate.makeVisible(this);
            }
         else
           {
@@ -17358,32 +17358,26 @@ public void openLeadsheet(boolean openCorpus)
                 getAllContours(file);
                 setupLeadsheet(file, true);
                 setLickGenStatus("Done learning from corpus: " + file);
-                /*
-                try {
-                new Thread() {
-                public void run() {
-                getAllContours(openLSFC.getSelectedFile());
-                setupLeadsheet(openLSFC.getSelectedFile(), true);
-                }
-                }.start();
-                }
-                catch (Exception e) {
-                //this is a normal bug
-                 */
-
               }
             else
               {
                 // open the file
                 setupLeadsheet(openLSFC.getSelectedFile(), false);
+                
+                if( createRoadMapCheckBox.isSelected() )
+                  {
+                  roadMapThisAnalyze();
+                  }
               }
             // clear undo/redo history
 
             cm.clearHistory();
 
-            // mark sheet as saved in it's current state (no unsaved changes)
+            // mark sheet as saved in its current state (no unsaved changes)
 
             cm.changedSinceLastSave(false);
+            
+            
           }
 
         setChordFontSizeSpinner(score.getChordFontSize());
@@ -17424,63 +17418,82 @@ public void openLeadsheet(boolean openCorpus)
     staveRequestFocus();
     }
 
-  /**
-   *
-   * Do stuff that is common to open and revert file.
-   *
-   */
-    public void setupLeadsheet(File file, boolean openCorpus) {
+  
+/**
+ *
+ * Do stuff that is common to open and revert file.
+ *
+ */
+  
+public void setupLeadsheet(File file, boolean openCorpus)
+  {
 
-        Advisor.useBackupStyles();
-        Score newScore = new Score();
+    Advisor.useBackupStyles();
+    Score newScore = new Score();
 
-        cm.execute(new OpenLeadsheetCommand(file, newScore));
+    cm.execute(new OpenLeadsheetCommand(file, newScore));
 
-        savedLeadsheet = file;
-        setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        setupScore(newScore);
-        if (openCorpus) {
-
-            // Note that learning is only occurring with 4/4 time files currently!!
-            
-            // if (newNotate.getMetre()[1] == 4 && newNotate.getMetre()[0] == 4)
-              {
-                //System.out.println(newNotate.getTitle());
-                getAllMeasures(newScore);
-                setLickGenStatus("Reading leadsheet from file " + file);
-            }
-        }
-    }
+    savedLeadsheet = file;
+    setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    setupScore(newScore);
+    if( openCorpus )
+      {
+          // Note that learning is only occurring with 4/4 time files currently!!
+          // if (newNotate.getMetre()[1] == 4 && newNotate.getMetre()[0] == 4)
+          {
+            //System.out.println(newNotate.getTitle());
+            getAllMeasures(newScore);
+            setLickGenStatus("Reading leadsheet from file " + file);
+          }
+      }
+    else
+      {
+      }
+  }
     
-    public void getAllMeasures(Score s) {
-        allMeasures = true;
-        
-        int HEAD = 0;                
-        melodyData = new ArrayList<String>();
-            
-        for (int i = 0; i < staveScrollPane.length; i++) {
-            //System.out.println("Chorus " + i+1 + ":");
-            scoreTab.setSelectedComponent(staveScrollPane[i]);
-            melodyData = getMelodyData(s, i);
-            //get the abstract melodies of all except the head
-            //if(i != 0) {
-            selectAll2();
-            lickgenFrame.getAbstractMelody();
-            //}
-            //get the exact melodies
-            //if (i == HEAD) {
-            //    headData = getMelodyData(s,i);
-            //}
-            
-            melodyData = getMelodyData(s, i);
-        }
-        allMeasures = false;
-    }
 
-        public ArrayList<String> getMelodyData(int chorusNumber)
-              {
-                  return getMelodyData(score, chorusNumber);
-              }
+/**
+ * I think this is only used in grammar learning.
+ * @param s 
+ */
+
+public void getAllMeasures(Score s)
+  {
+    allMeasures = true;
+
+    int HEAD = 0;
+    melodyData = new ArrayList<String>();
+
+    for( int i = 0; i < staveScrollPane.length; i++ )
+      {
+        //System.out.println("Chorus " + i+1 + ":");
+        scoreTab.setSelectedComponent(staveScrollPane[i]);
+        melodyData = getMelodyData(s, i);
+        //get the abstract melodies of all except the head
+        //if(i != 0) {
+        selectAll2();
+        lickgenFrame.getAbstractMelody();
+        //}
+        //get the exact melodies
+        //if (i == HEAD) {
+        //    headData = getMelodyData(s,i);
+        //}
+
+        melodyData = getMelodyData(s, i);
+      }
+    allMeasures = false;
+  }
+
+
+/**
+ * I think this is only used in grammar learning.
+ * @param s 
+ */
+
+public ArrayList<String> getMelodyData(int chorusNumber)
+  {
+    return getMelodyData(score, chorusNumber);
+  }
     
     /*Returns a vector of Strings representing a section of the melody of a
      *chorus and containing the notes in the section     */
@@ -17803,7 +17816,7 @@ public void WriteLeadsheetToFile(File file) {
                        getNewXlocation(),
                        getNewYlocation());
 
-    newNotate.makeVisible();
+    newNotate.makeVisible(this);
 
     // set the menu and button states
 
@@ -20442,25 +20455,15 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
 
 
 private void EmptyRoadMapAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmptyRoadMapAction
-    roadmapFrame = new RoadMapFrame(this);
-
-    roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
-    roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
-    roadmapFrame.setVisible(true);
+    openEmptyRoadmap();
 }//GEN-LAST:event_EmptyRoadMapAction
 
 private void roadMapThisMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapThisMIaction
-    roadmapFrame = new RoadMapFrame(this);
-
-    roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
-    roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
-    chordPartToRoadMapFrame(roadmapFrame);
-    roadmapFrame.setVisible(true);
+    roadMapThis();
 }//GEN-LAST:event_roadMapThisMIaction
 
 private void roadMapThisAnalyzeAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapThisAnalyzeAction
-    roadMapThisMIaction(null);
-    roadmapFrame.analyzeAllBricks();
+    roadMapThisAnalyze();
 }//GEN-LAST:event_roadMapThisAnalyzeAction
 
 private void printAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAllMIActionPerformed
@@ -20478,7 +20481,7 @@ public void openInNewWindow(File selectedFile)
                                   this.impro,
                                   getNewXlocation(),
                                   getNewYlocation());
-    newNotate.makeVisible();
+    newNotate.makeVisible(this);
 }
 
 public Notate newNotateWithScore(Score newScore, int x, int y)
@@ -20493,7 +20496,7 @@ public Notate newNotateWithScore(Score newScore, int x, int y)
     
     newNotate.setupScore(newScore);
 
-    newNotate.makeVisible();
+    newNotate.makeVisible(this);
     
     return newNotate;
 }
@@ -22645,10 +22648,28 @@ public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
   }
 
 
+/**
+ * Execute a command in the context of this Notate frame.
+ */
+
 public void execute(Command command)
   {
     cm.execute(command);
   }
+
+
+/**
+ * Make this Notate frame visible, after setting certain state elements
+ * from oldNotate.
+ */
+
+public void makeVisible(Notate oldNotate)
+  {
+    makeVisible();
+    createRoadMapCheckBox.setSelected(oldNotate.createRoadMapCheckBox.isSelected());
+   }
+
+
 
 /**
  * Make this Notate frame visible
@@ -22656,13 +22677,68 @@ public void execute(Command command)
 
 public void makeVisible()
   {
+    //System.out.println("makeVisible " + this);
+    //
+    System.out.println("box selected = " + createRoadMapCheckBox.isSelected());
     setNotateFrameHeight(this);
     setVisible(true);
     staveRequestFocus();
     if( createRoadMapCheckBox.isSelected() )
       {
-      roadMapThisAnalyzeAction(null);
+      roadMapThisAnalyze();
+      //System.out.println("roadmapping " + roadmapFrame);
       }
+  }
+
+
+/**
+ * Create a roadmap for the current Notate frame.
+ */
+
+public void roadMapThis()
+  {
+    establishRoadMapFrame();
+    chordPartToRoadMapFrame(roadmapFrame);
+    roadmapFrame.setVisible(true);
+  }
+
+
+/**
+ * Create a roadmap for the current Notate frame and analyze the contents.
+ */
+
+public void roadMapThisAnalyze()
+  {
+    establishRoadMapFrame();
+    chordPartToRoadMapFrame(roadmapFrame);
+    roadmapFrame.analyzeAllBricks();
+    roadmapFrame.setVisible(true);
+  }
+
+
+/**
+ * Create an empty road map tied to the current Notate frame.
+ */
+
+public void openEmptyRoadmap()
+  {
+    establishRoadMapFrame();
+    roadmapFrame.setVisible(true);
+  }
+
+
+/** 
+ * Create the road map frame, to be populated and opened subsequently.
+ */
+
+public void establishRoadMapFrame()
+  {
+    roadmapFrame = new RoadMapFrame(this);
+
+    roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
+    roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
+    
+    //System.out.println("established roadmapFrame = " + roadmapFrame);
   }
 }
 
