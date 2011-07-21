@@ -23,13 +23,12 @@
 package imp.brickdictionary;
 import imp.util.ErrorLog;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import polya.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -43,13 +42,13 @@ public class BrickLibrary {
     private static final long DEFAULT_COST = 40;
     public static final long NONBRICK = 2000;
    
-    private LinkedHashMap<String, Brick> brickMap;
+    private LinkedHashMap<String, LinkedList<Brick>> brickMap;
     private LinkedHashMap<String, Long> costMap;
     
     // Construct BrickLibrary as a HashMap associating a brick's name with its
     // contents
     public BrickLibrary() {
-        brickMap = new LinkedHashMap<String, Brick>();
+        brickMap = new LinkedHashMap<String, LinkedList<Brick>>();
         costMap = new LinkedHashMap<String, Long>();
     }
     
@@ -61,18 +60,20 @@ public class BrickLibrary {
     public void addBrick(Brick brick) {
         if(brickMap.containsKey(brick.getName()))
         {
-            ErrorLog.log(ErrorLog.WARNING, "Dictionary already contains " +
-                    brick.getName(), true);
+            this.brickMap.get(brick.getName()).add(brick);
         }
         else
-            this.brickMap.put(brick.name, brick);
+        {
+            LinkedList<Brick> brickList = new LinkedList<Brick>();
+            brickList.add(brick);
+            this.brickMap.put(brick.name, brickList);
+        }
     }
-    
     // Get a brick from the dictionary.
     public Brick getBrick(String s, long k) {
         if(brickMap.containsKey(s))
         {
-            Brick brick = new Brick(brickMap.get(s));
+            Brick brick = new Brick(brickMap.get(s).getFirst());
             brick.transpose((k-brick.getKey() + 12)%12);
             return brick;
         }
@@ -87,7 +88,7 @@ public class BrickLibrary {
     public Brick getBrick(String s, long k, int d) {
         if(brickMap.containsKey(s))
         {
-            Brick brick = new Brick(brickMap.get(s));
+            Brick brick = new Brick(brickMap.get(s).getFirst());
             brick.transpose((k-brick.getKey() + 12)%12);
             brick.adjustBrickDuration(d);
             return brick;
@@ -105,8 +106,24 @@ public class BrickLibrary {
         return (brickMap.containsKey(s));
     }
     
+    public Collection<Brick> getFullMap() {
+        LinkedList<Brick> values = new LinkedList<Brick>();
+        for (LinkedList<Brick> brickname : brickMap.values())
+        {
+            values.addAll(brickname);
+        }
+        
+        return values;
+    }
+    
     public Collection<Brick> getMap() {
-        return brickMap.values();
+        LinkedList<Brick> values = new LinkedList<Brick>();
+        for (LinkedList<Brick> brickname : brickMap.values())
+        {
+            values.add(brickname.getFirst());
+        }
+        
+        return values;
     }
     
     // Remove brick from dictionary (pass in actual brick)
@@ -121,12 +138,11 @@ public class BrickLibrary {
     
     // Print contents of dictionary
     public void printDictionary() {
-        Iterator iter = this.brickMap.keySet().iterator();
+        Iterator iter = getMap().iterator();
         
         while(iter.hasNext())
         {
-            String brickName = iter.next().toString();
-            Brick currentBrick = this.brickMap.get(brickName);
+            Brick currentBrick = (Brick)iter.next();
             currentBrick.printBrick();
         }
     }
@@ -280,20 +296,8 @@ public class BrickLibrary {
                     {
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
-                      /*String brickMode = contents.first().toString();
-                        contents = contents.rest();
-                        String brickType = contents.first().toString();
-                        contents = contents.rest();
-                        String brickKeyString = contents.first().toString();
-                        contents = contents.rest();
-                        long brickKeyNum = keyNameToNum(brickKeyString);
-                       
-                        // Create new brick using info gathered from text and
-                        // add to dictionary
-                        Brick currentBrick = new Brick(brickName, brickKeyNum,
-                                brickType, contents, dictionary, brickMode);
-                        dictionary.addBrick(currentBrick);
-                       */
+                        if (contents.first() instanceof Polylist)
+                            brickName += contents.first().toString();
                         
                         polymap.put(brickName, (Polylist)token);
                     }
@@ -312,31 +316,41 @@ public class BrickLibrary {
         }
 
         for (Polylist contents : polymap.values()) {
+            
             contents = contents.rest();
             String brickName = dashless(contents.first().toString());
             contents = contents.rest();
-            if (!dictionary.hasBrick(brickName)) {
-                
-                String brickMode = contents.first().toString();
+            
+            String brickQualifier = "";
+            if (contents.first() instanceof Polylist)
+            {
+                brickQualifier = ((Polylist)contents.first()).first().toString();
                 contents = contents.rest();
+                System.err.println(contents.first().toString());
+            }
+            
+            boolean hadBrick = dictionary.hasBrick(brickName);
+            
+            String brickMode = contents.first().toString();
+            contents = contents.rest();
                 
-                String brickType = contents.first().toString();
-                contents = contents.rest();
-                if (!dictionary.hasType(brickType))
-                    ErrorLog.log(ErrorLog.WARNING, brickName + " is of "
+            String brickType = contents.first().toString();
+            contents = contents.rest();
+            if (!dictionary.hasType(brickType))
+                ErrorLog.log(ErrorLog.WARNING, brickName + " is of "
                             + "uninitialized type " + brickType + 
                             "; will register as non-brick");
                 
-                String brickKeyString = contents.first().toString();
-                contents = contents.rest();
-                long brickKeyNum = keyNameToNum(brickKeyString);
+            String brickKeyString = contents.first().toString();
+            contents = contents.rest();
+            long brickKeyNum = keyNameToNum(brickKeyString);
                 
-                Brick currentBrick = new Brick(brickName, brickKeyNum,
-                           brickType, contents, dictionary, brickMode, polymap);
-                dictionary.addBrick(currentBrick);
+            Brick currentBrick = new Brick(brickName, brickQualifier, brickKeyNum,
+                       brickType, contents, dictionary, brickMode, polymap);
+            dictionary.addBrick(currentBrick);
                 
                 // special rule for creating overruns
-                if (brickType.equals("Cadence")) {
+                if (brickType.equals("Cadence") && hadBrick) {
                     String overrunName = brickName + " Overrun";
                     long overrunKeyNum = brickKeyNum;
                     String overrunType = "Overrun";
@@ -358,7 +372,7 @@ public class BrickLibrary {
                     Brick overrun = new Brick(overrunName, overrunKeyNum,
                             overrunType, overrunBlocks, overrunMode);
                     dictionary.addBrick(overrun);
-                }
+            
             }
             
             
@@ -391,7 +405,7 @@ public class BrickLibrary {
             
             out.write("\n\n\\\\ Brick Definitions\n\n");
             
-            for (Brick brick : brickMap.values())
+            for (Brick brick : getMap())
             {
                 out.write(brick.toPolylist().toString());
                 out.write("\n\n");

@@ -40,6 +40,8 @@ public class Brick extends Block {
     
     private ArrayList<Block> subBlocks; // Components of a brick
     private String type;                // The class of brick (e.g. "Cadence")
+    private String qualifier = "";
+    
     /** Brick / 6
      * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
      * to build the definition of the brick.
@@ -51,11 +53,55 @@ public class Brick extends Block {
      * @param bricks, a BrickLibrary
      * @param m, the mode (a String)
      */
-     public Brick(String brickName, long brickKey, String brickType, 
+     public Brick(String brickName, String brickQualifier, long brickKey, String brickType,
+         Polylist contents, BrickLibrary bricks, String m) {
+         super(brickName, brickKey, m);
+         qualifier = brickQualifier;
+         subBlocks = new ArrayList<Block>();
+         this.addSubBlocks(contents, bricks);
+         type = brickType;
+         duration = this.getDuration();
+         isEnd = isSectionEnd();
+     }
+     
+    /** Brick / 6
+     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
+     * to build the definition of the brick.
+     * 
+     * @param brickName, a String
+     * @param brickKey, a long
+     * @param brickType, a String
+     * @param contents, a Polylist describing bricks and chords
+     * @param bricks, a BrickLibrary
+     * @param m, the mode (a String)
+     */
+     public Brick(String brickName, long brickKey, String brickType,
          Polylist contents, BrickLibrary bricks, String m) {
          super(brickName, brickKey, m);
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks);
+         type = brickType;
+         duration = this.getDuration();
+         isEnd = isSectionEnd();
+     }
+     
+         /** Brick / 7
+     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
+     * to build the definition of the brick.
+     * 
+     * @param brickName, a String
+     * @param brickKey, a long
+     * @param brickType, a String
+     * @param contents, a Polylist describing bricks and chords
+     * @param bricks, a BrickLibrary
+     */
+     public Brick(String brickName, String brickQualifier, long brickKey, String brickType, 
+             Polylist contents, BrickLibrary bricks, String m, 
+             LinkedHashMap<String, Polylist> polymap) {
+         super(brickName, brickKey, m);
+         qualifier = brickQualifier;
+         subBlocks = new ArrayList<Block>();
+         this.addSubBlocks(contents, bricks, polymap);
          type = brickType;
          duration = this.getDuration();
          isEnd = isSectionEnd();
@@ -92,6 +138,27 @@ public class Brick extends Block {
      * @param contents, an ArrayList of component blocks
      * @param m, the mode as a String
      */
+    public Brick(String brickName, String brickQualifier, long brickKey, String brickType, 
+            ArrayList<Block> contents, String m) {
+        super(brickName, brickKey, m);
+        qualifier = brickQualifier;
+        subBlocks = contents;
+        type = brickType;
+        duration = this.getDuration();
+        isEnd = isSectionEnd();
+    }
+    
+    
+    /** Brick / 5
+     * As with the constructor above, but without taking in a BrickLibrary for
+     * defining bricks
+     * 
+     * @param brickName, a String
+     * @param brickKey, a long
+     * @param brickType, a String
+     * @param contents, an ArrayList of component blocks
+     * @param m, the mode as a String
+     */
     public Brick(String brickName, long brickKey, String brickType, 
             ArrayList<Block> contents, String m) {
         super(brickName, brickKey, m);
@@ -100,7 +167,6 @@ public class Brick extends Block {
         duration = this.getDuration();
         isEnd = isSectionEnd();
     }
-    
 
     /** Brick / 1
      * Copy constructor for a brick. Makes a deep copy.
@@ -419,6 +485,11 @@ public class Brick extends Block {
         }
         
         return dur;
+    }
+    
+    public String getQualifier() 
+    {
+        return this.qualifier;
     }
     
     // Returns the individual chords that constitute this brick

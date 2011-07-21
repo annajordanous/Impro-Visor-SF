@@ -205,7 +205,7 @@ public class CYKParser
      * @param lib: a BrickLibrary
      */
     public void createRules(BrickLibrary lib) {
-        Collection<Brick> bricks = lib.getMap();
+        Collection<Brick> bricks = lib.getFullMap();
         Iterator bIter = bricks.iterator();
         while (bIter.hasNext()) {
             Brick b = (Brick)bIter.next();

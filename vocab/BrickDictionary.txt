@@ -4,10 +4,11 @@
 (brick-type Cadence    30)
 (brick-type Dropback   30)
 (brick-type Overrun    30)
-(brick-type On-Off   1000)
+(brick-type On-Off    950)
 (brick-type Opening    25)
 (brick-type Turnaround 20)
 (brick-type Misc       40)
+(brick-type Unary     100)
 
 // Major bricks
 
@@ -92,10 +93,6 @@
 (Brick Extended Major Cadence C
 	(Brick Extended-Approach C 3)
 	(Chord CM7 1))
-
-(Brick Extended-Major-Cadence-with-Overrun Major Cadence C
-	(Brick Extended C 4)
-	(Chord F 1))
 
 (Brick Extended-Approach Major Approach C
 	(Chord A7 1)
@@ -229,26 +226,26 @@
 	(Brick Nowhere-Approach C 2)
         (Chord CM7 1))
 
-(Brick POT Major Turnaround C
+(Brick POT(standard) Major Turnaround C
 	(Chord C 1)
         (Chord Am 1)
 	(Brick Straight-Approach C 2))
 
-(Brick POT-Altered Major Turnaround C
+(Brick POT(variant) Major Turnaround C
 	(Brick Dropback C 2)
 	(Brick Straight-Approach C 2))
-
-(Brick POT-Altered-Cadence Major Turnaround C
-	(Brick POT-Altered C 4)
-	(Chord C 1))
 
 (Brick POT-Cadence Major Turnaround C
 	(Brick POT C 4)
 	(Chord C 1))
 
-(Brick POT-Minor minor Turnaround C
+(Brick POT-Minor(standard) minor Turnaround C
 	(Brick Dropback-Minor C 2)
 	(Brick Sad-Approach C 2))
+
+(Brick POT-Minor(variant) minor Turnaround C
+        (Brick Dropback-Minor C 2)
+        (Brick Straight-Approach-Minor C 2))
 
 (Brick POT-Minor-Cadence minor Turnaround C
 	(Brick POT-Minor C 4)
@@ -293,7 +290,7 @@
 	(Chord Em 1)
 	(Chord FM7 2))
 
-(Brick Rainbow-Variant-Dominant-Overrun Major Cadence C
+(Brick Rainbow-Variant-Dominant-Overrun Major Overrun C
         (Chord CM7 1)
         (Chord E7 1)
         (Chord FM7 1)

@@ -43,7 +43,6 @@ public class TreeNode {
     public static final double CHORD_COST = 1000;
     public static final double CHORD_SUB_COST = 1050;
     public static final double OVERLAP_COST = 100;
-    public static String MODIFIER = "!";
     
     // Constructors for TreeNodes
     
@@ -306,11 +305,6 @@ public class TreeNode {
     }
     
     public String getSymbol()
-    {
-        return symbol.split(MODIFIER)[0];
-    }
-    
-    public String getExactSymbol()
     {
         return symbol;
     }
