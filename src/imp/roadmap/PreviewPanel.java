@@ -83,11 +83,6 @@ public class PreviewPanel extends JPanel
         this.buffer = buffer;
     }
     
-    public void resetBuffer()
-    {
-        this.buffer = null;
-    }
-    
     public void setBrick(Block brick)
     {
         RoadMapSettings settings = view.getSettings();

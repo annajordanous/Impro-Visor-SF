@@ -152,7 +152,6 @@ public class RoadMapPanel extends JPanel{
     
     public void addBlocksBeforeSelection(ArrayList<Block> blocks)
     {
-        System.out.println("Selection from " + selectionStart + " to " + selectionEnd);
         if(selectionStart != -1 && selectionEnd != -1) {
             addBlocks(selectionStart, blocks);
             selectionStart+=blocks.size();
@@ -484,11 +483,6 @@ public class RoadMapPanel extends JPanel{
     public void setBuffer(Image buffer)
     {
         this.buffer = buffer;
-    }
-    
-    public void resetBuffer()
-    {
-        this.buffer = null;
     }
     
     public void draw()

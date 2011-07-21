@@ -30,6 +30,7 @@ import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.awt.event.ComponentListener;
 
 import imp.brickdictionary.*;
 import imp.cykparser.*;
@@ -85,7 +86,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private int bufferWidth  = 1024;
     private int bufferHeight = 200;
     
-    private int RMbufferWidth  = 2048;
+    private int RMbufferWidth  = 1920;
     private int RMbufferHeight = 1920;
    
     private DefaultTreeModel libraryTreeModel;
@@ -101,7 +102,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     private RoadMapFrame() {} // Not for you.
     
-    /** Creates new form AltRoadMapFrame */
+    /** Creates new form RoadMapFrame */
     public RoadMapFrame(Notate notate) {
         
         this.notate = notate;
@@ -303,6 +304,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
         setTitle("Road Map\n"); // NOI18N
         setMinimumSize(new java.awt.Dimension(830, 600));
         setName("Form"); // NOI18N
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                roadMapWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         toolBar.setFloatable(false);
@@ -1193,6 +1199,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
+
+    private void roadMapWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_roadMapWindowClosing
+        closeWindow();
+    }//GEN-LAST:event_roadMapWindowClosing
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1220,6 +1230,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
         }
     }
     
+    private void disposeBuffers()
+    {
+        bufferPreviewPanel = null;
+        bufferRoadMap = null;
+        previewPanel.setBuffer(null);
+        roadMapPanel.setBuffer(null);
+    }
 
     /** setBackground <p>
      * Paints the image white.
@@ -1832,9 +1849,11 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
 public void closeWindow()
   {
-  setVisible(false);
-
   WindowRegistry.unregisterWindow(this);
+  
+  disposeBuffers();
+          
+  dispose();
   }
 
 /**
