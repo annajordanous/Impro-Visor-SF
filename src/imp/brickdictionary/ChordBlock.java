@@ -224,6 +224,18 @@ public class ChordBlock extends Block {
     public long moduloSteps(long l) {
         return (l + 12)%12;
     }
+
+    @Override
+    public final boolean isChord()
+    {
+        return true;
+    }
+    
+    @Override
+    public final boolean isBrick()
+    {
+        return false;
+    }
     
 /**
  * returns a Polylist representation of a ChordBlock

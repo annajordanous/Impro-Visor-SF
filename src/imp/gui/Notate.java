@@ -22723,6 +22723,7 @@ public void roadMapThisAnalyze()
 public void openEmptyRoadmap()
   {
     establishRoadMapFrame();
+    roadmapFrame.setRoadMapTitle("Untitled");
     roadmapFrame.setVisible(true);
   }
 

@@ -131,6 +131,16 @@ public class Block {
     public void setSectionEnd(Boolean value) {
         isEnd = value;
     }
+   
+    public boolean isChord() 
+    {
+        return false;
+    }
+    
+    public boolean isBrick()
+    {
+        return false;
+    }
     
 /**
  * This will be overridden in derived classes

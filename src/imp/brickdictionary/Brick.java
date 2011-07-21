@@ -583,6 +583,18 @@ public class Brick extends Block {
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
 
+    @Override
+    public final boolean isChord()
+    {
+        return false;
+    }
+    
+    @Override
+    public final boolean isBrick()
+    {
+        return true;
+    }
+    
 /** 
  * Returns a Polylist representation of a Brick.
  * @return 

@@ -288,7 +288,7 @@ public class GraphicBrick {
         int fontOffset = (blockHeight + metrics.getAscent())/2;
         long currentBeats = 0;
         
-        if(chords.size() > 1) {
+        if(block.isBrick()) {
             g2d.setColor(settings.textColor);
             String name = trimString(block.getName(),cutoff - x, metrics);
             g2d.drawString(name, x+2, y+blockHeight + fontOffset);
