@@ -22,6 +22,7 @@
 
 package imp.brickdictionary;
 
+import imp.cykparser.PostProcessing;
 import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -225,6 +226,30 @@ public class Brick extends Block {
         }
         isEnd = isSectionEnd();
     }
+    
+    public Brick(ChordBlock c, String m) {
+        super("Launcher");
+        key = (c.getKey() + PostProcessing.DOM_ADJUST) % PostProcessing.OCTAVE;
+        type = "Launcher";
+        ArrayList<Block> singleton = new ArrayList<Block>();
+        singleton.add(c);
+        subBlocks = singleton;
+        duration = c.getDuration();
+        mode = m;
+        isEnd = c.isSectionEnd();
+    }
+    
+//    public Brick(ChordBlock c, KeySpan ks) {
+//        super("Off");
+//        key = ks.getKey();
+//        type = "Off";
+//        ArrayList<Block> singleton = new ArrayList<Block>();
+//        singleton.add(c);
+//        subBlocks = singleton;
+//        duration = c.getDuration();
+//        mode = ks.getMode();
+//        isEnd = c.isSectionEnd();
+//    }
   
     private static String modeHelper(List<Block> brickList, long key)
     {

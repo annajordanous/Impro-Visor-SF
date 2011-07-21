@@ -142,6 +142,10 @@ public class Block {
         return false;
     }
     
+    public void setName(String s) {
+        this.name = s;
+    }
+    
 /**
  * This will be overridden in derived classes
  * @return 

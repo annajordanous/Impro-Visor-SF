@@ -212,9 +212,7 @@ public class BrickLibrary {
             return 11;
         else
         {
-            System.err.println("keyNameToNum: Incorrect key formatting " 
-                    + keyName);
-            System.exit(-1);
+            ErrorLog.log(ErrorLog.FATAL, "Incorrect key formatting: " + keyName);
             return 0;
         }
     }
@@ -286,7 +284,6 @@ public class BrickLibrary {
                                             + "cost for brick type" + type);
                                     dictionary.addType(type);
                                 }
-                                            
                             }
                         }
                     }
@@ -298,7 +295,6 @@ public class BrickLibrary {
                         contents = contents.rest();
                         if (contents.first() instanceof Polylist)
                             brickName += contents.first().toString();
-                        
                         polymap.put(brickName, (Polylist)token);
                     }
                     else

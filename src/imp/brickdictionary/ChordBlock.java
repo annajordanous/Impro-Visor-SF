@@ -133,6 +133,16 @@ public class ChordBlock extends Block {
         return chord.getChordSymbol().getQuality();
     }
     
+    public boolean isDiminished() {
+        boolean dim = false;
+        
+        if(this.getSymbol().startsWith("dim") || this.getSymbol().startsWith("o")) {
+            dim = true;
+        }
+        
+        return dim;
+    }
+    
     public boolean isSlashChord() {
         return chord.getChordSymbol().isSlashChord();
     }
@@ -256,7 +266,7 @@ public class ChordBlock extends Block {
      */
     public final String findModeFromQuality() {
         String m;
-        String q = this.getQuality();
+        String q = this.getSymbol();
         
         if(q.startsWith("M") || q.equals("") || q.startsWith("6"))
             m = "Major";
