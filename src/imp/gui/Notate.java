@@ -2166,6 +2166,7 @@ public class Notate
         fileMenu = new javax.swing.JMenu();
         aboutMI = new javax.swing.JMenuItem();
         jSeparator22 = new javax.swing.JSeparator();
+        createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         newMI = new javax.swing.JMenuItem();
         openLeadsheetMI = new javax.swing.JMenuItem();
         openRecentLeadsheetMenu = new javax.swing.JMenu();
@@ -7319,6 +7320,11 @@ public class Notate
         });
         fileMenu.add(aboutMI);
         fileMenu.add(jSeparator22);
+
+        createRoadMapCheckBox.setSelected(true);
+        createRoadMapCheckBox.setText("Create road map");
+        createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
+        fileMenu.add(createRoadMapCheckBox);
 
         newMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newMI.setMnemonic('n');
@@ -21816,6 +21822,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem copyMelodySelectionToTextWindow;
     private javax.swing.JCheckBox countInCheckBox;
     private javax.swing.JPanel countInPanel;
+    private javax.swing.JCheckBoxMenuItem createRoadMapCheckBox;
     private javax.swing.JPanel currentStyleTab;
     private javax.swing.JButton cutBothBtn;
     private javax.swing.JMenuItem cutBothMI;
@@ -22652,7 +22659,10 @@ public void makeVisible()
     setNotateFrameHeight(this);
     setVisible(true);
     staveRequestFocus();
- 
+    if( createRoadMapCheckBox.isSelected() )
+      {
+      roadMapThisAnalyzeAction(null);
+      }
   }
 }
 

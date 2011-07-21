@@ -6144,6 +6144,13 @@
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator22">
             </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="createRoadMapCheckBox">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Create road map"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create roadmap of leadsheet if checked."/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="newMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
