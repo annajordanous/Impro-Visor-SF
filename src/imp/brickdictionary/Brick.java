@@ -417,7 +417,7 @@ public class Brick extends Block {
                                 brickType, tokens, bricks, brickMode, polymap);
                             subBrick.transpose(
                                     Arith.long2int(subBrickKeyNum - brickKeyNum));
-                            subBrick.adjustDuration(dur);
+                            subBrick.adjustBrickDuration(dur);
                         }
                         else
                         {
@@ -471,6 +471,8 @@ public class Brick extends Block {
         return this.type;
     }
     
+    
+    
     // Sum the durations of a brick's subblocks
     @Override
     public final int getDuration() {
@@ -484,7 +486,10 @@ public class Brick extends Block {
                 dur += ((Brick)b).getDuration();
         }
         
-        return dur;
+        duration = dur;
+        
+        return duration;
+
     }
     
     public String getQualifier() 
@@ -536,7 +541,7 @@ public class Brick extends Block {
     // Create new brick from an original with specified duration
     public void adjustBrickDuration(int newDuration) {
         float newDurFloat = newDuration;
-        float ratio = newDurFloat / this.getDuration();
+        float ratio = (newDurFloat / this.getDuration());
 
         List<Block> currentSubBlocks = this.getSubBlocks();
         Iterator<Block> subBlockIter = currentSubBlocks.iterator();
@@ -554,14 +559,12 @@ public class Brick extends Block {
                 int newDur = 
                         Math.round(ratio * adjustedSubBrick.getDuration());
                 adjustedSubBrick.adjustBrickDuration(newDur);
-                adjustedSubBrick.duration = 
-                        adjustedSubBrick.getDuration();
                 adjustedSubBlocks.add(adjustedSubBrick);
             }
         }
         
         this.subBlocks = adjustedSubBlocks;
-        this.duration = this.getDuration();
+        this.getDuration();
     }
     
     @Override
