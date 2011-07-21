@@ -192,4 +192,13 @@ public class RoadMapSettings {
         long endX = (b%getSlotsPerLine());
         return new long[]{endX, lines};
     }
+
+    public static String trimString(String string, int length, FontMetrics metrics)
+    {
+        int stringLength = metrics.stringWidth(string);
+        if(stringLength < length)
+            return string;
+        //System.out.println(string+" is too long. Length: " + stringLength + " Desired: " + length);
+        return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
+    }
 }

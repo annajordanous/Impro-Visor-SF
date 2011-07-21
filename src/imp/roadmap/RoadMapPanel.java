@@ -639,6 +639,7 @@ public class RoadMapPanel extends JPanel{
             long key = keySpan.getKey();
             String keyName = BrickLibrary.keyNumToName(key) + keySpan.getMode();
             long dur = keySpan.getDuration();
+            int cutoff = settings.getCutoff();
             
             Color keyColor = settings.brickBGColor;
             
@@ -664,13 +665,13 @@ public class RoadMapPanel extends JPanel{
             
             if(lines > 0) {
                 g2d.setColor(keyColor);
-                g2d.fillRect(x, y, settings.getCutoff() - x, blockHeight);
+                g2d.fillRect(x, y, cutoff - x, blockHeight);
                 g2d.fillRect(settings.xOffset, endY,
                         endX-settings.xOffset, blockHeight);
                 
                 g2d.setColor(settings.lineColor);
-                g2d.drawLine(x,y,settings.getCutoff(),y);
-                g2d.drawLine(x,y+blockHeight,settings.getCutoff(),y+blockHeight);
+                g2d.drawLine(x,y,cutoff,y);
+                g2d.drawLine(x,y+blockHeight,cutoff,y+blockHeight);
                 
                 g2d.drawLine(settings.xOffset, endY, endX, endY);
                 g2d.drawLine(settings.xOffset, endY+blockHeight,
@@ -683,11 +684,11 @@ public class RoadMapPanel extends JPanel{
                     g2d.setColor(settings.lineColor);
                     g2d.drawLine(settings.xOffset,
                             y+line*settings.getLineOffset(),
-                            settings.getCutoff(),
+                            cutoff,
                             y+line*settings.getLineOffset());
                     g2d.drawLine(settings.xOffset,
                             y+line*settings.getLineOffset() + blockHeight,
-                            settings.getCutoff(),
+                            cutoff,
                             y+line*settings.getLineOffset() + blockHeight);
                 }
             } else {
@@ -703,6 +704,8 @@ public class RoadMapPanel extends JPanel{
             g2d.drawLine(x, y, x, y+blockHeight);
             
             g2d.setColor(settings.textColor);
+            keyName = RoadMapSettings.trimString(keyName, cutoff - x, metrics);
+            keyName = RoadMapSettings.trimString(keyName, settings.getLength(dur), metrics);
             g2d.drawString(keyName, x+2, y+fontOffset);
     }
         

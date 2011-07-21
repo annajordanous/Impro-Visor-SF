@@ -177,14 +177,6 @@ public class GraphicBrick {
         return settings.getBlockLength(block);
     }
     
-    private String trimString(String string, int length, FontMetrics metrics)
-    {
-        int stringLength = metrics.stringWidth(string);
-        if(stringLength < length)
-            return string;
-        return string.substring(0, (string.length() * length)/stringLength - 1);
-    }
-    
     /* Drawing and junk lies below. DANGER: Extreme ugliness ahead */
     
     /**
@@ -288,11 +280,6 @@ public class GraphicBrick {
         int fontOffset = (blockHeight + metrics.getAscent())/2;
         long currentBeats = 0;
         
-        if(block.isBrick()) {
-            g2d.setColor(settings.textColor);
-            String name = trimString(block.getName(),cutoff - x, metrics);
-            g2d.drawString(name, x+2, y+blockHeight + fontOffset);
-        }
         
         g2d.setStroke(settings.basicLine);
         
@@ -343,10 +330,30 @@ public class GraphicBrick {
             }
             
             g2d.setColor(settings.textColor);
-            g2d.drawString(chord.getName(), currentX+2, currentY + fontOffset);
+            String name = RoadMapSettings.trimString(chord.getName(),length,metrics);
+            g2d.drawString(name, currentX+2, currentY + fontOffset);
             
             currentBeats += chord.getDuration();
             ind++;
+        }
+        
+        if(block.isBrick()) {
+            int totalLength = settings.getBlockLength(block);
+            
+            String name = block.getName();
+            
+            if(isSelected && false) { //TODO make this work properly
+                g2d.setColor(settings.selectedColor);
+                g2d.fillRect(x+2, y+blockHeight, metrics.stringWidth(name)+2, blockHeight);
+                g2d.setColor(settings.lineColor);
+                g2d.drawRect(x, y+blockHeight, metrics.stringWidth(name)+3, blockHeight);
+            } else {
+                name = RoadMapSettings.trimString(name,cutoff - x, metrics);
+                name = RoadMapSettings.trimString(name,totalLength, metrics);
+            }
+            
+            g2d.setColor(settings.textColor);
+            g2d.drawString(name, x+2, y+blockHeight + fontOffset);
         }
     }
     
@@ -374,8 +381,7 @@ public class GraphicBrick {
 
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
 
-        if( chords.size() > 1 )   // distinguish between chords and bricks
-        {                               // possibly unideal
+        if( block.isBrick() ) {
             g.setColor(settings.textColor);
             
             //Key
@@ -388,8 +394,7 @@ public class GraphicBrick {
         }
         int xOffset = 0;
 
-        for( ChordBlock chord : chords )
-        {      
+        for( ChordBlock chord : chords ) {      
             g.setColor(settings.lineColor);
             int length = settings.getBlockLength(chord);
             g.drawRect(x+xOffset, y+2*blockHeight, length, blockHeight);
