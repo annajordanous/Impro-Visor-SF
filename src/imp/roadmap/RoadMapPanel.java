@@ -152,14 +152,13 @@ public class RoadMapPanel extends JPanel{
     
     public void addBlocksBeforeSelection(ArrayList<Block> blocks)
     {
+        System.out.println("Selection from " + selectionStart + " to " + selectionEnd);
         if(selectionStart != -1 && selectionEnd != -1) {
-            roadMap.addAll(selectionStart, blocks);
-            graphicMap.addAll(selectionStart, makeBricks(blocks));
+            addBlocks(selectionStart, blocks);
             selectionStart+=blocks.size();
             selectionEnd+=blocks.size();
         } else {
-            roadMap.addAll(blocks);
-            graphicMap.addAll(selectionStart, makeBricks(blocks));
+            addBlocks(blocks);
         }
     }
             

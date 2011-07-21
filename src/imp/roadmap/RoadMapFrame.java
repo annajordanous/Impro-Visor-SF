@@ -95,7 +95,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
     
-    private static String roadmapTitlePrefix = "RoadMap: ";
+    private static String roadMapTitlePrefix = "RoadMap: ";
     
     public String roadMapTitle = "Untitled Roadmap";
 
@@ -124,8 +124,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         deactivateButtons();
         
-        roadMapTitle = notate.getTitle();
-        this.setTitle(roadmapTitlePrefix + roadMapTitle);
+        setRoadMapTitle(notate.getTitle());
         
         settings.beatsPerMeasure = notate.getTimeSigTop();
         settings.slotsPerMeasure = notate.getBeatValue()*notate.getTimeSigTop();
@@ -1168,7 +1167,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_transposeUpMenuItemActionPerformed
 
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
-        
         closeWindow();
     }//GEN-LAST:event_closeWindowMIActionPerformed
 
@@ -1242,6 +1240,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         setBackground(bufferPreviewPanel);
         setBackground(bufferRoadMap);
+    }
+ 
+    public void setRoadMapTitle(String title)
+    {
+        setTitle(roadMapTitlePrefix + title);
+        roadMapTitle = title;
+        roadMapPanel.draw();
     }
     
     public RoadMapSettings getSettings()
