@@ -236,6 +236,10 @@ public class PrintUtilities implements Printable {
             g2.drawImage(subImage, null, 0,topOfNextPage);
             response= Printable.PAGE_EXISTS;
         }
+        System.out.println("numStavesPerPage: "+ numStavesPerPage);
+        System.out.println("totalNumPage: " + totalNumPages);
+        System.out.println("numLines"+ numLines);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         return response;
     }
 

@@ -482,7 +482,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="stavesPerPageLabel">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Staves Per Page:"/>
+                    <Property name="text" type="java.lang.String" value="Print Staves Per Page:"/>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -6342,6 +6342,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="printAllMI">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+Ctrl+P"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Print All Choruses"/>
               </Properties>
               <Events>

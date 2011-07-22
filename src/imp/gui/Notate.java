@@ -2615,7 +2615,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         defaultsTab.add(jLabel11, gridBagConstraints);
 
-        stavesPerPageLabel.setText("Staves Per Page:");
+        stavesPerPageLabel.setText("Print Staves Per Page:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -7509,6 +7509,7 @@ public class Notate
         });
         fileMenu.add(printMI);
 
+        printAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         printAllMI.setText("Print All Choruses");
         printAllMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -16534,7 +16535,7 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 
-      PrintUtilities.printComponent(getCurrentStave(), lockedMeasures.length, numStavesPP);
+      PrintUtilities.printComponent(getCurrentStave(), staveScrollPane[currTabIndex].getNumLines(), numStavesPP);
 
 
       // printAllStaves();
@@ -16567,7 +16568,7 @@ private void pasteMelody(Part part, Stave stave)
    {
        setUpStavesToPrint(component[i]);
    }
-    PrintUtilities.printMultipleComponents(component, lockedMeasures.length, numStavesPP);
+    PrintUtilities.printMultipleComponents(component, staveScrollPane[currTabIndex].getNumLines(), numStavesPP);
    }
  
  private void setUpStavesToPrint(Stave stv)
