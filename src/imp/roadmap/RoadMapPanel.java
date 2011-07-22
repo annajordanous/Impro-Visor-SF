@@ -89,16 +89,14 @@ public class RoadMapPanel extends JPanel{
     public void placeBricks()
     {
         long currentSlots = 0;
-        long lines = 0;
+        int lines = 0;
         long lineBeats = 0;
         
         sectionBreaks.clear();
         
         for( GraphicBrick brick : graphicMap ) {
-            int x = settings.getLength(lineBeats) + settings.xOffset;
-            int y = (int)(lines*settings.getLineOffset()) + settings.yOffset;
-            brick.setPos(x,y);
-            
+            brick.setSlot(lineBeats);
+            brick.setLine(lines);
             currentSlots += brick.getBrick().getDuration();
             lineBeats += brick.getBrick().getDuration();
             
@@ -158,7 +156,22 @@ public class RoadMapPanel extends JPanel{
             selectionStart+=blocks.size();
             selectionEnd+=blocks.size();
         } else {
+            System.out.println("After bricks");
             addBlocks(blocks);
+        }
+    }
+    
+    public void addBlocksBeforeSelectionAndSelect(ArrayList<Block> blocks)
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            addBlocks(selectionStart, blocks);
+            //selectBrick(selectionStart);
+            //selectBricks(selectionStart+blocks.size()-1);
+        } else {
+            System.out.println("After bricks");
+            addBlocks(blocks);
+            selectBrick(roadMap.size() - blocks.size());
+            selectBricks(roadMap.size()-1);
         }
     }
             

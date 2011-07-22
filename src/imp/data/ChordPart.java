@@ -531,16 +531,9 @@ public ArrayList<Boolean> getSectionEnds()
     return result;
   }
 
-
-/**
- * Populate a RoadMapFrame with this ChordPart
- * @param roadmap 
- */
-
-public void toRoadMapFrame(RoadMapFrame roadmap)
-  {
-    ArrayList<ChordSymbol> chordSymbols = getChordSymbols();
-    ArrayList<Integer> durations = getChordDurations();
+public ArrayList<imp.brickdictionary.Block> toBlockList()
+{
+    ArrayList<imp.brickdictionary.Block> chords = new ArrayList();
 
     PartIterator i = iterator();
     Iterator<Boolean> sectionEnds = getSectionEnds().iterator();
@@ -553,11 +546,22 @@ public void toRoadMapFrame(RoadMapFrame roadmap)
 
         dictChord.setSectionEnd(sectionEnds.next());
 
-        roadmap.addChord(dictChord);
+        chords.add(dictChord);
       }
-
-    roadmap.endSection();
     
+    chords.get(chords.size()-1).setSectionEnd(true);
+    
+    return chords;
+}
+
+/**
+ * Populate a RoadMapFrame with this ChordPart
+ * @param roadmap 
+ */
+
+public void toRoadMapFrame(RoadMapFrame roadmap)
+  {
+    roadmap.addBlocks(0,toBlockList());
   }
 
 

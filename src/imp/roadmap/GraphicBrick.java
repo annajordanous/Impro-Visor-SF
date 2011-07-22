@@ -32,10 +32,11 @@ import imp.brickdictionary.*;
 public class GraphicBrick {
         
     private Block block;
-    private int x = 0;
-    private int y = 0;
     private boolean isSelected = false;
     private int selected = -1;
+    
+    private long slot = 0;
+    private int line = 0;
     
     private RoadMapSettings settings;
     
@@ -55,13 +56,23 @@ public class GraphicBrick {
         return block;
     }
     
+    public void setSlot(long slots)
+    {
+        slot = slots;
+    }
+    
+    public void setLine(int line)
+    {
+        this.line = line;
+    }
+    
     /**
      * returns the x position
      * @return the x position
      */
     public int x()
     {
-        return x;
+        return settings.xOffset + settings.getLength(slot);
     }
     
     /**
@@ -70,30 +81,9 @@ public class GraphicBrick {
      */
     public int y()
     {
-        return y;
+        return settings.yOffset + settings.getLineOffset()*line;
     }
-    
-    /**
-     * set the x and y coordinates of the brick
-     * @param x the new x coordinate
-     * @param y the new y coordinate
-     */
-    public void setPos(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-    
-    /**
-     * set the x and y coordinates of the brick
-     * @param point the point
-     */
-    public void setPos(Point point)
-    {
-        this.x = point.x;
-        this.y = point.y;
-    }
-    
+
     /**
      * returns whether or not the brick is currently selected
      * @return whether the brick is selected
@@ -144,8 +134,8 @@ public class GraphicBrick {
         
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
         
-        int xOffset = this.x;
-        int yOffset = this.y;
+        int xOffset = x();
+        int yOffset = y();
         int ind = 0;
 
         for( ChordBlock chord : chords ) {
@@ -206,17 +196,19 @@ public class GraphicBrick {
         int blockHeight = settings.getBlockHeight();
         int cutoff = settings.getCutoff();
         
-        int[] wrap = settings.wrap(x+settings.getBlockLength(block));
-        int endX = wrap[0]; //TODO : this is wrong. use total beats or something
-                            //We should be taking the endpoint from the number of beats somehow
-        int lines = wrap[1];
+        int x = settings.xOffset + settings.getLength(slot);
+        int y = settings.yOffset + settings.getLineOffset() * line;
+        
+        long[] wrap = settings.wrapFromSlots(slot+block.getDuration());
+        int endX = settings.xOffset + settings.getLength(wrap[0]);
+        long lines = wrap[1];
         
         if(endX == settings.xOffset) {  // This is to prevent the last line
             endX = cutoff;              // from being on the next line
             lines--;
         }
         
-        int endY = y+lines*settings.getLineOffset();
+        int endY = y+(int)(lines*settings.getLineOffset());
         
         Graphics2D g2d = (Graphics2D)g;
         g2d.setStroke(settings.brickOutline);
@@ -276,9 +268,15 @@ public class GraphicBrick {
     {
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
  
+        int x = settings.xOffset + settings.getLength(slot);
+        int y = settings.yOffset + (int)(line * settings.getLineOffset());
+        
+        System.out.println("--- Printing " + block.getName() +" at " + x + "---");
+        
         int blockHeight = settings.getBlockHeight();
         int cutoff = settings.getCutoff();
         int xOffset = settings.xOffset;
+        int yOffset = settings.yOffset;
         
         Graphics2D g2d = (Graphics2D)g;
         FontMetrics metrics = g2d.getFontMetrics();
@@ -293,16 +291,18 @@ public class GraphicBrick {
         int ind = 0;
         
         for( ChordBlock chord : chords ) {
-            int[] wrap = settings.wrap(x + settings.getLength(currentBeats));
-            int currentX = wrap[0];
-            int currentY = y + wrap[1] * settings.getLineOffset() + 2*blockHeight;
+            //int[] wrap = settings.wrap(x + settings.getLength(currentBeats+1));
+            long[] wrap = settings.wrapFromSlots(slot+currentBeats);
+            int currentX = xOffset+settings.getLength(wrap[0]);
+            int currentY = yOffset + (int)((line + wrap[1]) * settings.getLineOffset()) + 2*blockHeight;
             
-            int length = settings.getBlockLength(chord);
-            int[] endWrap = settings.wrap(x + settings.getLength(currentBeats+chord.getDuration()));
-            int endX = endWrap[0]; // TODO : wrong, use total beats or something
-            int lines = endWrap[1];
+            long[] endWrap = settings.wrapFromSlots(slot+currentBeats+chord.getDuration());
+            int endX = xOffset + settings.getLength(endWrap[0]);
+            int lines = (int)(endWrap[1] - wrap[1]);
             
-            g2d.setColor(settings.lineColor);
+            System.out.println("Start x " + currentX);
+            System.out.println("End x: " + endX + " Lines: " + lines);
+            
             if(lines > 0) {
                 if(selected == ind) {
                     g2d.setColor(settings.selectedColor);
@@ -310,13 +310,13 @@ public class GraphicBrick {
                             cutoff-currentX-1, blockHeight-1);
                     g2d.fillRect(xOffset, currentY+lines*settings.getLineOffset(),
                             endX-xOffset-1, blockHeight-1);
+                    
                     for(int line = 1; line < lines; line++) {
                         g2d.fillRect(xOffset, currentY + line*settings.getLineOffset(),
                                 cutoff-xOffset, blockHeight-1);
                     }
-                    g2d.setColor(settings.lineColor);
                 }
-                
+                g2d.setColor(settings.lineColor);
                 g2d.drawLine(currentX, currentY, cutoff, currentY);
                 g2d.drawLine(xOffset, currentY + lines*settings.getLineOffset(),
                         endX, currentY + lines*settings.getLineOffset());
@@ -335,7 +335,9 @@ public class GraphicBrick {
             }
             
             g2d.setColor(settings.textColor);
-            String name = RoadMapSettings.trimString(chord.getName(),length,metrics);
+            String name = RoadMapSettings.trimString(chord.getName(),
+                    settings.getBlockLength(chord), metrics);
+            name = RoadMapSettings.trimString(name, cutoff-currentX, metrics);
             g2d.drawString(name, currentX+2, currentY + fontOffset);
             
             currentBeats += chord.getDuration();

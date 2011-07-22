@@ -194,12 +194,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
         deleteMenuItem = new javax.swing.JMenuItem();
         flattenMenuItem = new javax.swing.JMenuItem();
         breakMenuItem = new javax.swing.JMenuItem();
-        toggleSectionMenuItem = new javax.swing.JMenuItem();
-        togglePhraseMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         transposeMenu = new javax.swing.JMenu();
         transposeDownMenuItem = new javax.swing.JMenuItem();
         transposeUpMenuItem = new javax.swing.JMenuItem();
+        sectionMenu = new javax.swing.JMenu();
+        toggleSectionMenuItem = new javax.swing.JMenuItem();
+        togglePhraseMenuItem = new javax.swing.JMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -722,7 +723,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         editMenu.setText("Edit"); // NOI18N
         editMenu.setName("editMenu"); // NOI18N
 
-        selectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        selectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, 0));
         selectAllMenuItem.setText("Select All"); // NOI18N
         selectAllMenuItem.setName("selectAllMenuItem"); // NOI18N
         selectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -735,7 +736,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jSeparator1.setName("jSeparator1"); // NOI18N
         editMenu.add(jSeparator1);
 
-        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, 0));
         undoMenuItem.setText("Undo"); // NOI18N
         undoMenuItem.setName("undoMenuItem"); // NOI18N
         undoMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -745,7 +746,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(undoMenuItem);
 
-        redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, 0));
         redoMenuItem.setText("Redo"); // NOI18N
         redoMenuItem.setName("redoMenuItem"); // NOI18N
         redoMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -758,7 +759,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         jSeparator2.setName("jSeparator2"); // NOI18N
         editMenu.add(jSeparator2);
 
-        cutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.META_MASK));
+        cutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 0));
         cutMenuItem.setText("Cut"); // NOI18N
         cutMenuItem.setName("cutMenuItem"); // NOI18N
         cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -768,7 +769,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(cutMenuItem);
 
-        copyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.META_MASK));
+        copyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, 0));
         copyMenuItem.setText("Copy"); // NOI18N
         copyMenuItem.setName("copyMenuItem"); // NOI18N
         copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -778,7 +779,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(copyMenuItem);
 
-        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.META_MASK));
+        pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, 0));
         pasteMenuItem.setText("Paste"); // NOI18N
         pasteMenuItem.setName("pasteMenuItem"); // NOI18N
         pasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -792,7 +793,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         editMenu.add(jSeparator3);
 
         deleteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
-        deleteMenuItem.setText("Delete Brick"); // NOI18N
+        deleteMenuItem.setText("Delete Selection"); // NOI18N
         deleteMenuItem.setName("deleteMenuItem"); // NOI18N
         deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -801,7 +802,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(deleteMenuItem);
 
-        flattenMenuItem.setText("Flatten Brick"); // NOI18N
+        flattenMenuItem.setText("Flatten Selection"); // NOI18N
         flattenMenuItem.setName("flattenMenuItem"); // NOI18N
         flattenMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -810,7 +811,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(flattenMenuItem);
 
-        breakMenuItem.setText("Break Brick"); // NOI18N
+        breakMenuItem.setText("Break Selection"); // NOI18N
         breakMenuItem.setName("breakMenuItem"); // NOI18N
         breakMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -818,26 +819,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         editMenu.add(breakMenuItem);
-
-        toggleSectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
-        toggleSectionMenuItem.setText("Toggle Section"); // NOI18N
-        toggleSectionMenuItem.setName("toggleSectionMenuItem"); // NOI18N
-        toggleSectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toggleSectionMenuItemActionPerformed(evt);
-            }
-        });
-        editMenu.add(toggleSectionMenuItem);
-
-        togglePhraseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
-        togglePhraseMenuItem.setText("Toggle Phrase"); // NOI18N
-        togglePhraseMenuItem.setName("togglePhraseMenuItem"); // NOI18N
-        togglePhraseMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                togglePhraseMenuItemActionPerformed(evt);
-            }
-        });
-        editMenu.add(togglePhraseMenuItem);
 
         jSeparator4.setName("jSeparator4"); // NOI18N
         editMenu.add(jSeparator4);
@@ -868,6 +849,31 @@ public class RoadMapFrame extends javax.swing.JFrame {
         transposeMenu.add(transposeUpMenuItem);
 
         roadmapMenuBar.add(transposeMenu);
+
+        sectionMenu.setText("Sections"); // NOI18N
+        sectionMenu.setName("sectionMenu"); // NOI18N
+
+        toggleSectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        toggleSectionMenuItem.setText("Toggle Section"); // NOI18N
+        toggleSectionMenuItem.setName("toggleSectionMenuItem"); // NOI18N
+        toggleSectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toggleSectionMenuItemActionPerformed(evt);
+            }
+        });
+        sectionMenu.add(toggleSectionMenuItem);
+
+        togglePhraseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
+        togglePhraseMenuItem.setText("Toggle Phrase"); // NOI18N
+        togglePhraseMenuItem.setName("togglePhraseMenuItem"); // NOI18N
+        togglePhraseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                togglePhraseMenuItemActionPerformed(evt);
+            }
+        });
+        sectionMenu.add(togglePhraseMenuItem);
+
+        roadmapMenuBar.add(sectionMenu);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
@@ -987,7 +993,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }*/
         }
         
-        roadMapScrollPane.requestFocus();
+        //roadMapScrollPane.requestFocus();
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
@@ -1128,7 +1134,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
       if( evt.getKeyCode() == KeyEvent.VK_ENTER )
         {
-        saveState("AddChord");
+        saveState("TextEntry");
         
         String entered = roadMapTextEntry.getText();
         
@@ -1143,7 +1149,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
             ErrorLog.log(ErrorLog.WARNING, "Melody notes entered with chord part will be ignored.");
           }
         
-        score.getChordProg().toRoadMapFrame(this); 
+        roadMapPanel.addBlocksBeforeSelectionAndSelect(score.getChordProg().toBlockList()); 
+        roadMapPanel.placeBricks();
         
         // restartPlayingSelection();
                  
@@ -1536,7 +1543,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         saveState("Drop");
         ArrayList<Block> block = new ArrayList();
         block.add(previewPanel.getBlock());
-        roadMapPanel.addBlocksBeforeSelection(block);
+        roadMapPanel.addBlocksBeforeSelectionAndSelect(block);
         roadMapPanel.placeBricks();
     }
     
@@ -1666,12 +1673,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         cutMenuItem.setEnabled(value);
         copyMenuItem.setEnabled(value);
-        pasteMenuItem.setEnabled(value);
         
         transposeMenu.setEnabled(value);
         
-        toggleSectionMenuItem.setEnabled(value);
-        togglePhraseMenuItem.setEnabled(value);
+        sectionMenu.setEnabled(value);
         
         flattenButton.setEnabled(value);
         flattenMenuItem.setEnabled(value);
@@ -1791,6 +1796,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
+    private javax.swing.JMenu sectionMenu;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
     private javax.swing.JButton sendToNotateButton;

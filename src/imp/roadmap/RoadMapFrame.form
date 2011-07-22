@@ -228,7 +228,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="selectAllMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+A"/>
+                  <KeyStroke key="A"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Select All" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="selectAllMenuItem" noResource="true"/>
@@ -245,7 +245,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="undoMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Z"/>
+                  <KeyStroke key="Z"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Undo" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="undoMenuItem" noResource="true"/>
@@ -257,7 +257,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="redoMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Y"/>
+                  <KeyStroke key="Y"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Redo" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="redoMenuItem" noResource="true"/>
@@ -274,7 +274,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="cutMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Meta+X"/>
+                  <KeyStroke key="X"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cut" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="cutMenuItem" noResource="true"/>
@@ -286,7 +286,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="copyMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Meta+C"/>
+                  <KeyStroke key="C"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Copy" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="copyMenuItem" noResource="true"/>
@@ -298,7 +298,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="pasteMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Meta+V"/>
+                  <KeyStroke key="V"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Paste" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="pasteMenuItem" noResource="true"/>
@@ -317,7 +317,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="BACK_SPACE"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Delete Brick" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Delete Selection" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="deleteMenuItem" noResource="true"/>
               </Properties>
               <Events>
@@ -326,7 +326,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="flattenMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Flatten Brick" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Flatten Selection" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="flattenMenuItem" noResource="true"/>
               </Properties>
               <Events>
@@ -335,35 +335,11 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="breakMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Break Brick" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Break Selection" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="breakMenuItem" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="breakMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="toggleSectionMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="ENTER"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Toggle Section" noResource="true"/>
-                <Property name="name" type="java.lang.String" value="toggleSectionMenuItem" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toggleSectionMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="togglePhraseMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+ENTER"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Toggle Phrase" noResource="true"/>
-                <Property name="name" type="java.lang.String" value="togglePhraseMenuItem" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togglePhraseMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
@@ -401,6 +377,38 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transposeUpMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="sectionMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Sections" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="sectionMenu" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="toggleSectionMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="ENTER"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Toggle Section" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="toggleSectionMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toggleSectionMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="togglePhraseMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+ENTER"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Toggle Phrase" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="togglePhraseMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togglePhraseMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
