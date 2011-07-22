@@ -2418,7 +2418,7 @@ public class Notate
         globalPreferences.setMinimumSize(new java.awt.Dimension(675, 600));
         globalPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         jLabel2.setText("  Global Program Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2887,8 +2887,6 @@ public class Notate
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         defaultsTab.add(defTempoLabel, gridBagConstraints);
-
-        numStavesPerPage.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 7;
@@ -3505,11 +3503,18 @@ public class Notate
         timeSignaturePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         timeSignatureTopTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        timeSignatureTopTF.setText("4");
         timeSignatureTopTF.setNextFocusableComponent(timeSignatureBottomTF);
         timeSignatureTopTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        timeSignatureTopTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeSignatureTopTFActionPerformed(evt);
+            }
+        });
         timeSignaturePanel.add(timeSignatureTopTF);
 
         timeSignatureBottomTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        timeSignatureBottomTF.setText("4");
         timeSignatureBottomTF.setNextFocusableComponent(keySignatureTF);
         timeSignatureBottomTF.setPreferredSize(new java.awt.Dimension(50, 19));
         timeSignaturePanel.add(timeSignatureBottomTF);
@@ -3549,7 +3554,7 @@ public class Notate
         chorusPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
         chorusPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14));
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         jLabel19.setText("  Chorus Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -20510,6 +20515,10 @@ private void printAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 private void grandStaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grandStaveBtnActionPerformed
     // TODO add your handling code here:
 }//GEN-LAST:event_grandStaveBtnActionPerformed
+
+private void timeSignatureTopTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeSignatureTopTFActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_timeSignatureTopTFActionPerformed
 
 public void openInNewWindow(File selectedFile)
 {
