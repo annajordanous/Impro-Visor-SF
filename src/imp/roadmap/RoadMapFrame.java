@@ -308,11 +308,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 roadMapWindowClosing(evt);
             }
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         toolBar.setFloatable(false);
         toolBar.setRollover(true);
+        toolBar.setFocusable(false);
         toolBar.setMaximumSize(new java.awt.Dimension(100, 60));
         toolBar.setMinimumSize(new java.awt.Dimension(500, 50));
         toolBar.setName("toolBar"); // NOI18N
@@ -930,7 +934,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapMouseWheelMoved
 
     private void roadMapScrollPaneroadMapReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapReleased
-        dropCurrentBrick(evt.getX(), evt.getY());
+        int x = evt.getX() + roadMapScrollPane.getHorizontalScrollBar().getValue();
+        int y = evt.getY() + roadMapScrollPane.getVerticalScrollBar().getValue();
+        dropCurrentBrick(x, y);
 }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
@@ -974,21 +980,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
-        dragSelectedBricks(evt.getX(), evt.getY());
+        int x = evt.getX() + roadMapScrollPane.getHorizontalScrollBar().getValue();
+        int y = evt.getY() + roadMapScrollPane.getVerticalScrollBar().getValue();
+        dragSelectedBricks(x, y);
 }//GEN-LAST:event_roadMapScrollPaneroadMapDragged
 
     private void roadMapScrollPaneroadMapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapKeyPressed
-        /*switch (evt.getKeyCode()) {
-            case 127: deleteSelection();                                break;
-            case 67: if(evt.isMetaDown()) copySelection();              break;
-            case 86: if(evt.isMetaDown()) pasteSelection();             break;
-            case 88: if(evt.isMetaDown()) cutSelection();               break;
-            case 65: if(evt.isMetaDown()) selectAllBricks();            break;
-            case 90: if(evt.isMetaDown()) undo();                       break;
-            case 89: if(evt.isMetaDown()) redo();                       break;
-            case 10: toggleSectionBreak();                              break;
+        switch (evt.getKeyCode()) {
             default:                                                    break;
-        }*/
+        }
 }//GEN-LAST:event_roadMapScrollPaneroadMapKeyPressed
 
     private void roadMapScrollPaneroadMapKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapKeyReleased
@@ -1203,6 +1203,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void roadMapWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_roadMapWindowClosing
         closeWindow();
     }//GEN-LAST:event_roadMapWindowClosing
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        roadMapPanel.requestFocusInWindow();
+    }//GEN-LAST:event_formWindowActivated
 //</editor-fold>
     
     /** InitBuffer <p>

@@ -143,6 +143,21 @@ public class RoadMapSettings {
         return keyColors[(int)key % 12];
     }
     
+    public Color getKeyColor(KeySpan keySpan)
+    {
+        return getKeyColor(keySpan.getKey(), keySpan.getMode());
+    }
+    
+    public Color getKeyColor(long key, String mode)
+    {
+        if(mode.equalsIgnoreCase("minor"))
+                    return getKeyColor(key+3);
+                else if (mode.equalsIgnoreCase("Dominant"))
+                    return getKeyColor(key+5);
+                else
+                    return getKeyColor(key);
+    }
+    
     /**
      * returns the number of lines taken up by this number of beats
      * @param beats number of beats

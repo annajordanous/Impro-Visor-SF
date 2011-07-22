@@ -294,7 +294,7 @@ public class GraphicBrick {
             int currentY = y + wrap[1] * settings.getLineOffset() + 2*blockHeight;
             
             int length = settings.getBlockLength(chord);
-            int[] endWrap = settings.wrap(currentX + length);
+            int[] endWrap = settings.wrap(x + settings.getLength(currentBeats+chord.getDuration()));
             int endX = endWrap[0]; // TODO : wrong, use total beats or something
             int lines = endWrap[1];
             
@@ -324,10 +324,10 @@ public class GraphicBrick {
             } else {
                 if(selected == ind) {
                     g2d.setColor(settings.selectedColor);
-                    g2d.fillRect(currentX+1, currentY+1, length-1, blockHeight-2);
+                    g2d.fillRect(currentX+1, currentY+1, endX-currentX-1, blockHeight-2);
                     g2d.setColor(settings.lineColor);
                 }
-                g2d.drawRect(currentX, currentY, length, blockHeight);
+                g2d.drawRect(currentX, currentY, endX-currentX, blockHeight);
             }
             
             g2d.setColor(settings.textColor);
@@ -361,50 +361,64 @@ public class GraphicBrick {
     
     /**
      * Draws the bricks at a specified location without wrapping
-     * @param g graphics on which to draw
+     * @param g2d graphics on which to draw
      * @param x x-coordinate
      * @param y y-coordinate
      */
     public void drawAt(Graphics g, int x, int y)
     {
+        Graphics2D g2d = (Graphics2D)g;
+        
         if(isSelected)
-            g.setColor(settings.selectedColor);
+            g2d.setColor(settings.selectedColor);
         else
-            g.setColor(settings.brickBGColor);
+            g2d.setColor(settings.brickBGColor);
 
         int totalLength = settings.getBlockLength(block);
         int blockHeight = settings.getBlockHeight();
-        g.fillRect(x, y, totalLength, settings.lineHeight);
-
-        g.setColor(settings.getKeyColor(block.getKey()));
         
-        g.fillRect(x, y, totalLength, blockHeight);
-
-        ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
+        g2d.fillRect(x, y, totalLength, settings.lineHeight);
 
         if( block.isBrick() ) {
-            g.setColor(settings.textColor);
+            g2d.setColor(settings.getKeyColor(block.getKey(),block.getMode()));
+        
+            g2d.fillRect(x, y, totalLength, blockHeight);
             
             //Key
-            g.drawRect(x, y, totalLength, blockHeight);
-            g.drawString(block.getKeyName(), x+5, y+blockHeight/2+5);
+            g2d.setColor(settings.lineColor);
+            g2d.drawRect(x, y, totalLength, blockHeight);
+            g2d.setColor(settings.textColor);
+            g2d.drawString(block.getKeyName()+block.getMode(), x+5, y+blockHeight/2+5);
 
             //Name
-            g.drawRect(x, y+blockHeight, totalLength, blockHeight);
-            g.drawString(block.getName(), x+5, y+3*blockHeight/2+5);
+            g2d.setColor(settings.lineColor);
+            g2d.drawRect(x, y+blockHeight, totalLength, blockHeight);
+            g2d.setColor(settings.textColor);
+            g2d.drawString(block.getName(), x+5, y+3*blockHeight/2+5);
         }
+        
+        ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
+        
         int xOffset = 0;
 
-        for( ChordBlock chord : chords ) {      
-            g.setColor(settings.lineColor);
-            int length = settings.getBlockLength(chord);
-            g.drawRect(x+xOffset, y+2*blockHeight, length, blockHeight);
+        long totalSlots = 0;
+        
+        for( ChordBlock chord : chords ) {    
+            xOffset = settings.getLength(totalSlots);
+            int length = settings.getLength(totalSlots + chord.getDuration()) - 
+                    xOffset;
             
-            g.setColor(settings.textColor);
+            g2d.setColor(settings.lineColor);
+            g2d.drawRect(x+xOffset, y+2*blockHeight, length, blockHeight);
+            
+            g2d.setColor(settings.textColor);
             String chordName = chord.getName();
-            g.drawString(chordName, x+xOffset+5, y+5*blockHeight/2+5);
+            g2d.drawString(chordName, x+xOffset+5, y+5*blockHeight/2+5);
 
-            xOffset += length;
+            totalSlots += chord.getDuration();
         }
+        
+        g2d.setStroke(settings.brickOutline);
+        g2d.drawRect(x, y, totalLength, 3*blockHeight);
     }
 }

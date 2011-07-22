@@ -73,7 +73,7 @@ public class PreviewPanel extends JPanel
         if( currentBrick != null )
         {
             System.out.println("Drawing Brick ");
-            currentBrick.drawAt(buffer.getGraphics(),0,0);
+            currentBrick.drawAt(buffer.getGraphics(),1,1);
         }
         repaint();
     }
