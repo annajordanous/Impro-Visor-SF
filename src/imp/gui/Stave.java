@@ -6049,4 +6049,14 @@ public Polylist extractChordNamePolylist(int startIndex, int stopIndex)
   {
       chordFont = new Font("Helvetica", Font.BOLD, notate.getScore().getChordFontSize());
   }
+  
+  /**
+   * return the number of staff lines in this Stave.
+   * @return 
+   */
+  
+  public int getNumLines()
+    {
+      return lineMeasures.length;
+    }
   }

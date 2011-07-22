@@ -99,4 +99,9 @@ public JPanel getBG()
 {
   return BG;
 }
+
+public int getNumLines()
+  {
+    return stave.getNumLines();
+  }
 }
