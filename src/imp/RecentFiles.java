@@ -37,7 +37,7 @@ import java.util.Stack;
  * This class writes a text file to the 'vocab' folder in order to keep track of
  * the previous leadsheets opened.
  * @author Amos Byon
- * @version 1.0
+ * @version 1.7
  */
 public class RecentFiles {
     /**
@@ -264,7 +264,6 @@ public class RecentFiles {
     {
         Stack recFiles = getMostRecentFiles();
         String list[] = new String[getSize()-1];
-        recFiles.pop();
         for(int i=0; i<getSize()-1; i++)
         {
             list[i] = (String)recFiles.pop();

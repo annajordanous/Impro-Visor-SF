@@ -20143,7 +20143,7 @@ private void mostRecentLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt
 private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentFileMenu
   RecentFiles recFiles = new RecentFiles();
   String filenames[] = {"No Recent Leadsheets to Open"};;
-  if(recFiles.getSize() == 0 || recFiles.getSize() == 1)
+  if(recFiles.getSize() == 0)
   {
       openRecentLeadsheetMenu.removeAll();
   
