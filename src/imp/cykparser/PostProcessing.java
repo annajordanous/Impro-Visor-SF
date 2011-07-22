@@ -88,7 +88,7 @@ public class PostProcessing {
 //                    System.out.println(cFirst.toString() + " resolves to " + 
 //                            cSecond.toString() + "?: " + dR);
                     if(dR) {
-                        blockArray[i].setMode(cSecond.getMode());
+                        blockArray[i].setMode(cSecond.getMode());               //This is where that thing happens with launcher modes
                     }
                 }
                 
@@ -279,7 +279,7 @@ public class PostProcessing {
                 }
                 
                 if(doesResolve(b, chordList.get(0)) && b.isSectionEnd()) {
-                    Brick uniLauncher = new Brick(b, postBlock.getMode());
+                    Brick uniLauncher = new Brick(b, chordList.get(0).getMode()); // This is where that thing happens again
                     
                     alteredList.add(uniLauncher);
                 }

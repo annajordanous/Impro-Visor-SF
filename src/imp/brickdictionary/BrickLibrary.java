@@ -322,7 +322,6 @@ public class BrickLibrary {
             {
                 brickQualifier = ((Polylist)contents.first()).first().toString();
                 contents = contents.rest();
-                System.err.println(contents.first().toString());
             }
             
             boolean hadBrick = dictionary.hasBrick(brickName);
