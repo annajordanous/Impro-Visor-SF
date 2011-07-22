@@ -37,49 +37,105 @@
 (section (style swing)) 
 
 FM7 | / | CM7 | / | 
-NC | Dm7 | G7 | CM7 | 
+NC | 
+(section (style swing)) 
+
+Dm7 | G7 | CM7 | 
 FM7 | Bm7b5 | E7 | Am | 
-NC | Dm | A7 | Dm7 | 
+NC | 
+(section (style swing)) 
+
+Dm | A7 | Dm7 | 
 G7 | CM7 | / | NC | 
+
+(section (style swing)) 
+
 Dm7 | Eb7 | G#M7 | B7 | 
 EM7 | G7 | CM7 | NC | 
+
+(section (style swing)) 
+
 G#m7 | C#7 | CM7 | / | 
-NC | Dm | G#m7 | C#7 | 
-CM7 | / | NC | Am7 | 
+NC | 
+(section (style swing)) 
+
+Dm | G#m7 | C#7 | 
+CM7 | / | NC | 
+(section (style swing)) 
+
+Am7 | 
 D7 | Dm7 | G7 | CM7 | 
-/ | NC | A7 | Dm7 | 
-G7 | CM7 | NC | Eb7 | 
+/ | NC | 
+(section (style swing)) 
+
+A7 | Dm7 | 
+G7 | CM7 | NC | 
+(section (style swing)) 
+
+Eb7 | 
 Dm7 | G7 | CM7 | NC | 
+
+(section (style swing)) 
+
 FM7 | F#m7 B7 | Em7 | A7 | 
 Dm7 | G7 | CM7 | NC | 
+
+(section (style swing)) 
+
 D7/C | DbM7/C | CM7 | / | 
-NC | F#m7 | B7 | CM7 | 
-/ | NC | Eb7 | G#M7 | 
-C#7 | CM7 | NC | EbM7 | 
-AbM7 | DbM7 | CM7 | NC | 
-Em7 A7 | Dm7 G7 | CM7 | / | 
-NC | Fm | / | C | 
-/ | NC | AbM7 | G7 | 
-CM7 | / | NC | CM7 | 
-E7 | Am | / | NC | 
-Ab7 | G7 | CM7 | / | 
-NC | Ab7 | G7 | Cm | 
-/ | NC | A7 | Ab7 | 
-G7 | CM7 | NC | Dm | 
-Em | Ebdim | Dm7 | G7 | 
-CM7 | NC | F | Bb7 | 
-CM7 | A7 | Dm7 | G7 | 
-CM7 | NC | G7 | / | 
-CM7 | / | NC | Dm7 | 
-/ | G7 | / | Em7 | 
-/ | A7 | / | Dm7 | 
-/ | G7 | / | CM7 | 
-/ | / | / | NC | 
-CM7 | / | Em | / | 
-FM7 | / | / | / | 
-NC | CM7 | / | E7 | 
-/ | FM7 | / | / | 
+NC | 
+(section (style swing)) 
+
+F#m7 | B7 | CM7 | 
 / | NC | 
+(section (style swing)) 
+
+Eb7 | G#M7 | 
+C#7 | CM7 | NC | 
+(section (style swing)) 
+
+EbM7 | 
+AbM7 | DbM7 | CM7 | NC | 
+
+(section (style swing)) 
+
+Em7 A7 | Dm7 G7 | CM7 | / | 
+NC | 
+(section (style swing)) 
+
+Fm | / | C | 
+/ | NC | 
+(section (style swing)) 
+
+AbM7 | G7 | 
+CM7 | / | NC | 
+(section (style swing)) 
+
+CM7 | 
+E7 | Am | / | NC | 
+
+(section (style swing)) 
+
+Ab7 | G7 | CM7 | / | 
+NC | 
+(section (style swing)) 
+
+Ab7 | G7 | Cm | 
+/ | NC | 
+(section (style swing)) 
+
+A7 | Ab7 | 
+G7 | CM7 | NC | 
+(section (style swing)) 
+
+Dm | 
+Em | Ebdim | Dm7 | G7 | 
+CM7 | NC | 
+(section (style swing)) 
+
+F | Bb7 | 
+CM7 | A7 | Dm7 | G7 | 
+CM7 | NC | 
 (part
     (type melody)
     (title )
@@ -89,4 +145,4 @@ NC | CM7 | / | E7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
