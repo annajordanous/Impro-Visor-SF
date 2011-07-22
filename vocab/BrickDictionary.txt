@@ -1,14 +1,16 @@
 // Brick types
 
-(brick-type Approach   45)
-(brick-type Cadence    30)
-(brick-type Dropback   30)
-(brick-type Overrun    30)
-(brick-type On-Off    950)
-(brick-type Opening    25)
-(brick-type Turnaround 20)
-(brick-type Misc       40)
-(brick-type Unary     100)
+(brick-type Approach         45)
+(brick-type Cadence          30)
+(brick-type Dropback         30)
+(brick-type Cadence-Dropback 30)
+(brick-type Overrun          30)
+(brick-type On-Off         1000)
+(brick-type Opening          25)
+(brick-type Turnaround       20)
+(brick-type Misc             40)
+(brick-type Unary           200)
+(brick-type UserDefined      30)
 
 // Major bricks
 
@@ -17,14 +19,12 @@
 	(Chord CM7 1))
 
 (Brick Autumn-Leaves-Opening minor Opening C
-	(Brick Straight-3 C 3)
-        (Chord FM7 1)
-	(Brick Sad A 3)
-	(Chord A7 1))
+	(Brick Straight C 4)
+	(Brick Sad-Straight A 4))
 
 (Brick Autumnal minor Cadence C
-	(Brick Autumnal-Approach C 4)
-	(Chord Am 4))
+	(Brick Autumnal-Approach C 6)
+	(Chord Am 2))
 
 (Brick Autumnal-Approach minor Approach C
 	(Brick Straight-Approach C 2)
@@ -38,6 +38,10 @@
 	(Chord Dm 1)
 	(Chord A7 1)
 	(Brick Straight-Approach C 2))
+
+(Brick Body-And-Soul-with-TTFA Major Cadence C
+        (Brick Body-And-Soul-Approach C 4)
+        (Brick TTFA C 4))
 
 (Brick Chromatic-Dropback Major Dropback C
 	(Brick Night-And-Day-Approach E 2)
@@ -72,7 +76,7 @@
 (Brick Donna-Lee-Opening Major Opening C
 	(Chord CM7 2)
 	(Chord D7 2)
-	(Brick Straight-4 C 4))
+	(Brick Straight C 4))
 
 (Brick Dropback Major Dropback C
 	(Chord CM7 1)
@@ -130,7 +134,7 @@
 	(Chord CM7 2))
 
 (Brick Honeysuckle-Bridge Major Approach C 
-	(Brick Straight-4 F 4) 
+	(Brick Straight F 4) 
 	(Brick Straight-Approach G 2) 
 	(Brick Straight-Approach C 2))
 
@@ -177,7 +181,7 @@
 	(Brick Straight-Approach C 2))
 
 (Brick Long-Dropback Major Dropback C
-        (Brick Straight-3 C 3)
+        (Brick Straight C 3)
         (Brick Extended C 4))
 
 (Brick Minor-Plagal Major Cadence C
@@ -221,10 +225,17 @@
 	(Brick Dropback C 2)
 	(Brick Nowhere-Approach C 2))
 
+(Brick Nowhere-Turnaround-Minor Minor Turnaround C
+        (Brick Dropback-Minor C 2)
+        (Brick Nowhere-Approach C 2))
+
 (Brick Nowhere-Turnaround-Cadence Major Cadence C
-        (Chord A7 1)
-	(Brick Nowhere-Approach C 2)
+        (Brick Nowhere-Turnaround C 4)
         (Chord CM7 1))
+
+(Brick Nowhere-Turnaround-Minor-Cadence Minor Cadence C
+        (Brick Nowhere-Turnaround-Minor C 4)
+        (Chord Cm 1))
 
 (Brick POT(standard) Major Turnaround C
 	(Chord C 1)
@@ -234,6 +245,10 @@
 (Brick POT(variant) Major Turnaround C
 	(Brick Dropback C 2)
 	(Brick Straight-Approach C 2))
+
+(Brick POT(short) Major Turnaround C
+        (Chord C 2)
+        (Brick Straight-Approach C 2))
 
 (Brick POT-Cadence Major Turnaround C
 	(Brick POT C 4)
@@ -246,6 +261,14 @@
 (Brick POT-Minor(variant) minor Turnaround C
         (Brick Dropback-Minor C 2)
         (Brick Straight-Approach-Minor C 2))
+
+(Brick POT-Minor(short) minor Turnaround C
+        (Chord C 2)
+        (Brick Sad-Approach C 2))
+
+(Brick POT-Minor(dominant) minor Turnaround C
+        (Chord Cm 1)
+        (Brick Extended-Approach C 3))
 
 (Brick POT-Minor-Cadence minor Turnaround C
 	(Brick POT-Minor C 4)
@@ -334,6 +357,10 @@
 	(Brick Sad-Approach C 2)
 	(Chord CmM7 2))
 
+(Brick Sad(Dominant) minor Cadence C
+        (Brick Straight-Approach-Minor C 2)
+        (Chord CmM7 2))
+
 (Brick Sad-Approach minor Approach C
 	(Chord Dm7b5 1)
 	(Chord G7alt 1))
@@ -344,7 +371,7 @@
 
 (Brick Sad-Straight minor Cadence C
 	(Brick Straight-Approach-Minor C 2)
-	(Chord Cm7 2))
+	(Chord Cm 2))
 
 (Brick Satin Major Cadence C
 	(Brick Satin-Approach C 4)
@@ -364,14 +391,6 @@
 	(Brick Sharp-Fourpenny-Approach C 12)
 	(Chord CM7 4))
 
-(Brick Short-POT Major Turnaround C
-        (Chord C 2)
-        (Brick Straight-Approach C 2))
-
-(Brick Short-POT-Minor minor Turnaround C
-        (Chord C 2)
-        (Brick Sad-Approach C 2))
-
 (Brick Sixpenny-Approach Major Approach C
 	(Chord Am 2)
 	(Brick Yardbird C 4)
@@ -382,9 +401,13 @@
 	(Brick Sixpenny-Approach C 12)
 	(Chord CM7 4))
 
-(Brick Spring Major Cadence C
+(Brick Spring(standard) Major Cadence C
 	(Brick Spring-Approach C 6)
 	(Chord CM7 2))
+
+(Brick Spring(simple) Major Cadence C
+        (Chord Bm7 2)
+        (Brick Straight C 4))
 
 (Brick Spring-Approach Major Approach C
 	(Chord Bm7b5 1)
@@ -430,13 +453,13 @@
 	(Chord Fm 1)
 	(Brick Rainy-Approach C 4))
 
-(Brick Straight-3 Major Cadence C
-	(Brick Straight-Approach C 2)
-	(Chord CM7 1))
-
-(Brick Straight-4 Major Cadence C
+(Brick Straight(standard) Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
+
+(Brick Straight(diminished) Major Cadence C
+        (Brick Straight-Approach-Minor C 2)
+        (Chord CM7 2))
 
 (Brick Straight-Approach Major Approach C
 	(Chord Dm7 1)
@@ -445,10 +468,6 @@
 (Brick Straight-Approach-Minor minor Approach C
 	(Chord Dm7b5 1)
 	(Chord G7 1))
-
-(Brick Straight-Cadence-With-Dropback Major Misc C
-        (Brick Straight-Approach C 2)
-        (Brick Dropback C 2))
 
 (Brick Supertension-Ending Dominant Cadence C
 	(Brick Straight-Approach C 2)
@@ -471,10 +490,15 @@
 	(Chord F7 1)
 	(Brick Nowhere-Approach D 2))
 
-(Brick TTFA Major Dropback C
+(Brick TTFA(standard) Major Dropback C
 	(Chord CM7 1)
 	(Chord F7 1)
 	(Brick Straight-Approach D 2))
+
+(Brick TTFA(nondominant) Major Dropback C
+        (Chord CM7 1)
+        (Chord FM7 1)
+        (Brick Straight-Approach D 2))
 
 (Brick To-IV-n-Back Major Turnaround C
 	(Chord CM7 1)
@@ -502,6 +526,10 @@
 	(Brick Perfect F 2)
 	(Chord Bb7 1))
 
+//(Brick Tritone Major Cadence C
+//        (Chord Db7 1)
+//        (Chord C 1))
+
 (Brick Twopenny-Approach Major Approach C
 	(Chord Dm 2)
 	(Brick Yardbird C 4)
@@ -522,7 +550,7 @@
 
 (Brick Whoopee-Cadence Major Cadence C
 	(Chord Dbdim 1)
-	(Brick Straight-3 C 3))
+	(Brick Straight C 3))
 
 (Brick Yardbird Major Cadence C
         (Brick Straight-Approach Eb 2)

@@ -60,7 +60,17 @@ public class BrickLibrary {
     public void addBrick(Brick brick) {
         if(brickMap.containsKey(brick.getName()))
         {
-            this.brickMap.get(brick.getName()).add(brick);
+            LinkedList<Brick> sameStemList = brickMap.get(brick.getName());
+            for (Brick sameStem : sameStemList)
+            {
+                if (sameStem.getQualifier().equals(brick.getQualifier()))
+                {
+                    ErrorLog.log(ErrorLog.WARNING, "Dictionary already contains " +
+                    brick.getName() + "(" + brick.getQualifier() + ")", true);
+                    break;
+                }
+            }
+            sameStemList.add(brick);
         }
         else
         {
@@ -241,7 +251,8 @@ public class BrickLibrary {
         Object token;
         
         BrickLibrary dictionary = new BrickLibrary();
-        LinkedHashMap<String, Polylist> polymap = new LinkedHashMap<String, Polylist>();
+        LinkedHashMap<String, LinkedList<Polylist>> polymap = 
+                new LinkedHashMap<String, LinkedList<Polylist>>();
         
         // Read in S expressions until end of file is reached
         while ((token = in.nextSexp()) != Tokenizer.eof)
@@ -293,9 +304,13 @@ public class BrickLibrary {
                     {
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
-                        if (contents.first() instanceof Polylist)
-                            brickName += contents.first().toString();
-                        polymap.put(brickName, (Polylist)token);
+                        if (polymap.containsKey(brickName))
+                                polymap.get(brickName).add((Polylist)token);
+                        else {
+                            LinkedList<Polylist> newKey = new LinkedList<Polylist>();
+                            newKey.add((Polylist)token);
+                            polymap.put(brickName, newKey);
+                        }
                     }
                     else
                     {
@@ -311,46 +326,48 @@ public class BrickLibrary {
             }
         }
 
-        for (Polylist contents : polymap.values()) {
+        for (LinkedList<Polylist> brickStem : polymap.values()) {
             
-            contents = contents.rest();
-            String brickName = dashless(contents.first().toString());
-            contents = contents.rest();
+            for (Polylist contents : brickStem) {
             
-            String brickQualifier = "";
-            if (contents.first() instanceof Polylist)
-            {
-                brickQualifier = ((Polylist)contents.first()).first().toString();
                 contents = contents.rest();
-            }
-            
-            boolean hadBrick = dictionary.hasBrick(brickName);
-            
-            String brickMode = contents.first().toString();
-            contents = contents.rest();
-                
-            String brickType = contents.first().toString();
-            contents = contents.rest();
-            if (!dictionary.hasType(brickType))
-                ErrorLog.log(ErrorLog.WARNING, brickName + " is of "
-                            + "uninitialized type " + brickType + 
-                            "; will register as non-brick");
-                
-            String brickKeyString = contents.first().toString();
-            contents = contents.rest();
-            long brickKeyNum = keyNameToNum(brickKeyString);
-                
-            Brick currentBrick = new Brick(brickName, brickQualifier, brickKeyNum,
-                       brickType, contents, dictionary, brickMode, polymap);
-            dictionary.addBrick(currentBrick);
-                
+                String brickName = dashless(contents.first().toString());
+                contents = contents.rest();
+
+                String brickQualifier = "";
+                if (contents.first() instanceof Polylist)
+                {
+                    brickQualifier = ((Polylist)contents.first()).first().toString();
+                    contents = contents.rest();
+                }
+
+                boolean hadBrick = dictionary.hasBrick(brickName);
+
+                String brickMode = contents.first().toString();
+                contents = contents.rest();
+
+                String brickType = contents.first().toString();
+                contents = contents.rest();
+                if (!dictionary.hasType(brickType))
+                    ErrorLog.log(ErrorLog.WARNING, brickName + " is of "
+                                + "uninitialized type " + brickType + 
+                                "; will register as non-brick");
+
+                String brickKeyString = contents.first().toString();
+                contents = contents.rest();
+                long brickKeyNum = keyNameToNum(brickKeyString);
+
+                Brick currentBrick = new Brick(brickName, brickQualifier, brickKeyNum,
+                           brickType, contents, dictionary, brickMode, polymap);
+                dictionary.addBrick(currentBrick);
+
                 // special rule for creating overruns
-                if (brickType.equals("Cadence") && hadBrick) {
-                    String overrunName = brickName + " Overrun";
+                if (brickType.equals("Cadence") && !hadBrick) {
+                    String overrunName = brickName + " with Overrun";
                     long overrunKeyNum = brickKeyNum;
                     String overrunType = "Overrun";
                     String overrunMode = brickMode;
-                    
+
                     // take blocks from regular cadence and add the next chord
                     // in the circle of fifths with the same quality as the
                     // resolution
@@ -362,12 +379,38 @@ public class BrickLibrary {
                                new ChordBlock(prevChord.transposeName(5), 
                                               prevChord.getDuration());
                     overrunBlocks.add(overrunChord);
-                    
+
                     // make a new brick from this list of blocks
                     Brick overrun = new Brick(overrunName, overrunKeyNum,
                             overrunType, overrunBlocks, overrunMode);
                     dictionary.addBrick(overrun);
-            
+                    
+                    String dropbackName = brickName + " with Dropback";
+                    long dropbackKeyNum = brickKeyNum;
+                    String dropbackType = "Dropback";
+                    String dropbackMode = brickMode;
+
+                    // take blocks from regular cadence and add the next chord
+                    // in the circle of fifths with the same quality as the
+                    // resolution
+                    ArrayList<Block> dropbackBlocks = new ArrayList<Block>();
+                    dropbackBlocks.addAll(currentBrick.getSubBlocks());
+                    String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
+                    if (dropbackMode.equals("minor"))
+                        dropbackChordName += "7b5";
+                    else
+                        dropbackChordName += 7;
+                    ChordBlock dropbackChord = 
+                               new ChordBlock(dropbackChordName, 
+                                              prevChord.getDuration());
+                    dropbackBlocks.add(dropbackChord);
+
+                    // make a new brick from this list of blocks
+                    Brick dropback = new Brick(dropbackName, dropbackKeyNum,
+                            dropbackType, dropbackBlocks, dropbackMode);
+                    dictionary.addBrick(dropback);
+                }
+        
             }
             
             

@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.ListIterator;
 import polya.*;
 
@@ -98,7 +99,7 @@ public class Brick extends Block {
      */
      public Brick(String brickName, String brickQualifier, long brickKey, String brickType, 
              Polylist contents, BrickLibrary bricks, String m, 
-             LinkedHashMap<String, Polylist> polymap) {
+             LinkedHashMap<String, LinkedList<Polylist>> polymap) {
          super(brickName, brickKey, m);
          qualifier = brickQualifier;
          subBlocks = new ArrayList<Block>();
@@ -120,7 +121,7 @@ public class Brick extends Block {
      */
      public Brick(String brickName, long brickKey, String brickType, 
              Polylist contents, BrickLibrary bricks, String m, 
-             LinkedHashMap<String, Polylist> polymap) {
+             LinkedHashMap<String, LinkedList<Polylist>> polymap) {
          super(brickName, brickKey, m);
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks, polymap);
@@ -389,7 +390,7 @@ public class Brick extends Block {
      * @param bricks, a BrickLibrary
      */
     private void addSubBlocks(Polylist contents, BrickLibrary bricks, 
-            LinkedHashMap<String, Polylist> polymap) {
+            LinkedHashMap<String, LinkedList<Polylist>> polymap) {
         
         List<Block> subBlockList = new ArrayList<Block>();
         
@@ -425,10 +426,16 @@ public class Brick extends Block {
                                     bricks.getBrick(subBrickName, subBrickKeyNum, dur);
                         }
                         else if (polymap.containsKey(subBrickName)) {
-                            Polylist tokens = polymap.get(subBrickName);
+                            Polylist tokens = polymap.get(subBrickName).getFirst();
                             String brickName = BrickLibrary.dashless(subBrickName);
                             tokens = tokens.rest();
                             tokens = tokens.rest();
+                            
+                            String brickQuality = "";
+                            if (tokens.first() instanceof Polylist) {
+                                brickQuality = ((Polylist)tokens.first()).first().toString();
+                                tokens = tokens.rest();
+                            }
                             String brickMode = tokens.first().toString();
                             tokens = tokens.rest();
                             String brickType = tokens.first().toString();
@@ -438,7 +445,7 @@ public class Brick extends Block {
                             long brickKeyNum = 
                                     BrickLibrary.keyNameToNum(brickKeyString);
 
-                            subBrick = new Brick(brickName, brickKeyNum,
+                            subBrick = new Brick(brickName, brickQuality, brickKeyNum,
                                 brickType, tokens, bricks, brickMode, polymap);
                             subBrick.transpose(
                                     Arith.long2int(subBrickKeyNum - brickKeyNum));

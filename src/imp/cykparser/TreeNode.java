@@ -42,7 +42,7 @@ public class TreeNode {
     // An int cost for a default chord
     public static final double CHORD_COST = 1000;
     public static final double CHORD_SUB_COST = 1050;
-    public static final double OVERLAP_COST = 100;
+    public static final double OVERLAP_COST = 5;
     
     // Constructors for TreeNodes
     
@@ -307,6 +307,13 @@ public class TreeNode {
     public String getSymbol()
     {
         return symbol;
+    }
+    
+    public String getTrimmedSymbol()
+    {
+        String trimmedSymbol = symbol.replace(" with Overrun", "");
+        trimmedSymbol = trimmedSymbol.replace(" with Dropback", "");
+        return trimmedSymbol;
     }
     
     public String getMode()
