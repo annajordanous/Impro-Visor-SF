@@ -16535,7 +16535,7 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 
-      PrintUtilities.printComponent(getCurrentStave(), staveScrollPane[currTabIndex].getNumLines(), numStavesPP);
+      PrintUtilities.printComponent(getCurrentStave(), staveScrollPane[currTabIndex].getNumLines(), numStavesPP, grandStaveBtn.isSelected());
 
 
       // printAllStaves();
@@ -16568,7 +16568,7 @@ private void pasteMelody(Part part, Stave stave)
    {
        setUpStavesToPrint(component[i]);
    }
-    PrintUtilities.printMultipleComponents(component, staveScrollPane[currTabIndex].getNumLines(), numStavesPP);
+    PrintUtilities.printMultipleComponents(component, staveScrollPane[currTabIndex].getNumLines(), numStavesPP, grandStaveBtn.isSelected());
    }
  
  private void setUpStavesToPrint(Stave stv)

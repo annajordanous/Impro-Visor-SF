@@ -85,12 +85,15 @@ public class PrintUtilities implements Printable {
      */
     private int numLines = 0;
     
-    public static void printComponent(Component c, int numLines, int numStavesPerPage) {
-        new PrintUtilities(c, numLines, numStavesPerPage).print();
+    private boolean grandStaveSelected;
+    
+    public static void printComponent(Component c, int numLines, int numStavesPerPage, boolean grandStave) {
+        new PrintUtilities(c, numLines, numStavesPerPage, grandStave).print();
     }
   
-    public PrintUtilities(Component componentToBePrinted, int numLines, int numStavesPerPage) {
+    public PrintUtilities(Component componentToBePrinted, int numLines, int numStavesPerPage, boolean grandStave) {
         this.numLines = numLines;
+        grandStaveSelected = grandStave;
         if(numStavesPerPage == 0)
         {
             this.numStavesPerPage = 8;
@@ -100,23 +103,39 @@ public class PrintUtilities implements Printable {
             this.numStavesPerPage = numStavesPerPage;
         }
         this.componentToBePrinted = componentToBePrinted;
-        int height = numLines*staveHeight;
+        int height;
+        if(grandStave)
+        {
+            height = numLines*grandStaveHeight;
+        }
+        else
+        {
+            height = numLines*staveHeight;
+        }
         img = new BufferedImage(this.componentToBePrinted.getWidth(), height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = img.getGraphics();
         this.componentToBePrinted.paint(graphics);
     }
     
-        public void setComponent(Component c, int numLines)
+        public void setComponent(Component c, int numLines, boolean grandStave)
       {
         this.componentToBePrinted = c;
-        int height = numLines*staveHeight;
+        int height;
+        if(grandStave)
+        {
+            height = numLines*grandStaveHeight;
+        }
+        else
+        {
+            height = numLines*staveHeight;
+        }
         img = new BufferedImage(this.componentToBePrinted.getWidth(), height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = img.getGraphics();
         this.componentToBePrinted.paint(graphics);
       }
   
-    public static void printMultipleComponents(Component comp[], int numLines, int numStavesPerPage) {  
-        PrintUtilities utility = new PrintUtilities(numLines, numStavesPerPage);
+    public static void printMultipleComponents(Component comp[], int numLines, int numStavesPerPage, boolean grandStave) {  
+        PrintUtilities utility = new PrintUtilities(numLines, numStavesPerPage, grandStave);
         PrintService[] pservices = PrinterJob.lookupPrintServices();
         
         PrinterJob printJob = PrinterJob.getPrinterJob();
@@ -126,7 +145,7 @@ public class PrintUtilities implements Printable {
          {
          for(int i = 0; i<comp.length; i++)
             {
-            utility.setComponent(comp[i], numLines);
+            utility.setComponent(comp[i], numLines, grandStave);
             try 
               {
                 printJob.print();
@@ -140,8 +159,9 @@ public class PrintUtilities implements Printable {
         
     }
   
-    public PrintUtilities(int numLines, int numStavesPerPage) {
+    public PrintUtilities(int numLines, int numStavesPerPage, boolean grandStave) {
         this.numLines = numLines;
+        grandStaveSelected = grandStave;
         if(numStavesPerPage == 0)
         {
             this.numStavesPerPage = 8;
@@ -197,7 +217,14 @@ public class PrintUtilities implements Printable {
         
         // for faster printing, turn off double buffering
         disableDoubleBuffering(componentToBePrinted);
-        numStavesConverted =staveHeight*numStavesPerPage;
+        if(grandStaveSelected)
+        {
+            numStavesConverted = grandStaveHeight*numStavesPerPage;
+        }
+        else
+        {
+            numStavesConverted =staveHeight*numStavesPerPage;
+        }
         int frameHeight = numStavesConverted;
         if(tracker+numStavesConverted >= img.getHeight())
         {
