@@ -56,7 +56,7 @@ public class PostProcessing {
         
         // Initialize key, mode, and duration of current block
         KeySpan current = new KeySpan();
-        ArrayList<Block> blocks = roadmap.getBricks();
+        ArrayList<Block> blocks = roadmap.getBlocks();
         
         if(blocks.isEmpty()) {
             roadmap.getKeyMap().clear();

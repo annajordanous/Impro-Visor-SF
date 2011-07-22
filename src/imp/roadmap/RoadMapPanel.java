@@ -67,7 +67,7 @@ public class RoadMapPanel extends JPanel{
     public void setRoadMap(RoadMap roadMap)
     {
         this.roadMap = roadMap;
-        graphicMap = makeBricks(roadMap.getBricks());
+        graphicMap = makeBricks(roadMap.getBlocks());
         roadMap.process();
     }
     
@@ -106,7 +106,8 @@ public class RoadMapPanel extends JPanel{
             lineBeats = wrap[0];
             lines += wrap[1];
             
-            if(brick.getBrick().isSectionEnd() && lineBeats != 0) {
+            if(brick.getBrick().getSectionEnd() == Block.SECTION_END &&
+                    lineBeats != 0) {
                 lineBeats = 0;
                 lines++;
                 sectionBreaks.add(currentSlots);
@@ -128,7 +129,7 @@ public class RoadMapPanel extends JPanel{
     
     public void rebuildRoadMap()
     {
-        graphicMap = makeBricks(roadMap.getBricks());
+        graphicMap = makeBricks(roadMap.getBlocks());
         placeBricks();
     }
     
@@ -211,8 +212,8 @@ public class RoadMapPanel extends JPanel{
     public ArrayList<Block> removeSelectionNoUpdate()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<Block> blocks = new ArrayList(roadMap.getBricks().subList(selectionStart, selectionEnd+1));
-            roadMap.getBricks().subList(selectionStart, selectionEnd+1).clear();
+            ArrayList<Block> blocks = new ArrayList(roadMap.getBlocks().subList(selectionStart, selectionEnd+1));
+            roadMap.getBlocks().subList(selectionStart, selectionEnd+1).clear();
             graphicMap.subList(selectionStart, selectionEnd+1).clear();
             return blocks;
         }
@@ -226,18 +227,18 @@ public class RoadMapPanel extends JPanel{
     
     public ArrayList<Block> getBlocks(int start, int end)
     {
-        return roadMap.getBricks(start, end);
+        return roadMap.getBlocks(start, end);
     }
     
     public ArrayList<Block> removeBlocks()
     {
         graphicMap.clear();
-        return roadMap.removeBricks();
+        return roadMap.removeBlocks();
     }
     
     public ArrayList<Block> removeBlocks(int start, int end)
     {
-        ArrayList<Block> blocks = roadMap.removeBricks(start, end);
+        ArrayList<Block> blocks = roadMap.removeBlocks(start, end);
         graphicMap.subList(start, end).clear();
         return blocks;
     }
@@ -333,7 +334,7 @@ public class RoadMapPanel extends JPanel{
     public void transposeSelection(long diff)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
+            for(Block block : roadMap.getBlocks(selectionStart, selectionEnd + 1))
                 block.transpose(diff);
             roadMap.process();
             draw();
@@ -344,7 +345,7 @@ public class RoadMapPanel extends JPanel{
     public void scaleSelection(int scale)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            for(Block block : roadMap.getBricks(selectionStart, selectionEnd + 1))
+            for(Block block : roadMap.getBlocks(selectionStart, selectionEnd + 1))
                 block.adjustDuration(scale);
             roadMap.process();
         }
@@ -360,7 +361,7 @@ public class RoadMapPanel extends JPanel{
     
     public void deleteRange(int start, int end)
     {
-        roadMap.removeBricks(start, end);
+        roadMap.removeBlocks(start, end);
         graphicMap.subList(start, end).clear();
         placeBricks();
     }
@@ -368,7 +369,7 @@ public class RoadMapPanel extends JPanel{
     public void breakSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd + 1);
+            ArrayList<Block> blocks = roadMap.removeBlocks(selectionStart, selectionEnd + 1);
             ArrayList<Block> newBlocks = new ArrayList();
             
             graphicMap.subList(selectionStart, selectionEnd + 1).clear();
@@ -407,7 +408,7 @@ public class RoadMapPanel extends JPanel{
     public Brick makeBrickFromSelection(String name, long key, String mode)
     {
         if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
-            ArrayList<Block> blocks = roadMap.removeBricks(selectionStart, selectionEnd+1);
+            ArrayList<Block> blocks = roadMap.removeBlocks(selectionStart, selectionEnd+1);
             graphicMap.subList(selectionStart, selectionEnd+1).clear();
             Brick newBrick = new Brick(name, key, "UserDefined", blocks, mode);
 
@@ -460,7 +461,22 @@ public class RoadMapPanel extends JPanel{
     public void toggleSection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            roadMap.getBrick(selectionEnd).setSectionEnd(!roadMap.getBrick(selectionEnd).isSectionEnd());
+            roadMap.getBlock(selectionEnd).setSectionEnd(!roadMap.getBlock(selectionEnd).isSectionEnd());
+            roadMap.process();
+            drawBrick(selectionEnd);
+            placeBricks();
+            drawKeyMap();
+        }
+    }
+    
+    public void togglePhrase()
+    {
+        if(selectionStart != -1 && selectionEnd != -1) {
+            Block block = roadMap.getBlock(selectionEnd);
+            if(block.getSectionEnd() != Block.PHRASE_END)
+                block.setSectionEnd(Block.PHRASE_END);
+            else
+                block.setSectionEnd(Block.NO_END);
             roadMap.process();
             drawBrick(selectionEnd);
             placeBricks();
@@ -470,7 +486,7 @@ public class RoadMapPanel extends JPanel{
     
     public void endSection()
     {
-        roadMap.getBrick(roadMap.size()-1).setSectionEnd(true);
+        roadMap.getBlock(roadMap.size()-1).setSectionEnd(true);
     }
     
     public void setInsertLine(int x, int y)

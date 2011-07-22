@@ -259,7 +259,11 @@ public class GraphicBrick {
                     endX, y + 3*blockHeight);
             g2d.drawLine(endX, y + blockHeight, endX, y + 3*blockHeight);
         }
-        g2d.setStroke(settings.basicLine);
+        if(block.getSectionEnd() == 2)
+            g2d.setStroke(settings.basicLine);
+        else
+            g2d.setStroke(settings.brickOutline);
+        
         if(block.isSectionEnd())
             g2d.drawLine(endX-3, endY + blockHeight, endX-3, endY + 3*blockHeight);
     }

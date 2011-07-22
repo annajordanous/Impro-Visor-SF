@@ -194,7 +194,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         deleteMenuItem = new javax.swing.JMenuItem();
         flattenMenuItem = new javax.swing.JMenuItem();
         breakMenuItem = new javax.swing.JMenuItem();
-        sectionBreakMenuItem = new javax.swing.JMenuItem();
+        toggleSectionMenuItem = new javax.swing.JMenuItem();
+        togglePhraseMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         transposeMenu = new javax.swing.JMenu();
         transposeDownMenuItem = new javax.swing.JMenuItem();
@@ -818,15 +819,25 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         editMenu.add(breakMenuItem);
 
-        sectionBreakMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
-        sectionBreakMenuItem.setText("Toggle Section"); // NOI18N
-        sectionBreakMenuItem.setName("sectionBreakMenuItem"); // NOI18N
-        sectionBreakMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        toggleSectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        toggleSectionMenuItem.setText("Toggle Section"); // NOI18N
+        toggleSectionMenuItem.setName("toggleSectionMenuItem"); // NOI18N
+        toggleSectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sectionBreakMenuItemActionPerformed(evt);
+                toggleSectionMenuItemActionPerformed(evt);
             }
         });
-        editMenu.add(sectionBreakMenuItem);
+        editMenu.add(toggleSectionMenuItem);
+
+        togglePhraseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
+        togglePhraseMenuItem.setText("Toggle Phrase"); // NOI18N
+        togglePhraseMenuItem.setName("togglePhraseMenuItem"); // NOI18N
+        togglePhraseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                togglePhraseMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(togglePhraseMenuItem);
 
         jSeparator4.setName("jSeparator4"); // NOI18N
         editMenu.add(jSeparator4);
@@ -969,7 +980,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
                 deselectBricks();
         } else if(evt.getButton() == evt.BUTTON3) {
             /*if(index != -1) {
-                int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
+                int jndex = roadMapPanel.getBlock(index).getChordAt(x, y);
                 selectChord(index,jndex);
                 chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
                 chordChangeDialog.setVisible(true);
@@ -1089,9 +1100,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         breakSelection();
     }//GEN-LAST:event_breakMenuItemActionPerformed
 
-    private void sectionBreakMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectionBreakMenuItemActionPerformed
+    private void toggleSectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleSectionMenuItemActionPerformed
         toggleSectionBreak();
-    }//GEN-LAST:event_sectionBreakMenuItemActionPerformed
+    }//GEN-LAST:event_toggleSectionMenuItemActionPerformed
 
     private void loopToggleButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loopToggleButtonPressed
         if( loopToggleButton.isSelected() )
@@ -1207,6 +1218,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         roadMapPanel.requestFocusInWindow();
     }//GEN-LAST:event_formWindowActivated
+
+    private void togglePhraseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePhraseMenuItemActionPerformed
+        togglePhraseEnd();
+    }//GEN-LAST:event_togglePhraseMenuItemActionPerformed
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1400,6 +1415,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         saveState("ChordChange");
         roadMapPanel.changeChord(name);
+    }
+    
+    private void togglePhraseEnd()
+    {
+        saveState("PhraseEnd");
+        roadMapPanel.togglePhrase();
     }
     
     private void toggleSectionBreak()
@@ -1649,7 +1670,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         transposeMenu.setEnabled(value);
         
-        sectionBreakMenuItem.setEnabled(value);
+        toggleSectionMenuItem.setEnabled(value);
+        togglePhraseMenuItem.setEnabled(value);
         
         flattenButton.setEnabled(value);
         flattenMenuItem.setEnabled(value);
@@ -1769,11 +1791,12 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
-    private javax.swing.JMenuItem sectionBreakMenuItem;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
     private javax.swing.JButton sendToNotateButton;
     private javax.swing.JButton stopButton;
+    private javax.swing.JMenuItem togglePhraseMenuItem;
+    private javax.swing.JMenuItem toggleSectionMenuItem;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JMenuItem transposeDownMenuItem;
     private javax.swing.JMenu transposeMenu;

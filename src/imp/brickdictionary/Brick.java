@@ -62,7 +62,7 @@ public class Brick extends Block {
          this.addSubBlocks(contents, bricks);
          type = brickType;
          duration = this.getDuration();
-         isEnd = isSectionEnd();
+         endValue = getSectionEnd();
      }
      
     /** Brick / 6
@@ -83,7 +83,7 @@ public class Brick extends Block {
          this.addSubBlocks(contents, bricks);
          type = brickType;
          duration = this.getDuration();
-         isEnd = isSectionEnd();
+         endValue = getSectionEnd();
      }
      
          /** Brick / 7
@@ -105,7 +105,7 @@ public class Brick extends Block {
          this.addSubBlocks(contents, bricks, polymap);
          type = brickType;
          duration = this.getDuration();
-         isEnd = isSectionEnd();
+         endValue = getSectionEnd();
      }
      
     /** Brick / 7
@@ -126,7 +126,7 @@ public class Brick extends Block {
          this.addSubBlocks(contents, bricks, polymap);
          type = brickType;
          duration = this.getDuration();
-         isEnd = isSectionEnd();
+         endValue = getSectionEnd();
      }
     
     /** Brick / 5
@@ -146,7 +146,7 @@ public class Brick extends Block {
         subBlocks = contents;
         type = brickType;
         duration = this.getDuration();
-        isEnd = isSectionEnd();
+        endValue = getSectionEnd();
     }
     
     
@@ -166,7 +166,7 @@ public class Brick extends Block {
         subBlocks = contents;
         type = brickType;
         duration = this.getDuration();
-        isEnd = isSectionEnd();
+        endValue = getSectionEnd();
     }
 
     /** Brick / 1
@@ -196,7 +196,7 @@ public class Brick extends Block {
         type = brick.getType();
         duration = this.getDuration();
         mode = brick.getMode();
-        isEnd = isSectionEnd();
+        endValue = getSectionEnd();
     }
     
     /** Brick / 2
@@ -224,7 +224,7 @@ public class Brick extends Block {
             duration += block.getDuration();
             subBlocks.add(newBlock); 
         }
-        isEnd = isSectionEnd();
+        endValue = getSectionEnd();
     }
     
     public Brick(ChordBlock c, String m) {
@@ -236,7 +236,7 @@ public class Brick extends Block {
         subBlocks = singleton;
         duration = c.getDuration();
         mode = m;
-        isEnd = c.isSectionEnd();
+        endValue = c.getSectionEnd();
     }
     
 //    public Brick(ChordBlock c, KeySpan ks) {
@@ -248,7 +248,7 @@ public class Brick extends Block {
 //        subBlocks = singleton;
 //        duration = c.getDuration();
 //        mode = ks.getMode();
-//        isEnd = c.isSectionEnd();
+//        endValue = c.isSectionEnd();
 //    }
   
     private static String modeHelper(List<Block> brickList, long key)
@@ -539,7 +539,7 @@ public class Brick extends Block {
 
             chordList.addAll(currentBlock.flattenBlock());
         }
-        chordList.get(chordList.size() - 1).setSectionEnd(isEnd);
+        chordList.get(chordList.size() - 1).setSectionEnd(endValue);
         
         return chordList;
     }
@@ -665,8 +665,8 @@ public class Brick extends Block {
     }
     
     @Override
-    public void setSectionEnd(Boolean value) {
-        isEnd = value;
+    public void setSectionEnd(int value) {
+        endValue = value;
         if(this.isOverlap()) {
             subBlocks.get(subBlocks.size() - 2).setSectionEnd(value);
         }
@@ -675,11 +675,32 @@ public class Brick extends Block {
     }
     
     @Override
-    public final boolean isSectionEnd()
+    public void setSectionEnd(boolean value) {
+        if(value)
+            endValue = Block.SECTION_END;
+        else
+            endValue = Block.NO_END;
+        if(this.isOverlap()) {
+            subBlocks.get(subBlocks.size() - 2).setSectionEnd(value);
+        }
+        else
+            subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
+    }
+    
+    @Override
+    public boolean isSectionEnd()
     {
         if(this.isOverlap())
             return subBlocks.get(subBlocks.size() - 2).isSectionEnd();
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
+    }
+    
+    @Override
+    public int getSectionEnd()
+    {
+        if(this.isOverlap())
+            return subBlocks.get(subBlocks.size() - 2).getSectionEnd();
+        return subBlocks.get(subBlocks.size() - 1).getSectionEnd();
     }
 
     @Override
@@ -709,7 +730,7 @@ public Polylist toPolylist()
         buffer.append(b.toPolylist());
       }
     
-    return Polylist.list("brick", name, duration, key, mode, isEnd, 
+    return Polylist.list("brick", name, duration, key, mode, endValue, 
                          buffer.toPolylist().cons("subblocks"));
   }
 

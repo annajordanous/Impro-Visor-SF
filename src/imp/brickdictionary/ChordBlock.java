@@ -58,7 +58,7 @@ public class ChordBlock extends Block {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
         else
             key = fixRoot(chord.getRoot());
-        isEnd = false;
+        endValue = Block.NO_END;
         mode = this.findModeFromQuality();
     }
     
@@ -70,7 +70,8 @@ public class ChordBlock extends Block {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
         else
             key = fixRoot(chord.getRoot());
-        isEnd = sectionend;
+        if(sectionend)
+            endValue = Block.SECTION_END;
         mode = findModeFromQuality();
     }
     
@@ -82,9 +83,8 @@ public class ChordBlock extends Block {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
         else
             key = fixRoot(chord.getRoot());
-        isEnd = ch.isSectionEnd();
+        endValue = ch.getSectionEnd();
         mode = findModeFromQuality();
-        isEnd = ch.isEnd;
     }
 
     public ChordBlock(Chord ch) {
@@ -256,7 +256,7 @@ public class ChordBlock extends Block {
     public Polylist toPolylist()
     {
         return Polylist.list("chord", name, duration, getQuality(), isSlashChord(), 
-                             NC, key, mode, isEnd);
+                             NC, key, mode, endValue);
     }
 
 /** findModeFromQuality

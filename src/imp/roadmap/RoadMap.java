@@ -68,7 +68,7 @@ public class RoadMap {
      */
     public RoadMap(RoadMap roadMap)
     {
-        blocks = cloneBlocks(roadMap.getBricks());
+        blocks = cloneBlocks(roadMap.getBlocks());
     }
     
     /**
@@ -105,7 +105,7 @@ public class RoadMap {
      * @param index index of the desired block
      * @return the block
      */
-    public Block getBrick(int index)
+    public Block getBlock(int index)
     {
         return blocks.get(index);
     }
@@ -115,7 +115,7 @@ public class RoadMap {
      * @return
      * list of bricks
      */
-    public ArrayList<Block> getBricks()
+    public ArrayList<Block> getBlocks()
     {
         return blocks;
     }
@@ -129,7 +129,7 @@ public class RoadMap {
      * @return  
      * list of bricks
      */
-    public ArrayList<Block> getBricks(int start, int end)
+    public ArrayList<Block> getBlocks(int start, int end)
     {
         return new ArrayList(blocks.subList(start, end));
     }
@@ -164,7 +164,7 @@ public class RoadMap {
      * @return 
      * bricks contained in the roadmap
      */
-    public ArrayList<Block> removeBricks()
+    public ArrayList<Block> removeBlocks()
     {
         ArrayList bricks = new ArrayList(blocks);
         blocks.clear();
@@ -182,7 +182,7 @@ public class RoadMap {
      * @return 
      * list of bricks
      */
-    public ArrayList<Block> removeBricks(int start, int end)
+    public ArrayList<Block> removeBlocks(int start, int end)
     {
         ArrayList bricks = new ArrayList(blocks.subList(start, end));
         blocks.subList(start, end).clear();
@@ -301,7 +301,7 @@ public class RoadMap {
     {
         joins = PostProcessing.findJoins(blocks);
         RoadMap newMap = PostProcessing.findKeys(this);
-        this.setBlocks(newMap.getBricks());
+        this.setBlocks(newMap.getBlocks());
         this.setKeyMap(newMap.getKeyMap());
     }
     

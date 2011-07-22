@@ -39,7 +39,11 @@ public class Block {
     protected String mode = null; // Broad quality of block (e.g. Major, Minor, 
                                   // or Dominant)
     
-    protected boolean isEnd;
+    public final static int NO_END = 0;
+    public final static int SECTION_END = 1;
+    public final static int PHRASE_END = 2;
+    
+    protected int endValue = 0;
     
     // Normal constructor for block
     public Block(String blockname, long blockkey, String mode) {
@@ -125,11 +129,22 @@ public class Block {
     }
     
     public boolean isSectionEnd() {
-        return isEnd;
+        return endValue != NO_END;
     }
     
-    public void setSectionEnd(Boolean value) {
-        isEnd = value;
+    public int getSectionEnd() {
+        return endValue;
+    }
+    
+    public void setSectionEnd(int value) {
+        endValue = value;
+    }
+    
+    public void setSectionEnd(boolean value) {
+        if(value)
+            endValue = SECTION_END;
+        else
+            endValue = NO_END;
     }
    
     public boolean isChord() 
