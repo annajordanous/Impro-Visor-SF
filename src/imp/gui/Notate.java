@@ -79,8 +79,8 @@ public class Notate
   
   RoadMapFrame roadmapFrame = null;
   
-  static int roadmapFrameInitialWidth = 1060;
-  static int roadmapFrameInitialHeight = 800;
+  static int roadmapFrameInitialWidth = 1200;
+  static int roadmapFrameInitialHeight = 900;
 
 
   LickgenFrame lickgenFrame;
@@ -22752,6 +22752,7 @@ public void roadMapThis()
   {
     establishRoadMapFrame();
     chordPartToRoadMapFrame(roadmapFrame);
+    roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.setVisible(true);
   }
 
@@ -22764,6 +22765,7 @@ public void roadMapThisAnalyze()
   {
     establishRoadMapFrame();
     chordPartToRoadMapFrame(roadmapFrame);
+    roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.analyzeAllBricks();
     roadmapFrame.setVisible(true);
   }
@@ -22787,7 +22789,15 @@ public void openEmptyRoadmap()
 
 public void establishRoadMapFrame()
   {
-    roadmapFrame = new RoadMapFrame(this);
+    if( roadmapFrame == null )
+      {
+      roadmapFrame = new RoadMapFrame(this);
+      }
+    else
+      {
+        roadmapFrame.selectAllBricks();
+        roadmapFrame.deleteSelection();
+      }
 
     roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
     roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());

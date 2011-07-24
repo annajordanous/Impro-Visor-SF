@@ -38,26 +38,59 @@
 
 Dm7 | G7 | CM7 | / | 
 Dm7 | G7 | CM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Ebm7 | G#7 | C#M7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Em7 | A7 | DM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Fm7 | Bb7 | EbM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 F#m7 | B7 | EM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Gm7 | C7 | FM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Gm7 | C7 | FM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 G#m7 | C#7 | F#M7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Am7 | D7 | GM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Bbm7 | Eb7 | G#M7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Bm7 | E7 | AM7 | NC | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | / | 
 Dbm7 | Gb7 | BM7 | NC | 
 

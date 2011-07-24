@@ -52,7 +52,7 @@ CM7 Am7 | Dm7 G7 | Gm7 | C7 |
 (section (style swing)) 
 
 FM7 Dm7 | Gm7 C7 | Am7 D7 | Gm7 C7 | 
-Cm7 F7 | BbM7 Eb7 | FM7 C7 | FM7 C7 | 
+Cm7 F7 | BbM7 Eb7 | FM7 C7 | FM7 | 
 
 (part
     (type melody)

@@ -43,10 +43,10 @@ AbM7 | Dm7b5 G7 | CM7 A7 | Dm7 G7 |
 
 CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
 AbM7 | Dm7b5 G7 | CM7 | / | 
+Dm7 | G7 | CM7 | Am7 | 
 
 (section (style swing)) 
 
-Dm7 | G7 | CM7 | Am7 | 
 Dm7 | G7 | C#m7 F#7 | Dm7 G7 | 
 
 (section (style swing)) 

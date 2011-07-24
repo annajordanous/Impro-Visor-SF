@@ -180,6 +180,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        openLeadsheetMI = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         selectAllMenuItem = new javax.swing.JMenuItem();
@@ -709,6 +710,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
         fileMenu.setName("fileMenu"); // NOI18N
         fileMenu.setPreferredSize(new java.awt.Dimension(50, 20));
 
+        openLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openLeadsheetMI.setMnemonic('o');
+        openLeadsheetMI.setText("Open Leadsheet"); // NOI18N
+        openLeadsheetMI.setToolTipText("Open a leadsheet in the current window."); // NOI18N
+        openLeadsheetMI.setName("openLeadsheetMI"); // NOI18N
+        openLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openLeadsheetMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openLeadsheetMI);
+
         exitMenuItem.setLabel("Quit"); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1229,6 +1242,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void togglePhraseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePhraseMenuItemActionPerformed
         togglePhraseEnd();
     }//GEN-LAST:event_togglePhraseMenuItemActionPerformed
+
+    private void openLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLeadsheetMIActionPerformed
+        notate.openLeadsheet(false);
+}//GEN-LAST:event_openLeadsheetMIActionPerformed
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1787,6 +1804,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JTree libraryTree;
     private javax.swing.JToggleButton loopToggleButton;
     private javax.swing.JButton newBrickButton;
+    private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
     private javax.swing.JScrollPane previewScrollPane;
