@@ -34,10 +34,16 @@
 	(Brick Body-And-Soul-Approach C 4)
 	(Chord CM7 4))
 
-(Brick Body-And-Soul-Approach Major Approach C
+(Brick Body-And-Soul-Approach(main) Major Approach C
 	(Chord Dm 1)
 	(Chord A7 1)
 	(Brick Straight-Approach C 2))
+
+(Brick Body-And-Soul-Approach(variant) Major Approach C
+	(Chord Dm 1)
+	(Chord A7 1)
+        (Chord Ab7 1)
+        (Chord G7 1))
 
 (Brick Body-And-Soul-with-TTFA Major Cadence C
         (Brick Body-And-Soul-Approach C 4)
@@ -73,6 +79,7 @@
 	(Brick Straight-Approach G 2)
 	(Brick Straight-Approach C 2))
 
+
 (Brick Donna-Lee-Opening Major Opening C
 	(Chord CM7 2)
 	(Chord D7 2)
@@ -82,7 +89,12 @@
 	(Chord CM7 1)
 	(Chord A7 1))
 
-(Brick Dropback(variant) Major Dropback C
+(Brick Dropback(var1) Major Dropback C
+	(Chord CM7 2)
+        (Chord Em7 1)
+	(Chord A7 1))
+
+(Brick Dropback(var2) Major Dropback C
 	(Chord CM7 1)
         (Chord Bb7 1)
 	(Chord A7  2))
@@ -95,6 +107,7 @@
 	(Chord Cm 1)
 	(Chord Am7b5 1))
 
+
 (Brick Dropback-Turnaround Major Turnaround C
 	(Brick Dropback-To-Five C 6)
 	(Chord C 1))
@@ -103,8 +116,12 @@
 	(Brick Extended-Approach C 3)
 	(Chord CM7 1))
 
-(Brick Extended-Approach Major Approach C
+(Brick Extended-Approach(var1) Major Approach C
 	(Chord A7 1)
+	(Brick Straight-Approach C 2))
+
+(Brick Extended-Approach(var2) Major Approach C
+	(Chord Am7 1)
 	(Brick Straight-Approach C 2))
 
 (Brick Foggy-Cadence Major Cadence C
@@ -127,12 +144,14 @@
 	(Chord CM7 4))
 
 (Brick Green-Dolphin-Street Major Cadence C
-	(Brick Green-Dolphin-Street-Approach C 2)
+	(Chord D7/C 1)
+        (Chord DbM7/C 1)
 	(Chord CM7 2))
-
+/* removed by RK
 (Brick Green-Dolphin-Street-Approach Major Approach C
 	(Chord D7/C 1)
 	(Chord DbM7/C 1))
+*/
 
 (Brick Happenstance Major Cadence C
 	(Brick Straight-Approach E 2)
@@ -143,9 +162,15 @@
 	(Brick Straight-Approach G 2) 
 	(Brick Straight-Approach C 2))
 
-(Brick II-n-Back minor Turnaround C
-	(Brick Reverse-Raindrop C 2)
-	(Chord Em 2))
+(Brick II-n-Back(standard) Major Turnaround C
+	(Chord Dm7 1)
+        (Chord D#o 1)
+	(Chord Em 1))
+
+(Brick II-n-Back(variant) Major Turnaround C
+	(Chord Dm7 1)
+        (Chord D#o 1)
+	(Chord C/E 1))
 
 (Brick ITCHY-Opening Major Opening C
 	(Chord CM7 2)
@@ -199,8 +224,13 @@
 	(Brick Long-Approach C 4)
 	(Chord CM7 4))
 
-(Brick Long-Approach Major Approach C
+(Brick Long-Approach(var1) Major Approach C
 	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Long-Approach(var2) Major Approach C
+	(Chord Em7 1)
+        (Chord Am7 1)
 	(Brick Straight-Approach C 2))
 
 (Brick Long-Dropback Major Dropback C
@@ -325,12 +355,31 @@
 	(Chord CM7 1))
 
 (Brick Pullback Major Cadence C
-	(Brick Pullback-Approach C 6)
+	(Brick Pullback-Approach-Extended C 6)
 	(Chord CM7 2))
 
-(Brick Pullback-Approach Major Approach C
+(Brick Pullback-Approach(basic) Major Approach C
 	(Brick Straight-Approach C 2)
-	(Brick Long-Approach C 4))
+	(Brick Straight-Approach D 2))
+
+(Brick Pullback-Approach(var1) Major Approach C
+	(Brick Straight-Approach C 2)
+        (Chord Em7 1)
+        (Chord Am7 1))
+
+(Brick Pullback-Approach(var2) Major Approach C
+	(Brick Straight-Approach C 2)
+        (Chord Em7b5 1)
+        (Chord A7 1))
+
+(Brick Pullback-Approach-Extended Major Approach C
+	(Brick Pullback-Approach C 4)
+	(Brick Straight-Approach C 2))
+
+(Brick Double-Pullback-Approach Major Approach C
+	(Brick Straight-Approach C 2)
+	(Brick Straight-Approach D 2)
+	(Brick Straight-Approach E 2))
 
 (Brick Rainbow Major Cadence C
 	(Chord CM7 1)
@@ -367,11 +416,11 @@
 (Brick Reverse-Raindrop Major Misc C
 	(Chord Dm 1)
 	(Chord Ebdim 1))
-
+/*
 (Brick Rhythm-Changes-Bridge Major Approach C
 	(Brick Dogleg-Approach D 4)
 	(Brick Dogleg-Approach C 4))
-
+*/
 (Brick Rhythm-Turnaround Major Turnaround C
 	(Brick Upslide C 2)
 	(Brick Reverse-Raindrop C 2))
@@ -502,6 +551,19 @@
         (Chord Fm7 1)
         (Chord Bb7 1))
 
+// Added by RK
+(Brick IV-n-Yak(main) Major Cadence C
+        (Chord F 1)
+        (Chord Bb7 1)
+        (Chord C 1))
+
+// Added by RK
+(Brick IV-n-Yak(var) Major Cadence C
+        (Chord F 2)
+        (Chord Fm7 1)
+        (Chord Bb7 1)
+        (Chord C 2))
+
 (Brick Supertension-Ending Dominant Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord C7#4 2))
@@ -533,6 +595,13 @@
         (Chord FM7 1)
         (Brick Straight-Approach D 2))
 
+(Brick TTFA(rainy) Major Dropback C
+        (Chord CM7 1)
+        (Chord F7 1)
+        (Chord Em7 1)
+        (Chord Ebo 1))
+
+
 (Brick To-IV-n-Back Major Turnaround C
 	(Chord CM7 1)
 	(Brick Perfect F 2)
@@ -562,15 +631,26 @@
 	(Chord Fm 1))
 
 // Modified by RK
-(Brick To-IV-n-Yak-turnaround Major Turnaround C
+(Brick To-IV-n-Yak(main) Major Turnaround C
 	(Chord CM7 1)
 	(Brick Perfect F 2)
 	(Chord Bb7 1))
 
 // Added by RK
-(Brick To-IV-n-Yak Major Cadence C
+(Brick To-IV-n-Yak(var1) Major Turnaround C
+	(Chord CM7 2)
+        (Chord C7 2)
+        (Chord F 2)
+        (Chord Fm7 1)
+	(Chord Bb7 1))
+
+// Added by RK
+(Brick To-IV-n-Yak(var2) Major Turnaround C
+	(Chord CM7 2)
 	(Chord Gm7 1)
-	(Brick Perfect F 2)
+        (Chord C7 1)
+        (Chord F 2)
+        (Chord Fm7 1)
 	(Chord Bb7 1))
 
 //(Brick Tritone Major Cadence C
@@ -590,6 +670,79 @@
 (Brick Upslide Major Misc C
 	(Chord CM7 1)
 	(Chord Dbdim 1))
+
+// Tritone approach and cadence added by RK
+
+(Brick Tritone-Approach Major Approach C
+        (Chord Dm7 1)
+        (Chord Db7 1))
+
+
+(Brick Tritone-Cadence(standard) Major Cadence C
+        (Chord Dm7 1)
+        (Chord Db7 1)
+        (Chord C 1))
+
+(Brick Tritone-Cadence(short) Major Cadence C
+        (Chord Db7 1)
+        (Chord C 1))
+
+(Brick Dominant-Cycle(2) Major Approach C
+        (Chord D7 1)
+        (Chord G7 1))
+
+(Brick Dominant-Cycle(3) Major Approach C
+        (Chord A7 1)
+        (Chord D7 1)
+        (Chord G7 1))
+
+(Brick Dominant-Cycle(4) Major Approach C
+        (Chord E7 1)
+        (Chord A7 1)
+        (Chord D7 1)
+        (Chord G7 1))
+
+(Brick Dominant-Cycle(5) Major Approach C
+        (Chord B7 1)
+        (Chord E7 1)
+        (Chord A7 1)
+        (Chord D7 1)
+        (Chord G7 1))
+
+(Brick Dominant-Cycle(6) Major Approach C
+        (Chord F#7 1)
+        (Chord B7 1)
+        (Chord E7 1)
+        (Chord A7 1)
+        (Chord D7 1)
+        (Chord G7 1))
+
+(Brick Two-Goes-Straight Major Approach C
+        (Brick Straight-Approach C 1)
+        (Brick Straight-Approach C 1))
+
+(Brick Three-Goes-Straight Major Approach C
+        (Brick Two-Goes-Straight C 1)
+        (Brick Straight-Approach C 1))
+
+(Brick Four-Goes-Straight Major Approach C
+        (Brick Two-Goes-Straight C 1)
+        (Brick Two-Goes-Straight C 1))
+
+(Brick Two-Goes-Tritone Major Approach C
+        (Brick Tritone-Approach C 1)
+        (Brick Tritone-Approach C 1))
+
+(Brick Three-Goes-Tritone Major Approach C
+        (Brick Tritone-Approach C 1)
+        (Brick Tritone-Approach C 1)
+        (Brick Tritone-Approach C 1))
+
+(Brick Four-Goes-Tritone Major Approach C
+        (Brick Tritone-Approach C 1)
+        (Brick Tritone-Approach C 1)
+        (Brick Tritone-Approach C 1)
+        (Brick Tritone-Approach C 1))
 
 (Brick Whoopee Major Turnaround C
 	(Brick Upslide C 2)
@@ -945,5 +1098,19 @@
 (Brick On-Off-On-Minor-To-VII-Major minor On-Off C
         (Brick On-Off-Minor-To-VII-Major C 2)
         (Chord Cm 2))
+
+// CESH's added by RK
+// CESH = Contrpunal Elaboration of Static Harmony
+
+(Brick Ascending-CESH(var1) minor Misc C
+        (Chord Cm 1)
+        (Chord Cm+ 1)
+        (Chord Cm6 1))
+
+(Brick Ascending-CESH(var2) minor Misc C
+        (Chord Cm 1)
+        (Chord Cm+ 1)
+        (Chord Cm6 1)
+        (Chord Cm7 1))
 
 // User-defined bricks

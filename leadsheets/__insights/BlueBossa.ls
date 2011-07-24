@@ -36,19 +36,19 @@
 
 (section (style latin)) 
 
-Cm69 | / | Fm9 | / | 
+Cm7 | / | Fm9 | / | 
 
 (section (style latin)) 
 
-Dm7b5 | G7#5#9 | Cm69 | / | 
+Dm7b5 | G7 | CmM7 | / | 
 
 (section (style latin)) 
 
-Ebm9 | Ab13 | DbM9 | / | 
+Ebm9 | Ab7 | DbM9 | / | 
 
 (section (style latin)) 
 
-Dm7b5 | G7#5#9 | Cm69 | Dm7b5 G7#5#9 | 
+Dm7b5 | G7 | CmM7 | / | 
 
 (part
     (type melody)
@@ -59,7 +59,7 @@ Dm7b5 | G7#5#9 | Cm69 | Dm7b5 G7#5#9 |
     (key -3)
     (stave treble)
 )
- g+4+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8
+ r4+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8
 (part
     (type melody)
     (title )

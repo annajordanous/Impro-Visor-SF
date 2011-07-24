@@ -36,7 +36,7 @@
 
 (section (style swing)) 
 
-NC | Gm7 C7 | F6 | / | 
+FM7 | Gm7 C7 | FM7 | / | 
 F/A | Abo | Gm7 C7 | Am7 D7 | 
 
 (section (style swing)) 

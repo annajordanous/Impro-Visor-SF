@@ -17,13 +17,22 @@
 
 (equiv Cdim7 Co7)
 
-(sub  C C+ Caug C7 C5)
+(equiv C+ Caug)
+
+
+(sub C7 C7alt C7+ C7aug Caug7 C7#5 C7#5#9 C7#9b13 C7b9 C7b9b13 C7#9 C9 C5
+     C13 C13b9 C13#9 C7#11 C9#11 C13#11 C7b5 C9b5 C7b5#9 C7b9#11 C13b9#11 C7add13 C7add6
+     C7sus4 C9sus4 C7b9sus4
+     )
+
+/* Old, RK:
 
 (sub C7 C7alt C7+ C7aug Caug7 C7#5 C7#5#9 C7#9b13 C7b9 C7b9b13 C7#9 C9 C5
      C13 C13b9 C13#9 C7#11 C9#11 C13#11 C7b5 C9b5 C7b5#9 C7b9#11 C13b9#11 C7add13 C7add6
      C7sus4 C9sus4 C7b9sus4
      Cm7
      )
+*/
 
 (sub C9 C9#11 C13 C13#11 
      )
@@ -33,7 +42,9 @@
 (sub C7b9 C13b9 C13b9#11)
 
 (sub C6 Am7)
-(sub Cm7 Cm7b5 Cm9 Cm11 Cm9b5 Cm13 C7 C7alt)
+(sub Cm7 Cm7b5 Cm9 Cm11 Cm9b5 Cm13 C7alt)
+
+// old, RK: (sub Cm7 Cm7b5 Cm9 Cm11 Cm9b5 Cm13 C7 C7alt)
 (sub Cm9 Cm9b5 Cm11 Cm13)
 (sub Cm11 Cm13)
 
