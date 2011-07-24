@@ -88,9 +88,15 @@
 	(Brick Straight-Approach C 2))
 
 
-(Brick Donna-Lee-Opening Major Opening C
+(Brick Donna-Lee-Opening(var1) Major Opening C
 	(Chord CM7 2)
 	(Chord D7 2)
+	(Brick Straight C 4))
+
+(Brick Donna-Lee-Opening(var2) Major Opening C
+	(Chord CM7 2)
+	(Chord Am7 1)
+	(Chord D7 1)
 	(Brick Straight C 4))
 
 (Brick Dropback(standard) Major Dropback C
@@ -555,8 +561,7 @@
 	(Chord C7 2))
 
 (Brick Starlight-Approach Major Approach C
-	(Chord F#m7b5 1)
-	(Chord B7 1)
+	(Brick An-Approach E 2)
 	(Brick Long-Approach C 4))
 
 (Brick Starlight-Dropback Major Dropback C
@@ -585,6 +590,16 @@
 	(Chord G7 1))
 
 (Brick Straight-Approach-Minor minor Approach C
+	(Chord Dm7b5 1)
+	(Chord G7 1))
+
+// Added by RK
+
+(Brick An-Approach(major-variant) Major Approach C
+	(Chord Dm7 1)
+	(Chord G7 1))
+
+(Brick An-Approach(minor-variant) Major Approach C
 	(Chord Dm7b5 1)
 	(Chord G7 1))
 
