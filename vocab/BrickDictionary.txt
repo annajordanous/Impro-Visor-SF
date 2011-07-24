@@ -26,9 +26,17 @@
 	(Brick Autumnal-Approach C 6)
 	(Chord Am 2))
 
-(Brick Autumnal-Approach minor Approach C
+(Brick Autumnal-Approach(var1) minor Approach C
 	(Brick Straight-Approach C 2)
 	(Brick Sad-Approach A 2))
+
+(Brick Autumnal-Approach(var2) minor Approach C
+	(Brick Sad-Approach C 2)
+	(Brick Sad-Approach A 2))
+
+(Brick Autumnal-Approach(var3) minor Approach C
+	(Chord Fm7b5 2)
+	(Brick Sad-Approach C 2))
 
 (Brick Body-And-Soul Major Cadence C
 	(Brick Body-And-Soul-Approach C 4)
@@ -90,11 +98,15 @@
 	(Chord A7 1))
 
 (Brick Dropback(var1) Major Dropback C
+	(Chord CM7 1)
+	(Chord Ebo 1))
+
+(Brick Dropback(var2) Major Dropback C
 	(Chord CM7 2)
         (Chord Em7 1)
 	(Chord A7 1))
 
-(Brick Dropback(var2) Major Dropback C
+(Brick Dropback(var3) Major Dropback C
 	(Chord CM7 1)
         (Chord Bb7 1)
 	(Chord A7  2))
@@ -358,6 +370,15 @@
 	(Brick Pullback-Approach-Extended C 6)
 	(Chord CM7 2))
 
+(Brick Two-Goes-Pullback Major Cadence C
+	(Brick Two-Goes-Pullback-Approach-Extended C 6)
+	(Chord CM7 2))
+
+(Brick Three-Goes-Pullback Major Cadence C
+	(Brick Three-Goes-Pullback-Approach-Extended C 6)
+	(Chord CM7 2))
+
+
 (Brick Pullback-Approach(basic) Major Approach C
 	(Brick Straight-Approach C 2)
 	(Brick Straight-Approach D 2))
@@ -372,6 +393,11 @@
         (Chord Em7b5 1)
         (Chord A7 1))
 
+(Brick Pullback-Approach(var3) Major Approach C
+	(Brick Straight-Approach C 2)
+        (Chord Bb7 1)
+        (Chord A7 1))
+
 (Brick Pullback-Approach-Extended Major Approach C
 	(Brick Pullback-Approach C 4)
 	(Brick Straight-Approach C 2))
@@ -380,6 +406,22 @@
 	(Brick Straight-Approach C 2)
 	(Brick Straight-Approach D 2)
 	(Brick Straight-Approach E 2))
+
+(Brick Two-Goes-Pullback-Approach Major Approach C
+        (Brick Pullback-Approach C 1)
+        (Brick Pullback-Approach C 1))
+
+(Brick Two-Goes-Pullback-Approach-Extended Major Approach C
+	(Brick Two-Goes-Pullback-Approach C 4)
+	(Brick Straight-Approach C 2))
+
+(Brick Three-Goes-Pullback-Approach Major Approach C
+        (Brick Two-Goes-Pullback-Approach C 1)
+        (Brick Pullback-Approach C 1))
+
+(Brick Three-Goes-Pullback-Approach-Extended Major Approach C
+	(Brick Three-Goes-Pullback-Approach C 6)
+	(Brick Straight-Approach C 2))
 
 (Brick Rainbow Major Cadence C
 	(Chord CM7 1)
@@ -439,8 +481,8 @@
         (Chord CmM7 2))
 
 (Brick Sad-Approach minor Approach C
-	(Chord Dm7b5 1)
-	(Chord G7alt 1))
+	(Chord Dm7b5 1)  
+	(Chord G7 1))          // modified by RK
 
 (Brick Sad-Somewhere minor Dropback C
 	(Brick Straight-Approach-Minor C 2)
