@@ -253,9 +253,10 @@
 	(Brick Straight-Approach C 2))
 
 (Brick Long-Approach(var2) Major Approach C
-	(Chord Em7 1)
-        (Chord Am7 1)
-	(Brick Straight-Approach C 2))
+	(Chord Am7 1)
+        (Chord D7 1)
+        (Chord G7 1))
+
 
 (Brick Long-Dropback Major Dropback C
         (Brick Straight C 3)
@@ -319,10 +320,16 @@
         (Chord Am 1)
 	(Brick Straight-Approach C 2))
 
-// Not sure this should be called a POT. Reference?
-(Brick POT(variant) Major Turnaround C
+(Brick POT(var1) Major Turnaround C
 	(Brick Dropback C 2)
 	(Brick Straight-Approach C 2))
+
+(Brick POT(var2) Major Turnaround C
+	(Chord C 2)
+	(Chord Am 2)
+        (Chord Am/C 2)
+        (Chord Dm7/G 1)
+        (Chord G7 1))
 
 (Brick POT(short) Major Turnaround C
         (Chord C 2)
@@ -677,10 +684,22 @@
         (Chord Ebo 1))
 
 
-(Brick To-IV-n-Back Major Turnaround C
+(Brick To-IV-n-Back(main) Major Turnaround C
 	(Chord CM7 1)
 	(Brick Perfect F 2)
 	(Chord F#dim 1))
+
+// Added by RK
+(Brick To-IV-n-Back(variant) Major Turnaround C
+	(Brick Perfect F 2)
+	(Chord F#dim 1))
+
+// Added by RK
+(Brick To-IV-n-Bird-POT(standard) Major Turnaround C
+	(Chord CM7 1)
+	(Brick Straight F 2)
+	(Chord Bb7 1)
+	(Brick POT C 4))
 
 (Brick To-IV-n-Bird-SPOT(standard) Major Turnaround C
 	(Chord CM7 1)
@@ -689,9 +708,16 @@
 	(Brick Suspended-POT C 4))
 
 // Added by RK
-(Brick To-IV-n-Bird-SPOT(variant) Major Turnaround C
-	(Chord Gm7 1)
+(Brick To-IV-n-Bird-SPOT(var1) Major Turnaround C
+        (Chord CM7 1)
 	(Brick Perfect F 2)
+	(Chord Bb7 1)
+	(Brick Suspended-POT C 4))
+
+// Added by RK
+(Brick To-IV-n-Bird-SPOT(var2) Major Turnaround C
+        (Chord CM7 1)
+	(Brick Straight F 2)
 	(Chord Bb7 1)
 	(Brick Suspended-POT C 4))
 
