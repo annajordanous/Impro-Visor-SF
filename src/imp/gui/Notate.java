@@ -493,6 +493,13 @@ public class Notate
   private int numStavesPP = 0;
 
   private static int QUANTUM = BEAT/2;
+  
+  /**
+   * Set this value if a roadmap created this frame.
+   */
+  
+  private RoadMapFrame createdByRoadmap = null;
+  
 
   public void setPlaybackStop(int slot)
   {
@@ -2253,14 +2260,15 @@ public class Notate
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
-        emptyRoadMapMI = new javax.swing.JMenuItem();
-        roadMapThisMI = new javax.swing.JMenuItem();
-        roadMapThisAnalyze = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
+        roadmapMenu = new javax.swing.JMenu();
+        emptyRoadMapMI = new javax.swing.JMenuItem();
+        roadMapThisMI = new javax.swing.JMenuItem();
+        roadMapThisAnalyze = new javax.swing.JMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -6353,7 +6361,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         truncatePartDialog.getContentPane().add(truncatePartLabel, gridBagConstraints);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
         setName("notateFrame"); // NOI18N
@@ -6376,6 +6384,9 @@ public class Notate
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                notateWIndowClosed(evt);
             }
         });
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -7353,7 +7364,6 @@ public class Notate
         fileMenu.add(aboutMI);
         fileMenu.add(jSeparator22);
 
-        createRoadMapCheckBox.setSelected(true);
         createRoadMapCheckBox.setText("Create road map");
         createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
         fileMenu.add(createRoadMapCheckBox);
@@ -8045,34 +8055,6 @@ public class Notate
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText("Utilities");
 
-        emptyRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.CTRL_MASK));
-        emptyRoadMapMI.setText("Empty Road Map\n");
-        emptyRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmptyRoadMapAction(evt);
-            }
-        });
-        utilitiesMenu.add(emptyRoadMapMI);
-
-        roadMapThisMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
-        roadMapThisMI.setText("Road Map this");
-        roadMapThisMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roadMapThisMIaction(evt);
-            }
-        });
-        utilitiesMenu.add(roadMapThisMI);
-
-        roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.SHIFT_MASK));
-        roadMapThisAnalyze.setText("Road Map this & Analyze");
-        roadMapThisAnalyze.setToolTipText("Open road map and analyze entire chorus.\n");
-        roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roadMapThisAnalyzeAction(evt);
-            }
-        });
-        utilitiesMenu.add(roadMapThisAnalyze);
-
         openLeadsheetEditorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetEditorMI.setMnemonic('l');
         openLeadsheetEditorMI.setText("Leadsheet Textual Editor");
@@ -8125,6 +8107,39 @@ public class Notate
         utilitiesMenu.add(voicingTestMI);
 
         menuBar.add(utilitiesMenu);
+
+        roadmapMenu.setText("Roadmap\n");
+        roadmapMenu.setToolTipText("Options for creating a roadmap of the chord progression.");
+
+        emptyRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.CTRL_MASK));
+        emptyRoadMapMI.setText("Empty Road Map\n");
+        emptyRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EmptyRoadMapAction(evt);
+            }
+        });
+        roadmapMenu.add(emptyRoadMapMI);
+
+        roadMapThisMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
+        roadMapThisMI.setText("Road Map this");
+        roadMapThisMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roadMapThisMIaction(evt);
+            }
+        });
+        roadmapMenu.add(roadMapThisMI);
+
+        roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.SHIFT_MASK));
+        roadMapThisAnalyze.setText("Road Map this & Analyze");
+        roadMapThisAnalyze.setToolTipText("Open road map and analyze entire chorus.\n");
+        roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roadMapThisAnalyzeAction(evt);
+            }
+        });
+        roadmapMenu.add(roadMapThisAnalyze);
+
+        menuBar.add(roadmapMenu);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -20521,6 +20536,23 @@ private void timeSignatureTopTFActionPerformed(java.awt.event.ActionEvent evt) {
     // TODO add your handling code here:
 }//GEN-LAST:event_timeSignatureTopTFActionPerformed
 
+private void notateWIndowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_notateWIndowClosed
+    closingThisWindow();
+}//GEN-LAST:event_notateWIndowClosed
+
+/**
+ * If this Notate frame was created from a roadmap, tell that roadmap
+ * about its closing.
+ */
+
+private void closingThisWindow()
+  {
+  if( createdByRoadmap != null )
+    {
+      createdByRoadmap.resetAuxNotate();
+    }
+  }
+
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
@@ -22225,6 +22257,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem revertToSavedMI;
     private javax.swing.JMenuItem roadMapThisAnalyze;
     private javax.swing.JMenuItem roadMapThisMI;
+    private javax.swing.JMenu roadmapMenu;
     private javax.swing.JCheckBox rootEqualBassCheckbox;
     private javax.swing.JLabel rootEqualBassLabel;
     private javax.swing.JLabel rootRangeLabel;
@@ -22723,6 +22756,17 @@ public void makeVisible(Notate oldNotate)
    }
 
 
+/**
+ * Set the selection value on the CheckBox that will automatically
+ * create a roadmap when this Notate is opened.
+ * @param value 
+ */
+
+public void setCreateRoadMapCheckBox(boolean value)
+  {
+    createRoadMapCheckBox.setSelected(value);
+  }
+
 
 /**
  * Make this Notate frame visible
@@ -22803,6 +22847,16 @@ public void establishRoadMapFrame()
     roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
     
     //System.out.println("established roadmapFrame = " + roadmapFrame);
+  }
+
+
+/** 
+ * Call if roadMapFrame is no longer to be remembered.
+ */
+
+public void disestablishRoadMapFrame()
+  {
+    roadmapFrame = null;
   }
 }
 

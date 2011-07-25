@@ -341,6 +341,11 @@ private ImproVisor(String leadsheet)
       }
     
      currentWindow = notate;
+     
+     // FIX: true for now, during development.
+     // Should be made into a Preference
+     
+     notate.setCreateRoadMapCheckBox(true);
 
      notate.makeVisible();
 

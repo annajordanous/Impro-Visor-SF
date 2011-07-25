@@ -158,14 +158,13 @@ public class RoadMapFrame extends javax.swing.JFrame {
         chordDialogAcceptButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         toolBar = new javax.swing.JToolBar();
-        flattenButton = new javax.swing.JButton();
-        breakButton = new javax.swing.JButton();
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
         newBrickButton = new javax.swing.JButton();
+        breakButton = new javax.swing.JButton();
         selectAllBricksButton = new javax.swing.JButton();
+        flattenButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
-        sendToNotateButton = new javax.swing.JButton();
         loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
@@ -202,6 +201,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         sectionMenu = new javax.swing.JMenu();
         toggleSectionMenuItem = new javax.swing.JMenuItem();
         togglePhraseMenuItem = new javax.swing.JMenuItem();
+        leadsheetMenu = new javax.swing.JMenu();
+        appendToLeadsheetMI = new javax.swing.JMenuItem();
+        appendToNewLeadsheetMI = new javax.swing.JMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -325,42 +327,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         toolBar.setName("toolBar"); // NOI18N
         toolBar.setPreferredSize(new java.awt.Dimension(500, 50));
 
-        flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
-        flattenButton.setText("Flatten"); // NOI18N
-        flattenButton.setToolTipText("Flatten selected bricks into their constituent chords."); // NOI18N
-        flattenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        flattenButton.setFocusable(false);
-        flattenButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        flattenButton.setMaximumSize(new java.awt.Dimension(50, 30));
-        flattenButton.setMinimumSize(new java.awt.Dimension(50, 30));
-        flattenButton.setName("flattenButton"); // NOI18N
-        flattenButton.setPreferredSize(new java.awt.Dimension(50, 30));
-        flattenButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        flattenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                flattenButtonPressed(evt);
-            }
-        });
-        toolBar.add(flattenButton);
-
-        breakButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
-        breakButton.setText("Break"); // NOI18N
-        breakButton.setToolTipText("Break this brick into constitutent parts."); // NOI18N
-        breakButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        breakButton.setFocusable(false);
-        breakButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        breakButton.setMaximumSize(new java.awt.Dimension(50, 30));
-        breakButton.setMinimumSize(new java.awt.Dimension(50, 30));
-        breakButton.setName("breakButton"); // NOI18N
-        breakButton.setPreferredSize(new java.awt.Dimension(50, 30));
-        breakButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        breakButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                breakButtonPressed(evt);
-            }
-        });
-        toolBar.add(breakButton);
-
         scaleLabel.setName("scaleLabel"); // NOI18N
         toolBar.add(scaleLabel);
 
@@ -402,6 +368,24 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(newBrickButton);
 
+        breakButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        breakButton.setText("Break"); // NOI18N
+        breakButton.setToolTipText("Break this brick into constitutent parts."); // NOI18N
+        breakButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        breakButton.setFocusable(false);
+        breakButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        breakButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        breakButton.setMinimumSize(new java.awt.Dimension(50, 30));
+        breakButton.setName("breakButton"); // NOI18N
+        breakButton.setPreferredSize(new java.awt.Dimension(50, 30));
+        breakButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        breakButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                breakButtonPressed(evt);
+            }
+        });
+        toolBar.add(breakButton);
+
         selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         selectAllBricksButton.setText("Select All"); // NOI18N
         selectAllBricksButton.setToolTipText("Select all bricks.\n"); // NOI18N
@@ -419,6 +403,24 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         toolBar.add(selectAllBricksButton);
+
+        flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        flattenButton.setText("Flatten"); // NOI18N
+        flattenButton.setToolTipText("Flatten selected bricks into their constituent chords."); // NOI18N
+        flattenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        flattenButton.setFocusable(false);
+        flattenButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        flattenButton.setMaximumSize(new java.awt.Dimension(50, 30));
+        flattenButton.setMinimumSize(new java.awt.Dimension(50, 30));
+        flattenButton.setName("flattenButton"); // NOI18N
+        flattenButton.setPreferredSize(new java.awt.Dimension(50, 30));
+        flattenButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        flattenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flattenButtonPressed(evt);
+            }
+        });
+        toolBar.add(flattenButton);
 
         analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
@@ -438,23 +440,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         toolBar.add(analyzeButton);
 
-        sendToNotateButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
-        sendToNotateButton.setText("To Leadsheet"); // NOI18N
-        sendToNotateButton.setToolTipText("Send the selection to the leadsheet window."); // NOI18N
-        sendToNotateButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        sendToNotateButton.setFocusable(false);
-        sendToNotateButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        sendToNotateButton.setMaximumSize(new java.awt.Dimension(90, 30));
-        sendToNotateButton.setMinimumSize(new java.awt.Dimension(90, 30));
-        sendToNotateButton.setPreferredSize(new java.awt.Dimension(90, 30));
-        sendToNotateButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        sendToNotateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendToNotateButtonPressed(evt);
-            }
-        });
-        toolBar.add(sendToNotateButton);
-
         loopToggleButton.setBackground(new java.awt.Color(0, 255, 0));
         loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         loopToggleButton.setText("Loop"); // NOI18N
@@ -466,7 +451,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         loopToggleButton.setName("loopToggleButton"); // NOI18N
         loopToggleButton.setOpaque(true);
         loopToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
-        loopToggleButton.setSize(new java.awt.Dimension(60, 30));
         loopToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         loopToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -888,6 +872,34 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
         roadmapMenuBar.add(sectionMenu);
 
+        leadsheetMenu.setText("Leadsheet"); // NOI18N
+        leadsheetMenu.setToolTipText("Transfer roadmap chord changes into a leadsheet."); // NOI18N
+        leadsheetMenu.setName("leadsheetMenu"); // NOI18N
+
+        appendToLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        appendToLeadsheetMI.setText("Append selection chords to most recent leadsheet created\n\n"); // NOI18N
+        appendToLeadsheetMI.setToolTipText("Appends the chords in the current selection to a created leadsheet, creating one if none exits."); // NOI18N
+        appendToLeadsheetMI.setName("appendToLeadsheetMI"); // NOI18N
+        appendToLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                appendToLeadsheetMIaction(evt);
+            }
+        });
+        leadsheetMenu.add(appendToLeadsheetMI);
+
+        appendToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        appendToNewLeadsheetMI.setText("Create a new leadsheet and add selected chords to it  "); // NOI18N
+        appendToNewLeadsheetMI.setToolTipText("Create a new leadsheet and add selected chords to it."); // NOI18N
+        appendToNewLeadsheetMI.setName("appendToNewLeadsheetMI"); // NOI18N
+        appendToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                appendToNewLeadsheetMIaction(evt);
+            }
+        });
+        leadsheetMenu.add(appendToNewLeadsheetMI);
+
+        roadmapMenuBar.add(leadsheetMenu);
+
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
         windowMenu.setName("windowMenu"); // NOI18N
@@ -1066,10 +1078,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         selectAllBricks();
     }//GEN-LAST:event_selectAllBricksButtonPressed
 
-    private void sendToNotateButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToNotateButtonPressed
-        sendSelectionToNotate();
-    }//GEN-LAST:event_sendToNotateButtonPressed
-
     private void playButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonPressed
         playSelection();
     }//GEN-LAST:event_playButtonPressed
@@ -1246,6 +1254,14 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void openLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLeadsheetMIActionPerformed
         notate.openLeadsheet(false);
 }//GEN-LAST:event_openLeadsheetMIActionPerformed
+
+    private void appendToLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToLeadsheetMIaction
+        appendSelectionToNotate();
+    }//GEN-LAST:event_appendToLeadsheetMIaction
+
+    private void appendToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToNewLeadsheetMIaction
+        sendSelectionToNewNotate();
+    }//GEN-LAST:event_appendToNewLeadsheetMIaction
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1772,6 +1788,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog addBrickDialog;
     private javax.swing.JButton analyzeButton;
+    private javax.swing.JMenuItem appendToLeadsheetMI;
+    private javax.swing.JMenuItem appendToNewLeadsheetMI;
     private javax.swing.JButton breakButton;
     private javax.swing.JMenuItem breakMenuItem;
     private javax.swing.JMenuItem cascadeMI;
@@ -1799,6 +1817,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JSpinner keySpinner;
+    private javax.swing.JMenu leadsheetMenu;
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTabbedPane libraryTabbedPane;
     private javax.swing.JTree libraryTree;
@@ -1817,7 +1836,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenu sectionMenu;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
-    private javax.swing.JButton sendToNotateButton;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem togglePhraseMenuItem;
     private javax.swing.JMenuItem toggleSectionMenuItem;
@@ -1831,34 +1849,90 @@ public class RoadMapFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 /**
-  * Sends the currently-selected blocks to a new Notate window called auxNotate.
-  *
-  * If not blocks are selected, selects them all first.
-  *
-  * If the road map is empty, does nothing.
-  */
+ * Appends the currently-selected blocks to a Notate window called auxNotate,
+ * creating that window if none exists.
+ *
+ * If no blocks are selected, selects them all first.
+ *
+ * If the road map is empty, does nothing.
+ */
     
-    public void sendSelectionToNotate() {
-        if (roadMapPanel.getNumBlocks() < 1) {
-            return;
-        }
-        if (!roadMapPanel.hasSelection()) {
-            selectAllBricks();
-        }
+public void appendSelectionToNotate()
+  {
+    if( roadMapPanel.getNumBlocks() < 1 )
+      {
+        return;
+      }
+    
+    if( !roadMapPanel.hasSelection() )
+      {
+        selectAllBricks();
+      }
 
-        if (auxNotate == null) {
-            imp.data.ChordPart chordPart = new imp.data.ChordPart();
-            chordPart.addFromRoadMapFrame(this);
-            Score score = new Score(chordPart);
-            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-        } else {
-            auxNotate.addToChordPartFromRoadMapFrame(this);
-        }
-        auxNotate.setVisible(true);
-        auxNotate.playScore();
+    if( auxNotate == null )
+      {
+        imp.data.ChordPart chordPart = new imp.data.ChordPart();
+        chordPart.addFromRoadMapFrame(this);
+        Score score = new Score(chordPart);
+        auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+      }
+    else
+      {
+        auxNotate.addToChordPartFromRoadMapFrame(this);
+      }
+    auxNotate.setCreateRoadMapCheckBox(false);
+    auxNotate.setVisible(true);
+    //auxNotate.playScore();
+  }
+    
 
-    }
+/**
+ * Sends the currently-selected blocks to a new Notate window called auxNotate.
+ * Any existing associate with that window is detached and lost.
+ *
+ * If no blocks are selected, selects them all first.
+ *
+ * If the road map is empty, does nothing.
+ */
+public void sendSelectionToNewNotate()
+  {
+    if( roadMapPanel.getNumBlocks() < 1 )
+      {
+        return;
+      }
+    
+    if( !roadMapPanel.hasSelection() )
+      {
+        selectAllBricks();
+      }
 
+    if( auxNotate != null )
+      {
+        // What to do here?
+        // Need to prevent inconsistency caused by the closing of auxNotate.
+        // It will set auxNotate to null.
+      }
+    imp.data.ChordPart chordPart = new imp.data.ChordPart();
+    chordPart.addFromRoadMapFrame(this);
+    Score score = new Score(chordPart);
+    auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+    auxNotate.setCreateRoadMapCheckBox(false);
+        
+    auxNotate.setVisible(true);
+    //auxNotate.playScore();
+  }
+
+
+/**
+ * Call from suxNotate when deleted to prevent dangling reference.
+ */
+
+public void resetAuxNotate()
+  {
+    auxNotate = null;
+  }
+   
+    
 /**
   * Plays the currently-selected blocks. The style is determined from the
   * Notate window where this roadmap was opened.
@@ -1904,14 +1978,25 @@ public class RoadMapFrame extends javax.swing.JFrame {
         playSelection();
     }
 
+
+/**
+ * Close this RoadMapFrame and clean up.
+ */
+    
 public void closeWindow()
   {
   WindowRegistry.unregisterWindow(this);
+  
+  if( notate != null )
+    {
+      notate.disestablishRoadMapFrame();
+    }
   
   disposeBuffers();
           
   dispose();
   }
+
 
 /**
  * Get X location for new frame cascaded from original.
