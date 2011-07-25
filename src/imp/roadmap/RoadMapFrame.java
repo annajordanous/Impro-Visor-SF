@@ -1057,7 +1057,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 }//GEN-LAST:event_scaleComboBoxscaleChosen
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
-        dialogNameField.setText("NewBrick");
+        dialogNameField.setText("New Brick");
         dialogKeySpinner.setValue("C");
         addBrickDialog.setVisible(true);
 }//GEN-LAST:event_newBrickButtonPressed
@@ -1782,7 +1782,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     {
         Brick scaledBrick = new Brick(brick);
         scaledBrick.reduceDurations();
-        brickLibrary.addBrick(scaledBrick);
+        brickLibrary.addBrickDefinition(scaledBrick);
         addToLibraryTree(brick.getName());
         
     }
@@ -1793,10 +1793,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)root.getLastChild();
         
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
-        if(node.toString().equals("UserDefined")) {
+        if(node.toString().equals("User-Defined")) {
             libraryTreeModel.insertNodeInto(newNode, node, node.getChildCount());
         } else {
-            DefaultMutableTreeNode newParent = new DefaultMutableTreeNode("UserDefined");
+            DefaultMutableTreeNode newParent = new DefaultMutableTreeNode("User-Defined");
             newParent.add(newNode);
             libraryTreeModel.insertNodeInto(newParent, root, root.getChildCount());
         }

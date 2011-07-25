@@ -66,16 +66,10 @@ public class BinaryProduction extends AbstractProduction {
         head = h;
         type = t;
         key1 = modKeys(b1.getKey() - k);
-        if (b1 instanceof ChordBlock) 
-            name1 = ((ChordBlock)b1).getSymbol();
-        else
-            name1 = b1.getName();
+        name1 = b1.getSymbol();
         
         key2 = modKeys(b2.getKey() - k);
-        if (b2 instanceof ChordBlock) 
-            name2 = ((ChordBlock)b2).getSymbol();
-        else
-            name2 = b2.getName();
+        name2 = b2.getSymbol();
         
         toPrint = p;
         mode = m;
@@ -100,12 +94,7 @@ public class BinaryProduction extends AbstractProduction {
         name1 = pStart.getHead();
         
         key2 = modKeys(b.getKey() - k);
-        if (b instanceof ChordBlock) {
-            name2 = ((ChordBlock)b).getSymbol();
-        }
-        else {
-            name2 = b.getName();
-        }
+        name2 = b.getSymbol();
         
         toPrint = p;
         mode = m;

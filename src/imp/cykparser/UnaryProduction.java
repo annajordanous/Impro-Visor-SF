@@ -43,10 +43,7 @@ public class UnaryProduction extends AbstractProduction {
         head = h;
         type = t;
         key = k; 
-        if (b instanceof ChordBlock) 
-            name = ((ChordBlock)b).getSymbol();
-        else
-            name = b.getName();
+        name = b.getSymbol();
         termKey = b.getKey();
         toPrint = p;
         mode = m;

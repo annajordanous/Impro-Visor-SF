@@ -423,7 +423,7 @@ public class RoadMapPanel extends JPanel{
         if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
             ArrayList<Block> blocks = roadMap.removeBlocks(selectionStart, selectionEnd+1);
             graphicMap.subList(selectionStart, selectionEnd+1).clear();
-            Brick newBrick = new Brick(name, key, "UserDefined", blocks, mode);
+            Brick newBrick = new Brick(name, key, "User-Defined", blocks, mode);
 
             
             roadMap.add(selectionStart, newBrick);

@@ -111,6 +111,12 @@ public class Block {
     public String getType() {
         return this.mode;
     }
+    
+    // Gets the symbol for parsing of a given block
+    public String getSymbol() {
+        return name;
+    }
+    
     // Transposes all the components of a block
     // Overridden by the corresponding method in Brick or Chord
     public void transpose(long diff) {

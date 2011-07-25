@@ -164,7 +164,14 @@ public class Brick extends Block {
     public Brick(String brickName, long brickKey, String brickType, 
             ArrayList<Block> contents, String m) {
         super(brickName, brickKey, m);
-        subBlocks = contents;
+        subBlocks = new ArrayList<Block>();
+        for (Block b : contents)
+        {
+            if (b.getName().contains("Launcher"))
+                subBlocks.addAll(b.flattenBlock());
+            else
+                subBlocks.add(b);
+        }
         type = brickType;
         duration = this.getDuration();
         endValue = getSectionEnd();
@@ -503,8 +510,6 @@ public class Brick extends Block {
         return this.type;
     }
     
-    
-    
     // Sum the durations of a brick's subblocks
     @Override
     public final int getDuration() {
@@ -727,24 +732,38 @@ public class Brick extends Block {
  * @return 
  */
     
-@Override
-public Polylist toPolylist()
-  {
-    PolylistBuffer buffer = new PolylistBuffer();
+    @Override
+    public Polylist toPolylist()
+    {
+        return Polylist.list("Brick", dashed(name), 
+                             BrickLibrary.keyNumToName(key), duration);
+    }
+
+
+    public Polylist toBrickDefinition()
+    {
+        PolylistBuffer buffer = new PolylistBuffer();
+        
+        for ( Block b: getSubBlocks() )
+        {
+            buffer.append(b.toPolylist());
+        }
+        if (qualifier != "") {
+            return Polylist.list("Brick", dashed(name), Polylist.list(qualifier), 
+                    mode, dashed(type), BrickLibrary.keyNumToName(key)
+                    ).append(buffer.toPolylist());
+        }
+        else return Polylist.list("Brick", dashed(name), mode, dashed(type),
+                    BrickLibrary.keyNumToName(key)).append(buffer.toPolylist());
+    }
     
-    for( Block b: getSubBlocks() )
-      {
-        buffer.append(b.toPolylist());
-      }
+    public static String dashed(String s) {
+        return s.replace(' ', '-');
+    }
+     // end of class Brick
+}
+
     
-    return Polylist.list("brick", name, duration, key, mode, endValue, 
-                         buffer.toPolylist().cons("subblocks"));
-  }
-
-} // end of class Brick
-
-
-
 class BrickComparator implements Comparator {
     @Override
     public int compare(Object b1, Object b2) {

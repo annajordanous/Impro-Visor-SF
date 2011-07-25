@@ -23,6 +23,8 @@
 package imp.brickdictionary;
 import imp.util.ErrorLog;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import polya.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class BrickLibrary {
         "F", "Gb", "G", "Ab", "A", "Bb", "B"};
     private static final long DEFAULT_COST = 40;
     public static final long NONBRICK = 2000;
+    public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
    
     private LinkedHashMap<String, LinkedList<Brick>> brickMap;
     private LinkedHashMap<String, Long> costMap;
@@ -54,6 +57,26 @@ public class BrickLibrary {
     
     public String[] getNames() {
         return brickMap.keySet().toArray(new String[0]);
+    }
+    
+    public void addBrickDefinition(Brick brick)
+    {
+        addBrick(brick);
+        
+        Polylist defn = brick.toBrickDefinition();
+        String defnString = defn.toString();
+        defnString = defnString.replaceAll(" \\(", "\n        \\(");
+        
+        try {
+            FileOutputStream out = new FileOutputStream(DICTIONARY_FILE, true);
+            out.write("\n".getBytes());
+            out.write(defnString.getBytes());
+            out.write("\n".getBytes());
+            out.close();
+        } catch (IOException ex) {
+            ErrorLog.log(ErrorLog.SEVERE, "Cannot write to dictionary");
+        }
+        
     }
     
     // Add a brick to the dictionary
@@ -131,6 +154,7 @@ public class BrickLibrary {
             addBrick(dropback);
         }
     }
+    
     // Get a brick from the dictionary.
     public Brick getBrick(String s, long k) {
         if(brickMap.containsKey(s))
@@ -317,7 +341,7 @@ public class BrickLibrary {
     // Read in dictionary file, parse into bricks, and build the dictionary
     public static BrickLibrary processDictionary() throws IOException {
         
-        FileInputStream fis = new FileInputStream("vocab/BrickDictionary.txt");
+        FileInputStream fis = new FileInputStream(DICTIONARY_FILE);
         Tokenizer in = new Tokenizer(fis);
         in.slashSlashComments(true);
         in.slashStarComments(true);

@@ -127,6 +127,7 @@ public class ChordBlock extends Block {
         return parseChordName();
     }
     
+    @Override
     public String getSymbol() {
         if (name.equals(Chord.NOCHORD))
             return name;
@@ -255,8 +256,7 @@ public class ChordBlock extends Block {
     @Override
     public Polylist toPolylist()
     {
-        return Polylist.list("chord", name, duration, getQuality(), isSlashChord(), 
-                             NC, key, mode, endValue);
+        return Polylist.list("Chord", name, duration);
     }
 
 /** findModeFromQuality
