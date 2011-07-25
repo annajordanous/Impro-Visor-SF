@@ -83,6 +83,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private Object[] durationChoices = {8,7,6,5,4,3,2,1};
     
+    private int RMframeWidth = 1200;
+    
     private int bufferWidth  = 1024;
     private int bufferHeight = 200;
     
@@ -2018,4 +2020,30 @@ public int getNewYlocation()
   {
     return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
   }
+
+
+  /**
+   * Set the height of specified RoadMapFrame so that it fills the screen.
+   * This seems to work fine when the dock is at the right, but when
+   * it is at the bottom, for some reason vertical staggering does not happen.
+   @param notate
+   */
+  
+  public void setRoadMapFrameHeight()
+  {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
+    DisplayMode dm = gs[0].getDisplayMode();
+    int x = notate.getNewXlocation();
+    int y = notate.getNewYlocation();
+    setLocation(x, y);
+    setSize(RMframeWidth, dm.getHeight() - y);
+  }
+  
+public void makeVisible()
+  {
+    setRoadMapFrameHeight();
+    setVisible(true);
+  }
+  
 }

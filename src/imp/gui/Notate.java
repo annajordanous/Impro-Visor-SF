@@ -79,7 +79,7 @@ public class Notate
   
   RoadMapFrame roadmapFrame = null;
   
-  static int roadmapFrameInitialWidth = 1200;
+  static int roadmapFrameInitialWidth = 800;
   static int roadmapFrameInitialHeight = 900;
 
 
@@ -22797,7 +22797,7 @@ public void roadMapThis()
     establishRoadMapFrame();
     chordPartToRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
-    roadmapFrame.setVisible(true);
+    roadmapFrame.makeVisible();
   }
 
 
@@ -22811,7 +22811,7 @@ public void roadMapThisAnalyze()
     chordPartToRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.analyzeAllBricks();
-    roadmapFrame.setVisible(true);
+    roadmapFrame.makeVisible();
   }
 
 
@@ -22823,7 +22823,7 @@ public void openEmptyRoadmap()
   {
     establishRoadMapFrame();
     roadmapFrame.setRoadMapTitle("Untitled");
-    roadmapFrame.setVisible(true);
+    roadmapFrame.makeVisible();
   }
 
 
@@ -22843,8 +22843,8 @@ public void establishRoadMapFrame()
         roadmapFrame.deleteSelection();
       }
 
-    roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
-    roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
+    //roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
+    //roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
     
     //System.out.println("established roadmapFrame = " + roadmapFrame);
   }
