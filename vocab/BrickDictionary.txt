@@ -175,10 +175,16 @@
 	(Brick Straight-Approach E 2)
 	(Chord CM7 2))
 
-(Brick Honeysuckle-Bridge Major Approach C 
+(Brick Honeysuckle-Bridge(main) Major Approach C 
 	(Brick Straight F 4) 
 	(Brick Straight-Approach G 2) 
 	(Brick Straight-Approach C 2))
+
+(Brick Honeysuckle-Bridge(two-goes) Major Approach C 
+	(Brick Two-Goes-Straight F 2) 
+        (Chord F 2)
+	(Brick Two-Goes-Straight G 2) 
+        (Chord G7 1))
 
 (Brick II-n-Back(standard) Major Turnaround C
 	(Chord Dm7 1)
@@ -352,10 +358,17 @@
 	(Brick Raindrop C 2)
 	(Brick Straight-Approach C 4))
 
-(Brick Pennies-Approach Major Approach C
+(Brick Pennies-Approach(main) Major Approach C
 	(Chord F 1)
         (Chord Bb7 1)
 	(Brick Dropback C 2)
+	(Brick Straight-Approach C 2))
+
+(Brick Pennies-Approach(variant) Major Approach C
+	(Chord F 1)
+        (Chord Bb7 1)
+        (Chord Em7 1)
+        (Chord A7 1)
 	(Brick Straight-Approach C 2))
 
 (Brick Pennies-Cadence Major Cadence C
@@ -650,6 +663,11 @@
 (Brick TTFA(nondominant) Major Dropback C
         (Chord CM7 1)
         (Chord FM7 1)
+        (Brick Straight-Approach D 2))
+
+(Brick TTFA(ii-variant) Major Dropback C
+        (Chord CM7 1)
+        (Chord Dm7 1)
         (Brick Straight-Approach D 2))
 
 (Brick TTFA(rainy) Major Dropback C

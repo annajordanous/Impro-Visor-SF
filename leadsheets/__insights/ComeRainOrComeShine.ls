@@ -36,23 +36,23 @@
 
 (section (style swing)) 
 
-FM7 | A7 | Dm | / | 
-G7 | C7 | F7 | Cm7 F7 | 
+FM7 | Em7b5 A7 | Dm | G7 | 
+Gm7 | C7 | Cm7 | F7 | 
 
 (section (style swing)) 
 
-Bbm7 | Fm7 | Bbm7 | C7 C7b9 | 
-Fm6 | Ebm6 | Am7b5 D7alt | G7 C7 | 
+Bbm7 | Fm7 | Bbm7 | Gm7 C7 | 
+Dm7b5 G7 | Cm7 | Am7b5 D7 | Gm7 C7 | 
 
 (section (style swing)) 
 
-FM7 | Em7 A7 | Dm7 | / | 
-B7sus4 | B7 | Em7 | A7 | 
+FM7 | Em7b5 A7 | Dm | G7 | 
+F#m7 | B7 | Em7 | A7 | 
 
 (section (style swing)) 
 
-Am7 | D7 | Dm7 | G7 | 
-Dm7 Bm7b5 | Em7b5 A7alt | Dm7 D7alt | G7 C7b9 | 
+D7 | / | G7 | / | 
+Dm7 Bm7b5 | Em7b5 A7 | Dm7 Ab7 | Gm7 C7 | 
 
 (part
     (type melody)

@@ -36,13 +36,13 @@
 
 (section (style ballad)) 
 
-Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7+ | 
-C7 / Gm7 C7 | F7 | B7 Bb7 | EbM7 / Dm7 G7 | 
+Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7 | 
+C7 / Gm7b5 C7 | F7 | B7 Bb7 | EbM7 / Dm7b5 G7 | 
 
 (section (style ballad)) 
 
-Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7+ | 
-C7 / Gm7 C7 | F7 | B7 Bb7 | EbM7 / Dm7 G7 | 
+Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7 | 
+C7 / Gm7b5 C7 | F7 | B7 Bb7 | EbM7 / Am7b5 D7 | 
 
 (section (style ballad)) 
 
@@ -51,8 +51,8 @@ Gm Em7b5 | A7 D7 | Dm7 G7 | Dm7 G7 |
 
 (section (style ballad)) 
 
-Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7+ | 
-C7 / Gm7 C7 | F7 | B7 Bb7 | EbM7 / Dm7b5 G7 | 
+Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7 | 
+C7 / Gm7b5 C7 | F7 | B7 Bb7 | EbM7 / Dm7b5 G7 | 
 
 (part
     (type melody)
