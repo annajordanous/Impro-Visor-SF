@@ -271,8 +271,6 @@ public class GraphicBrick {
         int x = settings.xOffset + settings.getLength(slot);
         int y = settings.yOffset + (int)(line * settings.getLineOffset());
         
-        System.out.println("--- Printing " + block.getName() +" at " + x + "---");
-        
         int blockHeight = settings.getBlockHeight();
         int cutoff = settings.getCutoff();
         int xOffset = settings.xOffset;
@@ -299,9 +297,6 @@ public class GraphicBrick {
             long[] endWrap = settings.wrapFromSlots(slot+currentBeats+chord.getDuration());
             int endX = xOffset + settings.getLength(endWrap[0]);
             int lines = (int)(endWrap[1] - wrap[1]);
-            
-            System.out.println("Start x " + currentX);
-            System.out.println("End x: " + endX + " Lines: " + lines);
             
             if(lines > 0) {
                 if(selected == ind) {

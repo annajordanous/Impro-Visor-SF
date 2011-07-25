@@ -30,7 +30,8 @@ import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Iterator;
-import java.awt.event.ComponentListener;
+import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerModel;
 
 import imp.brickdictionary.*;
 import imp.cykparser.*;
@@ -541,7 +542,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        roadMapScrollPane.setToolTipText("The roadmap.\n"); // NOI18N
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
@@ -620,7 +620,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.8;
         getContentPane().add(libraryTabbedPane, gridBagConstraints);
 
-        keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
+        keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "C"}));
         keySpinner.setToolTipText("Select the key for this brick."); // NOI18N
         keySpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Key, Root\n\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
         keySpinner.setName("keySpinner"); // NOI18N
@@ -949,7 +949,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Events">
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
-        System.out.println("Library tree selected");
         setPreview();
 }//GEN-LAST:event_libraryTreeSelected
 
@@ -992,7 +991,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         int index = roadMapPanel.getBrickIndexAt(x,y);
         if(evt.getButton() == evt.BUTTON1) {
 
-            System.out.println("Clicked brick "+index);
+            //System.out.println("Clicked brick "+index);
 
             if(index != -1) {
                 if(evt.isShiftDown())
@@ -1587,15 +1586,27 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void setPreview()
     {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)libraryTree.getSelectionPath().getLastPathComponent();
+        TreePath path = libraryTree.getSelectionPath();
+        if(path != null) {
 
-        if( node.isLeaf() ) {
-            Brick brick = brickLibrary.getBrick(node.toString(), 0);
+            int pathLength = path.getPathCount();
+            
+            if( pathLength > 2 ) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getParentPath().getLastPathComponent();
+                Brick brick;
+                
+                if(pathLength > 3 )
+                    brick = brickLibrary.getBrick(parent.toString(),node.toString(), 0);
+                else
+                    brick = brickLibrary.getBrick(node.toString(), 0);
+                
+                previewPanel.setBrick( brick );
 
-            previewPanel.setBrick( brick );
-
-            setPreviewKey();
-            setPreviewDuration();
+                setPreviewKey();
+                setPreviewDuration();
+            }
+            
         }
     }
     
@@ -1727,7 +1738,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     public void initLibraryTree()
     {
-        ArrayList<Brick> bricks = new ArrayList(brickLibrary.getMap());
+        LinkedList<LinkedList<Brick>> bricks = brickLibrary.getMap();
         
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         
@@ -1738,13 +1749,18 @@ public class RoadMapFrame extends javax.swing.JFrame {
         DefaultMutableTreeNode node = null;
         DefaultMutableTreeNode category = null;
         
-        for( Iterator<Brick> it = bricks.iterator(); it.hasNext(); )
+        for( LinkedList<Brick> variants : bricks )
         {
-            Brick brick = it.next();
+            Brick brick = variants.getFirst();
             String name = brick.getName();
             String type = brick.getType();
             
             node = new DefaultMutableTreeNode(name);
+            
+            if(variants.size() > 1)
+                for( Brick variant : variants.subList(1,variants.size()-1))
+                    node.add(new DefaultMutableTreeNode(variant.getQualifier()));
+            
             category = new DefaultMutableTreeNode(type);
             
             int ind = categoryNames.indexOf(type);

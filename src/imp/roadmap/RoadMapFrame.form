@@ -904,7 +904,6 @@
     <Container class="javax.swing.JScrollPane" name="roadMapScrollPane">
       <Properties>
         <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
-        <Property name="toolTipText" type="java.lang.String" value="The roadmap.&#xa;" noResource="true"/>
         <Property name="verticalScrollBarPolicy" type="int" value="22"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[800, 400]"/>
@@ -1008,16 +1007,16 @@
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
           <SpinnerModel type="list">
             <ListItem value="C"/>
-            <ListItem value="C#"/>
+            <ListItem value="Db"/>
             <ListItem value="D"/>
-            <ListItem value="D#"/>
+            <ListItem value="Eb"/>
             <ListItem value="E"/>
             <ListItem value="F"/>
-            <ListItem value="F#"/>
+            <ListItem value="Gb"/>
             <ListItem value="G"/>
-            <ListItem value="G#"/>
+            <ListItem value="Ab"/>
             <ListItem value="A"/>
-            <ListItem value="A#"/>
+            <ListItem value="Bb"/>
             <ListItem value="B"/>
             <ListItem value="C"/>
           </SpinnerModel>

@@ -95,6 +95,27 @@ public class BrickLibrary {
         }
     }
     
+    public Brick getBrick(String s, String q, long k) {
+        if(brickMap.containsKey(s))
+        {
+            Brick brick = brickMap.get(s).getFirst();
+            for(Brick variant : brickMap.get(s)) {
+                if(variant.getQualifier().equals(q)) {
+                    brick = new Brick(variant);
+                    break;
+                }
+            }
+            brick.transpose((k-brick.getKey() + 12)%12);
+            return brick;
+        }
+        else
+        {
+            ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                    s, true);
+            return null;
+        }
+    }
+    
     public Brick getBrick(String s, long k, int d) {
         if(brickMap.containsKey(s))
         {
@@ -126,11 +147,11 @@ public class BrickLibrary {
         return values;
     }
     
-    public Collection<Brick> getMap() {
-        LinkedList<Brick> values = new LinkedList<Brick>();
+    public LinkedList<LinkedList<Brick>> getMap() {
+        LinkedList<LinkedList<Brick>> values = new LinkedList();
         for (LinkedList<Brick> brickname : brickMap.values())
         {
-            values.add(brickname.getFirst());
+            values.add(brickname);
         }
         
         return values;
@@ -443,7 +464,7 @@ public class BrickLibrary {
             
             out.write("\n\n\\\\ Brick Definitions\n\n");
             
-            for (Brick brick : getMap())
+            for (Brick brick : getFullMap())
             {
                 out.write(brick.toPolylist().toString());
                 out.write("\n\n");
