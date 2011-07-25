@@ -354,7 +354,7 @@ public class CYKParser
     
         // The shortest path in the top right cell gets printed as the best
         // explanation for the whole chord progression
-
+        System.err.println(printTable());
         return PostProcessing.findLaunchers(minVals[0][size - 1].toBlocks());
             
     }

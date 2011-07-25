@@ -78,6 +78,58 @@ public class BrickLibrary {
             brickList.add(brick);
             this.brickMap.put(brick.name, brickList);
         }
+        
+        // special rule for creating overruns
+        if (brick.getType().equals("Cadence")) {
+            String overrunName = brick.getName() + " with Overrun";
+            long overrunKeyNum = brick.getKey();
+            String overrunType = "Overrun";
+            String overrunMode = brick.getMode();
+            String overrunQualifier = brick.getQualifier();
+
+            // take blocks from regular cadence and add the next chord
+            // in the circle of fifths with the same quality as the
+            // resolution
+            ArrayList<Block> overrunBlocks = new ArrayList<Block>();
+            overrunBlocks.addAll(brick.getSubBlocks());
+            ArrayList<ChordBlock> chords = brick.flattenBlock();
+            ChordBlock prevChord = chords.get(chords.size() - 1);
+            ChordBlock overrunChord = 
+                       new ChordBlock(prevChord.transposeName(5), 
+                                      prevChord.getDuration());
+            overrunBlocks.add(overrunChord);
+
+            // make a new brick from this list of blocks
+            Brick overrun = new Brick(overrunName, overrunQualifier, overrunKeyNum,
+                    overrunType, overrunBlocks, overrunMode);
+            addBrick(overrun);
+                    
+            String dropbackName = brick.getName() + " with Dropback";
+            long dropbackKeyNum = brick.getKey();
+            String dropbackType = "Dropback";
+            String dropbackMode = brick.getMode();
+            String dropbackQualifier = brick.getQualifier();
+
+            // take blocks from regular cadence and add the next chord
+            // in the circle of fifths with the same quality as the
+            // resolution
+            ArrayList<Block> dropbackBlocks = new ArrayList<Block>();
+            dropbackBlocks.addAll(brick.getSubBlocks());
+            String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
+            if (dropbackMode.equals("minor"))
+                dropbackChordName += "7b5";
+            else
+                dropbackChordName += 7;
+            ChordBlock dropbackChord = 
+                       new ChordBlock(dropbackChordName, 
+                                      prevChord.getDuration());
+            dropbackBlocks.add(dropbackChord);
+
+            // make a new brick from this list of blocks
+            Brick dropback = new Brick(dropbackName, dropbackQualifier, dropbackKeyNum,
+                    dropbackType, dropbackBlocks, dropbackMode);
+            addBrick(dropback);
+        }
     }
     // Get a brick from the dictionary.
     public Brick getBrick(String s, long k) {
@@ -381,57 +433,6 @@ public class BrickLibrary {
                 Brick currentBrick = new Brick(brickName, brickQualifier, brickKeyNum,
                            brickType, contents, dictionary, brickMode, polymap);
                 dictionary.addBrick(currentBrick);
-
-                // special rule for creating overruns
-                if (brickType.equals("Cadence") && !hadBrick) {
-                    String overrunName = brickName + " with Overrun";
-                    long overrunKeyNum = brickKeyNum;
-                    String overrunType = "Overrun";
-                    String overrunMode = brickMode;
-
-                    // take blocks from regular cadence and add the next chord
-                    // in the circle of fifths with the same quality as the
-                    // resolution
-                    ArrayList<Block> overrunBlocks = new ArrayList<Block>();
-                    overrunBlocks.addAll(currentBrick.getSubBlocks());
-                    ArrayList<ChordBlock> chords = currentBrick.flattenBlock();
-                    ChordBlock prevChord = chords.get(chords.size() - 1);
-                    ChordBlock overrunChord = 
-                               new ChordBlock(prevChord.transposeName(5), 
-                                              prevChord.getDuration());
-                    overrunBlocks.add(overrunChord);
-
-                    // make a new brick from this list of blocks
-                    Brick overrun = new Brick(overrunName, overrunKeyNum,
-                            overrunType, overrunBlocks, overrunMode);
-                    dictionary.addBrick(overrun);
-                    
-                    String dropbackName = brickName + " with Dropback";
-                    long dropbackKeyNum = brickKeyNum;
-                    String dropbackType = "Dropback";
-                    String dropbackMode = brickMode;
-
-                    // take blocks from regular cadence and add the next chord
-                    // in the circle of fifths with the same quality as the
-                    // resolution
-                    ArrayList<Block> dropbackBlocks = new ArrayList<Block>();
-                    dropbackBlocks.addAll(currentBrick.getSubBlocks());
-                    String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
-                    if (dropbackMode.equals("minor"))
-                        dropbackChordName += "7b5";
-                    else
-                        dropbackChordName += 7;
-                    ChordBlock dropbackChord = 
-                               new ChordBlock(dropbackChordName, 
-                                              prevChord.getDuration());
-                    dropbackBlocks.add(dropbackChord);
-
-                    // make a new brick from this list of blocks
-                    Brick dropback = new Brick(dropbackName, dropbackKeyNum,
-                            dropbackType, dropbackBlocks, dropbackMode);
-                    dictionary.addBrick(dropback);
-                }
-        
             }
             
             

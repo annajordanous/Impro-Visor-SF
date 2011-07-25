@@ -21,6 +21,7 @@ public class UnaryProduction extends AbstractProduction {
     private String head;        // the header symbol of the rule
     private String type;        // the type of brick the rule describes
     private long key;          // the symbol's key in a C-based block
+    private long termKey;
     private String name;       // the symbol itself, a quality or brick
     private long cost;           // how much the header brick costs
     private String mode = "";   // the mode of the brick in the production
@@ -46,7 +47,7 @@ public class UnaryProduction extends AbstractProduction {
             name = ((ChordBlock)b).getSymbol();
         else
             name = b.getName();
-        
+        termKey = b.getKey();
         toPrint = p;
         mode = m;
         cost = bricks.getCost(type);
@@ -90,7 +91,7 @@ public class UnaryProduction extends AbstractProduction {
     {
         
         if (t.getSymbol().equals(name))   
-                return modKeys(t.getKey() - key);
+                return modKeys(t.getKey() - termKey - key);
         // in the event that the production is incorrect (most of the time)
         return -1;
     }

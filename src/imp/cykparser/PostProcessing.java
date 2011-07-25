@@ -248,7 +248,7 @@ public class PostProcessing {
                         brickName = brickName.replace("Approach", "Launcher");
                     // If not, append "-Launcher" to the end
                     else
-                        brickName = brickName + "-Launcher";
+                        brickName = brickName + " Launcher";
                     b.setName(brickName);
                     b.setType("Launcher");
                     

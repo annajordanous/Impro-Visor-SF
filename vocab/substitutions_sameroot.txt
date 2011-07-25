@@ -39,7 +39,6 @@
 
 (sub C7b9 C13b9 C13b9#11)
 
-(sub C6 Am7)
 (sub Cm7 Cm7b5 Cm9 Cm11 Cm9b5 Cm13 C7alt)
 
 // old, RK: (sub Cm7 Cm7b5 Cm9 Cm11 Cm9b5 Cm13 C7 C7alt)
