@@ -13,9 +13,7 @@
 
 (equiv Cm Cminor Cm7 Cm6 Cm9 Cm11 Cm13)
 
-(equiv Cdim Co)
-
-(equiv Cdim7 Co7)
+(equiv Cdim Co Cdim7 Co7)
 
 (equiv C+ Caug)
 

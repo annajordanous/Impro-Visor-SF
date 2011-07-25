@@ -36,21 +36,51 @@
 
 (section (style latin)) 
 
-FM7 | / | G7#11 | Gm7 | 
+FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
+
+(section (style latin)) 
+
 Gm7 | Em7b5 A7 | D7 | Am7b5 D7 | 
 G7 | / | GbM7 | / | 
+
+(section (style latin)) 
+
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
+
+(section (style latin)) 
+
 Gm7 | Bbm7 Eb7 | FM7 | E7 | 
-AM7 | Bbo7 | Bm7 | E7 | 
-AM7 | Bbo7 | Bm7 | E7 | 
+
+(section (style latin)) 
+
+AM7 | C7 | Bm7 | E7 | 
+
+(section (style latin)) 
+
+AM7 | A#o | Bm7 | E7 | 
+
+(section (style latin)) 
+
 AM7 | F#m7 | Bm7 | E7 | 
-CM7 | C#o7 | Dm7 | G7 | 
+
+(section (style latin)) 
+
+C | C#o | Dm7 | G7 | 
 Gm7 | D7 | Gm7 | C7 | 
+
+(section (style latin)) 
+
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
+
+(section (style latin)) 
+
 Gm7 | Eb7 | FM7 | Abo7 | 
+
+(section (style latin)) 
+
 G7 | / | Bbm7 | Eb7 | 
 G7 | C7 | FM7 | Gm7/C | 
 

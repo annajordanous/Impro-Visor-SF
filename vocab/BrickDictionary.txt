@@ -22,7 +22,13 @@
 	(Brick Straight C 4)
 	(Brick Sad-Straight A 4))
 
-(Brick Autumnal minor Cadence C
+// Added by RK
+(Brick Autumnal(basic) minor Cadence C
+        (Chord Fm7 2)
+        (Chord Dm7  1)
+        (Chord G7  1))
+
+(Brick Autumnal(variant) minor Cadence C
 	(Brick Autumnal-Approach C 6)
 	(Chord Am 2))
 
@@ -35,7 +41,7 @@
 	(Brick Sad-Approach A 2))
 
 (Brick Autumnal-Approach(var3) minor Approach C
-	(Chord Fm7b5 2)
+	(Chord Fm7 2)
 	(Brick Sad-Approach C 2))
 
 (Brick Body-And-Soul Major Cadence C
@@ -87,6 +93,10 @@
 	(Brick Straight-Approach G 2)
 	(Brick Straight-Approach C 2))
 
+(Brick Donna-Lee-Opening-Start Major Opening C
+	(Chord CM7 2)
+	(Chord D7  1)
+        (Chord Dm7 1))
 
 (Brick Donna-Lee-Opening(var1) Major Opening C
 	(Chord CM7 2)
@@ -547,22 +557,29 @@
 	(Chord CM7 4))
 
 (Brick Spring(standard) Major Cadence C
-	(Brick Spring-Approach C 6)
+	(Brick Spring-Approach C 4)
 	(Chord CM7 2))
 
-(Brick Spring(simple) Major Cadence C
-        (Chord Bm7 2)
-        (Brick Straight C 4))
+// Spring cadence redone by RK
 
-(Brick Spring-Approach Major Approach C
+(Brick Spring-Approach(simple) Major Approach C
 	(Chord Bm7b5 1)
-	(Chord B7 1)
-	(Brick Long-Approach C 4))
+	(Brick Straight-Approach C 1))
+
+(Brick Spring-Approach(extended) Major Approach C
+	(Chord Bm7b5 1)
+	(Chord E7 1)
+	(Brick Straight-Approach C 2))
 
 (Brick Somewhere Major Dropback C
 	(Chord Bb7 1)
 	(Chord A7 2)
 	(Chord D7 2))
+
+(Brick Somewhere-Cadence Major Cadence C
+        (Chord D7 1)
+        (Chord G7 1)
+        (Chord C  1))
 
 (Brick Stablemates Major Cadence C
 	(Brick Stablemates-Approach C 4)
@@ -624,9 +641,24 @@
 	(Chord G7 1))
 
 // Added by RK
+(Brick Yardbird-Sub-Approach(var1) Major Approach C
+        (Chord Dm7 1)
+        (Chord Bb7 1))
+
+// Added by RK
+(Brick Yardbird-Sub-Approach(var2) Major Approach C
+        (Chord Dm7 2)
+        (Chord Fm7 1)
+        (Chord Bb7 1))
+
+// Added by RK
 (Brick Yardbird-Approach Major Approach C
         (Chord Fm7 1)
         (Chord Bb7 1))
+
+(Brick Yardbird-Sub-Cadence Major Cadence C
+        (Brick Yardbird-Sub-Approach C 2)
+        (Chord C 1))
 
 // Added by RK
 (Brick IV-n-Yak(main) Major Cadence C
@@ -768,7 +800,11 @@
 	(Brick Twopenny-Approach C 12)
 	(Chord CM7 4))
 
-(Brick Upslide Major Misc C
+(Brick Upslide(var1) Major Misc C
+	(Chord CM7 1)
+	(Chord Dbdim 1))
+
+(Brick Upslide(var2) Major Misc C
 	(Chord CM7 1)
 	(Chord Dbdim 1))
 

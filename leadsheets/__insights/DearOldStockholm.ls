@@ -36,15 +36,26 @@
 
 (section (style swing)) 
 
-Dm | Em7b5 A7alt | Gm7 C7 | F | 
+Dm | Em7b5 A7 | Gm7 C7 | F | 
 Em7b5 A7 | Dm | Bb7#11 | A7 | 
+
+(section (style swing)) 
+
 Gm13/A | / | / | / | 
+
+(section (style swing)) 
+
 F Dm7 | Gm7 C7 | F | Em7b5 A7 | 
-Dm | Em7b5 A7alt | Gm7 C7 | F | 
-Em7b5 A7 | Dm | Bb7#11 | A7 | 
-Gm7/C | / | / | / | 
-/ | / | Gm7/C A7 | Dm | 
-/ | 
+
+(section (style swing)) 
+
+Dm | Em7b5 A7 | Gm7 C7 | F | 
+Em7b5 A7 | Dm | 
+(section (style swing)) 
+
+Gm7/C | / | 
+/ | / | / | / | 
+Gm7/C A7 | Dm | 
 (part
     (type melody)
     (title )
@@ -54,4 +65,4 @@ Gm7/C | / | / | / |
     (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
