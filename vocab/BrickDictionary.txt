@@ -10,7 +10,7 @@
 (brick-type Turnaround       20)
 (brick-type Misc             40)
 (brick-type Unary           200)
-(brick-type UserDefined      30)
+(brick-type User-Defined     30)
 
 // Major bricks
 
