@@ -87,7 +87,7 @@ public class UnaryProduction extends AbstractProduction {
             EquivalenceDictionary e, SubstitutionDictionary s) 
     {
         
-        if (t.getSymbol().equals(name))   
+        if (t.getSymbol().equals(name) && t.getDuration() != 0)   
                 return modKeys(t.getKey() - termKey - key);
         // in the event that the production is incorrect (most of the time)
         return -1;

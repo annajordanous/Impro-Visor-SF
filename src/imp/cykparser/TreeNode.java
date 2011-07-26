@@ -322,7 +322,9 @@ public class TreeNode {
     // Booleans to test a TreeNode
     public boolean isOverlap()
     {
-        return block.isOverlap();
+        if (child2 == null)
+            return block.isOverlap();
+        return child2.isOverlap();
     }
     
     public boolean isSub()

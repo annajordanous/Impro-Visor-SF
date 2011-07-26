@@ -213,8 +213,9 @@ public class Brick extends Block {
      * @param name, a String
      * @param brickList, subblocks for a brick
      */
-    public Brick(String name, long key, String type, List<Block> brickList) {
-        super(name, key, modeHelper(brickList, key)); //TODO account for not finding key
+    public Brick(String brickName, long brickKey, String type, List<Block> brickList) {
+        super(brickName, brickKey, modeHelper(brickList, brickKey)); 
+                                  //TODO account for not finding key
         this.type = type;
         subBlocks = new ArrayList<Block>();
         
@@ -312,6 +313,8 @@ public class Brick extends Block {
     
     @Override
     public boolean isOverlap() {
+        if (duration == 0)
+            return true;
         return subBlocks.get(subBlocks.size() - 1).isOverlap();
     }
     
