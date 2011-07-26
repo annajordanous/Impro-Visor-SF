@@ -179,7 +179,7 @@ public class BrickLibrary {
             Brick brick = null;
             for (Brick b : brickMap.get(s))
                 if (b.getQualifier().equals(q)) {
-                    brick = b;
+                    brick = new Brick(b);
                     break;
                 }
             
