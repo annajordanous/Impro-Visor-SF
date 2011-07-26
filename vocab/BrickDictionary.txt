@@ -902,7 +902,7 @@
 
 (Brick On-Off-Minor-To-V minor On-Off C
         (Chord Cm 1)
-        (Brick GenDom C 1))
+        (Chord G7 1))
 
 (Brick On-Off-Minor-To-bVI minor On-Off C
 	(Chord Cm 1)

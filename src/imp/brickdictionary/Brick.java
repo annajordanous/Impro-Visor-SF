@@ -567,10 +567,7 @@ public class Brick extends Block {
         int dur = 0;
         for(Block b : this.getSubBlocks())
         {
-            if(b instanceof ChordBlock)
-                dur += ((ChordBlock)b).getDuration();
-            else if (b instanceof Brick)
-                dur += ((Brick)b).getDuration();
+            dur += b.getDuration();
         }
         
         duration = dur;
@@ -598,7 +595,9 @@ public class Brick extends Block {
 
             chordList.addAll(currentBlock.flattenBlock());
         }
-        chordList.get(chordList.size() - 1).setSectionEnd(endValue);
+        
+        if (chordList.size() > 0)
+            chordList.get(chordList.size() - 1).setSectionEnd(endValue);
         
         return chordList;
     }
@@ -748,7 +747,7 @@ public class Brick extends Block {
             endValue = Block.SECTION_END;
         else
             endValue = Block.NO_END;
-        if(this.isOverlap()) {
+        if(this.isOverlap() && subBlocks.size() > 1) {
             subBlocks.get(subBlocks.size() - 2).setSectionEnd(value);
         }
         else
@@ -758,7 +757,7 @@ public class Brick extends Block {
     @Override
     public boolean isSectionEnd()
     {
-        if(this.isOverlap())
+        if(this.isOverlap() && subBlocks.size() > 1)
             return subBlocks.get(subBlocks.size() - 2).isSectionEnd();
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
@@ -766,7 +765,7 @@ public class Brick extends Block {
     @Override
     public int getSectionEnd()
     {
-        if(this.isOverlap())
+        if(this.isOverlap() && subBlocks.size() > 1)
             return subBlocks.get(subBlocks.size() - 2).getSectionEnd();
         return subBlocks.get(subBlocks.size() - 1).getSectionEnd();
     }

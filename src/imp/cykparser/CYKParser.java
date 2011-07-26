@@ -370,12 +370,15 @@ public class CYKParser
                 for (TreeNode t : cykTable[i][j])
                 {
                     output += t.getSymbol() + " in " 
-                            + BrickLibrary.keyNumToName(t.getKey()) + " ";
+                            + BrickLibrary.keyNumToName(t.getKey()) + " "
+                             + t.getDuration() + " ";
                     if (!t.isTerminal())
                         output += t.getFirstChild().getSymbol() + " in " + 
-                                  BrickLibrary.keyNumToName(t.getFirstChild().getKey()) 
+                                  BrickLibrary.keyNumToName(t.getFirstChild().getKey())
+                                  + " (" + t.getFirstChild().getDuration() + ")"
                                   + ", " + t.getSecondChild().getSymbol() + " in " +
-                                  BrickLibrary.keyNumToName(t.getSecondChild().getKey());
+                                  BrickLibrary.keyNumToName(t.getSecondChild().getKey())
+                                  + " (" + t.getSecondChild().getDuration() + ")";
                     
                     output += "\n";
                 }         
@@ -516,10 +519,6 @@ public class CYKParser
                                     rule.getType(), rule.getMode(), 
                                     t, cost, newKey);
                     unaries.add(newNode);
-                    if (!(rule.getType().equals("On-Off")) && 
-                                    !(t.isSectionEnd()) &&
-                                    !(t.isOverlap()))
-                                overlaps.add(newNode.overlapCopy());
                 }
             }
         cykTable[row][col].addAll(unaries);

@@ -116,6 +116,23 @@ public class TreeNode {
         height = 0;
     }
     
+        
+    public TreeNode(Brick brick, ArrayList<ChordBlock> newChords, double c, long s)
+    {
+        child1 = null;
+        child2 = null;
+        block = brick;
+        mode = brick.getMode();
+        chords = newChords;
+        key = brick.getKey();
+        symbol = brick.getSymbol();
+        cost = c;
+        toPrint = !(brick.getType().equals(CYKParser.INVISIBLE));
+        isEnd = brick.isSectionEnd();
+        start = s;
+        isSub = false;
+        height = 0;
+    }
     /** Chord Constructor / 5
      * Takes in a chord and makes a TreeNode with cost c, but for a substituted
      * chord name and root
@@ -178,6 +195,9 @@ public class TreeNode {
         start = t.getStart();
         height = t.getHeight() + 1;
     }
+    
+    
+    
     /** TreeNode / 7
      * Makes a TreeNode for a nonterminal
      *
@@ -272,10 +292,25 @@ public class TreeNode {
     {
         TreeNode newNode;
         if (child1 == null && child2 == null) {
-            ChordBlock overlapChord = chords.get(chords.size() - 1);
-            ChordBlock zeroChord = new ChordBlock(overlapChord.getName(), 
-                    0, block.isSectionEnd());
-            newNode = new TreeNode(zeroChord, cost + 5, start);
+            if (block instanceof ChordBlock) {
+                ChordBlock overlapChord = new ChordBlock(block.getName(), 0, 
+                                                         block.isSectionEnd());
+                newNode = new TreeNode(overlapChord, cost + 5, start);
+            }
+            else {
+                ArrayList<ChordBlock> newChords = new ArrayList<ChordBlock>();
+                newChords.addAll(block.flattenBlock());
+                ChordBlock lastChord = 
+                        (ChordBlock)newChords.remove(newChords.size() - 1);
+                ChordBlock zeroChord = new ChordBlock(lastChord.getName(), 0, 
+                                                      block.isSectionEnd());
+                newChords.add(zeroChord);
+                ArrayList<Block> newBlocks = new ArrayList<Block>();
+                newBlocks.addAll(newChords);
+                Brick newBrick = new Brick(block.getName(), ((Brick)block).getQualifier(),
+                        block.getKey(), block.getType(), newBlocks, block.getMode());
+                newNode = new TreeNode(newBrick, newChords, cost + 5, start);
+            }
         }
         else {
             newNode = new TreeNode(symbol, block.getType(), mode, child1, 
@@ -380,6 +415,8 @@ public class TreeNode {
             blocks.addAll(child1.getBlocks());
             blocks.addAll(child2.getBlocks());
         }
+        else
+            blocks.addAll(block.flattenBlock());
         return blocks;
         
     }
