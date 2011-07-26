@@ -174,9 +174,11 @@ public class ChordBlock extends Block {
     // Change chord's root (key) by diff
     @Override
     public void transpose(long diff) {
-        this.key = moduloSteps(this.key + diff);
-        this.chord.transpose(Arith.long2int(diff));
-        this.name = chord.getName();
+        if(!this.chord.getName().equals(Chord.NOCHORD)) {
+            this.key = moduloSteps(this.key + diff);
+            this.chord.transpose(Arith.long2int(diff));
+            this.name = chord.getName();
+        }
     }
     
     public String transposeName(int diff) {

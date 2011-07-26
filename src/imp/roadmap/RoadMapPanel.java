@@ -684,7 +684,7 @@ public class RoadMapPanel extends JPanel{
             FontMetrics metrics = g2d.getFontMetrics();
             int fontOffset = (blockHeight + metrics.getAscent())/2;
             long key = keySpan.getKey();
-            String keyName = BrickLibrary.keyNumToName(key) + keySpan.getMode();
+            String keyName = BrickLibrary.keyNumToName(key) + " " + keySpan.getMode();
             long dur = keySpan.getDuration();
             int cutoff = settings.getCutoff();
             
