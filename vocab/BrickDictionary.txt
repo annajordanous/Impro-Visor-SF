@@ -651,18 +651,20 @@
 	(Chord G7 1))
 
 // Added by RK
-(Brick Yardbird-Sub-Approach Major Approach C
+(Brick Yardbird-Sub-Cadence Major Cadence C
         (Chord Dm7 1)
-        (Brick GenDom Eb 1))
+        (Brick GenDom Eb 1)
+        (Chord C 1))
 
-// Added by RK
 (Brick Yardbird-Approach Major Approach C
         (Chord Fm7 1)
         (Chord Bb7 1))
 
-(Brick Yardbird-Sub-Cadence Major Cadence C
-        (Brick Yardbird-Sub-Approach C 2)
-        (Chord C 1))
+
+// Removed by RK
+//(Brick Yardbird-Sub-Cadence Major Cadence C
+//        (Brick Yardbird-Sub-Approach C 2)
+//        (Chord C 1))
 
 // Added by RK
 (Brick IV-n-Yak(main) Major Cadence C
