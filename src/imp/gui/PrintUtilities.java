@@ -87,6 +87,12 @@ public class PrintUtilities implements Printable {
     
     private boolean grandStaveSelected;
     
+    private boolean multiple = false;
+    
+    private BufferedImage[] multImg;
+    
+    private int counter=0;
+    
     public static void printComponent(Component c, int numLines, int numStavesPerPage, boolean grandStave) {
         new PrintUtilities(c, numLines, numStavesPerPage, grandStave).print();
     }
@@ -117,9 +123,8 @@ public class PrintUtilities implements Printable {
         this.componentToBePrinted.paint(graphics);
     }
     
-        public void setComponent(Component c, int numLines, boolean grandStave)
+        public void setComponent(Component c[], int numLines, boolean grandStave, int length)
       {
-        this.componentToBePrinted = c;
         int height;
         if(grandStave)
         {
@@ -129,37 +134,40 @@ public class PrintUtilities implements Printable {
         {
             height = numLines*staveHeight;
         }
-        img = new BufferedImage(this.componentToBePrinted.getWidth(), height, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = img.getGraphics();
-        this.componentToBePrinted.paint(graphics);
+        //img = new BufferedImage(c[0].getWidth(), height, BufferedImage.TYPE_INT_RGB);
+        for(int i = 0; i<length; i++)
+        {
+            componentToBePrinted = c[i];
+            img = new BufferedImage(componentToBePrinted.getWidth(), height, BufferedImage.TYPE_INT_RGB);
+            Graphics graphics = img.getGraphics();
+            c[i].paint(graphics);
+            multImg[i] = img;
+        }
+        multiple = true;
       }
   
     public static void printMultipleComponents(Component comp[], int numLines, int numStavesPerPage, boolean grandStave) {  
-        PrintUtilities utility = new PrintUtilities(numLines, numStavesPerPage, grandStave);
+        PrintUtilities utility = new PrintUtilities(numLines, numStavesPerPage, grandStave, comp.length);
         PrintService[] pservices = PrinterJob.lookupPrintServices();
-        
         PrinterJob printJob = PrinterJob.getPrinterJob();
         printJob.setPrintable(utility);
         
        if (printJob.printDialog()) 
          {
-         for(int i = 0; i<comp.length; i++)
-            {
-            utility.setComponent(comp[i], numLines, grandStave);
-            try 
-              {
-                printJob.print();
-              }
-            catch(PrinterException pe)
-              {
-                System.out.println("Error printing: " + pe);
-              }
-            }
+            utility.setComponent(comp, numLines, grandStave, comp.length);
+             try
+             {
+                 printJob.print();
+             }
+             catch(PrinterException pe)
+             {
+                 System.out.println("Error printing: " + pe);
+             }
          }
-        
     }
   
-    public PrintUtilities(int numLines, int numStavesPerPage, boolean grandStave) {
+    public PrintUtilities(int numLines, int numStavesPerPage, boolean grandStave, int length) {
+        multImg = new BufferedImage[length];
         this.numLines = numLines;
         grandStaveSelected = grandStave;
         if(numStavesPerPage == 0)
@@ -226,47 +234,119 @@ public class PrintUtilities implements Printable {
             numStavesConverted =staveHeight*numStavesPerPage;
         }
         int frameHeight = numStavesConverted;
-        if(tracker+numStavesConverted >= img.getHeight())
+        if(!multiple)
         {
-            frameHeight = img.getHeight()-tracker;
-        }
-        BufferedImage subImage = img.getSubimage(0,tracker,1000,frameHeight);
-        tracker = numStavesConverted*pageIndex;
-        Dimension d = componentToBePrinted.getSize();       //  get size of document
-        double panelWidth = d.width;                        //  width in pixels
-        double panelHeight = d.height;                      //  height in pixels
-        double pageHeight = pf.getImageableHeight();        //  height of printer page
-        double pageWidth = pf.getImageableWidth();          //  width of printer page
-        double scale = pageWidth / panelWidth;
-        int totalNumPages = numLines/numStavesPerPage;
-        if(numLines%numStavesPerPage >0)
-        {
-            totalNumPages++;
-        }
-        
-        // make sure not print empty pages
-        if (pageIndex >= totalNumPages) {
-            response = NO_SUCH_PAGE;
-            tracker = 0;
-        } else {
-            g2.scale(scale, scale);
-            if(pageIndex == 0)
+            if(tracker+numStavesConverted >= img.getHeight())
             {
-                g2.translate(pf.getImageableX(), pf.getImageableY()+10);
+                frameHeight = img.getHeight()-tracker;
+            }
+            BufferedImage subImage = img.getSubimage(0,tracker,1000,frameHeight);
+            tracker = numStavesConverted*pageIndex;
+            Dimension d = componentToBePrinted.getSize();       //  get size of document
+            double panelWidth = d.width;                        //  width in pixels
+            double panelHeight = d.height;                      //  height in pixels
+            double pageHeight = pf.getImageableHeight();        //  height of printer page
+            double pageWidth = pf.getImageableWidth();          //  width of printer page
+            double scale = pageWidth / panelWidth;
+            int totalNumPages = numLines/numStavesPerPage;
+            if(numLines%numStavesPerPage >0)
+            {
+                totalNumPages++;
+            }
+        
+            // make sure not print empty pages
+            if (pageIndex >= totalNumPages) {
+                response = NO_SUCH_PAGE;
+                tracker = 0;
+            } else {
+                g2.scale(scale, scale);
+                if(pageIndex == 0)
+                {
+                    g2.translate(pf.getImageableX(), pf.getImageableY()+10);
+                }
+                else
+                {
+                    g2.translate(pf.getImageableX(), pf.getImageableY());
+                }
+                g2.translate(0, -pageIndex*pageHeight);
+                int topOfNextPage = (int)(pageIndex*pageHeight);
+                g2.drawImage(subImage, null, 0,topOfNextPage);
+                response= Printable.PAGE_EXISTS;
+            }
+            System.out.println("tracker: " + tracker);
+            System.out.println("numStavesConverted: " + numStavesConverted);
+            System.out.println("grandStaveSelected: "+ grandStaveSelected);
+            System.out.println("totalNumPages: " + totalNumPages);
+            System.out.println("frameHeight: "+ frameHeight);
+            System.out.println("counter: "+ counter);
+            System.out.println("pageIndex"+ pageIndex);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }
+        else
+        {
+            BufferedImage subImage;
+            System.out.println("counter before: " + counter);
+            if(tracker+numStavesConverted >= multImg[counter].getHeight())                   //problem is with counter and/or problem with painting the correct component to the corresponding array number
+            {
+                frameHeight = multImg[counter].getHeight()-tracker;
+                subImage = multImg[counter].getSubimage(0,tracker, 1000, frameHeight);
+                tracker = 0;
+                if((!(counter+1 >= multImg.length)) && pageIndex!= 0)
+                {
+                    counter++;
+                }
             }
             else
             {
-                g2.translate(pf.getImageableX(), pf.getImageableY());
+                subImage = multImg[counter].getSubimage(0,tracker, 1000, frameHeight);
+                int temp = numLines/numStavesPerPage;
+                if(numLines%numStavesPerPage >0)
+                {
+                    temp++;
+                }
+                tracker = numStavesConverted*(pageIndex%temp);
             }
-            g2.translate(0, -pageIndex*pageHeight);
-            int topOfNextPage = (int)(pageIndex*pageHeight);
-            g2.drawImage(subImage, null, 0,topOfNextPage);
-            response= Printable.PAGE_EXISTS;
+            Dimension d = componentToBePrinted.getSize();
+            double panelWidth = d.width;
+            double panelHeight = d.height;
+            double pageHeight = pf.getImageableHeight();
+            double pageWidth = pf.getImageableWidth();
+            double scale = pageWidth/panelWidth;
+            int totalNumPages = numLines/numStavesPerPage;
+            if(numLines%numStavesPerPage > 0)
+            {
+                totalNumPages++;
+            }
+            totalNumPages = totalNumPages*multImg.length;
+            if(pageIndex >= totalNumPages){
+                response = NO_SUCH_PAGE;
+                tracker = 0;
+                counter = 0;
+                multiple = false;
+            } else {
+                g2.scale(scale, scale);
+                if(pageIndex == 0)
+                {
+                    g2.translate(pf.getImageableX(), pf.getImageableY()+10);
+                }
+                else
+                {
+                    g2.translate(pf.getImageableX(), pf.getImageableY());
+                }
+                g2.translate(0, -pageIndex*pageHeight);
+                int topOfNextPage = (int)(pageIndex*pageHeight);
+                g2.drawImage(subImage, null, 0, topOfNextPage);
+                response = Printable.PAGE_EXISTS;
+            }
+            System.out.println("tracker: " + tracker);
+            System.out.println("numStavesConverted: " + numStavesConverted);
+            System.out.println("grandStaveSelected: "+ grandStaveSelected);
+            System.out.println("totalNumPages: " + totalNumPages);
+            System.out.println("frameHeight: "+ frameHeight);
+            System.out.println("counter: "+ counter);
+            System.out.println("pageIndex"+ pageIndex);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
-        System.out.println("numStavesPerPage: "+ numStavesPerPage);
-        System.out.println("totalNumPage: " + totalNumPages);
-        System.out.println("numLines"+ numLines);
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         return response;
     }
 
