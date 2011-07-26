@@ -436,6 +436,12 @@ public class PostProcessing {
         return joinable;
     }
     
+    /** checkDogleg
+     * Checks whether a possible join is a dogleg
+     * @param first : a Block (before join)
+     * @param second : a Brick (after join)
+     * @return isDogleg : a boolean indicating whether or not join is dogleg
+     */
     public static boolean checkDogleg(Block first, Brick second) {
         boolean isDogleg = false;
         
@@ -784,7 +790,7 @@ public class PostProcessing {
                 relative = (b2.getKey() + 5) % OCTAVE;
             }
 
-            if ((b1.getKey() + 5)%OCTAVE == b2.getKey()/* && b1.getMode().equals(b2Mode)*/) {
+            if ((b1.getKey() + DOM_ADJUST)%OCTAVE == b2.getKey()/* && b1.getMode().equals(b2Mode)*/) {
                 resolves = true;
             } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
                 resolves = true;
@@ -802,7 +808,7 @@ public class PostProcessing {
                 relative = (b2.getKey() + 5) % OCTAVE;
             }
 
-            if ((b1.getKey() + 5)%OCTAVE == b2.getKey() /*&& b1.getMode().equals(b2Mode)*/) {
+            if ((b1.getKey() + DOM_ADJUST)%OCTAVE == b2.getKey() /*&& b1.getMode().equals(b2Mode)*/) {
                 resolves = true;
             } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
                 resolves = true;

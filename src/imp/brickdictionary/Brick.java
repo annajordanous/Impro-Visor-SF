@@ -109,7 +109,7 @@ public class Brick extends Block {
          endValue = getSectionEnd();
      }
      
-    /** Brick / 7
+    /** Brick / 8
      * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
      * to build the definition of the brick.
      * 
@@ -151,7 +151,7 @@ public class Brick extends Block {
     }
     
     
-    /** Brick / 5
+    /** Brick / 6
      * As with the constructor above, but without taking in a BrickLibrary for
      * defining bricks
      * 
@@ -236,6 +236,11 @@ public class Brick extends Block {
         endValue = getSectionEnd();
     }
     
+    /** Brick
+     * Creates a Launcher from a single chord
+     * @param c : a ChordBlock
+     * @param m : the new brick's mode
+     */
     public Brick(ChordBlock c, String m) {
         super("Launcher");
         key = (c.getKey() + PostProcessing.DOM_ADJUST) % PostProcessing.OCTAVE;
@@ -247,18 +252,6 @@ public class Brick extends Block {
         mode = m;
         endValue = c.getSectionEnd();
     }
-    
-//    public Brick(ChordBlock c, KeySpan ks) {
-//        super("Off");
-//        key = ks.getKey();
-//        type = "Off";
-//        ArrayList<Block> singleton = new ArrayList<Block>();
-//        singleton.add(c);
-//        subBlocks = singleton;
-//        duration = c.getDuration();
-//        mode = ks.getMode();
-//        endValue = c.isSectionEnd();
-//    }
   
     private static String modeHelper(List<Block> brickList, long key)
     {

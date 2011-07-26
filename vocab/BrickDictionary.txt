@@ -21,7 +21,7 @@
 
 (Brick Autumn-Leaves-Opening minor Opening C
 	(Brick Straight C 4)
-	(Brick Sad-Straight A 4))
+	(Brick Sad-Cadence A 4))
 
 // Added by RK
 (Brick Autumnal(basic) minor Cadence C
@@ -368,7 +368,7 @@
 
 (Brick POT-Minor(variant) minor Turnaround C
         (Brick Dropback-Minor C 2)
-        (Brick Straight-Approach-Minor C 2))
+        (Brick Sad-Approach C 2))
 
 (Brick POT-Minor(short) minor Turnaround C
         (Chord Cm 2)
@@ -519,25 +519,29 @@
         (Brick Reverse-Raindrop C 2)
 	(Chord CM7 1))
 
-(Brick Sad minor Cadence C
+(Brick Sad-Cadence minor Cadence C
 	(Brick Sad-Approach C 2)
 	(Chord CmM7 2))
 
-(Brick Sad(Dominant) minor Cadence C
-        (Brick Straight-Approach-Minor C 2)
+/*
+(Brick Sad-Cadence(Dominant) minor Cadence C
+        (Brick Sad-Approach C 2)
         (Chord CmM7 2))
+*/
 
 (Brick Sad-Approach minor Approach C
 	(Chord Dm7b5 1)  
 	(Chord G7 1))          // modified by RK
 
 (Brick Sad-Somewhere minor Dropback C
-	(Brick Straight-Approach-Minor C 2)
+	(Brick Sad-Approach C 2)
 	(Chord D7 1))
 
+/*
 (Brick Sad-Straight minor Cadence C
-	(Brick Straight-Approach-Minor C 2)
+	(Brick Sad-Approach C 2)
 	(Chord Cm 2))
+*/
 
 (Brick Satin Major Cadence C
 	(Brick Satin-Approach C 4)
@@ -630,16 +634,18 @@
 	(Chord CM7 2))
 
 (Brick Straight(diminished) Major Cadence C
-        (Brick Straight-Approach-Minor C 2)
+        (Brick Sad-Approach C 2)
         (Chord CM7 2))
 
 (Brick Straight-Approach Major Approach C
 	(Chord Dm7 1)
 	(Chord G7 1))
 
-(Brick Straight-Approach-Minor minor Approach C
+/*
+(Brick Sad-Approach minor Approach C
 	(Chord Dm7b5 1)
 	(Chord G7 1))
+*/
 
 // Added by RK
 
