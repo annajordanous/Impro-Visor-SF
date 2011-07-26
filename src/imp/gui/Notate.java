@@ -16583,7 +16583,11 @@ private void pasteMelody(Part part, Stave stave)
    {
        setUpStavesToPrint(component[i]);
    }
-    PrintUtilities.printMultipleComponents(component, staveScrollPane[currTabIndex].getNumLines(), numStavesPP, grandStaveBtn.isSelected());
+   try{
+        PrintUtilities.printMultipleComponents(component, staveScrollPane[currTabIndex].getNumLines(), numStavesPP, grandStaveBtn.isSelected());
+   } catch (OutOfMemoryError e) {
+       ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to print this many choruses, try printing each chorus individually");
+   }
    }
  
  private void setUpStavesToPrint(Stave stv)
