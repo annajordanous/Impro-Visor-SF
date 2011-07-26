@@ -93,6 +93,20 @@ public class SubstituteList {
         return names.contains(mode);
     }
     
+    public boolean isEmpty() {
+        if(names.isEmpty() || keys.isEmpty())
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean nonEmpty() {
+        if(!names.isEmpty() && !keys.isEmpty())
+            return true;
+        else
+            return false;
+    }
+    
     // modKeys 
     // A helper function which returns i mod 12 and assures it is be positive
     private long modKeys(long i) {

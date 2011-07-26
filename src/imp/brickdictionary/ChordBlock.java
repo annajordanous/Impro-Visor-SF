@@ -39,7 +39,6 @@ import polya.Polylist;
 
 public class ChordBlock extends Block {
     
-    // Type of chord, ie. "m7b5" or "7"
     private Chord chord;
     private long NC = -1;
     private String BACKSLASH = "\\";
@@ -194,9 +193,7 @@ public class ChordBlock extends Block {
     
     
     public long matches(ChordBlock c) {
-        if (c.getQuality().equals(this.getQuality()) || 
-                (c.isSlashChord() && 
-                c.getQuality().split("/")[0].equals(this.getQuality())))
+        if (c.getSymbol().equals(this.getSymbol()))
             return moduloSteps(c.getKey() - key );
         return NC;
     }

@@ -1,28 +1,47 @@
 (diatonic Major C
-	(C)
-	(D m)
-	(E m)
-	(F)
-	(G 7)
-	(A m)
-	(B dim))
+	(equiv C CM CMajor CM7 CMaj7 CM9 CMaj9)
+	(equiv Dm Dminor Dm7 Dm9 Dm11 Dm13)
+	(equiv Em Eminor Em7 Em9 Em11 Em13)
+	(equiv F FM FMajor FM7 FMaj7 FM9 FMaj9)
+	(equiv G7 GDominant
+            G7b9 G7#9 G7+ G7#11 G7b9#11 G7b9b13 G9 G9#11 G9b5 G9b13 
+            G13 G13b9 G13#9 G7#5#9 G13#11 G13b5 G13b9#11 G13#9#11 G9+ G7b5b9
+            )
+	(equiv Am Aminor Am7 Am9 Am11 Am13)
+	(equiv Bdim Bo Bdim7 Bo7))
 
 (diatonic Minor C
-	(C m)
-	(D m7b5)
-	(Eb)
-	(F m)
-	(F)
-	(G 7)
-        (G m7)
-	(Ab)
-	(A m7b5)
-	(Bb 7)
-	(B dim))
+	(equiv Cm Cminor Cm7 Cm6 Cm9 Cm11 Cm13)
+	(Dm7b5)
+	(equiv Eb EbM EbMajor EbM7 EbMaj7 EbM9 EbMaj9)
+	(equiv Fm Fminor Fm7 Fm9 Fm11 Fm13)
+	(equiv F FM FMajor FM7 FMaj7 FM9 FMaj9)
+	(equiv G7 GDominant
+            G7b9 G7#9 G7+ G7#11 G7b9#11 G7b9b13 G9 G9#11 G9b5 G9b13 
+            G13 G13b9 G13#9 G7#5#9 G13#11 G13b5 G13b9#11 G13#9#11 G9+ G7b5b9
+            )
+        (equiv Gm7)
+	(equiv Ab AbM AbMajor AbM7 AbMaj7 AbM9 AbMaj9)
+	(Am7b5)
+	(equiv Bb7 BbDominant
+            Bb7b9 Bb7#9 Bb7+ Bb7#11 Bb7b9#11 Bb7b9b13 Bb9 Bb9#11 Bb9b5 Bb9b13 
+            Bb13 Bb13b9 Bb13#9 Bb7#5#9 Bb13#11 Bb13b5 Bb13b9#11 Bb13#9#11 Bb9+ 
+            Bb7b5b9
+            )
+	(equiv Bdim Bo Bdim7 Bo7))
 
 (diatonic Dominant C
-	(C 7)
-	(F 7)
-	(G m7)
-	(G 7))
+	(equiv C7 CDominant
+            C7b9 C7#9 C7+ C7#11 C7b9#11 C7b9b13 C9 C9#11 C9b5 C9b13 
+            C13 C13b9 C13#9 C7#5#9 C13#11 C13b5 C13b9#11 C13#9#11 C9+ C7b5b9
+            )
+	(equiv F7 FDominant
+            F7b9 F7#9 F7+ F7#11 F7b9#11 F7b9b13 F9 F9#11 F9b5 F9b13 
+            F13 F13b9 F13#9 F7#5#9 F13#11 F13b5 F13b9#11 F13#9#11 F9+ F7b5b9
+            )
+	(Gm7)
+	(equiv G7 GDominant
+            G7b9 G7#9 G7+ G7#11 G7b9#11 G7b9b13 G9 G9#11 G9b5 G9b13 
+            G13 G13b9 G13#9 G7#5#9 G13#11 G13b5 G13b9#11 G13#9#11 G9+ G7b5b9
+            ))
 	

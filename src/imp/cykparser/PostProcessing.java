@@ -41,10 +41,11 @@ public class PostProcessing {
     
     public static final int DOM_ADJUST = 5;
     public static final int OCTAVE = 12;
-    public static final Integer[] DIM_INTERVALS = {11, 8, 5, 2};
+    public static final Integer[] DIM_INTERVALS = {11, 8, 5, 2, 1, 10, 7, 4};
     public static final String[] JOINS = {"Bootstrap", "Stella", "Backslider", 
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
         "Cherokee", "Woody", "Highjump", "Bauble"};
+    public static final String DOGLEG = "Dogleg";
     
      /** findKeys
      * Method groups consecutive block of same key for overarching key sections
@@ -171,20 +172,22 @@ public class PostProcessing {
 //                    }
                 }
                 else if (c.isDiminished()) {
-                    ArrayList<ChordBlock> postList = (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
-                    ChordBlock post = postList.get(0);
+//                    ArrayList<ChordBlock> postList = (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
+//                    ChordBlock post = postList.get(0);
+//                    
+//                    if(diminishedCheck(c, post)) {
+//                        current.setDuration(current.getDuration() + c.getDuration());
+//                    }
+//                    else {
+//                        // Start a new key
+//                    KeySpan entry = current;
+//                    keymap.add(0, entry);
+//            
+//                    current = new KeySpan(c.getKey(), c.getMode(), 
+//                            c.getDuration());
+//                    }
                     
-                    if(diminishedCheck(c, post)) {
-                        current.setDuration(current.getDuration() + c.getDuration());
-                    }
-                    else {
-                        // Start a new key
-                    KeySpan entry = current;
-                    keymap.add(0, entry);
-            
-                    current = new KeySpan(c.getKey(), c.getMode(), 
-                            c.getDuration());
-                    }
+                    current.setDuration(current.getDuration() + c.getDuration());
                 }
                 else {
                     // Start a new key
@@ -316,8 +319,11 @@ public class PostProcessing {
             Block c = blocks.get(i + 1);
             // Check if current and next block are both bricks
             if (c instanceof Brick) {
+                if(checkDogleg(b, (Brick)c)) {
+                    joinArray[i] = DOGLEG;
+                }
                 // Check that the two bricks are joinable
-                if(checkJoinability(b, ((Brick)c))) {
+                else if(checkJoinability(b, ((Brick)c))) {
                     ArrayList<ChordBlock> subList = 
                             (ArrayList<ChordBlock>) c.flattenBlock();
                     // Block firstBlock = subList.get(0);
@@ -428,6 +434,30 @@ public class PostProcessing {
         }
         
         return joinable;
+    }
+    
+    public static boolean checkDogleg(Block first, Brick second) {
+        boolean isDogleg = false;
+        
+        ArrayList<ChordBlock> firstList = 
+                (ArrayList<ChordBlock>)first.flattenBlock();
+        ArrayList<ChordBlock> secondList = second.flattenBlock();
+        
+        ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
+        ChordBlock secondToCheck = secondList.get(0);
+        
+        long firstKey = firstToCheck.getKey();
+        String firstSymbol = firstToCheck.getSymbol();
+        
+        long secondKey = secondToCheck.getKey();
+        String secondSymbol = secondToCheck.getSymbol();
+        
+        if(firstKey == secondKey && firstSymbol.startsWith("7") && 
+                secondSymbol.equals("m7")) {
+            isDogleg = true;
+        }
+        
+        return isDogleg;
     }
     
     /** joinLookup
@@ -584,47 +614,85 @@ public class PostProcessing {
                         System.err.println(e.getMessage() + contents.toString());
                     }
                     else {
+                        EquivalenceDictionary dict = new EquivalenceDictionary();
+                        ArrayList<ChordBlock> newEq = new ArrayList<ChordBlock>();
+                        
                         String polylistTag = contents.first().toString();
                         contents = contents.rest();
+                        String diatonicMode = contents.first().toString();
+                        contents = contents.rest();
+                        String diatonicKey = contents.first().toString();
+                        contents = contents.rest();
                         
-                        // Check that
+                        // Check that entry is in the correct format
                         if (polylistTag.equals("diatonic")) {
-                            String diatonicMode = contents.first().toString();
-                            contents = contents.rest();
-                            String diatonicKey = contents.first().toString();
-                            contents = contents.rest();
+                            
                             if (diatonicMode.equals(mode)) {
-                                Long diff = key - 
-                                        BrickLibrary.keyNameToNum(diatonicKey);
                                 while(contents.nonEmpty()) {
-                                    Polylist diatonicElement = 
-                                            (Polylist) contents.first();
+                                    Long diff = key - 
+                                            BrickLibrary.keyNameToNum(diatonicKey);
+                                    Polylist current = (Polylist) contents.first();
                                     contents = contents.rest();
-                                    Long elementKey = BrickLibrary.keyNameToNum
-                                            (diatonicElement.first().toString());
-                                    diatonicElement = diatonicElement.rest();
-                                    String elementQuality;
-                                    
-                                    if(diatonicElement.nonEmpty()) {
-                                        elementQuality = 
-                                                diatonicElement.first().toString();
+                                    String categoryCheck = current.first().toString();
+                                    current = current.rest();
+                                    if(categoryCheck.equals("equiv")) {
+                                        while (current.nonEmpty())
+                                        {
+                                            String chordName = current.first().toString();
+                                            current = current.rest();
+                                            ChordBlock nextChord = new ChordBlock(chordName, 
+                                                    SubstitutionRule.NODUR);
+                                            // nextChord.transpose(diff);
+                                            newEq.add(nextChord);
+                                        }
                                     }
                                     else {
-                                        elementQuality = "";
+                                        ChordBlock nextChord = new ChordBlock(categoryCheck, 
+                                                SubstitutionRule.NODUR);
+                                        // nextChord.transpose(diff);
+                                        newEq.add(nextChord);
                                     }
-                                    
-                                    elementKey = (elementKey + diff)%OCTAVE;
-                                    if(c.getKey() == elementKey && 
-                                            c.getSymbol().equals(elementQuality)) {
-                                        isInKey = true;
-                                        return isInKey;
-                                    }
+                                    dict.addRule(newEq);
                                 }
+                                
+                                
+                                
+//                                while(contents.nonEmpty()) {
+//                                    Polylist diatonicElement = 
+//                                            (Polylist) contents.first();
+//                                    contents = contents.rest();
+//                                    Long elementKey = BrickLibrary.keyNameToNum
+//                                            (diatonicElement.first().toString());
+//                                    diatonicElement = diatonicElement.rest();
+//                                    String elementQuality;
+//                                    
+//                                    if(diatonicElement.nonEmpty()) {
+//                                        elementQuality = 
+//                                                diatonicElement.first().toString();
+//                                    }
+//                                    else {
+//                                        elementQuality = "";
+//                                    }
+//                                    
+//                                    elementKey = (elementKey + diff)%OCTAVE;
+//                                    if(c.getKey() == elementKey && 
+//                                            c.getSymbol().equals(elementQuality)) {
+//                                        isInKey = true;
+//                                        return isInKey;
+//                                    }
+//                                }
+                            }
+                            
+                            
+                            SubstituteList subs = dict.checkEquivalence(c);
+                            if(subs.nonEmpty()) {
+                                c.setMode(mode);
+                                isInKey = true;
                             }
                         }
                         else {
-                            Error e = new Error("No diatonic tag on Polylist: ");
-                            System.err.println(e.getMessage() + polylistTag);
+                        Error e = new Error("No diatonic tag on Polylist: ");
+                        System.err.println(e.getMessage() + polylistTag);
                         }
                     }
                 }
