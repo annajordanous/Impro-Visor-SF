@@ -81,6 +81,15 @@ public class RoadMap {
     }
     
     /**
+     * Returns whether the roadmap is empty
+     * @return 
+     */
+    public boolean isEmpty()
+    {
+        return blocks.isEmpty();
+    }
+    
+    /**
      * Returns the keymap.
      * @return 
      * Keymap

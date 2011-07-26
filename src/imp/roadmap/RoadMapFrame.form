@@ -51,36 +51,6 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JSpinner" name="dialogKeySpinner">
-          <Properties>
-            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-              <SpinnerModel type="list">
-                <ListItem value="C"/>
-                <ListItem value="C#"/>
-                <ListItem value="D"/>
-                <ListItem value="D#"/>
-                <ListItem value="E"/>
-                <ListItem value="F"/>
-                <ListItem value="F#"/>
-                <ListItem value="G"/>
-                <ListItem value="G#"/>
-                <ListItem value="A"/>
-                <ListItem value="A#"/>
-                <ListItem value="B"/>
-                <ListItem value="C"/>
-              </SpinnerModel>
-            </Property>
-            <Property name="name" type="java.lang.String" value="dialogKeySpinner" noResource="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[60, 28]"/>
-            </Property>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="3" anchor="10" weightX="1.0" weightY="0.0"/>
-            </Constraint>
-          </Constraints>
-        </Component>
         <Component class="javax.swing.JButton" name="dialogAcceptButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Accept" noResource="true"/>
@@ -115,6 +85,32 @@
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
               <GridBagConstraints gridX="2" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="dialogKeyComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="12">
+                <StringItem index="0" value="C"/>
+                <StringItem index="1" value="B"/>
+                <StringItem index="2" value="Bb"/>
+                <StringItem index="3" value="A"/>
+                <StringItem index="4" value="Ab"/>
+                <StringItem index="5" value="G"/>
+                <StringItem index="6" value="Gb"/>
+                <StringItem index="7" value="F"/>
+                <StringItem index="8" value="E"/>
+                <StringItem index="9" value="Eb"/>
+                <StringItem index="10" value="D"/>
+                <StringItem index="11" value="Db"/>
+              </StringArray>
+            </Property>
+            <Property name="name" type="java.lang.String" value="dialogKeyComboBox" noResource="true"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -436,9 +432,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="appendToLeadsheetMI">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="ENTER"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Append selection chords to most recent leadsheet created&#xa;&#xa;" noResource="true"/>
                 <Property name="toolTipText" type="java.lang.String" value="Appends the chords in the current selection to a created leadsheet, creating one if none exits." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="appendToLeadsheetMI" noResource="true"/>
@@ -449,9 +442,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="appendToNewLeadsheetMI">
               <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="ENTER"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Create a new leadsheet and add selected chords to it  " noResource="true"/>
                 <Property name="toolTipText" type="java.lang.String" value="Create a new leadsheet and add selected chords to it." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="appendToNewLeadsheetMI" noResource="true"/>

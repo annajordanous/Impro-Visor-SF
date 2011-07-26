@@ -51,21 +51,42 @@ public class GraphicBrick {
         this.settings = settings;
     }
     
+    /**
+     * Returns the name of the brick
+     * @return 
+     */
     public String getName()
     {
         return block.getName();
     }
     
+    public int getDuration()
+    {
+        return block.getDuration();
+    }
+    
+    /**
+     * Returns the brick
+     * @return 
+     */
     public Block getBrick()
     {
         return block;
     }
     
+    /**
+     * Sets the slot offset of the brick
+     * @param slots horizontal offset, size defined by the settings
+     */
     public void setSlot(long slots)
     {
         slot = slots;
     }
     
+    /**
+     * Sets the line offset of the brick
+     * @param line vertical offset, size defined by the settings
+     */
     public void setLine(int line)
     {
         this.line = line;
@@ -108,12 +129,25 @@ public class GraphicBrick {
         selected = -1;
     }
     
+    /**
+     * Selects the chord at the specified index
+     * @param index 
+     */
     public void selectChord(int index)
     {
         isSelected = true;
         selected = index;
     }
     
+    public ChordBlock getChord(int index)
+    {
+        return block.flattenBlock().get(index);
+    }
+    
+    /**
+     * Returns the index of the selected chord (-1 if none are selected)
+     * @return 
+     */
     public int getSelected()
     {
         return selected;
@@ -127,15 +161,10 @@ public class GraphicBrick {
      */
     public boolean contains(int x, int y)
     {
-        return getChordAt(x,y) != -1;
-    }
-    
-    public int getChordAt(int x, int y)
-    {
         int cutoffLine = settings.getCutoff();
         
         if( x > cutoffLine || x < settings.xOffset )
-            return -1;
+            return false;
         
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
         
@@ -148,7 +177,7 @@ public class GraphicBrick {
             
             if ( x > xOffset && x < xOffset + length && 
                     y > yOffset && y < yOffset + settings.lineHeight)
-                return ind;
+                return true;
             
             while ( xOffset + length >= cutoffLine )
             {
@@ -157,6 +186,44 @@ public class GraphicBrick {
                 
                 if ( x > xOffset && x < xOffset + length && 
                     y > yOffset && y < yOffset + settings.lineHeight)
+                    return true;
+            }
+            
+            xOffset += length;
+            ind++;
+        }
+        
+        return false;
+    }
+    
+    public int getChordAt(int x, int y)
+    {
+        int cutoffLine = settings.getCutoff();
+        int blockHeight = settings.getBlockHeight();
+        
+        if( x > cutoffLine || x < settings.xOffset )
+            return -1;
+        
+        ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
+        
+        int xOffset = x();
+        int yOffset = y() + 2*blockHeight;
+        int ind = 0;
+
+        for( ChordBlock chord : chords ) {
+            int length = settings.getBlockLength(chord);
+            
+            if ( x > xOffset && x < xOffset + length && 
+                    y > yOffset && y < yOffset + blockHeight)
+                return ind;
+            
+            while ( xOffset + length >= cutoffLine )
+            {
+                xOffset -= settings.getLineLength();
+                yOffset += settings.lineHeight + settings.lineSpacing;
+                
+                if ( x > xOffset && x < xOffset + length && 
+                    y > yOffset && y < yOffset + blockHeight)
                     return ind;
             }
             

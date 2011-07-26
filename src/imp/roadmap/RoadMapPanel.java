@@ -97,8 +97,8 @@ public class RoadMapPanel extends JPanel{
         for( GraphicBrick brick : graphicMap ) {
             brick.setSlot(lineBeats);
             brick.setLine(lines);
-            currentSlots += brick.getBrick().getDuration();
-            lineBeats += brick.getBrick().getDuration();
+            currentSlots += brick.getDuration();
+            lineBeats += brick.getDuration();
             
             long[] wrap = settings.wrapFromSlots(lineBeats);
             lineBeats = wrap[0];
@@ -306,8 +306,10 @@ public class RoadMapPanel extends JPanel{
     
     public void selectAll()
     {
+        if(!roadMap.isEmpty()){
         selectionStart = selectionEnd = 0;
         selectBricks(graphicMap.size()-1);
+        }
         
         // This is just for testing purposes. It should be eliminated later.
         //System.out.println("selected " + roadMap.toString());
@@ -338,6 +340,7 @@ public class RoadMapPanel extends JPanel{
             selectionEnd = selectionStart;
             selectBricks(selectionStart + bricks.size() - 1);
         } else {
+            
             ArrayList<Block> blocks = view.analyze(removeBlocks());
             addBlocks(blocks);
         }

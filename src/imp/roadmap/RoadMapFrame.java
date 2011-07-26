@@ -155,9 +155,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         dialogNameLabel = new javax.swing.JLabel();
         dialogKeyLabel = new javax.swing.JLabel();
         dialogNameField = new javax.swing.JTextField();
-        dialogKeySpinner = new javax.swing.JSpinner();
         dialogAcceptButton = new javax.swing.JButton();
         dialogModeComboBox = new javax.swing.JComboBox();
+        dialogKeyComboBox = new javax.swing.JComboBox();
         chordChangeDialog = new javax.swing.JDialog();
         chordDialogNameField = new javax.swing.JTextField();
         chordDialogAcceptButton = new javax.swing.JButton();
@@ -245,17 +245,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 3);
         addBrickDialog.getContentPane().add(dialogNameField, gridBagConstraints);
 
-        dialogKeySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C"}));
-        dialogKeySpinner.setName("dialogKeySpinner"); // NOI18N
-        dialogKeySpinner.setPreferredSize(new java.awt.Dimension(60, 28));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 3);
-        addBrickDialog.getContentPane().add(dialogKeySpinner, gridBagConstraints);
-
         dialogAcceptButton.setText("Accept"); // NOI18N
         dialogAcceptButton.setName("dialogAcceptButton"); // NOI18N
         dialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
@@ -278,6 +267,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         addBrickDialog.getContentPane().add(dialogModeComboBox, gridBagConstraints);
+
+        dialogKeyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
+        dialogKeyComboBox.setName("dialogKeyComboBox"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        addBrickDialog.getContentPane().add(dialogKeyComboBox, gridBagConstraints);
 
         chordChangeDialog.setTitle("Settings"); // NOI18N
         chordChangeDialog.setModal(true);
@@ -674,8 +672,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
         getContentPane().add(previewScrollPane, gridBagConstraints);
 
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
-        keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root")); // NOI18N
-        keyComboBox.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root"));
         keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         keyComboBox.setName("keyComboBox"); // NOI18N
         keyComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
@@ -881,7 +878,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         leadsheetMenu.setToolTipText("Transfer roadmap chord changes into a leadsheet."); // NOI18N
         leadsheetMenu.setName("leadsheetMenu"); // NOI18N
 
-        appendToLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
         appendToLeadsheetMI.setText("Append selection chords to most recent leadsheet created\n\n"); // NOI18N
         appendToLeadsheetMI.setToolTipText("Appends the chords in the current selection to a created leadsheet, creating one if none exits."); // NOI18N
         appendToLeadsheetMI.setName("appendToLeadsheetMI"); // NOI18N
@@ -892,7 +888,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         });
         leadsheetMenu.add(appendToLeadsheetMI);
 
-        appendToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
         appendToNewLeadsheetMI.setText("Create a new leadsheet and add selected chords to it  "); // NOI18N
         appendToNewLeadsheetMI.setToolTipText("Create a new leadsheet and add selected chords to it."); // NOI18N
         appendToNewLeadsheetMI.setName("appendToNewLeadsheetMI"); // NOI18N
@@ -993,17 +988,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
             //System.out.println("Clicked brick "+index);
 
             if(index != -1) {
+                int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                 if(evt.isShiftDown())
                     selectBricks(index);
                 else if( roadMapPanel.getBrick(index).isSelected() &&
-                        evt.getClickCount() == 2) {
-                    int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
+                        evt.getClickCount() == 2 && jndex != -1) {
                     selectChord(index,jndex);
                     chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
                     chordChangeDialog.setVisible(true);
-                } else if( roadMapPanel.getBrick(index).isSelected() ) {
+                } else if( roadMapPanel.getBrick(index).isSelected() && jndex != -1) {
                     //System.out.println("Selected brick clicked");
-                    int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                     selectChord(index,jndex);
                 } else
                     selectBrick(index);
@@ -1057,7 +1051,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
         dialogNameField.setText("New Brick");
-        dialogKeySpinner.setValue("C");
+        dialogKeyComboBox.setSelectedIndex(0);
         addBrickDialog.setVisible(true);
 }//GEN-LAST:event_newBrickButtonPressed
 
@@ -1273,9 +1267,16 @@ public class RoadMapFrame extends javax.swing.JFrame {
         int x = evt.getX()+xOffset;
         int y = evt.getY()+yOffset;
         int index = roadMapPanel.getBrickIndexAt(x,y);
-        if(index != -1)
-            roadMapPanel.drawRollover(x,y,roadMapPanel.getBrick(index).getName());
-        else
+        if(index != -1) {
+            int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
+            if(jndex != -1)  {
+                String name = roadMapPanel.getBrick(index).getChord(jndex).getName();
+                roadMapPanel.drawRollover(x,y,name);
+            }
+            else 
+                roadMapPanel.drawRollover(x,y,roadMapPanel.getBrick(index).getName());
+            
+        } else
             roadMapPanel.draw();
     }//GEN-LAST:event_roadMapScrollPaneMouseMoved
 //</editor-fold>
@@ -1426,7 +1427,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     public void makeBrickFromSelection()
     {
         saveState("Merge");
-        long key = BrickLibrary.keyNameToNum((String) dialogKeySpinner.getValue());
+        long key = BrickLibrary.keyNameToNum((String) dialogKeyComboBox.getSelectedItem());
         String name = dialogNameField.getText();
         String mode = (String)dialogModeComboBox.getSelectedItem();
         Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key, mode);
@@ -1846,8 +1847,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JButton dialogAcceptButton;
+    private javax.swing.JComboBox dialogKeyComboBox;
     private javax.swing.JLabel dialogKeyLabel;
-    private javax.swing.JSpinner dialogKeySpinner;
     private javax.swing.JComboBox dialogModeComboBox;
     private javax.swing.JTextField dialogNameField;
     private javax.swing.JLabel dialogNameLabel;
