@@ -64,6 +64,7 @@ public class TreeNode {
         isEnd = false;
         start = 0;
         isSub = false;
+        height = 0;
     }
     
     /** Chord Constructor / 2
@@ -87,6 +88,7 @@ public class TreeNode {
         isEnd = chord.isSectionEnd();
         start = s;
         isSub = false;
+        height = 0;
     }
     
     /** Chord Constructor / 3
@@ -111,6 +113,7 @@ public class TreeNode {
         isEnd = chord.isSectionEnd();
         start = s;
         isSub = false;
+        height = 0;
     }
     
     /** Chord Constructor / 5
@@ -137,11 +140,12 @@ public class TreeNode {
         isEnd = chord.isSectionEnd();
         start = s;
         isSub = true;
+        height = 0;
     }    
     
         
     /** TreeNode / 6
-     * Makes a TreeNode for a nonterminal
+     * Makes a TreeNode for a unary brick
      *
      * @param sym, a String of the Node symbol
      * @param type, a String of the Node's type
@@ -168,10 +172,11 @@ public class TreeNode {
         key = k;
 
         cost = co;
-        toPrint = !(type.equals(CYKParser.NONBRICK));
+        toPrint = !(type.equals(CYKParser.INVISIBLE));
 
         isEnd = t.isSectionEnd();
         start = t.getStart();
+        height = t.getHeight() + 1;
     }
     /** TreeNode / 7
      * Makes a TreeNode for a nonterminal
@@ -205,12 +210,17 @@ public class TreeNode {
         key = k;
 
         cost = co;
-        toPrint = !(type.equals(CYKParser.NONBRICK));
+        toPrint = !(type.equals(CYKParser.INVISIBLE));
 
         isEnd = c2.isSectionEnd();
         isSub = (c1.isSub() || c2.isSub());
 
         start = c1.getStart();
+        if (c1.getHeight() < c2.getHeight())
+            height = c2.getHeight();
+        else
+            height = c1.getHeight();
+        height++;
     }
     
     
@@ -246,6 +256,11 @@ public class TreeNode {
         isSub = (c1.isSub() || c2.isSub());
 
         start = c1.getStart();
+        if (c1.getHeight() < c2.getHeight())
+            height = c2.getHeight();
+        else
+            height = c1.getHeight();
+        height++;
     }
     
    /** overlapCopy
@@ -352,12 +367,16 @@ public class TreeNode {
         return block;
     }
     
+    public int getHeight() {
+        return height;
+    }
+    
     // Gets the significant types of blocks from a TreeNode.
     public ArrayList<Block> getBlocks()
     {
         ArrayList<Block> blocks = new ArrayList<Block>();
         if (toPrint) blocks.add(block);
-        else {
+        else if (child1 != null && child2 != null) {
             blocks.addAll(child1.getBlocks());
             blocks.addAll(child2.getBlocks());
         }
@@ -431,6 +450,8 @@ public class TreeNode {
     private boolean isEnd;            // If the node ends a section
     private String mode;              // the mode of the Node's nominal contents
     private boolean isSub;            // whether the Node has a substitution
+    
+    private int height;               // height of the tree at the TreeNode
                                       
 
 }

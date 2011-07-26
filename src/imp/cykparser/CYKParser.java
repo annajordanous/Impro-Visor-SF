@@ -43,7 +43,7 @@ public class CYKParser
     // equivalence dictionary
     public static final int BAR_DURATION = 480;
     public static final String DICTIONARY_NAME = "vocab/substitutions_sameroot.txt";
-    public static final String NONBRICK = "";
+    public static final String INVISIBLE = "Invisible";
     public static final long SUB_COST = 5;
     
     /**
@@ -252,13 +252,13 @@ public class CYKParser
                 // first rule
                 currentName = name + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];
-                prods[0] = new BinaryProduction(currentName, NONBRICK, b.getKey(),
+                prods[0] = new BinaryProduction(currentName, INVISIBLE, b.getKey(),
                         subBlocks.get(0), subBlocks.get(1), false, mode, lib);
                 nonterminalRules.add(prods[0]);
                 // second through next to last rules
                 for (int i = 2; i < size - 1; i++) {
                     currentName = name + i;
-                    prods[i-1] = new BinaryProduction(currentName, NONBRICK,
+                    prods[i-1] = new BinaryProduction(currentName, INVISIBLE,
                             b.getKey(), prods[i-2], subBlocks.get(i), false, mode, lib);
                     nonterminalRules.add(prods[i-1]);
                 }
@@ -330,7 +330,9 @@ public class CYKParser
                     while (node.hasNext()) {
                         TreeNode nextNode = (TreeNode) node.next();
                     if (nextNode.toShow() &&
-                            nextNode.getCost() < minVals[row][col].getCost())
+                            (nextNode.getCost() < minVals[row][col].getCost() ||
+                            ((nextNode.getCost() == minVals[row][col].getCost()) &&
+                            (nextNode.getHeight() > minVals[row][col].getHeight()))))
                             minVals[row][col] = nextNode;
                  
                     }
@@ -354,7 +356,6 @@ public class CYKParser
     
         // The shortest path in the top right cell gets printed as the best
         // explanation for the whole chord progression
-        System.err.println(printTable());
         return PostProcessing.findLaunchers(minVals[0][size - 1].toBlocks());
             
     }
@@ -492,7 +493,6 @@ public class CYKParser
                             // another later one, then we store a TreeNode 
                             // with a 0-duration final chord to put in the 
                             // table later.
-                            System.err.println(newNode.getSymbol());
                             if (!(rule.getType().equals("On-Off")) && 
                                     !(symbol2.isSectionEnd()) &&
                                     !(symbol2.isOverlap()) &&

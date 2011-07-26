@@ -23,8 +23,6 @@
 package imp.brickdictionary;
 import imp.util.ErrorLog;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import polya.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -42,8 +40,8 @@ public class BrickLibrary {
     private static final String[] KEY_NAME_ARRAY = {"C", "Db", "D", "Eb", "E",
         "F", "Gb", "G", "Ab", "A", "Bb", "B"};
     private static final long DEFAULT_COST = 40;
-    public static final long NONBRICK = 2000;
     public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
+    public static final String INVISIBLE = "Invisible";
    
     private LinkedHashMap<String, LinkedList<Brick>> brickMap;
     private LinkedHashMap<String, Long> costMap;
@@ -65,7 +63,10 @@ public class BrickLibrary {
         
         Polylist defn = brick.toBrickDefinition();
         String defnString = defn.toString();
+        if (!brick.getQualifier().equals(""))
+            defnString.replaceFirst(" \\(", "\\(");    
         defnString = defnString.replaceAll(" \\(", "\n        \\(");
+        
         
         try {
             FileOutputStream out = new FileOutputStream(DICTIONARY_FILE, true);
@@ -267,7 +268,8 @@ public class BrickLibrary {
         LinkedList<LinkedList<Brick>> values = new LinkedList();
         for (LinkedList<Brick> brickname : brickMap.values())
         {
-            values.add(brickname);
+            if(!brickname.getFirst().getType().equals(INVISIBLE))
+                values.add(brickname);
         }
         
         return values;
@@ -285,7 +287,7 @@ public class BrickLibrary {
     
     // Print contents of dictionary
     public void printDictionary() {
-        Iterator iter = getMap().iterator();
+        Iterator iter = getFullMap().iterator();
         
         while(iter.hasNext())
         {
@@ -303,11 +305,10 @@ public class BrickLibrary {
     }
     
     public long getCost(String t) {
-        if (hasType(t)) 
-            return costMap.get(t);
-        else {
-            return NONBRICK;
-        }
+        if (!hasType(t)) 
+            ErrorLog.log(ErrorLog.SEVERE, "Type does not exist, will register"
+                    + "as an invisible brick: " + t);
+        return costMap.get(t);    
     }
     
     public boolean hasType(String t) {
@@ -437,7 +438,7 @@ public class BrickLibrary {
                     }
                     
                     // For reading in dictionary, should only encounter bricks
-                    else if (blockCategory.equals("Brick"))
+                    else if (blockCategory.equals("Brick") && contents.length() > 4)
                     {
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();

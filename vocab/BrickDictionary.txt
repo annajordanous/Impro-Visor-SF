@@ -4,6 +4,7 @@
 (brick-type Cadence          30)
 (brick-type Dropback         30)
 (brick-type Cadence-Dropback 30)
+(brick-type Invisible      2000)
 (brick-type Overrun          30)
 (brick-type On-Off         1000)
 (brick-type Opening          25)
@@ -198,11 +199,11 @@
 	(Chord CM7 4))
 
 // added by RK/XS
-(Brick GenDom(var1) Major Approach C
+(Brick GenDom(var1) Major Invisible C
         (Chord G7 1))
 
 // added by RK/XS
-(Brick GenDom(var2) Major Approach C
+(Brick GenDom(var2) Major Invisible C
         (Chord Dm7 1)
         (Chord G7 1))
 
