@@ -134,6 +134,10 @@ public class Block {
         duration = duration * factor;
     }
     
+    public void adjustBrickDuration(int newDur) {
+        duration = newDur;
+    }
+    
     public boolean isSectionEnd() {
         return endValue != NO_END;
     }

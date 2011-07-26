@@ -51,6 +51,11 @@ public class GraphicBrick {
         this.settings = settings;
     }
     
+    public String getName()
+    {
+        return block.getName();
+    }
+    
     public Block getBrick()
     {
         return block;

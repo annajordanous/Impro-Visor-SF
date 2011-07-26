@@ -133,6 +133,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         settings.beatsPerMeasure = notate.getTimeSigTop();
         settings.slotsPerMeasure = notate.getBeatValue()*notate.getTimeSigTop();
         
+        //durationComboBox.addItem(this)
+        
         WindowRegistry.registerWindow(this);
         
         //roadMapScrollPane.setViewportView(roadMapPanel);
@@ -177,9 +179,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
         libraryTabbedPane = new javax.swing.JTabbedPane();
         libraryScrollPane = new javax.swing.JScrollPane();
         libraryTree = new javax.swing.JTree();
-        keySpinner = new javax.swing.JSpinner();
         durationComboBox = new javax.swing.JComboBox(durationChoices);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
+        keyComboBox = new javax.swing.JComboBox();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
@@ -560,6 +562,9 @@ public class RoadMapFrame extends javax.swing.JFrame {
             }
         });
         roadMapScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                roadMapScrollPaneMouseMoved(evt);
+            }
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapDragged(evt);
             }
@@ -620,27 +625,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weighty = 0.8;
         getContentPane().add(libraryTabbedPane, gridBagConstraints);
 
-        keySpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "C"}));
-        keySpinner.setToolTipText("Select the key for this brick."); // NOI18N
-        keySpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Key, Root\n\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
-        keySpinner.setName("keySpinner"); // NOI18N
-        keySpinner.setPreferredSize(new java.awt.Dimension(76, 54));
-        keySpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                keySpinnerChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.02;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        getContentPane().add(keySpinner, gridBagConstraints);
-
-        durationComboBox.setSelectedItem(480);
         durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
         durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
         durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
@@ -688,6 +672,25 @@ public class RoadMapFrame extends javax.swing.JFrame {
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
         getContentPane().add(previewScrollPane, gridBagConstraints);
+
+        keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
+        keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root")); // NOI18N
+        keyComboBox.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
+        keyComboBox.setName("keyComboBox"); // NOI18N
+        keyComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
+        keyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
+        getContentPane().add(keyComboBox, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
@@ -951,10 +954,6 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
         setPreview();
 }//GEN-LAST:event_libraryTreeSelected
-
-    private void keySpinnerChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_keySpinnerChanged
-        setPreviewKey();
-}//GEN-LAST:event_keySpinnerChanged
 
     private void previewScrollPanepreviewPaneReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneReleased
         dropFromPreview(evt.getX(), evt.getY());
@@ -1263,6 +1262,22 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private void appendToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToNewLeadsheetMIaction
         sendSelectionToNewNotate();
     }//GEN-LAST:event_appendToNewLeadsheetMIaction
+
+    private void keyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyComboBoxActionPerformed
+        setPreviewKey();
+    }//GEN-LAST:event_keyComboBoxActionPerformed
+
+    private void roadMapScrollPaneMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneMouseMoved
+        int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue();
+        int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
+        int x = evt.getX()+xOffset;
+        int y = evt.getY()+yOffset;
+        int index = roadMapPanel.getBrickIndexAt(x,y);
+        if(index != -1)
+            roadMapPanel.drawRollover(x,y,roadMapPanel.getBrick(index).getName());
+        else
+            roadMapPanel.draw();
+    }//GEN-LAST:event_roadMapScrollPaneMouseMoved
 //</editor-fold>
     
     /** InitBuffer <p>
@@ -1601,6 +1616,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
                 else
                     brick = brickLibrary.getBrick(node.toString(), 0);
                 
+                setDurationChoices(brick);
                 previewPanel.setBrick( brick );
 
                 setPreviewKey();
@@ -1616,7 +1632,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
      */
     public void setPreviewKey()
     {
-        String key = (String)keySpinner.getValue();
+        String key = (String)keyComboBox.getSelectedItem();
         if(BrickLibrary.isValidKey(key))
             previewPanel.setKey( key );
     }
@@ -1736,6 +1752,17 @@ public class RoadMapFrame extends javax.swing.JFrame {
         scaleComboBox.setEnabled(value);
     }
     
+    public void setDurationChoices(Brick brick)
+    {
+        int sig = notate.getTimeSigTop();
+        ArrayList<Integer> choices = new ArrayList();
+        for(int i = brick.getDuration(); i < sig*brick.getDuration(); i++)
+            choices.add(i);
+        for(int i = 1; i < 4; i++)
+            choices.add(i*brick.getDuration()*sig);
+        System.out.println(choices);
+    }
+    
     public void initLibraryTree()
     {
         LinkedList<LinkedList<Brick>> bricks = brickLibrary.getMap();
@@ -1834,7 +1861,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JSpinner keySpinner;
+    private javax.swing.JComboBox keyComboBox;
     private javax.swing.JMenu leadsheetMenu;
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTabbedPane libraryTabbedPane;
@@ -2053,7 +2080,7 @@ public int getNewYlocation()
     int x = notate.getNewXlocation();
     int y = notate.getNewYlocation();
     setLocation(x, y);
-    setSize(RMframeWidth, dm.getHeight() - y);
+    setSize(dm.getWidth() - x, dm.getHeight() - y);
   }
   
 public void makeVisible()

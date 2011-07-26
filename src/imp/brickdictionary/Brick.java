@@ -513,7 +513,11 @@ public class Brick extends Block {
     // Sum the durations of a brick's subblocks
     @Override
     public final int getDuration() {
-        
+        setDuration(); //TODO not this.
+        return duration;
+    }
+    
+    private void setDuration() {
         int dur = 0;
         for(Block b : this.getSubBlocks())
         {
@@ -524,9 +528,6 @@ public class Brick extends Block {
         }
         
         duration = dur;
-        
-        return duration;
-
     }
     
     public String getQualifier() 
@@ -576,8 +577,17 @@ public class Brick extends Block {
     }
     
     // Create new brick from an original with specified duration
+    @Override
     public void adjustBrickDuration(int newDuration) {
-        float newDurFloat = newDuration;
+        /*int ratio = newDuration * 480 / this.getDuration();
+        
+        for( Block block : subBlocks ) {
+            int newDur = block.duration * ratio / 480;
+            block.adjustBrickDuration(newDur);
+        }
+        
+        this.setDuration();
+        /**/float newDurFloat = newDuration;
         float ratio = (newDurFloat / this.getDuration());
 
         List<Block> currentSubBlocks = this.getSubBlocks();

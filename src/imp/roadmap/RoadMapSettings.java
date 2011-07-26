@@ -213,6 +213,9 @@ public class RoadMapSettings {
         int stringLength = metrics.stringWidth(string);
         if(stringLength < length)
             return string;
+        
+        if((string.length() * length)/stringLength <= 1)
+            return "...";
         //System.out.println(string+" is too long. Length: " + stringLength + " Desired: " + length);
         return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
     }

@@ -367,9 +367,19 @@ public class RoadMapPanel extends JPanel{
     
     public void deleteSelection()
     {
-        if(selectionStart != -1 && selectionEnd != -1)
-            deleteRange(selectionStart, selectionEnd+1);
+        if(selectionStart != -1 && selectionEnd != -1) {
+            int chordSelected = graphicMap.get(selectionStart).getSelected();
+            if(chordSelected != -1)
+                deleteChord(roadMap.getBlock(selectionStart), chordSelected);
+            else
+                deleteRange(selectionStart, selectionEnd+1);
+        }
         selectionStart = selectionEnd = -1;
+    }
+    
+    public void deleteChord(Block block, int chordInd)
+    {
+        //TODO
     }
     
     public void deleteRange(int start, int end)
@@ -737,6 +747,24 @@ public class RoadMapPanel extends JPanel{
             g2d.drawString(keyName, x+2, y+fontOffset);
     }
         
+    public void drawRollover(int x, int y, String text)
+    {
+        draw();
+        Graphics g = buffer.getGraphics();
+        FontMetrics metrics = g.getFontMetrics();
+        int width = metrics.stringWidth(text) + 4;
+        int height = metrics.getAscent() + 2;
+        
+        g.setColor(settings.brickBGColor);
+        
+        g.fillRect(x, y, width, height);
+        
+        g.setColor(settings.lineColor);
+        g.drawString(text, x+2, y+height - 2);
+        g.drawRect(x, y, width, height);
+        repaint();
+    }
+    
     /**
     * Override the paint method to draw the buffer image on this panel's graphics.
     * This method is called implicitly whenever repaint() is called.
