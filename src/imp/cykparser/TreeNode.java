@@ -257,7 +257,8 @@ public class TreeNode {
     {
         TreeNode newNode;
         if (child1 == null && child2 == null) {
-            ChordBlock zeroChord = new ChordBlock(block.flattenBlock().get(0).getName(), 
+            ChordBlock overlapChord = chords.get(chords.size() - 1);
+            ChordBlock zeroChord = new ChordBlock(overlapChord.getName(), 
                     0, block.isSectionEnd());
             newNode = new TreeNode(zeroChord, cost + 5, start);
         }

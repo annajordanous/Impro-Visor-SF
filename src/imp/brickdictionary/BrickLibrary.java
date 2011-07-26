@@ -171,18 +171,28 @@ public class BrickLibrary {
         }
     }
     
+    // Get a brick from the dictionary specific to the qualifier.
     public Brick getBrick(String s, String q, long k) {
         if(brickMap.containsKey(s))
         {
-            Brick brick = brickMap.get(s).getFirst();
-            for(Brick variant : brickMap.get(s)) {
-                if(variant.getQualifier().equals(q)) {
-                    brick = new Brick(variant);
+            Brick brick = null;
+            for (Brick b : brickMap.get(s))
+                if (b.getQualifier().equals(q)) {
+                    brick = b;
                     break;
                 }
+            
+            if (brick != null) {
+                brick.transpose((k-brick.getKey() + 12)%12);
+                return brick;
             }
-            brick.transpose((k-brick.getKey() + 12)%12);
-            return brick;
+            else
+            {
+                ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                        s + " with qualifier " + q, true);
+                return null;
+            }
+            
         }
         else
         {
@@ -199,6 +209,36 @@ public class BrickLibrary {
             brick.transpose((k-brick.getKey() + 12)%12);
             brick.adjustBrickDuration(d);
             return brick;
+        }
+        else
+        {
+            ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                    s, true);
+            return null;
+        }
+    }
+    
+    public Brick getBrick(String s, String q, long k, int d) {
+        if(brickMap.containsKey(s))
+        {
+            Brick brick = null;
+            for (Brick b : brickMap.get(s))
+                if (b.getQualifier().equals(q)) {
+                    brick = b;
+                    break;
+                }
+            if (brick != null) {
+                brick.transpose((k-brick.getKey() + 12)%12);
+                brick.adjustBrickDuration(d);
+                return brick;
+            }
+            
+            else {
+                ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                    s, true);
+                return null;
+            }
+                
         }
         else
         {
@@ -462,7 +502,7 @@ public class BrickLibrary {
             
             
         }
-        return dictionary;
+            return dictionary;
     }
     
         

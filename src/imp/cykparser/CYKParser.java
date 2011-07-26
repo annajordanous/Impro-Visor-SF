@@ -354,6 +354,7 @@ public class CYKParser
     
         // The shortest path in the top right cell gets printed as the best
         // explanation for the whole chord progression
+        System.err.println(printTable());
         return PostProcessing.findLaunchers(minVals[0][size - 1].toBlocks());
             
     }
@@ -491,10 +492,11 @@ public class CYKParser
                             // another later one, then we store a TreeNode 
                             // with a 0-duration final chord to put in the 
                             // table later.
-                            
+                            System.err.println(newNode.getSymbol());
                             if (!(rule.getType().equals("On-Off")) && 
                                     !(symbol2.isSectionEnd()) &&
-                                    !(symbol2.isOverlap()))
+                                    !(symbol2.isOverlap()) &&
+                                    !(symbol2.getDuration() == 0))
                                 overlaps.add(newNode.overlapCopy());
                         }
                     }
@@ -514,6 +516,10 @@ public class CYKParser
                                     rule.getType(), rule.getMode(), 
                                     t, cost, newKey);
                     unaries.add(newNode);
+                    if (!(rule.getType().equals("On-Off")) && 
+                                    !(t.isSectionEnd()) &&
+                                    !(t.isOverlap()))
+                                overlaps.add(newNode.overlapCopy());
                 }
             }
         cykTable[row][col].addAll(unaries);

@@ -111,6 +111,26 @@
 	(Brick Straight-Approach G 2)
 	(Brick Straight-Approach C 2))
 
+(Brick Dominant-Cycle(2) Major Approach C
+        (Chord D7 1)
+        (Chord G7 1))
+
+(Brick Dominant-Cycle(3) Major Approach C
+        (Chord A7 1)
+        (Brick Dominant-Cycle(2) C 2))
+
+(Brick Dominant-Cycle(4) Major Approach C
+        (Chord E7 1)
+        (Brick Dominant-Cycle(3) C 3))
+
+(Brick Dominant-Cycle(5) Major Approach C
+        (Chord B7 1)
+        (Brick Dominant-Cycle(4) C 4))
+
+(Brick Dominant-Cycle(6) Major Approach C
+        (Chord F#7 1)
+        (Brick Dominant-Cycle(5) C 5))
+
 (Brick Donna-Lee-Opening-Start Major Opening C
 	(Chord CM7 2)
 	(Brick GenDom G 1) // modified by XS
@@ -141,7 +161,6 @@
 (Brick Dropback-Minor minor Dropback C
 	(Chord Cm 1)
 	(Chord Am7b5 1))
-
 
 (Brick Dropback-Turnaround Major Turnaround C
 	(Brick Dropback-To-Five C 6)
@@ -306,7 +325,7 @@
 	(Brick Dropback C 2)
 	(Brick Nowhere-Approach C 2))
 
-(Brick Nowhere-Turnaround-Minor Minor Turnaround C
+(Brick Nowhere-Turnaround-Minor minor Turnaround C
         (Brick Dropback-Minor C 2)
         (Brick Nowhere-Approach C 2))
 
@@ -314,7 +333,7 @@
         (Brick Nowhere-Turnaround C 4)
         (Chord CM7 1))
 
-(Brick Nowhere-Turnaround-Minor-Cadence Minor Cadence C
+(Brick Nowhere-Turnaround-Minor-Cadence minor Cadence C
         (Brick Nowhere-Turnaround-Minor C 4)
         (Chord Cm 1))
 
@@ -351,7 +370,7 @@
         (Brick Straight-Approach-Minor C 2))
 
 (Brick POT-Minor(short) minor Turnaround C
-        (Chord C 2)
+        (Chord Cm 2)
         (Brick Sad-Approach C 2))
 
 (Brick POT-Minor(dominant) minor Turnaround C
@@ -774,36 +793,6 @@
 (Brick Tritone-Cadence(short) Major Cadence C
         (Chord Db7 1)
         (Chord C 1))
-
-(Brick Dominant-Cycle(2) Major Approach C
-        (Chord D7 1)
-        (Chord G7 1))
-
-(Brick Dominant-Cycle(3) Major Approach C
-        (Chord A7 1)
-        (Chord D7 1)
-        (Chord G7 1))
-
-(Brick Dominant-Cycle(4) Major Approach C
-        (Chord E7 1)
-        (Chord A7 1)
-        (Chord D7 1)
-        (Chord G7 1))
-
-(Brick Dominant-Cycle(5) Major Approach C
-        (Chord B7 1)
-        (Chord E7 1)
-        (Chord A7 1)
-        (Chord D7 1)
-        (Chord G7 1))
-
-(Brick Dominant-Cycle(6) Major Approach C
-        (Chord F#7 1)
-        (Chord B7 1)
-        (Chord E7 1)
-        (Chord A7 1)
-        (Chord D7 1)
-        (Chord G7 1))
 
 (Brick Two-Goes-Straight Major Approach C
         (Brick Straight-Approach C 1)
