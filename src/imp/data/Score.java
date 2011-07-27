@@ -473,6 +473,23 @@ public class Score implements Constants, Serializable {
 	    i.next().setMetre(top, bottom);
     }
     
+    public void setMetre(int metre[])
+      {
+        this.metre[0] = metre[0];
+        this.metre[1] = metre[1];
+      }
+    
+    /**
+     * Copy this Score's metre setting into the argument array of dimension 2.
+     * @param metre 
+     */
+    
+    public void getMetre(int metre[])
+      {
+        metre[0] = this.metre[0];
+        metre[1] = this.metre[1];
+      }
+    
     /**
      * Returns the Score's metre
      * @return int              the metre of the Score

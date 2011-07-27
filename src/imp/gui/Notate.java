@@ -22862,5 +22862,16 @@ public void disestablishRoadMapFrame()
   {
     roadmapFrame = null;
   }
+
+
+/**
+ * Copy this Notate's Score's metre setting into the argument array of dimension 2.
+ * @param metre 
+ */
+public void getMetre(int metre[])
+  {
+    score.getMetre(metre);
+  }
+
 }
 

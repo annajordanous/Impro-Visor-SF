@@ -130,7 +130,8 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         setRoadMapTitle(notate.getTitle());
         
-        settings.beatsPerMeasure = notate.getTimeSigTop();
+        notate.getMetre(settings.metre);
+        //settings.beatsPerMeasure = notate.getTimeSigTop();
         settings.slotsPerMeasure = notate.getBeatValue()*notate.getTimeSigTop();
         
         //durationComboBox.addItem(this)
@@ -1755,7 +1756,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     public void setDurationChoices(Brick brick)
     {
-        int sig = notate.getTimeSigTop();
+        int sig = settings.metre[0];
         ArrayList<Integer> choices = new ArrayList();
         for(int i = brick.getDuration(); i < sig*brick.getDuration(); i++)
             choices.add(i);

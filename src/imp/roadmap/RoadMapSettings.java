@@ -36,7 +36,8 @@ public class RoadMapSettings {
     public int measureLength = 80;
     public int lineSpacing = 20;
     public int slotsPerMeasure = 480;
-    public int beatsPerMeasure = 4;
+    
+    public int metre[] = {4, 4};
     
     public Color gridLineColor = new Color(150,150,150);
     public Color gridBGColor = new Color(225,225,225);
@@ -186,7 +187,7 @@ public class RoadMapSettings {
     
     public int getSlotsPerBeat()
     {
-        return slotsPerMeasure/beatsPerMeasure;
+        return slotsPerMeasure/metre[0];
     }
     
     /**
