@@ -24,6 +24,7 @@ package imp.data;
 import polya.*;
 
 import imp.Constants;
+import imp.util.ErrorLog;
 import java.io.Serializable;
 
 /**
@@ -258,7 +259,7 @@ public class ChordSymbol implements Constants, Serializable {
         return chordSymbol;
         }
 
-System.out.println("validity check failed for " + chordSymbol);
+      ErrorLog.log(ErrorLog.FATAL, chordSymbol + " is not a recognized chord");
       return null;
       }
 
