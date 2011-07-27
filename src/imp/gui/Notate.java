@@ -22799,7 +22799,7 @@ public void makeVisible()
 public void roadMapThis()
   {
     establishRoadMapFrame();
-    chordPartToRoadMapFrame(roadmapFrame);
+    score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.makeVisible();
   }
@@ -22812,7 +22812,7 @@ public void roadMapThis()
 public void roadMapThisAnalyze()
   {
     establishRoadMapFrame();
-    chordPartToRoadMapFrame(roadmapFrame);
+    score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.analyzeAllBricks();
     roadmapFrame.makeVisible();

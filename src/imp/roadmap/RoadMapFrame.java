@@ -1921,6 +1921,7 @@ public void appendSelectionToNotate()
         imp.data.ChordPart chordPart = new imp.data.ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
+        score.setMetre(settings.metre);
         auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
       }
     else
@@ -1962,6 +1963,7 @@ public void sendSelectionToNewNotate()
     imp.data.ChordPart chordPart = new imp.data.ChordPart();
     chordPart.addFromRoadMapFrame(this);
     Score score = new Score(chordPart);
+    score.setMetre(settings.metre);
     auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
     auxNotate.setCreateRoadMapCheckBox(false);
         
@@ -2000,6 +2002,7 @@ public void resetAuxNotate()
          ChordPart chordPart = new imp.data.ChordPart();
          chordPart.addFromRoadMapFrame(this);
          Score score = new imp.data.Score(chordPart);
+         score.setMetre(settings.metre);
          
          if( loopToggleButton.isSelected() )
            {
@@ -2076,19 +2079,45 @@ public int getNewYlocation()
   
   public void setRoadMapFrameHeight()
   {
+    int desiredWidth = RMframeWidth; // alternatively: dm.getWidth() - x
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
     DisplayMode dm = gs[0].getDisplayMode();
     int x = notate.getNewXlocation();
     int y = notate.getNewYlocation();
     setLocation(x, y);
-    setSize(dm.getWidth() - x, dm.getHeight() - y);
+    setSize(desiredWidth, dm.getHeight() - y);
   }
+  
+  
+/**
+ * Make this RoadMapFrame visible
+ */
   
 public void makeVisible()
   {
     setRoadMapFrameHeight();
     setVisible(true);
   }
-  
+
+/**
+ * Set the metre of this RoadMapFrame 
+ */
+
+public void setMetre(int metre[])
+  {
+    settings.metre[0] = metre[0];
+    settings.metre[1] = metre[1];
+  }
+
+/**
+ * Return a copy of the metre settings. 
+ * @return 
+ */
+
+public int[] getMetre()
+  {
+    int result[] = {settings.metre[0], settings.metre[1]};
+    return result;
+  }
 }
