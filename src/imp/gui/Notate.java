@@ -6364,6 +6364,7 @@ public class Notate
         truncatePartDialog.getContentPane().add(truncatePartLabel, gridBagConstraints);
 
         fileStepDialog.setTitle("File Step");
+        fileStepDialog.setAlwaysOnTop(true);
         fileStepDialog.setFocusCycleRoot(false);
         fileStepDialog.setMinimumSize(new java.awt.Dimension(300, 100));
         fileStepDialog.addWindowListener(new java.awt.event.WindowAdapter() {

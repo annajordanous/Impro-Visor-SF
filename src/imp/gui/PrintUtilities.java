@@ -274,19 +274,10 @@ public class PrintUtilities implements Printable {
                 g2.drawImage(subImage, null, 0,topOfNextPage);
                 response= Printable.PAGE_EXISTS;
             }
-            System.out.println("tracker: " + tracker);
-            System.out.println("numStavesConverted: " + numStavesConverted);
-            System.out.println("grandStaveSelected: "+ grandStaveSelected);
-            System.out.println("totalNumPages: " + totalNumPages);
-            System.out.println("frameHeight: "+ frameHeight);
-            System.out.println("counter: "+ counter);
-            System.out.println("pageIndex"+ pageIndex);
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
         else
         {
             BufferedImage subImage;
-            System.out.println("counter before: " + counter);
             if(tracker+numStavesConverted >= multImg[counter].getHeight())                   //problem is with counter and/or problem with painting the correct component to the corresponding array number
             {
                 frameHeight = multImg[counter].getHeight()-tracker;
@@ -339,14 +330,6 @@ public class PrintUtilities implements Printable {
                 g2.drawImage(subImage, null, 0, topOfNextPage);
                 response = Printable.PAGE_EXISTS;
             }
-            System.out.println("tracker: " + tracker);
-            System.out.println("numStavesConverted: " + numStavesConverted);
-            System.out.println("grandStaveSelected: "+ grandStaveSelected);
-            System.out.println("totalNumPages: " + totalNumPages);
-            System.out.println("frameHeight: "+ frameHeight);
-            System.out.println("counter: "+ counter);
-            System.out.println("pageIndex"+ pageIndex);
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
         return response;
     }
