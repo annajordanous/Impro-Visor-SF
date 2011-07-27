@@ -29,9 +29,7 @@ import java.io.StringReader;
 import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Iterator;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerModel;
+import java.awt.event.*;
 
 import imp.brickdictionary.*;
 import imp.cykparser.*;
@@ -43,6 +41,7 @@ import imp.gui.Notate;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
+import imp.util.MidiPlayListener;
 
 import polya.Tokenizer;
 
@@ -52,7 +51,7 @@ import polya.Tokenizer;
  * @author August Toman-Yih
  */
 
-public class RoadMapFrame extends javax.swing.JFrame {
+public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener {
     
     /**
      * Communication with leadsheet and score is done through Notate frame.
@@ -92,6 +91,10 @@ public class RoadMapFrame extends javax.swing.JFrame {
     private int RMbufferWidth  = 1920;
     private int RMbufferHeight = 1920;
    
+    private MidiPlayListener.Status isPlaying = MidiPlayListener.Status.STOPPED;
+    
+    private javax.swing.Timer playTimer;
+    
     private DefaultTreeModel libraryTreeModel;
     
     private RoadMapSettings settings = new RoadMapSettings();
@@ -126,13 +129,15 @@ public class RoadMapFrame extends javax.swing.JFrame {
         
         initBuffer();  
         
+        initTimer();
+        
         deactivateButtons();
         
         setRoadMapTitle(notate.getTitle());
         
         notate.getMetre(settings.metre);
         //settings.beatsPerMeasure = notate.getTimeSigTop();
-        settings.slotsPerMeasure = notate.getBeatValue()*notate.getTimeSigTop();
+        settings.slotsPerBeat = notate.getBeatValue();
         
         //durationComboBox.addItem(this)
         
@@ -1282,6 +1287,19 @@ public class RoadMapFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_roadMapScrollPaneMouseMoved
 //</editor-fold>
     
+    private void initTimer()
+    {
+        playTimer = new javax.swing.Timer(10,
+                new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent evt)
+                    {
+                        roadMapPanel.draw();
+                    }
+                }
+                );
+    }
+    
     /** InitBuffer <p>
      *  
      * Initializes the buffers for the roadmap and preview panel.
@@ -1618,7 +1636,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
                 else
                     brick = brickLibrary.getBrick(node.toString(), 0);
                 
-                setDurationChoices(brick);
+                //setDurationChoices(brick);
                 previewPanel.setBrick( brick );
 
                 setPreviewKey();
@@ -1981,7 +1999,10 @@ public void resetAuxNotate()
     auxNotate = null;
   }
    
-    
+    //TODO reorganize
+
+
+
 /**
   * Plays the currently-selected blocks. The style is determined from the
   * Notate window where this roadmap was opened.
@@ -2004,6 +2025,8 @@ public void resetAuxNotate()
          Score score = new imp.data.Score(chordPart);
          score.setMetre(settings.metre);
          
+         setPlaying(MidiPlayListener.Status.PLAYING, 0);
+         
          if( loopToggleButton.isSelected() )
            {
            notate.playAscoreInCurrentStyle(score, -1);
@@ -2018,6 +2041,7 @@ public void resetAuxNotate()
     
     public void stopPlayingSelection()
     {
+        setPlaying(MidiPlayListener.Status.STOPPED, 0);
         if(roadMapPanel.hasSelection())
             notate.stopPlayAscore();
     }
@@ -2028,23 +2052,40 @@ public void resetAuxNotate()
         playSelection();
     }
 
+    public void setPlaying(MidiPlayListener.Status playing, int transposition)
+    {
+        isPlaying = playing;
+        if(isPlaying())
+            playTimer.start();
+        else
+            playTimer.stop();
+    }
+    
+    public MidiPlayListener.Status getPlaying()
+    {
+        return isPlaying;
+    }
 
+    public boolean isPlaying()
+    {
+        return isPlaying == MidiPlayListener.Status.PLAYING;
+    }
 /**
  * Close this RoadMapFrame and clean up.
  */
     
 public void closeWindow()
   {
-  WindowRegistry.unregisterWindow(this);
+    if(isPlaying())
+        stopPlayingSelection();
+    WindowRegistry.unregisterWindow(this);
   
-  if( notate != null )
-    {
-      notate.disestablishRoadMapFrame();
+    if( notate != null ) {
+        notate.disestablishRoadMapFrame();
     }
   
-  disposeBuffers();
-          
-  dispose();
+    disposeBuffers();
+    dispose();
   }
 
 
@@ -2119,4 +2160,9 @@ public int[] getMetre()
     int result[] = {settings.metre[0], settings.metre[1]};
     return result;
   }
+
+public int getMidiSlot()
+{
+    return notate.getMidiSlot();
+}
 }

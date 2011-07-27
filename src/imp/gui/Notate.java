@@ -23142,5 +23142,11 @@ public void getMetre(int metre[])
     score.getMetre(metre);
   }
 
+public int getMidiSlot()
+{
+    return midiSynth3.getSlot();
 }
+
+}
+
 

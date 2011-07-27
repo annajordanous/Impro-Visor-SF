@@ -87,6 +87,8 @@ public class PreviewPanel extends JPanel
     {
         RoadMapSettings settings = view.getSettings();
               
+        
+        System.out.println("Current Duration: " + currentDuration);
         if (brick instanceof Brick)
             protoBrick = new Brick((Brick)brick);
         else if (brick instanceof ChordBlock)
@@ -94,10 +96,11 @@ public class PreviewPanel extends JPanel
         
         brick.adjustDuration(currentDuration);
         brick.transpose(currentKey);
-        currentBrick = new GraphicBrick(brick, settings);
         
-        Dimension size = new Dimension(getHeight(), settings.getBlockLength(brick)+10);
-        setPreferredSize(size);
+        
+        System.out.println("Brick Duration: " + brick.getDuration());
+        
+        currentBrick = new GraphicBrick(brick, settings);
     }
 
     public GraphicBrick getBrick()

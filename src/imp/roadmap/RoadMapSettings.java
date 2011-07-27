@@ -29,7 +29,7 @@ import java.awt.*;
  * @author August Toman-Yih
  */
 public class RoadMapSettings {
-    private int slotsPerBeat = 120; // Better to get from imp.Constants
+    public int slotsPerBeat = 120; // Better to get from imp.Constants
     public int xOffset = 50;
     public int yOffset = 70;
     public int barsPerLine = 8;
@@ -37,8 +37,6 @@ public class RoadMapSettings {
     public int measureLength = 100;
     public int lineSpacing = 20;
     public int metre[] = {4, 4};
-    
-    public int slotsPerMeasure = slotsPerBeat * metre[0];
     
     
     public Color gridLineColor = new Color(150,150,150);
@@ -48,6 +46,7 @@ public class RoadMapSettings {
     public Color selectedColor = new Color(181, 213, 255);
     public Color brickBGColor = Color.WHITE;
     public Color joinBGColor = new Color(255, 255, 171);
+    public Color playLineColor = Color.RED;
     
     public Color[] keyColors = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255), // Db
@@ -78,7 +77,12 @@ public class RoadMapSettings {
      */
     public int getBlockLength(Block block)
     {
-        return (int) (block.getDuration() * measureLength)/slotsPerMeasure;
+        return (int) (block.getDuration() * measureLength)/getSlotsPerMeasure();
+    }
+
+    public int getSlotsPerMeasure()
+    {
+        return slotsPerBeat * metre[0];
     }
     
     /**
@@ -88,7 +92,7 @@ public class RoadMapSettings {
      */
     public int getLength(long dur)
     {
-        return (int) (dur * measureLength)/slotsPerMeasure;
+        return (int) (dur * measureLength)/getSlotsPerMeasure();
     }
     
     /**
@@ -106,7 +110,7 @@ public class RoadMapSettings {
      */
     public long getSlotsPerLine()
     {
-        return slotsPerMeasure*barsPerLine;
+        return getSlotsPerMeasure()*barsPerLine;
     }
     
     /**
@@ -189,7 +193,7 @@ public class RoadMapSettings {
     
     public int getSlotsPerBeat()
     {
-        return slotsPerMeasure/metre[0];
+        return slotsPerBeat;
     }
     
     /**
@@ -227,6 +231,5 @@ public class RoadMapSettings {
       {
         this.metre[0] = metre[0];
         this.metre[1] = metre[1];
-        slotsPerMeasure = slotsPerBeat * metre[0];
       }
 }

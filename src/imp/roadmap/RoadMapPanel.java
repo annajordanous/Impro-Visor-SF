@@ -41,6 +41,9 @@ public class RoadMapPanel extends JPanel{
     
     public int insertLineIndex = -1;
     
+    private int playLineSlot = -1;
+    private int playLineLine = -1;
+    
     private Image buffer;
     
     private RoadMap roadMap = new RoadMap();
@@ -109,6 +112,10 @@ public class RoadMapPanel extends JPanel{
                 lineBeats = 0;
                 lines++;
                 sectionBreaks.add(currentSlots);
+            }
+            
+            if(lineBeats == 0 && brick == graphicMap.get(graphicMap.size()-1)) {
+                lines--;
             }
         }
         numLines = (int)lines+1;
@@ -525,6 +532,32 @@ public class RoadMapPanel extends JPanel{
         insertLineIndex = index;
     }
     
+    public void setPlayLine(int slot)
+    {
+        int[] wrap = findLineAndSlot(slot);
+        playLineSlot = wrap[0];
+        playLineLine = wrap[1];
+        //draw();
+    }
+    
+    public int[] findLineAndSlot(int slots)
+    {
+       int totalSlots = 0;
+       int lastLine = 0;
+       int lines = 0;
+       
+       for(Block block : roadMap.getBlocks()) {
+           if(totalSlots + block.getDuration() >= slots)
+               return new int[] {slots - lastLine, lines};
+           totalSlots += block.getDuration();
+           if(block.getSectionEnd() == 1) {
+               lines++;
+               lastLine = totalSlots;
+           }
+       }
+       
+       return new int[] {slots - lastLine, lines};
+    }
     /* Drawing and junk */
     
     public void setBuffer(Image buffer)
@@ -538,7 +571,26 @@ public class RoadMapPanel extends JPanel{
        drawGrid();
        drawBricks();
        drawKeyMap();
+       if(view.isPlaying()) {
+           setPlayLine(view.getMidiSlot()/settings.slotsPerBeat * settings.slotsPerBeat);
+           drawPlayLine();
+       }
        repaint();
+    }
+    
+    public void drawPlayLine()
+    {
+        Graphics2D g2d = (Graphics2D)buffer.getGraphics();
+        
+        g2d.setColor(settings.playLineColor);
+        g2d.setStroke(settings.cursorLine);
+        
+        Point point = settings.getPosFromSlots(playLineSlot);
+        
+        int x = point.x;
+        int y = point.y;
+        
+        g2d.drawLine(x,y-5,x,y+settings.lineHeight+5);
     }
     
     public void drawGrid()
