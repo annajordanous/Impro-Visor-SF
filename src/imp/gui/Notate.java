@@ -78,10 +78,6 @@ public class Notate
   private static boolean firstTime = true;
   
   RoadMapFrame roadmapFrame = null;
-  
-  static int roadmapFrameInitialWidth = 800;
-  static int roadmapFrameInitialHeight = 900;
-
 
   LickgenFrame lickgenFrame;
 
@@ -22778,16 +22774,12 @@ public void setCreateRoadMapCheckBox(boolean value)
 
 public void makeVisible()
   {
-    //System.out.println("makeVisible " + this);
-    //
-    System.out.println("box selected = " + createRoadMapCheckBox.isSelected());
     setNotateFrameHeight(this);
     setVisible(true);
     staveRequestFocus();
     if( createRoadMapCheckBox.isSelected() )
       {
       roadMapThisAnalyze();
-      //System.out.println("roadmapping " + roadmapFrame);
       }
   }
 
@@ -22847,10 +22839,6 @@ public void establishRoadMapFrame()
         roadmapFrame.deleteSelection();
       }
 
-    //roadmapFrame.setSize(roadmapFrameInitialWidth, roadmapFrameInitialHeight);
-    //roadmapFrame.setLocation(getNewXlocation(), getNewYlocation());
-    
-    //System.out.println("established roadmapFrame = " + roadmapFrame);
   }
 
 

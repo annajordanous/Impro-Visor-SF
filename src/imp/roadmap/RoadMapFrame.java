@@ -84,7 +84,7 @@ public class RoadMapFrame extends javax.swing.JFrame {
     
     private Object[] durationChoices = {8,7,6,5,4,3,2,1};
     
-    private int RMframeWidth = 1200;
+    private int RMframeWidth = 1250;
     
     private int bufferWidth  = 1024;
     private int bufferHeight = 200;

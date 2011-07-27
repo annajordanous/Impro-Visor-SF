@@ -34,7 +34,7 @@ public class RoadMapSettings {
     public int yOffset = 70;
     public int barsPerLine = 8;
     public int lineHeight = 60;
-    public int measureLength = 80;
+    public int measureLength = 100;
     public int lineSpacing = 20;
     public int metre[] = {4, 4};
     
