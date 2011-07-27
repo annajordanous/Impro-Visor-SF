@@ -2063,6 +2063,7 @@ public class Notate
         stepBackButton = new javax.swing.JButton();
         stepForwardButton = new javax.swing.JButton();
         fileStepLabel = new javax.swing.JLabel();
+        currDirectoryLabel = new javax.swing.JLabel();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -6365,7 +6366,6 @@ public class Notate
         fileStepDialog.setTitle("File Step");
         fileStepDialog.setFocusCycleRoot(false);
         fileStepDialog.setMinimumSize(new java.awt.Dimension(300, 100));
-        fileStepDialog.setPreferredSize(new java.awt.Dimension(300, 100));
         fileStepDialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 fileStepDialogWindowClosing(evt);
@@ -6400,6 +6400,13 @@ public class Notate
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         fileStepDialog.getContentPane().add(fileStepLabel, gridBagConstraints);
+
+        currDirectoryLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        currDirectoryLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        fileStepDialog.getContentPane().add(currDirectoryLabel, gridBagConstraints);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -20603,6 +20610,11 @@ private void notateWIndowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:eve
 }//GEN-LAST:event_notateWIndowClosed
 
 private void fileStepMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepMIActionPerformed
+    //RecentFiles recFiles = new RecentFiles();
+    //String first = recFiles.getFirstPathName();
+    //File file = new File(first);
+    //String dir = file.getParent();
+    //currDirectoryLabel.setText("Current Directory: " + dir);
     showFileStepDialog();
 }//GEN-LAST:event_fileStepMIActionPerformed
 
@@ -20631,6 +20643,10 @@ private void fileStepForward()
     {
         nextFile = lsFiles[currPos+1];
         setupLeadsheet(nextFile, false);
+        if( createRoadMapCheckBox.isSelected() )
+        {
+            roadMapThisAnalyze();
+        }
     }
 }
 
@@ -20647,6 +20663,10 @@ private void fileStepBackward()
     {
         nextFile = lsFiles[currPos-1];
         setupLeadsheet(nextFile, false);
+        if( createRoadMapCheckBox.isSelected() )
+        {
+            roadMapThisAnalyze();
+        }
     }
 }
 
@@ -22061,6 +22081,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBox countInCheckBox;
     private javax.swing.JPanel countInPanel;
     private javax.swing.JCheckBoxMenuItem createRoadMapCheckBox;
+    private javax.swing.JLabel currDirectoryLabel;
     private javax.swing.JPanel currentStyleTab;
     private javax.swing.JButton cutBothBtn;
     private javax.swing.JMenuItem cutBothMI;
