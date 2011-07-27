@@ -20643,6 +20643,57 @@ private void fileStepForward()
     if(!(currPos+1 >= lsFiles.length))
     {
         nextFile = lsFiles[currPos+1];
+        boolean redisplay = true;
+
+        while( redisplay )
+          {
+            redisplay = false;
+
+            // check to see if we will lose changes
+
+            if( unsavedChanges() )
+              {
+                // if we are going to lose changes, prompt the user
+
+                Object[] options =
+                  {
+                    "<html><b><u>Y</u>es</b>, save these modifications</html>",
+                    "<html><b><u>N</u>o</b>, do not save these modifications</html>",
+                    "<html><b>Cancel</b>, do not open a different leadsheet</html>"
+                  };
+
+                UnsavedChanges dialog =
+                    new UnsavedChanges(this,
+                                       "Save modifications before opening " + getTitle() + "?",
+                                       options);
+
+                dialog.setVisible(true);
+
+                dialog.dispose();
+
+                UnsavedChanges.Value choice = dialog.getValue();
+
+                switch( choice )
+                  {
+                    case YES:   // save before opening
+
+                        if( !saveLeadsheet() )
+                          {
+                            redisplay = true;
+                          }
+
+                        break;
+
+                    case NO:    // open without saving
+
+                        break;
+
+                    case CANCEL:// don't open
+
+                        return;
+                  }
+              }
+          }
         setupLeadsheet(nextFile, false);
         if( createRoadMapCheckBox.isSelected() )
         {
@@ -20663,6 +20714,57 @@ private void fileStepBackward()
     if(!(currPos-1 < 0))
     {
         nextFile = lsFiles[currPos-1];
+        boolean redisplay = true;
+
+        while( redisplay )
+          {
+            redisplay = false;
+
+            // check to see if we will lose changes
+
+            if( unsavedChanges() )
+              {
+                // if we are going to lose changes, prompt the user
+
+                Object[] options =
+                  {
+                    "<html><b><u>Y</u>es</b>, save these modifications</html>",
+                    "<html><b><u>N</u>o</b>, do not save these modifications</html>",
+                    "<html><b>Cancel</b>, do not open a different leadsheet</html>"
+                  };
+
+                UnsavedChanges dialog =
+                    new UnsavedChanges(this,
+                                       "Save modifications before opening " + getTitle() + "?",
+                                       options);
+
+                dialog.setVisible(true);
+
+                dialog.dispose();
+
+                UnsavedChanges.Value choice = dialog.getValue();
+
+                switch( choice )
+                  {
+                    case YES:   // save before opening
+
+                        if( !saveLeadsheet() )
+                          {
+                            redisplay = true;
+                          }
+
+                        break;
+
+                    case NO:    // open without saving
+
+                        break;
+
+                    case CANCEL:// don't open
+
+                        return;
+                  }
+              }
+          }
         setupLeadsheet(nextFile, false);
         if( createRoadMapCheckBox.isSelected() )
         {
