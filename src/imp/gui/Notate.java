@@ -2059,6 +2059,10 @@ public class Notate
         productionBtnGrp = new javax.swing.ButtonGroup();
         grammarExtractionButtonGroup = new javax.swing.ButtonGroup();
         jPopupMenu1 = new javax.swing.JPopupMenu();
+        fileStepDialog = new javax.swing.JDialog();
+        stepBackButton = new javax.swing.JButton();
+        stepForwardButton = new javax.swing.JButton();
+        fileStepLabel = new javax.swing.JLabel();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -2180,6 +2184,7 @@ public class Notate
         mostRecentLeadsheetMI = new javax.swing.JMenuItem();
         openRecentLeadsheetNewWindowMenu = new javax.swing.JMenu();
         mostRecentLeadsheetNewWindowMI = new javax.swing.JMenuItem();
+        fileStepMI = new javax.swing.JMenuItem();
         revertToSavedMI = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JSeparator();
         saveLeadsheetMI = new javax.swing.JMenuItem();
@@ -6357,6 +6362,45 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
         truncatePartDialog.getContentPane().add(truncatePartLabel, gridBagConstraints);
 
+        fileStepDialog.setTitle("File Step");
+        fileStepDialog.setFocusCycleRoot(false);
+        fileStepDialog.setMinimumSize(new java.awt.Dimension(300, 100));
+        fileStepDialog.setPreferredSize(new java.awt.Dimension(300, 100));
+        fileStepDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                fileStepDialogWindowClosing(evt);
+            }
+        });
+        fileStepDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        stepBackButton.setText("Step Back");
+        stepBackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepBackButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        fileStepDialog.getContentPane().add(stepBackButton, gridBagConstraints);
+
+        stepForwardButton.setText("Step Forward");
+        stepForwardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepForwardButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        fileStepDialog.getContentPane().add(stepForwardButton, gridBagConstraints);
+
+        fileStepLabel.setText("File Step");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        fileStepDialog.getContentPane().add(fileStepLabel, gridBagConstraints);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
@@ -7427,6 +7471,14 @@ public class Notate
         openRecentLeadsheetNewWindowMenu.add(mostRecentLeadsheetNewWindowMI);
 
         fileMenu.add(openRecentLeadsheetNewWindowMenu);
+
+        fileStepMI.setText("File Step");
+        fileStepMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileStepMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(fileStepMI);
 
         revertToSavedMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         revertToSavedMI.setText("Revert to Saved Leadsheet");
@@ -10958,6 +11010,16 @@ public Object getSelectedItem()
         }
         
         showFakeModalDialog(preferencesDialog);
+    }
+    
+    private boolean initLocationFileStepDialog = false;
+    
+    private void showFileStepDialog() {
+        if(!initLocationFileStepDialog) {
+            fileStepDialog.setLocationRelativeTo(this);
+            initLocationFileStepDialog = true;
+        }
+        showFakeModalDialog(fileStepDialog);
     }
     
     
@@ -20540,6 +20602,96 @@ private void notateWIndowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:eve
     closingThisWindow();
 }//GEN-LAST:event_notateWIndowClosed
 
+private void fileStepMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepMIActionPerformed
+    showFileStepDialog();
+}//GEN-LAST:event_fileStepMIActionPerformed
+
+private void fileStepDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_fileStepDialogWindowClosing
+    hideFakeModalDialog(fileStepDialog);
+}//GEN-LAST:event_fileStepDialogWindowClosing
+
+private void stepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepForwardButtonActionPerformed
+    fileStepForward();
+}//GEN-LAST:event_stepForwardButtonActionPerformed
+
+private void stepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepBackButtonActionPerformed
+    fileStepBackward();
+}//GEN-LAST:event_stepBackButtonActionPerformed
+
+private void fileStepForward()
+{
+    RecentFiles recFiles = new RecentFiles();
+    String first = recFiles.getFirstPathName();
+    File file = new File(first);
+    String dir = file.getParent();
+    File[] lsFiles = getLeadsheetsFromDir(dir);
+    int currPos = findPosOfCurrLs(lsFiles, first);
+    File nextFile;
+    if(!(currPos+1 >= lsFiles.length))
+    {
+        nextFile = lsFiles[currPos+1];
+        setupLeadsheet(nextFile, false);
+    }
+}
+
+private void fileStepBackward()
+{
+    RecentFiles recFiles = new RecentFiles();
+    String first = recFiles.getFirstPathName();
+    File file = new File(first);
+    String dir = file.getParent();
+    File[] lsFiles = getLeadsheetsFromDir(dir);
+    int currPos = findPosOfCurrLs(lsFiles, first);
+    File nextFile;
+    if(!(currPos-1 < 0))
+    {
+        nextFile = lsFiles[currPos-1];
+        setupLeadsheet(nextFile, false);
+    }
+}
+
+private int findPosOfCurrLs(File[] lsFiles, String name)
+{
+    String[] lsFilesName = new String[lsFiles.length];
+    for(int i = 0; i < lsFiles.length; i++)
+    {
+        lsFilesName[i] = lsFiles[i].getAbsolutePath();
+    }
+    int result = 0;
+    for(int i=0; i<lsFiles.length; i++)
+    {
+        if(lsFilesName[i].equals(name))
+        {
+            result = i;
+        }
+    }
+    return result;
+}
+
+static FileFilter lsFilter = new FileFilter() {
+    public boolean accept(File file) {
+        return file.getName().endsWith(".ls");
+    }
+};
+
+static FileFilter dirFilter = new FileFilter() {
+    public boolean accept(File file) {
+        return file.isDirectory();
+    }
+};
+
+private File[] getLeadsheetsFromDir(String dir)
+{
+    File file = new File(dir);
+    return file.listFiles(lsFilter);
+}
+
+private File[] getDirsFromDir(String dir)
+{
+    File file = new File(dir);
+    return file.listFiles(dirFilter);
+}
+
 /**
  * If this Notate frame was created from a roadmap, tell that roadmap
  * about its closing.
@@ -21986,6 +22138,9 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel extEntryLabel;
     private javax.swing.JTextField extEntryTF;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JDialog fileStepDialog;
+    private javax.swing.JLabel fileStepLabel;
+    private javax.swing.JMenuItem fileStepMI;
     private javax.swing.JToggleButton freezeLayoutButton;
     private javax.swing.JPanel generalContourTab;
     private javax.swing.JMenuItem generateLickInSelection;
@@ -22297,6 +22452,8 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel staveButtonPanel;
     private javax.swing.ButtonGroup staveChoiceButtonGroup;
     private javax.swing.JLabel stavesPerPageLabel;
+    private javax.swing.JButton stepBackButton;
+    private javax.swing.JButton stepForwardButton;
     private javax.swing.JToggleButton stepInputBtn;
     private javax.swing.JButton stopBtn;
     private javax.swing.JMenuItem stopPlayMI;
