@@ -29,15 +29,17 @@ import java.awt.*;
  * @author August Toman-Yih
  */
 public class RoadMapSettings {
+    private int slotsPerBeat = 120; // Better to get from imp.Constants
     public int xOffset = 50;
     public int yOffset = 70;
     public int barsPerLine = 8;
     public int lineHeight = 60;
     public int measureLength = 80;
     public int lineSpacing = 20;
-    public int slotsPerMeasure = 480;
-    
     public int metre[] = {4, 4};
+    
+    public int slotsPerMeasure = slotsPerBeat * metre[0];
+    
     
     public Color gridLineColor = new Color(150,150,150);
     public Color gridBGColor = new Color(225,225,225);
@@ -220,4 +222,11 @@ public class RoadMapSettings {
         //System.out.println(string+" is too long. Length: " + stringLength + " Desired: " + length);
         return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
     }
+    
+    public void setMetre(int metre[])
+      {
+        this.metre[0] = metre[0];
+        this.metre[1] = metre[1];
+        slotsPerMeasure = slotsPerBeat * metre[0];
+      }
 }

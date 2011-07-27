@@ -2106,8 +2106,7 @@ public void makeVisible()
 
 public void setMetre(int metre[])
   {
-    settings.metre[0] = metre[0];
-    settings.metre[1] = metre[1];
+    settings.setMetre(metre);
   }
 
 /**
