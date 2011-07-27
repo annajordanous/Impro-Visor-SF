@@ -39,14 +39,37 @@ import imp.brickdictionary.*;
  */
 public class TreeNode {
     
-    // An int cost for a default chord
-    public static final double CHORD_COST = 1000;
-    public static final double CHORD_SUB_COST = 1050;
-    public static final double OVERLAP_COST = 5;
+    // Constants
+    public static final double CHORD_COST = 1000;     // the default cost of a
+                                                      // chord in parsing
+    public static final double CHORD_SUB_COST = 1050; // the cost of a chord
+                                                      // substitution
+    public static final double OVERLAP_COST = 5;      // the additional cost
+                                                      // of an overlap
     
-    // Constructors for TreeNodes
     
-    /** Default Constructor / 0
+    // Data members for a TreeNode //
+    private TreeNode child1;              // First nonterminal from a tree
+    private TreeNode child2;              // Second nonterminal from a tree
+    private String symbol;                // Nonterminal symbol of current node
+    private ArrayList<ChordBlock> chords; // Chords contained within the node
+    private Block block;              // The structure holding all of the
+                                      // TreeNode's contents
+    private long key;                 // the key of the Node's nominal contents
+    private double cost;              // Value of the top-level block
+    private boolean toPrint;          // Whether the brick name will print
+    private long start;               // The start position of the first brick
+    private boolean isEnd;            // If the node ends a section
+    private String mode;              // the mode of the Node's nominal contents
+    private boolean isSub;            // whether the Node has a substitution
+    
+    private int height;               // height of the tree at the TreeNode
+    
+    
+    
+    // Constructors for TreeNodes //
+    
+    /** TreeNode / 0 (Default)
      * 
      * Constructs an empty TreeNode
      */
@@ -67,10 +90,10 @@ public class TreeNode {
         height = 0;
     }
     
-    /** Chord Constructor / 2
+    /** TreeNode / 2 (Chord)
      * Takes in a chord and makes a default chord-based TreeNode
      * 
-     * @param chord, a Chord
+     * @param chord, a ChordBlock
      * @param s, the start position in a piece
      */
     public TreeNode(ChordBlock chord, long s)
@@ -91,11 +114,11 @@ public class TreeNode {
         height = 0;
     }
     
-    /** Chord Constructor / 3
+    /** TreeNode / 3 (Chord)
      * Takes in a chord and makes a TreeNode with cost c
      * 
-     * @param chord, a Chord
-     * @param c, a long describing the Chord's cost
+     * @param chord, a ChordBlock
+     * @param c, a long describing the ChordBlock's cost
      * @param s, the start position in a piece
      */
         public TreeNode(ChordBlock chord, double c, long s)
@@ -116,7 +139,13 @@ public class TreeNode {
         height = 0;
     }
     
-        
+    /** TreeNode / 4 (UnaryBrick with overlap)
+     * Makes a TreeNode for a UnaryBrick with an overlap
+     * @param brick, the Brick describing the contents
+     * @param newChords, the ChordBlocks of the brick with an overlap
+     * @param c, the cost (a double)
+     * @param s, the start position (a long)
+     */
     public TreeNode(Brick brick, ArrayList<ChordBlock> newChords, double c, long s)
     {
         child1 = null;
@@ -133,13 +162,14 @@ public class TreeNode {
         isSub = false;
         height = 0;
     }
-    /** Chord Constructor / 5
+    
+    /** TreeNode / 4 (Chord substitution)
      * Takes in a chord and makes a TreeNode with cost c, but for a substituted
      * chord name and root
      * 
      * @param name, a String describing the replacement chord quality
      * @param k, a long describing the replacement chord key
-     * @param chord, a Chord
+     * @param chord, a ChordBlock
      * @param c, a long describing the Chord's cost
      */
         public TreeNode(String name, long k, ChordBlock chord, long s)
@@ -161,8 +191,8 @@ public class TreeNode {
     }    
     
         
-    /** TreeNode / 6
-     * Makes a TreeNode for a unary brick
+    /** TreeNode / 6 (Unary Brick)
+     * Makes a TreeNode for a Unary Brick
      *
      * @param sym, a String of the Node symbol
      * @param type, a String of the Node's type
@@ -198,7 +228,7 @@ public class TreeNode {
     
     
     
-    /** TreeNode / 7
+    /** TreeNode / 7 (Brick)
      * Makes a TreeNode for a nonterminal
      *
      * @param sym, a String of the Node symbol
@@ -244,7 +274,7 @@ public class TreeNode {
     }
     
     
-    /** Nonterminal Constructor / 2
+    /** TreeNode / 2 (Multiple blocks)
      * Creates a TreeNode whose name won't be printed for the purposes
      * of assembling other named TreeNodes.
      * 
@@ -319,7 +349,11 @@ public class TreeNode {
         return newNode;
     }
     
-    // Booleans to test a TreeNode
+    // Booleans to test a TreeNode //
+    /** isOverlap
+     * Detects whether the contents of the TreeNode include an overlap
+     * @return a boolean
+     */
     public boolean isOverlap()
     {
         if (child2 == null)
@@ -327,42 +361,82 @@ public class TreeNode {
         return child2.isOverlap();
     }
     
+    /** isSub
+     * Detects whether the brick has a substitution in it
+     * @return a boolean
+     */
     public boolean isSub()
     {
         return isSub;
     }
     
+    /** isTerminal
+     * Detects whether the brick is a terminal (a UnaryBrick or a Chord)
+     * @return a boolean
+     */
     public boolean isTerminal()
     {
         return (child1 == null);
     }
     
+    /** isSectionEnd
+     * Detects whether the TreeNode's contents end with the end of a section
+     * @return a boolean
+     */
     public boolean isSectionEnd()
     {
         return isEnd;
     }
     
+    /** toShow
+     * Detects whether the TreeNode's contents assemble to make a user-viewable
+     * brick or chord
+     * @return a boolean, true if the TreeNode's contents should be shown to 
+     *         the user
+     */
     public boolean toShow()
     {
         return toPrint;
     }
     
-    // Getters for the data members of a TreeNode
+    // Getters for the data members of a TreeNode //
+    
+    /** getFirstChild
+     * Gets the first child TreeNode of the current TreeNode. Changes made to 
+     * the returned TreeNode will apply to the original.
+     * @return a TreeNode by reference
+     */
     public TreeNode getFirstChild()
     {
         return child1;
     }
     
+    /** getSecondChild
+     * Gets the second child TreeNode of the current TreeNode. Changes made to 
+     * the returned TreeNode will apply to the original.
+     * @return a TreeNode by reference
+     */
     public TreeNode getSecondChild()
     {
         return child2;
     }
     
+    /** getSymbol
+     * Gets the name of the TreeNode's contents (either a chord quality, a Brick
+     * name, or null)
+     * @return a String of the symbol
+     */
     public String getSymbol()
     {
         return symbol;
     }
     
+    /** getTrimmedSymbol
+     * Gets the name of the TreeNode's contents (either a chord quality, a Brick
+     * name, or null) and ignores if the TreeNode is for an automatically
+     * defined brick for an overrun or dropback version of a cadence.
+     * @return a String of the symbol
+     */
     public String getTrimmedSymbol()
     {
         String trimmedSymbol = symbol.replace(" with Overrun", "");
@@ -370,45 +444,83 @@ public class TreeNode {
         return trimmedSymbol;
     }
     
+    /** getMode
+     * Gets the mode of the TreeNode's contents
+     * @return a String of the mode
+     */
     public String getMode()
     {
         return mode;
     }
     
+    /** getChords
+     * Gets the list of chords that the TreeNode contains.
+     * @return an ArrayList of ChordBlocks.
+     */
     public ArrayList<ChordBlock> getChords()
     {
         return chords;
     }
     
+    /** getCost
+     * Gets the cost of the contents of the TreeNode
+     * @return a double of the cost
+     */
     public double getCost() 
     { 
         return cost; 
     }
     
+    /** getKey
+     * Gets the key that the contents of the TreeNode are in
+     * @return the key, a long
+     */
     public long getKey()
     {
         return block.getKey();
     }
     
+    /** getDuration
+     * Gets the duration of the contents of the TreeNode
+     * @return the duration, a long
+     */
     public long getDuration()
     {
         return block.getDuration();
     }
     
+    /** getStart
+     * Gets the starting slot of the TreeNode's contents in their respective 
+     * leadsheet
+     * @return the starting slot, a long
+     */
     public long getStart()
     {
         return start;
     }
     
+    /** getBlock
+     * Gets the single block containing the contents of the TreeNode.
+     * @return a Block
+     */
     public Block getBlock() {
         return block;
     }
     
+    /** getHeight
+     * Gets the height in the tree of the given TreeNode
+     * @return height, an int
+     */
     public int getHeight() {
         return height;
     }
     
-    // Gets the significant types of blocks from a TreeNode.
+    /** getBlocks
+     * Returns a list of the highest-level user-viewable block description of
+     * the TreeNode's contents. Modifications to this list will affect the 
+     * TreeNode.
+     * @return an ArrayList of Blocks
+     */
     public ArrayList<Block> getBlocks()
     {
         ArrayList<Block> blocks = new ArrayList<Block>();
@@ -423,18 +535,15 @@ public class TreeNode {
         
     }
     
-    // Setter for a TreeNode
-    public void setChildren (TreeNode c1, TreeNode c2)
-    {
-        child1 = c1;
-        child2 = c2;
-    }
-   
+    // Ways to output TreeNodes //
+    
     /** toString()
      * Generates the string representation of the entire subtree of a
      * TreeNode recursively. It prints names based upon whether the block
      * that the TreeNode would represent the top level of is one whose name
      * should be printed, and whether or not it is a terminal.
+     * 
+     * @return a String representation of the node
      */
     @Override
     public String toString() 
@@ -454,8 +563,8 @@ public class TreeNode {
     }
     
     /** toBlocks()
-     * Converts a TreeNode into its constituent blocks for use when the Parser
-     * returns
+     * Converts a TreeNode into its constituent blocks for the purposes of
+     * returning the Parser's result
      * 
      * @return an ArrayList of Blocks.
      */
@@ -471,43 +580,29 @@ public class TreeNode {
         }
         return blocks;
     }
-            
-                
-
-    /******************************************************************/
-    // Data members for a TreeNode
-    private TreeNode child1;              // First nonterminal from a tree
-    private TreeNode child2;              // Second nonterminal from a tree
-    private String symbol;                // Nonterminal symbol of current node
-    private ArrayList<ChordBlock> chords; // Chords contained within the node
-    private Block block;              // The structure holding all of the
-                                      // TreeNode's contents
-    private long key;                 // the key of the Node's nominal contents
-    private double cost;              // Value of the top-level block
-    private boolean toPrint;          // Whether the brick name will print
-    private long start;               // The start position of the first brick
-    private boolean isEnd;            // If the node ends a section
-    private String mode;              // the mode of the Node's nominal contents
-    private boolean isSub;            // whether the Node has a substitution
     
-    private int height;               // height of the tree at the TreeNode
-                                      
-
-}
-
-// A simple Comparator class to compare TreeNodes by total cost.
-class NodeComparator implements Comparator {
-    @Override
-    public int compare(Object t1, Object t2) {
-        double cost1 = ((TreeNode)t1).getCost();
-        double cost2 = ((TreeNode)t2).getCost();
+    // Miscellaneous //
+    
+    /** lessThan
+     * Compares the current TreeNode to another TreeNode
+     * @param t, a second TreeNode
+     * @return if the current TreeNode is less costly than the TreeNode argument
+     */
+    public boolean lessThan(TreeNode t)
+    {
+        double cost1 = getCost();
+        double cost2 = t.getCost();
+        int height1 = getHeight();
+        int height2 = t.getHeight();
         if (cost1 < cost2)
-            return -1;
-        else if (cost1 > cost2)
-            return 1;
-        else
-            return 0;
-    }
-            
+            return true;
+        else if (cost1 == cost2 && height1 < height2)
+            return true;
+        else return false;
+    }                                    
+
+    // end of TreeNode class
+    
 }
+
 

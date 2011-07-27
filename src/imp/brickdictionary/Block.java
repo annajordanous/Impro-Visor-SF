@@ -81,7 +81,11 @@ public class Block {
     
     // Get block's name (ie. "Yardbird" or "Am7")
     public String getName() {
-        return this.name;
+        String fullName = new String();
+        fullName += name;
+        if (this.isOverlap())
+                fullName += " &...";
+        return fullName;
     }
     
     // Get block's duration
@@ -91,7 +95,7 @@ public class Block {
     
     
     public boolean isOverlap() {
-        return (duration == 0);
+        return (this.getDuration() == 0);
     }
     
     // Returns the subBlocks of a given block
@@ -130,7 +134,7 @@ public class Block {
     
     // Alters the duration of the total block
     // Overridden by the corresponding method in Brick or Chord
-    public void adjustDuration(int factor) {
+    public void scaleDuration(int factor) {
         duration = duration * factor;
     }
     

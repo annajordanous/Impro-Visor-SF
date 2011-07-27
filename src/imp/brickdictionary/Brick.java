@@ -167,7 +167,7 @@ public class Brick extends Block {
         subBlocks = new ArrayList<Block>();
         for (Block b : contents)
         {
-            if (b.getName().contains("Launcher") || b.isOverlap())
+            if (b.getName().contains("Launcher"))
                 subBlocks.addAll(b.flattenBlock());
             else
                 subBlocks.add(b);
@@ -306,7 +306,7 @@ public class Brick extends Block {
     
     @Override
     public boolean isOverlap() {
-        if (duration == 0)
+        if (this.getDuration() == 0)
             return true;
         return subBlocks.get(subBlocks.size() - 1).isOverlap();
     }
@@ -602,7 +602,7 @@ public class Brick extends Block {
     // subblocks.
     
     @Override
-    public void adjustDuration(int scale) {
+    public void scaleDuration(int scale) {
         
         duration = 0;
         
@@ -611,7 +611,7 @@ public class Brick extends Block {
         
         while(subBlockIter.hasNext()) {
             Block currentBlock = subBlockIter.next();
-            currentBlock.adjustDuration(scale);
+            currentBlock.scaleDuration(scale);
             duration += currentBlock.duration;
         }
         
@@ -699,7 +699,7 @@ public class Brick extends Block {
     }
     
     public void reduceDurations() {
-        adjustDuration(-getReductionFactor());
+        scaleDuration(-getReductionFactor());
     }
     
     public int getReductionFactor()

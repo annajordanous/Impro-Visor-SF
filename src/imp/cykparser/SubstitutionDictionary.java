@@ -29,11 +29,15 @@ import java.util.LinkedList;
  * 
  * @author Xanda Schofield
  */
+
 public class SubstitutionDictionary {
+    
     // The list of rules in the dictionary, subList, is the only data member
     private LinkedList<SubstitutionRule> subList; 
     
-    // Default constructor: makes an empty dictionary
+    /** Default constructor
+     * Makes an empty SubstitutionDictionary
+     */
     public SubstitutionDictionary()
     {
         subList = new LinkedList<SubstitutionRule>();
@@ -58,9 +62,13 @@ public class SubstitutionDictionary {
      */
     public SubstituteList checkSubstitution(ChordBlock c) {
         SubstituteList subs = new SubstituteList();
+        
+        // check each SubstitutionRule and add any substitutes it may find
         for (SubstitutionRule u : subList) {
             subs.addAll(u.checkSubstitution(c));
         }
         return subs;
-    }  
+    } 
+    
+    // end of SubstitutionDictionary class
 }

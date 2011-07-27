@@ -94,7 +94,7 @@ public class PreviewPanel extends JPanel
         else if (brick instanceof ChordBlock)
             protoBrick = new ChordBlock((ChordBlock)brick);
         
-        brick.adjustDuration(currentDuration);
+        brick.scaleDuration(currentDuration);
         brick.transpose(currentKey);
         
         

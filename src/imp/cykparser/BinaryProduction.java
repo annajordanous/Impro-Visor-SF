@@ -23,7 +23,8 @@ package imp.cykparser;
 import imp.brickdictionary.*;
 
 /** BinaryProduction
- *A production rule for a brick music grammar with two nonterminals as the body.
+ * A class used to describe production rules for a brick music grammar with 
+ * two nonterminals as the body of the production.
  * 
  * @author Xanda Schofield
  */
@@ -32,39 +33,51 @@ import imp.brickdictionary.*;
 
 public class BinaryProduction extends AbstractProduction {
     
-    public static final int TOTAL_SEMITONES = 12;
-    // BRICK_COSTS in order: 
-    public static final long NC = -1;
+    // Constants //
+    public static final int TOTAL_SEMITONES = 12; // the number of semitones in 
+                                                  // an octave
+    public static final long NC = -1;             // the key of a No Chord
     
     
-    // All production rules are put into the key of C.
+    
+    
+    // NB: All production rules are put into the key of C when they are 
+    // constructed. This does not necessitate the original Brick being written
+    // in C.
+    
+    // Data Members //
     private String head;        // the header symbol of the rule
     private String type;        // the type of brick the rule describes
     private long key1;          // the first symbol's key in a C-based block
     private long key2;          // the second symbol's key in a C-based block
     private String name1;       // the first symbol itself, a quality or brick
     private String name2;       // the second symbol itself, a quality or brick
-    private long cost;           // how much the header brick costs
+    private long cost;          // how much the header brick costs
     private String mode = "";   // the mode of the brick in the production
     private boolean toPrint;    // whether the brick is a user-side viewable one
     
     
-    /** Binary Production / 6
-     * Standard constructor based upon two blocks and production data
-     * @param h, the head symbol (a String)
-     * @param t, the type of production (a String)
-     * @param b1, the first composing Block
-     * @param b2, the second composing Block
-     * @param p, whether the production results in a printable Brick
-     * @param m, the mode (a String)
+    // BinaryProduction Constructors // 
+    
+    /** Standard constructor
+     * Constructs a BinaryProduction from two blocks and circumstantial data
      * 
-     * Note: this assumes that a production is relative to C.
+     * @param h, a String describing the "head" symbol, or the name of the 
+     *        resulting Brick the rule produces
+     * @param t, a String describing type of Brick formed
+     * @param k, a long denoting the key of the resulting Brick
+     * @param b1, the first Block forming the resulting Brick
+     * @param b2, the second Block forming the resulting brick
+     * @param p, a boolean describing whether this Brick should be seen by users
+     * @param m, a String describing the mode of the Brick
+     * @param bricks, a BrickLibrary
      */
     public BinaryProduction(String h, String t, long k, Block b1, Block b2, boolean p,
             String m, BrickLibrary bricks)
     {
         head = h;
         type = t;
+        
         key1 = modKeys(b1.getKey() - k);
         name1 = b1.getSymbol();
         
@@ -76,15 +89,20 @@ public class BinaryProduction extends AbstractProduction {
         cost = bricks.getCost(type);
     }
     
-    /** BinaryProduction / 6
-     * An alternate constructor for building off of previously created productions
+    /** Higher-level constructor
+     * Constructs a BinaryProduction from a BinaryProduction of the first part 
+     * of the Brick and a Block of the second part of the Brick.
      * 
-     * @param h, the head symbol (a String)
-     * @param t, the type of brick (a String)
-     * @param pStart, the first composing production (a BinaryProduction)
-     * @param b, the Block to add in this production
-     * @param p, whether this brick is printable
-     * @param m, the mode of the brick (a String)
+     * @param h, a String describing the "head" symbol, or the name of the 
+     *        resulting Brick the rule produces
+     * @param t, a String describing type of Brick formed
+     * @param k, a long denoting the key of the resulting Brick
+     * @param pStart, a BinaryProduction describing the first Block of this 
+     *        production's Brick
+     * @param b, the second Block forming the resulting Brick
+     * @param p, a boolean describing whether this Brick should be seen by users
+     * @param m, a String describing the mode of the Brick
+     * @param bricks, a BrickLibrary
      */
     public BinaryProduction(String h, String t, long k, BinaryProduction pStart, 
             Block b, boolean p, String m, BrickLibrary bricks) {
@@ -100,6 +118,9 @@ public class BinaryProduction extends AbstractProduction {
         mode = m;
         cost = bricks.getCost(type);
     }
+    
+    // Getters for a BinaryProduction //
+    
     /** getHead
      * Returns the header symbol for the production
      * @return a String of the head
@@ -110,24 +131,38 @@ public class BinaryProduction extends AbstractProduction {
     
     /** getBody
      * Returns the reconstructed body of the rule
-     * @return a String of the body  
+     * @return a String of the body with form
+     * "[firstBlockName] [firstBlockKey] [secondBlockName] [secondBlockKey] [cost]"
      */
     public String getBody() {
-        return key1 + " " + name1 + " " + key2 + " " + name2 + " " + cost;
+        return name1 + " " + key1 + " " + name2 + " " + key2 + " " + cost;
     }
     
-    // Getters for BinaryProductions.
+    /** getCost
+     * Returns the base cost for a parser to use the resulting Brick
+     * @return a long of the Brick's cost
+     */
     public long getCost() {
         return cost;
     }
     
+    /** getType
+     * Gets the type of Brick formed (e.g. "Cadence")
+     * @return a String of the Brick's type
+     */
     public String getType() {
         return type;
     }
     
+    /** getMode
+     * Gets the mode of the Brick formed (e.g. "Major")
+     * @return a String of the Brick's mode
+     */
     public String getMode() {
         return mode;
     }
+    
+    
     /** checkProduction
      * Tests whether a production fits with a given ordered pair of TreeNodes. 
      * If so, it returns a positive chord difference between these and the 
@@ -143,7 +178,6 @@ public class BinaryProduction extends AbstractProduction {
         // Conditions:
         // - TreeNodes a and b must have a key
         // - a must not mark a section end (the block cannot span a section end)
-        // - if the rule is an On-Off, there cannot be any substitutions
         // - the relative difference in key must be the same for the TreeNodes
         //   and the two halves of the production
         // - a and b must have names corresponding to the two composing symbols
@@ -159,9 +193,14 @@ public class BinaryProduction extends AbstractProduction {
         return -1;
     }
     
-    // Helper function - returns i mod 12 and assures it is be positive
+    /** modKeys
+     * Takes a key and assures it to be a positive number between 0 and 11.
+     * @param i, a long representing a key
+     * @return a long representing a key in the correct range (0 to 11)
+     */
     private long modKeys(long i) {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
     }
     
+    // end of BinaryProduction class
 }

@@ -28,8 +28,8 @@ import polya.*;
 
 /** CYKParser
  * 
- * Parses a sequence of chords given chords and durations using
- * the CYK algorithm
+ * A parser determining the lowest-cost division of a series of chords into
+ * Bricks and ChordBlocks.
  * 
  * @author Xanda Schofield
  */
@@ -39,32 +39,35 @@ import polya.*;
 public class CYKParser
 {
 
-    // Useful constants for the length of a bar and the load file for the
-    // equivalence dictionary
-    public static final int BAR_DURATION = 480;
+    // Constants used by the CYKParser
     public static final String DICTIONARY_NAME = "vocab/substitutions_sameroot.txt";
     public static final String INVISIBLE = "Invisible";
     public static final long SUB_COST = 5;
     
-    /**
-     * Data Members
-     */
-    private ArrayList<ChordBlock> chords;         // list of chords
-    
+
+    // Data members //
+    private ArrayList<ChordBlock> chords;      // list of chords to be parsed    
     private LinkedList<TreeNode>[][] cykTable; // table for CYK analysis
-    private boolean tableFilled;               // test for full table
+    private boolean tableFilled;               // a boolean describing if the 
+                                               // table is up to date
     
     // Terminal and Nonterminal grammar rules will be imported as lists of
     // strings. These will serve in separate phases of the parsing.
     
-    // Nonterminal rules will have the form:
-    //    (startSymbol, endSymbol1, endSymbol2)
+    // Nonterminal rules will be BinaryProductions, describing the union of
+    // two Blocks into a Brick:
     private LinkedList<BinaryProduction> nonterminalRules;
+    // Terminal rules will be UnaryProductions, describing the adoption of
+    // one Block as a Brick.
     private LinkedList<UnaryProduction> terminalRules;
     
-    // 
+    // Additional dictionaries describing what chord qualities are equivalent
+    // or substitutable are required for populating the table
     private EquivalenceDictionary edict;
     private SubstitutionDictionary sdict;
+    
+    
+    // Constructors //
     
     /**
      * CYKParser / 0
@@ -84,10 +87,10 @@ public class CYKParser
     }
     
     /**
-     * CYKParser / 2
-     * A CYKParser built with chords and durations
-     * @param c: chords, an ArrayList of Strings
-     * @param d: durations, an ArrayList of Integers (the int wrapper class)
+     * CYKParser / 1
+     * A CYKParser built with chords.
+     * 
+     * @param c: An ArrayList of ChordBlocks to be used to populate the table
      */
     public CYKParser(ArrayList<ChordBlock> c)
     {
@@ -105,10 +108,12 @@ public class CYKParser
         loadDictionaries(DICTIONARY_NAME);
     }
     
+    // Individual data initializers //
+    
     /** newChords
-     * newChords allows you to change the chords that a CYKParser is analyzing
-     * @param c: chords to replace those currently in a parser
-     * @param d: durations to correspond with the chords in c
+     * newChords allows you to change the chords that a CYKParser is analyzing.
+     * 
+     * @param c: an ArrayList of ChordBlocks to repopulate the table
      */
     
     public void newChords(ArrayList<ChordBlock> c)
@@ -122,6 +127,12 @@ public class CYKParser
         cykTable = (LinkedList<TreeNode>[][]) new LinkedList[size][size];
     }
     
+    /** loadDictionaries
+     * Initializes the SubstitutionDictionary and EquivalenceDictionary used in
+     * the parser.
+     * 
+     * @param filename, the file where the substitution data is stored
+     */
     private void loadDictionaries(String filename)
     {
         FileInputStream fis = null;
@@ -139,8 +150,10 @@ public class CYKParser
                 {
                     Polylist contents = (Polylist)token;
                     
-                    // Check that polylist has enough fields to be a brick
-                    // Needs BlockType (i.e. "Brick"), name, key, and contents
+                    // Check that polylist has enough fields to be a useful
+                    // substitution rule.
+                    // Rules must have a type ("sub" or "equiv") and at least
+                    // two chords listed.
                     if (contents.length() < 3)
                     {
                         ErrorLog.log(ErrorLog.SEVERE, "Improper substitution "
@@ -151,7 +164,8 @@ public class CYKParser
                         String eqCategory = contents.first().toString();
                         contents = contents.rest();
                         
-                        // For reading in dictionary, should only encounter bricks
+                        // If the rule is a substitution rule, it gets added to
+                        // the SubstitutionDictionary sdict
                         if (eqCategory.equals("sub"))
                         {
                             String head = contents.first().toString();
@@ -160,6 +174,9 @@ public class CYKParser
                                     new SubstitutionRule(head, contents);
                             sdict.addRule(newSub);
                         }
+                                
+                        // If the rule is an equivalence rule, it gets added to
+                        // the EquivalenceDictionary edict
                         else if (eqCategory.equals("equiv"))
                         {
                             ArrayList<ChordBlock> newEq = new ArrayList<ChordBlock>();
@@ -173,6 +190,9 @@ public class CYKParser
                             }
                             edict.addRule(newEq);
                         }
+                                
+                        // If it is neither type of rule, it is not a valid rule
+                        // for this file.
                         else
                         {
                             ErrorLog.log(ErrorLog.WARNING, 
@@ -180,12 +200,15 @@ public class CYKParser
                         }
                     }
                 }
+                        
+                // if the rule does not even read in as a proper Polylist
                 else
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Improper formatting for "
                             + "a token " + token.toString(), true);
                 }
             }
+        // if the dictionary file was not found at the path specified
         } catch (FileNotFoundException ex) {
             ErrorLog.log(ErrorLog.SEVERE, "Substitution dictionary not found", 
                     true);
@@ -205,8 +228,14 @@ public class CYKParser
      * @param lib: a BrickLibrary
      */
     public void createRules(BrickLibrary lib) {
+        
+        // Get a single list of all Bricks in the BrickLibrary, regardless of
+        // qualifier, and iterate through them
         Collection<Brick> bricks = lib.getFullMap();
         Iterator bIter = bricks.iterator();
+        
+        // For each Brick in the BrickLibrary, make all the productions needed
+        // to be able to produce it at parse time
         while (bIter.hasNext()) {
             Brick b = (Brick)bIter.next();
             String name = b.getName();
@@ -218,22 +247,23 @@ public class CYKParser
             int size = subBlocks.size();
             String mode = b.getMode();
             
-            // Error case: a Brick contains one or fewer subBlocks. Rather than 
-            // dealing with unary production rules for bricks, we take in chords
-            // as terminals and use only binary production rules for everything
-            // else. Any brick composed of one or fewer subBricks should not 
-            // be used.
+            // Error case: a Brick with no contents. If such a Brick is somehow
+            // defined, then the Brick will be rejected in parsing, as it could
+            // not be displayed or found by parsing.
             if (size < 1)
                 ErrorLog.log(ErrorLog.WARNING, "Error: brick of size " + size, 
                         true);
-                    
+            
+            // Unary case: single-Block bricks are added to a separate list of 
+            // UnaryProductions, processed after a table cell is filled by the
+            // parser
             else if (size == 1) {
                 UnaryProduction u = new UnaryProduction(name, b.getType(), 
                                         b.getKey(), subBlocks.get(0),
                                         true, mode, lib);
                 terminalRules.add(u);
             }
-            // Perfect case: a Brick of two subBricks. Only one rule is needed,
+            // Ideal case: a Brick of two subBricks. Only one rule is needed,
             // a BinaryProduction with the name of the resulting brick as its 
             // head and each of the subBricks in its body.
             else if (size == 2) {
@@ -270,6 +300,8 @@ public class CYKParser
         
         }
     }
+    
+    // Parsing methods //
     
     /** fillTable
      * fillTable takes the chord sequence and duration lists and uses them to 
@@ -329,10 +361,8 @@ public class CYKParser
                     ListIterator node = cykTable[row][col].listIterator();
                     while (node.hasNext()) {
                         TreeNode nextNode = (TreeNode) node.next();
-                    if (nextNode.toShow() &&
-                            (nextNode.getCost() < minVals[row][col].getCost() ||
-                            ((nextNode.getCost() == minVals[row][col].getCost()) &&
-                            (nextNode.getHeight() > minVals[row][col].getHeight()))))
+                    if (nextNode.toShow() && 
+                        nextNode.lessThan(minVals[row][col]))
                             minVals[row][col] = nextNode;
                  
                     }
@@ -360,37 +390,13 @@ public class CYKParser
             
     }
     
-    public String printTable() {
-        String output = new String();
-        
-        for (int i = 0; i < cykTable.length; i++)
-            for (int j = i; j < cykTable.length; j++)
-            {
-                output += "(" + i + ", " + j + ")\n";
-                for (TreeNode t : cykTable[i][j])
-                {
-                    output += t.getSymbol() + " in " 
-                            + BrickLibrary.keyNumToName(t.getKey()) + " "
-                             + t.getDuration() + " ";
-                    if (!t.isTerminal())
-                        output += t.getFirstChild().getSymbol() + " in " + 
-                                  BrickLibrary.keyNumToName(t.getFirstChild().getKey())
-                                  + " (" + t.getFirstChild().getDuration() + ")"
-                                  + ", " + t.getSecondChild().getSymbol() + " in " +
-                                  BrickLibrary.keyNumToName(t.getSecondChild().getKey())
-                                  + " (" + t.getSecondChild().getDuration() + ")";
-                    
-                    output += "\n";
-                }         
-                output += "----------------------\n";
-            }
-        return output;
-    }
-    
     /** findTerminal
      * findTerminal is a helper function which, for a given index i takes the
-     * ith chord and ith duration and fills the [i, i] space in the 2D List 
+     * ith ChordBlock in chords and fills the [i, i] space in the 2D List 
      * array with the symbols which could generate that chord.
+     * @param index, the int describing the index of the ChordBlock in the
+     *        list of chords which is to be processed in the table
+     * @param start, the starting slot in the piece of that ChordBlock
      */
     private void findTerminal(int index, long start)
     {
@@ -413,6 +419,10 @@ public class CYKParser
                                                 currentChord, start);
             cykTable[index][index].add(currentNode);
         }
+        
+        // If any UnaryProductions apply to just this ChordBlock, they will
+        // be processed and appropriate TreeNodes will be added to the same
+        // cell as the original ChordBlock's TreeNode.
         
         LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
         
@@ -453,6 +463,10 @@ public class CYKParser
         for(int index = 0; index < (col - row); index++) {
             assert(row+index < this.chords.size());
             
+            
+            // We loop through the TreeNodes in each cell, with iter1 being
+            // for the cell in the same row and iter2 being for the cell in the
+            // same column as the current cell.
             ListIterator iter1 = cykTable[row][row+index].listIterator();
             
             while(iter1.hasNext()) {
@@ -463,13 +477,16 @@ public class CYKParser
                 while(iter2.hasNext()) {
                     TreeNode symbol2 = (TreeNode)iter2.next();
                     
+                    // We check every rule against each pair of symbols.
                     ListIterator iterRule = nonterminalRules.listIterator();
 
-                    // We check every rule against each pair of symbols.
                     while (iterRule.hasNext()) { 
                         BinaryProduction rule = 
                                 (BinaryProduction) iterRule.next();
                         
+                        // checkProduction returns a long describing the key
+                        // of the resulting brick if rule applies to symbol1
+                        // and symbol2, or -1 if no such brick can be made.
                         long newKey = rule.checkProduction(symbol1, 
                                                            symbol2);
                         // If newKey comes up with an appropriate key distance,
@@ -508,6 +525,10 @@ public class CYKParser
         }
         LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
         
+        // After the cell is filled up with all possible BinaryProduction 
+        // results, the parser runs through each TreeNode in the cell itself
+        // with all UnaryProductions to see if additional TreeNodes should 
+        // be added for unary Bricks. Overlaps are not processed for these.
         for (TreeNode t : cykTable[row][col])
             for (UnaryProduction rule : terminalRules)
             {
@@ -547,4 +568,49 @@ public class CYKParser
         fillTable();
         return findSolution(lib);
     }
+    
+    // Miscellaneous methods
+    
+    /** printTable()
+     * Prints out the entirety of the contents of the CYKTable. Used for 
+     * debugging parser output.
+     * @return a String describing the entire table, with the format for each
+     *         cell:
+     * 
+     * (row, col)
+     * [TreeNode1] in [key1] ([duration1]) [child TreeNodes, if any]
+     * [TreeNode2] in [key2] ([duration2]) [child TreeNodes, if any]
+     * ...
+     * ----------------------
+     */
+    public String printTable() {
+        String output = new String();
+        
+        for (int i = 0; i < cykTable.length; i++)
+            for (int j = i; j < cykTable.length; j++)
+            {
+                output += "(" + i + ", " + j + ")\n";
+                for (TreeNode t : cykTable[i][j])
+                {
+                    output += t.getSymbol() + " in " 
+                           + BrickLibrary.keyNumToName(t.getKey()) + " (" 
+                           + t.getDuration() + ")";
+                    
+                    // adding each of the major child TreeNodes of the current
+                    // TreeNode
+                    if (!t.isTerminal())
+                        output += ": " + t.getFirstChild().getSymbol() + " in " + 
+                                  BrickLibrary.keyNumToName(t.getFirstChild().getKey())
+                                  + " (" + t.getFirstChild().getDuration() + ")"
+                                  + ", " + t.getSecondChild().getSymbol() + " in " +
+                                  BrickLibrary.keyNumToName(t.getSecondChild().getKey())
+                                  + " (" + t.getSecondChild().getDuration() + ")";
+                    
+                    output += "\n";
+                }         
+                output += "----------------------\n";
+            }
+        return output;
+    }
+    // end of CYKParser class
 }

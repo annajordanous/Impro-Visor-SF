@@ -31,33 +31,64 @@ import java.util.ArrayList;
  * @author Xanda Schofield
  */
 public class SubstituteList {
-    private ArrayList<String> names;
-    private ArrayList<Long> keys;
     
-    // Default constructor
+    // Data Members //
+    private ArrayList<String> names; // a list containing first the quality of
+                                     // each substitute chord
+    private ArrayList<Long> keys;    // a list carrying keys corresponding to
+                                     // chord qualities in names
+   
+   /** Default constructor for a SubstituteList
+     * 
+     * Constructs an empty SubstituteList
+     */
     public SubstituteList() {
-        names = new ArrayList<String>();
+        names = new ArrayList<String>();  
         keys = new ArrayList<Long>();
     }
     
-    // Getters for data members and characteristics of the SubstituteList
+    /** getNames
+     * Gets the list of all chord qualities contained in the SubstituteList
+     * @return an ArrayList of Strings describing the chord names
+     */
     public ArrayList<String> getNames() {
         return names;
     }
     
+    /** getKeys
+     * Gets the list of all chord keys pertaining the the chord qualities listed
+     * in the SubstituteList
+     * @return an ArrayList of longs describing the keys of the SubstituteList's
+     *         described chords
+     */
     public ArrayList<Long> getKeys() {
         return keys;
     }
     
+    /** getName
+     * Gets the ith chord quality in the SubstituteList
+     * @param i, the index of the chord
+     * @return a String of the chord quality
+     */
     public String getName(int i) {
         return names.get(i);
     }
     
+    /** getKey
+     * Gets the ith chord key in the SubstituteList
+     * @param i, the index of the chord
+     * @return a String of the chord quality
+     */
     public long getKey(int i) {
         return keys.get(i);
     }
     
+    /** length
+     * Returns the length of the SubstituteList
+     * @return an int of the SubstituteList's size; 
+     */
     public int length() {
+        assert(keys.size() == names.size());
         return keys.size();
     }
     
@@ -93,6 +124,10 @@ public class SubstituteList {
         return names.contains(mode);
     }
     
+    /** isEmpty
+     * Describes is a SubstituteList is empty
+     * @return a boolean describing whether the SubstituteRule contains no chords
+     */
     public boolean isEmpty() {
         if(names.isEmpty() || keys.isEmpty())
             return true;
@@ -100,18 +135,23 @@ public class SubstituteList {
             return false;
     }
     
+    /** nonEmpty
+     * Describes is a SubstituteList is nonempty
+     * @return a boolean describing whether the SubstituteRule contains any chords
+     */
     public boolean nonEmpty() {
-        if(!names.isEmpty() && !keys.isEmpty())
-            return true;
-        else
-            return false;
+        return !isEmpty();
     }
     
-    // modKeys 
-    // A helper function which returns i mod 12 and assures it is be positive
+   /** modKeys
+     * Converts a calculated key into a number between 0 and 11, inclusive
+     * @param i, the key's value as a long without applying a modulus
+     * @return the correct key as a long between 0 and 11
+     */
     private long modKeys(long i) {
         return (i + BinaryProduction.TOTAL_SEMITONES)
                 % BinaryProduction.TOTAL_SEMITONES;
     }
-    
+ 
+    // end of SubstituteList class 
 }

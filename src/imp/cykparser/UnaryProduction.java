@@ -61,19 +61,32 @@ public class UnaryProduction extends AbstractProduction {
     public String getBody() {
         return key + " " + name + " " + cost;
     }
-    
-    // Getters for BinaryProductions.
+
+    /** getCost
+     * Returns the base cost for a parser to use the resulting Brick
+     * @return a long of the Brick's cost
+     */
     public long getCost() {
         return cost;
     }
     
+    /** getType
+     * Gets the type of Brick formed (e.g. "Cadence")
+     * @return a String of the Brick's type
+     */
     public String getType() {
         return type;
     }
     
+    /** getMode
+     * Gets the mode of the Brick formed (e.g. "Major")
+     * @return a String of the Brick's mode
+     */
     public String getMode() {
         return mode;
     }
+    
+    
     /** checkProduction
      * Tests whether a production fits with a given ordered pair of TreeNodes. 
      * If so, it returns a positive chord difference between these and the 
@@ -93,9 +106,14 @@ public class UnaryProduction extends AbstractProduction {
         return -1;
     }
     
-    // Helper function - returns i mod 12 and assures it is be positive
+    /** modKeys
+     * Takes a key and assures it to be a positive number between 0 and 11.
+     * @param i, a long representing a key
+     * @return a long representing a key in the correct range (0 to 11)
+     */
     private long modKeys(long i) {
         return (i + TOTAL_SEMITONES)%TOTAL_SEMITONES;
     }
     
+    // end of UnaryProduction class
 }

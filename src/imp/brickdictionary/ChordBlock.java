@@ -49,10 +49,10 @@ public class ChordBlock extends Block {
     // Constructor for chord
     // Uses parseChordName to interpret chord's name, finding root (key) and
     // quality
-    public ChordBlock (String chordName, int duration) {
+    public ChordBlock (String chordName, int dur) {
         super(chordName);
-        this.duration = duration;
-        chord = new Chord(chordName, duration);
+        this.duration = dur;
+        chord = new Chord(chordName, this.duration);
         if (chordName.contains(BACKSLASH))
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
         else
@@ -61,9 +61,9 @@ public class ChordBlock extends Block {
         mode = this.findModeFromQuality();
     }
     
-    public ChordBlock(String chordName, int duration, boolean sectionend) {
+    public ChordBlock(String chordName, int dur, boolean sectionend) {
         super(chordName);
-        this.duration = duration;
+        this.duration = dur;
         chord = new Chord(chordName, this.duration);
         if (chordName.contains(BACKSLASH))
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
@@ -76,7 +76,7 @@ public class ChordBlock extends Block {
     
     public ChordBlock(ChordBlock ch) {
         super(ch.name);
-        this.duration = ch.duration;
+        this.duration = ch.getDuration();
         chord = new Chord(ch.name, this.duration);
         if (ch.name.contains(BACKSLASH))
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
@@ -106,7 +106,7 @@ public class ChordBlock extends Block {
     }
     
     @Override
-    public void adjustDuration(int scale) {
+    public void scaleDuration(int scale) {
         if(scale > 0)
             duration = duration * scale;
         else

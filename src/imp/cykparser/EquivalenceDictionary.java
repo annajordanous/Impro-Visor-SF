@@ -30,40 +30,46 @@ import java.util.LinkedList;
 
 /** EquivalenceDictionary
  *
- * Handles equivalent chords in interpretation of bricks
+ * Handles equivalent ChordBlocks in interpretation of bricks as equivalence classes
+ * of 2 or more ChordBlocks.
  * 
  * @author Xanda Schofield
  */
 public class EquivalenceDictionary {
+    
+    
     // EquivalenceDictionary has one data member, dict. It is a list of
     // ArrayLists of Chords, where each ArrayList represents an equivalence
     // class of chords.
-    private LinkedList<ArrayList<ChordBlock>> dict;
+    private LinkedList<ArrayList<ChordBlock>> dict; // the storage mechanism
+                                                    // for equivalence classes
     
     
     /** Default constructor
      * Constructs a new EquivalenceDictionary with an empty dict.
      */
-    public EquivalenceDictionary() {
+    public EquivalenceDictionary() 
+    {
         dict = new LinkedList<ArrayList<ChordBlock>>();
     }
     
-    /** loadDictionary
-     * Takes in a filename as a String and loads in every line as an equivalence
-     * class of chord qualities in the dictionary
-     * 
-     * @param filename, a String
+    
+    
+    /** addRule / 1
+     * Adds a single rule as an equivalence class to the dictionary
+     * @param rule, an ArrayList of equivalent ChordBlocks.
      */
-    public void addRule(ArrayList<ChordBlock> rule) {
+    public void addRule(ArrayList<ChordBlock> rule) 
+    {
         dict.add(rule);
-        }
+    }
     
     /** checkEquivalences / 1
      * Takes in a string for a quality and checks its equivalence classes for 
      * an appropriate class.
      * 
-     * @param c: a Chord whose equivalence is to be checked
-     * @return a SubstituteList of possible chords equivalent to c, 
+     * @param c: a ChordBlock whose equivalence is to be checked
+     * @return a SubstituteList of possible ChordBlocks equivalent to c, 
      * including c itself.
      */
     public SubstituteList checkEquivalence(ChordBlock c)
@@ -92,8 +98,8 @@ public class EquivalenceDictionary {
     /** loadDictionary / 1
      * Loads only the equivalences into the EquivalenceDictionary.
      * 
-     * @param filename: a String describing the source file for the equivalence
-     * rules.
+     * @param filename: a String describing the path to the source file for the 
+     * equivalence rules.
      */
     public void loadDictionary(String filename) {
         FileInputStream fis = null;
@@ -143,6 +149,7 @@ public class EquivalenceDictionary {
                         }
                     }
                 }
+                // if a Polylist was incomplete or unparseable
                 else
                 {
                     ErrorLog.log(ErrorLog.WARNING, 
@@ -159,5 +166,7 @@ public class EquivalenceDictionary {
             }
         }
     }
+    
+    // end of EquivalenceDictionary class
     
 }

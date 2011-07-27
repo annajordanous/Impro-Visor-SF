@@ -21,30 +21,31 @@
 
 package imp.cykparser;
 
+import imp.brickdictionary.*;
+import java.util.ArrayList;
+import polya.*;
 /** SubstitutionRule
- * Production class meant to deal with finding terminal symbols corresponding
+ * A class meant to deal with finding terminal symbols corresponding
  * to a given chord. Used to deal with chord substitutions.
  * 
  * @author Xanda Schofield
  */
 
-import imp.brickdictionary.*;
-import java.util.ArrayList;
-import polya.*;
-
+// 
 public class SubstitutionRule {
     
-    // Constants for use
+    // Constants //
     public static final int NODUR = 0;
    
     // Data members
-    private ChordBlock head;                     // the chord to replace
-    private ArrayList<ChordBlock> terminals;     // the substitute chords possible
+    private ChordBlock head;                   // the chord to replace
+    private ArrayList<ChordBlock> terminals;   // the substitute chords possible
     
     /** Constructor / 2
      * Makes a SubstitutionRule based on a PolyList describing a substitution
-     * @param h
-     * @param contents 
+     * @param h, the String describing a ChordBlock name
+     * @param contents, the rest of the Substitution rule (the list of other
+     *        ChordBlock names)
      */
     SubstitutionRule(String h, Polylist contents)
     {
@@ -60,11 +61,18 @@ public class SubstitutionRule {
         }
     }
 
-    // Getters
+    /** getHead
+     * returns the string of the ChordBlock whose substitutes are in the rule
+     * @return a String of the chord's name
+     */
     public String getHead() {
         return head.toString();
     }
     
+    /** getBody
+     * returns the String of the ChordBlock
+     * @return a String of the substitute chords' names
+     */
     public String getBody() {
         return terminals.toString();
     }
@@ -90,5 +98,6 @@ public class SubstitutionRule {
         
         return subs;
     }
-      
+    
+    // end of SubstitutionRule class
 }

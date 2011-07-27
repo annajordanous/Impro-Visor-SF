@@ -369,7 +369,7 @@ public class RoadMapPanel extends JPanel{
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             for(Block block : roadMap.getBlocks(selectionStart, selectionEnd + 1))
-                block.adjustDuration(scale);
+                block.scaleDuration(scale);
             roadMap.process();
         }
         placeBricks();
