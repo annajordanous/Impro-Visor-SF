@@ -20,7 +20,7 @@
 	(Chord CM7 1))
 
 (Brick Autumn-Leaves-Opening minor Opening C
-	(Brick Straight C 4)
+	(Brick Straight-Cadence C 4)
 	(Brick Sad-Cadence A 4))
 
 // Added by RK
@@ -140,7 +140,7 @@
 (Brick Donna-Lee-Opening Major Opening C
 	(Chord CM7 2)
 	(Brick GenDom G 2) // modified by XS
-	(Brick Straight C 4))
+	(Brick Straight-Cadence C 4))
 
 (Brick Dropback(standard) Major Dropback C
 	(Chord CM7 1)
@@ -167,7 +167,7 @@
 	(Brick Dropback-To-Five C 6)
 	(Chord C 1))
 
-(Brick Extended Major Cadence C
+(Brick Extended-Cadence Major Cadence C
 	(Brick Extended-Approach C 3)
 	(Chord CM7 1))
 
@@ -223,7 +223,7 @@
 	(Chord CM7 2))
 
 (Brick Honeysuckle-Bridge(main) Major Approach C 
-	(Brick Straight F 4) 
+	(Brick Straight-Cadence F 4) 
 	(Brick Straight-Approach G 2) 
 	(Brick Straight-Approach C 2))
 
@@ -282,8 +282,8 @@
 	(Brick GenDom C 2))
 
 (Brick Long-Dropback Major Dropback C
-        (Brick Straight C 3)
-        (Brick Extended C 4))
+        (Brick Straight-Cadence C 3)
+        (Brick Extended-Cadence C 4))
 
 (Brick Minor-Plagal Major Cadence C
 	(Chord Fm 1)
@@ -629,11 +629,11 @@
 	(Chord Fm 1)
 	(Brick Rainy-Approach C 4))
 
-(Brick Straight(standard) Major Cadence C
+(Brick Straight-Cadence(standard) Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
-(Brick Straight(diminished) Major Cadence C
+(Brick Straight-Cadence(diminished) Major Cadence C
         (Brick Sad-Approach C 2)
         (Chord CM7 2))
 
@@ -698,7 +698,7 @@
 	(Brick Sad-Approach C 2)
 	(Chord CM7 2))
 
-(Brick Suspended-POT Major Turnaround C
+(Brick SPOT Major Turnaround C
 	(Brick Straight-Approach D 2)
 	(Brick Straight-Approach C 2))
 
@@ -752,7 +752,7 @@
         (Brick GenDom F 1)
 	(Chord FM7 1)
 	(Chord Bb7 1)
-	(Brick Suspended-POT C 4))
+	(Brick SPOT C 4))
 
 (Brick To-IV-n-Hack Major Turnaround C
 	(Chord CM7 1)
@@ -833,7 +833,7 @@
 
 (Brick Whoopee-Cadence Major Cadence C
 	(Chord Dbdim 1)
-	(Brick Straight C 3))
+	(Brick Straight-Cadence C 3))
 
 // Changed by RK
 (Brick Yardbird Major Cadence C
