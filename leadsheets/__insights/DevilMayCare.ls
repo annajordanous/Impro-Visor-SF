@@ -38,12 +38,24 @@
 
 Am7 Gbm7b5 | B7b9 E7b9 | Am7 Gbm7b5 | B7b9 E7b9 | 
 Am7 | F#m7b5 | F7#11 | E7b9 | 
-Am7 Gbm7b5 | B7b9 E7b9 | Am7 Gbm7b5 | B7b9 E7b9 | 
+
+(section (style swing)) 
+
+Am7 Gbm7b5 | B7b9 E7b9 | Am7 Am/G | F#m7b5 | 
 Bm7b5 | E7b9 | Am7 | Eb7#11 | 
+
+(section (style swing)) 
+
 Dm7 | G7 | CM7 | Ebo | 
 Dm7 | G7 | CM7 | / | 
+
+(section (style swing)) 
+
 Cm7 | F7 | BbM7 | / | 
 Bm7b5 | E7b9 | AM7 | F7 E7 | 
+
+(section (style swing)) 
+
 Am7 Gbm7b5 | B7b9 E7b9 | Am7 Gbm7b5 | B7b9 E7b9 | 
 Am Am/G | F#m7b5 | F7#11 | / | 
 Bm7b5 | E7b9 | Am | / | 

@@ -43,7 +43,7 @@ Em7b5 A9 | Dm7 G7 | Gm7 | C7 |
 F | Eb7 | Am7b5 | D7 | 
 Gm7 | / | Bbm7 | Eb7 | 
 FM7 | Dm7 Dm7/C | Bm7b5 | E7 | 
-Am7 Dm7 | Gm7 C7 | FM7 | / | 
+Am7 D7 | Gm7 C7 | FM7 | / | 
 
 (part
     (type melody)

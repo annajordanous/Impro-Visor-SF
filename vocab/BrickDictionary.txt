@@ -155,11 +155,20 @@
         (Chord Bb7 1)
 	(Chord A7  2))
 
+(Def-Brick Rainy-Dropback-Cadence Major Cadence C
+	(Chord Dm7 1)
+        (Chord G7 1)
+        (Chord CM7 1)
+        (Chord Ebo 1)
+	(Chord Dm7 1)
+        (Chord G7 1)
+        (Chord CM7 1))      
+
 (Def-Brick Dropback-To-Five Major Dropback C
 	(Brick Somewhere C 5)
 	(Brick GenDom C 1)) // modified by XS
 
-(Def-Brick Dropback-Minor minor Dropback C
+(Def-Brick Minor-Dropback minor Dropback C
 	(Chord Cm 1)
 	(Chord Am7b5 1))
 
@@ -184,7 +193,7 @@
 	(Brick Straight-Approach C 2)
         (Chord CM7 1))
 
-(Def-Brick Foggy Major Turnaround C
+(Def-Brick Foggy-Turnaround Major Turnaround C
 	(Chord CM7 1)
 	(Chord Eb7 1)
 	(Brick Straight-Approach C 2))
@@ -255,25 +264,25 @@
 	(Chord Dm 2)
 	(Brick Straight-Approach E 2))
 
-(Def-Brick Ladybird Major Turnaround C
+(Def-Brick Ladybird-Turnaround(main) Major Turnaround C
 	(Chord CM7 1)
 	(Chord Eb7 1)
 	(Chord AbM7 1)
 	(Chord Db7 1))
 
-(Def-Brick Ladybird-Cadence Major Cadence C
-	(Chord Eb7 1)
-	(Chord AbM7 1)
-	(Chord Db7 1)
-        (Chord CM7 1))
-
-(Def-Brick Ladybird-Variant Major Turnaround C
+(Def-Brick Ladybird-Turnaround(variant) Major Turnaround C
 	(Chord CM7 1)
 	(Chord EbM7 1)
 	(Chord AbM7 1)
 	(Chord DbM7 1))
 
-(Def-Brick Ladybird-Variant-Cadence Major Cadence C
+(Def-Brick Ladybird-Cadence(main) Major Cadence C
+	(Chord Eb7 1)
+	(Chord AbM7 1)
+	(Chord Db7 1)
+        (Chord CM7 1))
+
+(Def-Brick Ladybird-Variant(variant) Major Cadence C
 	(Chord EbM7 1)
 	(Chord AbM7 1)
 	(Chord DbM7 1)
@@ -287,7 +296,7 @@
 	(Brick GenDom D 2)
 	(Brick GenDom C 2))
 
-(Def-Brick Long-Dropback Major Dropback C
+(Def-Brick Long-Dropback-Cadence Major Dropback C
         (Brick Straight-Cadence C 3)
         (Brick Extended-Cadence C 4))
 
@@ -333,10 +342,10 @@
 	(Brick Nowhere-Approach C 2))
 
 (Def-Brick Nowhere-Turnaround-Minor minor Turnaround C
-        (Brick Dropback-Minor C 2)
+        (Brick Minor-Dropback C 2)
         (Brick Nowhere-Approach C 2))
 
-(Def-Brick Nowhere-Turnaround-Cadence Major Cadence C
+(Def-Brick Nowhere-Turnaround+Cadence Major Cadence C
         (Brick Nowhere-Turnaround C 4)
         (Chord CM7 1))
 
@@ -369,12 +378,13 @@
 	(Chord C 1))
 
 (Def-Brick Minor-POT(standard) minor Turnaround C
-	(Brick Dropback-Minor C 2)
+	(Brick Minor-Dropback C 2)
 	(Brick Sad-Approach C 2))
 
 (Def-Brick Minor-POT(variant) minor Turnaround C
-        (Brick Dropback-Minor C 2)
-        (Brick Sad-Approach C 2))
+        (Brick Minor-Dropback C 2)
+        (Chord D7 1)
+        (Chord G7 1))
 
 (Def-Brick Minor-POT(short) minor Turnaround C
         (Chord Cm 2)
@@ -524,19 +534,19 @@
 	(Brick Upslide C 2)
 	(Brick Reverse-Raindrop C 2))
 
-(Def-Brick Rhythm-Turnaround-Cadence Major Cadence C
+(Def-Brick Rhythm-Turnaround+Cadence Major Cadence C
 	(Chord Dbdim 1)
         (Brick Reverse-Raindrop C 2)
 	(Chord CM7 1))
 
 (Def-Brick Sad-Cadence minor Cadence C
 	(Brick Sad-Approach C 2)
-	(Chord CmM7 2))
+	(Chord Cm 2))
 
 /*
 (Def-Brick Sad-Cadence(Dominant) minor Cadence C
         (Brick Sad-Approach C 2)
-        (Chord CmM7 2))
+        (Chord Cm 2))
 */
 
 (Def-Brick Sad-Approach minor Approach C
@@ -643,9 +653,11 @@
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
+/*
 (Def-Brick Straight-Cadence(diminished) Major Cadence C
         (Brick Sad-Approach C 2)
         (Chord CM7 2))
+*/
 
 (Def-Brick Straight-Approach Major Approach C
 	(Chord Dm7 1)
@@ -829,7 +841,7 @@
         (Brick Three-Goes-Tritone C 1)
         (Brick Tritone-Approach C 1))
 
-(Def-Brick Whoopee Major Turnaround C
+(Def-Brick Whoopee-Turnaround Major Turnaround C
 	(Brick Upslide C 2)
 	(Brick Straight-Approach C 2))
 
