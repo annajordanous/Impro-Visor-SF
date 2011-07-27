@@ -207,6 +207,12 @@
         (Chord Dm7 1)
         (Chord G7 1))
 
+(Def-Brick GenII(var1) Major Invisible C
+        (Chord Dm7 1))
+
+(Def-Brick GenII(var2) Major Invisible C
+        (Chord Dm7b5 1))
+
 (Def-Brick Green-Dolphin-Street-Cadence Major Cadence C
 	(Chord D7/C 1)
         (Chord DbM7/C 1)
@@ -490,7 +496,11 @@
 	(Chord Em 1)
 	(Chord Ebdim 1))
 
-(Def-Brick Raindrop(variant) Major Misc C
+(Def-Brick Raindrop(var1) Major Misc C
+	(Chord A7/E 1)
+	(Chord Ebdim 1))
+
+(Def-Brick Raindrop(var2) Major Misc C
 	(Chord C 1)
 	(Chord Ebdim 1))
 
@@ -649,12 +659,8 @@
 
 // Added by RK
 
-(Def-Brick An-Approach(major-variant) Major Approach C
-	(Chord Dm7 1)
-	(Chord G7 1))
-
-(Def-Brick An-Approach(minor-variant) Major Approach C
-	(Chord Dm7b5 1)
+(Def-Brick An-Approach(major-variant) Major Invisible C
+	(Brick GenII C 1)
 	(Chord G7 1))
 
 // Added by RK
@@ -1191,5 +1197,15 @@
         (Chord Cm+ 1)
         (Chord Cm6 1)
         (Chord Cm7 1))
+
+(Def-Brick II-n-Bird-POT Major Turnaround C
+        (Chord Dm7 2)
+        (Brick Yardbird-Approach C 2)
+        (Brick POT C 2))
+
+(Def-Brick II-n-Bird-SPOT Major Turnaround C
+        (Chord Dm7 2)
+        (Brick Yardbird-Approach C 2)
+        (Brick SPOT C 2))
 
 // User-defined bricks
