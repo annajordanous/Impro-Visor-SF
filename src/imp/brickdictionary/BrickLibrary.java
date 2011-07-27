@@ -39,6 +39,8 @@ public class BrickLibrary {
     
     private static final String[] KEY_NAME_ARRAY = {"C", "Db", "D", "Eb", "E",
         "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+    private static final String[] KEY_NAME_ARRAY_SHARPS = {"C", "C#", "D", "D#", "E",
+        "F", "F#", "G", "G#", "A", "A#", "B"};
     private static final long DEFAULT_COST = 40;
     public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
     public static final String INVISIBLE = "Invisible";
@@ -378,6 +380,25 @@ public class BrickLibrary {
             return "";
         }
     }
+    
+    public static String keyNumToName(long keyNum, boolean sharps) {
+        if(sharps) {
+            if(keyNum >= 0 && keyNum < 12) {
+            return KEY_NAME_ARRAY_SHARPS[(int)keyNum];
+            }
+            else if (keyNum == -1) {
+                return "";
+            }
+            else
+            {
+                ErrorLog.log(ErrorLog.FATAL, "Incorrect key number: " + keyNum);
+                return "";
+            }
+        }
+        else {
+            return keyNumToName(keyNum);
+        }
+    }
         
     // Read in dictionary file, parse into bricks, and build the dictionary
     public static BrickLibrary processDictionary() throws IOException {
@@ -400,7 +421,7 @@ public class BrickLibrary {
                 Polylist contents = (Polylist)token;
                 
                 // Check that polylist has enough fields to be a brick 
-                // Needs BlockType (i.e. "Brick"), name, key, and contents
+                // Needs BlockType (i.e. "Def-Brick"), name, key, and contents
                 if (contents.length() < 3)
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
@@ -438,7 +459,7 @@ public class BrickLibrary {
                     }
                     
                     // For reading in dictionary, should only encounter bricks
-                    else if (blockCategory.equals("Brick") && contents.length() > 4)
+                    else if (blockCategory.equals("Def-Brick") && contents.length() > 4)
                     {
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
