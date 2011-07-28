@@ -45,6 +45,8 @@ public class RoadMapPanel extends JPanel{
     private int playLineLine = -1;
     private int playLineOffset = 0;
     
+    private Point rolloverPos = new Point(0,0);
+    
     private Image buffer;
     
     private RoadMap roadMap = new RoadMap();
@@ -203,13 +205,13 @@ public class RoadMapPanel extends JPanel{
         return blocks;
     }
     
-    public void changeChord(String name)
+    public void changeChord(String name, int dur)
     {
         int chordInd = graphicMap.get(selectionStart).getSelected();
         Block block = removeSelectionNoUpdate().get(0);
         ArrayList<Block> newBlocks = new ArrayList(block.flattenBlock());
         ChordBlock chord = (ChordBlock)newBlocks.get(chordInd);
-        newBlocks.set(chordInd, new ChordBlock(name, chord.getDuration()));
+        newBlocks.set(chordInd, new ChordBlock(name, dur));
         
         addBlocks(selectionStart, newBlocks);
         selectBrick(selectionStart + chordInd);
@@ -390,7 +392,13 @@ public class RoadMapPanel extends JPanel{
     
     public void deleteChord(Block block, int chordInd)
     {
-        //TODO
+        removeSelectionNoUpdate();
+        ArrayList<Block> newBlocks = new ArrayList(block.flattenBlock());
+        newBlocks.remove(chordInd);
+        
+        addBlocks(selectionStart, newBlocks);
+        selectBrick(selectionStart + chordInd);
+        placeBricks();
     }
     
     public void deleteRange(int start, int end)

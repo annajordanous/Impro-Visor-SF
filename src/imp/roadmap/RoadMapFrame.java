@@ -169,7 +169,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordChangeDialog = new javax.swing.JDialog();
         chordDialogNameField = new javax.swing.JTextField();
         chordDialogAcceptButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        chordDialogDurationComboBox = new javax.swing.JComboBox(durationChoices);
         toolBar = new javax.swing.JToolBar();
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
@@ -291,18 +291,23 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordChangeDialog.setName("chordChangeDialog"); // NOI18N
         chordChangeDialog.setResizable(false);
         chordChangeDialog.setSize(new java.awt.Dimension(100, 100));
+        chordChangeDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         chordDialogNameField.setText("CM7"); // NOI18N
         chordDialogNameField.setMinimumSize(new java.awt.Dimension(14, 20));
         chordDialogNameField.setName("chordDialogNameField"); // NOI18N
         chordDialogNameField.setPreferredSize(new java.awt.Dimension(42, 20));
-        chordDialogNameField.setSize(new java.awt.Dimension(40, 20));
         chordDialogNameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordDialogNameFieldActionPerformed(evt);
             }
         });
-        chordChangeDialog.getContentPane().add(chordDialogNameField, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        chordChangeDialog.getContentPane().add(chordDialogNameField, gridBagConstraints);
 
         chordDialogAcceptButton.setText("Accept"); // NOI18N
         chordDialogAcceptButton.setName("chordDialogAcceptButton"); // NOI18N
@@ -311,11 +316,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 chordDialogAcceptButtonActionPerformed(evt);
             }
         });
-        chordChangeDialog.getContentPane().add(chordDialogAcceptButton, java.awt.BorderLayout.PAGE_END);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        chordChangeDialog.getContentPane().add(chordDialogAcceptButton, gridBagConstraints);
 
-        jLabel1.setText("Chord Name:"); // NOI18N
-        jLabel1.setName("jLabel1"); // NOI18N
-        chordChangeDialog.getContentPane().add(jLabel1, java.awt.BorderLayout.PAGE_START);
+        chordDialogDurationComboBox.setName("chordDialogDurationComboBox"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        chordChangeDialog.getContentPane().add(chordDialogDurationComboBox, gridBagConstraints);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Road Map\n"); // NOI18N
@@ -1019,7 +1030,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                     selectChord(index,jndex);
                 } else
                     selectBrick(index);
-            } else
+            } else //TODO, renaming and other outside clicks
                 deselectBricks();
         } else if(evt.getButton() == evt.BUTTON3) {
             /*if(index != -1) {
@@ -1199,12 +1210,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         String name = chordDialogNameField.getText();
         if(ChordSymbol.makeChordSymbol(name) != null) {
             chordChangeDialog.setVisible(false);
-            changeChord(name);
+            changeChord(name,
+                    (Integer)chordDialogDurationComboBox.getSelectedItem() * settings.getSlotsPerBeat());
         }
     }//GEN-LAST:event_chordDialogAcceptButtonActionPerformed
 
     private void chordDialogNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogNameFieldActionPerformed
-        // TODO add your handling code here:
+        chordDialogAcceptButtonActionPerformed(evt);
     }//GEN-LAST:event_chordDialogNameFieldActionPerformed
 
     private void libraryTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryTreeMouseClicked
@@ -1310,6 +1322,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 {
                     public void actionPerformed(ActionEvent evt)
                     {
+                        if(notate.getMidiSynthRM().finishedPlaying())
+                            setPlaying(false);
                         roadMapPanel.draw();
                     }
                 }
@@ -1413,6 +1427,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private void undo()
     {
+        deselectBricks();
         stepStateBack();
         //System.out.println("History: " + roadMapHistory);
         //System.out.println("Future: " + roadMapFuture);
@@ -1421,6 +1436,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private void redo()
     {
+        deselectBricks();
         stepStateForward();
         //System.out.println("History: " + roadMapHistory);
         //System.out.println("Future: " + roadMapFuture);
@@ -1503,10 +1519,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapPanel.scaleSelection(scale);       
     }
     
-    public void changeChord(String name)
+    public void changeChord(String name, int dur)
     {
         saveState("ChordChange");
-        roadMapPanel.changeChord(name);
+        roadMapPanel.changeChord(name, dur);
     }
     
     private void togglePhraseEnd()
@@ -1723,6 +1739,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     {
         roadMapPanel.selectChord(brickInd, chordInd);
         deactivateButtons();
+        deleteMenuItem.setEnabled(true);
     }
     
     /** deselectBricks <p>
@@ -1876,6 +1893,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JDialog chordChangeDialog;
     private javax.swing.JButton chordDialogAcceptButton;
+    private javax.swing.JComboBox chordDialogDurationComboBox;
     private javax.swing.JTextField chordDialogNameField;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuItem copyMenuItem;
@@ -1892,7 +1910,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JSlider featureWidthSlider;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -2080,6 +2097,14 @@ public void resetAuxNotate()
             playTimer.stop();
             roadMapPanel.draw();
         }
+    }
+    
+    public void setPlaying(boolean status)
+    {
+        if(status)
+            setPlaying(MidiPlayListener.Status.PLAYING,0);
+        else
+            setPlaying(MidiPlayListener.Status.STOPPED,0);
     }
     
     public MidiPlayListener.Status getPlaying()

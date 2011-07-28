@@ -1167,7 +1167,7 @@ public class Notate
     // Declare final, as it is accessed from inner class
 
     final int earlyScrollMargin = 160;
-
+    
     repainter = new ActionListener()
     {
       public void actionPerformed(ActionEvent evt)
@@ -23214,9 +23214,19 @@ public void getMetre(int metre[])
     score.getMetre(metre);
   }
 
+public void setRoadMapMidiListener(MidiPlayListener listener)
+{
+    midiSynth3.setPlayListener(listener);
+}
+
 public int getMidiSlot()
 {
     return midiSynth3.getSlot();
+}
+
+public MidiSynth getMidiSynthRM()
+{
+    return midiSynth3;
 }
 
 }
