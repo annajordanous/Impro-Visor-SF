@@ -2269,6 +2269,14 @@ public void keyPressed(KeyEvent e)
           stave.unselectAll();
           stave.repaint();
           return;
+            
+        case KeyEvent.VK_LEFT:
+            notate.fileStepBackward();
+            return;
+            
+        case KeyEvent.VK_RIGHT:
+            notate.fileStepForward();
+            return;
 
         default:                        // check for numeric keys
           handleGridLineSpacing(e);

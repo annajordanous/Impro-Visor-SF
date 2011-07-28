@@ -20645,7 +20645,7 @@ private void stepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GE
     fileStepBackward();
 }//GEN-LAST:event_stepBackButtonActionPerformed
 
-private void fileStepForward()
+public void fileStepForward()
 {
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
@@ -20716,7 +20716,7 @@ private void fileStepForward()
     }
 }
 
-private void fileStepBackward()
+public void fileStepBackward()
 {
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
@@ -20727,7 +20727,6 @@ private void fileStepBackward()
     File nextFile;
     if(!(currPos-1 < 0))
     {
-        nextFile = lsFiles[currPos-1];
         boolean redisplay = true;
 
         while( redisplay )
@@ -20779,6 +20778,7 @@ private void fileStepBackward()
                   }
               }
           }
+        nextFile = lsFiles[currPos-1];
         setupLeadsheet(nextFile, false);
         if( createRoadMapCheckBox.isSelected() )
         {

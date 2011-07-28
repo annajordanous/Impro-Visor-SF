@@ -278,7 +278,7 @@ public class PrintUtilities implements Printable {
         else
         {
             BufferedImage subImage;
-            if(tracker+numStavesConverted >= multImg[counter].getHeight())                   //problem is with counter and/or problem with painting the correct component to the corresponding array number
+            if(tracker+numStavesConverted >= multImg[counter].getHeight())
             {
                 frameHeight = multImg[counter].getHeight()-tracker;
                 subImage = multImg[counter].getSubimage(0,tracker, 1000, frameHeight);
