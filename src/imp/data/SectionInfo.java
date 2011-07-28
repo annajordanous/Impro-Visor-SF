@@ -245,6 +245,12 @@ public class SectionInfo implements Constants, Serializable {
     public boolean getIsPhrase(int n) {
         return records.get(n).getIsPhrase();
     }    
+    
+    public void setIsPhrase(int n, boolean value)
+      {
+        records.get(n).setIsPhrase(value);
+      }
+    
     public int size() {
         return records.size();
     }
@@ -284,14 +290,26 @@ public class SectionInfo implements Constants, Serializable {
         return chords.size()/measureLength;
     }
     
-    public void moveSection(int index, int newMeasure) {
-        if(getSectionMeasure(index) == newMeasure)
-            return;
+    public void adjustSection(int index, int newMeasure, boolean isPhrase) {
+         System.out.println("1 records = " + records);
+         
+        // Do not move first record
+        // Its phrase value can be set in place
         
+        if(getSectionMeasure(index) == newMeasure)
+          {
+            setIsPhrase(index, isPhrase);
+            return;
+          }
+
+
         SectionRecord record = records.get(index);
         Style s = record.getStyle();
         deleteSection(index);
-        addSection(s, measureToSlotIndex(newMeasure), record.getIsPhrase());
+        System.out.println("2 records = " + records);
+        addSection(s, measureToSlotIndex(newMeasure), isPhrase);
+        
+        System.out.println("3 records = " + records);
     }
   
     // Not sure about this:

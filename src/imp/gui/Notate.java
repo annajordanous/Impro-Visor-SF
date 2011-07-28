@@ -1788,6 +1788,7 @@ public class Notate
         sectionLabel = new javax.swing.JLabel();
         delSectionButton = new javax.swing.JButton();
         setMeasureButton = new javax.swing.JButton();
+        phraseCheckBox = new javax.swing.JCheckBox();
         contourPreferences = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
@@ -3782,9 +3783,9 @@ public class Notate
         styleListScrollPane.setViewportView(styleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.75;
@@ -3803,14 +3804,15 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.75;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(sectionListScrollPane, gridBagConstraints);
 
-        newSectionButton.setText("Add New Section");
+        newSectionButton.setText("Split Selected Section\n");
+        newSectionButton.setToolTipText("Splits the currently-selected Section approximately in two. Then set Starting Measure on second Section.");
         newSectionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newSectionButtonActionPerformed(evt);
@@ -3819,7 +3821,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -3860,7 +3862,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(sectionLabel, gridBagConstraints);
 
-        delSectionButton.setText("Delete Section");
+        delSectionButton.setText("Delete Selected Section");
         delSectionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delSectionButtonActionPerformed(evt);
@@ -3869,7 +3871,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 1.0;
@@ -3883,11 +3885,18 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(setMeasureButton, gridBagConstraints);
+
+        phraseCheckBox.setText("Phrase\n");
+        phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        currentStyleTab.add(phraseCheckBox, gridBagConstraints);
 
         styleTabs.addTab("Current Style", currentStyleTab);
 
@@ -10805,6 +10814,8 @@ public void refresh()
         styleList.setSelectedValue(sectionInfo.getStyle(index), true);
 
         measureTF.setText(String.valueOf(sectionInfo.getSectionMeasure(index)));
+        
+        phraseCheckBox.setSelected(sectionInfo.getIsPhrase(index));
 
       }
 
@@ -13515,6 +13526,8 @@ public void closeWindow()
             
             int currentMeasure = sectionInfo.getSectionMeasure(index);
             
+            boolean isPhrase = phraseCheckBox.isSelected();
+            
             if(measure > 0 && measure <= sectionInfo.measures()) {
                 
                 if(measure != currentMeasure && currentMeasure == 1) {
@@ -13525,7 +13538,7 @@ public void closeWindow()
                     
                 }
                 
-                sectionInfo.moveSection(index,measure);
+                sectionInfo.adjustSection(index, measure, isPhrase);
                 
             } else {
                 
@@ -22488,6 +22501,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBoxMenuItem pasteOverMI;
     private javax.swing.JToggleButton pauseBtn;
     private javax.swing.JMenuItem pausePlayMI;
+    private javax.swing.JCheckBox phraseCheckBox;
     private javax.swing.JButton pianoKeyboardButton;
     private javax.swing.JMenuItem pianoKeyboardMI;
     private javax.swing.JMenuItem playAllMI;
