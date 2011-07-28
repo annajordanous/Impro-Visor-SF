@@ -1105,7 +1105,7 @@ public class Leadsheet
                   {
                   index += slotsPerBar;
                   }
-                chords.addSection(style, index);
+                chords.addSection(style, index, false);
                 }
               }
               break;
@@ -1126,7 +1126,7 @@ public class Leadsheet
                       {
                       index += slotsPerBar;
                       }
-                    chords.addSection(style, index);
+                    chords.addSection(style, index, false);
                     }
                   }
                 item = item.rest();

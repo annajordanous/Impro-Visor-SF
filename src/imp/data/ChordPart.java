@@ -286,8 +286,8 @@ public class ChordPart extends Part implements Serializable{
         sectionInfo.setStyle(s);
     }
 
-    public void addSection(Style s, int n) {
-        sectionInfo.addSection(s,n);
+    public void addSection(Style s, int n, boolean isPhrase) {
+        sectionInfo.addSection(s,n, isPhrase);
     }
     
     public Style getStyle() {

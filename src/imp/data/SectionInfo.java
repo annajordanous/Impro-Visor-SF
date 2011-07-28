@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,11 +25,19 @@ import java.io.Serializable;
 import java.util.*;
 import javax.sound.midi.*;
 
+/**
+ * SectionInfo was originally done by Stephen Jones when sections were
+ * first added to the software. On July 27, 2011, Robert Keller refactored
+ * the code, by transcribing the separate Vectors into a single Vector
+ * of SectionRecord. The purpose was to enable phrases, and possibly other
+ * information to be added more easily.
+ * @author keller
+ */
+
 public class SectionInfo implements Constants, Serializable {
     private ChordPart chords;
     
-    private Vector<Style> styles = new Vector<Style>();
-    private Vector<Integer> styleIndices = new Vector<Integer>();
+    private Vector<SectionRecord> records = new Vector<SectionRecord>();
 
     public SectionInfo(ChordPart chords) {
         this.chords = chords;
@@ -44,19 +51,18 @@ public class SectionInfo implements Constants, Serializable {
 
         //style.setChordInstrument(chords.getInstrument(), "SectionInfo");
 
-        addSection(style, 0);
+        addSection(style, 0, false);
     }
 
     public SectionInfo copy() {
         SectionInfo si = new SectionInfo(chords);
-        si.styles = new Vector<Style>();
-        si.styleIndices = new Vector<Integer>();
-        Iterator<Style> i = styles.iterator();
-        Iterator<Integer> j = styleIndices.iterator();
-        while(i.hasNext()) {
-            si.styles.add(i.next());
-            si.styleIndices.add(j.next());
-        }
+        si.records = new Vector<SectionRecord>();
+        
+        for(SectionRecord record: records )
+          {
+            si.records.add(new SectionRecord(record));
+          }
+
         return si;
     }
     
@@ -65,49 +71,57 @@ public class SectionInfo implements Constants, Serializable {
         if(s == null)
             return false;
         else {
-            addSection(s,n);
+            addSection(s,n,false);
             return true;
         }
     }
     
-    public void addSection(Style s, int n) {
-        ListIterator<Style> i = styles.listIterator();
-        ListIterator<Integer> j = styleIndices.listIterator();
-        while(i.hasNext()) {
-            Style style = i.next();
-            int index = j.next();
-            if(index == n) {
-                i.remove();
-                j.remove();
+    public void addSection(Style s, int n, boolean isPhrase) {
+        ListIterator<SectionRecord> k = records.listIterator();
+        
+        while( k.hasNext() )
+          {
+            SectionRecord record = k.next();
+            int index = record.getIndex();
+            if( index == n )
+              {
+                k.remove();
                 break;
-            }
-            else if(index > n) {
-                i.previous();
-                j.previous();
+              }
+            else if( index > n )
+              {
+                k.previous();
                 break;
-            }
-                
-        }
-        i.add(s);
-        j.add(n);
+              }
+          }
+        k.add(new SectionRecord(s, n, isPhrase));
     }
     
     public void reloadStyles() {
-        ListIterator<Style> i = styles.listIterator();
-        while(i.hasNext()) {
-            Style s = i.next();
-            i.remove();
-            i.add(Advisor.getStyle(s.getName()));
-        }
+        ListIterator<SectionRecord> k = records.listIterator();
+        while( k.hasNext() )
+          {
+            SectionRecord record = k.next();
+            k.remove();
+            k.add(new SectionRecord(Advisor.getStyle(record.getStyle().getName()), 
+                                                     record.getIndex(), 
+                                                     record.getIsPhrase()));
+          }
     }
     
     public void newSection(int index) {
         int measureLength = chords.getMeasureLength();
         
-        int startIndex = styleIndices.get(index);
+        SectionRecord record = records.get(index);
+        int startIndex = record.getIndex();
+        
         int endIndex = chords.size();
+        
         if(index + 1 < size())
-            endIndex = styleIndices.get(index+1);
+          {
+          SectionRecord nextRecord = records.get(index+1);
+          endIndex = nextRecord.getIndex();
+          }
         
         int measure = (endIndex - startIndex) / measureLength;
         
@@ -116,95 +130,129 @@ public class SectionInfo implements Constants, Serializable {
         else
             measure = measure/2 + 1;
         
-        addSection(styles.get(index),startIndex + measure*measureLength);
+        addSection(record.getStyle(), 
+                   startIndex + measure*measureLength,
+                   record.getIsPhrase());
     }
 
     public Integer getPrevSectionIndex(int n) {
-        ListIterator<Integer> j = styleIndices.listIterator();
-        while(j.hasNext()) {
-            int index = j.next();
-            if(index > n) {
-                j.previous();
-                index = j.previous();
-                if(index == n && j.hasPrevious())
-                    return j.previous();
-                else if(index == n)
+        ListIterator<SectionRecord> k = records.listIterator();
+        while( k.hasNext() )
+          {
+            SectionRecord record = k.next();
+            int index = record.getIndex();
+            if( index > n )
+              {
+                k.previous();
+                index = k.previous().getIndex();
+                if( index == n && k.hasPrevious() )
+                  {
+                    return k.previousIndex();
+                  }
+                else if( index == n )
+                  {
                     return -1;
+                  }
                 return index;
-            }
-        }
+              }
+          }
+
         return -1;
     }
     
     public Integer getNextSectionIndex(int n) {
-        ListIterator<Integer> j = styleIndices.listIterator();
-        while(j.hasNext()) {
-            int index = j.next();
-            if(index > n)
+        ListIterator<SectionRecord> k = records.listIterator();
+        while( k.hasNext() )
+          {
+            int index = k.next().getIndex();
+            if( index > n )
+              {
                 return index;
-        }
+              }
+          }
         return null;
     }
 
     public boolean sectionAtSlot(int n) {
-        Iterator<Integer> j = styleIndices.listIterator();
-        while(j.hasNext())
-            if(j.next() == n)
+       Iterator<SectionRecord> k = records.listIterator();
+        while( k.hasNext() )
+          {
+            if( k.next().getIndex() == n )
+              {
                 return true;
+              }
+          }
         return false;
     }
     
-    public Style getStyleFromSlots(int n) {
-        ListIterator<Style> i = styles.listIterator();
-        ListIterator<Integer> j = styleIndices.listIterator();
+    public Style getStyleFromSlots(int n) {        
+        ListIterator<SectionRecord> k = records.listIterator();
         Style s = null;
-        while(i.hasNext()) {
-            s = i.next();
-            int index = j.next();
-            if(index == n)
+        
+        while( k.hasNext() )
+          {
+            SectionRecord record = k.next();
+            int index = record.getIndex();
+            if( index == n )
+              {
+                s = record.getStyle();
                 break;
-            else if(index > n) {
-                i.previous();
-                s = i.previous();
+              }
+            else if( index > n )
+              {
+                k.previous();
+                s = k.previous().getStyle();
                 break;
-            }
-        }
+              }
+          }
         return s;
+
     }
 
     public SectionInfo extract(int first, int last, ChordPart chords) {
         SectionInfo si = new SectionInfo(chords);
-
-        si.styles = new Vector<Style>();
-        si.styleIndices = new Vector<Integer>();
-        Iterator<Style> i = styles.iterator();
-        Iterator<Integer> j = styleIndices.iterator();
-        while(i.hasNext()) {
-            Style s = i.next();
-            int index = j.next() - first;
-            if(index < 0)
-                si.addSection(s,0);
-            else if(index <= last - first)
-                si.addSection(s,index);
-        }
+        
+        si.records = new Vector<SectionRecord>();
+        
+        Iterator<SectionRecord> k = records.iterator();
+        
+        while( k.hasNext() )
+          {
+            SectionRecord record = k.next();
+            Style s = record.getStyle();
+            int index = record.getIndex() - first;
+            if( index < 0 )
+              {
+                records.add(new SectionRecord(s, 0, record.getIsPhrase()));
+              }
+            else if( index <= last - first )
+              {
+                records.add(new SectionRecord(s, index, record.getIsPhrase()));
+              }
+          }
 
         return si;
     }
 
     public Style getStyle(int n) {
-        return styles.get(n);
+        return records.get(n).getStyle();
     }
 
     public int getStyleIndex(int n) {
-        return styleIndices.get(n);
+        return records.get(n).getIndex();
     }
-
+    
+    public boolean getIsPhrase(int n) {
+        return records.get(n).getIsPhrase();
+    }    
     public int size() {
-        return styles.size();
+        return records.size();
     }
 
     public String getInfo(int index) {
-        Style s = styles.get(index);
+        SectionRecord record = records.get(index);
+        
+        Style s = record.getStyle();
         int startIndex = getSectionMeasure(index);
         int endIndex = measures();
         if(index + 1 < size())
@@ -218,7 +266,7 @@ public class SectionInfo implements Constants, Serializable {
     }
     
     public int getSectionMeasure(int index) {
-        return slotIndexToMeasure(styleIndices.get(index));
+        return slotIndexToMeasure(records.get(index).getIndex());
     }
     
     public int slotIndexToMeasure(int index) {
@@ -240,14 +288,29 @@ public class SectionInfo implements Constants, Serializable {
         if(getSectionMeasure(index) == newMeasure)
             return;
         
-        Style s = styles.get(index);
+        SectionRecord record = records.get(index);
+        Style s = record.getStyle();
         deleteSection(index);
-        addSection(s,measureToSlotIndex(newMeasure));
+        addSection(s, measureToSlotIndex(newMeasure), record.getIsPhrase());
     }
   
+    // Not sure about this:
+    
     public void deleteSection(int index) {
         if(size() <= 1)
             return;
+        
+        ListIterator<SectionRecord> k = records.listIterator(index);
+        k.next();
+        k.remove();
+        if( index == 0 )
+          {
+            k = records.listIterator(0);
+            k.next();
+            k.remove();
+          }
+        
+        /* original code
         ListIterator<Style> i = styles.listIterator(index);
         ListIterator<Integer> j = styleIndices.listIterator(index);
         i.next();
@@ -260,17 +323,19 @@ public class SectionInfo implements Constants, Serializable {
             j.remove();
             j.add(0);
         }
+         *
+         */
     }
     
     public void setSize(int size) {
-        Iterator<Style> i = styles.iterator();
-        Iterator<Integer> j = styleIndices.iterator();
-        while(i.hasNext()) {
-            i.next();
-            int n = j.next();
-            if(n >= size) {
-                i.remove();
-                j.remove();
+        
+        Iterator<SectionRecord> k = records.iterator();
+        
+        while(k.hasNext()) {
+            SectionRecord record = k.next();
+            int n = record.getIndex();
+            if( n >= size ) {
+                k.remove();
             }
         }
     }
@@ -286,13 +351,12 @@ public class SectionInfo implements Constants, Serializable {
     }
     
     public void setStyle(Style s) {
-        styles = new Vector<Style>();
-        styleIndices = new Vector<Integer>();
-        addSection(s,0);
+        records = new Vector<SectionRecord>();
+        addSection(s,0, false);
     }
 
     public Style getStyle() {
-        return styles.firstElement();
+        return getStyle(0);
     }
 
 public long sequence(Sequence seq, int ch, long time, Track track,
@@ -300,34 +364,37 @@ public long sequence(Sequence seq, int ch, long time, Track track,
     throws InvalidMidiDataException
   {
     // to trace sequencing info:
-    // System.out.println("SectionInfo time = "
-    // + time + " endLimitIndex = " + endLimitIndex);
+    //System.out.println("Sequencing SectionInfo time = "
+    // + time + " endLimitIndex = " + endLimitIndex + " useDrums = " + useDrums);
 
     // Iterate over list of sections, each a Style
 
-    ListIterator<Style> i = styles.listIterator();
-    ListIterator<Integer> j = styleIndices.listIterator();
-    int startIndex = 0;
-    int endIndex = 0;
-    if( j.hasNext() )
+    int chordsSize = chords.size();
+    
+    int endIndex = chordsSize;
+    
+    // m is a second iterator intended to stay one step ahead of k
+    // so as to get the start of the next section
+    
+    ListIterator<SectionRecord> k = records.listIterator();
+    ListIterator<SectionRecord> m = records.listIterator();
+    if( m.hasNext() )
       {
-        endIndex = j.next();
+        m.next();
       }
 
-    while( i.hasNext() && (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
+    while( k.hasNext() ) //&& (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
       {
-        Style s = i.next();
-        startIndex = endIndex;
-        endIndex = chords.size();
-        if( j.hasNext() )
+        SectionRecord record = k.next();
+        Style style = record.getStyle();
+        int startIndex = record.getIndex();
+        
+        endIndex = m.hasNext() ? m.next().getIndex() : chordsSize;
+        
+        if( style != null )
           {
-            endIndex = j.next();
+          time = style.sequence(seq, time, track, chords, startIndex, endIndex, transposition, useDrums, endLimitIndex);
           }
-
-        if( s != null )
-          {
-            time = s.sequence(seq, time, track, chords, startIndex, endIndex, transposition, useDrums, endLimitIndex);
-           }
        }
     return time;
   }
@@ -343,14 +410,15 @@ public long sequence(Sequence seq, int ch, long time, Track track,
 public boolean isSectionStart(int index)
 {
     int accumulatedSlots = 0;
-    ListIterator<Integer> j = styleIndices.listIterator();
-    while( j.hasNext() && index >= accumulatedSlots )
+
+    ListIterator<SectionRecord> k = records.listIterator();
+    while( k.hasNext() && index >= accumulatedSlots )
     {
         if( index == accumulatedSlots )
         {
             return true;
         }
-        accumulatedSlots += j.next();
+        accumulatedSlots += k.next().getIndex();
     }
     return false;
   
@@ -358,20 +426,25 @@ public boolean isSectionStart(int index)
 
 public Vector<Integer> getSectionStartIndices()
 {
-    return styleIndices;
+  Vector<Integer> result = new Vector<Integer>();
+  for( SectionRecord record: records )
+    {
+      result.add(record.getIndex());
+    }
+    return result;
 }
 
 public String toString()
   {
-    ListIterator<Style> i = styles.listIterator();
-    ListIterator<Integer> j = styleIndices.listIterator();
     StringBuilder buffer = new StringBuilder();
-    while( i.hasNext() )
+    for( SectionRecord record: records )
     {
         buffer.append("(");
-        buffer.append(i.next().toString());
+        buffer.append(record.getStyle());
         buffer.append(" ");
-        buffer.append(j.next().toString());
+        buffer.append(record.getIndex());
+        buffer.append(" ");
+        buffer.append(record.getIsPhrase());
         buffer.append(") ");
     }
     return buffer.toString();

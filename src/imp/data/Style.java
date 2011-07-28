@@ -858,7 +858,7 @@ public class Style
           throws InvalidMidiDataException
     {
     // tracing sequence info
-    // System.out.println("drumline: time = " + time
+    //System.out.println("drumline: time = " + time + " duration = " + duration
     // + " endLimitIndex = " + endLimitIndex);
 
     // loop until we've found patterns to fill up the duration
@@ -1189,11 +1189,12 @@ static Polylist midiEvent2polylist(MidiEvent event)
                         ChordPart chordPart, int startIndex, int endIndex, int transposition, boolean useDrums, int endLimitIndex)
           throws InvalidMidiDataException
     {
-    // to trace sequencing info:
-    // System.out.println("Style: startIndex = " + startIndex
-    // + " endIndex = " + endIndex + " endLimitIndex = " + endLimitIndex);
-
     boolean hasStyle = !noStyle();
+
+    // to trace sequencing info:
+    //System.out.println("Sequencing Style: " + this + " startIndex = " + startIndex
+    // + " endIndex = " + endIndex + " endLimitIndex = " + endLimitIndex + " useDrums = " + useDrums + " hasStyle = " + hasStyle);
+
 
     Part.PartIterator i =
             chordPart.iterator(chordPart.getCurrentChordIndex(startIndex));

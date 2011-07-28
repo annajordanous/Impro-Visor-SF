@@ -13608,8 +13608,9 @@ public void updateStyle()
       {
         //         System.out.println("updateStyle called with style = " + style);
 
-        sectionInfo.addSection(style, sectionInfo.getStyleIndex(
-            sectionList.getSelectedIndex()));
+        sectionInfo.addSection(style, 
+                               sectionInfo.getStyleIndex(sectionList.getSelectedIndex()),
+                               false);
 
         sectionList.repaint();
       }
