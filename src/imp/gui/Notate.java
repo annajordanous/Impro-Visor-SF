@@ -2073,6 +2073,8 @@ public class Notate
                 newMIActionPerformed(evt);
             }
         });
+        fileStepBackBtn = new javax.swing.JButton();
+        fileStepForwardBtn = new javax.swing.JButton();
         openBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         saveBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -6488,6 +6490,31 @@ public class Notate
             }
         });
         standardToolbar.add(newBtn);
+
+        fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
+        fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        fileStepBackBtn.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        fileStepBackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileStepBackBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(fileStepBackBtn);
+
+        fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
+        fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        fileStepForwardBtn.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileStepForwardBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(fileStepForwardBtn);
 
         openBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/open.gif"))); // NOI18N
         openBtn.setToolTipText("Open a leadsheet in place of the current one (Ctrl+O).");
@@ -20645,6 +20672,14 @@ private void stepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GE
     fileStepBackward();
 }//GEN-LAST:event_stepBackButtonActionPerformed
 
+private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
+    fileStepForward();
+}//GEN-LAST:event_fileStepForwardBtnActionPerformed
+
+private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
+    fileStepBackward();
+}//GEN-LAST:event_fileStepBackBtnActionPerformed
+
 public void fileStepForward()
 {
     RecentFiles recFiles = new RecentFiles();
@@ -22296,7 +22331,9 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel extEntryLabel;
     private javax.swing.JTextField extEntryTF;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JButton fileStepBackBtn;
     private javax.swing.JDialog fileStepDialog;
+    private javax.swing.JButton fileStepForwardBtn;
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
     private javax.swing.JToggleButton freezeLayoutButton;
