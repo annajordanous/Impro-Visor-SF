@@ -2042,9 +2042,10 @@ public void resetAuxNotate()
     
     public void stopPlayingSelection()
     {
-        setPlaying(MidiPlayListener.Status.STOPPED, 0);
-        if(roadMapPanel.hasSelection())
+        if(isPlaying()) {
             notate.stopPlayAscore();
+            setPlaying(MidiPlayListener.Status.STOPPED, 0);
+        }
     }
     
     public void restartPlayingSelection()
@@ -2056,9 +2057,10 @@ public void resetAuxNotate()
     public void setPlaying(MidiPlayListener.Status playing, int transposition)
     {
         isPlaying = playing;
-        if(isPlaying())
+        if(isPlaying()) {
+            roadMapPanel.setPlayLineOffset();
             playTimer.start();
-        else {
+        } else {
             playTimer.stop();
             roadMapPanel.draw();
         }

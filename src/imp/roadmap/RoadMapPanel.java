@@ -39,10 +39,11 @@ public class RoadMapPanel extends JPanel{
     public int selectionStart = -1;
     public int selectionEnd = -1;
     
-    public int insertLineIndex = -1;
+    private int insertLineIndex = -1;
     
     private int playLineSlot = -1;
     private int playLineLine = -1;
+    private int playLineOffset = 0;
     
     private Image buffer;
     
@@ -532,9 +533,17 @@ public class RoadMapPanel extends JPanel{
         insertLineIndex = index;
     }
     
+    public void setPlayLineOffset()
+    {
+        int offset = 0;
+        for(int i = 0; i < selectionStart; i++)
+            offset += roadMap.getBlock(i).getDuration();
+        playLineOffset = offset;
+    }
+    
     public void setPlayLine(int slot)
     {
-        int[] wrap = findLineAndSlot(slot);
+        int[] wrap = findLineAndSlot(slot + playLineOffset);
         playLineSlot = wrap[0];
         playLineLine = wrap[1];
         //draw();

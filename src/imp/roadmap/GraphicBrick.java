@@ -92,6 +92,16 @@ public class GraphicBrick {
         this.line = line;
     }
     
+    public long getSlot()
+    {
+        return slot;
+    }
+    
+    public int getLine()
+    {
+        return line;
+    }
+    
     /**
      * returns the x position
      * @return the x position
@@ -196,6 +206,12 @@ public class GraphicBrick {
         return false;
     }
     
+    /**
+     * Returns the index of the chord at the specified point
+     * @param x
+     * @param y
+     * @return 
+     */
     public int getChordAt(int x, int y)
     {
         int cutoffLine = settings.getCutoff();
