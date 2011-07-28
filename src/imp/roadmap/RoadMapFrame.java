@@ -106,6 +106,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     public String roadMapTitle = "Untitled Roadmap";
 
+    ActionListener testListener;
+    
     private RoadMapFrame() {} // Not for you.
     
     /** Creates new form RoadMapFrame */
@@ -139,10 +141,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         //settings.beatsPerMeasure = notate.getTimeSigTop();
         settings.slotsPerBeat = notate.getBeatValue();
         
-        //durationComboBox.addItem(this)
-        
         WindowRegistry.registerWindow(this);
         
+       
         //roadMapScrollPane.setViewportView(roadMapPanel);
         //roadMapScrollPane.revalidate();
     }
@@ -1286,7 +1287,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             roadMapPanel.draw();
     }//GEN-LAST:event_roadMapScrollPaneMouseMoved
 //</editor-fold>
-    
+   
     private void initTimer()
     {
         playTimer = new javax.swing.Timer(10,
@@ -2057,8 +2058,10 @@ public void resetAuxNotate()
         isPlaying = playing;
         if(isPlaying())
             playTimer.start();
-        else
+        else {
             playTimer.stop();
+            roadMapPanel.draw();
+        }
     }
     
     public MidiPlayListener.Status getPlaying()
@@ -2070,6 +2073,8 @@ public void resetAuxNotate()
     {
         return isPlaying == MidiPlayListener.Status.PLAYING;
     }
+    
+    
 /**
  * Close this RoadMapFrame and clean up.
  */
@@ -2165,4 +2170,5 @@ public int getMidiSlot()
 {
     return notate.getMidiSlot();
 }
-}
+
+};

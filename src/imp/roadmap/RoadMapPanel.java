@@ -540,23 +540,17 @@ public class RoadMapPanel extends JPanel{
         //draw();
     }
     
-    public int[] findLineAndSlot(int slots)
+    public int[] findLineAndSlot(int slots) //Doesn't really do this
     {
        int totalSlots = 0;
-       int lastLine = 0;
-       int lines = 0;
        
-       for(Block block : roadMap.getBlocks()) {
-           if(totalSlots + block.getDuration() >= slots)
-               return new int[] {slots - lastLine, lines};
-           totalSlots += block.getDuration();
-           if(block.getSectionEnd() == 1) {
-               lines++;
-               lastLine = totalSlots;
-           }
+       for(GraphicBrick brick : graphicMap) {
+           totalSlots += brick.getDuration();
+           if(slots < totalSlots)
+               return new int[] {(int)brick.getSlot() + brick.getDuration() + slots - totalSlots,
+                   brick.getLine()};
        }
-       
-       return new int[] {slots - lastLine, lines};
+       return new int[]{0,0};
     }
     /* Drawing and junk */
     
@@ -588,7 +582,7 @@ public class RoadMapPanel extends JPanel{
         Point point = settings.getPosFromSlots(playLineSlot);
         
         int x = point.x;
-        int y = point.y;
+        int y = point.y + playLineLine * settings.getLineOffset();
         
         g2d.drawLine(x,y-5,x,y+settings.lineHeight+5);
     }
