@@ -38,6 +38,7 @@ import imp.data.ChordSymbol;
 import imp.data.Leadsheet;
 import imp.data.Score;
 import imp.gui.Notate;
+import imp.gui.PrintUtilitiesRoadMap;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
@@ -192,6 +193,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
+        printRoadMapMI = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         selectAllMenuItem = new javax.swing.JMenuItem();
@@ -360,7 +362,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(scaleComboBox);
 
-        newBrickButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        newBrickButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         newBrickButton.setText("New Brick"); // NOI18N
         newBrickButton.setToolTipText("Define a new brick in the dictionary."); // NOI18N
         newBrickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -714,6 +716,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         fileMenu.add(openLeadsheetMI);
+
+        printRoadMapMI.setText("Print RoadMap");
+        printRoadMapMI.setName("printRoadMapMI"); // NOI18N
+        printRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printRoadMapMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(printRoadMapMI);
 
         exitMenuItem.setLabel("Quit"); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
@@ -1286,6 +1297,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         } else
             roadMapPanel.draw();
     }//GEN-LAST:event_roadMapScrollPaneMouseMoved
+
+    private void printRoadMapMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRoadMapMIActionPerformed
+        PrintUtilitiesRoadMap.printRoadMap(roadMapPanel);
+    }//GEN-LAST:event_printRoadMapMIActionPerformed
 //</editor-fold>
    
     private void initTimer()
@@ -1893,6 +1908,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
     private javax.swing.JScrollPane previewScrollPane;
+    private javax.swing.JMenuItem printRoadMapMI;
     private javax.swing.JMenuItem redoMenuItem;
     private javax.swing.JScrollPane roadMapScrollPane;
     private javax.swing.JTextField roadMapTextEntry;

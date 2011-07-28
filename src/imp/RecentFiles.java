@@ -171,7 +171,7 @@ public class RecentFiles {
             datIn.close();
             return path;
         }catch(Exception e){
-            return path;
+            return null;
         }
     }
     

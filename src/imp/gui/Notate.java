@@ -20649,8 +20649,18 @@ public void fileStepForward()
 {
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
-    File file = new File(first);
-    String dir = file.getParent();
+    File file;
+    String dir;
+    if(first == null)
+    {
+        file = new File(leadsheetDirName);
+        dir = leadsheetDirName;
+    }
+    else
+    {
+        file = new File(first);
+        dir = file.getParent();
+    }
     File[] lsFiles = getLeadsheetsFromDir(dir);
     int currPos = findPosOfCurrLs(lsFiles, first);
     File nextFile;
@@ -20720,8 +20730,18 @@ public void fileStepBackward()
 {
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
-    File file = new File(first);
-    String dir = file.getParent();
+    File file;
+    String dir;
+    if(first == null)
+    {
+        file = new File(leadsheetDirName);
+        dir = leadsheetDirName;
+    }
+    else
+    {
+        file = new File(first);
+        dir = file.getParent();
+    }
     File[] lsFiles = getLeadsheetsFromDir(dir);
     int currPos = findPosOfCurrLs(lsFiles, first);
     File nextFile;
