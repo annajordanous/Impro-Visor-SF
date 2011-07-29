@@ -47,6 +47,7 @@ public class RoadMapSettings {
     public Color brickBGColor = Color.WHITE;
     public Color joinBGColor = new Color(255, 255, 171);
     public Color playLineColor = Color.RED;
+    public Color playSectionColor = Color.GREEN;
     
     public Color[] keyColors = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255), // Db

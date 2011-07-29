@@ -45,7 +45,10 @@ public class RoadMapPanel extends JPanel{
     private int playLineLine = -1;
     private int playLineOffset = 0;
     
-    private Point rolloverPos = new Point(0,0);
+    private int playSectionStart = 0;
+    private int playSectionEnd = 0;
+    
+    private Point rolloverPos = null;
     
     private Image buffer;
     
@@ -541,6 +544,12 @@ public class RoadMapPanel extends JPanel{
         insertLineIndex = index;
     }
     
+    public void setPlaySection()
+    {
+        playSectionStart = selectionStart;
+        playSectionEnd = selectionEnd;
+    }
+    
     public void setPlayLineOffset()
     {
         int offset = 0;
@@ -569,6 +578,17 @@ public class RoadMapPanel extends JPanel{
        }
        return new int[]{0,0};
     }
+    
+    public void setRolloverPos(Point point)
+    {
+        rolloverPos = point;
+    }
+    
+    public Point getRolloverPos()
+    {
+        return rolloverPos;
+    }
+    
     /* Drawing and junk */
     
     public void setBuffer(Image buffer)
@@ -583,10 +603,48 @@ public class RoadMapPanel extends JPanel{
        drawBricks();
        drawKeyMap();
        if(view.isPlaying()) {
+           drawPlaySection();
            setPlayLine(view.getMidiSlot()/settings.slotsPerBeat * settings.slotsPerBeat);
            drawPlayLine();
        }
+       drawRollover();
        repaint();
+    }
+    
+    public void drawCursorLine(int slot, Color color)
+    {
+        int[] wrap = findLineAndSlot(slot);
+        drawCursorLine(wrap[0], wrap[1], color);
+    }
+    
+    public void drawCursorLine(int slotOffset, int line, Color color)
+    {
+        Graphics2D g2d = (Graphics2D)buffer.getGraphics();
+        g2d.setColor(color);
+        g2d.setStroke(settings.cursorLine);
+        
+        int x = settings.getLength(slotOffset) + settings.xOffset;
+        int y = line * settings.getLineOffset() + settings.yOffset;
+        
+        g2d.drawLine(x,y-5,x,y+settings.lineHeight+5);
+    }
+    
+    public void drawPlaySection()
+    {
+        GraphicBrick startBrick = graphicMap.get(playSectionStart);
+        GraphicBrick endBrick = graphicMap.get(playSectionEnd);
+        
+        Color color = settings.playSectionColor;
+        
+        drawCursorLine((int)startBrick.getSlot(), startBrick.getLine(), color);
+        
+        long[] wrap = settings.wrapFromSlots(endBrick.getSlot() + endBrick.getDuration());
+        if(wrap[0] == 0 && wrap[1] > 0) { // TODO, maybe making a wrap method that doesn't wrap until it's over the edge?
+            wrap[0] = settings.getSlotsPerLine();
+            wrap[1]--;
+        }
+        
+        drawCursorLine((int)wrap[0], (int)wrap[1]+endBrick.getLine(), color);
     }
     
     public void drawPlayLine()
@@ -596,12 +654,8 @@ public class RoadMapPanel extends JPanel{
         g2d.setColor(settings.playLineColor);
         g2d.setStroke(settings.cursorLine);
         
-        Point point = settings.getPosFromSlots(playLineSlot);
-        
-        int x = point.x;
-        int y = point.y + playLineLine * settings.getLineOffset();
-        
-        g2d.drawLine(x,y-5,x,y+settings.lineHeight+5);
+        drawCursorLine(playLineSlot, playLineLine, settings.playLineColor);
+        //Maybe we should use the draw cursor line method from slots instead of two data members
     }
     
     public void drawGrid()
@@ -813,22 +867,31 @@ public class RoadMapPanel extends JPanel{
             g2d.drawString(keyName, x+2, y+fontOffset);
     }
         
-    public void drawRollover(int x, int y, String text)
+    public void drawRollover()
     {
-        draw();
-        Graphics g = buffer.getGraphics();
-        FontMetrics metrics = g.getFontMetrics();
-        int width = metrics.stringWidth(text) + 4;
-        int height = metrics.getAscent() + 2;
-        
-        g.setColor(settings.brickBGColor);
-        
-        g.fillRect(x, y, width, height);
-        
-        g.setColor(settings.lineColor);
-        g.drawString(text, x+2, y+height - 2);
-        g.drawRect(x, y, width, height);
-        repaint();
+        if(rolloverPos != null) {
+            int x = rolloverPos.x;
+            int y = rolloverPos.y;
+            int index = getBrickIndexAt(x,y);
+            
+            if(index != -1) {
+                String text = roadMap.getBlock(index).getName();
+
+                Graphics g = buffer.getGraphics();
+                FontMetrics metrics = g.getFontMetrics();
+                int width = metrics.stringWidth(text) + 4;
+                int height = metrics.getAscent() + 2;
+
+                g.setColor(settings.brickBGColor);
+
+                g.fillRect(x, y, width, height);
+
+                g.setColor(settings.lineColor);
+                g.drawString(text, x+2, y+height - 2);
+                g.drawRect(x, y, width, height);
+                repaint();
+            }
+        }
     }
     
     /**

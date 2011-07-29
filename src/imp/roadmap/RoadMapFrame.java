@@ -1296,18 +1296,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
         int x = evt.getX()+xOffset;
         int y = evt.getY()+yOffset;
-        int index = roadMapPanel.getBrickIndexAt(x,y);
-        if(index != -1) {
-            int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
-            if(jndex != -1)  {
-                String name = roadMapPanel.getBrick(index).getChord(jndex).getName();
-                roadMapPanel.drawRollover(x,y,name);
-            }
-            else 
-                roadMapPanel.drawRollover(x,y,roadMapPanel.getBrick(index).getName());
-            
-        } else
-            roadMapPanel.draw();
+        roadMapPanel.setRolloverPos(new Point(x,y));
+        roadMapPanel.draw();
     }//GEN-LAST:event_roadMapScrollPaneMouseMoved
 
     private void printRoadMapMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRoadMapMIActionPerformed
@@ -1398,6 +1388,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private void saveState(String name)
     {
+        stopPlayingSelection(); //TODO this probably doesn't belong here,
+        //but I don't want to write it over and over again and this is called for
+        //relevant actions
         if(name.equals("Transpose") &&
                 roadMapHistory.getLast().getName().equals("Transpose"))
             return; //Multiple transpositions should be the same action
@@ -2092,6 +2085,7 @@ public void resetAuxNotate()
         isPlaying = playing;
         if(isPlaying()) {
             roadMapPanel.setPlayLineOffset();
+            roadMapPanel.setPlaySection();
             playTimer.start();
         } else {
             playTimer.stop();
