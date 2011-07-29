@@ -6491,9 +6491,8 @@ public class Notate
         });
         standardToolbar.add(newBtn);
 
-        fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
+        fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
         fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        fileStepBackBtn.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -6503,9 +6502,8 @@ public class Notate
         });
         standardToolbar.add(fileStepBackBtn);
 
-        fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
+        fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
         fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        fileStepForwardBtn.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setPreferredSize(new java.awt.Dimension(30, 30));
