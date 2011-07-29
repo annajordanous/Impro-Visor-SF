@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ public class Stave
 
   private String PHRASE_MARK = ",";
   private String SECTION_MARK = "Style: ";
+  private int DOUBLE_BAR_OFFSET = 5;
   
   /**
    * The maximum width alloted to time signature. Longer than this causes too
@@ -67,7 +68,7 @@ public class Stave
   
   private static final int maxTimeSigWidth = 6;
 
-  private boolean beamingNotes = true;  // beaming is work in progress
+  private boolean beamingNotes = true;
   
   public static final int maxMeasuresPerLine = 16;
 
@@ -2890,6 +2891,13 @@ public class Stave
                 chordProg.getSectionInfo().getStyleFromSlots(i),
                 xCoordinate - 25,
                 headSpace + (staveLine * lineSpacing) - styleYoffset);
+            
+              // At a section other than the very start of the chorus,
+              // draw a double bar.
+              if( totalMeasureCount > 1 )
+                {
+                drawBarLine(xCoordinate-25+ DOUBLE_BAR_OFFSET, staveLine, g);
+                }
               break;
               
           case Block.PHRASE_END:
@@ -3256,6 +3264,12 @@ public class Stave
           {
           drawBarLine(STAVE_WIDTH, staveLine, g);
           toNextLine = true;
+          
+          // Draw a double bar at the end of the chorus.
+          if( totalMeasureCount >= notate.getBarsPerChorus() )
+            {
+            drawBarLine(STAVE_WIDTH - DOUBLE_BAR_OFFSET, staveLine, g);  
+            }
           }
         // otherwise draw the bar line at the current location
         else

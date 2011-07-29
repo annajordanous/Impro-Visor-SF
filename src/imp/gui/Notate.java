@@ -23266,6 +23266,10 @@ public MidiSynth getMidiSynthRM()
     return midiSynth3;
 }
 
+public int getBarsPerChorus()
+  {
+    return score.getBarsPerChorus();
+  }
 }
 
 
