@@ -164,6 +164,10 @@ public class Preferences implements imp.Constants
 
   public static final String ALWAYS_USE_BUTTONS = "always-use-buttons";
   
+  public static final String CREATE_ROADMAP = "create-roadmap";
+  
+  public static final String CR_VAL = "y";
+  
   public static final String TREBLE_STRING = "1";
   public static final String BASS_STRING = "2";
   public static final String GRAND_STRING = "3";
@@ -408,6 +412,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + DRAWING_TONES + " " + DRAWING_TONES_VAL + ")");
       out.println("(" + DEFAULT_DRAWING_MUTED + " " + DDM_VAL + ")");
       out.println("(" + ALWAYS_USE_BUTTONS + " " + DEFAULT_ALWAYS_USE_BUTTONS + ")");
+      out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");
       }
     catch( Exception e )
       {

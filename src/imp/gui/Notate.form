@@ -6251,6 +6251,9 @@
                 <Property name="text" type="java.lang.String" value="Create road map"/>
                 <Property name="toolTipText" type="java.lang.String" value="Create roadmap of leadsheet if checked."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRoadMapCheckBoxActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="newMI">
               <Properties>

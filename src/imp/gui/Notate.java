@@ -7448,6 +7448,11 @@ public class Notate
 
         createRoadMapCheckBox.setText("Create road map");
         createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
+        createRoadMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createRoadMapCheckBoxActionPerformed(evt);
+            }
+        });
         fileMenu.add(createRoadMapCheckBox);
 
         newMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
@@ -13773,7 +13778,19 @@ private boolean saveMetre()
             
             int melodyVol = defMelodyVolSlider.getValue();
             
+            //String createRoadMap;
             
+            //if(createRoadMapCheckBox.isSelected())
+            //{
+            //    createRoadMap = "y";
+            //    System.out.println("made it yes");
+            //}
+            //else
+            //{
+            //   createRoadMap = "n";
+            //    System.out.println("made it no");
+            //}
+            //Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
             
             if (cache < 0) {
                 
@@ -14499,6 +14516,11 @@ private boolean saveMetre()
     }
     }
     
+  public void setRoadMapCheckBox(boolean roadMap)
+  {
+      createRoadMapCheckBox.setSelected(roadMap);
+  }
+  
   public int getBreakpoint()
     {
     return score.getBreakpoint();
@@ -20679,6 +20701,19 @@ private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {
 private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
     fileStepBackward();
 }//GEN-LAST:event_fileStepBackBtnActionPerformed
+
+private void createRoadMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoadMapCheckBoxActionPerformed
+    String createRoadMap;
+    if(createRoadMapCheckBox.isSelected())
+    {
+        createRoadMap = "y";
+    }
+    else
+    {
+        createRoadMap = "n";
+    }
+    Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
+}//GEN-LAST:event_createRoadMapCheckBoxActionPerformed
 
 public void fileStepForward()
 {

@@ -321,6 +321,15 @@ private ImproVisor(String leadsheet)
     // Create an array of notate frames and initialize the first frame
     
     Notate notate = new Notate(score, advisor, this, initialXopen, initialYopen);
+    String createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP);
+    if(createRoadMap.equals("y"))
+    {
+        notate.setRoadMapCheckBox(true);
+    }
+    else
+    {
+        notate.setRoadMapCheckBox(false);
+    }
 
     // Then deal with recent files
 
@@ -345,7 +354,7 @@ private ImproVisor(String leadsheet)
      // FIX: true for now, during development.
      // Should be made into a Preference
      
-     notate.setCreateRoadMapCheckBox(true);
+     //notate.setCreateRoadMapCheckBox(true);
 
      notate.makeVisible();
 
