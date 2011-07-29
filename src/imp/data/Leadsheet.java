@@ -43,7 +43,7 @@ public class Leadsheet
            "stave", "treble", "bass", "grand", "auto", "none", "layout",
            "bass-volume", "drum-volume", "chord-volume", "style", "section",
            "bass-instrument", "playback-transpose", "show", "year",
-           "chord-font-size"
+           "chord-font-size", "phrase"
   };
 
   static final int TITLE = 0;
@@ -111,6 +111,8 @@ public class Leadsheet
   static final int YEAR = 31;
 
   static final int CHORD_FONT_SIZE = 32;
+
+  static final int PHRASE = 33;
 
   static final int UNKNOWN = -1;
 
@@ -373,8 +375,9 @@ public class Leadsheet
                   }
                 break;
 
+              case PHRASE:
               case SECTION:
-                if( item.nonEmpty() )
+                //if( item.nonEmpty() )
                   {
                   chordInputReversed =
                           chordInputReversed.cons(item.cons(dispatcher));
@@ -1079,6 +1082,8 @@ public class Leadsheet
           Polylist item = (Polylist)ob;
           String dispatcher = (String)item.first();
           item = item.rest();
+          
+          //System.out.println("dispatcher = " + dispatcher);
           switch( lookup(dispatcher, keyword) )
             {
             case STYLE:
@@ -1127,10 +1132,20 @@ public class Leadsheet
                       index += slotsPerBar;
                       }
                     chords.addSection(style, index, false);
+                    //System.out.println("adding section at " + index);
                     }
                   }
                 item = item.rest();
                 }
+ 
+              break;
+                
+            case PHRASE:
+
+                    int index = measure * slotsPerBar;
+                    chords.addSection(null, index, true);
+                    //System.out.println("adding phrase at " + index);
+
               break;
             }
           continue;

@@ -208,7 +208,29 @@ public class SectionInfo implements Constants, Serializable {
               }
           }
         return s;
-
+    }
+    
+        public SectionRecord getSectionRecord(int n) {        
+        ListIterator<SectionRecord> k = records.listIterator();
+        SectionRecord s = null;
+        
+        while( k.hasNext() )
+          {
+            SectionRecord record = k.next();
+            int index = record.getIndex();
+            if( index == n )
+              {
+                s = record;
+                break;
+              }
+            else if( index > n )
+              {
+                k.previous();
+                s = record;
+                break;
+              }
+          }
+        return s;
     }
 
     public SectionInfo extract(int first, int last, ChordPart chords) {
@@ -293,7 +315,7 @@ public class SectionInfo implements Constants, Serializable {
     }
     
     public void adjustSection(int index, int newMeasure, boolean isPhrase) {
-         System.out.println("1 records = " + records);
+         //System.out.println("1 records = " + records);
          
         // Do not move first record
         // Its phrase value can be set in place

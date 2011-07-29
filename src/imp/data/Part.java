@@ -1152,11 +1152,21 @@ public class Part implements Constants, Serializable {
                 int nextIndex = i.nextIndex();
 
                 if(nextSectionIndex != null && nextIndex >= nextSectionIndex) {
-                    Style s  = sectionInfo.getStyleFromSlots(nextSectionIndex);
-                    out.newLine();
-                    out.write("(section (style " + s + ")) ");
-                    out.newLine();
-                    out.newLine();
+                    SectionRecord record = sectionInfo.getSectionRecord(nextSectionIndex);
+                    if( record.getIsPhrase() )
+                      {
+                        out.newLine();
+                        out.write("(phrase)");
+                        out.newLine();
+                      }
+                    else
+                      {
+                      Style s  = sectionInfo.getStyleFromSlots(nextSectionIndex);
+                      out.newLine();
+                      out.write("(section (style " + s + ")) ");
+                      out.newLine();
+                      out.newLine();
+                      }
                     nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
                 }
             }
