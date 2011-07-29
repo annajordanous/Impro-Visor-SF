@@ -324,7 +324,7 @@ public class TreeNode {
         if (child1 == null && child2 == null) {
             if (block instanceof ChordBlock) {
                 ChordBlock overlapChord = new ChordBlock(block.getName(), 0, 
-                                                         block.isSectionEnd());
+                                                         block.getSectionEnd());
                 newNode = new TreeNode(overlapChord, cost + 5, start);
             }
             else {
@@ -333,7 +333,7 @@ public class TreeNode {
                 ChordBlock lastChord = 
                         (ChordBlock)newChords.remove(newChords.size() - 1);
                 ChordBlock zeroChord = new ChordBlock(lastChord.getName(), 0, 
-                                                      block.isSectionEnd());
+                                                      block.getSectionEnd());
                 newChords.add(zeroChord);
                 ArrayList<Block> newBlocks = new ArrayList<Block>();
                 newBlocks.addAll(newChords);

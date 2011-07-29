@@ -39,6 +39,8 @@ import polya.Polylist;
 
 public class ChordBlock extends Block {
     
+    public static enum FlagType {NORMAL, SECTION_END, PHRASE_END} ;
+    
     private Chord chord;
     private long NC = -1;
     private String BACKSLASH = "\\";
@@ -61,7 +63,7 @@ public class ChordBlock extends Block {
         mode = this.findModeFromQuality();
     }
     
-    public ChordBlock(String chordName, int dur, boolean sectionend) {
+    public ChordBlock(String chordName, int dur, int endValue) {
         super(chordName);
         this.duration = dur;
         chord = new Chord(chordName, this.duration);
@@ -69,8 +71,7 @@ public class ChordBlock extends Block {
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
         else
             key = fixRoot(chord.getRoot());
-        if(sectionend)
-            endValue = Block.SECTION_END;
+        this.endValue = endValue;
         mode = findModeFromQuality();
     }
     

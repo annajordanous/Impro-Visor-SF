@@ -21,6 +21,8 @@
 package imp.data;
 
 import imp.*;
+import imp.brickdictionary.Block;
+import imp.brickdictionary.ChordBlock;
 import java.io.Serializable;
 import java.util.*;
 import javax.sound.midi.*;
@@ -416,6 +418,54 @@ public long sequence(Sequence seq, int ch, long time, Track track,
        }
     return time;
   }
+
+public ArrayList<imp.brickdictionary.Block> toBlockList()
+{
+    ArrayList<imp.brickdictionary.Block> blocks = new ArrayList();
+    int chordsSize = chords.size();
+    
+    int endIndex = chordsSize;
+    
+    // m is a second iterator intended to stay one step ahead of k
+    // so as to get the start of the next section
+    
+    ListIterator<SectionRecord> k = records.listIterator();
+    ListIterator<SectionRecord> m = records.listIterator();
+    if( m.hasNext() )
+      {
+        m.next();
+      }
+
+    while( k.hasNext() ) //&& (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
+      {
+        SectionRecord record = k.next();
+        Style style = record.getStyle();
+        int startIndex = record.getIndex();
+        
+        endIndex = m.hasNext() ? m.next().getIndex() : chordsSize;
+        
+        ChordBlock block = null;
+        
+        for( int slot = startIndex; slot < endIndex; slot++ )
+          {
+          Chord chord = chords.getChord(slot);
+          
+          if( chord != null )
+            {
+              block = new ChordBlock(chord.getName(), chord.getRhythmValue());
+              blocks.add(block);
+            }
+          }
+        
+        // For last block in section
+        if( block != null )
+            {
+            block.setSectionEnd(record.getIsPhrase()? Block.PHRASE_END : Block.SECTION_END);
+            }
+       }
+    
+    return blocks;
+}
 
 /**
  * Determine whether a given index corresponds to the start of a Section.

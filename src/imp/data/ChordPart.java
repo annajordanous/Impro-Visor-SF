@@ -531,6 +531,7 @@ public ArrayList<Boolean> getSectionEnds()
     return result;
   }
 
+/* old
 public ArrayList<imp.brickdictionary.Block> toBlockList()
 {
     ArrayList<imp.brickdictionary.Block> chords = new ArrayList();
@@ -553,6 +554,12 @@ public ArrayList<imp.brickdictionary.Block> toBlockList()
     
     return chords;
 }
+*/
+
+public ArrayList<imp.brickdictionary.Block> toBlockList()
+{
+return sectionInfo.toBlockList();
+}
 
 /**
  * Populate a RoadMapFrame with this ChordPart
@@ -561,7 +568,7 @@ public ArrayList<imp.brickdictionary.Block> toBlockList()
 
 public void toRoadMapFrame(RoadMapFrame roadmap)
   {
-    roadmap.addBlocks(0,toBlockList());
+    roadmap.addBlocks(0, toBlockList());
   }
 
 
