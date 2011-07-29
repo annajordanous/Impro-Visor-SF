@@ -30,6 +30,7 @@ import java.util.Enumeration;
 import java.io.*;
 
 import imp.Constants;
+import imp.brickdictionary.Block;
 import imp.com.*;
 import imp.data.*;
 import imp.util.*;
@@ -52,6 +53,9 @@ public class Stave
         extends JPanel
         implements Constants
   {
+
+  private String PHRASE_MARK = ",";
+  private String SECTION_MARK = "Style: ";
   
   /**
    * The maximum width alloted to time signature. Longer than this causes too
@@ -321,6 +325,8 @@ public class Stave
   private Font barNumFont = new Font("Helvetica", Font.PLAIN, 12);
 
   private Font composerFont = barNumFont;
+  
+  private Font phraseMarkFont = new Font("TimesRoman", Font.PLAIN, 24);
 
   /**
    * The font for the chord symbols
@@ -2877,12 +2883,22 @@ public class Stave
         pitchDeterminer = orignote;
         }
 
-      if( chordProg.getSectionInfo().sectionAtSlot(i) )
+      switch( chordProg.getSectionInfo().sectionAtSlot(i) )
         {
-        g.drawString("Style: " +
+          case Block.SECTION_END:
+            g.drawString(SECTION_MARK+
                 chordProg.getSectionInfo().getStyleFromSlots(i),
                 xCoordinate - 25,
                 headSpace + (staveLine * lineSpacing) - styleYoffset);
+              break;
+              
+          case Block.PHRASE_END:
+            g.setFont(phraseMarkFont);
+            g.drawString(PHRASE_MARK,
+                xCoordinate - 25,
+                headSpace + (staveLine * lineSpacing) - styleYoffset);
+              break;
+             
         }
 
       int noteValue = orignote == null ? 0 : orignote.getRhythmValue();

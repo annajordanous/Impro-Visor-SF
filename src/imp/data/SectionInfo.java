@@ -175,16 +175,24 @@ public class SectionInfo implements Constants, Serializable {
         return null;
     }
 
-    public boolean sectionAtSlot(int n) {
+    public int sectionAtSlot(int n) {
        Iterator<SectionRecord> k = records.listIterator();
         while( k.hasNext() )
           {
-            if( k.next().getIndex() == n )
+            SectionRecord record = k.next();
+            if( record.getIndex() == n )
               {
-                return true;
+                if( record.getIsPhrase() )
+                  {
+                    return Block.PHRASE_END;
+                  }
+                else
+                  {
+                    return Block.SECTION_END;
+                  }
               }
           }
-        return false;
+        return Block.NO_END;
     }
     
     public Style getStyleFromSlots(int n) {        
