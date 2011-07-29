@@ -287,7 +287,7 @@ public class GraphicBrick {
         int x = settings.xOffset + settings.getLength(slot);
         int y = settings.yOffset + settings.getLineOffset() * line;
         
-        long[] wrap = settings.wrapFromSlots(slot+block.getDuration());
+        int[] wrap = settings.wrapFromSlots((int)slot+block.getDuration());
         int endX = settings.xOffset + settings.getLength(wrap[0]);
         long lines = wrap[1];
         
@@ -378,11 +378,11 @@ public class GraphicBrick {
         
         for( ChordBlock chord : chords ) {
             //int[] wrap = settings.wrap(x + settings.getLength(currentBeats+1));
-            long[] wrap = settings.wrapFromSlots(slot+currentBeats);
+            int[] wrap = settings.wrapFromSlots((int)(slot+currentBeats));
             int currentX = xOffset+settings.getLength(wrap[0]);
             int currentY = yOffset + (int)((line + wrap[1]) * settings.getLineOffset()) + 2*blockHeight;
             
-            long[] endWrap = settings.wrapFromSlots(slot+currentBeats+chord.getDuration());
+            int[] endWrap = settings.wrapFromSlots((int)(slot+currentBeats+chord.getDuration()));
             int endX = xOffset + settings.getLength(endWrap[0]);
             int lines = (int)(endWrap[1] - wrap[1]);
             

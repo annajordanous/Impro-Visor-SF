@@ -109,7 +109,7 @@ public class RoadMapPanel extends JPanel{
             currentSlots += brick.getDuration();
             lineBeats += brick.getDuration();
             
-            long[] wrap = settings.wrapFromSlots(lineBeats);
+            int[] wrap = settings.wrapFromSlots((int)lineBeats);
             lineBeats = wrap[0];
             lines += wrap[1];
             
@@ -563,20 +563,24 @@ public class RoadMapPanel extends JPanel{
         int[] wrap = findLineAndSlot(slot + playLineOffset);
         playLineSlot = wrap[0];
         playLineLine = wrap[1];
-        //draw();
     }
     
-    public int[] findLineAndSlot(int slots) //Doesn't really do this
+    public int[] findLineAndSlot(int slots)
     {
        int totalSlots = 0;
+       int slotOffset = 0;
+       int line = 0;
        
        for(GraphicBrick brick : graphicMap) {
            totalSlots += brick.getDuration();
+           slotOffset = (int)brick.getSlot() + brick.getDuration() + slots - totalSlots;
+           line = brick.getLine();
+           
            if(slots < totalSlots)
-               return new int[] {(int)brick.getSlot() + brick.getDuration() + slots - totalSlots,
-                   brick.getLine()};
+               break;
        }
-       return new int[]{0,0};
+       int[] wrap = settings.wrapFromSlots(slotOffset);
+       return new int[]{wrap[0],line + wrap[1]};
     }
     
     public void setRolloverPos(Point point)
@@ -638,9 +642,9 @@ public class RoadMapPanel extends JPanel{
         
         drawCursorLine((int)startBrick.getSlot(), startBrick.getLine(), color);
         
-        long[] wrap = settings.wrapFromSlots(endBrick.getSlot() + endBrick.getDuration());
+        int[] wrap = settings.wrapFromSlots((int)endBrick.getSlot() + endBrick.getDuration());
         if(wrap[0] == 0 && wrap[1] > 0) { // TODO, maybe making a wrap method that doesn't wrap until it's over the edge?
-            wrap[0] = settings.getSlotsPerLine();
+            wrap[0] = (int)settings.getSlotsPerLine();
             wrap[1]--;
         }
         
@@ -778,7 +782,7 @@ public class RoadMapPanel extends JPanel{
             currentBeats += keySpan.getDuration();
             lineBeats += keySpan.getDuration();
             
-            long[] wrap = settings.wrapFromSlots(lineBeats);
+            int[] wrap = settings.wrapFromSlots((int)lineBeats);
             lineBeats = wrap[0];
             lines += wrap[1];
             

@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+//TODO: become consistent with either long or int
+
 package imp.roadmap;
 
 import imp.brickdictionary.*;
@@ -209,11 +211,11 @@ public class RoadMapSettings {
         return new int[]{endX, lines};
     }
     
-    public long[] wrapFromSlots(long b)
+    public int[] wrapFromSlots(int b)
     {
-        long lines = getLines(b);
-        long endX = (b%getSlotsPerLine());
-        return new long[]{endX, lines};
+        int lines = getLines(b);
+        int endX = (int)(b%getSlotsPerLine());
+        return new int[]{endX, lines};
     }
 
     public static String trimString(String string, int length, FontMetrics metrics)
