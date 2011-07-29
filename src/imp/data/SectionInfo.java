@@ -426,6 +426,8 @@ public long sequence(Sequence seq, int ch, long time, Track track,
     // m is a second iterator intended to stay one step ahead of k
     // so as to get the start of the next section
     
+    Style mostRecentStyle = new Style();
+    
     ListIterator<SectionRecord> k = records.listIterator();
     ListIterator<SectionRecord> m = records.listIterator();
     if( m.hasNext() )
@@ -437,6 +439,12 @@ public long sequence(Sequence seq, int ch, long time, Track track,
       {
         SectionRecord record = k.next();
         Style style = record.getStyle();
+        if( style == null )
+          {
+            style = mostRecentStyle;
+          }
+        mostRecentStyle = style;
+        
         int startIndex = record.getIndex();
         
         endIndex = m.hasNext() ? m.next().getIndex() : chordsSize;
