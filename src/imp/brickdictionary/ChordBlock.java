@@ -106,6 +106,10 @@ public class ChordBlock extends Block {
         return this.duration;
     }
     
+    public Chord getChord() {
+        return chord;
+    }
+    
     @Override
     public void scaleDuration(int scale) {
         if(scale > 0)
@@ -273,7 +277,7 @@ public class ChordBlock extends Block {
         else if(q.startsWith("7"))
             m = "Dominant";
         else
-            m = "minor";
+            m = "Minor";
         
         return m;
     }

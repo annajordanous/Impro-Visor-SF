@@ -19,29 +19,29 @@
 	(Chord FM7 1)
 	(Chord CM7 1))
 
-(Def-Brick Autumn-Leaves-Opening minor Opening C
+(Def-Brick Autumn-Leaves-Opening Minor Opening C
 	(Brick Straight-Cadence C 4)
 	(Brick Sad-Cadence A 4))
 
 // Added by RK
-(Def-Brick Autumnal-Cadence(basic) minor Cadence C
+(Def-Brick Autumnal-Cadence(basic) Minor Cadence C
         (Chord Fm7 2)
         (Chord Dm7  1)
         (Chord G7  1))
 
-(Def-Brick Autumnal-Cadence(variant) minor Cadence C
+(Def-Brick Autumnal-Cadence(variant) Minor Cadence C
 	(Brick Autumnal-Approach C 6)
 	(Chord Am 2))
 
-(Def-Brick Autumnal-Approach(var1) minor Approach C
+(Def-Brick Autumnal-Approach(var1) Minor Approach C
 	(Brick Straight-Approach C 2)
 	(Brick Sad-Approach A 2))
 
-(Def-Brick Autumnal-Approach(var2) minor Approach C
+(Def-Brick Autumnal-Approach(var2) Minor Approach C
 	(Brick Sad-Approach C 2)
 	(Brick Sad-Approach A 2))
 
-(Def-Brick Autumnal-Approach(var3) minor Approach C
+(Def-Brick Autumnal-Approach(var3) Minor Approach C
 	(Chord Fm7 2)
 	(Brick Sad-Approach C 2))
 
@@ -168,7 +168,7 @@
 	(Brick Somewhere C 5)
 	(Brick GenDom C 1)) // modified by XS
 
-(Def-Brick Minor-Dropback minor Dropback C
+(Def-Brick Minor-Dropback Minor Dropback C
 	(Chord Cm 1)
 	(Chord Am7b5 1))
 
@@ -320,7 +320,7 @@
 	(Chord AbM7 1)
 	(Brick GenDom C 1))
 
-(Def-Brick Nobody's-Cadence minor Cadence C
+(Def-Brick Nobody's-Cadence Minor Cadence C
 	(Chord CM7 1)
 	(Chord E7 1)
 	(Chord Am 2))
@@ -333,7 +333,7 @@
 	(Chord Ab7 1)
 	(Brick GenDom C 1))
 
-(Def-Brick Nowhere-Minor-Cadence minor Cadence C
+(Def-Brick Nowhere-Minor-Cadence Minor Cadence C
         (Brick Nowhere-Approach C 2)
         (Chord Cm 2))
 
@@ -341,7 +341,7 @@
 	(Brick Dropback C 2)
 	(Brick Nowhere-Approach C 2))
 
-(Def-Brick Nowhere-Turnaround-Minor minor Turnaround C
+(Def-Brick Nowhere-Turnaround-Minor Minor Turnaround C
         (Brick Minor-Dropback C 2)
         (Brick Nowhere-Approach C 2))
 
@@ -349,7 +349,7 @@
         (Brick Nowhere-Turnaround C 4)
         (Chord CM7 1))
 
-(Def-Brick Nowhere-Turnaround-Minor-Cadence minor Cadence C
+(Def-Brick Nowhere-Turnaround-Minor-Cadence Minor Cadence C
         (Brick Nowhere-Turnaround-Minor C 4)
         (Chord Cm 1))
 
@@ -377,24 +377,24 @@
 	(Brick POT C 4)
 	(Chord C 1))
 
-(Def-Brick Minor-POT(standard) minor Turnaround C
+(Def-Brick Minor-POT(standard) Minor Turnaround C
 	(Brick Minor-Dropback C 2)
 	(Brick Sad-Approach C 2))
 
-(Def-Brick Minor-POT(variant) minor Turnaround C
+(Def-Brick Minor-POT(variant) Minor Turnaround C
         (Brick Minor-Dropback C 2)
         (Chord D7 1)
         (Chord G7 1))
 
-(Def-Brick Minor-POT(short) minor Turnaround C
+(Def-Brick Minor-POT(short) Minor Turnaround C
         (Chord Cm 2)
         (Brick Sad-Approach C 2))
 
-(Def-Brick Minor-POT(dominant) minor Turnaround C
+(Def-Brick Minor-POT(dominant) Minor Turnaround C
         (Chord Cm 1)
         (Brick Extended-Approach C 3))
 
-(Def-Brick Minor-POT+Cadence minor Turnaround C
+(Def-Brick Minor-POT+Cadence Minor Turnaround C
 	(Brick Minor-POT C 4)
 	(Chord Cm 1))
 
@@ -539,26 +539,26 @@
         (Brick Reverse-Raindrop C 2)
 	(Chord CM7 1))
 
-(Def-Brick Sad-Cadence minor Cadence C
+(Def-Brick Sad-Cadence Minor Cadence C
 	(Brick Sad-Approach C 2)
 	(Chord Cm 2))
 
 /*
-(Def-Brick Sad-Cadence(Dominant) minor Cadence C
+(Def-Brick Sad-Cadence(Dominant) Minor Cadence C
         (Brick Sad-Approach C 2)
         (Chord Cm 2))
 */
 
-(Def-Brick Sad-Approach minor Approach C
+(Def-Brick Sad-Approach Minor Approach C
 	(Chord Dm7b5 1)  
 	(Chord G7 1))          // modified by RK
 
-(Def-Brick Sad-Somewhere minor Dropback C
+(Def-Brick Sad-Somewhere Minor Dropback C
 	(Brick Sad-Approach C 2)
 	(Chord D7 1))
 
 /*
-(Def-Brick Sad-Straight minor Cadence C
+(Def-Brick Sad-Straight Minor Cadence C
 	(Brick Sad-Approach C 2)
 	(Chord Cm 2))
 */
@@ -664,7 +664,7 @@
 	(Chord G7 1))
 
 /*
-(Def-Brick Sad-Approach minor Approach C
+(Def-Brick Sad-Approach Minor Approach C
 	(Chord Dm7b5 1)
 	(Chord G7 1))
 */
@@ -708,7 +708,7 @@
 	(Brick Straight-Approach C 2)
 	(Chord C7#4 2))
 
-(Def-Brick Surprise-Minor-Cadence minor Cadence C
+(Def-Brick Surprise-Minor-Cadence Minor Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord Cm 2))
 
@@ -900,43 +900,43 @@
 	(Chord C 1)
 	(Chord B7 1))
 
-(Def-Brick On-Off-Minor-To-bII minor On-Off C
+(Def-Brick On-Off-Minor-To-bII Minor On-Off C
 	(Chord Cm 1)
 	(Chord Db7 1))
 
-(Def-Brick On-Off-Minor-To-II minor On-Off C
+(Def-Brick On-Off-Minor-To-II Minor On-Off C
 	(Chord Cm 1)
 	(Chord D7 1))
 
-(Def-Brick On-Off-Minor-To-bIII minor On-Off C
+(Def-Brick On-Off-Minor-To-bIII Minor On-Off C
 	(Chord Cm 1)
 	(Chord Eb7 1))
 
-(Def-Brick On-Off-Minor-To-III minor On-Off C
+(Def-Brick On-Off-Minor-To-III Minor On-Off C
 	(Chord Cm 1)
 	(Chord E7 1))
 
-(Def-Brick On-Off-Minor-To-bV minor On-Off C
+(Def-Brick On-Off-Minor-To-bV Minor On-Off C
 	(Chord Cm 1)
 	(Chord Gb7 1))
 
-(Def-Brick On-Off-Minor-To-V minor On-Off C
+(Def-Brick On-Off-Minor-To-V Minor On-Off C
         (Chord Cm 1)
         (Chord G7 1))
 
-(Def-Brick On-Off-Minor-To-bVI minor On-Off C
+(Def-Brick On-Off-Minor-To-bVI Minor On-Off C
 	(Chord Cm 1)
 	(Chord Ab7 1))
 
-(Def-Brick On-Off-Minor-To-VI minor On-Off C
+(Def-Brick On-Off-Minor-To-VI Minor On-Off C
 	(Chord Cm 1)
 	(Chord A7 1))
 
-(Def-Brick On-Off-Minor-To-bVII minor On-Off C
+(Def-Brick On-Off-Minor-To-bVII Minor On-Off C
 	(Chord Cm 1)
 	(Chord Bb7 1))
 
-(Def-Brick On-Off-Minor-To-VII minor On-Off C
+(Def-Brick On-Off-Minor-To-VII Minor On-Off C
 	(Chord Cm 1)
 	(Chord B7 1))
 
@@ -980,43 +980,43 @@
 	(Brick On-Off-To-VII C 2)
 	(Chord C 2))
 
-(Def-Brick On-Off-On-Minor-To-bII minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bII Minor On-Off C
 	(Brick On-Off-Minor-To-bII C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-II minor On-Off C
+(Def-Brick On-Off-On-Minor-To-II Minor On-Off C
 	(Brick On-Off-Minor-To-II C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bIII minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bIII Minor On-Off C
 	(Brick On-Off-Minor-To-bIII C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-III minor On-Off C
+(Def-Brick On-Off-On-Minor-To-III Minor On-Off C
 	(Brick On-Off-Minor-To-III C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bV minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bV Minor On-Off C
 	(Brick On-Off-Minor-To-bV C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-V minor On-Off C
+(Def-Brick On-Off-On-Minor-To-V Minor On-Off C
 	(Brick On-Off-Minor-To-V C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bVI minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bVI Minor On-Off C
 	(Brick On-Off-Minor-To-bVI C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-VI minor On-Off C
+(Def-Brick On-Off-On-Minor-To-VI Minor On-Off C
 	(Brick On-Off-Minor-To-VI C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bVII minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bVII Minor On-Off C
 	(Brick On-Off-Minor-To-bVII C 2)
 	(Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-VII minor On-Off C
+(Def-Brick On-Off-On-Minor-To-VII Minor On-Off C
 	(Brick On-Off-Minor-To-VII C 2)
 	(Chord Cm 2))
 
@@ -1108,103 +1108,103 @@
         (Brick On-Off-Major-To-VII C 2)
         (Chord CM 2))
 
-(Def-Brick On-Off-Minor-To-bII-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-bII-Major Minor On-Off C
         (Chord Cm 2)
         (Chord DbM7 2))
 
-(Def-Brick On-Off-Minor-To-II-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-II-Major Minor On-Off C
         (Chord Cm 2)
         (Chord DM7 2))
 
-(Def-Brick On-Off-Minor-To-bIII-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-bIII-Major Minor On-Off C
         (Chord Cm 2)
         (Chord EbM7 2))
 
-(Def-Brick On-Off-Minor-To-III-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-III-Major Minor On-Off C
         (Chord Cm 2)
         (Chord EM7 2))
 
-(Def-Brick On-Off-Minor-To-IV-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-IV-Major Minor On-Off C
         (Chord Cm 2)
         (Chord FM7 2))
 
-(Def-Brick On-Off-Minor-To-bV-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-bV-Major Minor On-Off C
         (Chord Cm 2)
         (Chord GbM7 2))
 
-(Def-Brick On-Off-Minor-To-V-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-V-Major Minor On-Off C
         (Chord Cm 2)
         (Chord GM7 2))
 
-(Def-Brick On-Off-Minor-To-bVI-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-bVI-Major Minor On-Off C
         (Chord Cm 2)
         (Chord AbM7 2))
 
-(Def-Brick On-Off-Minor-To-VI-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-VI-Major Minor On-Off C
         (Chord Cm 2)
         (Chord AM7 2))
 
-(Def-Brick On-Off-Minor-To-bVII-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-bVII-Major Minor On-Off C
         (Chord Cm 2)
         (Chord BbM7 2))
 
-(Def-Brick On-Off-Minor-To-VII-Major minor On-Off C
+(Def-Brick On-Off-Minor-To-VII-Major Minor On-Off C
         (Chord Cm 2)
         (Chord BM7 2))
 
-(Def-Brick On-Off-On-Minor-To-bII-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bII-Major Minor On-Off C
         (Brick On-Off-Minor-To-bII-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-II-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-II-Major Minor On-Off C
         (Brick On-Off-Minor-To-II-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bIII-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bIII-Major Minor On-Off C
         (Brick On-Off-Minor-To-bIII-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-III-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-III-Major Minor On-Off C
         (Brick On-Off-Minor-To-III-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-IV-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-IV-Major Minor On-Off C
         (Brick On-Off-Minor-To-IV-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bV-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bV-Major Minor On-Off C
         (Brick On-Off-Minor-To-bV-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-V-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-V-Major Minor On-Off C
         (Brick On-Off-Minor-To-V-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bVI-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bVI-Major Minor On-Off C
         (Brick On-Off-Minor-To-bVI-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-VI-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-VI-Major Minor On-Off C
         (Brick On-Off-Minor-To-VI-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-bVII-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-bVII-Major Minor On-Off C
         (Brick On-Off-Minor-To-bVII-Major C 2)
         (Chord Cm 2))
 
-(Def-Brick On-Off-On-Minor-To-VII-Major minor On-Off C
+(Def-Brick On-Off-On-Minor-To-VII-Major Minor On-Off C
         (Brick On-Off-Minor-To-VII-Major C 2)
         (Chord Cm 2))
 
 // CESH's added by RK
 // CESH = Contrpunal Elaboration of Static Harmony
 
-(Def-Brick Ascending-CESH(var1) minor Misc C
+(Def-Brick Ascending-CESH(var1) Minor Misc C
         (Chord Cm 1)
         (Chord Cm+ 1)
         (Chord Cm6 1))
 
-(Def-Brick Ascending-CESH(var2) minor Misc C
+(Def-Brick Ascending-CESH(var2) Minor Misc C
         (Chord Cm 1)
         (Chord Cm+ 1)
         (Chord Cm6 1)
