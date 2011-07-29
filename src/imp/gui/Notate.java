@@ -20684,6 +20684,7 @@ private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//G
 
 public void fileStepForward()
 {
+    stopPlaying();
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
     File file;
@@ -20765,6 +20766,7 @@ public void fileStepForward()
 
 public void fileStepBackward()
 {
+    stopPlaying();
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
     File file;
