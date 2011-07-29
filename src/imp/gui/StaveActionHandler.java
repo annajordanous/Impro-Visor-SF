@@ -2272,10 +2272,12 @@ public void keyPressed(KeyEvent e)
             
         case KeyEvent.VK_LEFT:
             notate.fileStepBackward();
+            notate.staveRequestFocus();
             return;
             
         case KeyEvent.VK_RIGHT:
             notate.fileStepForward();
+            notate.staveRequestFocus();
             return;
 
         default:                        // check for numeric keys
