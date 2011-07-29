@@ -20415,6 +20415,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
         int indexOfChordToPlay = 0;
         int modedIndex=0;
         int increment=0;
+        autoScrollOnPlayback = true;
         if(skippedBack)
         {
             currIndex = midiSynth.getSlot();
@@ -20568,6 +20569,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
 
 private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepBackButtonActionPerformed
         int currChordIndex = 0;
+        autoScrollOnPlayback = true;
         skippedBack = true;
         currChordIndex = midiSynth.getSlot();
         int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
