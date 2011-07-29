@@ -138,7 +138,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         setRoadMapTitle(notate.getTitle());
         
-        notate.getMetre(settings.metre);
+        notate.getMetre(settings.getMetre());
         //settings.beatsPerMeasure = notate.getTimeSigTop();
         settings.slotsPerBeat = notate.getBeatValue();
         
@@ -1195,10 +1195,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         roadMapPanel.addBlocksBeforeSelectionAndSelect(score.getChordProg().toBlockList()); 
         roadMapPanel.placeBricks();
+        activateButtons();
         
         // restartPlayingSelection();
                  
-        //roadMapPanel.placeBricks();
+        this.requestFocus();
         }
     }//GEN-LAST:event_textualEntryKeyPressed
 
@@ -1800,7 +1801,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     public void setDurationChoices(Brick brick)
     {
-        int sig = settings.metre[0];
+        int sig = settings.getMetre()[0];
         ArrayList<Integer> choices = new ArrayList();
         for(int i = brick.getDuration(); i < sig*brick.getDuration(); i++)
             choices.add(i);
@@ -1966,7 +1967,7 @@ public void appendSelectionToNotate()
         imp.data.ChordPart chordPart = new imp.data.ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
-        score.setMetre(settings.metre);
+        score.setMetre(settings.getMetre());
         auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
       }
     else
@@ -2008,7 +2009,7 @@ public void sendSelectionToNewNotate()
     imp.data.ChordPart chordPart = new imp.data.ChordPart();
     chordPart.addFromRoadMapFrame(this);
     Score score = new Score(chordPart);
-    score.setMetre(settings.metre);
+    score.setMetre(settings.getMetre());
     auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
     auxNotate.setCreateRoadMapCheckBox(false);
         
@@ -2050,7 +2051,7 @@ public void resetAuxNotate()
          ChordPart chordPart = new imp.data.ChordPart();
          chordPart.addFromRoadMapFrame(this);
          Score score = new imp.data.Score(chordPart);
-         score.setMetre(settings.metre);
+         score.setMetre(settings.getMetre());
          
          setPlaying(MidiPlayListener.Status.PLAYING, 0);
          
@@ -2199,8 +2200,7 @@ public void setMetre(int metre[])
 
 public int[] getMetre()
   {
-    int result[] = {settings.metre[0], settings.metre[1]};
-    return result;
+    return settings.getMetre();
   }
 
 public int getMidiSlot()

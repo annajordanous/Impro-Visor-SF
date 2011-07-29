@@ -26,24 +26,28 @@ import java.util.ArrayList;
 import imp.brickdictionary.*;
 
 /**
- *
+ * This class contains the graphical representation of a Block.
+ * Contains positional information, selection, and drawing methods
  * @author August Toman-Yih
  */
 public class GraphicBrick {
-        
+    /** contained block */
     private Block block;
+    /** is the block selected? */
     private boolean isSelected = false;
+    /** which chord in the block is selected */
     private int selected = -1;
-    
+    /** slot offset on line in the roadmap*/
     private long slot = 0;
+    /** line that block is on in the roadmap */
     private int line = 0;
     
     private RoadMapSettings settings;
     
     /**
      * Constructor to create a GraphicBrick from a block
-     * @param block 
-     * block to be graphically represented
+     * @param block block to be graphically represented
+     * @param settings settings of the current roadmap
      */
     public GraphicBrick(Block block, RoadMapSettings settings)
     {
@@ -53,23 +57,27 @@ public class GraphicBrick {
     
     /**
      * Returns the name of the brick
-     * @return 
+     * @return name
      */
     public String getName()
     {
         return block.getName();
     }
     
+    /**
+     * Returns the duration of the brick
+     * @return duration
+     */
     public int getDuration()
     {
         return block.getDuration();
     }
     
     /**
-     * Returns the brick
-     * @return 
+     * Returns the block
+     * @return block
      */
-    public Block getBrick()
+    public Block getBlock()
     {
         return block;
     }
@@ -92,11 +100,19 @@ public class GraphicBrick {
         this.line = line;
     }
     
+    /**
+     * returns the slot offset
+     * @return slot offset
+     */
     public long getSlot()
     {
         return slot;
     }
     
+    /**
+     * returns the line that the brick is on
+     * @return line offset
+     */
     public int getLine()
     {
         return line;
@@ -149,6 +165,11 @@ public class GraphicBrick {
         selected = index;
     }
     
+    /**
+     * Get chord at specific index
+     * @param index desired chord index
+     * @return ChordBlock
+     */
     public ChordBlock getChord(int index)
     {
         return block.flattenBlock().get(index);
@@ -250,6 +271,10 @@ public class GraphicBrick {
         return -1;
     }
     
+    /**
+     * returns the pixel width of this block
+     * @return 
+     */
     public int getLength()
     {
         return settings.getBlockLength(block);
@@ -450,7 +475,7 @@ public class GraphicBrick {
     
     /**
      * Draws the bricks at a specified location without wrapping
-     * @param g2d graphics on which to draw
+     * @param g graphics on which to draw
      * @param x x-coordinate
      * @param y y-coordinate
      */

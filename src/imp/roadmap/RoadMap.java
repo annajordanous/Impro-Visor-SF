@@ -31,16 +31,15 @@ import polya.Polylist;
 import polya.PolylistBuffer;
 
 /**
- *
+ * This class contains the musical data of a roadmap IE: a sequence of blocks,
+ * keys and joins.
  * @author August Toman-Yih
  */
 public class RoadMap {
     /** List of blocks contained in the roadmap */
     private ArrayList<Block> blocks;
-    
     /** Key map in the form of key, duration pairs */
     private ArrayList<KeySpan> keyMap = new ArrayList();
-    
     /** List of joins between each brick */
     private ArrayList<String> joins = new ArrayList();
     

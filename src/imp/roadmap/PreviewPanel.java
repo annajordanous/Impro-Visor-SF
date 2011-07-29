@@ -26,21 +26,24 @@ import java.awt.*;
 import imp.brickdictionary.*;
 
 /**
- *
+ * A panel containing a modifiable preview of a single brick
  * @author August Toman-Yih
  */
 public class PreviewPanel extends JPanel
 {
-    
+    /** Buffer for drawing */
     private Image buffer;
-    
+    /** GraphicBrick containing modified brick */
     public GraphicBrick currentBrick;
+    /** The original, unmodified brick */
     private Block protoBrick;
     
-    
+    /** Key of the contents of the panel */
     private long currentKey = 0;
+    /** Duration (of shortest chord) in the brick in the panel */
     private int currentDuration = 480;
     
+    /** Parent RoadMapFrame */
     RoadMapFrame view;
     
     /** Required if we are going to make a bean from this. */
@@ -50,45 +53,55 @@ public class PreviewPanel extends JPanel
       
      }
 
-    /** Creates new form PreviewPanel */
+    /**
+     * Creates new form PreviewPanel
+     * @param view 
+     */
     public PreviewPanel(RoadMapFrame view)
     {
         this.view = view;        
     }
   
    /**
-   * Override the paint method to draw the buffer image on this panel's graphics.
-   * This method is called implicitly whenever repaint() is called.
-   */
+    * Override the paint method to draw the buffer image on this panel's graphics.
+    * This method is called implicitly whenever repaint() is called.
+    * @param g graphics on which to paint
+    */
     @Override
     public void paint(Graphics g) 
     {
         g.drawImage(buffer, 0, 0, null);
     }
     
+    /**
+     * Draw contents.
+     */
     public void draw()
     {
-        System.out.println(view);
         view.setBackground(buffer);
-        if( currentBrick != null )
-        {
-            System.out.println("Drawing Brick ");
+        if( currentBrick != null ) {
             currentBrick.drawAt(buffer.getGraphics(),1,1);
         }
         repaint();
     }
     
+    /**
+     * Sets the buffer used for drawing
+     * @param buffer 
+     */
     public void setBuffer(Image buffer)
     {
         this.buffer = buffer;
     }
     
+    /**
+     * Sets the base brick and previews the desired length and key
+     * @param brick base brick to preview and modify
+     */
     public void setBrick(Block brick)
     {
         RoadMapSettings settings = view.getSettings();
               
-        
-        System.out.println("Current Duration: " + currentDuration);
         if (brick instanceof Brick)
             protoBrick = new Brick((Brick)brick);
         else if (brick instanceof ChordBlock)
@@ -96,40 +109,57 @@ public class PreviewPanel extends JPanel
         
         brick.scaleDuration(currentDuration);
         brick.transpose(currentKey);
-        
-        
-        System.out.println("Brick Duration: " + brick.getDuration());
-        
+            
         currentBrick = new GraphicBrick(brick, settings);
     }
 
+    /**
+     * Returns GraphicBrick containing the modified brick
+     * @return
+     */
     public GraphicBrick getBrick()
     {
         return currentBrick;
     }
     
+    /**
+     * Returns the modifed brick
+     * @return 
+     */
     public Block getBlock()
     {
-        return currentBrick.getBrick();
+        return currentBrick.getBlock();
     }
     
+    /**
+     * Modifies the key/root of the brick
+     * @param key root of the key as offset from C
+     */
     public void setKey(long key)
     {
         if(currentBrick != null)
-            currentBrick.getBrick().transpose(currentKey - key);
+            currentBrick.getBlock().transpose(currentKey - key);
         currentKey = key;
         draw();
     }
     
+    /**
+     * Modifies the key/root of the brick
+     * @param key name of the root note of the key
+     */
     public void setKey(String key)
     {
         long newKey = BrickLibrary.keyNameToNum(key);
         if(currentBrick != null)
-            currentBrick.getBrick().transpose(newKey - currentKey);
+            currentBrick.getBlock().transpose(newKey - currentKey);
         currentKey = newKey;
         draw();
     }
     
+    /**
+     * Modifies the duration of the brick
+     * @param duration slots per shortest chord
+     */
     public void setDuration(int duration)
     {
         currentDuration = duration;

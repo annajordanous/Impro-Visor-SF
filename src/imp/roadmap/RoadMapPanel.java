@@ -29,7 +29,7 @@ import java.util.Random;
 
 
 /**
- *
+ * A class for viewing and modifying the roadmap graphically
  * @author August Toman-Yih
  */
 public class RoadMapPanel extends JPanel{
@@ -113,7 +113,7 @@ public class RoadMapPanel extends JPanel{
             lineBeats = wrap[0];
             lines += wrap[1];
             
-            if(brick.getBrick().getSectionEnd() == Block.SECTION_END &&
+            if(brick.getBlock().getSectionEnd() == Block.SECTION_END &&
                     lineBeats != 0) {
                 lineBeats = 0;
                 lines++;
@@ -203,7 +203,7 @@ public class RoadMapPanel extends JPanel{
         ArrayList<Block> blocks = new ArrayList();
         
         for( GraphicBrick brick : bricks )
-            blocks.add(brick.getBrick());
+            blocks.add(brick.getBlock());
         
         return blocks;
     }
@@ -714,7 +714,7 @@ public class RoadMapPanel extends JPanel{
             
             if(ind < joinList.size() && !joinList.get(ind).isEmpty()) { //JOINS
                 String joinName = joinList.get(ind);
-                int length = settings.getBlockLength(brick.getBrick());
+                int length = settings.getBlockLength(brick.getBlock());
                 
                 FontMetrics metrics = g.getFontMetrics();
                 

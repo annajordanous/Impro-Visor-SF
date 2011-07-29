@@ -20,6 +20,7 @@
  */
 
 //TODO: become consistent with either long or int
+//TODO: rework access levels
 
 package imp.roadmap;
 
@@ -27,30 +28,47 @@ import imp.brickdictionary.*;
 import java.awt.*;
 
 /**
- *
+ * Contains constants and methods used to draw the roadmap and its contents.
  * @author August Toman-Yih
  */
 public class RoadMapSettings {
+    /** Slots contained in each beat */
     public int slotsPerBeat = 120; // Better to get from imp.Constants
+    /** Horizontal margin of roadmap */
     public int xOffset = 50;
+    /** Vertical offset of roadmap */
     public int yOffset = 70;
+    /** Number of measures allowed per line */
     public int barsPerLine = 8;
+    /** Height of a line on the roadMap */
     public int lineHeight = 60;
-    public int measureLength = 100;
+    /** Space between lines */
     public int lineSpacing = 20;
-    public int metre[] = {4, 4};
+    /** Pixel width of each measure */
+    public int measureLength = 100;
+    /** Time signature */
+    private int metre[] = {4, 4};
     
-    
+    /* --- Colors --- */
+    /** Color of the grid lines */
     public Color gridLineColor = new Color(150,150,150);
+    /** Color of the grid background */
     public Color gridBGColor = new Color(225,225,225);
+    /** Color of a basic line */
     public Color lineColor = Color.BLACK;
+    /** Color of text */
     public Color textColor = Color.BLACK;
+    /** Color of a selected brick */
     public Color selectedColor = new Color(181, 213, 255);
+    /** Color of the brick background */
     public Color brickBGColor = Color.WHITE;
+    /** Color of the join background*/
     public Color joinBGColor = new Color(255, 255, 171);
+    /** Color of the playline */
     public Color playLineColor = Color.RED;
+    /** Color of the play section markers */
     public Color playSectionColor = Color.GREEN;
-    
+    /** Colors associated with different keys */
     public Color[] keyColors = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255), // Db
                                         new Color(200, 255, 100), // D
@@ -64,17 +82,22 @@ public class RoadMapSettings {
                                         new Color(255, 180, 150), // Bb
                                         new Color(100, 170, 255)};// B
     
-    public BasicStroke brickOutline = new BasicStroke(2);
+    /* --- Strokes --- */
+    /** Basic line */
     public BasicStroke basicLine    = new BasicStroke(1);
+    /** Line for brick outline */
+    public BasicStroke brickOutline = new BasicStroke(2);
+    /** Cursor line */
     public BasicStroke cursorLine   = new BasicStroke(2);
     
+    /* --- Fonts --- */
+    /** Font for normal text, such as bricks, joins, rollovers, etc */
     public Font basicFont = new Font("Dialog", Font.PLAIN, 12);
+    /** Font for titles */
     public Font titleFont = new Font("Dialog", Font.PLAIN, 24);
     
-    //Not sure if a lot of this belongs here
-    
     /**
-     * returns the length of the block in the current settings
+     * Returns the length of the block in the current settings
      * @param block the block
      * @return the length
      */
@@ -83,13 +106,17 @@ public class RoadMapSettings {
         return (int) (block.getDuration() * measureLength)/getSlotsPerMeasure();
     }
 
+    /**
+     * Calculates the slots contained in a measure
+     * @return number of slots in a measure
+     */
     public int getSlotsPerMeasure()
     {
         return slotsPerBeat * metre[0];
     }
     
     /**
-     * returns the length of a duration in the current settings
+     * Returns the length of a duration in the current settings
      * @param dur the duration
      * @return the length
      */
@@ -99,7 +126,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the x cutoff in the current settings
+     * Returns the x cutoff in the current settings
      * @return the x cutoff
      */
     public int getCutoff()
@@ -108,7 +135,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the number of beats per line
+     * Returns the number of beats per line
      * @return the number of beats per line
      */
     public long getSlotsPerLine()
@@ -117,7 +144,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the length of a line
+     * Returns the length of a line
      * @return the length
      */
     public int getLineLength()
@@ -126,7 +153,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the distance between each line
+     * Returns the distance between each line
      * @return the distance between each line
      */
     public int getLineOffset()
@@ -135,7 +162,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the height of a block
+     * Returns the height of a block
      * @return the height of a block
      */
     public int getBlockHeight()
@@ -144,7 +171,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the color of the given key
+     * Returns the color of the given key (assumed to be major)
      * @param key the key
      * @return the color
      */
@@ -153,11 +180,22 @@ public class RoadMapSettings {
         return keyColors[(int)key % 12];
     }
     
+    /**
+     * Returns the color for a keyspan (taking mode into account)
+     * @param keySpan
+     * @return the color
+     */
     public Color getKeyColor(KeySpan keySpan)
     {
         return getKeyColor(keySpan.getKey(), keySpan.getMode());
     }
     
+    /**
+     * Returns the color for the key with the given mode
+     * @param key the key
+     * @param mode the mode
+     * @return the color
+     */
     public Color getKeyColor(long key, String mode)
     {
         if(mode.equalsIgnoreCase("minor"))
@@ -169,7 +207,7 @@ public class RoadMapSettings {
     }
     
     /**
-     * returns the number of lines taken up by this number of beats
+     * Returns the number of lines taken up by this number of beats
      * @param beats number of beats
      * @return number of lines
      */
@@ -178,22 +216,11 @@ public class RoadMapSettings {
         int lines = (int) (beats/getSlotsPerLine());
         return lines;
     }
-    
+
     /**
-     * 
-     * @param beats
-     * @return 
+     * Getter for slotsPerBeat
+     * @return the number of slots in a beat
      */
-    public Point getPosFromSlots(long beats)
-    {
-        int line = (int)getSlotsPerLine();
-        int numLines = (int)beats/line;
-        int y = yOffset + numLines * (lineHeight + lineSpacing);
-        int x = xOffset + getLength(beats % line);
-        
-        return new Point(x,y);
-    }
-    
     public int getSlotsPerBeat()
     {
         return slotsPerBeat;
@@ -211,13 +238,26 @@ public class RoadMapSettings {
         return new int[]{endX, lines};
     }
     
-    public int[] wrapFromSlots(int b)
+    /**
+     * Returns a slot offset, line pair resulting from wrapping the given number
+     * of slots
+     * @param slots
+     * @return int[]{slot offset, line}
+     */
+    public int[] wrapFromSlots(int slots)
     {
-        int lines = getLines(b);
-        int endX = (int)(b%getSlotsPerLine());
+        int lines = getLines(slots);
+        int endX = (int)(slots%getSlotsPerLine());
         return new int[]{endX, lines};
     }
 
+    /**
+     * Trims a string to the desired length, using the given fontMetrics
+     * @param string string to be trimmed
+     * @param length length to trim to
+     * @param metrics fontMetrics
+     * @return trimmed string
+     */
     public static String trimString(String string, int length, FontMetrics metrics)
     {
         int stringLength = metrics.stringWidth(string);
@@ -229,10 +269,41 @@ public class RoadMapSettings {
         //System.out.println(string+" is too long. Length: " + stringLength + " Desired: " + length);
         return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
     }
+  
+    /**
+     * Sets the time signature of the roadmap for Americans
+     * @param meter 
+     */
+    public void setMeter(int meter[])
+      {
+        setMetre(meter);
+      }
     
+    /**
+     * Sets the time signature of the roadmap for the rest of the world
+     * @param metre 
+     */
     public void setMetre(int metre[])
       {
         this.metre[0] = metre[0];
         this.metre[1] = metre[1];
       }
+   
+    /**
+     * Returns the time signature of the roadmap for Americans
+     * @return 
+     */
+    public int[] getMeter()
+    {
+        return metre;
+    }
+    
+    /**
+     * Returns the time signature of the roadmap for the rest of the world
+     * @return 
+     */
+    public int[] getMetre()
+    {
+        return metre;
+    }
 }

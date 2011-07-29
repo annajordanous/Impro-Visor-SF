@@ -22,29 +22,48 @@
 package imp.roadmap;
 
 /**
- *
- * @author ImproVisor
+ * Contains the state of a roadmap. Used for undo/redo.
+ * @author August Toman-Yih
  */
 public class RoadMapSnapShot {
+    /** Snapshot name */
     private String name;
+    /** Stored roadmap */
     private RoadMap roadMap = new RoadMap();
     
+    /**
+     * Create a new snapshot
+     * @param name snapshot name
+     * @param roadMap state to store
+     */
     public RoadMapSnapShot(String name, RoadMap roadMap)
     {
         this.name = name;
         this.roadMap = new RoadMap(roadMap);
     }
     
+    /**
+     * Get the stored roadmap
+     * @return 
+     */
     public RoadMap getRoadMap()
     {
         return roadMap;
     }
     
+    /**
+     * Get the name of the snapshot
+     * @return 
+     */
     public String getName()
     {
         return name;
     }
     
+    /**
+     * String printing
+     * @return 
+     */
     @Override
     public String toString()
     {
