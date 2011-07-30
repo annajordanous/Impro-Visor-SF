@@ -3651,6 +3651,11 @@ public class Notate
         layoutTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         layoutTF.setToolTipText("Set a specific layout (bars per line).");
         layoutTF.setNextFocusableComponent(swingTF);
+        layoutTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layoutTFActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -14479,7 +14484,6 @@ private boolean saveMetre()
     // display the current layout
 
     Polylist layout = score.getLayoutList();
-
     if( layout != null && layout.nonEmpty() )
       {
       setLayoutPreference(layout);
@@ -20714,6 +20718,10 @@ private void createRoadMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt
     }
     Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
 }//GEN-LAST:event_createRoadMapCheckBoxActionPerformed
+
+private void layoutTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutTFActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_layoutTFActionPerformed
 
 public void fileStepForward()
 {

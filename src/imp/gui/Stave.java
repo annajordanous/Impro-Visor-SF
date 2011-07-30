@@ -2873,6 +2873,8 @@ public class Stave
 
     Note pitchDeterminer = null;
 
+    SectionInfo sectionInfo = chordProg.getSectionInfo();
+            
     // cycle through the entire part
     for( int i = 0; i < cstrLines.length; i++ )
       {
@@ -2884,27 +2886,31 @@ public class Stave
         pitchDeterminer = orignote;
         }
 
+      // Handle sections within or at start of line.
+      
+      int xSection = xCoordinate - 25;
+      
       switch( chordProg.getSectionInfo().sectionAtSlot(i) )
         {
           case Block.SECTION_END:
             g.drawString(SECTION_MARK+
-                chordProg.getSectionInfo().getStyleFromSlots(i),
-                xCoordinate - 25,
-                headSpace + (staveLine * lineSpacing) - styleYoffset);
+                         chordProg.getSectionInfo().getStyleFromSlots(i),
+                         xSection,
+                         headSpace + (staveLine * lineSpacing) - styleYoffset);
             
               // At a section other than the very start of the chorus,
               // draw a double bar.
-              if( totalMeasureCount > 1 )
+              if( lineMeasureCount > 1 )
                 {
-                drawBarLine(xCoordinate-25+ DOUBLE_BAR_OFFSET, staveLine, g);
+                drawBarLine(xSection + DOUBLE_BAR_OFFSET, staveLine, g);
                 }
               break;
               
           case Block.PHRASE_END:
             g.setFont(phraseMarkFont);
             g.drawString(PHRASE_MARK,
-                xCoordinate - 25,
-                headSpace + (staveLine * lineSpacing) - styleYoffset);
+                         xSection,
+                         headSpace + (staveLine * lineSpacing) - styleYoffset);
               break;
              
         }
@@ -3180,8 +3186,8 @@ public class Stave
           drawBeatBracket(getSubDivs(i / beatValue), bracketStart,
                   bracketEnd, staveLine, g);
           }
-        
-      }
+        }
+      
 //FIX: There is an error in drawing tuplet brackets. Just because the first
 // note in a group has the value that could be a tuplet does not mean that
 // all notes do. All values need to be checked.
@@ -3265,12 +3271,16 @@ public class Stave
           drawBarLine(STAVE_WIDTH, staveLine, g);
           toNextLine = true;
           
-          // Draw a double bar at the end of the chorus.
-          if( totalMeasureCount >= notate.getBarsPerChorus() )
+          // Draw a double bar at the end of the chorus and
+          // at end of line if a section end.
+          
+          if( totalMeasureCount >= notate.getBarsPerChorus() 
+           || sectionInfo.sectionAtSlot(i+1) == Block.SECTION_END )
             {
             drawBarLine(STAVE_WIDTH - DOUBLE_BAR_OFFSET, staveLine, g);  
             }
           }
+
         // otherwise draw the bar line at the current location
         else
           {
@@ -3281,8 +3291,7 @@ public class Stave
           if( i == part.size() - 1 )
             {
             // white out any extra stave space
-            whiteOutStave(staveLine, xCoordinate + 2,
-                    STAVE_WIDTH, g);
+            whiteOutStave(staveLine, xCoordinate + 2, STAVE_WIDTH, g);
             }
           else
             {
@@ -3308,9 +3317,20 @@ public class Stave
 
         drawStave(staveLine, leftMargin, STAVE_WIDTH, g);
 
-        // draw a bar line at the right margin, with bar numbers
-        // if the flag is set to true
+        // draw a bar line at the right margin, with bar numbers if needed
+        
         drawBarLine(leftMargin, staveLine, g);
+        
+        xSection = xCoordinate - 25;
+        
+        if( sectionInfo.sectionAtSlot(i) == Block.SECTION_END )
+          {
+            g.drawString(SECTION_MARK +
+                         sectionInfo.getStyleFromSlots(i),
+                         xSection,
+                         headSpace + (staveLine * lineSpacing) - styleYoffset);
+          }
+              
         if( showBarNums )
           {
           g.drawString("" + (totalMeasureCount + 1),
@@ -3365,8 +3385,7 @@ public class Stave
   /**
    * Checks to see where the tuplet bracket should end
    */
-  private int checkForTupletEnd(int startBeat, int tVal, int sdivs,
-                                 MelodyPart part)
+  private int checkForTupletEnd(int startBeat, int tVal, int sdivs, MelodyPart part)
     {
     return (startBeat + beatValue / tVal * sdivs - 1);
     }
