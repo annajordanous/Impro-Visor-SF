@@ -117,7 +117,7 @@ public class BrickLibrary {
             // in the circle of fifths with the same quality as the
             // resolution
             ArrayList<Block> overrunBlocks = new ArrayList<Block>();
-            overrunBlocks.addAll(brick.getSubBlocks());
+            overrunBlocks.add(brick);
             ArrayList<ChordBlock> chords = brick.flattenBlock();
             ChordBlock prevChord = chords.get(chords.size() - 1);
             ChordBlock overrunChord = 
@@ -140,7 +140,7 @@ public class BrickLibrary {
             // in the circle of fifths with the same quality as the
             // resolution
             ArrayList<Block> dropbackBlocks = new ArrayList<Block>();
-            dropbackBlocks.addAll(brick.getSubBlocks());
+            dropbackBlocks.add(brick);
             String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
             if (dropbackMode.equals("minor"))
                 dropbackChordName += "7b5";

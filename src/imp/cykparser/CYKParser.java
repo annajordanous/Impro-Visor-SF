@@ -332,8 +332,7 @@ public class CYKParser
             {
                 findNonterminal(startRow, startCol+startRow);
             }
-        }
-        
+        }        
         tableFilled = true;
     }
     
@@ -386,7 +385,7 @@ public class CYKParser
     
         // The shortest path in the top right cell gets printed as the best
         // explanation for the whole chord progression
-        return PostProcessing.findLaunchers(minVals[0][size - 1].toBlocks());
+        return minVals[0][size - 1].toBlocks();
             
     }
     
@@ -453,7 +452,7 @@ public class CYKParser
      */
     private void findNonterminal(int row, int col)
     {
-
+        
         cykTable[row][col] = new LinkedList<TreeNode>();
         
         LinkedList<TreeNode> overlaps = new LinkedList<TreeNode>();
@@ -472,57 +471,62 @@ public class CYKParser
             while(iter1.hasNext()) {
                 TreeNode symbol1 = (TreeNode)iter1.next();
                 
-                ListIterator iter2 = cykTable[row+index+1][col].listIterator();
-            
-                while(iter2.hasNext()) {
-                    TreeNode symbol2 = (TreeNode)iter2.next();
-                    
-                    // We check every rule against each pair of symbols.
-                    ListIterator iterRule = nonterminalRules.listIterator();
+                if (!symbol1.isSectionEnd() && !symbol1.isOverlap())
+                {
+                    ListIterator iter2 = cykTable[row+index+1][col].listIterator();
 
-                    while (iterRule.hasNext()) { 
-                        BinaryProduction rule = 
-                                (BinaryProduction) iterRule.next();
-                        
-                        // checkProduction returns a long describing the key
-                        // of the resulting brick if rule applies to symbol1
-                        // and symbol2, or -1 if no such brick can be made.
-                        long newKey = rule.checkProduction(symbol1, 
-                                                           symbol2);
-                        // If newKey comes up with an appropriate key distance,
-                        // make a new TreeNode for the current two TreeNodes.
-                        if (!(newKey < 0)) {
-                            
-                            // The cost becomes larger for the final TreeNode if
-                            // either the first or second TreeNode uses a chord
-                            // substitute
-                            long cost = rule.getCost();
-                            if (symbol1.isSub())
-                                cost += SUB_COST;
-                            if (symbol2.isSub())
-                                cost += SUB_COST;
-                            if (symbol2.isOverlap())
-                                cost += TreeNode.OVERLAP_COST;
-                            
-                            TreeNode newNode = new TreeNode(rule.getHead(),
-                                    rule.getType(), rule.getMode(), 
-                                    symbol1, symbol2, cost, newKey);
-                            cykTable[row][col].add(newNode);
-                            
-                            // Additionally, if this block could overlap with 
-                            // another later one, then we store a TreeNode 
-                            // with a 0-duration final chord to put in the 
-                            // table later.
-                            if (!(rule.getType().equals("On-Off")) && 
-                                    !(symbol2.isSectionEnd()) &&
-                                    !(symbol2.isOverlap()) &&
-                                    !(symbol2.getDuration() == 0))
-                                overlaps.add(newNode.overlapCopy());
+                    while(iter2.hasNext()) {
+                        TreeNode symbol2 = (TreeNode)iter2.next();
+                        if (!symbol2.isOverlap()) {
+                        // We check every rule against each pair of symbols.
+                        ListIterator iterRule = nonterminalRules.listIterator();
+
+                        while (iterRule.hasNext()) { 
+                            BinaryProduction rule = 
+                                    (BinaryProduction) iterRule.next();
+
+                            // checkProduction returns a long describing the key
+                            // of the resulting brick if rule applies to symbol1
+                            // and symbol2, or -1 if no such brick can be made.
+                            long newKey = rule.checkProduction(symbol1, 
+                                                               symbol2);
+                            // If newKey comes up with an appropriate key distance,
+                            // make a new TreeNode for the current two TreeNodes.
+                            if (!(newKey < 0)) {
+
+                                // The cost becomes larger for the final TreeNode if
+                                // either the first or second TreeNode uses a chord
+                                // substitute
+                                long cost = rule.getCost();
+                                if (symbol1.isSub())
+                                    cost += SUB_COST;
+                                if (symbol2.isSub())
+                                    cost += SUB_COST;
+                                if (symbol2.isOverlap())
+                                    cost += TreeNode.OVERLAP_COST;
+
+                                TreeNode newNode = new TreeNode(rule.getHead(),
+                                        rule.getType(), rule.getMode(), 
+                                        symbol1, symbol2, cost, newKey);
+                                cykTable[row][col].add(newNode);
+
+                                // Additionally, if this block could overlap with 
+                                // another later one, then we store a TreeNode 
+                                // with a 0-duration final chord to put in the 
+                                // table later.
+                                if (!(rule.getType().equals("On-Off")) && 
+                                        !(symbol2.isSectionEnd()) &&
+                                        !(symbol2.isOverlap()) &&
+                                        !(symbol2.getDuration() == 0))
+                                    overlaps.add(newNode.overlapCopy());
+                            }
+                        }
                         }
                     }
                 }
             }
         }
+        
         LinkedList<TreeNode> unaries = new LinkedList<TreeNode>();
         
         // After the cell is filled up with all possible BinaryProduction 
@@ -556,19 +560,30 @@ public class CYKParser
      * @return parsed chords as bricks
      */
     public ArrayList<Block> parse(ArrayList<Block> blocks, BrickLibrary lib) {
-        
-        // Load in chords
-        ArrayList<ChordBlock> ch = new ArrayList<ChordBlock>();
-        for (Block b: blocks)
-            ch.addAll(b.flattenBlock());
-        newChords(ch);
-        
-        // Read in rules and parse
         createRules(lib);
-        fillTable();
-        return findSolution(lib);
+        ArrayList<Block> solution = new ArrayList<Block>();
+        // Load in chords
+        
+        ArrayList<ChordBlock> ch = new ArrayList<ChordBlock>();
+        for (Block b: blocks) {
+            ch.addAll(b.flattenBlock());
+            if (b.isSectionEnd()) {
+                newChords(ch);
+                fillTable();
+                solution.addAll(findSolution(lib));
+                ch.clear();
+            }
+        }
+        
+        if (!ch.isEmpty()) {
+            newChords(ch);
+            fillTable();
+            solution.addAll(findSolution(lib));
+        }
+        solution = PostProcessing.findLaunchers(solution);
+        return solution;
     }
-    
+        
     // Miscellaneous methods
     
     /** printTable()
@@ -592,6 +607,7 @@ public class CYKParser
                 output += "(" + i + ", " + j + ")\n";
                 for (TreeNode t : cykTable[i][j])
                 {
+
                     output += t.getSymbol() + " in " 
                            + BrickLibrary.keyNumToName(t.getKey()) + " (" 
                            + t.getDuration() + ")";

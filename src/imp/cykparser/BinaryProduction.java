@@ -182,8 +182,7 @@ public class BinaryProduction extends AbstractProduction {
         //   and the two halves of the production
         // - a and b must have names corresponding to the two composing symbols
         //   of the production
-        if (a.getKey() != NC && b.getKey() != NC && !(a.isSectionEnd()) &&
-                !a.isOverlap() && !b.isOverlap() &&
+        if (a.getKey() != NC && b.getKey() != NC &&
                 modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 (a.getSymbol().equals(name1) || a.getTrimmedSymbol().equals(name1)) && 
                 (b.getSymbol().equals(name2) || b.getTrimmedSymbol().equals(name2)))   
