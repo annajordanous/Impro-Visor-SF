@@ -6249,15 +6249,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator22">
             </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="createRoadMapCheckBox">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Create road map"/>
-                <Property name="toolTipText" type="java.lang.String" value="Create roadmap of leadsheet if checked."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRoadMapCheckBoxActionPerformed"/>
-              </Events>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="newMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -6285,6 +6276,15 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="createRoadMapCheckBox">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Create road map for leadsheet opened&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create roadmap of leadsheet if checked."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRoadMapCheckBoxActionPerformed"/>
               </Events>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
@@ -6325,7 +6325,8 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="fileStepMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="File Step"/>
+                <Property name="text" type="java.lang.String" value="File Stepper"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open separate window for file-stepping.&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fileStepMIActionPerformed"/>
@@ -7445,6 +7446,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperBack.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Browse previous leadsheet file in the current directory.&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -7466,6 +7468,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperFront.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Browse next leadsheet file in the current directory.&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

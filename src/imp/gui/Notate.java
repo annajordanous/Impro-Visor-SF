@@ -2181,9 +2181,9 @@ public class Notate
         fileMenu = new javax.swing.JMenu();
         aboutMI = new javax.swing.JMenuItem();
         jSeparator22 = new javax.swing.JSeparator();
-        createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         newMI = new javax.swing.JMenuItem();
         openLeadsheetMI = new javax.swing.JMenuItem();
+        createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         openRecentLeadsheetMenu = new javax.swing.JMenu();
         mostRecentLeadsheetMI = new javax.swing.JMenuItem();
         openRecentLeadsheetNewWindowMenu = new javax.swing.JMenu();
@@ -6497,6 +6497,7 @@ public class Notate
         standardToolbar.add(newBtn);
 
         fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
+        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current directory.\n");
         fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -6508,6 +6509,7 @@ public class Notate
         standardToolbar.add(fileStepBackBtn);
 
         fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
+        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current directory.\n");
         fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -7451,15 +7453,6 @@ public class Notate
         fileMenu.add(aboutMI);
         fileMenu.add(jSeparator22);
 
-        createRoadMapCheckBox.setText("Create road map");
-        createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
-        createRoadMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createRoadMapCheckBoxActionPerformed(evt);
-            }
-        });
-        fileMenu.add(createRoadMapCheckBox);
-
         newMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newMI.setMnemonic('n');
         newMI.setText("New Leadsheet");
@@ -7481,6 +7474,15 @@ public class Notate
             }
         });
         fileMenu.add(openLeadsheetMI);
+
+        createRoadMapCheckBox.setText("Create road map for leadsheet opened\n");
+        createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
+        createRoadMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createRoadMapCheckBoxActionPerformed(evt);
+            }
+        });
+        fileMenu.add(createRoadMapCheckBox);
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
@@ -7524,7 +7526,8 @@ public class Notate
 
         fileMenu.add(openRecentLeadsheetNewWindowMenu);
 
-        fileStepMI.setText("File Step");
+        fileStepMI.setText("File Stepper");
+        fileStepMI.setToolTipText("Open separate window for file-stepping.\n");
         fileStepMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileStepMIActionPerformed(evt);
@@ -12212,9 +12215,7 @@ private void updateTempoFromTextField()
         else
             
             saveAsAdviceActionPerformed(evt);
-        
-        
-        
+
     }//GEN-LAST:event_saveAdviceActionPerformed
     
     
@@ -12231,12 +12232,16 @@ private void updateTempoFromTextField()
     
     private void textEntryGainsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryGainsFocus
         
-        textEntryLabel.setForeground(Color.black);
+       textEntryLabel.setForeground(Color.black);
         
-        setStatus("Enter text for chords and/or melody.");
+       setNormalStatus();
         
     }//GEN-LAST:event_textEntryGainsFocus
     
+    private void setNormalStatus()
+      {
+        setStatus("Enter text for chords and/or melody.");
+      }
     
     
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
@@ -23201,10 +23206,13 @@ public void roadMapThis()
 
 public void roadMapThisAnalyze()
   {
+    setStatus("Creating RoadMap");
+    repaint();
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.analyzeAllBricks();
+    setNormalStatus();
     roadmapFrame.makeVisible();
   }
 
@@ -23230,6 +23238,7 @@ public void establishRoadMapFrame()
     if( roadmapFrame == null )
       {
       roadmapFrame = new RoadMapFrame(this);
+      roadmapFrame.setRoadMapFrameHeight();
       }
     else
       {

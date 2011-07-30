@@ -2180,7 +2180,6 @@ public int getNewYlocation()
   
 public void makeVisible()
   {
-    setRoadMapFrameHeight();
     setVisible(true);
   }
 
