@@ -26,134 +26,211 @@ import java.util.List;
 
 import polya.Polylist;
 
-/**
- * purpose: Block definition
+/** Block
+ * purpose: Describes a unit in a roadmap, either a ChordBlock or a Brick. 
+ * Provides an inheritance structure for each.
  * @author Zachary Merritt
  */
 public class Block {
     
-    protected String name;        // block's name
-    protected int duration;      // how long block lasts (not in absolute units)
-    protected long key;           // key is pitch-class relative to C, e.g. C=0, 
-                                  // D=2, B=11, etc.
-    protected String mode = null; // Broad quality of block (e.g. Major, Minor, 
-                                  // or Dominant)
+    // Data members //
+    protected String name;           // block's name
+    protected int duration;          // how long block lasts (not in absolute 
+                                     // units)
+    protected long key;              // key is pitch-class relative to C, e.g.  
+                                     // C=0, D=2, B=11, etc.
+    protected String mode = null;    // Broad quality of block (e.g. Major, 
+                                     // Minor, or Dominant)
+    protected int endValue = NO_END; // a descriptor of what kind of end the
+                                     // block might be, if any
     
-    public final static int NO_END = 0;
-    public final static int SECTION_END = 1;
-    public final static int PHRASE_END = 2;
+    // Constants //
+    public final static int NO_END = 0;      // int to set a block as not an end
+    public final static int SECTION_END = 1; // int to set a block as a section
+                                             // end in a leadsheet
+    public final static int PHRASE_END = 2;  // int to set a block as a phrase
+                                             // end in a leadsheet
     
-    protected int endValue = 0;
-    
-    // Normal constructor for block
+
+    /** Block / 3
+     * Fills in the name, key and mode information of a Block
+     * @param blockname, the block's name or chord quality (a String)
+     * @param blockkey, the key of the block (a long)
+     * @param mode, the mode of the block (a String)
+     */
     public Block(String blockname, long blockkey, String mode) {
         this.name = blockname;
         this.key = blockkey;
         this.mode = mode;
     }
     
-    // Normal constructor for block
+    /** Block / 2
+     * Fills in the name and key information of a Block
+     * @param blockname, the block's name or chord quality (a String)
+     * @param blockkey, the key of the block (a long)
+     */
     public Block(String blockname, long blockkey) {
         this.name = blockname;
         this.key = blockkey;
     }
     
-    // Constructor given only a key
-    public Block(int blockkey) {
-        this.key = blockkey;
-    }
-    
-    // Constructor given only a name
+    /** Block / 1
+     * Fills in the name of a block
+     * @param blockname, the block's name or chord quality (a String)
+     */
     public Block(String blockname) {
         this.name = blockname;
     }
     
-    
-    // Get key of brick or root of chord as a long (0 is C, 1 is C#, etc.)
+    /** getKey
+     * Get key of brick or root of chord as a long (0 is C, 1 is C#, etc.)
+     * @return the key (a long)
+     */
     public long getKey() {
         return this.key;
     }
     
-    // Get key of brick or root of chord as a String (e.g. "C")
+    /** getKeyName
+     * Get key of brick or root of chord as a String (e.g. "C")
+     * @return the key (a String)
+     */
     public String getKeyName() {
         return BrickLibrary.keyNumToName(this.key);
     }
     
-    // Get block's name (ie. "Yardbird" or "Am7")
+    /** getName
+     * Get block's name (ie. "Yardbird" or "Am7")
+     * @return the name (a String)
+     */
     public String getName() {
         String fullName = new String();
         fullName += name;
+        // in the case of an overlap, we want an indication in the name
         if (this.isOverlap())
                 fullName += " &...";
         return fullName;
     }
     
-    // Get block's duration
+    /** getDuration
+     * Gets the duration of a block.
+     * @return the duration (an int)
+     */
     public int getDuration() {
         return this.duration;
     }
     
-    
+    /** isOverlap
+     * Describes if the Block has an overlap chord in it. Overridden in Brick 
+     * and ChordBlock.
+     * @return a boolean
+     */
     public boolean isOverlap() {
         return (this.getDuration() == 0);
     }
     
-    // Returns the subBlocks of a given block
-    // Overridden by the corresponding method in Brick or Chord
+    /** getSubBlocks
+     * Returns the subblocks comprising a Block. Overridden in Brick and
+     * ChordBlock.
+     * @return a List of Blocks
+     */
     public List<Block> getSubBlocks() {
         return null;
     }
     
+    /** getMode
+     * Returns the mode of the block (e.g. "Major", "minor").
+     * @return the mode (a String)
+     */
     public String getMode() {
         return this.mode;
     }
     
+    /** setMode
+     * Sets the mode of the Block to the newly given mode.
+     * @param s, a mode (as a String)
+     */
     public void setMode(String s) {
         this.mode = s;
     }
     
+    /** getType
+     * Returns the type of the Block.
+     * @return the type (a String)
+     */
     public String getType() {
         return this.mode;
     }
     
-    // Gets the symbol for parsing of a given block
+    /** getSymbol
+     * Gets the symbol for parsing a given block
+     * @return the symbol (a String)
+     */
     public String getSymbol() {
         return name;
     }
     
-    // Transposes all the components of a block
-    // Overridden by the corresponding method in Brick or Chord
+    /** transpose
+     * Transposes a Block up a given number of steps.
+     * @param diff, the difference in key by semitones (a long)
+     */
     public void transpose(long diff) {
+        if (key >= 0)
+            key = (key + diff)%12;
     }
-    
-    // Returns the individual chords that constitute this block
-    // Overridden by the corresponding method in Brick or Chord
+    /** flattenBlock
+     * Returns the individual chords that constitute this Block
+     * Overridden by the corresponding method in Brick or Chord
+     * @return a List of ChordBlocks.
+     */
     public List<ChordBlock> flattenBlock() {
         return null;
     }
     
-    // Alters the duration of the total block
-    // Overridden by the corresponding method in Brick or Chord
+    /** scaleDuration
+     * Alters the duration of the total Block
+     * Overridden by the corresponding method in Brick or Chord
+     * @param factor, the factor by which the Block will be scaled (an int)
+     */
     public void scaleDuration(int factor) {
         duration = duration * factor;
     }
     
-    public void adjustBrickDuration(int newDur) {
+    /** replaceDuration
+     * Adjusts the Block's duration to a new value
+     * @param newDur, the new duration of the brick
+     */
+    public void replaceDuration(int newDur) {
         duration = newDur;
     }
     
+    /** isSectionEnd
+     * Tells whether or not a given Block ends a section or phrase
+     * @return a boolean
+     */
     public boolean isSectionEnd() {
         return endValue != NO_END;
     }
     
+    /** getSectionEnd
+     * Gets the kind of ending the Block has (NO_END, SECTION_END or PHRASE_END)
+     * @return an int representing one of the above values
+     */
     public int getSectionEnd() {
         return endValue;
     }
     
+    /** setSectionEnd
+     * Changes a Block to have the specified section end value
+     * @param value, an int among NO_END, SECTION_END and PHRASE_END
+     */
     public void setSectionEnd(int value) {
         endValue = value;
     }
     
+    /** setSectionEnd
+     * Changes a Block to be either a section end or no end
+     * @param value, a boolean (true marks a section end)
+     */
     public void setSectionEnd(boolean value) {
         if(value)
             endValue = SECTION_END;
@@ -161,28 +238,42 @@ public class Block {
             endValue = NO_END;
     }
    
+    /** isChord
+     * Describes if a Block is a ChordBlock. Overridden in derived classes.
+     * @return a boolean
+     */
     public boolean isChord() 
     {
         return false;
     }
     
+    /** isBrick
+     * Describes if a Block is a Brick. Overridden in derived classes.
+     * @return a boolean
+     */
     public boolean isBrick()
     {
         return false;
     }
     
+    /** setName
+     * Changes the name of a Block
+     * @param s, the new Block name (a string)
+     */
     public void setName(String s) {
         this.name = s;
     }
     
-/**
- * This will be overridden in derived classes
- * @return 
- */
+    /** toPolylist
+     * Describes a Block as a Polylist. Overridden in derived classes
+     * @return 
+     */
+
+    public Polylist toPolylist()
+      {
+        return Polylist.list("block");
+      }
     
-public Polylist toPolylist()
-  {
-    return Polylist.list("block");
-  }
+    // end of class Block
 
 }

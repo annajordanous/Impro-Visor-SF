@@ -40,15 +40,16 @@ import polya.*;
 public class Brick extends Block {
     
     
-    private ArrayList<Block> subBlocks; // Components of a brick
-    private String type;                // The class of brick (e.g. "Cadence")
-    private String qualifier = "";
+    private ArrayList<Block> subBlocks; // Components of a Brick
+    private String type;                // The class of Brick (e.g. "Cadence")
+    private String qualifier = "";      // The qualifier of a Brick name, if it
+                                        // shares a name with another Brick
     
-    /** Brick / 6
-     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
-     * to build the definition of the brick.
+    /** Brick / 7
+     * Constructs a Brick based on a qualifier and a complete BrickLibrary
      * 
      * @param brickName, a String
+     * @param brickQualifier, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, a Polylist describing bricks and chords
@@ -67,8 +68,7 @@ public class Brick extends Block {
      }
      
     /** Brick / 6
-     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
-     * to build the definition of the brick.
+     * Constructs a Brick based on a complete BrickLibrary
      * 
      * @param brickName, a String
      * @param brickKey, a long
@@ -87,15 +87,19 @@ public class Brick extends Block {
          endValue = getSectionEnd();
      }
      
-         /** Brick / 7
-     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
-     * to build the definition of the brick.
+    /** Brick / 8
+     * Constructs a new Brick based on construction details + qualifier
+     * mid-dictionary-creation
      * 
      * @param brickName, a String
+     * @param brickQualifier, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, a Polylist describing bricks and chords
      * @param bricks, a BrickLibrary
+     * @param m, the mode (a String)
+     * @param polymap, a LinkedHashMap<String, LinkedList<Polylist>> storing
+      *                definitions of other Bricks
      */
      public Brick(String brickName, String brickQualifier, long brickKey, String brickType, 
              Polylist contents, BrickLibrary bricks, String m, 
@@ -109,15 +113,18 @@ public class Brick extends Block {
          endValue = getSectionEnd();
      }
      
-    /** Brick / 8
-     * Constructs a Brick based on name, key, type, contents, using a BrickLibrary
-     * to build the definition of the brick.
+    /** Brick / 7
+     * Constructs a new Brick based on construction details + qualifier
+     * mid-dictionary-creation
      * 
      * @param brickName, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, a Polylist describing bricks and chords
      * @param bricks, a BrickLibrary
+     * @param m, the mode (a String)
+     * @param polymap, a LinkedHashMap<String, LinkedList<Polylist>> storing
+      *                definitions of other Bricks
      */
      public Brick(String brickName, long brickKey, String brickType, 
              Polylist contents, BrickLibrary bricks, String m, 
@@ -130,11 +137,11 @@ public class Brick extends Block {
          endValue = getSectionEnd();
      }
     
-    /** Brick / 5
-     * As with the constructor above, but without taking in a BrickLibrary for
-     * defining bricks
+    /** Brick / 6
+     * Constructs a brick with predefined contents and a qualifier
      * 
      * @param brickName, a String
+     * @param brickQualifier, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, an ArrayList of component blocks
@@ -151,9 +158,8 @@ public class Brick extends Block {
     }
     
     
-    /** Brick / 6
-     * As with the constructor above, but without taking in a BrickLibrary for
-     * defining bricks
+    /** Brick / 5
+     * Constructs a brick with predefined contents
      * 
      * @param brickName, a String
      * @param brickKey, a long
@@ -208,7 +214,7 @@ public class Brick extends Block {
     }
     
     /** Brick / 2
-     * Makes a brick based only on a list of subblocks
+     * Makes a brick based only on a name and a list of subblocks
      * 
      * @param name, a String
      * @param brickList, subblocks for a brick
@@ -236,8 +242,9 @@ public class Brick extends Block {
         endValue = getSectionEnd();
     }
     
-    /** Brick
+    /** Brick (Launcher constructor)
      * Creates a Launcher from a single chord
+     * 
      * @param c : a ChordBlock
      * @param m : the new brick's mode
      */
@@ -253,6 +260,12 @@ public class Brick extends Block {
         endValue = c.getSectionEnd();
     }
   
+    /** modeHelper
+     * Used to determine the mode of a list of Blocks
+     * @param brickList, a list of Blocks to be analyzed
+     * @param key, a long describing the key
+     * @return a String describing the mode
+     */
     private static String modeHelper(List<Block> brickList, long key)
     {
         int ind = brickList.lastIndexOf(key);
@@ -304,6 +317,10 @@ public class Brick extends Block {
         return this.subBlocks;
     }
     
+    /** isOverlap
+     * Tells if a Brick includes an overlap
+     * @return a boolean
+     */
     @Override
     public boolean isOverlap() {
         if (this.getDuration() == 0)
@@ -498,7 +515,7 @@ public class Brick extends Block {
                                 brickType, tokens, bricks, brickMode, polymap);
                             subBrick.transpose(
                                     Arith.long2int(subBrickKeyNum - brickKeyNum));
-                            subBrick.adjustBrickDuration(dur);
+                            subBrick.replaceDuration(dur);
                         }
                         else
                         {
@@ -546,19 +563,28 @@ public class Brick extends Block {
         subBlocks.addAll(subBlockList);
     }
     
-    // Get a brick's type (e.g. cadence, turnaround, etc.)
+    /** getType
+     * Return the type of Brick this is (e.g. "Cadence")
+     * @return a String
+     */
     @Override
     public String getType() {
         return this.type;
     }
     
-    // Sum the durations of a brick's subblocks
+    /** getDuration
+     * Returns the duration after recalculating it.
+     * @return an int describing the Brick's duration
+     */
     @Override
     public final int getDuration() {
         setDuration(); //TODO not this.
         return duration;
     }
     
+    /** setDuration
+     * Sets the duration based upon the durations of the subblocks
+     */
     private void setDuration() {
         int dur = 0;
         for(Block b : this.getSubBlocks())
@@ -569,13 +595,19 @@ public class Brick extends Block {
         duration = dur;
     }
     
+    /** getQualifier
+     * Returns the qualifier of the Brick, or an empty String if it has none
+     * @return a String
+     */
     public String getQualifier() 
     {
         return this.qualifier;
     }
     
-    // Returns the individual chords that constitute this brick
-    // Overrides corresponding method in Block
+    /** flattenBlock
+     * Returns this Brick as a list of ChordBlocks
+     * @return an ArrayList<ChordBlock> describing the Brick's contents
+     */
     @Override
     public ArrayList<ChordBlock> flattenBlock() {
         ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
@@ -598,9 +630,12 @@ public class Brick extends Block {
         return chordList;
     }
     
-    // Change the duration of a brick by recursively altering durations of 
-    // subblocks.
-    
+    /** scaleDuration
+     * Scales the duration by recursing through the subblocks and scaling each
+     * of them
+     * @param scale, the int scale factor (positive for growth, negative for 
+     *        shrinking)
+     */
     @Override
     public void scaleDuration(int scale) {
         
@@ -617,18 +652,14 @@ public class Brick extends Block {
         
     }
     
-    // Create new brick from an original with specified duration
+    /** replaceDuration
+     * Changes the duration to be as close as possible to the newly specified
+     * duration
+     * @param newDuration, an int duration.
+     */
     @Override
-    public void adjustBrickDuration(int newDuration) {
-        /*int ratio = newDuration * 480 / this.getDuration();
-        
-        for( Block block : subBlocks ) {
-            int newDur = block.duration * ratio / 480;
-            block.adjustBrickDuration(newDur);
-        }
-        
-        this.setDuration();
-        /**/float newDurFloat = newDuration;
+    public void replaceDuration(int newDuration) {
+        float newDurFloat = newDuration;
         float ratio = (newDurFloat / this.getDuration());
 
         List<Block> currentSubBlocks = this.getSubBlocks();
@@ -646,7 +677,7 @@ public class Brick extends Block {
                 Brick adjustedSubBrick = (Brick)currentBlock;
                 int newDur = 
                         Math.round(ratio * adjustedSubBrick.getDuration());
-                adjustedSubBrick.adjustBrickDuration(newDur);
+                adjustedSubBrick.replaceDuration(newDur);
                 adjustedSubBlocks.add(adjustedSubBrick);
             }
         }
@@ -655,12 +686,19 @@ public class Brick extends Block {
         this.getDuration();
     }
     
+    /** toString
+     * Returns a String representation of the Brick
+     * @return a String
+     */
     @Override
     public String toString() {
         return name + " " + BrickLibrary.keyNumToName(key) + " " + duration;
     }
     
-    // Print contents (subblocks) of brick
+    /** printBrick
+     * Prints a String representation of a Brick with its subblocks to 
+     * System.err
+     */
     public void printBrick() {
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
         long brickDur = this.getDuration();
@@ -698,10 +736,17 @@ public class Brick extends Block {
         }
     }
     
+    /** reduceDurations
+     * Reduces durations to lowest terms
+     */
     public void reduceDurations() {
         scaleDuration(-getReductionFactor());
     }
     
+    /** getReductionFactor
+     * Finds the GCD (greatest common divisor) of all the durations
+     * @return an int of the GCD
+     */
     public int getReductionFactor()
     {
         ArrayList<ChordBlock> chords = flattenBlock();
@@ -718,6 +763,12 @@ public class Brick extends Block {
         return currentGCD;
     }
     
+    /** gcd
+     * Returns the GCD of two numbers
+     * @param a, the first number (an int)
+     * @param b, the second number (an int)
+     * @return the GCD (an int)
+     */
     public static int gcd(int a, int b) {
         int r = a%b;
         
@@ -727,6 +778,11 @@ public class Brick extends Block {
         return gcd(b, r);
     }
     
+    /** setSectionEnd
+     * Sets the type of section end to the appropriate int value (among NO_END,
+     * SECTION_END and PHRASE_END)
+     * @param value, one of the ints above
+     */
     @Override
     public void setSectionEnd(int value) {
         endValue = value;
@@ -737,6 +793,10 @@ public class Brick extends Block {
             subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
     }
     
+    /** setSectionEnd
+     * Sets the type of section end to either be no end or a section end
+     * @param value, a boolean (true implies a section end)
+     */
     @Override
     public void setSectionEnd(boolean value) {
         if(value)
@@ -750,6 +810,10 @@ public class Brick extends Block {
             subBlocks.get(subBlocks.size() - 1).setSectionEnd(value);
     }
     
+    /** isSectionEnd
+     * Returns whether or not the Brick marks the end of a phrase or section
+     * @return a boolean
+     */
     @Override
     public boolean isSectionEnd()
     {
@@ -758,6 +822,10 @@ public class Brick extends Block {
         return subBlocks.get(subBlocks.size() - 1).isSectionEnd();
     }
     
+    /** getSectionEnd
+     * Returns an int describing what kind of section end this is, if any
+     * @return an int matching NO_END, SECTION_END or PHRASE_END
+     */
     @Override
     public int getSectionEnd()
     {
@@ -766,22 +834,30 @@ public class Brick extends Block {
         return subBlocks.get(subBlocks.size() - 1).getSectionEnd();
     }
 
+    /** isChord
+     * Describes whether or not this object is a ChordBlock
+     * @return a boolean
+     */
     @Override
     public final boolean isChord()
     {
         return false;
     }
     
+    /** isBrick
+     * Describes whether or not this object is a Brick
+     * @return a boolean
+     */
     @Override
     public final boolean isBrick()
     {
         return true;
     }
     
-/** 
- * Returns a Polylist representation of a Brick.
- * @return 
- */
+    /** toPolylist
+     * Returns a Polylist representation of a Brick.
+     * @return a Polylist containing the Brick's contents
+     */
     
     @Override
     public Polylist toPolylist()
@@ -790,7 +866,11 @@ public class Brick extends Block {
                              BrickLibrary.keyNumToName(key), duration);
     }
 
-
+    /** toBrickDefinition
+     * Returns a Polylist formatted specifically to replicate the Brick's 
+     * original definition format
+     * @return a Polylist containing the Brick's definition information
+     */
     public Polylist toBrickDefinition()
     {
         PolylistBuffer buffer = new PolylistBuffer();
@@ -800,11 +880,11 @@ public class Brick extends Block {
             buffer.append(b.toPolylist());
         }
         if (qualifier != "") {
-            return Polylist.list("Brick", dashed(name)+"("+qualifier+")", 
+            return Polylist.list("Def-Brick", dashed(name)+"("+qualifier+")", 
                     mode, dashed(type), BrickLibrary.keyNumToName(key)
                     ).append(buffer.toPolylist());
         }
-        else return Polylist.list("Brick", dashed(name), mode, dashed(type),
+        else return Polylist.list("Def-Brick", dashed(name), mode, dashed(type),
                     BrickLibrary.keyNumToName(key)).append(buffer.toPolylist());
     }
     
@@ -814,7 +894,10 @@ public class Brick extends Block {
      // end of class Brick
 }
 
-    
+/** Class BrickComparator
+ * Allows direct lexicographic comparison of Bricks
+ * @author ImproVisor
+ */
 class BrickComparator implements Comparator {
     @Override
     public int compare(Object b1, Object b2) {

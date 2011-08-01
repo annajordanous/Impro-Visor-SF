@@ -37,10 +37,10 @@ import java.util.Set;
  */
 public class BrickLibrary {
     
-    private static final String[] KEY_NAME_ARRAY = {"C", "Db", "D", "Eb", "E",
-        "F", "Gb", "G", "Ab", "A", "Bb", "B"};
-    private static final String[] KEY_NAME_ARRAY_SHARPS = {"C", "C#", "D", "D#", "E",
-        "F", "F#", "G", "G#", "A", "A#", "B"};
+    private static final String[] KEY_NAME_ARRAY = 
+        {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+    private static final String[] KEY_NAME_ARRAY_SHARPS =
+        {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
     private static final long DEFAULT_COST = 40;
     public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
     public static final String INVISIBLE = "Invisible";
@@ -210,7 +210,7 @@ public class BrickLibrary {
         {
             Brick brick = new Brick(brickMap.get(s).getFirst());
             brick.transpose((k-brick.getKey() + 12)%12);
-            brick.adjustBrickDuration(d);
+            brick.replaceDuration(d);
             return brick;
         }
         else
@@ -232,7 +232,7 @@ public class BrickLibrary {
                 }
             if (brick != null) {
                 brick.transpose((k-brick.getKey() + 12)%12);
-                brick.adjustBrickDuration(d);
+                brick.replaceDuration(d);
                 return brick;
             }
             

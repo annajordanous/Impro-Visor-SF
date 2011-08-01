@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import imp.data.Chord;
-import imp.Constants;
 import polya.Arith;
 
 import polya.Polylist;
@@ -41,16 +40,16 @@ public class ChordBlock extends Block {
     
     public static enum FlagType {NORMAL, SECTION_END, PHRASE_END} ;
     
-    private Chord chord;
-    private long NC = -1;
-    private String BACKSLASH = "\\";
-    private String SLASHCHAR = "/";
-    private boolean NO_SLASH = false;
-    private boolean SLASH = true;
+    private Chord chord;               // an imp.data Chord object
+    private long NC = -1;              // the key describing nonchords
+    private String BACKSLASH = "\\";   // the String of a single backslash
+    private String SLASHCHAR = "/";    // the String of a single forward slash
     
-    // Constructor for chord
-    // Uses parseChordName to interpret chord's name, finding root (key) and
-    // quality
+    /** ChordBlock / 2
+     * Creates a ChordBlock from a name and a duration
+     * @param chordName, a String of a chord name
+     * @param dur, an int duration
+     */
     public ChordBlock (String chordName, int dur) {
         super(chordName);
         this.duration = dur;
@@ -63,6 +62,13 @@ public class ChordBlock extends Block {
         mode = this.findModeFromQuality();
     }
     
+    /** ChordBlock / 3
+     * Creates a ChordBlock from a name, a duration and the type of section end
+     * it is, if any
+     * @param chordName, a String of a chord name
+     * @param dur, an int duration
+     * @param endValue, an int describing section end
+     */
     public ChordBlock(String chordName, int dur, int endValue) {
         super(chordName);
         this.duration = dur;
@@ -75,6 +81,10 @@ public class ChordBlock extends Block {
         mode = findModeFromQuality();
     }
     
+    /** ChordBlock / 1
+     * Copy constructor for a ChordBlock
+     * @param ch, a ChordBlock
+     */
     public ChordBlock(ChordBlock ch) {
         super(ch.name);
         this.duration = ch.getDuration();
@@ -87,6 +97,10 @@ public class ChordBlock extends Block {
         mode = findModeFromQuality();
     }
 
+    /** ChordBlock / 1
+     * Creates a ChordBlock corresponding to a Chord
+     * @param ch, a Chord
+     */
     public ChordBlock(Chord ch) {
         super(ch.getName());
         duration = ch.getRhythmValue();
@@ -100,16 +114,29 @@ public class ChordBlock extends Block {
     
  
 
-    // Get duration of current chord
+    /** getDuration
+     * Get the ChordBlock's duration
+     * @return an int
+     */
     @Override
     public int getDuration() {
         return this.duration;
     }
     
+    /** getChord
+     * Gets the Chord basis of the ChordBlock. Modifications affect the original
+     * ChordBlock
+     * @return the Chord
+     */
     public Chord getChord() {
         return chord;
     }
     
+    /** scaleDuration
+     * Scales the duration by a given scaling number (positive for stretching, 
+     * negative for shrinking)
+     * @param scale, the scale factor as an int
+     */
     @Override
     public void scaleDuration(int scale) {
         if(scale > 0)
@@ -119,18 +146,30 @@ public class ChordBlock extends Block {
         chord.setRhythmValue(duration);
     }
     
+    /** changeChordDuration
+     * Scales the chord by the given ratio
+     * @param ratio, a float for the scaling factor
+     */
     public void changeChordDuration(float ratio) {
         duration = Math.round(ratio * duration);
         chord.setRhythmValue(duration);
     }
     
-    // Get current chord's quality (ie. "mM7")
+    /** getQuality
+     * Returns the quality of the ChordBlock
+     * @return a String
+     */
     public String getQuality() {
         if (name.equals(Chord.NOCHORD))
             return name;
         return parseChordName();
     }
     
+    /** getSymbol
+     * Returns the symbol of the ChordBlock (the quality without slash chords
+     * or polychords)
+     * @return a String
+     */
     @Override
     public String getSymbol() {
         if (name.equals(Chord.NOCHORD))
@@ -138,6 +177,10 @@ public class ChordBlock extends Block {
         return chord.getChordSymbol().getQuality();
     }
     
+    /** isDiminished
+     * Describes whether or not the ChordBlock represents a diminished chord
+     * @return a boolean
+     */
     public boolean isDiminished() {
         boolean dim = false;
         
@@ -148,15 +191,28 @@ public class ChordBlock extends Block {
         return dim;
     }
     
+    /** isSlashChord
+     * Describes whether not the ChordBlock is a slash chord
+     * @return a boolean
+     */
     public boolean isSlashChord() {
         return chord.getChordSymbol().isSlashChord();
     }
     
+    /** isOverlap
+     * Describes whether the ChordBlock is part of an overlapping sequence
+     * @return a boolean
+     */
     @Override
     public boolean isOverlap() {
         return (duration == 0);
     }
     
+    /** getSubBlocks
+     * Returns the ChordBlock as part of a list of subblocks
+     * @return an ArrayList of Blocks, either empty or containing the ChordBlock
+     *         depending on if the ChordBlock is of zero duration or not
+     */
     @Override
     public List<Block> getSubBlocks() {
         ArrayList<Block> subBlocks = new ArrayList<Block>();
@@ -165,8 +221,11 @@ public class ChordBlock extends Block {
         return subBlocks;
     }
     
-    // Return a one member list of this chord
-    // Overrides corresponding methid in Block
+    /** flattenBlock
+     * Returns the ChordBlock as part of a list of chords
+     * @return an ArrayList of ChordBlocks, either empty or containing the 
+     *         ChordBlock depending on if the ChordBlock is of zero duration 
+     */
     @Override
     public List<ChordBlock> flattenBlock() {
         List<ChordBlock> chordList = new ArrayList<ChordBlock>();
@@ -176,7 +235,10 @@ public class ChordBlock extends Block {
         return chordList;
     }
     
-    // Change chord's root (key) by diff
+    /** transpose
+     * Moves the key up by diff semitones
+     * @param diff, a difference in key as a long
+     */
     @Override
     public void transpose(long diff) {
         if(!this.chord.getName().equals(Chord.NOCHORD)) {
@@ -185,7 +247,11 @@ public class ChordBlock extends Block {
             this.name = chord.getName();
         }
     }
-    
+    /** transposeName
+     * Gets the name of the ChordBlock if it was moved up by diff semitones
+     * @param diff, a difference in key as an int
+     * @return the String of the ChordBlock's name
+     */
     public String transposeName(int diff) {
         this.chord.transpose(diff);
         String tranName = this.chord.getName().intern();
@@ -193,19 +259,31 @@ public class ChordBlock extends Block {
         return tranName;
     }
     
+    /** toString
+     * Returns a String representation of the ChordBlock
+     * @return a String
+     */
     @Override
     public String toString() {
         return name + " " + duration;
     }
     
-    
+    /** matches
+     * Checks to see if the chords are effectively the same (have the same 
+     * quality, excepting variations from polychords)
+     * @param c, a ChordBlock to check for match
+     * @return a boolean (true if 
+     */
     public long matches(ChordBlock c) {
         if (c.getSymbol().equals(this.getSymbol()))
             return moduloSteps(c.getKey() - key );
         return NC;
     }
     
-    // Extract chord's root (key) and quality from its name
+    /** parseChordName
+     * Takes the chord name and processes it for key and quality
+     * @return the quality as a String
+     */
     private String parseChordName() {
         String chordName = this.getName();
         String quality;
@@ -235,35 +313,46 @@ public class ChordBlock extends Block {
         return quality;
     }
 
-    
-    public long moduloSteps(long l) {
-        return (l + 12)%12;
+    /** moduloSteps
+     * Assures a positive modulus of a given key by the number of semitones
+     * @param j, a long of a key
+     * @return the positive remainder of j / 12
+     */
+    public long moduloSteps(long k) {
+        return (k + 12)%12;
     }
 
+    /** isChord
+     * Describes whether the object is a ChordBlock.
+     * @return a boolean
+     */
     @Override
     public final boolean isChord()
     {
         return true;
     }
     
+    /** isBrick
+     * Describes whether the object is a Brick.
+     * @return a boolean
+     */
     @Override
     public final boolean isBrick()
     {
         return false;
     }
     
-/**
- * returns a Polylist representation of a ChordBlock
- * @return 
- */
-    
+    /** toPolylist
+     * returns a Polylist representation of a ChordBlock
+     * @return a Polylist of the Chord's basic information
+     */
     @Override
     public Polylist toPolylist()
     {
         return Polylist.list("Chord", name, duration);
     }
 
-/** findModeFromQuality
+    /** findModeFromQuality
      * Find mode of a block using quality of a chord
      * @param quality : String used to find mode
      * @return mode : String that determines overall tonicity of block
@@ -282,9 +371,16 @@ public class ChordBlock extends Block {
         return m;
     }
     
+    /** fixRoot
+     * Takes a lower-case key and returns the numeric version of the key.
+     * @param s, a String of a chord name
+     * @return the key as a long
+     */
     public static long fixRoot(String s) {
         s = s.replaceFirst(s.substring(0,1), s.substring(0, 1).toUpperCase());
         return BrickLibrary.keyNameToNum(s);
     }
+    
+    // end of class ChordBlock
    
 }
