@@ -317,6 +317,10 @@ public class BrickLibrary {
         return costMap.containsKey(t);
     }
     
+    public String[] getTypes() {
+        return costMap.keySet().toArray(new String[0]);
+    }
+    
     public static Boolean isValidKey(String keyName) {
         return keyName.equals("C") || keyName.equals("B#") || 
                 keyName.equals("C#") || keyName.equals("Db") ||

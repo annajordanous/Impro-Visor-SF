@@ -33,7 +33,7 @@ import java.awt.*;
  */
 public class RoadMapSettings {
     /** Slots contained in each beat */
-    public int slotsPerBeat = 120; // Better to get from imp.Constants
+    public int slotsPerBeat = imp.Constants.BEAT; // Better to get from imp.Constants
     /** Horizontal margin of roadmap */
     public int xOffset = 50;
     /** Vertical offset of roadmap */
@@ -48,6 +48,10 @@ public class RoadMapSettings {
     public int measureLength = 100;
     /** Time signature */
     private int metre[] = {4, 4};
+    /** Tempo */
+    public double tempo = 120;
+    /** Style */
+    public String style = "swing";
     
     /* --- Colors --- */
     /** Color of the grid lines */
@@ -95,6 +99,24 @@ public class RoadMapSettings {
     public Font basicFont = new Font("Dialog", Font.PLAIN, 12);
     /** Font for titles */
     public Font titleFont = new Font("Dialog", Font.PLAIN, 24);
+        
+    /**
+     * Get the musical information from the notate window
+     * @param notate 
+     */
+    public void extractSettings(imp.gui.Notate notate)
+    {
+        notate.getMetre(metre);
+        tempo = notate.getScore().getTempo();
+        style = notate.getScore().getChordProg().getStyle().getName();
+    }
+    
+    public void extractSettings(imp.data.Score score)
+    {
+        setMetre(score.getMetre());
+        tempo = score.getTempo();
+        style = score.getStyle().getName();
+    }
     
     /**
      * Returns the length of the block in the current settings

@@ -16998,7 +16998,7 @@ playAscore(score, 0);
 public void playAscore(Score score, int loopCount)
 {
   playAscore(score, "no-style", loopCount);
- }
+}
 
 /**
  * Play a score, not necessarily the one in this Notate window.
@@ -17018,6 +17018,36 @@ public void playAscoreInCurrentStyle(Score score, int loopCount)
 public void playAscore(Score score, String style, int loopCount)
 {
   score.setStyle(style);
+  int startTime = 0;
+  boolean swing = true;
+  int transposition = 0;
+  boolean useDrums = true;
+  int endLimitIndex = -1; // score.getLength()-1;
+  //System.out.println("playing score of length " + score.getLength());
+  
+  if( midiSynth3 == null )
+    {
+    midiSynth3 = new MidiSynth(midiManager);
+    }
+  
+  cm.execute(new PlayScoreCommand(score, 
+                                 startTime, 
+                                 swing, 
+                                 midiSynth3, 
+                                 this, 
+                                 loopCount, 
+                                 transposition, 
+                                 useDrums,
+                                 endLimitIndex));     
+}
+
+/**
+ * Plays a score using the style and tempo of the score
+ * @param score
+ * @param loopCount 
+ */
+public void playAscoreWithStyle(Score score, int loopCount)
+{
   int startTime = 0;
   boolean swing = true;
   int transposition = 0;

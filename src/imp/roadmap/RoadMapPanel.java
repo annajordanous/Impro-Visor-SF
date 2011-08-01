@@ -450,12 +450,12 @@ public class RoadMapPanel extends JPanel{
         }
     }
     
-    public Brick makeBrickFromSelection(String name, long key, String mode)
+    public Brick makeBrickFromSelection(String name, long key, String mode, String type)
     {
         if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
             ArrayList<Block> blocks = roadMap.removeBlocks(selectionStart, selectionEnd+1);
             graphicMap.subList(selectionStart, selectionEnd+1).clear();
-            Brick newBrick = new Brick(name, key, "User-Defined", blocks, mode);
+            Brick newBrick = new Brick(name, key, type, blocks, mode);
 
             
             roadMap.add(selectionStart, newBrick);
@@ -604,6 +604,7 @@ public class RoadMapPanel extends JPanel{
     { 
        view.setBackground(buffer);
        drawGrid();
+       drawText();
        drawBricks();
        drawKeyMap();
        if(view.isPlaying()) {
@@ -662,14 +663,13 @@ public class RoadMapPanel extends JPanel{
         //Maybe we should use the draw cursor line method from slots instead of two data members
     }
     
+    /**
+     * Draws the grid
+     */
     public void drawGrid()
     {
         Graphics g = buffer.getGraphics();
-        
-        g.setFont(settings.titleFont);
-        g.setColor(settings.textColor);
-        g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
-        
+
         for(int i = 0; i < numLines; i++) {
             g.setColor(settings.gridBGColor);
             g.fillRect(settings.xOffset,
@@ -687,6 +687,24 @@ public class RoadMapPanel extends JPanel{
         }
         
         setSize(WIDTH, numLines * (settings.lineHeight+settings.lineSpacing));
+    }
+    
+    public void drawText()
+    {
+        Graphics g = buffer.getGraphics();
+        g.setFont(settings.titleFont);
+        g.setColor(settings.textColor);
+        g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
+        
+        /**/
+        g.setFont(settings.basicFont);
+        FontMetrics metrics = g.getFontMetrics();
+        String text = settings.style + " " + settings.tempo;
+        int width = metrics.stringWidth(text);
+        g.drawString(text,settings.getCutoff() - width, settings.yOffset - 5); 
+        //g.drawString(text,settings.xOffset,settings.yOffset-5);
+        /**/
+        
     }
     
     public void drawBrick(int ind)
