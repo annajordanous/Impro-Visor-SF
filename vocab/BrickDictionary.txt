@@ -6,7 +6,7 @@
 (brick-type Cadence-Dropback 30)
 (brick-type Invisible      2000)
 (brick-type Overrun          30)
-(brick-type On-Off         1000)
+(brick-type On-Off          975)
 (brick-type Opening          25)
 (brick-type Turnaround       20)
 (brick-type Misc             40)
@@ -858,8 +858,115 @@
         (Chord CM7 2)
 	(Brick Straight-Approach Eb 2))
 
-// On-off
+// On-off (replaced by XS)
 
+(Def-Brick Major-On Major Invisible C
+        (Chord C 1))
+
+(Def-Brick Minor-On Minor Invisible C
+	(Chord Cm 1))
+
+(Def-Brick Off(dominant) Dominant Invisible C
+	(Chord C7 1))
+
+(Def-Brick Off(major) Major Invisible C
+	(Chord C 1))
+
+(Def-Brick Off(minor) Minor Invisible C
+        (Chord Cm 1))
+
+(Def-Brick Off(minor7) Minor Invisible C
+	(Chord Cm7 1))
+
+(Def-Brick On-Off-Major(bII) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off Db 1))
+
+(Def-Brick On-Off-Major(II) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off D 1)) 
+
+(Def-Brick On-Off-Major(bIII) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off Eb 1))
+
+(Def-Brick On-Off-Major(III) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off E 1))
+
+(Def-Brick On-Off-Major(IV) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off F 1))
+
+(Def-Brick On-Off-Major(#IV) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off F# 1))
+
+(Def-Brick On-Off-Major(bVI) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off Ab 1))
+
+(Def-Brick On-Off-Major(VI) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off A 1))
+
+(Def-Brick On-Off-Major(bVII) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off Bb 1))
+
+(Def-Brick On-Off-Major(VII) Major On-Off C
+	(Brick Major-On C 1)
+	(Brick Off B 1))
+
+(Def-Brick On-Off-On-Major Major On-Off C
+	(Brick On-Off-Major C 1)
+	(Brick Major-On C 1))
+
+(Def-Brick On-Off-Minor(bII) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off Db 1))
+
+(Def-Brick On-Off-Minor(II) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off D 1)) 
+
+(Def-Brick On-Off-Minor(bIII) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off Eb 1))
+
+(Def-Brick On-Off-Minor(III) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off E 1))
+
+(Def-Brick On-Off-Minor(IV) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off F 1))
+
+(Def-Brick On-Off-Minor(#IV) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off F# 1))
+
+(Def-Brick On-Off-Minor(bVI) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off Ab 1))
+
+(Def-Brick On-Off-Minor(VI) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off A 1))
+
+(Def-Brick On-Off-Minor(bVII) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off Bb 1))
+
+(Def-Brick On-Off-Minor(VII) Minor On-Off C
+	(Brick Minor-On C 1)
+	(Brick Off B 1))
+
+(Def-Brick On-Off-On-Minor Minor On-Off C
+	(Brick On-Off-Minor C 1)
+	(Brick Minor-On C 1))
+
+/* Old On-Off Definitions (commented out by XS)
 (Def-Brick On-Off-To-bII Major On-Off C
 	(Chord C 1)
 	(Chord Db7 1))
@@ -1195,9 +1302,10 @@
 (Def-Brick On-Off-On-Minor-To-VII-Major Minor On-Off C
         (Brick On-Off-Minor-To-VII-Major C 2)
         (Chord Cm 2))
+*/
 
 // CESH's added by RK
-// CESH = Contrpunal Elaboration of Static Harmony
+// CESH = Contrapunal Elaboration of Static Harmony
 
 (Def-Brick Ascending-CESH(var1) Minor Misc C
         (Chord Cm 1)
