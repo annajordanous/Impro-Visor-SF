@@ -580,7 +580,7 @@ public class CYKParser
             fillTable();
             solution.addAll(findSolution(lib));
         }
-        solution = PostProcessing.findLaunchers(solution);
+        solution = PostProcessor.findLaunchers(solution);
         return solution;
     }
         

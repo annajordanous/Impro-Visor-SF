@@ -24,7 +24,7 @@ package imp.roadmap;
 import java.util.ArrayList;
 import java.util.List;
 
-import imp.cykparser.PostProcessing;
+import imp.cykparser.PostProcessor;
 import imp.brickdictionary.*;
 
 import polya.Polylist;
@@ -307,8 +307,8 @@ public class RoadMap {
      */
     public void process()
     {
-        joins = PostProcessing.findJoins(blocks);
-        RoadMap newMap = PostProcessing.findKeys(this);
+        joins = PostProcessor.findJoins(blocks);
+        RoadMap newMap = PostProcessor.findKeys(this);
         this.setBlocks(newMap.getBlocks());
         this.setKeyMap(newMap.getKeyMap());
     }

@@ -21,6 +21,8 @@
 
 
 package imp.brickdictionary;
+import imp.cykparser.PostProcessor;
+import imp.data.ChordSymbol;
 import imp.util.ErrorLog;
 import java.util.Collection;
 import polya.*;
@@ -47,6 +49,7 @@ public class BrickLibrary {
    
     private LinkedHashMap<String, LinkedList<Brick>> brickMap;
     private LinkedHashMap<String, Long> costMap;
+    public PostProcessor processor;
     
     // Construct BrickLibrary as a HashMap associating a brick's name with its
     // contents
@@ -405,7 +408,7 @@ public class BrickLibrary {
     }
         
     // Read in dictionary file, parse into bricks, and build the dictionary
-    public static BrickLibrary processDictionary() throws IOException {
+    public void processDictionary() throws IOException {
         
         FileInputStream fis = new FileInputStream(DICTIONARY_FILE);
         Tokenizer in = new Tokenizer(fis);
@@ -413,7 +416,8 @@ public class BrickLibrary {
         in.slashStarComments(true);
         Object token;
         
-        BrickLibrary dictionary = new BrickLibrary();
+        ArrayList<Polylist> equivalenceRules = new ArrayList<Polylist>();
+        ArrayList<Polylist> diatonicRules = new ArrayList<Polylist>();
         LinkedHashMap<String, LinkedList<Polylist>> polymap = 
                 new LinkedHashMap<String, LinkedList<Polylist>>();
         
@@ -426,7 +430,7 @@ public class BrickLibrary {
                 
                 // Check that polylist has enough fields to be a brick 
                 // Needs BlockType (i.e. "Def-Brick"), name, key, and contents
-                if (contents.length() < 3)
+                if (contents.length() < 2)
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
                             + " a BrickDictionary Polylist", true);
@@ -437,7 +441,40 @@ public class BrickLibrary {
                     String blockCategory = contents.first().toString();
                     contents = contents.rest();
                     
-                    if (blockCategory.equals("brick-type"))
+                    if (blockCategory.equals("equiv"))
+                    {
+                        if(contents.isEmpty())
+                        {
+                            ErrorLog.log(ErrorLog.WARNING, "Empty equivalence "
+                                    + "rule in dictionary");
+                        }
+                        else
+                        {
+                            Polylist chords = ChordSymbol.chordSymbolsFromStrings(contents);
+//                            System.out.println(chords.toStringSansParens());
+                            equivalenceRules.add(chords);
+                        }
+                    }
+                            
+                    else if (blockCategory.equals("diatonic"))
+                    {
+                        if(contents.isEmpty())
+                        {
+                            ErrorLog.log(ErrorLog.WARNING, "Empty diatonic "
+                                    + "rule in dictionary");
+                        }
+                        else
+                        {
+                            String modeTag = contents.first().toString();
+                            contents = contents.rest();
+                            Polylist p = ChordSymbol.chordSymbolsFromStrings(contents);
+                            p = p.cons(modeTag);
+//                            System.out.println(p.toStringSansParens());
+                            diatonicRules.add(p);
+                        }
+                    }
+                    
+                    else if (blockCategory.equals("brick-type"))
                     {
                         if (contents.length() != 2 && contents.length() != 1)
                             ErrorLog.log(ErrorLog.WARNING, "Not a correct"
@@ -446,17 +483,17 @@ public class BrickLibrary {
                             String type = contents.first().toString();
                             contents = contents.rest();
                             if (contents.isEmpty()) {
-                                dictionary.addType(type);
+                                addType(type);
                             }
                             else
                             {
                                 Object cost = contents.first();
                                 if (cost instanceof Long)
-                                    dictionary.addType(type, (Long)cost);
+                                    addType(type, (Long)cost);
                                 else {
                                     ErrorLog.log(ErrorLog.WARNING, "Incorrect"
                                             + "cost for brick type" + type);
-                                    dictionary.addType(type);
+                                    addType(type);
                                 }
                             }
                         }
@@ -504,14 +541,14 @@ public class BrickLibrary {
                     contents = contents.rest();
                 }
 
-                boolean hadBrick = dictionary.hasBrick(brickName);
+                boolean hadBrick = hasBrick(brickName);
 
                 String brickMode = contents.first().toString();
                 contents = contents.rest();
 
                 String brickType = contents.first().toString();
                 contents = contents.rest();
-                if (!dictionary.hasType(brickType))
+                if (!hasType(brickType))
                     ErrorLog.log(ErrorLog.WARNING, brickName + " is of "
                                 + "uninitialized type " + brickType + 
                                 "; will register as non-brick");
@@ -521,14 +558,15 @@ public class BrickLibrary {
                 long brickKeyNum = keyNameToNum(brickKeyString);
 
                 Brick currentBrick = new Brick(brickName, brickQualifier, brickKeyNum,
-                           brickType, contents, dictionary, brickMode, polymap);
-                dictionary.addBrick(currentBrick);
+                           brickType, contents, this, brickMode, polymap);
+                addBrick(currentBrick);
             }
             
             
             
         }
-            return dictionary;
+        
+        processor = new PostProcessor(equivalenceRules, diatonicRules);
     }
     
         
@@ -567,10 +605,12 @@ public class BrickLibrary {
     }
     
     public static void main(String[] args) throws IOException 
-            {
-        BrickLibrary dictionary;
-        dictionary = BrickLibrary.processDictionary();
-        
+    {
+        BrickLibrary dictionary = new BrickLibrary();
+        dictionary.processDictionary();
         dictionary.printDictionary();
+        
+        Polylist p = Polylist.list("C", "Dm", "Em", "F", "G7", "Am", "Bo");
+        Polylist c = ChordSymbol.chordSymbolsFromStrings(p);
     }
 }

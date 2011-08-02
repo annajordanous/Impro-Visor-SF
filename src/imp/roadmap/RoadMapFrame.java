@@ -118,9 +118,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         previewPanel = new PreviewPanel(this);
         roadMapPanel = new RoadMapPanel(this);
+        brickLibrary = new BrickLibrary();
         
          try {
-            brickLibrary = BrickLibrary.processDictionary();
+            brickLibrary.processDictionary();
         } catch (IOException e) {
             ErrorLog.log(ErrorLog.FATAL, "Error opening brick dictionary");
             System.exit(-1);

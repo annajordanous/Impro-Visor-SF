@@ -22,7 +22,7 @@
 
 package imp.brickdictionary;
 
-import imp.cykparser.PostProcessing;
+import imp.cykparser.PostProcessor;
 import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -250,7 +250,7 @@ public class Brick extends Block {
      */
     public Brick(ChordBlock c, String m) {
         super("Launcher");
-        key = (c.getKey() + PostProcessing.DOM_ADJUST) % PostProcessing.OCTAVE;
+        key = (c.getKey() + PostProcessor.DOM_ADJUST) % PostProcessor.OCTAVE;
         type = "Launcher";
         ArrayList<Block> singleton = new ArrayList<Block>();
         singleton.add(c);

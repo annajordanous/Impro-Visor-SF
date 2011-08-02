@@ -21,6 +21,7 @@
 
 package imp.cykparser;
 import imp.brickdictionary.*;
+import imp.data.ChordSymbol;
 import imp.roadmap.*;
 import imp.util.ErrorLog;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import polya.*;
  * purpose: gain further information from list of blocks
  * @author Zachary Merritt
  */
-public class PostProcessing {
+public class PostProcessor {
     
     public static final int DOM_ADJUST = 5;
     public static final int OCTAVE = 12;
@@ -45,6 +46,35 @@ public class PostProcessing {
     private static final String[] MINOR_MODES = {"aeolian", "dorian", "phrygian"};
     private static final String[] DIMINISHED_MODES = {"locrian"};
     private static final String[] DOMINANT_MODES = {"mixolydian", "blues"};
+    
+    private static ArrayList<Polylist> equivalenceRules;
+    private static ArrayList<Polylist> diatonicRules;
+    
+    public PostProcessor() {
+        equivalenceRules = new ArrayList<Polylist>();
+        diatonicRules = new ArrayList<Polylist>();
+    }
+    
+    public PostProcessor(ArrayList<Polylist> e, ArrayList<Polylist> d) {
+        equivalenceRules = e;
+        diatonicRules = d;
+    }
+    
+    public ArrayList<Polylist> getEquivalenceRules() {
+        return equivalenceRules;
+    }
+    
+    public ArrayList<Polylist> getDiatonicRules() {
+        return diatonicRules;
+    }
+    
+    public void setEquivalenceRules(ArrayList<Polylist> e) {
+        equivalenceRules = e;
+    }
+    
+    public void setDiatonicRules(ArrayList<Polylist> d) {
+        diatonicRules = d;
+    }
     
      /** findKeys
      * Method groups consecutive block of same key for overarching key sections
@@ -508,28 +538,92 @@ public class PostProcessing {
      * @param c : chord to be checked
      * @param key : key that chord is checked against
      * @param mode : String that determines qualities of chords in key
+     * @param dict : a BrickLibrary
      * @return isInKey : whether or not chord is in key
      */
-    public static boolean diatonicChordCheck(ChordBlock c, Long key, String mode) {
+    public static boolean diatonicChordCheck(ChordBlock c, Long key, 
+            String mode) {
         boolean isInKey = false;
         
-        Polylist formScales = c.getChord().getChordForm().getScales();
-        String[] modeScales = determineScales(mode);
+//        System.out.println("Chord transitions");
+//        System.out.println("\tInitial chord: " + c.getName());
+        c.transpose(OCTAVE - key);
+        Long offset = c.getKey();
+//        System.out.println("\tFirst transposition: " + c.getName());
+//        System.out.println("\tOffset: " + offset);
         
-        for(PolylistEnum e = formScales.elements(); e.hasMoreElements();) {
-            String eString = e.nextElement().toString();
-            for(String s : modeScales) {
-                if(eString.contains(" " + s) && 
-                        eString.contains(BrickLibrary.keyNumToName(key))) {
+        c.transpose(OCTAVE - offset);
+//        System.out.println("\tSecond transposition: " + c.getName());
+        
+        ChordSymbol cSym = null;
+        
+        for(Polylist p : equivalenceRules)
+        {
+            if(c.getChord().getChordSymbol().enhMember(p))
+            {
+                cSym = ChordSymbol.makeChordSymbol(p.first().toString());
+//                System.out.println("\tRepresentative chord: " + cSym.getName());
+                break;
+            }
+        }
+        
+        if(cSym != null) {
+            cSym = cSym.transpose(offset.intValue());
+//            System.out.println("\tRep. chord transposed by offset: " + 
+//                    cSym.getName());
+        }
+        c.transpose(offset);
+        
+        for(Polylist p : diatonicRules)
+        {
+            String modeTag = p.first().toString();
+            p = p.rest();
+            if(modeTag.equals(mode))
+            {
+                if(cSym.enhMember(p))
+                {
+                    c.transpose(key);
                     isInKey = true;
-                    System.out.println("isInKey: " + isInKey);
+//                    System.out.println("\t" + c.getName() + " is in " + 
+//                            BrickLibrary.keyNumToName(key) + " " + mode +
+//                            ": " + isInKey);
                     return isInKey;
                 }
             }
         }
         
+        c.transpose(key);
+//        System.out.println("\t" + c.getName() + " is in " + 
+//                BrickLibrary.keyNumToName(key) + " " + mode + ": " + isInKey);
         return isInKey;
     }
+    
+//    /**diatonicChordCheck
+//     * Checks to see if chord fits diatonically within key
+//     * @param c : chord to be checked
+//     * @param key : key that chord is checked against
+//     * @param mode : String that determines qualities of chords in key
+//     * @return isInKey : whether or not chord is in key
+//     */
+//    public static boolean diatonicChordCheck(ChordBlock c, Long key, String mode) {
+//        boolean isInKey = false;
+//        
+//        Polylist formScales = c.getChord().getChordForm().getScales();
+//        String[] modeScales = determineScales(mode);
+//        
+//        for(PolylistEnum e = formScales.elements(); e.hasMoreElements();) {
+//            String eString = e.nextElement().toString();
+//            for(String s : modeScales) {
+//                if(eString.contains(" " + s) && 
+//                        eString.contains(BrickLibrary.keyNumToName(key))) {
+//                    isInKey = true;
+//                    return isInKey;
+//                }
+//            }
+//        }
+//        
+//        return isInKey;
+//    }
     
     /** determineScales
      * Finds what scales to compare against those of a ChordForm based on 
