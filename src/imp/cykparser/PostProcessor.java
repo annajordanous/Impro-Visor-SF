@@ -35,43 +35,66 @@ import polya.*;
  */
 public class PostProcessor {
     
-    public static final int DOM_ADJUST = 5;
-    public static final int OCTAVE = 12;
-    public static final Integer[] DIM_INTERVALS = {11, 8, 5, 2, 1, 10, 7, 4};
+    public static final int DOM_ADJUST = 5; // adjustment to root (by semitones)
+                                            // when dealing with dominants
+    public static final int OCTAVE = 12;    // semitones in octave
+    // Names of joins, arranged by difference in keys between which they
+    // transition (with reference to dominant in first block)
     public static final String[] JOINS = {"Bootstrap", "Stella", "Backslider", 
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
         "Cherokee", "Woody", "Highjump", "Bauble"};
-    public static final String DOGLEG = "Dogleg";
-    private static final String[] MAJOR_MODES = {"major", "lydian"};
-    private static final String[] MINOR_MODES = {"aeolian", "dorian", "phrygian"};
-    private static final String[] DIMINISHED_MODES = {"locrian"};
-    private static final String[] DOMINANT_MODES = {"mixolydian", "blues"};
     
+    // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;
+    // Rules for which chords are diatonic depending on mode
     private static ArrayList<Polylist> diatonicRules;
     
+    /** Default constructor
+     * Constructs a new PostProcessor with empty rules lists
+     */
     public PostProcessor() {
         equivalenceRules = new ArrayList<Polylist>();
         diatonicRules = new ArrayList<Polylist>();
     }
     
+    /** PostProcessor / 2
+     * Create rules lists from input
+     * @param e : ArrayList of Polylists, each one of which is an equivalence rule
+     * @param d : ArrayList of Polylists, each one of which is a diatonic rule
+     */
     public PostProcessor(ArrayList<Polylist> e, ArrayList<Polylist> d) {
         equivalenceRules = e;
         diatonicRules = d;
     }
     
+    /** getEquivalenceRules
+     * Get the stored equivalence rules
+     * @return a set of equivalence rules (ArrayList of Polylists)
+     */
     public ArrayList<Polylist> getEquivalenceRules() {
         return equivalenceRules;
     }
     
+    /** getDiatonicRules
+     * Get the stored diatonic rules
+     * @return a set of diatoniv rules (ArrayList of Polylists)
+     */
     public ArrayList<Polylist> getDiatonicRules() {
         return diatonicRules;
     }
     
+    /** setEquivalenceRules
+     * set the equivalence rules based on input
+     * @param e : a set of equivalence rules (ArrayList of Polylists)
+     */
     public void setEquivalenceRules(ArrayList<Polylist> e) {
         equivalenceRules = e;
     }
     
+    /** setDiatonicRules
+     * set the diatonic rules based on input
+     * @param e : a set of diatonic rules (ArrayList of Polylists)
+     */
     public void setDiatonicRules(ArrayList<Polylist> d) {
         diatonicRules = d;
     }
@@ -88,22 +111,26 @@ public class PostProcessor {
         KeySpan current = new KeySpan();
         ArrayList<Block> blocks = roadmap.getBlocks();
         
+        // Check for an empty roadmap
         if(blocks.isEmpty()) {
             roadmap.getKeyMap().clear();
             return roadmap;
         }
         
+        // Create array so we can loop through correctly
         Block[] blockArray = blocks.toArray(new Block[0]);
-//        current = new KeySpan(blockArray[blockArray.length - 1].getKey(),
-//                blockArray[blockArray.length - 1].getMode(),
-//                blockArray[blockArray.length - 1].getDuration());
         
+        // Initialize KeySpan using last block
         current.setKey(blockArray[blockArray.length - 1].getKey());
         current.setMode(blockArray[blockArray.length - 1].getMode());
         current.setDuration(blockArray[blockArray.length - 1].getDuration());
-            
+        
+        // Loop through blocks backwards, 
         for(int i = blockArray.length - 2; i >= 0; i--) {
+            // Create new KeySpan for new section
             if(blockArray[i].isSectionEnd()) {
+                // Match mode to second block if first block is an approach or
+                // launcher that resolves to second block
                 if(blockArray[i].getType().equals("Approach") || 
                         blockArray[i].getType().equals("Launcher")) {
                     ArrayList<ChordBlock> cFirstList = 
@@ -113,12 +140,9 @@ public class PostProcessor {
                             (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
                     ChordBlock cSecond = cSecondList.get(0);
                     
-//                    System.out.println("Going into doesResolve");
                     boolean dR = doesResolve(cFirst, cSecond);
-//                    System.out.println(cFirst.toString() + " resolves to " + 
-//                            cSecond.toString() + "?: " + dR);
                     if(dR) {
-                        blockArray[i].setMode(cSecond.getMode());               //This is where that thing happens with launcher modes
+                        blockArray[i].setMode(cSecond.getMode());
                     }
                 }
                 
@@ -129,12 +153,16 @@ public class PostProcessor {
                             blockArray[i].getMode(), blockArray[i].getDuration());
                 
             }
+            // Case in which first block is a brick
             else if(blockArray[i] instanceof Brick) {
+                // Check if current block can roll into current KeySpan
                 if(current.getKey() == blockArray[i].getKey() &&
                         current.getMode().equals(blockArray[i].getMode())) {
                     current.setDuration(current.getDuration() +
                             blockArray[i].getDuration());
                 }
+                // Match mode to second block if first block is an approach or
+                // launcher that resolves to second block
                 else if(blockArray[i].getType().equals("Approach") || 
                         blockArray[i].getType().equals("Launcher")) {
                     ArrayList<ChordBlock> cFirstList = 
@@ -144,10 +172,7 @@ public class PostProcessor {
                             (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
                     ChordBlock cSecond = cSecondList.get(0);
                     
-//                    System.out.println("Going into doesResolve");
                     boolean dR = doesResolve(cFirst, cSecond);
-//                    System.out.println(cFirst.toString() + " resolves to " + 
-//                            cSecond.toString() + "?: " + dR);
                     if(dR) {
                         blockArray[i].setMode(cSecond.getMode());
                         current.setDuration(current.getDuration() +
@@ -162,8 +187,8 @@ public class PostProcessor {
                                 blockArray[i].getDuration());
                     }
                 }
-                else {
                 // End of current key -- add to the list
+                else {
                     KeySpan entry = current;
                     keymap.add(0, entry);
 
@@ -171,55 +196,19 @@ public class PostProcessor {
                             blockArray[i].getMode(), blockArray[i].getDuration());
                 }
             }
+            // Case in which first block is a chord
             else {
                 ChordBlock c = (ChordBlock)blockArray[i];
-//                KeyMode km = chordKeyFind(c, blockArray[i + 1]);
-//                if(current.getKey() == km.getKey() && 
-//                        current.getMode().equals(km.getMode())) {
-//                if(blockArray[i+1].getType().equals("On-Off")) {
-//                    System.out.println("If in ChordBlock - " + i);
-//                    ChordBlock on = blockArray[i+1].flattenBlock().get(0);
-//                    if(c.getKey() == on.getKey() &&
-//                            c.getMode().equals(on.getMode())) {
-//                        System.out.println("Chord " + c.getName() + " is on");
-//                        // blockArray[i] = new Brick(c);
-//                    }
-//                    else {
-//                        System.out.println("Chord " + c.getName() + " is off");
-//                        // blockArray[i] = new Brick(c, current);
-//                    }
-//                }
+                // Check if chord is diatonically within current KeySpan
                 if(diatonicChordCheck(c, current.getKey(), current.getMode())) {
                     current.setDuration(current.getDuration() + c.getDuration());
-//                    if(c.getKey() == current.getKey()) {
-//                        // Consider this chord "on"
-//                         blockArray[i] = new Brick(c);
-//                    }
-//                    else {
-//                        // Consider this chord "off"
-//                         blockArray[i] = new Brick(c, current);
-//                    }
                 }
+                // If chord is diminished, add it onto current KeySpan
                 else if (c.isDiminished()) {
-//                    ArrayList<ChordBlock> postList = (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
-//                    ChordBlock post = postList.get(0);
-//                    
-//                    if(diminishedCheck(c, post)) {
-//                        current.setDuration(current.getDuration() + c.getDuration());
-//                    }
-//                    else {
-//                        // Start a new key
-//                    KeySpan entry = current;
-//                    keymap.add(0, entry);
-//            
-//                    current = new KeySpan(c.getKey(), c.getMode(), 
-//                            c.getDuration());
-//                    }
-                    
                     current.setDuration(current.getDuration() + c.getDuration());
                 }
+                // End of current key -- add to the list
                 else {
-                    // Start a new key
                     KeySpan entry = current;
                     keymap.add(0, entry);
             
@@ -229,15 +218,13 @@ public class PostProcessor {
             }
         }
         
+        // Add first KeySpan in song to list
         keymap.add(0, current);
         blocks = new ArrayList<Block>(Arrays.asList(blockArray));
         
+        // Replace current RoadMap with one that has properly merged KeySpans
         RoadMap newMap = new RoadMap(blocks);
         newMap.setKeyMap(keymap);
-        
-//        for(KeySpan ks : keymap) {
-//            System.out.println(ks.toString());
-//        }
         
         return newMap;
     }
@@ -293,6 +280,7 @@ public class PostProcessor {
                     alteredList.add(b);
             }
             
+            // Case in which current block is a dominant chord
             else if (((ChordBlock)blocks.get(i)).getSymbol().startsWith("7")) {
                 ChordBlock b = (ChordBlock)blocks.get(i);
                 Block postBlock;
@@ -310,8 +298,9 @@ public class PostProcessor {
                     chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
                 }
                 
+                // Check for single-chord launcher
                 if(doesResolve(b, chordList.get(0)) && b.isSectionEnd()) {
-                    Brick uniLauncher = new Brick(b, chordList.get(0).getMode()); // This is where that thing happens again
+                    Brick uniLauncher = new Brick(b, chordList.get(0).getMode());
                     
                     alteredList.add(uniLauncher);
                 }
@@ -339,8 +328,6 @@ public class PostProcessor {
             joinArray = new String[blocks.size() - 1];
         }
         else {
-            //ErrorLog.log(ErrorLog.WARNING, "Cannot find joins in an ArrayList "
-            //        + "of size 0");
             return null;
         }
         for(int i = 0; i < blocks.size() - 1; i++) {
@@ -348,63 +335,35 @@ public class PostProcessor {
             Block c = blocks.get(i + 1);
             // Check if current and next block are both bricks
             if (c instanceof Brick) {
+                // Check for special Dogleg join
                 if(checkDogleg(b, (Brick)c)) {
-                    joinArray[i] = DOGLEG;
+                    joinArray[i] = "Dogleg";
                 }
                 // Check that the two bricks are joinable
                 else if(checkJoinability(b, ((Brick)c))) {
                     ArrayList<ChordBlock> subList = 
                             (ArrayList<ChordBlock>) c.flattenBlock();
-                    // Block firstBlock = subList.get(0);
-                    // ArrayList<ChordBlock> chordList = (ArrayList<ChordBlock>)firstBlock.flattenBlock();
-                    
-                    // long domKey = (subList.get(0).getKey() + 5) % OCTAVE; 
                     
                     // Default to dominant of brick's overall key
                     long domKey = (c.getKey() + 7) % OCTAVE;
                     
+                    // Try to use first dominant in second brick
                     for(ChordBlock cb : subList) {
                         if(cb.getQuality().startsWith("7")) {
                             domKey = cb.getKey();
                             break;
                         }
-//                        else if(cb.getQuality().startsWith("m")) {
-//                            
-//                            
-//                            domKey = (cb.getKey() + 5) % OCTAVE;
-//                            break;
-//                        }
                     }
-                    
-//                    boolean inFirstBlock = false;
-//                    // keyDiff used in joinLookup is based on last dominant in 
-//                    // first subblock
-//                    for(ChordBlock j : chordList) {
-//                        if(j.getQuality().equals("7"))
-//                        {
-//                            domKey = j.getKey();
-//                            inFirstBlock = true;
-//                        }
-//                    }
-//                    
-//                    if(!inFirstBlock && !subList.isEmpty()) {
-//                        for(Block subListBlock : subList) {
-//                            ArrayList<ChordBlock> subChordList = (
-//                                    ArrayList<ChordBlock>)subListBlock.flattenBlock();
-//                            for(ChordBlock subChord : subChordList) {
-//                                if(subChord.getQuality().startsWith("7")) {
-//                                    domKey = subChord.getKey();
-//                                }
-//                            }
-//                        }
-//                    }
-                    
+                    // Determine which join based on difference between first 
+                    // block's key and dominant found in previous step
                     long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
                     joinArray[i] = joinLookup(keyDiff);
                 }
+                // Enter empty string if the two blocks are not joinable
                 else
                     joinArray[i] = "";
             }
+            // Enter empty string if second block is a chord
             else
                 joinArray[i] = "";
         }
@@ -426,12 +385,13 @@ public class PostProcessor {
                 (ArrayList<ChordBlock>)first.flattenBlock();
         ArrayList<ChordBlock> secondList = second.flattenBlock();
         
+        // Comparing last chord of first block and first block of second block
         ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
         ChordBlock secondToCheck = secondList.get(0);
         
+        // Create equivalence dictionary and get equivalences for the two chords
         EquivalenceDictionary dict = new EquivalenceDictionary();
         dict.loadDictionary(CYKParser.DICTIONARY_NAME);
-        
         SubstituteList firstEquivs = 
                 dict.checkEquivalence(firstToCheck);
         SubstituteList secondEquivs =
@@ -443,11 +403,13 @@ public class PostProcessor {
         boolean firstStable = false;
         boolean secondStable = false;
         
+        // Determine stability of first block
         if(firstEquivs.contains(firstMode) || 
                 first.getType().equals("Cadence")) {
             firstStable = true;
         }
         
+        // Determine stability of second block
         if(second.getType().equals("Approach") || 
                 second.getType().equals("Cadence") || 
                 second.getType().equals("Launcher")) {
@@ -458,6 +420,7 @@ public class PostProcessor {
             secondStable = true;
         }
         
+        // joinable if transition from stable to unstable
         if(firstStable && !secondStable) {
             joinable = true;
         }
@@ -478,6 +441,7 @@ public class PostProcessor {
                 (ArrayList<ChordBlock>)first.flattenBlock();
         ArrayList<ChordBlock> secondList = second.flattenBlock();
         
+        // Comparing last chord of first block and first block of second block
         ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
         ChordBlock secondToCheck = secondList.get(0);
         
@@ -487,6 +451,7 @@ public class PostProcessor {
         long secondKey = secondToCheck.getKey();
         String secondSymbol = secondToCheck.getSymbol();
         
+        // Dogleg join is characterized by a dominant to a m7
         if(firstKey == secondKey && firstSymbol.startsWith("7") && 
                 secondSymbol.equals("m7")) {
             isDogleg = true;
@@ -510,29 +475,6 @@ public class PostProcessor {
         }
     }
     
-    /** diminishedCheck
-     * Checks if diminished ChordBlock c resolves to ChordBlock post 
-     * (used in findKeys)
-     * @param c : a ChordBlock (diminished)
-     * @param post : the ChordBlock to which c is compared
-     * @return inKey : a boolean indicating whether or not KeySpan should 
-     *                 continue
-     */
-    public static boolean diminishedCheck(ChordBlock c, ChordBlock post) {
-        boolean inKey = false;
-        
-        long cKey = c.getKey();
-        long pKey = post.getKey();
-        
-        int diff = (int)((pKey - cKey + OCTAVE) % OCTAVE);
-        
-        if(Arrays.asList(DIM_INTERVALS).contains(diff)) {
-            inKey = true;
-        }
-        
-        return inKey;
-    }
-    
     /**diatonicChordCheck
      * Checks to see if chord fits diatonically within key
      * @param c : chord to be checked
@@ -545,35 +487,33 @@ public class PostProcessor {
             String mode) {
         boolean isInKey = false;
         
-//        System.out.println("Chord transitions");
-//        System.out.println("\tInitial chord: " + c.getName());
+        // Adjust for second brick's key
         c.transpose(OCTAVE - key);
         Long offset = c.getKey();
-//        System.out.println("\tFirst transposition: " + c.getName());
-//        System.out.println("\tOffset: " + offset);
         
+        // Transpose chord down to C
         c.transpose(OCTAVE - offset);
-//        System.out.println("\tSecond transposition: " + c.getName());
         
         ChordSymbol cSym = null;
         
+        // Get representative chord for c and save it in cSym
         for(Polylist p : equivalenceRules)
         {
             if(c.getChord().getChordSymbol().enhMember(p))
             {
                 cSym = ChordSymbol.makeChordSymbol(p.first().toString());
-//                System.out.println("\tRepresentative chord: " + cSym.getName());
                 break;
             }
         }
         
+        // Transpose cSym and c back by offset saved earlier
         if(cSym != null) {
             cSym = cSym.transpose(offset.intValue());
-//            System.out.println("\tRep. chord transposed by offset: " + 
-//                    cSym.getName());
         }
         c.transpose(offset);
         
+        // Check if cSym is diatonically within key according to mode of second
+        // block
         for(Polylist p : diatonicRules)
         {
             String modeTag = p.first().toString();
@@ -588,162 +528,41 @@ public class PostProcessor {
             }
         }
         
+        // Transpose c back to its original key
         c.transpose(key);
-//        System.out.println("\t" + c.getName() + " is in " + 
-//                BrickLibrary.keyNumToName(key) + " " + mode + ": " + isInKey);
         return isInKey;
-    }
-    
-//    /**diatonicChordCheck
-//     * Checks to see if chord fits diatonically within key
-//     * @param c : chord to be checked
-//     * @param key : key that chord is checked against
-//     * @param mode : String that determines qualities of chords in key
-//     * @return isInKey : whether or not chord is in key
-//     */
-//    public static boolean diatonicChordCheck(ChordBlock c, Long key, String mode) {
-//        boolean isInKey = false;
-//        
-//        Polylist formScales = c.getChord().getChordForm().getScales();
-//        String[] modeScales = determineScales(mode);
-//        
-//        for(PolylistEnum e = formScales.elements(); e.hasMoreElements();) {
-//            String eString = e.nextElement().toString();
-//            for(String s : modeScales) {
-//                if(eString.contains(" " + s) && 
-//                        eString.contains(BrickLibrary.keyNumToName(key))) {
-//                    isInKey = true;
-//                    return isInKey;
-//                }
-//            }
-//        }
-//        
-//        return isInKey;
-//    }
-    
-    /** determineScales
-     * Finds what scales to compare against those of a ChordForm based on 
-     * brick's mode
-     * @param mode : a String; determines what scales to use for comparison
-     * @return an array of strings containing scales to use for comparison
-     */
-    private static String[] determineScales(String mode) {
-        if(mode.equalsIgnoreCase("Major")) {
-            return MAJOR_MODES;
-        }
-        else if(mode.equalsIgnoreCase("Minor")) {
-            return MINOR_MODES;
-        }
-        else if(mode.equalsIgnoreCase("Dominant")) {
-            return DOMINANT_MODES;
-        }
-        else if(mode.equalsIgnoreCase("Diminished")) {
-            return DIMINISHED_MODES;
-        }
-        else {
-            return new String[0];
-        }
     }
     
     /** doesResolve
      * Check if brick resolves to a certain block
      * @param b1 : brick to be checked
      * @param b2 : possible tonic of b1
-     * @return resolves : whether or not b1 resolves to b2
+     * @return whether or not b1 resolves to b2
      */
     
-       public static boolean doesResolve(Brick b1, Block b2) {
-        boolean resolves = false;
+    public static boolean doesResolve(Brick b1, Block b2) {
 
-        if (b2 instanceof Brick) {
-            Brick b2Brick = (Brick) b2;
-            String b2Mode = b2.getMode();
-            Long relative;
-
-            if (b2Mode.equals("Major")) {
-                relative = (b2.getKey() - 3) % OCTAVE;
-            } else if (b2Mode.equals("minor")) {
-                relative = (b2.getKey() + 3) % OCTAVE;
-            } else {
-                relative = (b2.getKey() + 5) % OCTAVE;
-            }
-
-            if (b1.getKey() == b2.getKey()/* && b1.getMode().equals(b2Mode)*/) {
-                resolves = true;
-            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
-                resolves = true;
-            }*/
-        } else {
-//            String b2Mode = findModeFromQuality(((ChordBlock) b2).getQuality());
-            String b2Mode = ((ChordBlock)b2).findModeFromQuality();
-            Long relative;
-
-            if (b2Mode.equals("Major")) {
-                relative = (b2.getKey() - 3) % OCTAVE;
-            } else if (b2Mode.equals("minor")) {
-                relative = (b2.getKey() + 3) % OCTAVE;
-            } else {
-                relative = (b2.getKey() + 5) % OCTAVE;
-            }
-
-            if (b1.getKey() == b2.getKey() /*&& b1.getMode().equals(b2Mode)*/) {
-                resolves = true;
-            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
-                resolves = true;
-            }*/
+        if (b1.getKey() == b2.getKey()) {
+            return true;
         }
 
-        return resolves;
+        return false;
     }
        
        /** doesResolve
      * Check if brick resolves to a certain block
-     * @param b1 : brick to be checked
+     * @param b1 : ChordBlock to be checked
      * @param b2 : possible tonic of b1
-     * @return resolves : whether or not b1 resolves to b2
+     * @return whether or not b1 resolves to b2
      */
-       public static boolean doesResolve(ChordBlock b1, Block b2) {
-        boolean resolves = false;
-
-        if (b2 instanceof Brick) {
-            Brick b2Brick = (Brick) b2;
-            String b2Mode = b2.getMode();
-            Long relative;
-
-            if (b2Mode.equals("Major")) {
-                relative = (b2.getKey() - 3) % OCTAVE;
-            } else if (b2Mode.equals("minor")) {
-                relative = (b2.getKey() + 3) % OCTAVE;
-            } else {
-                relative = (b2.getKey() + 5) % OCTAVE;
-            }
-
-            if ((b1.getKey() + DOM_ADJUST)%OCTAVE == b2.getKey()/* && b1.getMode().equals(b2Mode)*/) {
-                resolves = true;
-            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
-                resolves = true;
-            }*/
-        } else {
-//            String b2Mode = findModeFromQuality(((ChordBlock) b2).getQuality());
-            String b2Mode = ((ChordBlock)b2).findModeFromQuality();
-            Long relative;
-
-            if (b2Mode.equals("Major")) {
-                relative = (b2.getKey() - 3) % OCTAVE;
-            } else if (b2Mode.equals("minor")) {
-                relative = (b2.getKey() + 3) % OCTAVE;
-            } else {
-                relative = (b2.getKey() + 5) % OCTAVE;
-            }
-
-            if ((b1.getKey() + DOM_ADJUST)%OCTAVE == b2.getKey() /*&& b1.getMode().equals(b2Mode)*/) {
-                resolves = true;
-            } /*else if (b1.getKey() == relative && !b1.getMode().equals(b2Mode)) {
-                resolves = true;
-            }*/
+    public static boolean doesResolve(ChordBlock b1, Block b2) {
+        
+        // Adjust for the dominant
+        if ((b1.getKey() + DOM_ADJUST)%OCTAVE == b2.getKey()) {
+            return true;
         }
 
-        return resolves;
+        return false;
     }
 }
      
