@@ -36,7 +36,7 @@
 
 (section (style latin)) 
 
-FM7 D7 | Gm7 C7 | Fm7 D7 | Bb7 | 
+FM7 D7 | Gm7 C7 | Fm7 | Bb7 | 
 Db7 | Gm7 C7 | FM7 | Gm7 C7 | 
 
 (section (style latin)) 
