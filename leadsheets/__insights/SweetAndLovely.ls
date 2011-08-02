@@ -1,5 +1,5 @@
-(title Falling In Love With Love)
-(composer Richard Rodgers)
+(title Sweet and Lovely)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,9 +10,9 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style swing
@@ -27,48 +27,40 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
     (key 0)
 )
 
-(phrase)
-BbM7 | Dm7 G7 | Cm7 | F7 | 
+(section (style swing)) 
+
+Gm7 | C7 | Gm7 | C7 | 
+Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
 
 (section (style swing)) 
 
-Cm7 | F7 | BbM7 | Cm7 F7 | 
-
-(phrase)
-BbM7 | / | Am7 | D7 | 
+Gm7 | C7 | Gm7 | C7 | 
+Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
 
 (section (style swing)) 
 
-Gm7 | C7 | Cm7 | F7 | 
-
-(phrase)
-BbM7 | Dm7 G7 | Cm7 | F7 | 
+Fm7 Bb7 | CM7 | Fm7 Bb7 | CM7 | 
+Abm7 Db7 | EbM7 | Ebm7 Ab7 | Dm7 G7 | 
 
 (section (style swing)) 
 
-Cm7 | F7 | BbM7 | Cm7 F7 | 
-
-(phrase)
-BbM7 | / | Am7 D7 | Dm7 G7 | 
-
-(section (style swing)) 
-
-Cm7 G7 | Cm7 F7 | BbM7 | / | 
+Gm7 | C7 | Gm7 | C7 | 
+Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 73)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- c8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -1,11 +1,11 @@
-(title Every Time We Say Goodbye)
-(composer Cole Porter)
+(title Never Let Me Go)
+(composer Jay Livingson and Ray Evans)
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key -3)
-(tempo 90.0)
+(key -1)
+(tempo 100.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -31,36 +31,23 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -3)
+    (key -1)
 )
 
 (phrase)
-EbM7 | Fm7 Bb7 | Gm7b5 C7 | Fm7 / Bb7 | 
+Gm7 | C7 | Fm7 | Bb7 | 
+EbM7 | Am7 D7 | DbM7 | Gm7 C7 | 
 
 (section (style ballad)) 
 
-EbM7 | Fm7 Bb7 | Bbm7 Eb7 | Abm7 Db7 | 
-
-(phrase)
-Gm7 Gbo7 | Fm7 Bb7 | Bbm7 Eb7 | AbM7 | 
+Cm7 | F7b9 | Bbm7 | Eb7 | 
+AbM7 | Dm7b5 G7b9 | CM7 | Am7 / Eb7 D7b9 | 
 
 (section (style ballad)) 
 
-Abm Db7 | EbM7 | B7 | Fm7 Bb7 | 
-
-(phrase)
-EbM7 | Fm7 Bb7 | Gm7b5 C7 | Fm7 / Bb7 | 
-
-(section (style ballad)) 
-
-EbM7 | Fm7 Bb7 | Bbm7 Eb7 | AbM7 | 
-
-(phrase)
-Gm7 Gbo7 | Fm7 Bb7 | Bbm7 Eb7 | AbM7 / Abm7 Db7 | 
-
-(section (style ballad)) 
-
-Gm7 C7 | Fm7 Bb7 | EbM7 | / | 
+Gm7 | C7 | Fm7 | Bb7 | 
+EbM7 | Am7 D7 | Gm7 GmM7 | C7 | 
+Cm7 Gb7#11 | F7 Ebm6/F | BbM7 | Am7b5 D7b9 | 
 
 (part
     (type melody)
@@ -68,7 +55,7 @@ Gm7 C7 | Fm7 Bb7 | EbM7 | / |
     (composer )
     (instrument 73)
     (volume 85)
-    (key -3)
+    (key -1)
     (stave treble)
 )
- g4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
+ g8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8
