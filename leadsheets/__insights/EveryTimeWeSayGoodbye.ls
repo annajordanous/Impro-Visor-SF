@@ -34,11 +34,10 @@
     (key -3)
 )
 
-(phrase)
+(section (style ballad))
 EbM7 | Fm7 Bb7 | Gm7b5 C7 | Fm7 / Bb7 | 
-
-(section (style ballad)) 
-
+ 
+(phrase)
 EbM7 | Fm7 Bb7 | Bbm7 Eb7 | Abm7 Db7 | 
 
 (phrase)

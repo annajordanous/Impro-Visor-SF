@@ -28,8 +28,6 @@
 (brick-type Opening          25)
 (brick-type Turnaround       20)
 (brick-type Misc             40)
-(brick-type Unary           200)
-(brick-type User-Defined     30)
 
 // Major bricks
 
@@ -171,16 +169,7 @@
 (Def-Brick Dropback(var2) Major Dropback C
 	(Chord CM7 1)
         (Chord Bb7 1)
-	(Chord A7  2))
-
-(Def-Brick Rainy-Dropback-Cadence Major Cadence C
-	(Chord Dm7 1)
-        (Chord G7 1)
-        (Chord CM7 1)
-        (Chord Ebo 1)
-	(Chord Dm7 1)
-        (Chord G7 1)
-        (Chord CM7 1))      
+	(Chord A7  2))    
 
 (Def-Brick Dropback-To-Five Major Dropback C
 	(Brick Somewhere C 5)
@@ -539,6 +528,15 @@
 (Def-Brick Rainy-Approach Major Approach C
 	(Brick Raindrop C 2)
 	(Brick Straight-Approach C 2))
+
+(Def-Brick Rainy-Dropback-Cadence Major Cadence C
+	(Chord Dm7 1)
+        (Chord G7 1)
+        (Chord CM7 1)
+        (Chord Ebo 1)
+	(Chord Dm7 1)
+        (Chord G7 1)
+        (Chord CM7 1))  
 
 (Def-Brick Reverse-Raindrop Major Misc C
 	(Chord Dm 1)

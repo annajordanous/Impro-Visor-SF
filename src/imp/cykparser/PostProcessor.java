@@ -580,14 +580,10 @@ public class PostProcessor {
             p = p.rest();
             if(modeTag.equals(mode))
             {
-                if(cSym.enhMember(p))
+                if(cSym != null && cSym.enhMember(p))
                 {
-                    c.transpose(key);
                     isInKey = true;
-//                    System.out.println("\t" + c.getName() + " is in " + 
-//                            BrickLibrary.keyNumToName(key) + " " + mode +
-//                            ": " + isInKey);
-                    return isInKey;
+                    break;
                 }
             }
         }
