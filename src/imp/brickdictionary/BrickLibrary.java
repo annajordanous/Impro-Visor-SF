@@ -39,40 +39,63 @@ import java.util.Set;
  */
 public class BrickLibrary {
     
+    // Lists of key names, with indices corresponding to numeric key value
     private static final String[] KEY_NAME_ARRAY = 
         {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
     private static final String[] KEY_NAME_ARRAY_SHARPS =
         {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+    
+    // the default cost of a type with no cost specified
     private static final long DEFAULT_COST = 40;
+    
+    // the path where the dictionary of brick definitions is stored
     public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
+    
+    // the string describing an invisible brick's type
     public static final String INVISIBLE = "Invisible";
    
-    private LinkedHashMap<String, LinkedList<Brick>> brickMap;
-    private LinkedHashMap<String, Long> costMap;
-    public PostProcessor processor;
+    // Data Members //
+    private LinkedHashMap<String, LinkedList<Brick>> brickMap; // all bricks
     
-    // Construct BrickLibrary as a HashMap associating a brick's name with its
-    // contents
+    private LinkedHashMap<String, Long> costMap;          // brick costs by type
+    
+    public PostProcessor processor;                  // the postprocessing unit
+    
+    
+    /** BrickLibrary / 0
+     * Default constructor for an empty BrickLibrary with no specified types
+     */
     public BrickLibrary() {
         brickMap = new LinkedHashMap<String, LinkedList<Brick>>();
         costMap = new LinkedHashMap<String, Long>();
     }
     
+    /** getNames
+     * Returns the list of the names of all bricks stored in the dictionary
+     * @return an array of Strings
+     */
     public String[] getNames() {
         return brickMap.keySet().toArray(new String[0]);
     }
     
+    /** addBrickDefinition
+     * When a new brick is created in the library, adds its contents to the 
+     * current brickMap and adds its definition to the dictionary file
+     * @param brick, a newly created Brick
+     */
     public void addBrickDefinition(Brick brick)
     {
+        // add the brick to the current BrickLibrary
         addBrick(brick);
         
+        // make a properly-formatted brick definition
         Polylist defn = brick.toBrickDefinition();
         String defnString = defn.toString();
         if (!brick.getQualifier().equals(""))
             defnString.replaceFirst(" \\(", "\\(");    
         defnString = defnString.replaceAll(" \\(", "\n        \\(");
         
-        
+        // write out the string with the definition to the end of the file
         try {
             FileOutputStream out = new FileOutputStream(DICTIONARY_FILE, true);
             out.write("\n".getBytes());
@@ -85,10 +108,18 @@ public class BrickLibrary {
         
     }
     
-    // Add a brick to the dictionary
+    /** addBrick
+     * Adds a brick to the library's brickMap
+     * @param brick, a created Brick
+     */
     public void addBrick(Brick brick) {
         if(brickMap.containsKey(brick.getName()))
         {
+            // first, we check if the brick is a duplicate or just a brick with
+            // an already-used name but a different qualifier. Presently, a
+            // doubly-defined brick will have both definitions added to the
+            // dictionary but will warn a user if the two definitions are 
+            // identical.
             LinkedList<Brick> sameStemList = brickMap.get(brick.getName());
             for (Brick sameStem : sameStemList)
             {
@@ -103,6 +134,7 @@ public class BrickLibrary {
         }
         else
         {
+            // adding a brick with a new brickname
             LinkedList<Brick> brickList = new LinkedList<Brick>();
             brickList.add(brick);
             this.brickMap.put(brick.name, brickList);
@@ -161,7 +193,12 @@ public class BrickLibrary {
         }
     }
     
-    // Get a brick from the dictionary.
+    /** getBrick (definition)
+     * Gets the default Brick with the given name from the dictionary in key k
+     * @param s, the retrieved Brick's name, a String
+     * @param k, the retrieved Brick's key, a long
+     * @return the transposed Brick
+     */
     public Brick getBrick(String s, long k) {
         if(brickMap.containsKey(s))
         {
@@ -177,7 +214,14 @@ public class BrickLibrary {
         }
     }
     
-    // Get a brick from the dictionary specific to the qualifier.
+    /** getBrick (with qualifier)
+     * Gets a particular Brick with a given name and qualifier from the 
+     * dictionary in key k
+     * @param s, the retrieved Brick's name, a String
+     * @param q, the retrieved Brick's qualifier, a String
+     * @param k, the retrieved Brick's key, a long
+     * @return the transposed Brick
+     */
     public Brick getBrick(String s, String q, long k) {
         if(brickMap.containsKey(s))
         {
@@ -208,6 +252,14 @@ public class BrickLibrary {
         }
     }
     
+    /** getBrick (with duration)
+     * Gets a particular Brick with a given name and qualifier from the 
+     * dictionary in key k
+     * @param s, the retrieved Brick's name, a String
+     * @param k, the retrieved Brick's key, a long
+     * @param d, the duration of the Brick, an int
+     * @return the transposed Brick
+     */
     public Brick getBrick(String s, long k, int d) {
         if(brickMap.containsKey(s))
         {
@@ -224,6 +276,15 @@ public class BrickLibrary {
         }
     }
     
+    /** getBrick (with qualifier)
+     * Gets a particular Brick with a given name and qualifier from the 
+     * dictionary in key k
+     * @param s, the retrieved Brick's name, a String
+     * @param q, the retrieved Brick's qualifier, a String
+     * @param k, the retrieved Brick's key, a long
+     * @param d, the duration of the Brick, an int
+     * @return the transposed Brick
+     */
     public Brick getBrick(String s, String q, long k, int d) {
         if(brickMap.containsKey(s))
         {
@@ -254,11 +315,20 @@ public class BrickLibrary {
         }
     }
     
+    /** hasBrick
+     * Checks if a Brick with a given name is in the dictionary
+     * @param s, the Brick name
+     * @return a boolean
+     */
     public boolean hasBrick(String s)
     {
         return (brickMap.containsKey(s));
     }
     
+    /** getFullMap
+     * Gets the list of all Bricks in the dictionary as a single collection
+     * @return a Collection of Bricks
+     */
     public Collection<Brick> getFullMap() {
         LinkedList<Brick> values = new LinkedList<Brick>();
         for (LinkedList<Brick> brickname : brickMap.values())
@@ -269,6 +339,10 @@ public class BrickLibrary {
         return values;
     }
     
+    /** getMap
+     * Gets the organized list of all Bricks in the dictionary
+     * @return a LinkedList of LinkedLists of Bricks
+     */
     public LinkedList<LinkedList<Brick>> getMap() {
         LinkedList<LinkedList<Brick>> values = new LinkedList();
         for (LinkedList<Brick> brickname : brickMap.values())
@@ -280,17 +354,25 @@ public class BrickLibrary {
         return values;
     }
     
-    // Remove brick from dictionary (pass in actual brick)
+    /** removeBrick
+     * Removes all Bricks matching a given Brick from the dictionary
+     * @param brick, the Brick to be removed itself
+     */
     public void removeBrick(Brick brick) {
         this.brickMap.remove(brick.name);
     }
     
-    // Remove brick from dictionary (pass in brick's name)
+    /** removeBrick
+     * Removes all Bricks with a given name from the dictionary
+     * @param brickName, the name of the Brick(s) to be removed
+     */
     public void removeBrick(String brickName) {
         this.brickMap.remove(brickName);
     }
     
-    // Print contents of dictionary
+    /** printDictionary
+     * Prints every brick in the dictionary to System.err
+     */
     public void printDictionary() {
         Iterator iter = getFullMap().iterator();
         
@@ -301,14 +383,28 @@ public class BrickLibrary {
         }
     }
     
+    /** addType
+     * Adds a given type to the dictionary with the default cost
+     * @param t, a type, a String
+     */
     public void addType(String t) {
         costMap.put(t, DEFAULT_COST);
     }
     
+    /** addType
+     * Adds a given type to the dictionary with the specified cost
+     * @param t, a type, a String
+     * @param c, a cost, a long
+     */
     public void addType(String t, long c) {
         costMap.put(t, c);
     }
     
+    /** getCost
+     * Gets the cost associated with the given type
+     * @param t, the type whose cost is desired (a String)
+     * @return the cost, a long
+     */
     public long getCost(String t) {
         if (!hasType(t)) 
             ErrorLog.log(ErrorLog.SEVERE, "Type does not exist, will register"
@@ -316,14 +412,28 @@ public class BrickLibrary {
         return costMap.get(t);    
     }
     
+    /** hasType
+     * Checks if a given type is contained in the dictionary
+     * @param t, a type (a String)
+     * @return a boolean
+     */
     public boolean hasType(String t) {
         return costMap.containsKey(t);
     }
     
+    /** getTypes
+     * Gets the list of all types in the dictionary
+     * @return an array of Strings of types
+     */
     public String[] getTypes() {
         return costMap.keySet().toArray(new String[0]);
     }
     
+    /** isValidKey
+     * Checks if a given key's name actually describes a key
+     * @param keyName, a key's name as a String
+     * @return a boolean
+     */
     public static Boolean isValidKey(String keyName) {
         return keyName.equals("C") || keyName.equals("B#") || 
                 keyName.equals("C#") || keyName.equals("Db") ||
@@ -339,7 +449,11 @@ public class BrickLibrary {
                 keyName.equals("B") || keyName.equals("Cb");
     }
     
-    // Convert brick's key (as a string) to a long indicating semitones above C
+    /** keyNameToNum
+     * Takes a key by name and returns the long describing that key
+     * @param keyName, a key as a String
+     * @return the same key as a long
+     */
     public static long keyNameToNum(String keyName) {
         if(keyName.equals(""))
             return -1;
@@ -374,7 +488,12 @@ public class BrickLibrary {
         }
     }
     
-    // Convert brick's key (as a string) to a long indicating semitones above C
+    /** keyNumToName
+     * Takes a key as a long and converts it to a key as a String with flats if
+     * accidentals are necessary
+     * @param keyNum, a long describing a key
+     * @return a String of the same key
+     */
     public static String keyNumToName(long keyNum) {
         if(keyNum >= 0 && keyNum < 12) {
             return KEY_NAME_ARRAY[(int)keyNum];
@@ -388,6 +507,13 @@ public class BrickLibrary {
         }
     }
     
+    /** keyNumToName
+     * Takes a key as a long and whether or not to use sharps and converts it 
+     * to a key as a String
+     * @param keyNum, a long describing a key
+     * @boolean sharps, a boolean describing whether or not to use sharps
+     * @return a String of the same key
+     */
     public static String keyNumToName(long keyNum, boolean sharps) {
         if(sharps) {
             if(keyNum >= 0 && keyNum < 12) {
@@ -407,7 +533,11 @@ public class BrickLibrary {
         }
     }
         
-    // Read in dictionary file, parse into bricks, and build the dictionary
+    /** processDictionary
+     * Reads in all the dictionary information in the file to define appropriate
+     * objects in the BrickDictionary.
+     * @throws IOException 
+     */
     public void processDictionary() throws IOException {
         
         FileInputStream fis = new FileInputStream(DICTIONARY_FILE);
@@ -441,6 +571,7 @@ public class BrickLibrary {
                     String blockCategory = contents.first().toString();
                     contents = contents.rest();
                     
+                    // Equivalence rules for the postprocessor
                     if (blockCategory.equals("equiv"))
                     {
                         if(contents.isEmpty())
@@ -455,7 +586,8 @@ public class BrickLibrary {
                             equivalenceRules.add(chords);
                         }
                     }
-                            
+                    
+                    // Diatonic rules for the postprocessor
                     else if (blockCategory.equals("diatonic"))
                     {
                         if(contents.isEmpty())
@@ -474,6 +606,7 @@ public class BrickLibrary {
                         }
                     }
                     
+                    // Type definitions with costs
                     else if (blockCategory.equals("brick-type"))
                     {
                         if (contents.length() != 2 && contents.length() != 1)
@@ -499,9 +632,11 @@ public class BrickLibrary {
                         }
                     }
                     
-                    // For reading in dictionary, should only encounter bricks
+                    // Brick definitions themselves
                     else if (blockCategory.equals("Def-Brick") && contents.length() > 4)
                     {
+                        // read in the information as a saved polylist to be 
+                        // constructed properly as a Brick later
                         String brickName = dashless(contents.first().toString());
                         contents = contents.rest();
                         if (polymap.containsKey(brickName))
@@ -525,11 +660,13 @@ public class BrickLibrary {
                     + "a Polylist token", true);
             }
         }
-
+        
+        // for each set of bricks with the same name
         for (LinkedList<Polylist> brickStem : polymap.values()) {
-            
+            // for each unprocessed brick definition
             for (Polylist contents : brickStem) {
             
+                // pull out the name, qualifier, and contents
                 contents = contents.rest();
                 String brickName = dashless(contents.first().toString());
                 contents = contents.rest();
@@ -540,8 +677,6 @@ public class BrickLibrary {
                     brickQualifier = ((Polylist)contents.first()).first().toString();
                     contents = contents.rest();
                 }
-
-                boolean hadBrick = hasBrick(brickName);
 
                 String brickMode = contents.first().toString();
                 contents = contents.rest();
@@ -557,6 +692,7 @@ public class BrickLibrary {
                 contents = contents.rest();
                 long brickKeyNum = keyNameToNum(brickKeyString);
 
+                // add the brick, recursively defining subbricks
                 Brick currentBrick = new Brick(brickName, brickQualifier, brickKeyNum,
                            brickType, contents, this, brickMode, polymap);
                 addBrick(currentBrick);
@@ -565,15 +701,23 @@ public class BrickLibrary {
             
             
         }
-        
+        // initialize the postprocessor with the rules for diatonic key checking
         processor = new PostProcessor(equivalenceRules, diatonicRules);
     }
     
-        
+    /** dashless
+     * Helper function to remove dashes from brick names
+     * @param s, a String
+     * @return a String with dashes replaced with spaces
+     */
     public static String dashless(String s) {
         return s.replace('-', ' ');
     }
     
+    /** writeDictionary
+     * Writes out an entire dictionary of definitions. Currently deprecated.
+     * @param filename, the file to write to
+     */
     public void writeDictionary(String filename) {
         FileWriter fstream;
         try {
@@ -604,13 +748,5 @@ public class BrickLibrary {
         }  
     }
     
-    public static void main(String[] args) throws IOException 
-    {
-        BrickLibrary dictionary = new BrickLibrary();
-        dictionary.processDictionary();
-        dictionary.printDictionary();
-        
-        Polylist p = Polylist.list("C", "Dm", "Em", "F", "G7", "Am", "Bo");
-        Polylist c = ChordSymbol.chordSymbolsFromStrings(p);
-    }
+    // end of class BrickLibrary
 }

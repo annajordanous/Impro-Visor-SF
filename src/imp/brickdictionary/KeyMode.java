@@ -93,6 +93,7 @@ public class KeyMode {
      * Returns a String representation of a KeyMode.
      * @return a String of the Polylist of the KeyMode
      */
+    @Override
     public String toString()
       {
         return toPolylist().toString();

@@ -549,12 +549,6 @@ public class Brick extends Block {
                     {
                         ErrorLog.log(ErrorLog.FATAL, chordName + ": " +
                                 "Duration not of type long: " + durObj, true);
-                        
-//                        throw new DictionaryException("Duration not of type "
-//                                + "Long");
-                        
-//                        Error e3 = new Error("Duration not of type Long");
-//                        System.err.println(e3);
                     }
                 }
             }
@@ -696,8 +690,8 @@ public class Brick extends Block {
     }
     
     /** printBrick
-     * Prints a String representation of a Brick with its subblocks to 
-     * System.err
+     * Prints a String representation of a Brick with its subblocks to the
+     * error printstream
      */
     public void printBrick() {
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
