@@ -34,10 +34,10 @@
     (key 0)
 )
 
-(phrase)
+(section (style swing)) 
 BbM7 | Dm7 G7 | Cm7 | F7 | 
 
-(section (style swing)) 
+(phrase)
 
 Cm7 | F7 | BbM7 | Cm7 F7 | 
 

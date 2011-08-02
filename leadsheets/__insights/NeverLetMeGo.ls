@@ -34,11 +34,11 @@
     (key -1)
 )
 
-(phrase)
+(section (style swing))
 Gm7 | C7 | Fm7 | Bb7 | 
 EbM7 | Am7 D7 | DbM7 | Gm7 C7 | 
 
-(section (style ballad)) 
+(phrase)
 
 Cm7 | F7b9 | Bbm7 | Eb7 | 
 AbM7 | Dm7b5 G7b9 | CM7 | Am7 / Eb7 D7b9 | 
