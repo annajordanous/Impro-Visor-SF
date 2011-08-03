@@ -21,6 +21,7 @@
 
 package imp.data;
 
+import imp.brickdictionary.Block;
 import java.io.*;
 import javax.sound.midi.*;
 import java.util.ArrayList;
@@ -498,7 +499,9 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         if( chord.getRhythmValue() > 0 )
           {
             // Note: 0 duration causes addUnit to fail.
-
+            int sectionType = chordBlock.getSectionEnd();
+            if( sectionType > Block.NO_END) ;
+                //sectionInfo;
             addChord(chord);
           }
       }

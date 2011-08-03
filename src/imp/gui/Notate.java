@@ -10865,7 +10865,7 @@ public void refresh()
 
 }
 
-public class StyleComboBoxModel
+static public class StyleComboBoxModel
     extends AbstractListModel
     implements ComboBoxModel
 {
@@ -23163,6 +23163,8 @@ public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
   {
       score.fromRoadMapFrame(roadmap);
       setBars(score.getBarsPerChorus());
+      //TODO style isn't set correctly
+      //TODO set name
       repaint();
   }
 
@@ -23225,6 +23227,7 @@ public void roadMapThis()
   {
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
+    //System.out.println("RoadMap has received chords");
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.makeVisible();
   }
@@ -23238,11 +23241,13 @@ public void roadMapThisAnalyze()
   {
     setStatus("Creating RoadMap");
     repaint();
+    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.analyzeAllBricks();
     setNormalStatus();
+    setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     roadmapFrame.makeVisible();
   }
 

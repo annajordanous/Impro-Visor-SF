@@ -1063,7 +1063,7 @@ public class Score implements Constants, Serializable {
 
 public void toRoadMapFrame(RoadMapFrame roadmap)
   {
-    roadmap.setSettings(this);
+    roadmap.setMusicalInfo(this);
     chordProg.toRoadMapFrame(roadmap);
   }
 
@@ -1075,6 +1075,8 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
   {
     chordProg.addFromRoadMapFrame(roadmap);
     setMetre(roadmap.getMetre());
+    setTempo(roadmap.getTempo());
+    setStyle(roadmap.getStyle().getName());
   }
 
 /**

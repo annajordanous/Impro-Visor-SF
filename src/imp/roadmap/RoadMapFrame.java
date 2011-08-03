@@ -33,10 +33,7 @@ import java.awt.event.*;
 
 import imp.brickdictionary.*;
 import imp.cykparser.*;
-import imp.data.ChordPart;
-import imp.data.ChordSymbol;
-import imp.data.Leadsheet;
-import imp.data.Score;
+import imp.data.*;
 import imp.gui.Notate;
 import imp.gui.PrintUtilitiesRoadMap;
 import imp.gui.WindowMenuItem;
@@ -84,6 +81,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private Object[] durationChoices = {8,7,6,5,4,3,2,1};
     
+    private Notate.StyleComboBoxModel styleComboBoxModel = new Notate.StyleComboBoxModel();
+    
     private int RMframeWidth = 1250;
     
     private int bufferWidth  = 1024;
@@ -105,9 +104,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private static String roadMapTitlePrefix = "RoadMap: ";
     
+    
+    
     public String roadMapTitle = "Untitled Roadmap";
-
-    ActionListener testListener;
+    
+    public Style style = Advisor.getStyle("swing");
+    
+    public int tempo = 120;
+    
+    public int[] metre = {4,4};
+    
     
     private RoadMapFrame() {} // Not for you.
     
@@ -169,6 +175,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordDialogNameField = new javax.swing.JTextField();
         chordDialogAcceptButton = new javax.swing.JButton();
         chordDialogDurationComboBox = new javax.swing.JComboBox(durationChoices);
+        preferencesDialog = new javax.swing.JDialog();
+        jPanel2 = new javax.swing.JPanel();
+        prefDialogAcceptButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        prefDialogStyleComboBox = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
+        prefDialogMeterLabel = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        prefDialogTitleField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        prefDialogTempoField = new imp.roadmap.IntegerField();
+        prefDialogMetreTopField = new imp.roadmap.IntegerField();
+        prefDialogMetreBottomField = new imp.roadmap.IntegerField();
         toolBar = new javax.swing.JToolBar();
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
@@ -192,6 +212,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
+        preferencesMenuItem = new javax.swing.JMenuItem();
         printRoadMapMI = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -344,6 +365,108 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         chordChangeDialog.getContentPane().add(chordDialogDurationComboBox, gridBagConstraints);
+
+        preferencesDialog.setTitle("Roadmap Info"); // NOI18N
+        preferencesDialog.setMinimumSize(new java.awt.Dimension(300, 200));
+        preferencesDialog.setName("preferencesDialog"); // NOI18N
+        preferencesDialog.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        jPanel2.setName("jPanel2"); // NOI18N
+
+        prefDialogAcceptButton.setText("Accept Changes"); // NOI18N
+        prefDialogAcceptButton.setName("prefDialogAcceptButton"); // NOI18N
+        prefDialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prefDialogAcceptButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(prefDialogAcceptButton);
+
+        preferencesDialog.getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
+
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        prefDialogStyleComboBox.setModel(styleComboBoxModel);
+        prefDialogStyleComboBox.setName("prefDialogStyleComboBox"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(prefDialogStyleComboBox, gridBagConstraints);
+
+        jLabel5.setText("Tempo:"); // NOI18N
+        jLabel5.setName("jLabel5"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(jLabel5, gridBagConstraints);
+
+        prefDialogMeterLabel.setText("Metre:"); // NOI18N
+        prefDialogMeterLabel.setName("prefDialogMeterLabel"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel1.add(prefDialogMeterLabel, gridBagConstraints);
+
+        jLabel6.setText("/"); // NOI18N
+        jLabel6.setName("jLabel6"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(jLabel6, gridBagConstraints);
+
+        prefDialogTitleField.setText("Untitled"); // NOI18N
+        prefDialogTitleField.setName("prefDialogTitleField"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        jPanel1.add(prefDialogTitleField, gridBagConstraints);
+
+        jLabel7.setText("Title:"); // NOI18N
+        jLabel7.setName("jLabel7"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jLabel7, gridBagConstraints);
+
+        jLabel8.setText("Style:"); // NOI18N
+        jLabel8.setName("jLabel8"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanel1.add(jLabel8, gridBagConstraints);
+
+        prefDialogTempoField.setText("120"); // NOI18N
+        prefDialogTempoField.setName("prefDialogTempoField"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel1.add(prefDialogTempoField, gridBagConstraints);
+
+        prefDialogMetreTopField.setText("4"); // NOI18N
+        prefDialogMetreTopField.setName("prefDialogMetreTopField"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(prefDialogMetreTopField, gridBagConstraints);
+
+        prefDialogMetreBottomField.setText("4"); // NOI18N
+        prefDialogMetreBottomField.setName("prefDialogMetreBottomField"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(prefDialogMetreBottomField, gridBagConstraints);
+
+        preferencesDialog.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Road Map\n"); // NOI18N
@@ -744,6 +867,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         fileMenu.add(openLeadsheetMI);
+
+        preferencesMenuItem.setText("Preferences"); // NOI18N
+        preferencesMenuItem.setName("preferencesMenuItem"); // NOI18N
+        preferencesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                preferencesMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(preferencesMenuItem);
 
         printRoadMapMI.setText("Print RoadMap");
         printRoadMapMI.setName("printRoadMapMI"); // NOI18N
@@ -1321,6 +1453,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void printRoadMapMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printRoadMapMIActionPerformed
         PrintUtilitiesRoadMap.printRoadMap(roadMapPanel);
     }//GEN-LAST:event_printRoadMapMIActionPerformed
+
+    private void preferencesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuItemActionPerformed
+        activatePreferencesDialog();
+    }//GEN-LAST:event_preferencesMenuItemActionPerformed
+
+    private void prefDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButtonActionPerformed
+        preferencesDialog.setVisible(false);
+        setRoadMapInfo();
+    }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
 //</editor-fold>
     
     private void initTimer()
@@ -1506,7 +1647,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     public void analyzeSelection()
     {
         saveState("Analyze");
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         roadMapPanel.analyzeSelection();
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
     
     public void flattenSelection()
@@ -1765,10 +1908,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
        
     public ArrayList<Block> analyze(ArrayList<Block> blocks)
     {
-        cykParser = new CYKParser();
         long startTime = System.currentTimeMillis();
         ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
         long endTime = System.currentTimeMillis();
+        cykParser = new CYKParser();
         System.err.println("Analysis: " + (endTime - startTime) + "ms");
         
         
@@ -1819,7 +1962,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     public void setDurationChoices(Brick brick)
     {
-        int sig = settings.getMetre()[0];
+        int sig = getMetre()[0];
         ArrayList<Integer> choices = new ArrayList();
         for(int i = brick.getDuration(); i < sig*brick.getDuration(); i++)
             choices.add(i);
@@ -1924,6 +2067,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JSlider featureWidthSlider;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -1938,6 +2087,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
+    private javax.swing.JButton prefDialogAcceptButton;
+    private javax.swing.JLabel prefDialogMeterLabel;
+    private imp.roadmap.IntegerField prefDialogMetreBottomField;
+    private imp.roadmap.IntegerField prefDialogMetreTopField;
+    private javax.swing.JComboBox prefDialogStyleComboBox;
+    private imp.roadmap.IntegerField prefDialogTempoField;
+    private javax.swing.JTextField prefDialogTitleField;
+    private javax.swing.JDialog preferencesDialog;
+    private javax.swing.JMenuItem preferencesMenuItem;
     private javax.swing.JScrollPane previewScrollPane;
     private javax.swing.JMenuItem printRoadMapMI;
     private javax.swing.JMenuItem redoMenuItem;
@@ -1984,10 +2142,10 @@ public void appendSelectionToNotate()
 
     if( auxNotate == null )
       {
-        imp.data.ChordPart chordPart = new imp.data.ChordPart();
+        ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
-        score.setMetre(settings.getMetre());
+        score.setMetre(getMetre());
         auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
       }
     else
@@ -2026,13 +2184,16 @@ public void sendSelectionToNewNotate()
         // Need to prevent inconsistency caused by the closing of auxNotate.
         // It will set auxNotate to null.
       }
-    imp.data.ChordPart chordPart = new imp.data.ChordPart();
+    ChordPart chordPart = new ChordPart();
     chordPart.addFromRoadMapFrame(this);
     Score score = new Score(chordPart);
-    score.setMetre(settings.getMetre());
+    score.setMetre(getMetre());
+    score.setStyle(style.getName());
+    score.setTempo(tempo);
+    score.setTitle(roadMapTitle);
     auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
     auxNotate.setCreateRoadMapCheckBox(false);
-        
+    
     auxNotate.setVisible(true);
     //auxNotate.playScore();
   }
@@ -2068,21 +2229,21 @@ public void resetAuxNotate()
             selectAllBricks();
         }
 
-         ChordPart chordPart = new imp.data.ChordPart();
+         ChordPart chordPart = new ChordPart();
          chordPart.addFromRoadMapFrame(this);
-         Score score = new imp.data.Score(chordPart);
-         score.setMetre(settings.getMetre());
-         score.setTempo(settings.tempo);
+         Score score = new Score(chordPart);
+         score.setMetre(getMetre());
+         score.setTempo(tempo);
          
          setPlaying(MidiPlayListener.Status.PLAYING, 0);
          
          if( loopToggleButton.isSelected() )
            {
-           notate.playAscore(score, settings.style, -1);
+           notate.playAscore(score, style.getName(), -1);
            }
          else
            {
-           notate.playAscore(score, settings.style, 0);
+           notate.playAscore(score, style.getName(), 0);
            }
     }
 
@@ -2204,32 +2365,87 @@ public void makeVisible()
   }
 
 /**
- * Set the metre of this RoadMapFrame 
+ * Sets the time signature of the roadmap for Americans
+ * @param meter 
  */
+public void setMeter(int meter[])
+  {
+    setMetre(meter);
+  }
 
+/**
+ * Sets the time signature of the roadmap for the rest of the world
+ * @param metre 
+ */
 public void setMetre(int metre[])
   {
+    this.metre[0] = metre[0];
+    this.metre[1] = metre[1];
     settings.setMetre(metre);
   }
 
 /**
- * Return a copy of the metre settings. 
+ * Returns the time signature of the roadmap for Americans
  * @return 
  */
+public int[] getMeter()
+{
+    return metre;
+}
 
+/**
+ * Returns the time signature of the roadmap for the rest of the world
+ * @return 
+ */
 public int[] getMetre()
-  {
-    return settings.getMetre();
-  }
+{
+    return metre;
+}
+
+public double getTempo()
+{
+    return tempo;
+}
+
+public Style getStyle()
+{
+    return style;
+}
 
 public int getMidiSlot()
 {
     return notate.getMidiSlot();
 }
 
-public void setSettings(imp.data.Score score)
+public void setMusicalInfo(Score score)
 {
-    settings.extractSettings(score);
+    setMetre(score.getMetre());
+    tempo = (int)score.getTempo();
+    style = score.getStyle();
+}
+
+public void activatePreferencesDialog()
+{
+    prefDialogTitleField.setText(roadMapTitle);
+    prefDialogTempoField.setText(String.valueOf(tempo));
+    prefDialogMetreTopField.setText(String.valueOf(getMetre()[0]));
+    prefDialogMetreBottomField.setText(String.valueOf(getMetre()[1]));
+    prefDialogStyleComboBox.setSelectedItem(style);
+    preferencesDialog.setVisible(true);
+}
+
+/**
+ * Gets the info from the preferences dialog
+ */
+public void setRoadMapInfo()
+{
+    setRoadMapTitle(prefDialogTitleField.getText());
+    int metreTop = prefDialogMetreTopField.getInt();
+    int metreBottom = prefDialogMetreBottomField.getInt();
+    setMetre(new int[]{metreTop, metreBottom});
+    tempo = prefDialogTempoField.getInt();
+    style = (Style)prefDialogStyleComboBox.getSelectedItem();
+    roadMapPanel.updateBricks();
 }
 
 };

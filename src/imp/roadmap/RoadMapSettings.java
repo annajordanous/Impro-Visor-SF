@@ -21,6 +21,7 @@
 
 //TODO: become consistent with either long or int
 //TODO: rework access levels
+//TODO: setting a song to an equal metre (4/4 -> 8/8) changes the measures. This is wrong.
 
 package imp.roadmap;
 
@@ -33,7 +34,7 @@ import java.awt.*;
  */
 public class RoadMapSettings {
     /** Slots contained in each beat */
-    public int slotsPerBeat = imp.Constants.BEAT; // Better to get from imp.Constants
+    public int slotsPerBeat = imp.Constants.BEAT;
     /** Horizontal margin of roadmap */
     public int xOffset = 50;
     /** Vertical offset of roadmap */
@@ -46,12 +47,9 @@ public class RoadMapSettings {
     public int lineSpacing = 20;
     /** Pixel width of each measure */
     public int measureLength = 100;
-    /** Time signature */
-    private int metre[] = {4, 4};
-    /** Tempo */
-    public double tempo = 120;
-    /** Style */
-    public String style = "swing";
+    
+    private int[] metre = {4,4}; // This is only here because I want measures to be a set length.
+                                 // CURSE YOU POOR PLANNING
     
     /* --- Colors --- */
     /** Color of the grid lines */
@@ -99,24 +97,6 @@ public class RoadMapSettings {
     public Font basicFont = new Font("Dialog", Font.PLAIN, 12);
     /** Font for titles */
     public Font titleFont = new Font("Dialog", Font.PLAIN, 24);
-        
-    /**
-     * Get the musical information from the notate window
-     * @param notate 
-     */
-    public void extractSettings(imp.gui.Notate notate)
-    {
-        notate.getMetre(metre);
-        tempo = notate.getScore().getTempo();
-        style = notate.getScore().getChordProg().getStyle().getName();
-    }
-    
-    public void extractSettings(imp.data.Score score)
-    {
-        setMetre(score.getMetre());
-        tempo = score.getTempo();
-        style = score.getStyle().getName();
-    }
     
     /**
      * Returns the length of the block in the current settings
@@ -292,40 +272,10 @@ public class RoadMapSettings {
         return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
     }
   
-    /**
-     * Sets the time signature of the roadmap for Americans
-     * @param meter 
-     */
-    public void setMeter(int meter[])
-      {
-        setMetre(meter);
-      }
-    
-    /**
-     * Sets the time signature of the roadmap for the rest of the world
-     * @param metre 
-     */
-    public void setMetre(int metre[])
-      {
+    protected void setMetre(int[] metre)
+    {
         this.metre[0] = metre[0];
         this.metre[1] = metre[1];
-      }
-   
-    /**
-     * Returns the time signature of the roadmap for Americans
-     * @return 
-     */
-    public int[] getMeter()
-    {
-        return metre;
     }
     
-    /**
-     * Returns the time signature of the roadmap for the rest of the world
-     * @return 
-     */
-    public int[] getMetre()
-    {
-        return metre;
-    }
 }
