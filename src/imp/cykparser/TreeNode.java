@@ -58,9 +58,7 @@ public class TreeNode {
     private long key;                 // the key of the Node's nominal contents
     private double cost;              // Value of the top-level block
     private boolean toPrint;          // Whether the brick name will print
-    private long start;               // The start position of the first brick
     private boolean isEnd;            // If the node ends a section
-    private String mode;              // the mode of the Node's nominal contents
     private boolean isSub;            // whether the Node has a substitution
     
     private int height;               // height of the tree at the TreeNode
@@ -81,11 +79,9 @@ public class TreeNode {
         block = null;
         chords = new ArrayList<ChordBlock>();
         cost = Double.POSITIVE_INFINITY; // To ensure it isn't added to a parse
-        mode = null;
         key = -1;
         toPrint = false;
         isEnd = false;
-        start = 0;
         isSub = false;
         height = 0;
     }
@@ -94,14 +90,12 @@ public class TreeNode {
      * Takes in a chord and makes a default chord-based TreeNode
      * 
      * @param chord, a ChordBlock
-     * @param s, the start position in a piece
      */
-    public TreeNode(ChordBlock chord, long s)
+    public TreeNode(ChordBlock chord)
     {
         child1 = null;
         child2 = null;
         block = chord;
-        mode = chord.getMode();
         chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = block.getKey();
@@ -109,7 +103,6 @@ public class TreeNode {
         cost = CHORD_COST;
         toPrint = true;
         isEnd = chord.isSectionEnd();
-        start = s;
         isSub = false;
         height = 0;
     }
@@ -119,14 +112,12 @@ public class TreeNode {
      * 
      * @param chord, a ChordBlock
      * @param c, a long describing the ChordBlock's cost
-     * @param s, the start position in a piece
      */
-        public TreeNode(ChordBlock chord, double c, long s)
+        public TreeNode(ChordBlock chord, double c)
     {
         child1 = null;
         child2 = null;
         block = chord;
-        mode = chord.getMode();
         chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = block.getKey();
@@ -134,7 +125,6 @@ public class TreeNode {
         cost = c;
         toPrint = true;
         isEnd = chord.isSectionEnd();
-        start = s;
         isSub = false;
         height = 0;
     }
@@ -144,21 +134,18 @@ public class TreeNode {
      * @param brick, the Brick describing the contents
      * @param newChords, the ChordBlocks of the brick with an overlap
      * @param c, the cost (a double)
-     * @param s, the start position (a long)
      */
-    public TreeNode(Brick brick, ArrayList<ChordBlock> newChords, double c, long s)
+    public TreeNode(Brick brick, ArrayList<ChordBlock> newChords, double c)
     {
         child1 = null;
         child2 = null;
         block = brick;
-        mode = brick.getMode();
         chords = newChords;
         key = brick.getKey();
         symbol = brick.getSymbol();
         cost = c;
         toPrint = !(brick.getType().equals(CYKParser.INVISIBLE));
         isEnd = brick.isSectionEnd();
-        start = s;
         isSub = false;
         height = 0;
     }
@@ -172,12 +159,11 @@ public class TreeNode {
      * @param chord, a ChordBlock
      * @param c, a long describing the Chord's cost
      */
-        public TreeNode(String name, long k, ChordBlock chord, long s)
+        public TreeNode(String name, long k, ChordBlock chord)
     {
         child1 = null;
         child2 = null;
         block = chord;
-        mode = chord.getMode();
         chords = new ArrayList<ChordBlock>();
         chords.add(chord);
         key = k;
@@ -185,7 +171,6 @@ public class TreeNode {
         cost = CHORD_SUB_COST;
         toPrint = true;
         isEnd = chord.isSectionEnd();
-        start = s;
         isSub = true;
         height = 0;
     }    
@@ -207,7 +192,6 @@ public class TreeNode {
         child1 = null;
         child2 = null;
         symbol = sym;
-        mode = m;
         
         ArrayList<Block> subBlocks = new ArrayList<Block>();
         subBlocks.addAll(t.getBlocks());
@@ -222,7 +206,6 @@ public class TreeNode {
         toPrint = !(type.equals(CYKParser.INVISIBLE));
 
         isEnd = t.isSectionEnd();
-        start = t.getStart();
         height = t.getHeight() + 1;
     }
     
@@ -246,7 +229,6 @@ public class TreeNode {
         child1 = c1;
         child2 = c2;
         symbol = sym;
-        mode = m;
         
         ArrayList<Block> subBlocks = new ArrayList<Block>();
         subBlocks.addAll(c1.getBlocks());
@@ -265,7 +247,6 @@ public class TreeNode {
         isEnd = c2.isSectionEnd();
         isSub = (c1.isSub() || c2.isSub());
 
-        start = c1.getStart();
         if (c1.getHeight() < c2.getHeight())
             height = c2.getHeight();
         else
@@ -287,7 +268,6 @@ public class TreeNode {
         child1 = c1;
         child2 = c2;
         symbol = null;
-        mode = "";
         
         chords = new ArrayList<ChordBlock>();
         chords.addAll(c1.getChords());
@@ -305,7 +285,6 @@ public class TreeNode {
         isEnd = c2.isSectionEnd();
         isSub = (c1.isSub() || c2.isSub());
 
-        start = c1.getStart();
         if (c1.getHeight() < c2.getHeight())
             height = c2.getHeight();
         else
@@ -325,7 +304,7 @@ public class TreeNode {
             if (block instanceof ChordBlock) {
                 ChordBlock overlapChord = new ChordBlock(block.getName(), 0, 
                                                          block.getSectionEnd());
-                newNode = new TreeNode(overlapChord, cost + 5, start);
+                newNode = new TreeNode(overlapChord, cost + 5);
             }
             else {
                 ArrayList<ChordBlock> newChords = new ArrayList<ChordBlock>();
@@ -339,11 +318,11 @@ public class TreeNode {
                 newBlocks.addAll(newChords);
                 Brick newBrick = new Brick(block.getName(), ((Brick)block).getQualifier(),
                         block.getKey(), block.getType(), newBlocks, block.getMode());
-                newNode = new TreeNode(newBrick, newChords, cost + 5, start);
+                newNode = new TreeNode(newBrick, newChords, cost + 5);
             }
         }
         else {
-            newNode = new TreeNode(symbol, block.getType(), mode, child1, 
+            newNode = new TreeNode(symbol, block.getType(), getMode(), child1, 
                     child2.overlapCopy(), cost + OVERLAP_COST + 5, block.getKey());
         }
         return newNode;
@@ -450,7 +429,7 @@ public class TreeNode {
      */
     public String getMode()
     {
-        return mode;
+        return block.getMode();
     }
     
     /** getChords
@@ -487,16 +466,6 @@ public class TreeNode {
     public long getDuration()
     {
         return block.getDuration();
-    }
-    
-    /** getStart
-     * Gets the starting slot of the TreeNode's contents in their respective 
-     * leadsheet
-     * @return the starting slot, a long
-     */
-    public long getStart()
-    {
-        return start;
     }
     
     /** getBlock

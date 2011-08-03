@@ -315,11 +315,8 @@ public class CYKParser
     {
         // Create nodes for the terminals, and put them into the table.
         int size = this.chords.size();
-        long currentStart = 0;
-        for (int i=0; i < size; i++) {
-            findTerminal(i, currentStart);
-            currentStart += chords.get(i).getDuration();
-        }
+        for (int i=0; i < size; i++)
+            findTerminal(i);
         
         // Iterate through the table by degrees parallel to the diagonal.
         // We use the column where each diagonal starts to determine where
@@ -378,8 +375,7 @@ public class CYKParser
                             < minVals[i][j].getCost()){
                         minVals[i][j] = new TreeNode(minVals[i][k-1], minVals[k][j]);
                     }
-                }
-                    
+                }    
             }
         }
     
@@ -397,13 +393,13 @@ public class CYKParser
      *        list of chords which is to be processed in the table
      * @param start, the starting slot in the piece of that ChordBlock
      */
-    private void findTerminal(int index, long start)
+    private void findTerminal(int index)
     {
         // First, the table cell is initialized and the original terminal placed
         // in it as a TreeNode.
         cykTable[index][index] = new LinkedList<TreeNode>();
         ChordBlock currentChord = chords.get(index);
-        TreeNode currentNode = new TreeNode(currentChord, start);
+        TreeNode currentNode = new TreeNode(currentChord);
         cykTable[index][index].add(currentNode);
         
         
@@ -415,7 +411,7 @@ public class CYKParser
         for (int i = 0; i < subs.length(); i++)
         {
             currentNode = new TreeNode(subs.getName(i), subs.getKey(i),
-                                                currentChord, start);
+                                                currentChord);
             cykTable[index][index].add(currentNode);
         }
         
