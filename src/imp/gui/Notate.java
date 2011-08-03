@@ -23245,7 +23245,8 @@ public void roadMapThisAnalyze()
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
-    roadmapFrame.analyzeAllBricks();
+    roadmapFrame.selectAllBricks();
+    roadmapFrame.analyzeSelection();
     setNormalStatus();
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     roadmapFrame.makeVisible();

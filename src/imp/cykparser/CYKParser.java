@@ -557,7 +557,6 @@ public class CYKParser
      * @return parsed chords as bricks
      */
     public ArrayList<Block> parse(ArrayList<Block> blocks, BrickLibrary lib) {
-        createRules(lib);
         ArrayList<Block> solution = new ArrayList<Block>();
         // Load in chords
         

@@ -189,7 +189,7 @@ public class Brick extends Block {
      * @param brick, a Brick
      */
     public Brick(Brick brick) {
-        super(brick.getName(), brick.getKey());
+        super(brick.name, brick.getKey());
         subBlocks = new ArrayList<Block>();
         
         // Loop through all the subblocks, making copies of each

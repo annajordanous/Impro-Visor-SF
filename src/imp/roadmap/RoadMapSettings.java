@@ -272,6 +272,10 @@ public class RoadMapSettings {
         return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
     }
   
+    /**
+     * Protected method to set the metre. Only used to keep drawing correct.
+     * @param metre 
+     */
     protected void setMetre(int[] metre)
     {
         this.metre[0] = metre[0];
