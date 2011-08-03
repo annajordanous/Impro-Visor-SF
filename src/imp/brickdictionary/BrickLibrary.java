@@ -25,6 +25,8 @@ import imp.cykparser.PostProcessor;
 import imp.data.ChordSymbol;
 import imp.util.ErrorLog;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import polya.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -370,6 +372,47 @@ public class BrickLibrary {
         this.brickMap.remove(brickName);
     }
     
+    public void exileBrick(Brick brick) {
+        
+        String brickType = " " + brick.getType() + " ";
+        String brickDefHead = "Def-Brick " + dashed(brick.getName());
+        String qualifier = brick.getQualifier();
+        if (!qualifier.isEmpty())
+            brickDefHead += "(" + qualifier + ")";
+        brickDefHead += " ";
+        
+        try {
+            File dictionary = new File(DICTIONARY_FILE);
+            FileReader in = new FileReader(dictionary);
+            BufferedReader reader = new BufferedReader(in);
+            
+            String line = reader.readLine();
+            String newfile = "";
+            
+            while(line != null)
+            {
+                if (line.contains(brickDefHead))
+                {
+                    line = line.replaceFirst(brickType, " " + INVISIBLE + " ");
+                }
+                
+                newfile += line + "\r\n";
+                line = reader.readLine();
+            }
+            
+            FileWriter writer = new FileWriter(DICTIONARY_FILE);
+            writer.write(newfile);
+            writer.close();
+            processDictionary();
+            
+        }
+        catch (IOException ioe)
+        {
+            ErrorLog.log(ErrorLog.SEVERE, "Could not modify brick in dictionary");
+        }
+        
+    }
+    
     /** printDictionary
      * Prints every brick in the dictionary to System.err
      */
@@ -550,6 +593,7 @@ public class BrickLibrary {
         ArrayList<Polylist> diatonicRules = new ArrayList<Polylist>();
         LinkedHashMap<String, LinkedList<Polylist>> polymap = 
                 new LinkedHashMap<String, LinkedList<Polylist>>();
+        brickMap.clear();
         
         // Read in S expressions until end of file is reached
         while ((token = in.nextSexp()) != Tokenizer.eof)
@@ -714,6 +758,10 @@ public class BrickLibrary {
         return s.replace('-', ' ');
     }
     
+    private String dashed(String s) {
+        return s.replace(' ', '-');
+    }
+    
     /** writeDictionary
      * Writes out an entire dictionary of definitions. Currently deprecated.
      * @param filename, the file to write to
@@ -749,4 +797,6 @@ public class BrickLibrary {
     }
     
     // end of class BrickLibrary
+
+    
 }

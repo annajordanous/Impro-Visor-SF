@@ -233,7 +233,8 @@ public class CYKParser
         // qualifier, and iterate through them
         Collection<Brick> bricks = lib.getFullMap();
         Iterator bIter = bricks.iterator();
-        
+        terminalRules = new LinkedList<UnaryProduction>();
+        nonterminalRules = new LinkedList<BinaryProduction>();
         // For each Brick in the BrickLibrary, make all the productions needed
         // to be able to produce it at parse time
         while (bIter.hasNext()) {

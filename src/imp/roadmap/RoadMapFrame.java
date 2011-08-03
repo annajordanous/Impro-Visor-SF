@@ -209,6 +209,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         durationComboBox = new javax.swing.JComboBox(durationChoices);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
         keyComboBox = new javax.swing.JComboBox();
+        deleteButton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
@@ -795,7 +796,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.1;
@@ -825,6 +826,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.1;
@@ -843,11 +845,25 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.02;
         getContentPane().add(keyComboBox, gridBagConstraints);
+
+        deleteButton.setText("Delete Selected Library Brick"); // NOI18N
+        deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        deleteButton.setName("deleteButton"); // NOI18N
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        getContentPane().add(deleteButton, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
@@ -1454,6 +1470,18 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         PrintUtilitiesRoadMap.printRoadMap(roadMapPanel);
     }//GEN-LAST:event_printRoadMapMIActionPerformed
 
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (previewPanel.currentBrick != null)
+        {
+            brickLibrary.exileBrick((Brick)previewPanel.currentBrick.getBlock());
+            initLibraryTree();
+            libraryTree.setModel(libraryTreeModel);
+            cykParser.createRules(brickLibrary);
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+
     private void preferencesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuItemActionPerformed
         activatePreferencesDialog();
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
@@ -1462,6 +1490,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesDialog.setVisible(false);
         setRoadMapInfo();
     }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
+
 //</editor-fold>
     
     private void initTimer()
@@ -2053,6 +2082,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JButton dialogAcceptButton;
     private javax.swing.JComboBox dialogKeyComboBox;
