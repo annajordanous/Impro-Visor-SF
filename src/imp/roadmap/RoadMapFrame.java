@@ -1487,7 +1487,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
 
 //</editor-fold>
-    
+    /** Creates the play timer and adds a listener */
     private void initTimer()
     {
         playTimer = new javax.swing.Timer(10,
@@ -1503,10 +1503,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 );
     }
     
-    /** InitBuffer <p>
-     *  
-     * Initializes the buffers for the roadmap and preview panel.
-     */
+    /** Initializes the buffers for the roadmap and preview panel. */
     private void initBuffer()
     {
       try 
@@ -1528,469 +1525,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         }
     }
     
-    private void disposeBuffers()
-    {
-        bufferPreviewPanel = null;
-        bufferRoadMap = null;
-        previewPanel.setBuffer(null);
-        roadMapPanel.setBuffer(null);
-    }
-
-    /** setBackground <p>
-     * Paints the image white.
-     * 
-     * @param image, an Image
-     */
-    public void setBackground(Image image)
-    {
-        Graphics graphics = image.getGraphics();
-        graphics.setColor(Color.white);
-        graphics.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
-    }
-    
-    /** setBackgrounds <p>
-     * Sets the background of each bufferPreviewPanel.
-     */
-    public void setBackgrounds()
-    {
-        setBackground(bufferPreviewPanel);
-        setBackground(bufferRoadMap);
-    }
- 
-    public void setRoadMapTitle(String title)
-    {
-        setTitle(roadMapTitlePrefix + title);
-        roadMapTitle = title;
-        roadMapPanel.draw();
-    }
-    
-    public RoadMapSettings getSettings()
-    {
-        return settings;
-    }
-    
-    private void saveState(String name)
-    {
-        stopPlayingSelection(); //TODO this probably doesn't belong here,
-        //but I don't want to write it over and over again and this is called for
-        //relevant actions
-        if(name.equals("Transpose") &&
-                roadMapHistory.getLast().getName().equals("Transpose"))
-            return; //Multiple transpositions should be the same action
-                    //ISSUE: changing multiple bricks in sequence undoes them all
-        RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
-        roadMapHistory.add(ss);
-        roadMapFuture.clear();
-    }
-    
-    private void stepStateBack()
-    {
-        if(roadMapHistory.peek() != null) {
-            RoadMapSnapShot ss = roadMapHistory.removeLast();
-            roadMapFuture.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
-            roadMapPanel.setRoadMap(ss.getRoadMap());
-        }
-    }
-    
-    private void stepStateForward()
-    {
-        if(roadMapFuture.peek() != null) {
-            RoadMapSnapShot ss = roadMapFuture.removeLast();
-            roadMapHistory.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
-            roadMapPanel.setRoadMap(ss.getRoadMap());
-        }
-    }
-    
-    private void undo()
-    {
-        deselectBricks();
-        stepStateBack();
-        //System.out.println("History: " + roadMapHistory);
-        //System.out.println("Future: " + roadMapFuture);
-        roadMapPanel.placeBricks();
-    }
-    
-    private void redo()
-    {
-        deselectBricks();
-        stepStateForward();
-        //System.out.println("History: " + roadMapHistory);
-        //System.out.println("Future: " + roadMapFuture);
-        roadMapPanel.placeBricks();
-    }
-       
-    /* -------- Actions -------- */
-    
-    /** addChord <p>
-    * Adds the chord inputted in the chord field to the roadmap.
-    */
-    public void addChord(ChordBlock chord)
-    {
-        saveState("AddChord");
-        roadMapPanel.addBlock(chord);
-        roadMapPanel.placeBricks();
-    }
-    
-    public void addBlocks(int ind, ArrayList<Block> blocks)
-    {
-        saveState("AddBricks");
-        roadMapPanel.addBlocks(ind, blocks);
-        roadMapPanel.placeBricks();
-    }
-        
-    public void deleteSelection()
-    {
-        saveState("Delete");
-        roadMapPanel.deleteSelection();
-        deactivateButtons();
-    }
-    
-    public void breakSelection()
-    {
-        saveState("Break");
-        roadMapPanel.breakSelection();
-    }
-    
-    public void makeBrickFromSelection()
-    {
-        saveState("Merge");
-        long key = BrickLibrary.keyNameToNum((String) dialogKeyComboBox.getSelectedItem());
-        String name = dialogNameField.getText();
-        String mode = (String)dialogModeComboBox.getSelectedItem();
-        String type = (String)dialogTypeComboBox.getSelectedItem();
-        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key, mode, type);
-        addToLibrary(newBrick);
-    }
-
-    public void transposeSelection(long diff)
-    {
-        saveState("Transpose");
-        roadMapPanel.transposeSelection(diff);
-    }
-    
-    public void analyzeSelection()
-    {
-        saveState("Analyze");
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
-        ArrayList<Block> blocks = roadMapPanel.getSelection();
-        roadMapPanel.replaceSelection(analyze(blocks));
-        
-        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    }
-    
-    public void flattenSelection()
-    {
-        saveState("Flatten");
-        roadMapPanel.flattenSelection();
-    }
-    
-    public void scaleSelection()
-    {
-        saveState("Scale");
-        String choice = (String)scaleComboBox.getSelectedItem();
-        
-        if( choice == null )
-            return;
-        
-        int scale = choice.charAt(1) - 48; // set to integer
-        
-        if( choice.charAt(0) == 47) //  / = division
-            scale = -scale;
-        
-        roadMapPanel.scaleSelection(scale);       
-    }
-    
-    public void changeChord(String name, int dur)
-    {
-        saveState("ChordChange");
-        roadMapPanel.changeChord(name, dur);
-    }
-    
-    private void togglePhraseEnd()
-    {
-        saveState("PhraseEnd");
-        roadMapPanel.togglePhrase();
-    }
-    
-    private void toggleSectionBreak()
-    {
-        saveState("SectionBreak");
-        roadMapPanel.toggleSection();
-    }
-    
-    public void endSection()
-    {
-        saveState("SectionBreak");
-        roadMapPanel.endSection();
-    }
-
-    public void cutSelection()
-    {
-        saveState("Cut");
-        clipboard = roadMapPanel.removeSelection();
-        roadMapPanel.placeBricks();
-    }
-    
-    public void pasteSelection()
-    {
-        saveState("Paste");
-        
-        ArrayList<Block> blocks = RoadMap.cloneBlocks(clipboard);
-        
-        roadMapPanel.addBlocksBeforeSelection(blocks, false);
-        
-        roadMapPanel.placeBricks();
-    }
-    
-    public void copySelection()
-    {
-        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());        
-    }
-    
-    /** dragSelectedBricks <p>
-     * Implements dragging behavior.
-     * 
-     * @param x, the x-coordinate of the mouse
-     * @param y, the y-coordinate of the mouse
-     */
-    public void dragSelectedBricks(int x, int y)
-    {   
-        int index = roadMapPanel.getBrickIndexAt(x, y);
-        if( draggedBricks.isEmpty() ) {
-            saveState("Drag");
-            roadMapPanel.setRolloverPos(null);
-            if( !roadMapPanel.isSelection(index))
-                roadMapPanel.selectBrick(index);
-            if( roadMapPanel.hasSelection() )
-                draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
-        }
-        
-        if( !draggedBricks.isEmpty() ) {
-            roadMapPanel.setInsertLine(x, y);
-            roadMapPanel.draw();
-            roadMapPanel.drawBricksAt(draggedBricks, x, y);
-        }
-    }
-    
-    /** dropCurrentBrick <p>
-     * Implements dropping behavior.
-     * 
-     * @param x, the x-coordinate of the mouse
-     * @param y, the y-coordinate of the mouse
-     */
-    public void dropCurrentBrick(int x, int y)
-    {   
-        if( !draggedBricks.isEmpty() ) {
-            int index = roadMapPanel.getIndexAt(x, y);
-            roadMapPanel.addBlocks(index, roadMapPanel.makeBlocks(draggedBricks), true);
-            draggedBricks.clear();
-            roadMapPanel.setInsertLine(-1);
-        }
-        roadMapPanel.placeBricks();
-    }
-    
-    /** dragFromPreview <p>
-     * Implements dragging behavior from the preview window.
-     * @param x, the x-coordinate of the mouse
-     * @param y, the y-coordinate of the mouse
-     */
-    public void dragFromPreview(int x, int y) 
-    {        
-        if( draggedBricks.isEmpty() ) {
-            roadMapPanel.deselectBricks();
-            
-            if (previewPanel.currentBrick != null) {
-                draggedBricks.add(previewPanel.getBrick());
-                setPreview();
-            }
-        }
-        dragSelectedBricks(x + previewScrollPane.getX(), y + previewScrollPane.getY());
-    }
-    
-    /** dropFromPreivew <p>
-     * Implements dropping behavior from the preview window;
-     * 
-     * @param x, the x-coordinate of the mouse
-     * @param y, the y-coordinate of the mouse 
-     */
-    public void dropFromPreview(int x, int y)
-    {
-        saveState("Drop");
-        dropCurrentBrick(x + previewScrollPane.getX(), y + previewScrollPane.getY());
-        activateButtons();
-    }
-    
-    public void addBrickFromPreview()
-    {
-        saveState("Drop");
-        ArrayList<Block> block = new ArrayList();
-        block.add(previewPanel.getBlock());
-        roadMapPanel.addBlocksBeforeSelection(block, true);
-        roadMapPanel.placeBricks();
-    }
-    
-    /** setPreview <p>
-     * Sets the preview brick, as well as its duration and key.
-     */
-    public void setPreview()
-    {
-        TreePath path = libraryTree.getSelectionPath();
-        if(path != null) {
-
-            int pathLength = path.getPathCount();
-            
-            if( pathLength > 2 ) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-                DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getParentPath().getLastPathComponent();
-                Brick brick;
-                
-                if(pathLength > 3 )
-                    brick = brickLibrary.getBrick(parent.toString(),node.toString(), 0);
-                else
-                    brick = brickLibrary.getBrick(node.toString(), 0);
-                
-                //setDurationChoices(brick);
-                previewPanel.setBrick( brick );
-
-                setPreviewKey();
-                setPreviewDuration();
-            }
-            
-        }
-    }
-    
-    /** setPreviewKey <p>
-     * Sets the key of the brick in the preview pane to the key chosen by
-     * the key spinner.
-     */
-    public void setPreviewKey()
-    {
-        String key = (String)keyComboBox.getSelectedItem();
-        if(BrickLibrary.isValidKey(key))
-            previewPanel.setKey( key );
-    }
-    
-    /** setPreviewDuration <p>
-     * Sets the duration of the brick in the preview pane to the key chosen by
-     * the duration combo box.
-     */
-    public void setPreviewDuration()
-    {
-        previewPanel.setDuration(settings.getSlotsPerBeat()*(Integer)durationChoices[durationComboBox.getSelectedIndex()]);
-        previewPanel.draw();
-    }
-           
-    /** selectBricks <p>
-     * Adds the brick at index to the selection, either extending the selection
-     * or reducing it depending on whether the brick is selected.
-     * 
-     * @param index, the index of the brick to be selected
-     */
-    public void selectBricks(int index)
-    {
-        roadMapPanel.selectBricks(index);
-        activateButtons();   
-    }
-    
-    public void selectAllBricks()
-    {
-        roadMapPanel.selectAll();
-        activateButtons();
-    }
-    
-    /** selectBrick <p>
-     * Selects only the brick at index, deselecting all other bricks.
-     * 
-     * @param index, the index of the brick to be selected 
-     */
-    public void selectBrick(int index)
-    {
-        roadMapPanel.selectBrick(index);
-        activateButtons();
-    }
-    
-    public void selectChord(int brickInd, int chordInd)
-    {
-        roadMapPanel.selectChord(brickInd, chordInd);
-        deactivateButtons();
-        deleteMenuItem.setEnabled(true);
-    }
-    
-    /** deselectBricks <p>
-     * Deselects all bricks.
-     */
-    public void deselectBricks()
-    {
-        roadMapPanel.deselectBricks();
-        deactivateButtons();
-    }
-       
-    public ArrayList<Block> analyze(ArrayList<Block> blocks)
-    {
-        long startTime = System.currentTimeMillis();
-        ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
-        long endTime = System.currentTimeMillis();
-        System.err.println("Analysis: " + (endTime - startTime) + "ms");
-        
-        
-        return result;
-    }  
-    
-    public ArrayList<ChordBlock> getChordsInSelection()
-    {
-        return RoadMap.getChords(roadMapPanel.getSelection());
-    }
-    
-    
-    public BrickLibrary getLibrary()
-    {
-        return brickLibrary;
-    }
-        
-    public void deactivateButtons()
-    {
-        setButtonEnabled(false);
-    }
-    
-    public void activateButtons()
-    {
-        setButtonEnabled(true);
-    }
-    
-    public void setButtonEnabled(boolean value)
-    {
-        cutMenuItem.setEnabled(value);
-        copyMenuItem.setEnabled(value);
-        
-        transposeMenu.setEnabled(value);
-        
-        sectionMenu.setEnabled(value);
-        
-        flattenButton.setEnabled(value);
-        flattenMenuItem.setEnabled(value);
-       
-        deleteMenuItem.setEnabled(value);
-        
-        breakButton.setEnabled(value);
-        breakMenuItem.setEnabled(value);
-        
-        newBrickButton.setEnabled(value);
-        scaleComboBox.setEnabled(value);
-    }
-    
-    public void setDurationChoices(Brick brick)
-    {
-        int sig = getMetre()[0];
-        ArrayList<Integer> choices = new ArrayList();
-        for(int i = brick.getDuration(); i < sig*brick.getDuration(); i++)
-            choices.add(i);
-        for(int i = 1; i < 4; i++)
-            choices.add(i*brick.getDuration()*sig);
-        System.out.println(choices);
-    }
-    
-    public void initLibraryTree()
+    /** Builds the library tree from the brick library */
+    private void initLibraryTree()
     {
         LinkedList<LinkedList<Brick>> bricks = brickLibrary.getMap();
         
@@ -2032,15 +1568,471 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryTreeModel = new DefaultTreeModel(root);
     }
     
+    /** Recycle buffer memory by setting them to null*/
+    private void disposeBuffers()
+    {
+        bufferPreviewPanel = null;
+        bufferRoadMap = null;
+        previewPanel.setBuffer(null);
+        roadMapPanel.setBuffer(null);
+    }
+
+    /** Paints the image white.
+     * @param image, an Image
+     */
+    public void setBackground(Image image)
+    {
+        Graphics graphics = image.getGraphics();
+        graphics.setColor(Color.white);
+        graphics.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
+    }
+    
+    /** setBackgrounds <p>
+     * Sets the background of each bufferPreviewPanel.
+     */
+    public void setBackgrounds()
+    {
+        setBackground(bufferPreviewPanel);
+        setBackground(bufferRoadMap);
+    }
+ 
+    /** Sets the roadmap and frame title to the given string */
+    public void setRoadMapTitle(String title)
+    {
+        setTitle(roadMapTitlePrefix + title);
+        roadMapTitle = title;
+        roadMapPanel.draw();
+    }
+    
+    /** Returns the current graphical settings */
+    public RoadMapSettings getSettings()
+    {
+        return settings;
+    }
+    
+    /** Returns the brick library */
+    public BrickLibrary getLibrary()
+    {
+        return brickLibrary;
+    }
+    
+    /** Returns the chords in the current selection */
+    public ArrayList<ChordBlock> getChordsInSelection()
+    {
+        return RoadMap.getChords(roadMapPanel.getSelection());
+    }
+    
+    /** Saves the current state of the roadmap */
+    private void saveState(String name)
+    {
+        stopPlayingSelection(); //TODO this probably doesn't belong here,
+        //but I don't want to write it over and over again and this is called for
+        //in relevant actions
+        if(name.equals("Transpose") &&
+                roadMapHistory.getLast().getName().equals("Transpose"))
+            return; //Multiple transpositions should be the same action
+                    //ISSUE: changing multiple bricks in sequence undoes them all
+        RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
+        roadMapHistory.add(ss);
+        roadMapFuture.clear();
+    }
+    
+    /** Reverts to the previous state */
+    private void stepStateBack()
+    {
+        if(roadMapHistory.peek() != null) {
+            RoadMapSnapShot ss = roadMapHistory.removeLast();
+            roadMapFuture.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
+            roadMapPanel.setRoadMap(ss.getRoadMap());
+        }
+    }
+    
+    /** Verts to the next state */
+    private void stepStateForward()
+    {
+        if(roadMapFuture.peek() != null) {
+            RoadMapSnapShot ss = roadMapFuture.removeLast();
+            roadMapHistory.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
+            roadMapPanel.setRoadMap(ss.getRoadMap());
+        }
+    }
+    
+    /** Undoes the any actions performed */
+    private void undo()
+    {
+        deselectBricks();
+        stepStateBack();
+        //System.out.println("History: " + roadMapHistory);
+        //System.out.println("Future: " + roadMapFuture);
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Redoes any undone action */
+    private void redo()
+    {
+        deselectBricks();
+        stepStateForward();
+        //System.out.println("History: " + roadMapHistory);
+        //System.out.println("Future: " + roadMapFuture);
+        roadMapPanel.placeBricks();
+    }
+       
+    /* -------- Actions -------- */
+    
+    /** Action to add a chord to the roadmap */
+    public void addChord(ChordBlock chord)
+    {
+        saveState("AddChord");
+        roadMapPanel.addBlock(chord);
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Action to insert a list of blocks into the roadmap */
+    public void addBlocks(int ind, ArrayList<Block> blocks)
+    {
+        saveState("AddBricks");
+        roadMapPanel.addBlocks(ind, blocks);
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Action to delete the selection */
+    public void deleteSelection()
+    {
+        saveState("Delete");
+        roadMapPanel.deleteSelection();
+        deactivateButtons();
+    }
+    
+    /** Action to break the selected bricks */
+    public void breakSelection()
+    {
+        saveState("Break");
+        roadMapPanel.breakSelection();
+    }
+    
+    /** Action to create a new brick from the selection */
+    public void makeBrickFromSelection()
+    {
+        saveState("Merge");
+        long key = BrickLibrary.keyNameToNum((String) dialogKeyComboBox.getSelectedItem());
+        String name = dialogNameField.getText();
+        String mode = (String)dialogModeComboBox.getSelectedItem();
+        String type = (String)dialogTypeComboBox.getSelectedItem();
+        Brick newBrick = roadMapPanel.makeBrickFromSelection(name, key, mode, type);
+        addToLibrary(newBrick);
+    }
+
+    /** Action to transpose the key of the selection */
+    public void transposeSelection(long diff)
+    {
+        saveState("Transpose");
+        roadMapPanel.transposeSelection(diff);
+    }
+    
+    /** Action to analyze the selection */
+    public void analyzeSelection()
+    {
+        saveState("Analyze");
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        
+        ArrayList<Block> blocks = roadMapPanel.getSelection();
+        roadMapPanel.replaceSelection(analyze(blocks));
+        
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
+    
+    /** Action to flatten the selected bricks */
+    public void flattenSelection()
+    {
+        saveState("Flatten");
+        roadMapPanel.flattenSelection();
+    }
+    
+    /** Action to scale the durations of the selected bricks */
+    public void scaleSelection()
+    {
+        saveState("Scale");
+        String choice = (String)scaleComboBox.getSelectedItem();
+        
+        if( choice == null )
+            return;
+        
+        int scale = choice.charAt(1) - 48; // set to integer
+        
+        if( choice.charAt(0) == 47) //  / = division
+            scale = -scale;
+        
+        roadMapPanel.scaleSelection(scale);       
+    }
+    
+    /** Action to change a chord's name and/or duration */
+    public void changeChord(String name, int dur)
+    {
+        saveState("ChordChange");
+        roadMapPanel.changeChord(name, dur);
+    }
+    
+    /** Action to add/remove a phrase end */
+    private void togglePhraseEnd()
+    {
+        saveState("PhraseEnd");
+        roadMapPanel.togglePhrase();
+    }
+    
+    /** Action to add/remove a section end */
+    private void toggleSectionBreak()
+    {
+        saveState("SectionBreak");
+        roadMapPanel.toggleSection();
+    }
+    
+    /** Action to add a section end to the end of the roadmap */
+    public void endSection()
+    {
+        saveState("SectionBreak");
+        roadMapPanel.endSection();
+    }
+
+    /** Action to cut the selection, adding it to the clipboard */
+    public void cutSelection()
+    {
+        saveState("Cut");
+        clipboard = roadMapPanel.removeSelection();
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Action to paste the selection, adding it to the roadmap from the clipboard */
+    public void pasteSelection()
+    {
+        saveState("Paste");
+        
+        ArrayList<Block> blocks = RoadMap.cloneBlocks(clipboard);
+        
+        roadMapPanel.addBlocksBeforeSelection(blocks, false);
+        
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Action to copy the selection, adding it to the clipboard */
+    public void copySelection()
+    {
+        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());        
+    }
+    
+    /** Implements dragging behavior.
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse */
+    public void dragSelectedBricks(int x, int y)
+    {   
+        int index = roadMapPanel.getBrickIndexAt(x, y);
+        if( draggedBricks.isEmpty() ) {
+            saveState("Drag");
+            roadMapPanel.setRolloverPos(null);
+            if( !roadMapPanel.isSelection(index))
+                roadMapPanel.selectBrick(index);
+            if( roadMapPanel.hasSelection() )
+                draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
+        }
+        
+        if( !draggedBricks.isEmpty() ) {
+            roadMapPanel.setInsertLine(x, y);
+            roadMapPanel.draw();
+            roadMapPanel.drawBricksAt(draggedBricks, x, y);
+        }
+    }
+    
+    /** Implements dropping behavior.
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse */
+    public void dropCurrentBrick(int x, int y)
+    {   
+        if( !draggedBricks.isEmpty() ) {
+            int index = roadMapPanel.getIndexAt(x, y);
+            roadMapPanel.addBlocks(index, roadMapPanel.makeBlocks(draggedBricks), true);
+            draggedBricks.clear();
+            roadMapPanel.setInsertLine(-1);
+        }
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Implements dragging behavior from the preview window.
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse */
+    public void dragFromPreview(int x, int y) 
+    {        
+        if( draggedBricks.isEmpty() ) {
+            roadMapPanel.deselectBricks();
+            
+            if (previewPanel.currentBrick != null) {
+                draggedBricks.add(previewPanel.getBrick());
+                setPreview();
+            }
+        }
+        dragSelectedBricks(x + previewScrollPane.getX(), y + previewScrollPane.getY());
+    }
+    
+    /** Implements dropping behavior from the preview window.
+     * @param x, the x-coordinate of the mouse
+     * @param y, the y-coordinate of the mouse */
+    public void dropFromPreview(int x, int y)
+    {
+        saveState("Drop");
+        dropCurrentBrick(x + previewScrollPane.getX(), y + previewScrollPane.getY());
+        activateButtons();
+    }
+    
+    /** Adds the current preview brick to the roadmap */
+    public void addBrickFromPreview()
+    {
+        saveState("Drop");
+        ArrayList<Block> block = new ArrayList();
+        block.add(previewPanel.getBlock());
+        roadMapPanel.addBlocksBeforeSelection(block, true);
+        roadMapPanel.placeBricks();
+    }
+    
+    /** Sets the preview brick (from the library), as well as its duration and key. */
+    public void setPreview()
+    {
+        TreePath path = libraryTree.getSelectionPath();
+        if(path != null) {
+
+            int pathLength = path.getPathCount();
+            
+            if( pathLength > 2 ) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getParentPath().getLastPathComponent();
+                Brick brick;
+                
+                if(pathLength > 3 )
+                    brick = brickLibrary.getBrick(parent.toString(),node.toString(), 0);
+                else
+                    brick = brickLibrary.getBrick(node.toString(), 0);
+                
+                //setDurationChoices(brick);
+                previewPanel.setBrick( brick );
+
+                setPreviewKey();
+                setPreviewDuration();
+            }
+            
+        }
+    }
+    
+    /** Sets the key of the brick in the preview pane to the key chosen by
+     * the key spinner. */
+    public void setPreviewKey()
+    {
+        String key = (String)keyComboBox.getSelectedItem();
+        if(BrickLibrary.isValidKey(key))
+            previewPanel.setKey( key );
+    }
+    
+    /** Sets the duration of the brick in the preview pane to the key chosen by
+     * the duration combo box. */
+    public void setPreviewDuration()
+    {
+        previewPanel.setDuration(settings.getSlotsPerBeat()*(Integer)durationChoices[durationComboBox.getSelectedIndex()]);
+        previewPanel.draw();
+    }
+           
+    /** Adds the brick at index to the selection, either extending the selection
+     * or reducing it depending on whether the brick is selected. 
+     * @param index, the index of the brick to be selected */
+    public void selectBricks(int index)
+    {
+        roadMapPanel.selectBricks(index);
+        activateButtons();   
+    }
+    
+    /** Selects all bricks in the roadmap */
+    public void selectAllBricks()
+    {
+        roadMapPanel.selectAll();
+        activateButtons();
+    }
+    
+    /** Selects only the brick at index, deselecting all other bricks.
+     * @param index, the index of the brick to be selected */
+    public void selectBrick(int index)
+    {
+        roadMapPanel.selectBrick(index);
+        activateButtons();
+    }
+    
+    /** Selects a chord within a brick
+     * @param brickInd the index of the brick
+     * @param chordInd the index of the chord within the brick */
+    public void selectChord(int brickInd, int chordInd)
+    {
+        roadMapPanel.selectChord(brickInd, chordInd);
+        deactivateButtons();
+        deleteMenuItem.setEnabled(true);
+    }
+    
+    /** Deselects all bricks. */
+    public void deselectBricks()
+    {
+        roadMapPanel.deselectBricks();
+        deactivateButtons();
+    }
+       
+    /** Uses cykParser to analyze a list of blocks */
+    public ArrayList<Block> analyze(ArrayList<Block> blocks)
+    {
+        long startTime = System.currentTimeMillis();
+        ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
+        long endTime = System.currentTimeMillis();
+        System.err.println("Analysis: " + (endTime - startTime) + "ms");
+        
+        return result;
+    }  
+  
+    /** Deactivates relevant buttons for selection */
+    public void deactivateButtons()
+    {
+        setButtonEnabled(false);
+    }
+    
+    /** Activates relevant buttons for selection */
+    public void activateButtons()
+    {
+        setButtonEnabled(true);
+    }
+    
+    /** Activates/Deactivates relecent buttons for selection */
+    public void setButtonEnabled(boolean value)
+    {
+        cutMenuItem.setEnabled(value);
+        copyMenuItem.setEnabled(value);
+        
+        transposeMenu.setEnabled(value);
+        
+        sectionMenu.setEnabled(value);
+        
+        flattenButton.setEnabled(value);
+        flattenMenuItem.setEnabled(value);
+       
+        deleteMenuItem.setEnabled(value);
+        
+        breakButton.setEnabled(value);
+        breakMenuItem.setEnabled(value);
+        
+        newBrickButton.setEnabled(value);
+        scaleComboBox.setEnabled(value);
+    }
+
+    /** Adds a brick to the brick library */
     private void addToLibrary(Brick brick)
     {
         Brick scaledBrick = new Brick(brick);
         scaledBrick.reduceDurations();
         brickLibrary.addBrickDefinition(scaledBrick);
-        addToLibraryTree(brick.getName());
         cykParser.createRules(brickLibrary);
+        addToLibraryTree(brick.getName());
     }
     
+    /** Adds a brick name to the library tree */
     private void addToLibraryTree(String name)
     {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)libraryTreeModel.getRoot();
@@ -2139,135 +2131,104 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
-/**
- * Appends the currently-selected blocks to a Notate window called auxNotate,
- * creating that window if none exists.
- *
- * If no blocks are selected, selects them all first.
- *
- * If the road map is empty, does nothing.
- */
-    
-public void appendSelectionToNotate()
-  {
-    if( roadMapPanel.getNumBlocks() < 1 )
-      {
-        return;
-      }
-    
-    if( !roadMapPanel.hasSelection() )
-      {
-        selectAllBricks();
-      }
+    /** Appends the currently-selected blocks to a Notate window called auxNotate,
+     * creating that window if none exists.
+     *
+     * If no blocks are selected, selects them all first.
+     *
+     * If the road map is empty, does nothing.
+     */ 
+    public void appendSelectionToNotate()
+    {
+        if( roadMapPanel.getNumBlocks() < 1 )
+            return;
 
-    if( auxNotate == null )
-      {
+        if( !roadMapPanel.hasSelection() )
+            selectAllBricks();
+
+        if( auxNotate == null ) {
+            ChordPart chordPart = new ChordPart();
+            chordPart.addFromRoadMapFrame(this);
+            Score score = new Score(chordPart);
+            score.setMetre(getMetre());
+            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+        } else
+            auxNotate.addToChordPartFromRoadMapFrame(this);
+
+        auxNotate.setCreateRoadMapCheckBox(false);
+        auxNotate.setVisible(true);
+    }
+
+
+    /** Sends the currently-selected blocks to a new Notate window called auxNotate.
+     * Any existing associate with that window is detached and lost.
+     *
+     * If no blocks are selected, selects them all first.
+     *
+     * If the road map is empty, does nothing.
+     */
+    public void sendSelectionToNewNotate()
+    {
+        if( roadMapPanel.getNumBlocks() < 1 )
+            return;
+
+        if( !roadMapPanel.hasSelection() )
+            selectAllBricks();
+
+        if( auxNotate != null ) {
+            // TODO What to do here?
+            // Need to prevent inconsistency caused by the closing of auxNotate.
+            // It will set auxNotate to null.
+        }
         ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
+        score.setStyle(style.getName());
+        score.setTempo(tempo);
+        score.setTitle(roadMapTitle);
         auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-      }
-    else
-      {
-        auxNotate.addToChordPartFromRoadMapFrame(this);
-      }
-    auxNotate.setCreateRoadMapCheckBox(false);
-    auxNotate.setVisible(true);
-    //auxNotate.playScore();
-  }
-    
+        auxNotate.setCreateRoadMapCheckBox(false);
 
-/**
- * Sends the currently-selected blocks to a new Notate window called auxNotate.
- * Any existing associate with that window is detached and lost.
- *
- * If no blocks are selected, selects them all first.
- *
- * If the road map is empty, does nothing.
- */
-public void sendSelectionToNewNotate()
-  {
-    if( roadMapPanel.getNumBlocks() < 1 )
-      {
-        return;
-      }
-    
-    if( !roadMapPanel.hasSelection() )
-      {
-        selectAllBricks();
+        auxNotate.setVisible(true);
       }
 
-    if( auxNotate != null )
-      {
-        // TODO What to do here?
-        // Need to prevent inconsistency caused by the closing of auxNotate.
-        // It will set auxNotate to null.
-      }
-    ChordPart chordPart = new ChordPart();
-    chordPart.addFromRoadMapFrame(this);
-    Score score = new Score(chordPart);
-    score.setMetre(getMetre());
-    score.setStyle(style.getName());
-    score.setTempo(tempo);
-    score.setTitle(roadMapTitle);
-    auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-    auxNotate.setCreateRoadMapCheckBox(false);
-    
-    auxNotate.setVisible(true);
-    //auxNotate.playScore();
-  }
 
-
-/**
- * Call from suxNotate when deleted to prevent dangling reference.
- */
-
-public void resetAuxNotate()
-  {
-    auxNotate = null;
-  }
-   
-    //TODO reorganize
-
-
-
-/**
-  * Plays the currently-selected blocks. The style is determined from the
-  * Notate window where this roadmap was opened.
-  *
-  * If not blocks are selected, selects them all first.
-  *
-  * If the road map is empty, does nothing.
-  */
-    
-    public void playSelection() {
-        if (roadMapPanel.getNumBlocks() < 1) {
-            return;
-        }
-        if (!roadMapPanel.hasSelection()) {
-            selectAllBricks();
-        }
-
-         ChordPart chordPart = new ChordPart();
-         chordPart.addFromRoadMapFrame(this);
-         Score score = new Score(chordPart);
-         score.setMetre(getMetre());
-         score.setTempo(tempo);
-         
-         setPlaying(MidiPlayListener.Status.PLAYING, 0);
-         
-         if( loopToggleButton.isSelected() )
-           {
-           notate.playAscore(score, style.getName(), -1);
-           }
-         else
-           {
-           notate.playAscore(score, style.getName(), 0);
-           }
+    /** Call from auxNotate when deleted to prevent dangling reference. */
+    public void resetAuxNotate()
+    {
+        auxNotate = null;
     }
 
-    
+    /** Plays the currently-selected blocks. The style is determined from the
+     * Notate window where this roadmap was opened.
+     *
+     * If not blocks are selected, selects them all first.
+     *
+     * If the road map is empty, does nothing.
+     */
+    public void playSelection() {
+        if (roadMapPanel.getNumBlocks() < 1)
+            return;
+        
+        if (!roadMapPanel.hasSelection())
+            selectAllBricks();
+
+        ChordPart chordPart = new ChordPart();
+        chordPart.addFromRoadMapFrame(this);
+        Score score = new Score(chordPart);
+        score.setMetre(getMetre());
+        score.setTempo(tempo);
+         
+        setPlaying(MidiPlayListener.Status.PLAYING, 0);
+         
+        if( loopToggleButton.isSelected() )
+            notate.playAscore(score, style.getName(), -1);
+        else
+            notate.playAscore(score, style.getName(), 0);
+    }
+
+    /** Stops playback */
     public void stopPlayingSelection()
     {
         if(isPlaying()) {
@@ -2276,12 +2237,14 @@ public void resetAuxNotate()
         }
     }
     
+    /** Stops then restarts playback */
     public void restartPlayingSelection()
     {
         stopPlayingSelection();
         playSelection();
     }
 
+    /** Set the playback status */
     public void setPlaying(MidiPlayListener.Status playing, int transposition)
     {
         isPlaying = playing;
@@ -2295,6 +2258,7 @@ public void resetAuxNotate()
         }
     }
     
+    /** Sets the playback status */
     public void setPlaying(boolean status)
     {
         if(status)
@@ -2303,169 +2267,154 @@ public void resetAuxNotate()
             setPlaying(MidiPlayListener.Status.STOPPED,0);
     }
     
+    /** Returns the playback status */
     public MidiPlayListener.Status getPlaying()
     {
         return isPlaying;
     }
 
+    /** Returns whether payback is active */
     public boolean isPlaying()
     {
         return isPlaying == MidiPlayListener.Status.PLAYING;
     }
     
-    
-/**
- * Close this RoadMapFrame and clean up.
- */
-    
-public void closeWindow()
-  {
-    if(isPlaying())
-        stopPlayingSelection();
-    WindowRegistry.unregisterWindow(this);
-  
-    if( notate != null ) {
-        notate.disestablishRoadMapFrame();
+
+    /** Close this RoadMapFrame and clean up. */
+    public void closeWindow()
+    {
+        if(isPlaying())
+            stopPlayingSelection();
+        WindowRegistry.unregisterWindow(this);
+
+        if( notate != null )
+            notate.disestablishRoadMapFrame();
+
+        disposeBuffers();
+        dispose();
     }
-  
-    disposeBuffers();
-    dispose();
-  }
 
 
-/**
- * Get X location for new frame cascaded from original.
- * @return 
- */
-
-public int getNewXlocation()
-  {
-    return (int)getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
-  }
+    /** Get X location for new frame cascaded from original. */
+    public int getNewXlocation()
+    {
+        return (int)getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
+    }
 
 
-/**
- * Get Y location for new frame cascaded from original.
- * @return 
- */
-
-public int getNewYlocation()
-  {
-    return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
-  }
+    /** Get Y location for new frame cascaded from original. */
+    public int getNewYlocation()
+    {
+        return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
+    }
 
 
-  /**
-   * Set the height of specified RoadMapFrame so that it fills the screen.
-   * This seems to work fine when the dock is at the right, but when
-   * it is at the bottom, for some reason vertical staggering does not happen.
-   @param notate
-   */
-  
-  public void setRoadMapFrameHeight()
-  {
-    int desiredWidth = RMframeWidth; // alternatively: dm.getWidth() - x
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
-    DisplayMode dm = gs[0].getDisplayMode();
-    int x = notate.getNewXlocation();
-    int y = notate.getNewYlocation();
-    setLocation(x, y);
-    setSize(desiredWidth, dm.getHeight() - y);
-  }
-  
-  
-/**
- * Make this RoadMapFrame visible
- */
-  
-public void makeVisible()
-  {
-    setVisible(true);
-  }
+    /**
+     * Set the height of specified RoadMapFrame so that it fills the screen.
+     * This seems to work fine when the dock is at the right, but when
+     * it is at the bottom, for some reason vertical staggering does not happen.
+     * @param notate
+     */
+    public void setRoadMapFrameHeight()
+    {
+        int desiredWidth = RMframeWidth; // alternatively: dm.getWidth() - x
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
+        DisplayMode dm = gs[0].getDisplayMode();
+        int x = notate.getNewXlocation();
+        int y = notate.getNewYlocation();
+        setLocation(x, y);
+        setSize(desiredWidth, dm.getHeight() - y);
+    }
 
-/**
- * Sets the time signature of the roadmap for Americans
- * @param meter 
- */
-public void setMeter(int meter[])
-  {
-    setMetre(meter);
-  }
 
-/**
- * Sets the time signature of the roadmap for the rest of the world
- * @param metre 
- */
-public void setMetre(int metre[])
-  {
-    this.metre[0] = metre[0];
-    this.metre[1] = metre[1];
-    settings.setMetre(metre);
-  }
+    /** Make this RoadMapFrame visible */
+    public void makeVisible()
+    {
+        setVisible(true);
+    }
 
-/**
- * Returns the time signature of the roadmap for Americans
- * @return 
- */
-public int[] getMeter()
-{
-    return metre;
-}
+    /** Sets the time signature of the roadmap for Americans
+     * @param meter
+     */
+    public void setMeter(int meter[])
+    {
+        setMetre(meter);
+    }
 
-/**
- * Returns the time signature of the roadmap for the rest of the world
- * @return 
- */
-public int[] getMetre()
-{
-    return metre;
-}
+    /** Sets the time signature of the roadmap for the rest of the world
+     * @param metre 
+     */
+    public void setMetre(int metre[])
+    {
+        this.metre[0] = metre[0];
+        this.metre[1] = metre[1];
+        settings.setMetre(metre);
+    }
 
-public double getTempo()
-{
-    return tempo;
-}
+    /** Returns the time signature of the roadmap for Americans
+     * @return 
+     */
+    public int[] getMeter()
+    {
+        return metre;
+    }
 
-public Style getStyle()
-{
-    return style;
-}
+    /** Returns the time signature of the roadmap for the rest of the world
+     * @return 
+     */
+    public int[] getMetre()
+    {
+        return metre;
+    }
 
-public int getMidiSlot()
-{
-    return notate.getMidiSlot();
-}
+    /** Returns the tempo */
+    public int getTempo()
+    {
+        return tempo;
+    }
 
-public void setMusicalInfo(Score score)
-{
-    setMetre(score.getMetre());
-    tempo = (int)score.getTempo();
-    style = score.getStyle();
-}
+    /** Returns the style */ 
+    public Style getStyle()
+    {
+        return style;
+    }
 
-public void activatePreferencesDialog()
-{
-    prefDialogTitleField.setText(roadMapTitle);
-    prefDialogTempoField.setText(String.valueOf(tempo));
-    prefDialogMetreTopField.setText(String.valueOf(getMetre()[0]));
-    prefDialogMetreBottomField.setText(String.valueOf(getMetre()[1]));
-    prefDialogStyleComboBox.setSelectedItem(style);
-    preferencesDialog.setVisible(true);
-}
+    /** Gets the current playback slot from notate */
+    public int getMidiSlot()
+    {
+        return notate.getMidiSlot();
+    }
 
-/**
- * Gets the info from the preferences dialog
- */
-public void setRoadMapInfo()
-{
-    setRoadMapTitle(prefDialogTitleField.getText());
-    int metreTop = prefDialogMetreTopField.getInt();
-    int metreBottom = prefDialogMetreBottomField.getInt();
-    setMetre(new int[]{metreTop, metreBottom});
-    tempo = prefDialogTempoField.getInt();
-    style = (Style)prefDialogStyleComboBox.getSelectedItem();
-    roadMapPanel.updateBricks();
-}
+    /** Gets the roadmap's musical info from a score */
+    public void setMusicalInfo(Score score)
+    {
+        setMetre(score.getMetre());
+        tempo = (int)score.getTempo();
+        style = score.getStyle();
+    }
+
+    /** Activate the preferences dialog and set the default values */
+    public void activatePreferencesDialog()
+    {
+        prefDialogTitleField.setText(roadMapTitle);
+        prefDialogTempoField.setText(String.valueOf(tempo));
+        prefDialogMetreTopField.setText(String.valueOf(getMetre()[0]));
+        prefDialogMetreBottomField.setText(String.valueOf(getMetre()[1]));
+        prefDialogStyleComboBox.setSelectedItem(style);
+        preferencesDialog.setVisible(true);
+    }
+
+    /** Gets the info from the preferences dialog */
+    public void setRoadMapInfo()
+    {
+        setRoadMapTitle(prefDialogTitleField.getText());
+        int metreTop = prefDialogMetreTopField.getInt();
+        int metreBottom = prefDialogMetreBottomField.getInt();
+        setMetre(new int[]{metreTop, metreBottom});
+        tempo = prefDialogTempoField.getInt();
+        style = (Style)prefDialogStyleComboBox.getSelectedItem();
+        roadMapPanel.updateBricks();
+    }
 
 };
