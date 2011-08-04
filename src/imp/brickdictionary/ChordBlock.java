@@ -43,7 +43,6 @@ public class ChordBlock extends Block {
     private Chord chord;               // an imp.data Chord object
     private long NC = -1;              // the key describing nonchords
     private String BACKSLASH = "\\";   // the String of a single backslash
-    private String SLASHCHAR = "/";    // the String of a single forward slash
     
     /** ChordBlock / 2
      * Creates a ChordBlock from a name and a duration

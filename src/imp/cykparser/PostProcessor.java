@@ -486,13 +486,14 @@ public class PostProcessor {
     public static boolean diatonicChordCheck(ChordBlock c, Long key, 
             String mode) {
         boolean isInKey = false;
+        ChordBlock cTemp = new ChordBlock(c);
         
         // Adjust for second brick's key
-        c.transpose(OCTAVE - key);
+        cTemp.transpose(OCTAVE - key);
         Long offset = c.getKey();
         
         // Transpose chord down to C
-        c.transpose(OCTAVE - offset);
+        cTemp.transpose(OCTAVE - offset);
         
         ChordSymbol cSym = null;
         
@@ -510,7 +511,6 @@ public class PostProcessor {
         if(cSym != null) {
             cSym = cSym.transpose(offset.intValue());
         }
-        c.transpose(offset);
         
         // Check if cSym is diatonically within key according to mode of second
         // block
@@ -528,8 +528,6 @@ public class PostProcessor {
             }
         }
         
-        // Transpose c back to its original key
-        c.transpose(key);
         return isInKey;
     }
     

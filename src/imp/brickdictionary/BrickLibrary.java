@@ -25,8 +25,6 @@ import imp.cykparser.PostProcessor;
 import imp.data.ChordSymbol;
 import imp.util.ErrorLog;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import polya.*;
 import java.io.*;
 import java.util.ArrayList;
