@@ -2012,7 +2012,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             node = new DefaultMutableTreeNode(name);
             
             if(variants.size() > 1)
-                for( Brick variant : variants.subList(1,variants.size()-1))
+                for( Brick variant : variants)
                     node.add(new DefaultMutableTreeNode(variant.getQualifier()));
             
             category = new DefaultMutableTreeNode(type);

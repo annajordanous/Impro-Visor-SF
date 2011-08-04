@@ -190,6 +190,7 @@ public class Brick extends Block {
      */
     public Brick(Brick brick) {
         super(brick.name, brick.getKey());
+        qualifier = brick.getQualifier();
         subBlocks = new ArrayList<Block>();
         
         // Loop through all the subblocks, making copies of each
@@ -694,10 +695,13 @@ public class Brick extends Block {
      * error printstream
      */
     public void printBrick() {
+        String brickName = this.getName();
+        if (!this.getQualifier().isEmpty())
+            brickName += "(" + this.getQualifier() + ")";
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
         long brickDur = this.getDuration();
         String brickType = this.getType();
-        System.err.println(this.getName() + " " + brickType + " " + brickKey 
+        System.err.println(brickName + " " + brickType + " " + brickKey 
                 + " " + brickDur);
         
         ArrayList<Block> subBlockList = this.getSubBlocks();

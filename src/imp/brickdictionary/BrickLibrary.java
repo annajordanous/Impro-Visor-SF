@@ -202,16 +202,18 @@ public class BrickLibrary {
     public Brick getBrick(String s, long k) {
         if(brickMap.containsKey(s))
         {
-            Brick brick = new Brick(brickMap.get(s).getFirst());
-            brick.transpose((k-brick.getKey() + 12)%12);
-            return brick;
+            LinkedList<Brick> possibleBricks = brickMap.get(s);
+            for (Brick oldBrick : possibleBricks)
+                if (!oldBrick.getType().equals(INVISIBLE)) {
+                    Brick brick = new Brick(oldBrick);
+                    brick.transpose((k-brick.getKey() + 12)%12);
+                    return brick;
+                }
         }
-        else
-        {
-            ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
-                    s, true);
-            return null;
-        }
+        // if no brick is returned
+        ErrorLog.log(ErrorLog.WARNING, "Dictionary does not contain " +
+                s, true);
+        return null;
     }
     
     /** getBrick (with qualifier)
@@ -347,8 +349,12 @@ public class BrickLibrary {
         LinkedList<LinkedList<Brick>> values = new LinkedList();
         for (LinkedList<Brick> brickname : brickMap.values())
         {
-            if(!brickname.getFirst().getType().equals(INVISIBLE))
-                values.add(brickname);
+            LinkedList<Brick> newlist = new LinkedList<Brick>();
+            for (Brick brick : brickname)
+                if (!brick.getType().equals(INVISIBLE))
+                    newlist.add(brick);
+            if (!newlist.isEmpty())
+                values.add(newlist);
         }
         
         return values;
@@ -371,6 +377,8 @@ public class BrickLibrary {
     }
     
     public void exileBrick(Brick brick) {
+        
+        brick.printBrick();
         
         String brickType = " " + brick.getType() + " ";
         String brickDefHead = "Def-Brick " + dashed(brick.getName());
