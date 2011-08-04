@@ -23,7 +23,6 @@ package imp.roadmap;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringReader;
 import javax.swing.tree.*;
@@ -1344,7 +1343,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         String entered = roadMapTextEntry.getText();
         
         Score score = new Score();
-        
+        score.setMetre(getMetre());
         Tokenizer tokenizer = new Tokenizer(new StringReader(entered));
         
         Leadsheet.readLeadSheet(tokenizer, score);
@@ -1746,8 +1745,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     public void copySelection()
     {
-        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
-            
+        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());        
     }
     
     /** dragSelectedBricks <p>
@@ -1761,9 +1759,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         int index = roadMapPanel.getBrickIndexAt(x, y);
         if( draggedBricks.isEmpty() ) {
             saveState("Drag");
-            if( index != -1 ) {
+            roadMapPanel.setRolloverPos(null);
+            if( !roadMapPanel.isSelection(index))
+                roadMapPanel.selectBrick(index);
+            if( roadMapPanel.hasSelection() )
                 draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
-            }
         }
         
         if( !draggedBricks.isEmpty() ) {
@@ -2200,7 +2200,7 @@ public void sendSelectionToNewNotate()
 
     if( auxNotate != null )
       {
-        // What to do here?
+        // TODO What to do here?
         // Need to prevent inconsistency caused by the closing of auxNotate.
         // It will set auxNotate to null.
       }

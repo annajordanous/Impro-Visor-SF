@@ -489,6 +489,8 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
 
     Iterator<imp.brickdictionary.ChordBlock> i = chords.iterator();
 
+    int totalSlots = 0;
+    
     while( i.hasNext() )
       {
         ChordBlock chordBlock = i.next();
@@ -499,9 +501,11 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         if( chord.getRhythmValue() > 0 )
           {
             // Note: 0 duration causes addUnit to fail.
-            int sectionType = chordBlock.getSectionEnd();
-            if( sectionType > Block.NO_END) ;
-                //sectionInfo;
+            totalSlots += chordBlock.getDuration();
+            if( chordBlock.isSectionEnd() ) {
+                System.out.println("Adding section");
+                addSection(roadmap.getStyle(),totalSlots,chordBlock.isPhraseEnd());
+            }
             addChord(chord);
           }
       }

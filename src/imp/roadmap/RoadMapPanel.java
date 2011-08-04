@@ -265,6 +265,12 @@ public class RoadMapPanel extends JPanel {
         placeBricks();
     }
     
+    /** Returns whether the selection contains the index */
+    public boolean isSelection(int ind)
+    {
+        return ind >= selectionStart && ind <= selectionEnd;
+    }
+    
     /** Returns a list of the selected blocks*/
     public ArrayList<Block> getSelection()
     {
@@ -395,11 +401,13 @@ public class RoadMapPanel extends JPanel {
     public void selectBrick(int index)
     {
         deselectBricks();
-        selectionStart = selectionEnd = index;
-        graphicMap.get(index).setSelected(true);
-        drawBrick(index);
-        
-        drawKeyMap();
+        if(index != -1) {
+            selectionStart = selectionEnd = index;
+            graphicMap.get(index).setSelected(true);
+            drawBrick(index);
+
+            drawKeyMap();
+        }
     }
     
     /** Selects all bricks */
@@ -620,10 +628,7 @@ public class RoadMapPanel extends JPanel {
     /** Sets the offset of the playline to the first brick */
     public void setPlayLineOffset()
     {
-        int offset = 0;
-        for(int i = 0; i < selectionStart; i++)
-            offset += roadMap.getBlock(i).getDuration();
-        playLineOffset = offset;
+        playLineOffset = getSlotFromIndex(selectionStart);
     }
     
     /** Sets the playline to the given slot */
@@ -632,6 +637,14 @@ public class RoadMapPanel extends JPanel {
         int[] wrap = findLineAndSlot(slot + playLineOffset);
         playLineSlot = wrap[0];
         playLineLine = wrap[1];
+    }
+    
+    public int getSlotFromIndex(int ind)
+    {
+        int slot = 0;
+        for(int i = 0; i < ind; i++)
+            slot += roadMap.getBlock(i).getDuration();
+        return slot;
     }
     
     /** Returns the position of the given slot with line breaks
@@ -686,7 +699,7 @@ public class RoadMapPanel extends JPanel {
        drawKeyMap();
        if(view.isPlaying()) {
            drawPlaySection();
-           setPlayLine(view.getMidiSlot()/settings.slotsPerBeat * settings.slotsPerBeat);
+           setPlayLine(view.getMidiSlot() - view.getMidiSlot()%(settings.slotsPerBeat/2));
            drawPlayLine();
        }
        drawRollover();

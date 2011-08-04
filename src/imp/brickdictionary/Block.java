@@ -211,6 +211,13 @@ public class Block {
         return endValue != NO_END;
     }
     
+    /** Returns true if the block is a phrase end.
+     * @return 
+     */
+    public boolean isPhraseEnd() {
+        return endValue == PHRASE_END;
+    }
+    
     /** getSectionEnd
      * Gets the kind of ending the Block has (NO_END, SECTION_END or PHRASE_END)
      * @return an int representing one of the above values
