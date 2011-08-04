@@ -7475,7 +7475,7 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
-        createRoadMapCheckBox.setText("Create road map for leadsheet opened\n");
+        createRoadMapCheckBox.setText("Create Roadmap for Open Leadsheet ");
         createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
         createRoadMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8215,7 +8215,7 @@ public class Notate
         roadmapMenu.setToolTipText("Options for creating a roadmap of the chord progression.");
 
         emptyRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.CTRL_MASK));
-        emptyRoadMapMI.setText("Empty Road Map\n");
+        emptyRoadMapMI.setText("Empty Roadmap ");
         emptyRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EmptyRoadMapAction(evt);
@@ -8224,7 +8224,7 @@ public class Notate
         roadmapMenu.add(emptyRoadMapMI);
 
         roadMapThisMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, 0));
-        roadMapThisMI.setText("Road Map this");
+        roadMapThisMI.setText("Roadmap this");
         roadMapThisMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roadMapThisMIaction(evt);
@@ -8233,7 +8233,7 @@ public class Notate
         roadmapMenu.add(roadMapThisMI);
 
         roadMapThisAnalyze.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SEMICOLON, java.awt.event.InputEvent.SHIFT_MASK));
-        roadMapThisAnalyze.setText("Road Map this & Analyze");
+        roadMapThisAnalyze.setText("Roadmap this & Analyze");
         roadMapThisAnalyze.setToolTipText("Open road map and analyze entire chorus.\n");
         roadMapThisAnalyze.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -86,8 +86,10 @@ public class BrickLibrary {
     public void addBrickDefinition(Brick brick)
     {
         // add the brick to the current BrickLibrary
-        addBrick(brick);
-        
+        boolean added = addBrick(brick);
+        if (!added)
+            return;
+            
         // make a properly-formatted brick definition
         Polylist defn = brick.toBrickDefinition();
         String defnString = defn.toString();
@@ -112,7 +114,7 @@ public class BrickLibrary {
      * Adds a brick to the library's brickMap
      * @param brick, a created Brick
      */
-    public void addBrick(Brick brick) {
+    public boolean addBrick(Brick brick) {
         if(brickMap.containsKey(brick.getName()))
         {
             // first, we check if the brick is a duplicate or just a brick with
@@ -126,8 +128,9 @@ public class BrickLibrary {
                 if (sameStem.getQualifier().equals(brick.getQualifier()))
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Dictionary already contains " +
-                    brick.getName() + "(" + brick.getQualifier() + ")", true);
-                    break;
+                    brick.getName() + "(" + brick.getQualifier() + "): will not"
+                            + " add to dictionary", true);
+                    return false;
                 }
             }
             sameStemList.add(brick);
@@ -191,6 +194,8 @@ public class BrickLibrary {
                     dropbackType, dropbackBlocks, dropbackMode);
             addBrick(dropback);
         }
+        
+        return true;
     }
     
     /** getBrick (definition)

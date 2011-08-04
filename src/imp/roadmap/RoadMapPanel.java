@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.util.ArrayList;
 import imp.brickdictionary.*;
+import imp.util.ErrorLog;
 import java.util.Random;
 
 
@@ -535,15 +536,17 @@ public class RoadMapPanel extends JPanel {
      * @param type
      * @return the new brick
      */
-    public Brick makeBrickFromSelection(String name, long key, String mode, String type)
+    public Brick makeBrickFromSelection(String name, String variant, long key, 
+                                        String mode, String type)
     {
-        if(selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
+        if(selectionStart != -1 && selectionEnd != -1) {
             ArrayList<Block> blocks = getSelection();
             ArrayList<Block> newBlock = new ArrayList();
-            newBlock.add(new Brick(name, key, type, blocks, mode));
+            newBlock.add(new Brick(name, variant, key, type, blocks, mode));
             replaceSelection(newBlock);
             return (Brick)newBlock.get(0);
         }
+        ErrorLog.log(ErrorLog.SEVERE, "Cannot create new brick from selection");
         return null;
     }
     
