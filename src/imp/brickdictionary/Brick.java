@@ -359,7 +359,7 @@ public class Brick extends Block {
                     pList = pList.rest();
                     String brickQualifier = "";
                     if (pList.first() instanceof Polylist) {
-                        brickQualifier = ((Polylist)pList.first()).first().toString();
+                        brickQualifier = ((Polylist)pList.first()).toStringSansParens();
                         pList = pList.rest();
                     }
                     String brickKeyString = pList.first().toString();
@@ -441,12 +441,13 @@ public class Brick extends Block {
                 // the necessary new brick.
                 if(blockType.equals("Brick"))
                 {
+                    // determine the information about the name, qualifier, etc.
                     String subBrickName = BrickLibrary.dashless(pList.first().toString());
                     pList = pList.rest();
                     
                     String subBrickQualifier = "";
                     if (pList.first() instanceof Polylist) {
-                        subBrickQualifier = ((Polylist)pList.first()).first().toString();
+                        subBrickQualifier = ((Polylist)pList.first()).toStringSansParens();
                         pList = pList.rest();
                     }
                     
@@ -454,12 +455,17 @@ public class Brick extends Block {
                     pList = pList.rest();
                     Object durObj = pList.first();
                     pList = pList.rest();
+                    
+                    // when all data members are initialized, find the correct 
+                    // brick scaled appropriately
                     if(durObj instanceof Long)
                     {
                         int dur = Arith.long2int((Long)durObj);
                         long subBrickKeyNum = 
                                 BrickLibrary.keyNameToNum(subBrickKeyString);
                         Brick subBrick = null;
+                        
+                        // if the subbrick already exists in the dictionary
                         if (bricks.hasBrick(subBrickName)) {
                             if (!subBrickQualifier.equals(""))
                                 subBrick = bricks.getBrick(subBrickName, 
@@ -470,7 +476,14 @@ public class Brick extends Block {
                                 subBrick = bricks.getBrick(subBrickName, 
                                                            subBrickKeyNum, dur);
                         }
+                        
+                                
+                        // if the subbrick has yet to be initialized in the 
+                        // dictionary, make one to use for now
                         else if (polymap.containsKey(subBrickName)) {
+                            
+                            // find the appropriate definition to use to assemble
+                            // the subbrick
                             LinkedList<Polylist> tokenList = polymap.get(subBrickName);
                             Polylist tokens = null;
                             if (subBrickQualifier.equals("")) {
@@ -478,29 +491,32 @@ public class Brick extends Block {
                             }
                             else {
                                 for (Polylist p : tokenList) {
-                                    Object qualifier = p.rest().rest().first();
-                                    if (qualifier instanceof Polylist &&
-                                        ((Polylist)qualifier).first().toString()
+                                    Object variant = p.rest().rest().first();
+                                    if (variant instanceof Polylist &&
+                                        ((Polylist)variant).toStringSansParens()
                                             .equals(subBrickQualifier)) {
                                         tokens = p;
                                         break;
                                     }
                                 }
-                                if (tokens.equals(null))
+                                if (tokens == null)
                                 {
                                     ErrorLog.log(ErrorLog.SEVERE, 
                                             "Dictionary does not contain " +
-                                            subBrickName + qualifier.toString());
+                                            subBrickName + 
+                                            subBrickQualifier.toString());
                                 }
                             }
-                                
+                            
+                            
+                            // find the elements of the subbrick
                             String brickName = BrickLibrary.dashless(subBrickName);
                             tokens = tokens.rest();
                             tokens = tokens.rest();
                             
                             String brickQualifier = "";
                             if (tokens.first() instanceof Polylist) {
-                                brickQualifier = ((Polylist)tokens.first()).first().toString();
+                                brickQualifier = ((Polylist)tokens.first()).toStringSansParens();
                                 tokens = tokens.rest();
                             }
                             String brickMode = tokens.first().toString();
@@ -511,7 +527,9 @@ public class Brick extends Block {
                             tokens = tokens.rest();
                             long brickKeyNum = 
                                     BrickLibrary.keyNameToNum(brickKeyString);
-
+                            
+                            
+                            // construct the subbrick
                             subBrick = new Brick(brickName, brickQualifier, brickKeyNum,
                                 brickType, tokens, bricks, brickMode, polymap);
                             subBrick.transpose(

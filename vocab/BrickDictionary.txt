@@ -264,25 +264,25 @@
 	(Brick Straight-Approach G 2)
 	(Brick Straight-Approach C 2))
 
-(Def-Brick Dominant-Cycle(2) Major Approach C
+(Def-Brick Dominant-Cycle(2 chords) Major Approach C
         (Chord D7 1)
         (Chord G7 1))
 
-(Def-Brick Dominant-Cycle(3) Major Approach C
+(Def-Brick Dominant-Cycle(3 chords) Major Approach C
         (Chord A7 1)
-        (Brick Dominant-Cycle(2) C 2))
+        (Brick Dominant-Cycle(2 chords) C 2))
 
-(Def-Brick Dominant-Cycle(4) Major Approach C
+(Def-Brick Dominant-Cycle(4 chords) Major Approach C
         (Chord E7 1)
-        (Brick Dominant-Cycle(3) C 3))
+        (Brick Dominant-Cycle(3 chords) C 3))
 
-(Def-Brick Dominant-Cycle(5) Major Approach C
+(Def-Brick Dominant-Cycle(5 chords) Major Approach C
         (Chord B7 1)
-        (Brick Dominant-Cycle(4) C 4))
+        (Brick Dominant-Cycle(4 chords) C 4))
 
-(Def-Brick Dominant-Cycle(6) Major Approach C
+(Def-Brick Dominant-Cycle(6 chords) Major Approach C
         (Chord F#7 1)
-        (Brick Dominant-Cycle(5) C 5))
+        (Brick Dominant-Cycle(5 chords) C 5))
 
 (Def-Brick Donna-Lee-Opening-Start Major Opening C
 	(Chord CM7 2)

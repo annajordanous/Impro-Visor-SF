@@ -381,10 +381,15 @@ public class BrickLibrary {
         this.brickMap.remove(brickName);
     }
     
+    /** exileBrick
+     * Takes a Brick out of the visible brick library
+     * @param brick, the brick to remove
+     */
     public void exileBrick(Brick brick) {
         
         brick.printBrick();
         
+        // define the search term (the name) for the given brick
         String brickType = " " + brick.getType() + " ";
         String brickDefHead = "Def-Brick " + dashed(brick.getName());
         String qualifier = brick.getQualifier();
@@ -392,6 +397,7 @@ public class BrickLibrary {
             brickDefHead += "(" + qualifier + ")";
         brickDefHead += " ";
         
+        // open the file and read in its contents
         try {
             File dictionary = new File(DICTIONARY_FILE);
             FileReader in = new FileReader(dictionary);
@@ -402,6 +408,8 @@ public class BrickLibrary {
             
             while(line != null)
             {
+                // Exiling a brick is just taking the type and changing it
+                // to be invisible
                 if (line.contains(brickDefHead))
                 {
                     line = line.replaceFirst(brickType, " " + INVISIBLE + " ");
@@ -411,6 +419,7 @@ public class BrickLibrary {
                 line = reader.readLine();
             }
             
+            // write out the modified dictionary
             FileWriter writer = new FileWriter(DICTIONARY_FILE);
             writer.write(newfile);
             writer.close();
@@ -729,7 +738,7 @@ public class BrickLibrary {
                 String brickQualifier = "";
                 if (contents.first() instanceof Polylist)
                 {
-                    brickQualifier = ((Polylist)contents.first()).first().toString();
+                    brickQualifier = ((Polylist)contents.first()).toStringSansParens();
                     contents = contents.rest();
                 }
 
