@@ -298,9 +298,9 @@
 	(Chord CM7 1)
 	(Brick GenDom D 1))
 
-(Def-Brick Dropback(var1) Major Dropback C
-	(Chord CM7 1)
-	(Chord Ebo 1))
+//(Def-Brick Dropback(var1) Major Dropback C
+//	(Chord CM7 1)
+//	(Chord Ebo 1))
 
 (Def-Brick Dropback(var2) Major Dropback C
 	(Chord CM7 1)
@@ -512,9 +512,9 @@
         (Chord Dm7/G 1)
         (Chord G7 1))
 
-(Def-Brick POT(short) Major Turnaround C
-        (Chord C 2)
-        (Brick Straight-Approach C 2))
+//(Def-Brick POT(short) Major Turnaround C
+//        (Chord C 2)
+//        (Brick Straight-Approach C 2))
 
 (Def-Brick POT+Cadence Major Turnaround C
 	(Brick POT C 4)
@@ -529,9 +529,9 @@
         (Chord D7 1)
         (Chord G7 1))
 
-(Def-Brick Minor-POT(short) Minor Turnaround C
-        (Chord Cm 2)
-        (Brick Sad-Approach C 2))
+//(Def-Brick Minor-POT(short) Minor Turnaround C
+//        (Chord Cm 2)
+//        (Brick Sad-Approach C 2))
 
 (Def-Brick Minor-POT(dominant) Minor Turnaround C
         (Chord Cm 1)
@@ -654,6 +654,10 @@
 	(Chord Ebdim 1))
 
 (Def-Brick Raindrop(var2) Major Misc C
+	(Chord C 1)
+	(Chord Ebdim 1))
+
+(Def-Brick Raindrop(var3) Major Misc C
 	(Chord C 1)
 	(Chord Ebdim 1))
 
@@ -1006,9 +1010,9 @@
         (Brick Yardbird-Approach C 2)
 	(Chord CM7 2))
 
-(Def-Brick Yardbird-Turnaround Major Turnaround C
-        (Chord CM7 2)
-	(Brick Straight-Approach Eb 2))
+//(Def-Brick Yardbird-Turnaround Major Turnaround C
+//        (Chord CM7 2)
+//	(Brick Straight-Approach Eb 2))
 
 // On-off (replaced by XS)
 
