@@ -266,7 +266,7 @@ public class RoadMapPanel extends JPanel {
         placeBricks();
     }
     
-    /** Returns whether the selection contains the index */
+    /** Returns whether the selection contains the brickInd */
     protected boolean isSelection(int ind)
     {
         return ind >= selectionStart && ind <= selectionEnd;
@@ -300,8 +300,8 @@ public class RoadMapPanel extends JPanel {
         return new ArrayList();
     }
     
-    /** Returns the GraphicBrick at the specified index
-     * @param index
+    /** Returns the GraphicBrick at the specified brickInd
+     * @param brickInd
      * @return 
      */
     protected GraphicBrick getBrick(int index)
@@ -354,8 +354,8 @@ public class RoadMapPanel extends JPanel {
         drawKeyMap();
     }
     
-    /** Selects the brick at the specified index with proper selection behavior.
-     * <p> If the index is outside of the current selection, extend the selection.
+    /** Selects the brick at the specified brickInd with proper selection behavior.
+     * <p> If the brickInd is outside of the current selection, extend the selection.
      * If not, just select that brick.
      */
     protected void selectBricks(int index)
@@ -398,7 +398,7 @@ public class RoadMapPanel extends JPanel {
         drawKeyMap();
     }
     
-    /** Selects the brick at the specified index. Deselects all other bricks. */
+    /** Selects the brick at the specified brickInd. Deselects all other bricks. */
     protected void selectBrick(int index)
     {
         deselectBricks();
@@ -485,8 +485,8 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Delete all bricks within the two indices
-     * @param start start index (inclusive)
-     * @param end end index (exclusive)
+     * @param start start brickInd (inclusive)
+     * @param end end brickInd (exclusive)
      */
     protected void deleteRange(int start, int end)
     {
@@ -550,7 +550,7 @@ public class RoadMapPanel extends JPanel {
         return null;
     }
     
-    /** Returns the index of the brick containing the point(x,y)*/
+    /** Returns the brickInd of the brick containing the point(x,y)*/
     protected int getBrickIndexAt(int x, int y)
     {
         int index = 0;
@@ -562,7 +562,7 @@ public class RoadMapPanel extends JPanel {
         return -1;
     }
     
-    /** Returns the index in the roadmap containing the point (x,y) */
+    /** Returns the brickInd in the roadmap containing the point (x,y) */
     protected int getIndexAt(int x, int y)
     {
         int index = 0;
@@ -616,7 +616,7 @@ public class RoadMapPanel extends JPanel {
         insertLineIndex = getIndexAt(x,y);
     }
     
-    /** Sets the insertion line to the desired index */
+    /** Sets the insertion line to the desired brickInd */
     protected void setInsertLine(int index)
     {
         insertLineIndex = index;
@@ -799,7 +799,7 @@ public class RoadMapPanel extends JPanel {
         
     }
     
-    /** Draws the brick at the given index */
+    /** Draws the brick at the given brickInd */
     private void drawBrick(int ind)
     {
         graphicMap.get(ind).draw(buffer.getGraphics());
@@ -987,10 +987,14 @@ public class RoadMapPanel extends JPanel {
         if(rolloverPos != null) {
             int x = rolloverPos.x;
             int y = rolloverPos.y;
-            int index = getBrickIndexAt(x,y);
+            int brickInd = getBrickIndexAt(x,y);
             
-            if(index != -1) {
-                String text = roadMap.getBlock(index).getName();
+            if(brickInd != -1) {
+                int chordInd = graphicMap.get(brickInd).getChordAt(x, y);
+                String text = roadMap.getBlock(brickInd).getName();
+                
+                if(chordInd != -1)
+                    text = roadMap.getBlock(brickInd).getChord(chordInd).getName();
 
                 Graphics g = buffer.getGraphics();
                 FontMetrics metrics = g.getFontMetrics();

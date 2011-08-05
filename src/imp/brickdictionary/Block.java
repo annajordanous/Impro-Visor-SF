@@ -282,6 +282,15 @@ public class Block {
         return Polylist.list("block");
       }
     
+    /** Returns the chord at the specified index within the brick.
+     * @param index
+     * @return 
+     */
+    public ChordBlock getChord(int index)
+    {
+        return flattenBlock().get(index);
+    }
+    
     // end of class Block
 
 }

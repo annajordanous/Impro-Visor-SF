@@ -65,7 +65,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private final int previewBufferHeight = 200;
 
     /** Buffer for the roadmap panel */
-    private Image bufferRoadMap;    
+    private Image bufferRoadMap;  
     /** Width of the roadmap buffer */
     private final int roadMapBufferWidth  = 1920;
     /** Height of the roadmap buffer */
@@ -146,6 +146,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         setRoadMapTitle(notate.getTitle());
         
+        brickLibraryFrame.setSize(brickLibraryFrame.getPreferredSize());
+        brickLibraryFrame.setVisible(true);
+        
         WindowRegistry.registerWindow(this);
     }
 
@@ -188,6 +191,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogTempoField = new imp.roadmap.IntegerField();
         prefDialogMetreTopField = new imp.roadmap.IntegerField();
         prefDialogMetreBottomField = new imp.roadmap.IntegerField();
+        brickLibraryFrame = new javax.swing.JFrame();
+        keyComboBox = new javax.swing.JComboBox();
+        libraryScrollPane = new javax.swing.JScrollPane();
+        libraryTree = new javax.swing.JTree();
+        deleteButton = new javax.swing.JButton();
+        durationComboBox = new javax.swing.JComboBox(durationChoices);
         toolBar = new javax.swing.JToolBar();
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
@@ -202,13 +211,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         featureWidthSlider = new javax.swing.JSlider();
         roadMapTextEntry = new javax.swing.JTextField();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
-        libraryTabbedPane = new javax.swing.JTabbedPane();
-        libraryScrollPane = new javax.swing.JScrollPane();
-        libraryTree = new javax.swing.JTree();
-        durationComboBox = new javax.swing.JComboBox(durationChoices);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
-        keyComboBox = new javax.swing.JComboBox();
-        deleteButton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
@@ -241,6 +244,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
@@ -265,14 +270,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         dialogNameField.setText("New Brick"); // NOI18N
         dialogNameField.setName("dialogNameField"); // NOI18N
-        dialogNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogNameFieldActionPerformed(evt);
-            }
-        });
-        dialogNameField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                textChanged(evt);
+        dialogNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                dialogNameFieldKeyReleased(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -338,13 +338,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         addBrickDialog.getContentPane().add(dialogVariantLabel, gridBagConstraints);
 
+        dialogVariantField.setEditable(false);
         dialogVariantField.setToolTipText("Enter a qualifying name of your brick (optional for uniquely-defined bricks)"); // NOI18N
         dialogVariantField.setName("dialogVariantField"); // NOI18N
-        dialogVariantField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogVariantFieldActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -494,6 +490,103 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.add(prefDialogMetreBottomField, gridBagConstraints);
 
         preferencesDialog.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        brickLibraryFrame.setTitle("Brick Library"); // NOI18N
+        brickLibraryFrame.setMinimumSize(new java.awt.Dimension(200, 200));
+        brickLibraryFrame.setName("brickLibraryFrame"); // NOI18N
+        brickLibraryFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                brickLibraryFrameWindowClosing(evt);
+            }
+        });
+        brickLibraryFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
+        keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root"));
+        keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
+        keyComboBox.setName("keyComboBox"); // NOI18N
+        keyComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
+        keyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
+        brickLibraryFrame.getContentPane().add(keyComboBox, gridBagConstraints);
+
+        libraryScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        libraryScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        libraryScrollPane.setName("libraryScrollPane"); // NOI18N
+
+        libraryTree.setModel(libraryTreeModel);
+        libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
+        libraryTree.setMaximumSize(new java.awt.Dimension(400, 3000));
+        libraryTree.setMinimumSize(new java.awt.Dimension(400, 2000));
+        libraryTree.setName("Bricks"); // NOI18N
+        libraryTree.setPreferredSize(new java.awt.Dimension(400, 2000));
+        libraryTree.setSize(new java.awt.Dimension(400, 2000));
+        libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        libraryTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                libraryTreeMouseClicked(evt);
+            }
+        });
+        libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                libraryTreeSelected(evt);
+            }
+        });
+        libraryScrollPane.setViewportView(libraryTree);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        brickLibraryFrame.getContentPane().add(libraryScrollPane, gridBagConstraints);
+
+        deleteButton.setText("Delete Selected Library Brick"); // NOI18N
+        deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        deleteButton.setMaximumSize(new java.awt.Dimension(182, 30));
+        deleteButton.setMinimumSize(new java.awt.Dimension(182, 30));
+        deleteButton.setName("deleteButton"); // NOI18N
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        brickLibraryFrame.getContentPane().add(deleteButton, gridBagConstraints);
+
+        durationComboBox.setSelectedItem(2);
+        durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
+        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
+        durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
+        durationComboBox.setName("durationComboBox"); // NOI18N
+        durationComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
+        durationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                durationComboBoxdurationChosen(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.02;
+        brickLibraryFrame.getContentPane().add(durationComboBox, gridBagConstraints);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Road Map\n"); // NOI18N
@@ -690,7 +783,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks."); // NOI18N
         featureWidthSlider.setValue(settings.measureLength);
         featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder("Feature Width"));
-        featureWidthSlider.setMaximumSize(new java.awt.Dimension(32767, 40));
+        featureWidthSlider.setMaximumSize(new java.awt.Dimension(300, 40));
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(50, 40));
         featureWidthSlider.setName("featureWidthSlider"); // NOI18N
         featureWidthSlider.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -765,66 +858,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.95;
         getContentPane().add(roadMapScrollPane, gridBagConstraints);
 
-        libraryTabbedPane.setMinimumSize(new java.awt.Dimension(300, 200));
-        libraryTabbedPane.setName("libraryTabbedPane"); // NOI18N
-        libraryTabbedPane.setPreferredSize(new java.awt.Dimension(300, 500));
-
-        libraryScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        libraryScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        libraryScrollPane.setName("libraryScrollPane"); // NOI18N
-
-        libraryTree.setModel(libraryTreeModel);
-        libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
-        libraryTree.setMaximumSize(new java.awt.Dimension(400, 3000));
-        libraryTree.setMinimumSize(new java.awt.Dimension(400, 2000));
-        libraryTree.setName("Bricks"); // NOI18N
-        libraryTree.setPreferredSize(new java.awt.Dimension(400, 2000));
-        libraryTree.setSize(new java.awt.Dimension(400, 2000));
-        libraryTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        libraryTree.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                libraryTreeMouseClicked(evt);
-            }
-        });
-        libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                libraryTreeSelected(evt);
-            }
-        });
-        libraryScrollPane.setViewportView(libraryTree);
-
-        libraryTabbedPane.addTab("Brick Dictionary", null, libraryScrollPane, "Dictionary of available bricks.\n");
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.8;
-        getContentPane().add(libraryTabbedPane, gridBagConstraints);
-
-        durationComboBox.setSelectedItem(2);
-        durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
-        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
-        durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
-        durationComboBox.setName("durationComboBox"); // NOI18N
-        durationComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
-        durationComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                durationComboBoxdurationChosen(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.02;
-        getContentPane().add(durationComboBox, gridBagConstraints);
-
         previewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick Preview\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
@@ -855,40 +888,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.1;
         getContentPane().add(previewScrollPane, gridBagConstraints);
 
-        keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
-        keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root"));
-        keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
-        keyComboBox.setName("keyComboBox"); // NOI18N
-        keyComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
-        keyComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keyComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.02;
-        getContentPane().add(keyComboBox, gridBagConstraints);
-
-        deleteButton.setText("Delete Selected Library Brick"); // NOI18N
-        deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        deleteButton.setMaximumSize(new java.awt.Dimension(182, 30));
-        deleteButton.setMinimumSize(new java.awt.Dimension(182, 30));
-        deleteButton.setName("deleteButton"); // NOI18N
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        getContentPane().add(deleteButton, gridBagConstraints);
-
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
         fileMenu.setText("File"); // NOI18N
@@ -908,7 +907,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         fileMenu.add(openLeadsheetMI);
 
-        preferencesMenuItem.setText("Preferences"); // NOI18N
+        preferencesMenuItem.setText("Roadmap Information"); // NOI18N
         preferencesMenuItem.setName("preferencesMenuItem"); // NOI18N
         preferencesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1153,6 +1152,19 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         windowMenu.add(cascadeMI);
 
+        jSeparator5.setName("jSeparator5"); // NOI18N
+        windowMenu.add(jSeparator5);
+
+        brickLibraryMenuItem.setSelected(true);
+        brickLibraryMenuItem.setText("Brick Library"); // NOI18N
+        brickLibraryMenuItem.setName("brickLibraryMenuItem"); // NOI18N
+        brickLibraryMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brickLibraryMenuItemActionPerformed(evt);
+            }
+        });
+        windowMenu.add(brickLibraryMenuItem);
+
         windowMenuSeparator.setName("windowMenuSeparator"); // NOI18N
         windowMenu.add(windowMenuSeparator);
 
@@ -1257,6 +1269,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
         dialogNameField.setText("New Brick");
+        dialogVariantField.setText("");
+        dialogTypeComboBox.setSelectedIndex(0);
         dialogKeyComboBox.setSelectedIndex(0);
         addBrickDialog.setVisible(true);
 }//GEN-LAST:event_newBrickButtonPressed
@@ -1272,6 +1286,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_exitMIhandler
 
     private void dialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogAccepted
+        //TODO: maybe put warning/don't close window when brick name is taken
         addBrickDialog.setVisible(false);
         makeBrickFromSelection();
     }//GEN-LAST:event_dialogAccepted
@@ -1425,9 +1440,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         windowMenu.add(windowMenuSeparator);
         
+        windowMenu.add(brickLibraryMenuItem);
+        
+        windowMenu.add(jSeparator5);
+        
         for(WindowMenuItem w : WindowRegistry.getWindows()) {
             
-            windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+            windowMenu.add(w.getMI(this));       // these are static, and calling getMI updates the name on them too in case the window title changed
             
         }
         
@@ -1499,17 +1518,23 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
     }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
 
-    private void dialogNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogNameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dialogNameFieldActionPerformed
+    private void brickLibraryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickLibraryMenuItemActionPerformed
+        brickLibraryFrame.setVisible(brickLibraryMenuItem.isSelected());
+    }//GEN-LAST:event_brickLibraryMenuItemActionPerformed
 
-    private void textChanged(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_textChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textChanged
+    private void brickLibraryFrameWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_brickLibraryFrameWindowClosing
+        brickLibraryMenuItem.setSelected(false);
+    }//GEN-LAST:event_brickLibraryFrameWindowClosing
 
-    private void dialogVariantFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogVariantFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dialogVariantFieldActionPerformed
+    private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
+        if(brickLibrary.hasBrick(dialogNameField.getText())) {
+            System.err.println(dialogNameField.getText());
+            dialogVariantField.setEditable(true);
+        } else {
+            dialogVariantField.setEditable(false);
+            //dialogVariantField.setText("");
+        }
+    }//GEN-LAST:event_dialogNameFieldKeyReleased
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -1741,7 +1766,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         saveState("Merge");
         long key = BrickLibrary.keyNameToNum((String) dialogKeyComboBox.getSelectedItem());
         String name = dialogNameField.getText();
-        String variant = dialogVariantField.getText();
+        
+        String variant = "";
+        if(brickLibrary.hasBrick(name))
+            variant = dialogVariantField.getText();
+        
         String mode = (String)dialogModeComboBox.getSelectedItem();
         String type = (String)dialogTypeComboBox.getSelectedItem();
         Brick newBrick = roadMapPanel.makeBrickFromSelection(name, variant, key,
@@ -2083,6 +2112,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem appendToNewLeadsheetMI;
     private javax.swing.JButton breakButton;
     private javax.swing.JMenuItem breakMenuItem;
+    private javax.swing.JFrame brickLibraryFrame;
+    private javax.swing.JCheckBoxMenuItem brickLibraryMenuItem;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JDialog chordChangeDialog;
     private javax.swing.JButton chordDialogAcceptButton;
@@ -2118,10 +2149,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JComboBox keyComboBox;
     private javax.swing.JMenu leadsheetMenu;
     private javax.swing.JScrollPane libraryScrollPane;
-    private javax.swing.JTabbedPane libraryTabbedPane;
     private javax.swing.JTree libraryTree;
     private javax.swing.JToggleButton loopToggleButton;
     private javax.swing.JButton newBrickButton;
