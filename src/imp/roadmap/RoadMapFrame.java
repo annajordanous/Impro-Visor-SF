@@ -43,74 +43,74 @@ import imp.util.MidiPlayListener;
 import polya.Tokenizer;
 
 
-/**
- *
+/** The main roadmap window. This class deals with user interaction as well as
+ * interaction with other parts of improvisor.
  * @author August Toman-Yih
  */
 
 public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener {
     
-    /**
-     * Communication with leadsheet and score is done through Notate frame.
-     */
-    
+    /** Communication with leadsheet and score is done through Notate frame. */
     private Notate notate = null;
     
-    /**
-     * auxNotate is a separate notate window for converting the roadmap
-     * to a leadsheet.
-     */
-    
+    /** auxNotate is a separate notate window for converting the roadmap
+     * to a leadsheet. */
     private Notate auxNotate = null;;
     
+    /** Buffer for the preview panel  */
     private Image bufferPreviewPanel;
-    private Image bufferRoadMap;
+    /** Width of the preview buffer */
+    private final int previewBufferWidth  = 1024;
+    /** Height of the preview buffer */
+    private final int previewBufferHeight = 200;
+
+    /** Buffer for the roadmap panel */
+    private Image bufferRoadMap;    
+    /** Width of the roadmap buffer */
+    private final int roadMapBufferWidth  = 1920;
+    /** Height of the roadmap buffer */
+    private final int roadMapBufferHeight = 1920;
     
+    /** Panel for previewing bricks from the library */
     private PreviewPanel previewPanel;
-    
+    /** Panel where the roadmap is drawn */
     private RoadMapPanel roadMapPanel;
-    
+    /** Library of available bricks */
     private BrickLibrary brickLibrary;
-    
+    /** Parser for chord analysis */
     private CYKParser cykParser = new CYKParser();
-    
+    /** When bricks are dragged, they are removed from the roadmap and store here */
     private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
-    
+    /** Stores copied bricks */
     private ArrayList<Block> clipboard = new ArrayList();
-    
+    /** Choices in the duration combobox */
     private Object[] durationChoices = {8,7,6,5,4,3,2,1};
-    
+    /** Combo box model for choosing styles */
     private Notate.StyleComboBoxModel styleComboBoxModel = new Notate.StyleComboBoxModel();
-    
+    /** Default width of the roadmap frame */
     private int RMframeWidth = 1250;
-    
-    private int bufferWidth  = 1024;
-    private int bufferHeight = 200;
-    
-    private int RMbufferWidth  = 1920;
-    private int RMbufferHeight = 1920;
-   
+    /** Playback status */
     private MidiPlayListener.Status isPlaying = MidiPlayListener.Status.STOPPED;
-    
+    /** This timer provides updates to the roadmap panel during playback */
     private javax.swing.Timer playTimer;
-    
+    /** Tree used to store the brick library */
     private DefaultTreeModel libraryTreeModel;
-    
+    /** Graphical settings are stored here */
     private RoadMapSettings settings = new RoadMapSettings();
-    
+    /** Actions that can be undone */
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
+    /** Actions that can be redone */
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
-    
+    /** Prefix on the frame title */
     private static String roadMapTitlePrefix = "RoadMap: ";
     
-    
-    
-    public String roadMapTitle = "Untitled Roadmap";
-    
+    /** Title of this piece */
+    public String roadMapTitle = "Untitled";
+    /** Style of this piece */
     public Style style = Advisor.getStyle("swing");
-    
+    /** Tempo of this piece */
     public int tempo = 120;
-    
+    /** Time signature of this piece */
     public int[] metre = {4,4};
     
     
@@ -125,7 +125,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapPanel = new RoadMapPanel(this);
         brickLibrary = new BrickLibrary();
         
-         try {
+        try {
             brickLibrary.processDictionary();
         } catch (IOException e) {
             ErrorLog.log(ErrorLog.FATAL, "Error opening brick dictionary");
@@ -147,10 +147,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setRoadMapTitle(notate.getTitle());
         
         WindowRegistry.registerWindow(this);
-        
-       
-        //roadMapScrollPane.setViewportView(roadMapPanel);
-        //roadMapScrollPane.revalidate();
     }
 
     /** This method is called from within the constructor to
@@ -716,11 +712,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setName("roadMapTextEntry"); // NOI18N
-        roadMapTextEntry.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roadMapTextEntryActionPerformed(evt);
-            }
-        });
         roadMapTextEntry.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 textualEntryKeyPressed(evt);
@@ -1209,9 +1200,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         int y = evt.getY()+yOffset;
         int index = roadMapPanel.getBrickIndexAt(x,y);
         if(evt.getButton() == evt.BUTTON1) {
-
-            //System.out.println("Clicked brick "+index);
-
             if(index != -1) {
                 int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
                 if(evt.isShiftDown())
@@ -1222,7 +1210,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                     chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
                     chordChangeDialog.setVisible(true);
                 } else if( roadMapPanel.getBrick(index).isSelected() && jndex != -1) {
-                    //System.out.println("Selected brick clicked");
                     selectChord(index,jndex);
                 } else
                     selectBrick(index);
@@ -1364,39 +1351,30 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
      * Add chords in leadsheet notation (with bar lines, etc.) from textual Entry
      * @param evt 
      */
-    
     private void textualEntryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textualEntryKeyPressed
+        if( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+            saveState("TextEntry");
 
-      if( evt.getKeyCode() == KeyEvent.VK_ENTER )
-        {
-        saveState("TextEntry");
-        
-        String entered = roadMapTextEntry.getText();
-        
-        Score score = new Score();
-        score.setMetre(getMetre());
-        Tokenizer tokenizer = new Tokenizer(new StringReader(entered));
-        
-        Leadsheet.readLeadSheet(tokenizer, score);
-        
-        if( score.getPart(0).size() > 0 )
-          {
-            ErrorLog.log(ErrorLog.WARNING, "Melody notes entered with chord part will be ignored.");
-          }
-        
-        roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true); 
-        roadMapPanel.placeBricks();
-        activateButtons();
-        
-        // restartPlayingSelection();
-                 
-        this.requestFocus();
+            String entered = roadMapTextEntry.getText();
+
+            if( !entered.isEmpty() ){
+                Score score = new Score();
+                score.setMetre(getMetre());
+                Tokenizer tokenizer = new Tokenizer(new StringReader(entered));
+
+                Leadsheet.readLeadSheet(tokenizer, score);
+
+                if( score.getPart(0).size() > 0 )
+                    ErrorLog.log(ErrorLog.WARNING, "Melody notes entered with chord part will be ignored.");
+
+            roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true); 
+            roadMapPanel.placeBricks();
+            activateButtons();
+
+            this.requestFocus();
+            }
         }
     }//GEN-LAST:event_textualEntryKeyPressed
-
-    private void roadMapTextEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roadMapTextEntryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roadMapTextEntryActionPerformed
 
     private void chordDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogAcceptButtonActionPerformed
         String name = chordDialogNameField.getText();
@@ -1513,8 +1491,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void prefDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButtonActionPerformed
-        preferencesDialog.setVisible(false);
-        setRoadMapInfo();
+        if( prefDialogMetreBottomField.getInt() % 2 == 0) {
+            preferencesDialog.setVisible(false);
+            setRoadMapInfo();
+        } else
+            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
     }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
 
     private void dialogNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogNameFieldActionPerformed
@@ -1551,8 +1532,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     {
       try 
         {
-        bufferPreviewPanel = new java.awt.image.BufferedImage(bufferWidth, bufferHeight, BufferedImage.TYPE_INT_RGB);
-        bufferRoadMap = new java.awt.image.BufferedImage(RMbufferWidth, RMbufferHeight, BufferedImage.TYPE_INT_RGB);
+        bufferPreviewPanel = new java.awt.image.BufferedImage(previewBufferWidth, previewBufferHeight, BufferedImage.TYPE_INT_RGB);
+        bufferRoadMap = new java.awt.image.BufferedImage(roadMapBufferWidth, roadMapBufferHeight, BufferedImage.TYPE_INT_RGB);
         previewPanel.setBuffer(bufferPreviewPanel);
         roadMapPanel.setBuffer(bufferRoadMap);
         

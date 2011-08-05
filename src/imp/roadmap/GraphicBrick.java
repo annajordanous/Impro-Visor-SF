@@ -124,7 +124,7 @@ public class GraphicBrick {
      */
     public int x()
     {
-        return settings.xOffset + settings.getLength(slot);
+        return settings.xOffset + settings.getLength((int)slot);
     }
     
     /**
@@ -309,7 +309,7 @@ public class GraphicBrick {
         int blockHeight = settings.getBlockHeight();
         int cutoff = settings.getCutoff();
         
-        int x = settings.xOffset + settings.getLength(slot);
+        int x = settings.xOffset + settings.getLength((int)slot);
         int y = settings.yOffset + settings.getLineOffset() * line;
         
         int[] wrap = settings.wrapFromSlots((int)slot+block.getDuration());
@@ -374,14 +374,14 @@ public class GraphicBrick {
     }
     
     /**
-     * Draws the chords of the brick
+     * Draws the chords of the brick, including lines and text.
      * @param g graphics on which to draw
      */
     private void drawChords(Graphics g)
     {
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();
  
-        int x = settings.xOffset + settings.getLength(slot);
+        int x = settings.xOffset + settings.getLength((int)slot);
         int y = settings.yOffset + (int)(line * settings.getLineOffset());
         
         int blockHeight = settings.getBlockHeight();
@@ -494,7 +494,7 @@ public class GraphicBrick {
         g2d.fillRect(x, y, totalLength, settings.lineHeight);
 
         if( block.isBrick() ) {
-            g2d.setColor(settings.getKeyColor(block.getKey(),block.getMode()));
+            g2d.setColor(settings.getKeyColor((int)block.getKey(),block.getMode()));
         
             g2d.fillRect(x, y, totalLength, blockHeight);
             
@@ -518,8 +518,8 @@ public class GraphicBrick {
         long totalSlots = 0;
         
         for( ChordBlock chord : chords ) {    
-            xOffset = settings.getLength(totalSlots);
-            int length = settings.getLength(totalSlots + chord.getDuration()) - 
+            xOffset = settings.getLength((int)totalSlots);
+            int length = settings.getLength((int)totalSlots + chord.getDuration()) - 
                     xOffset;
             
             g2d.setColor(settings.lineColor);

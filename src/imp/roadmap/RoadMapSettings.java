@@ -114,7 +114,7 @@ public class RoadMapSettings {
      */
     public int getSlotsPerMeasure()
     {
-        return slotsPerBeat * metre[0];
+        return slotsPerBeat * metre[0] * 4 / metre[1];
     }
     
     /**
@@ -122,9 +122,9 @@ public class RoadMapSettings {
      * @param dur the duration
      * @return the length
      */
-    public int getLength(long dur)
+    public int getLength(int dur)
     {
-        return (int) (dur * measureLength)/getSlotsPerMeasure();
+        return (dur * measureLength)/getSlotsPerMeasure();
     }
     
     /**
@@ -140,7 +140,7 @@ public class RoadMapSettings {
      * Returns the number of beats per line
      * @return the number of beats per line
      */
-    public long getSlotsPerLine()
+    public int getSlotsPerLine()
     {
         return getSlotsPerMeasure()*barsPerLine;
     }
@@ -177,7 +177,7 @@ public class RoadMapSettings {
      * @param key the key
      * @return the color
      */
-    public Color getKeyColor(long key)
+    public Color getKeyColor(int key)
     {
         return keyColors[(int)key % 12];
     }
@@ -189,7 +189,7 @@ public class RoadMapSettings {
      */
     public Color getKeyColor(KeySpan keySpan)
     {
-        return getKeyColor(keySpan.getKey(), keySpan.getMode());
+        return getKeyColor((int)keySpan.getKey(), keySpan.getMode());
     }
     
     /**
@@ -198,7 +198,7 @@ public class RoadMapSettings {
      * @param mode the mode
      * @return the color
      */
-    public Color getKeyColor(long key, String mode)
+    public Color getKeyColor(int key, String mode)
     {
         if(mode.equalsIgnoreCase("minor"))
                     return getKeyColor(key+3);
@@ -213,7 +213,7 @@ public class RoadMapSettings {
      * @param beats number of beats
      * @return number of lines
      */
-    public int getLines(long beats)
+    public int getLines(int beats)
     {
         int lines = (int) (beats/getSlotsPerLine());
         return lines;
@@ -268,7 +268,6 @@ public class RoadMapSettings {
         
         if((string.length() * length)/stringLength <= 1)
             return "...";
-        //System.out.println(string+" is too long. Length: " + stringLength + " Desired: " + length);
         return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
     }
   

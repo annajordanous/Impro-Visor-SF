@@ -29,8 +29,8 @@ import imp.util.ErrorLog;
 import java.util.Random;
 
 
-/**
- * A class for viewing and modifying the roadmap
+/** The panel where this roadmap is drawn. This class deals mostly with modifying
+ * and drawing the roadmap.
  * @author August Toman-Yih
  */
 public class RoadMapPanel extends JPanel {
@@ -77,20 +77,20 @@ public class RoadMapPanel extends JPanel {
     RoadMapFrame view;
     
     /** Creates new form RoadMapPanel */
-    public RoadMapPanel(RoadMapFrame view)
+    protected RoadMapPanel(RoadMapFrame view)
     {
         this.view = view;
         settings = view.getSettings();
     }
     
     /** Returns the roadmap */
-    public RoadMap getRoadMap()
+    protected RoadMap getRoadMap()
     {
         return roadMap;
     }
     
     /** Sets the roadmap */
-    public void setRoadMap(RoadMap roadMap)
+    protected void setRoadMap(RoadMap roadMap)
     {
         this.roadMap = roadMap;
         graphicMap = makeBricks(roadMap.getBlocks());
@@ -98,13 +98,13 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Returns the number of blocks in the roadmap */
-    public int getNumBlocks()
+    protected int getNumBlocks()
     {
         return roadMap.size();
     }
     
     /** Puts the bricks in the correct position onscreen based on sequence and line breaks */
-    public void placeBricks()
+    protected void placeBricks()
     {
         long currentSlots = 0;
         int lines = 0;
@@ -143,7 +143,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Process and draw bricks */
-    public void updateBricks()
+    protected void updateBricks()
     {
         roadMap.process();
         draw();
@@ -151,14 +151,14 @@ public class RoadMapPanel extends JPanel {
     
     /** Updates graphicMap to match the roadmap.
      * You shouldn't need to use this; using the other methods will keep them in sync*/
-    public void rebuildRoadMap()
+    protected void rebuildRoadMap()
     {
         graphicMap = makeBricks(roadMap.getBlocks());
         placeBricks();
     }
     
     /** Adds a block to the roadmap. */
-    public void addBlock(Block block)
+    protected void addBlock(Block block)
     {
         addBlock(block,false);
     }
@@ -166,7 +166,7 @@ public class RoadMapPanel extends JPanel {
      * @param block block to be added
      * @param selectBlocks Whether the block is selected after insertion
      */
-    public void addBlock(Block block, Boolean selectBlocks)
+    protected void addBlock(Block block, Boolean selectBlocks)
     {
         roadMap.add(block);
         graphicMap.add(new GraphicBrick(block, settings));
@@ -175,7 +175,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Adds a list of blocks to the roadmap */
-    public void addBlocks(ArrayList<Block> blocks)
+    protected void addBlocks(ArrayList<Block> blocks)
     {
         addBlocks(blocks, false);
     }
@@ -183,7 +183,7 @@ public class RoadMapPanel extends JPanel {
      * @param blocks blocks to be added
      * @param selectBlocks Whether the blocks are selected after insertion
      */
-    public void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
+    protected void addBlocks(ArrayList<Block> blocks, Boolean selectBlocks)
     {  
         
         roadMap.addAll(blocks);
@@ -195,7 +195,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Adds a list of blocks at the specified position */
-    public void addBlocks(int ind, ArrayList<Block> blocks)
+    protected void addBlocks(int ind, ArrayList<Block> blocks)
     {
         addBlocks(ind, blocks, false);
     }
@@ -204,7 +204,7 @@ public class RoadMapPanel extends JPanel {
      * @param blocks Blocks to be inserted
      * @param selectBlocks Whether the blocks are selected after insertion
      */
-    public void addBlocks(int ind, ArrayList<Block> blocks, Boolean selectBlocks)
+    protected void addBlocks(int ind, ArrayList<Block> blocks, Boolean selectBlocks)
     {
         roadMap.addAll(ind, blocks);
         graphicMap.addAll(ind, makeBricks(blocks));
@@ -214,7 +214,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Adds a list of blocks before the selection. Updates the selection */
-    public void addBlocksBeforeSelection(ArrayList<Block> blocks, Boolean selectBlocks)
+    protected void addBlocksBeforeSelection(ArrayList<Block> blocks, Boolean selectBlocks)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             addBlocks(selectionStart, blocks, selectBlocks);
@@ -228,7 +228,7 @@ public class RoadMapPanel extends JPanel {
     }
             
     /** Method that takes a list of blocks and creates GraphicBrick counterparts*/
-    public ArrayList<GraphicBrick> makeBricks(ArrayList<Block> blocks)
+    protected ArrayList<GraphicBrick> makeBricks(ArrayList<Block> blocks)
     {
         ArrayList<GraphicBrick> bricks = new ArrayList();
         
@@ -239,7 +239,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Method takes a list of GraphicBricks and gets the blocks contained within them*/
-    public ArrayList<Block> makeBlocks(ArrayList<GraphicBrick> bricks)
+    protected ArrayList<Block> makeBlocks(ArrayList<GraphicBrick> bricks)
     {
         ArrayList<Block> blocks = new ArrayList();
         
@@ -253,7 +253,7 @@ public class RoadMapPanel extends JPanel {
      * @param name Chord name
      * @param dur Chord duration
      */
-    public void changeChord(String name, int dur)
+    protected void changeChord(String name, int dur)
     {
         int chordInd = graphicMap.get(selectionStart).getSelected();
         Block block = removeSelection().get(0);
@@ -267,13 +267,13 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Returns whether the selection contains the index */
-    public boolean isSelection(int ind)
+    protected boolean isSelection(int ind)
     {
         return ind >= selectionStart && ind <= selectionEnd;
     }
     
     /** Returns a list of the selected blocks*/
-    public ArrayList<Block> getSelection()
+    protected ArrayList<Block> getSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1)
             return getBlocks(selectionStart, selectionEnd+1);
@@ -281,7 +281,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Removes and returns the selected blocks*/
-    public ArrayList<Block> removeSelection()
+    protected ArrayList<Block> removeSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1)
             return removeBlocks(selectionStart, selectionEnd+1);
@@ -289,7 +289,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Removes and returns the selected blocks <b>without post processing</b>. */
-    public ArrayList<Block> removeSelectionNoUpdate()
+    protected ArrayList<Block> removeSelectionNoUpdate()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             ArrayList<Block> blocks = new ArrayList(roadMap.getBlocks().subList(selectionStart, selectionEnd+1));
@@ -304,7 +304,7 @@ public class RoadMapPanel extends JPanel {
      * @param index
      * @return 
      */
-    public GraphicBrick getBrick(int index)
+    protected GraphicBrick getBrick(int index)
     {
         return graphicMap.get(index);
     }
@@ -314,13 +314,13 @@ public class RoadMapPanel extends JPanel {
      * @param end
      * @return 
      */
-    public ArrayList<Block> getBlocks(int start, int end)
+    protected ArrayList<Block> getBlocks(int start, int end)
     {
         return roadMap.getBlocks(start, end);
     }
     
     /** Removes and returns all blocks.*/
-    public ArrayList<Block> removeBlocks()
+    protected ArrayList<Block> removeBlocks()
     {
         graphicMap.clear();
         return roadMap.removeBlocks();
@@ -332,7 +332,7 @@ public class RoadMapPanel extends JPanel {
      * @param end
      * @return 
      */
-    public ArrayList<Block> removeBlocks(int start, int end)
+    protected ArrayList<Block> removeBlocks(int start, int end)
     {
         ArrayList<Block> blocks = roadMap.removeBlocks(start, end);
         graphicMap.subList(start, end).clear();
@@ -344,7 +344,7 @@ public class RoadMapPanel extends JPanel {
      * @param brickInd
      * @param chordInd 
      */
-    public void selectChord(int brickInd, int chordInd)
+    protected void selectChord(int brickInd, int chordInd)
     {
         selectBrick(brickInd);
         GraphicBrick brick = getBrick(brickInd);
@@ -358,7 +358,7 @@ public class RoadMapPanel extends JPanel {
      * <p> If the index is outside of the current selection, extend the selection.
      * If not, just select that brick.
      */
-    public void selectBricks(int index)
+    protected void selectBricks(int index)
     {
         if(selectionStart == -1 && selectionEnd == -1)
             selectionStart = selectionEnd = index;
@@ -387,7 +387,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Selects the bricks between the start and end indices, inclusive */
-    public void selectBricks(int start, int end)
+    protected void selectBricks(int start, int end)
     {
         deselectBricks();
         selectionStart = start;
@@ -399,7 +399,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Selects the brick at the specified index. Deselects all other bricks. */
-    public void selectBrick(int index)
+    protected void selectBrick(int index)
     {
         deselectBricks();
         if(index != -1) {
@@ -412,7 +412,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Selects all bricks */
-    public void selectAll()
+    protected void selectAll()
     {
         if(!roadMap.isEmpty())
             selectBricks(0, roadMap.size()-1);
@@ -420,7 +420,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Deselects all bricks */
-    public void deselectBricks()
+    protected void deselectBricks()
     {
         for(GraphicBrick brick : graphicMap)
             brick.setSelected(false);
@@ -431,13 +431,13 @@ public class RoadMapPanel extends JPanel {
     }
   
     /** Returns true if there are bricks currently selected */
-    public boolean hasSelection()
+    protected boolean hasSelection()
     {
         return selectionStart != -1 && selectionEnd != -1;
     }
     
     /** Transpose all the bricks in the selection by the desired number of semitones */
-    public void transposeSelection(long diff)
+    protected void transposeSelection(long diff)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             for(Block block : roadMap.getBlocks(selectionStart, selectionEnd + 1))
@@ -449,7 +449,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Scale all bricks in the selection by the given amount */
-    public void scaleSelection(int scale)
+    protected void scaleSelection(int scale)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             for(Block block : roadMap.getBlocks(selectionStart, selectionEnd + 1))
@@ -460,7 +460,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Delete all bricks in the selection (or the chord if it is selected)*/
-    public void deleteSelection()
+    protected void deleteSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             int chordSelected = graphicMap.get(selectionStart).getSelected();
@@ -473,7 +473,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Delete a chord within a brick */
-    public void deleteChord(Block block, int chordInd)
+    protected void deleteChord(Block block, int chordInd)
     {
         removeSelectionNoUpdate();
         ArrayList<Block> newBlocks = new ArrayList(block.flattenBlock());
@@ -488,7 +488,7 @@ public class RoadMapPanel extends JPanel {
      * @param start start index (inclusive)
      * @param end end index (exclusive)
      */
-    public void deleteRange(int start, int end)
+    protected void deleteRange(int start, int end)
     {
         roadMap.removeBlocks(start, end);
         graphicMap.subList(start, end).clear();
@@ -496,7 +496,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Replaces the selection with a collection of blocks */
-    public void replaceSelection(ArrayList<Block> blocks)
+    protected void replaceSelection(ArrayList<Block> blocks)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             removeSelection();
@@ -507,7 +507,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Breaks the selected bricks into component bricks */
-    public void breakSelection()
+    protected void breakSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             ArrayList<Block> blocks = getSelection();
@@ -521,7 +521,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Flattens the selected bricks to individual chords */
-    public void flattenSelection()
+    protected void flattenSelection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             ArrayList<Block> newBlocks = new ArrayList(RoadMap.getChords(getSelection()));
@@ -536,7 +536,7 @@ public class RoadMapPanel extends JPanel {
      * @param type
      * @return the new brick
      */
-    public Brick makeBrickFromSelection(String name, String variant, long key, 
+    protected Brick makeBrickFromSelection(String name, String variant, long key, 
                                         String mode, String type)
     {
         if(selectionStart != -1 && selectionEnd != -1) {
@@ -551,7 +551,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Returns the index of the brick containing the point(x,y)*/
-    public int getBrickIndexAt(int x, int y)
+    protected int getBrickIndexAt(int x, int y)
     {
         int index = 0;
         for ( GraphicBrick brick : graphicMap) {
@@ -563,7 +563,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Returns the index in the roadmap containing the point (x,y) */
-    public int getIndexAt(int x, int y)
+    protected int getIndexAt(int x, int y)
     {
         int index = 0;
         for ( GraphicBrick brick : graphicMap ) {
@@ -580,7 +580,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Adds a section end to the end of the selection */
-    public void toggleSection()
+    protected void toggleSection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             roadMap.getBlock(selectionEnd).setSectionEnd(!roadMap.getBlock(selectionEnd).isSectionEnd());
@@ -590,7 +590,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Adds a phrase end to the end of the selection */
-    public void togglePhrase()
+    protected void togglePhrase()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
             Block block = roadMap.getBlock(selectionEnd);
@@ -604,45 +604,45 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Sets the last brick to be a section end */
-    public void endSection()
+    protected void endSection()
     {
         roadMap.getBlock(roadMap.size()-1).setSectionEnd(true);
     }
     
     /** Sets the insertion line to the point (x,y) */
-    public void setInsertLine(int x, int y)
+    protected void setInsertLine(int x, int y)
     {
         insertLineIndex = getIndexAt(x,y);
     }
     
     /** Sets the insertion line to the desired index */
-    public void setInsertLine(int index)
+    protected void setInsertLine(int index)
     {
         insertLineIndex = index;
     }
     
     /** Sets the play section to the current selection */
-    public void setPlaySection()
+    protected void setPlaySection()
     {
         playSectionStart = selectionStart;
         playSectionEnd = selectionEnd;
     }
     
     /** Sets the offset of the playline to the first brick */
-    public void setPlayLineOffset()
+    protected void setPlayLineOffset()
     {
         playLineOffset = getSlotFromIndex(selectionStart);
     }
     
     /** Sets the playline to the given slot */
-    public void setPlayLine(int slot)
+    protected void setPlayLine(int slot)
     {
         int[] wrap = findLineAndSlot(slot + playLineOffset);
         playLineSlot = wrap[0];
         playLineLine = wrap[1];
     }
     
-    public int getSlotFromIndex(int ind)
+    private int getSlotFromIndex(int ind)
     {
         int slot = 0;
         for(int i = 0; i < ind; i++)
@@ -655,7 +655,7 @@ public class RoadMapPanel extends JPanel {
      * @return a two element int array where the first element is the slot offset
      * and the second the line
      */
-    public int[] findLineAndSlot(int slots)
+    private int[] findLineAndSlot(int slots)
     {
        int totalSlots = 0;
        int slotOffset = 0;
@@ -674,26 +674,26 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Sets the rollover to the given point */
-    public void setRolloverPos(Point point)
+    protected void setRolloverPos(Point point)
     {
         rolloverPos = point;
     }
     
     /** Returns a point containing the current position of the rollover */
-    public Point getRolloverPos()
+    protected Point getRolloverPos()
     {
         return rolloverPos;
     }
     
     /* Drawing and junk */
     /** Assign this panel a buffer */
-    public void setBuffer(Image buffer)
+    protected void setBuffer(Image buffer)
     {
         this.buffer = buffer;
     }
     
     /** Draw all elements of the roadmap*/
-    public void draw()
+    protected void draw()
     { 
        view.setBackground(buffer);
        drawGrid();
@@ -710,14 +710,14 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Draws a cursor line of the desired color at the desired slot */
-    public void drawCursorLine(int slot, Color color)
+    private void drawCursorLine(int slot, Color color)
     {
         int[] wrap = findLineAndSlot(slot);
         drawCursorLine(wrap[0], wrap[1], color);
     }
     
     /** Draws a cursor line of the desired color at the desired line/slot point */
-    public void drawCursorLine(int slotOffset, int line, Color color)
+    private void drawCursorLine(int slotOffset, int line, Color color)
     {
         Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setColor(color);
@@ -730,7 +730,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Draw the lines for the play section */
-    public void drawPlaySection()
+    private void drawPlaySection()
     {
         GraphicBrick startBrick = graphicMap.get(playSectionStart);
         GraphicBrick endBrick = graphicMap.get(playSectionEnd);
@@ -749,14 +749,14 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Draw a playline */ 
-    public void drawPlayLine()
+    private void drawPlayLine()
     { 
         drawCursorLine(playLineSlot, playLineLine, settings.playLineColor);
         //Maybe we should use the draw cursor line method from slots instead of two data members
     }
     
     /** Draws the grid */
-    public void drawGrid()
+    private void drawGrid()
     {
         Graphics g = buffer.getGraphics();
 
@@ -780,7 +780,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Draws the roadmap text (title, style, tempo, etc) */
-    public void drawText()
+    private void drawText()
     {
         Graphics g = buffer.getGraphics();
         g.setFont(settings.titleFont);
@@ -799,14 +799,14 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Draws the brick at the given index */
-    public void drawBrick(int ind)
+    private void drawBrick(int ind)
     {
         graphicMap.get(ind).draw(buffer.getGraphics());
         repaint();
     }
     
     /** Draws all bricks */
-    public void drawBricks()
+    private void drawBricks()
     {        
         Graphics2D g = (Graphics2D)buffer.getGraphics();
         
@@ -862,7 +862,7 @@ public class RoadMapPanel extends JPanel {
     }
     
     /** Draws the given bricks at the given point */
-    public void drawBricksAt(ArrayList<GraphicBrick> bricks, int x, int y)
+    protected void drawBricksAt(ArrayList<GraphicBrick> bricks, int x, int y)
     {
         Graphics g = buffer.getGraphics();
         
@@ -875,20 +875,16 @@ public class RoadMapPanel extends JPanel {
     }
 
     /** Draws the keymap */
-    public void drawKeyMap()
+    private void drawKeyMap()
     {
-        
         Graphics g = buffer.getGraphics();
         
         long currentBeats = 0;
         long lines = 0;
         long lineBeats = 0;
         
-        //Iterator<Long> number = sectionBreaks.iterator();
-        //System.out.println(roadMap.getKeyMap());
-        
         for( KeySpan keySpan : roadMap.getKeyMap() ) {
-            drawKeySpan(keySpan, settings.xOffset + settings.getLength(lineBeats),
+            drawKeySpan(keySpan, settings.xOffset + settings.getLength((int)lineBeats),
                     settings.yOffset + (int)(settings.getLineOffset() * lines), g);
             
             currentBeats += keySpan.getDuration();
@@ -927,7 +923,7 @@ public class RoadMapPanel extends JPanel {
             if(key != -1)
                 keyColor = settings.getKeyColor(keySpan);
             
-            int[] wrap = settings.wrap(x+settings.getLength(keySpan.getDuration()));
+            int[] wrap = settings.wrap(x+settings.getLength((int)keySpan.getDuration()));
 
             int endX = wrap[0];
             int lines = wrap[1];
@@ -980,12 +976,12 @@ public class RoadMapPanel extends JPanel {
             
             g2d.setColor(settings.textColor);
             keyName = RoadMapSettings.trimString(keyName, cutoff - x, metrics);
-            keyName = RoadMapSettings.trimString(keyName, settings.getLength(dur), metrics);
+            keyName = RoadMapSettings.trimString(keyName, settings.getLength((int)dur), metrics);
             g2d.drawString(keyName, x+2, y+fontOffset);
     }
         
     /** Draws the rollover */
-    public void drawRollover()
+    private void drawRollover()
     {
         if(rolloverPos != null) {
             int x = rolloverPos.x;
