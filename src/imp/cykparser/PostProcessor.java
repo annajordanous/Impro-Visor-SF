@@ -490,7 +490,7 @@ public class PostProcessor {
         
         // Adjust for second brick's key
         cTemp.transpose(OCTAVE - key);
-        Long offset = c.getKey();
+        Long offset = cTemp.getKey();
         
         // Transpose chord down to C
         cTemp.transpose(OCTAVE - offset);
@@ -505,7 +505,7 @@ public class PostProcessor {
                 cSym = ChordSymbol.makeChordSymbol(p.first().toString());
                 break;
             }
-        }
+        };
         
         // Transpose cSym and c back by offset saved earlier
         if(cSym != null) {
@@ -527,7 +527,6 @@ public class PostProcessor {
                 }
             }
         }
-        
         return isInKey;
     }
     

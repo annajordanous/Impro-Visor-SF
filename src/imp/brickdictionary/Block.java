@@ -128,6 +128,7 @@ public class Block {
         return (this.getDuration() == 0);
     }
     
+    
     /** getSubBlocks
      * Returns the subblocks comprising a Block. Overridden in Brick and
      * ChordBlock.

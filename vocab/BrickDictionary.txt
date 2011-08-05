@@ -145,6 +145,11 @@
  * Roadmap mode, selecting it, and clicking the "New Brick" button. The definition
  * will then be added to the bottom of this file to be loaded in future Impro-Visor
  * use.
+ *
+ * If you introduce a Cadence into the brick dictionary, you will notice that 
+ * matching Overrun and Dropback versions of the brick will also appear for that
+ * brick on runtime. At the present, the only way to remove those bricks is to
+ * remove the original cadence.
  * 
  * WARNING: Deleting a brick from the brick dictionary manually may destroy the
  * definitions of any bricks using the brick you wish to delete as a sub-block. In 
@@ -160,12 +165,18 @@
 (brick-type Dropback         30)
 (brick-type Invisible      2000)
 (brick-type Overrun          30)
-(brick-type On-Off          975)
+(brick-type On-Off         1025)
+(brick-type On              550)
+(brick-type Off             750)
 (brick-type Opening          25)
 (brick-type Turnaround       20)
 (brick-type Misc             40)
 
 // Major bricks
+
+(Def-Brick 7-Chord-Dropback() Major Dropback Eb
+        (Brick Somewhere-Cadence Eb 3)
+        (Brick Extended-Cadence Eb 5))
 
 (Def-Brick Amen-Cadence Major Cadence C
 	(Chord FM7 1)
@@ -401,11 +412,16 @@
         (Chord D#o 1)
 	(Chord C/E 1))
 
-(Def-Brick ITCHY-Opening Major Opening C
+(Def-Brick ITCHY-Opening(standard) Major Opening C
 	(Chord CM7 2)
 	(Brick Straight-Approach D 2)
 	(Chord Dm 2)
 	(Brick Straight-Approach E 2))
+
+(Def-Brick ITCHY-Opening(half-diminished) Major Opening G
+        (Chord GM7 2)
+        (Brick Sad-Cadence A 4)
+        (Brick Sad-Approach B 2))
 
 (Def-Brick Ladybird-Turnaround(main) Major Turnaround C
 	(Chord CM7 1)
@@ -431,9 +447,15 @@
 	(Chord DbM7 1)
         (Chord CM7 1))
 
-(Def-Brick Long-Cadence Major Cadence C
+(Def-Brick Long-Cadence(standard) Major Cadence C
 	(Brick Long-Approach C 4)
 	(Chord CM7 4))
+
+(Def-Brick Long-Cadence(On-Off-On) Major Cadence Db
+        (Chord Fm7 1)
+        (Chord Em7 1)
+        (Brick Straight-Cadence Db 4)
+        (Brick Perfect-Cadence Db 6))
 
 (Def-Brick Long-Approach Major Approach C
 	(Brick GenDom D 2)
@@ -747,9 +769,13 @@
 	(Brick Sixpenny-Approach C 12)
 	(Chord CM7 4))
 
-(Def-Brick Spring-Cadence Major Cadence C
+(Def-Brick Spring-Cadence(standard) Major Cadence C
 	(Brick Spring-Approach C 4)
 	(Chord CM7 2))
+
+(Def-Brick Spring-Cadence(m7) Major Cadence Ab
+        (Chord Gm7 2)
+        (Brick Straight-Cadence Ab 4))
 
 // Spring cadence redone by RK
 
@@ -780,9 +806,14 @@
 	(Brick Straight-Approach Db 2)
 	(Brick Straight-Approach C 2))
 
-(Def-Brick Starlight-Cadence Major Cadence C
+(Def-Brick Starlight-Cadence(standard) Major Cadence C
 	(Brick Starlight-Approach C 6)
 	(Chord CM7 2))
+
+(Def-Brick Starlight-Cadence(airegin) Major Cadence Ab
+        (Brick Sad-Approach C 2)
+        (Brick Sad-Cadence Bb 6)
+        (Brick Perfect-Cadence Ab 4))
 
 (Def-Brick Starlight-Dominant Dominant Cadence C
 	(Brick Starlight-Approach C 6)
@@ -1016,30 +1047,31 @@
 
 // On-off (replaced by XS)
 
-(Def-Brick Major-On Major Invisible C
+(Def-Brick Major-On Major On C
         (Chord C 1))
 
-(Def-Brick Minor-On(standard) Minor Invisible C
+(Def-Brick Minor-On(standard) Minor On C
 	(Chord Cm 1))
 
-(Def-Brick Minor-On(alternate) Minor Invisible C
+(Def-Brick Minor-On(alternate) Minor On C
         (Chord CmM7 1))
 
-(Def-Brick Off(dominant) Dominant Invisible C
+(Def-Brick Off(dominant) Dominant Off C
 	(Chord C7 1))
 
-(Def-Brick Off(major) Major Invisible C
+(Def-Brick Off(major) Major Off C
 	(Chord C 1))
 
-(Def-Brick Off(minor) Minor Invisible C
+(Def-Brick Off(minor) Minor Off C
         (Chord Cm 1))
 
-(Def-Brick Off(minor7) Minor Invisible C
+(Def-Brick Off(minor7) Minor Off C
 	(Chord Cm7 1))
 
-(Def-Brick Off(minor-major) Minor Invisible C
+(Def-Brick Off(minor-major) Minor Off C
         (Chord CmM7 1))
 
+/*
 (Def-Brick On-Off-Major(bII) Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Db 1))
@@ -1131,6 +1163,7 @@
 (Def-Brick On-Off-On-Minor Minor On-Off C
 	(Brick On-Off-Minor C 1)
 	(Brick Minor-On C 1))
+*/
 
 /* Old On-Off Definitions (commented out by XS)
 (Def-Brick On-Off-To-bII Major On-Off C
