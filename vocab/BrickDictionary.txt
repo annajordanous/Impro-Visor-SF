@@ -165,7 +165,7 @@
 (brick-type Dropback         30)
 (brick-type Invisible      2000)
 (brick-type Overrun          30)
-(brick-type On-Off         1025)
+(brick-type On-Off         1005)
 (brick-type On              550)
 (brick-type Off             750)
 (brick-type Opening          25)
@@ -903,9 +903,14 @@
 	(Brick Sad-Approach C 2)
 	(Chord CM7 2))
 
-(Def-Brick SPOT Major Turnaround C
+(Def-Brick SPOT(standard) Major Turnaround C
 	(Brick Straight-Approach D 2)
 	(Brick Straight-Approach C 2))
+
+
+(Def-Brick SPOT(minorIV) Major Turnaround C
+        (Chord Em7 1)
+        (Brick Extended-Approach C 3))
 
 (Def-Brick TINGLe Major Dropback C
 	(Chord CM7 1)
@@ -970,10 +975,14 @@
 	(Chord Fm 1))
 
 // Modified by RK
-(Def-Brick To-IV-n-Yak Major Turnaround C
+(Def-Brick To-IV-n-Yak(standard) Major Turnaround C
 	(Chord CM7 2)
 	(Brick Perfect-Cadence F 4)
 	(Brick GenDom Eb 2))
+
+(Def-Brick To-IV-n-Yak(minorV) Major Turnaround C
+        (Brick Straight-Cadence F 4)
+        (Brick GenDom Eb 2))
 
 (Def-Brick Twopenny-Approach Major Approach C
 	(Chord Dm 2)
@@ -1056,22 +1065,21 @@
 (Def-Brick Minor-On(alternate) Minor On C
         (Chord CmM7 1))
 
-(Def-Brick Off(dominant) Dominant Off C
+(Def-Brick Off(dominant) Dominant Invisible C
 	(Chord C7 1))
 
-(Def-Brick Off(major) Major Off C
+(Def-Brick Off(major) Major Invisible C
 	(Chord C 1))
 
-(Def-Brick Off(minor) Minor Off C
+(Def-Brick Off(minor) Minor Invisible C
         (Chord Cm 1))
 
-(Def-Brick Off(minor7) Minor Off C
+(Def-Brick Off(minor7) Minor Invisible C
 	(Chord Cm7 1))
 
-(Def-Brick Off(minor-major) Minor Off C
+(Def-Brick Off(minor-major) Minor Invisible C
         (Chord CmM7 1))
 
-/*
 (Def-Brick On-Off-Major(bII) Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Db 1))
@@ -1112,9 +1120,11 @@
 	(Brick Major-On C 1)
 	(Brick Off B 1))
 
+/*
 (Def-Brick On-Off-On-Major Major On-Off C
 	(Brick On-Off-Major C 1)
 	(Brick Major-On C 1))
+*/
 
 (Def-Brick On-Off-Minor(bII) Minor On-Off C
 	(Brick Minor-On C 1)
@@ -1160,6 +1170,7 @@
 	(Brick Minor-On C 1)
 	(Brick Off B 1))
 
+/*
 (Def-Brick On-Off-On-Minor Minor On-Off C
 	(Brick On-Off-Minor C 1)
 	(Brick Minor-On C 1))
