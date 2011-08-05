@@ -16,7 +16,7 @@
 
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110z-1301  USA
  */
 
 package imp.roadmap;
@@ -805,6 +805,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.8;
         getContentPane().add(libraryTabbedPane, gridBagConstraints);
 
+        durationComboBox.setSelectedItem(2);
         durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
         durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
         durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
@@ -2211,13 +2212,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
+        System.out.println(score.getChordProg().getSectionInfo());
         score.setMetre(getMetre());
-        score.setStyle(style.getName());
+        //score.setStyle(style.getName());
         score.setTempo(tempo);
         score.setTitle(roadMapTitle);
         auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
         auxNotate.setCreateRoadMapCheckBox(false);
-
+        System.out.println(auxNotate.getSectionInfo());
         auxNotate.setVisible(true);
       }
 

@@ -585,6 +585,7 @@ public class RoadMapPanel extends JPanel {
         if(selectionStart != -1 && selectionEnd != -1) {
             roadMap.getBlock(selectionEnd).setSectionEnd(!roadMap.getBlock(selectionEnd).isSectionEnd());
             roadMap.process();
+            placeBricks();
             draw();
         }
     }

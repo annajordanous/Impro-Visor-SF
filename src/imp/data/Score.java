@@ -475,8 +475,7 @@ public class Score implements Constants, Serializable {
     
     public void setMetre(int metre[])
       {
-        this.metre[0] = metre[0];
-        this.metre[1] = metre[1];
+        setMetre(metre[0],metre[1]);
       }
     
     /**
@@ -1065,18 +1064,6 @@ public void toRoadMapFrame(RoadMapFrame roadmap)
   {
     roadmap.setMusicalInfo(this);
     chordProg.toRoadMapFrame(roadmap);
-  }
-
-/**
- * Add chords in the current selection in RoadMapFrame to this ChordPart.
- */
-
-public void addFromRoadMapFrame(RoadMapFrame roadmap)
-  {
-    chordProg.addFromRoadMapFrame(roadmap);
-    setMetre(roadmap.getMetre());
-    setTempo(roadmap.getTempo());
-    setStyle(roadmap.getStyle().getName());
   }
 
 /**

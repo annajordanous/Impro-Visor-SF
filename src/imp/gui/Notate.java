@@ -1363,7 +1363,10 @@ public class Notate
 
     setDefaultButton(duplicateLickDialog, ignoreDuplicate);
 
-    score.getChordProg().setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+    /* Why is this here? I don't know. It resets the section info of the score,
+     * which seems dumb. I commented it out so that scores can retain their sections
+     */
+    //score.getChordProg().setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
     sectionInfo = score.getChordProg().getSectionInfo().copy();
 
@@ -23323,6 +23326,11 @@ public int getBarsPerChorus()
   {
     return score.getBarsPerChorus();
   }
+
+public SectionInfo getSectionInfo()
+{
+    return sectionInfo;
+}
 }
 
 

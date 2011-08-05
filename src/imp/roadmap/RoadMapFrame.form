@@ -1228,6 +1228,9 @@
     </Container>
     <Component class="javax.swing.JComboBox" name="durationComboBox">
       <Properties>
+        <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="2" type="code"/>
+        </Property>
         <Property name="toolTipText" type="java.lang.String" value="Set the duration of this brick (in slots)." noResource="true"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
