@@ -1527,7 +1527,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_brickLibraryFrameWindowClosing
 
     private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
-        if(brickLibrary.hasBrick(dialogNameField.getText())) {
+        if(brickLibrary.hasBrick(BrickLibrary.dashless(dialogNameField.getText()))) {
             System.err.println(dialogNameField.getText());
             dialogVariantField.setEditable(true);
         } else {
@@ -2085,7 +2085,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaledBrick.reduceDurations();
         brickLibrary.addBrickDefinition(scaledBrick);
         cykParser.createRules(brickLibrary);
-        addToLibraryTree(brick.getName());
+        initLibraryTree();
+        libraryTree.setModel(libraryTreeModel);
+        if (scaledBrick.getQualifier().isEmpty())
+            addToLibraryTree(scaledBrick.getName());
+        else
+            addToLibraryTree(scaledBrick.getName(), scaledBrick.getQualifier());
     }
     
     /** Adds a brick name to the library tree */
@@ -2095,6 +2100,24 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         DefaultMutableTreeNode node = (DefaultMutableTreeNode)root.getLastChild();
         
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        if(node.toString().equals("Recently Created")) {
+            libraryTreeModel.insertNodeInto(newNode, node, node.getChildCount());
+        } else {
+            DefaultMutableTreeNode newParent = new DefaultMutableTreeNode("Recently Created");
+            newParent.add(newNode);
+            libraryTreeModel.insertNodeInto(newParent, root, root.getChildCount());
+        }
+    }
+    
+    /** Adds a brick by name and variant to the library tree */
+    private void addToLibraryTree(String name, String variant)
+    {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)libraryTreeModel.getRoot();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)root.getLastChild();
+        
+        DefaultMutableTreeNode variantNode= new DefaultMutableTreeNode(variant);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
+        newNode.add(variantNode);
         if(node.toString().equals("Recently Created")) {
             libraryTreeModel.insertNodeInto(newNode, node, node.getChildCount());
         } else {

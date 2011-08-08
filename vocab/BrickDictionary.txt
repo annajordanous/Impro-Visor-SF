@@ -174,7 +174,7 @@
 
 // Major bricks
 
-(Def-Brick 7-Chord-Dropback() Major Dropback Eb
+(Def-Brick 7-Chord-Dropback Major Dropback Eb
         (Brick Somewhere-Cadence Eb 3)
         (Brick Extended-Cadence Eb 5))
 
@@ -1080,6 +1080,9 @@
 (Def-Brick Off(minor-major) Minor Invisible C
         (Chord CmM7 1))
 
+(Def-Brick Off(diminished) Minor Invisible C
+        (Chord Co7 1))
+
 (Def-Brick On-Off-Major(bII) Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Db 1))
@@ -1171,7 +1174,7 @@
 	(Brick Off B 1))
 
 /*
-(Def-Brick On-Off-On-Minor Minor On-Off C
+(Def-Brick On-Off-On-Minor Minor Invisible C
 	(Brick On-Off-Minor C 1)
 	(Brick Minor-On C 1))
 */
@@ -1539,3 +1542,10 @@
         (Brick SPOT C 2))
 
 // User-defined bricks
+
+(Def-Brick On-Off-On-Minor Minor Invisible D
+        (Chord Dm7 2)
+        (Chord A7 1)
+        (Chord Dm7 2)
+        (Chord A7 1)
+        (Chord Dm7 2))
