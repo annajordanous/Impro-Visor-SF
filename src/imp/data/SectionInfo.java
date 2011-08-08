@@ -255,11 +255,11 @@ public class SectionInfo implements Constants, Serializable {
             int index = record.getIndex() - first;
             if( index < 0 )
               {
-                records.add(new SectionRecord(s, 0, record.getIsPhrase()));
+                si.records.add(new SectionRecord(s, 0, record.getIsPhrase()));
               }
             else if( index <= last - first )
               {
-                records.add(new SectionRecord(s, index, record.getIsPhrase()));
+                si.records.add(new SectionRecord(s, index, record.getIsPhrase()));
               }
           }
 

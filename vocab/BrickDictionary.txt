@@ -1531,6 +1531,12 @@
         (Chord Cm6 1)
         (Chord Cm7 1))
 
+(Def-Brick Descending-CESH(var1) Minor Misc C
+        (Chord Cm 1)
+        (Chord CmM7 1)
+        (Chord Cm7 1)
+        (Chord Cm6 1))
+
 (Def-Brick II-n-Bird-POT Major Turnaround C
         (Chord Dm7 2)
         (Brick Yardbird-Approach C 2)
