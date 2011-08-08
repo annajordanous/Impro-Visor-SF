@@ -18037,6 +18037,8 @@ public void WriteLeadsheetToFile(File file) {
     newScore.setChordProg(new ChordPart());
 
     newScore.addPart(new MelodyPart(defaultBarsPerPart * measureLength));
+    
+    newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
     // open a new window
 

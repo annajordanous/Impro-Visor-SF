@@ -819,7 +819,12 @@
 	(Brick Starlight-Approach C 6)
 	(Chord C7 2))
 
-(Def-Brick Starlight-Approach Major Approach C
+(Def-Brick Starlight-Approach(main) Major Approach C
+        (Brick Sad-Approach E 2)
+        (Brick Sad-Approach D 2)
+        (Brick Sad-Approach C 2))
+
+(Def-Brick Starlight-Approach(var1) Major Approach C
 	(Brick An-Approach E 2)
 	(Brick Long-Approach C 4))
 
