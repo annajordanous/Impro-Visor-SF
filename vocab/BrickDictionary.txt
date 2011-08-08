@@ -182,7 +182,7 @@
 	(Chord FM7 1)
 	(Chord CM7 1))
 
-(Def-Brick Autumn-Leaves-Opening Minor Opening C
+(Def-Brick Autumn-Leaves-Opening Minor Opening A
 	(Brick Straight-Cadence C 4)
 	(Brick Sad-Cadence A 4))
 
@@ -192,15 +192,15 @@
         (Chord Dm7  1)
         (Chord G7  1))
 
-(Def-Brick Autumnal-Cadence(variant) Minor Cadence C
+(Def-Brick Autumnal-Cadence(variant) Minor Cadence A
 	(Brick Autumnal-Approach C 6)
 	(Chord Am 2))
 
-(Def-Brick Autumnal-Approach(var1) Minor Approach C
+(Def-Brick Autumnal-Approach(var1) Minor Approach A
 	(Brick Straight-Approach C 2)
 	(Brick Sad-Approach A 2))
 
-(Def-Brick Autumnal-Approach(var2) Minor Approach C
+(Def-Brick Autumnal-Approach(var2) Minor Approach A
 	(Brick Sad-Approach C 2)
 	(Brick Sad-Approach A 2))
 
@@ -226,14 +226,18 @@
 	(Chord EbM7 1)
 	(Chord Ab7 1))
 
-(Def-Brick Body-And-Soul-Cadence Major Cadence C
+(Def-Brick Body-And-Soul-Cadence(major) Major Cadence C
 	(Brick Body-And-Soul-Approach C 4)
 	(Chord CM7 4))
 
+(Def-Brick Body-And-Soul-Cadence(minor) Minor Cadence C
+	(Brick Body-And-Soul-Approach C 4)
+	(Chord Cm 4))
+
 (Def-Brick Body-And-Soul-Approach(main) Major Approach C
-	(Chord Dm 1)
+	(Chord Dm7 1)
 	(Chord A7 1)
-	(Brick Straight-Approach C 2))
+	(Brick An-Approach C 2))
 
 (Def-Brick Body-And-Soul-Approach(variant) Major Approach C
 	(Chord Dm 1)
@@ -641,7 +645,7 @@
         (Brick Pullback-Approach C 1)
         (Brick Pullback-Approach C 1))
 
-(Def-Brick Two-Goes-Pullback-Approach-Extended Major Approach C
+(Def-Brick Two-Goes-Pullback-Approach-Extended Major Invisible C
 	(Brick Two-Goes-Pullback-Approach C 4)
 	(Brick Straight-Approach C 2))
 
@@ -1566,3 +1570,9 @@
         (Chord Dm7 2)
         (Chord A7 1)
         (Chord Dm7 2))
+
+(Def-Brick Diatonic-Walkup Minor Approach Bb
+        (Chord Cm7 1)
+        (Chord Dm7 1)
+        (Chord Ebm7 1)
+        (Chord F7 1))

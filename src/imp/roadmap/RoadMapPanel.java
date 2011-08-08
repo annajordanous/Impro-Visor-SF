@@ -777,7 +777,7 @@ public class RoadMapPanel extends JPanel {
             }
         }
         
-        setSize(WIDTH, numLines * (settings.lineHeight+settings.lineSpacing));
+        // causes unwanted scrolling toward top: setSize(WIDTH, numLines * (settings.lineHeight+settings.lineSpacing));
     }
     
     /** Draws the roadmap text (title, style, tempo, etc) */
