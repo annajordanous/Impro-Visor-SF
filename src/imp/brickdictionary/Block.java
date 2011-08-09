@@ -245,6 +245,17 @@ public class Block {
         else
             endValue = NO_END;
     }
+    
+    /** setPhraseEnd
+     * Changes a Block to be either a phrase end or no end
+     * @param value, a boolean (true marks a phrase end)
+     */
+    public void setPhraseEnd(boolean value) {
+        if(value)
+            endValue = PHRASE_END;
+        else
+            endValue = NO_END;
+    }
    
     /** isChord
      * Describes if a Block is a ChordBlock. Overridden in derived classes.

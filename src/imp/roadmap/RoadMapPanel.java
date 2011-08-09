@@ -275,8 +275,15 @@ public class RoadMapPanel extends JPanel {
     /** Returns a list of the selected blocks*/
     protected ArrayList<Block> getSelection()
     {
-        if(selectionStart != -1 && selectionEnd != -1)
+        if(selectionStart != -1 && selectionEnd != -1) {
+            int chordInd = graphicMap.get(selectionStart).getSelected();
+            if(chordInd != -1) {
+                ArrayList<Block> block = new ArrayList();
+                block.add(roadMap.getBlock(selectionStart).getChord(chordInd));
+                return block;
+            }
             return getBlocks(selectionStart, selectionEnd+1);
+        }
         return new ArrayList();
     }
     
@@ -350,8 +357,7 @@ public class RoadMapPanel extends JPanel {
         GraphicBrick brick = getBrick(brickInd);
         
         brick.selectChord(chordInd);
-        drawBrick(brickInd);
-        drawKeyMap();
+        draw();
     }
     
     /** Selects the brick at the specified brickInd with proper selection behavior.
@@ -377,13 +383,10 @@ public class RoadMapPanel extends JPanel {
         }
         
 
-        for(int i = selectionStart; i <= selectionEnd; ) {
-            graphicMap.get(i).setSelected(true);
-            drawBrick(i);
-            i++;
-        }
+        for(GraphicBrick brick : graphicMap)
+            brick.setSelected(true);
         
-        drawKeyMap();
+        draw();
     }
     
     /** Selects the bricks between the start and end indices, inclusive */
@@ -394,8 +397,7 @@ public class RoadMapPanel extends JPanel {
         selectionEnd = end;
         for(int ind = start; ind <= end; ind++)
             graphicMap.get(ind).setSelected(true);
-        drawBricks();
-        drawKeyMap();
+        draw();
     }
     
     /** Selects the brick at the specified brickInd. Deselects all other bricks. */
@@ -405,9 +407,7 @@ public class RoadMapPanel extends JPanel {
         if(index != -1) {
             selectionStart = selectionEnd = index;
             graphicMap.get(index).setSelected(true);
-            drawBrick(index);
-
-            drawKeyMap();
+            draw();
         }
     }
     
@@ -583,7 +583,15 @@ public class RoadMapPanel extends JPanel {
     protected void toggleSection()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            roadMap.getBlock(selectionEnd).setSectionEnd(!roadMap.getBlock(selectionEnd).isSectionEnd());
+            int chordInd = graphicMap.get(selectionStart).getSelected();
+            int blockInd = selectionStart;
+            if(chordInd != -1) {
+                ArrayList<Block> chords = new ArrayList(removeSelectionNoUpdate().get(0).flattenBlock());
+                chords.get(chordInd).setSectionEnd(chords.get(chordInd).getSectionEnd() != 1);
+                addBlocks(blockInd,chords);
+                selectChord(blockInd+chordInd,0);
+            } else
+                roadMap.getBlock(selectionEnd).setSectionEnd(roadMap.getBlock(selectionEnd).getSectionEnd()!=1);
             roadMap.process();
             placeBricks();
             draw();
@@ -594,12 +602,17 @@ public class RoadMapPanel extends JPanel {
     protected void togglePhrase()
     {
         if(selectionStart != -1 && selectionEnd != -1) {
-            Block block = roadMap.getBlock(selectionEnd);
-            if(block.getSectionEnd() != Block.PHRASE_END)
-                block.setSectionEnd(Block.PHRASE_END);
-            else
-                block.setSectionEnd(Block.NO_END);
+            int chordInd = graphicMap.get(selectionStart).getSelected();
+            int blockInd = selectionStart;
+            if(chordInd != -1) {
+                ArrayList<Block> chords = new ArrayList(removeSelectionNoUpdate().get(0).flattenBlock());
+                chords.get(chordInd).setPhraseEnd(chords.get(chordInd).getSectionEnd() != 2);
+                addBlocks(blockInd,chords);
+                selectChord(blockInd+chordInd,0);
+            } else 
+                roadMap.getBlock(selectionEnd).setPhraseEnd(roadMap.getBlock(selectionEnd).getSectionEnd()!=2);
             roadMap.process();
+            placeBricks();
             draw();
         }
     }
@@ -776,8 +789,6 @@ public class RoadMapPanel extends JPanel {
                 j++;
             }
         }
-        
-        // causes unwanted scrolling toward top: setSize(WIDTH, numLines * (settings.lineHeight+settings.lineSpacing));
     }
     
     /** Draws the roadmap text (title, style, tempo, etc) */

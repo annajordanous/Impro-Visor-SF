@@ -456,16 +456,9 @@ public class GraphicBrick {
             int totalLength = settings.getBlockLength(block);
             
             String name = block.getName();
-            
-            if(isSelected && false) { //TODO make this work properly
-                g2d.setColor(settings.selectedColor);
-                g2d.fillRect(x+2, y+blockHeight, metrics.stringWidth(name)+2, blockHeight);
-                g2d.setColor(settings.lineColor);
-                g2d.drawRect(x, y+blockHeight, metrics.stringWidth(name)+3, blockHeight);
-            } else {
-                name = RoadMapSettings.trimString(name,cutoff - x, metrics);
-                name = RoadMapSettings.trimString(name,totalLength, metrics);
-            }
+
+            name = RoadMapSettings.trimString(name,cutoff - x, metrics);
+            name = RoadMapSettings.trimString(name,totalLength, metrics);
             
             g2d.setColor(settings.textColor);
             g2d.drawString(name, x+2, y+blockHeight + fontOffset);
@@ -482,6 +475,7 @@ public class GraphicBrick {
     public void drawAt(Graphics g, int x, int y)
     {
         Graphics2D g2d = (Graphics2D)g;
+        FontMetrics metrics = g2d.getFontMetrics();
         
         if(isSelected)
             g2d.setColor(settings.selectedColor);
@@ -499,16 +493,19 @@ public class GraphicBrick {
             g2d.fillRect(x, y, totalLength, blockHeight);
             
             //Key
+            String key = RoadMapSettings.trimString(block.getKeyName()+" "+block.getMode(),
+                    totalLength, metrics);
             g2d.setColor(settings.lineColor);
             g2d.drawRect(x, y, totalLength, blockHeight);
             g2d.setColor(settings.textColor);
-            g2d.drawString(block.getKeyName()+block.getMode(), x+5, y+blockHeight/2+5);
+            g2d.drawString(key, x+5, y+blockHeight/2+5);
 
             //Name
+            String name = RoadMapSettings.trimString(block.getName(), totalLength, metrics);
             g2d.setColor(settings.lineColor);
             g2d.drawRect(x, y+blockHeight, totalLength, blockHeight);
             g2d.setColor(settings.textColor);
-            g2d.drawString(block.getName(), x+5, y+3*blockHeight/2+5);
+            g2d.drawString(name, x+5, y+3*blockHeight/2+5);
         }
         
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();

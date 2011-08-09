@@ -400,6 +400,8 @@
       </Properties>
       <Events>
         <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="brickLibraryFrameWindowClosing"/>
+        <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="brickLibraryFrameComponentShown"/>
+        <EventHandler event="componentHidden" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="brickLibraryFrameComponentHidden"/>
       </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -883,7 +885,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="brickLibraryMenuItem">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Brick Library" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="brickLibraryMenuItem" noResource="true"/>
               </Properties>
@@ -1261,6 +1262,7 @@
                 <TitledBorder title="Feature Width"/>
               </Border>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[300, 40]"/>
             </Property>
@@ -1301,6 +1303,8 @@
       <Properties>
         <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
         <Property name="verticalScrollBarPolicy" type="int" value="22"/>
+        <Property name="focusable" type="boolean" value="false"/>
+        <Property name="ignoreRepaint" type="boolean" value="true"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[800, 400]"/>
         </Property>
@@ -1308,9 +1312,9 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[800, 900]"/>
         </Property>
+        <Property name="requestFocusEnabled" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="roadMapScrollPaneroadMapMouseWheelMoved"/>
         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="roadMapScrollPaneroadMapReleased"/>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="roadMapScrollPaneroadMapClicked"/>
         <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="roadMapScrollPaneMouseMoved"/>

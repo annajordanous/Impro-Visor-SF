@@ -146,8 +146,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         setRoadMapTitle(notate.getTitle());
         
+        roadMapScrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        
         brickLibraryFrame.setSize(brickLibraryFrame.getPreferredSize());
-        brickLibraryFrame.setVisible(true);
         
         WindowRegistry.registerWindow(this);
     }
@@ -499,6 +500,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 brickLibraryFrameWindowClosing(evt);
             }
         });
+        brickLibraryFrame.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                brickLibraryFrameComponentShown(evt);
+            }
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                brickLibraryFrameComponentHidden(evt);
+            }
+        });
         brickLibraryFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
@@ -783,6 +792,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks."); // NOI18N
         featureWidthSlider.setValue(settings.measureLength);
         featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder("Feature Width"));
+        featureWidthSlider.setFocusable(false);
         featureWidthSlider.setMaximumSize(new java.awt.Dimension(300, 40));
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(50, 40));
         featureWidthSlider.setName("featureWidthSlider"); // NOI18N
@@ -818,14 +828,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        roadMapScrollPane.setFocusable(false);
+        roadMapScrollPane.setIgnoreRepaint(true);
         roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
         roadMapScrollPane.setPreferredSize(new java.awt.Dimension(800, 900));
-        roadMapScrollPane.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
-            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
-                roadMapScrollPaneroadMapMouseWheelMoved(evt);
-            }
-        });
+        roadMapScrollPane.setRequestFocusEnabled(false);
         roadMapScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapReleased(evt);
@@ -1155,7 +1163,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jSeparator5.setName("jSeparator5"); // NOI18N
         windowMenu.add(jSeparator5);
 
-        brickLibraryMenuItem.setSelected(true);
         brickLibraryMenuItem.setText("Brick Library"); // NOI18N
         brickLibraryMenuItem.setName("brickLibraryMenuItem"); // NOI18N
         brickLibraryMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1181,7 +1188,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_libraryTreeSelected
 
     private void previewScrollPanepreviewPaneReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneReleased
-        dropFromPreview(evt.getX(), evt.getY());
+        int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue();
+        int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
+        int x = evt.getX()+xOffset;
+        int y = evt.getY()+yOffset;
+        dropFromPreview(x, y);
 }//GEN-LAST:event_previewScrollPanepreviewPaneReleased
 
     private void previewScrollPanepreviewPaneClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneClicked
@@ -1189,16 +1200,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_previewScrollPanepreviewPaneClicked
 
     private void previewScrollPanepreviewPaneDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneDragged
-        dragFromPreview(evt.getX(), evt.getY());
+        int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue();
+        int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
+        int x = evt.getX()+xOffset;
+        int y = evt.getY()+yOffset;
+        dragFromPreview(x, y);
 }//GEN-LAST:event_previewScrollPanepreviewPaneDragged
 
     private void durationComboBoxdurationChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationComboBoxdurationChosen
         setPreviewDuration();
 }//GEN-LAST:event_durationComboBoxdurationChosen
-
-    private void roadMapScrollPaneroadMapMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapMouseWheelMoved
-        transposeSelection(-evt.getWheelRotation());
-}//GEN-LAST:event_roadMapScrollPaneroadMapMouseWheelMoved
 
     private void roadMapScrollPaneroadMapReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapReleased
         int x = evt.getX() + roadMapScrollPane.getHorizontalScrollBar().getValue();
@@ -1220,8 +1231,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 else if( roadMapPanel.getBrick(index).isSelected() &&
                         evt.getClickCount() == 2 && jndex != -1) {
                     selectChord(index,jndex);
-                    chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
-                    chordChangeDialog.setVisible(true);
+                    activateChordDialog();
                 } else if( roadMapPanel.getBrick(index).isSelected() && jndex != -1) {
                     selectChord(index,jndex);
                 } else
@@ -1408,9 +1418,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void libraryTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryTreeMouseClicked
         int clicks = evt.getClickCount();
         TreePath path = libraryTree.getPathForLocation(evt.getX(), evt.getY());
-        if(path != null && previewPanel.getBrick() != null && clicks%2==0) {
+        if(path != null && previewPanel.getBrick() != null && clicks%2==0)
             addBrickFromPreview();
-        }
     }//GEN-LAST:event_libraryTreeMouseClicked
 
     private void transposeDownMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeDownMenuItemActionPerformed
@@ -1444,11 +1453,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         windowMenu.add(jSeparator5);
         
-        for(WindowMenuItem w : WindowRegistry.getWindows()) {
-            
+        for(WindowMenuItem w : WindowRegistry.getWindows())
             windowMenu.add(w.getMI(this));       // these are static, and calling getMI updates the name on them too in case the window title changed
-            
-        }
         
         windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
@@ -1524,6 +1530,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void brickLibraryFrameWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_brickLibraryFrameWindowClosing
         brickLibraryMenuItem.setSelected(false);
+        WindowRegistry.unregisterWindow(brickLibraryFrame);
     }//GEN-LAST:event_brickLibraryFrameWindowClosing
 
     private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
@@ -1535,6 +1542,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             //dialogVariantField.setText("");
         }
     }//GEN-LAST:event_dialogNameFieldKeyReleased
+
+    private void brickLibraryFrameComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_brickLibraryFrameComponentShown
+        WindowRegistry.registerWindow(brickLibraryFrame);
+    }//GEN-LAST:event_brickLibraryFrameComponentShown
+
+    private void brickLibraryFrameComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_brickLibraryFrameComponentHidden
+        WindowRegistry.unregisterWindow(brickLibraryFrame);
+    }//GEN-LAST:event_brickLibraryFrameComponentHidden
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -1885,7 +1900,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             saveState("Drag");
             roadMapPanel.setRolloverPos(null);
             if( !roadMapPanel.isSelection(index))
-                roadMapPanel.selectBrick(index);
+                selectBrick(index);
             if( roadMapPanel.hasSelection() )
                 draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
         }
@@ -2024,6 +2039,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapPanel.selectChord(brickInd, chordInd);
         deactivateButtons();
         deleteMenuItem.setEnabled(true);
+        sectionMenu.setEnabled(true);
     }
     
     /** Deselects all bricks. */
@@ -2367,6 +2383,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Close this RoadMapFrame and clean up. */
     public void closeWindow()
     {
+        brickLibraryFrame.setVisible(false); //TODO somehow make only one window
         if(isPlaying())
             stopPlayingSelection();
         WindowRegistry.unregisterWindow(this);
@@ -2416,6 +2433,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     public void makeVisible()
     {
         setVisible(true);
+        brickLibraryMenuItem.setSelected(true);
+        brickLibraryFrame.setVisible(true);
     }
 
     /** Sets the time signature of the roadmap for Americans
@@ -2488,6 +2507,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogStyleComboBox.setSelectedItem(style);
         preferencesDialog.setVisible(true);
     }
+    
+    public void activateChordDialog()
+    {
+        ChordBlock chord = (ChordBlock)roadMapPanel.getSelection().get(0);
+        chordDialogNameField.setText(chord.getName());
+        chordDialogDurationComboBox.setSelectedIndex(chord.getDuration()/settings.slotsPerBeat);
+        chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
+        chordChangeDialog.setVisible(true);
+    }
 
     /** Gets the info from the preferences dialog */
     public void setRoadMapInfo()
@@ -2500,5 +2528,5 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
         roadMapPanel.updateBricks();
     }
-
+    
 };
