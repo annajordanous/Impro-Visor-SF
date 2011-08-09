@@ -29,6 +29,8 @@ import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.awt.event.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import imp.brickdictionary.*;
 import imp.cykparser.*;
@@ -607,6 +609,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+        });
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
             }
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -1321,6 +1328,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void featureWidthSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_featureWidthSliderChanged
         settings.measureLength = featureWidthSlider.getValue();
         roadMapPanel.placeBricks();
+        setFeatureWidthLocked(false);
     }//GEN-LAST:event_featureWidthSliderChanged
 
     private void selectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllMenuItemClicked
@@ -1557,9 +1565,18 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_brickLibraryFrameComponentHidden
 
     private void featureWidthSliderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_featureWidthSliderMouseClicked
-        if(evt.getClickCount()%2 == 0)
+        if(evt.getClickCount()%2 == 0) {
             scaleToWindow();
+        } else {
+            setFeatureWidthLocked(false);
+        }
     }//GEN-LAST:event_featureWidthSliderMouseClicked
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
+        if(border.getTitle().endsWith("(Locked)"))
+            scaleToWindow();
+    }//GEN-LAST:event_formComponentResized
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2518,6 +2535,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesDialog.setVisible(true);
     }
     
+    /** Activate the chord change dialog and set the default values*/
     private void activateChordDialog()
     {
         ChordBlock chord = (ChordBlock)roadMapPanel.getSelection().get(0);
@@ -2539,10 +2557,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapPanel.updateBricks();
     }
     
+    /** Scales the roadmap display to the current window size */
     private void scaleToWindow()
     {
-        int width = roadMapScrollPane.getWidth();
-        featureWidthSlider.setValue((width - 2*settings.xOffset)/settings.barsPerLine);
+        int width = roadMapScrollPane.getWidth()-roadMapScrollPane.getVerticalScrollBar().getWidth()-5;
+        featureWidthSlider.setValue((width - 2*settings.xOffset)/settings.barsPerLine);    
+        setFeatureWidthLocked(true);
     }
     
+    /** Lock the feature width to scale to the window */
+    private void setFeatureWidthLocked(boolean value)
+    {
+        javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
+        String title = "Feature Width";
+        if(value)
+            title += " (Locked)";
+        border.setTitle(title);
+    }
 };
