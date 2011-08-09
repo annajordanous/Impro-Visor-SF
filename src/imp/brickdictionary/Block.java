@@ -196,11 +196,11 @@ public class Block {
         duration = duration * factor;
     }
     
-    /** replaceDuration
+    /** setDuration
      * Adjusts the Block's duration to a new value
      * @param newDur, the new duration of the brick
      */
-    public void replaceDuration(int newDur) {
+    public void setDuration(int newDur) {
         duration = newDur;
     }
     

@@ -63,7 +63,7 @@ public class Brick extends Block {
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks);
          type = brickType;
-         duration = this.getDuration();
+         this.updateDuration();
          endValue = getSectionEnd();
      }
      
@@ -83,7 +83,7 @@ public class Brick extends Block {
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks);
          type = brickType;
-         duration = this.getDuration();
+         this.updateDuration();
          endValue = getSectionEnd();
      }
      
@@ -109,7 +109,7 @@ public class Brick extends Block {
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks, polymap);
          type = brickType;
-         duration = this.getDuration();
+         this.updateDuration();
          endValue = getSectionEnd();
      }
      
@@ -133,7 +133,7 @@ public class Brick extends Block {
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks, polymap);
          type = brickType;
-         duration = this.getDuration();
+         this.updateDuration();
          endValue = getSectionEnd();
      }
     
@@ -153,7 +153,7 @@ public class Brick extends Block {
         qualifier = brickQualifier;
         subBlocks = contents;
         type = brickType;
-        duration = this.getDuration();
+        this.updateDuration();
         endValue = getSectionEnd();
     }
     
@@ -179,7 +179,7 @@ public class Brick extends Block {
                 subBlocks.add(b);
         }
         type = brickType;
-        duration = this.getDuration();
+        this.updateDuration();
         endValue = getSectionEnd();
     }
 
@@ -209,7 +209,7 @@ public class Brick extends Block {
         }
         
         type = brick.getType();
-        duration = this.getDuration();
+        this.updateDuration();
         mode = brick.getMode();
         endValue = getSectionEnd();
     }
@@ -534,7 +534,7 @@ public class Brick extends Block {
                                 brickType, tokens, bricks, brickMode, polymap);
                             subBrick.transpose(
                                     Arith.long2int(subBrickKeyNum - brickKeyNum));
-                            subBrick.replaceDuration(dur);
+                            subBrick.setDuration(dur);
                         }
                         else
                         {
@@ -591,14 +591,13 @@ public class Brick extends Block {
      */
     @Override
     public final int getDuration() {
-        setDuration(); //TODO not this.
         return duration;
     }
     
-    /** setDuration
+    /** updateDuration
      * Sets the duration based upon the durations of the subblocks
      */
-    private void setDuration() {
+    private void updateDuration() {
         int dur = 0;
         for(Block b : this.getSubBlocks())
         {
@@ -665,13 +664,13 @@ public class Brick extends Block {
         
     }
     
-    /** replaceDuration
+    /** setDuration
      * Changes the duration to be as close as possible to the newly specified
      * duration
      * @param newDuration, an int duration.
      */
     @Override
-    public void replaceDuration(int newDuration) {
+    public void setDuration(int newDuration) {
         float newDurFloat = newDuration;
         float ratio = (newDurFloat / this.getDuration());
 
@@ -690,13 +689,13 @@ public class Brick extends Block {
                 Brick adjustedSubBrick = (Brick)currentBlock;
                 int newDur = 
                         Math.round(ratio * adjustedSubBrick.getDuration());
-                adjustedSubBrick.replaceDuration(newDur);
+                adjustedSubBrick.setDuration(newDur);
                 adjustedSubBlocks.add(adjustedSubBrick);
             }
         }
         
         this.subBlocks = adjustedSubBlocks;
-        this.getDuration();
+        this.updateDuration();
     }
     
     /** toString

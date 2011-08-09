@@ -272,7 +272,7 @@ public class BrickLibrary {
         {
             Brick brick = new Brick(brickMap.get(s).getFirst());
             brick.transpose((k-brick.getKey() + 12)%12);
-            brick.replaceDuration(d);
+            brick.setDuration(d);
             return brick;
         }
         else
@@ -303,7 +303,7 @@ public class BrickLibrary {
                 }
             if (brick != null) {
                 brick.transpose((k-brick.getKey() + 12)%12);
-                brick.replaceDuration(d);
+                brick.setDuration(d);
                 return brick;
             }
             

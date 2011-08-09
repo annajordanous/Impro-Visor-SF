@@ -166,6 +166,7 @@
 (brick-type Invisible      2000)
 (brick-type Overrun          30)
 (brick-type On-Off         1005)
+(brick-type Off-On         1010)
 (brick-type On              550)
 (brick-type Off             750)
 (brick-type Opening          25)
@@ -258,6 +259,12 @@
     	(Brick Perfect-Cadence Ab 2) 
     	(Brick Perfect-Cadence E 2) 
     	(Brick Perfect-Cadence C 2))
+
+(Def-Brick Diatonic-Walkup Minor Approach Bb
+        (Chord Cm7 1)
+        (Chord Dm7 1)
+        (Chord Ebm7 1)
+        (Chord F7 1))
 
 (Def-Brick Dizzy-Cadence Major Cadence C
 	(Brick Straight-Approach Gb 2)
@@ -1094,43 +1101,43 @@
 (Def-Brick Off(diminished) Minor Invisible C
         (Chord Co7 1))
 
-(Def-Brick On-Off-Major(bII) Major On-Off C
+(Def-Brick On-Off-Major-bII Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Db 1))
 
-(Def-Brick On-Off-Major(II) Major On-Off C
+(Def-Brick On-Off-Major-Somewhere Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off D 1)) 
 
-(Def-Brick On-Off-Major(bIII) Major On-Off C
+(Def-Brick On-Off-Major-bIII Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Eb 1))
 
-(Def-Brick On-Off-Major(III) Major On-Off C
+(Def-Brick On-Off-Major-III Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off E 1))
 
-(Def-Brick On-Off-Major(IV) Major On-Off C
+(Def-Brick On-Off-Major-IV Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off F 1))
 
-(Def-Brick On-Off-Major(#IV) Major On-Off C
+(Def-Brick On-Off-Major-#IV Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off F# 1))
 
-(Def-Brick On-Off-Major(bVI) Major On-Off C
+(Def-Brick On-Off-Major-Nowhere Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Ab 1))
 
-(Def-Brick On-Off-Major(VI) Major On-Off C
+(Def-Brick On-Off-Major-VI Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off A 1))
 
-(Def-Brick On-Off-Major(bVII) Major On-Off C
+(Def-Brick On-Off-Major-bVII Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off Bb 1))
 
-(Def-Brick On-Off-Major(VII) Major On-Off C
+(Def-Brick On-Off-Major-VII Major On-Off C
 	(Brick Major-On C 1)
 	(Brick Off B 1))
 
@@ -1140,55 +1147,133 @@
 	(Brick Major-On C 1))
 */
 
-(Def-Brick On-Off-Minor(bII) Minor On-Off C
+(Def-Brick On-Off-Minor-bII Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off Db 1))
 
-(Def-Brick On-Off-Minor(II) Minor On-Off C
+(Def-Brick On-Off-Minor-Somewhere Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off D 1)) 
 
-(Def-Brick On-Off-Minor(bIII) Minor On-Off C
+(Def-Brick On-Off-Minor-bIII Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off Eb 1))
 
-(Def-Brick On-Off-Minor(III) Minor On-Off C
+(Def-Brick On-Off-Minor-III Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off E 1))
 
-(Def-Brick On-Off-Minor(IV) Minor On-Off C
+(Def-Brick On-Off-Minor-IV Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off F 1))
 
-(Def-Brick On-Off-Minor(#IV) Minor On-Off C
+(Def-Brick On-Off-Minor-#IV Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off F# 1))
 
-(Def-Brick On-Off-Minor(V) Minor On-Off C
+(Def-Brick On-Off-Minor-V Minor On-Off C
         (Brick Minor-On C 1)
         (Brick Off G 1))
 
-(Def-Brick On-Off-Minor(bVI) Minor On-Off C
+(Def-Brick On-Off-Minor-Nowhere Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off Ab 1))
 
-(Def-Brick On-Off-Minor(VI) Minor On-Off C
+(Def-Brick On-Off-Minor-VI Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off A 1))
 
-(Def-Brick On-Off-Minor(bVII) Minor On-Off C
+(Def-Brick On-Off-Minor-bVII Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off Bb 1))
 
-(Def-Brick On-Off-Minor(VII) Minor On-Off C
+(Def-Brick On-Off-Minor-VII Minor On-Off C
 	(Brick Minor-On C 1)
 	(Brick Off B 1))
 
-/*
-(Def-Brick On-Off-On-Minor Minor Invisible C
-	(Brick On-Off-Minor C 1)
+(Def-Brick Off-On-Major-bII Major Off-On C
+        (Brick Off Db 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-Somewhere Major Off-On C
+        (Brick Off D 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-bIII Major Off-On C
+        (Brick Off Eb 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-III Major Off-On C
+        (Brick Off E 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-IV Major Off-On C
+        (Brick Off F 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-#IV Major Off-On C
+        (Brick Off F# 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-Nowhere Major Off-On C
+        (Brick Off Ab 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-VI Major Off-On C
+        (Brick Off A 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-bVII Major Off-On C
+        (Brick Off Bb 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Major-VII Major Off-On C
+        (Brick Off B 1)
+        (Brick Major-On C 1))
+
+(Def-Brick Off-On-Minor-bII Minor Off-On C
+	(Brick Off Db 1)
 	(Brick Minor-On C 1))
-*/
+
+(Def-Brick Off-On-Minor-Somewhere Minor Off-On C
+	(Brick Off D 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-bIII Minor Off-On C
+	(Brick Off Eb 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-III Minor Off-On C
+	(Brick Off E 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-IV Minor Off-On C
+        (Brick Off F 1)
+        (Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-#IV Minor Off-On C
+	(Brick Off F# 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-V Minor Off-On C
+	(Brick Off G 1)
+        (Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-Nowhere Minor Off-On C
+	(Brick Off Ab 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-VI Minor Off-On C
+	(Brick Off A 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-bVII Minor Off-On C
+	(Brick Off Bb 1)
+	(Brick Minor-On C 1))
+
+(Def-Brick Off-On-Minor-VII Minor Off-On C
+	(Brick Off B 1)
+	(Brick Minor-On C 1))
 
 /* Old On-Off Definitions (commented out by XS)
 (Def-Brick On-Off-To-bII Major On-Off C
@@ -1564,15 +1649,4 @@
 
 // User-defined bricks
 
-(Def-Brick On-Off-On-Minor Minor Invisible D
-        (Chord Dm7 2)
-        (Chord A7 1)
-        (Chord Dm7 2)
-        (Chord A7 1)
-        (Chord Dm7 2))
 
-(Def-Brick Diatonic-Walkup Minor Approach Bb
-        (Chord Cm7 1)
-        (Chord Dm7 1)
-        (Chord Ebm7 1)
-        (Chord F7 1))
