@@ -482,6 +482,10 @@
 	(Chord Fm 1)
 	(Chord C 1))
 
+(Def-Brick Minor-Perfect-Cadence Minor Cadence C
+        (Chord G7 1)
+        (Chord Cm7 1))
+
 (Def-Brick Moment's-Cadence Major Cadence C
 	(Brick Moment's-Approach C 4)
 	(Chord CM7 4))
@@ -571,6 +575,10 @@
 (Def-Brick Minor-POT(dominant) Minor Turnaround C
         (Chord Cm 1)
         (Brick Extended-Approach C 3))
+
+(Def-Brick Minor-POT(sad) Minor Turnaround D
+        (Brick On-Off-Minor-VI D 2)
+        (Brick Sad-Approach D 2))
 
 (Def-Brick Minor-POT+Cadence Minor Turnaround C
 	(Brick Minor-POT C 4)
@@ -712,6 +720,26 @@
 	(Chord Dm7 1)
         (Chord G7 1)
         (Chord CM7 1))  
+
+(Def-Brick Reverse-Dominant-Cycle(2 chords) Dominant Dropback G
+        (Chord G7 1)
+        (Chord D7 1))
+
+(Def-Brick Reverse-Dominant-Cycle(3 chords) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(2 chords) C 2)
+        (Chord A7 1))
+
+(Def-Brick Reverse-Dominant-Cycle(4 chords) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(3 chords) C 3)
+        (Chord E7 1))
+
+(Def-Brick Reverse-Dominant-Cycle(5 chords) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(4 chords) C 4)
+        (Chord B7 1))
+
+(Def-Brick Reverse-Dominant-Cycle(6 chords) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(5 chords) C 5)
+        (Chord F#7 1))
 
 (Def-Brick Reverse-Raindrop Major Misc C
 	(Chord Dm 1)
@@ -975,12 +1003,17 @@
 	(Chord Bb7 1)
 	(Brick POT C 4))
 
-(Def-Brick To-IV-n-Bird-SPOT Major Turnaround C
+(Def-Brick To-IV-n-Bird-SPOT(broken down) Major Turnaround C
 	(Chord CM7 1)
         (Brick GenDom F 1)
 	(Chord FM7 1)
 	(Chord Bb7 1)
 	(Brick SPOT C 4))
+
+(Def-Brick To-IV-n-Bird-SPOT(yak) Major Turnaround F
+        (Brick To-IV-n-Yak F 4)
+        (Brick SPOT F 4))
+
 
 (Def-Brick To-IV-n-Hack Major Turnaround C
 	(Chord CM7 1)
@@ -1648,5 +1681,3 @@
         (Chord C#o 1))
 
 // User-defined bricks
-
-
