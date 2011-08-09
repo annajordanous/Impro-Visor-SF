@@ -797,9 +797,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(50, 40));
         featureWidthSlider.setName("featureWidthSlider"); // NOI18N
         featureWidthSlider.setPreferredSize(new java.awt.Dimension(100, 40));
+        featureWidthSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                featureWidthSliderMouseClicked(evt);
+            }
+        });
         featureWidthSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                scaleSliderChanged(evt);
+                featureWidthSliderChanged(evt);
             }
         });
         toolBar.add(featureWidthSlider);
@@ -1313,10 +1318,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         stopPlayingSelection();
     }//GEN-LAST:event_stopButtonPressed
 
-    private void scaleSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scaleSliderChanged
+    private void featureWidthSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_featureWidthSliderChanged
         settings.measureLength = featureWidthSlider.getValue();
         roadMapPanel.placeBricks();
-    }//GEN-LAST:event_scaleSliderChanged
+    }//GEN-LAST:event_featureWidthSliderChanged
 
     private void selectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllMenuItemClicked
         selectAllBricks();
@@ -1550,6 +1555,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void brickLibraryFrameComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_brickLibraryFrameComponentHidden
         WindowRegistry.unregisterWindow(brickLibraryFrame);
     }//GEN-LAST:event_brickLibraryFrameComponentHidden
+
+    private void featureWidthSliderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_featureWidthSliderMouseClicked
+        if(evt.getClickCount()%2 == 0)
+            scaleToWindow();
+    }//GEN-LAST:event_featureWidthSliderMouseClicked
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2498,7 +2508,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }
 
     /** Activate the preferences dialog and set the default values */
-    public void activatePreferencesDialog()
+    private void activatePreferencesDialog()
     {
         prefDialogTitleField.setText(roadMapTitle);
         prefDialogTempoField.setText(String.valueOf(tempo));
@@ -2508,7 +2518,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesDialog.setVisible(true);
     }
     
-    public void activateChordDialog()
+    private void activateChordDialog()
     {
         ChordBlock chord = (ChordBlock)roadMapPanel.getSelection().get(0);
         chordDialogNameField.setText(chord.getName());
@@ -2518,7 +2528,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }
 
     /** Gets the info from the preferences dialog */
-    public void setRoadMapInfo()
+    private void setRoadMapInfo()
     {
         setRoadMapTitle(prefDialogTitleField.getText());
         int metreTop = prefDialogMetreTopField.getInt();
@@ -2527,6 +2537,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         tempo = prefDialogTempoField.getInt();
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
         roadMapPanel.updateBricks();
+    }
+    
+    private void scaleToWindow()
+    {
+        int width = roadMapScrollPane.getWidth();
+        featureWidthSlider.setValue((width - 2*settings.xOffset)/settings.barsPerLine);
     }
     
 };

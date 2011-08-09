@@ -135,9 +135,7 @@ public class RoadMapPanel extends JPanel {
         }
         numLines = (int)lines+1;
         
-        setPreferredSize(
-                new Dimension(settings.getCutoff() + settings.xOffset,
-                settings.getLineOffset()*numLines + settings.yOffset));
+        setPanelSize();
         
         draw();
     }
@@ -383,7 +381,7 @@ public class RoadMapPanel extends JPanel {
         }
         
 
-        for(GraphicBrick brick : graphicMap)
+        for(GraphicBrick brick : graphicMap.subList(selectionStart, selectionEnd + 1))
             brick.setSelected(true);
         
         draw();
@@ -662,6 +660,14 @@ public class RoadMapPanel extends JPanel {
         for(int i = 0; i < ind; i++)
             slot += roadMap.getBlock(i).getDuration();
         return slot;
+    }
+    
+    private void setPanelSize()
+    {
+        setPreferredSize(
+                new Dimension(settings.getCutoff() + settings.xOffset,
+                settings.getLineOffset()*numLines + settings.yOffset));
+        revalidate();
     }
     
     /** Returns the position of the given slot with line breaks
