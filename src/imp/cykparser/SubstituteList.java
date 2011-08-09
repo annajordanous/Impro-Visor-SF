@@ -113,20 +113,27 @@ public class SubstituteList {
         keys.addAll(l.getKeys());
     }
     
-    /** contains / 1
+    /** hasMode / 1
      * Checks if a given mode is contained in the list of chords
      * 
      * @param mode, a String describing a mode (as a chord quality)
      * @return whether mode is in the list of chord qualities
      */
-    public boolean contains(String mode)
+    public boolean hasMode(String mode)
     {
-        return names.contains(mode);
+        String tempMode = mode.toLowerCase();
+        ArrayList<String> tempList = new ArrayList<String>();
+        String temp;
+        for(String n : names) {
+            temp = n.toLowerCase();
+            tempList.add(temp);
+        }
+        return tempList.contains(tempMode);
     }
     
     /** isEmpty
      * Describes is a SubstituteList is empty
-     * @return a boolean describing whether the SubstituteRule contains no chords
+     * @return a boolean describing whether the SubstituteRule hasMode no chords
      */
     public boolean isEmpty() {
         if(names.isEmpty() || keys.isEmpty())
@@ -137,7 +144,7 @@ public class SubstituteList {
     
     /** nonEmpty
      * Describes is a SubstituteList is nonempty
-     * @return a boolean describing whether the SubstituteRule contains any chords
+     * @return a boolean describing whether the SubstituteRule hasMode any chords
      */
     public boolean nonEmpty() {
         return !isEmpty();

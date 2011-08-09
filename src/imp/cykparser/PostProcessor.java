@@ -404,7 +404,7 @@ public class PostProcessor {
         boolean secondStable = false;
         
         // Determine stability of first block
-        if(firstEquivs.contains(firstMode) || 
+        if(firstEquivs.hasMode(firstMode) || 
                 first.getType().equals("Cadence")) {
             firstStable = true;
         }
@@ -416,7 +416,7 @@ public class PostProcessor {
             secondStable = false;
         }
         
-        else if(secondEquivs.contains(secondMode)) {
+        else if(secondEquivs.hasMode(secondMode)) {
             secondStable = true;
         }
         
