@@ -31,9 +31,7 @@
      )
 
 
-(equiv Cm Cm6 Cm69 CmM7 CmM9)
-
-(equiv Co Co7)
+(equiv Cm Cminor Cm6 Cm69 CmM7 CmM9)
 
 (equiv C7 CDominant
      C7b9 C7#9 C7+ C7#11 C7b9#11 C7b9b13 C9 C9#11 C9b5 C9b13 
