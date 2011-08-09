@@ -90,6 +90,14 @@ public class Block {
         return this.key;
     }
     
+    /** setKey
+     * Set key of brick or root of ChordBlock
+     * @param k : a long
+     */
+    public void setKey(long k) {
+        this.key = k;
+    }
+    
     /** getKeyName
      * Get key of brick or root of chord as a String (e.g. "C")
      * @return the key (a String)

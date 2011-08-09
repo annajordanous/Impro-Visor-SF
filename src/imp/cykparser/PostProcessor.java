@@ -43,6 +43,8 @@ public class PostProcessor {
     public static final String[] JOINS = {"Bootstrap", "Stella", "Backslider", 
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
         "Cherokee", "Woody", "Highjump", "Bauble"};
+    public static final String[] RESOLUTIONS = {"","Happenstance","Yardbird","",
+        "","","","","","","","Tritone"};
     
     // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;
@@ -246,18 +248,31 @@ public class PostProcessor {
             if(blocks.get(i) instanceof Brick) {
                 Brick b = (Brick)blocks.get(i);
                 ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
+                Block postBlock;
                 
                 // If the brick is not the last one in the list, get chords from
                 // next block
                 if(i != blocks.size() - 1) {
-                    chordList = (ArrayList<ChordBlock>)blocks.get(i + 1).flattenBlock();
+                    postBlock = blocks.get(i + 1);
+                    chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
                 }
                 // Otherwise, loop around and get chords from first block
                 else {
-                    chordList = (ArrayList<ChordBlock>)blocks.get(0).flattenBlock();
+                    postBlock = blocks.get(0);
+                    chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
                 }
                     
                 String brickName = b.getName();
+                
+                if(brickName.equals("Straight Approach")) {
+                    String altResolution = getAlternateResolution(b, chordList.get(0));
+                    if(!altResolution.isEmpty()) {
+                        brickName = brickName.replace("Straight", altResolution);
+                        b.setName(brickName);
+                        b.setKey(postBlock.getKey());
+                        b.setMode(postBlock.getMode());
+                    }
+                }
                 
                 // Check if brick is an approach that resolves to next block
                 if(b.getType().equals("Approach") && b.isSectionEnd() && 
@@ -282,7 +297,7 @@ public class PostProcessor {
             
             // Case in which current block is a dominant chord
             else if (((ChordBlock)blocks.get(i)).getSymbol().startsWith("7")) {
-                ChordBlock b = (ChordBlock)blocks.get(i);
+                ChordBlock c = (ChordBlock)blocks.get(i);
                 Block postBlock;
                 ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
                 
@@ -298,9 +313,20 @@ public class PostProcessor {
                     chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
                 }
                 
+                String altResolution = getAlternateResolution(c, chordList.get(0));
+                Block b;
+                if(!altResolution.isEmpty()) {
+                    b = new Brick(c, altResolution, chordList.get(0).getMode(), 
+                            postBlock.getKey());
+                }
+                else {
+                    b = new ChordBlock(c);
+                }
+                
+                
                 // Check for single-chord launcher
-                if(doesResolve(b, chordList.get(0)) && b.isSectionEnd()) {
-                    Brick uniLauncher = new Brick(b, chordList.get(0).getMode());
+                if(doesResolve(c, chordList.get(0)) && c.isSectionEnd()) {
+                    Brick uniLauncher = new Brick(c, chordList.get(0).getMode());
                     
                     alteredList.add(uniLauncher);
                 }
@@ -314,6 +340,20 @@ public class PostProcessor {
         }
         
         return alteredList;
+    }
+    
+    public static String getAlternateResolution(Block approach, ChordBlock target) {
+        ArrayList<ChordBlock> chordList = (ArrayList<ChordBlock>) approach.flattenBlock();
+        long domRoot = chordList.get(chordList.size() - 1).getKey();
+        int domRootInt = Long.valueOf(domRoot).intValue();
+        long resRoot = target.getKey();
+        int resRootInt = Long.valueOf(resRoot).intValue();
+        
+        int diff = (resRootInt - domRootInt + OCTAVE) % OCTAVE;
+        
+        String altResolution = RESOLUTIONS[diff];
+        
+        return altResolution;
     }
     
      /** findJoins

@@ -260,6 +260,26 @@ public class Brick extends Block {
         mode = m;
         endValue = c.getSectionEnd();
     }
+    
+    /** Brick (Special launcher constructor)
+     * Creates a specific launcher from a single chord
+     * 
+     * @param c : a ChordBlock
+     * @param name : indetifies the type of launcher (a String)
+     * @param m : the new brick's mode
+     * @param newKey : the new brick's key 
+     */
+    public Brick(ChordBlock c, String name, String m, long newKey) {
+        super(name + " Launcher");
+        key = newKey;
+        type = "Launcher";
+        ArrayList<Block> singleton = new ArrayList<Block>();
+        singleton.add(c);
+        subBlocks = singleton;
+        duration = c.getDuration();
+        mode = m;
+        endValue = c.getSectionEnd();
+    }
   
     /** modeHelper
      * Used to determine the mode of a list of Blocks
