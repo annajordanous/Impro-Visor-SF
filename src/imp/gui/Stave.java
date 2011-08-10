@@ -2890,11 +2890,11 @@ public class Stave
       
       int xSection = xCoordinate - 25;
       
-      switch( chordProg.getSectionInfo().sectionAtSlot(i) )
+      switch( sectionInfo.sectionAtSlot(i) )
         {
           case Block.SECTION_END:
             g.drawString(SECTION_MARK+
-                         chordProg.getSectionInfo().getStyleFromSlots(i),
+                         sectionInfo.getStyleFromSlots(i),
                          xSection,
                          headSpace + (staveLine * lineSpacing) - styleYoffset);
             
@@ -2907,10 +2907,20 @@ public class Stave
               break;
               
           case Block.PHRASE_END:
-            g.setFont(phraseMarkFont);
-            g.drawString(PHRASE_MARK,
+            if( totalMeasureCount > 1 )
+              {
+              g.setFont(phraseMarkFont);
+              g.drawString(PHRASE_MARK,
                          xSection,
                          headSpace + (staveLine * lineSpacing) - styleYoffset);
+               }
+            else
+              {
+              g.drawString(SECTION_MARK+
+                           sectionInfo.getStyleFromSlots(i),
+                           xSection,
+                           headSpace + (staveLine * lineSpacing) - styleYoffset);
+              }
               break;
              
         }

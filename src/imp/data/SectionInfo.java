@@ -58,7 +58,7 @@ public class SectionInfo implements Constants, Serializable {
 
     public SectionInfo copy() {
         SectionInfo si = new SectionInfo(chords);
-        //si.records = new Vector<SectionRecord>();
+        si.records = new Vector<SectionRecord>();
         
         for(SectionRecord record: records )
           {
@@ -244,7 +244,7 @@ public class SectionInfo implements Constants, Serializable {
     public SectionInfo extract(int first, int last, ChordPart chords) {
         SectionInfo si = new SectionInfo(chords);
         
-        //si.records = new Vector<SectionRecord>();
+        si.records = new Vector<SectionRecord>();
         
         Iterator<SectionRecord> k = records.iterator();
         
