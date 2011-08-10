@@ -302,6 +302,11 @@ public class ChordPart extends Part implements Serializable{
     public void setSectionInfo(SectionInfo si) {
         sectionInfo = si;
     }
+    
+    public boolean hasOneSection()
+      {
+        return sectionInfo.hasOneSection();
+      }
 
     public long sequence(Sequence seq, 
                          int ch, 

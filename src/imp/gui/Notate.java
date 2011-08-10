@@ -1367,9 +1367,11 @@ public class Notate
      * which seems dumb. I commented it out so that scores can retain their sections
      * 
      * Answer: Without this, new leadsheets open with Style: unknown, which is not good.
+     * 
+     * See Score.setStyle() for an attempted fix.
      */
     
-    //score.getChordProg().setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+    score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
     sectionInfo = score.getChordProg().getSectionInfo().copy();
 
@@ -8961,8 +8963,8 @@ private void setSectionParameters()
         Score tempScore = new Score();
         tempScore.addPart();
         tempScore.getPart(0).addRest(new Rest(chordToPlay.getRhythmValue()));
-        tempScore.getChordProg().addChord(chordToPlay);
-        tempScore.getChordProg().setStyle("no-style");
+        tempScore.addChord(chordToPlay);
+        tempScore.setStyle("no-style");
         int temp = chordToPlay.getRhythmValue();
         chordToPlay.setRhythmValue(480);
         try
@@ -9396,9 +9398,9 @@ private String getChordRedirectName(int row)
 
     cScore.getPart(0).addRest(new Rest(c.getRhythmValue()));
 
-    cScore.getChordProg().addChord(c);
+    cScore.addChord(c);
 
-    cScore.getChordProg().setStyle(s);
+    cScore.setStyle(s);
 
     new PlayScoreCommand(cScore, 0, false, 0, getTransposition(), false, 4*BEAT).execute();
 

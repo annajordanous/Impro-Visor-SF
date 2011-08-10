@@ -1039,12 +1039,29 @@ public class Score implements Constants, Serializable {
     
 
     /**
-     * Set the style of this score
+     * Set the style of this score, but only if there is no SectionInfo
+     * already established.
      */
     
     public void setStyle(String styleName)
     {
+      if( chordProg.getSectionInfo() == null || chordProg.getSectionInfo().hasOneSection() )
+        {
         chordProg.setStyle(styleName);
+        }
+    }
+
+    /**
+     * Set the style of this score, but only if there is no SectionInfo
+     * already established.
+     */
+    
+    public void setStyle(Style style)
+    {
+      if( chordProg.getSectionInfo() == null || chordProg.getSectionInfo().hasOneSection() )
+        {
+        chordProg.setStyle(style);
+        }
     }
 
 
@@ -1092,4 +1109,8 @@ public int getBassChannel()
     return style == null ? DEFAULT_BASS_CHANNEL : style.getBassChannel();
    }
 
+public void addChord(Chord chord)
+  {
+    chordProg.addChord(chord);
+  }
 }

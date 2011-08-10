@@ -286,6 +286,11 @@ public class SectionInfo implements Constants, Serializable {
     public int size() {
         return records.size();
     }
+    
+    public boolean hasOneSection()
+      {
+        return records.size() == 1;
+      }
 
     public String getInfo(int index) {
         SectionRecord record = records.get(index);
