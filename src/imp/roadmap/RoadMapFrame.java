@@ -2522,8 +2522,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     public void makeVisible()
     {
         setVisible(true);
-        brickLibraryMenuItem.setSelected(true);
-        brickLibraryFrame.setVisible(true);
+        if( brickLibraryMenuItem.isSelected() )
+          {
+          brickLibraryFrame.setVisible(true);
+          }
     }
 
     /** Sets the time signature of the roadmap for Americans
