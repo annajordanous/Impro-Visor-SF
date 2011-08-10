@@ -153,6 +153,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickLibraryFrame.setSize(brickLibraryFrame.getPreferredSize());
         
         WindowRegistry.registerWindow(this);
+        
+        //settings.generateColors(.3f);
     }
 
     /** This method is called from within the constructor to
@@ -194,6 +196,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogTempoField = new imp.roadmap.IntegerField();
         prefDialogMetreTopField = new imp.roadmap.IntegerField();
         prefDialogMetreBottomField = new imp.roadmap.IntegerField();
+        prefDialogKeyColorCheckBox = new javax.swing.JCheckBox();
         brickLibraryFrame = new javax.swing.JFrame();
         keyComboBox = new javax.swing.JComboBox();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -420,7 +423,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 9;
+        gridBagConstraints.gridwidth = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(prefDialogStyleComboBox, gridBagConstraints);
@@ -472,6 +475,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.add(jLabel8, gridBagConstraints);
 
         prefDialogTempoField.setText("120"); // NOI18N
+        prefDialogTempoField.setMinimumSize(new java.awt.Dimension(38, 28));
         prefDialogTempoField.setName("prefDialogTempoField"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -481,18 +485,30 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.add(prefDialogTempoField, gridBagConstraints);
 
         prefDialogMetreTopField.setText("4"); // NOI18N
+        prefDialogMetreTopField.setMinimumSize(new java.awt.Dimension(23, 28));
         prefDialogMetreTopField.setName("prefDialogMetreTopField"); // NOI18N
+        prefDialogMetreTopField.setPreferredSize(new java.awt.Dimension(23, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         jPanel1.add(prefDialogMetreTopField, gridBagConstraints);
 
         prefDialogMetreBottomField.setText("4"); // NOI18N
+        prefDialogMetreBottomField.setMinimumSize(new java.awt.Dimension(23, 28));
         prefDialogMetreBottomField.setName("prefDialogMetreBottomField"); // NOI18N
+        prefDialogMetreBottomField.setPreferredSize(new java.awt.Dimension(23, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 7;
         gridBagConstraints.gridy = 2;
         jPanel1.add(prefDialogMetreBottomField, gridBagConstraints);
+
+        prefDialogKeyColorCheckBox.setSelected(true);
+        prefDialogKeyColorCheckBox.setText("Key Coloration"); // NOI18N
+        prefDialogKeyColorCheckBox.setName("prefDialogKeyColorCheckBox"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(prefDialogKeyColorCheckBox, gridBagConstraints);
 
         preferencesDialog.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -2289,6 +2305,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
     private javax.swing.JButton prefDialogAcceptButton;
+    private javax.swing.JCheckBox prefDialogKeyColorCheckBox;
     private javax.swing.JLabel prefDialogMeterLabel;
     private imp.roadmap.IntegerField prefDialogMetreBottomField;
     private imp.roadmap.IntegerField prefDialogMetreTopField;
@@ -2605,7 +2622,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     {
         ChordBlock chord = (ChordBlock)roadMapPanel.getSelection().get(0);
         chordDialogNameField.setText(chord.getName());
-        chordDialogDurationComboBox.setSelectedIndex(chord.getDuration()/settings.slotsPerBeat);
+        chordDialogDurationComboBox.setSelectedItem(chord.getDuration()/settings.slotsPerBeat);
         chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
         chordChangeDialog.setVisible(true);
     }
@@ -2619,6 +2636,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setMetre(new int[]{metreTop, metreBottom});
         tempo = prefDialogTempoField.getInt();
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
+        settings.keysColored = prefDialogKeyColorCheckBox.isSelected();
         roadMapPanel.updateBricks();
     }
     

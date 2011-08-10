@@ -70,6 +70,12 @@ public class RoadMapSettings {
     public Color playLineColor = Color.RED;
     /** Color of the play section markers */
     public Color playSectionColor = Color.GREEN;
+    /** Are keys colored? */
+    public boolean keysColored = true;
+    /** Color for non colored mode */
+    public Color defaultColor = Color.LIGHT_GRAY;
+    /** Color for no key */
+    public Color noKeyColor = Color.WHITE;
     /** Colors associated with different keys */
     public Color[] keyColors = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255), // Db
@@ -179,7 +185,12 @@ public class RoadMapSettings {
      */
     public Color getKeyColor(int key)
     {
-        return keyColors[(int)key % 12];
+        if(keysColored) {
+            if(key != -1)
+                return keyColors[(int)key % 12];
+            return noKeyColor;
+        }
+        return defaultColor;
     }
     
     /**
@@ -281,4 +292,10 @@ public class RoadMapSettings {
         this.metre[1] = metre[1];
     }
     
+    public void generateColors(float sat)
+    {
+        for(int i = 0; i < 12; i++) {
+            keyColors[(i*7)%12] = Color.getHSBColor(i/13.0f, sat, 1.0f);
+        }
+    }
 }
