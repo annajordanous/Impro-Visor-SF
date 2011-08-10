@@ -266,12 +266,11 @@ public class Brick extends Block {
      * 
      * @param c : a ChordBlock
      * @param name : indetifies the type of launcher (a String)
-     * @param m : the new brick's mode
-     * @param newKey : the new brick's key 
+     * @param m : the new brick's mode 
      */
-    public Brick(ChordBlock c, String name, String m, long newKey) {
+    public Brick(ChordBlock c, String name, String m) {
         super(name + " Launcher");
-        key = newKey;
+        key = c.getKey();
         type = "Launcher";
         ArrayList<Block> singleton = new ArrayList<Block>();
         singleton.add(c);

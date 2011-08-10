@@ -316,8 +316,7 @@ public class PostProcessor {
                 String altResolution = getAlternateResolution(c, chordList.get(0));
                 Block b;
                 if(!altResolution.isEmpty()) {
-                    b = new Brick(c, altResolution, chordList.get(0).getMode(), 
-                            postBlock.getKey());
+                    b = new Brick(c, altResolution, "Dominant");
                 }
                 else {
                     b = new ChordBlock(c);
@@ -444,7 +443,11 @@ public class PostProcessor {
         boolean secondStable = false;
         
         // Determine stability of first block
-        if(firstEquivs.hasMode(firstMode) || 
+        if(first.getType().equals("Approach") || 
+                first.getType().equals("Launcher")) {
+            firstStable = false;
+        }
+        else if(firstEquivs.hasMode(firstMode) || 
                 first.getType().equals("Cadence")) {
             firstStable = true;
         }
