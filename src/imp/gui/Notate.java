@@ -23255,6 +23255,7 @@ public void roadMapThisAnalyze()
     setNormalStatus();
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     roadmapFrame.makeVisible();
+    roadmapFrame.deselectBricks();
   }
 
 
