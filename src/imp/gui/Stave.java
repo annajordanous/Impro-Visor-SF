@@ -2874,6 +2874,8 @@ public class Stave
     Note pitchDeterminer = null;
 
     SectionInfo sectionInfo = chordProg.getSectionInfo();
+    
+    Style previousStyle = sectionInfo.getStyleFromSlots(0);
             
     // cycle through the entire part
     for( int i = 0; i < cstrLines.length; i++ )
@@ -2890,13 +2892,18 @@ public class Stave
       
       int xSection = xCoordinate - 25;
       
+      Style style = sectionInfo.getStyleFromSlots(i);
+      
       switch( sectionInfo.sectionAtSlot(i) )
         {
           case Block.SECTION_END:
-            g.drawString(SECTION_MARK+
-                         sectionInfo.getStyleFromSlots(i),
+              if( i == 0 || !style.equals(previousStyle) )
+                {
+                  g.drawString(SECTION_MARK+
+                         style,
                          xSection,
                          headSpace + (staveLine * lineSpacing) - styleYoffset);
+                }
             
               // At a section other than the very start of the chorus,
               // draw a double bar.
@@ -2907,24 +2914,25 @@ public class Stave
               break;
               
           case Block.PHRASE_END:
-            if( totalMeasureCount > 1 )
+            if( i == 0 )
+              {
+               g.drawString(SECTION_MARK+
+                             style,
+                             xSection,
+                             headSpace + (staveLine * lineSpacing) - styleYoffset);
+               }
+            else
               {
               g.setFont(phraseMarkFont);
               g.drawString(PHRASE_MARK,
                          xSection,
                          headSpace + (staveLine * lineSpacing) - styleYoffset);
                }
-            else
-              {
-              g.drawString(SECTION_MARK+
-                           sectionInfo.getStyleFromSlots(i),
-                           xSection,
-                           headSpace + (staveLine * lineSpacing) - styleYoffset);
-              }
               break;
              
         }
-
+      previousStyle = style;
+      
       int noteValue = orignote == null ? 0 : orignote.getRhythmValue();
       
      // Check to see if the proper resolution is set for a beat.
