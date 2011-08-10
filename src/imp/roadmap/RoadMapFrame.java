@@ -886,7 +886,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        roadMapScrollPane.setFocusable(false);
         roadMapScrollPane.setIgnoreRepaint(true);
         roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
@@ -1293,6 +1292,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         } else if(evt.getButton() == evt.BUTTON3) {
             // Nothing
         }
+        roadMapScrollPane.requestFocus();
 }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
@@ -1453,6 +1453,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             this.requestFocus();
             }
         }
+        evt.consume();
     }//GEN-LAST:event_textualEntryKeyPressed
 
     private void chordDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogAcceptButtonActionPerformed
