@@ -1003,6 +1003,9 @@ public class Leadsheet
   static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
                               int rise, int slotsPerBar, Key key)
     {
+      
+    Style previousStyle = null;
+    
     Polylist chordInput = chordInputReversed.cons(NOCHORD).reverse();
     // NOCHORD is to force final output below
 
@@ -1083,6 +1086,7 @@ public class Leadsheet
           String dispatcher = (String)item.first();
           item = item.rest();
           
+          boolean isPhrase = false;
           //System.out.println("dispatcher = " + dispatcher);
           switch( lookup(dispatcher, keyword) )
             {
@@ -1097,6 +1101,8 @@ public class Leadsheet
                 }
                 else
                 {
+                previousStyle = style;
+                
                 item = item.rest();
                 while( item.nonEmpty() )
                   {
@@ -1115,6 +1121,10 @@ public class Leadsheet
               }
               break;
 
+            case PHRASE:
+                isPhrase = true;
+                /* fall-through */
+                
             case SECTION:
               while( item.nonEmpty() )
                 {
@@ -1125,13 +1135,21 @@ public class Leadsheet
                           sectItem.first().equals("style") &&
                           sectItem.second() instanceof String )
                     {
-                    Style style = Advisor.getStyle((String)sectItem.second());
+                    String stylename = (String)sectItem.second();
+                    Style style = Advisor.getStyle(stylename);
+                    
+                    if( style == null )
+                      {
+                      ErrorLog.log(ErrorLog.WARNING, "Style " + stylename + " not found");
+                      style = previousStyle;
+                      }
+
                     int index = measure * slotsPerBar;
                     if( seenFirstChord )
                       {
                       index += slotsPerBar;
                       }
-                    chords.addSection(style, index, false);
+                    chords.addSection(style, index, isPhrase);
                     //System.out.println("adding section at " + index);
                     }
                   }
@@ -1139,14 +1157,16 @@ public class Leadsheet
                 }
  
               break;
-                
+ /*               
             case PHRASE:
 
                     int index = measure * slotsPerBar;
-                    chords.addSection(null, index, true);
+                    chords.addSection(previousStyle, index, true);
                     //System.out.println("adding phrase at " + index);
 
               break;
+
+*/
             }
           continue;
           }
