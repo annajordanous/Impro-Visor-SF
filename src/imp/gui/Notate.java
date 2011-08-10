@@ -1365,7 +1365,10 @@ public class Notate
 
     /* Why is this here? I don't know. It resets the section info of the score,
      * which seems dumb. I commented it out so that scores can retain their sections
+     * 
+     * Answer: Without this, new leadsheets open with Style: unknown, which is not good.
      */
+    
     //score.getChordProg().setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
     sectionInfo = score.getChordProg().getSectionInfo().copy();
@@ -3775,6 +3778,11 @@ public class Notate
         swingTF.setMinimumSize(new java.awt.Dimension(50, 19));
         swingTF.setNextFocusableComponent(autoStaveBtn);
         swingTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        swingTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                swingTFActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -3901,8 +3909,13 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(setMeasureButton, gridBagConstraints);
 
-        phraseCheckBox.setText("Phrase\n");
+        phraseCheckBox.setText("Phrase ");
         phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
+        phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phraseCheckBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -8626,6 +8639,14 @@ public class Notate
       tempoSetOldTempo = tempoSet.getText();
         
     }//GEN-LAST:event_tempoSetFocusGained
+
+    
+private void setSectionParameters()
+  {
+  setSectionPrefs();
+
+  sectionListModel.refresh(); 
+  }
 
     private void setMeasureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMeasureButtonActionPerformed
 
@@ -18246,8 +18267,7 @@ public void WriteLeadsheetToFile(File file) {
 
     private void measureTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_measureTFActionPerformed
     {//GEN-HEADEREND:event_measureTFActionPerformed
-      setSectionPrefs();
-      sectionListModel.refresh();
+      setSectionParameters();
     }//GEN-LAST:event_measureTFActionPerformed
 
     private void adviceScrollListCellsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_adviceScrollListCellsMouseClicked
@@ -20762,6 +20782,14 @@ private void createRoadMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt
 private void layoutTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutTFActionPerformed
     // TODO add your handling code here:
 }//GEN-LAST:event_layoutTFActionPerformed
+
+private void phraseCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phraseCheckBoxActionPerformed
+    setSectionParameters();
+}//GEN-LAST:event_phraseCheckBoxActionPerformed
+
+private void swingTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_swingTFActionPerformed
+        setSectionParameters();
+}//GEN-LAST:event_swingTFActionPerformed
 
 public void fileStepForward()
 {
