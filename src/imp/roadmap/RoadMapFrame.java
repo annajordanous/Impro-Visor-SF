@@ -201,6 +201,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         deleteButton = new javax.swing.JButton();
         durationComboBox = new javax.swing.JComboBox(durationChoices);
         toolBar = new javax.swing.JToolBar();
+        fileStepBackBtn = new javax.swing.JButton();
+        fileStepForwardBtn = new javax.swing.JButton();
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
         newBrickButton = new javax.swing.JButton();
@@ -637,6 +639,39 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         toolBar.setName("toolBar"); // NOI18N
         toolBar.setPreferredSize(new java.awt.Dimension(500, 50));
 
+        fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
+        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current directory.\n"); // NOI18N
+        fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        fileStepBackBtn.setFocusable(false);
+        fileStepBackBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        fileStepBackBtn.setName("fileStepBackBtn"); // NOI18N
+        fileStepBackBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        fileStepBackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileStepBackBtnActionPerformed(evt);
+            }
+        });
+        toolBar.add(fileStepBackBtn);
+
+        fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
+        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current directory.\n"); // NOI18N
+        fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        fileStepForwardBtn.setFocusable(false);
+        fileStepForwardBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setName("fileStepForwardBtn"); // NOI18N
+        fileStepForwardBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        fileStepForwardBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileStepForwardBtnActionPerformed(evt);
+            }
+        });
+        toolBar.add(fileStepForwardBtn);
+
         scaleLabel.setName("scaleLabel"); // NOI18N
         toolBar.add(scaleLabel);
 
@@ -751,7 +786,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         toolBar.add(analyzeButton);
 
         loopToggleButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         loopToggleButton.setText("Loop"); // NOI18N
         loopToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loopToggleButton.setFocusable(false);
@@ -769,7 +804,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(loopToggleButton);
 
-        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playButton.setText("\n"); // NOI18N
         playButton.setToolTipText("Play the selection.\n"); // NOI18N
@@ -1595,6 +1630,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 libraryTree.getRowCount() * libraryTree.getRowHeight()));
     }//GEN-LAST:event_libraryTreeTreeExpanded
 
+    private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
+        notate.fileStepBackward();
+}//GEN-LAST:event_fileStepBackBtnActionPerformed
+
+    private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
+        notate.fileStepForward();
+}//GEN-LAST:event_fileStepForwardBtnActionPerformed
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -2220,6 +2263,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JComboBox durationComboBox;
     private javax.swing.JMenu editMenu;
     private javax.swing.JSlider featureWidthSlider;
+    private javax.swing.JButton fileStepBackBtn;
+    private javax.swing.JButton fileStepForwardBtn;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
     private javax.swing.JLabel jLabel5;
