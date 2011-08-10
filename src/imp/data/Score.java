@@ -150,6 +150,10 @@ public class Score implements Constants, Serializable {
      */
 
     private Polylist layout = Polylist.nil;
+    
+    private int DEFAULT_DRUM_CHANNEL = 9;
+ 
+    private int DEFAULT_BASS_CHANNEL = 6;
 
     /**
      * Creates an empty Score with default title, tempo, and volume.
@@ -1073,5 +1077,19 @@ public Style getStyle()
 {
     return chordProg.getStyle();
 }
+
+public int getDrumChannel()
+  {
+    Style style = getStyle();
+    
+    return style == null ? DEFAULT_DRUM_CHANNEL : style.getDrumChannel();
+   }
+
+public int getBassChannel()
+  {
+    Style style = getStyle();
+    
+    return style == null ? DEFAULT_BASS_CHANNEL : style.getBassChannel();
+   }
 
 }

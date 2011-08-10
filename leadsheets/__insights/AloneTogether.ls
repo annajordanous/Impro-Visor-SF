@@ -55,7 +55,7 @@ Gm7b5 | C7 | FM7 | Em7b5 A7 |
 (section (style swing)) 
 
 Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
-Dm | Bb7 A7#9 | Dm | / | 
+Dm | Bb7 A7 | Dm | / | 
 
 (part
     (type melody)

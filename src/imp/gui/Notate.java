@@ -9971,11 +9971,11 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
         
         if(score.getDrumMuted()) {
             
-            midiSynth.setChannelVolume(score.getChordProg().getStyle().getDrumChannel(), 0);
+            midiSynth.setChannelVolume(score.getDrumChannel(), 0);
             
         } else {
             
-            midiSynth.setChannelVolume(score.getChordProg().getStyle().getDrumChannel(), v);
+            midiSynth.setChannelVolume(score.getDrumChannel(), v);
             
         }
         
@@ -10005,11 +10005,11 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
         
         if(score.getBassMuted())
             
-            midiSynth.setChannelVolume(score.getChordProg().getStyle().getBassChannel(), 0);
+            midiSynth.setChannelVolume(score.getBassChannel(), 0);
         
         else
             
-            midiSynth.setChannelVolume(score.getChordProg().getStyle().getBassChannel(), v);
+            midiSynth.setChannelVolume(score.getBassChannel(), v);
         
     }
     

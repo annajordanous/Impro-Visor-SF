@@ -15,16 +15,6 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style swing
-    (swing 0.67)
-    (comp-swing 0.67)
-    (bass-high g-)
-    (bass-low g---)
-    (bass-base c--)
-    (chord-high a)
-    (chord-low c-)
-    (chord-base c- e- g-)
-)
 (part
     (type chords)
     (title Untitled Part)
