@@ -362,7 +362,8 @@ public class ChordBlock extends Block {
         
         if(q.startsWith("M") || q.equals("") || q.startsWith("6"))
             m = "Major";
-        else if(q.startsWith("7"))
+        else if(q.startsWith("7") || q.startsWith("9") || q.startsWith("11") || 
+                q.startsWith("13"))
             m = "Dominant";
         else
             m = "Minor";
