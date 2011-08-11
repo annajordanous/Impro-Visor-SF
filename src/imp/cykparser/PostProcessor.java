@@ -122,13 +122,27 @@ public class PostProcessor {
         // Create array so we can loop through correctly
         Block[] blockArray = blocks.toArray(new Block[0]);
         
+        boolean ncFlag = false;
+        int ncDuration = 0;
+        
+        int index = 1;
+        Block lastBlock = blockArray[blockArray.length - index];
+        
+        while(lastBlock.isChord() && ((ChordBlock)lastBlock).getChord()
+                .getChordSymbol().isNOCHORD()) {
+            ncDuration += lastBlock.getDuration();
+            index++;
+            lastBlock = blockArray[blockArray.length - index];
+        }
+        
         // Initialize KeySpan using last block
-        current.setKey(blockArray[blockArray.length - 1].getKey());
-        current.setMode(blockArray[blockArray.length - 1].getMode());
-        current.setDuration(blockArray[blockArray.length - 1].getDuration());
+        current.setKey(lastBlock.getKey());
+        current.setMode(lastBlock.getMode());
+        current.setDuration(lastBlock.getDuration() + ncDuration);
+        ncDuration = 0;
         
         // Loop through blocks backwards, 
-        for(int i = blockArray.length - 2; i >= 0; i--) {
+        for(int i = blockArray.length - index - 1; i >= 0; i--) {
             // Create new KeySpan for new section
             if(blockArray[i].isSectionEnd()) {
                 // Match mode to second block if first block is an approach or
@@ -154,6 +168,11 @@ public class PostProcessor {
                 current = new KeySpan(blockArray[i].getKey(),
                             blockArray[i].getMode(), blockArray[i].getDuration());
                 
+                if(ncFlag) {
+                    current.setDuration(current.getDuration() + ncDuration);
+                    ncFlag = false;
+                    ncDuration = 0;
+                }
             }
             // Case in which first block is a brick
             else if(blockArray[i] instanceof Brick) {
@@ -187,6 +206,12 @@ public class PostProcessor {
                         current = new KeySpan(blockArray[i].getKey(), 
                                 blockArray[i].getMode(), 
                                 blockArray[i].getDuration());
+                        
+                        if(ncFlag) {
+                            current.setDuration(current.getDuration() + ncDuration);
+                            ncFlag = false;
+                            ncDuration = 0;
+                        }
                     }
                 }
                 // End of current key -- add to the list
@@ -196,13 +221,24 @@ public class PostProcessor {
 
                     current = new KeySpan(blockArray[i].getKey(),
                             blockArray[i].getMode(), blockArray[i].getDuration());
+                    
+                    if(ncFlag) {
+                        current.setDuration(current.getDuration() + ncDuration);
+                        ncFlag = false;
+                        ncDuration = 0;
+                    }
                 }
             }
             // Case in which first block is a chord
             else {
                 ChordBlock c = (ChordBlock)blockArray[i];
+                
+                if(c.getChord().getChordSymbol().isNOCHORD()) {
+                    ncDuration += c.getDuration();
+                    ncFlag = true;
+                }
                 // Check if chord is diatonically within current KeySpan
-                if(diatonicChordCheck(c, current.getKey(), current.getMode())) {
+                else if(diatonicChordCheck(c, current.getKey(), current.getMode())) {
                     current.setDuration(current.getDuration() + c.getDuration());
                 }
                 // If chord is diminished, add it onto current KeySpan
@@ -216,6 +252,11 @@ public class PostProcessor {
             
                     current = new KeySpan(c.getKey(), c.getMode(), 
                             c.getDuration());
+                    if(ncFlag) {
+                        current.setDuration(current.getDuration() + ncDuration);
+                        ncFlag = false;
+                        ncDuration = 0;
+                    }
                 }
             }
         }
