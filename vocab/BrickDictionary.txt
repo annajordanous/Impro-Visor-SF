@@ -482,7 +482,7 @@
 	(Chord Fm 1)
 	(Chord C 1))
 
-(Def-Brick Minor-Perfect-Cadence Minor Cadence C
+(Def-Brick Minor-Perfect-Cadence Minor Invisible C
         (Chord G7 1)
         (Chord Cm7 1))
 

@@ -185,7 +185,7 @@ public class BinaryProduction extends AbstractProduction {
         if (a.getKey() != NC && b.getKey() != NC &&
                 modKeys(key2 - key1) == modKeys(b.getKey() - a.getKey()) &&
                 (a.getSymbol().equals(name1) || a.getTrimmedSymbol().equals(name1)) && 
-                (b.getSymbol().equals(name2) || b.getTrimmedSymbol().equals(name2)))   
+                (b.getSymbol().equals(name2)))
             return modKeys(b.getKey() - key2);
         
         // In the event that the production is incorrect (most of the time)

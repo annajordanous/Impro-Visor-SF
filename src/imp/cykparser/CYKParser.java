@@ -438,7 +438,7 @@ public class CYKParser
         cykTable[index][index].addAll(unaries);
         
     }
-    
+        
     /** findNonterminal
      * findNontermimal looks at every single possible combination of 
      * nonterminals from previously filled cells and sees if there is a 
@@ -512,6 +512,7 @@ public class CYKParser
                                 // with a 0-duration final chord to put in the 
                                 // table later.
                                 if (!(rule.getType().equals("On-Off")) && 
+                                        !(rule.getType().equals("Off-On")) &&
                                         !(symbol2.isSectionEnd()) &&
                                         !(symbol2.isOverlap()) &&
                                         !(symbol2.getDuration() == 0))
