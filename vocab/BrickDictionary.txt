@@ -168,7 +168,6 @@
 (brick-type On-Off         1005)
 (brick-type Off-On         1010)
 (brick-type On              550)
-(brick-type Off             750)
 (brick-type Opening          25)
 (brick-type Turnaround       20)
 (brick-type Misc             40)

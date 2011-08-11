@@ -197,15 +197,27 @@ public class Brick extends Block {
         ListIterator blockIter = brick.getSubBlocks().listIterator();
         while (blockIter.hasNext()) {
             Block block = (Block)blockIter.next();
-            Block newBlock;
-            if (block instanceof Brick) {
-                newBlock = new Brick((Brick) block);
-                
+            if (block.isOverlap())
+            {
+                if (block.isBrick())
+                {
+                    Brick overlapBrick = new Brick((Brick)block);
+                    subBlocks.addAll(overlapBrick.flattenBlock());
+                }
+            }
+            else if (block instanceof Brick) {
+                Brick nextBrick = new Brick((Brick) block);
+                String subName = nextBrick.getName();
+                if (subName.contains("Launcher")) {
+                    String newName = subName.replaceAll(" \\(Launcher\\)", "");
+                    newName.replaceAll("Launcher", "Approach");
+                    nextBrick.setName(newName);
+                }
+                subBlocks.add(nextBrick);
             }
             else {
-                newBlock = new ChordBlock((ChordBlock) block);
+                subBlocks.add(new ChordBlock((ChordBlock) block));
             }
-            subBlocks.add(newBlock); 
         }
         
         type = brick.getType();
