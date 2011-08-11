@@ -42,8 +42,6 @@ public class TreeNode {
     // Constants
     public static final double CHORD_COST = 1000;     // the default cost of a
                                                       // chord in parsing
-    public static final double CHORD_SUB_COST = 1050; // the cost of a chord
-                                                      // substitution
     public static final double OVERLAP_COST = 5;      // the additional cost
                                                       // of an overlap
     
@@ -168,8 +166,8 @@ public class TreeNode {
         chords.add(chord);
         key = k;
         symbol = name;
-        cost = CHORD_SUB_COST;
-        toPrint = true;
+        cost = CHORD_COST;
+        toPrint = false;
         isEnd = chord.isSectionEnd();
         isSub = true;
         height = 0;
