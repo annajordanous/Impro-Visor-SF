@@ -41,6 +41,7 @@ import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
 import imp.util.MidiPlayListener;
+import java.util.Arrays;
 
 import polya.Tokenizer;
 
@@ -151,7 +152,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapScrollPane.getVerticalScrollBar().setUnitIncrement(20);
         
         brickLibraryFrame.setSize(brickLibraryFrame.getPreferredSize());
-        
+    
         WindowRegistry.registerWindow(this);
         
         //settings.generateColors(.3f);
@@ -1252,6 +1253,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /* IMPORTANT: Any menu item with accelerators should include the conditional
+     * if(!roadMapTextEntry.isFocusOwner())
+     * Otherwise it will do actions while you type in the text field.
+     * I've added it to all menu items just in case they're given accelerators.
+     * It's dumb, but it's for safety. Feel free to implement a better solution.
+     */
     // <editor-fold defaultstate="collapsed" desc="Events">
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
         setPreview();
@@ -1388,43 +1395,43 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_featureWidthSliderChanged
 
     private void selectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllMenuItemClicked
-        selectAllBricks();
+        if(!roadMapTextEntry.isFocusOwner()) selectAllBricks();
     }//GEN-LAST:event_selectAllMenuItemClicked
 
     private void undoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMenuItemActionPerformed
-        undo();
+        if(!roadMapTextEntry.isFocusOwner()) undo();
     }//GEN-LAST:event_undoMenuItemActionPerformed
 
     private void redoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoMenuItemActionPerformed
-        redo();
+        if(!roadMapTextEntry.isFocusOwner()) redo();
     }//GEN-LAST:event_redoMenuItemActionPerformed
 
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
-        cutSelection();
+        if(!roadMapTextEntry.isFocusOwner()) cutSelection();
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
-        copySelection();
+        if(!roadMapTextEntry.isFocusOwner()) copySelection();
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
-        pasteSelection();
+        if(!roadMapTextEntry.isFocusOwner()) pasteSelection();
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
-        deleteSelection();
+        if(!roadMapTextEntry.isFocusOwner()) deleteSelection();
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void flattenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenMenuItemActionPerformed
-        flattenSelection();
+        if(!roadMapTextEntry.isFocusOwner()) flattenSelection();
     }//GEN-LAST:event_flattenMenuItemActionPerformed
 
     private void breakMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_breakMenuItemActionPerformed
-        breakSelection();
+        if(!roadMapTextEntry.isFocusOwner()) breakSelection();
     }//GEN-LAST:event_breakMenuItemActionPerformed
 
     private void toggleSectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleSectionMenuItemActionPerformed
-        toggleSectionBreak();
+        if(!roadMapTextEntry.isFocusOwner()) toggleSectionBreak();
     }//GEN-LAST:event_toggleSectionMenuItemActionPerformed
 
     private void loopToggleButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loopToggleButtonPressed
@@ -1469,7 +1476,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             this.requestFocus();
             }
         }
-        evt.consume();
     }//GEN-LAST:event_textualEntryKeyPressed
 
     private void chordDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogAcceptButtonActionPerformed
@@ -1493,11 +1499,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_libraryTreeMouseClicked
 
     private void transposeDownMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeDownMenuItemActionPerformed
-        transposeSelection(1);
+        if(!roadMapTextEntry.isFocusOwner()) transposeSelection(1);
     }//GEN-LAST:event_transposeDownMenuItemActionPerformed
 
     private void transposeUpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeUpMenuItemActionPerformed
-        transposeSelection(-1);
+        if(!roadMapTextEntry.isFocusOwner()) transposeSelection(-1);
     }//GEN-LAST:event_transposeUpMenuItemActionPerformed
 
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
@@ -1538,7 +1544,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_formWindowActivated
 
     private void togglePhraseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePhraseMenuItemActionPerformed
-        togglePhraseEnd();
+        if(!roadMapTextEntry.isFocusOwner()) togglePhraseEnd();
     }//GEN-LAST:event_togglePhraseMenuItemActionPerformed
 
     private void openLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLeadsheetMIActionPerformed
@@ -1546,11 +1552,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_openLeadsheetMIActionPerformed
 
     private void appendToLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToLeadsheetMIaction
-        appendSelectionToNotate();
+        if(!roadMapTextEntry.isFocusOwner()) appendSelectionToNotate();
     }//GEN-LAST:event_appendToLeadsheetMIaction
 
     private void appendToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToNewLeadsheetMIaction
-        sendSelectionToNewNotate();
+        if(!roadMapTextEntry.isFocusOwner()) sendSelectionToNewNotate();
     }//GEN-LAST:event_appendToNewLeadsheetMIaction
 
     private void keyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyComboBoxActionPerformed
@@ -1583,7 +1589,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
 
     private void preferencesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuItemActionPerformed
-        activatePreferencesDialog();
+        if(!roadMapTextEntry.isFocusOwner()) activatePreferencesDialog();
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void prefDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButtonActionPerformed
@@ -1595,7 +1601,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
 
     private void brickLibraryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickLibraryMenuItemActionPerformed
-        brickLibraryFrame.setVisible(brickLibraryMenuItem.isSelected());
+        if(!roadMapTextEntry.isFocusOwner()) brickLibraryFrame.setVisible(brickLibraryMenuItem.isSelected());
     }//GEN-LAST:event_brickLibraryMenuItemActionPerformed
 
     private void brickLibraryFrameWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_brickLibraryFrameWindowClosing
@@ -1709,12 +1715,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
         
+        ArrayList<String> categoryNames = new ArrayList(Arrays.asList(brickLibrary.getTypes()));
         ArrayList<DefaultMutableTreeNode> categories = new ArrayList();
-        ArrayList<String> categoryNames = new ArrayList();
-
+        
+        for(String name : categoryNames)
+            categories.add(new DefaultMutableTreeNode(name));
         
         DefaultMutableTreeNode node = null;
-        DefaultMutableTreeNode category = null;
         
         for( LinkedList<Brick> variants : bricks )
         {
@@ -1727,20 +1734,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             if(variants.size() > 1)
                 for( Brick variant : variants)
                     node.add(new DefaultMutableTreeNode(variant.getQualifier()));
-            
-            category = new DefaultMutableTreeNode(type);
-            
+             
             int ind = categoryNames.indexOf(type);
             
             if(ind != -1)
                 categories.get(ind).add(node);
-            else {
-                category.add(node);
-                categories.add(category);
-                root.add(category);
-                categoryNames.add(type);
-            }   
+            else
+                System.err.println(type+" is not in type list.");
         }
+        
+        for(DefaultMutableTreeNode type : categories)
+            root.add(type);
         
         libraryTreeModel = new DefaultTreeModel(root);
     }
