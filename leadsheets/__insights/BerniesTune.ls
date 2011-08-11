@@ -34,8 +34,7 @@
     (key -1)
 )
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 Dm | / | Bb7#11 | / | 
 
 (section (style swing)) 

@@ -49,25 +49,23 @@ G7 | / | GbM7 | / |
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
 
-(section (style latin)) 
-
+(phrase (style latin)) 
 Gm7 | Bbm7 Eb7 | FM7 | E7 | 
 
-(section (style latin)) 
-
+(phrase (style latin)) 
 AM7 | C7 | Bm7 | E7 | 
 
-(section (style latin)) 
-
+(phrase (style latin)) 
 AM7 | A#o | Bm7 | E7 | 
 
-(section (style latin)) 
-
+(phrase (style latin)) 
 AM7 | F#m7 | Bm7 | E7 | 
 
+(phrase (style latin)) 
+C | C#o | Dm7 | G7 | 
+
 (section (style latin)) 
 
-C | C#o | Dm7 | G7 | 
 Gm7 | D7 | Gm7 | C7 | 
 
 (section (style latin)) 
@@ -75,13 +73,14 @@ Gm7 | D7 | Gm7 | C7 |
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
 
-(section (style latin)) 
-
+(phrase (style latin)) 
 Gm7 | Eb7 | FM7 | Abo7 | 
 
+(phrase (style latin)) 
+G7 | / | Bbm7 | Eb7 | 
+
 (section (style latin)) 
 
-G7 | / | Bbm7 | Eb7 | 
 G7 | C7 | FM7 | Gm7/C | 
 
 (part

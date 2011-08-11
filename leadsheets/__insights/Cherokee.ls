@@ -38,7 +38,12 @@
 
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7#11 | / | 
+
+(phrase (style swing)) 
 BbM7 | / | Gm7 | C7#11 | 
+
+(section (style swing)) 
+
 Cm7 | G7 | Cm7 | F7+ | 
 
 (section (style swing)) 
@@ -48,18 +53,24 @@ EbM7 | / | Ab7 | / |
 BbM7 | / | Gm7 | C7#11 | 
 Cm7 | F7 | BbM7 | / | 
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 C#m7 | F#7 | BM7 | / | 
 Bm7 | E7 | AM7 | / | 
+
+(section (style swing)) 
+
 Am7 | D7 | GM7 | / | 
 Gm7 | C7 | Cm7 | F7+ | 
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7 | / | 
+
+(phrase (style swing)) 
 BbM7 | / | Gm7 | C7#11 | 
+
+(section (style swing)) 
+
 Cm7 | F7 | BbM7 | / | 
 
 (part

@@ -1,5 +1,5 @@
-(title Airegin)
-(composer Sonny Rollins)
+(title Major Joins)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,11 +10,11 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
-(layout)
+(layout 3)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -27,46 +27,63 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
     (key 0)
 )
 
-(phrase (style swing)) 
-Fm | C7#9 | Fm | Cm7 F7 | 
+(section (style swing)) 
+
+CM7 | Dm7 | G7 | 
+(section (style swing)) 
+
+CM7 | 
+Ebm7 | G#7 | 
+(section (style swing)) 
+
+CM7 | Em7 | 
+A7 | 
+(section (style swing)) 
+
+CM7 | Fm7 | Bb7 | 
 
 (section (style swing)) 
 
-Bbm | F7#9 | Bbm | / | 
+CM7 | F#m7 | B7 | 
+(section (style swing)) 
+
+CM7 | 
+Gm7 | C7 | 
+(section (style swing)) 
+
+CM7 | G#m7 | 
+C#7 | 
+(section (style swing)) 
+
+CM7 | Am7 | D7 | 
 
 (section (style swing)) 
 
-Bbm | Dm7 G7 | CM7 | C#m7 F#7 | 
-BM7 | Cm7 F7 | BbM7 | / | 
-
+CM7 | Bbm7 | Eb7 | 
 (section (style swing)) 
 
-Bbm7 | Eb7 | AbM7 | Gm7b5 C7 | 
-
-(phrase (style swing)) 
-Fm | C7#9 | Fm | Cm7 F7 | 
-
+CM7 | 
+Bm7 | E7 | 
 (section (style swing)) 
 
-Bbm | F7#9 | Bbm | / | 
-
+CM7 | Cm7 | 
+F7 | 
 (section (style swing)) 
 
-DbM7 | Dm7b5 G7 | Cm7b5 | F7 | 
-Bbm7 | Eb7 | AbM7 | Gm7b5 C7 | 
+CM7 | Dbm7 | Gb7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 73)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)

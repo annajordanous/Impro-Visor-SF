@@ -15,6 +15,16 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
+(style swing
+    (swing 0.67)
+    (comp-swing 0.67)
+    (bass-high g-)
+    (bass-low c---)
+    (bass-base e--)
+    (chord-high a)
+    (chord-low d-)
+    (chord-base c- e- g-)
+)
 (part
     (type chords)
     (title Untitled Part)
@@ -24,28 +34,28 @@
     (key 0)
 )
 
-(phrase)
+(phrase (style swing)) 
 CM7 | / | D7#11 | / | 
 
 (section (style swing)) 
 
 Dm7 | G7 | CM7 A7 | Dm7 G7 | 
 
-(phrase)
+(phrase (style swing)) 
 CM7 | / | D7#11 | / | 
 
 (section (style swing)) 
 
 Dm7 | G7 | CM7 | C7 | 
 
-(phrase)
+(phrase (style swing)) 
 FM7 | / | / | / | 
 
 (section (style swing)) 
 
 D7 | / | Dm7 | G7 | 
 
-(phrase)
+(phrase (style swing)) 
 CM7 | / | D7#11 | / | 
 
 (section (style swing)) 

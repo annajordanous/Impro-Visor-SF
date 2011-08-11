@@ -44,9 +44,11 @@ BbM7 | Gm7 | Gm7/C | Cm7/F F7 |
 BbM7 | Fm7 Bb7 | EbM7 | Ab7 | 
 Dm7 G7 | C7 / Cm7/F F7 | BbM7 | F7 F7/Eb | 
 
+(phrase (style ballad)) 
+Bb/D D+ | EbM7#11 | Dm7 D7/F# Gm7 / | Cm7 F7/Eb | 
+
 (section (style ballad)) 
 
-Bb/D D+ | EbM7#11 | Dm7 D7/F# Gm7 / | Cm7 F7/Eb | 
 Bb/D D+ | EbM7 / Dm7 Gm7 | C7 | Cm7/F F7 | 
 
 (section (style ballad)) 

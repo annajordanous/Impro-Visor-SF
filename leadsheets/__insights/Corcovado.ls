@@ -34,24 +34,32 @@
     (key 0)
 )
 
+(phrase (style swing)) 
+D7/A | / | Abo | / | 
+
 (section (style swing)) 
 
-D7/A | / | Abo | / | 
 Gm7 | C7 | FM7 | / | 
 
+(phrase (style swing)) 
+Fm7 | Bb7 | Em7b5 | A7+ | 
+
 (section (style swing)) 
 
-Fm7 | Bb7 | Em7b5 | A7+ | 
 D7 | / | Dm7b5 | G7 G#o7 | 
 
+(phrase (style swing)) 
+D7/A | / | Abo | / | 
+
 (section (style swing)) 
 
-D7/A | / | Abo | / | 
 Gm7 | C7 | FM7 | / | 
 
+(phrase (style swing)) 
+Fm7 | Bb7 | Em7 | Am7 A7 | 
+
 (section (style swing)) 
 
-Fm7 | Bb7 | Em7 | Am7 A7 | 
 Dm7 | G7 | Em7b5 | A7#9 | 
 Dm7 | G7 | 
 (part
