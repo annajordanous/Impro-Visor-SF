@@ -114,7 +114,6 @@ public class PostProcessor {
         ArrayList<Block> blocks = roadmap.getBlocks();
         
         // Check for an empty roadmap
-        System.err.println(blocks);
         if(blocks.isEmpty() || 
                 // special case for a new leadsheet
                 (blocks.size() == 1 && blocks.get(0).isChord() &&
