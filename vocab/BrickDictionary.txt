@@ -608,9 +608,16 @@
 	(Brick Straight-Approach C 2)
         (Chord CM7 2))
 
-(Def-Brick Pennies-Ending Major Cadence C
+(Def-Brick Pennies-Ending(main) Major Cadence C
 	(Brick Pennies-Approach C 6)
 	(Chord CM7 2))
+
+(Def-Brick Pennies-Ending(side-slipping) Major Cadence C
+        (Brick Major-On F 2)
+        (Brick Nowhere-Approach D 4)
+        (Brick Stablemates-Cadence C 8)
+        (Brick Straight-Approach C 2))
+
 
 (Def-Brick Perfect-Cadence Major Cadence C
 	(Chord G7 1)
