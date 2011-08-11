@@ -2191,7 +2191,6 @@ public class Notate
         jSeparator22 = new javax.swing.JSeparator();
         newMI = new javax.swing.JMenuItem();
         openLeadsheetMI = new javax.swing.JMenuItem();
-        createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         openRecentLeadsheetMenu = new javax.swing.JMenu();
         mostRecentLeadsheetMI = new javax.swing.JMenuItem();
         openRecentLeadsheetNewWindowMenu = new javax.swing.JMenu();
@@ -2282,6 +2281,8 @@ public class Notate
         emptyRoadMapMI = new javax.swing.JMenuItem();
         roadMapThisMI = new javax.swing.JMenuItem();
         roadMapThisAnalyze = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -7493,15 +7494,6 @@ public class Notate
         });
         fileMenu.add(openLeadsheetMI);
 
-        createRoadMapCheckBox.setText("Create Roadmap for Open Leadsheet ");
-        createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
-        createRoadMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createRoadMapCheckBoxActionPerformed(evt);
-            }
-        });
-        fileMenu.add(createRoadMapCheckBox);
-
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
@@ -8259,6 +8251,16 @@ public class Notate
             }
         });
         roadmapMenu.add(roadMapThisAnalyze);
+        roadmapMenu.add(jSeparator1);
+
+        createRoadMapCheckBox.setText("Generate Roadmap on Opening Leadsheet");
+        createRoadMapCheckBox.setToolTipText("Create roadmap of leadsheet if checked.");
+        createRoadMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createRoadMapCheckBoxActionPerformed(evt);
+            }
+        });
+        roadmapMenu.add(createRoadMapCheckBox);
 
         menuBar.add(roadmapMenu);
 
@@ -22535,6 +22537,7 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator14;
     private javax.swing.JSeparator jSeparator16;
@@ -23235,6 +23238,11 @@ public void makeVisible(Notate oldNotate)
 public void setCreateRoadMapCheckBox(boolean value)
   {
     createRoadMapCheckBox.setSelected(value);
+  }
+
+public boolean getCreateRoadMapCheckBox()
+  {
+    return createRoadMapCheckBox.isSelected();
   }
 
 

@@ -6284,15 +6284,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetMIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="createRoadMapCheckBox">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Create Roadmap for Open Leadsheet "/>
-                <Property name="toolTipText" type="java.lang.String" value="Create roadmap of leadsheet if checked."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRoadMapCheckBoxActionPerformed"/>
-              </Events>
-            </MenuItem>
             <Menu class="javax.swing.JMenu" name="openRecentLeadsheetMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Open Recent Leadsheet (same window)"/>
@@ -7176,6 +7167,17 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roadMapThisAnalyzeAction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="createRoadMapCheckBox">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Generate Roadmap on Opening Leadsheet"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create roadmap of leadsheet if checked."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRoadMapCheckBoxActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

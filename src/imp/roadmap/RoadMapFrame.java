@@ -1649,10 +1649,18 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
         notate.fileStepBackward();
+        if(notate.getCreateRoadMapCheckBox())
+            ;//notate.roadMapThisAnalyze();
+        else
+            notate.roadMapThis();
 }//GEN-LAST:event_fileStepBackBtnActionPerformed
 
     private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
         notate.fileStepForward();
+        if(notate.getCreateRoadMapCheckBox())
+            ;//notate.roadMapThisAnalyze();
+        else
+            notate.roadMapThis();
 }//GEN-LAST:event_fileStepForwardBtnActionPerformed
 
 //</editor-fold>

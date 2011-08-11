@@ -334,7 +334,11 @@ public class Brick extends Block {
      */ 
     @Override
     public ArrayList<Block> getSubBlocks() {
-        return this.subBlocks;
+        Block lastChord = subBlocks.get(subBlocks.size() - 1);
+        if(lastChord.isChord() && lastChord.isOverlap())
+            return new ArrayList(subBlocks.subList(0, subBlocks.size() - 1));
+                                // Danger: this makes a copy
+        return this.subBlocks;  // Doesn't
     }
     
     /** isOverlap
