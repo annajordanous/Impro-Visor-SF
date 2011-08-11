@@ -264,6 +264,11 @@ public class PostProcessor {
             }
         }
         
+        // Special case for NC chord at beginning of song
+        if(ncFlag) {
+            keymap.add(0, current);
+            current = new KeySpan(-1, "", ncDuration);
+        }
         // Add first KeySpan in song to list
         keymap.add(0, current);
         blocks = new ArrayList<Block>(Arrays.asList(blockArray));
