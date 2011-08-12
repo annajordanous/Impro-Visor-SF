@@ -474,7 +474,8 @@ public class Brick extends Block {
                 // If a subblock is a brick, split it into components and then
                 // look up the corresponding brick in the library to construct
                 // the necessary new brick.
-                if(blockType.equals("Brick"))
+                if(blockType.equals("Brick") && (pList.length() == 3 ||
+                                                 pList.length() == 4))
                 {
                     // determine the information about the name, qualifier, etc.
                     String subBrickName = BrickLibrary.dashless(pList.first().toString());
@@ -587,7 +588,7 @@ public class Brick extends Block {
                 }
                 
                 // If a subblock is a chord, make an appropriate Chord object
-                else if(blockType.equals("Chord"))
+                else if(blockType.equals("Chord") && pList.length() == 2)
                 {
                     String chordName = pList.first().toString();
                     pList = pList.rest();
@@ -604,6 +605,12 @@ public class Brick extends Block {
                         ErrorLog.log(ErrorLog.FATAL, chordName + ": " +
                                 "Duration not of type long: " + durObj, true);
                     }
+                }
+                
+                else {
+                    ErrorLog.log(ErrorLog.WARNING, "Incorrect subblock of " +
+                            name + ": " + blockType + 
+                            " " + pList.toStringSansParens());
                 }
             }
         }
