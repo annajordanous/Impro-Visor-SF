@@ -329,9 +329,9 @@ public class PostProcessor {
                     // If the name has "Approach", replace it with "Launcher"
                     if(brickName.contains("Approach")) 
                         brickName = brickName.replace("Approach", "Launcher");
-                    // If not, append "-Launcher" to the end
+                    // If not, append "(Launcher)" to the end
                     else
-                        brickName = brickName + " Launcher";
+                        brickName = brickName + " (Launcher)";
                     b.setName(brickName);
                     b.setType("Launcher");
                     

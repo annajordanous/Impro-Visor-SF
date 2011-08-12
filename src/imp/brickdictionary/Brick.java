@@ -210,7 +210,7 @@ public class Brick extends Block {
                 String subName = nextBrick.getName();
                 if (subName.contains("Launcher")) {
                     String newName = subName.replaceAll(" \\(Launcher\\)", "");
-                    newName.replaceAll("Launcher", "Approach");
+                    newName = newName.replaceAll("Launcher", "Approach");
                     nextBrick.setName(newName);
                 }
                 subBlocks.add(nextBrick);

@@ -89,9 +89,10 @@ public class BrickLibrary {
         boolean added = addBrick(brick);
         if (!added)
             return;
-            
+        
+        Brick definitionBrick = new Brick(brick);
         // make a properly-formatted brick definition
-        Polylist defn = brick.toBrickDefinition();
+        Polylist defn = definitionBrick.toBrickDefinition();
         String defnString = defn.toString();
         if (!brick.getQualifier().equals(""))
             defnString.replaceFirst(" \\(", "\\(");    
