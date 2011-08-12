@@ -59,9 +59,11 @@ Dm7 | G7 | CM7 | A7 |
 D7 | G7 | Em7 | Am7 | 
 Dm7 | G7 | CM7 | FM7 | 
 
+(phrase (style waltz)) 
+F#m7b5 | B7 | Em7 | A7 | 
+
 (section (style waltz)) 
 
-F#m7b5 | B7 | Em7 | A7 | 
 Dm7 / A7 | Dm7 / A7 | Dm7 / Ab7 | G7 | 
 
 (section (style waltz)) 
