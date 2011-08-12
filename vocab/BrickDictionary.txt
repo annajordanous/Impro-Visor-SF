@@ -192,9 +192,13 @@
         (Chord Dm7  1)
         (Chord G7  1))
 
-(Def-Brick Autumnal-Cadence(variant) Minor Cadence A
+(Def-Brick Autumnal-Cadence(var1) Minor Cadence A
 	(Brick Autumnal-Approach C 6)
 	(Chord Am 2))
+
+(Def-Brick Autumnal-Cadence(var2) Minor Cadence C
+        (Chord Fm7 2)
+        (Brick Sad-Cadence C 2))
 
 (Def-Brick Autumnal-Approach(var1) Minor Approach A
 	(Brick Straight-Approach C 2)
@@ -555,9 +559,11 @@
         (Chord Dm7/G 1)
         (Chord G7 1))
 
-//(Def-Brick POT(short) Major Turnaround C
-//        (Chord C 2)
-//        (Brick Straight-Approach C 2))
+(Def-Brick POT-Spring-sub Major Turnaround C
+	(Chord C 1)
+        (Chord Am7 1)
+        (Chord Dm7 1)
+        (Brick Straight-Approach Eb 1))
 
 (Def-Brick POT+Cadence Major Turnaround C
 	(Brick POT C 4)
@@ -794,12 +800,21 @@
 */
 
 (Def-Brick Satin-Cadence Major Cadence C
-	(Brick Satin-Approach C 4)
+	(Brick Side-Slips(2) C 4)
 	(Chord CM7 4))
-
+/*
 (Def-Brick Satin-Approach Major Approach C
 	(Brick Straight-Approach G 2)
 	(Brick Straight-Approach Gb 2))
+*/
+
+(Def-Brick Side-Slips(2) Major Approach C
+	(Brick Straight-Approach Db 2)
+	(Brick Straight-Approach C 2))
+
+(Def-Brick Side-Slips(4) Major Approach C
+	(Brick Side-Slips(2) D 2)
+	(Brick Side-Slips(2) C 2))
 
 (Def-Brick Sharp-Fourpenny-Approach Major Approach C
 	(Chord F#m7b5 2)
@@ -966,6 +981,15 @@
         (Chord Em7 1)
         (Brick Extended-Approach C 3))
 
+(Def-Brick Multi-Sub-POT Major Turnaround C
+        (Chord C 2)
+        (Chord Bbm7 1)
+        (Chord Eb7 1)
+        (Chord Am7 1)
+        (Chord D7 1)
+        (Chord Abm7 1)
+        (Chord Db7 1))
+
 (Def-Brick TINGLe-Dropback Major Dropback C
 	(Chord CM7 1)
 	(Chord F7 1)
@@ -1095,6 +1119,14 @@
 (Def-Brick Four-Goes-Tritone-Approach Major Approach C
         (Brick Three-Goes-Tritone-Approach C 1)
         (Brick Tritone-Approach C 1))
+
+(Def-Brick Two-Goes-Dominant-Approach Major Approach C
+        (Brick Dominant-Cycle(2 chords) C 1)
+        (Brick Dominant-Cycle(2 chords) C 1))
+
+(Def-Brick Two-Goes-Somewhere-Cadence Major Approach C
+        (Brick Two-Goes-Dominant-Approach C 4)
+        (Chord C 1))
 
 (Def-Brick Whoopee-Turnaround Major Turnaround C
 	(Brick Upslide C 2)

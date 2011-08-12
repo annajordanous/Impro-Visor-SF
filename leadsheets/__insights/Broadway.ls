@@ -1,4 +1,4 @@
-(title Blue and Sentimental)
+(title Broadway)
 (composer )
 (show )
 (year )
@@ -34,22 +34,34 @@
     (key 0)
 )
 
-(section (style swing)) 
-
-EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | EbM7 Bb7+ | 
-
-(section (style swing)) 
-
-EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | EbM7 Eb7 | 
+(phrase (style swing)) 
+CM7 | C7 | FM7 | / | 
 
 (section (style swing)) 
 
-AbM7 Ao | EbM7 Eb7 | AbM7 Ao | EbM7 Bb7+ | 
+CM7 A7 | Dm7 G7 | CM7 / Bbm7 Eb7 | Am7 D7 Abm7 Db7 | 
+
+(phrase (style swing)) 
+CM7 | C7 | FM7 | / | 
 
 (section (style swing)) 
 
-EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | EbM7 D7 Db7 C7 | 
-F7 Bb7 | EbM7 Bb7+ | 
+CM7 A7 | Dm7 G7 | CM7 | / | 
+
+(phrase (style swing)) 
+Gm7 | C7 | FM7 | F#m7 B7 | 
+
+(section (style swing)) 
+
+Fm7 | Bb7 | EbM7 Ab7 | D7 G7 | 
+
+(phrase (style swing)) 
+CM7 | C7 | FM7 | / | 
+
+(section (style swing)) 
+
+CM7 A7 | Dm7 G7 | CM7 A7 | Dm7 G7 | 
+
 (part
     (type melody)
     (title )
@@ -59,4 +71,4 @@ F7 Bb7 | EbM7 Bb7+ |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

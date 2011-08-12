@@ -34,9 +34,11 @@
     (key -3)
 )
 
+(phrase (style latin)) 
+Cm7 | / | 
 (section (style latin)) 
 
-Cm7 | / | Fm9 | / | 
+Fm7 | / | 
 
 (section (style latin)) 
 
@@ -44,7 +46,7 @@ Dm7b5 | G7 | CmM7 | / |
 
 (section (style latin)) 
 
-Ebm9 | Ab7 | DbM9 | / | 
+Ebm7 | Ab7 | DbM7 | / | 
 
 (section (style latin)) 
 
