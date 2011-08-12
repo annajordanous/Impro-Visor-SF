@@ -106,7 +106,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
     /** Prefix on the frame title */
     private static String roadMapTitlePrefix = "RoadMap: ";
-    
+    /** Suffix for constrained feature width */
+    private static String featureWidthSuffix = "(Constrained)";
     /** Title of this piece */
     public String roadMapTitle = "Untitled";
     /** Style of this piece */
@@ -338,6 +339,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         addBrickDialog.getContentPane().add(dialogTypeLabel, gridBagConstraints);
 
         dialogVariantLabel.setText("Variant:"); // NOI18N
+        dialogVariantLabel.setEnabled(false);
         dialogVariantLabel.setName("dialogVariantLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1613,9 +1615,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         if(brickLibrary.hasBrick(BrickLibrary.dashless(dialogNameField.getText()))) {
             System.err.println(dialogNameField.getText());
             dialogVariantField.setEditable(true);
+            dialogVariantLabel.setEnabled(true);
         } else {
             dialogVariantField.setEditable(false);
-            //dialogVariantField.setText("");
+            dialogVariantLabel.setEnabled(false);
         }
     }//GEN-LAST:event_dialogNameFieldKeyReleased
 
@@ -1637,7 +1640,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
-        if(border.getTitle().endsWith("(Locked)"))
+        if(border.getTitle().endsWith(featureWidthSuffix))
             scaleToWindow();
     }//GEN-LAST:event_formComponentResized
 
@@ -1733,7 +1736,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             
             if(variants.size() > 1)
                 for( Brick variant : variants)
-                    node.add(new DefaultMutableTreeNode(variant.getQualifier()));
+                    node.add(new DefaultMutableTreeNode(variant.getVariant()));
              
             int ind = categoryNames.indexOf(type);
             
@@ -2219,10 +2222,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         cykParser.createRules(brickLibrary);
         initLibraryTree();
         libraryTree.setModel(libraryTreeModel);
-        if (scaledBrick.getQualifier().isEmpty())
+        if (scaledBrick.getVariant().isEmpty())
             addToLibraryTree(scaledBrick.getName());
         else
-            addToLibraryTree(scaledBrick.getName(), scaledBrick.getQualifier());
+            addToLibraryTree(scaledBrick.getName(), scaledBrick.getVariant());
     }
     
     /** Adds a brick name to the library tree */
@@ -2666,7 +2669,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
         String title = "Feature Width";
         if(value)
-            title += " (Locked)";
+            title += " "+featureWidthSuffix;
         border.setTitle(title);
     }
 };

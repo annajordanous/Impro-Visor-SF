@@ -314,7 +314,7 @@ public class TreeNode {
                 newChords.add(zeroChord);
                 ArrayList<Block> newBlocks = new ArrayList<Block>();
                 newBlocks.addAll(newChords);
-                Brick newBrick = new Brick(block.getName(), ((Brick)block).getQualifier(),
+                Brick newBrick = new Brick(block.getName(), ((Brick)block).getVariant(),
                         block.getKey(), block.getType(), newBlocks, block.getMode());
                 newNode = new TreeNode(newBrick, newChords, cost + 5);
             }

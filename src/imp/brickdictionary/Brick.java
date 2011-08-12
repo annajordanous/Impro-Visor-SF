@@ -42,24 +42,24 @@ public class Brick extends Block {
     
     private ArrayList<Block> subBlocks; // Components of a Brick
     private String type;                // The class of Brick (e.g. "Cadence")
-    private String qualifier = "";      // The qualifier of a Brick name, if it
+    private String variant = "";        // The variant of a Brick name, if it
                                         // shares a name with another Brick
     
     /** Brick / 7
-     * Constructs a Brick based on a qualifier and a complete BrickLibrary
+     * Constructs a Brick based on a variant and a complete BrickLibrary
      * 
      * @param brickName, a String
-     * @param brickQualifier, a String
+     * @param brickVariant, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, a Polylist describing bricks and chords
      * @param bricks, a BrickLibrary
      * @param m, the mode (a String)
      */
-     public Brick(String brickName, String brickQualifier, long brickKey, String brickType,
+     public Brick(String brickName, String brickVariant, long brickKey, String brickType,
          Polylist contents, BrickLibrary bricks, String m) {
          super(brickName, brickKey, m);
-         qualifier = brickQualifier;
+         variant = brickVariant;
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks);
          type = brickType;
@@ -88,11 +88,11 @@ public class Brick extends Block {
      }
      
     /** Brick / 8
-     * Constructs a new Brick based on construction details + qualifier
+     * Constructs a new Brick based on construction details + variant
      * mid-dictionary-creation
      * 
      * @param brickName, a String
-     * @param brickQualifier, a String
+     * @param brickVariant, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, a Polylist describing bricks and chords
@@ -101,11 +101,11 @@ public class Brick extends Block {
      * @param polymap, a LinkedHashMap<String, LinkedList<Polylist>> storing
       *                definitions of other Bricks
      */
-     public Brick(String brickName, String brickQualifier, long brickKey, String brickType, 
+     public Brick(String brickName, String brickVariant, long brickKey, String brickType, 
              Polylist contents, BrickLibrary bricks, String m, 
              LinkedHashMap<String, LinkedList<Polylist>> polymap) {
          super(brickName, brickKey, m);
-         qualifier = brickQualifier;
+         variant = brickVariant;
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks, polymap);
          type = brickType;
@@ -114,7 +114,7 @@ public class Brick extends Block {
      }
      
     /** Brick / 7
-     * Constructs a new Brick based on construction details + qualifier
+     * Constructs a new Brick based on construction details + variant
      * mid-dictionary-creation
      * 
      * @param brickName, a String
@@ -138,19 +138,19 @@ public class Brick extends Block {
      }
     
     /** Brick / 6
-     * Constructs a brick with predefined contents and a qualifier
+     * Constructs a brick with predefined contents and a variant
      * 
      * @param brickName, a String
-     * @param brickQualifier, a String
+     * @param brickVariant, a String
      * @param brickKey, a long
      * @param brickType, a String
      * @param contents, an ArrayList of component blocks
      * @param m, the mode as a String
      */
-    public Brick(String brickName, String brickQualifier, long brickKey, String brickType, 
+    public Brick(String brickName, String brickVariant, long brickKey, String brickType, 
             ArrayList<Block> contents, String m) {
         super(brickName, brickKey, m);
-        qualifier = brickQualifier;
+        variant = brickVariant;
         subBlocks = contents;
         type = brickType;
         this.updateDuration();
@@ -190,7 +190,7 @@ public class Brick extends Block {
      */
     public Brick(Brick brick) {
         super(brick.name, brick.getKey());
-        qualifier = brick.getQualifier();
+        variant = brick.getVariant();
         subBlocks = new ArrayList<Block>();
         
         // Loop through all the subblocks, making copies of each
@@ -233,8 +233,8 @@ public class Brick extends Block {
      * @param brickList, subblocks for a brick
      */
     public Brick(String brickName, long brickKey, String type, List<Block> brickList) {
-        super(brickName, brickKey, modeHelper(brickList, brickKey)); 
-                                  //TODO account for not finding key
+        super(brickName, brickKey, modeHelper(brickList, brickKey));
+        
         this.type = type;
         subBlocks = new ArrayList<Block>();
         
@@ -392,9 +392,9 @@ public class Brick extends Block {
                 {
                     String brickName = BrickLibrary.dashless(pList.first().toString());
                     pList = pList.rest();
-                    String brickQualifier = "";
+                    String brickVariant = "";
                     if (pList.first() instanceof Polylist) {
-                        brickQualifier = ((Polylist)pList.first()).toStringSansParens();
+                        brickVariant = ((Polylist)pList.first()).toStringSansParens();
                         pList = pList.rest();
                     }
                     String brickKeyString = pList.first().toString();
@@ -407,8 +407,8 @@ public class Brick extends Block {
                         long brickKeyNum = 
                                 BrickLibrary.keyNameToNum(brickKeyString);
                         Brick subBrick;
-                        if (brickQualifier.equals("")) {
-                            subBrick = bricks.getBrick(brickName, brickQualifier, 
+                        if (brickVariant.equals("")) {
+                            subBrick = bricks.getBrick(brickName, brickVariant, 
                                                        brickKeyNum, dur);
                         }
                         else {
@@ -477,13 +477,13 @@ public class Brick extends Block {
                 if(blockType.equals("Brick") && (pList.length() == 3 ||
                                                  pList.length() == 4))
                 {
-                    // determine the information about the name, qualifier, etc.
+                    // determine the information about the name, variant, etc.
                     String subBrickName = BrickLibrary.dashless(pList.first().toString());
                     pList = pList.rest();
                     
-                    String subBrickQualifier = "";
+                    String subBrickVariant = "";
                     if (pList.first() instanceof Polylist) {
-                        subBrickQualifier = ((Polylist)pList.first()).toStringSansParens();
+                        subBrickVariant = ((Polylist)pList.first()).toStringSansParens();
                         pList = pList.rest();
                     }
                     
@@ -503,9 +503,9 @@ public class Brick extends Block {
                         
                         // if the subbrick already exists in the dictionary
                         if (bricks.hasBrick(subBrickName)) {
-                            if (!subBrickQualifier.equals(""))
+                            if (!subBrickVariant.equals(""))
                                 subBrick = bricks.getBrick(subBrickName, 
-                                                           subBrickQualifier,
+                                                           subBrickVariant,
                                                            subBrickKeyNum, dur);
                             
                             else
@@ -522,7 +522,7 @@ public class Brick extends Block {
                             // the subbrick
                             LinkedList<Polylist> tokenList = polymap.get(subBrickName);
                             Polylist tokens = null;
-                            if (subBrickQualifier.equals("")) {
+                            if (subBrickVariant.equals("")) {
                                 tokens = tokenList.getFirst();
                             }
                             else {
@@ -530,7 +530,7 @@ public class Brick extends Block {
                                     Object variant = p.rest().rest().first();
                                     if (variant instanceof Polylist &&
                                         ((Polylist)variant).toStringSansParens()
-                                            .equals(subBrickQualifier)) {
+                                            .equals(subBrickVariant)) {
                                         tokens = p;
                                         break;
                                     }
@@ -540,7 +540,7 @@ public class Brick extends Block {
                                     ErrorLog.log(ErrorLog.SEVERE, 
                                             "Dictionary does not contain " +
                                             subBrickName + 
-                                            subBrickQualifier.toString());
+                                            subBrickVariant.toString());
                                 }
                             }
                             
@@ -550,9 +550,9 @@ public class Brick extends Block {
                             tokens = tokens.rest();
                             tokens = tokens.rest();
                             
-                            String brickQualifier = "";
+                            String brickVariant = "";
                             if (tokens.first() instanceof Polylist) {
-                                brickQualifier = ((Polylist)tokens.first()).toStringSansParens();
+                                brickVariant = ((Polylist)tokens.first()).toStringSansParens();
                                 tokens = tokens.rest();
                             }
                             String brickMode = tokens.first().toString();
@@ -566,7 +566,7 @@ public class Brick extends Block {
                             
                             
                             // construct the subbrick
-                            subBrick = new Brick(brickName, brickQualifier, brickKeyNum,
+                            subBrick = new Brick(brickName, brickVariant, brickKeyNum,
                                 brickType, tokens, bricks, brickMode, polymap);
                             subBrick.transpose(
                                     Arith.long2int(subBrickKeyNum - brickKeyNum));
@@ -649,13 +649,13 @@ public class Brick extends Block {
         duration = dur;
     }
     
-    /** getQualifier
-     * Returns the qualifier of the Brick, or an empty String if it has none
+    /** getVariant
+     * Returns the variant of the Brick, or an empty String if it has none
      * @return a String
      */
-    public String getQualifier() 
+    public String getVariant() 
     {
-        return this.qualifier;
+        return this.variant;
     }
     
     /** flattenBlock
@@ -755,8 +755,8 @@ public class Brick extends Block {
      */
     public void printBrick() {
         String brickName = this.getName();
-        if (!this.getQualifier().isEmpty())
-            brickName += "(" + this.getQualifier() + ")";
+        if (!this.getVariant().isEmpty())
+            brickName += "(" + this.getVariant() + ")";
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
         long brickDur = this.getDuration();
         String brickType = this.getType();
@@ -812,9 +812,7 @@ public class Brick extends Block {
         
         for( Iterator<ChordBlock> it = chords.iterator(); it.hasNext(); ) {
             currentDur = it.next().duration;
-            System.out.print("("+currentGCD+","+currentDur+") = ");
             currentGCD = gcd(currentGCD, currentDur);
-            System.out.println(currentGCD);
         }
         
         return currentGCD;
@@ -936,8 +934,8 @@ public class Brick extends Block {
         {
             buffer.append(b.toPolylist());
         }
-        if (qualifier != "") {
-            return Polylist.list("Def-Brick", dashed(name)+"("+qualifier+")", 
+        if (variant != "") {
+            return Polylist.list("Def-Brick", dashed(name)+"("+variant+")", 
                     mode, dashed(type), BrickLibrary.keyNumToName(key)
                     ).append(buffer.toPolylist());
         }

@@ -94,7 +94,7 @@ public class BrickLibrary {
         // make a properly-formatted brick definition
         Polylist defn = definitionBrick.toBrickDefinition();
         String defnString = defn.toString();
-        if (!brick.getQualifier().equals(""))
+        if (!brick.getVariant().equals(""))
             defnString.replaceFirst(" \\(", "\\(");    
         defnString = defnString.replaceAll(" \\(", "\n        \\(");
         
@@ -126,10 +126,10 @@ public class BrickLibrary {
             LinkedList<Brick> sameStemList = brickMap.get(brick.getName());
             for (Brick sameStem : sameStemList)
             {
-                if (sameStem.getQualifier().equals(brick.getQualifier()))
+                if (sameStem.getVariant().equals(brick.getVariant()))
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Dictionary already contains " +
-                    brick.getName() + "(" + brick.getQualifier() + "): will not"
+                    brick.getName() + "(" + brick.getVariant() + "): will not"
                             + " add to dictionary", true);
                     return false;
                 }
@@ -150,7 +150,7 @@ public class BrickLibrary {
             long overrunKeyNum = brick.getKey();
             String overrunType = "Overrun";
             String overrunMode = brick.getMode();
-            String overrunQualifier = brick.getQualifier();
+            String overrunQualifier = brick.getVariant();
 
             // take blocks from regular cadence and add the next chord
             // in the circle of fifths with the same quality as the
@@ -173,7 +173,7 @@ public class BrickLibrary {
             long dropbackKeyNum = brick.getKey();
             String dropbackType = "Dropback";
             String dropbackMode = brick.getMode();
-            String dropbackQualifier = brick.getQualifier();
+            String dropbackQualifier = brick.getVariant();
 
             // take blocks from regular cadence and add the next chord
             // in the circle of fifths with the same quality as the
@@ -235,7 +235,7 @@ public class BrickLibrary {
         {
             Brick brick = null;
             for (Brick b : brickMap.get(s))
-                if (b.getQualifier().equals(q)) {
+                if (b.getVariant().equals(q)) {
                     brick = new Brick(b);
                     break;
                 }
@@ -298,7 +298,7 @@ public class BrickLibrary {
         {
             Brick brick = null;
             for (Brick b : brickMap.get(s))
-                if (b.getQualifier().equals(q)) {
+                if (b.getVariant().equals(q)) {
                     brick = new Brick(b);
                     break;
                 }
@@ -393,7 +393,7 @@ public class BrickLibrary {
         // define the search term (the name) for the given brick
         String brickType = " " + brick.getType() + " ";
         String brickDefHead = "Def-Brick " + dashed(brick.getName());
-        String qualifier = brick.getQualifier();
+        String qualifier = brick.getVariant();
         if (!qualifier.isEmpty())
             brickDefHead += "(" + qualifier + ")";
         brickDefHead += " ";

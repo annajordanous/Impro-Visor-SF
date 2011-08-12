@@ -456,7 +456,11 @@ public class GraphicBrick {
             int totalLength = settings.getBlockLength(block);
             
             String name = block.getName();
-
+            
+            String variant = ((Brick)block).getVariant();
+            if(!variant.isEmpty())
+                name += " ("+variant+")";
+            
             name = RoadMapSettings.trimString(name,cutoff - x, metrics);
             name = RoadMapSettings.trimString(name,totalLength, metrics);
             
@@ -502,6 +506,9 @@ public class GraphicBrick {
 
             //Name
             String name = RoadMapSettings.trimString(block.getName(), totalLength, metrics);
+            String variant = ((Brick)block).getVariant();
+            if(!variant.isEmpty())
+                name += " ("+variant+")";
             g2d.setColor(settings.lineColor);
             g2d.drawRect(x, y+blockHeight, totalLength, blockHeight);
             g2d.setColor(settings.textColor);
