@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title Woody 'n You)
 (composer )
 (show )
 (year )
@@ -34,31 +34,27 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+(section (style swing)) 
+
+Gm7b5 | C7#9 | Fm7b5 | Bb7#9 | 
+Ebm7b5 | Ab7#9 | DbM7 | / | 
 
 (section (style swing)) 
 
-Fm7 | Bb7 | EbM7 | Ab7#11 | 
-
-(phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-
-(section (style swing)) 
-
-FM7 Dm7 | Gm7 C7 | Am7b5 | D7 | 
+Gm7b5 | C7#9 | Fm7b5 | Bb7#9 | 
+Ebm7b5 | Ab7#9 | DbM7 | / | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+Abm7 Db7 | Abm7 Db7 | Abm7 Db7 | GbM7 | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+Bbm7 Eb7 | Bbm7 Eb7 | Bbm7 Eb7 | Ebm7 Ab7 | 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+Gm7b5 | C7#9 | Fm7b5 | Bb7#9 | 
+Ebm7b5 | Ab7#9 | DbM7 | / | 
 
 (part
     (type melody)

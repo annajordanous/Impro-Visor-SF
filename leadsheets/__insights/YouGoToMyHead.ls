@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title You Go to My Head)
 (composer )
 (show )
 (year )
@@ -34,31 +34,32 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+(section (style swing)) 
+
+EbM7 | Abm7 Db7 | GbM7 | Fm7b5 Bb7 | 
+Ebm Cm7b5 | Fm7b5 Bb7 | EbM7 Cm7 | Fm7 Bb7 | 
 
 (section (style swing)) 
 
-Fm7 | Bb7 | EbM7 | Ab7#11 | 
-
-(phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-
-(section (style swing)) 
-
-FM7 Dm7 | Gm7 C7 | Am7b5 | D7 | 
+EbM7 | Abm7 Db7 | GbM7 | Fm7b5 Bb7 | 
+Ebm Cm7b5 | Fm7b5 Bb7 | EbM7 | Bbm7 Eb7 | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+AbM7 | Ao | Eb/Bb Fm7/Bb | EbM7 | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+Am7 D7 | Bm7 E7 | Am7 D7 | GM7 Bb7 | 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+EbM7 | Abm7 Db7 | GbM7 | Fm7b5 Bb7 | 
+Ebm Cm7b5 | Fm7b5 Bb7 | EbM7 | Bbm7 Eb7 | 
+
+(section (style swing)) 
+
+AbM7 | Db7#11 | EbM7 Gm7 | Am7b5 D7 | 
+Gm7 C7 | Fm7 Bb7 | EbM7 | / | 
 
 (part
     (type melody)
@@ -69,4 +70,4 @@ Cm7b5 | F7 | BbM7 | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

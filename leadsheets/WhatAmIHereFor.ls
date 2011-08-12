@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title What Am I Here For?)
 (composer )
 (show )
 (year )
@@ -35,30 +35,32 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+BbM7 | Bo | Cm7 | F7 | 
 
 (section (style swing)) 
 
-Fm7 | Bb7 | EbM7 | Ab7#11 | 
+BbM7 | Bo | Cm7 | F7 | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
+Bb7 | E7 | EbM7 | Am7 D7 | 
 
 (section (style swing)) 
 
-FM7 Dm7 | Gm7 C7 | Am7b5 | D7 | 
+Gm7 | C7 | Cm7 | F7 | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+BbM7 | Bo | Cm7 | F7 | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+BbM7 | Bo | Cm7 | F7 | 
+
+(phrase (style swing)) 
+Bb7 | E7 | EbM7 | Ab7#11 | 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+BbM7 | Bo | Cm7 F7 | BbM7 F7 | 
 
 (part
     (type melody)

@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title Wave)
 (composer )
 (show )
 (year )
@@ -34,31 +34,28 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+(section (style swing)) 
+
+DM7 | Bbo | Am7 | D7 | 
+GM7 | Gm7 C7 | F#7 | B7 | 
+E7 | Bb7 A7 | Dm7 G7 | Em7 A7 | 
 
 (section (style swing)) 
 
-Fm7 | Bb7 | EbM7 | Ab7#11 | 
-
-(phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-
-(section (style swing)) 
-
-FM7 Dm7 | Gm7 C7 | Am7b5 | D7 | 
-
-(phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+DM7 | Bbo | Am7 | D7 | 
+GM7 | Gm7 C7 | F#7 | B7 | 
+E7 | Bb7 A7 | Dm7 G7 | Dm7 G7 | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+Gm7 | C7 | FM7 | / | 
+Fm7 | Bb7 | EbM7 | Em7 A7 | 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+DM7 | Bbo | Am7 | D7 | 
+GM7 | Gm7 C7 | F#7 | B7 | 
+E7 | Bb7 A7 | Dm7 G7 | Dm7 G7 | 
 
 (part
     (type melody)
@@ -69,4 +66,4 @@ Cm7b5 | F7 | BbM7 | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

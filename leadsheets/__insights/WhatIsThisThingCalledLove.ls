@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title What is This Thing Called Love?)
 (composer )
 (show )
 (year )
@@ -35,30 +35,32 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+Gm7b5 | C7 | Fm | / | 
 
 (section (style swing)) 
 
-Fm7 | Bb7 | EbM7 | Ab7#11 | 
+Dm7b5 | G7 | CmM7 | / | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
+Gm7b5 | C7 | Fm | / | 
 
 (section (style swing)) 
 
-FM7 Dm7 | Gm7 C7 | Am7b5 | D7 | 
+Dm7b5 | G7 | CmM7 | / | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+Cm7 | F7 | BbM7 | / | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+Ab7 | / | G7 | / | 
+
+(phrase (style swing)) 
+Gm7b5 | C7 | Fm | / | 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+Dm7b5 | G7 | CmM7 | / | 
 
 (part
     (type melody)

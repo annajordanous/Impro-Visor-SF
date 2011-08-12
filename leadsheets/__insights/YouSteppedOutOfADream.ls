@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title You Stepped out of a Dream)
 (composer )
 (show )
 (year )
@@ -35,30 +35,30 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+CM7 | / | DbM7 | / | 
 
 (section (style swing)) 
 
-Fm7 | Bb7 | EbM7 | Ab7#11 | 
+Bbm7 | Eb7 | AbM7 | / | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
+Gm7 | C7 | FM7 | / | 
 
 (section (style swing)) 
 
-FM7 Dm7 | Gm7 C7 | Am7b5 | D7 | 
+Am7 | D7 | Ebm7 Ab7 | Dm7 G7 | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+CM7 | / | DbM7 | / | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+Bbm7 | Eb7 | Gb7 | F7 | 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+Dm7b5 | G7 | CM7 | A7 | 
+Dm7 | G7 | CM7 | / | 
 
 (part
     (type melody)
