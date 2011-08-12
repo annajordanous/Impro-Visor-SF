@@ -197,7 +197,7 @@
 	(Chord Am 2))
 
 (Def-Brick Autumnal-Cadence(var2) Minor Cadence C
-        (Chord Fm7 2)
+        (Brick GenII Eb 1)
         (Brick Sad-Cadence C 2))
 
 (Def-Brick Autumnal-Approach(var1) Minor Approach A

@@ -39,9 +39,11 @@
 AbM7 | Bbm7 Eb7 | AbM7 | Ebm7 Ab7 | 
 DbM7 | Dm7 G7 | Cm7 | F7#9 | 
 
+(phrase (style latin)) 
+Bbm7 | Eb7 | Cm7 | F7 | 
+
 (section (style latin)) 
 
-Bbm7 | Eb7 | Cm7 | F7 | 
 Dm7 | G7 | Cm7 F7 | Bbm7 Eb7 | 
 
 (section (style latin)) 
