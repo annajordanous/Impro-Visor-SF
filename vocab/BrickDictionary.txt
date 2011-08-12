@@ -414,6 +414,11 @@
 	(Brick Two-Goes-Straight G 2) 
         (Chord G7 1))
 
+(Def-Brick Honeysuckle-Bridge(two-goes-dogleg) Major Approach C
+        (Brick Two-Goes-Straight F 4)
+        (Brick Dropback F 6)
+        (Brick Dogleg-Approach C 6))
+
 (Def-Brick II-n-Back(standard) Major Turnaround C
 	(Chord Dm7 1)
         (Chord D#o 1)
@@ -1687,3 +1692,4 @@
         (Chord C#o 1))
 
 // User-defined bricks
+
