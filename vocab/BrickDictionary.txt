@@ -200,6 +200,10 @@
         (Brick GenII Eb 1)
         (Brick Sad-Cadence C 2))
 
+(Def-Brick Autumnal-Cadence(var3) Minor Cadence D
+        (Brick Minor-On G 1)
+        (Brick Minor-Perfect-Cadence D 3))
+
 (Def-Brick Autumnal-Approach(var1) Minor Approach A
 	(Brick Straight-Approach C 2)
 	(Brick Sad-Approach A 2))
@@ -208,8 +212,8 @@
 	(Brick Sad-Approach C 2)
 	(Brick Sad-Approach A 2))
 
-(Def-Brick Autumnal-Approach(var3) Minor Approach C
-	(Chord Fm7 2)
+(Def-Brick Autumnal-Approach(var3) Minor Approach F
+	(Chord Fm7 1)
 	(Brick Sad-Approach C 2))
 
 (Def-Brick Bemsha-Turnaround-1 Major Turnaround C
@@ -289,7 +293,7 @@
 
 (Def-Brick Dogleg-Approach Major Approach C
 	(Brick GenDom G 2)
-	(Brick Straight-Approach C 2))
+	(Brick An-Approach C 2))
 
 (Def-Brick Dominant-Cycle(2 chords) Major Approach C
         (Chord D7 1)
@@ -311,7 +315,7 @@
         (Chord F#7 1)
         (Brick Dominant-Cycle(5 chords) C 5))
 
-(Def-Brick Donna-Lee-Opening-Start Major Opening C
+(Def-Brick Donna-Lee-Start Major Opening C
 	(Chord CM7 2)
 	(Brick GenDom G 1) // modified by XS
         (Chord Dm7 1))
@@ -472,6 +476,10 @@
 	(Brick Long-Approach C 4)
 	(Chord CM7 4))
 
+(Def-Brick Long-Cadence(variant) Major Cadence Bb
+        (Brick Straight-Approach F 2)
+        (Brick Perfect-Cadence Bb 5))
+
 (Def-Brick Long-Cadence(On-Off-On) Major Cadence Db
         (Chord Fm7 1)
         (Chord Em7 1)
@@ -479,7 +487,7 @@
         (Brick Perfect-Cadence Db 6))
 
 (Def-Brick Long-Approach Major Approach C
-	(Brick GenDom D 2)
+	(Brick An-Approach D 2)
 	(Brick GenDom C 2))
 
 (Def-Brick Long-Dropback-Cadence Major Dropback C
@@ -573,9 +581,15 @@
 	(Brick Minor-Dropback C 2)
 	(Brick Sad-Approach C 2))
 
-(Def-Brick Minor-POT(variant) Minor Turnaround C
+(Def-Brick Minor-POT(var1) Minor Turnaround C
         (Brick Minor-Dropback C 2)
         (Chord D7 1)
+        (Chord G7 1))
+
+(Def-Brick Minor-POT(var2) Minor Turnaround C
+        (Chord Cm 1)
+        (Chord Eb7 1)
+        (Chord Dm7b5 1)
         (Chord G7 1))
 
 //(Def-Brick Minor-POT(short) Minor Turnaround C
@@ -689,10 +703,15 @@
 	(Brick Three-Goes-Pullback-Approach C 6)
 	(Brick Straight-Approach C 2))
 
-(Def-Brick Rainbow-Cadence Major Cadence C
+(Def-Brick Rainbow-Cadence(var1) Major Cadence C
 	(Chord CM7 1)
 	(Chord Em 1)
 	(Chord FM7 2))
+
+(Def-Brick Rainbow-Cadence(var2) Major Approach Eb
+        (Chord Bb/D 1)
+        (Chord D+ 1)
+        (Chord EbM7#11 2))
 
 (Def-Brick Rainbow-Variant-Dominant-Overrun Major Overrun C
         (Chord CM7 1)
@@ -809,8 +828,13 @@
 */
 
 (Def-Brick Side-Slips(2) Major Approach C
-	(Brick Straight-Approach Db 2)
-	(Brick Straight-Approach C 2))
+	(Brick An-Approach Db 2)
+	(Brick An-Approach C 2))
+
+(Def-Brick Side-Slips(2 variant) Major Approach C
+	(Chord Ebm 1)
+        (Chord Abm 1)
+	(Brick An-Approach C 2))
 
 (Def-Brick Side-Slips(4) Major Approach C
 	(Brick Side-Slips(2) D 2)
@@ -974,12 +998,17 @@
 	(Chord CM7 2))
 
 (Def-Brick SPOT(standard) Major Turnaround C
-	(Brick Straight-Approach D 2)
+	(Brick An-Approach D 2)
 	(Brick Straight-Approach C 2))
 
 (Def-Brick SPOT(minorIV) Major Turnaround C
         (Chord Em7 1)
         (Brick Extended-Approach C 3))
+
+(Def-Brick SPOT(var3) Major Turnaround Bb
+        (Chord Dm7 1)
+        (Brick Minor-Perfect-Cadence G 3)
+        (Brick Straight-Approach Bb 4))
 
 (Def-Brick Multi-Sub-POT Major Turnaround C
         (Chord C 2)
@@ -1041,6 +1070,18 @@
 	(Chord FM7 1)
 	(Chord Bb7 1)
 	(Brick SPOT C 4))
+
+(Def-Brick To-IV-n-Bird-SPOT(variant) Major Approach Bb
+        (Chord BbM7 4)
+        (Chord Fm7 2)
+        (Chord Bb7 2)
+        (Chord EbM7 4)
+        (Chord Ab7 4)
+        (Chord Dm7 2)
+        (Chord G7 2)
+        (Chord C7 2)
+        (Chord Cm7/F 1)
+        (Chord F7 1))
 
 (Def-Brick To-IV-n-Bird-SPOT(yak) Major Turnaround F
         (Brick To-IV-n-Yak F 4)
@@ -1708,14 +1749,16 @@
         (Chord Cm7 1)
         (Chord Cm6 1))
 
-(Def-Brick II-n-Bird-POT Major Turnaround C
+(Def-Brick II-n-Bird Major Approach C
         (Chord Dm7 2)
-        (Brick Yardbird-Approach C 2)
+        (Brick Yardbird-Approach C 2))
+
+(Def-Brick II-n-Bird-POT Major Turnaround C
+        (Brick II-n-Bird C 2)
         (Brick POT C 2))
 
 (Def-Brick II-n-Bird-SPOT Major Turnaround C
-        (Chord Dm7 2)
-        (Brick Yardbird-Approach C 2)
+        (Brick II-n-Bird C 2)
         (Brick SPOT C 2))
 
 (Def-Brick Surge Major Misc C
@@ -1723,4 +1766,3 @@
         (Chord C#o 1))
 
 // User-defined bricks
-

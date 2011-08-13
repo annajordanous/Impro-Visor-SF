@@ -56,7 +56,7 @@ D7/A | / | Abo | / |
 Gm7 | C7 | FM7 | / | 
 
 (phrase (style swing)) 
-Fm7 | Bb7 | Em7 | Am7 A7 | 
+Fm7 | Bb7#11 | Em7 | Am7 A7 | 
 
 (section (style swing)) 
 

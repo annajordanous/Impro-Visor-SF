@@ -37,12 +37,12 @@
 (section (style ballad)) 
 
 CM7 G7/C | CM7 G7/C | CM7 / Bm7b5 E7 | Am7 / Gm7 C7 | 
-FM7 / Bm7b5 | Am7 / F#m7 B7 | EM7 / Fm7 Bb7 | EbM7 / Dm7 G7 | 
+FM7 / Bm7b5 E7 | Am7 / F#m7 B7 | EM7 / Fm7 Bb7 | EbM7 / Dm7 G7 | 
 
 (section (style ballad)) 
 
 CM7 G7/C | CM7 G7/C | CM7 / Bm7b5 E7 | Am7 / Gm7 C7 | 
-FM7 / Bm7b5 | Am7 / F#m7 B7 | Em7 A7 Dm7 G7 | CM7 | 
+FM7 / Bm7b5 E7 | Am7 / F#m7 B7 | Em7 A7 Dm7 G7 | CM7 | 
 
 (section (style ballad)) 
 
@@ -52,7 +52,7 @@ Fm7 Bb7 | EbM7 Ab | Am7 D7 | Dm7 G7 |
 (section (style ballad)) 
 
 CM7 G7/C | CM7 G7/C | CM7 / Bm7b5 E7 | Am7 / Gm7 C7 | 
-FM7 / Bm7b5 | Am7 / F#m7 B7 | Em7 A7 Dm7 G7 | CM7 | 
+FM7 / Bm7b5 E7 | Am7 / F#m7 B7 | Em7 A7 Dm7 G7 | CM7 | 
 
 (section (style ballad)) 
 
@@ -67,4 +67,6 @@ Em7 A7 Dm7 G7 | CM7 |
     (key -3)
     (stave treble)
 )
- c4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
+ c4 r1+1+1+1+1+1+1+1+1+1+1+1+4
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

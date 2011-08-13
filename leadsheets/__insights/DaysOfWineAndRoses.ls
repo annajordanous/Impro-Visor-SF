@@ -46,7 +46,7 @@ FM7 | Dm7 | Gm7 | C7 |
 
 (section (style ballad)) 
 
-Em7b5 A9 | Dm7 G7 | Gm7 | C7 | 
+Em7b5 A7 | Dm7 G7 | Gm7 | C7 | 
 
 (phrase (style ballad)) 
 F | Eb7 | Am7b5 | D7 | 

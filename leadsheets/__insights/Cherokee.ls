@@ -57,9 +57,11 @@ Cm7 | F7 | BbM7 | / |
 C#m7 | F#7 | BM7 | / | 
 Bm7 | E7 | AM7 | / | 
 
+(phrase (style swing)) 
+Am7 | D7 | GM7 | / | 
+
 (section (style swing)) 
 
-Am7 | D7 | GM7 | / | 
 Gm7 | C7 | Cm7 | F7+ | 
 
 (phrase (style swing)) 
