@@ -75,7 +75,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private final int roadMapBufferHeight = 1920;
     
     /** Dictionary frame location, relative to the roadmap panel */
-    private final int dictionaryFrameX = 925;
+    private final int dictionaryFrameX = 910;
     private final int dictionaryFrameY = 350;
     
     /** Panel for previewing bricks from the library */
@@ -259,11 +259,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         leadsheetMenu = new javax.swing.JMenu();
         appendToLeadsheetMI = new javax.swing.JMenuItem();
         appendToNewLeadsheetMI = new javax.swing.JMenuItem();
+        dictionaryMenu = new javax.swing.JMenu();
+        brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
@@ -1227,6 +1228,31 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadmapMenuBar.add(leadsheetMenu);
 
+        dictionaryMenu.setMnemonic('W');
+        dictionaryMenu.setText("Dictionary"); // NOI18N
+        dictionaryMenu.setName("dictionaryMenu"); // NOI18N
+        dictionaryMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                dictionaryMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        brickLibraryMenuItem.setText("Brick Dictionary"); // NOI18N
+        brickLibraryMenuItem.setToolTipText("Opens the dictionary of all currently-defined bricks."); // NOI18N
+        brickLibraryMenuItem.setName("brickLibraryMenuItem"); // NOI18N
+        brickLibraryMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brickLibraryMenuItemActionPerformed(evt);
+            }
+        });
+        dictionaryMenu.add(brickLibraryMenuItem);
+
+        roadmapMenuBar.add(dictionaryMenu);
+
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window"); // NOI18N
         windowMenu.setName("windowMenu"); // NOI18N
@@ -1264,16 +1290,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         jSeparator5.setName("jSeparator5"); // NOI18N
         windowMenu.add(jSeparator5);
-
-        brickLibraryMenuItem.setText("Brick Dictionary"); // NOI18N
-        brickLibraryMenuItem.setToolTipText("Opens the dictionary of all currently-defined bricks."); // NOI18N
-        brickLibraryMenuItem.setName("brickLibraryMenuItem"); // NOI18N
-        brickLibraryMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                brickLibraryMenuItemActionPerformed(evt);
-            }
-        });
-        windowMenu.add(brickLibraryMenuItem);
 
         windowMenuSeparator.setName("windowMenuSeparator"); // NOI18N
         windowMenu.add(windowMenuSeparator);
@@ -1555,12 +1571,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         windowMenu.add(cascadeMI);
         
-        windowMenu.add(windowMenuSeparator);
-        
-        windowMenu.add(brickLibraryMenuItem);
-        
-        windowMenu.add(jSeparator5);
-        
         for(WindowMenuItem w : WindowRegistry.getWindows())
             windowMenu.add(w.getMI(this));       // these are static, and calling getMI updates the name on them too in case the window title changed
         
@@ -1638,7 +1648,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void brickDictionaryFrameWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_brickDictionaryFrameWindowClosing
         brickLibraryMenuItem.setSelected(false);
-        WindowRegistry.unregisterWindow(brickDictionaryFrame);
     }//GEN-LAST:event_brickDictionaryFrameWindowClosing
 
     private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
@@ -1705,6 +1714,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void dialogKeyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogKeyComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dialogKeyComboBoxActionPerformed
+
+    private void dictionaryMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_dictionaryMenuMenuSelected
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dictionaryMenuMenuSelected
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2326,6 +2339,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JLabel dialogTypeLabel;
     private javax.swing.JTextField dialogVariantField;
     private javax.swing.JLabel dialogVariantLabel;
+    private javax.swing.JMenu dictionaryMenu;
     private javax.swing.JComboBox durationComboBox;
     private javax.swing.JMenu editMenu;
     private javax.swing.JSlider featureWidthSlider;
