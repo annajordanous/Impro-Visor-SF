@@ -39,6 +39,7 @@ import polya.*;
  */
 public class Brick extends Block {
     
+    private static final Long DEFAULT_SUBRICK_DURATION = new Long(1);
     
     private ArrayList<Block> subBlocks; // Components of a Brick
     private String type;                // The class of Brick (e.g. "Cadence")
@@ -489,8 +490,22 @@ public class Brick extends Block {
                     
                     String subBrickKeyString = pList.first().toString();
                     pList = pList.rest();
-                    Object durObj = pList.first();
-                    pList = pList.rest();
+                    
+                    // Workaround added by RK for error reporting
+                    // in case of missing duration in sub-brick
+                    
+                    Object durObj = DEFAULT_SUBRICK_DURATION;
+                    
+                    if( pList.isEmpty() )
+                      {
+                      ErrorLog.log(ErrorLog.WARNING, "Missing Sub-Brick Duration in "
+                                    + subBrickName + ", using 1");
+                      }
+                    else
+                      {
+                      durObj = pList.first();
+                      pList = pList.rest();
+                      }
                     
                     // when all data members are initialized, find the correct 
                     // brick scaled appropriately
@@ -574,7 +589,7 @@ public class Brick extends Block {
                         }
                         else
                         {
-                            ErrorLog.log(ErrorLog.FATAL, "Dictionary does "
+                            ErrorLog.log(ErrorLog.SEVERE, "Dictionary does "
                                     + "not contain " + subBrickName, true);
                         }
 

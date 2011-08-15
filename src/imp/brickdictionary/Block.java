@@ -33,6 +33,7 @@ import polya.Polylist;
  */
 public class Block {
     
+    private static final String OVERLAP_STRING = " + ...";
     // Data members //
     protected String name;           // block's name
     protected int duration;          // how long block lasts (not in absolute 
@@ -115,7 +116,7 @@ public class Block {
         fullName += name;
         // in the case of an overlap, we want an indication in the name
         if (this.isOverlap())
-                fullName += " &...";
+                fullName += OVERLAP_STRING;
         return fullName;
     }
     
