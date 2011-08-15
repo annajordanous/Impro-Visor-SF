@@ -34,28 +34,28 @@
     (key 0)
 )
 
-(section (style swing)) 
+(phrase (style swing)) 
 BbM7 | Dm7 G7 | Cm7 | F7 | 
 
-(phrase)
+(section (style swing)) 
 
 Cm7 | F7 | BbM7 | Cm7 F7 | 
 
-(phrase)
+(phrase (style swing)) 
 BbM7 | / | Am7 | D7 | 
 
 (section (style swing)) 
 
 Gm7 | C7 | Cm7 | F7 | 
 
-(phrase)
+(phrase (style swing)) 
 BbM7 | Dm7 G7 | Cm7 | F7 | 
 
 (section (style swing)) 
 
 Cm7 | F7 | BbM7 | Cm7 F7 | 
 
-(phrase)
+(phrase (style swing)) 
 BbM7 | / | Am7 D7 | Dm7 G7 | 
 
 (section (style swing)) 

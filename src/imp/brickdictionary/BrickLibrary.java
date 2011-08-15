@@ -628,7 +628,7 @@ public class BrickLibrary {
                 if (contents.length() < 2)
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
-                            + " a BrickDictionary Polylist", true);
+                            + " a BrickDictionary item: " + contents, true);
                 }
                         
                 else
@@ -675,8 +675,8 @@ public class BrickLibrary {
                     else if (blockCategory.equals("brick-type"))
                     {
                         if (contents.length() != 2 && contents.length() != 1)
-                            ErrorLog.log(ErrorLog.WARNING, "Not a correct"
-                                    + "brick-type declaration");
+                            ErrorLog.log(ErrorLog.WARNING, "Not a correct "
+                                    + "brick-type declaration: " + contents);
                         else {
                             String type = contents.first().toString();
                             contents = contents.rest();
@@ -689,8 +689,8 @@ public class BrickLibrary {
                                 if (cost instanceof Long)
                                     addType(type, (Long)cost);
                                 else {
-                                    ErrorLog.log(ErrorLog.WARNING, "Incorrect"
-                                            + "cost for brick type" + type);
+                                    ErrorLog.log(ErrorLog.WARNING, "Incorrect "
+                                            + "cost for brick type: " + type);
                                     addType(type);
                                 }
                             }
@@ -715,14 +715,14 @@ public class BrickLibrary {
                     else
                     {
                         ErrorLog.log(ErrorLog.WARNING, "Improper type for "
-                            + "a BrickDictionary Polylist", true);
+                            + "a BrickDictionary item: " + token, true);
                     }
                 }
             }
             else
             {
-                ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
-                    + "a Polylist token", true);
+                ErrorLog.log(ErrorLog.WARNING, "Improper formatting for "
+                    + "a token: " + token, true);
             }
         }
         

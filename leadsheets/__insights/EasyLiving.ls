@@ -38,10 +38,21 @@
 
 FM7 F#o | Gm7 G#o | Am7 / Cm7 F7 | Bb / Bbm7 Eb7 | 
 Am7 D7 | Gm7 C7 | Am7 D7 | Gm7 C7 | 
+
+(section (style swing)) 
+
 FM7 F#o | Gm7 G#o | Am7 / Cm7 F7 | Bb / Bbm7 Eb7 | 
-Am7 D7 | Gm7 C7 | FM7 Bb7 | Ebm7 Ab7 | 
-DbM7 Bbm7 | Ebm7 Ab7 | Fm7 Bb7 | Ebm7 Ab7 | 
+Am7 D7 | Gm7 C7 | FM7 Bbm7 | Ebm7 Ab7 | 
+
+(phrase (style swing)) 
+DbM7 Bbm7 | Ebm7 Ab7 | Fm7 Bbm7 | Ebm7 Ab7 | 
+
+(section (style swing)) 
+
 DbM7 Bbm7 | Gm7b5 C7 | Am7b5 D7 | G7 C7 | 
+
+(section (style swing)) 
+
 FM7 F#o | Gm7 G#o | Am7 / Cm7 F7 | Bb / Bbm7 Eb7 | 
 Am7 D7 | Gm7 C7 | FM7 / Bb Bo | F D7 Gm7 C7 | 
 
@@ -54,4 +65,6 @@ Am7 D7 | Gm7 C7 | FM7 / Bb Bo | F D7 Gm7 C7 |
     (key -1)
     (stave treble)
 )
- a4/3 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+16+32/3
+ a4/3 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+16+32/3
+
+ r1+1+1+1+1+1+1+1+1+1+1

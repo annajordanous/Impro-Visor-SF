@@ -34,18 +34,30 @@
     (key 0)
 )
 
+(phrase (style ballad)) 
+CM7 Dm7 | Em7 Ebo7 | Dm7 G7 | Dm7 G7 | 
+
 (section (style ballad)) 
 
-CM7 Dm7 | Em7 Ebo7 | Dm7 G7 | Dm7 G7 | 
 Dm7 | G7 | CM7 | / | 
+
+(phrase (style ballad)) 
 CM7/E | Ebo7 | Dm7 A7 | Dm7 | 
+
+(section (style ballad)) 
+
 Dm7 A7 | Dm7b5 G7 | CM7 Ab7 | G7 | 
+
+(phrase (style ballad)) 
 CM7 Dm7 | Em7 Ebo7 | Dm7 G7 | Dm7 G7 | 
+
+(section (style ballad)) 
+
 Dm7 | G7 | CM7 | Gm7 C7 | 
-FM7 | Bb7 | CM7 | Em7 A7 | 
-Dm7 | G7 | CM7 | / | 
+
+(phrase (style ballad)) 
 FM7 | Bb7 | CM7 | Em7b5 A7 | 
-Dm7 | G7 | CM7 | Dm7 G7 | 
+Dm7 | G7 | CM7 | / | 
 
 (part
     (type melody)
@@ -56,4 +68,4 @@ Dm7 | G7 | CM7 | Dm7 G7 |
     (key 0)
     (stave treble)
 )
- g4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
+ g4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

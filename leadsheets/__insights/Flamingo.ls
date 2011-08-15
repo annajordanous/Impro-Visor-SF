@@ -34,14 +34,18 @@
     (key 0)
 )
 
+(phrase (style latin)) 
+FM7 D7 | Gm7 C7 | Fm7 | Bb7 | 
+
 (section (style latin)) 
 
+Db7 | Gm7 C7 | FM7 D7 | Gm7 C7 | 
+
+(phrase (style latin)) 
 FM7 D7 | Gm7 C7 | Fm7 | Bb7 | 
-Db7 | Gm7 C7 | FM7 | Gm7 C7 | 
 
 (section (style latin)) 
 
-FM7 D7 | Gm7 C7 | Fm7 | Bb7 | 
 Db7 | Gm7 C7 | FM7 Bbm7 | FM7 | 
 
 (section (style latin)) 
@@ -49,9 +53,11 @@ Db7 | Gm7 C7 | FM7 Bbm7 | FM7 |
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | Gm7b5 | C7 | 
 
+(phrase (style latin)) 
+FM7 D7 | Gm7 C7 | Fm7 | Bb7 | 
+
 (section (style latin)) 
 
-FM7 D7 | Gm7 C7 | Fm7 | Bb7 | 
 Db7 | Gm7 C7 | FM7 D7 | Gm7 C7 | 
 
 (part

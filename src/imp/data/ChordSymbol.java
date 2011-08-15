@@ -259,7 +259,7 @@ public class ChordSymbol implements Constants, Serializable {
         return chordSymbol;
         }
 
-      ErrorLog.log(ErrorLog.FATAL, chordSymbol + " is not a recognized chord");
+      ErrorLog.log(ErrorLog.WARNING, chordSymbol + " is not a recognized chord");
       return null;
       }
 
