@@ -813,14 +813,14 @@ public class RoadMapPanel extends JPanel {
         g.setColor(settings.textColor);
         g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
         
-        /**/
+        /* 
         g.setFont(settings.basicFont);
         FontMetrics metrics = g.getFontMetrics();
         String text = view.style + " " + view.tempo + " bpm";
         int width = metrics.stringWidth(text);
         g.drawString(text,settings.getCutoff() - width, settings.yOffset - 5); 
         //g.drawString(text,settings.xOffset,settings.yOffset-5);
-        /**/
+        */
         
     }
     

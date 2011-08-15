@@ -1024,6 +1024,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         fileMenu.add(preferencesMenuItem);
 
+        printRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         printRoadMapMI.setText("Print RoadMap");
         printRoadMapMI.setName("printRoadMapMI"); // NOI18N
         printRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
@@ -1033,6 +1034,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         fileMenu.add(printRoadMapMI);
 
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setLabel("Quit"); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1404,6 +1406,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dialogVariantField.setText("");
         dialogTypeComboBox.setSelectedIndex(0);
         dialogKeyComboBox.setSelectedIndex(0);
+        addBrickDialog.setLocation(100, 100);
         addBrickDialog.setVisible(true);
 }//GEN-LAST:event_newBrickButtonPressed
 
