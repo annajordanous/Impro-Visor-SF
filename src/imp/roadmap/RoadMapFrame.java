@@ -120,8 +120,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     public int tempo = 120;
     /** Time signature of this piece */
     public int[] metre = {4,4};
-    
-    
+   
     private RoadMapFrame() {} // Not for you.
     
     /** Creates new form RoadMapFrame */
@@ -194,7 +193,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordDialogDurationComboBox = new javax.swing.JComboBox(durationChoices);
         preferencesDialog = new javax.swing.JDialog();
         jPanel2 = new javax.swing.JPanel();
-        prefDialogAcceptButton = new javax.swing.JButton();
+        prefDialogCancelButton = new javax.swing.JButton();
+        prefDialogAcceptButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         prefDialogStyleComboBox = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
@@ -206,7 +206,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogTempoField = new imp.roadmap.IntegerField();
         prefDialogMetreTopField = new imp.roadmap.IntegerField();
         prefDialogMetreBottomField = new imp.roadmap.IntegerField();
-        prefDialogKeyColorCheckBox = new javax.swing.JCheckBox();
         brickDictionaryFrame = new javax.swing.JFrame();
         keyComboBox = new javax.swing.JComboBox();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -223,6 +222,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         flattenButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
         newBrickButton = new javax.swing.JButton();
+        keyColorationButton = new javax.swing.JToggleButton();
         loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
@@ -426,14 +426,28 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         jPanel2.setName("jPanel2"); // NOI18N
 
-        prefDialogAcceptButton.setText("Accept Changes"); // NOI18N
-        prefDialogAcceptButton.setName("prefDialogAcceptButton"); // NOI18N
-        prefDialogAcceptButton.addActionListener(new java.awt.event.ActionListener() {
+        prefDialogCancelButton.setText("Cancel"); // NOI18N
+        prefDialogCancelButton.setToolTipText("Do not make changes."); // NOI18N
+        prefDialogCancelButton.setMaximumSize(new java.awt.Dimension(145, 29));
+        prefDialogCancelButton.setMinimumSize(new java.awt.Dimension(145, 29));
+        prefDialogCancelButton.setName("prefDialogCancelButton"); // NOI18N
+        prefDialogCancelButton.setPreferredSize(new java.awt.Dimension(145, 29));
+        prefDialogCancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prefDialogAcceptButtonActionPerformed(evt);
+                prefDialogCancelButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(prefDialogAcceptButton);
+        jPanel2.add(prefDialogCancelButton);
+
+        prefDialogAcceptButton1.setText("Accept Changes"); // NOI18N
+        prefDialogAcceptButton1.setToolTipText("Accept the changes as indicated."); // NOI18N
+        prefDialogAcceptButton1.setName("prefDialogAcceptButton1"); // NOI18N
+        prefDialogAcceptButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prefDialogAcceptButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(prefDialogAcceptButton1);
 
         preferencesDialog.getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_END);
 
@@ -523,14 +537,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridx = 7;
         gridBagConstraints.gridy = 2;
         jPanel1.add(prefDialogMetreBottomField, gridBagConstraints);
-
-        prefDialogKeyColorCheckBox.setSelected(true);
-        prefDialogKeyColorCheckBox.setText("Key Coloration"); // NOI18N
-        prefDialogKeyColorCheckBox.setName("prefDialogKeyColorCheckBox"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 2;
-        jPanel1.add(prefDialogKeyColorCheckBox, gridBagConstraints);
 
         preferencesDialog.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -828,6 +834,26 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         toolBar.add(newBrickButton);
+
+        keyColorationButton.setBackground(new java.awt.Color(153, 204, 255));
+        keyColorationButton.setFont(new java.awt.Font("Arial 11", 0, 12)); // NOI18N
+        keyColorationButton.setText("<html><center>B/W</center></html>"); // NOI18N
+        keyColorationButton.setToolTipText("Turn note coloration off or on."); // NOI18N
+        keyColorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        keyColorationButton.setFocusable(false);
+        keyColorationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        keyColorationButton.setMaximumSize(new java.awt.Dimension(40, 30));
+        keyColorationButton.setMinimumSize(new java.awt.Dimension(40, 30));
+        keyColorationButton.setName("keyColorationButton"); // NOI18N
+        keyColorationButton.setOpaque(true);
+        keyColorationButton.setPreferredSize(new java.awt.Dimension(40, 30));
+        keyColorationButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        keyColorationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyColorationButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(keyColorationButton);
 
         loopToggleButton.setBackground(new java.awt.Color(0, 255, 0));
         loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
@@ -1636,13 +1662,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         if(!roadMapTextEntry.isFocusOwner()) activatePreferencesDialog();
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
-    private void prefDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButtonActionPerformed
+    private void prefDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogCancelButtonActionPerformed
         if( prefDialogMetreBottomField.getInt() % 2 == 0) {
             preferencesDialog.setVisible(false);
             setRoadMapInfo();
         } else
             ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
-    }//GEN-LAST:event_prefDialogAcceptButtonActionPerformed
+    }//GEN-LAST:event_prefDialogCancelButtonActionPerformed
 
     private void brickLibraryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickLibraryMenuItemActionPerformed
         if(!roadMapTextEntry.isFocusOwner()) brickDictionaryFrame.setVisible(brickLibraryMenuItem.isSelected());
@@ -1720,6 +1746,22 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void dictionaryMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_dictionaryMenuMenuSelected
         // TODO add your handling code here:
     }//GEN-LAST:event_dictionaryMenuMenuSelected
+
+    private void keyColorationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyColorationButtonActionPerformed
+        if( settings.keysColored ) {
+            settings.keysColored = false;
+            keyColorationButton.setBackground(Color.red);
+            keyColorationButton.setText("Color");
+        } else {
+            settings.keysColored = true;
+            keyColorationButton.setBackground(new Color(153, 204, 255));
+            keyColorationButton.setText("B/W");
+        }
+    }//GEN-LAST:event_keyColorationButtonActionPerformed
+
+    private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_prefDialogAcceptButton1ActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2360,6 +2402,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JToggleButton keyColorationButton;
     private javax.swing.JComboBox keyComboBox;
     private javax.swing.JMenu leadsheetMenu;
     private javax.swing.JScrollPane libraryScrollPane;
@@ -2369,8 +2412,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
-    private javax.swing.JButton prefDialogAcceptButton;
-    private javax.swing.JCheckBox prefDialogKeyColorCheckBox;
+    private javax.swing.JButton prefDialogAcceptButton1;
+    private javax.swing.JButton prefDialogCancelButton;
     private javax.swing.JLabel prefDialogMeterLabel;
     private imp.roadmap.IntegerField prefDialogMetreBottomField;
     private imp.roadmap.IntegerField prefDialogMetreTopField;
@@ -2702,7 +2745,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setMetre(new int[]{metreTop, metreBottom});
         tempo = prefDialogTempoField.getInt();
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
-        settings.keysColored = prefDialogKeyColorCheckBox.isSelected();
+        settings.keysColored = keyColorationButton.isSelected();
         roadMapPanel.updateBricks();
     }
     

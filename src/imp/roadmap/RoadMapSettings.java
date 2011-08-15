@@ -54,28 +54,40 @@ public class RoadMapSettings {
     /* --- Colors --- */
     /** Color of the grid lines */
     public Color gridLineColor = new Color(150,150,150);
+    
     /** Color of the grid background */
     public Color gridBGColor = new Color(225,225,225);
+    
     /** Color of a basic line */
     public Color lineColor = Color.BLACK;
+    
     /** Color of text */
     public Color textColor = Color.BLACK;
+    
     /** Color of a selected brick */
     public Color selectedColor = new Color(181, 213, 255);
+    
     /** Color of the brick background */
     public Color brickBGColor = Color.WHITE;
+    
     /** Color of the join background*/
     public Color joinBGColor = new Color(255, 255, 171);
+    
     /** Color of the playline */
     public Color playLineColor = Color.RED;
+    
     /** Color of the play section markers */
     public Color playSectionColor = Color.GREEN;
+    
     /** Are keys colored? */
     public boolean keysColored = true;
+    
     /** Color for non colored mode */
     public Color defaultColor = Color.LIGHT_GRAY;
+    
     /** Color for no key */
-    public Color noKeyColor = Color.WHITE;
+    public Color noKeyColor = new Color(235, 235, 235);
+    
     /** Colors associated with different keys */
     public Color[] keyColors = {new Color(250, 220, 100), // C
                                         new Color(200, 110, 255), // Db
@@ -188,9 +200,9 @@ public class RoadMapSettings {
         if(keysColored) {
             if(key != -1)
                 return keyColors[(int)key % 12];
-            return noKeyColor;
+            return defaultColor;
         }
-        return defaultColor;
+        return noKeyColor;
     }
     
     /**
