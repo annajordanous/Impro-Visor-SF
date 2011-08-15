@@ -930,7 +930,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        roadMapScrollPane.setToolTipText("This is the roadmap of the leadsheet."); // NOI18N
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setIgnoreRepaint(true);
         roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));

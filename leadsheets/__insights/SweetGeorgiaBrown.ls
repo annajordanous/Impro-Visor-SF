@@ -34,18 +34,16 @@
     (key 0)
 )
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 D7 | / | / | / | 
 G7 | / | / | / | 
+C7 | / | / | / | 
 
 (section (style swing)) 
 
-C7 | / | / | / | 
 FM7 | C7 | FM7 | Em7 A7 | 
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 D7 | / | / | / | 
 G7 | / | / | / A7 | 
 

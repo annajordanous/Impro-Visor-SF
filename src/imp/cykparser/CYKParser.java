@@ -244,6 +244,11 @@ public class CYKParser
             // Rule parsing of rules is dependent on the number of subBlocks
             // in a given brick.
             ArrayList<Block> subBlocks = b.getSubBlocks();
+            
+            if( subBlocks == null )
+              {
+                ErrorLog.log(ErrorLog.FATAL, "Sorry, Cannot proceed", true);
+              }
             String currentName;
             int size = subBlocks.size();
             String mode = b.getMode();

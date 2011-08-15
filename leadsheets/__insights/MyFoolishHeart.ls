@@ -34,28 +34,28 @@
     (key 0)
 )
 
-(phrase)
+(phrase (style ballad)) 
 BbM7 | Dm7 G7 | Cm7 | Em7 A7 | 
 
 (section (style ballad)) 
 
 Dm7 D7 | Gm7 G7 | Cm7 | F7 | 
 
-(phrase)
+(phrase (style ballad)) 
 BbM7 | Fm7 Bb7 | EbM7 | Am7b5 D7 | 
 
 (section (style ballad)) 
 
 Gm7 D7 | Gm7 C7 | Cm7 | F7 | 
 
-(phrase)
+(phrase (style ballad)) 
 BbM7 | Dm7 G7 | Cm7 | Em7 A7 | 
 
 (section (style ballad)) 
 
 Dm7 D7 | Gm7 G7 | Cm7 | Am7b5 D7 | 
 
-(phrase)
+(phrase (style ballad)) 
 Gm7 | Ebm7 Ab7 | BbM7 EbM7 | Ab7 G7 | 
 
 (section (style ballad)) 

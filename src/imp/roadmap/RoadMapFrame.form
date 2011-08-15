@@ -1437,7 +1437,6 @@
     <Container class="javax.swing.JScrollPane" name="roadMapScrollPane">
       <Properties>
         <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
-        <Property name="toolTipText" type="java.lang.String" value="This is the roadmap of the leadsheet." noResource="true"/>
         <Property name="verticalScrollBarPolicy" type="int" value="22"/>
         <Property name="ignoreRepaint" type="boolean" value="true"/>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">

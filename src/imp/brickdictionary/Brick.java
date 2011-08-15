@@ -347,7 +347,20 @@ public class Brick extends Block {
      */ 
     @Override
     public ArrayList<Block> getSubBlocks() {
+        if( subBlocks == null )
+          {
+            return null;
+          }
+        if( subBlocks.size() == 0 )
+          {
+            return null;
+          }
         Block lastChord = subBlocks.get(subBlocks.size() - 1);
+        
+        if( lastChord == null )
+          {
+            return null;
+          }
         if(lastChord.isChord() && lastChord.isOverlap())
             return new ArrayList(subBlocks.subList(0, subBlocks.size() - 1));
                                 // Danger: this makes a copy
@@ -656,9 +669,19 @@ public class Brick extends Block {
      */
     private void updateDuration() {
         int dur = 0;
-        for(Block b : this.getSubBlocks())
+        ArrayList<Block> subBlocks = this.getSubBlocks();
+
+        if( subBlocks == null )
+          {
+            return;
+          }
+
+        for(Block b : subBlocks)
         {
+          if( b != null )
+            {
             dur += b.getDuration();
+            }
         }
         
         duration = dur;
@@ -689,8 +712,11 @@ public class Brick extends Block {
         // is a brick, recursively flatten.
         while(iter.hasNext()) {
             Block currentBlock = iter.next();
-
-            chordList.addAll(currentBlock.flattenBlock());
+            
+            if( currentBlock != null )
+              {
+              chordList.addAll(currentBlock.flattenBlock());
+              }
         }
         
         if (chordList.size() > 0)
