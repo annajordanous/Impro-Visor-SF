@@ -42,9 +42,11 @@ EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | EbM7 Bb7+ |
 
 EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | EbM7 Eb7 | 
 
+(phrase (style swing)) 
+AbM7 Ao | EbM7 Eb7 | 
 (section (style swing)) 
 
-AbM7 Ao | EbM7 Eb7 | AbM7 Ao | EbM7 Bb7+ | 
+AbM7 Ao | EbM7 Bb7 | 
 
 (section (style swing)) 
 

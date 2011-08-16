@@ -314,10 +314,6 @@
         (Chord Ab7 1)
         (Brick GenDom C 1)) // modified by XS
 
-(Def-Brick Body-&-Soul+TTFA Major Cadence C
-        (Brick Body-&-Soul-Approach C 4)
-        (Brick TTFA C 4))
-
 (Def-Brick Chromatic-Dropback Major Dropback C
 	(Brick Night-&-Day-Approach E 2)
 	(Brick Nowhere-Approach D 2))
@@ -327,7 +323,6 @@
     	(Brick Perfect-Cadence Ab 2) 
     	(Brick Perfect-Cadence E 2) 
     	(Brick Perfect-Cadence C 2))
-
 
 (Def-Brick Cyclic-Approach(2) Major Approach C
         (Chord Dm7 1)
@@ -423,7 +418,16 @@
 	(Chord CM7 1)
 	(Chord A7 1))
 
-(Def-Brick Dropback(var1) Major Dropback C
+(Def-Brick Dropback(vi-var) Major Dropback C
+	(Chord CM7 1)
+	(Chord Am7 1))
+
+(Def-Brick Dropback(iii-VI-var) Major Dropback C
+	(Chord CM7 1)
+        (Chord Em7 1)
+	(Chord A7 1))
+
+(Def-Brick Dropback(bVII-VI-var) Major Dropback C
 	(Chord CM7 1)
         (Chord Bb7 1)
 	(Chord A7  2))    
@@ -775,11 +779,11 @@
 (Def-Brick Perfect-Cadence Major Cadence C
 	(Chord G7 1)
 	(Chord CM7 1))
-
+/*
 (Def-Brick Pullback+Cadence Major Cadence C
 	(Brick Pullback-Extended C 6)
 	(Chord CM7 2))
-
+*/
 (Def-Brick Two-Goes-Pullback+Cadence Major Cadence C
 	(Brick Two-Goes-Pullback-Extended C 6)
 	(Chord CM7 2))
@@ -1177,21 +1181,24 @@
 	(Chord F 1)
 	(Brick Nowhere-Approach D 2))
 
-(Def-Brick TTFA(standard) Major Dropback C
+// TTFA = Turnaround to Further Away 
+// where "Further Away" means the ii chord
+
+(Def-Brick TTFA(standard) Major Turnaround C
 	(Chord CM7 1)
 	(Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(IV-variant) Major Dropback C
+(Def-Brick TTFA(IV-variant) Major Turnaround C
 	(Chord CM7 1)
 	(Chord F7 1)
 	(Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(nondominant) Major Dropback C
+(Def-Brick TTFA(nondominant) Major Turnaround C
         (Chord CM7 1)
         (Chord FM7 1)
         (Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(ii-variant) Major Dropback C
+(Def-Brick TTFA(ii-variant) Major Turnaround C
         (Chord CM7 1)
         (Chord Dm7 1)
         (Brick Straight-Approach D 2))
@@ -1202,12 +1209,11 @@
         (Chord Em7 1)
         (Chord Am7 1))
 
-(Def-Brick TTFA(rainy) Major Dropback C
+(Def-Brick TTFA(rainy) Major Turnaround C
         (Chord CM7 1)
         (Chord F7 1)
         (Chord Em7 1)
         (Chord Ebo 1))
-
 
 (Def-Brick To-IV-n-Back(main) Major Turnaround C
 	(Chord CM7 1)
@@ -1991,3 +1997,18 @@
         (Brick Major-On Bb 1)
         (Brick Nowhere-Minor-Cadence G 4)
         (Chord C7 1))
+
+(Def-Brick IV-n-Back-& Major Cadence Eb
+        (Chord AbM7 1)
+        (Chord Ao 1)
+        (Chord EbM7 1)
+        (Chord Eb7 1))
+
+(Def-Brick IV-n-Back Major Cadence Eb
+        (Chord AbM7 1)
+        (Chord Ao 1)
+        (Chord EbM7 1))
+
+(Def-Brick Minor-Chromatic-Approach Minor Approach D
+        (Chord Em7 1)
+        (Chord Ebm7 1))

@@ -497,7 +497,8 @@ public class PostProcessor {
             firstStable = false;
         }
         else if(firstEquivs.hasMode(firstMode) || 
-                first.getType().equals("Cadence")) {
+                first.getType().equals("Cadence") ||
+                first.getType().equals("Dropback")) {    // added by RK
             firstStable = true;
         }
         

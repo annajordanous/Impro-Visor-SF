@@ -34,19 +34,25 @@
     (key -3)
 )
 
+(phrase (style swing)) 
+Fm7b5 Bb7 | EbM7 | Fm7b5 | Bb7 | 
+
 (section (style swing)) 
 
-Fm7b5 Bb7 | EbM7 | Fm7b5 | Bb7 | 
 Fm7b5 Bb7 | EbM7 | Abm7 | Db7 | 
 
+(phrase (style swing)) 
+Eb/G | Gbo | Fm7 | Bb7 | 
+
 (section (style swing)) 
 
-Eb/G | Gbo | Fm7 | Bb7 | 
 EbM7 D7 | Db7 C7 | Fm7 | Bb7 | 
 
+(phrase (style swing)) 
+Fm7b5 Bb7 | EbM7 | Fm7b5 | Bb7 | 
+
 (section (style swing)) 
 
-Fm7b5 Bb7 | EbM7 | Fm7b5 | Bb7 | 
 Fm7b5 Bb7 | EbM7 | Gm7 | C7 | 
 
 (section (style swing)) 

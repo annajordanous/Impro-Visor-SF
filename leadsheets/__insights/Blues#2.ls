@@ -38,9 +38,11 @@
 
 CM7 | Dm7 D#o | C/E | Gm7 C7 | 
 
+(phrase (style swing)) 
+FM7 | Fm7 Bb7 | 
 (section (style swing)) 
 
-FM7 | Fm7 Bb7 | EbM7 | Ebm7 Ab7 | 
+EbM7 | Ebm7 Ab7 | 
 
 (section (style swing)) 
 
