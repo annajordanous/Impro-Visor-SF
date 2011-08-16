@@ -34,17 +34,27 @@
     (key 0)
 )
 
+(phrase (style cha-cha-cha-2)) 
+CM7 | Dm7 G7 | CM7 | Dm7 G7 | 
+
 (section (style cha-cha-cha-2)) 
 
-CM7 | Dm7 G7 | CM7 | Dm7 G7 | 
 CM7 | / | Ebo7 | A7 D7 | 
+
+(section (style cha-cha-cha-2)) 
+
 Dm7 G7 | / | Bb7#11 | A7 | 
 Dm7 | G7 | Em7 A7 | Dm7 G7 | 
 
+(phrase (style cha-cha-cha-2)) 
+CM7 | Dm7 G7 | CM7 | Dm7 G7 | 
+
 (section (style cha-cha-cha-2)) 
 
-CM7 | Dm7 G7 | CM7 | Dm7 G7 | 
 CM7 | / | Ebo7 | A7 D7 | 
+
+(section (style cha-cha-cha-2)) 
+
 Dm7 G7 | / | Bb7#11 | A7 | 
 Dm7 | G7 | CM7 | / | 
 

@@ -53,9 +53,6 @@ Bbm7 | Eb7 | Cm7 | F7 |
 
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | Gb7#11 | F7 | 
-
-(section (style swing)) 
-
 Bbm7 | Eb7 | AbM7 | / | 
 
 (part

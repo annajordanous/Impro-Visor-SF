@@ -50,9 +50,6 @@ FM7 | Gm7 C7 | FM7 | / |
 
 (phrase (style swing)) 
 Am7b5 | / | D7 | / | 
-
-(section (style swing)) 
-
 Gm | / | Bbm7 | Eb7 | 
 
 (phrase (style swing)) 
