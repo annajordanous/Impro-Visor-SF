@@ -167,6 +167,7 @@
 (brick-type Overrun          30)
 (brick-type On-Off         1005)
 (brick-type Off-On         1010)
+(brick-type On-Off+         100)
 (brick-type On              550)
 (brick-type Opening          25)
 (brick-type Turnaround       20)
@@ -1583,27 +1584,27 @@
 	(Brick Off B 1)
 	(Brick Minor-On C 1))
 
-(Def-Brick On-Off-On-To-V Major On-Off C
+(Def-Brick On-Off-On-To-V Major On-Off+ C
         (Brick Major-On C 1)
         (Brick Perfect-Cadence C 3))
 
-(Def-Brick On-Off-To-IV-Twice-Major-then-Minor Minor On-Off C
+(Def-Brick On-Off-To-IV-Twice-Major-then-Minor Minor On-Off+ C
         (Brick On-Off-Major-IV C 1)
         (Brick On-Off-Minor-IV C 1))
 
-(Def-Brick On-Off-Major-Minor-V Minor On-Off C
+(Def-Brick On-Off-Major-Minor-V Minor On-Off+ C
         (Brick On-Off-Major-V C 1)
         (Brick On-Off-Minor-V C 1))
 
-(Def-Brick On-Off-Twice-Minor-V Minor On-Off C
+(Def-Brick On-Off-Twice-Minor-V Minor On-Off+ C
         (Brick On-Off-Minor-V C 1)
         (Brick On-Off-Minor-V C 1))
 
-(Def-Brick On-Off-Thrice-Minor-V Minor On-Off C
+(Def-Brick On-Off-Thrice-Minor-V Minor On-Off+ C
         (Brick On-Off-Twice-Minor-V C 2)
         (Brick On-Off-Minor-V C 1))
 
-(Def-Brick On-Off-On-Minor-V Minor Cadence C
+(Def-Brick On-Off-On-Minor-V Minor On-Off+ C
         (Brick On-Off-Minor-V C 1)
         (Brick GenMinor C 1))
 
@@ -1985,7 +1986,6 @@
         (Chord C#o 1))
 
 // User-defined bricks
-
 
 (Def-Brick Pennies-Approach(var3) Major Approach F
         (Brick Major-On Bb 1)
