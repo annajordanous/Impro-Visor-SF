@@ -44,16 +44,20 @@ Cm Am7b5 | Dm7b5 G7 | CM7 A7 | Dm7 G7 |
 (phrase (style swing)) 
 CM7 | Bbm7 Eb7 | AbM7 | Dm7b5 G7 | 
 
+(phrase (style swing)) 
+Cm Am7b5 | Dm7b5 G7 | 
 (section (style swing)) 
 
-Cm Am7b5 | Dm7b5 G7 | CM7 | Gm7 C7 | 
+CM7 | Gm7 C7 | 
 
 (phrase (style swing)) 
 FM7 | Ebm7 Ab7 | DbM7 | Gm7b5 C7 | 
 
+(phrase (style swing)) 
+Fm Dm7b5 | Gm7b5 C7 | 
 (section (style swing)) 
 
-Fm Dm7b5 | Gm7b5 C7 | FM7 | Dm7b5 G7 | 
+FM7 | Dm7b5 G7 | 
 
 (phrase (style swing)) 
 CM7 | Bbm7 Eb7 | AbM7 | Dm7b5 G7 | 

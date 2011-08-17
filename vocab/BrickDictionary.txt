@@ -497,7 +497,7 @@
 */
 
 (Def-Brick Happenstance-Cadence Major Cadence C
-	(Brick Straight-Approach E 2)
+	(Brick An-Approach E 2)
 	(Chord CM7 2))
 
 (Def-Brick Honeysuckle-Bridge(main) Major Approach C 
