@@ -1089,7 +1089,7 @@
         (Brick Sad-Cadence Bb 6)
         (Brick Perfect-Cadence Ab 4))
 
-(Def-Brick Starlight-Dominant Dominant Cadence C
+(Def-Brick Starlight-Cadence(tension) Dominant Cadence C
 	(Brick Starlight-Approach C 6)
 	(Chord C7 2))
 
@@ -1131,8 +1131,7 @@
         (Chord C 1))
 
 (Def-Brick Yardbird-Approach Major Approach C
-        (Chord Fm7 1)
-        (Chord Bb7 1))
+        (Brick GenDom Eb 2))
 
 (Def-Brick IV-n-Yak(main) Major Cadence C
         (Chord F 1)
@@ -1411,8 +1410,8 @@
 
 // Changed by RK
 (Def-Brick Yardbird-Cadence Major Cadence C
-        (Brick Yardbird-Approach C 2)
-	(Chord CM7 2))
+        (Brick GenDom Eb 1)
+	(Chord C 1))
 
 //(Def-Brick Yardbird-Turnaround Major Turnaround C
 //        (Chord CM7 2)
@@ -2055,7 +2054,7 @@
 
 (Def-Brick II-n-Bird Major Approach C
         (Chord Dm7 2)
-        (Brick Yardbird-Approach C 2))
+        (Brick GenDom Eb 2))
 
 (Def-Brick II-n-Bird-POT Major Turnaround C
         (Brick II-n-Bird C 2)
@@ -2091,3 +2090,8 @@
         (Chord Em7 1)
         (Chord Ebm7 1))
 
+(Def-Brick Starlight-Opening Major Opening Bb
+        (Chord Em7b5 1)
+        (Chord A7 1)
+        (Chord Cm7 1)
+        (Chord F7 1))

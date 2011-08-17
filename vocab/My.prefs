@@ -1,3 +1,4 @@
+(create-roadmap y)
 (default-chord-font-size 16)
 (advice-cache-size 10)
 (always-use-buttons nnnn)

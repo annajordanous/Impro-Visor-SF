@@ -1,0 +1,11 @@
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/StellaByStarlight.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/Solar.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/NeverLetMeGo.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/MyOldFlame.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/MyFunnyValentine.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/MyFoolishHeart.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/HoneysuckleRose.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/FlyMeToTheMoon.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/Flamingo.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/FineRomance.ls
+/Users/keller/NetBeansProjects/impro-visor-aug-12/leadsheets/__insights/FallingInLoveWithLove.ls
