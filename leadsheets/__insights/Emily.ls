@@ -34,24 +34,32 @@
     (key 0)
 )
 
+(phrase (style waltz)) 
+CM7 | Am7 | Dm7 | G7 | 
+
 (section (style waltz)) 
 
-CM7 | Am7 | Dm7 | G7 | 
 Gm7 | C7 | FM7 | Bb7 | 
 
+(phrase (style waltz)) 
+AM7 | F#m7 | Bm7 | E7 | 
+
 (section (style waltz)) 
 
-AM7 | F#m7 | Bm7 | E7 | 
 Am7 | D7 | Dm7 | G7+ | 
 
+(phrase (style waltz)) 
+CM7 | Am7 | Dm7 | G7 | 
+
 (section (style waltz)) 
 
-CM7 | Am7 | Dm7 | G7 | 
 Gm7 | C7 | FM7 | Bm7b5 E7alt | 
 
+(phrase (style waltz)) 
+Am7 | B7 | Em7 | A7 | 
+
 (section (style waltz)) 
 
-Am7 | B7 | Em7 | A7 | 
 Dm7 | G7 | Em7b5 | A7 | 
 
 (section (style waltz)) 

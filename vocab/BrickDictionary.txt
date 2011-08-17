@@ -53,9 +53,9 @@
 
 // Diatonic Rules
 
-(diatonic Major C Dm Dm7 Em Em7 F G7 Am Am7 Bo)
-(diatonic Minor Cm Dm7b5 Eb Fm F G7 Gm7 Ab Am7b5 Bb7 Bo)
-(diatonic Dominant C7 F7 Gm7 G7)
+(diatonic Major C Dm Dm7 Em Em7 F G7 G7sus Gsus Am Am7 Bo)
+(diatonic Minor Cm Dm7b5 Eb Fm F G7 Gm7 G7sus Gsus Ab Am7b5 Bb7 Bo)
+(diatonic Dominant C7 C7sus Csus Dm Dm7 Eo Em7b5 F7 F7sus Fsus G7sus Gsus Am Am7 Bb )
 
 
 /** Brick Definitions
@@ -162,6 +162,7 @@
 
 (brick-type Approach         45)
 (brick-type Cadence          30)
+(brick-type CESH             10)
 (brick-type Dropback         30)
 (brick-type Invisible      2000)
 (brick-type Overrun          30)
@@ -238,9 +239,13 @@
         (Brick Straight-Approach D 2)
         (Brick Somewhere-Cadence C 3))
 
-(Def-Brick Amen-Cadence Major Cadence C
-	(Chord FM7 1)
-	(Chord CM7 1))
+(Def-Brick Amen-Cadence(main) Major Cadence C
+	(Chord F 1)
+	(Chord C 1))
+
+(Def-Brick Amen-Cadence(var) Major Cadence C
+	(Chord F7 1)
+	(Chord C 1))
 
 (Def-Brick Autumn-Leaves-Opening Minor Opening A
 	(Brick Straight-Cadence C 4)
@@ -745,6 +750,13 @@
 	(Brick Raindrop C 2)
 	(Brick Straight-Approach C 4))
 
+(Def-Brick Pennies-Turnaround-Two-Goes Major Turnaround C
+	(Chord CM7 1)
+	(Chord Dm 1)
+	(Brick Raindrop C 2)
+	(Brick Straight-Approach C 2)
+	(Brick Straight-Approach C 2))
+
 (Def-Brick Pennies-Approach(main) Major Approach C
 	(Chord F 1)
         (Chord Bb7 1)
@@ -799,13 +811,13 @@
 (Def-Brick Pullback(var1) Major Approach C
 	(Brick An-Approach C 2)
         (Chord Em7 1)
-        (Chord Am7 1))
-/*
+       (Chord Am7 1))
+
 (Def-Brick Pullback(var2) Major Approach C
-	(Brick Straight-Approach C 2)
-        (Chord Em7b5 1)
-        (Chord A7 1))
-*/
+	(Brick An-Approach C 2)
+        (Brick An-Approach D 2)
+        (Brick An-Approach C 2))
+
 (Def-Brick Pullback(var3) Major Approach C
         (Brick An-Approach C 2)
         (Brick An-Approach D 2)
@@ -1594,6 +1606,24 @@
 	(Brick Off B 1)
 	(Brick Minor-On C 1))
 
+
+(Def-Brick On-Off-On-To-IV Major On-Off+ C
+        (Brick Major-On C 1)
+        (Brick Amen-Cadence C 2))
+
+(Def-Brick On-Off-Twice-On-To-IV Major On-Off+ C
+        (Brick On-Off-On-To-IV C 4)
+        (Brick Amen-Cadence C 2))
+
+(Def-Brick On-Off-Thrice-On-To-IV Major On-Off+ C
+        (Brick On-Off-Twice-On-To-IV C 4)
+        (Brick Amen-Cadence C 2))
+
+(Def-Brick On-Off-Four-Times-On-To-IV Major On-Off+ C
+        (Brick On-Off-Thrice-On-To-IV C 4)
+        (Brick Amen-Cadence C 2))
+
+
 (Def-Brick On-Off-On-To-V Major On-Off+ C
         (Brick Major-On C 1)
         (Brick Perfect-Cadence C 2))
@@ -1995,22 +2025,33 @@
 
 // CESH = Contrapunal Elaboration of Static Harmony
 
-(Def-Brick Ascending-CESH(var1) Minor Misc C
-        (Chord Cm 1)
-        (Chord Cm+ 1)
-        (Chord Cm6 1))
-
-(Def-Brick Ascending-CESH(var2) Minor Misc C
+(Def-Brick Ascending-Minor-CESH(4 step) Minor CESH C
         (Chord Cm 1)
         (Chord Cm+ 1)
         (Chord Cm6 1)
         (Chord Cm7 1))
 
-(Def-Brick Descending-CESH(var1) Minor Misc C
+(Def-Brick Ascending-Minor-CESH(3 step) Minor CESH C
+        (Chord Cm 1)
+        (Chord Cm+ 1)
+        (Chord Cm6 1))
+
+(Def-Brick Descending-Minor-CESH(4 step) Minor CESH C
         (Chord Cm 1)
         (Chord CmM7 1)
         (Chord Cm7 1)
         (Chord Cm6 1))
+
+(Def-Brick Ascending-Major-CESH(4 step) Major CESH C
+        (Chord C 1)
+        (Chord C+ 1)
+        (Chord C6 1)
+        (Chord C7 1))
+
+(Def-Brick Ascending-Major-CESH(3 step) Major CESH C
+        (Chord C 1)
+        (Chord C+ 1)
+        (Chord C6 1))
 
 (Def-Brick II-n-Bird Major Approach C
         (Chord Dm7 2)
