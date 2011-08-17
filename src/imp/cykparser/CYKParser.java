@@ -286,14 +286,14 @@ public class CYKParser
             // subBlock. The last rule gets the name of the final Brick.
             else {
                 // first rule
-                currentName = name + "1";
+                currentName = name + b.getVariant() + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];
                 prods[0] = new BinaryProduction(currentName, INVISIBLE, b.getKey(),
                         subBlocks.get(0), subBlocks.get(1), false, mode, lib);
                 nonterminalRules.add(prods[0]);
                 // second through next to last rules
                 for (int i = 2; i < size - 1; i++) {
-                    currentName = name + i;
+                    currentName = name + b.getVariant() + i;
                     prods[i-1] = new BinaryProduction(currentName, INVISIBLE,
                             b.getKey(), prods[i-2], subBlocks.get(i), false, mode, lib);
                     nonterminalRules.add(prods[i-1]);
