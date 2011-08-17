@@ -497,15 +497,15 @@ public class PostProcessor {
             firstStable = false;
         }
         else if(firstEquivs.hasMode(firstMode) || 
-                first.getType().equals("Cadence") ||
-                first.getType().equals("Dropback")) {    // added by RK
+                first.getType().equals("Cadence") ) {
             firstStable = true;
         }
         
         // Determine stability of second block
         if(second.getType().equals("Approach") || 
                 second.getType().equals("Cadence") || 
-                second.getType().equals("Launcher")) {
+                second.getType().equals("Launcher") ||
+                second.getType().equals("Misc") ) {     // added by RK
             secondStable = false;
         }
         

@@ -233,6 +233,11 @@
         (Brick Somewhere-Cadence C 3)
         (Brick Extended-Cadence C 5))
 
+(Def-Brick 7-Chord-Dropback(var) Major Dropback C
+        (Brick Somewhere-Cadence C 3)
+        (Brick Straight-Approach D 2)
+        (Brick Somewhere-Cadence C 3))
+
 (Def-Brick Amen-Cadence Major Cadence C
 	(Chord FM7 1)
 	(Chord CM7 1))
@@ -432,9 +437,9 @@
         (Chord Bb7 1)
 	(Chord A7  2))    
 
-//(Def-Brick Dropback(var2) Major Dropback C
-//	(Chord CM7 1)
-//	(Chord Ebo 1))
+(Def-Brick Dropback(dim-iii-var) Major Dropback C
+	(Chord CM7 1)
+	(Chord Ebo 1))
 
 (Def-Brick Dropback-To-Five Major Dropback C
 	(Brick Somewhere C 5)
@@ -683,8 +688,7 @@
 	(Brick Straight-Approach C 2))
 
 (Def-Brick POT(var2) Major Turnaround C
-	(Chord C 1)
-        (Chord Am 1)
+	(Chord C 2)
 	(Brick Straight-Approach C 2))
 
 (Def-Brick POT(var3) Major Turnaround C
@@ -779,11 +783,7 @@
 (Def-Brick Perfect-Cadence Major Cadence C
 	(Chord G7 1)
 	(Chord CM7 1))
-/*
-(Def-Brick Pullback+Cadence Major Cadence C
-	(Brick Pullback-Extended C 6)
-	(Chord CM7 2))
-*/
+
 (Def-Brick Two-Goes-Pullback+Cadence Major Cadence C
 	(Brick Two-Goes-Pullback-Extended C 6)
 	(Chord CM7 2))
@@ -793,32 +793,36 @@
 	(Chord CM7 2))
 
 (Def-Brick Pullback(basic) Major Approach C
-	(Brick Straight-Approach C 2)
-	(Brick Straight-Approach D 2))
+	(Brick An-Approach C 2)
+	(Brick An-Approach D 2))
 
 (Def-Brick Pullback(var1) Major Approach C
-	(Brick Straight-Approach C 2)
+	(Brick An-Approach C 2)
         (Chord Em7 1)
         (Chord Am7 1))
-
+/*
 (Def-Brick Pullback(var2) Major Approach C
 	(Brick Straight-Approach C 2)
         (Chord Em7b5 1)
         (Chord A7 1))
-
+*/
 (Def-Brick Pullback(var3) Major Approach C
-        (Brick Sad-Approach C 2)
-        (Brick Sad-Approach D 2)
+        (Brick An-Approach C 2)
+        (Brick An-Approach D 2)
         (Brick Dominant-Cycle(2 chords) C 2))
 
 (Def-Brick Pullback(tritone-sub) Major Approach C
-	(Brick Straight-Approach C 2)
+	(Brick An-Approach C 2)
         (Chord Bb7 1)
         (Chord A7 1))
 
 (Def-Brick Pullback-Extended Major Approach C
 	(Brick Pullback C 4)
-	(Brick Straight-Approach C 2))
+	(Brick An-Approach C 2))
+
+(Def-Brick Pullback-Extended-+-Cadence Major Cadence C
+        (Brick Pullback-Extended C 6)
+        (Chord C 2))
 
 (Def-Brick Pullback-Yardbird-variant Major Approach Bb
         (Chord Cm7 1)
@@ -829,9 +833,9 @@
         (Chord F7 1))
 
 (Def-Brick Double-Pullback Major Approach C
-	(Brick Straight-Approach C 2)
-	(Brick Straight-Approach D 2)
-	(Brick Straight-Approach E 2))
+	(Brick An-Approach C 2)
+	(Brick An-Approach D 2)
+	(Brick An-Approach E 2))
 
 (Def-Brick Two-Goes-Pullback Major Approach C
         (Brick Pullback C 1)
@@ -1592,7 +1596,40 @@
 
 (Def-Brick On-Off-On-To-V Major On-Off+ C
         (Brick Major-On C 1)
-        (Brick Perfect-Cadence C 3))
+        (Brick Perfect-Cadence C 2))
+
+(Def-Brick On-Off-Twice-On-To-V Major On-Off+ C
+        (Brick On-Off-On-To-V C 4)
+        (Brick Perfect-Cadence C 2))
+
+(Def-Brick On-Off-Thrice-On-To-V Major On-Off+ C
+        (Brick On-Off-Twice-On-To-V C 4)
+        (Brick Perfect-Cadence C 2))
+
+(Def-Brick On-Off-Four-Times-On-To-V Major On-Off+ C
+        (Brick On-Off-Thrice-On-To-V C 4)
+        (Brick Perfect-Cadence C 2))
+
+
+(Def-Brick On-Off-On-To-II Major On-Off+ C
+        (Brick Major-On C 1)
+        (Chord Dm7 1)
+        (Brick Major-On C 1))
+ 
+(Def-Brick On-Off-Twice-On-To-II Major On-Off+ C
+        (Brick On-Off-On-To-II C 4)
+        (Chord Dm7 1)
+        (Brick Major-On C 1))
+
+(Def-Brick On-Off-Thrice-On-To-II Major On-Off+ C
+        (Brick On-Off-Twice-On-To-II C 4)
+        (Chord Dm7 1)
+        (Brick Major-On C 1))
+
+(Def-Brick On-Off-Four-Times-On-To-II Major On-Off+ C
+        (Brick On-Off-Thrice-On-To-II C 4)
+        (Chord Dm7 1)
+        (Brick Major-On C 1))
 
 (Def-Brick On-Off-To-IV-Twice-Major-then-Minor Minor On-Off+ C
         (Brick On-Off-Major-IV C 1)
@@ -2012,3 +2049,4 @@
 (Def-Brick Minor-Chromatic-Approach Minor Approach D
         (Chord Em7 1)
         (Chord Ebm7 1))
+
