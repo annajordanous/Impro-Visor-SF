@@ -63,7 +63,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Buffer for the preview panel  */
     private Image bufferPreviewPanel;
     /** Width of the preview buffer */
-    private final int previewBufferWidth  = 1024;
+    private final int previewBufferWidth  = 1920;
     /** Height of the preview buffer */
     private final int previewBufferHeight = 200;
 
@@ -181,6 +181,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dialogKeyLabel = new javax.swing.JLabel();
         dialogNameField = new javax.swing.JTextField();
         dialogAcceptButton = new javax.swing.JButton();
+        dialogCancelButton = new javax.swing.JButton();
         dialogModeComboBox = new javax.swing.JComboBox();
         dialogKeyComboBox = new javax.swing.JComboBox();
         dialogTypeComboBox = new javax.swing.JComboBox(brickLibrary.getTypes());
@@ -202,7 +203,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jLabel6 = new javax.swing.JLabel();
         prefDialogTitleField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         prefDialogTempoField = new imp.roadmap.IntegerField();
         prefDialogMetreTopField = new imp.roadmap.IntegerField();
         prefDialogMetreBottomField = new imp.roadmap.IntegerField();
@@ -218,8 +218,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaleLabel = new javax.swing.JLabel();
         scaleComboBox = new javax.swing.JComboBox();
         breakButton = new javax.swing.JButton();
-        selectAllBricksButton = new javax.swing.JButton();
         flattenButton = new javax.swing.JButton();
+        selectAllBricksButton = new javax.swing.JButton();
         analyzeButton = new javax.swing.JButton();
         newBrickButton = new javax.swing.JButton();
         keyColorationButton = new javax.swing.JToggleButton();
@@ -287,8 +287,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 2;
         addBrickDialog.getContentPane().add(dialogKeyLabel, gridBagConstraints);
 
-        dialogNameField.setText("New Brick"); // NOI18N
+        dialogNameField.setToolTipText("Enter the name of the new brick type. If it is the same as an existing brick type, the Variant field will be enabled."); // NOI18N
         dialogNameField.setName("dialogNameField"); // NOI18N
+        dialogNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dialogNameFieldActionPerformed(evt);
+            }
+        });
         dialogNameField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 dialogNameFieldKeyReleased(evt);
@@ -309,11 +314,24 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 3, 0);
         addBrickDialog.getContentPane().add(dialogAcceptButton, gridBagConstraints);
+
+        dialogCancelButton.setText("Cancel\n"); // NOI18N
+        dialogCancelButton.setDefaultCapable(false);
+        dialogCancelButton.setName("dialogCancelButton"); // NOI18N
+        dialogCancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dialogCancelButtondialogAccepted(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 3, 0);
+        addBrickDialog.getContentPane().add(dialogCancelButton, gridBagConstraints);
 
         dialogModeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Major", "Minor", "Dominant" }));
         dialogModeComboBox.setName("dialogModeComboBox"); // NOI18N
@@ -502,13 +520,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         jPanel1.add(jLabel7, gridBagConstraints);
-
-        jLabel8.setText("Style:"); // NOI18N
-        jLabel8.setName("jLabel8"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        jPanel1.add(jLabel8, gridBagConstraints);
 
         prefDialogTempoField.setText("120"); // NOI18N
         prefDialogTempoField.setMinimumSize(new java.awt.Dimension(38, 28));
@@ -763,24 +774,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(breakButton);
 
-        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
-        selectAllBricksButton.setText("Select All"); // NOI18N
-        selectAllBricksButton.setToolTipText("Select all bricks.\n"); // NOI18N
-        selectAllBricksButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        selectAllBricksButton.setFocusable(false);
-        selectAllBricksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        selectAllBricksButton.setMaximumSize(new java.awt.Dimension(70, 30));
-        selectAllBricksButton.setMinimumSize(new java.awt.Dimension(70, 30));
-        selectAllBricksButton.setName("selectAllBricksButton"); // NOI18N
-        selectAllBricksButton.setPreferredSize(new java.awt.Dimension(70, 30));
-        selectAllBricksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        selectAllBricksButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectAllBricksButtonPressed(evt);
-            }
-        });
-        toolBar.add(selectAllBricksButton);
-
         flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         flattenButton.setText("Flatten"); // NOI18N
         flattenButton.setToolTipText("Flatten selected bricks into their constituent chords."); // NOI18N
@@ -798,6 +791,24 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         toolBar.add(flattenButton);
+
+        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        selectAllBricksButton.setText("Select All"); // NOI18N
+        selectAllBricksButton.setToolTipText("Select all bricks.\n"); // NOI18N
+        selectAllBricksButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        selectAllBricksButton.setFocusable(false);
+        selectAllBricksButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        selectAllBricksButton.setMaximumSize(new java.awt.Dimension(70, 30));
+        selectAllBricksButton.setMinimumSize(new java.awt.Dimension(70, 30));
+        selectAllBricksButton.setName("selectAllBricksButton"); // NOI18N
+        selectAllBricksButton.setPreferredSize(new java.awt.Dimension(70, 30));
+        selectAllBricksButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        selectAllBricksButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectAllBricksButtonPressed(evt);
+            }
+        });
+        toolBar.add(selectAllBricksButton);
 
         analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
@@ -911,7 +922,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(stopButton);
 
-        featureWidthSlider.setMaximum(200);
+        featureWidthSlider.setMaximum(300);
         featureWidthSlider.setMinimum(60);
         featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks. Double-click to constrain the setting."); // NOI18N
         featureWidthSlider.setValue(settings.measureLength);
@@ -960,7 +971,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapScrollPane.setIgnoreRepaint(true);
         roadMapScrollPane.setMinimumSize(new java.awt.Dimension(800, 400));
         roadMapScrollPane.setName("roadMapScrollPane"); // NOI18N
-        roadMapScrollPane.setPreferredSize(new java.awt.Dimension(800, 900));
+        roadMapScrollPane.setPreferredSize(new java.awt.Dimension(2500, 900));
         roadMapScrollPane.setRequestFocusEnabled(false);
         roadMapScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -1001,7 +1012,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(800, 80));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
-        previewScrollPane.setPreferredSize(new java.awt.Dimension(800, 80));
+        previewScrollPane.setPreferredSize(new java.awt.Dimension(1200, 80));
         previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 previewScrollPanepreviewPaneReleased(evt);
@@ -1428,7 +1439,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_scaleComboBoxscaleChosen
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
-        dialogNameField.setText("New Brick");
+        dialogNameField.setText("");
         dialogVariantField.setText("");
         dialogTypeComboBox.setSelectedIndex(0);
         dialogKeyComboBox.setSelectedIndex(0);
@@ -1762,6 +1773,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_prefDialogAcceptButton1ActionPerformed
+
+    private void dialogCancelButtondialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogCancelButtondialogAccepted
+        addBrickDialog.setVisible(false);
+    }//GEN-LAST:event_dialogCancelButtondialogAccepted
+
+    private void dialogNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dialogNameFieldActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2374,6 +2393,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JButton deleteButton;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JButton dialogAcceptButton;
+    private javax.swing.JButton dialogCancelButton;
     private javax.swing.JComboBox dialogKeyComboBox;
     private javax.swing.JLabel dialogKeyLabel;
     private javax.swing.JComboBox dialogModeComboBox;
@@ -2394,7 +2414,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
