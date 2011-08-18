@@ -706,6 +706,8 @@ public class Brick extends Block {
         
         ArrayList<Block> currentList = this.getSubBlocks();
         
+        //System.out.println("currentList = " + currentList); debugging RK
+        
         Iterator<Block> iter = currentList.iterator();
         
         // Iterate through subblocks. If a block is a chord, just add it. If it 
@@ -925,9 +927,16 @@ public class Brick extends Block {
     @Override
     public int getSectionEnd()
     {
-        if(this.isOverlap() && subBlocks.size() > 1)
-            return subBlocks.get(subBlocks.size() - 2).getSectionEnd();
-        return subBlocks.get(subBlocks.size() - 1).getSectionEnd();
+      int size = subBlocks.size();
+      
+      if( size == 0 )
+        {
+          return NO_END;
+        }
+      
+        if(this.isOverlap() && size > 1)
+            return subBlocks.get(size - 2).getSectionEnd();
+        return subBlocks.get(size - 1).getSectionEnd();
     }
 
     /** isChord
