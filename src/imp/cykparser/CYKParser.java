@@ -264,19 +264,36 @@ public class CYKParser
             // UnaryProductions, processed after a table cell is filled by the
             // parser
             else if (size == 1) {
-                UnaryProduction u = new UnaryProduction(name, b.getType(), 
-                                        b.getKey(), subBlocks.get(0),
+                Block sb0 = subBlocks.get(0);
+                
+                // Avoid potential crash if either subBlock is null.
+                // This might occur if a sub-brick is not recognized.
+                
+                if( sb0 != null )
+                  {
+                  UnaryProduction u = new UnaryProduction(name, b.getType(), 
+                                        b.getKey(), sb0,
                                         true, mode, lib);
-                terminalRules.add(u);
+                  terminalRules.add(u);
+                  }
             }
             // Ideal case: a Brick of two subBricks. Only one rule is needed,
             // a BinaryProduction with the name of the resulting brick as its 
             // head and each of the subBricks in its body.
             else if (size == 2) {
-                BinaryProduction p = new BinaryProduction(name, b.getType(), 
-                                         b.getKey(), subBlocks.get(0), 
-                                         subBlocks.get(1), true, mode, lib);
-                nonterminalRules.add(p);
+                Block sb0 = subBlocks.get(0);
+                Block sb1 = subBlocks.get(1);
+                
+                // Avoid potential crash if either subBlock is null.
+                // This might occur if a sub-brick is not recognized.
+                
+                if( sb0 != null && sb1 != null )
+                  {
+                  BinaryProduction p = new BinaryProduction(name, b.getType(), 
+                                         b.getKey(), sb0, sb1, 
+                                         true, mode, lib);
+                  nonterminalRules.add(p);
+                  }
             }
             
             // Larger case: a Brick of three or more subBricks. The Brick gets
@@ -285,6 +302,10 @@ public class CYKParser
             // being the name of the previous production and one being the next
             // subBlock. The last rule gets the name of the final Brick.
             else {
+                
+                // Note: Crash prevention code should be added to this
+                // as in the previous two cases.
+                
                 // first rule
                 currentName = name + b.getVariant() + "1";
                 BinaryProduction[] prods = new BinaryProduction[size];

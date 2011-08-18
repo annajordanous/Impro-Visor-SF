@@ -163,6 +163,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         WindowRegistry.registerWindow(this);
         
+        setFeatureWidthLocked(true);
+        
         //settings.generateColors(.3f);
     }
 

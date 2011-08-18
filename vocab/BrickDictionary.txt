@@ -386,13 +386,17 @@
         (Chord E7#11 1)
         (Brick Tritone-Cadence A 2))
 
-(Def-Brick Dizzy-Substitution-Cadence Major Cadence C
-	(Brick Dizzy-Substitution-Approach C 4)
+(Def-Brick Dizzy-Sub-Cadence Major Cadence C
+	(Brick Dizzy-Sub-Approach C 4)
 	(Chord CM7 4))
 
-(Def-Brick Dizzy-Substitution-Approach Major Approach C
+(Def-Brick Dizzy-Sub-Approach(var1) Major Approach C
 	(Chord Dm 2)
 	(Brick Straight-Approach Gb 2))
+
+(Def-Brick Dizzy-Sub-Approach(var2) Minor Approach C
+        (Chord Dm7b5 1)
+        (Chord Db7 1))
 
 (Def-Brick Dogleg-Approach Major Approach C
 	(Brick GenDom G 2)
@@ -740,6 +744,11 @@
         (Chord Am/C 2)
         (Chord Dm7/G 1)
         (Chord G7 1))
+
+(Def-Brick POT(var4) Major Turnaround F
+        (Brick Dropback F 2)
+        (Brick Minor-On G 1)
+        (Chord Csus 1))
 
 (Def-Brick POT-Spring-sub Major Turnaround C
 	(Chord C 1)
@@ -1125,9 +1134,13 @@
         (Brick GenDom C 1)
         (Chord C  1))
 
-(Def-Brick Somewhere/Nowhere-Approach Minor Approach G
+(Def-Brick Somewhere/Nowhere-Approach(var1) Minor Approach G
         (Chord E7 2)
         (Brick Nowhere-Approach D 2))
+
+(Def-Brick Somewhere/Nowhere-Approach(var2) Major Approach F
+        (Chord G7 1)
+        (Chord Db7 1))
 
 (Def-Brick Stablemates-Cadence Major Cadence C
 	(Brick Stablemates-Approach C 4)
@@ -1335,6 +1348,12 @@
         (Chord Em7 1)
         (Chord Ebo 1))
 
+(Def-Brick To-II-n-Back Major Approach Bb
+        (Chord Bb 1)
+        (Brick Minor-On C 1)
+        (Chord C#m7b5 1)
+        (Brick Major-On Bb 1))
+
 (Def-Brick To-IV-n-Back(main) Major Turnaround C
 	(Chord CM7 1)
 	(Brick Perfect-Cadence F 2)
@@ -1427,18 +1446,18 @@
 	(Brick Perfect-Cadence F 2)
 	(Chord Fm 1))
 
-(Def-Brick To-IV-n-Yak(main) Major Cadence F
+(Def-Brick To-IV-n-Yak(main) Major Approach F
 	(Chord CM7 2)
 	(Brick Perfect-Cadence F 4)
 	(Brick GenDom Eb 2))
 
-(Def-Brick To-IV-n-Yak(new) Major Approach F
+(Def-Brick To-IV-n-Yak(var) Major Approach F
         (Chord Cm7 1)
         (Chord F7 1)
         (Chord BbM7 1)
         (Chord Eb7 1))
 
-(Def-Brick To-IV-n-Yak(minorV) Major Cadence F
+(Def-Brick To-IV-n-Yak(minorV) Major Approach F
         (Brick Straight-Cadence F 4)
         (Brick GenDom Eb 2))
 
@@ -1449,6 +1468,10 @@
         (Chord GM7 2)
         (Chord Gm7 1)
         (Chord C7 1))
+
+(Def-Brick To-IV-n-Yak-Cadence Major Cadence C
+        (Brick To-IV-n-Yak C 3)
+        (Chord C 1))
 
 (Def-Brick Twopenny-Approach Major Approach C
 	(Chord Dm 2)
@@ -1493,6 +1516,11 @@
 (Def-Brick Tritone-Cadence(short) Major Cadence C
         (Chord Db7 1)
         (Chord C 1))
+
+(Def-Brick Tritone/Straight-Approach Major Approach F
+        (Brick Tritone-Approach G 4)
+        (Brick Straight-Approach F 3)
+        (Chord C7/Bb 1))
 
 (Def-Brick Two-Goes-Straight-Approach Major Approach C
         (Brick Straight-Approach C 1)
@@ -2274,4 +2302,7 @@
         (Chord C#o 1))
 
 // User-defined bricks
+
+
+
 
