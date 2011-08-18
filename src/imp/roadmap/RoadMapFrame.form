@@ -925,6 +925,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="appendToNewLeadsheetMIaction"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sendToOriginalLeadsheetMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reset original leadsheet with selection. CAUTION: Cannot be undone." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Clear the original leadsheet and send selection it. CAUTION: This cannot be undone." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="sendToOriginalLeadsheetMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendToOriginalLeadsheetMIaction"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="dictionaryMenu">

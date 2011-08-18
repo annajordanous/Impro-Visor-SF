@@ -259,6 +259,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         leadsheetMenu = new javax.swing.JMenu();
         appendToLeadsheetMI = new javax.swing.JMenuItem();
         appendToNewLeadsheetMI = new javax.swing.JMenuItem();
+        sendToOriginalLeadsheetMI = new javax.swing.JMenuItem();
         dictionaryMenu = new javax.swing.JMenu();
         brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
@@ -1264,6 +1265,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         leadsheetMenu.add(appendToNewLeadsheetMI);
 
+        sendToOriginalLeadsheetMI.setText("Reset original leadsheet with selection. CAUTION: Cannot be undone."); // NOI18N
+        sendToOriginalLeadsheetMI.setToolTipText("Clear the original leadsheet and send selection it. CAUTION: This cannot be undone."); // NOI18N
+        sendToOriginalLeadsheetMI.setName("sendToOriginalLeadsheetMI"); // NOI18N
+        sendToOriginalLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendToOriginalLeadsheetMIaction(evt);
+            }
+        });
+        leadsheetMenu.add(sendToOriginalLeadsheetMI);
+
         roadmapMenuBar.add(leadsheetMenu);
 
         dictionaryMenu.setMnemonic('W');
@@ -1781,6 +1792,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void dialogNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogNameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dialogNameFieldActionPerformed
+
+    private void sendToOriginalLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToOriginalLeadsheetMIaction
+        senSelectionToOriginalNotate();
+    }//GEN-LAST:event_sendToOriginalLeadsheetMIaction
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2452,6 +2467,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenu sectionMenu;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
+    private javax.swing.JMenuItem sendToOriginalLeadsheetMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem togglePhraseMenuItem;
     private javax.swing.JMenuItem toggleSectionMenuItem;
@@ -2528,6 +2544,31 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
       }
 
 
+    /** Send selection to original notate, after emptying it.
+     *
+     * If no blocks are selected, selects them all first.
+     *
+     * If the road map is empty, does nothing.
+     */ 
+    public void senSelectionToOriginalNotate()
+    {
+        if( roadMapPanel.getNumBlocks() < 1 )
+            return;
+
+        if( !roadMapPanel.hasSelection() )
+            selectAllBricks();
+
+
+        ChordPart chordPart = new ChordPart();
+        chordPart.setStyle(style);
+        chordPart.addFromRoadMapFrame(this);
+ 
+        notate.setChordProg(chordPart);
+        notate.setCreateRoadMapCheckBox(false);
+        notate.setVisible(true);
+    }
+
+    
     /** Call from auxNotate when deleted to prevent dangling reference. */
     public void resetAuxNotate()
     {

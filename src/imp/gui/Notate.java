@@ -10964,163 +10964,78 @@ public int getSize()
 
 public Object getElementAt(int index)
   {
-
-    Object o = devices.elementAt(index);
+   Object o = devices.elementAt(index);
 
     if( o == null )
       {
-
         return midiManager.defaultDeviceLabel;
-
       }
-
     return o;
-
   }
 
 public void setSelectedItem(Object anItem)
   {
-
     selectedItem = anItem;
-
   }
 
 public Object getSelectedItem()
   {
-
     return selectedItem;
-
   }
         
 }
-    
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-  
-    
-    /*    */
-    
-    
-    /**
-     *
-     * flag to reset position of dialog the first time it is displayed only
-     *
-     * means that the dialog gets centered the first time it is shown,
-     *
-     * when the dialog is shown a second time, it remembers it's last position
-     *
-     */
-    
-    private boolean initLocationPreferencesDialog = false;
-    
-    private void showPreferencesDialog() {
-        
-        setPrefsDialog();
-        
-        // center dialog only the first time it is shown
-        
-        if(!initLocationPreferencesDialog) {
+ 
+/**
+ *
+ * flag to reset position of dialog the first time it is displayed only
+ *
+ * means that the dialog gets centered the first time it is shown,
+ *
+ * when the dialog is shown a second time, it remembers it's last position
+ *
+ */
+private boolean initLocationPreferencesDialog = false;
 
-           preferencesDialog.setLocationRelativeTo(this);
-            
-           initLocationPreferencesDialog = true;
+private void showPreferencesDialog()
+  {
+    setPrefsDialog();
 
-        }
-        
-        showFakeModalDialog(preferencesDialog);
-    }
-    
-    private boolean initLocationFileStepDialog = false;
-    
-    private void showFileStepDialog() {
-        if(!initLocationFileStepDialog) {
-            fileStepDialog.setLocationRelativeTo(this);
-            initLocationFileStepDialog = true;
-        }
-        showFakeModalDialog(fileStepDialog);
-    }
-    
-    
-    
+    // center dialog only the first time it is shown
+
+    if( !initLocationPreferencesDialog )
+      {
+        preferencesDialog.setLocationRelativeTo(this);
+
+        initLocationPreferencesDialog = true;
+      }
+
+    showFakeModalDialog(preferencesDialog);
+  }
+
+private boolean initLocationFileStepDialog = false;
+
+private void showFileStepDialog()
+  {
+    if( !initLocationFileStepDialog )
+      {
+        fileStepDialog.setLocationRelativeTo(this);
+        initLocationFileStepDialog = true;
+      }
+    showFakeModalDialog(fileStepDialog);
+  }
+
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
-        
+
         stopPlaying();
-        if (keyboard != null && keyboard.isVisible())
-        {
+
+        if( keyboard != null && keyboard.isVisible() )
+          {
             keyboard.setPlayback(false);
             clearVoicingEntryTF();
-        }
-        
+          }
     }//GEN-LAST:event_stopBtnActionPerformed
-    
-    
+
+
     
   private void setTempo(double value)
     {
@@ -11147,7 +11062,6 @@ public Object getSelectedItem()
     }
 
     
-    
     private void tempoSetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tempoSetFocusLost
         
         updateTempoFromTextField();
@@ -11155,9 +11069,6 @@ public Object getSelectedItem()
         staveRequestFocus();
         
     }//GEN-LAST:event_tempoSetFocusLost
-    
-    
-        
     
     
 private void updateTempoFromTextField()
@@ -11286,25 +11197,24 @@ private void updateTempoFromTextField()
     private Color adviceBtnColorClosed = new Color(238, 212, 212);
     
     private void showAdviceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAdviceButtonActionPerformed
-        
+ 
         boolean value = showAdviceButton.isSelected();
-        
+
         Trace.log(2, "AdviceButton selected = " + value);
-        
+
         impro.setShowAdvice(value);
-        
-        showAdviceButton.setBackground(value? adviceBtnColorOpen : adviceBtnColorClosed);
-        
-        if( value ) {
-            
+
+        showAdviceButton.setBackground(value ? adviceBtnColorOpen : adviceBtnColorClosed);
+
+        if( value )
+          {
             redoAdvice();
-            
-        } else {
-            
+          }
+        else
+          {
             closeAdviceFrame();
-            
-        }
-        
+          }
+
     }//GEN-LAST:event_showAdviceButtonActionPerformed
     
     
@@ -23372,6 +23282,14 @@ public SectionInfo getSectionInfo()
 {
     return sectionInfo;
 }
+
+public void setChordProg(ChordPart chordPart)
+  {
+    score.setChordProg(chordPart);
+    score.setLength(chordPart.getSize());
+    setBars(chordPart.getBars());
+    setupArrays();
+  }
 }
 
 
