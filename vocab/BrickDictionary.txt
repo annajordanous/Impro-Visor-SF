@@ -164,6 +164,7 @@
 (brick-type Cadence          30)
 (brick-type CESH             10)
 (brick-type Dropback         30)
+(brick-type Ending           30)
 (brick-type Invisible      2000)
 (brick-type Overrun          30)
 (brick-type On-Off         1005)
@@ -525,7 +526,7 @@
 	(Brick Straight-Approach E 2)
 	(Brick Long-Approach C 8))
 
-(Def-Brick Four-Star-Ending Major Cadence C
+(Def-Brick Four-Star-Ending Major Ending C
 	(Brick Four-Star-Approach C 12)
 	(Chord CM7 4))
 
@@ -825,25 +826,25 @@
 	(Brick Pennies-Approach C 6)
 	(Chord CM7 2))
 
-(Def-Brick Pennies-Ending(raindrop) Major Cadence C
+(Def-Brick Pennies-Ending(raindrop) Major Ending C
 	(Chord Dm 2)
 	(Brick Raindrop C 2)
 	(Brick Straight-Approach C 2)
         (Chord CM7 2))
 
-(Def-Brick Pennies-Ending(side-slipping) Major Cadence C
+(Def-Brick Pennies-Ending(side-slipping) Major Ending C
         (Brick Major-On F 2)
         (Brick Nowhere-Approach D 4)
         (Brick Stablemates-Cadence C 8)
         (Brick Straight-Approach C 2))
 
-(Def-Brick Pennies-Ending(dropback) Major Cadence C
+(Def-Brick Pennies-Ending(dropback) Major Ending C
         (Brick IV-n-Yak C 3)
         (Chord A7 1)
         (Brick Cyclic-Approach C 2)
         (Chord CM7 2))
 
-(Def-Brick Pennies-Ending(Somewhere) Major Cadence C
+(Def-Brick Pennies-Ending(Somewhere) Major Ending C
         (Brick IV-n-Yak C 3)
         (Chord D7 1)
         (Brick Straight-Cadence C 3))
@@ -1082,7 +1083,7 @@
 	(Brick Straight-Approach D 2)
 	(Brick Straight-Approach C 4))
 
-(Def-Brick Sixpenny-Ending Major Cadence C
+(Def-Brick Sixpenny-Ending Major Ending C
 	(Brick Sixpenny-Approach C 12)
 	(Chord CM7 4))
 
@@ -1442,16 +1443,16 @@
 	(Brick Straight-Approach D 2)
 	(Brick Straight-Approach C 4))
 
-(Def-Brick Twopenny-Ending(main) Major Cadence C
+(Def-Brick Twopenny-Ending(main) Major Ending C
 	(Brick Twopenny-Approach C 12)
 	(Chord CM7 4))
 
-(Def-Brick Twopenny-Ending(var1) Major Cadence G
+(Def-Brick Twopenny-Ending(var1) Major Ending G
         (Brick II-n-Bird G 4)
         (Brick Straight-Approach A 2)
         (Brick Stablemates-Cadence G 8))
 
-(Def-Brick Twopenny-Ending(var2) Major Cadence C
+(Def-Brick Twopenny-Ending(var2) Major Ending C
         (Chord Dm7 1)
         (Chord B7 1)
         (Chord Em7 1)
@@ -1459,7 +1460,7 @@
         (Brick An-Approach C 2)
         (Chord C 1))
 
-(Def-Brick Twopenny-Ending(var3) Major Cadence Eb
+(Def-Brick Twopenny-Ending(var3) Major Ending Eb
         (Brick II-n-Bird-SPOT Eb 12)
         (Chord EbM7 2))
 
