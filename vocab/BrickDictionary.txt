@@ -1205,9 +1205,16 @@
         (Chord Bb7 1)
         (Chord C 2))
 
-(Def-Brick IV-n-Yak(var2) Major Cadence Eb
-        (Brick IV-n-Yak Eb 5)
-        (Brick Minor-On G 1))
+(Def-Brick IV-n-Yak(var2) Major Cadence C
+        (Chord F 2)
+        (Chord Fm7 1)
+        (Chord Bb7 1)
+        (Brick Minor-On E 1))
+
+(Def-Brick IV-n-Yak(var3) Major Approach G
+        (Chord CM7 2)
+        (Chord F7 2)
+        (Chord GM7 1))
 
 (Def-Brick IV-n-Yak-+-Dropback Major Dropback C
         (Brick Major-On F 1)
@@ -1314,6 +1321,12 @@
         (Chord CM7 1)
         (Chord F7 1)
         (Chord Em7 1)
+        (Chord Am7 1))
+
+(Def-Brick TTFA(IV-III-vi-variant) Dominant Approach C
+        (Chord CM7 1)
+        (Chord FM7 1)
+        (Chord E7 1)
         (Chord Am7 1))
 
 (Def-Brick TTFA(rainy) Major Turnaround C
@@ -2261,21 +2274,4 @@
         (Chord C#o 1))
 
 // User-defined bricks
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

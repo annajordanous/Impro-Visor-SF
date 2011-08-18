@@ -1795,7 +1795,6 @@ public class Notate
         measureTF = new javax.swing.JTextField();
         sectionLabel = new javax.swing.JLabel();
         delSectionButton = new javax.swing.JButton();
-        setMeasureButton = new javax.swing.JButton();
         phraseCheckBox = new javax.swing.JCheckBox();
         contourPreferences = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -3898,19 +3897,6 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(delSectionButton, gridBagConstraints);
-
-        setMeasureButton.setText("Set");
-        setMeasureButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setMeasureButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(setMeasureButton, gridBagConstraints);
 
         phraseCheckBox.setText("Phrase ");
         phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
@@ -7252,7 +7238,7 @@ public class Notate
         partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
-        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12));
+        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -8651,14 +8637,6 @@ private void setSectionParameters()
 
   sectionListModel.refresh(); 
   }
-
-    private void setMeasureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMeasureButtonActionPerformed
-
-      setSectionPrefs();
-
-      sectionListModel.refresh();
-        
-    }//GEN-LAST:event_setMeasureButtonActionPerformed
 
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
 
@@ -22666,7 +22644,6 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane sectionListScrollPane;
     private javax.swing.JLabel selectAStyleLabel;
     private javax.swing.JMenuItem selectAllMI;
-    private javax.swing.JButton setMeasureButton;
     private javax.swing.JToggleButton showAdviceButton;
     private javax.swing.JCheckBoxMenuItem showEmptyTitlesMI;
     private javax.swing.JCheckBoxMenuItem showTitlesMI;
