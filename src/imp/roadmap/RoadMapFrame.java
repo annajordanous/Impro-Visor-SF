@@ -1687,11 +1687,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void prefDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogCancelButtonActionPerformed
-        if( prefDialogMetreBottomField.getInt() % 2 == 0) {
+
             preferencesDialog.setVisible(false);
-            setRoadMapInfo();
-        } else
-            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
+
     }//GEN-LAST:event_prefDialogCancelButtonActionPerformed
 
     private void brickLibraryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickLibraryMenuItemActionPerformed
@@ -1784,7 +1782,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_keyColorationButtonActionPerformed
 
     private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
-        // TODO add your handling code here:
+        if( prefDialogMetreBottomField.getInt() % 2 == 0) {
+            preferencesDialog.setVisible(false);
+            setRoadMapInfo();
+        } else
+            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");                                                     
     }//GEN-LAST:event_prefDialogAcceptButton1ActionPerformed
 
     private void dialogCancelButtondialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogCancelButtondialogAccepted
@@ -2807,7 +2809,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         setMetre(new int[]{metreTop, metreBottom});
         tempo = prefDialogTempoField.getInt();
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
-        settings.keysColored = keyColorationButton.isSelected();
         roadMapPanel.updateBricks();
     }
     
