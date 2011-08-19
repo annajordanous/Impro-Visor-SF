@@ -26,6 +26,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.*;
 import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.io.*;
 
 import imp.Constants;
@@ -52,10 +53,17 @@ public class Stave
         extends JPanel
         implements Constants
 {
-
+/**
+ * Style and phrase layout parameters
+ */
 private String PHRASE_MARK = ",";
-private String SECTION_MARK = "Style: ";
-private int DOUBLE_BAR_OFFSET = 5;
+private String STYLE_MARK = "Style: ";
+
+private static int DOUBLE_BAR_OFFSET = 5;
+private static int PHRASE_MARK_OFFSET = 30;
+private static int styleXoffset = 20;
+private static int styleYoffset = 50;
+
 /**
  * The maximum width alloted to time signature. Longer than this causes too
  * few measures in the first line for the basic 4 bars per line if there
@@ -73,7 +81,6 @@ public static int partTitleYoffset = 30;
 public static int partComposerYoffset = 48;
 public static int showTitleYoffset = 30;
 public static int yearYoffset = 48;
-static int styleYoffset = 40;
 static int tupletBracketInset = 3;
 static int tupletBracketHeight = 10;
 static int beatBracketHeight = 10;
@@ -200,6 +207,9 @@ Note nextNote = null;
 private int[] metre = new int[2];
 private int beatValue = BEAT;                // default for 4/4
 private int measureLength = 4 * beatValue;        // default for 4/4
+
+private boolean doubleBar = false;
+
 /**
  * The key signature of the Stave. Positive numbers indicate sharps,
  * negative indicate flats
@@ -2794,16 +2804,47 @@ private void drawPart(MelodyPart part, Graphics g)
       }
 
     Note pitchDeterminer = null;
-
+    
     SectionInfo sectionInfo = chordProg.getSectionInfo();
 
-    Style previousStyle = sectionInfo.getStyleFromSlots(0);
+    Iterator<SectionRecord> sectionIter = sectionInfo.iterator();
+    
+    SectionRecord record = sectionIter.next();
 
-    int previousSectionType = sectionInfo.sectionAtSlot(0);
+    Style style = record.getStyle(); // sectionInfo.getStyleFromSlots(0);
 
+    int previousSectionType = record.getSectionType(); // sectionInfo.sectionAtSlot(0);
+    
+    int sectionType = previousSectionType;
+    
+    int nextSectionStart;
+    
+    boolean indicateStyle = true;
+    
+    if( sectionIter.hasNext() )
+      {
+        record = sectionIter.next();
+        nextSectionStart = record.getIndex();
+      }
+    else
+      {
+        nextSectionStart = chordProg.getSize(); // i.e. "infinity"
+      }
+
+    Style previousStyle = null;
+    
     // cycle through the entire part
     for( int i = 0; i < cstrLines.length; i++ )
       {
+         if( indicateStyle && style != previousStyle )
+           {
+           g.drawString(STYLE_MARK + style, 
+                        xCoordinate - styleXoffset, 
+                        headSpace + (staveLine * lineSpacing) - styleYoffset);
+                      
+           indicateStyle = false;
+           }
+                  
         Note note = part.getNote(i);
         Note orignote = origPart.getNote(i);
 
@@ -2815,48 +2856,69 @@ private void drawPart(MelodyPart part, Graphics g)
         // Handle sections within or at start of line.
 
         int xSection = xCoordinate - 25;
+        
+          if( i+1 == nextSectionStart )
+            {
+              // Starting a new Section
 
-        Style newStyle = sectionInfo.getStyleFromSlots(i);
-        Style style = newStyle != null ? newStyle : previousStyle;
-        int sectionType = sectionInfo.sectionAtSlot(i);
+              Style newStyle = record.getStyle();
+              
+              if( newStyle != null )
+                {
+                  previousStyle = style;
+                  style = newStyle;
+                }
 
-        if( sectionType == Block.SECTION_END || sectionType == Block.PHRASE_END )
-          {
-           //System.out.println("i = " + i + ", sectionType = " + sectionType + ", previousSectionType = " + previousSectionType);
-            if( sectionType == Block.PHRASE_END )
-              {
-                // Possibly draw phrase mark.
-                if( i > 0 ) 
-                  {
-                    Font saveFont = g.getFont();
-                    g.setFont(phraseMarkFont);
-                    g.drawString(PHRASE_MARK,
-                                 xSection,
-                                 headSpace + (staveLine * lineSpacing) - styleYoffset);
-                    g.setFont(saveFont);
-                  }
-              }
-            else if( sectionType == Block.SECTION_END && lineMeasureCount > 1 )
-              {
-                // Possibly draw double-bar line
-                // This depends on one line being drawn elsewhere.
-                // The position of that line might be a problem.
-                drawBarLine(xSection + DOUBLE_BAR_OFFSET, staveLine, g);
-              }
+               sectionType = record.getSectionType();
+              
+              if( sectionIter.hasNext() )
+                {
+                record = sectionIter.next();
+                nextSectionStart = record.getIndex();
+                }
+              else
+                {
+                nextSectionStart = chordProg.getSize(); // i.e. "infinity"
+                }
 
-            // Possibly indicate Style.
+              if( previousSectionType == Block.SECTION_END || previousSectionType == Block.PHRASE_END )
+                {
+                  int ySection = headSpace + (staveLine * lineSpacing) - styleYoffset;
+/*
+                  System.out.println("staveLine = " + staveLine
+                          + ", xSection = " + xSection
+                          + ", ySection = " + ySection
+                          + ", i = " + i + ", sectionType = "
+                          + (sectionType == Block.SECTION_END ? "section" : "phrase")
+                          + ", previousSectionType = "
+                          + (previousSectionType == Block.SECTION_END ? "section" : "phrase"));
+*/
+                  if( previousSectionType == Block.PHRASE_END )
+                    {
+                      // Possibly draw phrase mark.
+                      if( i > 0 )
+                        {
+                          Font saveFont = g.getFont();
+                          g.setFont(phraseMarkFont);
+                          g.drawString(PHRASE_MARK,  PHRASE_MARK_OFFSET + xSection, ySection);
+                          g.setFont(saveFont);
+                        }
+                    }
 
-            if( i == 0 || (sectionType == Block.SECTION_END && !style.equals(previousStyle)) )
-              {
-                g.drawString(SECTION_MARK + style,
-                             xSection,
-                             headSpace + (staveLine * lineSpacing) - styleYoffset);
-              }
+                  if( previousSectionType == Block.SECTION_END /* && lineMeasureCount > 1*/ )
+                    {
+                      // Set up to draw double barline when barline is drawn.
+                      // Also possibly indicate style at start of next section.
+                      doubleBar = true;
+                      indicateStyle = true;
+                     }
+                 }
+              
 
-            previousStyle = style;
-            previousSectionType = sectionType;
-          }
-
+              previousSectionType = sectionType;
+            }
+        
+            
         int noteValue = orignote == null ? 0 : orignote.getRhythmValue();
 
         // Check to see if the proper resolution is set for a beat.
@@ -3207,15 +3269,6 @@ private void drawPart(MelodyPart part, Graphics g)
               {
                 drawBarLine(STAVE_WIDTH, staveLine, g);
                 toNextLine = true;
-
-                // Draw a double bar at the end of the chorus and
-                // at end of line if a section end.
-
-                if( totalMeasureCount >= notate.getBarsPerChorus()
-                        || sectionInfo.sectionAtSlot(i + 1) == Block.SECTION_END )
-                  {
-                    drawBarLine(STAVE_WIDTH - DOUBLE_BAR_OFFSET, staveLine, g);
-                  }
               }
             // otherwise draw the bar line at the current location
             else
@@ -3261,7 +3314,7 @@ private void drawPart(MelodyPart part, Graphics g)
 
             if( sectionInfo.sectionAtSlot(i) == Block.SECTION_END )
               {
-                g.drawString(SECTION_MARK
+                g.drawString(STYLE_MARK
                         + sectionInfo.getStyleFromSlots(i),
                              xSection,
                              headSpace + (staveLine * lineSpacing) - styleYoffset);
@@ -4500,12 +4553,24 @@ private int drawTimeSig(Graphics g)
  */
 private void drawBarLine(int x, int staveLine, Graphics g)
   {
-    for( int i = 0; i < 2; i++ )
-      {
-        g.drawLine(x + i, headSpace + (staveLine * lineSpacing),
-                   x + i,
-                   headSpace + ((numPitchLines - 1) * staveSpaceHeight) + (staveLine * lineSpacing));
-      }
+      for( int i = 0; i < 2; i++ )
+        {
+          g.drawLine(x + i, headSpace + (staveLine * lineSpacing),
+                     x + i,
+                     headSpace + ((numPitchLines - 1) * staveSpaceHeight) + (staveLine * lineSpacing));
+        }
+
+      if( doubleBar )
+        {
+          for( int i = 0; i < 2; i++ )
+            {
+              g.drawLine(x + i - DOUBLE_BAR_OFFSET, headSpace + (staveLine * lineSpacing),
+                         x + i - DOUBLE_BAR_OFFSET,
+                         headSpace + ((numPitchLines - 1) * staveSpaceHeight) + (staveLine * lineSpacing));
+            }
+          
+          doubleBar = false;
+        }
   }
 
 /**

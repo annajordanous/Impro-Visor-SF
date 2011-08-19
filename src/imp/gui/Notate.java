@@ -1628,10 +1628,10 @@ public class Notate
 
         preferencesDialog = new javax.swing.JDialog();
         buttonPanel = new javax.swing.JPanel();
-        globalBtn = new javax.swing.JToggleButton();
-        leadsheetBtn = new javax.swing.JToggleButton();
-        chorusBtn = new javax.swing.JToggleButton();
         styleBtn = new javax.swing.JToggleButton();
+        chorusBtn = new javax.swing.JToggleButton();
+        leadsheetBtn = new javax.swing.JToggleButton();
+        globalBtn = new javax.swing.JToggleButton();
         midiBtn = new javax.swing.JToggleButton();
         contourBtn = new javax.swing.JToggleButton();
         okcancelPanel = new javax.swing.JPanel();
@@ -2300,7 +2300,7 @@ public class Notate
         jSeparator32 = new javax.swing.JSeparator();
         helpAboutMI = new javax.swing.JMenuItem();
 
-        preferencesDialog.setTitle("Preferences");
+        preferencesDialog.setTitle("Preferences and Settings");
         preferencesDialog.setFocusCycleRoot(false);
         preferencesDialog.getRootPane().setDefaultButton(savePrefsBtn);
         preferencesDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -2314,35 +2314,21 @@ public class Notate
         buttonPanel.setMaximumSize(new java.awt.Dimension(200, 32767));
         buttonPanel.setPreferredSize(new java.awt.Dimension(112, 70));
 
-        prefsTabBtnGrp.add(globalBtn);
-        globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
-        globalBtn.setText("Global");
-        globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        globalBtn.setIconTextGap(6);
-        globalBtn.setNextFocusableComponent(leadsheetPreferences);
-        globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        globalBtn.addActionListener(new java.awt.event.ActionListener() {
+        prefsTabBtnGrp.add(styleBtn);
+        styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
+        styleBtn.setSelected(true);
+        styleBtn.setText("Section & Style");
+        styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        styleBtn.setIconTextGap(0);
+        styleBtn.setNextFocusableComponent(midiPreferences);
+        styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        styleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                globalBtnActionPerformed(evt);
+                styleBtnActionPerformed(evt);
             }
         });
-        buttonPanel.add(globalBtn);
-
-        prefsTabBtnGrp.add(leadsheetBtn);
-        leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        leadsheetBtn.setSelected(true);
-        leadsheetBtn.setText("LeadSheet");
-        leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        leadsheetBtn.setNextFocusableComponent(chorusPreferences);
-        leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        leadsheetBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        leadsheetBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leadsheetBtnActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(leadsheetBtn);
+        buttonPanel.add(styleBtn);
 
         prefsTabBtnGrp.add(chorusBtn);
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
@@ -2358,20 +2344,34 @@ public class Notate
         });
         buttonPanel.add(chorusBtn);
 
-        prefsTabBtnGrp.add(styleBtn);
-        styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
-        styleBtn.setText("Style");
-        styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        styleBtn.setIconTextGap(0);
-        styleBtn.setNextFocusableComponent(midiPreferences);
-        styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        styleBtn.addActionListener(new java.awt.event.ActionListener() {
+        prefsTabBtnGrp.add(leadsheetBtn);
+        leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
+        leadsheetBtn.setText("LeadSheet");
+        leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        leadsheetBtn.setNextFocusableComponent(chorusPreferences);
+        leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        leadsheetBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        leadsheetBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                styleBtnActionPerformed(evt);
+                leadsheetBtnActionPerformed(evt);
             }
         });
-        buttonPanel.add(styleBtn);
+        buttonPanel.add(leadsheetBtn);
+
+        prefsTabBtnGrp.add(globalBtn);
+        globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
+        globalBtn.setText("Global");
+        globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        globalBtn.setIconTextGap(6);
+        globalBtn.setNextFocusableComponent(leadsheetPreferences);
+        globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        globalBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                globalBtnActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(globalBtn);
 
         prefsTabBtnGrp.add(midiBtn);
         midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
@@ -3739,9 +3739,9 @@ public class Notate
         stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
         stylePreferences.setLayout(new java.awt.GridBagLayout());
 
-        stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14));
+        stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         stylePrefLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
-        stylePrefLabel.setText("  Style Settings");
+        stylePrefLabel.setText("Section and Style Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

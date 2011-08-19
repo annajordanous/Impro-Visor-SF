@@ -560,4 +560,9 @@ public String toString()
     }
     return buffer.toString();
   }
+
+public Iterator<SectionRecord> iterator()
+  {
+    return records.iterator();
+  }
 }

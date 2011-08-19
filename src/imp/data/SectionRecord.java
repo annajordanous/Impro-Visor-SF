@@ -20,6 +20,8 @@
 
 package imp.data;
 
+import imp.brickdictionary.Block;
+
 /**
  * SectionRecord records the information about a section. It was added when
  * StyleInfo was refactored July 27, 2011
@@ -80,7 +82,10 @@ public boolean hasIndex(int index)
     return index == this.index;
   }
 
-
+public int getSectionType()
+  {
+    return isPhrase? Block.PHRASE_END : Block.SECTION_END;
+  }
 
 @Override
 public String toString()
