@@ -75,6 +75,13 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
+  /**
+   * Name of file in which names of recent leadsheet files are stored.
+   */
+
+  private static String recentFilesFilename = "vocab/RecentFiles.txt";
+  
+  
   private static boolean firstTime = true;
   
   RoadMapFrame roadmapFrame = null;
@@ -1146,7 +1153,7 @@ public class Notate
 
     // set the initial file to be null
 
-    savedLeadsheet = null;
+    setSavedLeadsheet(null);
 
     savedVocab =
             new File(Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE));
@@ -12989,7 +12996,7 @@ private void updateTempoFromTextField()
     public boolean unsavedChanges() {
         
         if(cm.changedSinceLastSave()) {
-            if(savedLeadsheet == null || !savedLeadsheet.exists())
+            if( !savedLeadsheetExists() )
                 return true;
             
             // create string representing score
@@ -17283,16 +17290,18 @@ public ChordPart makeCountIn()
         {
 
         selected += leadsheetExt;
-
         }
 
-      noErrors = saveLeadsheet(new File(dir + selected), score);
+      File newFile = new File(dir + selected);
+      
+      noErrors = saveLeadsheet(newFile, score);
       setTitle(score.getTitle());
-      savedLeadsheet = new File(dir + selected);
+      
+      setSavedLeadsheet(newFile);
 
       if( !savedLeadsheet.exists() )
         {
-        savedLeadsheet = null;
+        setSavedLeadsheet(null);
         return false;
         }
 
@@ -17324,25 +17333,27 @@ public boolean saveAsLeadsheetSwing()
 
             setTitle(score.getTitle());
 
-            savedLeadsheet = saveLSFC.getSelectedFile();
+            setSavedLeadsheet(saveLSFC.getSelectedFile());
           }
         else
           {
             String file = saveLSFC.getSelectedFile().getAbsolutePath();
 
             file += leadsheetExt;
+            
+            File newFile = new File(file);
 
-            noErrors = saveLeadsheet(new File(file), score);
+            noErrors = saveLeadsheet(newFile, score);
 
             setTitle(score.getTitle());
 
-            savedLeadsheet = new File(file);
+            setSavedLeadsheet(newFile);
           }
 
 
         if( !savedLeadsheet.exists() )
           {
-            savedLeadsheet = null;
+            setSavedLeadsheet(null);
 
             return false;
           }
@@ -17538,9 +17549,9 @@ public void openLeadsheet(boolean openCorpus)
   public void revertLeadsheet(java.awt.event.ActionEvent evt)
     {
 
-    if( savedLeadsheet == null )
+    if( !savedLeadsheetExists() )
       {
-      return;        // nothing save
+      return;        // nothing saved
       }
 
     revertLSFC.setSelectedFile(savedLeadsheet);
@@ -17577,7 +17588,7 @@ public void setupLeadsheet(File file, boolean openCorpus)
 
     cm.execute(new OpenLeadsheetCommand(file, newScore));
 
-    savedLeadsheet = file;
+    setSavedLeadsheet(file);
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
     setupScore(newScore);
     if( openCorpus )
@@ -17735,7 +17746,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
                     cm.execute(new OpenLeadsheetCommand(file, newScore));
 
-                    savedLeadsheet = file;
+                    setSavedLeadsheet(file);
                     setCursor(new Cursor(Cursor.WAIT_CURSOR));
                     //setupScore(newNotate);
 
@@ -17990,6 +18001,11 @@ public void WriteLeadsheetToFile(File file) {
   {
       savedLeadsheet = f;
   }
+  
+  public boolean savedLeadsheetExists()
+    {
+      return savedLeadsheet != null && savedLeadsheet.exists();
+    }
   
   public boolean countInCheckboxIsSelected()
   {
@@ -20245,7 +20261,7 @@ private void mostRecentLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt
 
 private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentFileMenu
   RecentFiles recFiles = new RecentFiles();
-  String filenames[] = {"No Recent Leadsheets to Open"};;
+  String filenames[] = {"No Recent Leadsheets to Open"};
   if(recFiles.getSize() == 0)
   {
       openRecentLeadsheetMenu.removeAll();
@@ -20300,7 +20316,7 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
                 public void actionPerformed(ActionEvent evt)
                 {
                     try{
-                        BufferedWriter recentFiles = new BufferedWriter(new FileWriter("vocab/RecentFiles.txt"));
+                        BufferedWriter recentFiles = new BufferedWriter(new FileWriter(recentFilesFilename));
                         recentFiles.write("");
                         recentFiles.close();
                     } catch(Exception e){
@@ -20369,19 +20385,20 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
         openRecentLeadsheetNewWindowMenu.add(clear);
         clear.addActionListener(
         new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent evt)
+                  {
+                  public void actionPerformed(ActionEvent evt)
                     {
-                        try{
-                            BufferedWriter recentFiles = new BufferedWriter(new FileWriter("vocab/RecentFiles.txt"));
-                            recentFiles.write("");
-                            recentFiles.close();
-                        } catch(Exception e){
-
+                      try
+                        {
+                          BufferedWriter recentFiles = new BufferedWriter(new FileWriter(recentFilesFilename));
+                          recentFiles.write("");
+                          recentFiles.close();
+                        }
+                      catch( Exception e )
+                        {
                         }
                     }
-                }
-                );
+                  });
       }
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
 private boolean skippedBack = false;

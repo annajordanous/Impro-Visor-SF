@@ -2557,7 +2557,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
-        System.out.println(score.getChordProg().getSectionInfo());
+        //System.out.println(score.getChordProg().getSectionInfo());
         score.setMetre(getMetre());
         //score.setStyle(style.getName());
         score.setTempo(tempo);
