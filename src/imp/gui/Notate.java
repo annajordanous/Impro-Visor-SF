@@ -1490,8 +1490,11 @@ public class Notate
     defChordInst.setDialog(preferencesDialog);
 
     defBassInst.setDialog(preferencesDialog);
+    
+    // The following determines how the preferences dialog will open
+    // in terms of which tab is presented initially.
 
-    changePrefTab(leadsheetBtn, leadsheetPreferences);
+    changePrefTab(styleBtn, stylePreferences);
 
     preferencesDialog.setSize(preferencesDialogDimension);
 
