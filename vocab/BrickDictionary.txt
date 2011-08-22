@@ -2301,6 +2301,12 @@
         (Chord C+ 1)
         (Chord C6 1))
 
+(Def-Brick Ascending-&-Descending-Minor-CESH(4 step) Minor CESH C
+        (Chord Cm 1)
+        (Chord Cm+ 1)
+        (Chord Cm6 1)
+        (Chord Cm+ 1))
+
 (Def-Brick II-n-Bird Major Approach C
         (Chord Dm7 2)
         (Brick GenDom Eb 2))
@@ -2331,3 +2337,45 @@
 (Def-Brick To-IV Major Approach F
         (Brick Major-On F 1)
         (Brick Perfect-Cadence Bb 2))
+
+(Def-Brick TTFA(new) Dominant Approach F
+        (Brick On-Off-Major-IV F 2)
+        (Chord Am7b5 1)
+        (Chord D7 1))
+
+(Def-Brick Dropback(new) Major Dropback Bb
+        (Brick Straight-Cadence Bb 6)
+        (Brick Long-Cadence Bb 10))
+
+(Def-Brick Stablemates-Approach(dominant-cycle) Major Approach Ab
+        (Brick Dominant-Cycle A 2)
+        (Brick Straight-Approach Ab 2))
+
+(Def-Brick Chromatic-Major-Walkup Major Cadence Ab
+        (Brick Major-On Gb 1)
+        (Brick On-Off-Major-bII G 3))
+
+(Def-Brick Diatonic-I-ii-iii-IV Major Approach A
+        (Brick On-Off-Major-Somewhere A 2)
+        (Brick On-Off-Minor-bII Db 2))
+
+(Def-Brick Diatonic-I-ii-iii-IV-V-vi Major Approach A
+        (Brick Diatonic-I-ii-iii-IV A 4)
+        (Brick Off-On-Minor-bVII Gb 2))
+
+(Def-Brick To-IV-n-Bird-SPOT(Yardbird sub) Major Approach Bb
+        (Brick Straight-Approach Bb 4)
+        (Chord Bb 2)
+        (Chord Eb7 2)
+        (Chord Am7 2)
+        (Brick Dominant-Cycle C 4)
+        (Brick Straight-Approach Ab 2))
+
+(Def-Brick Two-Goes-Rainy-Approach Major Approach Bb
+        (Brick Rainy-Approach Bb 4)
+        (Brick Rainy-Approach Bb 4))
+
+
+(Def-Brick Starlight-Approach(Dizzy var2) Major Approach Bb
+        (Brick Dizzy-Sub-Approach D 2)
+        (Brick SPOT Bb 4))
