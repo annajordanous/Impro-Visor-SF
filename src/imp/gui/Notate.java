@@ -1646,6 +1646,66 @@ public class Notate
         resetBtn = new javax.swing.JButton();
         savePrefsBtn = new javax.swing.JButton();
         preferencesScrollPane = new javax.swing.JScrollPane();
+        stylePreferences = new javax.swing.JPanel();
+        stylePrefLabel = new javax.swing.JLabel();
+        styleTabs = new javax.swing.JTabbedPane();
+        currentStyleTab = new javax.swing.JPanel();
+        selectAStyleLabel = new javax.swing.JLabel();
+        swingLabel = new javax.swing.JLabel();
+        swingTF = new javax.swing.JTextField();
+        styleListScrollPane = new javax.swing.JScrollPane();
+        styleList = new javax.swing.JList();
+        sectionListScrollPane = new javax.swing.JScrollPane();
+        sectionList = new javax.swing.JList();
+        newSectionButton = new javax.swing.JButton();
+        measureLabel = new javax.swing.JLabel();
+        measureTF = new javax.swing.JTextField();
+        sectionLabel = new javax.swing.JLabel();
+        delSectionButton = new javax.swing.JButton();
+        phraseCheckBox = new javax.swing.JCheckBox();
+        chorusPreferences = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        jTabbedPane4 = new javax.swing.JTabbedPane();
+        chorusSpecificPanel = new javax.swing.JPanel();
+        partTitleLabel = new javax.swing.JLabel();
+        partTitleTF = new javax.swing.JTextField();
+        melodyInsttLabel = new javax.swing.JLabel();
+        partComposerLabel = new javax.swing.JLabel();
+        partComposerTF = new javax.swing.JTextField();
+        layoutLabel = new javax.swing.JLabel();
+        layoutTF = new javax.swing.JTextField();
+        staveButtonPanel = new javax.swing.JPanel();
+        autoStaveBtn = new javax.swing.JRadioButton();
+        trebleStaveBtn = new javax.swing.JRadioButton();
+        bassStaveBtn = new javax.swing.JRadioButton();
+        grandStaveBtn = new javax.swing.JRadioButton();
+        melodyInstPanel = melodyInst;
+        leadsheetPreferences = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jTabbedPane5 = new javax.swing.JTabbedPane();
+        leadsheetSpecificPanel = new javax.swing.JPanel();
+        breakpointLabel = new javax.swing.JLabel();
+        breakpointTF = new javax.swing.JTextField();
+        scoreTitleTF = new javax.swing.JTextField();
+        measuresPerPartLabel = new javax.swing.JLabel();
+        prefMeasTF = new javax.swing.JTextField();
+        tempoTF = new javax.swing.JTextField();
+        tempoLabel = new javax.swing.JLabel();
+        composerLabel = new javax.swing.JLabel();
+        leadsheetTitleLabel = new javax.swing.JLabel();
+        composerField = new javax.swing.JTextField();
+        chordIInstLabel = new javax.swing.JLabel();
+        bassInstLabel = new javax.swing.JLabel();
+        keySignatureLabel = new javax.swing.JLabel();
+        keySignatureTF = new javax.swing.JTextField();
+        commentsLabel = new javax.swing.JLabel();
+        commentsTF = new javax.swing.JTextField();
+        timeSignatureLabel = new javax.swing.JLabel();
+        timeSignaturePanel = new javax.swing.JPanel();
+        timeSignatureTopTF = new javax.swing.JTextField();
+        timeSignatureBottomTF = new javax.swing.JTextField();
+        chordInstPanel = chordInst;
+        bassInstPanel = bassInst;
         globalPreferences = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         globalTabs = new javax.swing.JTabbedPane();
@@ -1743,75 +1803,6 @@ public class Notate
         defCacheSizeLabel = new javax.swing.JLabel();
         cacheSize = new javax.swing.JTextField();
         purgeCache = new javax.swing.JButton();
-        leadsheetPreferences = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jTabbedPane5 = new javax.swing.JTabbedPane();
-        leadsheetSpecificPanel = new javax.swing.JPanel();
-        breakpointLabel = new javax.swing.JLabel();
-        breakpointTF = new javax.swing.JTextField();
-        scoreTitleTF = new javax.swing.JTextField();
-        measuresPerPartLabel = new javax.swing.JLabel();
-        prefMeasTF = new javax.swing.JTextField();
-        tempoTF = new javax.swing.JTextField();
-        tempoLabel = new javax.swing.JLabel();
-        composerLabel = new javax.swing.JLabel();
-        leadsheetTitleLabel = new javax.swing.JLabel();
-        composerField = new javax.swing.JTextField();
-        chordIInstLabel = new javax.swing.JLabel();
-        bassInstLabel = new javax.swing.JLabel();
-        keySignatureLabel = new javax.swing.JLabel();
-        keySignatureTF = new javax.swing.JTextField();
-        commentsLabel = new javax.swing.JLabel();
-        commentsTF = new javax.swing.JTextField();
-        timeSignatureLabel = new javax.swing.JLabel();
-        timeSignaturePanel = new javax.swing.JPanel();
-        timeSignatureTopTF = new javax.swing.JTextField();
-        timeSignatureBottomTF = new javax.swing.JTextField();
-        chordInstPanel = chordInst;
-        bassInstPanel = bassInst;
-        chorusPreferences = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
-        chorusSpecificPanel = new javax.swing.JPanel();
-        partTitleLabel = new javax.swing.JLabel();
-        partTitleTF = new javax.swing.JTextField();
-        melodyInsttLabel = new javax.swing.JLabel();
-        partComposerLabel = new javax.swing.JLabel();
-        partComposerTF = new javax.swing.JTextField();
-        layoutLabel = new javax.swing.JLabel();
-        layoutTF = new javax.swing.JTextField();
-        staveButtonPanel = new javax.swing.JPanel();
-        autoStaveBtn = new javax.swing.JRadioButton();
-        trebleStaveBtn = new javax.swing.JRadioButton();
-        bassStaveBtn = new javax.swing.JRadioButton();
-        grandStaveBtn = new javax.swing.JRadioButton();
-        melodyInstPanel = melodyInst;
-        stylePreferences = new javax.swing.JPanel();
-        stylePrefLabel = new javax.swing.JLabel();
-        styleTabs = new javax.swing.JTabbedPane();
-        currentStyleTab = new javax.swing.JPanel();
-        selectAStyleLabel = new javax.swing.JLabel();
-        swingLabel = new javax.swing.JLabel();
-        swingTF = new javax.swing.JTextField();
-        styleListScrollPane = new javax.swing.JScrollPane();
-        styleList = new javax.swing.JList();
-        sectionListScrollPane = new javax.swing.JScrollPane();
-        sectionList = new javax.swing.JList();
-        newSectionButton = new javax.swing.JButton();
-        measureLabel = new javax.swing.JLabel();
-        measureTF = new javax.swing.JTextField();
-        sectionLabel = new javax.swing.JLabel();
-        delSectionButton = new javax.swing.JButton();
-        phraseCheckBox = new javax.swing.JCheckBox();
-        contourPreferences = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
-        generalContourTab = new javax.swing.JPanel();
-        contToneChoices = new javax.swing.JPanel();
-        drawScaleTonesCheckBox = new javax.swing.JCheckBox();
-        drawChordTonesCheckBox = new javax.swing.JCheckBox();
-        drawColorTonesCheckBox = new javax.swing.JCheckBox();
-        defaultDrawingMutedCheckBox = new javax.swing.JCheckBox();
         midiPreferences = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         devicesTab = new javax.swing.JPanel();
@@ -1831,6 +1822,15 @@ public class Notate
         midiLatencyUnitsLabel = new javax.swing.JLabel();
         midiCalibrationPanel = new MidiLatencyMeasurementTool(this);
         jLabel4 = new javax.swing.JLabel();
+        contourPreferences = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jTabbedPane3 = new javax.swing.JTabbedPane();
+        generalContourTab = new javax.swing.JPanel();
+        contToneChoices = new javax.swing.JPanel();
+        drawScaleTonesCheckBox = new javax.swing.JCheckBox();
+        drawChordTonesCheckBox = new javax.swing.JCheckBox();
+        drawColorTonesCheckBox = new javax.swing.JCheckBox();
+        defaultDrawingMutedCheckBox = new javax.swing.JCheckBox();
         staveButtonGroup = new javax.swing.ButtonGroup();
         popupMenu = new javax.swing.JPopupMenu();
         overrideMeasPMI = new javax.swing.JMenuItem();
@@ -2319,6 +2319,7 @@ public class Notate
         buttonPanel.setBackground(new java.awt.Color(255, 255, 255));
         buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         buttonPanel.setMaximumSize(new java.awt.Dimension(200, 32767));
+        buttonPanel.setNextFocusableComponent(styleBtn);
         buttonPanel.setPreferredSize(new java.awt.Dimension(112, 70));
 
         prefsTabBtnGrp.add(styleBtn);
@@ -2327,7 +2328,7 @@ public class Notate
         styleBtn.setText("Section & Style");
         styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         styleBtn.setIconTextGap(0);
-        styleBtn.setNextFocusableComponent(midiPreferences);
+        styleBtn.setNextFocusableComponent(chorusBtn);
         styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
         styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         styleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2341,7 +2342,7 @@ public class Notate
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         chorusBtn.setText("Chorus");
         chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        chorusBtn.setNextFocusableComponent(stylePreferences);
+        chorusBtn.setNextFocusableComponent(leadsheetBtn);
         chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
         chorusBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         chorusBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2355,7 +2356,7 @@ public class Notate
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
         leadsheetBtn.setText("LeadSheet");
         leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        leadsheetBtn.setNextFocusableComponent(chorusPreferences);
+        leadsheetBtn.setNextFocusableComponent(globalBtn);
         leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
         leadsheetBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         leadsheetBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2370,7 +2371,7 @@ public class Notate
         globalBtn.setText("Global");
         globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         globalBtn.setIconTextGap(6);
-        globalBtn.setNextFocusableComponent(leadsheetPreferences);
+        globalBtn.setNextFocusableComponent(midiBtn);
         globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
         globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         globalBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2385,7 +2386,7 @@ public class Notate
         midiBtn.setText("MIDI");
         midiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         midiBtn.setIconTextGap(0);
-        midiBtn.setNextFocusableComponent(contourPreferences);
+        midiBtn.setNextFocusableComponent(contourBtn);
         midiBtn.setPreferredSize(new java.awt.Dimension(100, 85));
         midiBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         midiBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2400,7 +2401,7 @@ public class Notate
         contourBtn.setText("Contour");
         contourBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         contourBtn.setIconTextGap(0);
-        contourBtn.setNextFocusableComponent(globalPreferences);
+        contourBtn.setNextFocusableComponent(styleBtn);
         contourBtn.setPreferredSize(new java.awt.Dimension(100, 85));
         contourBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         contourBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2441,6 +2442,626 @@ public class Notate
 
         preferencesDialog.getContentPane().add(okcancelPanel, java.awt.BorderLayout.SOUTH);
         preferencesDialog.getContentPane().add(preferencesScrollPane, java.awt.BorderLayout.CENTER);
+
+        stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
+        stylePreferences.setLayout(new java.awt.GridBagLayout());
+
+        stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14));
+        stylePrefLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
+        stylePrefLabel.setText("Section and Style Settings");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        stylePreferences.add(stylePrefLabel, gridBagConstraints);
+
+        currentStyleTab.setLayout(new java.awt.GridBagLayout());
+
+        selectAStyleLabel.setText("Style:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
+
+        swingLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        swingLabel.setText("Swing:");
+        swingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(swingLabel, gridBagConstraints);
+
+        swingTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        swingTF.setText(" ");
+        swingTF.setToolTipText("Enter the melody swing value (.5 for no swing, .67 for nominal swing.)");
+        swingTF.setMinimumSize(new java.awt.Dimension(50, 19));
+        swingTF.setNextFocusableComponent(autoStaveBtn);
+        swingTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        swingTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                swingTFActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(swingTF, gridBagConstraints);
+
+        styleList.setModel(styleListModel);
+        styleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        styleList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                styleListValueChanged(evt);
+            }
+        });
+        styleListScrollPane.setViewportView(styleList);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.75;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(styleListScrollPane, gridBagConstraints);
+
+        sectionList.setModel(sectionListModel);
+        sectionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        sectionList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                sectionListValueChanged(evt);
+            }
+        });
+        sectionListScrollPane.setViewportView(sectionList);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.75;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(sectionListScrollPane, gridBagConstraints);
+
+        newSectionButton.setText("Split Selected Section\n");
+        newSectionButton.setToolTipText("Splits the currently-selected Section approximately in two. Then set Starting Measure on second Section.");
+        newSectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newSectionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(newSectionButton, gridBagConstraints);
+
+        measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        measureLabel.setText("Starting Measure:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(measureLabel, gridBagConstraints);
+
+        measureTF.setMinimumSize(new java.awt.Dimension(50, 19));
+        measureTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        measureTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                measureTFActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(measureTF, gridBagConstraints);
+
+        sectionLabel.setText("Sections:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(sectionLabel, gridBagConstraints);
+
+        delSectionButton.setText("Delete Selected Section");
+        delSectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delSectionButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        currentStyleTab.add(delSectionButton, gridBagConstraints);
+
+        phraseCheckBox.setText("Phrase ");
+        phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
+        phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phraseCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        currentStyleTab.add(phraseCheckBox, gridBagConstraints);
+
+        styleTabs.addTab("Current Style", currentStyleTab);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        stylePreferences.add(styleTabs, gridBagConstraints);
+
+        chorusPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        chorusPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
+        chorusPreferences.setLayout(new java.awt.GridBagLayout());
+
+        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
+        jLabel19.setText("  Chorus Settings");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        chorusPreferences.add(jLabel19, gridBagConstraints);
+
+        chorusSpecificPanel.setMinimumSize(new java.awt.Dimension(483, 200));
+        chorusSpecificPanel.setPreferredSize(new java.awt.Dimension(500, 200));
+        chorusSpecificPanel.setLayout(new java.awt.GridBagLayout());
+
+        partTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        partTitleLabel.setText("Chorus Title:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(partTitleLabel, gridBagConstraints);
+
+        partTitleTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        partTitleTF.setToolTipText("The title of this part");
+        partTitleTF.setNextFocusableComponent(partComposerTF);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(partTitleTF, gridBagConstraints);
+
+        melodyInsttLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        melodyInsttLabel.setText("Melody Instrument MIDI Number:");
+        melodyInsttLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(melodyInsttLabel, gridBagConstraints);
+
+        partComposerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        partComposerLabel.setText("Chorus Composer:");
+        partComposerLabel.setToolTipText("Enter the person composing this part (solo).");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(partComposerLabel, gridBagConstraints);
+
+        partComposerTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(partComposerTF, gridBagConstraints);
+
+        layoutLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        layoutLabel.setText("Layout (bars per line):");
+        layoutLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(layoutLabel, gridBagConstraints);
+
+        layoutTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        layoutTF.setToolTipText("Set a specific layout (bars per line).");
+        layoutTF.setNextFocusableComponent(swingTF);
+        layoutTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layoutTFActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(layoutTF, gridBagConstraints);
+
+        staveButtonPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Stave Type", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        staveButtonPanel.setPreferredSize(new java.awt.Dimension(285, 48));
+        staveButtonPanel.setLayout(new java.awt.GridBagLayout());
+
+        staveChoiceButtonGroup.add(autoStaveBtn);
+        autoStaveBtn.setSelected(true);
+        autoStaveBtn.setText("auto");
+        autoStaveBtn.setNextFocusableComponent(trebleStaveBtn);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.weightx = 1.0;
+        staveButtonPanel.add(autoStaveBtn, gridBagConstraints);
+
+        staveChoiceButtonGroup.add(trebleStaveBtn);
+        trebleStaveBtn.setText("treble");
+        trebleStaveBtn.setNextFocusableComponent(bassStaveBtn);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.weightx = 1.0;
+        staveButtonPanel.add(trebleStaveBtn, gridBagConstraints);
+
+        staveChoiceButtonGroup.add(bassStaveBtn);
+        bassStaveBtn.setText("bass");
+        bassStaveBtn.setNextFocusableComponent(grandStaveBtn);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.weightx = 1.0;
+        staveButtonPanel.add(bassStaveBtn, gridBagConstraints);
+
+        staveChoiceButtonGroup.add(grandStaveBtn);
+        grandStaveBtn.setText("grand");
+        grandStaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grandStaveBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.weightx = 1.0;
+        staveButtonPanel.add(grandStaveBtn, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        chorusSpecificPanel.add(staveButtonPanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        chorusSpecificPanel.add(melodyInstPanel, gridBagConstraints);
+
+        jTabbedPane4.addTab("Chorus", chorusSpecificPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        chorusPreferences.add(jTabbedPane4, gridBagConstraints);
+
+        leadsheetPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        leadsheetPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
+        leadsheetPreferences.setLayout(new java.awt.GridBagLayout());
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
+        jLabel3.setText("  Leadsheet Settings");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        leadsheetPreferences.add(jLabel3, gridBagConstraints);
+
+        leadsheetSpecificPanel.setMaximumSize(new java.awt.Dimension(500, 280));
+        leadsheetSpecificPanel.setMinimumSize(new java.awt.Dimension(486, 250));
+        leadsheetSpecificPanel.setPreferredSize(new java.awt.Dimension(500, 280));
+        leadsheetSpecificPanel.setLayout(new java.awt.GridBagLayout());
+
+        breakpointLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        breakpointLabel.setText("Automatic Stave Breakpoint Pitch:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(breakpointLabel, gridBagConstraints);
+
+        breakpointTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        breakpointTF.setText("54");
+        breakpointTF.setMinimumSize(new java.awt.Dimension(50, 19));
+        breakpointTF.setNextFocusableComponent(prefMeasTF);
+        breakpointTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(breakpointTF, gridBagConstraints);
+
+        scoreTitleTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        scoreTitleTF.setNextFocusableComponent(composerField);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
+        leadsheetSpecificPanel.add(scoreTitleTF, gridBagConstraints);
+
+        measuresPerPartLabel.setText("Measures per Chorus:");
+        measuresPerPartLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(measuresPerPartLabel, gridBagConstraints);
+
+        prefMeasTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        prefMeasTF.setText("" + defaultBarsPerPart);
+        prefMeasTF.setMinimumSize(new java.awt.Dimension(50, 19));
+        prefMeasTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(prefMeasTF, gridBagConstraints);
+
+        tempoTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        tempoTF.setText("160");
+        tempoTF.setMinimumSize(new java.awt.Dimension(50, 19));
+        tempoTF.setNextFocusableComponent(breakpointTF);
+        tempoTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        tempoTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tempoTFActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(tempoTF, gridBagConstraints);
+
+        tempoLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        tempoLabel.setText("Tempo:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(tempoLabel, gridBagConstraints);
+
+        composerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        composerLabel.setText("Composer:");
+        composerLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        composerLabel.setPreferredSize(new java.awt.Dimension(90, 17));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(composerLabel, gridBagConstraints);
+
+        leadsheetTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        leadsheetTitleLabel.setText("Leadsheet Title:");
+        leadsheetTitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
+        leadsheetSpecificPanel.add(leadsheetTitleLabel, gridBagConstraints);
+
+        composerField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        composerField.setNextFocusableComponent(timeSignatureTopTF);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(composerField, gridBagConstraints);
+
+        chordIInstLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chordIInstLabel.setText("Chord MIDI Instrument:");
+        chordIInstLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(chordIInstLabel, gridBagConstraints);
+
+        bassInstLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        bassInstLabel.setText("Bass MIDI Instrument:");
+        bassInstLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(bassInstLabel, gridBagConstraints);
+
+        keySignatureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        keySignatureLabel.setText("Key Signature (+sharps, - flats):");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(keySignatureLabel, gridBagConstraints);
+
+        keySignatureTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        keySignatureTF.setText("0");
+        keySignatureTF.setMinimumSize(new java.awt.Dimension(50, 19));
+        keySignatureTF.setNextFocusableComponent(tempoTF);
+        keySignatureTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(keySignatureTF, gridBagConstraints);
+
+        commentsLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        commentsLabel.setText("Comments:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(commentsLabel, gridBagConstraints);
+
+        commentsTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        commentsTF.setMinimumSize(new java.awt.Dimension(40, 19));
+        commentsTF.setNextFocusableComponent(partTitleTF);
+        commentsTF.setPreferredSize(new java.awt.Dimension(11, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(commentsTF, gridBagConstraints);
+
+        timeSignatureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        timeSignatureLabel.setText("Time Signature:");
+        timeSignatureLabel.setAlignmentX(1.0F);
+        timeSignatureLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        leadsheetSpecificPanel.add(timeSignatureLabel, gridBagConstraints);
+
+        timeSignaturePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        timeSignatureTopTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        timeSignatureTopTF.setText("4");
+        timeSignatureTopTF.setNextFocusableComponent(timeSignatureBottomTF);
+        timeSignatureTopTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        timeSignatureTopTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeSignatureTopTFActionPerformed(evt);
+            }
+        });
+        timeSignaturePanel.add(timeSignatureTopTF);
+
+        timeSignatureBottomTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        timeSignatureBottomTF.setText("4");
+        timeSignatureBottomTF.setNextFocusableComponent(keySignatureTF);
+        timeSignatureBottomTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        timeSignaturePanel.add(timeSignatureBottomTF);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 100;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        leadsheetSpecificPanel.add(timeSignaturePanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        leadsheetSpecificPanel.add(chordInstPanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        leadsheetSpecificPanel.add(bassInstPanel, gridBagConstraints);
+
+        jTabbedPane5.addTab("Leadsheet", leadsheetSpecificPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        leadsheetPreferences.add(jTabbedPane5, gridBagConstraints);
 
         globalPreferences.setBackground(new java.awt.Color(255, 255, 255));
         globalPreferences.setMinimumSize(new java.awt.Dimension(675, 600));
@@ -3307,702 +3928,6 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         globalPreferences.add(globalTabs, gridBagConstraints);
 
-        leadsheetPreferences.setBackground(new java.awt.Color(255, 255, 255));
-        leadsheetPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
-        leadsheetPreferences.setLayout(new java.awt.GridBagLayout());
-
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14));
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        jLabel3.setText("  Leadsheet Settings");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        leadsheetPreferences.add(jLabel3, gridBagConstraints);
-
-        leadsheetSpecificPanel.setMaximumSize(new java.awt.Dimension(500, 280));
-        leadsheetSpecificPanel.setMinimumSize(new java.awt.Dimension(486, 250));
-        leadsheetSpecificPanel.setPreferredSize(new java.awt.Dimension(500, 280));
-        leadsheetSpecificPanel.setLayout(new java.awt.GridBagLayout());
-
-        breakpointLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        breakpointLabel.setText("Automatic Stave Breakpoint Pitch:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(breakpointLabel, gridBagConstraints);
-
-        breakpointTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        breakpointTF.setText("54");
-        breakpointTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        breakpointTF.setNextFocusableComponent(prefMeasTF);
-        breakpointTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(breakpointTF, gridBagConstraints);
-
-        scoreTitleTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        scoreTitleTF.setNextFocusableComponent(composerField);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.9;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
-        leadsheetSpecificPanel.add(scoreTitleTF, gridBagConstraints);
-
-        measuresPerPartLabel.setText("Measures per Chorus:");
-        measuresPerPartLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(measuresPerPartLabel, gridBagConstraints);
-
-        prefMeasTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        prefMeasTF.setText("" + defaultBarsPerPart);
-        prefMeasTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        prefMeasTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(prefMeasTF, gridBagConstraints);
-
-        tempoTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        tempoTF.setText("160");
-        tempoTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        tempoTF.setNextFocusableComponent(breakpointTF);
-        tempoTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        tempoTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tempoTFActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(tempoTF, gridBagConstraints);
-
-        tempoLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        tempoLabel.setText("Tempo:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(tempoLabel, gridBagConstraints);
-
-        composerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        composerLabel.setText("Composer:");
-        composerLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        composerLabel.setPreferredSize(new java.awt.Dimension(90, 17));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(composerLabel, gridBagConstraints);
-
-        leadsheetTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        leadsheetTitleLabel.setText("Leadsheet Title:");
-        leadsheetTitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
-        leadsheetSpecificPanel.add(leadsheetTitleLabel, gridBagConstraints);
-
-        composerField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        composerField.setNextFocusableComponent(timeSignatureTopTF);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.9;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(composerField, gridBagConstraints);
-
-        chordIInstLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        chordIInstLabel.setText("Chord MIDI Instrument:");
-        chordIInstLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(chordIInstLabel, gridBagConstraints);
-
-        bassInstLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        bassInstLabel.setText("Bass MIDI Instrument:");
-        bassInstLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(bassInstLabel, gridBagConstraints);
-
-        keySignatureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        keySignatureLabel.setText("Key Signature (+sharps, - flats):");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(keySignatureLabel, gridBagConstraints);
-
-        keySignatureTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        keySignatureTF.setText("0");
-        keySignatureTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        keySignatureTF.setNextFocusableComponent(tempoTF);
-        keySignatureTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(keySignatureTF, gridBagConstraints);
-
-        commentsLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        commentsLabel.setText("Comments:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 0.1;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(commentsLabel, gridBagConstraints);
-
-        commentsTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        commentsTF.setMinimumSize(new java.awt.Dimension(40, 19));
-        commentsTF.setNextFocusableComponent(partTitleTF);
-        commentsTF.setPreferredSize(new java.awt.Dimension(11, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.9;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(commentsTF, gridBagConstraints);
-
-        timeSignatureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        timeSignatureLabel.setText("Time Signature:");
-        timeSignatureLabel.setAlignmentX(1.0F);
-        timeSignatureLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        leadsheetSpecificPanel.add(timeSignatureLabel, gridBagConstraints);
-
-        timeSignaturePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        timeSignatureTopTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        timeSignatureTopTF.setText("4");
-        timeSignatureTopTF.setNextFocusableComponent(timeSignatureBottomTF);
-        timeSignatureTopTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        timeSignatureTopTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timeSignatureTopTFActionPerformed(evt);
-            }
-        });
-        timeSignaturePanel.add(timeSignatureTopTF);
-
-        timeSignatureBottomTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        timeSignatureBottomTF.setText("4");
-        timeSignatureBottomTF.setNextFocusableComponent(keySignatureTF);
-        timeSignatureBottomTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        timeSignaturePanel.add(timeSignatureBottomTF);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 100;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        leadsheetSpecificPanel.add(timeSignaturePanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        leadsheetSpecificPanel.add(chordInstPanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        leadsheetSpecificPanel.add(bassInstPanel, gridBagConstraints);
-
-        jTabbedPane5.addTab("Leadsheet", leadsheetSpecificPanel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        leadsheetPreferences.add(jTabbedPane5, gridBagConstraints);
-
-        chorusPreferences.setBackground(new java.awt.Color(255, 255, 255));
-        chorusPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
-        chorusPreferences.setLayout(new java.awt.GridBagLayout());
-
-        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14));
-        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
-        jLabel19.setText("  Chorus Settings");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        chorusPreferences.add(jLabel19, gridBagConstraints);
-
-        chorusSpecificPanel.setMinimumSize(new java.awt.Dimension(483, 200));
-        chorusSpecificPanel.setPreferredSize(new java.awt.Dimension(500, 200));
-        chorusSpecificPanel.setLayout(new java.awt.GridBagLayout());
-
-        partTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        partTitleLabel.setText("Chorus Title:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(partTitleLabel, gridBagConstraints);
-
-        partTitleTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        partTitleTF.setToolTipText("The title of this part");
-        partTitleTF.setNextFocusableComponent(partComposerTF);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.8;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(partTitleTF, gridBagConstraints);
-
-        melodyInsttLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        melodyInsttLabel.setText("Melody Instrument MIDI Number:");
-        melodyInsttLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(melodyInsttLabel, gridBagConstraints);
-
-        partComposerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        partComposerLabel.setText("Chorus Composer:");
-        partComposerLabel.setToolTipText("Enter the person composing this part (solo).");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(partComposerLabel, gridBagConstraints);
-
-        partComposerTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.8;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(partComposerTF, gridBagConstraints);
-
-        layoutLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        layoutLabel.setText("Layout (bars per line):");
-        layoutLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(layoutLabel, gridBagConstraints);
-
-        layoutTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        layoutTF.setToolTipText("Set a specific layout (bars per line).");
-        layoutTF.setNextFocusableComponent(swingTF);
-        layoutTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                layoutTFActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.8;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        chorusSpecificPanel.add(layoutTF, gridBagConstraints);
-
-        staveButtonPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Stave Type", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        staveButtonPanel.setPreferredSize(new java.awt.Dimension(285, 48));
-        staveButtonPanel.setLayout(new java.awt.GridBagLayout());
-
-        staveChoiceButtonGroup.add(autoStaveBtn);
-        autoStaveBtn.setSelected(true);
-        autoStaveBtn.setText("auto");
-        autoStaveBtn.setNextFocusableComponent(trebleStaveBtn);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 1.0;
-        staveButtonPanel.add(autoStaveBtn, gridBagConstraints);
-
-        staveChoiceButtonGroup.add(trebleStaveBtn);
-        trebleStaveBtn.setText("treble");
-        trebleStaveBtn.setNextFocusableComponent(bassStaveBtn);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 1.0;
-        staveButtonPanel.add(trebleStaveBtn, gridBagConstraints);
-
-        staveChoiceButtonGroup.add(bassStaveBtn);
-        bassStaveBtn.setText("bass");
-        bassStaveBtn.setNextFocusableComponent(grandStaveBtn);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 1.0;
-        staveButtonPanel.add(bassStaveBtn, gridBagConstraints);
-
-        staveChoiceButtonGroup.add(grandStaveBtn);
-        grandStaveBtn.setText("grand");
-        grandStaveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grandStaveBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 1.0;
-        staveButtonPanel.add(grandStaveBtn, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
-        chorusSpecificPanel.add(staveButtonPanel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        chorusSpecificPanel.add(melodyInstPanel, gridBagConstraints);
-
-        jTabbedPane4.addTab("Chorus", chorusSpecificPanel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        chorusPreferences.add(jTabbedPane4, gridBagConstraints);
-
-        stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
-        stylePreferences.setLayout(new java.awt.GridBagLayout());
-
-        stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        stylePrefLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
-        stylePrefLabel.setText("Section and Style Settings");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        stylePreferences.add(stylePrefLabel, gridBagConstraints);
-
-        currentStyleTab.setLayout(new java.awt.GridBagLayout());
-
-        selectAStyleLabel.setText("Style:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
-
-        swingLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        swingLabel.setText("Swing:");
-        swingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(swingLabel, gridBagConstraints);
-
-        swingTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        swingTF.setText(" ");
-        swingTF.setToolTipText("Enter the melody swing value (.5 for no swing, .67 for nominal swing.)");
-        swingTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        swingTF.setNextFocusableComponent(autoStaveBtn);
-        swingTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        swingTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                swingTFActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(swingTF, gridBagConstraints);
-
-        styleList.setModel(styleListModel);
-        styleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        styleList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                styleListValueChanged(evt);
-            }
-        });
-        styleListScrollPane.setViewportView(styleList);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.75;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(styleListScrollPane, gridBagConstraints);
-
-        sectionList.setModel(sectionListModel);
-        sectionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        sectionList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                sectionListValueChanged(evt);
-            }
-        });
-        sectionListScrollPane.setViewportView(sectionList);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.75;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(sectionListScrollPane, gridBagConstraints);
-
-        newSectionButton.setText("Split Selected Section\n");
-        newSectionButton.setToolTipText("Splits the currently-selected Section approximately in two. Then set Starting Measure on second Section.");
-        newSectionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newSectionButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(newSectionButton, gridBagConstraints);
-
-        measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        measureLabel.setText("Starting Measure:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(measureLabel, gridBagConstraints);
-
-        measureTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        measureTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        measureTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                measureTFActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(measureTF, gridBagConstraints);
-
-        sectionLabel.setText("Sections:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(sectionLabel, gridBagConstraints);
-
-        delSectionButton.setText("Delete Selected Section");
-        delSectionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                delSectionButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(delSectionButton, gridBagConstraints);
-
-        phraseCheckBox.setText("Phrase ");
-        phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
-        phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phraseCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        currentStyleTab.add(phraseCheckBox, gridBagConstraints);
-
-        styleTabs.addTab("Current Style", currentStyleTab);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        stylePreferences.add(styleTabs, gridBagConstraints);
-
-        contourPreferences.setBackground(new java.awt.Color(255, 255, 255));
-        contourPreferences.setLayout(new java.awt.GridBagLayout());
-
-        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14));
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
-        jLabel10.setText("  Contour Settings");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
-        contourPreferences.add(jLabel10, gridBagConstraints);
-
-        generalContourTab.setLayout(new java.awt.GridBagLayout());
-
-        contToneChoices.setBorder(javax.swing.BorderFactory.createTitledBorder("Fit notes to contour using:"));
-        contToneChoices.setPreferredSize(new java.awt.Dimension(190, 100));
-        contToneChoices.setLayout(new java.awt.GridBagLayout());
-
-        drawScaleTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
-        drawScaleTonesCheckBox.setSelected(true);
-        drawScaleTonesCheckBox.setText("Scale tones");
-        drawScaleTonesCheckBox.setContentAreaFilled(false);
-        drawScaleTonesCheckBox.setIconTextGap(10);
-
-        if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(0) == 'x')       drawScaleTonesCheckBox.setSelected(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        contToneChoices.add(drawScaleTonesCheckBox, gridBagConstraints);
-
-        drawChordTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
-        drawChordTonesCheckBox.setSelected(true);
-        drawChordTonesCheckBox.setIconTextGap(10);
-        drawChordTonesCheckBox.setLabel("Chord tones");
-
-        if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(1) == 'x')       drawChordTonesCheckBox.setSelected(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        contToneChoices.add(drawChordTonesCheckBox, gridBagConstraints);
-
-        drawColorTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
-        drawColorTonesCheckBox.setText("Color tones");
-        drawColorTonesCheckBox.setIconTextGap(10);
-        if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1')       drawColorTonesCheckBox.setSelected(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        contToneChoices.add(drawColorTonesCheckBox, gridBagConstraints);
-
-        generalContourTab.add(contToneChoices, new java.awt.GridBagConstraints());
-
-        defaultDrawingMutedCheckBox.setFont(new java.awt.Font("Dialog", 0, 10));
-        defaultDrawingMutedCheckBox.setSelected(true);
-        defaultDrawingMutedCheckBox.setText("Mute drawing sound by default");
-        defaultDrawingMutedCheckBox.setIconTextGap(10);
-        if (Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("false"))       defaultDrawingMutedCheckBox.setSelected(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipady = 25;
-        generalContourTab.add(defaultDrawingMutedCheckBox, gridBagConstraints);
-
-        jTabbedPane3.addTab("General", generalContourTab);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        contourPreferences.add(jTabbedPane3, gridBagConstraints);
-
         midiPreferences.setBackground(new java.awt.Color(255, 255, 255));
         midiPreferences.setAlignmentX(0.0F);
         midiPreferences.setAlignmentY(0.0F);
@@ -4142,6 +4067,82 @@ public class Notate
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         midiPreferences.add(jLabel4, gridBagConstraints);
+
+        contourPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        contourPreferences.setLayout(new java.awt.GridBagLayout());
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
+        jLabel10.setText("  Contour Settings");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        contourPreferences.add(jLabel10, gridBagConstraints);
+
+        generalContourTab.setLayout(new java.awt.GridBagLayout());
+
+        contToneChoices.setBorder(javax.swing.BorderFactory.createTitledBorder("Fit notes to contour using:"));
+        contToneChoices.setPreferredSize(new java.awt.Dimension(190, 100));
+        contToneChoices.setLayout(new java.awt.GridBagLayout());
+
+        drawScaleTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
+        drawScaleTonesCheckBox.setSelected(true);
+        drawScaleTonesCheckBox.setText("Scale tones");
+        drawScaleTonesCheckBox.setContentAreaFilled(false);
+        drawScaleTonesCheckBox.setIconTextGap(10);
+
+        if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(0) == 'x')       drawScaleTonesCheckBox.setSelected(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        contToneChoices.add(drawScaleTonesCheckBox, gridBagConstraints);
+
+        drawChordTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
+        drawChordTonesCheckBox.setSelected(true);
+        drawChordTonesCheckBox.setIconTextGap(10);
+        drawChordTonesCheckBox.setLabel("Chord tones");
+
+        if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(1) == 'x')       drawChordTonesCheckBox.setSelected(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        contToneChoices.add(drawChordTonesCheckBox, gridBagConstraints);
+
+        drawColorTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
+        drawColorTonesCheckBox.setText("Color tones");
+        drawColorTonesCheckBox.setIconTextGap(10);
+        if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1')       drawColorTonesCheckBox.setSelected(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        contToneChoices.add(drawColorTonesCheckBox, gridBagConstraints);
+
+        generalContourTab.add(contToneChoices, new java.awt.GridBagConstraints());
+
+        defaultDrawingMutedCheckBox.setFont(new java.awt.Font("Dialog", 0, 10));
+        defaultDrawingMutedCheckBox.setSelected(true);
+        defaultDrawingMutedCheckBox.setText("Mute drawing sound by default");
+        defaultDrawingMutedCheckBox.setIconTextGap(10);
+        if (Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("false"))       defaultDrawingMutedCheckBox.setSelected(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipady = 25;
+        generalContourTab.add(defaultDrawingMutedCheckBox, gridBagConstraints);
+
+        jTabbedPane3.addTab("General", generalContourTab);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        contourPreferences.add(jTabbedPane3, gridBagConstraints);
 
         overrideMeasPMI.setText("Override Measures for this Line");
         overrideMeasPMI.setToolTipText("Enter the number of measure for this line.");
@@ -7245,7 +7246,7 @@ public class Notate
         partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
-        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12));
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -14098,8 +14099,16 @@ private boolean saveMetre()
     defaultChordFontSizeSpinner.setValue(chordFontSizeValue);
     }
     
+  
+  
+  /**
+   * Set up the preferences dialog box.
+   */
+  
   private void setPrefsDialog()
     {
+    // System.out.println("setPrefsDialog");
+    
     // ===== update Midi panel
 
     refreshMidiStatus();
@@ -15041,20 +15050,28 @@ private void setTotalMeasures(int measures)
     setLockedMeasures(tempLockedMeasures, "setTotalMeasures");
   }
     
-    
-    /**
-     *
-     * Sets the layout text field in the preferences dialog.
-     *
-     */
-    
+
+
+/**
+ * Clear the layout preferences for the leadsheet.
+ * @param layout 
+ */
+
 private void clearLayoutPreference()
   {
     layoutTF.setText("");
   }
 
+
+/**
+ * Set the layout preferences for the leadsheet.
+ * @param layout 
+ */
+
 private void setLayoutPreference(Polylist layout)
   {
+    //System.out.println("setLayoutPreference " + layout);
+    
     if( layout != null )
       {
         StringBuffer buffer = new StringBuffer();
@@ -17881,6 +17898,7 @@ public void WriteLeadsheetToFile(File file) {
     }
   
   /**
+   * Set up a new score.
    *
    * Do stuff that is common to open file, revert file, and
    *
@@ -17889,8 +17907,6 @@ public void WriteLeadsheetToFile(File file) {
    */
   public void setupScore(Score score)
     {
-    // set the new score
-
     this.score = score;
 
     setTitle(score.getTitle());
@@ -17902,11 +17918,14 @@ public void WriteLeadsheetToFile(File file) {
     setTempo(score.getTempo());
     
     clearLayoutPreference();
-
+/*
+     * This is done in setPrefsDialog:
+     * Putting it here too causes problems.
+     * 
     Polylist layout = score.getLayoutList();
 
     adjustLayout(layout);
-
+*/
     closeAdviceFrame();
 
     int bars = score.getLength();
@@ -20260,72 +20279,79 @@ private void mostRecentLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt
 }//GEN-LAST:event_mostRecentLeadsheetMIActionPerformed
 
 private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentFileMenu
-  RecentFiles recFiles = new RecentFiles();
-  String filenames[] = {"No Recent Leadsheets to Open"};
-  if(recFiles.getSize() == 0)
-  {
-      openRecentLeadsheetMenu.removeAll();
-  
-  for( String name: filenames )
-   {
-     final JMenuItem item = new JMenuItem(name);
-    
-        
-        openRecentLeadsheetMenu.add(item);
-    } 
-  }
-  else
-  {
-      filenames = recFiles.convertToArray();
-      openRecentLeadsheetMenu.removeAll();
-  
-    for( String name: filenames )
-    {
-    
-        final JMenuItem item = new JMenuItem(name);
-    
-        item.addActionListener(
-        new ActionListener()
-        {
-        public void actionPerformed(ActionEvent evt)
-        {
-            File selected = new File(item.getText());
-            if(selected.exists())
-            {
-                try{
-                    setupLeadsheet(selected,false);
-                }
-                catch(Exception ij){
-                }
-            }
-            else
-            {
-               
-            }
-        }
-        } // end of ActionListener embedded
-        );
-        openRecentLeadsheetMenu.add(item);
-    }
-    openRecentLeadsheetMenu.add(new JSeparator());
-    JMenuItem clear = new JMenuItem("clear all recent history");
-    openRecentLeadsheetMenu.add(clear);
-    clear.addActionListener(
-    new ActionListener()
-            {
-                public void actionPerformed(ActionEvent evt)
+    RecentFiles recFiles = new RecentFiles();
+    String filenames[] =
+      {
+        "No Recent Leadsheets to Open"
+      };
+    if( recFiles.getSize() == 0 )
+      {
+        openRecentLeadsheetMenu.removeAll();
+
+        for( String name : filenames )
+          {
+            final JMenuItem item = new JMenuItem(name);
+
+
+            openRecentLeadsheetMenu.add(item);
+          }
+      }
+    else
+      {
+        filenames = recFiles.convertToArray();
+        openRecentLeadsheetMenu.removeAll();
+
+        for( String name : filenames )
+          {
+            final JMenuItem item = new JMenuItem(name);
+
+            item.addActionListener(
+                    new ActionListener()
+                    {
+                    public void actionPerformed(ActionEvent evt)
+                      {
+                        File selected = new File(item.getText());
+                        if( selected.exists() )
+                          {
+                            try
+                              {
+                                setupLeadsheet(selected, false);
+                              }
+                            catch( Exception ij )
+                              {
+                              }
+                          }
+                        else
+                          {
+                          }
+                      }
+
+                    } // end of ActionListener embedded
+                  );
+            openRecentLeadsheetMenu.add(item);
+          }
+        openRecentLeadsheetMenu.add(new JSeparator());
+        JMenuItem clear = new JMenuItem("clear all recent history");
+        openRecentLeadsheetMenu.add(clear);
+        clear.addActionListener(
+                new ActionListener()
                 {
-                    try{
+
+                public void actionPerformed(ActionEvent evt)
+                  {
+                    try
+                      {
                         BufferedWriter recentFiles = new BufferedWriter(new FileWriter(recentFilesFilename));
                         recentFiles.write("");
                         recentFiles.close();
-                    } catch(Exception e){
-                        
-                    }
-                }
-            }
-            );
-  }
+                      }
+                    catch( Exception e )
+                      {
+                      }
+                  }
+
+                });
+      }
 }//GEN-LAST:event_populateRecentFileMenu
 
 private void mostRecentLeadsheetNewWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostRecentLeadsheetNewWindowMIActionPerformed

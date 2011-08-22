@@ -37,7 +37,13 @@
 (section (style swing)) 
 
 F13 | Bb13 Bo7 | F13 | Cm9 F13b9 | 
+
+(section (style swing)) 
+
 Bb13 | Bo7 | F13 | D7#5#9 | 
+
+(section (style swing)) 
+
 Gm9 | C13b9 | F13 D7#5#9 | Gm9 C13b9 | 
 
 (part

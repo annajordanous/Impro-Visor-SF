@@ -304,6 +304,7 @@ private ImproVisor(String leadsheet)
           }
 
       }
+    
     // FIrst open a blank Notate window
 
     // Create a score with default measures in default meter
@@ -318,9 +319,10 @@ private ImproVisor(String leadsheet)
 
     score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
 
-    // Create an array of notate frames and initialize the first frame
+    // Create notate frame.
     
     Notate notate = new Notate(score, advisor, this, initialXopen, initialYopen);
+    
     String createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP);
     if(createRoadMap.equals("y"))
     {
@@ -350,11 +352,6 @@ private ImproVisor(String leadsheet)
       }
     
      currentWindow = notate;
-     
-     // FIX: true for now, during development.
-     // Should be made into a Preference
-     
-     //notate.setCreateRoadMapCheckBox(true);
 
      notate.makeVisible();
 

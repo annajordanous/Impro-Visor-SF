@@ -1,4 +1,4 @@
-Major major M  maj7 M7 Maj7 6 M6 69 M69 maj9 M9 Maj9 M7#11 M9#11 M13#11 M6b5 M6#11 6b5 6#11 69#11 M69#11
+Major major M  maj7 M7 Maj7 6 M6 69 M69 maj9 M9 Maj9 M7#11 M9#11 M13#11 M6b5 M6#11 6b5 6#11 69#11 M69#11 Bass 5 maj13 Maj13 2 sus sus4 Msus4 maj9#11 Maj9#11 maj13#11 Maj13#11
 Dominant dominant 7 7b9 7#9 7b5 7+ 7#11 7b9#11 7b9b13 9 9#11 9b5 9b13 13 13b9 13#9 7#5#9 13#11 13b5 13b9#11 13#9#11 9+ 7b5b9 7alt
 Minor minor m m6 m69 minor7 m7 m9 m11 m13 m7b5 m9b5 m11b5 m13b5 h9 h11 half-diminished m7b5 h7 mM7 mMaj7 - mMaj9 mM9
 augmented M#5 maj#5 Maj#5 + aug

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
@@ -63,7 +63,7 @@ public class RecentFiles {
     /**
      * Integer to denote the max number of leadsheets that the program will keep track of
      */
-    private int MAX_RECENT_FILES;
+    private static int MAX_RECENT_FILES = 30;
     
     public RecentFiles(String pathName)
     {
@@ -73,7 +73,6 @@ public class RecentFiles {
         path = pathName;
         stk.push(path);
         path = (String)stk.peek();
-        MAX_RECENT_FILES = 11;
     }
     
     public RecentFiles()
@@ -81,7 +80,6 @@ public class RecentFiles {
         filename = "vocab" + File.separator + "RecentFiles.txt";
         stk = new Stack();
         tempStk= new Stack();
-        MAX_RECENT_FILES = 11;
     }
     
     /**

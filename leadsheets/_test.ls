@@ -8,6 +8,7 @@
 (tempo 200.0)
 (volume 127)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 48)
 (drum-volume 60)
@@ -818,7 +819,7 @@ Am9 | D13b9 | GM9 | D9sus4 |
 
  b+8 c++8 b+8 a+8 g+8 f+8 eb+8 d+8
 
- c#+8 d+8 c#+8 d+8 gb+8 e+4+8
+ c#+8 d+8 c#+8 d+8 f#+8 e+4+8
 
  c+8 c#+8 c+8 c#+8 f#+8 eb+4 b8
 
@@ -850,7 +851,7 @@ Am9 | D13b9 | GM9 | D9sus4 |
 
  eb4 d+8/3 b8/3 d+8/3 b8 g8 eb4
 
- d8 c#8 f#8 a8 bb4+8 gb+8
+ d8 c#8 f#8 a8 bb4+8 f#+8
 
  g+8 e+8 c+8 e8 b8 g#4 a8
 

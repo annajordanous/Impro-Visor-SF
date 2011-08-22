@@ -8,12 +8,13 @@
 (tempo 180.0)
 (volume 127)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 31)
 (drum-volume 48)
 (chord-volume 37)
 (breakpoint 54)
-(layout)
+(layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -36,7 +37,13 @@
 (section (style swing)) 
 
 F13 | Bb13 Bo7 | F13 | Cm9 F13b9 | 
+
+(section (style swing)) 
+
 Bb13 | Bo7 | F13 | D7#5#9 | 
+
+(section (style swing)) 
+
 Gm9 | C13b9 | F13 D7#5#9 | Gm9 C13b9 | 
 
 (part

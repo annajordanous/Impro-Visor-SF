@@ -791,6 +791,11 @@
 	(Brick Minor-POT C 4)
 	(Chord Cm 1))
 
+(Def-Brick POT Dominant Turnaround C
+	(Chord C7 1)
+        (Chord A7 1)
+	(Brick Straight-Approach C 2))
+
 (Def-Brick Pennies-Turnaround(main) Major Turnaround C
 	(Chord CM7 1)
 	(Chord Dm 1)
@@ -1204,8 +1209,14 @@
         (Brick GenDom Eb 1)
         (Chord C 1))
 
-(Def-Brick Yardbird-Approach Major Approach C
-        (Brick GenDom Eb 2))
+(Def-Brick Yardbird-Approach(main) Major Approach C
+        (Chord Fm7 1)
+        (Chord Bb7 1))
+
+/*
+(Def-Brick Yardbird-Approach(short) Major Approach C
+        (Chord Bb7 1))
+*/
 
 (Def-Brick IV-n-Yak(main) Major Cadence C
         (Chord F 1)
