@@ -1179,7 +1179,7 @@
 
 (Def-Brick Starlight-Approach(Dizzy) Major Approach Ab
         (Chord Dm7b5 1)
-        (Chord G7 1)
+        (Chord G7 1)G
         (Brick Tritone-Approach Bb 2)
         (Brick Tritone-Approach Ab 2))
 
@@ -1203,6 +1203,11 @@
 (Def-Brick Straight-Approach Major Approach C
 	(Chord Dm7 1)
 	(Chord G7 1))
+
+/* Not distinguishable from Minor-on:
+ * (Def-Brick Sus Major Approach C
+ *       (Chord Dm7/G 1))
+ */
 
 (Def-Brick Yardbird-Sub-Cadence Major Cadence C
         (Chord Dm7 1)
@@ -2317,3 +2322,12 @@
 
 
 
+
+(Def-Brick Sus-Cadence Major Cadence F
+        (Chord Gm7 1)
+        (Chord Gm7/C 1)
+        (Brick Major-On F 1))
+
+(Def-Brick To-IV Major Approach F
+        (Brick Major-On F 1)
+        (Brick Perfect-Cadence Bb 2))

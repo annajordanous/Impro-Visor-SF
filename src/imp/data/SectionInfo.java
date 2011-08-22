@@ -343,7 +343,7 @@ public class SectionInfo implements Constants, Serializable {
         SectionRecord record = records.get(index);
         Style s = record.getStyle();
         deleteSection(index);
-        System.out.println("2 records = " + records);
+        //System.out.println("2 records = " + records);
         addSection(s, measureToSlotIndex(newMeasure), isPhrase);
         
         System.out.println("3 records = " + records);
@@ -356,13 +356,17 @@ public class SectionInfo implements Constants, Serializable {
             return;
         
         ListIterator<SectionRecord> k = records.listIterator(index);
-        k.next();
+        SectionRecord record = k.next();
         k.remove();
+        
+        Style style = record.getStyle();
+        
         if( index == 0 )
           {
             k = records.listIterator(0);
             k.next();
             k.remove();
+            k.add(new SectionRecord(style, 0, false));
           }
         
         /* original code
