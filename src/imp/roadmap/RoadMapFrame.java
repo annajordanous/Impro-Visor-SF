@@ -59,9 +59,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private String dictionaryDir = Directories.dictionaryDirName + File.separator;
     
-    private String dictionaryFilename = dictionaryDir + defaultDictionaryName + DictionaryFilter.EXTENSION;
+    private String dictionaryFilename;
     
-    /** Communication with leadsheet and score is done through Notate frame. */
+     /** Communication with leadsheet and score is done through Notate frame. */
     private Notate notate = null;
     
     /** auxNotate is a separate notate window for converting the roadmap
@@ -149,20 +149,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         previewPanel = new PreviewPanel(this);
         roadMapPanel = new RoadMapPanel(this);
-        brickLibrary = new BrickLibrary();
-        
-        try {
-            brickLibrary.processDictionary(dictionaryFilename);
-        } catch (IOException e) {
-            ErrorLog.log(ErrorLog.FATAL, "Error opening brick dictionary");
-            System.exit(-1);
-        }
-         
-        cykParser.createRules(brickLibrary);
-         
-        initLibraryTree();
                 
-        initComponents();
+        initComponents(); // Must be done before newDictionary is called.
+        
+        newDictionary(defaultDictionaryName);
         
         initBuffer();
         
@@ -179,8 +169,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickDictionaryFrame.setLocationRelativeTo(roadMapPanel);
     
         brickDictionaryFrame.setLocation(dictionaryFrameX, dictionaryFrameY);
-        
-        setDictionaryTitle(defaultDictionaryName);
         
         WindowRegistry.registerWindow(this);
         
@@ -207,7 +195,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dialogCancelButton = new javax.swing.JButton();
         dialogModeComboBox = new javax.swing.JComboBox();
         dialogKeyComboBox = new javax.swing.JComboBox();
-        dialogTypeComboBox = new javax.swing.JComboBox(brickLibrary.getTypes());
+        dialogTypeComboBox = new javax.swing.JComboBox();
         dialogTypeLabel = new javax.swing.JLabel();
         dialogVariantLabel = new javax.swing.JLabel();
         dialogVariantField = new javax.swing.JTextField();
@@ -1029,7 +1017,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.95;
         getContentPane().add(roadMapScrollPane, gridBagConstraints);
 
-        previewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick preview (select from Dictionary)\n", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION)); // NOI18N
+        previewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick preview (select from Dictionary)\n", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         previewScrollPane.setToolTipText("Provides a preview of a brick selected from the Brick Dictionary."); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
@@ -2924,29 +2912,9 @@ private void populateRoadmapDictionaryMenu(String dictionaryName)
                         
                         String newDictionaryName = item.getText();
                         
-                        dictionaryFilename = dictionaryDir + newDictionaryName + DictionaryFilter.EXTENSION;
-                        try
-                          {
-                          brickLibrary = new BrickLibrary();
-                          brickLibrary.processDictionary(dictionaryFilename);
-                          cykParser.createRules(brickLibrary);
-                          initLibraryTree();
-                          libraryTree.setModel(libraryTreeModel);
-                          populateRoadmapDictionaryMenu(item.getText());
-                          setDictionaryTitle(newDictionaryName);
-                          
-                          dialogTypeComboBox.removeAllItems();
-                          
-                          for( String type: brickLibrary.getTypes())
-                            {
-                              dialogTypeComboBox.addItem(type);
-                              System.out.println("adding " + type);
-                            }
-                          }
-                        catch( Exception e)
-                          {
-                            ErrorLog.log(ErrorLog.SEVERE, e.getMessage());
-                          }
+                        newDictionary(newDictionaryName);
+                        populateRoadmapDictionaryMenu(item.getText());
+                       
                         if(!roadMapTextEntry.isFocusOwner())
                           {
                           brickDictionaryFrame.setVisible(true);
@@ -2956,6 +2924,40 @@ private void populateRoadmapDictionaryMenu(String dictionaryName)
               }
           }
       }
+  }
+
+
+/**
+ * Create a new dictionary with the given name, based on a similarly-named
+ * dictionary file.
+ * @param dictionaryName 
+ */
+
+private void newDictionary(String dictionaryName)
+  {
+    dictionaryFilename = dictionaryDir + dictionaryName + DictionaryFilter.EXTENSION;
+    try
+      {
+        brickLibrary = new BrickLibrary();
+        brickLibrary.processDictionary(dictionaryFilename);
+        cykParser.createRules(brickLibrary);
+        initLibraryTree();
+        libraryTree.setModel(libraryTreeModel);
+        setDictionaryTitle(dictionaryName);
+
+        dialogTypeComboBox.removeAllItems();
+
+        for( String type : brickLibrary.getTypes() )
+          {
+            dialogTypeComboBox.addItem(type);
+            System.out.println("adding " + type);
+          }
+      }
+    catch( Exception e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, e.getMessage());
+      }
+
   }
 
 
