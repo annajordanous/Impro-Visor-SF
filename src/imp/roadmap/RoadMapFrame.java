@@ -22,26 +22,24 @@
 package imp.roadmap;
 
 import java.awt.*;
+import java.awt.event.*;;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
+import javax.swing.*;
 import javax.swing.tree.*;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.awt.event.*;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import imp.brickdictionary.*;
 import imp.cykparser.*;
 import imp.data.*;
+import imp.Directories;
 import imp.gui.Notate;
 import imp.gui.PrintUtilitiesRoadMap;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
-import imp.util.ErrorLog;
-import imp.util.MidiPlayListener;
-import java.util.Arrays;
+import imp.util.*;
 
 import polya.Tokenizer;
 
@@ -52,6 +50,16 @@ import polya.Tokenizer;
  */
 
 public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener {
+    
+    private String defaultDictionaryName = "My";
+    
+    private String dictionaryNameSuffix = " dictionary";
+    
+    JCheckBoxMenuItem recentlySelected = null;
+    
+    private String dictionaryDir = Directories.dictionaryDirName + File.separator;
+    
+    private String dictionaryFilename = dictionaryDir + defaultDictionaryName + DictionaryFilter.EXTENSION;
     
     /** Communication with leadsheet and score is done through Notate frame. */
     private Notate notate = null;
@@ -120,6 +128,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     public int tempo = 120;
     /** Time signature of this piece */
     public int[] metre = {4,4};
+    
+    
+  /**
+   *
+   * The file chooser for opening the dictionary
+   *
+   */
+    
+  private JFileChooser dictionaryfc = new JFileChooser();;
+
+  
    
     private RoadMapFrame() {} // Not for you.
     
@@ -133,7 +152,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickLibrary = new BrickLibrary();
         
         try {
-            brickLibrary.processDictionary();
+            brickLibrary.processDictionary(dictionaryFilename);
         } catch (IOException e) {
             ErrorLog.log(ErrorLog.FATAL, "Error opening brick dictionary");
             System.exit(-1);
@@ -160,6 +179,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickDictionaryFrame.setLocationRelativeTo(roadMapPanel);
     
         brickDictionaryFrame.setLocation(dictionaryFrameX, dictionaryFrameY);
+        
+        setDictionaryTitle(defaultDictionaryName);
         
         WindowRegistry.registerWindow(this);
         
@@ -1478,8 +1499,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void analyzeButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeButtonPressed
         if(!roadMapPanel.hasSelection())
+          {
             roadMapPanel.selectAll();
-        analyzeSelection();
+            analyzeSelection();
+            roadMapPanel.deselectBricks();
+          }
+        else
+          {
+          analyzeSelection();
+          }
 }//GEN-LAST:event_analyzeButtonPressed
 
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
@@ -1690,7 +1718,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         if (previewPanel.currentBrick != null)
         {
-            brickLibrary.exileBrick((Brick)previewPanel.currentBrick.getBlock());
+            brickLibrary.exileBrick((Brick)previewPanel.currentBrick.getBlock(), dictionaryFilename);
             initLibraryTree();
             libraryTree.setModel(libraryTreeModel);
             cykParser.createRules(brickLibrary);
@@ -1709,7 +1737,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_prefDialogCancelButtonActionPerformed
 
     private void brickLibraryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickLibraryMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) brickDictionaryFrame.setVisible(brickLibraryMenuItem.isSelected());
+        
     }//GEN-LAST:event_brickLibraryMenuItemActionPerformed
 
     private void brickDictionaryFrameWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_brickDictionaryFrameWindowClosing
@@ -1782,7 +1810,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_dialogKeyComboBoxActionPerformed
 
     private void dictionaryMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_dictionaryMenuMenuSelected
-        // TODO add your handling code here:
+        populateRoadmapDictionaryMenu(defaultDictionaryName);
+        
     }//GEN-LAST:event_dictionaryMenuMenuSelected
 
     private void keyColorationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyColorationButtonActionPerformed
@@ -2367,7 +2396,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     {
         Brick scaledBrick = new Brick(brick);
         scaledBrick.reduceDurations();
-        brickLibrary.addBrickDefinition(scaledBrick);
+        brickLibrary.addBrickDefinition(scaledBrick, dictionaryFilename);
         cykParser.createRules(brickLibrary);
         initLibraryTree();
         libraryTree.setModel(libraryTreeModel);
@@ -2850,4 +2879,87 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             title += " "+featureWidthSuffix;
         border.setTitle(title);
     }
+    
+    
+ /**
+  * Populate the dictionary menu in the Roadmap window
+  * Creates actionListener for each name in the menu.
+  */
+
+private void populateRoadmapDictionaryMenu(String dictionaryName)
+  {
+    dictionaryfc.setCurrentDirectory(notate.getDictionaryDir());
+    
+    File directory = dictionaryfc.getCurrentDirectory();
+    if( directory.isDirectory() )
+      {
+        dictionaryMenu.removeAll();
+        
+        String fileName[] = directory.list();
+        for( int i = 0; i < fileName.length; i++ )
+          {
+            String name = fileName[i];
+
+            if( name.endsWith(DictionaryFilter.EXTENSION) )
+              {
+                int len = name.length();
+                String stem = name.substring(0, len - DictionaryFilter.EXTENSION.length());
+                final JCheckBoxMenuItem item = new JCheckBoxMenuItem(stem);
+                dictionaryMenu.add(item);
+                
+                item.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        
+                        if( recentlySelected != null )
+                          {
+                          // If some other item was, unselect it.
+                          recentlySelected.setIcon(null);
+                          }
+                        
+                        item.setSelected(true);
+
+                        recentlySelected = item;
+
+                        // Item wasn't selected, but is now.
+                        
+                        String newDictionaryName = item.getText();
+                        
+                        dictionaryFilename = dictionaryDir + newDictionaryName + DictionaryFilter.EXTENSION;
+                        try
+                          {
+                          brickLibrary = new BrickLibrary();
+                          brickLibrary.processDictionary(dictionaryFilename);
+                          cykParser.createRules(brickLibrary);
+                          initLibraryTree();
+                          libraryTree.setModel(libraryTreeModel);
+                          populateRoadmapDictionaryMenu(item.getText());
+                          setDictionaryTitle(newDictionaryName);
+                          }
+                        catch( Exception e)
+                          {
+                            ErrorLog.log(ErrorLog.SEVERE, e.getMessage());
+                          }
+                        if(!roadMapTextEntry.isFocusOwner())
+                          {
+                          brickDictionaryFrame.setVisible(true);
+                          }
+                      }
+                });
+              }
+          }
+      }
+  }
+
+
+/**
+ * Set the title for the dictionary on the dictionary frame and on
+ * the menu bar.
+ * @param dictionaryName 
+ */
+private void setDictionaryTitle(String dictionaryName)
+  {
+   String dictionaryTitle = dictionaryName + dictionaryNameSuffix;
+   dictionaryMenu.setText(dictionaryTitle);
+   brickDictionaryFrame.setTitle(dictionaryTitle); 
+  }
 };

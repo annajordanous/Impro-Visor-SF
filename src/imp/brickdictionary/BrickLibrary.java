@@ -49,7 +49,7 @@ public class BrickLibrary {
     private static final long DEFAULT_COST = 40;
     
     // the path where the dictionary of brick definitions is stored
-    public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
+    // public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
     
     // the string describing an invisible brick's type
     public static final String INVISIBLE = "Invisible";
@@ -83,7 +83,7 @@ public class BrickLibrary {
      * current brickMap and adds its definition to the dictionary file
      * @param brick, a newly created Brick
      */
-    public void addBrickDefinition(Brick brick)
+    public void addBrickDefinition(Brick brick, String dictionaryFilename)
     {
         // add the brick to the current BrickLibrary
         boolean added = addBrick(brick);
@@ -100,7 +100,7 @@ public class BrickLibrary {
         
         // write out the string with the definition to the end of the file
         try {
-            FileOutputStream out = new FileOutputStream(DICTIONARY_FILE, true);
+            FileOutputStream out = new FileOutputStream(dictionaryFilename, true);
             out.write("\n".getBytes());
             out.write(defnString.getBytes());
             out.write("\n".getBytes());
@@ -386,7 +386,7 @@ public class BrickLibrary {
      * Takes a Brick out of the visible brick library
      * @param brick, the brick to remove
      */
-    public void exileBrick(Brick brick) {
+    public void exileBrick(Brick brick, String dictionaryFilename) {
         
         brick.printBrick();
         
@@ -400,7 +400,7 @@ public class BrickLibrary {
         
         // open the file and read in its contents
         try {
-            File dictionary = new File(DICTIONARY_FILE);
+            File dictionary = new File(dictionaryFilename);
             FileReader in = new FileReader(dictionary);
             BufferedReader reader = new BufferedReader(in);
             
@@ -421,10 +421,10 @@ public class BrickLibrary {
             }
             
             // write out the modified dictionary
-            FileWriter writer = new FileWriter(DICTIONARY_FILE);
+            FileWriter writer = new FileWriter(dictionaryFilename);
             writer.write(newfile);
             writer.close();
-            processDictionary();
+            processDictionary(dictionaryFilename);
             
         }
         catch (IOException ioe)
@@ -602,9 +602,9 @@ public class BrickLibrary {
      * objects in the BrickDictionary.
      * @throws IOException 
      */
-    public void processDictionary() throws IOException {
+    public void processDictionary(String dictionaryFilename) throws IOException {
         
-        FileInputStream fis = new FileInputStream(DICTIONARY_FILE);
+        FileInputStream fis = new FileInputStream(dictionaryFilename);
         Tokenizer in = new Tokenizer(fis);
         in.slashSlashComments(true);
         in.slashStarComments(true);

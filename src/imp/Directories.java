@@ -50,7 +50,14 @@ public class Directories
     public static String soloistDirName = "vocab"; // was "soloists";
 
 
-   /**
+    /**
+     * Standard sub-directory for dictionaries
+     */
+
+    public static String dictionaryDirName = "vocab";
+
+
+  /**
      * Standard file name for accumulated productions used in grammar learning
      */
 

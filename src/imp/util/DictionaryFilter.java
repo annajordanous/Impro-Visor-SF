@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,14 @@ import java.io.File;
 import javax.swing.filechooser.*;
 
 /**
- * A file filter to filter only *.voc vocabulary files
+ * A file filter to filter only *.dictionary files
  *
  * @author awolin
  */
-public class GrammarFilter extends FileFilter {
+
+public class DictionaryFilter extends FileFilter {
     
-    public static String EXTENSION = ".grammar";
+    public static String EXTENSION = ".dictionary";
 
     public boolean accept(File f) {
         
@@ -46,6 +47,6 @@ public class GrammarFilter extends FileFilter {
 
     
     public String getDescription() {
-        return "Grammar files";
+        return "Dictionary files";
     }
 }

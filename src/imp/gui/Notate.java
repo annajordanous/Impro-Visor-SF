@@ -215,6 +215,13 @@ public class Notate
 
   /**
    *
+   * Sub-directory for dictionaries
+   *
+   */
+  File dictionaryDir; // set within constructor
+
+  /**
+   *
    * Standard file for vocabulary
    *
    */
@@ -1058,6 +1065,8 @@ public class Notate
     vocabDir = new File(basePath + Directories.vocabDirName);
 
     grammarDir = new File(basePath + Directories.grammarDirName);
+    
+    dictionaryDir = new File(basePath + Directories.dictionaryDirName);
 
     leadsheetDir = new File(basePath + leadsheetDirName);
 
@@ -1473,6 +1482,8 @@ public class Notate
 
   public void postInitComponents()
     {
+    notateGrammarMenu.setText("My grammar");
+    
     voicingTestFrame.pack();
 
     voicingTestFrame.setSize(875, 525);
@@ -21015,8 +21026,8 @@ public void keyPressed(java.awt.event.KeyEvent evt)
 private void notateGrammarMenuAction(java.awt.event.ActionEvent evt) {
     JMenuItem item = (JMenuItem)evt.getSource();
     String stem = item.getText();
-    notateGrammarMenu.setText("Grammar: " + stem);
-    grammarFile = basePath + File.separator +  "vocab"+ File.separator +  stem + GrammarFilter.EXTENSION;
+    notateGrammarMenu.setText(stem + " grammar");
+    grammarFile = basePath + File.separator +  Directories.grammarDirName + File.separator +  stem + GrammarFilter.EXTENSION;
     lickgen.loadGrammar(grammarFile);
 }
 
@@ -23341,6 +23352,11 @@ public void setChordProg(ChordPart chordPart)
     score.setLength(chordPart.getSize());
     setBars(chordPart.getBars());
     setupArrays();
+  }
+
+public File getDictionaryDir()
+  {
+    return dictionaryDir;
   }
 }
 
