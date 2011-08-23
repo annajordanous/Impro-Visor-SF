@@ -2934,6 +2934,14 @@ private void populateRoadmapDictionaryMenu(String dictionaryName)
                           libraryTree.setModel(libraryTreeModel);
                           populateRoadmapDictionaryMenu(item.getText());
                           setDictionaryTitle(newDictionaryName);
+                          
+                          dialogTypeComboBox.removeAllItems();
+                          
+                          for( String type: brickLibrary.getTypes())
+                            {
+                              dialogTypeComboBox.addItem(type);
+                              System.out.println("adding " + type);
+                            }
                           }
                         catch( Exception e)
                           {

@@ -105,9 +105,4 @@
 (Def-Brick X-Dim(4) Diminished Unit C
         (Brick Dominant-Minor Bb 1)
         (Brick Dominant-Minor Bb 1))
-(Def-Brick test Dominant Approach C
-        (Brick Dominant F 2)
-        (Brick Dominant-Minor C 2))
 
-(Def-Brick foo Major Cadence C
-        (Brick test C 4))
