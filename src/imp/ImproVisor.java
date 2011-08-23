@@ -41,6 +41,8 @@ import imp.util.*;
 
 public class ImproVisor implements Constants {
     
+    static private Notate currentWindow = null;
+
     public static String version = "5";
     
     private static int initialXopen = 0;
@@ -323,17 +325,23 @@ private ImproVisor(String leadsheet)
     
     Notate notate = new Notate(score, advisor, this, initialXopen, initialYopen);
     
+    
+    // Decide whether a roadmap will be created automatically.
+    
     String createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP);
-    if(createRoadMap.equals("y"))
-    {
-        notate.setRoadMapCheckBox(true);
-    }
-    else
-    {
-        notate.setRoadMapCheckBox(false);
-    }
+    
+    notate.setRoadMapCheckBox(createRoadMap.equals("y"));
+    
+    
+    // Close the splash window.
 
-    // Then deal with recent files
+    if( loadAdvice != null )
+      {
+        loadAdvice.hideLoadDialog();
+      }    
+    
+    
+    // Load most recent file, if there is one.
 
     RecentFiles recFiles = new RecentFiles();
     String pathName = recFiles.getFirstPathName();
@@ -342,9 +350,16 @@ private ImproVisor(String leadsheet)
         File f = new File(pathName);
         if( f.exists() )
           {
+            //System.out.append("Using most recent file: " + f);
+            
+            // Hack. Without the following, lines/bar formatting does not 
+            // register on the leadsheet in this one case where launched with 
+            // the most recent file.
+            
+            notate.prepare();
+            
             notate.setupLeadsheet(f, false);
-            notate.setSavedLeadsheet(f);
-         }
+          }
         else
           {
             ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + f);
@@ -353,9 +368,11 @@ private ImproVisor(String leadsheet)
     
      currentWindow = notate;
 
+     // Open the main window
+     
      notate.makeVisible();
 
-//        Stuff from Julia Botev that never got integrated.
+//        Stuff from Julia Botev that was never integrated.
 //        ComplexityFrame attributeFrame = new ComplexityFrame();
 //        attributeFrame.setVisible(true);
 //
@@ -364,14 +381,9 @@ private ImproVisor(String leadsheet)
       {
         advisor.listChords(System.out);	// option to list all chord types
       }
-
-    if( loadAdvice != null )
-      {
-        loadAdvice.hideLoadDialog();
-      }
   }
        
-    static private Notate currentWindow = null;
+    
     static public void windowHasFocus(Notate window) {
         currentWindow = window;
     }

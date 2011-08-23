@@ -17544,15 +17544,9 @@ public void openLeadsheet(boolean openCorpus)
                   roadMapThisAnalyze();
                   }
               }
-            // clear undo/redo history
+            // creset the command manager
 
-            cm.clearHistory();
-
-            // mark sheet as saved in its current state (no unsaved changes)
-
-            cm.changedSinceLastSave(false);
-            
-            
+            cmReset();
           }
 
         setChordFontSizeSpinner(score.getChordFontSize());
@@ -17560,6 +17554,23 @@ public void openLeadsheet(boolean openCorpus)
 
     staveRequestFocus();
   }
+
+
+/**
+ * Reset the command manager
+ */
+
+public void cmReset()
+  {
+    // clear undo/redo history
+    
+    cm.clearHistory();
+    
+    // mark sheet as saved in its current state (no unsaved changes).
+    
+    cm.changedSinceLastSave(false);
+  }
+
     
   /**
    *
@@ -17582,18 +17593,15 @@ public void openLeadsheet(boolean openCorpus)
       {
       setupLeadsheet(savedLeadsheet, false);
 
-      // clear undo/redo history
+      // Reset the command manager
 
-      cm.clearHistory();
-
-      // mark sheet as saved in it's current state (no unsaved changes)
-
-      cm.changedSinceLastSave(false);
+      cmReset();
       }
+    
     staveRequestFocus();
     }
 
-  
+
 /**
  *
  * Do stuff that is common to open and revert file.
@@ -17602,7 +17610,7 @@ public void openLeadsheet(boolean openCorpus)
   
 public void setupLeadsheet(File file, boolean openCorpus)
   {
-
+    //System.out.println("setupLeadsheet");
     Advisor.useBackupStyles();
     Score newScore = new Score();
 
@@ -17613,17 +17621,12 @@ public void setupLeadsheet(File file, boolean openCorpus)
     setupScore(newScore);
     if( openCorpus )
       {
-          // Note that learning is only occurring with 4/4 time files currently!!
-          // if (newNotate.getMetre()[1] == 4 && newNotate.getMetre()[0] == 4)
-          {
-            //System.out.println(newNotate.getTitle());
-            getAllMeasures(newScore);
-            setLickGenStatus("Reading leadsheet from file " + file);
-          }
+        //System.out.println(newNotate.getTitle());
+        getAllMeasures(newScore);
+        setLickGenStatus("Reading leadsheet from file " + file);
+
       }
-    else
-      {
-      }
+    staveRequestFocus();
   }
     
 
@@ -18010,13 +18013,13 @@ public void WriteLeadsheetToFile(File file) {
    @param notate
    */
   
-  public void setNotateFrameHeight(Notate notate)
+  public void setNotateFrameHeight()
   {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
     DisplayMode dm = gs[0].getDisplayMode();
-    
-    notate.setSize(fWidth, dm.getHeight() - notate.getY());
+
+    setSize(fWidth, dm.getHeight() - (isVisible()? getY() : 0));
   }
   
   public void setSavedLeadsheet(File f)
@@ -20281,12 +20284,20 @@ private void mostRecentLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt
 
 }//GEN-LAST:event_mostRecentLeadsheetMIActionPerformed
 
+/**
+ * Populate the menu of recent files by reading from a saved text file
+ * containing pathnames to those files.
+ * @param evt 
+ */
 private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentFileMenu
+
     RecentFiles recFiles = new RecentFiles();
+
     String filenames[] =
       {
         "No Recent Leadsheets to Open"
       };
+
     if( recFiles.getSize() == 0 )
       {
         openRecentLeadsheetMenu.removeAll();
@@ -20294,7 +20305,6 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         for( String name : filenames )
           {
             final JMenuItem item = new JMenuItem(name);
-
 
             openRecentLeadsheetMenu.add(item);
           }
@@ -20304,12 +20314,14 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         filenames = recFiles.convertToArray();
         openRecentLeadsheetMenu.removeAll();
 
+        // Add each filename to the menu.
+        
         for( String name : filenames )
           {
             final JMenuItem item = new JMenuItem(name);
 
             item.addActionListener(
-                    new ActionListener()
+                new ActionListener()
                     {
                     public void actionPerformed(ActionEvent evt)
                       {
@@ -20324,15 +20336,14 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
                               {
                               }
                           }
-                        else
-                          {
-                          }
                       }
 
                     } // end of ActionListener embedded
-                  );
+                 );
+            
             openRecentLeadsheetMenu.add(item);
           }
+
         openRecentLeadsheetMenu.add(new JSeparator());
         JMenuItem clear = new JMenuItem("clear all recent history");
         openRecentLeadsheetMenu.add(clear);
@@ -23185,13 +23196,31 @@ public boolean getCreateRoadMapCheckBox()
 
 public void makeVisible()
   {
-    setNotateFrameHeight(this);
+    setNotateFrameHeight();
     setVisible(true);
+    
     staveRequestFocus();
     if( createRoadMapCheckBox.isSelected() )
       {
       roadMapThisAnalyze();
       }
+
+  }
+
+
+/**
+ * Hack to avoid the following problem:
+ * When the most recent leadsheet file is open, the leadsheet layout
+ * (number of bars per line) may be ignored without this.
+ * Only called from ImproVisor.java in this one case.
+ * *
+ * I hope to find a better way.
+ */
+
+public void prepare()
+  {
+    setNotateFrameHeight(); // Needed
+    setVisible(true);    
   }
 
 
