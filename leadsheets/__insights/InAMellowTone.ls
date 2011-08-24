@@ -1,18 +1,18 @@
-(title Blues Riff)
+(title In A Mellow Tone)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key -1)
-(tempo 180.0)
+(key 0)
+(tempo 160.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 31)
-(drum-volume 48)
-(chord-volume 37)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style swing
@@ -31,12 +31,33 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -1)
+    (key 0)
 )
+
+(phrase (style swing)) 
+Bb7 | Eb7 | AbM7 | / | 
 
 (section (style swing)) 
 
-F13 | Bb13 Bo7 | F13 | Cm9 F13b9 | 
+Ebm7 | Ab7 | DbM7 | / | 
+
+(phrase (style swing)) 
+DbM7 | Gb7 | AbM7 | F7 | 
+
+(section (style swing)) 
+
+Bb7 | / | Bbm7 | Eb7 | 
+
+(phrase (style swing)) 
+Bb7 | Eb7 | AbM7 | / | 
+
+(section (style swing)) 
+
+Ebm7 | Ab7 | DbM7 | / | 
+
+(phrase (style swing)) 
+DbM7 | Do | AbM7 | F7 | 
+Bb7 | Eb7 | AbM7 | F7 | 
 
 (part
     (type melody)
@@ -44,13 +65,7 @@ F13 | Bb13 Bo7 | F13 | Cm9 F13b9 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key -1)
+    (key 0)
     (stave treble)
 )
- r4 f+4 d+8 c+8 a8 g8
-
- f8 d8 f4 ab4 r2
-
- f+4 d+8 c+8 a8 g8
-
- f8 d8 f4 eb4 r4
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

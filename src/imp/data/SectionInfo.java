@@ -346,7 +346,7 @@ public class SectionInfo implements Constants, Serializable {
         //System.out.println("2 records = " + records);
         addSection(s, measureToSlotIndex(newMeasure), isPhrase);
         
-        System.out.println("3 records = " + records);
+        //System.out.println("3 records = " + records);
     }
   
     // Not sure about this:
