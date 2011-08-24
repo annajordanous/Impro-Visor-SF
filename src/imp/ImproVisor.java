@@ -238,7 +238,7 @@ private ImproVisor(String leadsheet)
 
     midiManager = new MidiManager();
 
-    // Make sure to load preferences before loading the advisor
+    // Make sure to load preferences before loading the Advisor
     Preferences.loadPreferences();
 
     advisor = new Advisor();
@@ -325,13 +325,7 @@ private ImproVisor(String leadsheet)
     
     Notate notate = new Notate(score, advisor, this, initialXopen, initialYopen);
     
-    
-    // Decide whether a roadmap will be created automatically.
-    
-    String createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP);
-    
-    notate.setRoadMapCheckBox(createRoadMap.equals("y"));
-    
+    notate.setNotateFrameHeight();
     
     // Close the splash window.
 
@@ -348,29 +342,18 @@ private ImproVisor(String leadsheet)
     if( pathName != null )
       {
         File f = new File(pathName);
+        
         if( f.exists() )
           {
-            //System.out.append("Using most recent file: " + f);
-            
-            // Hack. Without the following, lines/bar formatting does not 
-            // register on the leadsheet in this one case where launched with 
-            // the most recent file.
-            
-            notate.prepare();
-            
             notate.setupLeadsheet(f, false);
           }
-        else
-          {
-            ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + f);
-          }
       }
-    
+
+ 
+     notate.setVisible(true);
+
      currentWindow = notate;
 
-     // Open the main window
-     
-     notate.makeVisible();
 
 //        Stuff from Julia Botev that was never integrated.
 //        ComplexityFrame attributeFrame = new ComplexityFrame();

@@ -6109,4 +6109,18 @@ public int getNumLines()
     return lineMeasures.length;
   }
 
+public int getNumMeasures()
+  {
+    if( lineMeasures == null )
+      {
+        return 0;
+      }
+    
+    int sum = 0;
+    for( int x: lineMeasures )
+      {
+        sum += x;
+      }
+    return sum;
+  }
 }

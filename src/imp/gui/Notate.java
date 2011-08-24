@@ -111,6 +111,8 @@ public class Notate
 
   public static final int defaultBarsPerPart = 72;
 
+  public static final int defaultMeasPerLine = 4;
+
   public static final int defaultMetre = 4;
 
   public static final Dimension preferencesDialogDimension =
@@ -962,7 +964,7 @@ public class Notate
   public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
     {
     super();
-
+    
     setTitle(score.getTitle());
     
     setTransposition(score.getTransposition());
@@ -11803,238 +11805,227 @@ private void updateTempoFromTextField()
     // Make sure the user has entered acceptable values for each of the other fields   
     // in the triage frame.
     
-    private void verifyTriageFields()
-    
-    {
+private void verifyTriageFields()
+  {
+    lickgenFrame.verifyTriageFields();
+    lickgenFrame.setTotalBeats(totalBeats);
+    getCurrentStave().repaint();
+  }
 
-        lickgenFrame.verifyTriageFields();
-        lickgenFrame.setTotalBeats(totalBeats);
+private void saveLick(String saveSelection)
+  {
+    saveLickFrame.setVisible(false);
 
- 
-        getCurrentStave().repaint();
-    }
-        
-    
-    private void saveLick(String saveSelection)
-    
-    {
-        
-        saveLickFrame.setVisible(false);
-        
-        if( saveSelection != null )
-            
-        {
-            
-            Polylist selectionAsList = parseListFromString(saveSelection);
-            
-            
-            
-            if( adv.addUserRule(selectionAsList) )
-                
-            {
-                
-                saveAdviceActionPerformed(null);        // automatically save advice
-                
-                // lickSavedLabel.setText("Lick saved!");
-                
-            }
-            
-        }
-        
-        staveRequestFocus();
-        
-    }
+    if( saveSelection != null )
+      {
+        Polylist selectionAsList = parseListFromString(saveSelection);
+
+        if( adv.addUserRule(selectionAsList) )
+          {
+            saveAdviceActionPerformed(null);        // automatically save advice
+
+            // lickSavedLabel.setText("Lick saved!");
+          }
+      }
+
+    staveRequestFocus();
+  }
+
+public void triageLick(String lickName, int grade)
+  {
+    String saveSelection = getCurrentStave().getSaveSelection(lickName, Stave.ExtractMode.LICK, grade);
+
+    if( lickgenFrame.toCriticSelected() )
+      {
+        criticDialog.add(saveSelection, grade);
+
+        criticDialog.setVisible(true);
+      }
+    else
+      {
+        saveLick(saveSelection);
+      }
+  }
     
     
-    
-    public void triageLick(String lickName, int grade) {
-        
-        String saveSelection = getCurrentStave().getSaveSelection(lickName, Stave.ExtractMode.LICK, grade);
-        
-        if(lickgenFrame.toCriticSelected()) {
-            
-            criticDialog.add(saveSelection, grade);
-            
-            criticDialog.setVisible(true);
-            
-        } else {
-            
-            saveLick(saveSelection);
-            
-        }
-        
-    }
-    
-    
-    
-    boolean isPowerOf2(int x)
-    {
-        // trust me, it works!
-        return ((x > 0) && ((x & (x - 1)) == 0));
-    }
-    
-    
+boolean isPowerOf2(int x)
+  {
+    // trust me, it works!
+    return ((x > 0) && ((x & (x - 1)) == 0));
+  }
 
     
-    private MelodyPart makeLick(Polylist rhythm) {
-        verifyTriageFields();
-         
-        if (rhythm == null || rhythm.isEmpty()) {
-            ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No lick will be generated.");
-            return null;
-        }
-        
-        lickgen.setProbs(lickgenFrame.readProbs());
-        MelodyPart lick;
-        
-        int len = lickgen.parseLength(rhythm);
-        int scoreLen = score.getLength();
-        int diff = len + getCurrentSelectionStart() - scoreLen;
-        if (diff > 0 ) {
-            ErrorLog.log(ErrorLog.WARNING, "Lick is " + diff + " slots longer than available space of " + scoreLen + " slots.  Aborting.");
-              
-            return null;
-        }
-        
-        // Fill in a melody according to the provided rhythm.
-        // FIX - Currently, the lick generator doesn't support half beats; thus,
-        // it can only generate things in terms of number of quarter notes.
-        // This is why BEAT is getting passed into the generator.
+private MelodyPart makeLick(Polylist rhythm)
+  {
+    verifyTriageFields();
 
-        return lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
-    }
+    if( rhythm == null || rhythm.isEmpty() )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No lick will be generated.");
+        return null;
+      }
+
+    lickgen.setProbs(lickgenFrame.readProbs());
+    MelodyPart lick;
+
+    int len = lickgen.parseLength(rhythm);
+    int scoreLen = score.getLength();
+    int diff = len + getCurrentSelectionStart() - scoreLen;
+    if( diff > 0 )
+      {
+        ErrorLog.log(ErrorLog.WARNING, "Lick is " + diff + " slots longer than available space of " + scoreLen + " slots.  Aborting.");
+
+        return null;
+      }
+
+    // Fill in a melody according to the provided rhythm.
+    // FIX - Currently, the lick generator doesn't support half beats; thus,
+    // it can only generate things in terms of number of quarter notes.
+    // This is why BEAT is getting passed into the generator.
+
+    return lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
+  }
     
-    private void putLick(MelodyPart lick) {
-        if (lick == null) {
-            ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
-            return;
-        }
-        
-        // Figure out which enharmonics to use based on
-        // the current chord and key signature.
-        setLickEnharmonics(lick);
-        
-        // Paste the melody into the stave and play the selection.
-        // We turn play off temporarily, or we get an erroneous sound
-        // as ImproVisor plays the inserted note at the same time
-        // it plays the selection.
-        impro.setPlayEntrySounds(false);
-        pasteMelody(lick);
 
-        if( lickgenFrame.rectifySelected() )
-         {
-         rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
-         }
+private void putLick(MelodyPart lick)
+  {
+    if( lick == null )
+      {
+        ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
+        return;
+      }
 
-        // Wait for playing to stop
+    // Figure out which enharmonics to use based on
+    // the current chord and key signature.
+    setLickEnharmonics(lick);
 
-        getCurrentStave().playSelection();
-        impro.setPlayEntrySounds(true);
-    }
+    // Paste the melody into the stave and play the selection.
+    // We turn play off temporarily, or we get an erroneous sound
+    // as ImproVisor plays the inserted note at the same time
+    // it plays the selection.
+    impro.setPlayEntrySounds(false);
+    pasteMelody(lick);
+
+    if( lickgenFrame.rectifySelected() )
+      {
+        rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
+      }
+
+    // Wait for playing to stop
+
+    getCurrentStave().playSelection();
+    impro.setPlayEntrySounds(true);
+  }
     
-     public void generateLick(Polylist rhythm) {
-        MelodyPart lick = makeLick(rhythm);
-        if(lickgenFrame.useHeadSelected())
-            adjustLickToHead(lick);
-        putLick(lick);
-    }
+
+public void generateLick(Polylist rhythm)
+  {
+    MelodyPart lick = makeLick(rhythm);
+    if( lickgenFrame.useHeadSelected() )
+      {
+        adjustLickToHead(lick);
+      }
+    putLick(lick);
+  }
     
-    private void adjustLickToHead(MelodyPart lick) {
-        Vector<Score> heads = lickgen.getHeadData();
-        Score head = null;
-        for(int i = 0; i < heads.size(); i++) {
-            
-            //select the head with matching title and length, if there is one
-            if (heads.get(i).getTitle().equals(this.getTitle())  &&
-                    heads.get(i).getBarsPerChorus() == this.score.getBarsPerChorus()) {
-                
-                head = heads.get(i);
-            }
-        }
 
-        //if we don't have the head, leave the lick as it is
-        
-        if(head == null) {
-            setLickGenStatus("No head available for this song");
-            return;
-        }
-        
+private void adjustLickToHead(MelodyPart lick)
+  {
+    Vector<Score> heads = lickgen.getHeadData();
+    Score head = null;
+    for( int i = 0; i < heads.size(); i++ )
+      {
+        //select the head with matching title and length, if there is one
+        if( heads.get(i).getTitle().equals(this.getTitle())
+                && heads.get(i).getBarsPerChorus() == this.score.getBarsPerChorus() )
+          {
+            head = heads.get(i);
+          }
+      }
 
-        MelodyPart headMelody = head.getPart(0);
-        int start = getCurrentSelectionStart();
-        int end = getCurrentSelectionEnd();
-        
-        
-        
-        //note in lick
-        Note n = null;
-        //tracks position in lick
-        int position = 0;
-        int oldpitch = 0;;
-        
-        int numChanged = 0;
-        int numSame = 0;
-        
-        while(lick.getNextNote(position) != null) {
-            n = lick.getNextNote(position);
-            int duration = n.getRhythmValue();;
-            int pitch = n.getPitch();
-            int headPitch = headMelody.getPitchSounding(position+start);
-            int nextIndex = lick.getNextIndex(position + n.getRhythmValue()-1);
-            int nextPitch = -10;
-            if(lick.getNote(nextIndex) != null)
-                nextPitch = lick.getNote(nextIndex).getPitch();
-            
-            //don't create repeated notes
-            if(headPitch != pitch && headPitch != oldpitch && headPitch != nextPitch) {
-                if (Math.abs(headPitch - pitch) < 7 && Math.random() < 0.1 && duration >= 60 ||
-                    Math.abs(headPitch - pitch) < 4 && Math.random() < 0.6 ||
-                    Math.abs(headPitch - pitch) < 2 && Math.random() < 0.9)     {
+    //if we don't have the head, leave the lick as it is
+
+    if( head == null )
+      {
+        setLickGenStatus("No head available for this song");
+        return;
+      }
+
+    MelodyPart headMelody = head.getPart(0);
+    int start = getCurrentSelectionStart();
+    int end = getCurrentSelectionEnd();
+
+    //note in lick
+    Note n = null;
+    //tracks position in lick
+    int position = 0;
+    int oldpitch = 0;;
+
+    int numChanged = 0;
+    int numSame = 0;
+
+    while( lick.getNextNote(position) != null )
+      {
+        n = lick.getNextNote(position);
+        int duration = n.getRhythmValue();;
+        int pitch = n.getPitch();
+        int headPitch = headMelody.getPitchSounding(position + start);
+        int nextIndex = lick.getNextIndex(position + n.getRhythmValue() - 1);
+        int nextPitch = -10;
+        if( lick.getNote(nextIndex) != null )
+          {
+            nextPitch = lick.getNote(nextIndex).getPitch();
+          }
+
+        //don't create repeated notes
+        if( headPitch != pitch && headPitch != oldpitch && headPitch != nextPitch )
+          {
+            if( Math.abs(headPitch - pitch) < 7 && Math.random() < 0.1 && duration >= 60
+                    || Math.abs(headPitch - pitch) < 4 && Math.random() < 0.6
+                    || Math.abs(headPitch - pitch) < 2 && Math.random() < 0.9 )
+              {
                 n.setPitch(headPitch);
                 numChanged++;
-                }
-                numSame++;
-            }
-            else {
-                numSame++;
-            }         
-            oldpitch = n.getPitch();
-            position += n.getRhythmValue() -1 ;
-            
-        }
-        
-        //System.out.println(numChanged + " pitches changed out of " + (numChanged + numSame));
-    }
-    
-    
-    // Calculate the current lick enharmonics based on the chord progression
-    
-    // and they key signature.
-    
-    private void setLickEnharmonics(MelodyPart lick)
-    
-    {
-        
-        int index = 0;
-        
-        while (index < lick.size())
-            
-        {
-            
-            Note current = lick.getNote(index);
-            if( current != null )
-              {
-              current.setEnharmonic(score.getCurrentEnharmonics(getCurrentSelectionStart() + index));
-              index += current.getRhythmValue();
-             }
-            else
-              {
-              index++;
               }
-        }
-        
-    }
-    
+            numSame++;
+          }
+        else
+          {
+            numSame++;
+          }
+        oldpitch = n.getPitch();
+        position += n.getRhythmValue() - 1;
+
+      }
+
+    //System.out.println(numChanged + " pitches changed out of " + (numChanged + numSame));
+  }
+
+
+/**
+ * Calculate the current lick enharmonics based on the chord progression
+ * and they key signature.
+ */
+
+private void setLickEnharmonics(MelodyPart lick)
+  {
+    int index = 0;
+
+    while( index < lick.size() )
+      {
+        Note current = lick.getNote(index);
+        if( current != null )
+          {
+            current.setEnharmonic(score.getCurrentEnharmonics(getCurrentSelectionStart() + index));
+            index += current.getRhythmValue();
+          }
+        else
+          {
+            index++;
+          }
+      }
+  }
+  
     
     
     private void cancelLickTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLickTitleActionPerformed
@@ -14531,7 +14522,9 @@ private boolean saveMetre()
     
   private void toggleFreezeLayout()
     {
-    String current = layoutTF.getText().trim();
+    String current = getLayoutTF();
+    
+    current = current.trim();
 
     if( current.equals("") )
       {
@@ -14697,11 +14690,14 @@ private boolean saveMetre()
     
     // adjust the layout if a layout is specified
 
-    Polylist layout = parseListFromString(layoutTF.getText());
+    Polylist layout = parseListFromString(getLayoutTF());
+    
+    if( layout.nonEmpty() )
+      {
+      adjustLayout(layout);
 
-    adjustLayout(layout);
-
-    setFreezeLayout(layout.nonEmpty());
+      setFreezeLayout(true);        
+      }
 
     // set the menu and button states
 
@@ -14864,10 +14860,9 @@ public void setBars(int bars)
 
 private void adjustLayout(Polylist layout)
   {
-
     // System.out.println("adjustLayout to " + layout);
 
-    if( layout == null || layout.isEmpty() || noLockedMeasures() )
+    if( layout == null || layout.isEmpty()  /* || noLockedMeasures() */ )
       {
         score.setLayoutList(Polylist.nil);
 
@@ -14883,7 +14878,6 @@ private void adjustLayout(Polylist layout)
         autoAdjustStaves = autoAdjustMI.isSelected();
 
         return;
-
       }
 
     score.setLayoutList(layout);
@@ -14894,39 +14888,37 @@ private void adjustLayout(Polylist layout)
 
     // Determine how many measures there are currently
 
-    int currentMeasures = 0;
+    int currentMeasures = staveScrollPane[0].getStave().getNumMeasures();
+    
+    //int measureArray[] = staveScrollPane[0].getStave().getLineMeasures();
+    /*
+    int measureArray[] = lockedMeasures;
 
-    for( int k = lockedMeasures.length - 1; k >= 0; k-- )
+    for( int k = measureArray.length - 1; k >= 0; k-- )
       {
 
-        currentMeasures += lockedMeasures[k];
+        currentMeasures += measureArray[k];
       }
-
-
+     
+     */
 
     // Now determine the size of the new array.
 
     // This has to be enough to accomodate the current measures,
-
     // and the number of elements has to conform to the list
-
     // specification.  If there are more elements than specified
-
     // in the list, the last entry in the list is used as the size
-
     // for all remaining lines.  So obviously the list has to have
-
     // at least one element.  There should not be any zero or
-
     // negative elements.
 
-
-
-    int measuresLeft = currentMeasures;
+    int measuresLeft = score.getBarsPerChorus(); //currentMeasures;
 
     int arrayElements = 0;
 
     Polylist T = layout;
+    
+    //System.out.println("setting layout using " + layout + " measuresLeft = " + measuresLeft);
 
     int lastLineLength = 0;
 
@@ -14934,7 +14926,6 @@ private void adjustLayout(Polylist layout)
 
     for( arrayElements = 0; measuresLeft > 0; arrayElements++ )
       {
-
         if( T.nonEmpty() )
           {
 
@@ -14943,15 +14934,13 @@ private void adjustLayout(Polylist layout)
 
                 ErrorLog.log(ErrorLog.WARNING,
                              "Non-integer " + T.first() + " in layout specification");
-
                 return;
               }
 
             lastLineLength = ((Long) T.first()).intValue();
-
+            
             if( lastLineLength <= 0 )
               {
-
                 ErrorLog.log(ErrorLog.WARNING,
                              "Non-positive line length " + lastLineLength + " in layout specification");
                 return;
@@ -14964,12 +14953,14 @@ private void adjustLayout(Polylist layout)
 
         measuresLeft -= thisLineLength;
       }
+    
+    //System.out.println("arrayElements = " + arrayElements);
 
     int newLockedMeasures[] = new int[arrayElements];
 
     // Finally populate the new array
 
-    measuresLeft = currentMeasures;
+    measuresLeft = score.getBarsPerChorus(); //;
 
     T = layout;
 
@@ -14990,36 +14981,52 @@ private void adjustLayout(Polylist layout)
       }
 
     setLockedMeasures(newLockedMeasures, "adjustLayout2");
-    
-    paintCurrentStaveImmediately("adjustLayout");
 
+    paintCurrentStaveImmediately("adjustLayout");
   }
 
-    /**
-     * Force the stave to paint.
-     */
 
-    private void paintCurrentStaveImmediately(String id)
-    {
-     // The try was to try to workaround a bug in the Java libraries,
-     // which causes a stack trace unnecessarily. However, it doesn't
-     // fix the problem
-        try
-        {
-            Stave stave = getCurrentStave();
-            stave.paintImmediately(0, 0, stave.getWidth(), stave.getHeight());
-        }
-        catch(Error e)
-        {
-            System.out.println("paintImmediately error caught at " + id);
-        }
-    }
+/**
+ * Force the stave to paint.
+ */
+
+private void paintCurrentStaveImmediately(String id)
+  {
+    // The try was to try to workaround a bug in the Java libraries,
+    // which causes a stack trace unnecessarily. However, it doesn't
+    // fix the problem
+    try
+      {
+        Stave stave = getCurrentStave();
+        stave.paintImmediately(0, 0, stave.getWidth(), stave.getHeight());
+      }
+    catch( Error e )
+      {
+        System.out.println("paintImmediately error caught at " + id);
+      }
+  }
 
     
 public void setLockedMeasures(int[] _lockedMeasures, String msg)
   {
     lockedMeasures = _lockedMeasures;
+    //System.out.print("setLockedMeasures from " + msg + ": ");
+    
+    if( lockedMeasures == null )
+      {
+        //System.out.println("null");
+        return;
+      }
+    
+    /*
+    for( int x: lockedMeasures )
+      {
+        System.out.print(x + " ");
+      }
+    System.out.println();
+    */
   }
+
 
 public int[] getLockedMeasures()
   {
@@ -15036,6 +15043,13 @@ public boolean hasLockedMeasures()
     return lockedMeasures != null;
   }
 
+/**
+ * FIX:
+ * Not sure if this logic is correct. Locked measures
+ * sometimes ends up being longer than necessary.
+ * This should be checked, although it seems harmless at the moment.
+ * @param measures 
+ */
 private void setTotalMeasures(int measures)
   {
     if( measures == 0 || noLockedMeasures() )
@@ -15043,12 +15057,8 @@ private void setTotalMeasures(int measures)
         return;
       }
 
-//  score.setLength(measures * measureLength);
-
-    int defaultMeasPerLine = 4;
-
     int[] tempLockedMeasures = new int[lockedMeasures.length +
-        (measures - lockedMeasures.length) / 4];
+        (measures - lockedMeasures.length) / defaultMeasPerLine];
 
     for( int i = 0; i < tempLockedMeasures.length; i++ )
       {
@@ -15073,7 +15083,7 @@ private void setTotalMeasures(int measures)
 
 private void clearLayoutPreference()
   {
-    layoutTF.setText("");
+    setLayoutTF("");
   }
 
 
@@ -15097,7 +15107,7 @@ private void setLayoutPreference(Polylist layout)
             layout = layout.rest();
           }
 
-        layoutTF.setText(buffer.toString());
+        setLayoutTF(buffer.toString());
       }
   }
 
@@ -15995,7 +16005,6 @@ private void setLayoutPreference(Polylist layout)
     private void overrideMeasPMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overrideMeasPMIActionPerformed
 
         displayOverrideMeasures();
-
     }//GEN-LAST:event_overrideMeasPMIActionPerformed
     
     
@@ -16009,28 +16018,19 @@ private void setLayoutPreference(Polylist layout)
 
         autoAdjustStaves = !autoAdjustStaves;
 
-
-
         // set the locked measures to the current layout
 
         setLockedMeasures(getCurrentStave().getLineMeasures(), "autoAdjustMI1"); // who do we need two of these?
 
-
-
         paintCurrentStaveImmediately("autoAdjust");
-
-
 
         // set the locked measures to the newly calculated layout
 
         setLockedMeasures(getCurrentStave().getLineMeasures(), "autoAdjustMI2");
 
-
-
         // set the menu and button states
 
         setItemStates();
-
     }//GEN-LAST:event_autoAdjustMIActionPerformed
     
     
@@ -17625,8 +17625,12 @@ public void setupLeadsheet(File file, boolean openCorpus)
     Advisor.useBackupStyles();
     Score newScore = new Score();
 
-    cm.execute(new OpenLeadsheetCommand(file, newScore));
+    //cm.execute(new OpenLeadsheetCommand(file, newScore));
 
+    // System.out.println("reading file " + file);
+    
+    readLeadsheetFile(file, newScore);
+    
     setSavedLeadsheet(file);
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
     setupScore(newScore);
@@ -17641,6 +17645,27 @@ public void setupLeadsheet(File file, boolean openCorpus)
   }
     
 
+    /**
+     * Reads the File into the Score.
+     */
+    public void readLeadsheetFile(File file, Score score)
+      {
+        FileInputStream leadStream = null;
+        
+        try {
+            leadStream = new FileInputStream(file);
+            RecentFiles recFile = new RecentFiles(file.getAbsolutePath());
+            recFile.writeNewFile();
+        }
+        catch(Exception e) {
+            ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + file);
+            return;
+            // e.printStackTrace();
+        }
+
+        Leadsheet.readLeadSheet(new Tokenizer(leadStream), score);
+    }
+
 /**
  * I think this is only used in grammar learning.
  * @param s 
@@ -17651,17 +17676,22 @@ public void getAllMeasures(Score s)
     allMeasures = true;
 
     int HEAD = 0;
+    
     melodyData = new ArrayList<String>();
 
     for( int i = 0; i < staveScrollPane.length; i++ )
       {
         //System.out.println("Chorus " + i+1 + ":");
+        
         scoreTab.setSelectedComponent(staveScrollPane[i]);
         melodyData = getMelodyData(s, i);
+        
         //get the abstract melodies of all except the head
         //if(i != 0) {
+        
         selectAll2();
         lickgenFrame.getAbstractMelody();
+        
         //}
         //get the exact melodies
         //if (i == HEAD) {
@@ -20138,40 +20168,31 @@ private void newVoicingNameTFActionPerformed(java.awt.event.ActionEvent evt) {//
 }
 
 private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delTabBtnActionPerformed
-        // initialize the option pane
+    // initialize the option pane
 
-        Object[] options = {"Yes", "No"};
+    Object[] options =
+      {
+        "Yes", "No"
+      };
 
-        int choice = JOptionPane.showOptionDialog(this,
+    int choice = JOptionPane.showOptionDialog(this,
+        "Do you wish to delete the current chorus?\n\nThis can't be undone.",
+        "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
-                "Do you wish to delete the current chorus?\n\nThis can't be undone.",
+    // the user selected yes
 
-                "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
+    if( choice == 0 && currTabIndex >= 0
+            && scoreTab.getTabCount() > 1 )
+      {
+        score.delPart(currTabIndex);
 
-                JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        setupArrays();
 
+        // set the menu and button states
 
-
-        // the user selected yes
-
-        if (choice == 0 && currTabIndex >= 0
-
-                && scoreTab.getTabCount() > 1) {
-
-
-
-            score.delPart(currTabIndex);
-
-            setupArrays();
-
-
-
-            // set the menu and button states
-
-            setItemStates();
-
-        }
-
+        setItemStates();
+      }
 }//GEN-LAST:event_delTabBtnActionPerformed
 
 private void pauseMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseMIActionPerformed
@@ -20974,7 +20995,8 @@ public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
     score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
-    (new OpenLeadsheetCommand(selectedFile, newScore)).execute();
+    readLeadsheetFile(selectedFile, newScore); 
+    
     //create a new window and show the score
     Notate newNotate = new Notate(newScore,
                                   this.adv,
@@ -23184,6 +23206,29 @@ public void makeVisible(Notate oldNotate)
    }
 
 
+public void setVisible(boolean value)
+  {
+    super.setVisible(value);
+  }
+
+
+/**
+ * Make this Notate frame visible
+ */
+
+public void makeVisible()
+  {
+    setNotateFrameHeight(); // Needed
+    setVisible(true);  
+    
+    staveRequestFocus();
+    if( createRoadMapCheckBox.isSelected() )
+      {
+      roadMapThisAnalyze();
+      }
+  }
+
+
 /**
  * Set the selection value on the CheckBox that will automatically
  * create a roadmap when this Notate is opened.
@@ -23195,44 +23240,17 @@ public void setCreateRoadMapCheckBox(boolean value)
     createRoadMapCheckBox.setSelected(value);
   }
 
+
+/**
+ * Indicate whether or not this Notate frame has the create roadmap box checked.
+ * @return 
+ */
+
 public boolean getCreateRoadMapCheckBox()
   {
     return createRoadMapCheckBox.isSelected();
   }
 
-
-/**
- * Make this Notate frame visible
- */
-
-public void makeVisible()
-  {
-    setNotateFrameHeight();
-    setVisible(true);
-    
-    staveRequestFocus();
-    if( createRoadMapCheckBox.isSelected() )
-      {
-      roadMapThisAnalyze();
-      }
-
-  }
-
-
-/**
- * Hack to avoid the following problem:
- * When the most recent leadsheet file is open, the leadsheet layout
- * (number of bars per line) may be ignored without this.
- * Only called from ImproVisor.java in this one case.
- * *
- * I hope to find a better way.
- */
-
-public void prepare()
-  {
-    setNotateFrameHeight(); // Needed
-    setVisible(true);    
-  }
 
 
 /**
@@ -23357,6 +23375,33 @@ public File getDictionaryDir()
   {
     return dictionaryDir;
   }
+
+public String getLayoutTF()
+  {
+    String text = layoutTF.getText();
+    //System.out.println("getLayoutTF returns " + text);
+    return text;
+  }
+
+public Polylist getLayoutTFasPolylist()
+  {
+    String text = getLayoutTF().trim();
+    
+    if( text.equals("") )
+      {
+        return Polylist.nil;
+      }
+    return parseListFromString(getLayoutTF());
+  }
+
+public void setLayoutTF(String text)
+  {
+    //System.out.println("setLayoutTF gets " + text);
+    
+    layoutTF.setText(text);
+  }
+
+
 }
 
 
