@@ -122,7 +122,7 @@ public class EquivalenceDictionary {
                     if (contents.length() < 3)
                     {
                         ErrorLog.log(ErrorLog.WARNING, 
-                                "Error: incorrect equivalence", true);
+                                "Error: incorrect equivalence: " + token, true);
                     }
                     // for appropriate rules
                     else
@@ -153,7 +153,7 @@ public class EquivalenceDictionary {
                 else
                 {
                     ErrorLog.log(ErrorLog.WARNING, 
-                            "Improper formatting for a token", true);
+                            "Improper formatting for a token: " + token, true);
                 }
             }
         } catch (FileNotFoundException ex) {

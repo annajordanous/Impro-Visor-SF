@@ -23256,7 +23256,6 @@ public void roadMapThis()
 public void roadMapThisAnalyze()
   {
     setStatus("Creating RoadMap");
-    repaint();
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);

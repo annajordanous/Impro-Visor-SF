@@ -1956,15 +1956,19 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_dictionaryMenuMenuSelected
 
     private void keyColorationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyColorationButtonActionPerformed
-        if( settings.keysColored ) {
+        if( settings.keysColored )
+          {
             settings.keysColored = false;
             keyColorationButton.setBackground(Color.red);
             keyColorationButton.setText("Color");
-        } else {
+          }
+        else
+          {
             settings.keysColored = true;
             keyColorationButton.setBackground(new Color(153, 204, 255));
             keyColorationButton.setText("B/W");
-        }
+          }
+        roadMapPanel.draw();
     }//GEN-LAST:event_keyColorationButtonActionPerformed
 
     private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
