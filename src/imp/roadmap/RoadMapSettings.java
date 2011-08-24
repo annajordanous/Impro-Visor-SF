@@ -102,6 +102,8 @@ public class RoadMapSettings {
                                         new Color(255, 180, 150), // Bb
                                         new Color(100, 170, 255)};// B
     
+    private int colorationBias = 0;
+    
     /* --- Strokes --- */
     /** Basic line */
     public BasicStroke basicLine    = new BasicStroke(1);
@@ -199,7 +201,7 @@ public class RoadMapSettings {
     {
         if(keysColored) {
             if(key != -1)
-                return keyColors[(int)key % 12];
+                return keyColors[(int)(key + colorationBias) % 12];
             return defaultColor;
         }
         return noKeyColor;
@@ -310,4 +312,14 @@ public class RoadMapSettings {
             keyColors[(i*7)%12] = Color.getHSBColor(i/13.0f, sat, 1.0f);
         }
     }
+    
+    public void setColorationBias(int bias)
+      {
+        colorationBias = bias;
+      }
+    
+    public int getColorationBias()
+      {
+        return colorationBias;
+      }
 }

@@ -50,6 +50,8 @@ import polya.Tokenizer;
  */
 
 public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener {
+
+    private int keyColorationOffset = 0;
     
     private String defaultDictionaryName = "My";
     
@@ -223,6 +225,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryTree = new javax.swing.JTree();
         deleteButton = new javax.swing.JButton();
         durationComboBox = new javax.swing.JComboBox(durationChoices);
+        colorationPreferencesButtonGroup = new javax.swing.ButtonGroup();
         toolBar = new javax.swing.JToolBar();
         fileStepBackBtn = new javax.swing.JButton();
         fileStepForwardBtn = new javax.swing.JButton();
@@ -274,6 +277,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         preferencesMenu = new javax.swing.JMenu();
         preferencesMenuItem = new javax.swing.JMenuItem();
+        colorationPreferences = new javax.swing.JMenu();
+        fixedColorsRadioBtn = new javax.swing.JRadioButtonMenuItem();
+        relativeToCbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToBbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToBbbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToAbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToAbbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToGbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeTGbbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToFbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToEbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToEbbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToDbutton = new javax.swing.JRadioButtonMenuItem();
+        relativeToDbbutton = new javax.swing.JRadioButtonMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -1327,6 +1344,142 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         preferencesMenu.add(preferencesMenuItem);
 
+        colorationPreferences.setText("Key Coloration"); // NOI18N
+        colorationPreferences.setName("colorationPreferences"); // NOI18N
+
+        colorationPreferencesButtonGroup.add(fixedColorsRadioBtn);
+        fixedColorsRadioBtn.setSelected(true);
+        fixedColorsRadioBtn.setText("Absolute Colors"); // NOI18N
+        fixedColorsRadioBtn.setName("fixedColorsRadioBtn"); // NOI18N
+        fixedColorsRadioBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fixedColorsRadioBtnActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(fixedColorsRadioBtn);
+
+        colorationPreferencesButtonGroup.add(relativeToCbutton);
+        relativeToCbutton.setText("Relative to C"); // NOI18N
+        relativeToCbutton.setName("relativeToCbutton"); // NOI18N
+        relativeToCbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToCbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToCbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToBbutton);
+        relativeToBbutton.setText("Relative to B"); // NOI18N
+        relativeToBbutton.setName("relativeToBbutton"); // NOI18N
+        relativeToBbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToBbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToBbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToBbbutton);
+        relativeToBbbutton.setText("Relative to Bb"); // NOI18N
+        relativeToBbbutton.setName("relativeToBbbutton"); // NOI18N
+        relativeToBbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToBbbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToBbbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToAbutton);
+        relativeToAbutton.setText("Relative to A"); // NOI18N
+        relativeToAbutton.setName("relativeToAbutton"); // NOI18N
+        relativeToAbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToAbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToAbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToAbbutton);
+        relativeToAbbutton.setText("Relative to Ab"); // NOI18N
+        relativeToAbbutton.setName("relativeToAbbutton"); // NOI18N
+        relativeToAbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToAbbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToAbbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToGbutton);
+        relativeToGbutton.setText("Relative to G"); // NOI18N
+        relativeToGbutton.setName("relativeToGbutton"); // NOI18N
+        relativeToGbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToGbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToGbutton);
+
+        colorationPreferencesButtonGroup.add(relativeTGbbutton);
+        relativeTGbbutton.setText("Relative to Gb"); // NOI18N
+        relativeTGbbutton.setName("relativeTGbbutton"); // NOI18N
+        relativeTGbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeTGbbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeTGbbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToFbutton);
+        relativeToFbutton.setText("Relative to F"); // NOI18N
+        relativeToFbutton.setName("relativeToFbutton"); // NOI18N
+        relativeToFbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToFbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToFbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToEbutton);
+        relativeToEbutton.setText("Relative to E"); // NOI18N
+        relativeToEbutton.setName("relativeToEbutton"); // NOI18N
+        relativeToEbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToEbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToEbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToEbbutton);
+        relativeToEbbutton.setText("Relative to Eb"); // NOI18N
+        relativeToEbbutton.setName("relativeToEbbutton"); // NOI18N
+        relativeToEbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToEbbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToEbbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToDbutton);
+        relativeToDbutton.setText("Relative to D"); // NOI18N
+        relativeToDbutton.setName("relativeToDbutton"); // NOI18N
+        relativeToDbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToDbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToDbutton);
+
+        colorationPreferencesButtonGroup.add(relativeToDbbutton);
+        relativeToDbbutton.setText("Relative to Db"); // NOI18N
+        relativeToDbbutton.setName("relativeToDbbutton"); // NOI18N
+        relativeToDbbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relativeToDbbuttonActionPerformed(evt);
+            }
+        });
+        colorationPreferences.add(relativeToDbbutton);
+
+        preferencesMenu.add(colorationPreferences);
+
         roadmapMenuBar.add(preferencesMenu);
 
         windowMenu.setMnemonic('W');
@@ -1837,6 +1990,58 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void preferencesMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_preferencesMenuMenuSelected
         // TODO add your handling code here:
     }//GEN-LAST:event_preferencesMenuMenuSelected
+
+    private void fixedColorsRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedColorsRadioBtnActionPerformed
+        settings.setColorationBias(0); roadMapPanel.draw();
+    }//GEN-LAST:event_fixedColorsRadioBtnActionPerformed
+
+    private void relativeToCbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToCbuttonActionPerformed
+        settings.setColorationBias(0); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToCbuttonActionPerformed
+
+    private void relativeToBbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToBbuttonActionPerformed
+        settings.setColorationBias(1); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToBbuttonActionPerformed
+
+    private void relativeToBbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToBbbuttonActionPerformed
+        settings.setColorationBias(2); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToBbbuttonActionPerformed
+
+    private void relativeToAbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToAbuttonActionPerformed
+        settings.setColorationBias(3); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToAbuttonActionPerformed
+
+    private void relativeToAbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToAbbuttonActionPerformed
+        settings.setColorationBias(4); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToAbbuttonActionPerformed
+
+    private void relativeToGbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToGbuttonActionPerformed
+        settings.setColorationBias(5); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToGbuttonActionPerformed
+
+    private void relativeTGbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeTGbbuttonActionPerformed
+        settings.setColorationBias(6); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeTGbbuttonActionPerformed
+
+    private void relativeToFbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToFbuttonActionPerformed
+        settings.setColorationBias(7); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToFbuttonActionPerformed
+
+    private void relativeToEbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToEbuttonActionPerformed
+        settings.setColorationBias(8); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToEbuttonActionPerformed
+
+    private void relativeToEbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToEbbuttonActionPerformed
+       settings.setColorationBias(9); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToEbbuttonActionPerformed
+
+    private void relativeToDbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToDbuttonActionPerformed
+        settings.setColorationBias(10); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToDbuttonActionPerformed
+
+    private void relativeToDbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToDbbuttonActionPerformed
+        settings.setColorationBias(11); roadMapPanel.draw();
+    }//GEN-LAST:event_relativeToDbbuttonActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2444,6 +2649,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JComboBox chordDialogDurationComboBox;
     private javax.swing.JTextField chordDialogNameField;
     private javax.swing.JMenuItem closeWindowMI;
+    private javax.swing.JMenu colorationPreferences;
+    private javax.swing.ButtonGroup colorationPreferencesButtonGroup;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JButton deleteButton;
@@ -2465,6 +2672,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JSlider featureWidthSlider;
     private javax.swing.JButton fileStepBackBtn;
     private javax.swing.JButton fileStepForwardBtn;
+    private javax.swing.JRadioButtonMenuItem fixedColorsRadioBtn;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
     private javax.swing.JLabel jLabel5;
@@ -2501,6 +2709,18 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JScrollPane previewScrollPane;
     private javax.swing.JMenuItem printRoadMapMI;
     private javax.swing.JMenuItem redoMenuItem;
+    private javax.swing.JRadioButtonMenuItem relativeTGbbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToAbbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToAbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToBbbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToBbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToCbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToDbbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToDbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToEbbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToEbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToFbutton;
+    private javax.swing.JRadioButtonMenuItem relativeToGbutton;
     private javax.swing.JScrollPane roadMapScrollPane;
     private javax.swing.JTextField roadMapTextEntry;
     private javax.swing.JMenuBar roadmapMenuBar;
@@ -2950,7 +3170,6 @@ private void newDictionary(String dictionaryName)
         for( String type : brickLibrary.getTypes() )
           {
             dialogTypeComboBox.addItem(type);
-            System.out.println("adding " + type);
           }
       }
     catch( Exception e )

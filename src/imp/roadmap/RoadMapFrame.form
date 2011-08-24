@@ -616,6 +616,8 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.ButtonGroup" name="colorationPreferencesButtonGroup">
+    </Component>
     <Menu class="javax.swing.JMenuBar" name="roadmapMenuBar">
       <Properties>
         <Property name="name" type="java.lang.String" value="roadmapMenuBar" noResource="true"/>
@@ -964,6 +966,171 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="preferencesMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <Menu class="javax.swing.JMenu" name="colorationPreferences">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Key Coloration" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="colorationPreferences" noResource="true"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="fixedColorsRadioBtn">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="colorationPreferencesButtonGroup" type="code"/>
+                    </Property>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Absolute Colors" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="fixedColorsRadioBtn" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fixedColorsRadioBtnActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToCbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to C" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToCbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToCbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToBbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to B" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToBbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToBbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToBbbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to Bb" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToBbbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToBbbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToAbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to A" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToAbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToAbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToAbbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to Ab" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToAbbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToAbbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToGbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to G" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToGbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToGbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeTGbbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to Gb" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeTGbbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeTGbbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToFbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to F" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToFbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToFbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToEbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to E" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToEbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToEbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToEbbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to Eb" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToEbbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToEbbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToDbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to D" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToDbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToDbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="relativeToDbbutton">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="colorationPreferencesButtonGroup"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Relative to Db" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="relativeToDbbutton" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relativeToDbbuttonActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="windowMenu">
