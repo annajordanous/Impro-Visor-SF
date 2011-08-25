@@ -259,6 +259,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         selectAllMenuItem = new javax.swing.JMenuItem();
+        unselectAllMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         undoMenuItem = new javax.swing.JMenuItem();
         redoMenuItem = new javax.swing.JMenuItem();
@@ -1136,6 +1137,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         editMenu.add(selectAllMenuItem);
+
+        unselectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        unselectAllMenuItem.setText("Unselect All"); // NOI18N
+        unselectAllMenuItem.setToolTipText("Unselects any selected bricks."); // NOI18N
+        unselectAllMenuItem.setName("unselectAllMenuItem"); // NOI18N
+        unselectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unselectAllMenuItemClicked(evt);
+            }
+        });
+        editMenu.add(unselectAllMenuItem);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         editMenu.add(jSeparator1);
@@ -2080,6 +2092,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         analyze();
     }//GEN-LAST:event_analyzeMenuItemActionPerformed
 
+    private void unselectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllMenuItemClicked
+        deselectBricks();
+    }//GEN-LAST:event_unselectAllMenuItemClicked
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -2777,6 +2793,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenu transposeMenu;
     private javax.swing.JMenuItem transposeUpMenuItem;
     private javax.swing.JMenuItem undoMenuItem;
+    private javax.swing.JMenuItem unselectAllMenuItem;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables

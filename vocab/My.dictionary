@@ -2483,3 +2483,7 @@
         (Chord C#o 1))
 
 // User-defined bricks
+
+(Def-Brick Starlight-Approach(new) Major Approach C
+        (Brick Tritone-Approach E 2)
+        (Brick SPOT C 6))
