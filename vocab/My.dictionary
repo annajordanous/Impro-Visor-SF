@@ -2471,3 +2471,16 @@
 
 
 
+
+(Def-Brick IV-n-Mack Major Cadence D
+        (Brick Major-On G 1)
+        (Brick Minor-Plagal-Cadence D 2))
+
+(Def-Brick Sus-Approach Major Approach D
+        (Brick Major-On E 1)
+        (Chord E7 1)
+        (Brick Major-On A 2))
+
+(Def-Brick Sus-Approach(var 1) Major Approach D
+        (Brick Minor-On E 1)
+        (Chord Asus 1))

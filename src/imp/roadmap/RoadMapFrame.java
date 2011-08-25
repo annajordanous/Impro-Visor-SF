@@ -144,8 +144,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private RoadMapFrame() {} // Not for you.
     
     /** Creates new form RoadMapFrame */
-    public RoadMapFrame(Notate notate) {
-        
+    public RoadMapFrame(Notate notate) 
+      {
+        this(notate, notate.getTitle());
+      }
+
+    /** Creates new form RoadMapFrame, with a different title */
+    public RoadMapFrame(Notate notate, String title) 
+      {
         this.notate = notate;
         
         previewPanel = new PreviewPanel(this);
@@ -161,7 +167,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         deactivateButtons();
         
-        setRoadMapTitle(notate.getTitle());
+
+        setRoadMapTitle(title);
+
         
         roadMapScrollPane.getVerticalScrollBar().setUnitIncrement(20);
         
@@ -246,6 +254,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
+        newRoadMapMI = new javax.swing.JMenuItem();
         printRoadMapMI = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -1079,6 +1088,18 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         fileMenu.add(openLeadsheetMI);
+
+        newRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        newRoadMapMI.setMnemonic('n');
+        newRoadMapMI.setText("New Roadmap\n"); // NOI18N
+        newRoadMapMI.setToolTipText("Open a new Roadmap window. The contents can be saved by creating a leadsheet from the roadmap."); // NOI18N
+        newRoadMapMI.setName("newRoadMapMI"); // NOI18N
+        newRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newRoadMapMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(newRoadMapMI);
 
         printRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         printRoadMapMI.setText("Print RoadMap");
@@ -2046,6 +2067,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         settings.setColorationBias(11); roadMapPanel.draw();
     }//GEN-LAST:event_relativeToDbbuttonActionPerformed
 
+    private void newRoadMapMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newRoadMapMIActionPerformed
+        openEmptyRoadmap();
+    }//GEN-LAST:event_newRoadMapMIActionPerformed
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -2695,6 +2720,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JTree libraryTree;
     private javax.swing.JToggleButton loopToggleButton;
     private javax.swing.JButton newBrickButton;
+    private javax.swing.JMenuItem newRoadMapMI;
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JButton playButton;
@@ -2962,8 +2988,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
         DisplayMode dm = gs[0].getDisplayMode();
-        int x = notate.getNewXlocation();
-        int y = notate.getNewYlocation();
+        int x;
+        int y;
+        x = notate.getNewXlocation();
+        y = notate.getNewYlocation();
         setLocation(x, y);
         setSize(desiredWidth, dm.getHeight() - y);
     }
@@ -3215,5 +3243,18 @@ public void analyze()
         analyzeSelection();
       }
   }
+
+
+/**
+ * Create an empty road map tied to the parent Notate frame.
+ */
+
+public void openEmptyRoadmap()
+  {
+    RoadMapFrame roadmapFrame = new RoadMapFrame(notate, "untitled");
+    roadmapFrame.setRoadMapFrameHeight();
+    roadmapFrame.makeVisible();
+  }
+
 }
 
