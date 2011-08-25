@@ -98,7 +98,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** When bricks are dragged, they are removed from the roadmap and store here */
     private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
     /** Stores copied bricks */
-    private ArrayList<Block> clipboard = new ArrayList();
+    private static ArrayList<Block> clipboard = new ArrayList();
     /** Choices in the duration combobox */
     private Object[] durationChoices = {8,7,6,5,4,3,2,1};
     /** Combo box model for choosing styles */
