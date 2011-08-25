@@ -3215,4 +3215,5 @@ public void analyze()
         analyzeSelection();
       }
   }
-};
+}
+
