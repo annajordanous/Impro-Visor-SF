@@ -1,4 +1,4 @@
-(title Love Came on Stealthy Fingers)
+(title Love is Here to Stay)
 (composer )
 (show )
 (year )
@@ -36,27 +36,26 @@
 
 (section (style swing)) 
 
-BbM7 Dm7b5 | / G7 | Cm7 | F7 | 
-BbM7 Dm7b5 | / G7 | C / Dm7 G7 | CM7 | 
+G7 | Gm7 C7 | FM7 | Am7 D7 | 
+G7 | Gm7 C7 | A7 D7 | G7 G#o | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | DbM7 | C#m7 F#7 | BM7 | 
+Am7 D7 | Gm7 C7 | FM7 | Em7b5 A7 | 
 
 (section (style swing)) 
 
-Bm7 E7 | AM7 | Ebm7 Ab7 | Db / Cm7 F7 | 
-
-(section (style swing)) 
-
-BbM7 Dm7b5 | / G7 | Cm7 | F7 | 
-BbM7 Dm7b5 | Dm7b5 G7 | CM7 / C#m7 F#7 | Cm7 F7 Gm7 Gm7/F | 
+Dm7 | G7 | Gm7 | C7 | 
 
 (phrase (style swing)) 
-Em7b5 A7alt | Dm7b5 G7alt | Cm7 F7 | Ebm7 Ab7#11 | 
+G7 | Gm7 C7 | FM7 | Am7 D7 | 
+G7 | Gm7 C7 | A7 D7 | G7 G#o | 
+
+(phrase (style swing)) 
+Am7 D7 | Gm7 C7 | Cm7 F7 | Bb6 Bo | 
 
 (section (style swing)) 
 
-BbM7 Dm7b5 | / G7 | Cm7 / Gb7 F7 | BbM7 | 
+F/C D7 | Gm7 C7 | FM7 | / | 
 
 (part
     (type melody)

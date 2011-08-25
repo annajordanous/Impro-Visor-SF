@@ -1,4 +1,4 @@
-(title Love Came on Stealthy Fingers)
+(title Love for Sale)
 (composer )
 (show )
 (year )
@@ -36,27 +36,33 @@
 
 (section (style swing)) 
 
-BbM7 Dm7b5 | / G7 | Cm7 | F7 | 
-BbM7 Dm7b5 | / G7 | C / Dm7 G7 | CM7 | 
-
-(phrase (style swing)) 
-Ebm7 Ab7 | DbM7 | C#m7 F#7 | BM7 | 
+Eb7 | / | Bbm7 | / | 
+Eb7 | / | Bb7 | / | 
 
 (section (style swing)) 
 
-Bm7 E7 | AM7 | Ebm7 Ab7 | Db / Cm7 F7 | 
+Ebm7 | Ab7 | DbM7 | GbM7 | 
+Cm7b5 | F7 | Bbm7 | / | 
 
 (section (style swing)) 
 
-BbM7 Dm7b5 | / G7 | Cm7 | F7 | 
-BbM7 Dm7b5 | Dm7b5 G7 | CM7 / C#m7 F#7 | Cm7 F7 Gm7 Gm7/F | 
-
-(phrase (style swing)) 
-Em7b5 A7alt | Dm7b5 G7alt | Cm7 F7 | Ebm7 Ab7#11 | 
+Eb7 | / | Bbm7 | / | 
+Eb7 | / | Bb7 | / | 
 
 (section (style swing)) 
 
-BbM7 Dm7b5 | / G7 | Cm7 / Gb7 F7 | BbM7 | 
+Ebm7 | Ab7 | DbM7 | GbM7 | 
+Cm7b5 | F7 | Bbm7 | / | 
+
+(section (style swing)) 
+
+Ebm7 | Ab7 | DbM7 | Fm7 Bb7 | 
+Ebm7 | Ab7 | DbM7 | / | 
+
+(section (style swing)) 
+
+Fm7b5 | Bb7 | Ebm | / | 
+Gm7b5 | C7 | Fm7b5 | Bb7 | 
 
 (part
     (type melody)
@@ -67,4 +73,4 @@ BbM7 Dm7b5 | / G7 | Cm7 / Gb7 F7 | BbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

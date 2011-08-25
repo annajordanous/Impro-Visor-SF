@@ -546,6 +546,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         prefDialogTitleField.setText("Untitled"); // NOI18N
         prefDialogTitleField.setName("prefDialogTitleField"); // NOI18N
+        prefDialogTitleField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                titleBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -2008,12 +2013,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapPanel.draw();
     }//GEN-LAST:event_keyColorationButtonActionPerformed
 
-    private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
-        if( prefDialogMetreBottomField.getInt() % 2 == 0) {
+    private void acceptPreferences()
+      {
+      if( prefDialogMetreBottomField.getInt() % 2 == 0) {
             preferencesDialog.setVisible(false);
             setRoadMapInfo();
         } else
-            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");                                                     
+            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");    
+      }
+    private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
+       acceptPreferences();                                                     
     }//GEN-LAST:event_prefDialogAcceptButton1ActionPerformed
 
     private void dialogCancelButtondialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogCancelButtondialogAccepted
@@ -2095,6 +2104,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void unselectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllMenuItemClicked
         deselectBricks();
     }//GEN-LAST:event_unselectAllMenuItemClicked
+
+    private void titleBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleBoxActionPerformed
+       acceptPreferences();
+    }//GEN-LAST:event_titleBoxActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2842,11 +2855,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         if( !roadMapPanel.hasSelection() )
             selectAllBricks();
 
-        if( auxNotate != null ) {
-            // TODO What to do here?
-            // Need to prevent inconsistency caused by the closing of auxNotate.
-            // It will set auxNotate to null.
-        }
         ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
@@ -2855,10 +2863,19 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         //score.setStyle(style.getName());
         score.setTempo(tempo);
         score.setTitle(roadMapTitle);
-        auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-        auxNotate.setCreateRoadMapCheckBox(false);
-        System.out.println(auxNotate.getSectionInfo());
-        auxNotate.setVisible(true);
+        
+        if( auxNotate == null )
+          {
+          auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+          auxNotate.setCreateRoadMapCheckBox(false);
+          }
+        else
+          {
+          auxNotate.setupScore(score);
+          }
+        
+        auxNotate.setVisible(true); 
+
       }
 
 
