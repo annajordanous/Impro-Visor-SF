@@ -417,6 +417,10 @@
         (Brick Diatonic-I-ii-iii-IV A 4)
         (Brick Off-On-Minor-bVII Gb 2))
 
+(Def-Brick Dizzy-Approach Major Approach Bb
+        (Chord F#m7b5 1)
+        (Chord F7 1))
+
 (Def-Brick Dizzy-Cadence(main) Major Cadence C
 	(Brick Straight-Approach Gb 2)
 	(Chord CM7 2))
@@ -821,11 +825,11 @@
         (Chord Am7 1)
         (Chord Dm7 1)
         (Brick Straight-Approach Eb 1))
-
+/*
 (Def-Brick POT+Cadence Major Turnaround C
 	(Brick POT C 4)
 	(Chord C 1))
-
+*/
 (Def-Brick Minor-POT(standard) Minor Turnaround C
 	(Brick Minor-Dropback C 2)
 	(Brick Sad-Approach C 2))
@@ -1324,11 +1328,6 @@
         (Chord F7 1)
         (Chord Bb7 2))
 
-(Def-Brick Yardbird-Sub-Cadence Major Cadence C
-        (Chord Dm7 1)
-        (Brick GenDom Eb 1)
-        (Chord C 1))
-
 (Def-Brick Yardbird-Approach(main) Major Approach C
         (Chord Fm7 1)
         (Chord Bb7 1))
@@ -1337,6 +1336,16 @@
 (Def-Brick Yardbird-Approach(short) Major Approach C
         (Chord Bb7 1))
 */
+
+(Def-Brick Yardbird-Sub-Cadence Major Cadence C
+        (Chord Dm7 1)
+        (Brick GenDom Eb 1)
+        (Chord C 1))
+
+(Def-Brick Yardbird-Sub-Turnaround Major Turnaround Eb
+        (Chord Eb 1)
+        (Brick Minor-On C 1)
+        (Chord Db7 2))
 
 (Def-Brick Supertension-Ending Dominant Cadence C
 	(Brick Straight-Approach C 2)
@@ -2526,6 +2535,11 @@
         (Chord Cm+ 1)
         (Chord Cm6 1))
 
+(Def-Brick Descending-Minor-CESH(3 step) Minor CESH C
+        (Chord Cm 1)
+        (Chord CmM7 1)
+        (Chord Cm7 1))
+
 (Def-Brick Descending-Minor-CESH(4 step) Minor CESH C
         (Chord Cm 1)
         (Chord CmM7 1)
@@ -2549,6 +2563,13 @@
         (Chord Cm6 1)
         (Chord Cm+ 1))
 
+(Def-Brick Ascending-&-Descending-Minor-CESH(5 step) Minor CESH C
+        (Chord Cm 1)
+        (Chord Cm+ 1)
+        (Chord Cm6 1)
+        (Chord Cm7 1)
+        (Chord Cm6 1))
+
 (Def-Brick II-n-Bird Major Approach C
         (Chord Dm7 2)
         (Brick GenDom Eb 2))
@@ -2566,3 +2587,4 @@
         (Chord C#o 1))
 
 // User-defined bricks
+
