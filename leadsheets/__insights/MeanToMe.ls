@@ -1,4 +1,4 @@
-(title Lover)
+(title Mean to Me)
 (composer )
 (show )
 (year )
@@ -9,10 +9,10 @@
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-instrument 33)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style swing
@@ -35,44 +35,39 @@
 )
 
 (phrase (style swing)) 
-EbM7 | / | Am7 | D7 | 
-Abm7 | Db7 | Gm7 | C7 | 
-F#m7 | B7 | Fm7 | Bb7 | 
+FM7 F#o | Gm7 C7 | FM7 F7 | BbM7 Eb7 | 
 
 (section (style swing)) 
 
-Gm7 | C7 | Fm7 | Bb7 | 
+Am7 D7 | Gm7 C7 | FM7 | Gm7 G7+ | 
 
 (phrase (style swing)) 
-EbM7 | / | Am7 | D7 | 
-Abm7 | Db7 | Gm7 | C7 | 
-F#m7 | B7 | Fm7 | Bb7 | 
+FM7 F#o | Gm7 C7 | FM7 F7 | BbM7 Eb7 | 
 
 (section (style swing)) 
 
-EbM7 | Db7 | EbM7 | Am7 D7 | 
+Am7 D7 | Gm7 C7 | FM7 | Gm7 G7+ | 
 
 (phrase (style swing)) 
-GM7 | Em7 | Am7 | D7 | 
+Gm7 | C7 | FM7 | Em7b5 A7 | 
 
 (section (style swing)) 
 
-GM7 | Em7 | Am7 | D7 | 
+Dm7 | G7 | Gm7 | C7 C7+ | 
 
 (phrase (style swing)) 
-BbM7 | Gm7 | Cm7 | F7 | 
+FM7 F#o | Gm7 C7 | FM7 F7 | BbM7 Eb7 | 
 
-(section (style swing)) 
-
-Gm7 | C7 | Fm7 | Bb7 | 
+(phrase (style swing)) 
+Am7 D7 | Gm7 C7 | FM7 | / | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -437,11 +437,19 @@
         (Chord Dm7b5 1)
         (Chord Db7 1))
 
-(Def-Brick Dogleg-Approach Major Approach C
+(Def-Brick Dogleg-Approach(main) Major Approach C
 	(Brick GenDom G 2)
 	(Brick An-Approach C 2))
 
-(Def-Brick Dogleg-Approach-Sub Major Approach C
+(Def-Brick Dogleg-Approach(var 1) Major Approach F
+        (Chord G7 4)
+        (Brick Straight-Approach F 4))
+
+(Def-Brick Dogleg-Approach(var 2) Major Approach F
+        (Brick Straight-Approach C 4)
+        (Brick Straight-Approach F 4))
+
+(Def-Brick Dogleg-Approach(nowhere var) Major Approach C
         (Brick Straight-Approach G 2)
         (Brick Nowhere-Approach C 2))
 
@@ -797,6 +805,11 @@
         (Brick Dropback F 4)
         (Brick II-n-Bird F 4))
 
+(Def-Brick POT(sad approach) Major Turnaround C
+        (Brick Dropback C 2)
+        (Brick Sad-Approach C 2))
+
+
 (Def-Brick POT-Spring-sub Major Turnaround C
 	(Chord C 1)
         (Chord Am7 1)
@@ -833,6 +846,13 @@
 (Def-Brick Minor-POT(sad) Minor Turnaround D
         (Brick On-Off-Minor-VI D 2)
         (Brick Sad-Approach D 2))
+
+(Def-Brick Minor-POT(altered dominant) Minor Turnaround C
+        (Chord Cm 1)
+        (Chord A7#11 1)
+        (Chord D7 1)
+        (Chord G7+ 1))
+
 
 (Def-Brick Minor-POT+Cadence Minor Turnaround C
 	(Brick Minor-POT C 4)
@@ -1109,9 +1129,21 @@
         (Chord Abm 1)
 	(Brick An-Approach C 2))
 
+(Def-Brick Side-Slips(3) Major Approach C
+	(Brick An-Approach D 2)
+	(Brick Side-Slips(2) C 4))
+
 (Def-Brick Side-Slips(4) Major Approach C
 	(Brick Side-Slips(2) D 2)
 	(Brick Side-Slips(2) C 2))
+
+(Def-Brick Side-Slips(5) Major Approach C
+	(Brick An-Approach E 2)
+	(Brick Side-Slips(4) C 8))
+
+(Def-Brick Side-Slips(6) Major Approach C
+	(Brick Side-Slips(2) E 4)
+	(Brick Side-Slips(4) C 8))
 
 (Def-Brick Sharp-Fourpenny-Approach Major Approach C
 	(Chord F#m7b5 2)
@@ -1220,6 +1252,10 @@
 	(Chord Fm 1)
 	(Brick Rainy-Approach C 4))
 
+(Def-Brick Starlight-Approach(tritone start) Major Approach C
+        (Brick Tritone-Approach E 2)
+        (Brick SPOT C 6))
+
 (Def-Brick Starlight-Cadence(standard) Major Cadence C
 	(Brick Starlight-Approach C 6)
 	(Chord CM7 2))
@@ -1249,9 +1285,14 @@
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
-(Def-Brick Straight-Approach Major Approach C
+(Def-Brick Straight-Approach(main) Major Approach C
 	(Chord Dm7 1)
 	(Chord G7 1))
+
+(Def-Brick Straight-Approach(var) Major Approach F
+        (Chord Gm7 2)
+        (Chord C7 1)
+        (Chord C7/Bb 1))
 
 (Def-Brick Sus-Approach Major Approach D
         (Brick Major-On E 1)
@@ -1320,10 +1361,16 @@
         (Chord Em7 1)
         (Brick Extended-Approach C 3))
 
-(Def-Brick SPOT(var) Major Turnaround C
+(Def-Brick SPOT(var 1) Major Turnaround C
         (Chord Em7 1)
         (Brick Minor-Perfect-Cadence A 3)
         (Brick Straight-Approach C 4))
+
+(Def-Brick SPOT(var 2) Major Turnaround F
+        (Brick Straight-Approach G 4)
+        (Brick Straight-Approach F 3)
+        (Chord C7/Bb 1))
+
 
 (Def-Brick SPOT(chromatic) Major Turnaround C
         (Chord Bb7 1)
@@ -1435,9 +1482,11 @@
         (Chord F7 2)
         (Chord GM7 1))
 
+/*
 (Def-Brick IV-n-Yak-+-Dropback Major Dropback C
         (Brick Major-On F 1)
         (Brick Nowhere-Approach D 3))
+*/
 
 (Def-Brick IV-n-Hack-Cadence Major Cadence C
         (Chord FM7 2)
@@ -1484,7 +1533,8 @@
         (Brick Major-On F 2)
         (Chord Cm7 1)
         (Chord F7 1)
-        (Brick IV-n-Yak-+-Dropback F 8)
+        (Brick Major-On Bb 2)
+        (Brick Nowhere-Approach G 6)
         (Brick Dominant-Cycle F 4))
 
 (Def-Brick To-IV-n-Bird-SPOT(var 3) Major Turnaround C
@@ -1606,6 +1656,16 @@
         (Chord Db7 1)
         (Chord Gm7 2)
         (Chord C7 2)
+        (Chord FM7 1))
+
+(Def-Brick Twopenny-Ending(Starlight back) Major Ending F
+        (Brick Yardbird-Sub-Cadence F 6)
+        (Chord Bm7b5 1)
+        (Chord Bb7 1)
+        (Chord Am7 1)
+        (Chord D7 1)
+        (Chord Gm7 1)
+        (Chord C7 1)
         (Chord FM7 1))
 
 (Def-Brick Twopenny-Ending(var 1) Major Ending G
@@ -2483,7 +2543,3 @@
         (Chord C#o 1))
 
 // User-defined bricks
-
-(Def-Brick Starlight-Approach(new) Major Approach C
-        (Brick Tritone-Approach E 2)
-        (Brick SPOT C 6))
