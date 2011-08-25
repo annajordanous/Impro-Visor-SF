@@ -271,6 +271,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         flattenMenuItem = new javax.swing.JMenuItem();
         breakMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        analyzeMenuItem = new javax.swing.JMenuItem();
         transposeMenu = new javax.swing.JMenu();
         transposeDownMenuItem = new javax.swing.JMenuItem();
         transposeUpMenuItem = new javax.swing.JMenuItem();
@@ -1205,8 +1206,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         editMenu.add(deleteMenuItem);
 
-        flattenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        flattenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
         flattenMenuItem.setText("Flatten Selection"); // NOI18N
+        flattenMenuItem.setToolTipText("Repeatedly break the selection until there are only chords, with no composite bricks.\n"); // NOI18N
         flattenMenuItem.setName("flattenMenuItem"); // NOI18N
         flattenMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1215,7 +1217,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         editMenu.add(flattenMenuItem);
 
-        breakMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+        breakMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
         breakMenuItem.setText("Break Selection"); // NOI18N
         breakMenuItem.setName("breakMenuItem"); // NOI18N
         breakMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1227,6 +1229,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         jSeparator4.setName("jSeparator4"); // NOI18N
         editMenu.add(jSeparator4);
+
+        analyzeMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, 0));
+        analyzeMenuItem.setText("Analyze Selection"); // NOI18N
+        analyzeMenuItem.setToolTipText("Performs a brick analysis on the selected chords, or on all chords if nothing selected."); // NOI18N
+        analyzeMenuItem.setName("analyzeMenuItem"); // NOI18N
+        analyzeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analyzeMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(analyzeMenuItem);
 
         roadmapMenuBar.add(editMenu);
 
@@ -1294,6 +1307,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         leadsheetMenu.add(appendToLeadsheetMI);
 
+        appendToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, 0));
         appendToNewLeadsheetMI.setText("Create a new leadsheet and add selected chords to it  "); // NOI18N
         appendToNewLeadsheetMI.setToolTipText("Create a new leadsheet and add selected chords to it."); // NOI18N
         appendToNewLeadsheetMI.setName("appendToNewLeadsheetMI"); // NOI18N
@@ -1659,16 +1673,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_newBrickButtonPressed
 
     private void analyzeButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeButtonPressed
-        if(!roadMapPanel.hasSelection())
-          {
-            roadMapPanel.selectAll();
-            analyzeSelection();
-            roadMapPanel.deselectBricks();
-          }
-        else
-          {
-          analyzeSelection();
-          }
+        analyze();
 }//GEN-LAST:event_analyzeButtonPressed
 
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
@@ -2070,6 +2075,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void newRoadMapMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newRoadMapMIActionPerformed
         openEmptyRoadmap();
     }//GEN-LAST:event_newRoadMapMIActionPerformed
+
+    private void analyzeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeMenuItemActionPerformed
+        analyze();
+    }//GEN-LAST:event_analyzeMenuItemActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2665,6 +2674,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog addBrickDialog;
     private javax.swing.JButton analyzeButton;
+    private javax.swing.JMenuItem analyzeMenuItem;
     private javax.swing.JMenuItem appendToLeadsheetMI;
     private javax.swing.JMenuItem appendToNewLeadsheetMI;
     private javax.swing.JButton breakButton;

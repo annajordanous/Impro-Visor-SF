@@ -807,9 +807,10 @@
             <MenuItem class="javax.swing.JMenuItem" name="flattenMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+F"/>
+                  <KeyStroke key="F"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Flatten Selection" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Repeatedly break the selection until there are only chords, with no composite bricks.&#xa;" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="flattenMenuItem" noResource="true"/>
               </Properties>
               <Events>
@@ -819,7 +820,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="breakMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+B"/>
+                  <KeyStroke key="B"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Break Selection" noResource="true"/>
                 <Property name="name" type="java.lang.String" value="breakMenuItem" noResource="true"/>
@@ -832,6 +833,19 @@
               <Properties>
                 <Property name="name" type="java.lang.String" value="jSeparator4" noResource="true"/>
               </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="analyzeMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="A"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Analyze Selection" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Performs a brick analysis on the selected chords, or on all chords if nothing selected." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="analyzeMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="analyzeMenuItemActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -918,6 +932,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="appendToNewLeadsheetMI">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="N"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Create a new leadsheet and add selected chords to it  " noResource="true"/>
                 <Property name="toolTipText" type="java.lang.String" value="Create a new leadsheet and add selected chords to it." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="appendToNewLeadsheetMI" noResource="true"/>
