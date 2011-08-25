@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,8 +28,6 @@ import imp.data.*;
 import imp.com.*;
 import imp.gui.*;
 import imp.util.*;
-
-
 
 /**
  * Impro-Visor main class
@@ -327,6 +324,11 @@ private ImproVisor(String leadsheet)
     
     notate.setNotateFrameHeight();
     
+    
+    String createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP);
+    
+    notate.setRoadMapCheckBox(createRoadMap.equals("y"));
+    
     // Close the splash window.
 
     if( loadAdvice != null )
@@ -349,8 +351,7 @@ private ImproVisor(String leadsheet)
           }
       }
 
- 
-     notate.setVisible(true);
+     notate.makeVisible();
 
      currentWindow = notate;
 

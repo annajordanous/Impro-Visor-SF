@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110z-1301  USA
@@ -3194,5 +3193,26 @@ private void setDictionaryTitle(String dictionaryName)
    String dictionaryTitle = dictionaryName + dictionaryNameSuffix;
    dictionaryMenu.setText(dictionaryTitle);
    brickDictionaryFrame.setTitle(dictionaryTitle); 
+  }
+
+
+/**
+ * Analyze the selection if there is one.
+ * If no selection, then analyze the entire roadmap.
+ * Deselect everything following analysis in the second case.
+ */
+
+public void analyze()
+  {
+    if( !roadMapPanel.hasSelection() )
+      {
+        roadMapPanel.selectAll();
+        analyzeSelection();
+        roadMapPanel.deselectBricks();
+      }
+    else
+      {
+        analyzeSelection();
+      }
   }
 };

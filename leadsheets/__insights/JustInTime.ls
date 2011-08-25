@@ -43,6 +43,9 @@ Dm7 | G7 | C7 | / |
 
 (phrase (style swing)) 
 Cm7 | F7 | BbM7 | Bb7 | 
+
+(section (style swing)) 
+
 EbM7 | / | Am7b5 | D7 | 
 
 (phrase (style swing)) 

@@ -23202,7 +23202,7 @@ public void execute(Command command)
 public void makeVisible(Notate oldNotate)
   {
     makeVisible();
-    createRoadMapCheckBox.setSelected(oldNotate.createRoadMapCheckBox.isSelected());
+    //createRoadMapCheckBox.setSelected(oldNotate.createRoadMapCheckBox.isSelected());
    }
 
 
@@ -23273,17 +23273,16 @@ public void roadMapThis()
 
 public void roadMapThisAnalyze()
   {
-    setStatus("Creating RoadMap");
+    setStatus("Analyzing RoadMap");
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
-    roadmapFrame.selectAllBricks();
-    roadmapFrame.analyzeSelection();
+    roadmapFrame.makeVisible();
+    roadmapFrame.analyze();
     setNormalStatus();
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    roadmapFrame.makeVisible();
-    roadmapFrame.deselectBricks();
+    staveRequestFocus();
   }
 
 
@@ -23300,7 +23299,8 @@ public void openEmptyRoadmap()
 
 
 /** 
- * Create the road map frame, to be populated and opened subsequently.
+ * If a roadmapFrame exists, clear it out. 
+ * Otherwise create a roadmapFrame.
  */
 
 public void establishRoadMapFrame()

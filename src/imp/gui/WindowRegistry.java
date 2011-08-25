@@ -35,9 +35,9 @@ public class WindowRegistry
 {
 /** Offsets for cascading windows. */
 
-public static final int defaultXnewWindowStagger = 40;
+public static final int defaultXnewWindowStagger = 100;
 
-public static final int defaultYnewWindowStagger = 40;
+public static final int defaultYnewWindowStagger = 100;
 
 /**
  *
