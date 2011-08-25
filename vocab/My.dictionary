@@ -594,6 +594,12 @@
         (Chord Db/C 1)
 	(Chord CM7 2))
 
+(Def-Brick GDS-Tag Major Cadence Eb
+        (Brick Minor-On F 2)
+        (Brick On-Off-Minor-bVII G 3)
+        (Brick On-Off-Minor-Somewhere F 2)
+        (Brick On-Off-Minor-bVII F 5))
+
 (Def-Brick Happenstance-Cadence Major Cadence C
 	(Brick An-Approach E 2)
 	(Chord CM7 2))
@@ -993,6 +999,11 @@
         (Chord Bb/D 1)
         (Chord D+ 1)
         (Chord EbM7#11 2))
+
+(Def-Brick Rainbow-to-IV-n-back Major Approach Ab
+        (Chord Eb/G 1)
+        (Chord G7 1)
+        (Brick Upslide Ab 2))
 
 (Def-Brick Rainbow-Variant-Dominant-Overrun Major Overrun C
         (Chord CM7 1)
@@ -1456,6 +1467,10 @@
         (Brick Upslide Ab 2)
         (Brick Sad-Approach C 2))
 
+(Def-Brick IV-n-Bird-SPOT Major Turnaround F
+        (Brick On-Off-Major-IV F 4)
+        (Brick Rainy-Approach C 4))
+
 (Def-Brick IV-n-Mack Major Cadence D
         (Brick Major-On G 1)
         (Brick Minor-Plagal-Cadence D 2))
@@ -1597,6 +1612,11 @@
 	(Chord CM7 1)
 	(Brick Straight-Approach D 2))
 
+(Def-Brick TTFA(dropback) Major Turnaround Eb
+        (Chord EbM7/Bb 1)
+        (Brick Minor-Perfect-Cadence G 2)
+        (Chord C7 1))
+
 (Def-Brick TTFA(IV-variant) Major Turnaround C
 	(Chord CM7 1)
 	(Chord F7 1)
@@ -1724,7 +1744,6 @@
         (Brick Pullback C 1)
         (Brick Pullback C 1))
 
-
 (Def-Brick Two-Goes-Pullback-Extended Major Approach C
 	(Brick Two-Goes-Pullback C 4)
 	(Brick Straight-Approach C 2))
@@ -1744,6 +1763,10 @@
 (Def-Brick Two-Goes-Sad-Cadence Minor Cadence C
         (Brick Two-Goes-Sad-Approach C 2)
         (Chord Cm 1))
+
+(Def-Brick Two-Goes-Starlight-Approach Major Approach Eb
+        (Brick Straight-Approach G 2)
+        (Brick Starlight-Approach Eb 6))
 
 (Def-Brick Two-Goes-Straight-Approach Major Approach C
         (Brick Straight-Approach C 1)

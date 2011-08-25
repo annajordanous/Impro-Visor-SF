@@ -251,6 +251,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapTextEntry = new javax.swing.JTextField();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
+        clearButton = new javax.swing.JButton();
+ 
+        insertButton = new javax.swing.JButton();
+   
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
@@ -948,9 +952,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(playButton);
 
-        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
+        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
-        stopButton.setText("\n"); // NOI18N
+        stopButton.setText(" "); // NOI18N
         stopButton.setToolTipText("Stop playing the selection.\n"); // NOI18N
         stopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stopButton.setFocusable(false);
@@ -991,6 +995,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.05;
@@ -1044,6 +1049,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.9;
         gridBagConstraints.weighty = 0.95;
@@ -1070,12 +1076,50 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.1;
         getContentPane().add(previewScrollPane, gridBagConstraints);
+
+        clearButton.setBackground(new java.awt.Color(255, 255, 51));
+        clearButton.setText("Clear"); // NOI18N
+        clearButton.setToolTipText("Clear the textual entry field."); // NOI18N
+        clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
+        clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
+        clearButton.setName("clearButton"); // NOI18N
+        clearButton.setOpaque(true);
+        clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        getContentPane().add(clearButton, gridBagConstraints);
+
+        insertButton.setBackground(new java.awt.Color(0, 255, 0));
+        insertButton.setText("<html>\n<center>\nInsert<br>\nBrick\n</center>\n</html>"); // NOI18N
+        insertButton.setToolTipText("Insert the previewed brick into the roadmap."); // NOI18N
+        insertButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        insertButton.setMaximumSize(new java.awt.Dimension(46, 38));
+        insertButton.setMinimumSize(new java.awt.Dimension(46, 38));
+        insertButton.setName("insertButton"); // NOI18N
+        insertButton.setOpaque(true);
+        insertButton.setPreferredSize(new java.awt.Dimension(46, 38));
+        insertButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        getContentPane().add(insertButton, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
@@ -1798,6 +1842,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
             roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true); 
             roadMapPanel.placeBricks();
+            roadMapPanel.deselectBricks();
             activateButtons();
 
             this.requestFocus();
@@ -2108,6 +2153,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void titleBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleBoxActionPerformed
        acceptPreferences();
     }//GEN-LAST:event_titleBoxActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        
+        roadMapTextEntry.setText("");
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void insertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertButtonActionPerformed
+        dragFromPreview(0, 0);
+        dropFromPreview(0, 0);
+    }//GEN-LAST:event_insertButtonActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2715,6 +2770,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JButton chordDialogAcceptButton;
     private javax.swing.JComboBox chordDialogDurationComboBox;
     private javax.swing.JTextField chordDialogNameField;
+    private javax.swing.JButton clearButton;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenu colorationPreferences;
     private javax.swing.ButtonGroup colorationPreferencesButtonGroup;
@@ -2742,6 +2798,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JRadioButtonMenuItem fixedColorsRadioBtn;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
+    private javax.swing.JButton insertButton;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
