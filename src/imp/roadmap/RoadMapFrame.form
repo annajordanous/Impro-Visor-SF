@@ -949,7 +949,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="appendToNewLeadsheetMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="N"/>
+                  <KeyStroke key="Ctrl+W"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Create a new leadsheet and add selected chords to it  " noResource="true"/>
                 <Property name="toolTipText" type="java.lang.String" value="Create a new leadsheet and add selected chords to it." noResource="true"/>
@@ -1825,7 +1825,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="insertButton">
       <Properties>
-        <Property name="background" type="java.awt.Color" noResource="true" editor="org.netbeans.beaninfo.editors.ColorEditor">
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="ff" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;center&gt;&#xa;Insert&lt;br&gt;&#xa;Brick&#xa;&lt;/center&gt;&#xa;&lt;/html&gt;" noResource="true"/>

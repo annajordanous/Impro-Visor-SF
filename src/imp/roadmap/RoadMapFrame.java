@@ -252,9 +252,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
         clearButton = new javax.swing.JButton();
- 
         insertButton = new javax.swing.JButton();
-   
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
@@ -952,7 +950,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(playButton);
 
-        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
         stopButton.setText(" "); // NOI18N
         stopButton.setToolTipText("Stop playing the selection.\n"); // NOI18N
@@ -1368,7 +1366,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         leadsheetMenu.add(appendToLeadsheetMI);
 
-        appendToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, 0));
+        appendToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         appendToNewLeadsheetMI.setText("Create a new leadsheet and add selected chords to it  "); // NOI18N
         appendToNewLeadsheetMI.setToolTipText("Create a new leadsheet and add selected chords to it."); // NOI18N
         appendToNewLeadsheetMI.setName("appendToNewLeadsheetMI"); // NOI18N
@@ -3352,9 +3350,16 @@ public void analyze()
 
 public void openEmptyRoadmap()
   {
+    try 
+      {
     RoadMapFrame roadmapFrame = new RoadMapFrame(notate, "untitled");
     roadmapFrame.setRoadMapFrameHeight();
     roadmapFrame.makeVisible();
+      }
+    catch( NullPointerException e)
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "Out of Memory: Please save your work and restart the program");
+      }
   }
 
 }
