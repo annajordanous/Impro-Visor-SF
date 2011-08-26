@@ -1126,6 +1126,9 @@ public class Leadsheet
                 /* fall-through */
                 
             case SECTION:
+              {
+                Style style = previousStyle; // default if no style specified
+              
               while( item.nonEmpty() )
                 {
                 if( item.first() instanceof Polylist )
@@ -1136,7 +1139,7 @@ public class Leadsheet
                           sectItem.second() instanceof String )
                     {
                     String stylename = (String)sectItem.second();
-                    Style style = Advisor.getStyle(stylename);
+                    style = Advisor.getStyle(stylename);
                     
                     if( style == null )
                       {
@@ -1144,18 +1147,19 @@ public class Leadsheet
                       style = previousStyle;
                       }
 
-                    int index = measure * slotsPerBar;
-                    if( seenFirstChord )
-                      {
-                      index += slotsPerBar;
-                      }
-                    chords.addSection(style, index, isPhrase);
+
                     //System.out.println("adding section at " + index);
                     }
                   }
                 item = item.rest();
                 }
- 
+              int index = measure * slotsPerBar;
+              if( seenFirstChord )
+                {
+                index += slotsPerBar;
+                }
+              chords.addSection(style, index, isPhrase);
+              }
               break;
  /*               
             case PHRASE:
