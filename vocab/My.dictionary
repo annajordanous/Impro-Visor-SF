@@ -237,10 +237,14 @@
         (Brick Somewhere-Cadence C 3)
         (Brick Extended-Cadence C 5))
 
-(Def-Brick 7-Chord-Dropback(var) Major Dropback C
+(Def-Brick 7-Chord-Dropback(var 1) Major Dropback C
         (Brick Somewhere-Cadence C 3)
         (Brick Straight-Approach D 2)
         (Brick Somewhere-Cadence C 3))
+
+(Def-Brick 7-Chord-Dropback(var 2) Major Cadence Bb
+        (Brick To-IV-n-Back F 4)
+        (Brick Straight-Cadence Bb 4))
 
 (Def-Brick Amen-Cadence(major) Major Cadence C
 	(Chord F 1)
@@ -301,6 +305,10 @@
         (Brick Minor-On C 2)
         (Brick Autumnal-Cadence G 4)
         (Chord Gm7 2))
+
+(Def-Brick Autumnal-Overrun-to-Somewhere Minor Approach G
+        (Chord Gm7 2)
+        (Brick SPOT C 6))
 
 (Def-Brick Bemsha-Turnaround-1 Major Turnaround C
 	(Chord CM7 1)
@@ -447,7 +455,7 @@
         (Brick Nowhere-Approach D 4)
         (Chord AbM7 1))
 
-(Def-Brick Dizzy-Cadence-with-Dropback() Dominant Approach Ab
+(Def-Brick Dizzy-Cadence-with-Dropback Dominant Approach Ab
         (Brick Dizzy-Cadence Ab 5)
         (Brick Straight-Approach Bb 3))
 
@@ -735,6 +743,10 @@
         (Chord Gm7 1)
         (Chord C7 1))
 
+(Def-Brick Long-Approach(sus) Major Approach C
+        (Brick Surprise-Minor-Cadence D 3)
+        (Chord F/G 1))
+
 (Def-Brick Long-Dropback-Cadence Major Dropback C
         (Brick Straight-Cadence C 3)
         (Brick Extended-Cadence C 4))
@@ -780,17 +792,27 @@
 	(Chord E7 1)
 	(Chord Am 2))
 
+(Def-Brick Nowhere-Approach(main) Major Approach C
+	(Chord Ab7 1)
+	(Brick GenDom C 1))
+
+(Def-Brick Nowhere-Approach(sus) Major Approach C
+        (Chord Ab7 2)
+        (Brick Minor-On D 1)
+        (Brick Minor-On D 1))
+
 (Def-Brick Nowhere-Cadence Major Cadence C
 	(Brick Nowhere-Approach C 2)
 	(Chord CM7 2))
 
-(Def-Brick Nowhere-Approach Major Approach C
-	(Chord Ab7 1)
-	(Brick GenDom C 1))
-
-(Def-Brick Nowhere-Minor-Cadence Minor Cadence C
+(Def-Brick Nowhere-Minor-Cadence(main) Minor Cadence C
         (Brick Nowhere-Approach C 2)
         (Chord Cm 2))
+
+(Def-Brick Nowhere-Minor-Cadence(var 1) Minor Cadence D
+        (Brick Dominant-Cycle Ab 2)
+        (Brick Minor-On D 1)
+        (Chord Dm7/C 1))
 
 (Def-Brick Nowhere-Turnaround Major Turnaround C
 	(Brick Dropback C 2)
@@ -842,6 +864,12 @@
         (Brick Minor-On G 1)
         (Chord Csus 1))
 
+(Def-Brick POT(cyclic) Major Turnaround C
+        (Chord C 1)
+        (Chord A7 1)
+        (Chord D7 1)
+        (Chord G7 1))
+
 (Def-Brick POT(Yardbird) Major Turnaround F
         (Brick Dropback F 4)
         (Brick II-n-Bird F 4))
@@ -861,6 +889,11 @@
 	(Brick POT C 4)
 	(Chord C 1))
 */
+
+(Def-Brick POT+Cadence(cyclic) Major Cadence C
+        (Brick POT(cyclic) C 4)
+        (Chord C 1))
+
 (Def-Brick Minor-POT(standard) Minor Turnaround C
 	(Brick Minor-Dropback C 2)
 	(Brick Sad-Approach C 2))
@@ -931,6 +964,16 @@
 	(Brick Pennies-Approach C 6)
 	(Chord CM7 2))
 
+(Def-Brick Pennies-Ending(var 1) Major Ending Ab
+        (Brick IV-n-Back Ab 3)
+        (Chord F7 1)
+        (Brick Somewhere-Cadence Ab 3))
+
+(Def-Brick Pennies-Ending(var 2) Major Ending C
+        (Brick On-Off-Major-IV F 2)
+        (Brick Sad-Approach D 2)
+        (Brick Somewhere-Cadence C 4))
+
 (Def-Brick Pennies-Ending(raindrop) Major Ending C
 	(Chord Dm 2)
 	(Brick Raindrop C 2)
@@ -953,11 +996,6 @@
         (Brick IV-n-Yak C 3)
         (Chord D7 1)
         (Brick Straight-Cadence C 3))
-
-(Def-Brick Pennies-Ending(var) Major Ending Ab
-        (Brick IV-n-Back Ab 3)
-        (Chord F7 1)
-        (Brick Somewhere-Cadence Ab 3))
 
 (Def-Brick Pennies-Ending(Yardbird) Major Ending G
         (Brick IV-n-Yak G 5)
@@ -1012,6 +1050,10 @@
 	(Brick An-Approach C 2)
         (Chord Bb7 1)
         (Chord A7 1))
+
+(Def-Brick Pullback-Cadence-with-Dropback(Rainy) Major Dropback C
+        (Brick Straight-Approach C 2)
+        (Brick Cadence-with-Dropback(Rainy) C 6))
 
 (Def-Brick Pullback-Extended Major Approach C
 	(Brick Pullback C 4)
@@ -1079,7 +1121,7 @@
 	(Brick Raindrop C 2)
 	(Brick Straight-Approach C 2))
 
-(Def-Brick Rainy-Dropback-Cadence Major Cadence C
+(Def-Brick Cadence-with-Dropback(Rainy) Major Cadence C
 	(Chord Dm7 1)
         (Chord G7 1)
         (Chord CM7 1)
@@ -1149,6 +1191,10 @@
         (Chord F7#11 1)
         (Brick Minor-Perfect-Cadence Eb 2))
 
+(Def-Brick Sad-Cadence-with-Overrun(new) Minor Overrun F
+        (Brick Sad-Cadence F 3)
+        (Chord Db7 1))
+
 (Def-Brick Sad-Dropback Major Approach Eb
         (Chord Fm7b5 1)
         (Chord Bb7 1)
@@ -1161,9 +1207,13 @@
         (Brick Sad-Approach D 2)
         (Brick Sad-Approach C 2))
 
+(Def-Brick Satin-Approach Major Cadence C
+	(Brick Straight-Approach G 2)
+	(Brick Straight-Approach Gb 2))
+
 (Def-Brick Satin-Cadence Major Cadence C
-	(Brick Side-Slips(2) C 4)
-	(Chord CM7 4))
+	(Brick Satin-Approach C 4)
+	(Chord C 4))
 
 (Def-Brick Side-Slip Major Approach F
         (Chord C#m7b5 2)
@@ -1431,6 +1481,9 @@
         (Brick Straight-Approach F 3)
         (Chord C7/Bb 1))
 
+(Def-Brick SPOT(var 3) Major Opening Db
+        (Brick Tritone-Approach Eb 2)
+        (Brick Straight-Approach Db 2))
 
 (Def-Brick SPOT(chromatic) Major Turnaround C
         (Chord Bb7 1)
@@ -1488,7 +1541,6 @@
 	(Chord F 1)
 	(Chord F#dim 1))
 
-// Added by RK
 (Def-Brick To-IV-n-Back(var 2) Major Turnaround C
 	(Brick Perfect-Cadence F 2)
 	(Chord F#dim 1))
@@ -1501,6 +1553,14 @@
         (Chord AbM7 1)
         (Chord Ao 1)
         (Chord EbM7 1))
+
+(Def-Brick IV-n-Back(var 5) Major Cadence Ab
+        (Brick Surge Ab 4)
+        (Chord Eb/Bb 1))
+
+(Def-Brick To-IV-n-Back(var 6) Major Approach Bb
+        (Brick To-IV Bb 3)
+        (Chord Ebo 1))
 
 (Def-Brick IV-n-Back-& Major Cadence Eb
         (Chord AbM7 1)
@@ -1520,9 +1580,13 @@
         (Brick On-Off-Major-IV F 4)
         (Brick Rainy-Approach C 4))
 
-(Def-Brick IV-n-Mack Major Cadence D
+(Def-Brick IV-n-Mack-Cadence Major Cadence D
         (Brick Major-On G 1)
         (Brick Minor-Plagal-Cadence D 2))
+
+(Def-Brick IV-n-Mack Major Approach Db
+        (Brick Major-On Gb 2)
+        (Brick Minor-On Gb 1))
 
 (Def-Brick IV-n-Yak(main) Major Cadence C
         (Chord F 1)
@@ -1545,6 +1609,11 @@
         (Chord CM7 2)
         (Chord F7 2)
         (Chord GM7 1))
+
+(Def-Brick IV-n-Yak(var 4) Major Cadence C
+        (Chord F7 2)
+        (Chord Fm7 1)
+        (Brick Yardbird-Cadence C 5))
 
 /*
 (Def-Brick IV-n-Yak-+-Dropback Major Dropback C
@@ -1618,9 +1687,10 @@
 	(Brick Perfect-Cadence F 2)
 	(Chord B7 1))
 
-(Def-Brick To-IV-n-Mack Major Turnaround C
+(Def-Brick To-IV-n-Mack Major Approach C
 	(Chord CM7 1)
-	(Brick Perfect-Cadence F 2)
+        (Brick GenDom F 1)
+        (Chord F 1)
 	(Chord Fm 1))
 
 (Def-Brick To-IV-n-Yak(main) Major Approach F
@@ -1646,11 +1716,16 @@
         (Chord Gm7 1)
         (Chord C7 1))
 
-(Def-Brick To-IV-n-Yak-Cadence(main) Major Cadence C
+(Def-Brick To-IV-n-Yak-Cadence(main) Major Cadence F
+        (Brick Major-On F 2)
+        (Chord Bb7 1)
+        (Brick Yardbird-Cadence F 3))
+
+(Def-Brick To-IV-n-Yak-Cadence(var 1) Major Cadence C
         (Brick To-IV-n-Yak C 3)
         (Chord C 1))
 
-(Def-Brick To-IV-n-Yak-Cadence(var) Major Cadence Bb
+(Def-Brick To-IV-n-Yak-Cadence(var 2) Major Cadence Bb
         (Brick To-IV Bb 3)
         (Brick Yardbird-Cadence Bb 5))
 
@@ -1681,6 +1756,11 @@
         (Chord Dm7 1)
         (Brick Straight-Approach D 2))
 
+(Def-Brick TTFA(II n Back variant) Dominant Approach Eb
+        (Brick Major-On Eb 2)
+        (Brick II-n-Back Eb 4)
+        (Chord Cm7 2))
+
 (Def-Brick TTFA(IV-iii-vi-variant) Major Turnaround C
         (Chord CM7 1)
         (Chord F7 1)
@@ -1708,6 +1788,10 @@
         (Chord FM7 1)
         (Chord Bb7 1)
         (Brick Minor-Chromatic-Approach G 2))
+
+(Def-Brick TTFA(Somewhere) Major Turnaround Db
+        (Brick Major-On Db 1)
+        (Brick Somewhere-Approach Ab 3))
 
 (Def-Brick Twopenny-Approach Major Approach C
 	(Chord Dm 2)
@@ -1913,7 +1997,6 @@
         (Brick Tritone-Approach C 1)
         (Brick Straight-Approach C 1))
 
-
 (Def-Brick Two-Goes-Tritone-Straight-Cadence Major Cadence C
         (Brick Two-Goes-Tritone-Straight-Approach C 4)
         (Chord C 1))
@@ -1925,6 +2008,10 @@
 (Def-Brick Whoopee-Cadence Major Cadence C
 	(Chord Dbdim 1)
 	(Brick Straight-Cadence C 3))
+
+(Def-Brick Wonderful-Opening Major Opening Bb
+        (Brick Surge Bb 4)
+        (Brick Straight-Cadence Bb 3))
 
 // Changed by RK
 (Def-Brick Yardbird-Cadence Major Cadence C
@@ -2622,7 +2709,11 @@
         (Brick II-n-Bird C 2)
         (Brick SPOT C 2))
 
-(Def-Brick Surge Major Misc C
+(Def-Brick Surge(var 1) Major Misc C
+        (Chord C 1)
+        (Chord C#o 1))
+
+(Def-Brick Surge(var 2) Major Misc C
         (Chord C7 1)
         (Chord C#o 1))
 

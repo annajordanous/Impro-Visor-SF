@@ -1,18 +1,18 @@
-(title Sweet and Lovely)
+(title Skylark)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-instrument 34)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style swing
@@ -34,39 +34,31 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+(section (style swing)) 
+
+EbM7 Fm7 | Gm7 AbM7 | EbM7 A7 | AbM7 / Gm7 C7 | 
+F7 | Fm7 Bb7 | EbM7 Cm7 | Fm7 Bb7 | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
-
-(phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+EbM7 Fm7 | Gm7 AbM7 | EbM7 A7 | AbM7 / Gm7 C7 | 
+F7 | Fm7 Bb7 | EbM7 Bb7 | Eb | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
-
-(phrase (style swing)) 
-Fm7 Bb7 | CM7 | Fm7 Bb7 | CM7 | 
+Cm7 F7 | Bbm7 Eb7 | AbM7 DbM7 | Gm7b5 C7 | 
+Fm7 Db7 | Bbm7 Eb7 AbM7 / | GM7 E7 | Am7 D7 GM7 Bb7 | 
 
 (section (style swing)) 
 
-Abm7 Db7 | EbM7 | Ebm7 Ab7 | Dm7 G7 | 
-
-(phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
-
-(section (style swing)) 
-
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
+EbM7 Fm7 | Gm7 AbM7 | EbM7 A7 | AbM7 / Gm7 C7 | 
+F7 | Fm7 Bb7 | EbM7 Cm7 | Fm7 Bb7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)

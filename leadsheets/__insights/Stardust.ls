@@ -1,11 +1,11 @@
-(title Sweet and Lovely)
+(title Stardust)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -35,32 +35,46 @@
 )
 
 (phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+DbM7 | Gb7#11 | F7 | Bb7 | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
+Ebm7 Ab7 | Fm7 Bbm7 | Gm7 C7 | Fm7 E7 Ebm7 Ab7 | 
 
 (phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+DbM7 | Gb7#11 | F7 | Bb7 | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
+Ebm7 Ab7 | Fm7 Bbm7 | Ebm7 Ab7 | DbM7 Db7+ | 
 
 (phrase (style swing)) 
-Fm7 Bb7 | CM7 | Fm7 Bb7 | CM7 | 
+GbM7 | / | GbmM7 | F#m7 B7 | 
 
 (section (style swing)) 
 
-Abm7 Db7 | EbM7 | Ebm7 Ab7 | Dm7 G7 | 
+DbM7 | Fm7 Bb7 | Ebm7 Bb7 | Ebm7 | 
 
 (phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+Ab7 | Ebm7 Ab7 | DbM7 | Bbm7 | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
+Eb7 | / | Ab7 Ebm7 | Ab7 G7 | 
+
+(phrase (style swing)) 
+GbM7 | / | GbmM7 | F#m7 B7 | 
+
+(section (style swing)) 
+
+DbM7 | Fm7 Bb7 | Ebm7 Bb7 | Ebm7 | 
+
+(phrase (style swing)) 
+F#m7 | B7 | DbM7 | Bb7 | 
+
+(section (style swing)) 
+
+Ebm7 | Ab7 | DbM7 | Abm7 Db7 | 
 
 (part
     (type melody)
@@ -71,4 +85,4 @@ Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

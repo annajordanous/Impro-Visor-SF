@@ -619,6 +619,7 @@ public class BrickLibrary {
         // Read in S expressions until end of file is reached
         while ((token = in.nextSexp()) != Tokenizer.eof)
         {
+          //System.out.println("Token = " + token);
             if (token instanceof Polylist) 
             {
                 Polylist contents = (Polylist)token;

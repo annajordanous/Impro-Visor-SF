@@ -1,11 +1,11 @@
-(title Sweet and Lovely)
+(title Recorda Me)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -35,32 +35,28 @@
 )
 
 (phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+Am6 | / | / | / | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
+Cm6 | / | / | Cm7 F7 | 
+
+(section (style swing)) 
+
+BbM7 | Bbm7 Eb7 | AbM7 | Abm7 Db7 | 
+GbM7 | Gm7 C7 | FM7 / / E7 | / | 
 
 (phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
+Am6 | / | / | / | 
 
 (section (style swing)) 
 
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
-
-(phrase (style swing)) 
-Fm7 Bb7 | CM7 | Fm7 Bb7 | CM7 | 
+Cm6 | / | / | Cm7 F7 | 
 
 (section (style swing)) 
 
-Abm7 Db7 | EbM7 | Ebm7 Ab7 | Dm7 G7 | 
-
-(phrase (style swing)) 
-Gm7 | C7 | Gm7 | C7 | 
-
-(section (style swing)) 
-
-Cm7 F7 | BbM7 Eb7 | E7 A7 D7 G7 | CM7 | 
+BbM7 | Bbm7 Eb7 | AbM7 | Abm7 Db7 | 
+GbM7 | Gm7 C7 | FM7 / / E7 | / | 
 
 (part
     (type melody)
