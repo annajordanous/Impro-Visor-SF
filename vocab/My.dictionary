@@ -1909,6 +1909,14 @@
         (Brick Two-Goes-Straight-Approach C 2)
         (Chord C 1))
 
+(Def-Brick Two-Goes-Straight-Cadence-with-Overrun(var 1) Major Cadence C
+        (Brick Two-Goes-Straight-Cadence C 5)
+        (Chord F 1))
+
+(Def-Brick Two-Goes-Straight-Cadence-with-Overrun(var 2) Major Cadence C
+        (Brick Two-Goes-Straight-Cadence C 5)
+        (Chord F7 1))
+
 (Def-Brick Three-Goes-Pullback Major Approach C
         (Brick Two-Goes-Pullback C 1)
         (Brick Pullback C 1))
@@ -2218,6 +2226,11 @@
 (Def-Brick On-Off-Twice-On-To-IV Major On-Off+ C
         (Brick On-Off-On-To-IV C 4)
         (Brick Amen-Cadence C 2))
+
+(Def-Brick On-Off-Thrice-To-IV Major On-Off+ C
+        (Brick On-Off-Major-IV C 2)
+        (Brick On-Off-Major-IV C 2)
+        (Brick On-Off-Major-IV C 2))
 
 (Def-Brick On-Off-Thrice-On-To-IV Major On-Off+ C
         (Brick On-Off-Twice-On-To-IV C 4)
@@ -2718,3 +2731,55 @@
         (Chord C#o 1))
 
 // User-defined bricks
+
+(Def-Brick Honeysuckle-Bridge(Pullback) Major Approach Eb
+        (Brick Pullback-Extended-+-Cadence Eb 8)
+        (Brick Pullback F 4)
+        (Brick Dogleg-Approach Bb 4))
+
+(Def-Brick Foolish-Approach Major Approach Eb
+        (Brick Raindrop Db 2)
+        (Brick Straight-Approach Eb 2))
+
+(Def-Brick To-IV(new) Major Cadence Eb
+        (Chord Eb7 1)
+        (Chord Ab 1))
+
+
+(Def-Brick Minor-POT() Minor Turnaround G
+        (Brick Minor-Dropback G 2)
+        (Brick Straight-Approach G 2))
+
+(Def-Brick Diatonic-ii-iii-IV Major Cadence Bb
+        (Brick Minor-On C 1)
+        (Brick On-Off-Minor-bII D 3))
+
+(Def-Brick To-IV-n-Yak-approach Major Approach C
+        (Brick Major-On C 1)
+        (Brick Dominant-Cycle Eb 3))
+
+(Def-Brick Honeysuckle-Bridge(newest) Major Cadence C
+        (Brick Straight-Cadence F 5)
+        (Brick Perfect-Cadence F 3)
+        (Brick Dogleg-Approach C 8))
+
+(Def-Brick TTFA(Minor Plagal) Major Approach C
+        (Chord CM7 1)
+        (Brick Minor-Plagal-Cadence C 2)
+        (Brick Approach D 1))
+
+(Def-Brick Dropback(Minor Plagal TTFA) Major Dropback C
+        (Brick Overrun C 6)
+        (Brick Long-Cadence C 7)
+        (Brick Minor-Plagal-Cadence C 3))
+
+(Def-Brick 7-Chord-Dropback Major Cadence F
+        (Brick Minor-On Bb 1)
+        (Brick Perfect-Cadence F 2)
+        (Brick Long-Cadence F 5))
+
+(Def-Brick 7-Chord-Dropback(still newer) Major Cadence F
+        (Chord Gm7 1)
+        (Chord C7 1)
+        (Brick POT F 4)
+        (Chord FM7 1))
