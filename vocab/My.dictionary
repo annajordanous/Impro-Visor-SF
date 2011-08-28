@@ -332,9 +332,16 @@
 	(Brick Body-&-Soul-Approach C 4)
 	(Chord CM7 4))
 
+/* generalized
 (Def-Brick Body-&-Soul-Approach(main) Major Approach C
 	(Chord Dm7 1)
 	(Chord A7 1)
+	(Brick An-Approach C 2))
+*/
+
+(Def-Brick Body-&-Soul-Approach(main) Major Approach C
+        (Chord Dm7 1)
+	(Brick GenDom D 1)
 	(Brick An-Approach C 2))
 
 (Def-Brick Body-&-Soul-Approach(var 1) Major Approach C
@@ -361,10 +368,23 @@
         (Brick Major-On Gb 1)
         (Brick On-Off-Major-bII G 3))
 
-(Def-Brick Chromatic-Minor-Ascending Minor Approach E
-        (Chord Dm7 1)
-        (Brick Minor-On Eb 1)
-        (Chord Em7 1))
+(Def-Brick Chromatic-Minor-Ascending(3 chords) Minor Approach E
+        (Brick GenII C 1)
+        (Brick GenII Db 1)
+        (Brick GenII D 1))
+
+(Def-Brick Chromatic-Minor-Ascending(4 chords) Minor Approach F
+        (Brick Chromatic-Minor-Ascending(3 chords) E 3)
+        (Brick GenII Eb 1))
+
+(Def-Brick Chromatic-Minor-Decending(3 chords) Minor Approach D
+        (Brick GenII D 1)
+        (Brick GenII Db 1)
+        (Brick GenII C 1))
+
+(Def-Brick Chromatic-Minor-Decending(4 chords) Minor Approach D
+        (Brick Chromatic-Minor-Decending(3 chords) D 3)
+        (Brick GenII B 1))
 
 (Def-Brick Chromatically-Descending-Dominants(3 chords) Major Approach C
         (Chord A7 1)
@@ -2733,7 +2753,7 @@
 // User-defined bricks
 
 (Def-Brick Honeysuckle-Bridge(Pullback) Major Approach Eb
-        (Brick Pullback-Extended-+-Cadence Eb 8)
+        (Brick Pullback-Extended-+-Cadence Eb 8)brick body-
         (Brick Pullback F 4)
         (Brick Dogleg-Approach Bb 4))
 
@@ -2783,3 +2803,17 @@
         (Chord C7 1)
         (Brick POT F 4)
         (Chord FM7 1))
+
+(Def-Brick To-IV-n-Yak(tritone) Major Cadence Eb
+        (Brick Major-On Eb 1)
+        (Brick Tritone-Cadence Ab 2)
+        (Brick Yardbird-Cadence Eb 2))
+
+(Def-Brick To-IV(tritone) Major Cadence Eb
+        (Brick Major-On Eb 1)
+        (Brick Tritone-Cadence Ab 2))
+
+(Def-Brick Two-Goes-Approach Major Approach F
+        (Brick An-Approach F 2)
+        (Brick An-Approach F 2))
+
