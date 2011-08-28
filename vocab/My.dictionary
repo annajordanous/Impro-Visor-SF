@@ -2766,7 +2766,7 @@
 (Def-Brick TTFA(Minor Plagal) Major Approach C
         (Chord CM7 1)
         (Brick Minor-Plagal-Cadence C 2)
-        (Brick Approach D 1))
+        (Brick An-Approach D 1))
 
 (Def-Brick Dropback(Minor Plagal TTFA) Major Dropback C
         (Brick Overrun C 6)
