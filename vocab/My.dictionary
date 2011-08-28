@@ -548,6 +548,10 @@
         (Chord F#7 1)
         (Brick Dominant-Cycle(5 chords) C 5))
 
+(Def-Brick Dominant-Cycle-Cadence Major Cadence C
+        (Brick Dominant-Cycle C 1)
+        (Chord C 1))
+
 (Def-Brick Dominant-Turnaround Major Turnaround C
 	(Chord C7 1)
 	(Chord Ab7 1)
