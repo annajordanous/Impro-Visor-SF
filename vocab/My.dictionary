@@ -280,11 +280,11 @@
 
 // Major bricks
 
-(Def-Brick Dropback-Approach(main) Major Dropback C
+(Def-Brick Dropback-Approach(main) Major Invisible C
         (Brick Straight-Cadence C 3)
         (Brick Extended-Approach C 4))
 
-(Def-Brick Dropback-Approach(Somewhere) Major Dropback C
+(Def-Brick Dropback-Approach(Somewhere) Major Invisible C
         (Brick Somewhere-Cadence C 3)
         (Brick Extended-Approach C 4))
 
@@ -604,6 +604,10 @@
 (Def-Brick Dominant-Cycle-Cadence Major Cadence C
         (Brick Dominant-Cycle C 1)
         (Chord C 1))
+
+(Def-Brick Dominant-Cycle-Minor-Cadence Minor Cadence C
+        (Brick Dominant-Cycle C 1)
+        (Chord Cm 1))
 
 (Def-Brick Dominant-Turnaround Major Turnaround C
 	(Chord C7 1)
