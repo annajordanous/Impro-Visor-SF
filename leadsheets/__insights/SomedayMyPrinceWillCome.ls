@@ -9,10 +9,10 @@
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-instrument 34)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style waltz
@@ -61,16 +61,14 @@ BbM7 | Bb7 | EbM7 | Ebo |
 (section (style waltz)) 
 
 Bb/F | Cm7 / F7 | BbM7 | / | 
-/ | / | / | / | 
-/ | / | / | / | 
-/ | / | 
+
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

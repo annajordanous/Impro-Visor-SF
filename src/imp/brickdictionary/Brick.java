@@ -434,7 +434,7 @@ public class Brick extends Block {
                     else
                     {
                         ErrorLog.log(ErrorLog.FATAL, brickName + ": " +
-                                "Duration not of type long: " + durObj, true);
+                                "Duration not of type long: " + obj, true);
                     }
                 }
                 
@@ -454,7 +454,7 @@ public class Brick extends Block {
                     else
                     {
                         ErrorLog.log(ErrorLog.FATAL, chordName + ": " +
-                                "Duration not of type long: " + durObj, true);
+                                "Duration not of type long: " + obj, true);
                     }
                 }
             }
@@ -611,7 +611,7 @@ public class Brick extends Block {
                     else
                     {
                         ErrorLog.log(ErrorLog.FATAL, subBrickName + ": " +
-                                "Duration not of type long: " + durObj, true);
+                                "Duration not of type long: " + obj, true);
                     }
                 }
                 
@@ -707,7 +707,7 @@ public class Brick extends Block {
         ArrayList<Block> currentList = this.getSubBlocks();
         
         //System.out.println("currentList = " + currentList); debugging RK
-        
+// FIX!! Sometimes get null pointer exception here:        
         Iterator<Block> iter = currentList.iterator();
         
         // Iterate through subblocks. If a block is a chord, just add it. If it 

@@ -1,5 +1,30 @@
 // Various bricks removed from the My.Dictionary for various reasons.
 
+
+(Def-Brick 7-Chord-Dropback(var 3) Major Cadence F
+        (Chord Gm7 1)
+        (Chord C7 1)
+        (Brick POT F 4)
+        (Chord FM7 1))
+
+(Def-Brick Stablemates-Approach Major Approach C
+	(Brick Straight-Approach Db 2)
+	(Brick Straight-Approach C 2))
+
+(Def-Brick Stablemates-Approach(dominant-cycle) Major Approach Ab
+        (Brick Dominant-Cycle A 2)
+        (Brick Straight-Approach Ab 2))(Def-Brick Satin-Approach Major Cadence C
+	(Brick Straight-Approach G 2)
+	(Brick Straight-Approach Gb 2))
+
+(Def-Brick Amen-Cadence(minor) Major Cadence C
+	(Chord Fm 1)
+	(Chord Cm 1))
+
+(Def-Brick IV-n-Mack Major Approach Db
+        (Brick Major-On Gb 2)
+        (Brick Minor-On Gb 1))
+
 /* Gets in the way
 (Def-Brick Dropback(vi-var) Major Dropback C
 	(Chord CM7 1)

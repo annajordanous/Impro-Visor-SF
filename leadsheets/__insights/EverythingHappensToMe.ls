@@ -1,15 +1,15 @@
 (title Everything Happens To Me)
-(composer Matt Dennis and Tom Adair)
+(composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key -2)
+(key 0)
 (tempo 90.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
+(bass-instrument 34)
 (bass-volume 60)
 (drum-volume 60)
 (chord-volume 60)
@@ -27,11 +27,11 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
-    (key -2)
+    (key 0)
 )
 
 (phrase (style ballad)) 
@@ -53,7 +53,7 @@ Fm7 Bb7 | EbM7 Cm7 | Fm7 Bb7 | EbM7 |
 
 (section (style ballad)) 
 
-Em7 A7 | DM7 Bm7 | Gm7 C7 | Cm7 F7 | 
+Em7 A7 | DM7 | Gm7 C7 | Cm7 F7 | 
 
 (phrase (style ballad)) 
 Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
@@ -66,11 +66,9 @@ Cm7 Ab7 | Dm7 G7 | Cm7 F7 | BbM7 |
     (type melody)
     (title )
     (composer )
-    (instrument 73)
+    (instrument 0)
     (volume 85)
-    (key -2)
+    (key 0)
     (stave treble)
 )
- d+8 r1+1+1+1+1+2+4+8
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -50,7 +50,7 @@ Fm7 C7 | Fm7 Bb7 | EbM7 | Bbm7 Eb7 |
 
 (section (style swing)) 
 
-AbM7 Fm7 | Am7 D7 | Gm7 | Em7b5 A7 | 
+AbM7 | Am7 D7 | Gm7 | Em7b5 A7 | 
 Dm7 Gm7 | Cm7 F7 | Bbsus | Bb7+ | 
 
 (phrase (style swing)) 

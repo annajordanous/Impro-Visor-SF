@@ -48,6 +48,9 @@ Cm Am7b5 | Dm7b5 G7 | Cm | Fm7 Bb7 |
 
 EbM7 | / | Eo | / | 
 Fm7 | F#o | Dm7b5 | G7 | 
+
+(section (style swing)) 
+
 Cm | Dm7 G7 | Cm Am7b5 | D7 G7 | 
 Cm Am7b5 | Dm7b5 G7 | Cm | / | 
 

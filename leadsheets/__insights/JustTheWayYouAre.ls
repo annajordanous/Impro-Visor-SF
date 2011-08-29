@@ -9,10 +9,10 @@
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-instrument 34)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style swing
@@ -40,15 +40,21 @@ DM7 Em7b5/D | DM7 / G/D D | DM7 Em7b5/D | DM7 / G/D D |
 
 (phrase (style swing)) 
 DM7 | Bm6 | GM7 | Bm7 D7 | 
+
+(phrase (style swing)) 
 GM7 | GmM7 | DM7/F# | Am7 D7 | 
+
+(phrase (style swing)) 
+GM7 | Gm6 | DM7/F# | Bm7 | 
 
 (section (style swing)) 
 
-GM7 | Gm6 | DM7/F# | Bm7 | 
 Esus | E7 | Asus | / | 
 
 (phrase (style swing)) 
 DM7 | Bm6 | GM7 | Bm7 D7 | 
+
+(phrase (style swing)) 
 GM7 | GmM7 | DM7/F# | Am7 D7 | 
 
 (section (style swing)) 
@@ -69,7 +75,7 @@ Em7 | A7 |
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)

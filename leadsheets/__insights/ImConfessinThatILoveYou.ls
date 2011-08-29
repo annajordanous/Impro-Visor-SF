@@ -9,10 +9,10 @@
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-instrument 34)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style swing
@@ -48,11 +48,9 @@ AbM7 | G7#11 | AbM7 DbM7#11 | Cm7 F7 |
 
 B7#11 E7#11 | Bbm7 Eb7 | GbM7 GM7 | AbM7 | 
 
-(phrase (style swing)) 
-Ebm7 | Ab7 | DbM7 | / / C7 B7 | 
-
 (section (style swing)) 
 
+Ebm7 | Ab7 | DbM7 | / / C7 B7 | 
 Bb7 | Bb7#11 | Bbm7 / / E7 | Eb7 | 
 
 (phrase (style swing)) 
@@ -63,7 +61,7 @@ B7#11 E7#11 | Bbm7 Eb7 | GbM7 GM7 | AbM7 |
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)

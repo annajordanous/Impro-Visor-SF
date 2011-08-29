@@ -1,5 +1,5 @@
-(title Corovado (Quiet Nights))
-(composer Antonio Carlos Jobim)
+(title Corcovado (Quiet Nights))
+(composer )
 (show )
 (year )
 (comments )
@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -71,4 +71,4 @@ Dm7 | G7 |
     (key 0)
     (stave treble)
 )
- e4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

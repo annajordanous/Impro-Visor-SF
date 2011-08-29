@@ -1,5 +1,5 @@
 (title Emily)
-(composer Johnny Mandel)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,9 +10,9 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style waltz
@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -55,25 +55,26 @@ CM7 | Am7 | Dm7 | G7 |
 
 Gm7 | C7 | FM7 | Bm7b5 E7alt | 
 
-(phrase (style waltz)) 
-Am7 | B7 | Em7 | A7 | 
-
 (section (style waltz)) 
 
+Am7 | B7 | Em7 | A7 | 
 Dm7 | G7 | Em7b5 | A7 | 
 
 (section (style waltz)) 
 
 Dm7 | B7 | Em7 | A7 | 
 Dm7 | G7 | CM7 | / | 
-
+/ | / | / | / | 
+/ | / | / | / | 
+/ | / | / | / | 
+/ | 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 73)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- e8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

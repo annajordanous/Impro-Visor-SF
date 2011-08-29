@@ -1,4 +1,4 @@
-(title Mean to Me)
+(title Misty)
 (composer )
 (show )
 (year )
@@ -9,20 +9,20 @@
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-instrument 34)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
-    (bass-base c--)
+    (bass-low c---)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -35,37 +35,38 @@
 )
 
 (phrase (style swing)) 
-FM7 F#o | Gm7 C7 | FM7 F7 | BbM7 Eb7 | 
+EbM7 | Bbm7 Eb7 | AbM7 | Abm7 Db7 | 
 
 (section (style swing)) 
 
-Am7 D7 | Gm7 C7 | FM7 | Gm7 G7+ | 
+EbM7 Cm7 | Fm7 Bb7 | G7#11 C7 | Fm7 Bb7 | 
 
 (phrase (style swing)) 
-FM7 F#o | Gm7 C7 | FM7 F7 | BbM7 Eb7 | 
+EbM7 | Bbm7 Eb7 | AbM7 | Abm7 Db7 | 
 
 (section (style swing)) 
 
-Am7 D7 | Gm7 C7 | FM7 | Gm7 G7+ | 
+EbM7 Cm7 | Fm7 Bb7 | EbM7 Db7 | EbM7 | 
 
 (phrase (style swing)) 
-Gm7 | C7 | FM7 | Em7b5 A7 | 
+Bbm7 | Eb7 | AbM7 | / | 
 
 (section (style swing)) 
 
-Dm7 | G7 | Gm7 | C7 C7+ | 
+Am7 D7 | Am7b5 D7 | Gm7 C7 | Fm7 Bb7 | 
 
 (phrase (style swing)) 
-FM7 F#o | Gm7 C7 | FM7 F7 | BbM7 Eb7 | 
+EbM7 | Bbm7 Eb7 | AbM7 | Abm7 Db7 | 
 
-(phrase (style swing)) 
-Am7 D7 | Gm7 C7 | FM7 | / | 
+(section (style swing)) 
+
+EbM7 Cm7 | Fm7 Bb7 | EbM7 Db7 | EbM7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)
