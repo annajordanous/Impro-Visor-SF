@@ -1,11 +1,11 @@
-(title Afternoon In Paris)
+(title untitled)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 140.0)
+(tempo 120.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -36,25 +36,18 @@
 
 (section (style swing)) 
 
-CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
-AbM7 | Dm7b5 G7 | CM7 A7 | Dm7 G7 | 
-
+BbM7 | Fm7 Bb7 | Eb | 
 (section (style swing)) 
 
-CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
-AbM7 | Dm7b5 G7 | CM7 | / | 
-
-(phrase (style swing)) 
-Dm7 | G7 | CM7 | Am7 | 
-
+Bbm7 | 
+Fm7 Bb7 | Eb | 
 (section (style swing)) 
 
-Dm7 | G7 | C#m7 F#7 | Dm7 G7 | 
-
+Bb7 | Fm7 Bb7 | 
+Eb | 
 (section (style swing)) 
 
-CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
-AbM7 | Dm7b5 G7 | CM7 | / | 
+Bbo | Fm7 Bb7 | Eb | 
 
 (part
     (type melody)
@@ -65,4 +58,4 @@ AbM7 | Dm7b5 G7 | CM7 | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1

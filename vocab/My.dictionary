@@ -484,9 +484,14 @@
         (Brick On-Off-Major-Somewhere F 2)
         (Brick On-Off-Minor-bVII A 2))
 
-(Def-Brick Diatonic-ii-iii-IV Major Cadence Bb
-        (Brick Minor-On C 1)
-        (Brick On-Off-Minor-bII D 3))
+(Def-Brick Diatonic-ii-iii-IV Major Cadence C
+        (Chord Dm7 1)
+        (Chord Em7 1)
+        (Chord F 1))
+
+(Def-Brick Diatonic-ii-iii-IV-V Major Cadence C
+        (Brick Diatonic-ii-iii-IV C 3)
+        (Chord G7 1))
 
 (Def-Brick Diatonic-ii-iii-IV-iii-ii Dominant Approach Eb
         (Brick Minor-On C 1)
@@ -528,7 +533,7 @@
         (Brick Nowhere-Approach D 4)
         (Chord AbM7 1))
 
-(Def-Brick Dizzy-Cadence-with-Dropback Dominant Approach Ab
+(Def-Brick Dizzy-Cadence-with-Dropback C Dropback Ab
         (Brick Dizzy-Cadence Ab 5)
         (Brick Straight-Approach Bb 3))
 
@@ -878,10 +883,6 @@
         (Brick Straight-Cadence Db 4)
         (Brick Perfect-Cadence Db 6))
 
-(Def-Brick Long-Dropback-Cadence Major Cadence C
-        (Brick Straight-Cadence C 3)
-        (Brick Extended-Cadence C 4))
-
 (Def-Brick Minor-Chromatic-Approach Minor Approach D
         (Chord Em7 1)
         (Chord Ebm7 1))
@@ -1184,7 +1185,7 @@
 
 (Def-Brick Pullback-Cadence-with-Dropback(Rainy) Major Dropback C
         (Brick Straight-Approach C 2)
-        (Brick Cadence-with-Dropback(Rainy) C 6))
+        (Brick 7-Chord-Dropback(Rainy) C 6))
 
 (Def-Brick Pullback-Extended Major Approach C
 	(Brick Pullback C 4)
@@ -1222,7 +1223,7 @@
         (Chord G7 1)
         (Brick Upslide Ab 2))
 
-(Def-Brick Rainbow-Variant-Dominant-Overrun Major Overrun C
+(Def-Brick Rainbow-Overrun Major Overrun F
         (Chord CM7 1)
         (Chord E7 1)
         (Chord FM7 1)
@@ -1260,7 +1261,7 @@
 	(Brick Raindrop C 2)
 	(Brick Straight-Approach C 2))
 
-(Def-Brick Cadence-with-Dropback(Rainy) Major Cadence C
+(Def-Brick 7-Chord-Dropback(Rainy) Major Cadence C
 	(Chord Dm7 1)
         (Chord G7 1)
         (Chord CM7 1)
@@ -1517,7 +1518,7 @@
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
-(Def-Brick Cadence-with-Dropback(var) Major Approach A
+(Def-Brick Cadence-with-Dropback(var) Major Dropback A
         (Brick Straight-Approach A 2)
         (Chord AM7 1)
         (Chord F#m7 1))

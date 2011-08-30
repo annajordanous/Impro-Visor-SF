@@ -1,6 +1,12 @@
 // Various bricks removed from the My.Dictionary for various reasons.
 
 
+/*
+(Def-Brick Long-Dropback-Cadence Major Cadence C
+        (Brick Straight-Cadence C 3)
+        (Brick Extended-Cadence C 4))
+*/
+
 (Def-Brick 7-Chord-Dropback(var 3) Major Cadence F
         (Chord Gm7 1)
         (Chord C7 1)
@@ -13,7 +19,9 @@
 
 (Def-Brick Stablemates-Approach(dominant-cycle) Major Approach Ab
         (Brick Dominant-Cycle A 2)
-        (Brick Straight-Approach Ab 2))(Def-Brick Satin-Approach Major Cadence C
+        (Brick Straight-Approach Ab 2))
+
+(Def-Brick Satin-Approach Major Cadence C
 	(Brick Straight-Approach G 2)
 	(Brick Straight-Approach Gb 2))
 

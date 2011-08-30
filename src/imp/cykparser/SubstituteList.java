@@ -35,6 +35,7 @@ public class SubstituteList {
     // Data Members //
     private ArrayList<String> names; // a list containing first the quality of
                                      // each substitute chord
+    
     private ArrayList<Long> keys;    // a list carrying keys corresponding to
                                      // chord qualities in names
    
@@ -160,5 +161,19 @@ public class SubstituteList {
                 % BinaryProduction.TOTAL_SEMITONES;
     }
  
+    public String toString()
+      {
+        StringBuilder buffer = new StringBuilder();
+        
+        buffer.append("(");
+        for( String name: names )
+          {
+            buffer.append(name);
+            buffer.append(" ");
+          }
+        buffer.append(")");
+        
+        return buffer.toString();
+      }
     // end of SubstituteList class 
 }

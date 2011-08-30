@@ -46,6 +46,12 @@ public class PostProcessor {
     public static final String[] RESOLUTIONS = {"","Happenstance","Yardbird","",
         "","","","","","","","Tritone"};
     
+    //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
+
+    public static String[] FIRST_STABLE = {"Cadence", "Dropback", "On", "On-Off+", "Overrun"};
+
+    public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "SPOT"};
+    
     // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;
     // Rules for which chords are diatonic depending on mode
@@ -473,53 +479,65 @@ public class PostProcessor {
                 (ArrayList<ChordBlock>)first.flattenBlock();
         ArrayList<ChordBlock> secondList = second.flattenBlock();
         
-        // Comparing last chord of first block and first block of second block
+        // Comparing last chord of first block and first chord of second block
         ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
         ChordBlock secondToCheck = secondList.get(0);
         
         // Create equivalence dictionary and get equivalences for the two chords
+        
+        // Create dictionary checkJoinability is called ?? Seems slow.
+        
         EquivalenceDictionary dict = new EquivalenceDictionary();
         dict.loadDictionary(CYKParser.DICTIONARY_NAME);
-        SubstituteList firstEquivs = 
-                dict.checkEquivalence(firstToCheck);
-        SubstituteList secondEquivs =
-                dict.checkEquivalence(secondToCheck);
+        
+        SubstituteList firstEquivs = dict.checkEquivalence(firstToCheck);
+        SubstituteList secondEquivs = dict.checkEquivalence(secondToCheck);
         
         String firstMode = first.getMode();
         String secondMode = second.getMode();
         
-        boolean firstStable = false;
-        boolean secondStable = false;
+        String firstType = first.getType();
+        String secondType = second.getType();
+        
+        //System.out.print("joinable? " + firstType + " to " + secondType);
         
         // Determine stability of first block
-        if(first.getType().equals("Approach") || 
-                first.getType().equals("Launcher")) {
-            firstStable = false;
-        }
-        else if(firstEquivs.hasMode(firstMode) || 
-                first.getType().equals("Cadence")
-                        ) {
-            firstStable = true;
-        }
+        // This is necesary if the blocks are to be joinable.
         
+        if( !member(firstType, FIRST_STABLE) )
+          {
+            //System.out.println(" NO, first not stable");
+            return false; // No point in checking further
+          }
+        /*
+         * else if( firstEquivs.hasMode(firstMode) )
+          {
+            // Otherwise, continue if the first block is stable.
+          }
+        else
+          {
+            System.out.println(" NO, first wrong mode");
+            return false; // Otherwise, condsider non-joinable.
+          }
+         *
+         */
+  
         // Determine stability of second block
-        if(second.getType().equals("Approach") || 
-                second.getType().equals("Cadence") || 
-                second.getType().equals("Launcher") ||
-                second.getType().equals("Misc") ) {     // added by RK
-            secondStable = false;
-        }
         
-        else if(secondEquivs.hasMode(secondMode)) {
-            secondStable = true;
-        }
+        if( member(secondType, SECOND_UNSTABLE) )
+          {
+            //System.out.println(" YES");
+            return true;
+          }
+         else if( secondEquivs.hasMode(secondMode)) 
+           {
+            //System.out.println(" NO, second wrong ");
+            return false;
+           }
         
-        // joinable if transition from stable to unstable
-        if(firstStable && !secondStable) {
-            joinable = true;
-        }
-        
-        return joinable;
+        //System.out.println(" YES");
+        return true;
+
     }
     
     /** checkDogleg
@@ -655,5 +673,24 @@ public class PostProcessor {
 
         return false;
     }
+    
+    /** 
+     * Treating an array of Strings as a set, determines whether or not
+     * element occurs in the array.
+     * @param array
+     * @param element
+     * @return 
+     */
+    public static boolean member(String element, String array[])
+      {
+        for( String x: array )
+          {
+            if( x.equals(element) )
+              {
+                return true;
+              }
+          }       
+        return false;
+      }
 }
      
