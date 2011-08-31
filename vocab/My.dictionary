@@ -1240,7 +1240,7 @@
         (Chord G7 1)
         (Brick Upslide Ab 2))
 
-(Def-Brick Rainbow-Overrun Major Overrun F
+(Def-Brick Rainbow-Overrun Major Overrun C
         (Chord CM7 1)
         (Chord E7 1)
         (Chord FM7 1)
