@@ -252,7 +252,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
         clearButton = new javax.swing.JButton();
-        insertButton = new javax.swing.JButton();
+        insertBrickButton = new javax.swing.JButton();
         roadmapMenuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
@@ -285,6 +285,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         appendToLeadsheetMI = new javax.swing.JMenuItem();
         appendToNewLeadsheetMI = new javax.swing.JMenuItem();
         sendToOriginalLeadsheetMI = new javax.swing.JMenuItem();
+        sendToOriginalLeadsheetAndSaveMI = new javax.swing.JMenuItem();
         dictionaryMenu = new javax.swing.JMenu();
         brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         preferencesMenu = new javax.swing.JMenu();
@@ -1099,25 +1100,24 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 3;
         getContentPane().add(clearButton, gridBagConstraints);
 
-        insertButton.setBackground(new java.awt.Color(0, 255, 0));
-        insertButton.setText("<html>\n<center>\nInsert<br>\nBrick\n</center>\n</html>"); // NOI18N
-        insertButton.setToolTipText("Insert the previewed brick into the roadmap."); // NOI18N
-        insertButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        insertButton.setMaximumSize(new java.awt.Dimension(46, 38));
-        insertButton.setMinimumSize(new java.awt.Dimension(46, 38));
-        insertButton.setName("insertButton"); // NOI18N
-        insertButton.setOpaque(true);
-        insertButton.setPreferredSize(new java.awt.Dimension(46, 38));
-        insertButton.addActionListener(new java.awt.event.ActionListener() {
+        insertBrickButton.setBackground(new java.awt.Color(0, 255, 0));
+        insertBrickButton.setText("<html>\n<center>\nInsert\n<br>\nBrick\n</center>\n</html>"); // NOI18N
+        insertBrickButton.setToolTipText("Enter the previewed brick into the roadmap."); // NOI18N
+        insertBrickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        insertBrickButton.setMaximumSize(new java.awt.Dimension(46, 38));
+        insertBrickButton.setMinimumSize(new java.awt.Dimension(46, 38));
+        insertBrickButton.setName("insertBrickButton"); // NOI18N
+        insertBrickButton.setOpaque(true);
+        insertBrickButton.setPreferredSize(new java.awt.Dimension(46, 38));
+        insertBrickButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertButtonActionPerformed(evt);
+                insertBrickButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        getContentPane().add(insertButton, gridBagConstraints);
+        getContentPane().add(insertBrickButton, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
 
@@ -1386,6 +1386,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         leadsheetMenu.add(sendToOriginalLeadsheetMI);
+
+        sendToOriginalLeadsheetAndSaveMI.setText("Save entire roadmap into original leadsheet. CAUTION: Cannot be undone."); // NOI18N
+        sendToOriginalLeadsheetAndSaveMI.setToolTipText("Clear the original leadsheet and send the entire roadmap to it. CAUTION: This cannot be undone."); // NOI18N
+        sendToOriginalLeadsheetAndSaveMI.setName("sendToOriginalLeadsheetAndSaveMI"); // NOI18N
+        sendToOriginalLeadsheetAndSaveMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendToOriginalLeadsheetAndSaveMIaction(evt);
+            }
+        });
+        leadsheetMenu.add(sendToOriginalLeadsheetAndSaveMI);
 
         roadmapMenuBar.add(leadsheetMenu);
 
@@ -1753,10 +1763,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playSelection();
     }//GEN-LAST:event_playButtonPressed
 
-    private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed
-        stopPlayingSelection();
-    }//GEN-LAST:event_stopButtonPressed
-
     private void featureWidthSliderChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_featureWidthSliderChanged
         settings.measureLength = featureWidthSlider.getValue();
         roadMapPanel.placeBricks();
@@ -2077,7 +2083,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_dialogNameFieldActionPerformed
 
     private void sendToOriginalLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToOriginalLeadsheetMIaction
-        senSelectionToOriginalNotate();
+        sendSelectionToOriginalNotate();
     }//GEN-LAST:event_sendToOriginalLeadsheetMIaction
 
     private void preferencesMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_preferencesMenuMenuSelected
@@ -2157,10 +2163,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapTextEntry.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
 
-    private void insertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertButtonActionPerformed
+    private void sendToOriginalLeadsheetAndSaveMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToOriginalLeadsheetAndSaveMIaction
+        selectAllBricks();
+        sendSelectionToOriginalNotate();
+        notate.saveLeadsheet();
+    }//GEN-LAST:event_sendToOriginalLeadsheetAndSaveMIaction
+
+    private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed
+         stopPlayingSelection();
+    }//GEN-LAST:event_stopButtonPressed
+
+    private void insertBrickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBrickButtonActionPerformed
         dragFromPreview(0, 0);
         dropFromPreview(0, 0);
-    }//GEN-LAST:event_insertButtonActionPerformed
+    }//GEN-LAST:event_insertBrickButtonActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2796,7 +2812,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JRadioButtonMenuItem fixedColorsRadioBtn;
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
-    private javax.swing.JButton insertButton;
+    private javax.swing.JButton insertBrickButton;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -2852,6 +2868,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenu sectionMenu;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
+    private javax.swing.JMenuItem sendToOriginalLeadsheetAndSaveMI;
     private javax.swing.JMenuItem sendToOriginalLeadsheetMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem togglePhraseMenuItem;
@@ -2940,7 +2957,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
      *
      * If the road map is empty, does nothing.
      */ 
-    public void senSelectionToOriginalNotate()
+    public void sendSelectionToOriginalNotate()
     {
         if( roadMapPanel.getNumBlocks() < 1 )
             return;

@@ -549,24 +549,27 @@
         (Chord Dm7b5 1)
         (Chord Db7 1))
 
-(Def-Brick Dogleg-Approach(main) Major Approach C
-	(Brick GenDom G 2)
-	(Brick An-Approach C 2))
+(Def-Brick Slow-Approach(main) Major Approach C
+        (Chord D7 1)
+        (Chord G7 1))
 
-(Def-Brick Dogleg-Approach(var 1) Major Approach F
-        (Chord G7 4)
-        (Brick Straight-Approach F 4))
+(Def-Brick Slow-Approach(Dogleg) Major Approach C
+        (Chord D7 1)
+        (Chord Dm7 1)
+        (Chord G7 1))
 
-(Def-Brick Dogleg-Approach(var 2) Major Approach F
-        (Brick Straight-Approach C 4)
-        (Brick Straight-Approach F 4))
+(Def-Brick Slow-Approach(Long) Major Approach C
+        (Chord Am7 1)
+        (Chord D7 1)
+        (Chord Dm7 1)
+        (Chord G7 1))
 
-(Def-Brick Dogleg-Approach(nowhere var) Major Approach C
+(Def-Brick Slow-Approach(Nowhere) Major Approach C
         (Brick Straight-Approach G 2)
         (Brick Nowhere-Approach C 2))
 
-(Def-Brick Dogleg-Cadence Major Cadence C
-	(Brick Dogleg-Approach C 2)
+(Def-Brick Slow-Cadence Major Cadence C
+	(Brick Slow-Approach C 2)
 	(Chord C 1))
 
 (Def-Brick Dogleg-Cycle(3 steps) Major Approach C
@@ -592,7 +595,7 @@
 
 (Def-Brick Dominant-Cycle(3 chords) Major Approach C
         (Chord A7 1)
-        (Brick Dominant-Cycle(2 chords) C 2))
+        (Brick Slow-Approach(main) C 2))
 
 (Def-Brick Dominant-Cycle(4 chords) Major Approach C
         (Chord E7 1)
@@ -748,20 +751,20 @@
         (Brick Straight-Approach F 2)
         (Brick Honeysuckle-Bridge C 14))
 
-(Def-Brick Honeysuckle-Bridge(dogleg) Major Cadence C
+(Def-Brick Honeysuckle-Bridge(Dogleg) Major Cadence C
         (Brick Straight-Cadence F 5)
         (Brick Perfect-Cadence F 3)
-        (Brick Dogleg-Approach C 8))
+        (Brick Slow-Approach(Dogleg) C 8))
 
 (Def-Brick Honeysuckle-Bridge(two-goes-dogleg) Major Approach C
         (Brick Two-Goes-Straight-Approach F 4)
         (Brick Dropback F 6)
-        (Brick Dogleg-Approach C 6))
+        (Brick Slow-Approach(Dogleg) C 6))
 
 (Def-Brick Honeysuckle-Bridge(Pullback) Major Approach Eb
         (Brick Pullback-Extended-+-Cadence Eb 8)
         (Brick Pullback F 4)
-        (Brick Dogleg-Approach Bb 4))
+        (Brick Slow-Approach Bb 4))
 
 (Def-Brick II-n-Back(standard) Major Turnaround C
 	(Chord Dm7 1)
@@ -887,7 +890,7 @@
         (Chord Em7 1)
         (Chord Ebm7 1))
 
-(Def-Brick Minor-Dogleg-Approach Minor Approach G
+(Def-Brick Minor-Slow-Approach(Dogleg) Minor Approach G
         (Brick Sad-Approach D 2)
         (Brick Sad-Approach G 2))
 

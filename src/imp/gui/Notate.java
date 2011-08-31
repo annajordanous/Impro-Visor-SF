@@ -12495,98 +12495,92 @@ private void setLickEnharmonics(MelodyPart lick)
     
     
     
-    /**
-     *
-     * Common point within notate for invoking saveLeadsheet command
-     *
-     */
+/**
+ *
+ * Common point within notate for invoking saveLeadsheet command
+ *
+ */
     
+public boolean saveLeadsheet()
+  {
+    if( savedLeadsheet != null )
+      {
+        return saveLeadsheet(savedLeadsheet, score);
+      }
+    else
+      {
+        return saveAsLeadsheet();
+      }
+  }
+   
     
-    
-    private boolean saveLeadsheet() {
-        
-        if (savedLeadsheet != null)
-            
-            return saveLeadsheet(savedLeadsheet, score);
-        
+private boolean saveLeadsheet(File file, Score score)
+  {
+    SaveLeadsheetCommand s = new SaveLeadsheetCommand(file, score, cm);
+
+    cm.execute(s);
+
+    if( s.getError() instanceof IOException )
+      {
+        JOptionPane.showMessageDialog(this, "There was an IO Exception during saving:\n" + s.getError().getMessage(), "An error occurred when attmepting to save", JOptionPane.WARNING_MESSAGE);
+
+        return false;
+      }
+    return true;
+  }
+
+private void exportToMusicXML()
+  {
+    if( savedMusicXML != null )
+      {
+        musicxmlfc.setSelectedFile(savedMusicXML);
+      }
+    else
+      {
+        if( savedLeadsheet != null )
+          {
+            String name = savedLeadsheet.getName();
+            if( name.endsWith(leadsheetExt) )
+              {
+                name = name.substring(0, name.length() - 3);
+              }
+            musicxmlfc.setSelectedFile(new File(name + musicxmlExt));
+          }
         else
-            
-            return saveAsLeadsheet();
-        
-    }
-    
-    
-    
-    private boolean saveLeadsheet(File file, Score score) {
-        
-        SaveLeadsheetCommand s = new SaveLeadsheetCommand(file, score, cm);
-        
-        cm.execute(s);
-        
-        if(s.getError() instanceof IOException) {
-            
-            JOptionPane.showMessageDialog(this, "There was an IO Exception during saving:\n" + s.getError().getMessage(), "An error occurred when attmepting to save", JOptionPane.WARNING_MESSAGE);
-            
-            return false;
-            
-        }
-        
-        return true;
-        
-    }
-    
-      private void exportToMusicXML()
-    {
- 	    if( savedMusicXML != null )
- 	      {
- 	      musicxmlfc.setSelectedFile(savedMusicXML);
- 	      }
- 	    else
- 	      {
- 	      if( savedLeadsheet != null )
- 	        {
- 	        String name = savedLeadsheet.getName();
- 	        if( name.endsWith(leadsheetExt) )
- 	          {
- 	          name = name.substring(0, name.length() - 3);
- 	          }
- 	        musicxmlfc.setSelectedFile(new File(name + musicxmlExt));
- 	        }
- 	      else
- 	        {
- 	    	  musicxmlfc.setSelectedFile(new File(musicxmlDef));
- 	        }
- 	      }
+          {
+            musicxmlfc.setSelectedFile(new File(musicxmlDef));
+          }
+      }
 
- 	    if( musicxmlfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
- 	      {
- 	      File file;
- 	      if( musicxmlfc.getSelectedFile().getName().endsWith(musicxmlExt) )
- 	        {
- 	        file = musicxmlfc.getSelectedFile();
- 	        }
- 	      else
- 	        {
- 	        String fileName = musicxmlfc.getSelectedFile().getAbsolutePath();
- 	        fileName += musicxmlExt;
- 	        file = new File(fileName);
- 	        }
+    if( musicxmlfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
+      {
+        File file;
+        if( musicxmlfc.getSelectedFile().getName().endsWith(musicxmlExt) )
+          {
+            file = musicxmlfc.getSelectedFile();
+          }
+        else
+          {
+            String fileName = musicxmlfc.getSelectedFile().getAbsolutePath();
+            fileName += musicxmlExt;
+            file = new File(fileName);
+          }
 
- 	      ExportToMusicXMLCommand exportCmd = new ExportToMusicXMLCommand(file, score , scoreTab.getSelectedIndex(), getTransposition());
- 	      cm.execute(exportCmd);
+        ExportToMusicXMLCommand exportCmd = new ExportToMusicXMLCommand(file, score, scoreTab.getSelectedIndex(), getTransposition());
+        cm.execute(exportCmd);
 
- 	      if( exportCmd.getError() instanceof IOException )
- 	        {
- 	        JOptionPane.showMessageDialog(this,
- 	                "There was an IO Exception during saving:\n" + exportCmd.getError().getMessage(),
- 	                "An error occurred when attmepting to save",
- 	                JOptionPane.WARNING_MESSAGE);
- 	        return;
- 	        }
+        if( exportCmd.getError() instanceof IOException )
+          {
+            JOptionPane.showMessageDialog(this,
+                                          "There was an IO Exception during saving:\n" + exportCmd.getError().getMessage(),
+                                          "An error occurred when attmepting to save",
+                                          JOptionPane.WARNING_MESSAGE);
+            return;
+          }
 
- 	      savedMusicXML = file;
- 	      }
- 	    }
+        savedMusicXML = file;
+      }
+  }
 
     
   private void exportToMidi(int toExport)
