@@ -113,6 +113,9 @@ public class PostProcessor {
      * @return newMap : an altered RoadMap
      */
     public static RoadMap findKeys(RoadMap roadmap) {
+        
+        //System.out.println("findKeys in " + roadmap);
+        
         ArrayList<KeySpan> keymap = new ArrayList<KeySpan>();
         
         // Initialize key, mode, and duration of current block
@@ -597,6 +600,9 @@ public class PostProcessor {
      */
     public static boolean diatonicChordCheck(ChordBlock c, Long key, 
             String mode) {
+        
+        //System.out.println("diatonicChordCheck " + c);
+        
         boolean isInKey = false;
         ChordBlock cTemp = new ChordBlock(c);
         
@@ -610,6 +616,7 @@ public class PostProcessor {
         ChordSymbol cSym = null;
         
         // Get representative chord for c and save it in cSym
+         
         for(Polylist p : equivalenceRules)
         {
             if(c.getChord().getChordSymbol().enhMember(p))

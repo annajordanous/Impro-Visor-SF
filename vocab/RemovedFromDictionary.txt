@@ -1,11 +1,16 @@
 // Various bricks removed from the My.Dictionary for various reasons.
 
 
-/*
+
+(Def-Brick IV-n-Yak(var 1) Major Cadence C
+        (Chord F 2)
+        (Chord Fm7 1)
+        (Chord Bb7 1)
+        (Chord C 2))
+
 (Def-Brick Long-Dropback-Cadence Major Cadence C
         (Brick Straight-Cadence C 3)
         (Brick Extended-Cadence C 4))
-*/
 
 (Def-Brick 7-Chord-Dropback(var 3) Major Cadence F
         (Chord Gm7 1)
