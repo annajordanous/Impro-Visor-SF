@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -37,30 +37,40 @@
 (phrase (style ballad)) 
 Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7 | 
 
+(phrase (style ballad)) 
+C7 / Gm7b5 C7 | F7 | 
 (section (style ballad)) 
 
-C7 / Gm7b5 C7 | F7 | B7 Bb7 | EbM7 / Dm7b5 G7 | 
+B7 Bb7 | EbM7 / Dm7b5 G7 | 
 
 (phrase (style ballad)) 
 Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7 | 
 
+(phrase (style ballad)) 
+C7 / Gm7b5 C7 | F7 | 
 (section (style ballad)) 
 
-C7 / Gm7b5 C7 | F7 | B7 Bb7 | EbM7 / Am7b5 D7 | 
+B7 Bb7 | EbM7 / Am7b5 D7 | 
 
 (phrase (style ballad)) 
-Gm Em7b5 | A7 D7 | Gm Bb7 | Am7b5 D7 | 
+Gm Em7b5 | A7 D7 | Gm Bb7 | 
+(phrase (style ballad)) 
+Am7b5 D7 | 
 
+(phrase (style ballad)) 
+Gm Em7b5 | A7 D7 | 
 (section (style ballad)) 
 
-Gm Em7b5 | A7 D7 | Dm7 G7 | Dm7 G7 | 
+Dm7 G7 | Dm7 G7 | 
 
 (phrase (style ballad)) 
 Cm Cm+ | Cm6 Cm7 | Fm7 Bb7 | EbM7 / Dm7b5 G7 | 
 
+(phrase (style ballad)) 
+C7 / Gm7b5 C7 | F7 | 
 (section (style ballad)) 
 
-C7 / Gm7b5 C7 | F7 | B7 Bb7 | EbM7 / Dm7b5 G7 | 
+B7 Bb7 | EbM7 / Dm7b5 G7 | 
 
 (part
     (type melody)

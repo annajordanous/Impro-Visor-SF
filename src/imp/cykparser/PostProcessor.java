@@ -48,7 +48,7 @@ public class PostProcessor {
     
     //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
 
-    public static String[] FIRST_STABLE = {"Cadence", "Dropback", "Ending", "On", "On-Off+", "Overrun"};
+    public static String[] FIRST_STABLE = {"Cadence", "Dropback", "Ending", "On", "On-Off+", "Opening", "Overrun"};
 
     public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "SPOT"};
     

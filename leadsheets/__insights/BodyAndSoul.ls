@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -49,11 +49,15 @@ Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb7 | Fm7 Eo |
 Ebm7 Ebm7/Db | Cm7b5 F7 | Bbm7 / Ebm7 D7 | DbM7 / Em7 A7 | 
 
 (phrase (style ballad)) 
-DM7 / Em7 A7 | D/F# / Gm7 C7 | DM7 Bm7 Em7 A7 | DM7 | 
+DM7 / Em7 A7 | D/F# / Gm7 C7 | 
+(phrase (style ballad)) 
+DM7 Bm7 Em7 A7 | DM7 | 
 
+(phrase (style ballad)) 
+Dm7 G7 | Em7 Ebo | Dm7 G7 | 
 (section (style ballad)) 
 
-Dm7 G7 | Em7 Ebo | Dm7 G7 | C7 B7 Bb7 / | 
+C7 B7 Bb7 / | 
 
 (phrase (style ballad)) 
 Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb7 | Fm7 Eo | 

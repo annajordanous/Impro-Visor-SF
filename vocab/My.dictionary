@@ -979,11 +979,11 @@
         (Brick Minor-Dropback C 2)
         (Brick Nowhere-Approach C 2))
 
-(Def-Brick Nowhere-Turnaround+Cadence Major Cadence C
+(Def-Brick Nowhere-Turnaround+On Major Cadence C
         (Brick Nowhere-Turnaround C 4)
         (Chord CM7 1))
 
-(Def-Brick Nowhere-Turnaround-Minor-Cadence Minor Cadence C
+(Def-Brick Nowhere-Turnaround-to-Minor-On Minor Cadence C
         (Brick Nowhere-Turnaround-Minor C 4)
         (Chord Cm 1))
 
@@ -1047,7 +1047,7 @@
         (Chord Dm7 1)
         (Brick Straight-Approach Eb 1))
 
-(Def-Brick POT+Cadence(cyclic) Major Cadence C
+(Def-Brick POT+On(cyclic) Major Cadence C
         (Brick POT(cyclic) C 4)
         (Chord C 1))
 
@@ -1089,7 +1089,7 @@
         (Chord G7+ 1))
 
 
-(Def-Brick Minor-POT+Cadence Minor Turnaround C
+(Def-Brick Minor-POT+On Minor Turnaround C
 	(Brick Minor-POT C 4)
 	(Chord Cm 1))
 
@@ -1265,6 +1265,10 @@
 	(Chord C 1)
 	(Chord Ebdim 1))
 
+(Def-Brick Rainy-Approach Major Approach C
+	(Brick Raindrop C 2)
+	(Brick Straight-Approach C 2))
+
 (Def-Brick Rainy-Cadence Major Cadence C
 	(Brick Rainy-Approach C 4)
 	(Chord CM7 4))
@@ -1272,10 +1276,6 @@
 (Def-Brick Rainy-Cadence(minor chromatic) Major Cadence Eb
         (Brick Minor-Chromatic-Approach F 2)
         (Brick Straight-Cadence Eb 6))
-
-(Def-Brick Rainy-Approach Major Approach C
-	(Brick Raindrop C 2)
-	(Brick Straight-Approach C 2))
 
 (Def-Brick 7-Chord-Dropback(Rainy) Major Cadence C
 	(Chord Dm7 1)
@@ -1324,7 +1324,7 @@
         (Chord G7/D 1)
         (Chord Ebo 1))
 
-(Def-Brick Rhythm-Turnaround+Cadence Major Cadence C
+(Def-Brick Rhythm-Turnaround+On Major Cadence C
 	(Chord Dbdim 1)
         (Brick Reverse-Raindrop C 2)
 	(Chord CM7 1))

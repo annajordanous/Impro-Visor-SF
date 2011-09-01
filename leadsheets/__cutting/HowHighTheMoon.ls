@@ -1,11 +1,11 @@
-(title Gone With the Wind)
+(title How High The Moon)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -14,7 +14,7 @@
 (drum-volume 36)
 (chord-volume 54)
 (breakpoint 54)
-(layout 4)
+(layout)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -34,33 +34,19 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-Fm7 Bb7 | EbM7 C7 | Fm7 Bb7 | EbM7 | 
+(section (style swing)) 
+
+GM7 | / | Gm7 | C7 | 
+FM7 | / | Fm7 | Bb7 | 
+EbM7 | Am7b5 D7 | Gm7 | Am7b5 D7 | 
+Bm7 E7 | Am7 D13 | Bm7 Bb13 | Am11 Am7/D D7b9 | 
 
 (section (style swing)) 
 
-Am7 D7 | GM7 E7 | Am7 D7 | GM7 | 
-
-(phrase (style swing)) 
-Gm7 | F#o | Fm7 | Bb7 | 
-
-(section (style swing)) 
-
-Eb7 D7 | Db7 C7 | Fm7 | Bb7 | 
-
-(phrase (style swing)) 
-Fm7 Bb7 | EbM7 C7 | Fm7 Bb7 | EbM7 | 
-
-(section (style swing)) 
-
-Am7 D7 | GM7 E7 | Am7 D7 | GM7 | 
-
-(phrase (style swing)) 
-Fm7 | Cm | AbM7#11 | Gm7 C7 | 
-
-(section (style swing)) 
-
-Fm7 | Bb7 | EbM7 Ab7 | Gm7 C7 | 
+GM7 | / | Gm7 | C7 | 
+FM7 | / | Fm7 | Bb7 | 
+EbM7 | Am7b5 D7 | GM7 | Am7 / Am7/D D7b9 | 
+Bm7 Bb13 | Am11 / Am7/D D7b9 | G | / | 
 
 (part
     (type melody)
