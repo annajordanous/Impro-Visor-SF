@@ -563,27 +563,29 @@
         (Chord Dm7b5 1)
         (Chord Db7 1))
 
-(Def-Brick Slow-Approach(main) Major Approach C
+(Def-Brick Slow-Approach Major Approach C
         (Chord D7 1)
         (Chord G7 1))
 
-(Def-Brick Slow-Approach(Dogleg) Major Approach C
-        (Chord D7 1)
-        (Brick GenII C 1)
-        (Chord G7 1))
-
-(Def-Brick Slow-Approach(Long) Major Approach C
-        (Chord Am7 1)
+(Def-Brick Dogleg-Slow-Approach(short) Major Approach C
         (Chord D7 1)
         (Chord Dm7 1)
         (Chord G7 1))
 
-(Def-Brick Slow-Approach(Nowhere) Major Approach C
+(Def-Brick Dogleg-Slow-Approach(long) Major Approach C
+        (Brick Straight-Approach G 2)
+        (Brick Straight-Approach C 2))
+
+(Def-Brick Nowhere-Slow-Approach Major Approach C
         (Brick Straight-Approach G 2)
         (Brick Nowhere-Approach C 2))
 
 (Def-Brick Slow-Cadence Major Cadence C
 	(Brick Slow-Approach C 2)
+	(Chord C 1))
+
+(Def-Brick Dogleg-Slow-Cadence Major Cadence C
+	(Brick Dogleg-Slow-Approach C 3)
 	(Chord C 1))
 
 (Def-Brick Dogleg-Cycle(3 steps) Major Approach C
@@ -609,7 +611,7 @@
 
 (Def-Brick Dominant-Cycle(3 chords) Major Approach C
         (Chord A7 1)
-        (Brick Slow-Approach(main) C 2))
+        (Brick Slow-Approach C 2))
 
 (Def-Brick Dominant-Cycle(4 chords) Major Approach C
         (Chord E7 1)
@@ -769,12 +771,12 @@
 (Def-Brick Honeysuckle-Bridge(Dogleg) Major Cadence C
         (Brick Straight-Cadence F 5)
         (Brick Perfect-Cadence F 3)
-        (Brick Slow-Approach(Dogleg) C 8))
+        (Brick Dogleg-Slow-Approach C 8))
 
 (Def-Brick Honeysuckle-Bridge(two-goes-dogleg) Major Approach C
         (Brick Two-Goes-Straight-Approach F 4)
         (Brick Dropback F 6)
-        (Brick Slow-Approach(Dogleg) C 6))
+        (Brick Dogleg-Slow-Approach C 6))
 
 (Def-Brick Honeysuckle-Bridge(Pullback) Major Approach Eb
         (Brick Pullback-to-Cadence Eb 8)
@@ -910,7 +912,7 @@
         (Chord Em7 1)
         (Chord Ebm7 1))
 
-(Def-Brick Minor-Slow-Approach(Dogleg) Minor Approach G
+(Def-Brick Minor-Dogleg-Slow-Approach Minor Approach G
         (Brick Sad-Approach D 2)
         (Brick Sad-Approach G 2))
 
@@ -984,14 +986,16 @@
 (Def-Brick Nowhere-Turnaround-Minor-Cadence Minor Cadence C
         (Brick Nowhere-Turnaround-Minor C 4)
         (Chord Cm 1))
+
 /*
 (Def-Brick Overrun Major Cadence G
         (Brick Straight-Cadence G 3)
         (Chord C7 1))
 */
+
 (Def-Brick POT(standard) Major Turnaround C
 	(Chord C 1)
-        (Chord Am 1)
+        (Brick GenII G 1)
 	(Brick Straight-Approach C 2))
 
 (Def-Brick POT(var 1) Major Turnaround C
@@ -1003,9 +1007,11 @@
         (Brick On-Off-Major-VI E 2)
         (Brick Sad-Approach E 2))
 
+/*
 (Def-Brick POT(var 3) Major Turnaround C
 	(Chord C 2)
 	(Brick Straight-Approach C 2))
+*/
 
 (Def-Brick POT(var 4) Major Turnaround C
 	(Chord C 2)
@@ -1177,10 +1183,6 @@
 (Def-Brick Perfect-Cadence Major Cadence C
 	(Chord G7 1)
 	(Chord CM7 1))
-
-(Def-Brick Perfect-Cadence-+-Overrun Minor Overrun E
-        (Brick Perfect-Cadence E 2)
-        (Chord A7 1))
 
 (Def-Brick Pullback(basic) Major Approach C
 	(Brick An-Approach C 2)
@@ -1672,12 +1674,9 @@
 	(Chord F 1)
 	(Brick Nowhere-Approach D 2))
 
-(Def-Brick IV-n-Back(var 1) Major Cadence C
-	(Brick Surge F 2)
-        (Chord CM7 1))
-
-(Def-Brick IV-n-Back(var 2) Major Cadence C
-        (Brick Surge F 2)
+(Def-Brick IV-n-Back Major Cadence C
+        (Chord F 1)
+        (Chord F#o 1)
         (Chord C/G 1))
 
 (Def-Brick IV-n-Back-On-Off-On-II Major On-Off+ Eb

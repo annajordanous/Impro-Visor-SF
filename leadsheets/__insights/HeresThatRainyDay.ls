@@ -52,11 +52,9 @@ Am7 | D7 | GM7 E7 | Am7 D7 |
 GM7 | Bb7 | EbM7 | AbM7 | 
 Am7 | D7 | GM7 | Dm7 G7 | 
 
-(phrase (style swing)) 
-CM7 | Am7 D7 | Bm7 | Bbo | 
-
 (section (style swing)) 
 
+CM7 | Am7 D7 | Bm7 | Bbo | 
 Am7 | D7 | GM7 E7 | Am7 D7 | 
 
 (part
