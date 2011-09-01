@@ -1222,24 +1222,24 @@
         (Chord C 2))
 
 (Def-Brick Rainbow-Cadence(var 1) Major Cadence C
-	(Chord CM7 1)
-	(Chord Em  1)
-	(Chord FM7 2))
+	(Chord C  1)
+	(Chord Em 1)
+	(Chord F  2))
 
-(Def-Brick Rainbow-Cadence(var 2) Major Cadence Eb
-        (Chord Bb/D 1)
-        (Chord D+ 1)
-        (Chord EbM7#11 2))
+(Def-Brick Rainbow-Cadence(var 2) Major Cadence C
+        (Chord C/E 1)
+        (Chord E+ 1)
+        (Chord F7#11 2))
 
-(Def-Brick Rainbow-Cadence(var 3) Major Cadence F
+(Def-Brick Rainbow-Cadence(var 3) Major Cadence C
 	(Chord CM7 1)
 	(Chord E7 1)
 	(Chord FM7 2))
 
-(Def-Brick Rainbow-to-IV-n-back Major Approach Ab
-        (Chord Eb/G 1)
-        (Chord G7 1)
-        (Brick Upslide Ab 2))
+(Def-Brick Rainbow-to-IV-n-back Major Approach C
+        (Chord G/B 1)
+        (Chord B7 1)
+        (Brick Upslide C 2))
 
 (Def-Brick Rainbow-Overrun Major Overrun C
         (Chord CM7 1)
@@ -1260,10 +1260,6 @@
 	(Chord Ebdim 1))
 
 (Def-Brick Raindrop(var 3) Major Misc C
-	(Chord C 1)
-	(Chord Ebdim 1))
-
-(Def-Brick Raindrop(var 4) Major Misc C
 	(Chord C 1)
 	(Chord Ebdim 1))
 
@@ -1552,7 +1548,8 @@
 
 (Def-Brick Surge(var 1) Major Misc C
         (Chord C 1)
-        (Chord C#o 1))
+        (Chord C#o 1)
+        (Chord G/D 1))
 
 (Def-Brick Surge(var 2) Major Misc F
         (Chord C7 1)
@@ -1675,14 +1672,13 @@
 	(Chord F 1)
 	(Brick Nowhere-Approach D 2))
 
-(Def-Brick IV-n-Back(direct) Major Cadence C
+(Def-Brick IV-n-Back(var 1) Major Cadence C
 	(Brick Surge F 2)
         (Chord CM7 1))
 
-(Def-Brick IV-n-Back(var) Major Cadence C
-        (Brick Surge C 4)
-        (Chord G/D 1)
-        (Chord CM7 1))
+(Def-Brick IV-n-Back(var 2) Major Cadence C
+        (Brick Surge F 2)
+        (Chord C/G 1))
 
 (Def-Brick IV-n-Back-On-Off-On-II Major On-Off+ Eb
         (Brick Upslide Ab 4)
@@ -1896,6 +1892,12 @@
         (Brick Major-On Eb 2)
         (Brick II-n-Back Eb 4)
         (Chord Cm7 2))
+
+(Def-Brick Dropback(chromatic) Major Dropback C
+        (Chord C 1)
+        (Chord B7 1)
+        (Chord Bb7 1)
+        (Chord A7 1))
 
 (Def-Brick TTFA(IV-iii-vi-variant) Major Dropback C
         (Chord CM7 1)
@@ -2358,6 +2360,11 @@
 	(Brick Off B 1)
 	(Brick Minor-On C 1))
 
+(Def-Brick On-Off-Twice-To-V Major On-Off+ C
+        (Brick Major-On C 1)
+        (Chord G7 1)
+        (Brick Major-On C 1)
+        (Chord G7 1))
 
 (Def-Brick On-Off-On-To-IV Major On-Off+ C
         (Brick Major-On C 1)
