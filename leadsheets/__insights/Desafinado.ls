@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -39,9 +39,11 @@
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
 
+(phrase (style latin)) 
+Gm7 | Em7b5 A7 | D7 | Am7b5 D7 | 
+
 (section (style latin)) 
 
-Gm7 | Em7b5 A7 | D7 | Am7b5 D7 | 
 G7 | / | GbM7 | / | 
 
 (section (style latin)) 

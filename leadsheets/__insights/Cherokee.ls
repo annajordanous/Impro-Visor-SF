@@ -27,19 +27,16 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
     (key -1)
 )
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7#11 | / | 
-
-(phrase (style swing)) 
 BbM7 | / | Gm7 | C7#11 | 
 
 (section (style swing)) 
@@ -67,8 +64,6 @@ Gm7 | C7 | Cm7 | F7+ |
 (phrase (style swing)) 
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7 | / | 
-
-(phrase (style swing)) 
 BbM7 | / | Gm7 | C7#11 | 
 
 (section (style swing)) 

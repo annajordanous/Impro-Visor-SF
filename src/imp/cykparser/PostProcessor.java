@@ -446,7 +446,7 @@ public class PostProcessor {
                     
                     // Try to use first dominant in second brick
                     for(ChordBlock cb : subList) {
-                        if(cb.getQuality().startsWith("7")) {
+                        if(cb.isDominant()) {
                             domKey = cb.getKey();
                             break;
                         }
@@ -512,18 +512,16 @@ public class PostProcessor {
             //System.out.println(" NO, first not stable");
             return false; // No point in checking further
           }
-        /*
-         * else if( firstEquivs.hasMode(firstMode) )
+        else if( firstEquivs.hasMode(firstMode) )
           {
             // Otherwise, continue if the first block is stable.
           }
         else
           {
-            System.out.println(" NO, first wrong mode");
+            //System.out.println(" NO, first wrong mode");
             return false; // Otherwise, condsider non-joinable.
           }
-         *
-         */
+
   
         // Determine stability of second block
         

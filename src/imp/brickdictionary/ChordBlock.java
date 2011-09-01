@@ -189,6 +189,21 @@ public class ChordBlock extends Block {
         
         return dim;
     }
+
+    /** isDominant
+     * Describes whether or not the ChordBlock represents a diminished chord
+     * @return a boolean
+     */
+    public boolean isDominant() {
+        boolean dom = false;
+        
+        if(this.getSymbol().startsWith("7") || this.getSymbol().startsWith("sus")) {
+            dom = true;
+        }
+        
+        return dom;
+    }
+    
     
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord
