@@ -35,14 +35,24 @@ import polya.*;
  */
 public class PostProcessor {
     
+    /**
+     * Temporary fix to static method issues
+     */
+
+    private static EquivalenceDictionary dict = null;
+        
     public static final int DOM_ADJUST = 5; // adjustment to root (by semitones)
                                             // when dealing with dominants
+    
     public static final int OCTAVE = 12;    // semitones in octave
+    
     // Names of joins, arranged by difference in keys between which they
     // transition (with reference to dominant in first block)
+    
     public static final String[] JOINS = {"Bootstrap", "Stella", "Backslider", 
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
         "Cherokee", "Woody", "Highjump", "Bauble"};
+    
     public static final String[] RESOLUTIONS = {"","Happenstance","Yardbird","",
         "","","","","","","","Tritone"};
     
@@ -56,6 +66,11 @@ public class PostProcessor {
     private static ArrayList<Polylist> equivalenceRules;
     // Rules for which chords are diatonic depending on mode
     private static ArrayList<Polylist> diatonicRules;
+    
+    static
+      {
+        setEquivalenceDictionary();
+      }
     
     /** Default constructor
      * Constructs a new PostProcessor with empty rules lists
@@ -486,12 +501,7 @@ public class PostProcessor {
         ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
         ChordBlock secondToCheck = secondList.get(0);
         
-        // Create equivalence dictionary and get equivalences for the two chords
-        
-        // Create dictionary checkJoinability is called ?? Seems slow.
-        
-        EquivalenceDictionary dict = new EquivalenceDictionary();
-        dict.loadDictionary(CYKParser.DICTIONARY_NAME);
+        // Get equivalences for the two chords
         
         SubstituteList firstEquivs = dict.checkEquivalence(firstToCheck);
         SubstituteList secondEquivs = dict.checkEquivalence(secondToCheck);
@@ -696,6 +706,17 @@ public class PostProcessor {
               }
           }       
         return false;
+      }
+    
+    
+    /**
+     * This only needs to be called once.
+     */
+    
+    public static void setEquivalenceDictionary()
+      {       
+        dict = new EquivalenceDictionary();
+        dict.loadDictionary(CYKParser.DICTIONARY_NAME);
       }
 }
      
