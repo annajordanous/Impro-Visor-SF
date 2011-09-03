@@ -182,10 +182,32 @@ public static RoadMap findKeys(RoadMap roadmap)
 
         if( thisBlock.isSectionEnd() )
           {
+            KeySpan entry = current;
+            keymap.add(0, entry);
+
+            current = new KeySpan(thisBlock);
+
+            if( thisBlock.isChord() )
+              {
+              ChordBlock c = (ChordBlock) thisBlock;
+
+            if( diatonicChordCheck(c, entry.getKey(), entry.getMode()) )
+              {
+                current.setKey(entry.getKey());
+                current.setMode(entry.getMode());
+              }
+            // End of current key -- add to the list
+            else
+              {
+                current = new KeySpan(c.getKey(), c.getMode(),
+                                      c.getDuration());
+  
+              }                
+              }
             // Match mode to second block if first block is an approach or
             // launcher that resolves to second block.
 
-            if( isApproachOrLauncher(thisBlock) )
+            else if( isApproachOrLauncher(thisBlock) )
               {
                 ChordBlock cFirst = thisBlock.getLastChord();
 
@@ -197,10 +219,6 @@ public static RoadMap findKeys(RoadMap roadmap)
                   }
               }
 
-            KeySpan entry = current;
-            keymap.add(0, entry);
-
-            current = new KeySpan(thisBlock);
 
             if( ncFlag )
               {
@@ -276,11 +294,6 @@ public static RoadMap findKeys(RoadMap roadmap)
               }
             // Check if chord is diatonically within current KeySpan
             else if( diatonicChordCheck(c, current.getKey(), current.getMode()) )
-              {
-                current.setDuration(current.getDuration() + c.getDuration());
-              }
-            // If chord is diminished, add it onto current KeySpan
-            else if( c.isDiminished() )
               {
                 current.setDuration(current.getDuration() + c.getDuration());
               }
@@ -626,6 +639,11 @@ public static RoadMap findKeys(RoadMap roadmap)
             String mode) {
         
         //System.out.println("diatonicChordCheck " + c);
+        
+        if( c.isDiminished() )
+          {
+            return true;
+          }
         
         boolean isInKey = false;
         ChordBlock cTemp = new ChordBlock(c);
