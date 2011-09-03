@@ -122,188 +122,216 @@ public class PostProcessor {
         diatonicRules = d;
     }
     
-     /** findKeys
-     * Method groups consecutive block of same key for overarching key sections
-     * @param roadmap : a RoadMap
-     * @return newMap : an altered RoadMap
-     */
-    public static RoadMap findKeys(RoadMap roadmap) {
+/** findKeys
+ * Method groups consecutive block of same key for overarching key sections
+ * @param roadmap : a RoadMap
+ * @return newMap : an altered RoadMap
+ */
+public static RoadMap findKeys(RoadMap roadmap)
+  {
+
+    //System.out.println("findKeys in " + roadmap);
+
+    ArrayList<KeySpan> keymap = new ArrayList<KeySpan>();
+
+    // Initialize key, mode, and duration of current block
+    KeySpan current = new KeySpan();
+    ArrayList<Block> blocks = roadmap.getBlocks();
+
+    // Check for an empty roadmap
+    if( blocks.isEmpty()
+            || // special case for a new leadsheet
+            (blocks.size() == 1 && blocks.get(0).isChord()
+            && ((ChordBlock) blocks.get(0)).getChord().isNOCHORD()) )
+      {
+        roadmap.getKeyMap().clear();
+        return roadmap;
+      }
+
+    // Create array so we can loop through correctly
+    Block[] blockArray = blocks.toArray(new Block[0]);
+
+    boolean ncFlag = false;
+    int ncDuration = 0;
+
+    int index = 1;
+    Block lastBlock = blockArray[blockArray.length - index];
+
+    while( lastBlock.isChord() && ((ChordBlock) lastBlock).getChord().isNOCHORD() )
+      {
+        ncDuration += lastBlock.getDuration();
+        index++;
+        lastBlock = blockArray[blockArray.length - index];
+      }
+
+    // Initialize KeySpan using last block
+    current.setKey(lastBlock.getKey());
+    current.setMode(lastBlock.getMode());
+    current.setDuration(lastBlock.getDuration() + ncDuration);
+    ncDuration = 0;
+
+    // Loop through blocks backwards, 
+    for( int i = blockArray.length - index - 1; i >= 0; i-- )
+      {
+        Block thisBlock = blockArray[i];
+
+        // Create new KeySpan for new section
         
-        //System.out.println("findKeys in " + roadmap);
-        
-        ArrayList<KeySpan> keymap = new ArrayList<KeySpan>();
-        
-        // Initialize key, mode, and duration of current block
-        KeySpan current = new KeySpan();
-        ArrayList<Block> blocks = roadmap.getBlocks();
-        
-        // Check for an empty roadmap
-        if(blocks.isEmpty() || 
-                // special case for a new leadsheet
-                (blocks.size() == 1 && blocks.get(0).isChord() &&
-                ((ChordBlock)blocks.get(0)).getChord().getChordSymbol().isNOCHORD())) {
-            roadmap.getKeyMap().clear();
-            return roadmap;
-        }
-        
-        // Create array so we can loop through correctly
-        Block[] blockArray = blocks.toArray(new Block[0]);
-        
-        boolean ncFlag = false;
-        int ncDuration = 0;
-        
-        int index = 1;
-        Block lastBlock = blockArray[blockArray.length - index];
-        
-        while(lastBlock.isChord() && ((ChordBlock)lastBlock).getChord()
-                .getChordSymbol().isNOCHORD()) {
-            ncDuration += lastBlock.getDuration();
-            index++;
-            lastBlock = blockArray[blockArray.length - index];
-        }
-        
-        // Initialize KeySpan using last block
-        current.setKey(lastBlock.getKey());
-        current.setMode(lastBlock.getMode());
-        current.setDuration(lastBlock.getDuration() + ncDuration);
-        ncDuration = 0;
-        
-        // Loop through blocks backwards, 
-        for(int i = blockArray.length - index - 1; i >= 0; i--) {
-            // Create new KeySpan for new section
-            if(blockArray[i].isSectionEnd()) {
-                // Match mode to second block if first block is an approach or
-                // launcher that resolves to second block
-                if(blockArray[i].getType().equals("Approach") || 
-                        blockArray[i].getType().equals("Launcher")) {
-                    ArrayList<ChordBlock> cFirstList = 
-                            (ArrayList<ChordBlock>)blockArray[i].flattenBlock();
-                    ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
-                    ArrayList<ChordBlock> cSecondList = 
-                            (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
-                    ChordBlock cSecond = cSecondList.get(0);
-                    
-                    boolean dR = doesResolve(cFirst, cSecond);
-                    if(dR) {
-                        blockArray[i].setMode(cSecond.getMode());
-                    }
-                }
-                
+        // Note that a section end can still consist of a single chord
+        // If that chord is a diminished chord, this will go unnoticed!
+
+        if( thisBlock.isSectionEnd() )
+          {
+            // Match mode to second block if first block is an approach or
+            // launcher that resolves to second block.
+
+            if( isApproachOrLauncher(thisBlock) )
+              {
+                ArrayList<ChordBlock> cFirstList =
+                        (ArrayList<ChordBlock>) thisBlock.flattenBlock();
+
+                ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
+
+                ArrayList<ChordBlock> cSecondList =
+                        (ArrayList<ChordBlock>) blockArray[i + 1].flattenBlock();
+
+                ChordBlock cSecond = cSecondList.get(0);
+
+                if( doesResolve(cFirst, cSecond) )
+                  {
+                    thisBlock.setMode(cSecond.getMode());
+                  }
+              }
+
+            KeySpan entry = current;
+            keymap.add(0, entry);
+
+            current = new KeySpan(thisBlock);
+
+            if( ncFlag )
+              {
+                current.setDuration(current.getDuration() + ncDuration);
+                ncFlag = false;
+                ncDuration = 0;
+              }
+          }
+        // Case in which first block is a brick
+        else if( thisBlock instanceof Brick )
+          {
+            // Check if current block can roll into current KeySpan
+            if( current.getKey() == thisBlock.getKey()
+             && current.getMode().equals(thisBlock.getMode()) )
+              {
+                current.setDuration(current.getDuration()
+                        + thisBlock.getDuration());
+              }
+            // Match mode to second block if first block is an approach or
+            // launcher that resolves to second block
+            else if( isApproachOrLauncher(thisBlock) )
+              {
+                ArrayList<ChordBlock> cFirstList =
+                        (ArrayList<ChordBlock>) thisBlock.flattenBlock();
+
+                ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
+
+                ArrayList<ChordBlock> cSecondList =
+                        (ArrayList<ChordBlock>) blockArray[i + 1].flattenBlock();
+
+                ChordBlock cSecond = cSecondList.get(0);
+
+                if( doesResolve(cFirst, cSecond) )
+                  {
+                    thisBlock.setMode(cSecond.getMode());
+                    current.setDuration(current.getDuration()
+                            + thisBlock.getDuration());
+                  }
+                else
+                  {
+                    KeySpan entry = current;
+                    keymap.add(0, entry);
+
+                    current = new KeySpan(thisBlock);
+
+                    if( ncFlag )
+                      {
+                        current.setDuration(current.getDuration() + ncDuration);
+                        ncFlag = false;
+                        ncDuration = 0;
+                      }
+                  }
+              }
+            // End of current key -- add to the list
+            else
+              {
                 KeySpan entry = current;
                 keymap.add(0, entry);
-                
-                current = new KeySpan(blockArray[i].getKey(),
-                            blockArray[i].getMode(), blockArray[i].getDuration());
-                
-                if(ncFlag) {
+
+                current = new KeySpan(thisBlock);
+
+                if( ncFlag )
+                  {
                     current.setDuration(current.getDuration() + ncDuration);
                     ncFlag = false;
                     ncDuration = 0;
-                }
-            }
-            // Case in which first block is a brick
-            else if(blockArray[i] instanceof Brick) {
-                // Check if current block can roll into current KeySpan
-                if(current.getKey() == blockArray[i].getKey() &&
-                        current.getMode().equals(blockArray[i].getMode())) {
-                    current.setDuration(current.getDuration() +
-                            blockArray[i].getDuration());
-                }
-                // Match mode to second block if first block is an approach or
-                // launcher that resolves to second block
-                else if(blockArray[i].getType().equals("Approach") || 
-                        blockArray[i].getType().equals("Launcher")) {
-                    ArrayList<ChordBlock> cFirstList = 
-                            (ArrayList<ChordBlock>)blockArray[i].flattenBlock();
-                    ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
-                    ArrayList<ChordBlock> cSecondList = 
-                            (ArrayList<ChordBlock>)blockArray[i + 1].flattenBlock();
-                    ChordBlock cSecond = cSecondList.get(0);
-                    
-                    boolean dR = doesResolve(cFirst, cSecond);
-                    if(dR) {
-                        blockArray[i].setMode(cSecond.getMode());
-                        current.setDuration(current.getDuration() +
-                            blockArray[i].getDuration());
-                    }
-                    else {
-                        KeySpan entry = current;
-                        keymap.add(0, entry);
+                  }
+              }
+          }
+        // Case in which first block is a chord
+        else
+          {
+            ChordBlock c = (ChordBlock) thisBlock;
 
-                        current = new KeySpan(blockArray[i].getKey(), 
-                                blockArray[i].getMode(), 
-                                blockArray[i].getDuration());
-                        
-                        if(ncFlag) {
-                            current.setDuration(current.getDuration() + ncDuration);
-                            ncFlag = false;
-                            ncDuration = 0;
-                        }
-                    }
-                }
-                // End of current key -- add to the list
-                else {
-                    KeySpan entry = current;
-                    keymap.add(0, entry);
+            if( c.getChord().isNOCHORD() )
+              {
+                ncDuration += c.getDuration();
+                ncFlag = true;
+              }
+            // Check if chord is diatonically within current KeySpan
+            else if( diatonicChordCheck(c, current.getKey(), current.getMode()) )
+              {
+                current.setDuration(current.getDuration() + c.getDuration());
+              }
+            // If chord is diminished, add it onto current KeySpan
+            else if( c.isDiminished() )
+              {
+                current.setDuration(current.getDuration() + c.getDuration());
+              }
+            // End of current key -- add to the list
+            else
+              {
+                KeySpan entry = current;
+                keymap.add(0, entry);
 
-                    current = new KeySpan(blockArray[i].getKey(),
-                            blockArray[i].getMode(), blockArray[i].getDuration());
-                    
-                    if(ncFlag) {
-                        current.setDuration(current.getDuration() + ncDuration);
-                        ncFlag = false;
-                        ncDuration = 0;
-                    }
-                }
-            }
-            // Case in which first block is a chord
-            else {
-                ChordBlock c = (ChordBlock)blockArray[i];
-                
-                if(c.getChord().getChordSymbol().isNOCHORD()) {
-                    ncDuration += c.getDuration();
-                    ncFlag = true;
-                }
-                // Check if chord is diatonically within current KeySpan
-                else if(diatonicChordCheck(c, current.getKey(), current.getMode())) {
-                    current.setDuration(current.getDuration() + c.getDuration());
-                }
-                // If chord is diminished, add it onto current KeySpan
-                else if (c.isDiminished()) {
-                    current.setDuration(current.getDuration() + c.getDuration());
-                }
-                // End of current key -- add to the list
-                else {
-                    KeySpan entry = current;
-                    keymap.add(0, entry);
-            
-                    current = new KeySpan(c.getKey(), c.getMode(), 
-                            c.getDuration());
-                    if(ncFlag) {
-                        current.setDuration(current.getDuration() + ncDuration);
-                        ncFlag = false;
-                        ncDuration = 0;
-                    }
-                }
-            }
-        }
-        
-        // Special case for NC chord at beginning of song
-        if(ncFlag) {
-            keymap.add(0, current);
-            current = new KeySpan(-1, "", ncDuration);
-        }
-        // Add first KeySpan in song to list
+                current = new KeySpan(c.getKey(), c.getMode(),
+                                      c.getDuration());
+                if( ncFlag )
+                  {
+                    current.setDuration(current.getDuration() + ncDuration);
+                    ncFlag = false;
+                    ncDuration = 0;
+                  }
+              }
+          }
+      }
+
+    // Special case for NC chord at beginning of song
+    if( ncFlag )
+      {
         keymap.add(0, current);
-        blocks = new ArrayList<Block>(Arrays.asList(blockArray));
-        
-        // Replace current RoadMap with one that has properly merged KeySpans
-        RoadMap newMap = new RoadMap(blocks);
-        newMap.setKeyMap(keymap);
-        
-        return newMap;
-    }
-    
+        current = new KeySpan(-1, "", ncDuration);
+      }
+    // Add first KeySpan in song to list
+    keymap.add(0, current);
+    blocks = new ArrayList<Block>(Arrays.asList(blockArray));
+
+    // Replace current RoadMap with one that has properly merged KeySpans
+    RoadMap newMap = new RoadMap(blocks);
+    newMap.setKeyMap(keymap);
+
+    return newMap;
+  }
+
+
     /** findLaunchers
      * Analyze ArrayList of Blocks to find approaches that could be launchers
      * @param blocks : ArrayList of blocks
@@ -718,5 +746,17 @@ public class PostProcessor {
         dict = new EquivalenceDictionary();
         dict.loadDictionary(CYKParser.DICTIONARY_NAME);
       }
+    
+    /**
+     * Tell whether the argument block is an Approach or a Launcher type
+     * @param b
+     * @return 
+     */
+    public static boolean isApproachOrLauncher(Block b)
+      {
+        String type = b.getType();
+        return type.equals("Approach") || type.equals("Launcher");
+      }
+ 
 }
      

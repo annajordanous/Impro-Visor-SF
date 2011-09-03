@@ -734,4 +734,19 @@ static int barsOnLine;
       {
       return symbol;
       }
+    
+    
+    /**
+     * Returns the quality (e.g. M7, m7, o, etc. as a String) for this Chord
+     * If the quality is just a major triad, then quality is the empty string.
+     */
+    public String getQuality()
+      {
+        return symbol.getQuality();
+      }
+    
+    public boolean isNOCHORD()
+      {
+        return symbol.isNOCHORD();
+      }
 }

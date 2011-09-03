@@ -173,22 +173,20 @@ public class ChordBlock extends Block {
     public String getSymbol() {
         if (name.equals(Chord.NOCHORD))
             return name;
-        return chord.getChordSymbol().getQuality();
+        return chord.getQuality();
     }
     
     /** isDiminished
      * Describes whether or not the ChordBlock represents a diminished chord
      * @return a boolean
      */
-    public boolean isDiminished() {
-        boolean dim = false;
+    public boolean isDiminished() 
+      {
+        String quality = getQuality();
+        //System.out.println("quality of " + this + " is " + getSymbol() );
         
-        if(this.getSymbol().startsWith("dim") || this.getSymbol().startsWith("o")) {
-            dim = true;
-        }
-        
-        return dim;
-    }
+        return quality.startsWith("dim") || quality.startsWith("o");
+      }
 
     /** isDominant
      * Describes whether or not the ChordBlock represents a diminished chord

@@ -53,6 +53,15 @@ public class KeySpan {
         duration = d;
     }
     
+     /** KeySpan
+     * Constructs a KeySpan based on a Block
+     */
+    
+    public KeySpan(Block b)
+      {
+        this(b.getKey(), b.getMode(), b.getDuration());
+      }
+    
     /** KeySpan / 0
      * Constructs a default KeySpan for no chord and no duration
      */
