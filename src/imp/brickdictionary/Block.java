@@ -22,6 +22,7 @@
 
 package imp.brickdictionary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import polya.Polylist;
@@ -311,6 +312,16 @@ public class Block {
         return flattenBlock().get(index);
     }
     
-    // end of class Block
-
+    public ChordBlock getFirstChord()
+      {
+        return flattenBlock().get(0);
+      }
+    
+    public ChordBlock getLastChord()
+      {
+        List<ChordBlock> list = flattenBlock();
+        return list.get(list.size()-1);
+      }
+    
+// end of class Block
 }

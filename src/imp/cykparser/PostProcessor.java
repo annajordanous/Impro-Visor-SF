@@ -187,15 +187,9 @@ public static RoadMap findKeys(RoadMap roadmap)
 
             if( isApproachOrLauncher(thisBlock) )
               {
-                ArrayList<ChordBlock> cFirstList =
-                        (ArrayList<ChordBlock>) thisBlock.flattenBlock();
+                ChordBlock cFirst = thisBlock.getLastChord();
 
-                ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
-
-                ArrayList<ChordBlock> cSecondList =
-                        (ArrayList<ChordBlock>) blockArray[i + 1].flattenBlock();
-
-                ChordBlock cSecond = cSecondList.get(0);
+                ChordBlock cSecond = blockArray[i + 1].getFirstChord();
 
                 if( doesResolve(cFirst, cSecond) )
                   {
@@ -229,15 +223,9 @@ public static RoadMap findKeys(RoadMap roadmap)
             // launcher that resolves to second block
             else if( isApproachOrLauncher(thisBlock) )
               {
-                ArrayList<ChordBlock> cFirstList =
-                        (ArrayList<ChordBlock>) thisBlock.flattenBlock();
+                ChordBlock cFirst = thisBlock.getLastChord();
 
-                ChordBlock cFirst = cFirstList.get(cFirstList.size() - 1);
-
-                ArrayList<ChordBlock> cSecondList =
-                        (ArrayList<ChordBlock>) blockArray[i + 1].flattenBlock();
-
-                ChordBlock cSecond = cSecondList.get(0);
+                ChordBlock cSecond = blockArray[i + 1].getFirstChord(); 
 
                 if( doesResolve(cFirst, cSecond) )
                   {
