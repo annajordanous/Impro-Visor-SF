@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -193,7 +192,7 @@ public class Block {
      * Overridden by the corresponding method in Brick or Chord
      * @return a List of ChordBlocks.
      */
-    public List<ChordBlock> flattenBlock() {
+    public ArrayList<ChordBlock> flattenBlock() {
         return null;
     }
     
@@ -321,6 +320,17 @@ public class Block {
       {
         List<ChordBlock> list = flattenBlock();
         return list.get(list.size()-1);
+      }
+    
+    public String endValueString()
+      {
+        switch( endValue )
+          {
+            case NO_END: return "";
+            case SECTION_END: return "Section End";
+            case PHRASE_END: return "Phrase End";
+          }
+        return "";
       }
     
 // end of class Block

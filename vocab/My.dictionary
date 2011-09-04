@@ -40,17 +40,26 @@
 
 // Equivalence Rules
 
-(equiv C CM CMajor CM7 CM9 C6 C69 CM6 CM69 CM7#11 CM9#11 CM13#11 
-       CMaj7 CMaj9 CMaj7#11 CMaj9#11 CMaj13#11 )
+(equiv C CM CMajor 
+       C6   C69     CM6    CM69 C69#11 CM69#11
+       CM7  CMaj7   CM7#11 CMaj7#11  
+       CM9  CMaj9   CM9#11 CMaj9#11 
+       CM13 CM13#11 CMaj13#11
+       Cadd9 Cadd2 Csus2)
 
 (equiv Cm Cminor Cm6 Cm69 CmM7)
+
 (equiv Cm7 Cm9 Cm11 Cm13)
-(equiv C7 CDominant
-    C7b9 C7#9 C7+ C7#11 C7b9#11 C7b9b13 C9 C9#11 C9b5 C9b13 
-    C13 C13b9 C13#9 C7#5#9 C13#11 C13b5 C13b9#11 C13#9#11 C9+ C7b5b9
-    )
-(equiv Co Cdim Cdim7 Co7)
+
 (equiv Cm7b5 Cm9b5 Cm11b5)
+
+(equiv C7 CDominant C7alt
+       C7b9 C7#9 C7+ C7#11 C7b9#11 C7b9b13 C9 C9#11 C9b5 C9b13 
+       C13 C13b9 C13#9 C7#5#9 C13#11 C13b5 C13b9#11 C13#9#11 C9+ C7b5b9
+       Csus Csus4 C7sus C7sus4 C9sus C9sus4 C7sus4b9 C7b9sus C7b9sus4)
+
+(equiv Co Cdim Cdim7 Co7 CoM7)
+
 
 // Diatonic Rules
 
@@ -640,7 +649,7 @@
         (Brick Dominant-Cycle C 1)
         (Chord Cm 1))
 
-(Def-Brick Dominant-Turnaround Major Turnaround C
+(Def-Brick Dominant-Turnaround Dominant Turnaround C
 	(Chord C7 1)
 	(Chord Ab7 1)
         (Chord G7 1)
@@ -703,6 +712,10 @@
 (Def-Brick Extended-Approach(var 2) Major Approach C
 	(Chord Am7 1)
 	(Brick Straight-Approach C 2))
+
+(Def-Brick Extended-Approach(var 3) Minor Approach D
+        (Chord Bm7b5 1)
+        (Brick Slow-Approach D 5))
 
 (Def-Brick Foggy-Cadence Major Cadence C
         (Chord Eb7 1)
@@ -1015,6 +1028,10 @@
         (Brick On-Off-Major-VI E 2)
         (Brick Sad-Approach E 2))
 
+(Def-Brick POT(new) Major Turnaround C
+        (Brick Major-On C 2)
+        (Brick Straight-Approach C 2))
+
 /*
 (Def-Brick POT(var 3) Major Turnaround C
 	(Chord C 2)
@@ -1231,17 +1248,17 @@
         (Brick Pullback-Extended C 6)
         (Chord C 2))
 
-(Def-Brick Rainbow-Cadence(var 1) Major Cadence C
+(Def-Brick Rainbow-Cadence(var 1) Major Cadence F
 	(Chord C  1)
 	(Chord Em 1)
 	(Chord F  2))
 
-(Def-Brick Rainbow-Cadence(var 2) Major Cadence C
+(Def-Brick Rainbow-Cadence(var 2) Dominant Cadence F
         (Chord C/E 1)
         (Chord E+ 1)
         (Chord F7#11 2))
 
-(Def-Brick Rainbow-Cadence(var 3) Major Cadence C
+(Def-Brick Rainbow-Cadence(var 3) Major Cadence F
 	(Chord CM7 1)
 	(Chord E7 1)
 	(Chord FM7 2))
@@ -1327,7 +1344,7 @@
 	(Chord Dm7 1)
         (Chord Ebo 1))
 
-(Def-Brick Rhythm-Turnaround(var) Major Approach C
+(Def-Brick Rhythm-Turnaround(var) Major Turnaround C
         (Brick Upslide C 2)
         (Chord G7/D 1)
         (Chord Ebo 1))
@@ -1691,7 +1708,7 @@
         (Brick Upslide Ab 4)
         (Brick On-Off-On-To-II Eb 4))
 
-(Def-Brick IV-n-Bauble Dominant Approach Eb
+(Def-Brick IV-n-Bauble Major Approach Eb
         (Brick Upslide Ab 2)
         (Brick Sad-Approach C 2))
 

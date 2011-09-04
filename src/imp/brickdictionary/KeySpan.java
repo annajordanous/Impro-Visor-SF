@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -48,9 +47,7 @@ public class KeySpan {
      * @param d, the duration (a long) 
      */
     public KeySpan(long k, String m, long d) {
-        KeyMode km = new KeyMode(k, m);
-        keymode = km;
-        duration = d;
+        this(new KeyMode(k, m), d);
     }
     
      /** KeySpan
@@ -71,6 +68,7 @@ public class KeySpan {
      * Get the key of the KeySpan
      * @return the key, a long
      */
+    
     public long getKey() {
         return keymode.getKey();
     }
@@ -113,6 +111,14 @@ public class KeySpan {
      */
     public void setDuration(long d) {
         duration = d;
+    }
+    
+    /** 
+     * Augment the duration of the KeySpan by the argument
+     * @param d, the duration as a long
+     */
+    public void augmentDuration(long d) {
+        duration += d;
     }
     
     /** toPolylist

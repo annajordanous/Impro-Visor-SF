@@ -23,7 +23,6 @@
 package imp.brickdictionary;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import imp.data.Chord;
 import polya.Arith;
@@ -226,7 +225,7 @@ public class ChordBlock extends Block {
      *         depending on if the ChordBlock is of zero duration or not
      */
     @Override
-    public List<Block> getSubBlocks() {
+    public ArrayList<Block> getSubBlocks() {
         ArrayList<Block> subBlocks = new ArrayList<Block>();
         if (this.duration != 0)
             subBlocks.add(this);
@@ -239,8 +238,8 @@ public class ChordBlock extends Block {
      *         ChordBlock depending on if the ChordBlock is of zero duration 
      */
     @Override
-    public List<ChordBlock> flattenBlock() {
-        List<ChordBlock> chordList = new ArrayList<ChordBlock>();
+    public ArrayList<ChordBlock> flattenBlock() {
+        ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
         if (this.duration != 0)
             chordList.add(this);
         

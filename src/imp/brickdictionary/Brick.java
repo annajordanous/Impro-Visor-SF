@@ -789,7 +789,9 @@ public class Brick extends Block {
      */
     @Override
     public String toString() {
-        return name + " " + BrickLibrary.keyNumToName(key) + " " + duration;
+        return name + " " + BrickLibrary.keyNumToName(key) + " " + duration 
+                + " (type " + type + ") "
+                + endValueString();
     }
     
     /** printBrick

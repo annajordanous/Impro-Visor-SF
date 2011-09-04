@@ -34,29 +34,21 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-C7 Ab7 | G7 C7 | 
 (section (style swing)) 
 
-F7 Bb7 | EbM7 / Dm7 G7 | 
+C7 Ab7 | G7 C7 | F7 Bb7 | EbM7 / Dm7b5 G7 | 
 
-(phrase (style swing)) 
-C7 Ab7 | G7 C7 | 
 (section (style swing)) 
 
-F7 Bb7 | EbM7 Eb7 | 
+C7 Ab7 | G7 C7 | F7 Bb7 | EbM7 Eb7 | 
 
-(phrase (style swing)) 
-AbM7 Ao | Eb/Bb Eb7 | 
 (section (style swing)) 
 
-AbM7 Ao | Dm7b5 G7 | 
+AbM7 Ao | Eb/Bb Eb7 | AbM7 Ao | Dm7b5 G7 | 
 
-(phrase (style swing)) 
-C7 Ab7 | G7 C7 | 
 (section (style swing)) 
 
-F7 Bb7 | EbM7 / Dm7 G7 | 
+C7 Ab7 | G7 C7 | F7 Bb7 | EbM7 / Dm7b5 G7 | 
 
 (part
     (type melody)

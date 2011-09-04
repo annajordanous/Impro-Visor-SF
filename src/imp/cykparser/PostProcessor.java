@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -58,14 +57,17 @@ public class PostProcessor {
     
     //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
 
-    public static String[] FIRST_STABLE = {"Cadence", "Dropback", "Ending", "On", "On-Off+", "Opening", "Overrun"};
+    public static String[] FIRST_STABLE = {"Cadence", "Dropback", "Ending", "On", "On-Off", "On-Off+", "Opening", "Overrun"};
 
     public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "SPOT"};
     
     // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;
+    
     // Rules for which chords are diatonic depending on mode
     private static ArrayList<Polylist> diatonicRules;
+    
+    // Introduced to avoid reading the dictionary repeatedly in checkJoinability.
     
     static
       {
@@ -122,14 +124,14 @@ public class PostProcessor {
         diatonicRules = d;
     }
     
-/** findKeys
- * Method groups consecutive block of same key for overarching key sections
+/** 
+ * Group consecutive block of same key for overarching key sections.
  * @param roadmap : a RoadMap
  * @return newMap : an altered RoadMap
  */
+    
 public static RoadMap findKeys(RoadMap roadmap)
   {
-
     //System.out.println("findKeys in " + roadmap);
 
     ArrayList<KeySpan> keymap = new ArrayList<KeySpan>();
@@ -165,9 +167,11 @@ public static RoadMap findKeys(RoadMap roadmap)
       }
 
     // Initialize KeySpan using last block
+    
     current.setKey(lastBlock.getKey());
     current.setMode(lastBlock.getMode());
     current.setDuration(lastBlock.getDuration() + ncDuration);
+    
     ncDuration = 0;
 
     // Loop through blocks backwards, 
@@ -175,13 +179,12 @@ public static RoadMap findKeys(RoadMap roadmap)
       {
         Block thisBlock = blockArray[i];
 
-        // Create new KeySpan for new section
-        
-        // Note that a section end can still consist of a single chord
-        // If that chord is a diminished chord, this will go unnoticed!
+        // Create new KeySpan for new section. 
 
         if( thisBlock.isSectionEnd() )
           {
+            // Note that a section end can still consist of a single chord
+
             KeySpan entry = current;
             keymap.add(0, entry);
 
@@ -189,24 +192,21 @@ public static RoadMap findKeys(RoadMap roadmap)
 
             if( thisBlock.isChord() )
               {
-              ChordBlock c = (ChordBlock) thisBlock;
+                ChordBlock c = (ChordBlock) thisBlock;
 
-            if( diatonicChordCheck(c, entry.getKey(), entry.getMode()) )
-              {
-                current.setKey(entry.getKey());
-                current.setMode(entry.getMode());
-              }
-            // End of current key -- add to the list
-            else
-              {
-                current = new KeySpan(c.getKey(), c.getMode(),
-                                      c.getDuration());
-  
-              }                
+                if( diatonicChordCheck(c, entry.getKey(), entry.getMode()) )
+                  {
+                    current.setKey(entry.getKey());
+                    current.setMode(entry.getMode());
+                  }
+                // End of current key -- add to the list
+                else
+                  {
+                    current = new KeySpan(c);
+                  }
               }
             // Match mode to second block if first block is an approach or
             // launcher that resolves to second block.
-
             else if( isApproachOrLauncher(thisBlock) )
               {
                 ChordBlock cFirst = thisBlock.getLastChord();
@@ -219,10 +219,9 @@ public static RoadMap findKeys(RoadMap roadmap)
                   }
               }
 
-
             if( ncFlag )
               {
-                current.setDuration(current.getDuration() + ncDuration);
+                current.augmentDuration(ncDuration);
                 ncFlag = false;
                 ncDuration = 0;
               }
@@ -234,8 +233,7 @@ public static RoadMap findKeys(RoadMap roadmap)
             if( current.getKey() == thisBlock.getKey()
              && current.getMode().equals(thisBlock.getMode()) )
               {
-                current.setDuration(current.getDuration()
-                        + thisBlock.getDuration());
+                current.augmentDuration(thisBlock.getDuration());
               }
             // Match mode to second block if first block is an approach or
             // launcher that resolves to second block
@@ -243,13 +241,12 @@ public static RoadMap findKeys(RoadMap roadmap)
               {
                 ChordBlock cFirst = thisBlock.getLastChord();
 
-                ChordBlock cSecond = blockArray[i + 1].getFirstChord(); 
+                ChordBlock cSecond = blockArray[i + 1].getFirstChord();
 
                 if( doesResolve(cFirst, cSecond) )
                   {
                     thisBlock.setMode(cSecond.getMode());
-                    current.setDuration(current.getDuration()
-                            + thisBlock.getDuration());
+                    current.augmentDuration(thisBlock.getDuration());
                   }
                 else
                   {
@@ -260,7 +257,7 @@ public static RoadMap findKeys(RoadMap roadmap)
 
                     if( ncFlag )
                       {
-                        current.setDuration(current.getDuration() + ncDuration);
+                        current.augmentDuration(ncDuration);
                         ncFlag = false;
                         ncDuration = 0;
                       }
@@ -276,7 +273,7 @@ public static RoadMap findKeys(RoadMap roadmap)
 
                 if( ncFlag )
                   {
-                    current.setDuration(current.getDuration() + ncDuration);
+                    current.augmentDuration(ncDuration);
                     ncFlag = false;
                     ncDuration = 0;
                   }
@@ -295,7 +292,7 @@ public static RoadMap findKeys(RoadMap roadmap)
             // Check if chord is diatonically within current KeySpan
             else if( diatonicChordCheck(c, current.getKey(), current.getMode()) )
               {
-                current.setDuration(current.getDuration() + c.getDuration());
+                current.augmentDuration(c.getDuration());
               }
             // End of current key -- add to the list
             else
@@ -303,11 +300,10 @@ public static RoadMap findKeys(RoadMap roadmap)
                 KeySpan entry = current;
                 keymap.add(0, entry);
 
-                current = new KeySpan(c.getKey(), c.getMode(),
-                                      c.getDuration());
+                current = new KeySpan(c);
                 if( ncFlag )
                   {
-                    current.setDuration(current.getDuration() + ncDuration);
+                    current.augmentDuration(ncDuration);
                     ncFlag = false;
                     ncDuration = 0;
                   }
@@ -321,11 +317,14 @@ public static RoadMap findKeys(RoadMap roadmap)
         keymap.add(0, current);
         current = new KeySpan(-1, "", ncDuration);
       }
+    
     // Add first KeySpan in song to list
+    
     keymap.add(0, current);
     blocks = new ArrayList<Block>(Arrays.asList(blockArray));
 
     // Replace current RoadMap with one that has properly merged KeySpans
+    
     RoadMap newMap = new RoadMap(blocks);
     newMap.setKeyMap(keymap);
 
@@ -333,117 +332,160 @@ public static RoadMap findKeys(RoadMap roadmap)
   }
 
 
-    /** findLaunchers
-     * Analyze ArrayList of Blocks to find approaches that could be launchers
+    /** 
+     * Analyze ArrayList of Blocks to find approaches that could be launchers.
      * @param blocks : ArrayList of blocks
      * @return alteredList : ArrayList of blocks adjusted for any launchers 
      *                       found
      */
-    public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks) {
-        // Rebuilding original list, but with launchers in the appropriate 
-        // places
-        ArrayList<Block> alteredList = new ArrayList<Block>();
+
+public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
+  {
+    // Rebuilding original list, but with launchers in the appropriate 
+    // places
+    ArrayList<Block> alteredList = new ArrayList<Block>();
+
+    for( int i = 0; i < blocks.size(); i++ )
+      {
+
+        Block thisBlock = blocks.get(i);
         
-        for(int i = 0; i < blocks.size(); i++) {
-            
-            // If the current block is a brick, check if it could be a launcher
-            if(blocks.get(i) instanceof Brick) {
-                Brick b = (Brick)blocks.get(i);
-                ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
-                Block postBlock;
-                
-                // If the brick is not the last one in the list, get chords from
-                // next block
-                if(i != blocks.size() - 1) {
-                    postBlock = blocks.get(i + 1);
-                    chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
-                }
-                // Otherwise, loop around and get chords from first block
-                else {
-                    postBlock = blocks.get(0);
-                    chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
-                }
-                    
-                String brickName = b.getName();
-                
-                if(brickName.equals("Straight Approach")) {
-                    String altResolution = getAlternateResolution(b, chordList.get(0));
-                    if(!altResolution.isEmpty()) {
-                        brickName = brickName.replace("Straight", altResolution);
-                        b.setName(brickName);
-                        b.setKey(postBlock.getKey());
-                        b.setMode(postBlock.getMode());
-                    }
-                }
-                
-                // Check if brick is an approach that resolves to next block
-                if(b.getType().equals("Approach") && b.isSectionEnd() && 
-                        doesResolve(b, chordList.get(0))) {
-                    // If the name has "Approach", replace it with "Launcher"
-                    if(brickName.contains("Approach")) 
-                        brickName = brickName.replace("Approach", "Launcher");
-                    // If not, append "(Launcher)" to the end
-                    else
-                        brickName = brickName + " (Launcher)";
-                    b.setName(brickName);
-                    b.setType("Launcher");
-                    
-                    // Add altered brick to the list
-                    alteredList.add(b);
-                }
-                // If brick is not an approach or does not resolve, add it to 
-                // the list 
-                else 
-                    alteredList.add(b);
-            }
-            
-            // Case in which current block is a dominant chord
-            else if (((ChordBlock)blocks.get(i)).getSymbol().startsWith("7")) {
-                ChordBlock c = (ChordBlock)blocks.get(i);
-                Block postBlock;
-                ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
-                
-                // If the brick is not the last one in the list, get chords from
-                // next block
-                if(i != blocks.size() - 1)  {
-                    postBlock = blocks.get(i + 1); 
-                    chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
-                }
-                // Otherwise, loop around and get chords from first block
-                else {
-                    postBlock = blocks.get(0); 
-                    chordList = (ArrayList<ChordBlock>)postBlock.flattenBlock();
-                }
-                
-                String altResolution = getAlternateResolution(c, chordList.get(0));
-                Block b;
-                if(!altResolution.isEmpty()) {
-                    b = new Brick(c, altResolution, "Dominant");
-                }
-                else {
-                    b = new ChordBlock(c);
-                }
-                
-                
-                // Check for single-chord launcher
-                if(doesResolve(c, chordList.get(0)) && c.isSectionEnd()) {
-                    Brick uniLauncher = new Brick(c, chordList.get(0).getMode());
-                    
-                    alteredList.add(uniLauncher);
-                }
-                else
-                    alteredList.add(b);
-            }
-                    
-            // If the block is a non-dominant chord, add it to the list
+        //System.out.println("thisBlock = " + thisBlock);
+
+        // If the current block is a brick, check if it could be a launcher
+        if( thisBlock instanceof Brick )
+          {
+            Brick b = (Brick) thisBlock;
+            ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
+
+            Block postBlock;
+
+            // If the brick is not the last one in the list, get chords from
+            // next block.
+
+            if( i != blocks.size() - 1 )
+              {
+                postBlock = blocks.get(i + 1);
+                chordList = (ArrayList<ChordBlock>) postBlock.flattenBlock();
+              }
+            // Otherwise, loop around and get chords from first block
             else
-                alteredList.add(blocks.get(i));
-        }
-        
-        return alteredList;
-    }
+              {
+                postBlock = blocks.get(0);
+                chordList = (ArrayList<ChordBlock>) postBlock.flattenBlock();
+              }
+
+            String brickName = b.getName();
+
+            if( brickName.equals("Straight Approach") )
+              {
+                String altResolution = getAlternateResolution(b, chordList.get(0));
+                if( !altResolution.isEmpty() )
+                  {
+                    brickName = brickName.replace("Straight", altResolution);
+                    b.setName(brickName);
+                    b.setKey(postBlock.getKey());
+                    b.setMode(postBlock.getMode());
+                  }
+              }
+
+            // Check if brick is an approach is actually a Launcher.
+            // In "Insights" examples, resolution is not required.
+
+            if( b.getType().equals("Approach") && b.isSectionEnd()
+                    /* && doesResolve(b, chordList.get(0))*/ ) 
+              {
+                // If the name has "Approach", replace it with "Launcher"
+                if( brickName.contains("Approach") )
+                  {
+                    brickName = brickName.replace("Approach", "Launcher");
+                  }
+                // If not, append "(Launcher)" to the end
+                else
+                  {
+                    brickName = brickName + " (Launcher)";
+                  }
+
+                b.setName(brickName);
+                b.setType("Launcher");
+
+                // Add altered brick to the list
+                alteredList.add(b);
+              }
+            // If brick is not an approach or does not resolve, add it to 
+            // the list 
+            else
+              {
+                alteredList.add(b);
+              }
+          }
+        // Case in which current block is a dominant chord:
+        else if( ((ChordBlock) blocks.get(i)).isDominant() )
+          {
+
+            ChordBlock c = (ChordBlock) thisBlock;
+            Block postBlock;
+            ArrayList<ChordBlock> chordList = new ArrayList<ChordBlock>();
+
+            // If the brick is not the last one in the list, get chords from
+            // next block.
+
+            if( i != blocks.size() - 1 )
+              {
+                postBlock = blocks.get(i + 1);
+                chordList = (ArrayList<ChordBlock>) postBlock.flattenBlock();
+              }
+            // Otherwise, loop around and get chords from first block.
+            else
+              {
+                postBlock = blocks.get(0);
+                chordList = (ArrayList<ChordBlock>) postBlock.flattenBlock();
+              }
+
+            String altResolution = getAlternateResolution(c, chordList.get(0));
+
+            Block b;
+            if( !altResolution.isEmpty() )
+              {
+                b = new Brick(c, altResolution, "Dominant");
+              }
+            else
+              {
+                b = new ChordBlock(c);
+              }
+
+            // Check for single-chord launcher.
+
+            if( doesResolve(c, chordList.get(0)) && c.isSectionEnd() )
+              {
+                Brick uniLauncher = new Brick(c, chordList.get(0).getMode());
+
+                alteredList.add(uniLauncher);
+              }
+            else
+              {
+                alteredList.add(b);
+              }
+          }
+        // If the block is a non-dominant chord, add it to the list
+        else
+          {
+            alteredList.add(thisBlock);
+          }
+      }
+    return alteredList;
+  }
+   
     
+    /**
+     * Change the resolution of a Straight approach to some other kind,
+     * depending on the target
+     * @param approach
+     * @param target
+     * @return 
+     */
     public static String getAlternateResolution(Block approach, ChordBlock target) {
+        
         ArrayList<ChordBlock> chordList = (ArrayList<ChordBlock>) approach.flattenBlock();
         long domRoot = chordList.get(chordList.size() - 1).getKey();
         int domRootInt = Long.valueOf(domRoot).intValue();
@@ -457,11 +499,12 @@ public static RoadMap findKeys(RoadMap roadmap)
         return altResolution;
     }
     
-     /** findJoins
-     * A method that finds joins between bricks
+     /** 
+     * A method that finds joins between two bricks, if any.
      * @param blocks : ArrayList of Blocks (Chords or Bricks)
      * @return joinList : ArrayList of joins between blocks
      */
+    
     public static ArrayList<String> findJoins(ArrayList<Block> blocks) {
 
         String[] joinArray = null;
@@ -512,18 +555,18 @@ public static RoadMap findKeys(RoadMap roadmap)
         return joinList;
     }
     
-    /** checkJoinability
-     * Checks if two Blocks are joinable
+    /** 
+     * Check whether a Block is joinable to a Brick.
      * @param first : a Block
      * @param second : a Brick
      * @return joinable : a boolean indicating whether or not first and second 
      *                    are joinable
      */
+    
     public static boolean checkJoinability(Block first, Brick second) {
         boolean joinable = false;
         
-        ArrayList<ChordBlock> firstList = 
-                (ArrayList<ChordBlock>)first.flattenBlock();
+        ArrayList<ChordBlock> firstList = first.flattenBlock();
         ArrayList<ChordBlock> secondList = second.flattenBlock();
         
         // Comparing last chord of first block and first chord of second block
@@ -580,12 +623,13 @@ public static RoadMap findKeys(RoadMap roadmap)
 
     }
     
-    /** checkDogleg
+    /** 
      * Checks whether a possible join is a dogleg
      * @param first : a Block (before join)
      * @param second : a Brick (after join)
      * @return isDogleg : a boolean indicating whether or not join is dogleg
      */
+    
     public static boolean checkDogleg(Block first, Brick second) {
         boolean isDogleg = false;
         
@@ -612,8 +656,8 @@ public static RoadMap findKeys(RoadMap roadmap)
         return isDogleg;
     }
     
-    /** joinLookup
-     * Retrieve name of join based on difference between keys of two bricks
+    /**
+     * Retrieve name of join based on difference between keys of two bricks.
      * @param keyDiff : difference of keys between two bricks
      * @return  Name of join
      */
@@ -627,8 +671,8 @@ public static RoadMap findKeys(RoadMap roadmap)
         }
     }
     
-    /**diatonicChordCheck
-     * Checks to see if chord fits diatonically within key
+    /**
+     * Check to see if chord fits diatonically within key.
      * @param c : chord to be checked
      * @param key : key that chord is checked against
      * @param mode : String that determines qualities of chords in key
@@ -666,7 +710,7 @@ public static RoadMap findKeys(RoadMap roadmap)
                 cSym = ChordSymbol.makeChordSymbol(p.first().toString());
                 break;
             }
-        };
+        }
         
         // Transpose cSym and c back by offset saved earlier
         if(cSym != null) {
@@ -691,8 +735,8 @@ public static RoadMap findKeys(RoadMap roadmap)
         return isInKey;
     }
     
-    /** doesResolve
-     * Check if brick resolves to a certain block
+    /** 
+     * Check if brick resolves to a certain block.
      * @param b1 : brick to be checked
      * @param b2 : possible tonic of b1
      * @return whether or not b1 resolves to b2
@@ -707,8 +751,8 @@ public static RoadMap findKeys(RoadMap roadmap)
         return false;
     }
        
-       /** doesResolve
-     * Check if brick resolves to a certain block
+    /** 
+     * Check if ChordBlock resolves to a certain block
      * @param b1 : ChordBlock to be checked
      * @param b2 : possible tonic of b1
      * @return whether or not b1 resolves to b2
