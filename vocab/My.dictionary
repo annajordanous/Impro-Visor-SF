@@ -1178,7 +1178,7 @@
 	(Brick Straight-Approach C 4))
 
 (Def-Brick Pennies-Turnaround(TTFA) Major Turnaround C
-        (Brick TTFA C 4)
+        (Brick TTFA-Dropback C 4)
         (Brick Straight-Approach C 4))
 
 (Def-Brick Pennies-Turnaround-Two-Goes Major Turnaround C
@@ -1531,7 +1531,7 @@
 	(Chord CM7 2))
 
 (Def-Brick Starlight-Dropback Major Dropback C
-	(Brick Straight-Approach E 2)
+	(Brick Sad-Approach E 2)
 	(Brick Straight-Approach D 2))
 
 (Def-Brick Starlight-Opening Major Opening Bb
@@ -1871,31 +1871,31 @@
 // TTFA = Turnaround to Further Away 
 // where "Further Away" means the ii chord
 
-(Def-Brick TTFA(standard) Major Dropback C
+(Def-Brick TTFA-Dropback(standard) Major Dropback C
 	(Chord CM7 1)
 	(Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(dropback) Major Dropback Eb
+(Def-Brick TTFA-Dropback(dropback) Major Dropback Eb
         (Chord EbM7/Bb 1)
         (Brick Minor-Perfect-Cadence G 2)
         (Chord C7 1))
 
-(Def-Brick TTFA(IV-variant) Major Dropback C
+(Def-Brick TTFA-Dropback(IV-variant) Major Dropback C
 	(Chord CM7 1)
 	(Chord F7 1)
 	(Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(nondominant) Major Dropback C
+(Def-Brick TTFA-Dropback(nondominant) Major Dropback C
         (Chord CM7 1)
         (Chord FM7 1)
         (Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(ii-variant) Major Dropback C
+(Def-Brick TTFA-Dropback(ii-variant) Major Dropback C
         (Chord CM7 1)
         (Chord Dm7 1)
         (Brick Straight-Approach D 2))
 
-(Def-Brick TTFA(II n Back variant) Dominant Dropback Eb
+(Def-Brick TTFA-Dropback(II n Back variant) Dominant Dropback Eb
         (Brick Major-On Eb 2)
         (Brick II-n-Back Eb 4)
         (Chord Cm7 2))
@@ -1906,40 +1906,40 @@
         (Chord Bb7 1)
         (Chord A7 1))
 
-(Def-Brick TTFA(IV-iii-vi-variant) Major Dropback C
+(Def-Brick TTFA-Dropback(IV-iii-vi-variant) Major Dropback C
         (Chord CM7 1)
         (Chord F7 1)
         (Chord Em7 1)
         (Chord Am7 1))
 
-(Def-Brick TTFA(IV-III-vi-variant) Dominant Dropback C
+(Def-Brick TTFA-Dropback(IV-III-vi-variant) Dominant Dropback C
         (Chord CM7 1)
         (Chord FM7 1)
         (Chord E7 1)
         (Chord Am7 1))
 
-(Def-Brick TTFA(rainy) Major Dropback C
+(Def-Brick TTFA-Dropback(rainy) Major Dropback C
         (Chord CM7 1)
         (Chord F7 1)
         (Chord Em7 1)
         (Chord Ebo 1))
 
-(Def-Brick TTFA(Minor Plagal) Major Dropback C
+(Def-Brick TTFA-Dropback(Minor Plagal) Major Dropback C
         (Chord CM7 1)
         (Brick Minor-Plagal-Cadence C 2)
         (Brick An-Approach D 1))
 
-(Def-Brick TTFA(on-off) Dominant Dropback F
+(Def-Brick TTFA-Dropback(on-off) Dominant Dropback F
         (Brick On-Off-Major-IV F 2)
         (Chord Am7b5 1)
         (Chord D7 1))
 
-(Def-Brick TTFA(minor chromatic descent) Major Dropback F
+(Def-Brick TTFA-Dropback(minor chromatic descent) Major Dropback F
         (Chord FM7 1)
         (Chord Bb7 1)
         (Brick Minor-Chromatic-Approach G 2))
 
-(Def-Brick TTFA(Somewhere) Major Dropback Db
+(Def-Brick TTFA-Dropback(Somewhere) Major Dropback Db
         (Brick Major-On Db 1)
         (Brick Somewhere-Approach Ab 3))
 
