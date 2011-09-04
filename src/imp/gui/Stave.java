@@ -53,6 +53,10 @@ public class Stave
         extends JPanel
         implements Constants
 {
+
+String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
+
+   
 /**
  * Style and phrase layout parameters
  */
@@ -3850,8 +3854,14 @@ public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
 
     boolean approachable = (noteType == CHORD_TONE || noteType == COLOR_TONE);
 
-    if( c != null && (note != null) && approachable && !note.isRest() && !c.getName().equals("NC")
-            && prevNote != null && !prevNote.isRest() && !isApproach )
+    if( c != null 
+     && (note != null) 
+     && approachable 
+     && !note.isRest() 
+     && !c.getName().equals("NC")
+     && prevNote != null 
+     && !prevNote.isRest() 
+     && !isApproach )
       {
 
         if( prevNote.getPitch() == note.getPitch() - 1
@@ -3863,49 +3873,13 @@ public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
                                                    prevIndex, g, true, colorArray);
 
           }
-        /* USING THE VOCAB APPROACHES */
-        /*
-        ChordForm form = c.getChordSymbol().getChordForm();
-        // The list of lists of (chordTone approach1 approach2 etc)
-        Polylist approachList = form.getApproach(c.getRoot());
-        //System.out.println("Approach list: " + approachList);
-        //System.out.println("\tfor notes: " + prevNote.getPitch() + ", " + note.getPitch());
-         * The current note should be the head of one of these nested
-         * lists.  When we find it, check to see if the previous note
-         * is contained as an approach tone.  If so, set the note type
-         * for the previous tone with a recursive determineColor call.
-         *
-        while (approachList.nonEmpty()) {
-        Polylist testSet = (Polylist) approachList.first();
-        NoteSymbol head = (NoteSymbol) testSet.first();
-        // when we find the right sublist to look into ...
-        if (compareNoteSymbolAndNotePitches(note, head)) {
-        boolean noteIsApproached = false;
-        // Check all the NoteSymbols in that sublist against the 
-        // previous note to determine whether it's an approach tone
-        while ((testSet = testSet.rest()).nonEmpty()) {
-        if (compareNoteSymbolAndNotePitches(prevNote, ((NoteSymbol)(testSet.first()))))
-        noteIsApproached = true;
-        }
-        if (noteIsApproached) {
-        colorArray[prevIndex] = determineColor(prevNote,
-        getOrigPart().getNote(prevIndex),
-        prevIndex, g, true, colorArray);
-        }
-        break;
-        }            
-        approachList = approachList.rest();
-        }
-         */
+
       }
 
-
-    String colors = Preferences.getPreference(Preferences.NOTE_COLORING);
-
-    // FIX: Avoid re-parsing.  Also, do some range checking on digits
+    // Avoid re-parsing.  Also, should do some range checking on digits
     // in the user preferences.
 
-    int noteColor = Integer.parseInt("" + colors.charAt(noteType)) - 1;
+    int noteColor = Integer.parseInt("" + noteColorString.charAt(noteType)) - 1;
     return noteColor;
   }
 

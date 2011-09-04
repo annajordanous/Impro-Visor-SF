@@ -800,9 +800,10 @@
         (Chord D#o 1)
 	(Chord C/E 1))
 
+/* Conflicts witn On-Off-Minor-Nowhere!
 (Def-Brick II-n-Bird-Approach Major Approach C
         (Chord Dm7 2)
-        (Brick GenDom Eb 2))
+*/
 
 // Same as Yardbird-sub-cadence:
 /*
@@ -2483,7 +2484,8 @@
 
 // User-defined bricks
 
-
+/*
 (Def-Brick On-Off-IV-On+Dropback Major Dropback Bb
         (Brick On-Off-On-To-IV Bb 6)
         (Brick SuperGenDom C 2))
+*/

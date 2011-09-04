@@ -180,7 +180,12 @@ public class BrickLibrary {
             // resolution
             ArrayList<Block> dropbackBlocks = new ArrayList<Block>();
             dropbackBlocks.add(brick);
-            String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
+            
+            String dropbackChordName = keyNumToName((brick.getKey() + 9) % 12);
+            
+            // was wrong: String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
+            
+            
             if (dropbackMode.equals("minor"))
                 dropbackChordName += "7b5";
             else

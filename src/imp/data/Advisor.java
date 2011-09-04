@@ -44,8 +44,9 @@ static private int numLickBuckets = 33;	 // half-beat buckets in which to sort c
 
 static private int numProfileBins = 10;
 
-static private int adviceTreeCacheLimit = Integer.parseInt(
-        Preferences.getPreference(Preferences.ADV_CACHE_SIZE));
+static private int adviceTreeCacheLimit = 1000;
+
+// was Integer.parseInt(Preferences.getPreference(Preferences.ADV_CACHE_SIZE));
 
 static private int depthLimit = 5; // to limit circularity in "same" scale or chord
 

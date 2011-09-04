@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,12 +13,10 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 
 package imp.util;
 
@@ -28,8 +26,8 @@ import imp.Directories;
 import imp.com.*;
 import polya.*;
 
-/*
- * author: dmorrison
+/**
+ * @author dmorrison, keller
  */
 
 public class Preferences implements imp.Constants
@@ -53,10 +51,10 @@ public class Preferences implements imp.Constants
   private static FileInputStream inputStream;
 
   protected static CommandManager cm = new CommandManager();
+  
+  public static String vocabDir = "vocab";
 
-  protected static Polylist prefs = new Polylist();
-
-  protected static Polylist prefs2 = new Polylist();
+  protected static Polylist prefs = Polylist.nil;
 
   public static final String ADV_CACHE_SIZE = "advice-cache-size";
 
@@ -119,14 +117,13 @@ public class Preferences implements imp.Constants
 
   public static final String DEFAULT_VOCAB_FILE = "default-vocab-file";
 
-  public static final String DVF_VAL = Directories.vocabDirName + "My.voc";
+  public static final String DVF_VAL = "vocab/My.voc"; 
 
   public static final String DEFAULT_GRAMMAR_FILE = "default-grammar-file";
 
-  public static final String DVF_GRAMMAR_VAL = Directories.grammarDirName + "My.grammar";
+  public static final String DVF_GRAMMAR_VAL = "vocab/My.grammar";
 
-  public static final String DEFAULT_STYLE_DIRECTORY =
-          "default-style-directory";
+  public static final String DEFAULT_STYLE_DIRECTORY = "default-style-directory";
 
   public static final String DSD_VAL = "styles";
 
@@ -144,7 +141,7 @@ public class Preferences implements imp.Constants
 
   public static final String NOTE_COLORING = "note-coloring";
 
-  public static final String NC_VAL = "1322";
+  public static final String NC_VAL = "1342";
 
   public static final String SHOW_TRACKING_LINE = "show-tracking-line";
 
@@ -169,13 +166,13 @@ public class Preferences implements imp.Constants
   public static final String CR_VAL = "y";
   
   public static final String TREBLE_STRING = "1";
-  public static final String BASS_STRING = "2";
-  public static final String GRAND_STRING = "3";
-  public static final String AUTO_STRING = "4";
+  public static final String BASS_STRING   = "2";
+  public static final String GRAND_STRING  = "3";
+  public static final String AUTO_STRING   = "4";
 
   public static final String DEFAULT_CHORD_FONT_SIZE = "default-chord-font-size";
 
-  public static final int DEFAULT_CHORD_FONT_SIZE_VALUE = 16;
+  public static final String DEFAULT_CHORD_FONT_SIZE_VALUE = "16";
   
   public static final String DEFAULT_STAVES_PER_PAGE = "8";
 
@@ -281,11 +278,14 @@ public class Preferences implements imp.Constants
     {
     Polylist search = prefs;
 
+    //System.out.println("\ngetPreference for " + pref);
+
     // While the search list isn't empty...
     while( search.nonEmpty() )
       {
       // Look at the next pref, make sure it's a string.
       Polylist nextPref = (Polylist)search.first();
+      
       if( !(nextPref.first() instanceof String) )
         {
         ErrorLog.log(ErrorLog.SEVERE, "Malformed Preferences File.");
@@ -293,9 +293,10 @@ public class Preferences implements imp.Constants
       // If it is, see if it's the string we're looking for, then return the value.
       else if( pref.equals((String)nextPref.first()) )
         {
-        String valString = nextPref.rest().toString();
-        String value = valString.substring(1, valString.length()-1);
+        String value = nextPref.second().toString();
+
         //System.out.println("getting preference for " + pref + " as " + value);
+        
         return value;
         }
 
@@ -420,6 +421,42 @@ public static boolean getAlwaysUse(int index)
       }
     }
 
+  public static Polylist initialPrefs()
+    {
+      PolylistBuffer buffer = new PolylistBuffer();
+      
+      buffer.append(Polylist.list(ADV_CACHE_SIZE,            ACS_VAL));
+      buffer.append(Polylist.list(ADV_CACHE_ENABLED,         ACE_VAL));
+      buffer.append(Polylist.list(DEFAULT_LOAD_STAVE,        DLS_VAL));
+      buffer.append(Polylist.list(DEFAULT_MELODY_INSTRUMENT, DMI_VAL));
+      buffer.append(Polylist.list(DEFAULT_CHORD_INSTRUMENT,  DCI_VAL));
+      buffer.append(Polylist.list(DEFAULT_BASS_INSTRUMENT,   DBI_VAL));
+      buffer.append(Polylist.list(DEFAULT_MIXER_ALL,         DMA_VAL));
+      buffer.append(Polylist.list(DEFAULT_MIXER_ENTRY,       DME_VAL));
+      buffer.append(Polylist.list(DEFAULT_MIXER_BASS,        DMB_VAL));
+      buffer.append(Polylist.list(DEFAULT_MIXER_CHORDS,      DMC_VAL));
+      buffer.append(Polylist.list(DEFAULT_MIXER_DRUMS,       DMD_VAL));
+      buffer.append(Polylist.list(DEFAULT_MIXER_MELODY,      DMM_VAL));
+      buffer.append(Polylist.list(DEFAULT_STYLE,             DS_VAL));
+      buffer.append(Polylist.list(DEFAULT_TEMPO,             DT_VAL));
+      buffer.append(Polylist.list(DEFAULT_VOCAB_FILE,        DVF_VAL));
+      buffer.append(Polylist.list(DEFAULT_GRAMMAR_FILE,      DVF_GRAMMAR_VAL));
+      buffer.append(Polylist.list(DEFAULT_STYLE_DIRECTORY,   DSD_VAL));
+      buffer.append(Polylist.list(VIS_ADV_COMPONENTS,        VAC_VAL));
+      buffer.append(Polylist.list(CHORD_DIST_ABOVE_ROOT,     CDAR_VAL));
+      buffer.append(Polylist.list(DEFAULT_CHORD_FONT_SIZE,   DEFAULT_CHORD_FONT_SIZE_VALUE));
+      buffer.append(Polylist.list(MAX_NOTES_IN_VOICING,      MNIV_VAL));
+      buffer.append(Polylist.list(NOTE_COLORING,             NC_VAL));
+      buffer.append(Polylist.list(SHOW_TRACKING_LINE,        STL_VAL));
+      buffer.append(Polylist.list(TRACKER_DELAY,             TD_VAL));
+      buffer.append(Polylist.list(DRAWING_TONES,             DRAWING_TONES_VAL));
+      buffer.append(Polylist.list(DEFAULT_DRAWING_MUTED,     DDM_VAL));
+      buffer.append(Polylist.list(ALWAYS_USE_BUTTONS,        DEFAULT_ALWAYS_USE_BUTTONS));
+      buffer.append(Polylist.list(CREATE_ROADMAP,            CR_VAL));
+      return buffer.toPolylist();
+    }
+  
+  
   public static class SavePrefsCommand
           implements Command
     {

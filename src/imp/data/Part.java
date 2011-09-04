@@ -142,7 +142,7 @@ public class Part implements Constants, Serializable {
     public static final double DEFAULT_SWING = 0.67;	//rk 2./3 looks very awkward when expanded
 
 
-    protected StaveType staveType = getPreferredStaveType();
+    protected StaveType staveType = Preferences.getStaveTypeFromPreferences(); // getPreferredStaveType();
 
     /**
      * Creates a Part with the specified number of slots and
@@ -159,8 +159,7 @@ public class Part implements Constants, Serializable {
         keySig = DEFAULT_KEYSIG;
         swing = DEFAULT_SWING;
         composer = DEFAULT_COMPOSER;
-        staveType = getPreferredStaveType();
-
+ 
         this.size = size;
         slots = new Vector<Unit>(size);
         slots.setSize(size);
@@ -172,7 +171,7 @@ public class Part implements Constants, Serializable {
     
     StaveType getPreferredStaveType()
     {
-    return Preferences.getStaveTypeFromPreferences();  // This is not correct. Need to pass type to constructor
+    return staveType; //Preferences.getStaveTypeFromPreferences();  // This is not correct. Need to pass type to constructor
     }
 
     /**
