@@ -13711,20 +13711,7 @@ private boolean saveMetre()
             
             int melodyVol = defMelodyVolSlider.getValue();
             
-            //String createRoadMap;
-            
-            //if(createRoadMapCheckBox.isSelected())
-            //{
-            //    createRoadMap = "y";
-            //    System.out.println("made it yes");
-            //}
-            //else
-            //{
-            //   createRoadMap = "n";
-            //    System.out.println("made it no");
-            //}
-            //Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
-            
+           
             if (cache < 0) {
                 
                 ErrorLog.log(ErrorLog.SEVERE, "Cache size must be a positive number.");
@@ -14458,6 +14445,7 @@ private boolean saveMetre()
     
   public void setRoadMapCheckBox(boolean roadMap)
   {
+    //System.out.println("setRoadMapCheckBox " + roadMap);
       createRoadMapCheckBox.setSelected(roadMap);
   }
   
@@ -20743,9 +20731,14 @@ private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//G
 
 private void createRoadMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoadMapCheckBoxActionPerformed
     String createRoadMap = createRoadMapCheckBox.isSelected() ? "y" : "n";
+    System.out.println("createRoadMapCheckBox " + createRoadMap);
     Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
 }//GEN-LAST:event_createRoadMapCheckBoxActionPerformed
 
+public boolean getCreateRoadMapState()
+  {
+    return createRoadMapCheckBox.isSelected();
+  }
 private void layoutTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutTFActionPerformed
     // TODO add your handling code here:
 }//GEN-LAST:event_layoutTFActionPerformed
@@ -20833,7 +20826,7 @@ public void fileStepForward()
               }
           }
         setupLeadsheet(nextFile, false);
-        if( createRoadMapCheckBox.isSelected() )
+        if( getAutoCreateRoadMap() )
         {
             roadMapThisAnalyze();
         }
@@ -23188,7 +23181,7 @@ public void execute(Command command)
 public void makeVisible(Notate oldNotate)
   {
     makeVisible();
-    //createRoadMapCheckBox.setSelected(oldNotate.createRoadMapCheckBox.isSelected());
+    setAutoCreateRoadMap(oldNotate.getAutoCreateRoadMap());
    }
 
 
@@ -23221,9 +23214,10 @@ public void makeVisible()
  * @param value 
  */
 
-public void setCreateRoadMapCheckBox(boolean value)
+public void setAutoCreateRoadMap(boolean value)
   {
     createRoadMapCheckBox.setSelected(value);
+    Preferences.setPreference(Preferences.CREATE_ROADMAP, value ? "y" : "no");
   }
 
 
@@ -23232,12 +23226,10 @@ public void setCreateRoadMapCheckBox(boolean value)
  * @return 
  */
 
-public boolean getCreateRoadMapCheckBox()
+public boolean getAutoCreateRoadMap()
   {
-    return createRoadMapCheckBox.isSelected();
+    return createRoadMapCheckBox.getState();
   }
-
-
 
 /**
  * Create a roadmap for the current Notate frame.

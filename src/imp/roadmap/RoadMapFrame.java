@@ -2024,7 +2024,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
         notate.fileStepBackward();
-        if(notate.getCreateRoadMapCheckBox())
+        if(notate.getAutoCreateRoadMap())
             ;//notate.roadMapThisAnalyze();
         else
             notate.roadMapThis();
@@ -2032,7 +2032,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
         notate.fileStepForward();
-        if(notate.getCreateRoadMapCheckBox())
+        if(notate.getAutoCreateRoadMap())
             ;//notate.roadMapThisAnalyze();
         else
             notate.roadMapThis();
@@ -2908,7 +2908,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         } else
             auxNotate.addToChordPartFromRoadMapFrame(this);
 
-        auxNotate.setCreateRoadMapCheckBox(false);
+        auxNotate.setAutoCreateRoadMap(false);
         auxNotate.setVisible(true);
     }
 
@@ -2940,7 +2940,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         if( auxNotate == null )
           {
           auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-          auxNotate.setCreateRoadMapCheckBox(false);
+          auxNotate.setAutoCreateRoadMap(false);
           }
         else
           {
@@ -2972,7 +2972,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordPart.addFromRoadMapFrame(this);
  
         notate.setChordProg(chordPart);
-        notate.setCreateRoadMapCheckBox(false);
+        notate.setAutoCreateRoadMap(false);
         notate.setVisible(true);
     }
 
