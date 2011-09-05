@@ -3322,7 +3322,8 @@ private void newDictionary(String dictionaryName)
       }
     catch( Exception e )
       {
-        ErrorLog.log(ErrorLog.SEVERE, "In processing dictionary by RoadMap: " + e);
+        // Usually redundant due to another error message
+        //ErrorLog.log(ErrorLog.SEVERE, "In processing dictionary by RoadMap: " + e);
       }
 
   }

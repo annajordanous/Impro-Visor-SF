@@ -42,7 +42,9 @@ GM7 | Bbo | Am7 D7 | Bm7 E7 |
 Am7 | Am7b5 D7 | GM7 | F#m7b5 B7 | 
 
 (phrase (style ballad)) 
-Em Em7/D | C#m7b5 F#7 | Bm Bm7/A | G#m7b5 Gm6 | 
+Em Em7/D | 
+(phrase (style ballad)) 
+C#m7b5 F#7 | Bm Bm7/A | G#m7b5 Gm6 | 
 
 (section (style ballad)) 
 

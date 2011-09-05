@@ -52,7 +52,9 @@ FM7 | / | G7#11 | / |
 Gm7 | C7 | Am7b5 | D7 | 
 
 (phrase (style latin)) 
-Gm7 | Bbm7 Eb7 | FM7 | E7 | 
+Gm7 | Bbm7 Eb7 | FM7 | 
+(phrase (style latin)) 
+E7 | 
 
 (phrase (style latin)) 
 AM7 | C7 | Bm7 | E7 | 

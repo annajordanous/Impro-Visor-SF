@@ -47,7 +47,7 @@
        CM13 CM13#11 CMaj13#11
        Cadd9 Cadd2 Csus2)
 
-(equiv Cm Cminor Cm6 Cm69 CmM7)
+(equiv Cm Cminor Cm6 Cm69 CmM7 Cm+ Cmb6 Cm#5)
 
 (equiv Cm7 Cm9 Cm11 Cm13)
 
@@ -669,7 +669,7 @@
         (Brick Donna-Lee-Start C 5)
         (Brick Tritone-Cadence C 2))
 
-(Def-Brick Dropback(standard) Major Dropback C
+(Def-Brick Dropback(main) Major Dropback C
 	(Chord CM7 1)
 	(Chord A7 1))
 
@@ -803,7 +803,7 @@
         (Brick Pullback F 4)
         (Brick Slow-Approach Bb 4))
 
-(Def-Brick II-n-Back(standard) Major Turnaround C
+(Def-Brick II-n-Back(main) Major Turnaround C
 	(Chord Dm7 1)
         (Chord D#o 1)
 	(Chord Em 1))
@@ -813,10 +813,9 @@
         (Chord D#o 1)
 	(Chord C/E 1))
 
-/* Conflicts witn On-Off-Minor-Nowhere!
-(Def-Brick II-n-Bird-Approach Major Approach C
-        (Chord Dm7 2)
-*/
+(Def-Brick II-n-Bird-Approach Major Approach F
+        (Brick Minor-On G 2)
+        (Brick Yardbird-Approach F 2))
 
 // Same as Yardbird-sub-cadence:
 /*
@@ -841,7 +840,7 @@
 
 // ITCHY = "It Could Happen to You"
 
-(Def-Brick ITCHY-Opening(standard) Major Opening C
+(Def-Brick ITCHY-Opening(main) Major Opening C
 	(Chord CM7 2)
 	(Brick Straight-Approach D 2)
 	(Chord Dm 2)
@@ -913,15 +912,20 @@
         (Brick Surprise-Minor-Cadence D 3)
         (Chord F/G 1))
 
-(Def-Brick Long-Cadence(standard) Major Cadence C
+(Def-Brick Long-Cadence(main) Major Cadence C
 	(Brick Long-Approach C 4)
 	(Chord CM7 1))
 
-(Def-Brick Long-Cadence(var 2) Major Cadence F
-        (Chord A7 1)
-        (Chord D7 1)
-        (Chord Gm7 1)
-        (Brick Perfect-Cadence F 5))
+(Def-Brick Long-Cadence(var 1) Major Cadence C
+        (Chord E7 1)
+        (Chord G7 1)
+        (Chord Dm7 1)
+        (Brick Perfect-Cadence C 5))
+
+(Def-Brick Long-Cadence(var 2) Major Cadence C
+        (Brick GenDom G 1)
+        (Chord G7 1)
+        (Chord C 4))
 
 (Def-Brick Long-Cadence+Off-On Major Cadence Db
         (Chord Fm7 1)
@@ -958,12 +962,15 @@
 	(Brick Straight-Approach C 2))
 
 (Def-Brick Night-&-Day-Cadence Major Cadence C
-	(Brick Night-&-Day-Approach C 2)
+	(Chord AbM7 1)
+	(Chord G7 1)
 	(Chord CM7 2))
 
+/*
 (Def-Brick Night-&-Day-Approach Major Approach C
 	(Chord AbM7 1)
 	(Chord G7 1))
+*/
 
 (Def-Brick Nobody's-Cadence Minor Cadence A
 	(Chord CM7 1)
@@ -1014,7 +1021,7 @@
         (Chord C7 1))
 */
 
-(Def-Brick POT(standard) Major Turnaround C
+(Def-Brick POT(main) Major Turnaround C
 	(Chord C 1)
         (Brick GenII G 1)
 	(Brick Straight-Approach C 2))
@@ -1076,7 +1083,7 @@
         (Brick POT(cyclic) C 4)
         (Chord C 1))
 
-(Def-Brick Minor-POT(standard) Minor Turnaround C
+(Def-Brick Minor-POT(main) Minor Turnaround C
 	(Brick Minor-Dropback C 2)
 	(Brick Sad-Approach C 2))
 
@@ -1113,8 +1120,7 @@
         (Chord D7 1)
         (Chord G7+ 1))
 
-
-(Def-Brick Minor-POT+On Minor Turnaround C
+(Def-Brick Minor-POT+On Minor Cadence C
 	(Brick Minor-POT C 4)
 	(Chord Cm 1))
 
@@ -1259,6 +1265,11 @@
         (Chord F7#11 2))
 
 (Def-Brick Rainbow-Cadence(var 3) Major Cadence F
+        (Brick Major-On C 1)
+        (Chord E+ 1)
+        (Brick Major-On F 2))
+
+(Def-Brick Rainbow-Cadence(var 4) Major Cadence F
 	(Chord CM7 1)
 	(Chord E7 1)
 	(Chord FM7 2))
@@ -1274,7 +1285,7 @@
         (Chord FM7 1)
         (Chord Bb7 1))
 
-(Def-Brick Raindrop(standard) Major Misc C
+(Def-Brick Raindrop(main) Major Misc C
 	(Chord Em 1)
 	(Chord Ebdim 1))
 
@@ -1442,7 +1453,7 @@
 	(Brick Sixpenny-Approach C 12)
 	(Chord CM7 4))
 
-(Def-Brick Spring-Cadence(standard) Major Cadence C
+(Def-Brick Spring-Cadence(main) Major Cadence C
 	(Brick Spring-Approach C 4)
 	(Chord CM7 2))
 
@@ -1530,7 +1541,7 @@
         (Brick Dominant-Cycle D 4)
         (Brick Straight-Approach C 2))
 
-(Def-Brick Starlight-Cadence(standard) Major Cadence C
+(Def-Brick Starlight-Cadence(main) Major Cadence C
 	(Brick Starlight-Approach C 6)
 	(Chord CM7 2))
 
@@ -1555,7 +1566,7 @@
         (Brick Sad-Approach D 2)
         (Brick Straight-Approach Bb 2))
 
-(Def-Brick Straight-Cadence(standard) Major Cadence C
+(Def-Brick Straight-Cadence(main) Major Cadence C
 	(Brick Straight-Approach C 2)
 	(Chord CM7 2))
 
@@ -1641,7 +1652,7 @@
         (Chord G7 1)
         (Chord C 1))
 
-(Def-Brick SPOT(standard) Major Turnaround C
+(Def-Brick SPOT(main) Major Turnaround C
 	(Brick An-Approach D 2)
 	(Brick Straight-Approach C 2))
 
@@ -1888,7 +1899,7 @@
 // TTFA = Turnaround to Further Away 
 // where "Further Away" means the ii chord
 
-(Def-Brick TTFA-Dropback(standard) Major Dropback C
+(Def-Brick TTFA-Dropback(main) Major Dropback C
 	(Chord CM7 1)
 	(Brick Straight-Approach D 2))
 
@@ -2014,7 +2025,7 @@
         (Chord Dm7 1)
         (Chord Db7 1))
 
-(Def-Brick Tritone-Cadence(standard) Major Cadence C
+(Def-Brick Tritone-Cadence(main) Major Cadence C
         (Chord Dm7 1)
         (Chord Db7 1)
         (Chord C 1))
@@ -2207,7 +2218,7 @@
 (Def-Brick Major-On Major On C
         (Chord C 1))
 
-(Def-Brick Minor-On(standard) Minor On C
+(Def-Brick Minor-On(main) Minor On C
 	(Chord Cm 1))
 
 (Def-Brick Minor-On(var 1) Minor On C
@@ -2390,12 +2401,21 @@
         (Brick Major-On C 1)
         (Chord G7 1))
 
-(Def-Brick On-Off-On-To-IV Major On-Off+ C
+(Def-Brick On-Off-On-To-IV-Major Major On-Off+ C
         (Brick Major-On C 1)
         (Brick Amen-Cadence C 2))
 
+(Def-Brick On-Off-On-+Dropback-IV-Major Major Dropback C
+        (Brick On-Off-On-To-IV-Major C 3)
+        (Brick SuperGenDom D 1))
+
+(Def-Brick On-Off-On-To-IV-Minor Minor On-Off+ C
+        (Brick Minor-On C 1)
+        (Chord Fm 1)
+        (Brick Minor-On C 1))
+
 (Def-Brick On-Off-Twice-On-To-IV Major On-Off+ C
-        (Brick On-Off-On-To-IV C 4)
+        (Brick On-Off-On-To-IV-Major C 4)
         (Brick Amen-Cadence C 2))
 
 (Def-Brick On-Off-Thrice-To-IV Major On-Off+ C
@@ -2415,6 +2435,11 @@
 (Def-Brick On-Off-On-To-V(main) Major On-Off+ C
         (Brick Major-On C 1)
         (Brick Perfect-Cadence C 2))
+
+(Def-Brick On-Off-On-To-V(minor) Minor On-Off+ C
+        (Brick Minor-On C 1)
+        (Brick DomOrMinor C 1)
+        (Brick Minor-On C 1))
 
 (Def-Brick On-Off-On-To-V(sus) Major On-Off+ C
         (Brick Major-On C 1)
@@ -2501,8 +2526,16 @@
 
 // User-defined bricks
 
-/*
-(Def-Brick On-Off-IV-On+Dropback Major Dropback Bb
-        (Brick On-Off-On-To-IV Bb 6)
-        (Brick SuperGenDom C 2))
-*/
+
+(Def-Brick Dropback-Cadence Major Cadence Bb
+        (Brick Tension-Cadence C 3)
+        (Brick Perfect-Cadence Bb 3))
+
+(Def-Brick To-IV-n-Back() Major Cadence Bb
+        (Brick To-IV Bb 3)
+        (Chord Eo 1)
+        (Brick Major-On Bb 1))
+
+(Def-Brick Stablemates-Approach Major Approach Ab
+        (Brick Slow-Approach A 2)
+        (Brick Straight-Approach Ab 2))

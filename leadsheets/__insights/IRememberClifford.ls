@@ -37,9 +37,11 @@
 (phrase (style swing)) 
 EbM7 G7 | AbM7 Ao | Bb7 Bo | Cm7 Cm7/Bb | 
 
+(phrase (style swing)) 
+Am7b5 D7 | Gm7 Gm7/F | 
 (section (style swing)) 
 
-Am7b5 D7 | Gm7 Gm7/F | Em7b5 A7 | Fm7 Bb7 | 
+Em7b5 A7 | Fm7 Bb7 | 
 
 (phrase (style swing)) 
 EbM7 G7 | AbM7 Ao | Bb7 Bo | Cm7 Cm7/Bb | 
@@ -51,9 +53,11 @@ Am7b5 D7 | Gm7b5 C7 | Fm7 Bb7 | Gm7 AbM7 |
 (phrase (style swing)) 
 Am7b5 D7 | Gm7 C7 | Fm7 Bb7 | EbM7 | 
 
+(phrase (style swing)) 
+Dm7b5 G7 | Cm7 Cm7/Bb | 
 (section (style swing)) 
 
-Dm7b5 G7 | Cm7 Cm7/Bb | Am7b5 D7 | Gm7 C7 Fm7 Bb7 | 
+Am7b5 D7 | Gm7 C7 Fm7 Bb7 | 
 
 (phrase (style swing)) 
 EbM7 G7 | AbM7 Ao | Bb7 Bo | Cm7 Cm7/Bb | 

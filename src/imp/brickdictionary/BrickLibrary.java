@@ -190,6 +190,8 @@ public class BrickLibrary {
                 dropbackChordName += "7b5";
             else
                 dropbackChordName += 7;
+            
+            
             ChordBlock dropbackChord = 
                        new ChordBlock(dropbackChordName, 
                                       prevChord.getDuration());

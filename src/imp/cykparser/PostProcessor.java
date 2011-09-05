@@ -54,14 +54,19 @@ public class PostProcessor {
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
         "Cherokee", "Woody", "Highjump", "Bauble"};
     
-    public static final String[] RESOLUTIONS = {"","Happenstance","Yardbird","",
-        "","","","","","","","Tritone"};
+//    public static final String[] RESOLUTIONS = {"","Happenstance","Yardbird","",
+//        "","","","","","","","Tritone"};
     
+    // For launching other than straight across a section
+    
+    public static final String[] RESOLUTIONS = {"", "", "", "", "", "", "Tritone", "", "Happenstance", "Yardbird", "", ""};
+
     //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
 
-    public static String[] FIRST_STABLE = {"Cadence", "Dropback", "Ending", "On", "On-Off", "On-Off+", "Opening", "Overrun"};
+    public static String[] FIRST_STABLE = {"Cadence", "CESH", "Dropback", "Ending", 
+        "On", "On Off", "On-Off+", "Opening", "Overrun"};
 
-    public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "SPOT"};
+    public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Pullback", "SPOT"};
     
     // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;
@@ -381,8 +386,13 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
 
             if( brickName.equals("Straight Approach") )
               {
-                String altResolution = getAlternateResolution(b, chordList.get(0));
-                if( !altResolution.isEmpty() )
+               
+//                String altResolution = getAlternateResolution(b, chordList.get(0));
+                String altResolution = getAlternateResolution(b.getKey(), postBlock.getKey());
+                
+                //System.out.println(b + " vs " + postBlock + " altResolution = " + altResolution);
+                
+                 if( !altResolution.isEmpty() )
                   {
                     brickName = brickName.replace("Straight", altResolution);
                     b.setName(brickName);
@@ -422,7 +432,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
               }
           }
         // Case in which current block is a dominant chord:
-        else if( ((ChordBlock) blocks.get(i)).isDominant() )
+        else if( ((ChordBlock)thisBlock).isDominant() )
           {
 
             ChordBlock c = (ChordBlock) thisBlock;
@@ -490,17 +500,26 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
         
         ArrayList<ChordBlock> chordList = (ArrayList<ChordBlock>) approach.flattenBlock();
         long domRoot = chordList.get(chordList.size() - 1).getKey();
-        int domRootInt = Long.valueOf(domRoot).intValue();
         long resRoot = target.getKey();
+        
+        return getAlternateResolution(domRoot, resRoot);
+    }
+    
+    
+      public static String getAlternateResolution(long domRoot, long resRoot) {
+        int domRootInt = Long.valueOf(domRoot).intValue();
         int resRootInt = Long.valueOf(resRoot).intValue();
         
         int diff = (resRootInt - domRootInt + OCTAVE) % OCTAVE;
+        
+        //System.out.println("domRoot = " + domRoot + ", resRoot = " + resRoot + " diff = " + diff);
         
         String altResolution = RESOLUTIONS[diff];
         
         return altResolution;
     }
     
+      
      /** 
      * A method that finds joins between two bricks, if any.
      * @param blocks : ArrayList of Blocks (Chords or Bricks)
@@ -622,6 +641,12 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
         ChordBlock firstToCheck = firstList.get(firstList.size() - 1);
         ChordBlock secondToCheck = secondList.get(0);
         
+        // Don't join to a tonic directly
+        
+        if( secondToCheck.isTonic() )
+          {
+            return false;
+          }
         // Get equivalences for the two chords
         
         SubstituteList firstEquivs = dict.checkEquivalence(firstToCheck);

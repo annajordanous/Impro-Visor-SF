@@ -27,28 +27,31 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
     (key -2)
 )
 
+(phrase (style swing)) 
+Bb | 
 (section (style swing)) 
 
-Bb | Dm7 G7 | C7 F7 | BbM7 | 
+Dm7 G7 | C7 F7 | BbM7 | 
 
+(phrase (style swing)) 
+Bb | 
 (section (style swing)) 
 
-Bb | Dm7 G7 | C7#11 | F7 | 
+Dm7 G7 | C7#11 | F7 | 
 
-(section (style swing)) 
-
+(phrase (style swing)) 
 BbM7 | Bb7 | EbM7 | Eo | 
-
+Bb | 
 (section (style swing)) 
 
-Bb | Dm7 G7 | C7 F7 | BbM7 | 
+Dm7 G7 | C7 F7 | BbM7 | 
 
 (part
     (type melody)

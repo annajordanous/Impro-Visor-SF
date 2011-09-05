@@ -217,7 +217,18 @@ public class ChordBlock extends Block {
             || symbol.startsWith("m13");
     }
     
-    
+   /** 
+     * Describes whether or not the ChordBlock represents a stable tonic chord.
+     * @return a boolean
+     */
+    public boolean isTonic() {
+         String symbol = getSymbol();
+        
+        return symbol.equals("m")
+            || symbol.startsWith("M") 
+            || symbol.startsWith("m6");
+    }
+        
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord
      * @return a boolean

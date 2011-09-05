@@ -706,8 +706,16 @@ public class Brick extends Block {
         
         ArrayList<Block> currentList = this.getSubBlocks();
         
-        //System.out.println("currentList = " + currentList); debugging RK
-// FIX!! Sometimes get null pointer exception here:        
+        // Occasionally getting null pointer exception here,
+        // Due to, e.g. Minor On bricks having 0 duration.
+        // I hope this fix is ok.
+        
+        if( currentList == null )
+          {
+            //ErrorLog.log(ErrorLog.SEVERE, "Internal Error: null block list in brick " + toString());
+            return chordList;
+          }
+        
         Iterator<Block> iter = currentList.iterator();
         
         // Iterate through subblocks. If a block is a chord, just add it. If it 
