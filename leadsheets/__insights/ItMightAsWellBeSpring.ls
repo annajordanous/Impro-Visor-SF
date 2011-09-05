@@ -35,32 +35,50 @@
 )
 
 (phrase (style swing)) 
-CM7 F7 | Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
-
-(section (style swing)) 
-
-FM7 F#m7 B7 | CM7 A7 | Dm7 G7 | Em7 A7 Dm7 G7 | 
+CM7 F7 | 
+(phrase (style swing)) 
+Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
 
 (phrase (style swing)) 
-CM7 F7 | Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
-
+FM7 F#m7 B7 | 
+(phrase (style swing)) 
+CM7 A7 | 
+(phrase (style swing)) 
+Dm7 G7 | 
 (section (style swing)) 
 
-FM7 F#m7 B7 | CM7 A7 | Dm7 G7 | CM7 / Gm7 C7 | 
+Em7 A7 Dm7 G7 | 
+
+(phrase (style swing)) 
+CM7 F7 | 
+(phrase (style swing)) 
+Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
+
+(phrase (style swing)) 
+FM7 F#m7 B7 | CM7 A7 | 
+(section (style swing)) 
+
+Dm7 G7 | CM7 / Gm7 C7 | 
 
 (phrase (style swing)) 
 FM7 Dm7 | Gm7 C7 | Gm7 C7 | FM7 | 
 
+(phrase (style swing)) 
+Dm7 Dm7/C | Bm7b5 E7 | 
 (section (style swing)) 
 
-Dm7 Dm7/C | Bm7b5 E7 | Am7 D7 | Dm7/G G7 | 
+Am7 D7 | Dm7/G G7 | 
 
 (phrase (style swing)) 
-CM7 F7 | Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
+CM7 F7 | 
+(phrase (style swing)) 
+Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
 
+(phrase (style swing)) 
+FM7 F#m7 B7 | CM7 A7 | 
 (section (style swing)) 
 
-FM7 F#m7 B7 | CM7 A7 | Dm7 G7 | E7 A7 | 
+Dm7 G7 | E7 A7 | 
 
 (phrase (style swing)) 
 D7 | Fm7 Bb7 | Em7 Am7 | D7 / Fm7 Bb7 | 
