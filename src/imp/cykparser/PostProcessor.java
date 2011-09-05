@@ -45,6 +45,8 @@ public class PostProcessor {
     
     public static final int OCTAVE = 12;    // semitones in octave
     
+    public static final int FOURTH = 5;      // perfect fourth in semitones
+    
     // Names of joins, arranged by difference in keys between which they
     // transition (with reference to dominant in first block)
     
@@ -505,55 +507,102 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
      * @return joinList : ArrayList of joins between blocks
      */
     
-    public static ArrayList<String> findJoins(ArrayList<Block> blocks) {
+public static ArrayList<String> findJoins(ArrayList<Block> blocks)
+  {
 
-        String[] joinArray = null;
-        if(blocks.size() >= 1) {
-            joinArray = new String[blocks.size() - 1];
-        }
-        else {
-            return null;
-        }
-        for(int i = 0; i < blocks.size() - 1; i++) {
-            Block b = blocks.get(i);
-            Block c = blocks.get(i + 1);
-            // Check if current and next block are both bricks
-            if (c instanceof Brick) {
-                // Check for special Dogleg join
-                if(checkDogleg(b, (Brick)c)) {
-                    joinArray[i] = "Dogleg";
-                }
-                // Check that the two bricks are joinable
-                else if(checkJoinability(b, ((Brick)c))) {
-                    ArrayList<ChordBlock> subList = 
-                            (ArrayList<ChordBlock>) c.flattenBlock();
-                    
-                    // Default to dominant of brick's overall key
-                    long domKey = (c.getKey() + 7) % OCTAVE;
-                    
-                    // Try to use first dominant in second brick
-                    for(ChordBlock cb : subList) {
-                        if(cb.isDominant()) {
+    String[] joinArray = null;
+    if( blocks.size() >= 1 )
+      {
+        joinArray = new String[blocks.size() - 1];
+      }
+    else
+      {
+        return null;
+      }
+    for( int i = 0; i < blocks.size() - 1; i++ )
+      {
+        Block b = blocks.get(i);
+        Block c = blocks.get(i + 1);
+        // Check if current and next block are both bricks
+        if( c instanceof Brick )
+          {
+            // Check for special Dogleg join
+            if( checkDogleg(b, (Brick) c) )
+              {
+                joinArray[i] = "Dogleg";
+              }
+            // Check that the two bricks are joinable
+            else if( checkJoinability(b, ((Brick) c)) )
+              {
+                ArrayList<ChordBlock> subList =
+                        (ArrayList<ChordBlock>) c.flattenBlock();
+
+                // Default to dominant of brick's overall key
+                long domKey = (c.getKey() + 7) % OCTAVE;
+
+                ChordBlock cfirst = c.getFirstChord();
+
+                // First check for staring with minor 7 type chord
+                if( cfirst.isMinor7() )
+                  {
+                    domKey = (cfirst.getKey() + FOURTH) % OCTAVE;
+                  }
+                // Try to use first dominant in second brick
+                else
+                  {
+                    for( ChordBlock cb : subList )
+                      {
+                        if( cb.isDominant() )
+                          {
                             domKey = cb.getKey();
                             break;
-                        }
-                    }
-                    // Determine which join based on difference between first 
-                    // block's key and dominant found in previous step
-                    long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
-                    joinArray[i] = joinLookup(keyDiff);
-                }
-                // Enter empty string if the two blocks are not joinable
-                else
-                    joinArray[i] = "";
-            }
-            // Enter empty string if second block is a chord
+                          }
+                      }
+                  }
+
+                // Determine which join based on difference between first 
+                // block's key and dominant found in previous step
+                long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
+                joinArray[i] = joinLookup(keyDiff);
+              }
+            // Enter empty string if the two blocks are not joinable
             else
+              {
                 joinArray[i] = "";
-        }
-        ArrayList<String> joinList = new ArrayList(Arrays.asList(joinArray));
-        return joinList;
-    }
+              }
+          }
+        else
+          {
+            // Second block is a chord, but this does not mean not joinable
+            ChordBlock cb = (ChordBlock) c;
+            long domKey = (cb.getKey() + 7) % OCTAVE;
+
+            // First check for staring with minor 7 type chord
+            if( cb.isMinor7() )
+              {
+                domKey = (c.getKey() + FOURTH) % OCTAVE;
+                long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
+                joinArray[i] = joinLookup(keyDiff);
+              }
+            // Try to use first dominant in second brick
+            else if( cb.isDominant() )
+              {
+                domKey = cb.getKey();
+                long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
+                joinArray[i] = joinLookup(keyDiff);
+              }
+            else
+              {
+                joinArray[i] = "";
+              }
+
+            // Determine which join based on difference between first 
+            // block's key and dominant found in previous step
+          }
+      }
+    ArrayList<String> joinList = new ArrayList(Arrays.asList(joinArray));
+    return joinList;
+  }
     
     /** 
      * Check whether a Block is joinable to a Brick.
@@ -566,7 +615,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
     public static boolean checkJoinability(Block first, Brick second) {
         boolean joinable = false;
         
-        ArrayList<ChordBlock> firstList = first.flattenBlock();
+        ArrayList<ChordBlock> firstList  = first.flattenBlock();
         ArrayList<ChordBlock> secondList = second.flattenBlock();
         
         // Comparing last chord of first block and first chord of second block
@@ -633,8 +682,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
     public static boolean checkDogleg(Block first, Brick second) {
         boolean isDogleg = false;
         
-        ArrayList<ChordBlock> firstList = 
-                (ArrayList<ChordBlock>)first.flattenBlock();
+        ArrayList<ChordBlock> firstList  =  first.flattenBlock();
         ArrayList<ChordBlock> secondList = second.flattenBlock();
         
         // Comparing last chord of first block and first block of second block

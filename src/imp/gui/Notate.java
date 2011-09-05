@@ -20742,15 +20742,7 @@ private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//G
 }//GEN-LAST:event_fileStepBackBtnActionPerformed
 
 private void createRoadMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoadMapCheckBoxActionPerformed
-    String createRoadMap;
-    if(createRoadMapCheckBox.isSelected())
-    {
-        createRoadMap = "y";
-    }
-    else
-    {
-        createRoadMap = "n";
-    }
+    String createRoadMap = createRoadMapCheckBox.isSelected() ? "y" : "n";
     Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
 }//GEN-LAST:event_createRoadMapCheckBoxActionPerformed
 

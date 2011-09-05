@@ -971,6 +971,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="sendToOriginalLeadsheetAndSaveMI">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+S"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Save entire roadmap into original leadsheet. CAUTION: Cannot be undone." noResource="true"/>
                 <Property name="toolTipText" type="java.lang.String" value="Clear the original leadsheet and send the entire roadmap to it. CAUTION: This cannot be undone." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="sendToOriginalLeadsheetAndSaveMI" noResource="true"/>
@@ -1832,7 +1835,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="insertBrickButton">
       <Properties>
-        <Property name="background" type="java.awt.Color" noResource="true" editor="org.netbeans.beaninfo.editors.ColorEditor">
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="ff" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;center&gt;&#xa;Insert&#xa;&lt;br&gt;&#xa;Brick&#xa;&lt;/center&gt;&#xa;&lt;/html&gt;" noResource="true"/>

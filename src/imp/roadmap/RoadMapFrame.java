@@ -1387,6 +1387,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         leadsheetMenu.add(sendToOriginalLeadsheetMI);
 
+        sendToOriginalLeadsheetAndSaveMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         sendToOriginalLeadsheetAndSaveMI.setText("Save entire roadmap into original leadsheet. CAUTION: Cannot be undone."); // NOI18N
         sendToOriginalLeadsheetAndSaveMI.setToolTipText("Clear the original leadsheet and send the entire roadmap to it. CAUTION: This cannot be undone."); // NOI18N
         sendToOriginalLeadsheetAndSaveMI.setName("sendToOriginalLeadsheetAndSaveMI"); // NOI18N
@@ -2159,14 +2160,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_titleBoxActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        
-        roadMapTextEntry.setText("");
+                roadMapTextEntry.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void sendToOriginalLeadsheetAndSaveMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToOriginalLeadsheetAndSaveMIaction
         selectAllBricks();
         sendSelectionToOriginalNotate();
         notate.saveLeadsheet();
+        deselectBricks();
     }//GEN-LAST:event_sendToOriginalLeadsheetAndSaveMIaction
 
     private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed

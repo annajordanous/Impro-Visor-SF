@@ -187,18 +187,34 @@ public class ChordBlock extends Block {
         return quality.startsWith("dim") || quality.startsWith("o");
       }
 
-    /** isDominant
+    /** 
+     * FIX: Use the vocabulary instead of this kind of test.
      * Describes whether or not the ChordBlock represents a diminished chord
      * @return a boolean
      */
     public boolean isDominant() {
-        boolean dom = false;
+         String symbol = getSymbol();
         
-        if(this.getSymbol().startsWith("7") || this.getSymbol().startsWith("sus")) {
-            dom = true;
-        }
+        return symbol.startsWith("7") 
+            || symbol.startsWith("9")
+            || symbol.startsWith("11")
+            || symbol.startsWith("13")
+            || symbol.startsWith("sus");
+    }
+    
+    
+   /** 
+     * FIX: Use the vocabulary instead of this kind of test.
+     * Describes whether or not the ChordBlock represents a diminished chord
+     * @return a boolean
+     */
+    public boolean isMinor7() {
+         String symbol = getSymbol();
         
-        return dom;
+        return symbol.startsWith("m7") 
+            || symbol.startsWith("m9")
+            || symbol.startsWith("m11")
+            || symbol.startsWith("m13");
     }
     
     
