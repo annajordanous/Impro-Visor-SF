@@ -212,6 +212,7 @@ public class Preferences implements imp.Constants
 
   public static void savePreferences()
     {
+      //System.out.println("saving preferences");
     try
       {
       outputStream = new PrintStream(new FileOutputStream(prefsFileName));

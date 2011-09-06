@@ -2984,8 +2984,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordPart.addFromRoadMapFrame(this);
  
         notate.setChordProg(chordPart);
-        notate.setAutoCreateRoadMap(false);
+        boolean savedBit = notate.getAutoCreateRoadMap();
+        notate.setAutoCreateRoadMap(false); // to avoid re mapping
         notate.setVisible(true);
+        notate.setAutoCreateRoadMap(savedBit);
     }
 
     

@@ -1,5 +1,5 @@
 (title Beautiful Love)
-(composer Victor Young Young W. King King E. Van Alstyne)
+(composer Victor Young, W. King,  E. Van Alstyne)
 (show )
 (year )
 (comments )
@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -41,11 +41,9 @@ Em7b5 | A7b9 | Dm | D7 |
 
 Gm7 | C7 | FM7 | Em7b5 A7 | 
 
-(phrase (style swing)) 
-Dm7 | Gm7 | Bb7 | A7 | 
-
 (section (style swing)) 
 
+Dm7 | Gm7 | Bb7 | A7 | 
 Dm7 | B7 | Em7b5 | A7 | 
 
 (phrase (style swing)) 
@@ -55,11 +53,9 @@ Em7b5 | A7b9 | Dm | D7 |
 
 Gm7 | C7 | FM7 | Em7b5 A7 | 
 
-(phrase (style swing)) 
-Dm7 | Gm7 | Bb7 | A7 | 
-
 (section (style swing)) 
 
+Dm7 | Gm7 | Bb7 | A7 | 
 Dm7 Bm7b5 | Bb7 A7 | Dm | / | 
 
 (part

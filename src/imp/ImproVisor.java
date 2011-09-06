@@ -315,11 +315,12 @@ private ImproVisor(String leadsheet)
 
     String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
 
-    if( fontSizePref.equals("") )
+/*
+     * if( fontSizePref.equals("") )
       {
         fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
       }
-
+*/
     score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
 
     // Create notate frame.

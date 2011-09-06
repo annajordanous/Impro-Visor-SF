@@ -10410,7 +10410,7 @@ public void chordVolumeChanged()
     
     
     private void savePrefsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePrefsBtnActionPerformed
-        Preferences.setPreference(Preferences.DEFAULT_CHORD_FONT_SIZE, "" + newChordFontSize);
+
         savePrefs(); 
         
     }//GEN-LAST:event_savePrefsBtnActionPerformed
@@ -14085,7 +14085,7 @@ private boolean saveMetre()
     defaultChordFontSizeSpinner.setValue(chordFontSizeValue);
     }
     
-  
+ 
   
   /**
    * Set up the preferences dialog box.
@@ -14111,7 +14111,7 @@ private boolean saveMetre()
 
     chordDist.setText(Preferences.getPreference(Preferences.CHORD_DIST_ABOVE_ROOT));
     
-    ensureChordFontSize();
+    // nuisance: ensureChordFontSize();
 
     setTrackerDelay(Preferences.getPreference(Preferences.TRACKER_DELAY));
 
@@ -14443,10 +14443,10 @@ private boolean saveMetre()
     }
     }
     
-  public void setRoadMapCheckBox(boolean roadMap)
+  public void setRoadMapCheckBox(boolean value)
   {
     //System.out.println("setRoadMapCheckBox " + roadMap);
-      createRoadMapCheckBox.setSelected(roadMap);
+      createRoadMapCheckBox.setSelected(value);
   }
   
   public int getBreakpoint()
@@ -17440,10 +17440,10 @@ public void openLeadsheet(boolean openCorpus)
             // load the file
 
             Score newScore = new Score();
-
+/* Done in new Notate
             score.setChordFontSize(Integer.valueOf(Preferences.getPreference(
                 Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
-
+*/
             (new OpenLeadsheetCommand(openLSFC.getSelectedFile(), newScore)).execute();
 
 
@@ -20730,9 +20730,8 @@ private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//G
 }//GEN-LAST:event_fileStepBackBtnActionPerformed
 
 private void createRoadMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRoadMapCheckBoxActionPerformed
-    String createRoadMap = createRoadMapCheckBox.isSelected() ? "y" : "n";
-    System.out.println("createRoadMapCheckBox " + createRoadMap);
-    Preferences.setPreference(Preferences.CREATE_ROADMAP, createRoadMap);
+    String value = createRoadMapCheckBox.isSelected() ? "y" : "n";
+    Preferences.setPreference(Preferences.CREATE_ROADMAP, value);
 }//GEN-LAST:event_createRoadMapCheckBoxActionPerformed
 
 public boolean getCreateRoadMapState()
@@ -23217,7 +23216,6 @@ public void makeVisible()
 public void setAutoCreateRoadMap(boolean value)
   {
     createRoadMapCheckBox.setSelected(value);
-    Preferences.setPreference(Preferences.CREATE_ROADMAP, value ? "y" : "no");
   }
 
 
@@ -23228,7 +23226,7 @@ public void setAutoCreateRoadMap(boolean value)
 
 public boolean getAutoCreateRoadMap()
   {
-    return createRoadMapCheckBox.getState();
+    return createRoadMapCheckBox.isSelected();
   }
 
 /**
