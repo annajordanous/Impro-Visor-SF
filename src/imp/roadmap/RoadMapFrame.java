@@ -74,7 +74,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Width of the preview buffer */
     private final int previewBufferWidth  = 2400;
     /** Height of the preview buffer */
-    private final int previewBufferHeight = 200;
+    private final int previewBufferHeight = 100;
 
     /** Buffer for the roadmap panel */
     private Image bufferRoadMap;  
@@ -1000,9 +1000,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
+        roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
+        roadMapTextEntry.setMinimumSize(new java.awt.Dimension(12, 30));
         roadMapTextEntry.setName("roadMapTextEntry"); // NOI18N
+        roadMapTextEntry.setPreferredSize(new java.awt.Dimension(12, 30));
         roadMapTextEntry.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 textualEntryKeyPressed(evt);
@@ -1010,8 +1014,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.95;
+        gridBagConstraints.weighty = 0.03;
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -1047,10 +1053,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.95;
         getContentPane().add(roadMapScrollPane, gridBagConstraints);
 
@@ -1059,7 +1065,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
-        previewScrollPane.setMinimumSize(new java.awt.Dimension(800, 80));
+        previewScrollPane.setMinimumSize(new java.awt.Dimension(800, 60));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
         previewScrollPane.setPreferredSize(new java.awt.Dimension(1200, 80));
         previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1077,19 +1083,19 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weightx = 0.95;
+        gridBagConstraints.weighty = 0.07;
         getContentPane().add(previewScrollPane, gridBagConstraints);
 
         clearButton.setBackground(new java.awt.Color(255, 255, 51));
-        clearButton.setText("Clear"); // NOI18N
+        clearButton.setText("<html><center>\nClear<br>\nText\n</center></html>"); // NOI18N
         clearButton.setToolTipText("Clear the textual entry field."); // NOI18N
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
-        clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
+        clearButton.setMaximumSize(new java.awt.Dimension(46, 30));
+        clearButton.setMinimumSize(new java.awt.Dimension(46, 30));
         clearButton.setName("clearButton"); // NOI18N
         clearButton.setOpaque(true);
-        clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
+        clearButton.setPreferredSize(new java.awt.Dimension(46, 30));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
@@ -1097,7 +1103,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weightx = 0.05;
+        gridBagConstraints.weighty = 0.05;
         getContentPane().add(clearButton, gridBagConstraints);
 
         insertBrickButton.setBackground(new java.awt.Color(0, 255, 0));
@@ -1117,6 +1126,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weightx = 0.05;
+        gridBagConstraints.weighty = 0.05;
         getContentPane().add(insertBrickButton, gridBagConstraints);
 
         roadmapMenuBar.setName("roadmapMenuBar"); // NOI18N
