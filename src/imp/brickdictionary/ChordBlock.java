@@ -114,6 +114,14 @@ public class ChordBlock extends Block {
       {
         return chord.getRoot();
       }
+    
+    // Probably this is not adequate
+    
+    public boolean same(ChordBlock cb)
+      {
+        return chord.getRootSemitones() == cb.chord.getRootSemitones()
+            && chord.getQuality().equals(cb.getQuality());
+      }
 
     /** getDuration
      * Get the ChordBlock's duration
