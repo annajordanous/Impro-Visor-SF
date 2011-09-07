@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -115,6 +114,11 @@ public class ChordBlock extends Block {
         return chord.getRoot();
       }
     
+    public int getRootSemitones()
+      {
+        return chord.getRootSemitones();
+      }
+    
     // Probably this is not adequate
     
     public boolean same(ChordBlock cb)
@@ -171,7 +175,7 @@ public class ChordBlock extends Block {
     public String getQuality() {
         if (name.equals(Chord.NOCHORD))
             return name;
-        return parseChordName();
+        return chord.getQuality(); // doesn't work as well: parseChordName();
     }
     
     /** getSymbol
@@ -227,6 +231,17 @@ public class ChordBlock extends Block {
             || symbol.startsWith("m11")
             || symbol.startsWith("m13");
     }
+    
+    
+    /** 
+     * FIX: Use the vocabulary instead of this kind of test.
+     * Describes whether or not the ChordBlock represents a diminished chord
+     * @return a boolean
+     */
+    public boolean isMinor() {
+        return getSymbol().startsWith("m");
+    }
+    
     
    /** 
      * Describes whether or not the ChordBlock represents a stable tonic chord.

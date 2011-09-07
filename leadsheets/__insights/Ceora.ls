@@ -27,16 +27,18 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
     (key -4)
 )
 
+(phrase (style latin)) 
+AbM7 | 
 (section (style latin)) 
 
-AbM7 | Bbm7 Eb7 | AbM7 | Ebm7 Ab7 | 
+Bbm7 Eb7 | AbM7 | Ebm7 Ab7 | 
 DbM7 | Dm7 G7 | Cm7 | F7#9 | 
 
 (phrase (style latin)) 
@@ -46,9 +48,11 @@ Bbm7 | Eb7 | Cm7 | F7 |
 
 Dm7 | G7 | Cm7 F7 | Bbm7 Eb7 | 
 
+(phrase (style latin)) 
+AbM7 | 
 (section (style latin)) 
 
-AbM7 | Bbm7 Eb7 | AbM7 | Ebm7 Ab7 | 
+Bbm7 Eb7 | AbM7 | Ebm7 Ab7 | 
 DbM7 | Dm7 G7 | Cm7 | F7#9 | 
 
 (section (style latin)) 
