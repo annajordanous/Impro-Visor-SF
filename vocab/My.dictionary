@@ -803,15 +803,15 @@
         (Brick Pullback F 4)
         (Brick Slow-Approach Bb 4))
 
-(Def-Brick II-n-Back(main) Major Turnaround C
-	(Chord Dm7 1)
-        (Chord D#o 1)
-	(Chord Em 1))
-
-(Def-Brick II-n-Back(variant) Major Turnaround C
+(Def-Brick II-n-Back(main) Major Cadence C
 	(Chord Dm7 1)
         (Chord D#o 1)
 	(Chord C/E 1))
+
+(Def-Brick II-n-Back(var) Major Cadence C
+	(Chord Dm7 1)
+        (Chord D#o 1)
+	(Chord Em 1))
 
 (Def-Brick II-n-Bird-Approach Major Approach F
         (Brick Minor-On G 2)
@@ -1322,7 +1322,11 @@
         (Chord G7 1)
         (Chord CM7 1))  
 
-(Def-Brick Rainy-Pullback Major Approach C
+(Def-Brick Rainy-Pullback(main) Major Approach C
+        (Brick Straight-Approach C 2)
+        (Brick Rainy-Approach C 4))
+
+(Def-Brick Rainy-Pullback(var) Major Approach C
         (Brick Straight-Approach C 2)
         (Brick Raindrop C 2))
 
@@ -2539,3 +2543,4 @@
 (Def-Brick Stablemates-Approach Major Approach Ab
         (Brick Slow-Approach A 2)
         (Brick Straight-Approach Ab 2))
+

@@ -110,7 +110,10 @@ public class ChordBlock extends Block {
         mode = findModeFromQuality();
     }
     
- 
+    public String getRoot()
+      {
+        return chord.getRoot();
+      }
 
     /** getDuration
      * Get the ChordBlock's duration

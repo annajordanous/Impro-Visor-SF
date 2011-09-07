@@ -415,7 +415,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
                 // If not, append "(Launcher)" to the end
                 else
                   {
-                    brickName = brickName + " (Launcher)";
+                    // no for now: brickName = brickName + " (Launcher)";
                   }
 
                 b.setName(brickName);
@@ -542,6 +542,7 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
       {
         Block b = blocks.get(i);
         Block c = blocks.get(i + 1);
+
         // Check if current and next block are both bricks
         if( c instanceof Brick )
           {
@@ -594,6 +595,7 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
           {
             // Second block is a chord, but this does not mean not joinable
             ChordBlock cb = (ChordBlock) c;
+
             long domKey = (cb.getKey() + 7) % OCTAVE;
 
             // First check for staring with minor 7 type chord
@@ -647,6 +649,7 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
           {
             return false;
           }
+        
         // Get equivalences for the two chords
         
         SubstituteList firstEquivs = dict.checkEquivalence(firstToCheck);
@@ -657,6 +660,13 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
         
         String firstType = first.getType();
         String secondType = second.getType();
+        
+        // Don't join chord to itself
+        
+        if( firstToCheck.getRoot().equals(secondToCheck.getRoot())  && firstToCheck.getQuality().equals(secondToCheck.getQuality()) )
+          {
+            return false;
+          }
         
         //System.out.print("joinable? " + firstType + " to " + secondType);
         
