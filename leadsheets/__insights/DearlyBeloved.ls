@@ -56,9 +56,11 @@ Dm7 | G7 | Dm7 | G7 |
 (phrase (style swing)) 
 CM7 FM7 | Em7 A7 | D7 | Ebo | 
 
+(phrase (style swing)) 
+Dm7 | G7 | CM7 | 
 (section (style swing)) 
 
-Dm7 | G7 | CM7 | Em7 A7 | 
+Em7 A7 | 
 
 (part
     (type melody)

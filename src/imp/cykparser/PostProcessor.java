@@ -63,7 +63,7 @@ public class PostProcessor {
 
     //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
 
-    public static String[] FIRST_STABLE = {"Cadence", "CESH", "Dropback", "Ending", 
+    public static String[] FIRST_STABLE = {"Cadence", "CESH", /* "Dropback", */ "Ending", 
         "On", "On-Off", "On-Off+", "Opening", "Overrun"};
 
     public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Pullback", "Turnaround"};
@@ -612,14 +612,24 @@ public static String getJoinString(Block b, Block c)
                if( !chords.isEmpty() )
                   {
                     ChordBlock previous = c.getFirstChord();
-                    
+
                     for( ChordBlock cb: chords )
                       {
                         int diffPrevious = (OCTAVE + previous.getRootSemitones() - cb.getRootSemitones()) % OCTAVE;
+                        
+                        // Possible cyclic or chromatic descending dominant
+                        
                         if( cb.same(previous) 
-                        || (cb.isDominant() &&  (diffPrevious == 7 || diffPrevious == 1)) )
+                        || (cb.isDominant() && (diffPrevious == 7 || diffPrevious == 1)) )
                           {
                             previous = cb;
+                          }
+                                
+                        // Possible cyclic or chromatic descending broken-down dominant
+                                
+                        else if( cb.isMinor7() && (diffPrevious == 0 || diffPrevious == 6) )
+                          {
+                            
                           }
                         else
                           {
@@ -643,7 +653,12 @@ public static String getJoinString(Block b, Block c)
     else
       // c is a ChordBlock, not a Brick
       {
-        // Second block is a chord, but this does not mean not joinable.
+     if( !checkFirstStability(b) )
+        {
+        return "";
+        }
+     
+     // Second block is a chord, but this does not mean not joinable.
         
         ChordBlock cb = (ChordBlock) c;
 

@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -35,7 +35,9 @@
 )
 
 (phrase (style swing)) 
-FM7 | / | Gm7 C7 | FM7 | 
+FM7 | / | 
+(phrase (style swing)) 
+Gm7 C7 | FM7 | 
 
 (section (style swing)) 
 
@@ -56,7 +58,9 @@ Cm7 F7 | Bm7 E7 | Bbm7 Eb7 | Am7 D7 |
 Gm7 | / | Abm7 Db7 | Gm7 C7 | 
 
 (phrase (style swing)) 
-FM7 | / | Gm7 C7 | Am7b5 D7 | 
+FM7 | / | 
+(phrase (style swing)) 
+Gm7 C7 | Am7b5 D7 | 
 
 (section (style swing)) 
 
