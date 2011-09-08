@@ -66,7 +66,7 @@ public class PostProcessor {
     public static String[] FIRST_STABLE = {"Cadence", "CESH", /* "Dropback", */ "Ending", 
         "On", /* "On-Off", */ "On-Off+", "Opening", "Overrun"};
 
-    public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Pullback", "Turnaround"};
+    public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Overrun", "Pullback", "Turnaround"};
     
     // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;
@@ -556,10 +556,11 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
 
 public static String getJoinString(Block b, Block c)
   {
-    //System.out.println("getJoinString " + b + " vs. " + c + " chords = " + b.getLastChord() + " vs. " + c.getFirstChord());
+    System.out.println("getJoinString " + b + " vs. " + c + " chords = " + b.getLastChord() + " vs. " + c.getFirstChord());
 
     if( b.getLastChord().same(c.getFirstChord()) )
       {
+        System.out.println("Not joinable because chords the same");
         return "";
       }
 
@@ -571,13 +572,14 @@ public static String getJoinString(Block b, Block c)
               {
                 return "Dogleg";
               }
+            System.out.println("Not joinable because first unstable and not dogleg");
             return "";
           }
 
         // Check that the two bricks are joinable
         if( checkJoinability(b, (Brick) c) )
           {
-            //System.out.println("joinable");
+            System.out.println("joinable");
             // Default to dominant of brick's overall key
 
             long domKey = (c.getKey() + 7) % OCTAVE;
@@ -696,6 +698,7 @@ public static String getJoinString(Block b, Block c)
 
             return joinLookup(keyDiff);
           }
+        System.out.println("Not joinable because checkJoinability failed");
         return "";
       } // instance of Brick
     else
@@ -703,6 +706,7 @@ public static String getJoinString(Block b, Block c)
       {
         if( !checkFirstStability(b) )
           {
+            System.out.println("Not joinable because first unstable");
             return "";
           }
 
@@ -728,8 +732,8 @@ public static String getJoinString(Block b, Block c)
             return joinLookup(keyDiff);
           }
       }
-
-return "";
+  System.out.println("Generally not joinable");
+  return "";
   }
 
 /** 
@@ -743,28 +747,36 @@ public static boolean checkJoinability(Block first, Brick second)
   {
      // Comparing last chord of first block and first chord of second block
     
-    ChordBlock firstToCheck = first.getLastChord();
-    ChordBlock secondToCheck = second.getFirstChord();
+    ChordBlock firstChord = first.getLastChord();
+    ChordBlock secondChord = second.getFirstChord();
 
     // Don't join to a tonic directly
 
-    if( secondToCheck.isTonic() )
+    if( secondChord.isTonic() )
       {
+        System.out.println("Not Joinable because second is tonic");
         return false;
+      }
+    
+    if( first.isOverlap() )
+      {
+        System.out.println("Not Joinable because first is overlap brick.");
+        return false;       
       }
     
     // Don't join minor tonality with minor7
     
-    if( firstToCheck.isMinor() && secondToCheck.isMinor7() 
-     && firstToCheck.getRootSemitones() == secondToCheck.getRootSemitones() )
+    if( firstChord.isMinor() && secondChord.isMinor7() 
+     && firstChord.getRootSemitones() == secondChord.getRootSemitones() )
       {
+        System.out.println("Not joinable: Minor tonality to minor tonic");
         return false;
       }
 
     // Get equivalences for the two chords
 
-    SubstituteList firstEquivs = dict.checkEquivalence(firstToCheck);
-    SubstituteList secondEquivs = dict.checkEquivalence(secondToCheck);
+    SubstituteList firstEquivs = dict.checkEquivalence(firstChord);
+    SubstituteList secondEquivs = dict.checkEquivalence(secondChord);
 
     String firstMode = first.getMode();
     String secondMode = second.getMode();
@@ -774,8 +786,9 @@ public static boolean checkJoinability(Block first, Brick second)
 
     // Don't join chord to the same chord
 
-    if( firstToCheck.same(secondToCheck) )
+    if( firstChord.same(secondChord) )
       {
+        System.out.println("Not joinable: Two chords the same");
         return false;
       }
 
@@ -786,7 +799,7 @@ public static boolean checkJoinability(Block first, Brick second)
 
     if( !checkFirstStability(first) ) 
       {
-        //System.out.println(" NO, first not stable");
+        System.out.println("Not joinable: first not stable");
         return false; // No point in checking further
       }
     /*
@@ -803,9 +816,9 @@ public static boolean checkJoinability(Block first, Brick second)
 
     // Determine stability of second block
 
-    if( !checkSecondInstability(secondToCheck) )
+    if( !checkSecondInstability(second) )
       {
-        //System.out.println(" YES");
+        System.out.println(" Not jointable: second not unstable: " + secondChord + " type " + secondChord.getType());
         return false;
       }
     /*
@@ -816,7 +829,7 @@ public static boolean checkJoinability(Block first, Brick second)
       }
      */
 
-    //System.out.println(" YES");
+    System.out.println("Joinable");
     return true;
 
   }
@@ -1008,6 +1021,10 @@ public static boolean checkJoinability(Block first, Brick second)
     
     public static boolean checkFirstStability(Block b)
       {
+        if( b instanceof ChordBlock )
+          {
+            return ((ChordBlock)b).isTonic();
+          }
         return member(b.getType(), FIRST_STABLE);
       }
  

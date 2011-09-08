@@ -318,7 +318,7 @@ public class Block {
     
     public ChordBlock getLastChord()
       {
-        List<ChordBlock> list = flattenBlock();
+        ArrayList<ChordBlock> list = flattenBlock();
         return list.get(list.size()-1);
       }
     
