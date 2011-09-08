@@ -370,7 +370,7 @@
         (Brick Autumnal-Approach E 6)
         (Chord Em7 2))
 
-(Def-Brick Autumnal-Cadence(basic) Minor Cadence C
+(Def-Brick Autumnal-Cadence(basic) Minor Invisible C
         (Chord Fm7 2)
         (Chord Dm7  1)
         (Chord G7  1))
@@ -1674,7 +1674,7 @@
         (Brick Straight-Approach F 3)
         (Chord C7/Bb 1))
 
-(Def-Brick SPOT(var 3) Major Opening Db
+(Def-Brick SPOT(var 3) Major Turnaround Db
         (Brick Tritone-Approach Eb 2)
         (Brick Straight-Approach Db 2))
 
@@ -2549,3 +2549,11 @@
         (Chord BbM7 2)
         (Brick Straight-Approach F 2))
 
+
+(Def-Brick Autumnal-Approach(var 5) Minor Approach A
+        (Brick Minor-On D 2)
+        (Brick Straight-Approach A 2))
+
+(Def-Brick To-IV-n-Yak(newest) Major Approach Eb
+        (Brick Rainy-Cadence Eb 10)
+        (Chord Ab7 4))

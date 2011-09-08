@@ -42,7 +42,7 @@ Am7 | B7 E7 A7 D7 | GM7 E7 | Am7 D7 |
 (section (style swing)) 
 
 GM7 CM7 | B7 Em7 | A7#11 | / | 
-Am7 | B7 E7 A7 D7 | GM7 C#o | Dm7 G7 | 
+Am7 | B7 E7 A7 D7 | GM7 | Dm7 G7 | 
 
 (phrase (style swing)) 
 CM7 | / | F7 | / | 

@@ -764,6 +764,7 @@ public static boolean checkJoinability(Block first, Brick second)
         return false;       
       }
     
+    /*
     // Don't join minor tonality with minor7
     
     if( firstChord.isMinor() && secondChord.isMinor7() 
@@ -772,7 +773,8 @@ public static boolean checkJoinability(Block first, Brick second)
         System.out.println("Not joinable: Minor tonality to minor tonic");
         return false;
       }
-
+    */
+    
     // Get equivalences for the two chords
 
     SubstituteList firstEquivs = dict.checkEquivalence(firstChord);
