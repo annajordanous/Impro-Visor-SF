@@ -2569,3 +2569,36 @@
 (Def-Brick Rhythm-Bridge(dog-legged) Major Approach Bb
         (Brick Dogleg-Cycle(4 steps) Bb 8))
 
+
+(Def-Brick To-IV-n-Bird-SPOT(newer) Major Turnaround C
+        (Brick Straight-Cadence F 6)
+        (Brick Somewhere/Nowhere-Approach Ab 3)
+        (Brick Extended-Approach C 3))
+
+(Def-Brick Surprise-Major-Cadence-+-Dropback(newer) Major Dropback G
+        (Brick Surprise-Major-Cadence G 6)
+        (Brick Sad-Approach A 2))
+
+(Def-Brick Straight-Cadence-+-Dominant-Overrun Major Overrun G
+        (Brick Straight-Cadence G 3)
+        (Chord C7 1))
+
+(Def-Brick Autumnal-Cadence(newer) Major Cadence C
+        (Chord Fm7 1)
+        (Brick Straight-Cadence C 2))
+
+(Def-Brick To-Somewhere Major Approach C
+        (Chord CM7 1)
+        (Chord D7 1))
+
+(Def-Brick IV-n-Yak-+-Pullback-Approach Major Approach F
+        (Brick On-Off-Major-IV Bb 2)
+        (Brick Sad-Approach G 2))
+
+(Def-Brick IV-n-Yak-To Major Approach F
+        (Brick IV-n-Yak F 3)
+        (Chord F7 1))
+
+(Def-Brick Autumn-Leaves-Opening(new) Major Opening Db
+        (Brick Straight-Cadence-+-Overrun Db 4)
+        (Brick Sad-Cadence Bb 4))

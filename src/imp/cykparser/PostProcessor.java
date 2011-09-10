@@ -34,7 +34,7 @@ import polya.*;
  */
 public class PostProcessor {
 
-    public static boolean traceJoin = false;
+    public static boolean traceJoin = true;
     
     /**
      * Temporary fix to static method issues
@@ -390,7 +390,8 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
               {
                
 //                String altResolution = getAlternateResolution(b, chordList.get(0));
-                String altResolution = getAlternateResolution(b.getKey(), postBlock.getKey());
+                Long baseKey = b.getLastChord().getKey(); // alternate b.getKey()
+                String altResolution = getAlternateResolution(baseKey, postBlock.getKey());
                 
                 //System.out.println(b + " vs " + postBlock + " altResolution = " + altResolution);
                 
@@ -562,8 +563,8 @@ public static String getJoinString(Block b, Block c)
       {
         System.out.println("-------------------------------------------------");
 
-        System.out.println("\ngetJoinString " + b + " vs. " + c + " chords = " 
-                         + b.getLastChord() + " vs. " + c.getFirstChord() + ".");
+        System.out.println("\nTrying to join " + b + " last chord = " + b.getLastChord()
+                  + "\nto " + c + " first chord = " + c.getFirstChord() + ":");
       }
 
     if( b.getLastChord().same(c.getFirstChord()) )
@@ -571,6 +572,8 @@ public static String getJoinString(Block b, Block c)
         if( traceJoin ) System.out.println("Not joinable because chords the same");
         return "";
       }
+
+    long baseKey = b.getLastChord().getKey();  // alternate: b.getKey() will give different results, e.g. if overrun
 
     if( c instanceof Brick )
       {
@@ -584,7 +587,7 @@ public static String getJoinString(Block b, Block c)
             if( traceJoin ) System.out.println("Not joinable because first unstable and not dogleg");
             return "";
           }
-
+        
         // Check that the two bricks are joinable
         if( checkJoinability(b, (Brick) c) )
           {
@@ -603,15 +606,15 @@ public static String getJoinString(Block b, Block c)
 
                         if( current.isDominant() )
                           {
-                            long domKey = (current.getKey() + 7) % OCTAVE;
-                            if( traceJoin ) System.out.println("domKey determined by first dominant as: " + BrickLibrary.keyNumToName(domKey) );
-                            return joinLookup(domKey, b.getKey());
+                            long domKey = current.getKey();
+                            if( traceJoin ) System.out.println("domKey determined by first dominant " + current + " as: " + BrickLibrary.keyNumToName(domKey) );
+                            return joinLookup(domKey, baseKey);
                           }
                         else if( current.isMinor7() )
                           {
                             long domKey = (current.getKey() + FOURTH) % OCTAVE;
-                            if( traceJoin ) System.out.println("domKey determined by first minor7 as: " + BrickLibrary.keyNumToName(domKey) );
-                            return joinLookup(domKey, b.getKey());
+                            if( traceJoin ) System.out.println("domKey determined by first minor7 " + current + " as: " + BrickLibrary.keyNumToName(domKey) );
+                            return joinLookup(domKey, baseKey);
                            }
                       }
                   }
@@ -643,15 +646,15 @@ public static String getJoinString(Block b, Block c)
         if( cb.isMinor7() )
           {
             domKey = (cb.getKey() + FOURTH) % OCTAVE;
-            if( traceJoin ) System.out.println("domkey determined by minor7 chordBlock as " + BrickLibrary.keyNumToName(domKey));
-            return joinLookup(domKey, b.getKey());
+            if( traceJoin ) System.out.println("domkey determined by minor7 " + cb + " as " + BrickLibrary.keyNumToName(domKey));
+            return joinLookup(domKey, baseKey);
           }
         // Otherwise try to use first dominant in second brick
         else if( cb.isDominant() )
           {
-             domKey = cb.getKey();
-             if( traceJoin ) System.out.println("domKey determined by first dominant as: " + BrickLibrary.keyNumToName(domKey) );
-             return joinLookup(domKey, b.getKey());
+             domKey = (cb.getKey() + 7) % OCTAVE;
+             if( traceJoin ) System.out.println("domKey determined by first dominant " + cb + " as: " + BrickLibrary.keyNumToName(domKey) );
+             return joinLookup(domKey, baseKey);
           }
         else
           {

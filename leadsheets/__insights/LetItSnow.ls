@@ -49,11 +49,15 @@ CM7 Dm7 | Em7 FM7 | Em7 Ebo | Dm7 G7 |
 Dm7 A7 | Dm7 Ebo | Dm7 G7 | CM7 / Am7 D7 | 
 
 (phrase (style swing)) 
-GM7 CM7 | Bm7 E7 | Am7 D7 | GM7 D7 | 
+GM7 CM7 | Bm7 E7 | 
+(phrase (style swing)) 
+Am7 D7 | GM7 D7 | 
 
+(phrase (style swing)) 
+GM7 CM7 | Bm7 E7 | 
 (section (style swing)) 
 
-GM7 CM7 | Bm7 E7 | Am7 D7 | Dm7 G7 | 
+Am7 D7 | Dm7 G7 | 
 
 (phrase (style swing)) 
 CM7 Dm7 | Em7 FM7 | Em7 Ebo | Dm7 G7 | 

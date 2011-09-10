@@ -248,16 +248,17 @@ public class ChordBlock extends Block {
      * @return a boolean
      */
     public boolean isTonic() {
-         String symbol = getSymbol();
-        
-        return symbol.equals("m")
+        String symbol = getSymbol();
+        return symbol.equals("")
+            || symbol.equals("m")
             || symbol.startsWith("M")
             || symbol.startsWith("m6");
     }
         
     public boolean isGeneralizedTonic() {
         String symbol = getSymbol();
-        return symbol.equals("m")
+        return symbol.equals("")
+            || symbol.equals("m") 
             || symbol.startsWith("M") 
             || symbol.startsWith("m6")
             || symbol.startsWith("m7")
