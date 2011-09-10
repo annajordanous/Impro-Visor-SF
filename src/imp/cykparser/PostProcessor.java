@@ -33,6 +33,8 @@ import polya.*;
  * @author Zachary Merritt
  */
 public class PostProcessor {
+
+    public static boolean traceJoin = false;
     
     /**
      * Temporary fix to static method issues
@@ -64,7 +66,7 @@ public class PostProcessor {
     //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
 
     public static String[] FIRST_STABLE = {"Cadence", "CESH", /* "Dropback", */ "Ending", 
-        "On", /* "On-Off", */ "On-Off+", "Opening", "Overrun"};
+        "On", /* "On-Off", */ "On-Off+", "Overrun"};
 
     public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Overrun", "Pullback", "Turnaround"};
     
@@ -556,11 +558,17 @@ public static ArrayList<String> findJoins(ArrayList<Block> blocks)
 
 public static String getJoinString(Block b, Block c)
   {
-    System.out.println("getJoinString " + b + " vs. " + c + " chords = " + b.getLastChord() + " vs. " + c.getFirstChord());
+    if( traceJoin ) 
+      {
+        System.out.println("-------------------------------------------------");
+
+        System.out.println("\ngetJoinString " + b + " vs. " + c + " chords = " 
+                         + b.getLastChord() + " vs. " + c.getFirstChord() + ".");
+      }
 
     if( b.getLastChord().same(c.getFirstChord()) )
       {
-        System.out.println("Not joinable because chords the same");
+        if( traceJoin ) System.out.println("Not joinable because chords the same");
         return "";
       }
 
@@ -570,46 +578,17 @@ public static String getJoinString(Block b, Block c)
           {
             if( checkDogleg(b, (Brick) c) )
               {
+                if( traceJoin ) System.out.println("Dogleg");
                 return "Dogleg";
               }
-            System.out.println("Not joinable because first unstable and not dogleg");
+            if( traceJoin ) System.out.println("Not joinable because first unstable and not dogleg");
             return "";
           }
 
         // Check that the two bricks are joinable
         if( checkJoinability(b, (Brick) c) )
           {
-            System.out.println("joinable");
-            // Default to dominant of brick's overall key
-
-            long domKey = (c.getKey() + 7) % OCTAVE;
-
-            ChordBlock cfirst = c.getFirstChord();
-
-            // First check for staring with minor 7 type chord
-/*
-            if( cfirst.isMinor7() )
-              {
-                domKey = (cfirst.getKey() + FOURTH) % OCTAVE;
-              }
-            // Otherwise try to use first dominant in second brick
-            else
-*/
-              {
                 ArrayList<ChordBlock> chords = c.flattenBlock();
-
-                for( ChordBlock cb : chords )
-                  {
-                    if( cb.isDominant() )
-                      {
-                        domKey = cb.getKey();
-                        break;
-                      }
-                  }
-
-                // Make exception if there is a sequence of dominants
-                // following the cycle or chromatic, in which case use
-                // the last dominant in the sequence.
 
                 if( !chords.isEmpty() )
                   {
@@ -618,95 +597,38 @@ public static String getJoinString(Block b, Block c)
                     for( ChordBlock current : chords )
                       {
                         //System.out.println("previous = " + previous + " current = " + current);
-                        int diffPrevious = (OCTAVE + previous.getRootSemitones() - current.getRootSemitones()) % OCTAVE;
+                        //int diffPrevious = (OCTAVE + previous.getRootSemitones() - current.getRootSemitones()) % OCTAVE;
 
                         // Possible cyclic or chromatic descending dominant
 
-                        if( current.same(previous) )
+                        if( current.isDominant() )
                           {
-                          }
-                        else if( current.isDominant() )
-                          {
-                            if( previous.isDominant() )
-                              {
-                                if( diffPrevious == 7 || diffPrevious == 1 )
-                                  {
-                                  }
-                                else
-                                  {
-                                    break;
-                                  }
-                              }
-                            else if( previous.isMinor7() )
-                              {
-                                if( diffPrevious == 7 )
-                                  {
-                                  }
-                                else
-                                  {
-                                    break;
-                                  }
-                              }
-                            else
-                              {
-                                break;
-                              }
-                            previous = current;
+                            long domKey = (current.getKey() + 7) % OCTAVE;
+                            if( traceJoin ) System.out.println("domKey determined by first dominant as: " + BrickLibrary.keyNumToName(domKey) );
+                            return joinLookup(domKey, b.getKey());
                           }
                         else if( current.isMinor7() )
                           {
-                            if( previous.isDominant() )
-                              {
-                                if( diffPrevious == 7 )
-                                  {
-                                  }
-                                else
-                                  {
-                                    break;
-                                  }
-                              }
-                            else if( previous.isMinor7() )
-                              {
-                                if( diffPrevious == 7 )
-                                  {
-                                  }
-                                else
-                                  {
-                                    break;
-                                  }
-                              }
-                            else
-                              {
-                                break;
-                              }
-                            previous = current;
-                          }
-                        else
-                          {
-                            break;
-                          }
+                            long domKey = (current.getKey() + FOURTH) % OCTAVE;
+                            if( traceJoin ) System.out.println("domKey determined by first minor7 as: " + BrickLibrary.keyNumToName(domKey) );
+                            return joinLookup(domKey, b.getKey());
+                           }
                       }
-
-                    // Break to here
-                    domKey = previous.isDominant() ? previous.getKey() : (previous.getKey() - 7);
                   }
-              }
-            // Determine which join based on difference between first 
-            // block's key and dominant found in previous step
 
-            long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
-
-            return joinLookup(keyDiff);
+               if( traceJoin ) System.out.println("Not joinable because no dominant or minor7.");
+               return "";
           }
-        System.out.println("Not joinable because checkJoinability failed");
+        if( traceJoin ) System.out.println("Not joinable because checkJoinability failed.");
         return "";
-      } // instance of Brick
+      } // c instanceof Brick
+            
     else
       // c is a ChordBlock, not a Brick
       {
         if( !checkFirstStability(b) )
           {
-            System.out.println("Not joinable because first unstable");
+            if( traceJoin ) System.out.println("Not joinable because first unstable.");
             return "";
           }
 
@@ -714,29 +636,49 @@ public static String getJoinString(Block b, Block c)
 
         ChordBlock cb = (ChordBlock) c;
 
-        long domKey = (cb.getKey() + 7) % OCTAVE;
+        long domKey;
 
         // First check for staring with minor 7 type chord
 
         if( cb.isMinor7() )
           {
-            domKey = (c.getKey() + FOURTH) % OCTAVE;
-            long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
-            return joinLookup(keyDiff);
+            domKey = (cb.getKey() + FOURTH) % OCTAVE;
+            if( traceJoin ) System.out.println("domkey determined by minor7 chordBlock as " + BrickLibrary.keyNumToName(domKey));
+            return joinLookup(domKey, b.getKey());
           }
         // Otherwise try to use first dominant in second brick
         else if( cb.isDominant() )
           {
-            domKey = cb.getKey();
-            long keyDiff = (domKey - b.getKey() + OCTAVE) % OCTAVE;
-            return joinLookup(keyDiff);
+             domKey = cb.getKey();
+             if( traceJoin ) System.out.println("domKey determined by first dominant as: " + BrickLibrary.keyNumToName(domKey) );
+             return joinLookup(domKey, b.getKey());
+          }
+        else
+          {
+            System.out.println("Not joinable because neither a dominant nor minor 7");
+            return "";
           }
       }
-  System.out.println("Generally not joinable");
-  return "";
   }
 
-/** 
+    /**
+     * Retrieve name of join based on difference between keys of two bricks.
+     * @param keyDiff : difference of keys between two bricks
+     * @return  Name of join
+     */
+    public static String joinLookup(long domKey, long baseKey) {
+       int keyDiff = (int)((domKey - baseKey + OCTAVE) % OCTAVE);
+       String joinType = JOINS[keyDiff];
+       
+       if( traceJoin )
+       System.out.println("domKey = "  + BrickLibrary.keyNumToName(domKey) 
+                       + ", baseKey = " + BrickLibrary.keyNumToName(baseKey)
+                       + " joinType = " + joinType);
+        
+        return joinType;
+    }
+    
+    /** 
  * Check whether a Block is joinable to a Brick.
  * @param first : a Block
  * @param second : a Brick
@@ -754,27 +696,16 @@ public static boolean checkJoinability(Block first, Brick second)
 
     if( secondChord.isTonic() )
       {
-        System.out.println("Not Joinable because second is tonic");
+        if( traceJoin ) System.out.println("Not Joinable because second is tonic.");
         return false;
       }
     
     if( first.isOverlap() )
       {
-        System.out.println("Not Joinable because first is overlap brick.");
+        if( traceJoin ) System.out.println("Not Joinable because first is overlap brick.");
         return false;       
       }
-    
-    /*
-    // Don't join minor tonality with minor7
-    
-    if( firstChord.isMinor() && secondChord.isMinor7() 
-     && firstChord.getRootSemitones() == secondChord.getRootSemitones() )
-      {
-        System.out.println("Not joinable: Minor tonality to minor tonic");
-        return false;
-      }
-    */
-    
+
     // Get equivalences for the two chords
 
     SubstituteList firstEquivs = dict.checkEquivalence(firstChord);
@@ -790,48 +721,27 @@ public static boolean checkJoinability(Block first, Brick second)
 
     if( firstChord.same(secondChord) )
       {
-        System.out.println("Not joinable: Two chords the same");
+        if( traceJoin ) System.out.println("Not joinable: Two chords the same.");
         return false;
       }
-
-    //System.out.println("joinable? " + firstType + " to " + secondType + ": " + first + " to " + second);
-
-    // Determine stability of first block
-    // This is necesary if the blocks are to be joinable.
 
     if( !checkFirstStability(first) ) 
       {
-        System.out.println("Not joinable: first not stable");
+        if( traceJoin ) System.out.println("Not joinable: first not stable.");
         return false; // No point in checking further
       }
-    /*
-    else if( firstEquivs.hasMode(firstMode) )
-      {
-        // Otherwise, continue if the first block is stable.
-      }
-    else
-      {
-        //System.out.println(" NO, first wrong mode");
-        return false; // Otherwise, condsider non-joinable.
-      }
-     */
 
     // Determine stability of second block
 
-    if( !checkSecondInstability(second) )
+    if( checkSecondStability(second) )
       {
-        System.out.println(" Not jointable: second not unstable: " + secondChord + " type " + secondChord.getType());
+        if( traceJoin ) System.out.println(" Not jointable: second not unstable: " 
+                        + secondChord + " type " + secondChord.getType() + ".");
         return false;
       }
-    /*
-    else if( secondEquivs.hasMode(secondMode) )
-      {
-        System.out.println(" NO, second wrong ");
-        return false;
-      }
-     */
 
-    System.out.println("Joinable");
+
+    if( traceJoin ) System.out.println("Joinable.");
     return true;
 
   }
@@ -868,20 +778,6 @@ public static boolean checkJoinability(Block first, Brick second)
         return isDogleg;
     }
     
-    /**
-     * Retrieve name of join based on difference between keys of two bricks.
-     * @param keyDiff : difference of keys between two bricks
-     * @return  Name of join
-     */
-    public static String joinLookup (long keyDiff) {
-        if(keyDiff >= 0 && keyDiff < 12)
-            return JOINS[(int)keyDiff];
-        else
-        {
-            ErrorLog.log(ErrorLog.FATAL, "Difference between keys is incorrect");
-            return "";
-        }
-    }
     
     /**
      * Check to see if chord fits diatonically within key.
@@ -1023,17 +919,12 @@ public static boolean checkJoinability(Block first, Brick second)
     
     public static boolean checkFirstStability(Block b)
       {
-        if( b instanceof ChordBlock )
-          {
-            return ((ChordBlock)b).isTonic();
-          }
-        return member(b.getType(), FIRST_STABLE);
+        return b.getLastChord().isGeneralizedTonic();
       }
  
-    public static boolean checkSecondInstability(Block b)
+    public static boolean checkSecondStability(Block b)
       {
-        return member(b.getType(), SECOND_UNSTABLE) 
-           || (b instanceof ChordBlock && ((ChordBlock)b).isMinor7());
+        return b.getFirstChord().isTonic();
       }
 }
      

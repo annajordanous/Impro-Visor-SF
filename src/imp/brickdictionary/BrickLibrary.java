@@ -38,10 +38,33 @@ import java.util.Set;
  * @author Zachary Merritt
  */
 public class BrickLibrary {
+
+    /**
+     *  This is the conjunction to be used to describe appendages to Cadences
+     *  such as Overrun and Dropback
+     */
+    public static String CONJUNCTION = " + ";
+    
+    
+    /**
+     * The name for an Overrun
+     */
+
+    public static String OVERRUN = "Overrun";
+
+        
+    /**
+     * The name for a Dropback
+     */
+
+    public static String DROPBACK = "Dropback";
+    
     
     // Lists of key names, with indices corresponding to numeric key value
+    
     private static final String[] KEY_NAME_ARRAY = 
         {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+    
     private static final String[] KEY_NAME_ARRAY_SHARPS =
         {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
     
@@ -146,9 +169,9 @@ public class BrickLibrary {
         
         // special rule for creating overruns
         if (brick.getType().equals("Cadence")) {
-            String overrunName = brick.getName() + " with Overrun";
+            String overrunName = brick.getName() + CONJUNCTION + OVERRUN;
             long overrunKeyNum = brick.getKey();
-            String overrunType = "Overrun";
+            String overrunType = OVERRUN;
             String overrunMode = brick.getMode();
             String overrunQualifier = brick.getVariant();
 
@@ -169,9 +192,9 @@ public class BrickLibrary {
                     overrunType, overrunBlocks, overrunMode);
             addBrick(overrun);
                     
-            String dropbackName = brick.getName() + " with Dropback";
+            String dropbackName = brick.getName() + CONJUNCTION + DROPBACK;
             long dropbackKeyNum = brick.getKey();
-            String dropbackType = "Dropback";
+            String dropbackType = DROPBACK;
             String dropbackMode = brick.getMode();
             String dropbackQualifier = brick.getVariant();
 

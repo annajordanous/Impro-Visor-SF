@@ -251,10 +251,21 @@ public class ChordBlock extends Block {
          String symbol = getSymbol();
         
         return symbol.equals("m")
-            || symbol.startsWith("M") 
+            || symbol.startsWith("M")
             || symbol.startsWith("m6");
     }
         
+    public boolean isGeneralizedTonic() {
+        String symbol = getSymbol();
+        return symbol.equals("m")
+            || symbol.startsWith("M") 
+            || symbol.startsWith("m6")
+            || symbol.startsWith("m7")
+            || symbol.startsWith("m9")
+            || symbol.startsWith("m11")
+            || symbol.startsWith("m13");
+    }
+    
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord
      * @return a boolean

@@ -447,40 +447,40 @@
         (Brick Major-On Gb 1)
         (Brick On-Off-Major-bII G 3))
 
-(Def-Brick Chromatic-Minor-Ascending(3 chords) Minor Approach E
+(Def-Brick Chromatic-Minor-Ascending(3 steps) Minor Approach E
         (Brick GenII C 1)
         (Brick GenII Db 1)
         (Brick GenII D 1))
 
-(Def-Brick Chromatic-Minor-Ascending(4 chords) Minor Approach F
-        (Brick Chromatic-Minor-Ascending(3 chords) E 3)
+(Def-Brick Chromatic-Minor-Ascending(4 steps) Minor Approach F
+        (Brick Chromatic-Minor-Ascending(3 steps) E 3)
         (Brick GenII Eb 1))
 
-(Def-Brick Chromatic-Minor-Decending(3 chords) Minor Approach D
+(Def-Brick Chromatic-Minor-Decending(3 steps) Minor Approach D
         (Brick GenII D 1)
         (Brick GenII Db 1)
         (Brick GenII C 1))
 
-(Def-Brick Chromatic-Minor-Decending(4 chords) Minor Approach D
-        (Brick Chromatic-Minor-Decending(3 chords) D 3)
+(Def-Brick Chromatic-Minor-Decending(4 steps) Minor Approach D
+        (Brick Chromatic-Minor-Decending(3 steps) D 3)
         (Brick GenII B 1))
 
-(Def-Brick Chromatically-Descending-Dominants(3 chords) Major Approach C
+(Def-Brick Chromatically-Descending-Dominants(3 steps) Major Approach C
         (Chord A7 1)
         (Chord Ab7 1)
         (Chord G7 1))
 
-(Def-Brick Chromatically-Descending-Dominants(4 chords) Major Approach C
+(Def-Brick Chromatically-Descending-Dominants(4 steps) Major Approach C
         (Chord Bb7 1)
-        (Brick Chromatically-Descending-Dominants(3 chords) C 3))
+        (Brick Chromatically-Descending-Dominants(3 steps) C 3))
 
-(Def-Brick Chromatically-Descending-Dominants(5 chords) Major Approach C
+(Def-Brick Chromatically-Descending-Dominants(5 steps) Major Approach C
         (Chord B7 1)
-        (Brick Chromatically-Descending-Dominants(4 chords) C 4))
+        (Brick Chromatically-Descending-Dominants(4 steps) C 4))
 
-(Def-Brick Chromatically-Descending-Dominants(6 chords) Major Approach C
+(Def-Brick Chromatically-Descending-Dominants(6 steps) Major Approach C
         (Chord C7 1)
-        (Brick Chromatically-Descending-Dominants(5 chords) C 5))
+        (Brick Chromatically-Descending-Dominants(5 steps) C 5))
 
 (Def-Brick Coltrane-Cadence Major Cadence C
     	(Chord Dm7 2) 
@@ -621,25 +621,25 @@
         (Brick Straight-Approach B 1)
         (Brick Dogleg-Cycle(5 steps) C 5))
 
-(Def-Brick Dominant-Cycle(2 chords) Major Approach C
+(Def-Brick Dominant-Cycle(2 steps) Major Approach C
         (Chord D7 1)
         (Chord G7 1))
 
-(Def-Brick Dominant-Cycle(3 chords) Major Approach C
+(Def-Brick Dominant-Cycle(3 steps) Major Approach C
         (Chord A7 1)
         (Brick Slow-Approach C 2))
 
-(Def-Brick Dominant-Cycle(4 chords) Major Approach C
+(Def-Brick Dominant-Cycle(4 steps) Major Approach C
         (Chord E7 1)
-        (Brick Dominant-Cycle(3 chords) C 3))
+        (Brick Dominant-Cycle(3 steps) C 3))
 
-(Def-Brick Dominant-Cycle(5 chords) Major Approach C
+(Def-Brick Dominant-Cycle(5 steps) Major Approach C
         (Chord B7 1)
-        (Brick Dominant-Cycle(4 chords) C 4))
+        (Brick Dominant-Cycle(4 steps) C 4))
 
-(Def-Brick Dominant-Cycle(6 chords) Major Approach C
+(Def-Brick Dominant-Cycle(6 steps) Major Approach C
         (Chord F#7 1)
-        (Brick Dominant-Cycle(5 chords) C 5))
+        (Brick Dominant-Cycle(5 steps) C 5))
 
 (Def-Brick Dominant-Cycle-Cadence Major Cadence C
         (Brick Dominant-Cycle C 1)
@@ -1248,7 +1248,7 @@
 (Def-Brick Pullback-Extended(var 1) Major Approach C
         (Brick An-Approach C 2)
         (Brick An-Approach D 2)
-        (Brick Dominant-Cycle(2 chords) C 2))
+        (Brick Dominant-Cycle(2 steps) C 2))
 
 (Def-Brick Pullback-to-Cadence Major Cadence C
         (Brick Pullback-Extended C 6)
@@ -1330,24 +1330,24 @@
         (Brick Straight-Approach C 2)
         (Brick Raindrop C 2))
 
-(Def-Brick Reverse-Dominant-Cycle(2 chords) Dominant Dropback G
+(Def-Brick Reverse-Dominant-Cycle(2 steps) Dominant Dropback G
         (Chord G7 1)
         (Chord D7 1))
 
-(Def-Brick Reverse-Dominant-Cycle(3 chords) Dominant Dropback G
-        (Brick Reverse-Dominant-Cycle(2 chords) C 2)
+(Def-Brick Reverse-Dominant-Cycle(3 steps) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(2 steps) C 2)
         (Chord A7 1))
 
-(Def-Brick Reverse-Dominant-Cycle(4 chords) Dominant Dropback G
-        (Brick Reverse-Dominant-Cycle(3 chords) C 3)
+(Def-Brick Reverse-Dominant-Cycle(4 steps) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(3 steps) C 3)
         (Chord E7 1))
 
-(Def-Brick Reverse-Dominant-Cycle(5 chords) Dominant Dropback G
-        (Brick Reverse-Dominant-Cycle(4 chords) C 4)
+(Def-Brick Reverse-Dominant-Cycle(5 steps) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(4 steps) C 4)
         (Chord B7 1))
 
-(Def-Brick Reverse-Dominant-Cycle(6 chords) Dominant Dropback G
-        (Brick Reverse-Dominant-Cycle(5 chords) C 5)
+(Def-Brick Reverse-Dominant-Cycle(6 steps) Dominant Dropback G
+        (Brick Reverse-Dominant-Cycle(5 steps) C 5)
         (Chord F#7 1))
 
 (Def-Brick Reverse-Raindrop Major Misc C
@@ -1761,13 +1761,9 @@
         (Chord C#m7b5 1)
         (Brick Major-On Bb 1))
 
-(Def-Brick To-IV(main) Major Approach F
+(Def-Brick To-IV(main) Major Cadence F
         (Brick Major-On F 1)
         (Brick Perfect-Cadence Bb 2))
-
-(Def-Brick To-IV(var) Major Cadence Eb
-        (Chord Eb7 1)
-        (Chord Ab 1))
 
 (Def-Brick To-IV(tritone) Major Cadence Eb
         (Brick Major-On Eb 1)
@@ -2181,8 +2177,8 @@
         (Chord C 1))
 
 (Def-Brick Two-Goes-Dominant-Approach Major Approach C
-        (Brick Dominant-Cycle(2 chords) C 1)
-        (Brick Dominant-Cycle(2 chords) C 1))
+        (Brick Dominant-Cycle(2 steps) C 1)
+        (Brick Dominant-Cycle(2 steps) C 1))
 
 (Def-Brick Two-Goes-Somewhere-Cadence Major Approach C
         (Brick Two-Goes-Dominant-Approach C 4)
@@ -2557,3 +2553,19 @@
 (Def-Brick To-IV-n-Yak(newest) Major Approach Eb
         (Brick Rainy-Cadence Eb 10)
         (Chord Ab7 4))
+
+
+(Def-Brick IV-n-Hack Major Cadence C
+        (Brick Major-On F 1)
+        (Brick Happenstance-Cadence C 3))
+
+(Def-Brick Tension-Pullback Dominant Approach C
+        (Brick Straight-Approach C 2)
+        (Brick Slow-Approach D 2))
+
+(Def-Brick Rhythm-Bridge(straight) Major Approach Bb
+        (Brick Dominant-Cycle(4 steps) Bb 4))
+
+(Def-Brick Rhythm-Bridge(dog-legged) Major Approach Bb
+        (Brick Dogleg-Cycle(4 steps) Bb 8))
+

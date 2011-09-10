@@ -39,7 +39,7 @@ GM7 | / | E7 | / |
 
 (section (style swing)) 
 
-A7 Em7 | A7 Em7 | A7 | / | 
+A7 Em7 | / | A7 | / | 
 
 (phrase (style swing)) 
 Am7 D7 | F#m7b5 B7 | 
@@ -55,7 +55,7 @@ GM7 | / | E7 | / |
 
 (section (style swing)) 
 
-A7 Em7 | A7 | A7 | Dm7 G7 | 
+A7 Em7 | / | A7 | Dm7 G7 | 
 
 (section (style swing)) 
 

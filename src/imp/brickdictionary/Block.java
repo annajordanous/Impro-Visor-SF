@@ -333,5 +333,10 @@ public class Block {
         return "";
       }
     
+    public int getLength()
+      {
+        return 1;
+      }
+    
 // end of class Block
 }

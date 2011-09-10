@@ -40,14 +40,10 @@ CM7 F7 |
 Em7 A7 Dm7 G7 | CM7 | Gm7 C7 | 
 
 (phrase (style swing)) 
-FM7 F#m7 B7 | 
-(phrase (style swing)) 
-CM7 A7 | 
-(phrase (style swing)) 
-Dm7 G7 | 
+FM7 F#m7 B7 | CM7 A7 | 
 (section (style swing)) 
 
-Em7 A7 Dm7 G7 | 
+Dm7 G7 | Em7 A7 Dm7 G7 | 
 
 (phrase (style swing)) 
 CM7 F7 | 

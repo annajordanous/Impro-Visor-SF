@@ -38,17 +38,21 @@
 
 Dm7 Dbo | Cm7 F7 | Dm7 Dbo | Cm7 F7 | 
 
+(phrase (style swing)) 
+BbM7 | 
 (section (style swing)) 
 
-BbM7 | Gm7 C7 | Gm7 C7 | Cm7 / F7 F7/Eb | 
+Gm7 C7 | Gm7 C7 | Cm7 / F7 F7/Eb | 
 
 (section (style swing)) 
 
 Dm7 Dbo | Cm7 F7 | Dm7 Dbo | Cm7 / Am7b5 D7 | 
 
+(phrase (style swing)) 
+Gm7 Gm7/F | 
 (section (style swing)) 
 
-Gm7 Gm7/F | Em7b5 Eb7#11 | Dm7 G7 | Cm7 F7 | 
+Em7b5 Eb7#11 | Dm7 G7 | Cm7 F7 | 
 BbM7 G7 | Cm7 / F7 F7/Eb | 
 (part
     (type melody)

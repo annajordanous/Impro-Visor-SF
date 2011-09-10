@@ -48,10 +48,12 @@ EbM7 Cm7 | Fm7 Bb7 | Am7b5 D7 | Gm7 C7+ |
 
 Fm7 | Bb7 | EbM7 | Bbm7 Eb7 | 
 
+(phrase (style swing)) 
+AbM7 | Fm7 Bb7 | EbM7 | Dm7 G7 | 
+Cm7 Cm7/Bb | 
 (section (style swing)) 
 
-AbM7 | Fm7 Bb7 | EbM7 | Dm7 G7 | 
-Cm7 Cm7/Bb | Am7b5 D7 | GM7 | Fm7 Bb7 | 
+Am7b5 D7 | GM7 | Fm7 Bb7 | 
 
 (phrase (style swing)) 
 EbM7 Cm7 | Fm7 Bb7 | Am7b5 D7 | Gm7 C7+ | 

@@ -1006,6 +1006,13 @@ public class Brick extends Block {
     public static String dashed(String s) {
         return s.replace(' ', '-');
     }
+    
+        
+    public int getLength()
+      {
+        return  flattenBlock().size();
+      }
+    
      // end of class Brick
 }
 
@@ -1021,4 +1028,5 @@ class BrickComparator implements Comparator {
         return name1.compareTo(name2);
     }
             
+
 }
