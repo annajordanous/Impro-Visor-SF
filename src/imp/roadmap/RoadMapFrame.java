@@ -2693,7 +2693,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         long startTime = System.currentTimeMillis();
         ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
         long endTime = System.currentTimeMillis();
-        System.err.println("Analysis: " + (endTime - startTime) + "ms");
+        //System.err.println("Analysis: " + (endTime - startTime) + "ms");
         
         return result;
     }  

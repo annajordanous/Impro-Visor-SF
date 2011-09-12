@@ -658,7 +658,7 @@ public static String getJoinString(Block b, Block c)
           }
         else
           {
-            System.out.println("Not joinable because neither a dominant nor minor 7");
+            if( traceJoin ) System.out.println("Not joinable because neither a dominant nor minor 7");
             return "";
           }
       }
