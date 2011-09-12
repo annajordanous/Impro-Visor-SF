@@ -40,7 +40,7 @@ public class CYKParser
 {
 
     // Constants used by the CYKParser
-    public static final String DICTIONARY_NAME = "vocab/substitutions.txt";
+    public static final String DICTIONARY_NAME = "vocab/My.substitutions";
     public static final String INVISIBLE = "Invisible";
     public static final long SUB_COST = 5;
     

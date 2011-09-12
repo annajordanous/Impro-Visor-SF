@@ -34,7 +34,7 @@ import polya.*;
  */
 public class PostProcessor {
 
-    public static boolean traceJoin = true;
+    public static boolean traceJoin = false;
     
     /**
      * Temporary fix to static method issues
