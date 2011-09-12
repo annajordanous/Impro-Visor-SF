@@ -1,5 +1,5 @@
-Welcome to Impro-Visor (Improvisation Advisor) Version 4, 
-from Harvey Mudd College.
+Welcome to Impro-Visor (Improvisation Advisor) Version 5, 
+from Prof. Bob Keller at Harvey Mudd College.
 
 If you need help, please post to the Yahoo! impro-visor user group:
 
@@ -7,7 +7,7 @@ If you need help, please post to the Yahoo! impro-visor user group:
 
 Impro-Visor is free and runs on any platform that supports Java 1.5 or later, including:
  
-    Windows (XP, 2000, or Vista)
+    Windows (XP, 2000, Vista, 7)
     MacOSX (Tiger (10.4.3 or later) needed for Java 1.5)
     Linux 
 
@@ -44,7 +44,8 @@ Stephen Jones, Aaron Wolin
 David Morrison, Martin Hunt, Steven Gomez
 Jim Herold, Brandy McMenamy, Sayuri Soejima
 Emma Carlson, Jon Gillick, Kevin Tang, Stephen Lee
-Chad Waters, John Goodman
+Chad Waters, John Goodman, Lasconic, Amos Byon,
+Zack Merritt, Xanda Schofield, August Toman-Yih
 
 Sincerely,
 
