@@ -23,6 +23,7 @@ package imp.util;
 import java.io.*;
 import javax.swing.JCheckBox;
 import imp.Directories;
+import imp.ImproVisor;
 import imp.com.*;
 import polya.*;
 
@@ -32,8 +33,6 @@ import polya.*;
 
 public class Preferences implements imp.Constants
   {
-  private static String prefsFileName = "vocab" + File.separator + "My.prefs";
-  
   public static final char TRUE_CHECK_BOX = 'y';
 
   public static final char FALSE_CHECK_BOX = 'n';
@@ -182,23 +181,29 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_ALWAYS_USE_BUTTONS = "nnnn";
 
 
+
+  
   public static void loadPreferences()
     {
     Polylist test = new Polylist();
+    File prefsFile = ImproVisor.getPrefsFile();
     try
       {
-      inputStream = new FileInputStream(prefsFileName);
+      inputStream = new FileInputStream(prefsFile);
       cm.execute(new LoadPrefsCommand(inputStream));
       }
     catch( Exception e )
       {
+      /*
       ErrorLog.log(ErrorLog.WARNING, "Cannot open preferences file; " +
               "generating default preference file 'vocab/My.prefs'.");
+
+      */
       makeDefaultPrefsFile();
 
       try
         {
-        inputStream = new FileInputStream(prefsFileName);
+        inputStream = new FileInputStream(prefsFile);
         cm.execute(new LoadPrefsCommand(inputStream));
 
         }
@@ -212,17 +217,19 @@ public class Preferences implements imp.Constants
 
   public static void savePreferences()
     {
-      //System.out.println("saving preferences");
+    File file = ImproVisor.getPrefsFile();
+
+    //System.out.println("saving preferences");
     try
       {
-      outputStream = new PrintStream(new FileOutputStream(prefsFileName));
+      file.createNewFile();
+      outputStream = new PrintStream(new FileOutputStream(file));
+      cm.execute(new SavePrefsCommand(outputStream));
       }
     catch( Exception e )
       {
-      ErrorLog.log(ErrorLog.WARNING, "Cannot open preferences file.");
+      ErrorLog.log(ErrorLog.WARNING, "Cannot open or create preferences file: " + file);
       }
-
-    cm.execute(new SavePrefsCommand(outputStream));
     }
 
   /*
@@ -367,9 +374,10 @@ public static boolean getAlwaysUse(int index)
 
   public static void makeDefaultPrefsFile()
     {
-
+    File file = ImproVisor.getPrefsFile();
     try
       {
+      /*
       File newVocabDir = new File("vocab");
       boolean needNewVocabDir =
               !newVocabDir.exists() || !newVocabDir.isDirectory();
@@ -379,10 +387,11 @@ public static boolean getAlwaysUse(int index)
         System.err.println("Creating new 'vocab' directory");
         newVocabDir.mkdir();
         }
-
+      */
+        
       FileOutputStream newFile;
 
-      newFile = new FileOutputStream("vocab" + File.separator + "My.prefs");
+      newFile = new FileOutputStream(file); //"vocab" + File.separator + "My.prefs");
       PrintStream out = new PrintStream(newFile);
       out.println("(" + ADV_CACHE_SIZE + " " + ACS_VAL + ")");
 

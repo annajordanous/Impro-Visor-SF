@@ -41,11 +41,6 @@ import java.util.Stack;
  */
 public class RecentFiles {
     /**
-     * filname name and path created for the text file
-     */
-    private static String filename;
-    
-    /**
      * path is the name of the directory for the current leadsheet opened
      */
     private String path;
@@ -67,7 +62,6 @@ public class RecentFiles {
     
     public RecentFiles(String pathName)
     {
-        filename = "vocab" + File.separator + "RecentFiles.txt";
         stk = new Stack();
         tempStk = new Stack();
         path = pathName;
@@ -77,7 +71,6 @@ public class RecentFiles {
     
     public RecentFiles()
     {
-        filename = "vocab" + File.separator + "RecentFiles.txt";
         stk = new Stack();
         tempStk= new Stack();
     }
@@ -91,8 +84,13 @@ public class RecentFiles {
      */
     public void writeNewFile() throws IOException
     {
+        File file = ImproVisor.getRecentFilesFile();
+        if( file == null )
+          {
+            return;
+          }
         try{
-            FileInputStream inStream = new FileInputStream(filename);
+            FileInputStream inStream = new FileInputStream(file);
             DataInputStream datIn = new DataInputStream(inStream);
             BufferedReader buffRead = new BufferedReader(new InputStreamReader(datIn));
             String line;
@@ -121,7 +119,7 @@ public class RecentFiles {
             {
                 cleared.push(path);
             }
-            BufferedWriter recentFiles = new BufferedWriter(new FileWriter(filename));
+            BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
             while(!cleared.empty())
             {
                 recentFiles.write((String)cleared.pop());
@@ -130,7 +128,7 @@ public class RecentFiles {
             recentFiles.close();
         }
         catch(Exception e){
-        BufferedWriter recentFiles = new BufferedWriter(new FileWriter(filename));
+        BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
         recentFiles.write(path);
         recentFiles.close();
         }
@@ -138,9 +136,14 @@ public class RecentFiles {
     
     public void openMostRecent()
     {
+       File file = ImproVisor.getRecentFilesFile();
+        if( file == null )
+          {
+            return;
+          }
         File mostRec;
         try{
-            FileInputStream inStream = new FileInputStream(filename);
+            FileInputStream inStream = new FileInputStream(file);
             DataInputStream datIn = new DataInputStream(inStream);
             BufferedReader buffRead = new BufferedReader(new InputStreamReader(datIn));
             path= buffRead.readLine();
@@ -161,8 +164,13 @@ public class RecentFiles {
      */
     public String getFirstPathName()
     {
+        File file = ImproVisor.getRecentFilesFile();
+        if( file == null )
+          {
+            return null;
+          }
         try{
-            FileInputStream inStream = new FileInputStream(filename);
+            FileInputStream inStream = new FileInputStream(file);
             DataInputStream datIn = new DataInputStream(inStream);
             BufferedReader buffRead = new BufferedReader(new InputStreamReader(datIn));
             path = buffRead.readLine();
@@ -181,8 +189,13 @@ public class RecentFiles {
      */
     public Stack getMostRecentFiles()
     {
+        File file = ImproVisor.getRecentFilesFile();
+        if( file == null )
+           {
+           return null;
+           }
         try{
-            FileInputStream inStream = new FileInputStream(filename);
+            FileInputStream inStream = new FileInputStream(file);
             DataInputStream datIn = new DataInputStream(inStream);
             BufferedReader buffRead = new BufferedReader(new InputStreamReader(datIn));
             String line;
@@ -235,7 +248,7 @@ public class RecentFiles {
     }
     
     /**
-     * Returns the number of leadsheets in "RecentFiles.txt"
+     * Returns the number of leadsheets in "RecentFilesFile.txt"
      * @return 
      */
     public int getSize()

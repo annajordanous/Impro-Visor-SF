@@ -75,13 +75,12 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
+
+  
   /**
    * Name of file in which names of recent leadsheet files are stored.
    */
 
-  private static String recentFilesFilename = "vocab/RecentFiles.txt";
-  
-  
   private static boolean firstTime = true;
   
   RoadMapFrame roadmapFrame = null;
@@ -530,6 +529,8 @@ public class Notate
   private FileDialog saveAWT;
 
   private JFileChooser revertLSFC;
+  
+  private JFileChooser personalizeFC;
 
   private LeadsheetPreview lsOpenPreview;
 
@@ -20369,9 +20370,13 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
                   {
                     try
                       {
-                        BufferedWriter recentFiles = new BufferedWriter(new FileWriter(recentFilesFilename));
-                        recentFiles.write("");
-                        recentFiles.close();
+                        File file = ImproVisor.getRecentFilesFile();
+                        if( file != null )
+                          {
+                          BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
+                          recentFiles.write("");
+                          recentFiles.close();
+                          }
                       }
                     catch( Exception e )
                       {
@@ -20444,9 +20449,13 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
                     {
                       try
                         {
-                          BufferedWriter recentFiles = new BufferedWriter(new FileWriter(recentFilesFilename));
-                          recentFiles.write("");
-                          recentFiles.close();
+                          File file = ImproVisor.getRecentFilesFile();
+                          if( file != null )
+                            {
+                            BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
+                            recentFiles.write("");
+                            recentFiles.close();
+                            }
                         }
                       catch( Exception e )
                         {
@@ -23376,6 +23385,15 @@ public void setLayoutTF(String text)
     
     layoutTF.setText(text);
   }
+
+private void personalize()
+  {
+  personalizeFC = new JFileChooser();
+  personalizeFC.setDialogType(JFileChooser.SAVE_DIALOG);
+  if(personalizeFC.showDialog(this, "Select a Personal Directory") != JFileChooser.APPROVE_OPTION)
+            return;
+  //userDirectory = personalizeFC.getSelectedFile();
+  }               
 
 
 }

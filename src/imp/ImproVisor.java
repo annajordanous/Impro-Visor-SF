@@ -40,7 +40,7 @@ public class ImproVisor implements Constants {
     
     static private Notate currentWindow = null;
 
-    public static String version = "5";
+    public static final String version = "5";
     
     private static int initialXopen = 0;
     private static int initialYopen = 0;
@@ -452,4 +452,79 @@ private ImproVisor(String leadsheet)
         // but it does allow us to pass in a leadsheet parameter...
         instance = new ImproVisor(leadsheet);
     }
+    
+
+  
+private static String improHome = "impro-visor-version-" 
+                    + ImproVisor.version 
+                    + "-files";
+  
+private static String recentFilesFilename = "vocab" + File.separator + "RecentFiles.txt";
+
+private static String prefsFileName = "My.prefs";
+
+    
+public static File getUserDirectory()
+  {
+  String userHome = System.getProperty("user.home");
+  //System.out.println("User Home Path: "+ userHome);
+
+  
+  File homeDir = new File(userHome, improHome);
+    
+  if( !homeDir.exists() )
+    {
+      homeDir.mkdir();
+      System.out.println("Created new folder: " + improHome);
+    }
+  
+  File vocabDir = new File(homeDir, "vocab");
+  
+  if( !vocabDir.exists() )
+    {
+      vocabDir.mkdir();
+    }
+  
+  return homeDir;
+  }
+
+
+public static File getVocabDirectory()
+  {
+  File homeDir = getUserDirectory();
+  
+  File vocabDir = new File(homeDir, "vocab");
+  
+  if( !vocabDir.exists() )
+    {
+      vocabDir.mkdir();
+    }
+  
+  return vocabDir;
+  }
+
+public static File getPrefsFile()
+    {
+    return new File(getVocabDirectory(), prefsFileName); 
+    }
+  
+
+  
+  
+public static File getRecentFilesFile()
+  {
+    String filename = getUserDirectory() + File.separator + recentFilesFilename;
+    File file = new File(filename);
+    try
+      {
+      file.createNewFile();
+      //System.out.println("recentFiles in " + filename);
+      return file;
+      }
+    catch( IOException e )
+      {
+      ErrorLog.log(ErrorLog.WARNING, "Cannot create recentFiles file: " + filename);
+      return null;
+      }
+  }
 }
