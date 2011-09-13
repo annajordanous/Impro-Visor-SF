@@ -532,53 +532,43 @@ public static void copyDir(String subDirName, File homeDir)
 
 public static File getVocabDirectory()
   {
-  File homeDir = getUserDirectory();
-  
-  File vocabDir = new File(homeDir, Directories.vocabDirName);
-
-  return vocabDir;
+  return new File(getUserDirectory(), Directories.vocabDirName);
   }
 
 public static File getLeadsheetDirectory()
   {
-  File homeDir = getUserDirectory();
-  
-  File leadsheetDir = new File(homeDir, Directories.leadsheetDirName);
+  return new File(getUserDirectory(), Directories.leadsheetDirName);
+  }
 
-  return leadsheetDir;
+public static File getStyleDirectory()
+  {
+   return new File(getUserDirectory(), Directories.styleDirName);
+  }
+
+public static File getStyleExtractDirectory()
+  {
+  return new File(getUserDirectory(), Directories.styleExtractDirName);
   }
 
 public static File getGrammarDirectory()
   {
-  File homeDir = getUserDirectory();
-  
-  File grammarDir = new File(homeDir, Directories.grammarDirName);
-
-  return grammarDir;
+  return new File(getUserDirectory(), Directories.grammarDirName);
   }
 
 public static File getDictionaryDirectory()
   {
-  File homeDir = getUserDirectory();
-  
-  File dictionaryDir = new File(homeDir, Directories.dictionaryDirName);
-
-  return dictionaryDir;
+  return new File(getUserDirectory(), Directories.dictionaryDirName);
   }
 
 public static File getProfileDirectory()
   {
-  File homeDir = getUserDirectory();
-  
-  File profileDir = new File(homeDir, Directories.profileDirName);
-
-  return profileDir;
+  return new File(getUserDirectory(), Directories.profileDirName);
   }
 
 public static File getPrefsFile()
-    {
-    return new File(getVocabDirectory(), prefsFileName); 
-    }
+  {
+  return new File(getVocabDirectory(), prefsFileName); 
+  }
     
   
 public static File getRecentFilesFile()
@@ -587,14 +577,15 @@ public static File getRecentFilesFile()
     File file = new File(filename);
     try
       {
-      file.createNewFile();
-      //System.out.println("recentFiles in " + filename);
-      return file;
+        file.createNewFile();
+        //System.out.println("recentFiles in " + filename);
+        return file;
       }
     catch( IOException e )
       {
-      ErrorLog.log(ErrorLog.WARNING, "Cannot create recentFiles file: " + filename);
-      return null;
+        ErrorLog.log(ErrorLog.WARNING, "Cannot create recentFiles file: " + filename);
+        return null;
       }
   }
+
 }

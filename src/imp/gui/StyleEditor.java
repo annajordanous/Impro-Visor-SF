@@ -28,6 +28,7 @@ import polya.Tokenizer;
 import imp.com.*;
 import imp.data.*;
 import imp.data.BassPatternElement.*;
+import imp.ImproVisor;
 import imp.util.*;
 import java.io.*;
 import imp.Constants;
@@ -207,8 +208,8 @@ public class StyleEditor
     {
     // Establish Directories
 
-    styleDir = new File(ImproVisor.getUserDirectory(), Directories.styleDirName);
-    styleExtractDir = new File(ImproVisor.getUserDirectory(), Directories.styleExtractDirName);
+    styleDir = ImproVisor.getStyleDirectory();
+    styleExtractDir = ImproVisor.getStyleExtractDirectory();
 
     this.parent = p;
     this.cm = cm;
