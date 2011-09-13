@@ -310,6 +310,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         cascadeMI = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         windowMenuSeparator = new javax.swing.JSeparator();
+        playMenu = new javax.swing.JMenu();
+        playSelectionMI = new javax.swing.JMenuItem();
+        playAllMI = new javax.swing.JMenuItem();
+        stopPlayMI = new javax.swing.JMenuItem();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(250, 180));
@@ -1642,6 +1646,52 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadmapMenuBar.add(windowMenu);
 
+        playMenu.setMnemonic('p');
+        playMenu.setText("Play"); // NOI18N
+        playMenu.setToolTipText("Select type of playing."); // NOI18N
+        playMenu.setName("playMenu"); // NOI18N
+        playMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playMenuActionPerformed(evt);
+            }
+        });
+
+        playSelectionMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        playSelectionMI.setText("Play Selection"); // NOI18N
+        playSelectionMI.setToolTipText("Play only the selection."); // NOI18N
+        playSelectionMI.setName("playSelectionMI"); // NOI18N
+        playSelectionMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playSelectionMIActionPerformed(evt);
+            }
+        });
+        playMenu.add(playSelectionMI);
+
+        playAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, 0));
+        playAllMI.setMnemonic('p');
+        playAllMI.setText("Play All"); // NOI18N
+        playAllMI.setToolTipText("Play the entire chorus."); // NOI18N
+        playAllMI.setName("playAllMI"); // NOI18N
+        playAllMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playAllMIActionPerformed(evt);
+            }
+        });
+        playMenu.add(playAllMI);
+
+        stopPlayMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, 0));
+        stopPlayMI.setText("Stop Playback"); // NOI18N
+        stopPlayMI.setToolTipText("Stop the current playing."); // NOI18N
+        stopPlayMI.setName("stopPlayMI"); // NOI18N
+        stopPlayMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopPlayMIActionPerformed(evt);
+            }
+        });
+        playMenu.add(stopPlayMI);
+
+        roadmapMenuBar.add(playMenu);
+
         setJMenuBar(roadmapMenuBar);
 
         pack();
@@ -2191,6 +2241,27 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dragFromPreview(0, 0);
         dropFromPreview(0, 0);
     }//GEN-LAST:event_insertBrickButtonActionPerformed
+
+private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
+  {//GEN-HEADEREND:event_playSelectionMIActionPerformed
+  playSelection();
+  }//GEN-LAST:event_playSelectionMIActionPerformed
+
+private void playAllMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playAllMIActionPerformed
+  {//GEN-HEADEREND:event_playAllMIActionPerformed
+  selectAllBricks();
+  playSelection();
+  }//GEN-LAST:event_playAllMIActionPerformed
+
+private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayMIActionPerformed
+  {//GEN-HEADEREND:event_stopPlayMIActionPerformed
+  stopPlayingSelection();
+ }//GEN-LAST:event_stopPlayMIActionPerformed
+
+private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMenuActionPerformed
+  {//GEN-HEADEREND:event_playMenuActionPerformed
+
+  }//GEN-LAST:event_playMenuActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2847,7 +2918,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem newRoadMapMI;
     private javax.swing.JMenuItem openLeadsheetMI;
     private javax.swing.JMenuItem pasteMenuItem;
+    private javax.swing.JMenuItem playAllMI;
     private javax.swing.JButton playButton;
+    private javax.swing.JMenu playMenu;
+    private javax.swing.JMenuItem playSelectionMI;
     private javax.swing.JButton prefDialogAcceptButton1;
     private javax.swing.JButton prefDialogCancelButton;
     private javax.swing.JLabel prefDialogMeterLabel;
@@ -2885,6 +2959,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private javax.swing.JMenuItem sendToOriginalLeadsheetAndSaveMI;
     private javax.swing.JMenuItem sendToOriginalLeadsheetMI;
     private javax.swing.JButton stopButton;
+    private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JMenuItem togglePhraseMenuItem;
     private javax.swing.JMenuItem toggleSectionMenuItem;
     private javax.swing.JToolBar toolBar;
