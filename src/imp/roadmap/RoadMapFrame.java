@@ -1001,7 +1001,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
@@ -1343,7 +1343,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         sectionMenu.setText("Sections"); // NOI18N
         sectionMenu.setName("sectionMenu"); // NOI18N
 
-        toggleSectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        toggleSectionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, 0));
         toggleSectionMenuItem.setText("Toggle Section"); // NOI18N
         toggleSectionMenuItem.setName("toggleSectionMenuItem"); // NOI18N
         toggleSectionMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -1353,7 +1353,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         sectionMenu.add(toggleSectionMenuItem);
 
-        togglePhraseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
+        togglePhraseMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.SHIFT_MASK));
         togglePhraseMenuItem.setText("Toggle Phrase"); // NOI18N
         togglePhraseMenuItem.setName("togglePhraseMenuItem"); // NOI18N
         togglePhraseMenuItem.addActionListener(new java.awt.event.ActionListener() {
