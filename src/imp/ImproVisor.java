@@ -447,6 +447,10 @@ private ImproVisor(String leadsheet)
         // preload images
         ToolkitImages.getInstance();
         
+        // Establish user directory and copy vocab files.
+        
+        getUserDirectory();
+        
         // create ImproVisor instance... this seems to violate some principle
         // of instances, we set instance directly instead of call getInstance()
         // but it does allow us to pass in a leadsheet parameter...
@@ -454,16 +458,35 @@ private ImproVisor(String leadsheet)
     }
     
 
-  
+/**
+ * name of where Impro-Visor files will be stored in the user's directory.
+ */
+    
 private static String improHome = "impro-visor-version-" 
                     + ImproVisor.version 
                     + "-files";
-  
-private static String recentFilesFilename = "vocab" + File.separator + "RecentFiles.txt";
+
+private static String vocabDirName = "vocab";
+
+private static String leadsheetDirName = "leadsheets";
+
+private static String styleDirName = "styles";
+
+private static String styleExtractDirName = "styleExtract";
+
+private static String profiletDirName = "profiles";
+
+private static String recentFilesFilename =  "vocab" + File.separator + "recentFiles.txt";
 
 private static String prefsFileName = "My.prefs";
 
-    
+/**
+ * Get the directory where user Impro-Visor files are stored.
+ * If this directory does not exist, then it is created and populated with
+ * directories and files from the master installation.
+ * @return 
+ */
+
 public static File getUserDirectory()
   {
   String userHome = System.getProperty("user.home");
@@ -474,18 +497,55 @@ public static File getUserDirectory()
     
   if( !homeDir.exists() )
     {
-      homeDir.mkdir();
-      System.out.println("Created new folder: " + improHome);
-    }
-  
-  File vocabDir = new File(homeDir, "vocab");
-  
-  if( !vocabDir.exists() )
-    {
-      vocabDir.mkdir();
-    }
+      establishUserDirectory(homeDir);
+     }
   
   return homeDir;
+  }
+
+
+/**
+ * Establish Impro-Visor home directory in user's space.
+ * This should be done only once per installation.
+ * @param homeDir 
+ */
+public static void establishUserDirectory(File homeDir)
+  {
+    System.out.println("Creating new folder for impro-visor files: " + improHome);
+
+    homeDir.mkdir();
+
+    copyDir(vocabDirName, homeDir);
+    copyDir(leadsheetDirName, homeDir);
+    copyDir(styleDirName, homeDir);
+    copyDir(styleExtractDirName, homeDir);
+    copyDir(profiletDirName, homeDir);
+  }
+
+/**
+ * Copy master sub-directory into users home directory.
+ * @param homeDir
+ * @param name 
+ */
+
+public static void copyDir(String subDirName, File homeDir)
+  {
+    File masterDir = new File(subDirName);
+
+    File userDir = new File(homeDir, subDirName);
+
+    if( masterDir != null )
+      {
+        try
+          {
+            FileUtilities.copyDirectory(masterDir, userDir);
+          }
+        catch( IOException e )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Error in copying folder " 
+                           + subDirName + " to user directory.");
+          }
+      }
   }
 
 
@@ -493,13 +553,8 @@ public static File getVocabDirectory()
   {
   File homeDir = getUserDirectory();
   
-  File vocabDir = new File(homeDir, "vocab");
-  
-  if( !vocabDir.exists() )
-    {
-      vocabDir.mkdir();
-    }
-  
+  File vocabDir = new File(homeDir, vocabDirName);
+
   return vocabDir;
   }
 
@@ -507,9 +562,7 @@ public static File getPrefsFile()
     {
     return new File(getVocabDirectory(), prefsFileName); 
     }
-  
-
-  
+    
   
 public static File getRecentFilesFile()
   {

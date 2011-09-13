@@ -190,7 +190,7 @@ public class Notate
    * Sub-directory for vocabulary
    *
    */
-  File vocabDir; // set within constructor
+  //File vocabDir; // set within constructor
 
   /**
    *
@@ -1065,7 +1065,7 @@ public class Notate
 
 //        System.out.println("basePath = " + basePath);          
 
-    vocabDir = new File(basePath + Directories.vocabDirName);
+    //vocabDir = new File(basePath + Directories.vocabDirName);
 
     grammarDir = new File(basePath + Directories.grammarDirName);
     
@@ -1136,7 +1136,7 @@ public class Notate
 
     // Set directories of file choosers
 
-    vocfc.setCurrentDirectory(vocabDir);
+    vocfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
 
     midfc.setCurrentDirectory(leadsheetDir);
 
@@ -1159,7 +1159,7 @@ public class Notate
     musicxmlfc.addChoosableFileFilter(new MusicXMLFilter());
 
 
-    grammarfc.setCurrentDirectory(vocabDir); // original
+    grammarfc.setCurrentDirectory(ImproVisor.getVocabDirectory()); // original
 
     //attempted change grammarfc.setCurrentDirectory(grammarDir);
 
@@ -1344,9 +1344,9 @@ public class Notate
 
 
 
-    lickgen = new LickGen("vocab" + File.separator + "My.grammar", this); //orig
+    lickgen = new LickGen(ImproVisor.getVocabDirectory() + File.separator + "My.grammar", this); //orig
 
-    ChordDescription.load(vocabDir + File.separator + musicxmlFile);
+    ChordDescription.load(ImproVisor.getVocabDirectory() + File.separator + musicxmlFile);
 
     
     initComponents();
@@ -12083,7 +12083,7 @@ private void setLickEnharmonics(MelodyPart lick)
         
         File oldDirectory = vocfc.getCurrentDirectory();
         
-        vocfc.setCurrentDirectory(vocabDir);
+        vocfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
         
         
         // If never saved before, used the name specified in vocFile.
