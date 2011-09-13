@@ -185,14 +185,7 @@ public class Notate
    */
   File baseDir = new File("dummy");
 
-  /**
-   *
-   * Sub-directory for vocabulary
-   *
-   */
-  //File vocabDir; // set within constructor
-
-  /**
+   /**
    *
    * Standard file for vocabulary
    *
@@ -250,11 +243,11 @@ public class Notate
    * Standard sub-directory for leadsheets and midi
    *
    */
-  String leadsheetDirName = "leadsheets";
+  String leadsheetDirName = ImproVisor.getLeadsheetDirectory().toString(); //"leadsheets";
 
-  File leadsheetDir;
+  //File leadsheetDir;
 
-  String midiDir = "leadsheets" + File.separator + "midi";
+  String midiDir; // = "leadsheets" + File.separator + "midi";
 
   /**
    *
@@ -1071,10 +1064,10 @@ public class Notate
     
     dictionaryDir = new File(basePath + Directories.dictionaryDirName);
 
-    leadsheetDir = new File(basePath + leadsheetDirName);
+    //leadsheetDir = new File(basePath + leadsheetDirName);
 
-    midiDir = leadsheetDir + File.separator + "midi";
-
+    midiDir = ImproVisor.getLeadsheetDirectory() + File.separator + "midi";  // FIX
+ 
 
     // setup the file choosers' initial paths
 
@@ -1085,7 +1078,7 @@ public class Notate
     lsOpenPreview.getCheckbox().setText("Open in new window");
 
 
-    openLSFC.setCurrentDirectory(leadsheetDir);
+    openLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
 
     openLSFC.setDialogType(JFileChooser.OPEN_DIALOG);
 
@@ -1107,7 +1100,7 @@ public class Notate
 
     lsSavePreview.getCheckbox().setVisible(false);
 
-    saveLSFC.setCurrentDirectory(leadsheetDir);
+    saveLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
 
     saveLSFC.setDialogType(JFileChooser.SAVE_DIALOG);
 
@@ -1125,7 +1118,7 @@ public class Notate
 
     saveLSFC.setAccessory(lsSavePreview);
 
-    saveAWT.setDirectory(leadsheetDir.getAbsolutePath());
+    saveAWT.setDirectory(ImproVisor.getLeadsheetDirectory().getAbsolutePath());
 
     revertLSFC.setDialogType(JFileChooser.CUSTOM_DIALOG);
 
@@ -1138,7 +1131,7 @@ public class Notate
 
     vocfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
 
-    midfc.setCurrentDirectory(leadsheetDir);
+    midfc.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
 
     midfc.setDialogType(JFileChooser.SAVE_DIALOG);
 
@@ -1148,7 +1141,7 @@ public class Notate
 
     midfc.addChoosableFileFilter(new MidiFilter());
 
-    musicxmlfc.setCurrentDirectory(leadsheetDir);
+    musicxmlfc.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
 
     musicxmlfc.setDialogType(JFileChooser.SAVE_DIALOG);
 
@@ -17289,7 +17282,7 @@ public ChordPart makeCountIn()
     {
     if( saveAWT.getDirectory().equals("/") )
       {
-      saveAWT.setDirectory(leadsheetDir.getAbsolutePath());
+      saveAWT.setDirectory(ImproVisor.getLeadsheetDirectory().getAbsolutePath());
       }
 
     saveAWT.setVisible(true);
@@ -17333,7 +17326,7 @@ public boolean saveAsLeadsheetSwing()
   {
     if( saveLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
       {
-        saveLSFC.setCurrentDirectory(leadsheetDir);
+        saveLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
       }
 
     if( saveLSFC.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
@@ -17425,7 +17418,7 @@ public void openLeadsheet(boolean openCorpus)
   {
     if( openLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
       {
-        openLSFC.setCurrentDirectory(leadsheetDir);
+        openLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
       }
 
     // stopPlaying(); experimental
@@ -17441,10 +17434,7 @@ public void openLeadsheet(boolean openCorpus)
             // load the file
 
             Score newScore = new Score();
-/* Done in new Notate
-            score.setChordFontSize(Integer.valueOf(Preferences.getPreference(
-                Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
-*/
+
             (new OpenLeadsheetCommand(openLSFC.getSelectedFile(), newScore)).execute();
 
 
