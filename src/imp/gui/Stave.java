@@ -5412,7 +5412,7 @@ public void playSelection(boolean playToEndOfChorus, int loopCount)
 public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums)
   {
 
-    // System.out.println("\nStave: playSelection, playToEndOfChorus = " + playToEndOfChorus);
+   System.out.println("\nStave: playSelection, playToEndOfChorus = " + playToEndOfChorus);
 
     if( !somethingSelected() )
       {

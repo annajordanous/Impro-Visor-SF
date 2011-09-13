@@ -2230,6 +2230,8 @@ public class Notate
         measureCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
         allCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
+        playSelectionMI = new javax.swing.JMenuItem();
+        playSelectionToEndMI = new javax.swing.JMenuItem();
         playAllMI = new javax.swing.JMenuItem();
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
@@ -8084,6 +8086,26 @@ public class Notate
                 playMenuActionPerformed(evt);
             }
         });
+
+        playSelectionMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0));
+        playSelectionMI.setText("Play Selection");
+        playSelectionMI.setToolTipText("Play only the selection.");
+        playSelectionMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playSelectionMIActionPerformed(evt);
+            }
+        });
+        playMenu.add(playSelectionMI);
+
+        playSelectionToEndMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.SHIFT_MASK));
+        playSelectionToEndMI.setText("Play Selection to End");
+        playSelectionToEndMI.setToolTipText("Play from the selection to the end of the chorus.");
+        playSelectionToEndMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playSelectionToEndMIActionPerformed(evt);
+            }
+        });
+        playMenu.add(playSelectionToEndMI);
 
         playAllMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, 0));
         playAllMI.setMnemonic('p');
@@ -15597,8 +15619,10 @@ private void setLayoutPreference(Polylist layout)
         break;
 
       case KeyEvent.VK_ENTER:
+          /* Now handled by accelerator
         keyboard.setPlayback(true);
         getCurrentStave().playSelection(true, 0);
+           */
         break;
       }
     staveRequestFocus();
@@ -15692,7 +15716,9 @@ private void setLayoutPreference(Polylist layout)
         break;
 
       case KeyEvent.VK_ENTER:
+          /* Now handled by accelerator
         getCurrentStave().playSelection(false, 0);
+           */
         break;
 
       case KeyEvent.VK_SPACE:
@@ -20698,6 +20724,18 @@ private void swingTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         setSectionParameters();
 }//GEN-LAST:event_swingTFActionPerformed
 
+private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
+  {//GEN-HEADEREND:event_playSelectionMIActionPerformed
+    noCountIn();
+    getCurrentStave().playSelection(false, getLoopCount());
+  }//GEN-LAST:event_playSelectionMIActionPerformed
+
+private void playSelectionToEndMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionToEndMIActionPerformed
+  {//GEN-HEADEREND:event_playSelectionToEndMIActionPerformed
+    noCountIn();
+    getCurrentStave().playSelection(true, getLoopCount());
+  }//GEN-LAST:event_playSelectionToEndMIActionPerformed
+
 public void fileStepForward()
 {
     stopPlaying();
@@ -22586,6 +22624,8 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem playAllMI;
     private javax.swing.JButton playBtn;
     private javax.swing.JMenu playMenu;
+    private javax.swing.JMenuItem playSelectionMI;
+    private javax.swing.JMenuItem playSelectionToEndMI;
     private javax.swing.JToolBar playToolBar;
     private javax.swing.JButton playVoicingButton;
     private javax.swing.JPanel playbackPanel;

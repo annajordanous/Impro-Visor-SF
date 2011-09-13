@@ -2202,7 +2202,7 @@ public void keyPressed(KeyEvent e)
       switch( e.getKeyCode() )
        {
         case KeyEvent.VK_ENTER:
-          playSelection();
+          // playSelection(); // Now handled by notate Key accelerator
           return;
         case KeyEvent.VK_Z:  // not effective?
           undo();
@@ -2228,9 +2228,11 @@ public void keyPressed(KeyEvent e)
         return;
          */
         case KeyEvent.VK_ENTER:
+            /* Done by accelerator in Notate
           notate.noCountIn();
           stave.playSelection(false, notate.getLoopCount(),
                               PlayScoreCommand.USEDRUMS);
+             */
           return;
         case KeyEvent.VK_A:
           if( notate.getMode() != Notate.Mode.DRAWING )
