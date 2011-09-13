@@ -499,6 +499,7 @@ public static void establishUserDirectory(File homeDir)
 
     copyDir(Directories.vocabDirName,        homeDir);
     copyDir(Directories.leadsheetDirName,    homeDir);
+    copyDir(Directories.grammarDirName,      homeDir);
     copyDir(Directories.styleDirName,        homeDir);
     copyDir(Directories.styleExtractDirName, homeDir);
   }
@@ -570,7 +571,11 @@ public static File getPrefsFile()
   return new File(getVocabDirectory(), prefsFileName); 
   }
     
-  
+public static File getGrammarFile()
+  {
+  return new File(getGrammarDirectory(), "My.grammar"); 
+  }
+     
 public static File getRecentFilesFile()
   {
     String filename = getUserDirectory() + File.separator + recentFilesFilename;

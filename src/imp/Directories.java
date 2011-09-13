@@ -39,19 +39,26 @@ public static String improHome = "impro-visor-version-"
 public static String vocabDirName = "vocab";
 
 /**
+ * Standard sub-directory for dictionaries
+ */
+public static String dictionaryDirName = "vocab";
+
+/**
  * Standard sub-directory for grammars
  */
-public static String grammarDirName = "vocab"; // was "grammars";
+public static String grammarDirName = "grammars"; // was "grammars";
 
 /**
  * Standard sub-directory for soloist files
  */
-public static String soloistDirName = "vocab"; // was "soloists";
+public static String soloistDirName = "grammars"; // was "soloists";
 
 /**
- * Standard sub-directory for dictionaries
+ * Name of standard sub-directory for Solo profile
+ * optionally used in lick generation.
  */
-public static String dictionaryDirName = "vocab";
+public static String profileDirName = "grammars";
+
 
 /**
  * Standard file name for accumulated productions used in grammar learning
@@ -68,12 +75,6 @@ public static String styleDirName = "styles";
  * from combination of midi and leadsheet
  */
 public static String styleExtractDirName = "styleExtract";
-
-/**
- * Name of standard sub-directory for Solo profile
- * optionally used in lick generation.
- */
-public static String profileDirName = "profiles";
 
 /**
  * Name of standard sub-directory for leaadsheets 

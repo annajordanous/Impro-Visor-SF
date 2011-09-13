@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,6 +22,7 @@ package imp.lickgen;
 
 import java.io.*;
 import java.util.*;
+import imp.ImproVisor;
 import imp.util.*;
 import imp.gui.Notate;
 import polya.*;
@@ -534,9 +534,10 @@ public Polylist getRules()
 
 public int loadGrammar(String filename)
   {
+  //System.out.println("Grammar loadGrammar " + filename);
   try
     {
-    Tokenizer in = new Tokenizer(new FileInputStream(new File(filename)));
+    Tokenizer in = new Tokenizer(new FileInputStream(filename));
     Object ob = null;
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )

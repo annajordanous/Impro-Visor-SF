@@ -144,13 +144,14 @@ public class LickGen implements Constants
      * sets all note probabilities to 1.
      */
     public LickGen(String grammarFile, Notate notate) {
+    //System.out.println("Lickgen constructor grammarFile = " + grammarFile);
         this.notate = notate;
         grammar = new Grammar(grammarFile);
         probs = new Vector<double[]>();
         chordUsed.clear();
         chordUsedSection.clear();
         
-        loadHeadData("vocab" + File.separator + "HeadData.data");
+        loadHeadData(ImproVisor.getGrammarDirectory().getAbsolutePath() + File.separator + "HeadData.data");
         
         String soloistFileName = grammarFile.replace(".grammar", ".soloist"); 
         File soloistFile = new File(soloistFileName);
@@ -172,6 +173,7 @@ public class LickGen implements Constants
 
     //load the Score objects of the transcriptions with heads into memory
     public void loadHeadData(String file) {
+    System.out.println("loadHeadData" + file);
         FileInputStream fis = null;
         ObjectInputStream in = null;
         
@@ -609,6 +611,7 @@ public class LickGen implements Constants
     @param grammarFile
      */
     public void loadGrammar(String grammarFile) {
+        //System.out.println("LickGen loadGrammar: " + grammarFile);
         grammar.clear();
         grammar.loadGrammar(grammarFile);
 
@@ -922,11 +925,12 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
     }
 
  
-        public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
-            int maxInterval,
-            int beatValue, double leapProb,
-            Polylist rhythmString, ChordPart chordProg,
-            int start, boolean avoidRepeats) {
+public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
+                             int maxInterval,
+                             int beatValue, double leapProb,
+                             Polylist rhythmString, ChordPart chordProg,
+                             int start, boolean avoidRepeats)
+  {
 
         //if we are using outlines, we call this method multiple times, so we want
         //to keep oldPitch

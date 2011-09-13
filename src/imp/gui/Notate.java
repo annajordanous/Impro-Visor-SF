@@ -186,31 +186,8 @@ public class Notate
   */
   public String musicxmlFile = "chord_musicxml.xml";
 
-
-  /**
-   *
-   * Sub-directory for grammars
-   *
-   */
-  //File grammarDir; // set within constructor
-
-  /**
-   *
-   * Sub-directory for dictionaries
-   *
-   */
-  //File dictionaryDir; // set within constructor
-
-  /**
-   *
-   * Standard file for vocabulary
-   *
-   */
-
-  public String grammarFile = ImproVisor.getGrammarDirectory() + "My.grammar"; // original
-
  
-   /**
+  /**
    *
    * Standard file for leadsheet
    *
@@ -683,6 +660,8 @@ public class Notate
   private File savedMidi;
 
   private File savedMusicXML;
+  
+  private String grammarFilename = null;
 
   private String lickTitle = "unnamed";
 
@@ -986,6 +965,8 @@ public class Notate
     musicxmlfc = new JFileChooser();
 
     grammarfc = new JFileChooser();
+    
+    setGrammarFilename(ImproVisor.getGrammarFile().getAbsolutePath());
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
 
@@ -1302,7 +1283,7 @@ public class Notate
 
 
 
-    lickgen = new LickGen(ImproVisor.getVocabDirectory() + File.separator + "My.grammar", this); //orig
+    lickgen = new LickGen(ImproVisor.getGrammarFile().getAbsolutePath(), this); //orig
 
     ChordDescription.load(ImproVisor.getVocabDirectory() + File.separator + musicxmlFile);
 
@@ -9091,10 +9072,12 @@ private String getChordRedirectName(int row)
     // If never saved before, used the name specified in vocFile.
     // Otherwise use previous file.
 
-    if( grammarFile == null )
+    if( grammarFilename == null )
       {
-        grammarfc.setSelectedFile(new File(grammarFile));
+        setGrammarFilename(ImproVisor.getGrammarFile().getAbsolutePath());
       }
+
+    grammarfc.setSelectedFile(new File(grammarFilename));
 
     grammarfc.resetChoosableFileFilters();
 
@@ -9107,16 +9090,15 @@ private String getChordRedirectName(int row)
         if( grammarfc.getSelectedFile().getName().endsWith(
             GrammarFilter.EXTENSION) )
           {
-            grammarFile = grammarfc.getSelectedFile().getAbsolutePath();
+            setGrammarFilename(grammarfc.getSelectedFile().getAbsolutePath());
 
-            lickgen.saveGrammar(grammarFile);
+            lickgen.saveGrammar(grammarFilename);
           }
         else
           {
-            grammarFile =
-                grammarfc.getSelectedFile().getAbsolutePath() + GrammarFilter.EXTENSION;
+            setGrammarFilename(ImproVisor.getGrammarDirectory().getName() + grammarfc.getSelectedFile() + GrammarFilter.EXTENSION);
 
-            lickgen.saveGrammar(grammarFile);
+            lickgen.saveGrammar(grammarFilename);
           }
       }
 
@@ -9145,7 +9127,7 @@ private String getChordRedirectName(int row)
     }
     public void loadGrammar()
     {
-      lickgen.loadGrammar(grammarFile);
+      lickgen.loadGrammar(grammarFilename);
 
       lickgenFrame.resetTriageParameters(true);
     }
@@ -9164,9 +9146,11 @@ private String getChordRedirectName(int row)
 
       if( grammarfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
         {
-        grammarFile = grammarfc.getSelectedFile().getAbsolutePath();
+        String filename = grammarfc.getSelectedFile().getAbsolutePath();
+        
+        setGrammarFilename(filename);
 
-        lickgen.loadGrammar(grammarFile);
+        lickgen.loadGrammar(filename);
         }
 
       grammarfc.setCurrentDirectory(oldDirectory);
@@ -20991,8 +20975,8 @@ private void notateGrammarMenuAction(java.awt.event.ActionEvent evt) {
     JMenuItem item = (JMenuItem)evt.getSource();
     String stem = item.getText();
     notateGrammarMenu.setText(stem + " grammar");
-    grammarFile = ImproVisor.getGrammarDirectory() + File.separator +  stem + GrammarFilter.EXTENSION;
-    lickgen.loadGrammar(grammarFile);
+    grammarFilename = ImproVisor.getGrammarDirectory() + File.separator +  stem + GrammarFilter.EXTENSION;
+    lickgen.loadGrammar(grammarFilename);
 }
 
 public void openCorpus()
@@ -21006,7 +20990,7 @@ public void openCorpus()
 
 private void populateNotateGrammarMenu()
   {
-    File directory = grammarfc.getCurrentDirectory();
+    File directory = ImproVisor.getGrammarDirectory();
     if( directory.isDirectory() )
       {
         String fileName[] = directory.list();
@@ -22807,21 +22791,22 @@ public void showNewVoicingDialog()
 
   public String getGrammarFileName()
     {
-
-    return grammarFile;
-
+    return grammarFilename;
     }
 
+  public void setGrammarFilename(String name)
+    {
+      grammarFilename = name;
+    }
+  
   public void reloadGrammar()
     {
-
-    lickgen.loadGrammar(grammarFile);
-
+    lickgen.loadGrammar(grammarFilename);
     }
 
   public void reloadGrammar2()
     {
-    lickgen.loadGrammar(grammarFile);
+    lickgen.loadGrammar(grammarFilename);
     }
 
   void playbackGoToTab(int tab)

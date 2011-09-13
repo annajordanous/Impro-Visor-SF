@@ -2497,14 +2497,15 @@ public void setRhythmFieldText(String string)
 }//GEN-LAST:event_fillMelodyButtonActionPerformed
 
     
-        public MelodyPart fillMelody(int beatValue, 
-            Polylist rhythmString, ChordPart chordProg,
-            int start) {
-            
-            return lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval,
-                               beatValue, leapProb, rhythmString, chordProg,
-                               start, avoidRepeats);
-        }
+public MelodyPart fillMelody(int beatValue,
+                             Polylist rhythmString, ChordPart chordProg,
+                             int start)
+  {
+
+    return lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval,
+                              beatValue, leapProb, rhythmString, chordProg,
+                              start, avoidRepeats);
+  }
 
     private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAbstractMelodyButtonActionPerformed
 

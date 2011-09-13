@@ -22,7 +22,6 @@ package imp.util;
 
 import java.io.*;
 import javax.swing.JCheckBox;
-import imp.Directories;
 import imp.ImproVisor;
 import imp.com.*;
 import polya.*;
@@ -120,7 +119,7 @@ public class Preferences implements imp.Constants
 
   public static final String DEFAULT_GRAMMAR_FILE = "default-grammar-file";
 
-  public static final String DVF_GRAMMAR_VAL = "vocab/My.grammar";
+  public static final String DVF_GRAMMAR_VAL = "grammars/My.grammar";
 
   public static final String DEFAULT_STYLE_DIRECTORY = "default-style-directory";
 
@@ -174,6 +173,7 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_CHORD_FONT_SIZE_VALUE = "16";
   
   public static final String DEFAULT_STAVES_PER_PAGE = "8";
+  
 
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
@@ -423,7 +423,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + DRAWING_TONES + " " + DRAWING_TONES_VAL + ")");
       out.println("(" + DEFAULT_DRAWING_MUTED + " " + DDM_VAL + ")");
       out.println("(" + ALWAYS_USE_BUTTONS + " " + DEFAULT_ALWAYS_USE_BUTTONS + ")");
-      out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");
+      out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");      
       }
     catch( Exception e )
       {
