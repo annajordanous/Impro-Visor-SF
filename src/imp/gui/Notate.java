@@ -19904,11 +19904,11 @@ public void generate(LickGen lickgen)
 
     if( useOutlines )
       {
-        lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-
-            // lickgen.getFillMelodyParameters(minPitch, maxPitch, minInterval,
-            //                           maxInterval, BEAT, leapProb, chordProg,
-            //                           0, avoidRepeats);
+        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+        // was commented out:
+        lickgen.getFillMelodyParameters(minPitch, maxPitch, minInterval,
+                                  maxInterval, BEAT, leapProb, chordProg,
+                                       0, avoidRepeats);
 
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
         if( solo != null )
