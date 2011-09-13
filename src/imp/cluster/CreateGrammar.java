@@ -125,10 +125,10 @@ public class CreateGrammar implements imp.Constants {
             Vector<Vector<ClusterSet>> outlines = getOutlines(orders, clusters, clusterSets);
 
             //store memory in file as serialized objectsFile grammarOut = new File(outFile);
-            String soloistFileName = outFile.replace(".grammar", ".soloist");//.replace(Directories.grammarDirName, Directories.soloistDirName);
+            String soloistFileName = outFile.replace(".grammar", ".soloist");
 
             File soloistFile = new File(soloistFileName);
-            //notate.setLickGenStatus("Saving .soloist File with " + outlines.size() + " outlines: " + soloistFileName);
+            
             notate.setLickGenStatus("Creating .soloist File with " + outlines.size() + " outlines: " + soloistFileName);
 
             createSoloistFile(dataPoints, clusters, clusterSets,

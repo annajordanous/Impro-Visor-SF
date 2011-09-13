@@ -458,24 +458,6 @@ private ImproVisor(String leadsheet)
     }
     
 
-/**
- * name of where Impro-Visor files will be stored in the user's directory.
- */
-    
-private static String improHome = "impro-visor-version-" 
-                    + ImproVisor.version 
-                    + "-files";
-
-private static String vocabDirName = "vocab";
-
-private static String leadsheetDirName = "leadsheets";
-
-private static String styleDirName = "styles";
-
-private static String styleExtractDirName = "styleExtract";
-
-private static String profiletDirName = "profiles";
-
 private static String recentFilesFilename =  "vocab" + File.separator + "recentFiles.txt";
 
 private static String prefsFileName = "My.prefs";
@@ -493,7 +475,7 @@ public static File getUserDirectory()
   //System.out.println("User Home Path: "+ userHome);
 
   
-  File homeDir = new File(userHome, improHome);
+  File homeDir = new File(userHome, Directories.improHome);
     
   if( !homeDir.exists() )
     {
@@ -511,15 +493,14 @@ public static File getUserDirectory()
  */
 public static void establishUserDirectory(File homeDir)
   {
-    System.out.println("Creating new folder for impro-visor files: " + improHome);
+    System.out.println("Creating new folder for impro-visor files: " + Directories.improHome);
 
     homeDir.mkdir();
 
-    copyDir(vocabDirName, homeDir);
-    copyDir(leadsheetDirName, homeDir);
-    copyDir(styleDirName, homeDir);
-    copyDir(styleExtractDirName, homeDir);
-    copyDir(profiletDirName, homeDir);
+    copyDir(Directories.vocabDirName,        homeDir);
+    copyDir(Directories.leadsheetDirName,    homeDir);
+    copyDir(Directories.styleDirName,        homeDir);
+    copyDir(Directories.styleExtractDirName, homeDir);
   }
 
 /**
@@ -553,9 +534,45 @@ public static File getVocabDirectory()
   {
   File homeDir = getUserDirectory();
   
-  File vocabDir = new File(homeDir, vocabDirName);
+  File vocabDir = new File(homeDir, Directories.vocabDirName);
 
   return vocabDir;
+  }
+
+public static File getLeadsheetDirectory()
+  {
+  File homeDir = getUserDirectory();
+  
+  File leadsheetDir = new File(homeDir, Directories.leadsheetDirName);
+
+  return leadsheetDir;
+  }
+
+public static File getGrammarDirectory()
+  {
+  File homeDir = getUserDirectory();
+  
+  File grammarDir = new File(homeDir, Directories.grammarDirName);
+
+  return grammarDir;
+  }
+
+public static File getDictionaryDirectory()
+  {
+  File homeDir = getUserDirectory();
+  
+  File dictionaryDir = new File(homeDir, Directories.dictionaryDirName);
+
+  return dictionaryDir;
+  }
+
+public static File getProfileDirectory()
+  {
+  File homeDir = getUserDirectory();
+  
+  File profileDir = new File(homeDir, Directories.profileDirName);
+
+  return profileDir;
   }
 
 public static File getPrefsFile()

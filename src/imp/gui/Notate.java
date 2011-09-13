@@ -162,7 +162,6 @@ public class Notate
 
   public static String windowTitlePrefixSeparator = ": ";
 
-
   
   /**
    *
@@ -171,27 +170,15 @@ public class Notate
    */
   public static String leadsheetTitlePrefix = "Leadsheet: ";
 
+ 
   /**
-   *
-   * The current working path, same as the application normally.
-   *
-   */
-  public static String basePath;
-
-  /**
-   *
-   * Used to establish basePath, by creating a dummy file, then getting its canonical path.
-   *
-   */
-  File baseDir = new File("dummy");
-
-   /**
    *
    * Standard file for vocabulary
    *
    */
   public String vocFile = "My.voc";
 
+  
  /**
   *
   * file for musicXML chord description
@@ -205,14 +192,14 @@ public class Notate
    * Sub-directory for grammars
    *
    */
-  File grammarDir; // set within constructor
+  //File grammarDir; // set within constructor
 
   /**
    *
    * Sub-directory for dictionaries
    *
    */
-  File dictionaryDir; // set within constructor
+  //File dictionaryDir; // set within constructor
 
   /**
    *
@@ -220,10 +207,9 @@ public class Notate
    *
    */
 
-  public String grammarFile = "vocab" + File.separator + "My.grammar"; // original
+  public String grammarFile = ImproVisor.getGrammarDirectory() + "My.grammar"; // original
 
-  // attempted new public String grammarFile = Directories.grammarDirName + File.separator + "My.grammar";
-
+ 
    /**
    *
    * Standard file for leadsheet
@@ -1044,28 +1030,7 @@ public class Notate
 
     criticDialog = new CriticDialog(lickgenFrame);
 
-    // Establish Directories
-
-    try
-      {
-      basePath = baseDir.getCanonicalPath().substring(0,
-              baseDir.getCanonicalPath().length() - 5);
-      }
-    catch( Exception e )
-      {
-      assert (false);
-      }
-
-//        System.out.println("basePath = " + basePath);          
-
-    //vocabDir = new File(basePath + Directories.vocabDirName);
-
-    grammarDir = new File(basePath + Directories.grammarDirName);
-    
-    dictionaryDir = new File(basePath + Directories.dictionaryDirName);
-
-    //leadsheetDir = new File(basePath + leadsheetDirName);
-
+ 
     midiDir = ImproVisor.getLeadsheetDirectory() + File.separator + "midi";  // FIX
  
 
@@ -9121,7 +9086,7 @@ private String getChordRedirectName(int row)
 
     File oldDirectory = grammarfc.getCurrentDirectory();
 
-    grammarfc.setCurrentDirectory(grammarDir);
+    grammarfc.setCurrentDirectory(ImproVisor.getGrammarDirectory());
 
     // If never saved before, used the name specified in vocFile.
     // Otherwise use previous file.
@@ -9191,7 +9156,7 @@ private String getChordRedirectName(int row)
 
       File oldDirectory = grammarfc.getCurrentDirectory();
 
-      grammarfc.setCurrentDirectory(grammarDir);
+      grammarfc.setCurrentDirectory(ImproVisor.getGrammarDirectory());
 
       grammarfc.resetChoosableFileFilters();
 
@@ -21026,7 +20991,7 @@ private void notateGrammarMenuAction(java.awt.event.ActionEvent evt) {
     JMenuItem item = (JMenuItem)evt.getSource();
     String stem = item.getText();
     notateGrammarMenu.setText(stem + " grammar");
-    grammarFile = basePath + File.separator +  Directories.grammarDirName + File.separator +  stem + GrammarFilter.EXTENSION;
+    grammarFile = ImproVisor.getGrammarDirectory() + File.separator +  stem + GrammarFilter.EXTENSION;
     lickgen.loadGrammar(grammarFile);
 }
 
@@ -23344,11 +23309,6 @@ public void setChordProg(ChordPart chordPart)
     score.setLength(chordPart.getSize());
     setBars(chordPart.getBars());
     setupArrays();
-  }
-
-public File getDictionaryDir()
-  {
-    return dictionaryDir;
   }
 
 public String getLayoutTF()

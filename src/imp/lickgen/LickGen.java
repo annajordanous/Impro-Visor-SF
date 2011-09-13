@@ -152,7 +152,7 @@ public class LickGen implements Constants
         
         loadHeadData("vocab" + File.separator + "HeadData.data");
         
-        String soloistFileName = grammarFile.replace(".grammar", ".soloist"); // .replace(Directories.grammarDirName, Directories.soloistDirName);
+        String soloistFileName = grammarFile.replace(".grammar", ".soloist"); 
         File soloistFile = new File(soloistFileName);
         if(soloistFile.exists()) {
             soloistLoaded = true;
@@ -614,7 +614,7 @@ public class LickGen implements Constants
 
         notate.setLickGenStatus("Grammar loaded: " + grammarFile);
 
-        String soloistFileName = grammarFile.replace(".grammar", ".soloist"); //.replace(Directories.grammarDirName, Directories.soloistDirName);
+        String soloistFileName = grammarFile.replace(".grammar", ".soloist");
 
         File soloistFile = new File(soloistFileName);
         if(soloistFile.exists()) {
@@ -645,7 +645,7 @@ public class LickGen implements Constants
     }
 
     public void saveSoloist(String grammarFile) {
-            String soloistFileName = grammarFile.replace(".grammar", ".soloist"); //.replace(Directories.grammarDirName, Directories.soloistDirName);
+            String soloistFileName = grammarFile.replace(".grammar", ".soloist"); 
              File soloistFile = new File(soloistFileName);
              notate.setLickGenStatus("Saving soloist file: " + soloistFileName);
              CreateGrammar.createSoloistFile(dataPoints, clusters, clusterSets,

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2010 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
@@ -29,36 +29,26 @@ package imp.gui;
 
 import imp.cluster.*;
 import imp.com.*;
-
 import imp.data.*;
 import imp.Directories;
-
+import imp.ImproVisor;
 import imp.lickgen.*;
-import imp.util.ErrorLog;
+import imp.util.ProfileFilter;
 
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.MouseEvent;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.plaf.metal.*;
 import javax.swing.JScrollPane;
-
 import java.util.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.DefaultComboBoxModel;
 
 import polya.*;
-import imp.util.ProfileFilter;
 
 
 /**
  *
- * @author Robert Keller
+ * @author David Morrison, Robert Keller
  */
 public class LickgenFrame
     extends javax.swing.JFrame
@@ -177,7 +167,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
 private void initCompFileChoosers() {
     ProfileFilter pFilter = new ProfileFilter();
     profileExt = ProfileFilter.EXTENSION;
-    defaultProfile = new File(Notate.basePath+"profiles/default."+profileExt);
+    defaultProfile = new File(ImproVisor.getProfileDirectory(), "default." + profileExt);
 
     saveCWFC = new JFileChooser();
     openCWFC = new JFileChooser();

@@ -31,6 +31,7 @@ import imp.data.BassPatternElement.*;
 import imp.util.*;
 import java.io.*;
 import imp.Constants;
+import imp.ImproVisor;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.event.*;
@@ -95,13 +96,7 @@ public class StyleEditor
 
   private boolean pianoRollTracking = false;
 
-  /**
-   * Use to establish basePath, by creating a dummy file, 
-   * then getting its canonical path.
-   */
-  File baseDir = new File("dummy");
 
-  String basePath;
 
    /**
    * Standard sub-directory for styles
@@ -112,7 +107,7 @@ public class StyleEditor
    * Standard sub-directory for importing styles 
   from combination of midi and leadsheet
    */
-  File styleImportDir; // set within constructor
+  File styleExtractDir; // set within constructor
 
   //Useful parent classes
   private Notate parent;
@@ -212,19 +207,8 @@ public class StyleEditor
     {
     // Establish Directories
 
-    try
-      {
-      // A hack to get the pathname to the directory of execution.
-      basePath = baseDir.getCanonicalPath().substring(0,
-              baseDir.getCanonicalPath().length() - 5);
-      }
-    catch( Exception e )
-      {
-      assert (false);
-      }
-
-    styleDir = new File(basePath + Directories.styleDirName);
-    styleImportDir = new File(basePath + Directories.styleImportDirName);
+    styleDir = new File(ImproVisor.getUserDirectory(), Directories.styleDirName);
+    styleExtractDir = new File(ImproVisor.getUserDirectory(), Directories.styleExtractDirName);
 
     this.parent = p;
     this.cm = cm;
@@ -1314,7 +1298,7 @@ public class StyleEditor
     openStyle.addChoosableFileFilter(new StyleFilter());
     openStyle.setFileView(styView);
 
-    midiFileChooser.setCurrentDirectory(styleImportDir);
+    midiFileChooser.setCurrentDirectory(styleExtractDir);
     midiFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
     midiFileChooser.setDialogTitle("Open MIDI");
     midiFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -1322,7 +1306,7 @@ public class StyleEditor
     midiFileChooser.addChoosableFileFilter(new MidiFilter());
     midiFileChooser.setFileView(styView);
 
-    chordFileChooser.setCurrentDirectory(styleImportDir);
+    chordFileChooser.setCurrentDirectory(styleExtractDir);
     chordFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
     chordFileChooser.setDialogTitle("Open Leadsheet");
     chordFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);

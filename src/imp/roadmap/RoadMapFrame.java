@@ -34,6 +34,7 @@ import imp.brickdictionary.*;
 import imp.cykparser.*;
 import imp.data.*;
 import imp.Directories;
+import imp.ImproVisor;
 import imp.gui.Notate;
 import imp.gui.PrintUtilitiesRoadMap;
 import imp.gui.WindowMenuItem;
@@ -3258,7 +3259,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
 private void populateRoadmapDictionaryMenu(String dictionaryName)
   {
-    dictionaryfc.setCurrentDirectory(notate.getDictionaryDir());
+    dictionaryfc.setCurrentDirectory(ImproVisor.getDictionaryDirectory());
     
     File directory = dictionaryfc.getCurrentDirectory();
     if( directory.isDirectory() )
