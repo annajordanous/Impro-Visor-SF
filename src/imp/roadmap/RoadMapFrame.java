@@ -135,8 +135,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private SourceEditorDialog dictionaryEditor = null;
     
     private static int DICTIONARY_EDITOR_ROWS = 3000;
-    private static int DICTIONARY_EDITOR_WIDTH = 600;
-    private static int DICTIONARY_EDITOR_HEIGHT = 800;
+    private static int DICTIONARY_EDITOR_WIDTH = 700;
+    private static int DICTIONARY_EDITOR_HEIGHT = 900;
+    private static int DICTIONARY_EDITOR_X_OFFSET = 200;
+    private static int DICTIONARY_EDITOR_Y_OFFSET = 200;
     
   /**
    *
@@ -3572,6 +3574,7 @@ private void openDictionaryEditor()
 
     dictionaryEditor.setRows(DICTIONARY_EDITOR_ROWS);
     dictionaryEditor.setSize(DICTIONARY_EDITOR_WIDTH, DICTIONARY_EDITOR_HEIGHT);
+    dictionaryEditor.setLocation(DICTIONARY_EDITOR_X_OFFSET, DICTIONARY_EDITOR_Y_OFFSET);
     dictionaryEditor.fillEditor();
     dictionaryEditor.setVisible(true);
   }

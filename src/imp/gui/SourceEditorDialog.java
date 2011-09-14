@@ -67,7 +67,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
         editorToSourceButton.setText("Editor to " + typeStr[type]);
         sourceToEditorButton.setText(typeStr[type] + " to Editor");
         
-        setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12));
+        sourceEditor.setFont(new java.awt.Font("Lucida Console", java.awt.Font.PLAIN, 13));
     }
 
     private String title = "";
