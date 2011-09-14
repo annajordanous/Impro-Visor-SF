@@ -65,7 +65,7 @@ public class RoadMapSettings {
     public Color textColor = Color.BLACK;
     
     /** Color of a selected brick */
-    public Color selectedColor = new Color(181, 213, 255);
+    public Color selectedColor = new Color(208, 255, 255);
     
     /** Color of the brick background */
     public Color brickBGColor = Color.WHITE;
@@ -90,17 +90,17 @@ public class RoadMapSettings {
     
     /** Colors associated with different keys */
     public Color[] keyColors = {new Color(250, 220, 100), // C
-                                        new Color(200, 110, 255), // Db
-                                        new Color(200, 255, 100), // D
-                                        new Color(255, 150, 150), // Eb
-                                        new Color(90, 220, 255),  // E
-                                        new Color(255, 200, 100), // F
-                                        new Color(155, 155, 255), // Gb
-                                        new Color(255, 255, 100), // G
-                                        new Color(255, 150, 255), // Ab
-                                        new Color(150, 255, 220), // A
-                                        new Color(255, 180, 150), // Bb
-                                        new Color(100, 170, 255)};// B
+                                        new Color(247, 126, 255), // Db
+                                        new Color(150, 255,   0), // D
+                                        new Color(255, 182, 180), // Eb
+                                        new Color(131, 235, 255),  // E
+                                        new Color(255, 221, 118), // F
+                                        new Color(169, 184, 250), // Gb
+                                        new Color(255, 255,   0), // G
+                                        new Color(255, 189, 255), // Ab
+                                        new Color(150, 255, 202), // A
+                                        new Color(255, 217, 150), // Bb
+                                        new Color(157, 209, 255)};// B
     
     private int colorationBias = 0;
     
