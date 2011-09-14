@@ -752,7 +752,7 @@ public class Notate
    */
   private InstrumentChooser melodyInst,  chordInst,  bassInst,  defMelodyInst,  defChordInst,  defBassInst;
 
-  private SourceEditorDialog leadsheetEditor = null;;
+  private SourceEditorDialog leadsheetEditor = null;
 
   private SourceEditorDialog grammarEditor = null;;
 

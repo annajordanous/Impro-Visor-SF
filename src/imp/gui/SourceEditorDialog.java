@@ -23,6 +23,7 @@ package imp.gui;
 
 import imp.com.*;
 import imp.data.*;
+import imp.roadmap.RoadMapFrame;
 import imp.util.BasicEditor;
 
 /**
@@ -36,6 +37,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
      */
     
     Notate parent;
+    java.awt.Frame frameParent;
     CommandManager cm;
     int type;
     
@@ -44,7 +46,8 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
     public static final int LEADSHEET = 0;
     public static final int GRAMMAR = 1;
     public static final int STYLE = 2;
-    public static final String[] typeStr = {"Leadsheet", "Grammar", "Style"};
+    public static final int DICTIONARY = 3;
+    public static final String[] typeStr = {"Leadsheet", "Grammar", "Style", "Dictionary"};
 
     public static String editorTitlePrefix = "Editor for: ";
     
@@ -54,6 +57,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
     public SourceEditorDialog(java.awt.Frame parent, boolean modal, Notate p, CommandManager cm, int type)
     {
         super(parent, modal);
+        frameParent = parent;
         this.parent = p;
         this.cm = cm;
         this.type = type;
@@ -62,6 +66,8 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
         setTitle("");
         editorToSourceButton.setText("Editor to " + typeStr[type]);
         sourceToEditorButton.setText(typeStr[type] + " to Editor");
+        
+        setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12));
     }
 
     private String title = "";
@@ -157,6 +163,9 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
             case STYLE:
                 cm.execute(new StylesToEditorCommand(this));
                 break;
+            case DICTIONARY:
+                new DictionaryToEditorCommand(((RoadMapFrame)frameParent).getDictionaryFilename(), this).execute();
+                break;
         }
     if( firstTime )
       {
@@ -183,7 +192,9 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 cm.execute(new EditorToStylesCommand(this));
                 parent.reloadStyles();
                 break;
-        }
+            case DICTIONARY:
+                new EditorToDictionaryCommand((RoadMapFrame)frameParent, this).execute();
+                break;        }
     }//GEN-LAST:event_editorToSourceButtonActionPerformed
     
     //used when calling the grammar to editor button automatically from Notate

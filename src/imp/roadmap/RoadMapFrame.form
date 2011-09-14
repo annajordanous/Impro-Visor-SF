@@ -1006,6 +1006,25 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="editorMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Editor" noResource="true"/>
+            <Property name="toolTipText" type="java.lang.String" value="Open dictionary textual editor." noResource="true"/>
+            <Property name="name" type="java.lang.String" value="editorMenu" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="dictionaryEditorMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Dictionary Textual Editor" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open a text editor for the Brick Dictionary." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="dictionaryEditorMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dictionaryEditorMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="preferencesMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="80"/>

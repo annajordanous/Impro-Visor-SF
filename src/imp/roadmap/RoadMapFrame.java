@@ -37,6 +37,7 @@ import imp.Directories;
 import imp.ImproVisor;
 import imp.gui.Notate;
 import imp.gui.PrintUtilitiesRoadMap;
+import imp.gui.SourceEditorDialog;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.*;
@@ -59,7 +60,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     JCheckBoxMenuItem recentlySelected = null;
     
-    private String dictionaryDir = Directories.dictionaryDirName + File.separator;
+    //private String dictionaryDir = Directories.dictionaryDirName + File.separator;
     
     private String dictionaryFilename;
     
@@ -131,6 +132,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Time signature of this piece */
     public int[] metre = {4,4};
     
+    private SourceEditorDialog dictionaryEditor = null;
+    
+    private static int DICTIONARY_EDITOR_ROWS = 3000;
+    private static int DICTIONARY_EDITOR_WIDTH = 600;
+    private static int DICTIONARY_EDITOR_HEIGHT = 800;
     
   /**
    *
@@ -160,18 +166,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 
         initComponents(); // Must be done before newDictionary is called.
         
-        newDictionary(defaultDictionaryName);
+        setDictionaryFilename(defaultDictionaryName);
+        newDictionary();
         
         initBuffer();
         
         initTimer();
         
         deactivateButtons();
-        
 
         setRoadMapTitle(title);
 
-        
         roadMapScrollPane.getVerticalScrollBar().setUnitIncrement(20);
         
         brickDictionaryFrame.setSize(brickDictionaryFrame.getPreferredSize());
@@ -289,6 +294,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         sendToOriginalLeadsheetAndSaveMI = new javax.swing.JMenuItem();
         dictionaryMenu = new javax.swing.JMenu();
         brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
+        editorMenu = new javax.swing.JMenu();
+        dictionaryEditorMI = new javax.swing.JMenuItem();
         preferencesMenu = new javax.swing.JMenu();
         preferencesMenuItem = new javax.swing.JMenuItem();
         colorationPreferences = new javax.swing.JMenu();
@@ -1443,6 +1450,22 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadmapMenuBar.add(dictionaryMenu);
 
+        editorMenu.setText("Editor"); // NOI18N
+        editorMenu.setToolTipText("Open dictionary textual editor."); // NOI18N
+        editorMenu.setName("editorMenu"); // NOI18N
+
+        dictionaryEditorMI.setText("Dictionary Textual Editor"); // NOI18N
+        dictionaryEditorMI.setToolTipText("Open a text editor for the Brick Dictionary."); // NOI18N
+        dictionaryEditorMI.setName("dictionaryEditorMI"); // NOI18N
+        dictionaryEditorMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dictionaryEditorMIActionPerformed(evt);
+            }
+        });
+        editorMenu.add(dictionaryEditorMI);
+
+        roadmapMenuBar.add(editorMenu);
+
         preferencesMenu.setMnemonic('P');
         preferencesMenu.setText("Preferences"); // NOI18N
         preferencesMenu.setToolTipText("Set preferences for this roadmap."); // NOI18N
@@ -2287,6 +2310,11 @@ private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)/
     settings.showJoins = showJoinsCheckBoxMI.getState();
   }//GEN-LAST:event_showJoinsCheckBoxMIActionPerformed
 
+private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_dictionaryEditorMIActionPerformed
+  {//GEN-HEADEREND:event_dictionaryEditorMIActionPerformed
+    openDictionaryEditor();
+  }//GEN-LAST:event_dictionaryEditorMIActionPerformed
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -2917,9 +2945,11 @@ private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)/
     private javax.swing.JLabel dialogTypeLabel;
     private javax.swing.JTextField dialogVariantField;
     private javax.swing.JLabel dialogVariantLabel;
+    private javax.swing.JMenuItem dictionaryEditorMI;
     private javax.swing.JMenu dictionaryMenu;
     private javax.swing.JComboBox durationComboBox;
     private javax.swing.JMenu editMenu;
+    private javax.swing.JMenu editorMenu;
     private javax.swing.JSlider featureWidthSlider;
     private javax.swing.JButton fileStepBackBtn;
     private javax.swing.JButton fileStepForwardBtn;
@@ -3237,7 +3267,7 @@ private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)/
     /** Make this RoadMapFrame visible */
     public void makeVisible(boolean analyze)
     {
-      System.out.println("makeVisible analyze = " + analyze);
+      //ystem.out.println("makeVisible analyze = " + analyze);
         // Don't show joins until analysis is done.
         boolean tempJoins = settings.showJoins;
         settings.showJoins = false;
@@ -3418,7 +3448,8 @@ private void populateRoadmapDictionaryMenu(String dictionaryName)
                         
                         String newDictionaryName = item.getText();
                         
-                        newDictionary(newDictionaryName);
+                        setDictionaryFilename(newDictionaryName);
+                        newDictionary();
                         populateRoadmapDictionaryMenu(item.getText());
                        
                         if(!roadMapTextEntry.isFocusOwner())
@@ -3433,15 +3464,26 @@ private void populateRoadmapDictionaryMenu(String dictionaryName)
   }
 
 
+public void setDictionaryFilename(String dictionaryName)
+  {
+    dictionaryFilename = ImproVisor.getDictionaryDirectory() + File.separator + dictionaryName + DictionaryFilter.EXTENSION;
+    setDictionaryTitle(dictionaryName);
+  }
+
 /**
  * Create a new dictionary with the given name, based on a similarly-named
  * dictionary file.
  * @param dictionaryName 
  */
 
-private void newDictionary(String dictionaryName)
+public void newDictionary()
   {
-    dictionaryFilename = dictionaryDir + dictionaryName + DictionaryFilter.EXTENSION;
+    newDictionary(dictionaryFilename);
+  }
+
+public void newDictionary(String dictionaryFilename)
+  {
+    //System.out.println("newDictionary: " + dictionaryFilename);
     try
       {
         brickLibrary = new BrickLibrary();
@@ -3449,7 +3491,6 @@ private void newDictionary(String dictionaryName)
         cykParser.createRules(brickLibrary);
         initLibraryTree();
         libraryTree.setModel(libraryTreeModel);
-        setDictionaryTitle(dictionaryName);
 
         dialogTypeComboBox.removeAllItems();
 
@@ -3519,5 +3560,20 @@ public void openEmptyRoadmap()
       }
   }
 
+public String getDictionaryFilename()
+  {
+    return dictionaryFilename;
+  }
+
+private void openDictionaryEditor()
+  {
+      dictionaryEditor = new SourceEditorDialog(this, false, notate, null,
+            SourceEditorDialog.DICTIONARY);
+
+    dictionaryEditor.setRows(DICTIONARY_EDITOR_ROWS);
+    dictionaryEditor.setSize(DICTIONARY_EDITOR_WIDTH, DICTIONARY_EDITOR_HEIGHT);
+    dictionaryEditor.fillEditor();
+    dictionaryEditor.setVisible(true);
+  }
 }
 
