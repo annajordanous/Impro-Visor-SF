@@ -1806,7 +1806,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_newBrickButtonPressed
 
     private void analyzeButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeButtonPressed
-        analyze();
+        analyzeInBackground();
 }//GEN-LAST:event_analyzeButtonPressed
 
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
@@ -2244,13 +2244,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
 private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
   {//GEN-HEADEREND:event_playSelectionMIActionPerformed
-  playSelection();
+   if( !roadMapTextEntry.isFocusOwner() )
+     {
+       playSelection();
+     }
   }//GEN-LAST:event_playSelectionMIActionPerformed
 
 private void playAllMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playAllMIActionPerformed
   {//GEN-HEADEREND:event_playAllMIActionPerformed
-  selectAllBricks();
-  playSelection();
+   if( !roadMapTextEntry.isFocusOwner() )
+     {  
+     selectAllBricks();
+     playSelection();
+     deselectBricks();
+     }
   }//GEN-LAST:event_playAllMIActionPerformed
 
 private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayMIActionPerformed
@@ -3205,15 +3212,28 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
 
 
     /** Make this RoadMapFrame visible */
-    public void makeVisible()
+    public void makeVisible(boolean analyze)
     {
         setVisible(true);
         if( brickLibraryMenuItem.isSelected() )
           {
           brickDictionaryFrame.setVisible(true);
           }
+        
+        if( analyze )
+          {
+            analyzeInBackground();
+          }
     }
     
+    /**
+     * Analyze in the background by creating Analyzer Thread.
+     */
+    
+    public void analyzeInBackground()
+      {
+        new Analyzer(this).start();
+      }
 
     /** Sets the time signature of the roadmap for Americans
      * @param meter
@@ -3463,7 +3483,7 @@ public void openEmptyRoadmap()
       {
     RoadMapFrame roadmapFrame = new RoadMapFrame(notate, "untitled");
     roadmapFrame.setRoadMapFrameHeight();
-    roadmapFrame.makeVisible();
+    roadmapFrame.makeVisible(false);
       }
     catch( NullPointerException e)
       {

@@ -173,7 +173,7 @@ public class LickGen implements Constants
 
     //load the Score objects of the transcriptions with heads into memory
     public void loadHeadData(String file) {
-    System.out.println("loadHeadData" + file);
+    //System.out.println("loadHeadData" + file);
         FileInputStream fis = null;
         ObjectInputStream in = null;
         

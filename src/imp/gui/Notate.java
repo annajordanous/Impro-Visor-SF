@@ -23228,7 +23228,7 @@ public void roadMapThis()
     score.toRoadMapFrame(roadmapFrame);
     //System.out.println("RoadMap has received chords");
     roadmapFrame.setRoadMapTitle(getTitle());
-    roadmapFrame.makeVisible();
+    roadmapFrame.makeVisible(false);
   }
 
 
@@ -23243,8 +23243,8 @@ public void roadMapThisAnalyze()
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
-    roadmapFrame.makeVisible();
-    roadmapFrame.analyze();
+    roadmapFrame.makeVisible(true);
+
     setNormalStatus();
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     staveRequestFocus();
@@ -23259,7 +23259,7 @@ public void openEmptyRoadmap()
   {
     establishRoadMapFrame();
     roadmapFrame.setRoadMapTitle("Untitled");
-    roadmapFrame.makeVisible();
+    roadmapFrame.makeVisible(false);
   }
 
 
