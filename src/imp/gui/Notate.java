@@ -20311,6 +20311,7 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
                             try
                               {
                                 setupLeadsheet(selected, false);
+                                makeVisible(createRoadMapCheckBox.getState());
                               }
                             catch( Exception ij )
                               {
@@ -23185,14 +23186,20 @@ public void setVisible(boolean value)
 
 public void makeVisible()
   {
+    makeVisible(createRoadMapCheckBox.isSelected());
+  }
+
+
+public void makeVisible(boolean createRoadMap)
+  {
     setNotateFrameHeight(); // Needed
     setVisible(true);  
     
     staveRequestFocus();
-    if( createRoadMapCheckBox.isSelected() )
+    if( createRoadMap )
       {
       roadMapThisAnalyze();
-      }
+      }   
   }
 
 

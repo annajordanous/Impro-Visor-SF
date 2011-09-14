@@ -15,11 +15,13 @@ public class Analyzer extends Thread
     
     RoadMapFrame frame;
     WaitAnalysisDialog dialog;
+    boolean showJoinsOnCompletion;
     
-    public Analyzer(RoadMapFrame frame)
+    public Analyzer(RoadMapFrame frame, boolean showJoinsOnCompletion)
       {
         this.frame = frame;
         this.dialog = new WaitAnalysisDialog(frame, false, this);
+        this.showJoinsOnCompletion = showJoinsOnCompletion;
       }
     
     @Override
@@ -27,7 +29,7 @@ public class Analyzer extends Thread
       {
         dialog.setLocation(frame.getX()+Xoffset, frame.getY()+Yoffset);
         dialog.setVisible(true);
-        frame.analyze();
+        frame.analyze(showJoinsOnCompletion);
         dialog.setVisible(false);
       }
     

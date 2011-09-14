@@ -725,7 +725,7 @@ public class RoadMapPanel extends JPanel {
        view.setBackground(buffer);
        drawGrid();
        drawText();
-       drawBricks();
+       drawBricks(settings.showJoins);
        drawKeyMap();
        if(view.isPlaying()) {
            drawPlaySection();
@@ -830,8 +830,9 @@ public class RoadMapPanel extends JPanel {
         repaint();
     }
     
+    
     /** Draws all bricks */
-    private void drawBricks()
+    private void drawBricks(boolean showJoins)
     {        
         Graphics2D g = (Graphics2D)buffer.getGraphics();
         
@@ -847,6 +848,9 @@ public class RoadMapPanel extends JPanel {
             int y = brick.y();
             
             brick.draw(g);
+            
+            if( showJoins )
+              {
             
             if(ind < joinList.size() && !joinList.get(ind).isEmpty()) { //JOINS
                 String joinName = joinList.get(ind);
@@ -873,7 +877,7 @@ public class RoadMapPanel extends JPanel {
                 g.setColor(settings.textColor);
                 g.drawString(joinName,joinX+4, joinY+2+offset);
             }
-                
+              }
             
             if( ind == insertLineIndex ) {
                 g.setColor(Color.RED);

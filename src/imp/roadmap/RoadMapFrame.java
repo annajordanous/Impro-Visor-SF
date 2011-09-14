@@ -305,6 +305,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         relativeToEbbutton = new javax.swing.JRadioButtonMenuItem();
         relativeToDbutton = new javax.swing.JRadioButtonMenuItem();
         relativeToDbbutton = new javax.swing.JRadioButtonMenuItem();
+        showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -1601,6 +1602,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         preferencesMenu.add(colorationPreferences);
 
+        showJoinsCheckBoxMI.setSelected(true);
+        showJoinsCheckBoxMI.setText("Show Joins"); // NOI18N
+        showJoinsCheckBoxMI.setToolTipText("Indicate whether to show joins between bricks."); // NOI18N
+        showJoinsCheckBoxMI.setName("showJoinsCheckBoxMI"); // NOI18N
+        showJoinsCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showJoinsCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(showJoinsCheckBoxMI);
+
         roadmapMenuBar.add(preferencesMenu);
 
         windowMenu.setMnemonic('W');
@@ -1806,7 +1818,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 }//GEN-LAST:event_newBrickButtonPressed
 
     private void analyzeButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeButtonPressed
-        analyzeInBackground();
+        analyzeInBackground(settings.showJoins);
 }//GEN-LAST:event_analyzeButtonPressed
 
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
@@ -2211,7 +2223,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_newRoadMapMIActionPerformed
 
     private void analyzeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeMenuItemActionPerformed
-        analyze();
+        analyze(settings.showJoins);
     }//GEN-LAST:event_analyzeMenuItemActionPerformed
 
     private void unselectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllMenuItemClicked
@@ -2269,6 +2281,11 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
   {//GEN-HEADEREND:event_playMenuActionPerformed
 
   }//GEN-LAST:event_playMenuActionPerformed
+
+private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showJoinsCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_showJoinsCheckBoxMIActionPerformed
+    settings.showJoins = showJoinsCheckBoxMI.getState();
+  }//GEN-LAST:event_showJoinsCheckBoxMIActionPerformed
 
 //</editor-fold>
     /** Creates the play timer and adds a listener */
@@ -2518,13 +2535,18 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     }
     
     /** Action to analyze the selection */
-    public void analyzeSelection()
+    public void analyzeSelection(boolean showJoinsOnCompletion)
     {
         saveState("Analyze");
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
         ArrayList<Block> blocks = roadMapPanel.getSelection();
         roadMapPanel.replaceSelection(analyze(blocks));
+        
+        if( showJoinsOnCompletion )
+          {
+            settings.showJoins = true;
+          }
         
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
@@ -2965,6 +2987,7 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     private javax.swing.JMenuItem selectAllMenuItem;
     private javax.swing.JMenuItem sendToOriginalLeadsheetAndSaveMI;
     private javax.swing.JMenuItem sendToOriginalLeadsheetMI;
+    private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JMenuItem togglePhraseMenuItem;
@@ -3214,6 +3237,11 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     /** Make this RoadMapFrame visible */
     public void makeVisible(boolean analyze)
     {
+      System.out.println("makeVisible analyze = " + analyze);
+        // Don't show joins until analysis is done.
+        boolean tempJoins = settings.showJoins;
+        settings.showJoins = false;
+        
         setVisible(true);
         if( brickLibraryMenuItem.isSelected() )
           {
@@ -3222,7 +3250,7 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
         
         if( analyze )
           {
-            analyzeInBackground();
+            analyzeInBackground(tempJoins);
           }
     }
     
@@ -3230,9 +3258,9 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
      * Analyze in the background by creating Analyzer Thread.
      */
     
-    public void analyzeInBackground()
+    public void analyzeInBackground(boolean showJoins)
       {
-        new Analyzer(this).start();
+        new Analyzer(this, showJoins).start();
       }
 
     /** Sets the time signature of the roadmap for Americans
@@ -3458,17 +3486,17 @@ private void setDictionaryTitle(String dictionaryName)
  * Deselect everything following analysis in the second case.
  */
 
-public void analyze()
+public void analyze(boolean showJoinsOnCompletion)
   {
     if( !roadMapPanel.hasSelection() )
       {
         roadMapPanel.selectAll();
-        analyzeSelection();
+        analyzeSelection(showJoinsOnCompletion);
         roadMapPanel.deselectBricks();
       }
     else
       {
-        analyzeSelection();
+        analyzeSelection(showJoinsOnCompletion);
       }
   }
 

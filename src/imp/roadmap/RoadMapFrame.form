@@ -1191,6 +1191,17 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showJoinsCheckBoxMI">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Show Joins" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Indicate whether to show joins between bricks." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="showJoinsCheckBoxMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showJoinsCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="windowMenu">

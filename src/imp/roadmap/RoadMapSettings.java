@@ -119,6 +119,12 @@ public class RoadMapSettings {
     public Font titleFont = new Font("Dialog", Font.PLAIN, 24);
     
     /**
+     * whether to show joins in roadmap or not
+     */
+    
+    public boolean showJoins = true;
+    
+    /**
      * Returns the length of the block in the current settings
      * @param block the block
      * @return the length

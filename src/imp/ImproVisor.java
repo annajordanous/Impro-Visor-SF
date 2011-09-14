@@ -330,9 +330,9 @@ private ImproVisor(String leadsheet)
     notate.setNotateFrameHeight();
     
     
-    String createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP);
+    boolean createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP).equals("y");
     
-    notate.setRoadMapCheckBox(createRoadMap.equals("y"));
+    notate.setRoadMapCheckBox(createRoadMap);
     
     // Close the splash window.
 
@@ -356,7 +356,7 @@ private ImproVisor(String leadsheet)
           }
       }
 
-     notate.makeVisible();
+     notate.makeVisible(createRoadMap);
 
      currentWindow = notate;
 
