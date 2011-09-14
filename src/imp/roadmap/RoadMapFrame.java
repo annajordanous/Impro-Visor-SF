@@ -257,6 +257,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         stopButton = new javax.swing.JButton();
         featureWidthSlider = new javax.swing.JSlider();
         roadMapTextEntry = new javax.swing.JTextField();
+        roadMapStatus = new javax.swing.JTextField();
         roadMapScrollPane = new javax.swing.JScrollPane(roadMapPanel);
         previewScrollPane = new javax.swing.JScrollPane(previewPanel);
         clearButton = new javax.swing.JButton();
@@ -1015,7 +1016,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
@@ -1031,9 +1032,32 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.95;
+        gridBagConstraints.weightx = 0.98;
         gridBagConstraints.weighty = 0.03;
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
+
+        roadMapStatus.setEditable(false);
+        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapStatus.setToolTipText("Shows the status of the roadmap."); // NOI18N
+        roadMapStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Roadmap status")); // NOI18N
+        roadMapStatus.setMaximumSize(new java.awt.Dimension(2147483647, 30));
+        roadMapStatus.setMinimumSize(new java.awt.Dimension(12, 30));
+        roadMapStatus.setName("roadMapStatus"); // NOI18N
+        roadMapStatus.setPreferredSize(new java.awt.Dimension(12, 30));
+        roadMapStatus.setRequestFocusEnabled(false);
+        roadMapStatus.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                roadMapStatustextualEntryKeyPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.02;
+        getContentPane().add(roadMapStatus, gridBagConstraints);
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         roadMapScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -1068,7 +1092,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -1098,7 +1122,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 0.95;
+        gridBagConstraints.weightx = 0.98;
         gridBagConstraints.weighty = 0.07;
         getContentPane().add(previewScrollPane, gridBagConstraints);
 
@@ -2317,6 +2341,11 @@ private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//
     openDictionaryEditor();
   }//GEN-LAST:event_dictionaryEditorMIActionPerformed
 
+private void roadMapStatustextualEntryKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_roadMapStatustextualEntryKeyPressed
+  {//GEN-HEADEREND:event_roadMapStatustextualEntryKeyPressed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_roadMapStatustextualEntryKeyPressed
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -3010,6 +3039,7 @@ private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JRadioButtonMenuItem relativeToFbutton;
     private javax.swing.JRadioButtonMenuItem relativeToGbutton;
     private javax.swing.JScrollPane roadMapScrollPane;
+    private javax.swing.JTextField roadMapStatus;
     private javax.swing.JTextField roadMapTextEntry;
     private javax.swing.JMenuBar roadmapMenuBar;
     private javax.swing.JComboBox scaleComboBox;
@@ -3577,6 +3607,16 @@ private void openDictionaryEditor()
     dictionaryEditor.setLocation(DICTIONARY_EDITOR_X_OFFSET, DICTIONARY_EDITOR_Y_OFFSET);
     dictionaryEditor.fillEditor();
     dictionaryEditor.setVisible(true);
+  }
+
+public void setStatus(String text)
+  {
+    roadMapStatus.setText(text);
+  }
+
+public void setStatusColor(Color color)
+  {
+    roadMapStatus.setBackground(color);
   }
 }
 
