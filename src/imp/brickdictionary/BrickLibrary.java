@@ -40,6 +40,12 @@ import java.util.Set;
 public class BrickLibrary {
 
     /**
+     * Keyword used in defining bricks in a dictionary.
+     */
+
+    public static final String DEF_BRICK = "defbrick";
+ 
+    /**
      *  This is the conjunction to be used to describe appendages to Cadences
      *  such as Overrun and Dropback
      */
@@ -422,7 +428,7 @@ public class BrickLibrary {
         
         // define the search term (the name) for the given brick
         String brickType = " " + brick.getType() + " ";
-        String brickDefHead = "Def-Brick " + dashed(brick.getName());
+        String brickDefHead = DEF_BRICK + dashed(brick.getName());
         String qualifier = brick.getVariant();
         if (!qualifier.isEmpty())
             brickDefHead += "(" + qualifier + ")";
@@ -655,7 +661,7 @@ public class BrickLibrary {
                 Polylist contents = (Polylist)token;
                 
                 // Check that polylist has enough fields to be a brick 
-                // Needs BlockType (i.e. "Def-Brick"), name, key, and contents
+                // Needs BlockType (i.e. DEF_BRICK), name, key, and contents
                 if (contents.length() < 2)
                 {
                     ErrorLog.log(ErrorLog.WARNING, "Improper formatting for"
@@ -729,7 +735,7 @@ public class BrickLibrary {
                     }
                     
                     // Brick definitions themselves
-                    else if (blockCategory.equals("Def-Brick") && contents.length() > 4)
+                    else if (blockCategory.equals(DEF_BRICK) && contents.length() > 4)
                     {
                         // read in the information as a saved polylist to be 
                         // constructed properly as a Brick later

@@ -38,7 +38,7 @@ import polya.*;
  * @author Zachary Merritt
  */
 public class Brick extends Block {
-    
+
     private static final Long DEFAULT_SUBRICK_DURATION = new Long(1);
     
     private ArrayList<Block> subBlocks; // Components of a Brick
@@ -995,11 +995,11 @@ public class Brick extends Block {
             buffer.append(b.toPolylist());
         }
         if (variant != "") {
-            return Polylist.list("Def-Brick", dashed(name)+"("+variant+")", 
+            return Polylist.list(BrickLibrary.DEF_BRICK, dashed(name)+"("+variant+")", 
                     mode, dashed(type), BrickLibrary.keyNumToName(key)
                     ).append(buffer.toPolylist());
         }
-        else return Polylist.list("Def-Brick", dashed(name), mode, dashed(type),
+        else return Polylist.list(BrickLibrary.DEF_BRICK, dashed(name), mode, dashed(type),
                     BrickLibrary.keyNumToName(key)).append(buffer.toPolylist());
     }
     
