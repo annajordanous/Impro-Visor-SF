@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import imp.brickdictionary.*;
 import imp.cykparser.*;
 import imp.data.*;
-import imp.Directories;
 import imp.ImproVisor;
 import imp.gui.Notate;
 import imp.gui.PrintUtilitiesRoadMap;
@@ -139,6 +138,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private static int DICTIONARY_EDITOR_HEIGHT = 900;
     private static int DICTIONARY_EDITOR_X_OFFSET = 200;
     private static int DICTIONARY_EDITOR_Y_OFFSET = 200;
+    
+    FileDialog saveAWT = new FileDialog(this, "Save Dictionary As...", FileDialog.SAVE);
+    
+    public static final String DICTIONARY_EXT = ".dictionary";
     
   /**
    *
@@ -299,6 +302,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickLibraryMenuItem = new javax.swing.JCheckBoxMenuItem();
         editorMenu = new javax.swing.JMenu();
         dictionaryEditorMI = new javax.swing.JMenuItem();
+        saveDictionaryAsMI = new javax.swing.JMenuItem();
         preferencesMenu = new javax.swing.JMenu();
         preferencesMenuItem = new javax.swing.JMenuItem();
         colorationPreferences = new javax.swing.JMenu();
@@ -1490,6 +1494,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         editorMenu.add(dictionaryEditorMI);
 
+        saveDictionaryAsMI.setText("Save Dictionary as ..."); // NOI18N
+        saveDictionaryAsMI.setToolTipText("Save the current dictionary under a new name."); // NOI18N
+        saveDictionaryAsMI.setName("saveDictionaryAsMI"); // NOI18N
+        saveDictionaryAsMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveDictionaryAsMIActionPerformed(evt);
+            }
+        });
+        editorMenu.add(saveDictionaryAsMI);
+
         roadmapMenuBar.add(editorMenu);
 
         preferencesMenu.setMnemonic('P');
@@ -2346,6 +2360,11 @@ private void roadMapStatustextualEntryKeyPressed(java.awt.event.KeyEvent evt)//G
     // TODO add your handling code here:
   }//GEN-LAST:event_roadMapStatustextualEntryKeyPressed
 
+private void saveDictionaryAsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveDictionaryAsMIActionPerformed
+  {//GEN-HEADEREND:event_saveDictionaryAsMIActionPerformed
+    saveDictionaryAs();
+  }//GEN-LAST:event_saveDictionaryAsMIActionPerformed
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -3042,6 +3061,7 @@ private void roadMapStatustextualEntryKeyPressed(java.awt.event.KeyEvent evt)//G
     private javax.swing.JTextField roadMapStatus;
     private javax.swing.JTextField roadMapTextEntry;
     private javax.swing.JMenuBar roadmapMenuBar;
+    private javax.swing.JMenuItem saveDictionaryAsMI;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
     private javax.swing.JMenu sectionMenu;
@@ -3618,5 +3638,49 @@ public void setStatusColor(Color color)
   {
     roadMapStatus.setBackground(color);
   }
+
+public void saveDictionaryAs()
+  {
+    saveDictionaryAsAWT();
+  }
+
+ 
+  public boolean saveDictionaryAsAWT()
+    {
+    saveAWT.setDirectory(ImproVisor.getDictionaryDirectory().getAbsolutePath());
+    saveAWT.setVisible(true);
+    
+    String selected = saveAWT.getFile();
+    
+    String newFileName = selected;
+
+    String dir = saveAWT.getDirectory();
+    
+    if( selected != null )
+      {
+
+      boolean noErrors = true;
+
+      if( !newFileName.endsWith(DICTIONARY_EXT) )
+        {
+        newFileName += DICTIONARY_EXT;
+        }
+
+      File newFile = new File(dir + newFileName);
+      
+      try
+        {
+          FileUtilities.copy(new File(dictionaryFilename), newFile);
+        }
+      catch( IOException e)
+        {
+          ErrorLog.log(ErrorLog.SEVERE, "Error writing new dictionary: " + newFile);
+        }
+      
+      setDictionaryFilename(selected);
+      }
+
+    return false;
+    }
 }
 

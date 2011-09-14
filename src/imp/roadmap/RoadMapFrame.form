@@ -1023,6 +1023,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dictionaryEditorMIActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="saveDictionaryAsMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save Dictionary as ..." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the current dictionary under a new name." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="saveDictionaryAsMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveDictionaryAsMIActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="preferencesMenu">
