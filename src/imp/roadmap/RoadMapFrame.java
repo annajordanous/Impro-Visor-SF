@@ -2246,7 +2246,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_newRoadMapMIActionPerformed
 
     private void analyzeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeMenuItemActionPerformed
-        analyze(settings.showJoins);
+        analyzeInBackground(settings.showJoins);
     }//GEN-LAST:event_analyzeMenuItemActionPerformed
 
     private void unselectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unselectAllMenuItemClicked
@@ -3267,7 +3267,7 @@ private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//
     /** Make this RoadMapFrame visible */
     public void makeVisible(boolean analyze)
     {
-      //ystem.out.println("makeVisible analyze = " + analyze);
+      //System.out.println("makeVisible analyze = " + analyze);
         // Don't show joins until analysis is done.
         boolean tempJoins = settings.showJoins;
         settings.showJoins = false;

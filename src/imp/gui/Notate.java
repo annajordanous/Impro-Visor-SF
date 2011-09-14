@@ -2227,6 +2227,7 @@ public class Notate
         showTitlesMI = new javax.swing.JCheckBoxMenuItem();
         showEmptyTitlesMI = new javax.swing.JCheckBoxMenuItem();
         barNumsMI = new javax.swing.JCheckBoxMenuItem();
+        phrasemarksMI = new javax.swing.JCheckBoxMenuItem();
         measureCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
         allCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
@@ -8059,6 +8060,16 @@ public class Notate
             }
         });
         viewMenu.add(barNumsMI);
+
+        phrasemarksMI.setSelected(true);
+        phrasemarksMI.setText("Show Phrase Marks");
+        phrasemarksMI.setToolTipText("Check to show phrase marks on the leadsheet. Phrase marks are used in roadmap analysis.");
+        phrasemarksMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phrasemarksMIActionPerformed(evt);
+            }
+        });
+        viewMenu.add(phrasemarksMI);
 
         measureCstrLinesMI.setSelected(true);
         measureCstrLinesMI.setText("Show Construction Lines on Current Measure");
@@ -20737,6 +20748,16 @@ private void playSelectionToEndMIActionPerformed(java.awt.event.ActionEvent evt)
     getCurrentStave().playSelection(true, getLoopCount());
   }//GEN-LAST:event_playSelectionToEndMIActionPerformed
 
+private void phrasemarksMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_phrasemarksMIActionPerformed
+  {//GEN-HEADEREND:event_phrasemarksMIActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_phrasemarksMIActionPerformed
+
+public boolean showPhrasemarks()
+  {
+    return phrasemarksMI.getState();
+  }
+
 public void fileStepForward()
 {
     stopPlaying();
@@ -22620,6 +22641,7 @@ public void showNewVoicingDialog()
     private javax.swing.JToggleButton pauseBtn;
     private javax.swing.JMenuItem pausePlayMI;
     private javax.swing.JCheckBox phraseCheckBox;
+    private javax.swing.JCheckBoxMenuItem phrasemarksMI;
     private javax.swing.JButton pianoKeyboardButton;
     private javax.swing.JMenuItem pianoKeyboardMI;
     private javax.swing.JMenuItem playAllMI;

@@ -65,10 +65,10 @@ public class PostProcessor {
 
     //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
 
-    public static String[] FIRST_STABLE = {"Cadence", "CESH", /* "Dropback", */ "Ending", 
-        "On", /* "On-Off", */ "On-Off+", "Overrun"};
+    //public static String[] FIRST_STABLE = {"Cadence", "CESH", /* "Dropback", */ "Ending", 
+    //    "On", /* "On-Off", */ "On-Off+", "Overrun"};
 
-    public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Overrun", "Pullback", "Turnaround"};
+    //public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Overrun", "Pullback", "Turnaround"};
     
     // Rules for finding representative chord in diatonicChordCheck
     private static ArrayList<Polylist> equivalenceRules;

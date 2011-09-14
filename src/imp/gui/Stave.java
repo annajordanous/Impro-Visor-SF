@@ -2900,7 +2900,7 @@ private void drawPart(MelodyPart part, Graphics g)
                   if( previousSectionType == Block.PHRASE_END )
                     {
                       // Possibly draw phrase mark.
-                      if( i > 0 )
+                      if( i > 0 && notate.showPhrasemarks() )
                         {
                           Font saveFont = g.getFont();
                           g.setFont(phraseMarkFont);

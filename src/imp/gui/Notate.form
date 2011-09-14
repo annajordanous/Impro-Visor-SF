@@ -6983,6 +6983,16 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barNumsMIActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="phrasemarksMI">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Show Phrase Marks"/>
+                <Property name="toolTipText" type="java.lang.String" value="Check to show phrase marks on the leadsheet. Phrase marks are used in roadmap analysis."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phrasemarksMIActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="measureCstrLinesMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
