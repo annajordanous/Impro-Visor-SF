@@ -114,9 +114,10 @@ public class RoadMapSettings {
     
     /* --- Fonts --- */
     /** Font for normal text, such as bricks, joins, rollovers, etc */
-    public Font basicFont = new Font("Dialog", Font.PLAIN, 12);
+    public Font basicFont = new Font("Lucida Grande", Font.BOLD, 14);
+    
     /** Font for titles */
-    public Font titleFont = new Font("Dialog", Font.PLAIN, 24);
+    public Font titleFont = new Font("Lucida Grande", Font.BOLD, 24);
     
     /**
      * whether to show joins in roadmap or not

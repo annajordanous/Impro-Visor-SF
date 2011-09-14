@@ -835,8 +835,10 @@ public class RoadMapPanel extends JPanel {
     private void drawBricks(boolean showJoins)
     {        
         Graphics2D g = (Graphics2D)buffer.getGraphics();
-        
+        g.setFont(settings.basicFont);
         ArrayList<String> joinList = roadMap.getJoins();
+        
+        int yAdjust = 1;
         
         //Random r = new Random(System.nanoTime());
         for( int ind = 0; ind < graphicMap.size(); ind++ ) {
@@ -869,13 +871,13 @@ public class RoadMapPanel extends JPanel {
                 g.setColor(settings.joinBGColor);
                 g.setStroke(settings.basicLine);
                 
-                g.fillRect(joinX+2,joinY+2, width, offset + 2);
+                g.fillRect(joinX+2,joinY+yAdjust, width, offset + 2);
         
                 g.setColor(settings.lineColor);
-                g.drawRect(joinX+2,joinY+2, width, offset + 2);
+                g.drawRect(joinX+2,joinY+yAdjust, width, offset + 2);
                 
                 g.setColor(settings.textColor);
-                g.drawString(joinName,joinX+4, joinY+2+offset);
+                g.drawString(joinName,joinX+4, joinY+yAdjust+offset);
             }
               }
             
@@ -911,7 +913,7 @@ public class RoadMapPanel extends JPanel {
         long currentBeats = 0;
         long lines = 0;
         long lineBeats = 0;
-        
+        g.setFont(settings.basicFont);
         for( KeySpan keySpan : roadMap.getKeyMap() ) {
             drawKeySpan(keySpan, settings.xOffset + settings.getLength((int)lineBeats),
                     settings.yOffset + (int)(settings.getLineOffset() * lines), g);
