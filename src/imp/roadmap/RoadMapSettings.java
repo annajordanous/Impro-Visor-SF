@@ -53,7 +53,7 @@ public class RoadMapSettings {
     
     /* --- Colors --- */
     /** Color of the grid lines */
-    public Color gridLineColor = new Color(150,150,150);
+    public Color gridLineColor = new Color(100,100,100);
     
     /** Color of the grid background */
     public Color gridBGColor = new Color(225,225,225);

@@ -799,6 +799,13 @@ public class RoadMapPanel extends JPanel {
                         settings.yOffset + i*(settings.lineHeight + settings.lineSpacing) - 5,
                         settings.xOffset + j*settings.measureLength,
                         settings.yOffset + (i+1)*settings.lineHeight + i*settings.lineSpacing + 5);
+
+                // Draw double lines to make more prominent
+                g.drawLine(settings.xOffset + j*settings.measureLength - 1,
+                        settings.yOffset + i*(settings.lineHeight + settings.lineSpacing) - 5,
+                        settings.xOffset + j*settings.measureLength - 1,
+                        settings.yOffset + (i+1)*settings.lineHeight + i*settings.lineSpacing + 5);
+                
                 j++;
             }
         }
@@ -871,13 +878,13 @@ public class RoadMapPanel extends JPanel {
                 g.setColor(settings.joinBGColor);
                 g.setStroke(settings.basicLine);
                 
-                g.fillRect(joinX+2,joinY+yAdjust, width, offset + 2);
+                g.fillRect(joinX+1,joinY+yAdjust, width, offset + 2);
         
                 g.setColor(settings.lineColor);
-                g.drawRect(joinX+2,joinY+yAdjust, width, offset + 2);
+                g.drawRect(joinX+1,joinY+yAdjust, width, offset + 2);
                 
                 g.setColor(settings.textColor);
-                g.drawString(joinName,joinX+4, joinY+yAdjust+offset);
+                g.drawString(joinName,joinX+3, joinY+yAdjust+offset);
             }
               }
             
