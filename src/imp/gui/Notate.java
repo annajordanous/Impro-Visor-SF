@@ -75,12 +75,6 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
-
-  
-  /**
-   * Name of file in which names of recent leadsheet files are stored.
-   */
-
   private static boolean firstTime = true;
   
   RoadMapFrame roadmapFrame = null;
@@ -11501,7 +11495,7 @@ private void updateTempoFromTextField()
      *
      * means that the dialog gets centered the first time it is shown,
      *
-     * when the dialog is shown a second time, it remembers it's last position
+     * when the dialog is shown a second time, it remembers its last position
      *
      */
     
@@ -17240,17 +17234,29 @@ public ChordPart makeCountIn()
    */
   public boolean saveAsLeadsheetAWT()
     {
+      
+    //System.out.println("using AWT: " + lastLeadsheetFileStem);
     if( saveAWT.getDirectory().equals("/") )
       {
       saveAWT.setDirectory(ImproVisor.getLeadsheetDirectory().getAbsolutePath());
       }
-
+    String lastLeadsheetFileStem = ImproVisor.getLastLeadsheetFileStem();
+    
+    if( lastLeadsheetFileStem != null )
+      {
+      saveAWT.setFile(lastLeadsheetFileStem);
+      }
+    
     saveAWT.setVisible(true);
+    
     String selected = saveAWT.getFile();
+    
+    ImproVisor.setLastLeadsheetFileStem(saveAWT.getFile());
+    
     String dir = saveAWT.getDirectory();
+    
     if( selected != null )
       {
-
       boolean noErrors = true;
 
       if( !selected.endsWith(leadsheetExt) )
@@ -17284,17 +17290,28 @@ public ChordPart makeCountIn()
    */
 public boolean saveAsLeadsheetSwing()
   {
+ //System.out.println("using Swing :" + lastLeadsheetFileStem);   
     if( saveLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
       {
         saveLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
       }
+    
+     String lastLeadsheetFileStem = ImproVisor.getLastLeadsheetFileStem();
 
+     if( lastLeadsheetFileStem != null )
+      {
+      saveLSFC.setSelectedFile(new File(lastLeadsheetFileStem));
+      }
+    
+        
     if( saveLSFC.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
       {
 
         boolean noErrors = true;
+        
+        File selectedFile = saveLSFC.getSelectedFile();
 
-        if( saveLSFC.getSelectedFile().getName().endsWith(leadsheetExt) )
+        if( selectedFile.getName().endsWith(leadsheetExt) )
           {
             noErrors = saveLeadsheet(saveLSFC.getSelectedFile(), score);
 
@@ -17304,7 +17321,7 @@ public boolean saveAsLeadsheetSwing()
           }
         else
           {
-            String file = saveLSFC.getSelectedFile().getAbsolutePath();
+            String file = selectedFile.getAbsolutePath();
 
             file += leadsheetExt;
             
@@ -17316,6 +17333,8 @@ public boolean saveAsLeadsheetSwing()
 
             setSavedLeadsheet(newFile);
           }
+        
+        ImproVisor.setLastLeadsheetFileStem(selectedFile.getName());
 
 
         if( !savedLeadsheet.exists() )
@@ -17381,8 +17400,6 @@ public void openLeadsheet(boolean openCorpus)
         openLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
       }
 
-    // stopPlaying(); experimental
-
     // show open file dialog
 
     if( openLSFC.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
@@ -17394,10 +17411,12 @@ public void openLeadsheet(boolean openCorpus)
             // load the file
 
             Score newScore = new Score();
-
-            (new OpenLeadsheetCommand(openLSFC.getSelectedFile(), newScore)).execute();
-
-
+            
+            File file = openLSFC.getSelectedFile();
+            
+            ImproVisor.setLastLeadsheetFileStem(file.getName());
+            
+            (new OpenLeadsheetCommand(file, newScore)).execute();
 
             // create a new window and show the score
 
@@ -17481,8 +17500,13 @@ public void openLeadsheet(boolean openCorpus)
             else
               {
                 // open the file
-                setupLeadsheet(openLSFC.getSelectedFile(), false);
                 
+                File file = openLSFC.getSelectedFile();
+                
+                setupLeadsheet(file, false);               
+                            
+                ImproVisor.setLastLeadsheetFileStem(file.getName());
+            
                 if( createRoadMapCheckBox.isSelected() )
                   {
                   roadMapThisAnalyze();

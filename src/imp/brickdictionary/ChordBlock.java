@@ -252,21 +252,20 @@ public class ChordBlock extends Block {
         return symbol.equals("")
             || symbol.equals("m")
             || symbol.startsWith("M")
-            || symbol.startsWith("m6");
-    }
-        
+            || symbol.endsWith("tonic");    }
+    
     public boolean isGeneralizedTonic() {
         String symbol = getSymbol();
         return symbol.equals("")
             || symbol.equals("m") 
             || symbol.startsWith("M") 
+            || symbol.startsWith("mM") 
             || symbol.startsWith("m6")
             || symbol.startsWith("m7")
             || symbol.startsWith("m9")
             || symbol.startsWith("m11")
             || symbol.startsWith("m13")
-            || symbol.endsWith("#11")
-            || symbol.endsWith("#4");    }
+            || symbol.endsWith("tonic");    }
     
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord

@@ -36,10 +36,12 @@ import imp.util.*;
 
 public class ImproVisor implements Constants {
     
+    public static final String version = "5.0";
+    
+    private static String lastLeadsheetFileStem = null;
+    
     static private Notate currentWindow = null;
 
-    public static final String version = "5";
-    
     private static int initialXopen = 0;
     private static int initialYopen = 0;
 
@@ -571,4 +573,13 @@ public static File getRecentFilesFile()
       }
   }
 
+public static void setLastLeadsheetFileStem(String stem)
+  {
+    lastLeadsheetFileStem = stem;
+  }
+
+public static String getLastLeadsheetFileStem()
+  {
+    return lastLeadsheetFileStem;
+  }
 }
