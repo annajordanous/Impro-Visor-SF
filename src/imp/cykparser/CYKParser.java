@@ -22,6 +22,7 @@
 package imp.cykparser;
 import java.util.*;
 import imp.brickdictionary.*;
+import imp.ImproVisor;
 import imp.util.ErrorLog;
 import java.io.*;
 import polya.*;
@@ -40,7 +41,7 @@ public class CYKParser
 {
 
     // Constants used by the CYKParser
-    public static final String DICTIONARY_NAME = "vocab/My.substitutions";
+    public static final String DICTIONARY_NAME = "My.substitutions";
     public static final String INVISIBLE = "Invisible";
     public static final long SUB_COST = 5;
     
@@ -136,8 +137,9 @@ public class CYKParser
     private void loadDictionaries(String filename)
     {
         FileInputStream fis = null;
+        File file = new File(ImproVisor.getDictionaryDirectory(), filename);
         try {
-            fis = new FileInputStream(filename);
+            fis = new FileInputStream(file);
             Tokenizer in = new Tokenizer(fis);
             in.slashSlashComments(true);
             in.slashStarComments(true);
@@ -210,7 +212,8 @@ public class CYKParser
             }
         // if the dictionary file was not found at the path specified
         } catch (FileNotFoundException ex) {
-            ErrorLog.log(ErrorLog.SEVERE, "Substitution dictionary not found", 
+            ErrorLog.log(ErrorLog.SEVERE, "Substitution dictionary not found: " 
+                                          + file.getAbsolutePath(), 
                     true);
         } finally {
             try {

@@ -264,8 +264,9 @@ public class ChordBlock extends Block {
             || symbol.startsWith("m7")
             || symbol.startsWith("m9")
             || symbol.startsWith("m11")
-            || symbol.startsWith("m13");
-    }
+            || symbol.startsWith("m13")
+            || symbol.endsWith("#11")
+            || symbol.endsWith("#4");    }
     
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord

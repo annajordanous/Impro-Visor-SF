@@ -21,6 +21,7 @@
 
 package imp.cykparser;
 
+import imp.ImproVisor;
 import java.io.*;
 import imp.brickdictionary.*;
 import imp.util.ErrorLog;
@@ -103,8 +104,9 @@ public class EquivalenceDictionary {
      */
     public void loadDictionary(String filename) {
         FileInputStream fis = null;
+        File file = new File(ImproVisor.getDictionaryDirectory(), filename);
         try {
-            fis = new FileInputStream(filename);
+            fis = new FileInputStream(file);
             Tokenizer in = new Tokenizer(fis);
             in.slashSlashComments(true);
             in.slashStarComments(true);
@@ -157,7 +159,8 @@ public class EquivalenceDictionary {
                 }
             }
         } catch (FileNotFoundException ex) {
-            ErrorLog.log(ErrorLog.SEVERE, "Dictionary file not found", true);
+            ErrorLog.log(ErrorLog.SEVERE, "Dictionary file not found: " 
+                                           + file.getAbsolutePath(), true);
         } finally {
             try {
                 fis.close();

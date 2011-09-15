@@ -2763,6 +2763,12 @@
           (Brick Major-On C 1)
           (Chord Dm7 1)
           (Brick Major-On C 1))
+
+(defbrick On-Off-Twice-To-II Major On-Off+ C
+          (Brick Major-On C 1)
+          (Chord Dm7 1)
+          (Brick Major-On C 1)
+          (Chord Dm7 1))
  
 (defbrick On-Off-Twice-On-To-II Major On-Off+ C
           (Brick On-Off-On-To-II C 4)

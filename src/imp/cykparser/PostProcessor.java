@@ -22,7 +22,6 @@ package imp.cykparser;
 import imp.brickdictionary.*;
 import imp.data.ChordSymbol;
 import imp.roadmap.*;
-import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Arrays;
 import polya.*;
@@ -55,9 +54,6 @@ public class PostProcessor {
     public static final String[] JOINS = {"Bootstrap", "Stella", "Backslider", 
         "Half Nelson", "Sidewinder", "New Horizon", "Downwinder", "Homer", 
         "Cherokee", "Woody", "Highjump", "Bauble"};
-    
-//    public static final String[] RESOLUTIONS = {"","Happenstance","Yardbird","",
-//        "","","","","","","","Tritone"};
     
     // For launching other than straight across a section
     
