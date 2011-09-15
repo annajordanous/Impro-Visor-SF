@@ -22,8 +22,6 @@ package imp;
 
 import java.io.*;
 
-import javax.swing.JFileChooser;
-
 import imp.data.*;
 import imp.com.*;
 import imp.gui.*;
@@ -46,11 +44,14 @@ public class ImproVisor implements Constants {
     private static int initialYopen = 0;
 
     private static String ruleFilePath;
-    private static String ruleFileDir;
     private static String ruleFileName;
 
     private static File ruleFile;
     
+    private static String recentFilesFilename =  "vocab" + File.separator + "recentFiles.txt";
+
+    private static String prefsFileName = "My.prefs";
+
     public static File getRuleFile()
       {
       return ruleFile;
@@ -252,42 +253,22 @@ private ImproVisor(String leadsheet)
     ruleFilePath = Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE);
     if( ruleFilePath.lastIndexOf(File.separator) == -1 )
       {
-        ruleFileDir = "";
         ruleFileName = ruleFilePath;
       }
     else
       {
-        ruleFileDir = ruleFilePath.substring(0, ruleFilePath.lastIndexOf(File.separator));
         ruleFileName = ruleFilePath.substring(ruleFilePath.lastIndexOf(File.separator), ruleFilePath.length());
       }
 
     LoadAdviceCommand loadAdvice = null;
 
-    Trace.log(2, "Loading: " + ruleFileDir + " :: " + ruleFileName);
-    ruleFile = new File(ruleFileDir, ruleFileName);
-    if( ruleFile.exists() || (ruleFile = new File(ruleFileName)).exists() )
-      {
-        loadAdvice = new LoadAdviceCommand(ruleFile, advisor, null, true, false);
-      }
-    else
-      {
-        JFileChooser fc = new JFileChooser();
+    //Trace.log(2, "Loading: " + ruleFileDir + " :: " + ruleFileName);
+ 
+    ruleFile = new File(getVocabDirectory(), ruleFileName);
+    
+    loadAdvice = new LoadAdviceCommand(ruleFile, advisor, null, true, false);
 
-        fc.setDialogTitle("Open Vocabulary");
-        ruleFile = new File("vocab");
-        fc.setCurrentDirectory(ruleFile);
-
-        fc.resetChoosableFileFilters();
-        fc.addChoosableFileFilter(new imp.util.AdviceFilter());
-
-        if( fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION )
-          {
-            loadAdvice = new LoadAdviceCommand(fc.getSelectedFile(), advisor, null, true, false);
-          }
-      }
-
-
-    if( loadAdvice != null )
+   if( loadAdvice != null )
       {
         loadAdvice.setLoadDialogText("Loading Vocabulary ...");
         loadAdvice.execute();
@@ -315,12 +296,6 @@ private ImproVisor(String leadsheet)
 
     String fontSizePref = Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE);
 
-/*
-     * if( fontSizePref.equals("") )
-      {
-        fontSizePref = "" + Preferences.DEFAULT_CHORD_FONT_SIZE_VALUE;
-      }
-*/
     score.setChordFontSize(Integer.valueOf(fontSizePref).intValue());
 
     // Create notate frame.
@@ -373,94 +348,97 @@ private ImproVisor(String leadsheet)
   }
        
     
-    static public void windowHasFocus(Notate window) {
-        currentWindow = window;
-    }
-    static public Notate getCurrentWindow() {
-        return currentWindow;
-    }
-    
-    /**
-     * Returns the melody clipboard.
-     * @return MelodyPart             the melody clipboard
-     */
-    public MelodyPart getMelodyClipboard() {
-        return melodyClipboard;
-    }
-    
-    /**
-     * Returns the chord clipboard.
-     * @return ChordPart             the clipboard
-     */
-    public ChordPart getChordsClipboard() {
-        return chordsClipboard;
-    }
-    
-    
-    /**
-     * Indicates whether the melody clipboard is non-empty
-     * @return indication of whether the melody clipboard is non-empty
-     */
-    public boolean melodyClipboardNonEmpty() {
-        return melodyClipboard.size() > 0;
-    }
-    
-    
-    /**
-     * Indicates whether the chord clipboard is non-empty
-     * @return indication of whether the chord clipboard is non-empty
-     */
-    public boolean chordsClipboardNonEmpty() {
-        return chordsClipboard.size() > 0;
-    }
+ static public void windowHasFocus(Notate window)
+  {
+    currentWindow = window;
+  }
 
+static public Notate getCurrentWindow()
+  {
+    return currentWindow;
+  }
 
-    /**
-     * Sets the pasting type to be for chords or notes
-     * @param type              the type of paste
-     */
-    public void setPasteType(int type) {
-        this.pasteType = type;
-    }
-    
-    
-    /**
-     * Gets the pasting type
-     * @return int              the type of paste
-     */
-    public int getPasteType() {
-        return pasteType;
-    }
-    
-    
-    /**
-     * Main Impro-Visor program. Creates an ImproVisor instance, which will 
-     * initialize the array of Notate frames.
-     */
-    public static void main(String[] args) {
-        String leadsheet = null;
-        if (args.length > 0) {
-            //System.out.println("sees argument");
-            leadsheet = args[0];
-        }
-        
-        // preload images
-        ToolkitImages.getInstance();
-        
-        // Establish user directory and copy vocab files.
-        
-        getUserDirectory();
-        
-        // create ImproVisor instance... this seems to violate some principle
-        // of instances, we set instance directly instead of call getInstance()
-        // but it does allow us to pass in a leadsheet parameter...
-        instance = new ImproVisor(leadsheet);
-    }
-    
+/**
+ * Returns the melody clipboard.
+ * @return MelodyPart             the melody clipboard
+ */
+public MelodyPart getMelodyClipboard()
+  {
+    return melodyClipboard;
+  }
 
-private static String recentFilesFilename =  "vocab" + File.separator + "recentFiles.txt";
+/**
+ * Returns the chord clipboard.
+ * @return ChordPart             the clipboard
+ */
+public ChordPart getChordsClipboard()
+  {
+    return chordsClipboard;
+  }
 
-private static String prefsFileName = "My.prefs";
+/**
+ * Indicates whether the melody clipboard is non-empty
+ * @return indication of whether the melody clipboard is non-empty
+ */
+public boolean melodyClipboardNonEmpty()
+  {
+    return melodyClipboard.size() > 0;
+  }
+
+/**
+ * Indicates whether the chord clipboard is non-empty
+ * @return indication of whether the chord clipboard is non-empty
+ */
+public boolean chordsClipboardNonEmpty()
+  {
+    return chordsClipboard.size() > 0;
+  }
+
+/**
+ * Sets the pasting type to be for chords or notes
+ * @param type              the type of paste
+ */
+public void setPasteType(int type)
+  {
+    this.pasteType = type;
+  }
+
+/**
+ * Gets the pasting type
+ * @return int              the type of paste
+ */
+public int getPasteType()
+  {
+    return pasteType;
+  }
+
+    
+/**
+ * Main Impro-Visor program. Creates an ImproVisor instance, which will 
+ * initialize the array of Notate frames.
+ */
+public static void main(String[] args)
+  {
+    String leadsheet = null;
+    if( args.length > 0 )
+      {
+        //System.out.println("sees argument");
+        leadsheet = args[0];
+      }
+
+    // preload images
+    ToolkitImages.getInstance();
+
+    // Establish user directory and copy vocab files.
+
+    getUserDirectory();
+
+    // create ImproVisor instance... this seems to violate some principle
+    // of instances, we set instance directly instead of call getInstance()
+    // but it does allow us to pass in a leadsheet parameter...
+    instance = new ImproVisor(leadsheet);
+  }
+
 
 /**
  * Get the directory where user Impro-Visor files are stored.

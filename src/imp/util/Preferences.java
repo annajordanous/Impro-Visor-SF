@@ -50,7 +50,7 @@ public class Preferences implements imp.Constants
 
   protected static CommandManager cm = new CommandManager();
   
-  public static String vocabDir = "vocab";
+  //public static String vocabDir = "vocab";
 
   protected static Polylist prefs = Polylist.nil;
 
@@ -115,11 +115,11 @@ public class Preferences implements imp.Constants
 
   public static final String DEFAULT_VOCAB_FILE = "default-vocab-file";
 
-  public static final String DVF_VAL = "vocab/My.voc"; 
+  public static final String DVF_VAL = "My.voc"; 
 
   public static final String DEFAULT_GRAMMAR_FILE = "default-grammar-file";
 
-  public static final String DVF_GRAMMAR_VAL = "grammars/My.grammar";
+  public static final String DVF_GRAMMAR_VAL = "My.grammar";
 
   public static final String DEFAULT_STYLE_DIRECTORY = "default-style-directory";
 
@@ -210,7 +210,7 @@ public class Preferences implements imp.Constants
       catch( Exception j )
         {
         ErrorLog.log(ErrorLog.WARNING, "Failure generating default " +
-                "preference file 'vocab/My.prefs'.");
+                "preference file 'My.prefs'.");
         }
       }
     }

@@ -1010,9 +1010,6 @@ public class Notate
     setStepInput(false);
 
     criticDialog = new CriticDialog(lickgenFrame);
-
- 
-    midiDir = ImproVisor.getLeadsheetDirectory() + File.separator + "midi";  // FIX
  
 
     // setup the file choosers' initial paths
@@ -1107,7 +1104,8 @@ public class Notate
     setSavedLeadsheet(null);
 
     savedVocab =
-            new File(Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE));
+            new File(ImproVisor.getVocabDirectory(),
+                     Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE));
 
     melodyInst = new InstrumentChooser();
 
@@ -12051,62 +12049,38 @@ private void setLickEnharmonics(MelodyPart lick)
     
     
     private void saveAsAdviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsAdviceActionPerformed
-        
+
         vocfc.setDialogTitle("Save Vocabluary As");
-        
-        
-        
-        File oldDirectory = vocfc.getCurrentDirectory();
-        
         vocfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
-        
-        
-        // If never saved before, used the name specified in vocFile.
-        
-        // Otherwise use previous file.
-        
-        
-        
-        if( savedVocab == null ) {
-            
-            vocfc.setSelectedFile(new File(vocFile));
-            
-        }
-        
-        
-        
+
+       // If never saved before, used the name specified in vocFile.
+       // Otherwise use previous file.
+
+        if( savedVocab == null )
+          {
+           vocfc.setSelectedFile(new File(vocFile));
+         }
+
         vocfc.resetChoosableFileFilters();
-        
         vocfc.addChoosableFileFilter(new VocabFilter());
-        
-        
-        
-        if (vocfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            
-            if (vocfc.getSelectedFile().getName().endsWith(vocabExt)) {
-                
-                
-                
-                cm.execute(new SaveAdviceCommand(vocfc.getSelectedFile(), adv));
-                
-                savedVocab = vocfc.getSelectedFile();
-                
-                
-                
-            } else {
-                
+
+        if( vocfc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
+          {
+            if( vocfc.getSelectedFile().getName().endsWith(vocabExt) )
+              {
+              cm.execute(new SaveAdviceCommand(vocfc.getSelectedFile(), adv));
+
+              savedVocab = vocfc.getSelectedFile();
+              }
+            else
+              {
                 String file = vocfc.getSelectedFile().getAbsolutePath() + vocabExt;
-                
+
                 savedVocab = new File(file);
-                
+
                 cm.execute(new SaveAdviceCommand(savedVocab, adv));
-                
-            }
-            
-        }
-        
-        
-        
+              }
+          }
     }//GEN-LAST:event_saveAsAdviceActionPerformed
     
     
@@ -17755,7 +17729,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         FileOutputStream fileOut = null;
         ObjectOutputStream objOut = null;
 
-        File outFile = new File("Vocab" + File.separator + "HeadData.data");
+        File outFile = new File(ImproVisor.getGrammarDirectory(), "HeadData.data");
 
         try {
             fileOut = new FileOutputStream(outFile);

@@ -77,9 +77,6 @@ public class BrickLibrary {
     // the default cost of a type with no cost specified
     private static final long DEFAULT_COST = 40;
     
-    // the path where the dictionary of brick definitions is stored
-    // public static final String DICTIONARY_FILE = "vocab/BrickDictionary.txt";
-    
     // the string describing an invisible brick's type
     public static final String INVISIBLE = "Invisible";
    
