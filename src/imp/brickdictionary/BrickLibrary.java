@@ -580,8 +580,8 @@ public class BrickLibrary {
             return 11;
         else
         {
-            ErrorLog.log(ErrorLog.FATAL, "Incorrect key formatting: " + keyName);
-            return 0;
+            ErrorLog.log(ErrorLog.SEVERE, "Incorrect key formatting: " + keyName);
+            return -1;
         }
     }
     
@@ -599,7 +599,7 @@ public class BrickLibrary {
             return "";
         else
         {
-            ErrorLog.log(ErrorLog.FATAL, "Incorrect key number: " + keyNum);
+            ErrorLog.log(ErrorLog.FATAL, "Internal: Incorrect key number: " + keyNum);
             return "";
         }
     }
@@ -621,7 +621,7 @@ public class BrickLibrary {
             }
             else
             {
-                ErrorLog.log(ErrorLog.FATAL, "Incorrect key number: " + keyNum);
+                ErrorLog.log(ErrorLog.FATAL, "Internal: Incorrect key number: " + keyNum);
                 return "";
             }
         }

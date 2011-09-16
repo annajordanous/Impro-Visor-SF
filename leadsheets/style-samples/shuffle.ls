@@ -8,6 +8,7 @@
 (tempo 180.0)
 (volume 127)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 62)
 (drum-volume 42)

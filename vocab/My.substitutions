@@ -1,5 +1,8 @@
 /** Equivalences and substitutions
  *
+ * Eventually this information should be in the .voc file, but this will require
+ * some recoding.
+ *
  * Chord equivalences and substitutions are read in here for the purposes of
  * parsing chord bricks with substituted chords. These are divided into 
  * equivalence rules and substitution rules.
@@ -31,6 +34,7 @@
      CM7#11 CM9#11 CM13#11 Cadd2 Cadd9
      CM6b5 CM6#11 C6b5 C6#11 C69#11 CM69#11
      Cmaj7#11 Cmaj9#11 Cmaj13#11 CMaj7#11 CMaj9#11 CMaj13#11 
+     Cadd9 Cadd2 Csus2 C7t C9t C13t C7#11t C9#11t C13#11t C7#4t C9#4t C13#4t
      )
 
 (equiv Cm Cminor Cm6 Cm69 Cm7 CmM7 CmM9 Cm9 Cm11 Cm13 C-)
@@ -38,7 +42,7 @@
 (equiv C7 CDominant
      C7b9 C7#9 C7+ C7#11 C7b9#11 C7b9b13 C9 C9#11 C9b5 C9b13 
      C13 C13b9 C13#9 C7#5#9 C13#11 C13b5 C13b9#11 C13#9#11 C9+ C7b5b9
-     C+7 
+     C+7 C7+4 C7#4 C9+4 C9#4 C13+4 C13#4
      )
 
 (equiv Cdim Co Cdim7 Co7)

@@ -8,6 +8,7 @@
 (tempo 180.0)
 (volume 127)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 62)
 (drum-volume 42)
@@ -48,7 +49,7 @@ Gm9 | C13b9 | F13 D7#5#9 | Gm9 C13b9 |
     (key -1)
     (stave treble)
 )
- c+2/3+16/3 r4 a8 g8 f8
+ c+4+8 r4 a8 g8 f8
 
  e8 ab8 f8 c8 db8 r8 g8 d8
 
@@ -64,10 +65,10 @@ Gm9 | C13b9 | F13 D7#5#9 | Gm9 C13b9 |
 
  g#4 f#8 d8 f2
 
- g8/3 e8/3 a#8/3 r8 d+8 f+2/3+16/3 a#+8
+ g8/3 e8/3 bb8/3 r8 d+8 f+4+8 bb+8
 
  e+8 c+8 g4 db8 c8 eb8 r8
 
- c8 d8 f8 r8 f#8 a#8 eb+8 d+8
+ c8 d8 f8 r8 f#8 bb8 eb+8 d+8
 
  f+8 db+8 c+8 a8 g8 db+8 e+8 c+8

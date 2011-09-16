@@ -15,14 +15,14 @@
 (chord-volume 54)
 (breakpoint 54)
 (layout)
-(style swing
-    (swing 0.67)
-    (comp-swing 0.67)
+(style latin
+    (swing 0.55)
+    (comp-swing 0.55)
     (bass-high g-)
     (bass-low c---)
-    (bass-base e--)
+    (bass-base c--)
     (chord-high a)
-    (chord-low d-)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,10 +34,11 @@
     (key 0)
 )
 
-(phrase (style swing)) 
+(section (style latin)) 
+
 EbM7 | / | Ebm7 | / | 
 
-(section (style swing)) 
+(section (style latin)) 
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
@@ -48,10 +49,11 @@ Fm7 | Bb7 | EbM7 | / |
 
 Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
 
-(phrase (style swing)) 
+(section (style latin)) 
+
 EbM7 | / | Ebm7 | / | 
 
-(section (style swing)) 
+(section (style latin)) 
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 

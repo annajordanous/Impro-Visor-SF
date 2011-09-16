@@ -3,7 +3,10 @@ from Prof. Bob Keller at Harvey Mudd College.
 
 If you need help, please post to the Yahoo! impro-visor user group:
 
-	groups.yahoo.com/impro-visor
+    http://launch.groups.yahoo.com/group/impro-visor/
+
+From the group, you may also obtain The Imaginary Book which contains a large
+number of chords-only leadsheets, as well as other useful resources.
 
 Impro-Visor is free and runs on any platform that supports Java 1.5 or later, including:
  
@@ -39,14 +42,6 @@ You can download the latest version of Java free from:
  
 What you want is the JRE (Java Runtime Environment).
 
-
-Please address support questions through our Yahoo! group:
-
-    http://launch.groups.yahoo.com/group/impro-visor/
-
-
-From the group, you may also obtain The Imaginary Book which contains a large
-number of chords-only leadsheets, as well as other useful resources.
 
 I am pleased to acknowledge contributions from the following developers:
 

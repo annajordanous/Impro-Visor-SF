@@ -1,5 +1,5 @@
 /*
- * File: My.dictionary, version 1.0, Wed. Sept. 14, 2011
+ * File: My.dictionary, version 1.0, Fri. Sept. 16, 2011
  * This dictionary text file accompanies the Impro-Visor Application
  *
  * Copyright (C) 2011 Robert Keller and Harvey Mudd College
@@ -20,17 +20,18 @@
  */
 
 /*
- * This dictionary is largely based on the definitions in John Elliott's book
- * "Insights in Jazz", 2009, published in the UK by Jazzwise Publications, and 
- * on Conrad Cork's book "The New Guide to Harmony with Lego Bricks", published
- * in the UK by Tadley Ewing Publications, 1996. We do not claim complete 
- * agreement with those works, only that they will be a useful guide to
- * understanding the bricks defined herein.
- *
  * This dictionary was compiled by Zack Merritt, Xanda Schofield, and
  * Robert Keller, June-Sept. 2011. It is expected that it will undergo many
  * revisions. In particular, there are probably lots of redundancies that
  * can be removed.
+ *
+ * The terminology in this dictionary is largely based on the definitions in 
+ * John Elliott's book"Insights in Jazz", 2009, published in the UK by Jazzwise 
+ * Publications, and on Conrad Cork's book "The New Guide to Harmony with Lego 
+ * Bricks", published in the UK by Tadley Ewing Publications, 1996. We do not  
+ * claim completeagreement with those works, only that they will be a useful 
+ * guide to understanding the bricks defined herein. 
+ * Also, any mistakes are ours and not those of the above authors.
  *
  * Note that you do not have to use this dictionary. You can make your own.
  */
@@ -55,13 +56,14 @@
 
 
 // Equivalence Rules
+// This information should eventually be encoded into the .voc file.
 
 (equiv C CM CMajor 
        C6   C69     CM6    CM69 C69#11 CM69#11
        CM7  CMaj7   CM7#11 CMaj7#11  
        CM9  CMaj9   CM9#11 CMaj9#11 
        CM13 CM13#11 CMaj13#11
-       Cadd9 Cadd2 Csus2)
+       Cadd9 Cadd2 Csus2 C7t C9t C13t C7#11t C9#11t C13#11t C7#4t C9#4t C13#4t)
 
 (equiv Cm Cminor Cm6 Cm69 CmM7 Cm+ Cmb6 Cm#5)
 
@@ -72,15 +74,16 @@
 (equiv C7 CDominant C7alt
        C7b9 C7#9 C7+ C7#11 C7b9#11 C7b9b13 C9 C9#11 C9b5 C9b13 
        C13 C13b9 C13#9 C7#5#9 C13#11 C13b5 C13b9#11 C13#9#11 C9+ C7b5b9
-       Csus Csus4 C7sus C7sus4 C9sus C9sus4 C7sus4b9 C7b9sus C7b9sus4)
+       Csus Csus4 C7sus C7sus4 C9sus C9sus4 C7sus4b9 C7b9sus C7b9sus4
+       C7#4 C9#4 C13#4 C7+4 C9+4 C13+4)
 
 (equiv Co Cdim Cdim7 Co7 CoM7)
 
 
 // Diatonic Rules
 
-(diatonic Major C Dm Dm7 Em Em7 F G7 G7sus Gsus Am Am7 Bo)
-(diatonic Minor Cm Dm7b5 Eb Fm F G7 Gm7 G7sus Gsus Ab Am7b5 Bb7 Bo)
+(diatonic Major C Dm Dm7 Dm9 Dm11 Em Em7 F G7 G7sus Gsus Am Am7 Am9 Bo Bm7b5)
+(diatonic Minor Cm Dm7b5 Eb Fm F G7 Gm7 G7sus Gsus Ab Am7b5 Bb7 Bo Bo7)
 (diatonic Dominant C7 C7sus Csus Dm Dm7 Eo Em7b5 F7 F7sus Fsus G7sus Gsus Am Am7 Bb )
 
 
@@ -184,6 +187,7 @@
  * revealing the undesired brick at runtime.
  */
 
+
 // Brick types
 
 (brick-type Approach         45)
@@ -198,6 +202,7 @@
 (brick-type On-Off+         100)
 (brick-type On              550)
 (brick-type Opening          25)
+(brick-type To-IV            25)
 (brick-type Turnaround       20)
 (brick-type Misc             40)
 
@@ -1000,8 +1005,18 @@
           (Chord C/G 1))
 
 (defbrick IV-n-Back(Blues) Dominant Cadence C
+        (Chord C7 1)
+        (Chord C#o 1)
+        (Chord F 1))
+
+(defbrick IV-n-Back+Dropback(Blues) Major Dropback F
         (Brick Surge Bb 2)
-        (Chord C7 2))
+        (Brick Dropback F 2))
+
+(defbrick IV-n-back(rainbow) Major To-IV C
+          (Chord G/B 1)
+          (Chord B7 1)
+          (Brick Upslide C 2))
 
 (defbrick IV-n-Back-On-Off-On-II Major On-Off+ C
           (Brick Upslide F 4)
@@ -1285,7 +1300,7 @@
           (Brick On-Off-Major-VI C 2)
           (Brick Sad-Approach C 2))
 
-(defbrick POT(new) Major Turnaround C
+(defbrick POT(var 3) Major Turnaround C
           (Brick Major-On C 2)
           (Brick Straight-Approach C 2))
 
@@ -1300,6 +1315,12 @@
           (Brick Dropback C 2)
           (Brick Minor-On D 1)
           (Chord Gsus 1))
+
+(defbrick POT(blues) Dominant Approach C
+        (Chord C7 1)
+        (Chord A7 1)
+        (Chord Dm7 1)
+        (Chord G7 1))
 
 (defbrick POT(cyclic) Major Turnaround C
           (Chord C 1)
@@ -1530,11 +1551,6 @@
           (Chord CM7 1)
           (Chord E7 1)
           (Chord FM7 2))
-
-(defbrick Rainbow-to-IV-n-back Major Approach C
-          (Chord G/B 1)
-          (Chord B7 1)
-          (Brick Upslide C 2))
 
 (defbrick Rainbow-Overrun Major Overrun C
           (Chord CM7 1)
@@ -1842,7 +1858,6 @@
           (Chord Abm7 1)
           (Chord Db7 1))
 
-
 // Stablemates
 
 (defbrick Stablemates-Approach Major Approach C
@@ -1959,8 +1974,8 @@
           (Chord C#o 1))
 
 (defbrick Surge(var 3) Major Misc C
-          (Chord G7 1)
-          (Chord G#o 1))
+          (Chord C7 1)
+          (Chord C#o 1))
 
 // Supertension (7#4 or 7#110
 
@@ -2049,22 +2064,28 @@
           (Chord CM7 1)
           (Chord D7 1))
 
-(defbrick To-IV(main) Major Cadence C
+(defbrick To-IV(main) Major To-IV C
           (Brick Major-On C 1)
           (Brick Perfect-Cadence F 2))
 
-(defbrick To-IV(tritone) Major Cadence C
+(defbrick To-IV(tritone) Major To-IV C
           (Brick Major-On C 1)
           (Brick Tritone-Cadence F 2))
 
-(defbrick To-IV-n-Back(main) Major Cadence C
+(defbrick To-IV-n-Back(main) Major To-IV C
           (Brick An-Approach F 1)
           (Brick IV-n-Back C 1))
 
-(defbrick To-IV-n-Back(var 1) Major Cadence C
+(defbrick To-IV-n-Back(var 1) Major To-IV C
           (Brick To-IV C 3)
           (Chord F#o 1)
           (Brick Major-On C 1))
+
+(defbrick To-IV-n-Back(blues) Dominant To-IV C
+        (Chord C 1)
+        (Chord F7 1)
+        (Chord F#o 1)
+        (Chord C 1))
 
 (defbrick To-IV-n-Bird-POT Major Turnaround C
           (Chord CM7 1)
@@ -2830,5 +2851,6 @@
           (Brick Major-On C 1))
 
 // User-defined bricks
+
 
 

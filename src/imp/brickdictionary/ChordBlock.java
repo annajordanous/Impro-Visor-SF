@@ -252,7 +252,7 @@ public class ChordBlock extends Block {
         return symbol.equals("")
             || symbol.equals("m")
             || symbol.startsWith("M")
-            || symbol.endsWith("tonic");    }
+            || symbol.endsWith("t");    }
     
     public boolean isGeneralizedTonic() {
         String symbol = getSymbol();
@@ -265,7 +265,7 @@ public class ChordBlock extends Block {
             || symbol.startsWith("m9")
             || symbol.startsWith("m11")
             || symbol.startsWith("m13")
-            || symbol.endsWith("tonic");    }
+            || symbol.endsWith("t");    }
     
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord

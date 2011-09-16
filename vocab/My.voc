@@ -2383,8 +2383,8 @@
     (priority g#8 bb8 e8 c8)
     (approach (c8 b8 c#8) (e8 f8 eb8) (g#8 g8 a8) (bb8 a8 b8) (d8 c#8 eb8) (f#8 f8 g8))
     (voicings
-        (two-hand-A (type open)(notes e--8 bb--8 c-8 g-8)(extension))
-        (left-hand-C (type closed)(notes g--8 bb--8 c-8 e-8)(extension))
+        (two-hand-A (type open)(notes e--8 bb--8 c-8 g#-8)(extension))
+        (left-hand-C (type closed)(notes g#--8 bb--8 c-8 e-8)(extension))
         (left-hand-A (type closed)(notes c-8 e-8 ab-8 bb-8)(extension))
         (left-hand-B (type closed)(notes bb8 e+8 g#+8)(extension))
         (two-hand-B (type open)(notes bb--8 e-8 ab-8 c8)(extension))
@@ -3700,6 +3700,51 @@
     (name CM13#4)
     (pronounce C major thirteen sharp 4)
     (same CM13#11)
+    )
+(chord
+    (name C7t)
+    (pronounce C seven tonic)
+    (same C7)
+    )
+(chord
+    (name C9t)
+    (pronounce C nine tonic)
+    (same C9)
+    )
+(chord
+    (name C13t)
+    (pronounce C thirteen tonic)
+    (same C13)
+    )
+(chord
+    (name C7#11t)
+    (pronounce C seven sharp eleven tonic)
+    (same C7#11)
+    )
+(chord
+    (name C9#11t)
+    (pronounce C nine sharp eleventonic)
+    (same C9#11)
+    )
+(chord
+    (name C13#11t)
+    (pronounce C thirteen sharp eleven tonic)
+    (same C13#11)
+    )
+(chord
+    (name C7#4t)
+    (pronounce C seven sharp eleven tonic)
+    (same C7#4)
+    )
+(chord
+    (name C9#4t)
+    (pronounce C nine sharp eleventonic)
+    (same C9#4)
+    )
+(chord
+    (name C13#4t)
+    (pronounce C thirteen sharp eleven tonic)
+    (same C13#4)
     )
 (cell (notes b4 ab8 gb8 eb8) (name blues) (chords Ab7))
 (cell (notes r4 bb8 bb8 b16/3 bb16/3 ab16/3 f8 eb8 f8) (name blues) (chords Bb))

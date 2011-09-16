@@ -5,7 +5,7 @@
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 120.0)
+(tempo 168.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -44,7 +44,7 @@ BbM7 | Bbm7 Eb7 | Am7 D7 | Abm7 Db7 |
 
 (section (style swing)) 
 
-Gm7 | C7 | Am7 D7 | Gm7 A7 | 
+Gm7 | C7 | Am7 D7 | Gm7 C7 | 
 
 (part
     (type melody)

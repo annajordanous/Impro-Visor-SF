@@ -5,7 +5,7 @@
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 192.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)

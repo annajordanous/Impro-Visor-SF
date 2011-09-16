@@ -1,10 +1,15 @@
 (title Doxy)
 (composer Sonny Rollins)
+(show )
+(year )
 (comments )
 (meter 4 4)
 (key -2)
 (tempo 160.0)
 (volume 127)
+(playback-transpose 0)
+(chord-font-size 16)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
 (chord-volume 60)
@@ -45,4 +50,4 @@ Bb Ab7 | G7 | C7 F7 | Bb |
     (key -2)
     (stave treble)
 )
- r8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+2/3+16/3
+ r8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

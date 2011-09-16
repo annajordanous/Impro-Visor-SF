@@ -5,7 +5,7 @@
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 184.0)
 (volume 127)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,14 +15,14 @@
 (chord-volume 54)
 (breakpoint 54)
 (layout)
-(style swing
-    (swing 0.67)
-    (comp-swing 0.67)
-    (bass-high g-)
-    (bass-low g---)
+(style latin-fast
+    (swing 0.5)
+    (comp-swing 0.5)
+    (bass-high e-)
+    (bass-low c---)
     (bass-base c--)
-    (chord-high a)
-    (chord-low b--)
+    (chord-high c)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,10 +34,11 @@
     (key 0)
 )
 
-(phrase (style swing)) 
+(section (style latin-fast)) 
+
 GM7 | / | C7#11 | / | 
 
-(section (style swing)) 
+(section (style latin-fast)) 
 
 Gm | Gm+ | Gm6 | Gm+ | 
 
@@ -56,10 +57,11 @@ Cm7 | F7 | BbM7 | / |
 Am7 | D7 | GM7 | / | 
 F#m7 | B7 | EM7 | Am7 D7 | 
 
-(phrase (style swing)) 
+(section (style latin)) 
+
 GM7 | / | C7#11 | / | 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Gm | Gm+ | Gm6 | Gm+ | 
 
