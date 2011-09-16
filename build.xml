@@ -36,6 +36,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     <property name="buildDir"               value="build"                    />
     <property name="lsDir"                  value="leadsheets"               />
     <property name="vocabDir"               value="vocab"                    />
+    <property name="grammarDir"             value="grammars"                 />
     <property name="styleDir"               value="styles"                   />
     <property name="styleExtractDir"        value="styleExtract"             />
     <property name="packagingDir"           value="packaging"                />
@@ -158,13 +159,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
          </manifest>
     </jar>
     <copy todir="${distDir}/vocab">
-        <fileset dir="${vocabDir}" includes="**/*.voc HeadData.data" />
+        <fileset dir="${vocabDir}" includes="**/*.voc" />
     </copy>
     <copy todir="${distDir}">
         <fileset dir="" includes="LICENSE.txt" />
     </copy>
-    <copy todir="${distDir}/vocab">
-        <fileset dir="${vocabDir}" includes="**/*.grammar **/*.soloist" />
+    <copy todir="${distDir}/grammars">
+        <fileset dir="${grammarDir}" includes="**/*.grammar **/*.soloist **/HeadData.data" />
     </copy>
     <copy todir="${distDir}/vocab">
         <fileset dir="${vocabDir}" includes="**/*.prefs" />

@@ -11,13 +11,24 @@ Impro-Visor is free and runs on any platform that supports Java 1.5 or later, in
     MacOSX (Tiger (10.4.3 or later) needed for Java 1.5)
     Linux 
 
-Once you have Java 1.5 installed, you may run this program as follows:
+The official download site for Impro-Visor is sourceForge:
 
-    Copy directory improvisorNNN, where NNN is the version number, to your desktop.  
+    http://sourceforge.net/projects/impro-visor/
 
-Then double-click 
+Download the installer that is provided for your platform, then launch the installer.
+
+Once the program is installed, there should be a launcher
+
+    Impro-Visor
+
+that will run the program itself. The first time the program is run it will  
+set up a folder in your user home for your personal version of various files.
+
+Alternatively, you may run by double-clicking the file: 
 
     improvisor.jar
+
+which is a Java archive.
 
 (You cannot start the application by clicking on individual leadsheet files.
 They must be opened from within.)
@@ -28,15 +39,14 @@ You can download the latest version of Java free from:
  
 What you want is the JRE (Java Runtime Environment).
 
-You may address support questions by joining our Yahoo! group:
+
+Please address support questions through our Yahoo! group:
 
     http://launch.groups.yahoo.com/group/impro-visor/
 
-or the mailing list at:
 
-    https://sourceforge.net/projects/impro-visor/
-
-I hope you enjoy using the program. 
+From the group, you may also obtain The Imaginary Book which contains a large
+number of chords-only leadsheets, as well as other useful resources.
 
 I am pleased to acknowledge contributions from the following developers:
 
@@ -47,7 +57,15 @@ Emma Carlson, Jon Gillick, Kevin Tang, Stephen Lee
 Chad Waters, John Goodman, Lasconic, Amos Byon,
 Zack Merritt, Xanda Schofield, August Toman-Yih
 
+We hope you enjoy using the program. 
+
 Sincerely,
 
 Bob Keller, Impro-Visor Project Director
+Professor of Computer Science
+Harvey Mudd College
+Claremont, CA 91711
+
+keller@cs.hmc.edu
+
 

@@ -1,4 +1,4 @@
-Notes on Impro-Visor project sources:
+Notes on Impro-Visor project sources, for developers.
 
 If doing GUI work of any kind, please use the Netbeans environment 7.0 or later.
 
@@ -14,3 +14,5 @@ Thanks.
 Bob Keller
 
 Impro-Visor Project Director
+keller@cs.hmc.edu
+
