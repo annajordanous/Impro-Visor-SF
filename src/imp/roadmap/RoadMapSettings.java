@@ -33,18 +33,25 @@ import java.awt.*;
  * @author August Toman-Yih
  */
 public class RoadMapSettings {
+
     /** Slots contained in each beat */
     public int slotsPerBeat = imp.Constants.BEAT;
+    
     /** Horizontal margin of roadmap */
     public int xOffset = 50;
+    
     /** Vertical offset of roadmap */
     public int yOffset = 70;
+    
     /** Number of measures allowed per line */
     public int barsPerLine = 8;
+    
     /** Height of a line on the roadMap */
     public int lineHeight = 60;
+    
     /** Space between lines */
     public int lineSpacing = 20;
+    
     /** Pixel width of each measure */
     public int measureLength = 100;
     
@@ -56,7 +63,7 @@ public class RoadMapSettings {
     public Color gridLineColor = new Color(100,100,100);
     
     /** Color of the grid background */
-    public Color gridBGColor = new Color(225,225,225);
+    public Color gridBGColor = new Color(245,245,245);
     
     /** Color of a basic line */
     public Color lineColor = Color.BLACK;
@@ -69,6 +76,9 @@ public class RoadMapSettings {
     
     /** Color of the brick background */
     public Color brickBGColor = Color.WHITE;
+    
+    /** Color of the brick background */
+    public Color rolloverBGColor = new Color(255, 225, 50);
     
     /** Color of the join background*/
     public Color joinBGColor = new Color(255, 255, 171);

@@ -33,7 +33,7 @@ import polya.Polylist;
  */
 public class Block {
     
-    private static final String OVERLAP_STRING = " + ...";
+    private static final String OVERLAP_STRING = " + . . .";
     // Data members //
     protected String name;           // block's name
     protected int duration;          // how long block lasts (not in absolute 

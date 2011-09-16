@@ -1038,7 +1038,7 @@ public class RoadMapPanel extends JPanel {
                 int width = metrics.stringWidth(text) + 4;
                 int height = metrics.getAscent() + 2;
 
-                g.setColor(settings.brickBGColor);
+                g.setColor(settings.rolloverBGColor);
 
                 g.fillRect(x, y, width, height);
 

@@ -6461,7 +6461,7 @@ public class Notate
         standardToolbar.add(newBtn);
 
         fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
-        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current directory.\n");
+        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)\n");
         fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -6473,7 +6473,7 @@ public class Notate
         standardToolbar.add(fileStepBackBtn);
 
         fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
-        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current directory.\n");
+        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)\n\n");
         fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -6903,7 +6903,7 @@ public class Notate
         playToolBar.add(mixerBtn);
 
         chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
-        chordStepBackButton.setToolTipText("Play the entire leadsheet.");
+        chordStepBackButton.setToolTipText("Move back to the previous chord (without playing).\n");
         chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepBackButton.setFocusable(false);
         chordStepBackButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -6919,7 +6919,7 @@ public class Notate
         playToolBar.add(chordStepBackButton);
 
         chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
-        chordStepForwardButton.setToolTipText("Play the entire leadsheet.");
+        chordStepForwardButton.setToolTipText("Move to, and play, the next chord.");
         chordStepForwardButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chordStepForwardButton.setFocusable(false);
         chordStepForwardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -19546,7 +19546,7 @@ private void voicingSequenceListValueChanged(javax.swing.event.ListSelectionEven
 
 public void setFutureChordDisplay(String chords)
 {
-    keyboard.setFutureChordDisplayText(chords);
+    // keyboard.setFutureChordDisplayText(chords);
 }
 
 public void setPresentChordDisplay(String chords)
@@ -19556,7 +19556,7 @@ public void setPresentChordDisplay(String chords)
 
 public void setPastChordDisplay(String chords)
 {
-    keyboard.setPastChordDisplayText(chords);
+    // keyboard.setPastChordDisplayText(chords);
 }
 
 public Polylist futureChords;

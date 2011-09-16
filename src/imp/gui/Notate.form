@@ -7478,7 +7478,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperBack.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Browse previous leadsheet file in the current directory.&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -7500,7 +7500,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/fileStepperFront.png"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Browse next leadsheet file in the current directory.&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)&#xa;&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -8349,7 +8349,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/playReversedGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet."/>
+                <Property name="toolTipText" type="java.lang.String" value="Move back to the previous chord (without playing).&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -8377,7 +8377,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/icons/playGreen.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet."/>
+                <Property name="toolTipText" type="java.lang.String" value="Move to, and play, the next chord."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

@@ -222,6 +222,7 @@ public class VoicingKeyboard extends javax.swing.JFrame {
         windowMenuSeparator = new javax.swing.JSeparator();
 
         setTitle("Keyboard");
+        setAlwaysOnTop(true);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setMaximumSize(new java.awt.Dimension(1045, 150));
