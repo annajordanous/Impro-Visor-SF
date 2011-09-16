@@ -46,6 +46,12 @@ public class Brick extends Block {
     private String variant = "";        // The variant of a Brick name, if it
                                         // shares a name with another Brick
     
+    public static String BRICK_KEYWORD = "brick";
+    public static String CHORD_KEYWORD = "chord";
+    
+    public static String APPROACH_KEYWORD = "Approach";
+    public static String LAUNCHER_KEYWORD = "Launcher";
+   
     /** Brick / 7
      * Constructs a Brick based on a variant and a complete BrickLibrary
      * 
@@ -174,7 +180,7 @@ public class Brick extends Block {
         subBlocks = new ArrayList<Block>();
         for (Block b : contents)
         {
-            if (b.getName().contains("Launcher"))
+            if (b.getName().contains(LAUNCHER_KEYWORD))
                 subBlocks.addAll(b.flattenBlock());
             else
                 subBlocks.add(b);
@@ -209,9 +215,9 @@ public class Brick extends Block {
             else if (block instanceof Brick) {
                 Brick nextBrick = new Brick((Brick) block);
                 String subName = nextBrick.getName();
-                if (subName.contains("Launcher")) {
+                if (subName.contains(LAUNCHER_KEYWORD)) {
                     String newName = subName.replaceAll(" \\(Launcher\\)", "");
-                    newName = newName.replaceAll("Launcher", "Approach");
+                    newName = newName.replaceAll(LAUNCHER_KEYWORD, APPROACH_KEYWORD);
                     nextBrick.setName(newName);
                 }
                 subBlocks.add(nextBrick);
@@ -263,9 +269,9 @@ public class Brick extends Block {
      * @param m : the new brick's mode
      */
     public Brick(ChordBlock c, String m) {
-        super("Launcher");
+        super(LAUNCHER_KEYWORD);
         key = (c.getKey() + PostProcessor.DOM_ADJUST) % PostProcessor.OCTAVE;
-        type = "Launcher";
+        type = LAUNCHER_KEYWORD;
         ArrayList<Block> singleton = new ArrayList<Block>();
         singleton.add(c);
         subBlocks = singleton;
@@ -282,9 +288,9 @@ public class Brick extends Block {
      * @param m : the new brick's mode 
      */
     public Brick(ChordBlock c, String name, String m) {
-        super(name + " Launcher");
+        super(name + " " + LAUNCHER_KEYWORD);
         key = c.getKey();
-        type = "Launcher";
+        type = LAUNCHER_KEYWORD;
         ArrayList<Block> singleton = new ArrayList<Block>();
         singleton.add(c);
         subBlocks = singleton;
@@ -402,7 +408,7 @@ public class Brick extends Block {
                 // If a subblock is a brick, split it into components and then
                 // look up the corresponding brick in the library to construct
                 // the necessary new brick.
-                if(blockType.equals("Brick"))
+                if(blockType.equals(BRICK_KEYWORD))
                 {
                     String brickName = BrickLibrary.dashless(pList.first().toString());
                     pList = pList.rest();
@@ -439,7 +445,7 @@ public class Brick extends Block {
                 }
                 
                 // If a subblock is a chord, make an appropriate Chord object
-                else if(blockType.equals("Chord"))
+                else if(blockType.equals(CHORD_KEYWORD))
                 {
                     String chordName = pList.first().toString();
                     pList = pList.rest();
@@ -488,7 +494,7 @@ public class Brick extends Block {
                 // If a subblock is a brick, split it into components and then
                 // look up the corresponding brick in the library to construct
                 // the necessary new brick.
-                if(blockType.equals("Brick") && (pList.length() == 3 ||
+                if(blockType.equals(BRICK_KEYWORD) && (pList.length() == 3 ||
                                                  pList.length() == 4))
                 {
                     // determine the information about the name, variant, etc.
@@ -616,7 +622,7 @@ public class Brick extends Block {
                 }
                 
                 // If a subblock is a chord, make an appropriate Chord object
-                else if(blockType.equals("Chord") && pList.length() == 2)
+                else if(blockType.equals(CHORD_KEYWORD) && pList.length() == 2)
                 {
                     String chordName = pList.first().toString();
                     pList = pList.rest();
@@ -977,7 +983,7 @@ public class Brick extends Block {
     @Override
     public Polylist toPolylist()
     {
-        return Polylist.list("Brick", dashed(name), 
+        return Polylist.list(BRICK_KEYWORD, dashed(name), 
                              BrickLibrary.keyNumToName(key), duration);
     }
 

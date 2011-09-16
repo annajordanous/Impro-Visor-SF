@@ -42,7 +42,7 @@ public class Analyzer extends Thread
       {
         this.frame = frame;
         
-        this.showJoinsOnCompletion = showJoinsOnCompletion;
+        this.showJoinsOnCompletion = true;   // This idea not quite working, so always show joins on completion.
       }
     
     @Override

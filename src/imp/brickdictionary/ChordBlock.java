@@ -425,7 +425,7 @@ public class ChordBlock extends Block {
     @Override
     public Polylist toPolylist()
     {
-        return Polylist.list("Chord", name, duration);
+        return Polylist.list(Brick.CHORD_KEYWORD, name, duration);
     }
 
     /** findModeFromQuality

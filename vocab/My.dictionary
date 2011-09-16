@@ -144,18 +144,18 @@
  *        after the basic brick information in order of occurrence in the brick. 
  *        If a sub-block is a chord, then it is written as
  *            
- *            (Chord [chord name] [relative duration])
+ *            (chord [chord name] [relative duration])
  *
  *        whereas a brick sub-block would be listed as
  *
- *            (Brick [brick name] [key] [relative duration])
+ *            (brick [brick name] [key] [relative duration])
  *        
  *        to appropriately describe the default version of that brick. If a sub-
  *        brick is supposed to be by default a variation on a given brick's
  *        definition rather than the original, then the quality can be specified
  *        in the definition as
  *            
- *            (Brick [brick name]([qualifier]) [key] [relative duration])
+ *            (brick [brick name]([qualifier]) [key] [relative duration])
  *
  *        to make the default in the dictionary appear with that variation as a
  *        sub-block. However, when parsing, the parser will treat all bricks 
@@ -211,134 +211,134 @@
 // GenMinor is a generalized minor tonic
 
 (defbrick GenMinor(var 1) Minor Invisible C
-         (Chord Cm 1))
+         (chord Cm 1))
 
 (defbrick GenMinor(var 2) Minor Invisible C
-          (Chord Cm7 1))
+          (chord Cm7 1))
 
 
 // GenDom is a generalized dominant, either a V or a ii-V
 
 (defbrick GenDom(var 1) Major Invisible C
-          (Chord G7 1))
+          (chord G7 1))
 
 (defbrick GenDom(var 2) Major Invisible C
-          (Chord Dm7 1)
-          (Chord G7 1))
+          (chord Dm7 1)
+          (chord G7 1))
 
 
 // GenII is a Generalized II chord, either a m7 or m7b5
 
 (defbrick GenII(var 1) Major Invisible C
-          (Chord Dm7 1))
+          (chord Dm7 1))
 
 (defbrick GenII(var 2) Major Invisible C
-          (Chord Dm7b5 1))
+          (chord Dm7b5 1))
 
 
 // GenIIDom is a GenII followed by a V
 
 (defbrick GenIIDom Major Invisible C
-          (Brick GenII C 1)
-          (Chord G7 1))
+          (brick GenII C 1)
+          (chord G7 1))
 
 
 // An-Approach is a GenII followed by the corresponding dominant
 
 (defbrick An-Approach Major Invisible C
-          (Brick GenII C 1)
-          (Chord G7 1))
+          (brick GenII C 1)
+          (chord G7 1))
 
 
 // SuperGenDom is a V or a GenII followed by a V
 
 
 (defbrick SuperGenDom(var 1) Major Invisible C
-          (Chord G7 1))
+          (chord G7 1))
 
 (defbrick SuperGenDom(var 2) Major Invisible C
-          (Brick GenII C 1)
-          (Chord G7 1))
+          (brick GenII C 1)
+          (chord G7 1))
 
 
 // GenMajorTonic is either a Major I chord or a Major iii chord, which can sub for I
 
 (defbrick GenMajorTonic(main) Major Invisible C
-          (Chord C 1))
+          (chord C 1))
 
 (defbrick GenMajorTonic(iii) Major Invisible C
-          (Chord Em7 1))
+          (chord Em7 1))
 
 
 // Varieties of "Off", chords that contrast a I chord
 
 
 (defbrick Off(dominant) Dominant Invisible C
-          (Chord C7 1))
+          (chord C7 1))
 
 (defbrick Off(major) Major Invisible C
-          (Chord C 1))
+          (chord C 1))
 
 (defbrick Off(minor) Minor Invisible C
-          (Chord Cm 1))
+          (chord Cm 1))
 
 (defbrick Off(minor7) Minor Invisible C
-          (Chord Cm7 1))
+          (chord Cm7 1))
 
 (defbrick Off(minor-major) Minor Invisible C
-          (Chord CmM7 1))
+          (chord CmM7 1))
 
 (defbrick Off(diminished) Minor Invisible C
-          (Chord Co7 1))
+          (chord Co7 1))
 
 
 // TonicOrDom is a chord that is either major, minor, or dominant on a given root
 
 (defbrick TonicOrDom(major) Major Invisible C
-          (Chord C 1))
+          (chord C 1))
 
 (defbrick TonicOrDom(minor) Major Invisible C
-          (Chord Cm 1))
+          (chord Cm 1))
 
 (defbrick TonicOrDom(dom) Major Invisible C
-          (Chord C7 1))
+          (chord C7 1))
 
 
 // DomOrMinor is a minor, minor 7, or dominant on a given root on degree V of the key.
 
 (defbrick DomOrMinor(minor) Dominant Invisible C
-          (Chord Gm 1))
+          (chord Gm 1))
 
 (defbrick DomOrMinor(minor7) Dominant Invisible C
-          (Chord Gm7 1))
+          (chord Gm7 1))
 
 (defbrick DomOrMinor(dom) Dominant Invisible C
-          (Chord G7 1))
+          (chord G7 1))
 
 
 // Dropback-Approaches are used in defining 7-chord DropBacks
 
 (defbrick Dropback-Approach(main) Major Invisible C
-          (Brick Straight-Cadence C 3)
-          (Brick Extended-Approach C 4))
+          (brick Straight-Cadence C 3)
+          (brick Extended-Approach C 4))
 
 (defbrick Dropback-Approach(Somewhere) Major Invisible C
-          (Brick Somewhere-Cadence C 3)
-          (Brick Extended-Approach C 4))
+          (brick Somewhere-Cadence C 3)
+          (brick Extended-Approach C 4))
 
 (defbrick Dropback(chromatic) Major Dropback C
-          (Chord C 1)
-          (Chord B7 1)
-          (Chord Bb7 1)
-          (Chord A7 1))
+          (chord C 1)
+          (chord B7 1)
+          (chord Bb7 1)
+          (chord A7 1))
 
 
 // Double
 
 (defbrick Double-Pullback Major Approach C
-          (Brick An-Approach C 2)
-          (Brick An-Approach D 2)
-          (Brick An-Approach E 2))
+          (brick An-Approach C 2)
+          (brick An-Approach D 2)
+          (brick An-Approach E 2))
 
 // End of Invisible Bricks
 
@@ -346,151 +346,151 @@
 // CESH = Contrapunal Elaboration of Static Harmony
 
 (defbrick Ascending-Minor-CESH(4 step) Minor CESH C
-          (Chord Cm 1)
-          (Chord Cm+ 1)
-          (Chord Cm6 1)
-          (Chord Cm7 1))
+          (chord Cm 1)
+          (chord Cm+ 1)
+          (chord Cm6 1)
+          (chord Cm7 1))
 
 (defbrick Ascending-Minor-CESH(3 step) Minor CESH C
-          (Chord Cm 1)
-          (Chord Cm+ 1)
-          (Chord Cm6 1))
+          (chord Cm 1)
+          (chord Cm+ 1)
+          (chord Cm6 1))
 
 (defbrick Descending-Minor-CESH(3 step) Minor CESH C
-          (Chord Cm 1)
-          (Chord CmM7 1)
-          (Chord Cm7 1))
+          (chord Cm 1)
+          (chord CmM7 1)
+          (chord Cm7 1))
 
 (defbrick Descending-Minor-CESH(4 step) Minor CESH C
-          (Chord Cm 1)
-          (Chord CmM7 1)
-          (Chord Cm7 1)
-          (Chord Cm6 1))
+          (chord Cm 1)
+          (chord CmM7 1)
+          (chord Cm7 1)
+          (chord Cm6 1))
 
 (defbrick Ascending-Major-CESH(4 step) Major CESH C
-          (Chord C 1)
-          (Chord C+ 1)
-          (Chord C6 1)
-          (Chord C7 1))
+          (chord C 1)
+          (chord C+ 1)
+          (chord C6 1)
+          (chord C7 1))
 
 (defbrick Ascending-Major-CESH(3 step) Major CESH C
-          (Chord C 1)
-          (Chord C+ 1)
-          (Chord C6 1))
+          (chord C 1)
+          (chord C+ 1)
+          (chord C6 1))
 
 (defbrick Ascending-&-Descending-Minor-CESH(4 step) Minor CESH C
-          (Chord Cm 1)
-          (Chord Cm+ 1)
-          (Chord Cm6 1)
-          (Chord Cm+ 1))
+          (chord Cm 1)
+          (chord Cm+ 1)
+          (chord Cm6 1)
+          (chord Cm+ 1))
 
 (defbrick Ascending-&-Descending-Minor-CESH(5 step) Minor CESH C
-          (Chord Cm 1)
-          (Chord Cm+ 1)
-          (Chord Cm6 1)
-          (Chord Cm7 1)
-          (Chord Cm6 1))
+          (chord Cm 1)
+          (chord Cm+ 1)
+          (chord Cm6 1)
+          (chord Cm7 1)
+          (chord Cm6 1))
 
 // End of CESH
 
 (defbrick 7-Chord-Dropback(main) Major Cadence C
-          (Brick Dropback-Approach C 6)
-          (Chord C 1))
+          (brick Dropback-Approach C 6)
+          (chord C 1))
 
 (defbrick 7-Chord-Dropback(var 1) Major Cadence C
-          (Brick Somewhere-Cadence C 3)
-          (Brick Straight-Approach D 2)
-          (Brick Somewhere-Cadence C 3))
+          (brick Somewhere-Cadence C 3)
+          (brick Straight-Approach D 2)
+          (brick Somewhere-Cadence C 3))
 
 (defbrick 7-Chord-Dropback(var 2) Major Cadence Bb
-          (Brick To-IV-n-Back F 4)
-          (Brick Straight-Cadence Bb 4))
+          (brick To-IV-n-Back F 4)
+          (brick Straight-Cadence Bb 4))
 
 (defbrick 7-Chord-Dropback(Minor On) Major Cadence F
-          (Brick Minor-On Bb 1)
-          (Brick Perfect-Cadence F 2)
-          (Brick Long-Cadence F 5))
+          (brick Minor-On Bb 1)
+          (brick Perfect-Cadence F 2)
+          (brick Long-Cadence F 5))
 
 (defbrick 7-Chord-Dropback(Rainy) Major Cadence C
-          (Chord Dm7 1)
-          (Chord G7 1)
-          (Chord CM7 1)
-          (Chord Ebo 1)
-          (Chord Dm7 1)
-          (Chord G7 1)
-          (Chord CM7 1))  
+          (chord Dm7 1)
+          (chord G7 1)
+          (chord CM7 1)
+          (chord Ebo 1)
+          (chord Dm7 1)
+          (chord G7 1)
+          (chord CM7 1))  
 
 (defbrick Amen-Cadence(major) Major Cadence C
-          (Chord F 1)
-          (Chord CM7 1))
+          (chord F 1)
+          (chord CM7 1))
 
 (defbrick Amen-Cadence(var) Major Cadence C
-          (Chord F7 1)
-          (Chord CM7 1))
+          (chord F7 1)
+          (chord CM7 1))
 
 (defbrick Autumn-Leaves-Opening(main) Major Opening C 
-          (Brick Straight-Approach C 1)
-          (Chord C 2)
-          (Brick Sad-Cadence A 4))
+          (brick Straight-Approach C 1)
+          (chord C 2)
+          (brick Sad-Cadence A 4))
 
 (defbrick Autumn-Leaves-Opening(with overrun) Major Opening C
-          (Brick Straight-Approach C 1)
-          (Chord C 1)
-          (Chord F 1)
-          (Brick Sad-Cadence A 4))
+          (brick Straight-Approach C 1)
+          (chord C 1)
+          (chord F 1)
+          (brick Sad-Cadence A 4))
 
 // Autumnal stuff
 
 (defbrick Autumnal-Approach(var 1) Minor Approach A
-          (Brick Straight-Approach C 2)
-          (Brick Sad-Approach A 2))
+          (brick Straight-Approach C 2)
+          (brick Sad-Approach A 2))
 
 (defbrick Autumnal-Approach(var 2) Minor Approach A
-          (Brick Sad-Approach C 2)
-          (Brick Sad-Approach A 2))
+          (brick Sad-Approach C 2)
+          (brick Sad-Approach A 2))
 
 (defbrick Autumnal-Approach(var 3) Minor Approach A
-          (Chord Am7 1)
-          (Brick Sad-Approach E 2))
+          (chord Am7 1)
+          (brick Sad-Approach E 2))
 
 (defbrick Autumnal-Approach(var 4) Minor Approach A
-          (Brick Minor-On D 2)
-          (Brick Straight-Approach A 2))
+          (brick Minor-On D 2)
+          (brick Straight-Approach A 2))
 
 (defbrick Autumnal-Approach(var 5) Major Approach C
-          (Chord Fm7 1)
-          (Chord Bb7 1)
-          (Chord Dm7 1)
-          (Chord G7 1))
+          (chord Fm7 1)
+          (chord Bb7 1)
+          (chord Dm7 1)
+          (chord G7 1))
 
 (defbrick Autumnal-Cadence(main) Minor Cadence C
-          (Brick Autumnal-Approach C 6)
-          (Chord Cm7 2))
+          (brick Autumnal-Approach C 6)
+          (chord Cm7 2))
 
 (defbrick Autumnal-Cadence(var 1) Minor Cadence C
-          (Brick Autumnal-Approach Eb 6)
-          (Chord Cm 2))
+          (brick Autumnal-Approach Eb 6)
+          (chord Cm 2))
 
 (defbrick Autumnal-Cadence(var 2) Minor Cadence C
-          (Brick GenII Eb 1)
-          (Brick Sad-Cadence C 2))
+          (brick GenII Eb 1)
+          (brick Sad-Cadence C 2))
 
 (defbrick Autumnal-Cadence(var 3) Minor Cadence C
-          (Brick Minor-On F 1) 
-          (Brick Minor-Perfect-Cadence C 3))
+          (brick Minor-On F 1) 
+          (brick Minor-Perfect-Cadence C 3))
 
 (defbrick Autumnal-Cadence(var 4) Major Cadence C
-          (Chord Fm7 1)
-          (Brick Straight-Cadence C 2))
+          (chord Fm7 1)
+          (brick Straight-Cadence C 2))
 
 (defbrick Autumnal-Cadence(descending bassline) Minor Cadence C
-          (Brick Minor-On F 2)
-          (Brick Autumnal-Cadence C 4)
-          (Chord Cm7 2))
+          (brick Minor-On F 2)
+          (brick Autumnal-Cadence C 4)
+          (chord Cm7 2))
 
 (defbrick Autumnal-Overrun-to-Somewhere Minor Approach C
-          (Chord Cm7 2)
-          (Brick SPOT F 6))
+          (chord Cm7 2)
+          (brick SPOT F 6))
 
 // End of Autumnal stuff
 
@@ -500,49 +500,49 @@
 // as occuring in Monk's "Bemsha Swing"
 
 (defbrick Bemsha-Turnaround-1 Major Turnaround C
-          (Chord CM7 1)
-          (Chord Eb7 1)
-          (Chord D7 1)
-          (Chord Db7 1))
+          (chord CM7 1)
+          (chord Eb7 1)
+          (chord D7 1)
+          (chord Db7 1))
 
 (defbrick Bemsha-Turnaround-2 Major Turnaround C
-          (Chord CM7 1)
-          (Chord Ab7 1)
-          (Chord DbM7 1)
-          (Chord Gb7 1))
+          (chord CM7 1)
+          (chord Ab7 1)
+          (chord DbM7 1)
+          (chord Gb7 1))
 
 (defbrick Bemsha-Turnaround-3 Major Turnaround C
-          (Chord CM7 1)
-          (Chord Bb7 1)
-          (Chord EbM7 1)
-          (Chord Ab7 1))
+          (chord CM7 1)
+          (chord Bb7 1)
+          (chord EbM7 1)
+          (chord Ab7 1))
 
 
 // Body-and-Soul Stuff
 
 (defbrick Body-&-Soul-Approach(main) Major Approach C
-          (Chord Dm7 1)
-          (Brick GenDom D 1)
-          (Brick An-Approach C 2))
+          (chord Dm7 1)
+          (brick GenDom D 1)
+          (brick An-Approach C 2))
 
 (defbrick Body-&-Soul-Approach(var 1) Major Approach C
-          (Chord Dm 1)
-          (Chord A7 1)
-          (Chord Ab7 1)
-          (Brick GenDom C 1)) // modified by XS
+          (chord Dm 1)
+          (chord A7 1)
+          (chord Ab7 1)
+          (brick GenDom C 1)) // modified by XS
 
 (defbrick Body-&-Soul-Approach(var 2) Major Approach C
-          (Brick On-Off-Minor-Somewhere D 2)
-          (Brick Straight-Approach C 2))
+          (brick On-Off-Minor-Somewhere D 2)
+          (brick Straight-Approach C 2))
 
 
 (defbrick Body-&-Soul-Cadence(major) Major Cadence C
-          (Brick Body-&-Soul-Approach C 4)
-          (Chord C 4))
+          (brick Body-&-Soul-Approach C 4)
+          (chord C 4))
 
 (defbrick Body-&-Soul-Cadence(minor) Minor Cadence C
-          (Brick Body-&-Soul-Approach C 4)
-          (Chord Cm 4))
+          (brick Body-&-Soul-Approach C 4)
+          (chord Cm 4))
 
 // End of Body-and-Soul Stuff
 
@@ -550,49 +550,49 @@
 // Chromatic stuff
 
 (defbrick Chromatic-Dropback(main) Major Dropback C
-          (Chord CM7 1)
-          (Chord B7 1)
-          (Chord Bb7 1)
-          (Chord A7 1))
+          (chord CM7 1)
+          (chord B7 1)
+          (chord Bb7 1)
+          (chord A7 1))
 
 (defbrick Chromatic-Major-Walkup Major Cadence C
-          (Brick Major-On Bb 1)
-          (Brick On-Off-Major-bII B 3))
+          (brick Major-On Bb 1)
+          (brick On-Off-Major-bII B 3))
 
 (defbrick Chromatic-Minor-Ascending(3 steps) Minor Approach C
-          (Brick GenII A 1)
-          (Brick GenII Bb 1)
-          (Brick GenII B 1))
+          (brick GenII A 1)
+          (brick GenII Bb 1)
+          (brick GenII B 1))
 
 (defbrick Chromatic-Minor-Ascending(4 steps) Minor Approach F
-          (Brick Chromatic-Minor-Ascending(3 steps) E 3)
-          (Brick GenII Eb 1))
+          (brick Chromatic-Minor-Ascending(3 steps) E 3)
+          (brick GenII Eb 1))
 
 (defbrick Chromatic-Minor-Decending(3 steps) Minor Approach C
-          (Brick GenII C 1)
-          (Brick GenII B 1)
-          (Brick GenII Bb 1))
+          (brick GenII C 1)
+          (brick GenII B 1)
+          (brick GenII Bb 1))
 
 (defbrick Chromatic-Minor-Decending(4 steps) Minor Approach C
-          (Brick Chromatic-Minor-Decending(3 steps) C 3)
-          (Brick GenII A 1))
+          (brick Chromatic-Minor-Decending(3 steps) C 3)
+          (brick GenII A 1))
 
 (defbrick Chromatically-Descending-Dominants(3 steps) Major Approach C
-          (Chord A7 1)
-          (Chord Ab7 1)
-          (Chord G7 1))
+          (chord A7 1)
+          (chord Ab7 1)
+          (chord G7 1))
 
 (defbrick Chromatically-Descending-Dominants(4 steps) Major Approach C
-          (Chord Bb7 1)
-          (Brick Chromatically-Descending-Dominants(3 steps) C 3))
+          (chord Bb7 1)
+          (brick Chromatically-Descending-Dominants(3 steps) C 3))
 
 (defbrick Chromatically-Descending-Dominants(5 steps) Major Approach C
-          (Chord B7 1)
-          (Brick Chromatically-Descending-Dominants(4 steps) C 4))
+          (chord B7 1)
+          (brick Chromatically-Descending-Dominants(4 steps) C 4))
 
 (defbrick Chromatically-Descending-Dominants(6 steps) Major Approach C
-          (Chord C7 1)
-          (Brick Chromatically-Descending-Dominants(5 steps) C 5))
+          (chord C7 1)
+          (brick Chromatically-Descending-Dominants(5 steps) C 5))
 
 // End of Chromatic Stuff
 
@@ -600,75 +600,75 @@
 // Coltrane
 
 (defbrick Coltrane-Cadence Major Cadence C
-          (Chord Dm7 2) 
-          (Brick Perfect-Cadence Ab 2) 
-          (Brick Perfect-Cadence E 2) 
-          (Brick Perfect-Cadence C 2))
+          (chord Dm7 2) 
+          (brick Perfect-Cadence Ab 2) 
+          (brick Perfect-Cadence E 2) 
+          (brick Perfect-Cadence C 2))
 
 
 // Cyclic
 
 (defbrick Cyclic-Approach(2) Major Approach C
-          (Chord Dm7 1)
-          (Chord D7 1)
-          (Chord Gm7 1)
-          (Chord G7 1))
+          (chord Dm7 1)
+          (chord D7 1)
+          (chord Gm7 1)
+          (chord G7 1))
 
 (defbrick Cyclic-Approach(3) Major Approach C
-          (Brick Cyclic-Approach(2) G 4)
-          (Chord Gm7 1)
-          (Chord G7 1))
+          (brick Cyclic-Approach(2) G 4)
+          (chord Gm7 1)
+          (chord G7 1))
 
 
 // Diatonic stuff
 
 (defbrick Diatonic-Walkup(3 steps from ii) Minor Approach C
-          (Chord Dm7 1)
-          (Chord Em7 1)
-          (Chord Fm7 1))
+          (chord Dm7 1)
+          (chord Em7 1)
+          (chord Fm7 1))
 
 (defbrick Diatonic-Walkup(4 steps from ii) Minor Approach C
-          (Chord Dm7 1)
-          (Chord Em7 1)
-          (Chord Fm7 1)
-          (Chord Gb7 1))
+          (chord Dm7 1)
+          (chord Em7 1)
+          (chord Fm7 1)
+          (chord Gb7 1))
 
 (defbrick Diatonic-I-ii-iii-ii Major Approach C
-          (Brick On-Off-Major-Somewhere C 2)
-          (Brick On-Off-Minor-bVII E 2))
+          (brick On-Off-Major-Somewhere C 2)
+          (brick On-Off-Minor-bVII E 2))
 
 (defbrick Diatonic-ii-iii-IV Major Cadence C
-          (Chord Dm7 1)
-          (Chord Em7 1)
-          (Chord F 1))
+          (chord Dm7 1)
+          (chord Em7 1)
+          (chord F 1))
 
 (defbrick Diatonic-ii-iii-IV-V Major Cadence C
-          (Brick Diatonic-ii-iii-IV C 3)
-          (Chord G7 1))
+          (brick Diatonic-ii-iii-IV C 3)
+          (chord G7 1))
 
 (defbrick Diatonic-ii-iii-IV-iii-ii Dominant Approach C
-          (Brick Minor-On A 1)
-          (Chord Bm7 1)
-          (Brick Major-On C 1)
-          (Chord Bm7 1)
-          (Chord Am7 1))
+          (brick Minor-On A 1)
+          (chord Bm7 1)
+          (brick Major-On C 1)
+          (chord Bm7 1)
+          (chord Am7 1))
 
 (defbrick Diatonic-I-ii-iii-IV Major Cadence C
-          (Brick On-Off-Major-Somewhere C 2)
-          (Brick On-Off-Minor-bII E 2))
+          (brick On-Off-Major-Somewhere C 2)
+          (brick On-Off-Minor-bII E 2))
 
 (defbrick Diatonic-I-ii-iii-IV-V-vi Major Approach C
-          (Brick Diatonic-I-ii-iii-IV C 4)
-          (Brick Off-On-Minor-bVII A 2))
+          (brick Diatonic-I-ii-iii-IV C 4)
+          (brick Off-On-Minor-bVII A 2))
 
 (defbrick Diatonic-I-IV-iii-ii Major Approach C
-          (Brick On-Off-Major-IV C 2)
-          (Brick On-Off-Minor-bVII E 2))
+          (brick On-Off-Major-IV C 2)
+          (brick On-Off-Minor-bVII E 2))
 
 (defbrick Diatonic-I-ii-iii-biii Major Approach C
-          (Chord CM7 1)
-          (Brick Minor-On D 1)
-          (Brick Minor-Chromatic-Approach D 2))
+          (chord CM7 1)
+          (brick Minor-On D 1)
+          (brick Minor-Chromatic-Approach D 2))
 
 // End of Diatonic stuff
 
@@ -676,32 +676,32 @@
 // Dizzy stuff
 
 (defbrick Dizzy-Approach Major Approach C
-          (Chord G#m7b5 1)
-          (Chord G7 1))
+          (chord G#m7b5 1)
+          (chord G7 1))
 
 (defbrick Dizzy-Cadence(main) Major Cadence C
-          (Brick Straight-Approach Gb 2)
-          (Chord CM7 2))
+          (brick Straight-Approach Gb 2)
+          (chord CM7 2))
 
 (defbrick Dizzy-Cadence(var 1) Major Cadence C
-          (Chord G7#11 1)
-          (Brick Tritone-Cadence C 2))
+          (chord G7#11 1)
+          (brick Tritone-Cadence C 2))
 
 (defbrick Dizzy-Cadence(var 2) Major Cadence C
-          (Brick Nowhere-Approach F# 4)
-          (Chord CM7 1))
+          (brick Nowhere-Approach F# 4)
+          (chord CM7 1))
 
 (defbrick Dizzy-Sub-Cadence Major Cadence C
-          (Brick Dizzy-Sub-Approach C 4)
-          (Chord CM7 4))
+          (brick Dizzy-Sub-Approach C 4)
+          (chord CM7 4))
 
 (defbrick Dizzy-Sub-Approach(var 1) Major Approach C
-          (Chord Dm 2)
-          (Brick Straight-Approach Gb 2))
+          (chord Dm 2)
+          (brick Straight-Approach Gb 2))
 
 (defbrick Dizzy-Sub-Approach(var 2) Minor Approach C
-          (Chord Dm7b5 1)
-          (Chord Db7 1))
+          (chord Dm7b5 1)
+          (chord Db7 1))
 
 // End of Dizzy stuff
 
@@ -709,92 +709,92 @@
 // Dogleg stuff
 
 (defbrick Dogleg-Slow-Approach(short) Major Approach C
-          (Chord D7 1)
-          (Chord Dm7 1)
-          (Chord G7 1))
+          (chord D7 1)
+          (chord Dm7 1)
+          (chord G7 1))
 
 (defbrick Dogleg-Slow-Approach(long) Major Approach C
-          (Brick Straight-Approach G 2)
-          (Brick Straight-Approach C 2))
+          (brick Straight-Approach G 2)
+          (brick Straight-Approach C 2))
 
 (defbrick Dogleg-Slow-Cadence Major Cadence C
-          (Brick Dogleg-Slow-Approach C 3)
-          (Chord C 1))
+          (brick Dogleg-Slow-Approach C 3)
+          (chord C 1))
 
 (defbrick Dogleg-Cycle(3 steps) Major Approach C
-          (Brick Straight-Approach D 1)
-          (Brick Straight-Approach G 1)
-          (Brick Straight-Approach C 1))
+          (brick Straight-Approach D 1)
+          (brick Straight-Approach G 1)
+          (brick Straight-Approach C 1))
 
 (defbrick Dogleg-Cycle(4 steps) Major Approach C
-          (Brick Straight-Approach A 1)
-          (Brick Dogleg-Cycle(3 steps) C 3))
+          (brick Straight-Approach A 1)
+          (brick Dogleg-Cycle(3 steps) C 3))
 
 (defbrick Dogleg-Cycle(5 steps) Major Approach C
-          (Brick Straight-Approach E 1)
-          (Brick Dogleg-Cycle(4 steps) C 4))
+          (brick Straight-Approach E 1)
+          (brick Dogleg-Cycle(4 steps) C 4))
 
 (defbrick Dogleg-Cycle(6 steps) Major Approach C
-          (Brick Straight-Approach B 1)
-          (Brick Dogleg-Cycle(5 steps) C 5))
+          (brick Straight-Approach B 1)
+          (brick Dogleg-Cycle(5 steps) C 5))
 
 // End of Dogleg stuff
 
 
 (defbrick Dominant-Cycle(2 steps) Major Approach C
-          (Chord D7 1)
-          (Chord G7 1))
+          (chord D7 1)
+          (chord G7 1))
 
 (defbrick Dominant-Cycle(3 steps) Major Approach C
-          (Chord A7 1)
-          (Brick Slow-Approach C 2))
+          (chord A7 1)
+          (brick Slow-Approach C 2))
 
 (defbrick Dominant-Cycle(4 steps) Major Approach C
-          (Chord E7 1)
-          (Brick Dominant-Cycle(3 steps) C 3))
+          (chord E7 1)
+          (brick Dominant-Cycle(3 steps) C 3))
 
 (defbrick Dominant-Cycle(5 steps) Major Approach C
-          (Chord B7 1)
-          (Brick Dominant-Cycle(4 steps) C 4))
+          (chord B7 1)
+          (brick Dominant-Cycle(4 steps) C 4))
 
 (defbrick Dominant-Cycle(6 steps) Major Approach C
-          (Chord F#7 1)
-          (Brick Dominant-Cycle(5 steps) C 5))
+          (chord F#7 1)
+          (brick Dominant-Cycle(5 steps) C 5))
 
 (defbrick Dominant-Cycle-Cadence Major Cadence C
-          (Brick Dominant-Cycle C 1)
-          (Chord C 1))
+          (brick Dominant-Cycle C 1)
+          (chord C 1))
 
 (defbrick Dominant-Cycle-Minor-Cadence Minor Cadence C
-          (Brick Dominant-Cycle C 1)
-          (Chord Cm 1))
+          (brick Dominant-Cycle C 1)
+          (chord Cm 1))
 
 (defbrick Dominant-Turnaround Dominant Turnaround C
-         (Chord C7 1)
-         (Chord Ab7 1)
-         (Chord G7 1)
-         (Chord C7 1))
+         (chord C7 1)
+         (chord Ab7 1)
+         (chord G7 1)
+         (chord C7 1))
 
 
 // Donna Lee stuff
 
 (defbrick Donna-Lee-Start(var 1) Major Approach C
-        (Chord CM7 2)
-        (Brick Straight-Approach G 2))
+        (chord CM7 2)
+        (brick Straight-Approach G 2))
 
 (defbrick Donna-Lee-Start(var 2) Major Approach C
-         (Chord CM7 2)
-         (Brick GenDom G 1)
-         (Chord Dm7 1))
+         (chord CM7 2)
+         (brick GenDom G 1)
+         (chord Dm7 1))
 
 (defbrick Donna-Lee-Opening(main) Major Opening C
-         (Chord CM7 2)
-         (Brick GenDom G 2)
-         (Brick Straight-Cadence C 4))
+         (chord CM7 2)
+         (brick GenDom G 2)
+         (brick Straight-Cadence C 4))
 
 (defbrick Donna-Lee-Opening(Dizzy cadence ending) Major Cadence C
-         (Brick Donna-Lee-Start C 5)
-         (Brick Tritone-Cadence C 2))
+         (brick Donna-Lee-Start C 5)
+         (brick Tritone-Cadence C 2))
 
 // End of Donna Lee Stuff
 
@@ -802,124 +802,124 @@
 // Dropbacks
 
 (defbrick Dropback(main) Major Dropback C
-          (Chord CM7 1)
-          (Chord A7 1))
+          (chord CM7 1)
+          (chord A7 1))
 
 (defbrick Dropback(iii-VI-var) Major Dropback C
-          (Chord CM7 1)
-          (Chord Em7 1)
-          (Chord A7 1))
+          (chord CM7 1)
+          (chord Em7 1)
+          (chord A7 1))
 
 (defbrick Dropback(tritone) Major Dropback C
-          (Chord CM7 1)
-          (Chord Bb7 1)
-          (Chord A7  2))    
+          (chord CM7 1)
+          (chord Bb7 1)
+          (chord A7  2))    
 
 (defbrick Dropback(Minor Plagal TTFA) Major Cadence C
-          (Brick Straight-Cadence C 3)
-          (Chord F7 1)
-          (Brick Long-Cadence C 7)
-          (Brick Minor-Plagal-Cadence C 3))
+          (brick Straight-Cadence C 3)
+          (chord F7 1)
+          (brick Long-Cadence C 7)
+          (brick Minor-Plagal-Cadence C 3))
 
 (defbrick Dropback(long) Major Cadence C
-          (Brick Straight-Cadence C 6)
-          (Brick Long-Cadence C 10))
+          (brick Straight-Cadence C 6)
+          (brick Long-Cadence C 10))
 
 (defbrick Dropback-Cadence Major Cadence C
-          (Brick Tension-Cadence D 3)
-          (Brick Perfect-Cadence C 3))
+          (brick Tension-Cadence D 3)
+          (brick Perfect-Cadence C 3))
 
 (defbrick Dropback-To-Five Major Dropback C
-          (Brick Somewhere-Approach C 5)
-          (Brick GenDom C 1)) // modified by XS
+          (brick Somewhere-Approach C 5)
+          (brick GenDom C 1)) // modified by XS
 
 (defbrick Dropback-Turnaround Major Turnaround C
-          (Brick Dropback-To-Five C 6)
-          (Chord C 1))
+          (brick Dropback-To-Five C 6)
+          (chord C 1))
 
 // End of Dropbacks
 
 
 (defbrick Extended-Cadence Major Cadence C
-          (Brick Extended-Approach C 3)
-          (Chord CM7 1))
+          (brick Extended-Approach C 3)
+          (chord CM7 1))
 
 (defbrick Extended-Approach(var 1) Major Approach C
-          (Chord A7 1)
-          (Brick Straight-Approach C 2))
+          (chord A7 1)
+          (brick Straight-Approach C 2))
 
 (defbrick Extended-Approach(var 2) Major Approach C
-          (Chord Am7 1)
-          (Brick Straight-Approach C 2))
+          (chord Am7 1)
+          (brick Straight-Approach C 2))
 
 (defbrick Extended-Approach(var 3) Minor Approach D
-          (Chord Bm7b5 1)
-          (Brick Slow-Approach D 5))
+          (chord Bm7b5 1)
+          (brick Slow-Approach D 5))
 
 
 // Foggy stuff
 
 
 (defbrick Foggy-Cadence Major Cadence C
-          (Chord Eb7 1)
-          (Brick Straight-Approach C 2)
-          (Chord CM7 1))
+          (chord Eb7 1)
+          (brick Straight-Approach C 2)
+          (chord CM7 1))
 
 (defbrick Foggy-Turnaround(main) Major Turnaround C
-          (Chord CM7 1)
-          (Chord Eb7 1)
-          (Brick Straight-Approach C 2))
+          (chord CM7 1)
+          (chord Eb7 1)
+          (brick Straight-Approach C 2))
 
 (defbrick Foggy-Turnaround(var) Major Turnaround C
-          (Chord CM7 1)
-          (Chord Eb7 1)
-          (Chord D7 1)
-          (Chord G7 1))
+          (chord CM7 1)
+          (chord Eb7 1)
+          (chord D7 1)
+          (chord G7 1))
 
 
 // Foolish
 
 (defbrick Foolish-Approach Major Approach C
-        (Brick Raindrop Bb 2)
-        (Brick Straight-Approach C 2))
+        (brick Raindrop Bb 2)
+        (brick Straight-Approach C 2))
 
 
 // Four-Star
 
 (defbrick Four-Star-Approach Major Approach C
-          (Chord FM7 2)
-          (Brick Straight-Approach E 2)
-          (Brick Long-Approach C 8))
+          (chord FM7 2)
+          (brick Straight-Approach E 2)
+          (brick Long-Approach C 8))
 
 (defbrick Four-Star-Ending Major Ending C
-          (Brick Four-Star-Approach C 12)
-          (Chord CM7 4))
+          (brick Four-Star-Approach C 12)
+          (chord CM7 4))
 
 
 // GDS = "Green Dolphin Street"
 
 (defbrick GDS-Cadence Major Cadence C
-          (Chord D/C 1)
-          (Chord Db/C 1)
-          (Chord CM7 2))
+          (chord D/C 1)
+          (chord Db/C 1)
+          (chord CM7 2))
 
 (defbrick GDS-Tag Major Cadence Eb
-          (Brick Minor-On F 2)
-          (Brick On-Off-Minor-bVII G 3)
-          (Brick On-Off-Minor-Somewhere F 2)
-          (Brick On-Off-Minor-bVII F 5))
+          (brick Minor-On F 2)
+          (brick On-Off-Minor-bVII G 3)
+          (brick On-Off-Minor-Somewhere F 2)
+          (brick On-Off-Minor-bVII F 5))
 
 (defbrick Generalized-Dominant-Cycle Major Approach C
-          (Brick GenDom A 2)
-          (Brick GenDom D 2)
-          (Brick GenDom G 2)
-          (Brick GenDom C 2))
+          (brick GenDom A 2)
+          (brick GenDom D 2)
+          (brick GenDom G 2)
+          (brick GenDom C 2))
 
 // Happenstance, from "It Could Happen to You"
 
 (defbrick Happenstance-Cadence Major Cadence C
-          (Brick An-Approach E 2)
-          (Chord CM7 2))
+          (brick An-Approach E 2)
+          (chord CM7 2))
 
 
 // Honeysuckle Bridge stuff, from "Honeysuckle Rose"
@@ -927,38 +927,38 @@
 
 
 (defbrick Honeysuckle-Bridge(main) Major Approach C 
-          (Brick Straight-Cadence F 4) 
-          (Brick Straight-Approach G 2) 
-          (Brick Straight-Approach C 2))
+          (brick Straight-Cadence F 4) 
+          (brick Straight-Approach G 2) 
+          (brick Straight-Approach C 2))
 
 (defbrick Honeysuckle-Bridge(two-goes) Major Approach C 
-          (Brick Two-Goes-Straight-Approach F 2) 
-          (Chord F 2)
-          (Brick Two-Goes-Straight-Approach G 2) 
-          (Chord G7 1))
+          (brick Two-Goes-Straight-Approach F 2) 
+          (chord F 2)
+          (brick Two-Goes-Straight-Approach G 2) 
+          (chord G7 1))
 
 (defbrick Honeysuckle-Bridge(two-goes-variant) Major Approach C
-          (Brick Straight-Approach F 2)
-          (Brick Honeysuckle-Bridge C 14))
+          (brick Straight-Approach F 2)
+          (brick Honeysuckle-Bridge C 14))
 
 (defbrick Honeysuckle-Bridge(two-goes-dogleg) Major Approach C
-          (Brick Two-Goes-Straight-Approach F 4)
-          (Brick Dropback F 6)
-          (Brick Dogleg-Slow-Approach C 6))
+          (brick Two-Goes-Straight-Approach F 4)
+          (brick Dropback F 6)
+          (brick Dogleg-Slow-Approach C 6))
 
 (defbrick Honeysuckle-Bridge(Pullback) Major Approach Eb
-          (Brick Pullback-to-Cadence Eb 8)
-          (Brick Pullback F 4)
-          (Brick Slow-Approach Bb 4))
+          (brick Pullback-to-Cadence Eb 8)
+          (brick Pullback F 4)
+          (brick Slow-Approach Bb 4))
 
 (defbrick Honeysuckle-Bridge(Dogleg) Major Cadence C
-          (Brick Straight-Cadence F 5)
-          (Brick Perfect-Cadence F 3)
-          (Brick Dogleg-Slow-Approach C 8))
+          (brick Straight-Cadence F 5)
+          (brick Perfect-Cadence F 3)
+          (brick Dogleg-Slow-Approach C 8))
 
 (defbrick Honeysuckle-Bridge(supertension end) Dominant Cadence C
-          (Brick Straight-Cadence Bb 4)
-          (Brick Tension-Cadence C 3))
+          (brick Straight-Cadence Bb 4)
+          (brick Tension-Cadence C 3))
 
 // End of Honeysuckle Bridge stuff
 
@@ -966,33 +966,33 @@
 // II 'n ... stuff (see also "To ...")
 
 (defbrick II-n-Back(main) Major Cadence C
-          (Chord Dm7 1)
-          (Chord D#o 1)
-          (Chord C/E 1))
+          (chord Dm7 1)
+          (chord D#o 1)
+          (chord C/E 1))
 
 (defbrick II-n-Back(var) Major Cadence C
-          (Chord Dm7 1)
-          (Chord D#o 1)
-          (Chord Em 1))
+          (chord Dm7 1)
+          (chord D#o 1)
+          (chord Em 1))
 
 (defbrick II-n-Bird-Approach Major Approach F
-          (Brick Minor-On G 2)
-          (Brick Yardbird-Approach F 2))
+          (brick Minor-On G 2)
+          (brick Yardbird-Approach F 2))
 
 (defbrick II-n-Bird-POT Major Turnaround C
-          (Chord Dm7 2)
-          (Brick GenDom Eb 2)
-          (Brick POT C 2))
+          (chord Dm7 2)
+          (brick GenDom Eb 2)
+          (brick POT C 2))
 
 (defbrick II-n-Bird-SPOT(main) Major Turnaround C
-          (Chord Dm7 2)
-          (Brick GenDom Eb 2)
-          (Brick SPOT C 2))
+          (chord Dm7 2)
+          (brick GenDom Eb 2)
+          (brick SPOT C 2))
 
 (defbrick II-n-Bird-Spot(var 1) Major Turnaround C
-          (Brick Minor-On D 2)
-          (Brick Straight-Approach Eb 2)
-          (Brick Rainy-Approach C 4))
+          (brick Minor-On D 2)
+          (brick Straight-Approach Eb 2)
+          (brick Rainy-Approach C 4))
 
 // End of II'n stuff
 
@@ -1000,65 +1000,65 @@
 // IV 'n ... stuff (see also "To ...")
 
 (defbrick IV-n-Back(main) Major Cadence C
-          (Chord F 1)
-          (Chord F#o 1)
-          (Chord C/G 1))
+          (chord F 1)
+          (chord F#o 1)
+          (chord C/G 1))
 
 (defbrick IV-n-Back(Blues) Dominant Cadence C
-        (Chord C7 1)
-        (Chord C#o 1)
-        (Chord F 1))
+        (chord C7 1)
+        (chord C#o 1)
+        (chord F 1))
 
 (defbrick IV-n-Back+Dropback(Blues) Major Dropback F
-        (Brick Surge Bb 2)
-        (Brick Dropback F 2))
+        (brick Surge Bb 2)
+        (brick Dropback F 2))
 
 (defbrick IV-n-back(rainbow) Major To-IV C
-          (Chord G/B 1)
-          (Chord B7 1)
-          (Brick Upslide C 2))
+          (chord G/B 1)
+          (chord B7 1)
+          (brick Upslide C 2))
 
 (defbrick IV-n-Back-On-Off-On-II Major On-Off+ C
-          (Brick Upslide F 4)
-          (Brick On-Off-On-To-II C 4))
+          (brick Upslide F 4)
+          (brick On-Off-On-To-II C 4))
   
 (defbrick IV-n-Bauble Major Approach C
-          (Brick Upslide F 2)
-          (Brick Sad-Approach A 2))
+          (brick Upslide F 2)
+          (brick Sad-Approach A 2))
   
 (defbrick IV-n-Bird Major Cadence C
-          (Chord F 1)
-          (Brick GenDom Eb 1)
-          (Chord Em 1))
+          (chord F 1)
+          (brick GenDom Eb 1)
+          (chord Em 1))
 
 (defbrick IV-n-Bird-SPOT Major Turnaround C
-          (Brick IV-n-Bird C 1)
-          (Brick Rainy-Approach C 4))
+          (brick IV-n-Bird C 1)
+          (brick Rainy-Approach C 4))
   
 (defbrick IV-n-Hack Major Cadence C
-          (Brick Major-On F 1)
-          (Brick Happenstance-Cadence C 3))
+          (brick Major-On F 1)
+          (brick Happenstance-Cadence C 3))
 
 (defbrick IV-n-Mack-Cadence Major Cadence C
-          (Brick Major-On F 1)
-          (Brick Minor-Plagal-Cadence C 2))
+          (brick Major-On F 1)
+          (brick Minor-Plagal-Cadence C 2))
 
 (defbrick IV-n-Yak Major Cadence C
-          (Brick TonicOrDom  F 1)
-          (Brick GenDom Eb 1)
-          (Chord C 1))
+          (brick TonicOrDom  F 1)
+          (brick GenDom Eb 1)
+          (chord C 1))
 
 (defbrick IV-n-Yak-&-Dropback Major Dropback C
-          (Brick IV-n-Yak C 3)
-          (Brick DomOrMinor D 1))
+          (brick IV-n-Yak C 3)
+          (brick DomOrMinor D 1))
 
 (defbrick IV-n-Yak-+-Pullback-Approach Major Approach C
-          (Brick On-Off-Major-IV F 2)
-          (Brick Sad-Approach D 2))
+          (brick On-Off-Major-IV F 2)
+          (brick Sad-Approach D 2))
 
 (defbrick IV-n-Yak-To Major Approach C
-        (Brick IV-n-Yak C 3)
-        (Chord C7 1))
+        (brick IV-n-Yak C 3)
+        (chord C7 1))
 
 // End of IV'n stuff
 
@@ -1066,106 +1066,106 @@
 // ITCHY = "It Could Happen to You" (see also "Happenstance")
 
 (defbrick ITCHY-Opening(main) Major Opening C
-          (Chord CM7 2)
-          (Brick Straight-Approach D 2)
-          (Chord Dm 2)
-          (Brick Straight-Approach E 2))
+          (chord CM7 2)
+          (brick Straight-Approach D 2)
+          (chord Dm 2)
+          (brick Straight-Approach E 2))
 
 (defbrick ITCHY-Opening(half-diminished) Major Opening C
-          (Chord CM7 2)
-          (Brick Sad-Cadence D 4)
-          (Brick Sad-Approach E 2))
+          (chord CM7 2)
+          (brick Sad-Cadence D 4)
+          (brick Sad-Approach E 2))
 
 
 // Ladybird stuff
 
 (defbrick Ladybird-Turnaround(main) Major Turnaround C
-          (Chord CM7 1)
-          (Chord Eb7 1)
-          (Chord AbM7 1)
-          (Chord Db7 1))
+          (chord CM7 1)
+          (chord Eb7 1)
+          (chord AbM7 1)
+          (chord Db7 1))
 
 (defbrick Ladybird-Turnaround(var 1) Major Turnaround C
-          (Chord CM7 1)
-          (Chord EbM7 1)
-          (Chord AbM7 1)
-          (Chord DbM7 1))
+          (chord CM7 1)
+          (chord EbM7 1)
+          (chord AbM7 1)
+          (chord DbM7 1))
 
 (defbrick Ladybird-Turnaround(var 2) Major Turnaround C
-          (Chord CM7 1)
-          (Chord EbM7 1)
-          (Chord AbM7 1)
-          (Chord Db7 1))
+          (chord CM7 1)
+          (chord EbM7 1)
+          (chord AbM7 1)
+          (chord Db7 1))
 
 (defbrick Ladybird-Turnaround(var 3) Major Turnaround C
-          (Chord CM7 1)
-          (Chord Eb7 1)
-          (Chord AM7 1)
-          (Chord G7 1))
+          (chord CM7 1)
+          (chord Eb7 1)
+          (chord AM7 1)
+          (chord G7 1))
 
 (defbrick Ladybird-Turnaround(var 4) Major Approach Eb
-          (Chord EbM7 1)
-          (Chord Gb7 1)
-          (Chord BM7 1)
-          (Chord Bb7 1))
+          (chord EbM7 1)
+          (chord Gb7 1)
+          (chord BM7 1)
+          (chord Bb7 1))
 
 (defbrick Ladybird-Cadence Major Cadence C
-          (Brick Ladybird-Turnaround C 2)
-          (Chord C 1))
+          (brick Ladybird-Turnaround C 2)
+          (chord C 1))
 
 
 // Light & Day, a variant on "Night & Day" and "Starlight"
 
 (defbrick Light-&-Day-Approach Minor Approach C
-          (Chord Dm7b5 1)
-          (Chord Dbm 1))
+          (chord Dm7b5 1)
+          (chord Dbm 1))
 
 
 // Long stuff: approaches and cadences
 
 (defbrick Long-Approach(main) Major Approach C
-          (Chord Em7 1)
-          (Chord Am7 1)
-          (Brick An-Approach C 2))
+          (chord Em7 1)
+          (chord Am7 1)
+          (brick An-Approach C 2))
 
 (defbrick Long-Approach(var 1) Major Approach C
-          (Brick An-Approach D 2)
-          (Brick An-Approach C 2))
+          (brick An-Approach D 2)
+          (brick An-Approach C 2))
 
 (defbrick Long-Approach(var 2) Major Approach C
-          (Chord E7 1)
-          (Chord Am7 1)
-          (Brick An-Approach C 2))
+          (chord E7 1)
+          (chord Am7 1)
+          (brick An-Approach C 2))
 
 (defbrick Long-Approach(tritone) Major Approach C
-          (Brick Dizzy-Approach D 2)
-          (Chord Abm7 1)
-          (Chord Db7 1))
+          (brick Dizzy-Approach D 2)
+          (chord Abm7 1)
+          (chord Db7 1))
 
 (defbrick Long-Approach(sus) Major Approach C
-          (Brick Surprise-Minor-Cadence D 3)
-          (Chord F/G 1))
+          (brick Surprise-Minor-Cadence D 3)
+          (chord F/G 1))
 
 (defbrick Long-Cadence(main) Major Cadence C
-          (Brick Long-Approach C 4)
-          (Chord CM7 1))
+          (brick Long-Approach C 4)
+          (chord CM7 1))
 
 (defbrick Long-Cadence(var 1) Major Cadence C
-          (Chord E7 1)
-          (Chord G7 1)
-          (Chord Dm7 1)
-          (Brick Perfect-Cadence C 5))
+          (chord E7 1)
+          (chord G7 1)
+          (chord Dm7 1)
+          (brick Perfect-Cadence C 5))
 
 (defbrick Long-Cadence(var 2) Major Cadence C
-          (Brick GenDom G 1)
-          (Chord G7 1)
-          (Chord C 4))
+          (brick GenDom G 1)
+          (chord G7 1)
+          (chord C 4))
 
 (defbrick Long-Cadence+Off-On Major Cadence C
-          (Chord Em7 1)
-          (Chord Ebm7 1)
-          (Brick Straight-Cadence D 4)
-          (Brick Perfect-Cadence D 6))
+          (chord Em7 1)
+          (chord Ebm7 1)
+          (brick Straight-Cadence D 4)
+          (brick Perfect-Cadence D 6))
 
 // End of Long stuff
 
@@ -1174,111 +1174,111 @@
 // Minor ...
 
 (defbrick Minor-Chromatic-Approach Minor Approach D
-          (Chord Em7 1)
-          (Chord Ebm7 1))
+          (chord Em7 1)
+          (chord Ebm7 1))
 
 (defbrick Minor-Chromatic-Walkdown Dominant Approach Bb
-        (Chord Gm7#5 1)
-        (Chord Gbm7 1)
-        (Chord Fm7 1))
+        (chord Gm7#5 1)
+        (chord Gbm7 1)
+        (chord Fm7 1))
 
 (defbrick Minor-Chromatic-Walkdown-Approach Major Approach A
-        (Brick Minor-Chromatic-Walkdown Bb 3)
-        (Chord E7#9 1))
+        (brick Minor-Chromatic-Walkdown Bb 3)
+        (chord E7#9 1))
 
 (defbrick Minor-Dogleg-Slow-Approach Minor Approach G
-          (Brick Sad-Approach D 2)
-          (Brick Sad-Approach G 2))
+          (brick Sad-Approach D 2)
+          (brick Sad-Approach G 2))
 
 (defbrick Minor-Dropback Minor Dropback C
-          (Chord Cm 1)
-          (Chord Am7b5 1))
+          (chord Cm 1)
+          (chord Am7b5 1))
 
 (defbrick Minor-Plagal-Cadence Major Cadence C
-         (Chord Fm 1)
-         (Chord C 1))
+         (chord Fm 1)
+         (chord C 1))
 
 (defbrick Minor-Perfect-Cadence Minor Cadence C
-          (Chord G7 1)
-          (Chord Cm7 1))
+          (chord G7 1)
+          (chord Cm7 1))
 
 
 // Moment's, from Coltrane's "A Moment's Notice"
 
 (defbrick Moment's-Cadence Major Cadence C
-          (Brick Moment's-Approach C 4)
-          (Chord CM7 4))
+          (brick Moment's-Approach C 4)
+          (chord CM7 4))
 
 (defbrick Moment's-Approach Major Approach C
-          (Brick Straight-Approach B 2)
-          (Brick Straight-Approach C 2))
+          (brick Straight-Approach B 2)
+          (brick Straight-Approach C 2))
 
 
 // Night & Day
 
 (defbrick Night-&-Day-Cadence Major Cadence C
-          (Chord AbM7 1)
-          (Chord G7 1)
-          (Chord CM7 2))
+          (chord AbM7 1)
+          (chord G7 1)
+          (chord CM7 2))
 
 /* This yields false matches:
 (defbrick Night-&-Day-Approach Major Approach C
-          (Chord AbM7 1)
-          (Chord G7 1))
+          (chord AbM7 1)
+          (chord G7 1))
 */
 
 
 // Nobody
 
 (defbrick Nobody's-Cadence Minor Cadence A
-          (Chord CM7 1)
-          (Chord E7 1)
-          (Chord Am 2))
+          (chord CM7 1)
+          (chord E7 1)
+          (chord Am 2))
 
 
 // Nowhere stuff (see also Somewhere stuff) from "Out of Nowhere" bVI
 
 (defbrick Nowhere-Approach(main) Major Approach C
-          (Chord Ab7 1)
-          (Brick GenDom C 1))
+          (chord Ab7 1)
+          (brick GenDom C 1))
 
 (defbrick Nowhere-Approach(sus) Major Approach C
-          (Chord Ab7 2)
-          (Brick Minor-On D 1)
-          (Brick Minor-On D 1))
+          (chord Ab7 2)
+          (brick Minor-On D 1)
+          (brick Minor-On D 1))
 
 (defbrick Nowhere-Cadence Major Cadence C
-          (Brick Nowhere-Approach C 2)
-          (Chord CM7 2))
+          (brick Nowhere-Approach C 2)
+          (chord CM7 2))
 
 (defbrick Nowhere-Minor-Cadence(main) Minor Cadence C
-          (Brick Nowhere-Approach C 2)
-          (Chord Cm 2))
+          (brick Nowhere-Approach C 2)
+          (chord Cm 2))
 
 (defbrick Nowhere-Minor-Cadence(var 1) Minor Cadence C
-          (Brick Dominant-Cycle Gb 2)
-          (Brick Minor-On C 1)
-          (Chord Cm7/Bb 1))
+          (brick Dominant-Cycle Gb 2)
+          (brick Minor-On C 1)
+          (chord Cm7/Bb 1))
 
 (defbrick Nowhere-Slow-Approach Major Approach C
-          (Brick Straight-Approach G 2)
-          (Brick Nowhere-Approach C 2))
+          (brick Straight-Approach G 2)
+          (brick Nowhere-Approach C 2))
 
 (defbrick Nowhere-Turnaround Major Turnaround C
-          (Brick Dropback C 2)
-          (Brick Nowhere-Approach C 2))
+          (brick Dropback C 2)
+          (brick Nowhere-Approach C 2))
 
 (defbrick Nowhere-Turnaround-Minor Minor Turnaround C
-          (Brick Minor-Dropback C 2)
-          (Brick Nowhere-Approach C 2))
+          (brick Minor-Dropback C 2)
+          (brick Nowhere-Approach C 2))
 
 (defbrick Nowhere-Turnaround+On Major Cadence C
-          (Brick Nowhere-Turnaround C 4)
-          (Chord CM7 1))
+          (brick Nowhere-Turnaround C 4)
+          (chord CM7 1))
 
 (defbrick Nowhere-Turnaround-to-Minor-On Minor Cadence C
-          (Brick Nowhere-Turnaround-Minor C 4)
-          (Chord Cm 1))
+          (brick Nowhere-Turnaround-Minor C 4)
+          (chord Cm 1))
 
 // End of Nowhere stuff
 
@@ -1287,109 +1287,109 @@
 // POT = "Plain Ol' Turnaround"
 
 (defbrick POT(main) Major Turnaround C
-          (Chord C 1)
-          (Brick GenII G 1)
-          (Brick Straight-Approach C 2))
+          (chord C 1)
+          (brick GenII G 1)
+          (brick Straight-Approach C 2))
 
 (defbrick POT(var 1) Major Turnaround C
-          (Chord C 1)
-          (Chord A7 1)
-          (Brick Straight-Approach C 2))
+          (chord C 1)
+          (chord A7 1)
+          (brick Straight-Approach C 2))
 
 (defbrick POT(var 2) Major Turnaround C
-          (Brick On-Off-Major-VI C 2)
-          (Brick Sad-Approach C 2))
+          (brick On-Off-Major-VI C 2)
+          (brick Sad-Approach C 2))
 
 (defbrick POT(var 3) Major Turnaround C
-          (Brick Major-On C 2)
-          (Brick Straight-Approach C 2))
+          (brick Major-On C 2)
+          (brick Straight-Approach C 2))
 
 (defbrick POT(var 4) Major Turnaround C
-          (Chord C 2)
-          (Chord Am 2)
-          (Chord Am/C 2)
-          (Chord Dm7/G 1)
-          (Chord G7 1))
+          (chord C 2)
+          (chord Am 2)
+          (chord Am/C 2)
+          (chord Dm7/G 1)
+          (chord G7 1))
 
 (defbrick POT(var 5) Major Turnaround C
-          (Brick Dropback C 2)
-          (Brick Minor-On D 1)
-          (Chord Gsus 1))
+          (brick Dropback C 2)
+          (brick Minor-On D 1)
+          (chord Gsus 1))
 
 (defbrick POT(blues) Dominant Approach C
-        (Chord C7 1)
-        (Chord A7 1)
-        (Chord Dm7 1)
-        (Chord G7 1))
+        (chord C7 1)
+        (chord A7 1)
+        (chord Dm7 1)
+        (chord G7 1))
 
 (defbrick POT(cyclic) Major Turnaround C
-          (Chord C 1)
-          (Chord A7 1)
-          (Chord D7 1)
-          (Chord G7 1))
+          (chord C 1)
+          (chord A7 1)
+          (chord D7 1)
+          (chord G7 1))
 
 (defbrick POT(Yardbird) Major Turnaround C
-          (Chord C 1)
-          (Chord A7 1)
-          (Chord Dm7 2)
-          (Brick GenDom Eb 2))
+          (chord C 1)
+          (chord A7 1)
+          (chord Dm7 2)
+          (brick GenDom Eb 2))
 
 (defbrick POT(sad approach) Major Turnaround C
-          (Chord C 1)
-          (Chord A7 1)
-          (Brick Sad-Approach C 2))
+          (chord C 1)
+          (chord A7 1)
+          (brick Sad-Approach C 2))
 
 (defbrick POT-Spring-sub Major Turnaround C
-          (Chord C 1)
-          (Chord Am7 1)
-          (Chord Dm7 1)
-          (Brick Straight-Approach Eb 1))
+          (chord C 1)
+          (chord Am7 1)
+          (chord Dm7 1)
+          (brick Straight-Approach Eb 1))
 
 (defbrick POT+On(cyclic) Major Cadence C
-          (Brick POT(cyclic) C 4)
-          (Chord C 1))
+          (brick POT(cyclic) C 4)
+          (chord C 1))
 
 (defbrick POT Dominant Turnaround C
-          (Chord C7 1)
-          (Chord A7 1)
-         (Brick Straight-Approach C 2))
+          (chord C7 1)
+          (chord A7 1)
+         (brick Straight-Approach C 2))
 
 (defbrick Minor-POT(main) Minor Turnaround C
-          (Brick Minor-Dropback C 2)
-          (Brick Sad-Approach C 2))
+          (brick Minor-Dropback C 2)
+          (brick Sad-Approach C 2))
 
 (defbrick Minor-POT(var 1) Minor Turnaround C
-          (Brick Minor-Dropback C 2)
-          (Chord D7 1)
-          (Chord G7 1))
+          (brick Minor-Dropback C 2)
+          (chord D7 1)
+          (chord G7 1))
 
 (defbrick Minor-POT(var 2) Minor Turnaround C
-          (Chord Cm 1)
-          (Chord Eb7 1)
-          (Chord Dm7b5 1)
-          (Chord G7 1))
+          (chord Cm 1)
+          (chord Eb7 1)
+          (chord Dm7b5 1)
+          (chord G7 1))
 
 (defbrick Minor-POT(var 3) Minor Turnaround G
-          (Brick Minor-Dropback G 2)
-          (Brick Straight-Approach G 2))
+          (brick Minor-Dropback G 2)
+          (brick Straight-Approach G 2))
 
 (defbrick Minor-POT(dominant) Minor Turnaround C
-          (Chord Cm 1)
-          (Brick Extended-Approach C 3))
+          (chord Cm 1)
+          (brick Extended-Approach C 3))
 
 (defbrick Minor-POT(sad) Minor Turnaround C
-          (Brick On-Off-Minor-VI C 2)
-          (Brick Sad-Approach C 2))
+          (brick On-Off-Minor-VI C 2)
+          (brick Sad-Approach C 2))
 
 (defbrick Minor-POT(altered dominant) Minor Turnaround C
-          (Chord Cm 1)
-          (Chord A7#11 1)
-          (Chord D7 1)
-          (Chord G7+ 1))
+          (chord Cm 1)
+          (chord A7#11 1)
+          (chord D7 1)
+          (chord G7+ 1))
 
 (defbrick Minor-POT+On Minor Cadence C
-          (Brick Minor-POT C 4)
-          (Chord Cm 1))
+          (brick Minor-POT C 4)
+          (chord Cm 1))
 
 // End of POT stuff
 
@@ -1397,86 +1397,86 @@
 // Pennies stuff, from "Pennies from Heaven"
 
 (defbrick Pennies-Approach(main) Major Approach C
-          (Chord F 1)
-          (Chord Bb7 1)
-          (Brick Dropback C 2)
-          (Brick An-Approach C 2))
+          (chord F 1)
+          (chord Bb7 1)
+          (brick Dropback C 2)
+          (brick An-Approach C 2))
 
 (defbrick Pennies-Approach(var 1) Major Approach C
-          (Chord F 1)
-          (Chord Bb7 1)
-          (Brick GenMajorTonic C 1)
-          (Brick GenIIDom D 1)
-          (Brick An-Approach C 2))
+          (chord F 1)
+          (chord Bb7 1)
+          (brick GenMajorTonic C 1)
+          (brick GenIIDom D 1)
+          (brick An-Approach C 2))
 
 (defbrick Pennies-Approach(var 2) Major Approach C
-          (Brick IV-n-Yak C 6)
-          (Brick Minor-Perfect-Cadence D 4)
-          (Brick Dominant-Cycle C 2))
+          (brick IV-n-Yak C 6)
+          (brick Minor-Perfect-Cadence D 4)
+          (brick Dominant-Cycle C 2))
 
 (defbrick Pennies-Approach(var 3) Major Approach C
-          (Brick Major-On F 1)
-          (Brick Nowhere-Minor-Cadence D 4)
-          (Chord G7 1))
+          (brick Major-On F 1)
+          (brick Nowhere-Minor-Cadence D 4)
+          (chord G7 1))
 
 (defbrick Pennies-Ending(main) Major Cadence C
-          (Brick Pennies-Approach C 6)
-          (Chord CM7 2))
+          (brick Pennies-Approach C 6)
+          (chord CM7 2))
 
 (defbrick Pennies-Ending(var 1) Major Ending C
-          (Brick IV-n-Back C 3)
-          (Chord A7 1)
-          (Brick Somewhere-Cadence C 3))
+          (brick IV-n-Back C 3)
+          (chord A7 1)
+          (brick Somewhere-Cadence C 3))
 
 (defbrick Pennies-Ending(var 2) Major Ending C
-          (Brick On-Off-Major-IV F 2)
-          (Brick Sad-Approach D 2)
-          (Brick Somewhere-Cadence C 4))
+          (brick On-Off-Major-IV F 2)
+          (brick Sad-Approach D 2)
+          (brick Somewhere-Cadence C 4))
 
 (defbrick Pennies-Ending(raindrop) Major Ending C
-          (Chord Dm 2)
-          (Brick Raindrop C 2)
-          (Brick Straight-Approach C 2)
-          (Chord CM7 2))
+          (chord Dm 2)
+          (brick Raindrop C 2)
+          (brick Straight-Approach C 2)
+          (chord CM7 2))
 
 (defbrick Pennies-Ending(side-slipping) Major Ending C
-          (Brick Major-On F 2)
-          (Brick Nowhere-Approach D 4)
-          (Brick Stablemates-Cadence C 8)
-          (Brick Straight-Approach C 2))
+          (brick Major-On F 2)
+          (brick Nowhere-Approach D 4)
+          (brick Stablemates-Cadence C 8)
+          (brick Straight-Approach C 2))
 
 (defbrick Pennies-Ending(dropback) Major Ending C
-          (Brick IV-n-Yak C 3)
-          (Chord A7 1)
-          (Brick Cyclic-Approach C 2)
-          (Chord CM7 2))
+          (brick IV-n-Yak C 3)
+          (chord A7 1)
+          (brick Cyclic-Approach C 2)
+          (chord CM7 2))
 
 (defbrick Pennies-Ending(Somewhere) Major Ending C
-          (Brick IV-n-Yak C 3)
-          (Chord D7 1)
-          (Brick Straight-Cadence C 3))
+          (brick IV-n-Yak C 3)
+          (chord D7 1)
+          (brick Straight-Cadence C 3))
 
 (defbrick Pennies-Ending(Yardbird) Major Ending C
-          (Brick IV-n-Yak C 5)
-          (Brick Minor-Perfect-Cadence A 3)
-          (Brick Straight-Cadence C 5))
+          (brick IV-n-Yak C 5)
+          (brick Minor-Perfect-Cadence A 3)
+          (brick Straight-Cadence C 5))
 
 (defbrick Pennies-Turnaround(main) Major Turnaround C
-          (Chord CM7 1)
-          (Chord Dm 1)
-          (Brick Raindrop C 2)
-          (Brick Straight-Approach C 4))
+          (chord CM7 1)
+          (chord Dm 1)
+          (brick Raindrop C 2)
+          (brick Straight-Approach C 4))
 
 (defbrick Pennies-Turnaround(TTFA) Major Turnaround C
-          (Brick TTFA-Dropback C 4)
-          (Brick Straight-Approach C 4))
+          (brick TTFA-Dropback C 4)
+          (brick Straight-Approach C 4))
 
 (defbrick Pennies-Turnaround-Two-Goes Major Turnaround C
-          (Chord CM7 1)
-          (Chord Dm 1)
-          (Brick Raindrop C 2)
-          (Brick Straight-Approach C 2)
-          (Brick Straight-Approach C 2))
+          (chord CM7 1)
+          (chord Dm 1)
+          (brick Raindrop C 2)
+          (brick Straight-Approach C 2)
+          (brick Straight-Approach C 2))
 
 // End of Pennies stuff
 
@@ -1485,195 +1485,195 @@
 // Perfect
 
 (defbrick Perfect-Cadence Major Cadence C
-          (Chord G7 1)
-          (Chord CM7 1))
+          (chord G7 1)
+          (chord CM7 1))
 
 (defbrick Pullback(basic) Major Approach C
-          (Brick An-Approach C 2)
-          (Brick An-Approach D 2))
+          (brick An-Approach C 2)
+          (brick An-Approach D 2))
 
 
 // Pullback
 
 (defbrick Pullback(var 1) Major Approach C
-          (Brick An-Approach C 2)
-          (Chord Em7 1)
-          (Chord Am7 1))
+          (brick An-Approach C 2)
+          (chord Em7 1)
+          (chord Am7 1))
 
 (defbrick Pullback(tritone-sub) Major Approach C
-          (Brick An-Approach C 2)
-          (Chord Bb7 1)
-          (Chord A7 1))
+          (brick An-Approach C 2)
+          (chord Bb7 1)
+          (chord A7 1))
 
 (defbrick Pullback(Yardbird) Major Approach C
-          (Chord Dm7 1)
-          (Chord Bb7 1)
-          (Chord Em7 1)
-          (Chord A7  1)
-          (Chord Dm7 1)
-          (Chord G7 1))
+          (chord Dm7 1)
+          (chord Bb7 1)
+          (chord Em7 1)
+          (chord A7  1)
+          (chord Dm7 1)
+          (chord G7 1))
 
 (defbrick Pullback-Cadence-with-Dropback(Rainy) Major Dropback C
-          (Brick Straight-Approach C 2)
-          (Brick 7-Chord-Dropback(Rainy) C 6))
+          (brick Straight-Approach C 2)
+          (brick 7-Chord-Dropback(Rainy) C 6))
 
 (defbrick Pullback-Extended(basic) Major Approach C
-          (Brick Pullback C 4)
-          (Brick An-Approach C 2))
+          (brick Pullback C 4)
+          (brick An-Approach C 2))
 
 (defbrick Pullback-Extended(var 1) Major Approach C
-          (Brick An-Approach C 2)
-          (Brick An-Approach D 2)
-          (Brick Dominant-Cycle(2 steps) C 2))
+          (brick An-Approach C 2)
+          (brick An-Approach D 2)
+          (brick Dominant-Cycle(2 steps) C 2))
 
 (defbrick Pullback-to-Cadence Major Cadence C
-          (Brick Pullback-Extended C 6)
-          (Chord C 2))
+          (brick Pullback-Extended C 6)
+          (chord C 2))
 
 // Rainbow
 
 (defbrick Rainbow-Cadence(var 1) Major Cadence F
-          (Chord C  1)
-          (Chord Em 1)
-          (Chord F  2))
+          (chord C  1)
+          (chord Em 1)
+          (chord F  2))
 
 (defbrick Rainbow-Cadence(var 2) Dominant Cadence F
-          (Chord C/E 1)
-          (Chord E+ 1)
-          (Chord F7#11 2))
+          (chord C/E 1)
+          (chord E+ 1)
+          (chord F7#11 2))
 
 (defbrick Rainbow-Cadence(var 3) Major Cadence F
-          (Brick Major-On C 1)
-          (Chord E+ 1)
-          (Brick Major-On F 2))
+          (brick Major-On C 1)
+          (chord E+ 1)
+          (brick Major-On F 2))
 
 (defbrick Rainbow-Cadence(var 4) Major Cadence F
-          (Chord CM7 1)
-          (Chord E7 1)
-          (Chord FM7 2))
+          (chord CM7 1)
+          (chord E7 1)
+          (chord FM7 2))
 
 (defbrick Rainbow-Overrun Major Overrun C
-          (Chord CM7 1)
-          (Chord E7 1)
-          (Chord FM7 1)
-          (Chord Bb7 1))
+          (chord CM7 1)
+          (chord E7 1)
+          (chord FM7 1)
+          (chord Bb7 1))
 
 // Raindrop
 
 (defbrick Raindrop(main) Major Misc C
-          (Chord Em 1)
-          (Chord Ebdim 1))
+          (chord Em 1)
+          (chord Ebdim 1))
 
 (defbrick Raindrop(var 1) Major Misc C
-          (Chord C 1)
-          (Chord Ebdim 1))
+          (chord C 1)
+          (chord Ebdim 1))
 
 (defbrick Raindrop(var 2) Major Misc C
-          (Chord A7/E 1)
-          (Chord Ebdim 1))
+          (chord A7/E 1)
+          (chord Ebdim 1))
 
 (defbrick Raindrop(var 3) Major Misc C
-          (Chord C 1)
-          (Chord Ebdim 1))
+          (chord C 1)
+          (chord Ebdim 1))
 
 // Rainy
 
 (defbrick Rainy-Approach Major Approach C
-          (Brick Raindrop C 2)
-          (Brick Straight-Approach C 2))
+          (brick Raindrop C 2)
+          (brick Straight-Approach C 2))
 
 (defbrick Rainy-Cadence Major Cadence C
-          (Brick Rainy-Approach C 4)
-          (Chord CM7 4))
+          (brick Rainy-Approach C 4)
+          (chord CM7 4))
 
 (defbrick Rainy-Cadence(minor chromatic) Major Cadence Eb
-          (Brick Minor-Chromatic-Approach F 2)
-          (Brick Straight-Cadence Eb 6))
+          (brick Minor-Chromatic-Approach F 2)
+          (brick Straight-Cadence Eb 6))
 
 (defbrick Rainy-Pullback(main) Major Approach C
-          (Brick Straight-Approach C 2)
-          (Brick Rainy-Approach C 4))
+          (brick Straight-Approach C 2)
+          (brick Rainy-Approach C 4))
 
 (defbrick Rainy-Pullback(var) Major Approach C
-          (Brick Straight-Approach C 2)
-          (Brick Raindrop C 2))
+          (brick Straight-Approach C 2)
+          (brick Raindrop C 2))
 
 
 // Reverse
 
 (defbrick Reverse-Dominant-Cycle(2 steps) Dominant Dropback G
-          (Chord G7 1)
-          (Chord D7 1))
+          (chord G7 1)
+          (chord D7 1))
 
 (defbrick Reverse-Dominant-Cycle(3 steps) Dominant Dropback G
-          (Brick Reverse-Dominant-Cycle(2 steps) C 2)
-          (Chord A7 1))
+          (brick Reverse-Dominant-Cycle(2 steps) C 2)
+          (chord A7 1))
 
 (defbrick Reverse-Dominant-Cycle(4 steps) Dominant Dropback G
-          (Brick Reverse-Dominant-Cycle(3 steps) C 3)
-          (Chord E7 1))
+          (brick Reverse-Dominant-Cycle(3 steps) C 3)
+          (chord E7 1))
 
 (defbrick Reverse-Dominant-Cycle(5 steps) Dominant Dropback G
-          (Brick Reverse-Dominant-Cycle(4 steps) C 4)
-          (Chord B7 1))
+          (brick Reverse-Dominant-Cycle(4 steps) C 4)
+          (chord B7 1))
 
 (defbrick Reverse-Dominant-Cycle(6 steps) Dominant Dropback G
-          (Brick Reverse-Dominant-Cycle(5 steps) C 5)
-          (Chord F#7 1))
+          (brick Reverse-Dominant-Cycle(5 steps) C 5)
+          (chord F#7 1))
 
 // Rhythm
 
 (defbrick Rhythm-Bridge(straight) Major Approach C
-          (Brick Dominant-Cycle(4 steps) C 4))
+          (brick Dominant-Cycle(4 steps) C 4))
 
 (defbrick Rhythm-Bridge(dog-legged) Major Approach C
-          (Brick Dogleg-Cycle(4 steps) C 8))
+          (brick Dogleg-Cycle(4 steps) C 8))
 
 (defbrick Rhythm-Turnaround(main) Major Turnaround C
-          (Brick Upslide C 2)
-          (Chord Dm7 1)
-          (Chord Ebo 1))
+          (brick Upslide C 2)
+          (chord Dm7 1)
+          (chord Ebo 1))
 
 (defbrick Rhythm-Turnaround(var) Major Turnaround C
-          (Brick Upslide C 2)
-          (Chord G7/D 1)
-          (Chord Ebo 1))
+          (brick Upslide C 2)
+          (chord G7/D 1)
+          (chord Ebo 1))
 
 (defbrick Rhythm-Turnaround+On Major Cadence C
-          (Chord Dbdim 1)
-          (Brick Surge D 2)
-          (Chord CM7 1))
+          (chord Dbdim 1)
+          (brick Surge D 2)
+          (chord CM7 1))
 
 
 // Sad
 
 (defbrick Sad-Approach Minor Approach C
-          (Chord Dm7b5 1)  
-          (Chord G7 1))
+          (chord Dm7b5 1)  
+          (chord G7 1))
 
 (defbrick Sad-Cadence(main) Minor Cadence C
-          (Brick Sad-Approach C 2)
-          (Chord Cm 2))
+          (brick Sad-Approach C 2)
+          (chord Cm 2))
 
 (defbrick Sad-Cadence(var) Minor Cadence Eb
-          (Chord F7#11 1)
-          (Brick Minor-Perfect-Cadence Eb 2))
+          (chord F7#11 1)
+          (brick Minor-Perfect-Cadence Eb 2))
 
 (defbrick Sad-Cadence-with-Overrun(var) Minor Overrun C
-          (Brick Sad-Cadence C 3)
-          (Chord Ab7 1))
+          (brick Sad-Cadence C 3)
+          (chord Ab7 1))
 
 (defbrick Sad-Dropback Major Approach C
-          (Chord Dm7b5 1)
-          (Chord G7 1)
-          (Chord Cm 1)
-          (Chord Am7b5 1)
-          (Chord Dm7b5 1)
-          (Chord G7 1))
+          (chord Dm7b5 1)
+          (chord G7 1)
+          (chord Cm 1)
+          (chord Am7b5 1)
+          (chord Dm7b5 1)
+          (chord G7 1))
 
 (defbrick Sad-SPOT Minor Turnaround C
-          (Brick Sad-Approach D 2)
-          (Brick Sad-Approach C 2))
+          (brick Sad-Approach D 2)
+          (brick Sad-Approach C 2))
 
 // End of Sad stuff
 
@@ -1681,133 +1681,133 @@
 // Satin
 
 (defbrick Satin-Cadence Major Cadence C
-          (Brick Straight-Approach G 2)
-          (Brick Straight-Approach Gb 2)
-          (Chord C 1))
+          (brick Straight-Approach G 2)
+          (brick Straight-Approach Gb 2)
+          (chord C 1))
 
 
 // Side-Slip
 
 (defbrick Side-Slip Major Approach F
-          (Chord C#m7b5 2)
-          (Chord Cm7 1)
-          (Chord F7 1))
+          (chord C#m7b5 2)
+          (chord Cm7 1)
+          (chord F7 1))
 
 (defbrick Side-Slips(2) Major Approach C
-          (Brick An-Approach Db 2)
-          (Brick An-Approach C 2))
+          (brick An-Approach Db 2)
+          (brick An-Approach C 2))
 
 (defbrick Side-Slips(2 variant) Major Approach C
-          (Chord Ebm 1)
-          (Chord Abm 1)
-          (Brick An-Approach C 2))
+          (chord Ebm 1)
+          (chord Abm 1)
+          (brick An-Approach C 2))
 
 (defbrick Side-Slips(3) Major Approach C
-          (Brick An-Approach D 2)
-          (Brick Side-Slips(2) C 4))
+          (brick An-Approach D 2)
+          (brick Side-Slips(2) C 4))
 
 (defbrick Side-Slips(4) Major Approach C
-          (Brick Side-Slips(2) D 2)
-          (Brick Side-Slips(2) C 2))
+          (brick Side-Slips(2) D 2)
+          (brick Side-Slips(2) C 2))
 
 (defbrick Side-Slips(5) Major Approach C
-          (Brick An-Approach E 2)
-          (Brick Side-Slips(4) C 8))
+          (brick An-Approach E 2)
+          (brick Side-Slips(4) C 8))
 
 (defbrick Side-Slips(6) Major Approach C
-          (Brick Side-Slips(2) E 4)
-          (Brick Side-Slips(4) C 8))
+          (brick Side-Slips(2) E 4)
+          (brick Side-Slips(4) C 8))
 
 
 // Sharp Fourpenny
 
 (defbrick Sharp-Fourpenny-Approach Major Approach C
-          (Chord F#m7b5 2)
-          (Brick Yardbird-Cadence C 4)
-          (Brick Straight-Approach D 2)
-          (Brick Straight-Approach C 4))
+          (chord F#m7b5 2)
+          (brick Yardbird-Cadence C 4)
+          (brick Straight-Approach D 2)
+          (brick Straight-Approach C 4))
 
 (defbrick Sharp-Fourpenny-Ending(main) Major Cadence C
-          (Brick Sharp-Fourpenny-Approach C 12)
-          (Chord CM7 4))
+          (brick Sharp-Fourpenny-Approach C 12)
+          (chord CM7 4))
 
 (defbrick Sharp-Fourpenny-Ending(var) Major Ending C
-          (Brick Side-Slip Bb 4)
-          (Brick Straight-Approach D 4)
-          (Brick Sus-Cadence C 8))
+          (brick Side-Slip Bb 4)
+          (brick Straight-Approach D 4)
+          (brick Sus-Cadence C 8))
 
 // Sixpenny
 
 (defbrick Sixpenny-Approach Major Approach C
-          (Chord Am 2)
-          (Brick Yardbird-Cadence C 4)
-          (Brick Straight-Approach D 2)
-          (Brick Straight-Approach C 4))
+          (chord Am 2)
+          (brick Yardbird-Cadence C 4)
+          (brick Straight-Approach D 2)
+          (brick Straight-Approach C 4))
 
 (defbrick Sixpenny-Ending Major Ending C
-          (Brick Sixpenny-Approach C 12)
-          (Chord CM7 4))
+          (brick Sixpenny-Approach C 12)
+          (chord CM7 4))
 
 
 // For "Slow" see also "Dogleg"
 
 (defbrick Slow-Approach Major Approach C
-          (Brick GenDom G 2)
-          (Brick GenDom C 2))
+          (brick GenDom G 2)
+          (brick GenDom C 2))
 
 (defbrick Slow-Cadence Major Cadence C
-          (Brick Slow-Approach C 4)
-          (Chord C 1))
+          (brick Slow-Approach C 4)
+          (chord C 1))
 
 
 // "Spring" (opposite of "Autumnal") stuff
 
 (defbrick Spring-Approach(simple) Major Approach C
-          (Chord Bm7b5 1)
-          (Brick Straight-Approach C 1))
+          (chord Bm7b5 1)
+          (brick Straight-Approach C 1))
 
 (defbrick Spring-Approach(extended) Major Approach C
-          (Chord Bm7b5 1)
-          (Chord E7 1)
-          (Brick Straight-Approach C 2))
+          (chord Bm7b5 1)
+          (chord E7 1)
+          (brick Straight-Approach C 2))
 
 (defbrick Spring-Cadence(main) Major Cadence C
-          (Brick Spring-Approach C 4)
-          (Chord CM7 2))
+          (brick Spring-Approach C 4)
+          (chord CM7 2))
 
 (defbrick Spring-Cadence(m7) Major Cadence C
-          (Chord Bm7 2)
-          (Brick Straight-Cadence C 4))
+          (chord Bm7 2)
+          (brick Straight-Cadence C 4))
 
 
 // Somewhere stuff (Tritone sub for Nowhere, II7)
 
 (defbrick Somewhere-Approach(main) Major Dropback C
-          (Chord Bb7 1)
-          (Chord A7 2)
-          (Chord D7 2))
+          (chord Bb7 1)
+          (chord A7 2)
+          (chord D7 2))
 
 (defbrick Sad-Somewhere-Approach(var) Minor Dropback C
-          (Brick Sad-Approach C 2)
-          (Chord D7 1))
+          (brick Sad-Approach C 2)
+          (chord D7 1))
 
 (defbrick Somewhere-Cadence(main) Major Cadence C
-          (Chord D7 1)
-          (Brick GenDom C 1)
-          (Chord C  1))
+          (chord D7 1)
+          (brick GenDom C 1)
+          (chord C  1))
 
 (defbrick Somewhere-Cadence(var) Major Cadence C
-          (Chord Dm7b5 1)
-          (Brick GenDom C 1)
-          (Chord C  1))
+          (chord Dm7b5 1)
+          (brick GenDom C 1)
+          (chord C  1))
 
 (defbrick Somewhere/Nowhere-Approach(var 1) Minor Approach C
-          (Chord A7 2)
-          (Brick Nowhere-Approach G 2))
+          (chord A7 2)
+          (brick Nowhere-Approach G 2))
 
 (defbrick Somewhere/Nowhere-Approach(var 2) Major Approach C
-          (Chord D7 1)
-          (Chord Ab7 1))
+          (chord D7 1)
+          (chord Ab7 1))
 
 // End of Somewhere stuff
 
@@ -1815,125 +1815,125 @@
 // SPOT = "Suspended Plain Ol' Turnaround" replaces the initial I with a iii
 
 (defbrick SPOT(main) Major Turnaround C
-          (Brick An-Approach D 2)
-          (Brick Straight-Approach C 2))
+          (brick An-Approach D 2)
+          (brick Straight-Approach C 2))
 
 (defbrick SPOT(minorIV) Major Turnaround C
-          (Chord Em7 1)
-          (Brick Extended-Approach C 3))
+          (chord Em7 1)
+          (brick Extended-Approach C 3))
 
 (defbrick SPOT(var 1) Major Turnaround C
-          (Chord Em7 1)
-          (Brick Minor-Perfect-Cadence A 3)
-          (Brick Straight-Approach C 4))
+          (chord Em7 1)
+          (brick Minor-Perfect-Cadence A 3)
+          (brick Straight-Approach C 4))
 
 (defbrick SPOT(var 2) Major Turnaround C
-          (Brick Straight-Approach D 4)
-          (Brick Straight-Approach C 3)
-          (Chord G7/F 1))
+          (brick Straight-Approach D 4)
+          (brick Straight-Approach C 3)
+          (chord G7/F 1))
 
 (defbrick SPOT(var 3) Major Turnaround C
-          (Brick Tritone-Approach D 2)
-          (Brick Straight-Approach C 2))
+          (brick Tritone-Approach D 2)
+          (brick Straight-Approach C 2))
 
 (defbrick SPOT(chromatic) Major Turnaround C
-          (Chord Bb7 1)
-          (Chord A7 1)
-          (Chord Ab7 1)
-          (Chord G7 1))
+          (chord Bb7 1)
+          (chord A7 1)
+          (chord Ab7 1)
+          (chord G7 1))
 
 (defbrick SPOT(sideslip) Major Turnaround C
-          (Chord Em7 2)
-          (Chord Ebm7 1)
-          (Chord Ab7 1)
-          (Chord Dm7 2)
-          (Chord G7 2))
+          (chord Em7 2)
+          (chord Ebm7 1)
+          (chord Ab7 1)
+          (chord Dm7 2)
+          (chord G7 2))
 
 (defbrick Multi-Sub-POT Major Turnaround C
-          (Chord C 2)
-          (Chord Bbm7 1)
-          (Chord Eb7 1)
-          (Chord Am7 1)
-          (Chord D7 1)
-          (Chord Abm7 1)
-          (Chord Db7 1))
+          (chord C 2)
+          (chord Bbm7 1)
+          (chord Eb7 1)
+          (chord Am7 1)
+          (chord D7 1)
+          (chord Abm7 1)
+          (chord Db7 1))
 
 // Stablemates
 
 (defbrick Stablemates-Approach Major Approach C
-          (Brick Slow-Approach Db 2)
-          (Brick Straight-Approach C 2))
+          (brick Slow-Approach Db 2)
+          (brick Straight-Approach C 2))
 
 (defbrick Stablemates-Cadence(var 1) Major Cadence C
-          (Brick Straight-Approach Db 2)
-          (Brick Straight-Approach C 2)
-          (Chord CM7 4))
+          (brick Straight-Approach Db 2)
+          (brick Straight-Approach C 2)
+          (chord CM7 4))
 
 (defbrick Stablemates-Cadence(var 2) Major Cadence C
-          (Brick Dominant-Cycle Db 2)
-          (Brick Straight-Approach C 2)
-          (Chord CM7 4))
+          (brick Dominant-Cycle Db 2)
+          (brick Straight-Approach C 2)
+          (chord CM7 4))
 
 
 // Starlight stuff, from the ending of "Stella by Starlight"
 
 
 (defbrick Starlight-Approach(main) Major Approach C
-          (Brick An-Approach E 2)
-          (Brick An-Approach D 2)
-          (Brick An-Approach C 2))
+          (brick An-Approach E 2)
+          (brick An-Approach D 2)
+          (brick An-Approach C 2))
 
 (defbrick Starlight-Approach(Dizzy) Major Approach C
-          (Chord F#m7b5 1)
-          (Chord B7 1)G
-          (Brick Tritone-Approach D 2)
-          (Brick Tritone-Approach C 2))
+          (chord F#m7b5 1)
+          (chord B7 1)G
+          (brick Tritone-Approach D 2)
+          (brick Tritone-Approach C 2))
 
 (defbrick Starlight-Approach(Dizzy var 2) Major Approach C
-          (Brick Dizzy-Sub-Approach E 2)
-          (Brick SPOT C 4))
+          (brick Dizzy-Sub-Approach E 2)
+          (brick SPOT C 4))
 
 (defbrick Starlight-Approach(Night-&-Day) Major Approach C
-          (Brick Light-&-Day-Approach E 2)
-          (Brick SPOT C 4))
+          (brick Light-&-Day-Approach E 2)
+          (brick SPOT C 4))
 
 (defbrick Starlight-Approach(rainy) Major Approach C
-          (Chord F#m7b5 1)
-          (Chord Fm 1)
-          (Brick Rainy-Approach C 4))
+          (chord F#m7b5 1)
+          (chord Fm 1)
+          (brick Rainy-Approach C 4))
 
 (defbrick Starlight-Approach(tritone start) Major Approach C
-          (Brick Tritone-Approach E 2)
-          (Brick SPOT C 6))
+          (brick Tritone-Approach E 2)
+          (brick SPOT C 6))
 
 (defbrick Starlight-Approach(dominant-cycle) Major Approach C
-          (Brick Dominant-Cycle D 4)
-          (Brick Straight-Approach C 2))
+          (brick Dominant-Cycle D 4)
+          (brick Straight-Approach C 2))
 
 (defbrick Starlight-Cadence(main) Major Cadence C
-          (Brick Starlight-Approach C 6)
-          (Chord CM7 2))
+          (brick Starlight-Approach C 6)
+          (chord CM7 2))
 
 (defbrick Starlight-Cadence(airegin) Major Cadence C
-          (Brick Sad-Approach E 2)
-          (Brick Sad-Cadence D 6)
-          (Brick Perfect-Cadence C 4))
+          (brick Sad-Approach E 2)
+          (brick Sad-Cadence D 6)
+          (brick Perfect-Cadence C 4))
 
 (defbrick Starlight-Cadence(tension) Dominant Cadence C
-          (Brick Starlight-Approach C 6)
-          (Chord C7 2))
+          (brick Starlight-Approach C 6)
+          (chord C7 2))
 
 (defbrick Starlight-Cadence(Night-&-Day) Major Cadence C
-          (Brick Starlight-Approach(Night-&-Day) C 6)
-          (Chord CM7 2))
+          (brick Starlight-Approach(Night-&-Day) C 6)
+          (chord CM7 2))
 
 (defbrick Starlight-Dropback Major Dropback C
-          (Brick Sad-Approach E 2)
-          (Brick Straight-Approach D 2))
+          (brick Sad-Approach E 2)
+          (brick Straight-Approach D 2))
 
 (defbrick Starlight-Opening Major Opening Bb
-          (Brick Sad-Approach D 2)
-          (Brick Straight-Approach Bb 2))
+          (brick Sad-Approach D 2)
+          (brick Straight-Approach Bb 2))
 
 // End of Starlight stuff
 
@@ -1941,331 +1941,338 @@
 // Straight (meaning Major) stuff
 
 (defbrick Straight-Approach(main) Major Approach C
-          (Chord Dm7 1)
-          (Chord G7 1))
+          (chord Dm7 1)
+          (chord G7 1))
 
 (defbrick Straight-Approach(var) Major Approach F
-          (Chord Gm7 2)
-          (Chord C7 1)
-          (Chord C7/Bb 1))
+          (chord Gm7 2)
+          (chord C7 1)
+          (chord C7/Bb 1))
 
 (defbrick Straight-Cadence(main) Major Cadence C
-          (Brick Straight-Approach C 2)
-          (Chord CM7 2))
+          (brick Straight-Approach C 2)
+          (chord CM7 2))
 
 (defbrick Straight-Cadence-with-Dropback Major Dropback C
-          (Brick Straight-Approach C 2)
-          (Chord CM7 1)
-          (Chord Am7 1))
+          (brick Straight-Approach C 2)
+          (chord CM7 1)
+          (chord Am7 1))
 
 (defbrick Straight-Cadence-+-Dominant-Overrun Major Overrun C
-          (Brick Straight-Cadence C 3)
-          (Chord F7 1))
+          (brick Straight-Cadence C 3)
+          (chord F7 1))
 
 // Surge
 
 (defbrick Surge(var 1) Major Misc C
-          (Chord C 1)
-          (Chord C#o 1)
-          (Chord G/D 1))
+          (chord C 1)
+          (chord C#o 1)
+          (chord G/D 1))
 
 (defbrick Surge(var 2) Major Misc C
-          (Chord C 1)
-          (Chord C#o 1))
+          (chord C 1)
+          (chord C#o 1))
 
 (defbrick Surge(var 3) Major Misc C
-          (Chord C7 1)
-          (Chord C#o 1))
+          (chord C7 1)
+          (chord C#o 1))
 
 // Supertension (7#4 or 7#110
 
 (defbrick Supertension-Ending Dominant Cadence C
-          (Brick Straight-Approach C 2)
-          (Chord C7#4 2))
+          (brick Straight-Approach C 2)
+          (chord C7#4 2))
 
 // Surprise, meaning major approach with minor resolution, or vice-versa
 
 (defbrick Surprise-Minor-Cadence Minor Cadence C
-          (Brick Straight-Approach C 2)
-          (Chord Cm 2))
+          (brick Straight-Approach C 2)
+          (chord Cm 2))
 
 (defbrick Surprise-Major-Cadence Major Cadence C
-         (Brick Sad-Approach C 2)
-         (Chord CM7 2))
+         (brick Sad-Approach C 2)
+         (chord CM7 2))
 
 
 // Sus = Suspended fourth stuff
 
 (defbrick Sus-Approach Major Approach C
-          (Brick Major-On D 1)
-          (Chord D7 1)
-          (Brick Major-On G 2))
+          (brick Major-On D 1)
+          (chord D7 1)
+          (brick Major-On G 2))
 
 (defbrick Sus-Approach(var 1) Major Approach C
-          (Brick Minor-On D 1)
-          (Chord Gsus 1))
+          (brick Minor-On D 1)
+          (chord Gsus 1))
 
 (defbrick Sus-Cadence Major Cadence F
-          (Chord Gm7 1)
-          (Chord Gm7/C 1)
-          (Brick Major-On F 1))
+          (chord Gm7 1)
+          (chord Gm7/C 1)
+          (brick Major-On F 1))
 
 (defbrick Sus-Cadence(main) Major Cadence C
-          (Chord G7sus 1)
-          (Chord C 1))
+          (chord G7sus 1)
+          (chord C 1))
 
 (defbrick Sus-Cadence(var 1) Major Cadence C
-          (Chord Dm7 1)
-          (Chord G7sus 1)
-          (Chord C 1))
+          (chord Dm7 1)
+          (chord G7sus 1)
+          (chord C 1))
 
 (defbrick Sus-Cadence(var 2) Major Cadence C
-          (Chord G7sus 1)
-          (Chord G7 1)
-          (Chord C 1))
+          (chord G7sus 1)
+          (chord G7 1)
+          (chord C 1))
 
 // Tension
 
 (defbrick Tension-Cadence Dominant Cadence Bb
-          (Chord Cm7 1)
-          (Chord F7 1)
-          (Chord Bb7 2))
+          (chord Cm7 1)
+          (chord F7 1)
+          (chord Bb7 2))
 
 (defbrick Tension-Pullback Dominant Approach C
-          (Brick Straight-Approach C 2)
-          (Brick Slow-Approach D 2))
+          (brick Straight-Approach C 2)
+          (brick Slow-Approach D 2))
 
 (defbrick Tension-SPOT Major Turnaround G
-          (Brick Dominant-Cycle A 2)
-          (Brick Straight-Approach G 2))
+          (brick Dominant-Cycle A 2)
+          (brick Straight-Approach G 2))
 
 
 // TINGLe = "There is No Greater Love"
 
 (defbrick TINGLe-Dropback(main) Major Dropback C
-          (Chord CM7 1)
-          (Chord F7 1)
-          (Brick Nowhere-Approach D 2))
+          (chord CM7 1)
+          (chord F7 1)
+          (brick Nowhere-Approach D 2))
 
 (defbrick TINGLe-Dropback(var) Major Dropback C
-          (Chord CM7 1)
-          (Chord F 1)
-          (Brick Nowhere-Approach D 2))
+          (chord CM7 1)
+          (chord F 1)
+          (brick Nowhere-Approach D 2))
 
 // "To ..." stuff (II, IV, Somewhere, ...)
  
 (defbrick To-II-n-Back Major Cadence C
-          (Chord C 1)
-          (Brick Minor-On D 1)
-          (Chord Ebm7b5 1)
-          (Brick Major-On C 1))
+          (chord C 1)
+          (brick Minor-On D 1)
+          (chord Ebm7b5 1)
+          (brick Major-On C 1))
 
 (defbrick To-Somewhere Major Approach C
-          (Chord CM7 1)
-          (Chord D7 1))
+          (chord CM7 1)
+          (chord D7 1))
 
 (defbrick To-IV(main) Major To-IV C
-          (Brick Major-On C 1)
-          (Brick Perfect-Cadence F 2))
+          (brick Major-On C 1)
+          (brick Perfect-Cadence F 2))
 
 (defbrick To-IV(tritone) Major To-IV C
-          (Brick Major-On C 1)
-          (Brick Tritone-Cadence F 2))
+          (brick Major-On C 1)
+          (brick Tritone-Cadence F 2))
 
 (defbrick To-IV-n-Back(main) Major To-IV C
-          (Brick An-Approach F 1)
-          (Brick IV-n-Back C 1))
+          (brick An-Approach F 1)
+          (brick IV-n-Back C 1))
 
 (defbrick To-IV-n-Back(var 1) Major To-IV C
-          (Brick To-IV C 3)
-          (Chord F#o 1)
-          (Brick Major-On C 1))
+          (brick To-IV C 3)
+          (chord F#o 1)
+          (brick Major-On C 1))
 
 (defbrick To-IV-n-Back(blues) Dominant To-IV C
-        (Chord C 1)
-        (Chord F7 1)
-        (Chord F#o 1)
-        (Chord C 1))
+        (chord C 1)
+        (chord F7 1)
+        (chord F#o 1)
+        (chord C 1))
+
+(defbrick To-IV-n-Back(blues var) Dominant To-IV C
+        (chord C 1)
+        (chord C7 1)
+        (chord F7 1)
+        (chord F#o 1)
+        (chord C 1))
 
 (defbrick To-IV-n-Bird-POT Major Turnaround C
-          (Chord CM7 1)
-          (Brick GenDom F 1)
-          (Chord FM7 1)
-          (Chord Bb7 1)
-          (Brick POT C 4))
+          (chord CM7 1)
+          (brick GenDom F 1)
+          (chord FM7 1)
+          (chord Bb7 1)
+          (brick POT C 4))
 
 (defbrick To-IV-n-Bird-SPOT(broken down) Major Turnaround C
-          (Chord CM7 1)
-          (Brick GenDom F 1)
-          (Chord FM7 1)
-          (Chord Bb7 1)
-          (Brick SPOT C 4))
+          (chord CM7 1)
+          (brick GenDom F 1)
+          (chord FM7 1)
+          (chord Bb7 1)
+          (brick SPOT C 4))
 
 (defbrick To-IV-n-Bird-SPOT(on-at-iii variant) Major Turnaround C
-          (Chord Em7 1)
-          (Brick GenDom F 1)
-          (Chord FM7 1)
-          (Brick GenDom Eb 1)
-          (Brick SPOT C 4))
+          (chord Em7 1)
+          (brick GenDom F 1)
+          (chord FM7 1)
+          (brick GenDom Eb 1)
+          (brick SPOT C 4))
 
 (defbrick To-IV-n-Bird-SPOT(yak) Major Turnaround C
-          (Brick To-IV-n-Yak C 4)
-          (Brick SPOT C 4))
+          (brick To-IV-n-Yak C 4)
+          (brick SPOT C 4))
 
 (defbrick To-IV-n-Bird-SPOT(var 1) Major Approach C
-          (Chord CM7 4)
-          (Chord Gm7 2)
-          (Chord C7 2)
-          (Chord FM7 4)
-          (Chord Bb7 4)
-          (Chord Em7 2)
-          (Chord A7 2)
-          (Chord D7 2)
-          (Chord Dm7/G 1)
-          (Chord G7 1))
+          (chord CM7 4)
+          (chord Gm7 2)
+          (chord C7 2)
+          (chord FM7 4)
+          (chord Bb7 4)
+          (chord Em7 2)
+          (chord A7 2)
+          (chord D7 2)
+          (chord Dm7/G 1)
+          (chord G7 1))
 
 (defbrick To-IV-n-Bird-SPOT(var 2) Major Turnaround C
-          (Brick Major-On C 2)
-          (Chord Gm7 1)
-          (Chord C7 1)
-          (Brick Major-On F 2)
-          (Brick Nowhere-Approach D 6)
-          (Brick Dominant-Cycle C 4))
+          (brick Major-On C 2)
+          (chord Gm7 1)
+          (chord C7 1)
+          (brick Major-On F 2)
+          (brick Nowhere-Approach D 6)
+          (brick Dominant-Cycle C 4))
 
 (defbrick To-IV-n-Bird-SPOT(var 3) Major Turnaround C
-          (Brick To-IV-n-Yak F 8)
-          (Brick Tension-SPOT C 4))
+          (brick To-IV-n-Yak F 8)
+          (brick Tension-SPOT C 4))
 
 (defbrick To-IV-n-Bird-SPOT(Yardbird sub) Major Approach C
-          (Brick Straight-Approach C 4)
-          (Chord C 2)
-          (Chord F7 2)
-          (Chord Bm7 2)
-          (Brick Dominant-Cycle D 4)
-          (Brick Straight-Approach Bb 2))
+          (brick Straight-Approach C 4)
+          (chord C 2)
+          (chord F7 2)
+          (chord Bm7 2)
+          (brick Dominant-Cycle D 4)
+          (brick Straight-Approach Bb 2))
 
 (defbrick To-IV-n-Bird-SPOT(Somewhere/Nowhere) Major Turnaround C
-          (Brick Straight-Cadence F 6)
-          (Brick Somewhere/Nowhere-Approach Ab 3)
-          (Brick Extended-Approach C 3))
+          (brick Straight-Cadence F 6)
+          (brick Somewhere/Nowhere-Approach Ab 3)
+          (brick Extended-Approach C 3))
 
 (defbrick To-IV-n-Hack Major Approach C
-          (Chord CM7 1)
-          (Brick Perfect-Cadence F 2)
-          (Chord B7 1))
+          (chord CM7 1)
+          (brick Perfect-Cadence F 2)
+          (chord B7 1))
 
 (defbrick To-IV-n-Mack Major Approach C
-          (Chord CM7 1)
-          (Brick GenDom F 1)
-          (Chord F 1)
-          (Chord Fm 1))
+          (chord CM7 1)
+          (brick GenDom F 1)
+          (chord F 1)
+          (chord Fm 1))
 
 (defbrick To-IV-n-Yak-Approach(Main) Major Approach Eb
-          (Chord EbM7 2)
-          (Chord Bbm7 1)
-          (Chord Eb7 1)
-          (Chord AbM7 2)
-          (Chord Abm7 1)
-          (Chord Db7 1))
+          (chord EbM7 2)
+          (chord Bbm7 1)
+          (chord Eb7 1)
+          (chord AbM7 2)
+          (chord Abm7 1)
+          (chord Db7 1))
 
 (defbrick To-IV-n-Yak(rainy) Major Approach Eb
-          (Brick Rainy-Cadence Eb 10))
+          (brick Rainy-Cadence Eb 10))
 
 (defbrick To-IV-n-Yak-Cadence(main) Major Cadence C
-          (Brick To-IV-n-Yak-Approach C 4)
-          (Chord C 1))
+          (brick To-IV-n-Yak-Approach C 4)
+          (chord C 1))
 
 (defbrick To-IV-n-Yak-Cadence(var 0) Major Cadence C
-          (Brick An-Approach F 2)
-          (Brick IV-n-Yak C 2))
+          (brick An-Approach F 2)
+          (brick IV-n-Yak C 2))
 
 (defbrick To-IV-n-Yak-Cadence(var 1) Major Cadence F
-          (Brick Major-On F 2)
-          (Chord Bb7 1)
-          (Brick Yardbird-Cadence F 3))
+          (brick Major-On F 2)
+          (chord Bb7 1)
+          (brick Yardbird-Cadence F 3))
 
 (defbrick To-IV-n-Yak-Cadence(var 2) Major Cadence C
-          (Brick To-IV-n-Yak C 3)
-          (Chord C 1))
+          (brick To-IV-n-Yak C 3)
+          (chord C 1))
 
 (defbrick To-IV-n-Yak-Cadence(var 3) Major Cadence Bb
-          (Brick To-IV Bb 3)
-          (Brick Yardbird-Cadence Bb 5))
+          (brick To-IV Bb 3)
+          (brick Yardbird-Cadence Bb 5))
 
 (defbrick To-IV-n-Yak-Cadence(tritone) Major Cadence Eb
-          (Brick Major-On Eb 1)
-          (Brick Tritone-Cadence Ab 2)
-          (Brick Yardbird-Cadence Eb 2))
+          (brick Major-On Eb 1)
+          (brick Tritone-Cadence Ab 2)
+          (brick Yardbird-Cadence Eb 2))
 
 
 // TTFA = Turnaround to Further Away 
 // where "Further Away" means the ii chord, so these are Dropbacks ending on VI7
 
 (defbrick TTFA-Dropback(main) Major Dropback C
-          (Chord CM7 1)
-          (Brick Straight-Approach D 2))
+          (chord CM7 1)
+          (brick Straight-Approach D 2))
 
 (defbrick TTFA-Dropback(dropback) Major Dropback Eb
-          (Chord EbM7/Bb 1)
-          (Brick Minor-Perfect-Cadence G 2)
-          (Chord C7 1))
+          (chord EbM7/Bb 1)
+          (brick Minor-Perfect-Cadence G 2)
+          (chord C7 1))
 
 (defbrick TTFA-Dropback(IV-variant) Major Dropback C
-          (Chord CM7 1)
-          (Chord F7 1)
-          (Brick Straight-Approach D 2))
+          (chord CM7 1)
+          (chord F7 1)
+          (brick Straight-Approach D 2))
 
 (defbrick TTFA-Dropback(nondominant) Major Dropback C
-          (Chord CM7 1)
-          (Chord FM7 1)
-          (Brick Straight-Approach D 2))
+          (chord CM7 1)
+          (chord FM7 1)
+          (brick Straight-Approach D 2))
 
 (defbrick TTFA-Dropback(ii-variant) Major Dropback C
-          (Chord CM7 1)
-          (Chord Dm7 1)
-          (Brick Straight-Approach D 2))
+          (chord CM7 1)
+          (chord Dm7 1)
+          (brick Straight-Approach D 2))
 
 (defbrick TTFA-Dropback(II n Back variant) Major Dropback Eb
-          (Brick Major-On Eb 2)
-          (Brick II-n-Back Eb 4)
-          (Chord Cm7 2))
+          (brick Major-On Eb 2)
+          (brick II-n-Back Eb 4)
+          (chord Cm7 2))
 
 (defbrick TTFA-Dropback(IV-iii-vi-variant) Major Dropback C
-          (Chord CM7 1)
-          (Chord F7 1)
-          (Chord Em7 1)
-          (Chord Am7 1))
+          (chord CM7 1)
+          (chord F7 1)
+          (chord Em7 1)
+          (chord Am7 1))
 
 (defbrick TTFA-Dropback(IV-III-vi-variant) Major Dropback C
-          (Chord CM7 1)
-          (Chord FM7 1)
-          (Chord E7 1)
-          (Chord Am7 1))
+          (chord CM7 1)
+          (chord FM7 1)
+          (chord E7 1)
+          (chord Am7 1))
 
 (defbrick TTFA-Dropback(rainy) Major Dropback C
-          (Chord CM7 1)
-          (Chord F7 1)
-          (Chord Em7 1)
-          (Chord Ebo 1))
+          (chord CM7 1)
+          (chord F7 1)
+          (chord Em7 1)
+          (chord Ebo 1))
 
 (defbrick TTFA-Dropback(Minor Plagal) Major Dropback C
-          (Chord CM7 1)
-          (Brick Minor-Plagal-Cadence C 2)
-          (Brick An-Approach D 1))
+          (chord CM7 1)
+          (brick Minor-Plagal-Cadence C 2)
+          (brick An-Approach D 1))
 
 (defbrick TTFA-Dropback(on-off) Major Dropback F
-          (Brick On-Off-Major-IV F 2)
-          (Chord Am7b5 1)
-          (Chord D7 1))
+          (brick On-Off-Major-IV F 2)
+          (chord Am7b5 1)
+          (chord D7 1))
 
 (defbrick TTFA-Dropback(minor chromatic descent) Major Dropback F
-          (Chord FM7 1)
-          (Chord Bb7 1)
-          (Brick Minor-Chromatic-Approach G 2))
+          (chord FM7 1)
+          (chord Bb7 1)
+          (brick Minor-Chromatic-Approach G 2))
 
 (defbrick TTFA-Dropback(Somewhere) Major Dropback Db
-          (Brick Major-On Db 1)
-          (Brick Somewhere-Approach Ab 3))
+          (brick Major-On Db 1)
+          (brick Somewhere-Approach Ab 3))
 
 // End of TTFA stuff
 
@@ -2273,226 +2280,226 @@
 // Twopenny stuff
 
 (defbrick Twopenny-Approach Major Approach C
-          (Chord Dm 2)
-          (Brick Yardbird-Cadence C 4)
-          (Brick Straight-Approach D 2)
-          (Brick Straight-Approach C 4))
+          (chord Dm 2)
+          (brick Yardbird-Cadence C 4)
+          (brick Straight-Approach D 2)
+          (brick Straight-Approach C 4))
 
 (defbrick Twopenny-Ending(main) Major Ending C
-          (Brick Twopenny-Approach C 12)
-          (Chord CM7 4))
+          (brick Twopenny-Approach C 12)
+          (chord CM7 4))
 
 (defbrick Twopenny-Ending(Nowhere dropback) Major Approach F
-          (Brick Yardbird-Sub-Cadence F 6)
-          (Chord Abm7 1)
-          (Chord Db7 1)
-          (Chord Gm7 2)
-          (Chord C7 2)
-          (Chord FM7 1))
+          (brick Yardbird-Sub-Cadence F 6)
+          (chord Abm7 1)
+          (chord Db7 1)
+          (chord Gm7 2)
+          (chord C7 2)
+          (chord FM7 1))
 
 (defbrick Twopenny-Ending(Starlight back) Major Ending F
-          (Brick Yardbird-Sub-Cadence F 6)
-          (Chord Bm7b5 1)
-          (Chord Bb7 1)
-          (Chord Am7 1)
-          (Chord D7 1)
-          (Chord Gm7 1)
-          (Chord C7 1)
-          (Chord FM7 1))
+          (brick Yardbird-Sub-Cadence F 6)
+          (chord Bm7b5 1)
+          (chord Bb7 1)
+          (chord Am7 1)
+          (chord D7 1)
+          (chord Gm7 1)
+          (chord C7 1)
+          (chord FM7 1))
 
 (defbrick Twopenny-Ending(var 1) Major Ending G
-          (Chord Am7 2)
-          (Brick GenDom Bb 2)
-          (Brick Straight-Approach A 2)
-          (Brick Stablemates-Cadence G 8))
+          (chord Am7 2)
+          (brick GenDom Bb 2)
+          (brick Straight-Approach A 2)
+          (brick Stablemates-Cadence G 8))
 
 (defbrick Twopenny-Ending(var 2) Major Ending C
-          (Chord Dm7 1)
-          (Chord B7 1)
-          (Chord Em7 1)
-          (Chord A7 1)
-          (Brick An-Approach C 2)
-          (Chord C 1))
+          (chord Dm7 1)
+          (chord B7 1)
+          (chord Em7 1)
+          (chord A7 1)
+          (brick An-Approach C 2)
+          (chord C 1))
 
 (defbrick Twopenny-Ending(var 3) Major Ending Eb
-          (Brick II-n-Bird-SPOT Eb 12)
-          (Chord EbM7 2))
+          (brick II-n-Bird-SPOT Eb 12)
+          (chord EbM7 2))
 
 // End of Twopenny stuff
 
 (defbrick Upslide Major Invisible C
-          (Chord CM7 1)
-          (Chord Dbdim 1))
+          (chord CM7 1)
+          (chord Dbdim 1))
 
 // Tritone
 
 (defbrick Tritone-Approach Major Approach C
-          (Chord Dm7 1)
-          (Chord Db7 1))
+          (chord Dm7 1)
+          (chord Db7 1))
 
 (defbrick Tritone-Cadence(main) Major Cadence C
-          (Chord Dm7 1)
-          (Chord Db7 1)
-          (Chord C 1))
+          (chord Dm7 1)
+          (chord Db7 1)
+          (chord C 1))
 
 (defbrick Tritone-Cadence(short) Major Cadence C
-          (Chord Db7 1)
-          (Chord C 1))
+          (chord Db7 1)
+          (chord C 1))
 
 (defbrick Tritone/Straight-Approach Major Approach F
-          (Brick Tritone-Approach G 4)
-          (Brick Straight-Approach F 3)
-          (Chord C7/Bb 1))
+          (brick Tritone-Approach G 4)
+          (brick Straight-Approach F 3)
+          (chord C7/Bb 1))
 
 // Two-Goes stuff, including Three-Goes and Four-Goes
 
 (defbrick Two-Goes-Approach Major Approach F
-          (Brick An-Approach F 2)
-          (Brick An-Approach F 2))
+          (brick An-Approach F 2)
+          (brick An-Approach F 2))
 
 (defbrick Two-Goes-Nowhere-Approach Major Approach C
-          (Brick Nowhere-Approach C 2)
-          (Brick Nowhere-Approach C 2))
+          (brick Nowhere-Approach C 2)
+          (brick Nowhere-Approach C 2))
 
 (defbrick Two-Goes-Nowhere-Cadence Major Cadence C
-          (Brick Two-Goes-Nowhere-Approach C 4)
-          (Chord C 1))
+          (brick Two-Goes-Nowhere-Approach C 4)
+          (chord C 1))
 
 (defbrick Two-Goes-Pullback Major Approach C
-          (Brick Pullback(basic) C 1)
-          (Brick Pullback(basic) C 1))
+          (brick Pullback(basic) C 1)
+          (brick Pullback(basic) C 1))
 
 (defbrick Two-Goes-Pullback-Extended Major Approach C
-          (Brick Two-Goes-Pullback C 4)
-          (Brick Straight-Approach C 2))
+          (brick Two-Goes-Pullback C 4)
+          (brick Straight-Approach C 2))
 
 (defbrick Two-Goes-Pullback+Cadence Major Cadence C
-          (Brick Two-Goes-Pullback-Extended C 6)
-          (Chord CM7 2))
+          (brick Two-Goes-Pullback-Extended C 6)
+          (chord CM7 2))
 
 (defbrick Two-Goes-Rainy-Approach Major Approach Bb
-          (Brick Rainy-Approach Bb 4)
-          (Brick Rainy-Approach Bb 4))
+          (brick Rainy-Approach Bb 4)
+          (brick Rainy-Approach Bb 4))
 
 (defbrick Two-Goes-Sad-Approach Minor Approach C
-          (Brick Sad-Approach C 1)
-          (Brick Sad-Approach C 1))
+          (brick Sad-Approach C 1)
+          (brick Sad-Approach C 1))
 
 (defbrick Two-Goes-Sad-Cadence Minor Cadence C
-          (Brick Two-Goes-Sad-Approach C 2)
-          (Chord Cm 1))
+          (brick Two-Goes-Sad-Approach C 2)
+          (chord Cm 1))
 
 (defbrick Two-Goes-Starlight-Approach Major Approach Eb
-          (Brick Straight-Approach G 2)
-          (Brick Starlight-Approach Eb 6))
+          (brick Straight-Approach G 2)
+          (brick Starlight-Approach Eb 6))
 
 (defbrick Two-Goes-Straight-Approach Major Approach C
-          (Brick Straight-Approach C 1)
-          (Brick Straight-Approach C 1))
+          (brick Straight-Approach C 1)
+          (brick Straight-Approach C 1))
 
 (defbrick Two-Goes-Straight-Cadence Major Cadence C
-          (Brick Two-Goes-Straight-Approach C 2)
-          (Chord C 1))
+          (brick Two-Goes-Straight-Approach C 2)
+          (chord C 1))
 
 (defbrick Two-Goes-Straight-Cadence-with-Overrun(var 1) Major Cadence C
-          (Brick Two-Goes-Straight-Cadence C 5)
-          (Chord F 1))
+          (brick Two-Goes-Straight-Cadence C 5)
+          (chord F 1))
 
 (defbrick Two-Goes-Straight-Cadence-with-Overrun(var 2) Major Cadence C
-          (Brick Two-Goes-Straight-Cadence C 5)
-          (Chord F7 1))
+          (brick Two-Goes-Straight-Cadence C 5)
+          (chord F7 1))
 
 (defbrick Three-Goes-Pullback Major Approach C
-          (Brick Two-Goes-Pullback C 1)
-          (Brick Pullback C 1))
+          (brick Two-Goes-Pullback C 1)
+          (brick Pullback C 1))
 
 (defbrick Three-Goes-Pullback-Extended Major Approach C
-          (Brick Three-Goes-Pullback C 6)
-          (Brick Straight-Approach C 2))
+          (brick Three-Goes-Pullback C 6)
+          (brick Straight-Approach C 2))
 
 (defbrick Three-Goes-Pullback+Cadence Major Cadence C
-          (Brick Three-Goes-Pullback-Extended C 6)
-          (Chord CM7 2))
+          (brick Three-Goes-Pullback-Extended C 6)
+          (chord CM7 2))
 
 (defbrick Three-Goes-Sad-Approach Minor Approach C
-          (Brick Two-Goes-Sad-Approach C 1)
-          (Brick Sad-Approach C 1))
+          (brick Two-Goes-Sad-Approach C 1)
+          (brick Sad-Approach C 1))
 
 (defbrick Three-Goes-Sad-Cadence Minor Cadence C
-          (Brick Three-Goes-Sad-Approach C 3)
-          (Chord Cm 1))
+          (brick Three-Goes-Sad-Approach C 3)
+          (chord Cm 1))
 
 (defbrick Three-Goes-Straight-Approach Major Approach C
-          (Brick Two-Goes-Straight-Approach C 2)
-          (Brick Straight-Approach C 1))
+          (brick Two-Goes-Straight-Approach C 2)
+          (brick Straight-Approach C 1))
 
 (defbrick Three-Goes-Straight-Cadence Major Cadence C
-          (Brick Three-Goes-Straight-Approach C 3)
-          (Chord C 1))
+          (brick Three-Goes-Straight-Approach C 3)
+          (chord C 1))
 
 (defbrick Three-Goes-Nowhere-Approach Major Approach C
-          (Brick Two-Goes-Nowhere-Approach C 2)
-          (Brick Nowhere-Approach C 2))
+          (brick Two-Goes-Nowhere-Approach C 2)
+          (brick Nowhere-Approach C 2))
 
 (defbrick Three-Goes-Nowhere-Cadence Major Cadence C
-          (Brick Three-Goes-Nowhere-Approach C 4)
-          (Chord C 1))
+          (brick Three-Goes-Nowhere-Approach C 4)
+          (chord C 1))
 
 (defbrick Four-Goes-Straight-Approach Major Approach C
-          (Brick Two-Goes-Straight-Approach C 2)
-          (Brick Two-Goes-Straight-Approach C 2))
+          (brick Two-Goes-Straight-Approach C 2)
+          (brick Two-Goes-Straight-Approach C 2))
 
 (defbrick Four-Goes-Straight-Cadence Major Cadence C
-          (Brick Four-Goes-Straight-Approach C 4)
-          (Chord C 1))
+          (brick Four-Goes-Straight-Approach C 4)
+          (chord C 1))
 
 (defbrick Four-Goes-Sad-Approach Minor Approach C
-          (Brick Two-Goes-Sad-Approach C 1)
-          (Brick Two-Goes-Sad-Approach C 1))
+          (brick Two-Goes-Sad-Approach C 1)
+          (brick Two-Goes-Sad-Approach C 1))
 
 (defbrick Four-Goes-Sad-Cadence Minor Cadence C
-          (Brick Four-Goes-Sad-Approach C 4)
-          (Chord Cm 1))
+          (brick Four-Goes-Sad-Approach C 4)
+          (chord Cm 1))
 
 (defbrick Two-Goes-Tritone-Approach Major Approach C
-          (Brick Tritone-Approach C 1)
-          (Brick Tritone-Approach C 1))
+          (brick Tritone-Approach C 1)
+          (brick Tritone-Approach C 1))
 
 (defbrick Two-Goes-Tritone-Cadence Major Cadence C
-          (Brick Two-Goes-Tritone-Approach C 2)
-          (Chord C 1))
+          (brick Two-Goes-Tritone-Approach C 2)
+          (chord C 1))
 
 (defbrick Three-Goes-Tritone-Approach Major Approach C
-          (Brick Two-Goes-Tritone-Approach C 2)
-          (Brick Tritone-Approach C 1))
+          (brick Two-Goes-Tritone-Approach C 2)
+          (brick Tritone-Approach C 1))
 
 (defbrick Three-Goes-Tritone-Cadence Major Cadence C
-          (Brick Three-Goes-Tritone-Approach C 3)
-          (Chord C 1))
+          (brick Three-Goes-Tritone-Approach C 3)
+          (chord C 1))
 
 (defbrick Four-Goes-Tritone-Approach Major Approach C
-          (Brick Three-Goes-Tritone-Approach C 3)
-          (Brick Tritone-Approach C 1))
+          (brick Three-Goes-Tritone-Approach C 3)
+          (brick Tritone-Approach C 1))
 
 (defbrick Four-Goes-Tritone-Cadence Major Cadence C
-          (Brick Four-Goes-Tritone-Approach C 4)
-          (Chord C 1))
+          (brick Four-Goes-Tritone-Approach C 4)
+          (chord C 1))
 
 (defbrick Two-Goes-Dominant-Approach Major Approach C
-          (Brick Dominant-Cycle(2 steps) C 1)
-          (Brick Dominant-Cycle(2 steps) C 1))
+          (brick Dominant-Cycle(2 steps) C 1)
+          (brick Dominant-Cycle(2 steps) C 1))
 
 (defbrick Two-Goes-Somewhere-Cadence Major Approach C
-          (Brick Two-Goes-Dominant-Approach C 4)
-          (Chord C 1))
+          (brick Two-Goes-Dominant-Approach C 4)
+          (chord C 1))
 
 (defbrick Two-Goes-Tritone-Straight-Approach Major Approach C
-          (Brick Tritone-Approach C 1)
-          (Brick Straight-Approach C 1))
+          (brick Tritone-Approach C 1)
+          (brick Straight-Approach C 1))
 
 (defbrick Two-Goes-Tritone-Straight-Cadence Major Cadence C
-          (Brick Two-Goes-Tritone-Straight-Approach C 4)
-          (Chord C 1))
+          (brick Two-Goes-Tritone-Straight-Approach C 4)
+          (chord C 1))
 
 // End of Two-Goes, Three-Goes, Four-Goes
 
@@ -2500,355 +2507,355 @@
 // Whoopee, from "Makin' Whoopee"
 
 (defbrick Whoopee-Turnaround Major Turnaround C
-          (Brick Upslide C 2)
-          (Brick Straight-Approach C 2))
+          (brick Upslide C 2)
+          (brick Straight-Approach C 2))
 
 (defbrick Whoopee-Cadence Major Cadence C
-          (Chord Dbdim 1)
-          (Brick Straight-Cadence C 3))
+          (chord Dbdim 1)
+          (brick Straight-Cadence C 3))
 
 
 // Wonderful
 
 (defbrick Wonderful-Opening Major Opening Bb
-        (Brick Surge Bb 4)
-        (Brick Straight-Cadence Bb 3))
+        (brick Surge Bb 4)
+        (brick Straight-Cadence Bb 3))
 
 // Yardbird
 
 (defbrick Yardbird-Approach(main) Major Approach C
-          (Chord Fm7 1)
-          (Chord Bb7 1))
+          (chord Fm7 1)
+          (chord Bb7 1))
 
 (defbrick Yardbird-Cadence Major Cadence C
-          (Brick GenDom Eb 1)
-          (Chord C 1))
+          (brick GenDom Eb 1)
+          (chord C 1))
 
 (defbrick Yardbird-Sub-Cadence Major Cadence C
-          (Chord Dm7 1)
-          (Brick GenDom Eb 1)
-          (Chord C 1))
+          (chord Dm7 1)
+          (brick GenDom Eb 1)
+          (chord C 1))
 
 (defbrick Yardbird-Sub-Turnaround Major Turnaround C
-          (Chord C 1)
-          (Brick Minor-On A 1)
-          (Chord Bb7 2))
+          (chord C 1)
+          (brick Minor-On A 1)
+          (chord Bb7 2))
 
 
 // On-off (replaced by XS)
 
 (defbrick Major-On Major On C
-          (Chord C 1))
+          (chord C 1))
 
 (defbrick Minor-On(main) Minor On C
-         (Chord Cm 1))
+         (chord Cm 1))
 
 (defbrick Minor-On(var 1) Minor On C
-          (Chord CmM7 1))
+          (chord CmM7 1))
 
 (defbrick Minor-On(var 2) Minor On C
-          (Chord Cm7 1))
+          (chord Cm7 1))
 
 (defbrick On-Off-Major-V Major On-Off C
-          (Chord C 1)
-          (Chord G7 1))
+          (chord C 1)
+          (chord G7 1))
 
 (defbrick On-Off-Major-bII Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off Db 1))
+          (brick Major-On C 1)
+          (brick Off Db 1))
 
 (defbrick On-Off-Major-Somewhere Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off D 1)) 
+          (brick Major-On C 1)
+          (brick Off D 1)) 
 
 (defbrick On-Off-Major-bIII Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off Eb 1))
+          (brick Major-On C 1)
+          (brick Off Eb 1))
 
 (defbrick On-Off-Major-III Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off E 1))
+          (brick Major-On C 1)
+          (brick Off E 1))
 
 (defbrick On-Off-Major-IV Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off F 1))
+          (brick Major-On C 1)
+          (brick Off F 1))
 
 (defbrick On-Off-Major-#IV Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off F# 1))
+          (brick Major-On C 1)
+          (brick Off F# 1))
 
 (defbrick On-Off-Major-Nowhere Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off Ab 1))
+          (brick Major-On C 1)
+          (brick Off Ab 1))
 
 (defbrick On-Off-Major-VI Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off A 1))
+          (brick Major-On C 1)
+          (brick Off A 1))
 
 (defbrick On-Off-Major-bVII Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off Bb 1))
+          (brick Major-On C 1)
+          (brick Off Bb 1))
 
 (defbrick On-Off-Major-VII Major On-Off C
-          (Brick Major-On C 1)
-          (Brick Off B 1))
+          (brick Major-On C 1)
+          (brick Off B 1))
 
 (defbrick On-Off-Minor-bII Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off Db 1))
+          (brick Minor-On C 1)
+          (brick Off Db 1))
 
 (defbrick On-Off-Minor-Somewhere Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off D 1)) 
+          (brick Minor-On C 1)
+          (brick Off D 1)) 
 
 (defbrick On-Off-Minor-bIII Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off Eb 1))
+          (brick Minor-On C 1)
+          (brick Off Eb 1))
 
 (defbrick On-Off-Minor-III Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off E 1))
+          (brick Minor-On C 1)
+          (brick Off E 1))
 
 (defbrick On-Off-Minor-IV Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off F 1))
+          (brick Minor-On C 1)
+          (brick Off F 1))
 
 (defbrick On-Off-Minor-#IV Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off F# 1))
+          (brick Minor-On C 1)
+          (brick Off F# 1))
 
 (defbrick On-Off-Minor-V Minor On-Off C
-          (Brick GenMinor C 1)
-          (Chord G7 1))
+          (brick GenMinor C 1)
+          (chord G7 1))
 
 (defbrick On-Off-Minor-Nowhere Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off Ab 1))
+          (brick Minor-On C 1)
+          (brick Off Ab 1))
 
 (defbrick On-Off-Minor-VI Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off A 1))
+          (brick Minor-On C 1)
+          (brick Off A 1))
 
 (defbrick On-Off-Minor-bVII Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off Bb 1))
+          (brick Minor-On C 1)
+          (brick Off Bb 1))
 
 (defbrick On-Off-Minor-VII Minor On-Off C
-          (Brick Minor-On C 1)
-          (Brick Off B 1))
+          (brick Minor-On C 1)
+          (brick Off B 1))
 
 (defbrick Off-On-Major-bII Major Off-On C
-          (Brick Off Db 1)
-          (Brick Major-On C 1))
+          (brick Off Db 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-Somewhere Major Off-On C
-          (Brick Off D 1)
-          (Brick Major-On C 1))
+          (brick Off D 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-bIII Major Off-On C
-          (Brick Off Eb 1)
-          (Brick Major-On C 1))
+          (brick Off Eb 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-III Major Off-On C
-          (Brick Off E 1)
-          (Brick Major-On C 1))
+          (brick Off E 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-IV Major Off-On C
-          (Brick Off F 1)
-          (Brick Major-On C 1))
+          (brick Off F 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-#IV Major Off-On C
-          (Brick Off F# 1)
-          (Brick Major-On C 1))
+          (brick Off F# 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-Nowhere Major Off-On C
-          (Brick Off Ab 1)
-          (Brick Major-On C 1))
+          (brick Off Ab 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-VI Major Off-On C
-          (Brick Off A 1)
-          (Brick Major-On C 1))
+          (brick Off A 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-bVII Major Off-On C
-          (Brick Off Bb 1)
-          (Brick Major-On C 1))
+          (brick Off Bb 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Major-VII Major Off-On C
-          (Brick Off B 1)
-          (Brick Major-On C 1))
+          (brick Off B 1)
+          (brick Major-On C 1))
 
 (defbrick Off-On-Minor-bII Minor Off-On C
-          (Brick Off Db 1)
-          (Brick Minor-On C 1))
+          (brick Off Db 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-Somewhere Minor Off-On C
-          (Brick Off D 1)
-          (Brick Minor-On C 1))
+          (brick Off D 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-bIII Minor Off-On C
-          (Brick Off Eb 1)
-          (Brick Minor-On C 1))
+          (brick Off Eb 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-III Minor Off-On C
-          (Brick Off E 1)
-          (Brick Minor-On C 1))
+          (brick Off E 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-IV Minor Off-On C
-          (Brick Off F 1)
-          (Brick Minor-On C 1))
+          (brick Off F 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-#IV Minor Off-On C
-          (Brick Off F# 1)
-          (Brick Minor-On C 1))
+          (brick Off F# 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-Nowhere Minor Off-On C
-          (Brick Off Ab 1)
-          (Brick Minor-On C 1))
+          (brick Off Ab 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-VI Minor Off-On C
-          (Brick Off A 1)
-          (Brick Minor-On C 1))
+          (brick Off A 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-bVII Minor Off-On C
-          (Brick Off Bb 1)
-          (Brick Minor-On C 1))
+          (brick Off Bb 1)
+          (brick Minor-On C 1))
 
 (defbrick Off-On-Minor-VII Minor Off-On C
-          (Brick Off B 1)
-          (Brick Minor-On C 1))
+          (brick Off B 1)
+          (brick Minor-On C 1))
 
 (defbrick On-Off-Twice-To-V Major On-Off+ C
-          (Brick Major-On C 1)
-          (Chord G7 1)
-          (Brick Major-On C 1)
-          (Chord G7 1))
+          (brick Major-On C 1)
+          (chord G7 1)
+          (brick Major-On C 1)
+          (chord G7 1))
 
 (defbrick On-Off-On-To-IV-Major Major On-Off+ C
-          (Brick Major-On C 1)
-          (Brick Amen-Cadence C 2))
+          (brick Major-On C 1)
+          (brick Amen-Cadence C 2))
 
 (defbrick On-Off-On-+Dropback-IV-Major Major Dropback C
-          (Brick On-Off-On-To-IV-Major C 3)
-          (Brick SuperGenDom D 1))
+          (brick On-Off-On-To-IV-Major C 3)
+          (brick SuperGenDom D 1))
 
 (defbrick On-Off-On-To-IV-Minor Minor On-Off+ C
-          (Brick Minor-On C 1)
-          (Chord Fm 1)
-          (Brick Minor-On C 1))
+          (brick Minor-On C 1)
+          (chord Fm 1)
+          (brick Minor-On C 1))
 
 (defbrick On-Off-Twice-On-To-IV Major On-Off+ C
-          (Brick On-Off-On-To-IV-Major C 4)
-          (Brick Amen-Cadence C 2))
+          (brick On-Off-On-To-IV-Major C 4)
+          (brick Amen-Cadence C 2))
 
 (defbrick On-Off-Thrice-To-IV Major On-Off+ C
-          (Brick On-Off-Major-IV C 2)
-          (Brick On-Off-Major-IV C 2)
-          (Brick On-Off-Major-IV C 2))
+          (brick On-Off-Major-IV C 2)
+          (brick On-Off-Major-IV C 2)
+          (brick On-Off-Major-IV C 2))
 
 (defbrick On-Off-Thrice-On-To-IV Major On-Off+ C
-          (Brick On-Off-Twice-On-To-IV C 4)
-          (Brick Amen-Cadence C 2))
+          (brick On-Off-Twice-On-To-IV C 4)
+          (brick Amen-Cadence C 2))
 
 (defbrick On-Off-Four-Times-On-To-IV Major On-Off+ C
-          (Brick On-Off-Thrice-On-To-IV C 4)
-          (Brick Amen-Cadence C 2))
+          (brick On-Off-Thrice-On-To-IV C 4)
+          (brick Amen-Cadence C 2))
 
 
 (defbrick On-Off-On-To-V(main) Major On-Off+ C
-          (Brick Major-On C 1)
-          (Brick Perfect-Cadence C 2))
+          (brick Major-On C 1)
+          (brick Perfect-Cadence C 2))
 
 (defbrick On-Off-On-To-V(minor) Minor On-Off+ C
-          (Brick Minor-On C 1)
-          (Brick DomOrMinor C 1)
-          (Brick Minor-On C 1))
+          (brick Minor-On C 1)
+          (brick DomOrMinor C 1)
+          (brick Minor-On C 1))
 
 (defbrick On-Off-On-To-V(sus) Major On-Off+ C
-          (Brick Major-On C 1)
-          (Chord Gsus 1)
-          (Brick Major-On C 1))
+          (brick Major-On C 1)
+          (chord Gsus 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-Twice-On-To-V Major On-Off+ C
-          (Brick On-Off-On-To-V C 4)
-          (Brick Perfect-Cadence C 2))
+          (brick On-Off-On-To-V C 4)
+          (brick Perfect-Cadence C 2))
 
 (defbrick On-Off-Thrice-On-To-V Major On-Off+ C
-          (Brick On-Off-Twice-On-To-V C 4)
-          (Brick Perfect-Cadence C 2))
+          (brick On-Off-Twice-On-To-V C 4)
+          (brick Perfect-Cadence C 2))
 
 (defbrick On-Off-Four-Times-On-To-V Major On-Off+ C
-          (Brick On-Off-Thrice-On-To-V C 4)
-          (Brick Perfect-Cadence C 2))
+          (brick On-Off-Thrice-On-To-V C 4)
+          (brick Perfect-Cadence C 2))
 
 (defbrick On-Off-On-To-II Major On-Off+ C
-          (Brick Major-On C 1)
-          (Chord Dm7 1)
-          (Brick Major-On C 1))
+          (brick Major-On C 1)
+          (chord Dm7 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-Twice-To-II Major On-Off+ C
-          (Brick Major-On C 1)
-          (Chord Dm7 1)
-          (Brick Major-On C 1)
-          (Chord Dm7 1))
+          (brick Major-On C 1)
+          (chord Dm7 1)
+          (brick Major-On C 1)
+          (chord Dm7 1))
  
 (defbrick On-Off-Twice-On-To-II Major On-Off+ C
-          (Brick On-Off-On-To-II C 4)
-          (Chord Dm7 1)
-          (Brick Major-On C 1))
+          (brick On-Off-On-To-II C 4)
+          (chord Dm7 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-Thrice-On-To-II Major On-Off+ C
-          (Brick On-Off-Twice-On-To-II C 4)
-          (Chord Dm7 1)
-          (Brick Major-On C 1))
+          (brick On-Off-Twice-On-To-II C 4)
+          (chord Dm7 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-Four-Times-On-To-II Major On-Off+ C
-          (Brick On-Off-Thrice-On-To-II C 4)
-          (Chord Dm7 1)
-          (Brick Major-On C 1))
+          (brick On-Off-Thrice-On-To-II C 4)
+          (chord Dm7 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-To-IV-Twice-Major-then-Minor Minor On-Off+ C
-          (Brick On-Off-Major-IV C 1)
-          (Brick On-Off-Minor-IV C 1))
+          (brick On-Off-Major-IV C 1)
+          (brick On-Off-Minor-IV C 1))
 
 (defbrick On-Off-Major-Minor-V Minor On-Off+ C
-          (Brick On-Off-Major-V C 1)
-          (Brick On-Off-Minor-V C 1))
+          (brick On-Off-Major-V C 1)
+          (brick On-Off-Minor-V C 1))
 
 (defbrick On-Off-Twice-Minor-V Minor On-Off+ C
-          (Brick On-Off-Minor-V C 1)
-          (Brick On-Off-Minor-V C 1))
+          (brick On-Off-Minor-V C 1)
+          (brick On-Off-Minor-V C 1))
 
 (defbrick On-Off-Thrice-Minor-V Minor On-Off+ C
-          (Brick On-Off-Twice-Minor-V C 2)
-          (Brick On-Off-Minor-V C 1))
+          (brick On-Off-Twice-Minor-V C 2)
+          (brick On-Off-Minor-V C 1))
 
 (defbrick On-Off-On-Minor-V Minor On-Off+ C
-          (Brick On-Off-Minor-V C 1)
-          (Brick GenMinor C 1))
+          (brick On-Off-Minor-V C 1)
+          (brick GenMinor C 1))
 
 (defbrick On-Off-On-Twice-Minor-V Minor Cadence C
-          (Brick On-Off-Twice-Minor-V C 1)
-          (Brick GenMinor C 1))
+          (brick On-Off-Twice-Minor-V C 1)
+          (brick GenMinor C 1))
 
 (defbrick On-Off-On-To-bVII Major On-Off+ C
-          (Brick Major-On C 1)
-          (Chord Bb7 1)
-          (Brick Major-On C 1))
+          (brick Major-On C 1)
+          (chord Bb7 1)
+          (brick Major-On C 1))
  
 (defbrick On-Off-Twice-On-To-bVII Major On-Off+ C
-          (Brick On-Off-On-To-bVII C 4)
-          (Chord Bb7 1)
-          (Brick Major-On C 1))
+          (brick On-Off-On-To-bVII C 4)
+          (chord Bb7 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-Thrice-On-To-bVII Major On-Off+ C
-          (Brick On-Off-Twice-On-To-bVII C 4)
-          (Chord Bb7 1)
-          (Brick Major-On C 1))
+          (brick On-Off-Twice-On-To-bVII C 4)
+          (chord Bb7 1)
+          (brick Major-On C 1))
 
 (defbrick On-Off-Four-Times-On-To-bVII Major On-Off+ C
-          (Brick On-Off-Thrice-On-To-bVII C 4)
-          (Chord Bb7 1)
-          (Brick Major-On C 1))
+          (brick On-Off-Thrice-On-To-bVII C 4)
+          (chord Bb7 1)
+          (brick Major-On C 1))
 
 // User-defined bricks
 
