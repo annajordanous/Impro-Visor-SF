@@ -2167,13 +2167,18 @@
           (chord F 1)
           (chord Fm 1))
 
-(defbrick To-IV-n-Yak-Approach(Main) Major Approach Eb
+(defbrick To-IV-n-Yak-Approach(main) Major Approach Eb
           (chord EbM7 2)
           (chord Bbm7 1)
           (chord Eb7 1)
           (chord AbM7 2)
           (chord Abm7 1)
           (chord Db7 1))
+
+(defbrick To-IV-n-Yak(var) Major Approach Bb
+        (brick Major-On Bb 2)
+        (brick Straight-Cadence-+-Dominant-Overrun Eb 6))
+
 
 (defbrick To-IV-n-Yak(rainy) Major Approach Eb
           (brick Rainy-Cadence Eb 10))

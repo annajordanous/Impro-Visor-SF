@@ -34,9 +34,12 @@
     (key -1)
 )
 
-(phrase (style swing)) 
+(section (style swing)) 
+
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7#11 | / | 
+
+(phrase (style swing)) 
 BbM7 | / | Gm7 | C7#11 | 
 
 (section (style swing)) 
@@ -47,6 +50,9 @@ Cm7 | G7 | Cm7 | F7+ |
 
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7#11 | / | 
+
+(section (style swing)) 
+
 BbM7 | / | Gm7 | C7#11 | 
 Cm7 | F7 | BbM7 | / | 
 
@@ -61,9 +67,12 @@ Am7 | D7 | GM7 | / |
 
 Gm7 | C7 | Cm7 | F7+ | 
 
-(phrase (style swing)) 
+(section (style swing)) 
+
 BbM7 | / | Fm7 | Bb7 | 
 EbM7 | / | Ab7#11 | / | 
+
+(phrase (style swing)) 
 BbM7 | / | Gm7 | C7#11 | 
 
 (section (style swing)) 
