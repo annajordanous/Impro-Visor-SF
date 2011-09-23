@@ -25,7 +25,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import imp.brickdictionary.*;
 import imp.util.ErrorLog;
-import java.util.Random;
 
 
 /** The panel where this roadmap is drawn. This class deals mostly with modifying

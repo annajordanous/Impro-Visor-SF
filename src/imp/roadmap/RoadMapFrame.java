@@ -72,17 +72,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     /** Buffer for the preview panel  */
     private Image bufferPreviewPanel;
+    
     /** Width of the preview buffer */
     private final int previewBufferWidth  = 2400;
+    
     /** Height of the preview buffer */
     private final int previewBufferHeight = 100;
 
     /** Buffer for the roadmap panel */
     private Image bufferRoadMap;  
+    
     /** Width of the roadmap buffer */
     private final int roadMapBufferWidth  = 2400;
+    
     /** Height of the roadmap buffer */
-    private final int roadMapBufferHeight = 1920;
+    private final int roadMapBufferHeight = 2400;
     
     /** Dictionary frame location, relative to the roadmap panel */
     private final int dictionaryFrameX = 910;
@@ -90,44 +94,64 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     /** Panel for previewing bricks from the library */
     private PreviewPanel previewPanel;
+    
     /** Panel where the roadmap is drawn */
     private RoadMapPanel roadMapPanel;
+    
     /** Library of available bricks */
     private BrickLibrary brickLibrary;
+    
     /** Parser for chord analysis */
     private CYKParser cykParser = new CYKParser();
+    
     /** When bricks are dragged, they are removed from the roadmap and store here */
     private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
+    
     /** Stores copied bricks */
     private static ArrayList<Block> clipboard = new ArrayList();
+    
     /** Choices in the duration combobox */
     private Object[] durationChoices = {8,7,6,5,4,3,2,1};
+    
     /** Combo box model for choosing styles */
     private Notate.StyleComboBoxModel styleComboBoxModel = new Notate.StyleComboBoxModel();
+    
     /** Default width of the roadmap frame */
     private int RMframeWidth = 1250;
+    
     /** Playback status */
     private MidiPlayListener.Status isPlaying = MidiPlayListener.Status.STOPPED;
+    
     /** This timer provides updates to the roadmap panel during playback */
     private javax.swing.Timer playTimer;
+    
     /** Tree used to store the brick library */
     private DefaultTreeModel libraryTreeModel;
+    
     /** Graphical settings are stored here */
     private RoadMapSettings settings = new RoadMapSettings();
+    
     /** Actions that can be undone */
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
+    
     /** Actions that can be redone */
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
+    
     /** Prefix on the frame title */
     private static String roadMapTitlePrefix = "RoadMap: ";
+    
     /** Suffix for constrained feature width */
     private static String featureWidthSuffix = "(Constrained)";
+    
     /** Title of this piece */
     public String roadMapTitle = "Untitled";
+    
     /** Style of this piece */
     public Style style = Advisor.getStyle("swing");
+    
     /** Tempo of this piece */
     public int tempo = 120;
+    
     /** Time signature of this piece */
     public int[] metre = {4,4};
     
@@ -2400,6 +2424,8 @@ private void barsPerLineComboBoxscaleComboReleased(java.awt.event.MouseEvent evt
 private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleChosen
   {//GEN-HEADEREND:event_barsPerLineComboBoxscaleChosen
     settings.setBarsPerLine(Integer.parseInt((String)barsPerLineComboBox.getSelectedItem()));
+    roadMapPanel.draw();
+    roadMapPanel.requestFocusInWindow();
   }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
 
 //</editor-fold>
