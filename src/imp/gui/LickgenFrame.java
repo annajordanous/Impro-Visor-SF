@@ -2242,17 +2242,19 @@ public void redrawTriage()
         // add it to the list of chords that we've processed.
 
         Chord currentChord = chordPart.getCurrentChord(chordChanges.get(i));
-
-        String currentChordName = currentChord.getName();
-
-        if( chordUsed.contains(currentChordName) )
+        
+        if( currentChord != null )
           {
+          String currentChordName = currentChord.getName();
+  
+          if( chordUsed.contains(currentChordName) )
+            {
             continue;
-          }
-        else
-          {
+            }
+          else
+            {
             chordUsed.add(currentChordName);
-          }
+            }
 
         // Add in a label specifing which chord these text boxes correspond to.
 
@@ -2380,6 +2382,7 @@ public void redrawTriage()
             panel.add(prefs[j], gbc);
           }
         lickPrefs.add(prefs);
+      }
       }
 
     JScrollPane sp = new JScrollPane(panel);

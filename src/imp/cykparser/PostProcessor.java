@@ -385,8 +385,10 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
             if( brickName.equals("Straight Approach") )
               {
                
-//                String altResolution = getAlternateResolution(b, chordList.get(0));
                 Long baseKey = b.getLastChord().getKey(); // alternate b.getKey()
+                
+                // This call is made in the event of an approach resolving 
+                
                 String altResolution = getAlternateResolution(baseKey, postBlock.getKey());
                 
                 //System.out.println(b + " vs " + postBlock + " altResolution = " + altResolution);
@@ -407,6 +409,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
                     /* && doesResolve(b, chordList.get(0))*/ ) 
               {
                 // If the name has "Approach", replace it with "Launcher"
+                
                 if( brickName.contains("Approach") )
                   {
                     brickName = brickName.replace("Approach", "Launcher");
@@ -453,7 +456,10 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
                 chordList = (ArrayList<ChordBlock>) postBlock.flattenBlock();
               }
 
-            String altResolution = getAlternateResolution(c, chordList.get(0));
+            // This call is made in the event of a single dominant resolving
+            // to a tonic.
+            
+            String altResolution = getAlternateResolution(c.getKey(), postBlock.getKey());
 
             Block b;
             if( !altResolution.isEmpty() )
@@ -489,33 +495,43 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
    
     
     /**
+     * No longer used
      * Change the resolution of a Straight approach to some other kind,
      * depending on the target
      * @param approach
      * @param target
      * @return 
-     */
+
 public static String getAlternateResolution(Block approach, ChordBlock target)
   {
     //System.out.println("getAlternate " + approach + " to " + target);
     
-    int BIAS = 7;
     long domRoot = approach.getLastChord().getKey();
-    long resRoot = BIAS + target.getKey();
+    long resRoot = target.getKey();
 
     return getAlternateResolution(domRoot, resRoot);
   }
+ */
+
+/**
+ * Change the resolution of a target as if from a dominant.
+ * @param domRoot
+ * @param resRoot
+ * @return 
+ */
 
 public static String getAlternateResolution(long domRoot, long resRoot)
   {
+    int BIAS = 7;
+    
     int domRootInt = Long.valueOf(domRoot).intValue();
     int resRootInt = Long.valueOf(resRoot).intValue();
 
-    int diff = (resRootInt - domRootInt + OCTAVE) % OCTAVE;
-
-    //System.out.println("domRoot = " + domRoot + ", resRoot = " + resRoot + " diff = " + diff);
+    int diff = (resRootInt + BIAS - domRootInt + OCTAVE) % OCTAVE;
 
     String altResolution = RESOLUTIONS[diff];
+
+    //System.out.println("domRoot = " + domRoot + ", resRoot = " + resRoot + " diff = " + diff + " res = " + altResolution);
 
     return altResolution;
   }

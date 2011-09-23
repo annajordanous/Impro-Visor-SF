@@ -2424,8 +2424,7 @@ private void barsPerLineComboBoxscaleComboReleased(java.awt.event.MouseEvent evt
 private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleChosen
   {//GEN-HEADEREND:event_barsPerLineComboBoxscaleChosen
     settings.setBarsPerLine(Integer.parseInt((String)barsPerLineComboBox.getSelectedItem()));
-    roadMapPanel.draw();
-    roadMapPanel.requestFocusInWindow();
+
   }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
 
 //</editor-fold>
