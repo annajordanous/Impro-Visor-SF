@@ -258,6 +258,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
+        barsPerLineComboBox = new javax.swing.JComboBox();
         featureWidthSlider = new javax.swing.JSlider();
         roadMapTextEntry = new javax.swing.JTextField();
         roadMapStatus = new javax.swing.JTextField();
@@ -989,6 +990,27 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(stopButton);
 
+        barsPerLineComboBox.setMaximumRowCount(24);
+        barsPerLineComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", " " }));
+        barsPerLineComboBox.setSelectedIndex(7);
+        barsPerLineComboBox.setToolTipText("Scale the maximum number of bars per line.\n"); // NOI18N
+        barsPerLineComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars Per Line ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande 9", 0, 12))); // NOI18N
+        barsPerLineComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
+        barsPerLineComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
+        barsPerLineComboBox.setName("barsPerLineComboBox"); // NOI18N
+        barsPerLineComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
+        barsPerLineComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                barsPerLineComboBoxscaleComboReleased(evt);
+            }
+        });
+        barsPerLineComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barsPerLineComboBoxscaleChosen(evt);
+            }
+        });
+        toolBar.add(barsPerLineComboBox);
+
         featureWidthSlider.setMaximum(300);
         featureWidthSlider.setMinimum(60);
         featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks. Double-click to constrain the setting."); // NOI18N
@@ -1020,13 +1042,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         roadMapTextEntry.setMinimumSize(new java.awt.Dimension(900, 30));
         roadMapTextEntry.setName("roadMapTextEntry"); // NOI18N
         roadMapTextEntry.setPreferredSize(new java.awt.Dimension(1200, 30));
+        roadMapTextEntry.setSize(new java.awt.Dimension(0, 30));
         roadMapTextEntry.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 textualEntryKeyPressed(evt);
@@ -1037,7 +1060,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.05;
+        gridBagConstraints.weighty = 0.075;
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapStatus.setEditable(false);
@@ -1049,6 +1072,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapStatus.setName("roadMapStatus"); // NOI18N
         roadMapStatus.setPreferredSize(new java.awt.Dimension(12, 30));
         roadMapStatus.setRequestFocusEnabled(false);
+        roadMapStatus.setSize(new java.awt.Dimension(0, 30));
         roadMapStatus.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 roadMapStatustextualEntryKeyPressed(evt);
@@ -1060,7 +1084,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.05;
+        gridBagConstraints.weighty = 0.075;
         getContentPane().add(roadMapStatus, gridBagConstraints);
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -1100,7 +1124,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.8;
+        gridBagConstraints.weighty = 0.75;
         getContentPane().add(roadMapScrollPane, gridBagConstraints);
 
         previewScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Brick preview (select from Dictionary)\n", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
@@ -1108,9 +1132,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
-        previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 60));
+        previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
-        previewScrollPane.setPreferredSize(new java.awt.Dimension(1200, 80));
+        previewScrollPane.setPreferredSize(new java.awt.Dimension(1200, 100));
+        previewScrollPane.setSize(new java.awt.Dimension(0, 100));
         previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 previewScrollPanepreviewPaneReleased(evt);
@@ -2367,6 +2392,16 @@ private void saveDictionaryAsMIActionPerformed(java.awt.event.ActionEvent evt)//
     saveDictionaryAs();
   }//GEN-LAST:event_saveDictionaryAsMIActionPerformed
 
+private void barsPerLineComboBoxscaleComboReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleComboReleased
+  {//GEN-HEADEREND:event_barsPerLineComboBoxscaleComboReleased
+    // TODO add your handling code here:
+  }//GEN-LAST:event_barsPerLineComboBoxscaleComboReleased
+
+private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleChosen
+  {//GEN-HEADEREND:event_barsPerLineComboBoxscaleChosen
+    settings.setBarsPerLine(Integer.parseInt((String)barsPerLineComboBox.getSelectedItem()));
+  }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -2969,6 +3004,7 @@ private void saveDictionaryAsMIActionPerformed(java.awt.event.ActionEvent evt)//
     private javax.swing.JMenuItem analyzeMenuItem;
     private javax.swing.JMenuItem appendToLeadsheetMI;
     private javax.swing.JMenuItem appendToNewLeadsheetMI;
+    private javax.swing.JComboBox barsPerLineComboBox;
     private javax.swing.JButton breakButton;
     private javax.swing.JMenuItem breakMenuItem;
     private javax.swing.JFrame brickDictionaryFrame;

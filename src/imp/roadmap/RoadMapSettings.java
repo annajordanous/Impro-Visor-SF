@@ -115,10 +115,13 @@ public class RoadMapSettings {
     private int colorationBias = 0;
     
     /* --- Strokes --- */
+    
     /** Basic line */
     public BasicStroke basicLine    = new BasicStroke(1);
+    
     /** Line for brick outline */
     public BasicStroke brickOutline = new BasicStroke(2);
+    
     /** Cursor line */
     public BasicStroke cursorLine   = new BasicStroke(2);
     
@@ -338,5 +341,13 @@ public class RoadMapSettings {
     public int getColorationBias()
       {
         return colorationBias;
+      }
+    
+    public void setBarsPerLine(int bars)
+      {
+        if( bars > 0 )
+          {
+            barsPerLine = bars;
+          }
       }
 }

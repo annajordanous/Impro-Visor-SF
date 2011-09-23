@@ -43,6 +43,7 @@ public class RoadMapPanel extends JPanel {
      */
     /** Index of the start of selection (inclusive) */
     private int selectionStart = -1;
+    
     /** Index of the end of selection (inclusive) */
     private int selectionEnd = -1;
     
@@ -51,27 +52,37 @@ public class RoadMapPanel extends JPanel {
     
     /** Slot offset of the play line */
     private int playLineSlot = -1;
+    
     /** Line of the play line */
     private int playLineLine = -1;
+    
     /** Keeps track of the offset (in slots) of the playline (for when playback starts at a chord in the middle) */
     private int playLineOffset = 0;
+    
     /** Index of the start of the play section */
     private int playSectionStart = 0;
+    
     /** Index of the end of the play section */
     private int playSectionEnd = 0;
     
     /** Position of the rollover (prevents flickering during playback)*/
     private Point rolloverPos = null;
+    
     /** Buffer for drawing */
     private Image buffer;
+    
     /** Roadmap. Stores the chords and junk. */
     private RoadMap roadMap = new RoadMap();
+    
     /** Graphic representation of the roadmap */
     private ArrayList<GraphicBrick> graphicMap = new ArrayList();
+    
     /** Section breaks list. Only used for keymapping. Possibly unideal. */
     private ArrayList<Long> sectionBreaks = new ArrayList();
+    
     /** Keeps track of graphical settings for the roadmap */
     RoadMapSettings settings;
+    
     /** RoadMapFrame containing this panel */
     RoadMapFrame view;
     
