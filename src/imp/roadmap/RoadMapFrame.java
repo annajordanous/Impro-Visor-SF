@@ -1066,7 +1066,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
@@ -1084,11 +1084,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.075;
+        gridBagConstraints.weighty = 0.08;
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapStatus.setEditable(false);
-        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapStatus.setToolTipText("Shows the status of the roadmap."); // NOI18N
         roadMapStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Roadmap status"));
         roadMapStatus.setMaximumSize(new java.awt.Dimension(2147483647, 30));
@@ -1108,7 +1108,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.075;
+        gridBagConstraints.weighty = 0.08;
         getContentPane().add(roadMapStatus, gridBagConstraints);
 
         roadMapScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -1176,7 +1176,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 0.1;
+        gridBagConstraints.weighty = 0.09;
         getContentPane().add(previewScrollPane, gridBagConstraints);
 
         clearButton.setBackground(new java.awt.Color(255, 255, 51));
