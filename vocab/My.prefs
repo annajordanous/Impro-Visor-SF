@@ -4,7 +4,7 @@
 (default-melody-instrument 12)
 (default-chord-instrument 1)
 (default-bass-instrument 34)
-(default-mixer-all 127)
+(default-mixer-all 80)
 (default-mixer-entry 50)
 (default-mixer-bass 60)
 (default-mixer-chords 40)

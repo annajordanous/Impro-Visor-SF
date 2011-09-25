@@ -973,11 +973,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         allVolumeToolBarSlider.setMajorTickSpacing(5);
         allVolumeToolBarSlider.setMaximum(127);
-        allVolumeToolBarSlider.setToolTipText("Set the volume for sounds on entry."); // NOI18N
+        allVolumeToolBarSlider.setToolTipText("Set the master volume."); // NOI18N
+        allVolumeToolBarSlider.setValue(80);
         allVolumeToolBarSlider.setMaximumSize(new java.awt.Dimension(120, 20));
         allVolumeToolBarSlider.setMinimumSize(new java.awt.Dimension(80, 20));
         allVolumeToolBarSlider.setName("allVolumeToolBarSlider"); // NOI18N
-        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(80, 20));
+        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(90, 20));
         allVolumeToolBarSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 allVolumeToolBarSliderStateChanged(evt);
@@ -2461,16 +2462,8 @@ private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN
 
 private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
   {//GEN-HEADEREND:event_allVolumeToolBarSliderStateChanged
-     if( jSliderIgnoreStateChangedEvt )
-        {
-          return;
-        }
 
-      jSliderIgnoreStateChangedEvt = true;  
-      
-      notate.volumeSliderChanged(allVolumeToolBarSlider);
-      
-      jSliderIgnoreStateChangedEvt = false;  
+    setVolumeSlider(allVolumeToolBarSlider.getValue());
   }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
 
 
@@ -2482,9 +2475,8 @@ public void setVolumeSlider(int volume)
       }
 
     jSliderIgnoreStateChangedEvt = true;
-
-    allVolumeToolBarSlider.setValue(volume);
-
+    
+    notate.setSliderVolumes(volume);
 
     jSliderIgnoreStateChangedEvt = false;
   }
@@ -3331,6 +3323,10 @@ public void setVolumeSlider(int volume)
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(tempo);
+        int volume = allVolumeToolBarSlider.getValue();
+        
+        score.setMasterVolume(volume); 
+        setVolumeSlider(volume);
          
         setPlaying(MidiPlayListener.Status.PLAYING, 0);
          
