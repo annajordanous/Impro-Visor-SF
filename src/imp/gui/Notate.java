@@ -613,16 +613,22 @@ public class Notate
    *
    * and then immediately set back to false.  Since events dispatched on the
    *
-   * setValue call are not threaded, this is garunteed to work and not
+   * setValue call are not threaded, this is guaranteed to work and not
    *
    * interfere, even if this boolean is used for multiple jSliders.  The
    *
    * possible exception is if one changeEvent listener fires another
    *
    * changeEvent listener, but this probably won't happen anyway.
-   *
+   * 
+   * But it does happen with the addition of sliders in other windows, 9/24/11
    */
+  
   private boolean jSliderIgnoreStateChangedEvt = false;
+  
+  private boolean toolbarVolumeSliderIgnoreStateChangedEvt = false;
+
+  private boolean mixerSliderIgnoreStateChangedEvt = false;
 
   /**
    *
@@ -7108,7 +7114,8 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.weightx = 0.7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
         masterVolumePanel.add(allVolumeToolBarSlider, gridBagConstraints);
 
         playToolBar.add(masterVolumePanel);
@@ -10071,88 +10078,108 @@ public void chordVolumeChanged()
     
     
     
-    private void setMuteAll(boolean muted) {
-        
-        score.setMasterVolumeMuted(muted);
-        
-        if(muted) {
-            
-            allMuteMixerBtn.setSelected(true);
-            
-            allMuteToolBarBtn.setSelected(true);
-            
-            allMuteToolBarBtn.setBackground(Color.red);
-            
-            allMuteToolBarBtn.setText("Play");
-            
-        } else {
-            
-            allMuteMixerBtn.setSelected(false);
-            
-            allMuteToolBarBtn.setSelected(false);
-            
-            allMuteToolBarBtn.setBackground(Color.green);
-            
-            allMuteToolBarBtn.setText("Mute");
-         }
-        
-        masterVolumeChanged();
-        
-    }
+private void setMuteAll(boolean muted)
+  {
+    score.setMasterVolumeMuted(muted);
+
+    if( muted )
+      {
+        allMuteMixerBtn.setSelected(true);
+
+        allMuteToolBarBtn.setSelected(true);
+
+        allMuteToolBarBtn.setBackground(Color.red);
+
+        allMuteToolBarBtn.setText("Play");
+      }
+    else
+      {
+        allMuteMixerBtn.setSelected(false);
+
+        allMuteToolBarBtn.setSelected(false);
+
+        allMuteToolBarBtn.setBackground(Color.green);
+
+        allMuteToolBarBtn.setText("Mute");
+      }
+
+    masterVolumeChanged();
+  }
     
     
     
-    private void masterVolumeChanged() {
-        
-        int v = allVolumeMixerSlider.getValue();
-        
-        score.setMasterVolume(v);
-        
-        
-        
-        if(score.getMasterVolumeMuted()) {
-            
-            allVolumeMixerSlider.setEnabled(false);
-            
-            allVolumeToolBarSlider.setEnabled(false);
-            
-            
-            
-            midiSynth.setMasterVolume(0);
-            
-        } else {
-            
-            allVolumeMixerSlider.setEnabled(true);
-            
-            allVolumeToolBarSlider.setEnabled(true);
-            
-            
-            
-            midiSynth.setMasterVolume(v);
-            
-        }
-        
-    }
+private void masterVolumeChanged()
+  {
+    if( mixerSliderIgnoreStateChangedEvt )
+      {
+        return;
+      }
+    
+    mixerSliderIgnoreStateChangedEvt = true;
     
     
+    int v = allVolumeMixerSlider.getValue();
+
+    allVolumeMixerSlider.setValue(v);
+
+    score.setMasterVolume(v);
+
+    if( score.getMasterVolumeMuted() )
+      {
+        allVolumeMixerSlider.setEnabled(false);
+
+        allVolumeToolBarSlider.setEnabled(false);
+
+        setSynthVolumes(0);
+      }
+    else
+      {
+        allVolumeMixerSlider.setEnabled(true);
+
+        allVolumeToolBarSlider.setEnabled(true);
+
+        setSynthVolumes(v);
+      }
     
-    private void setVolumeDefaults() {
-        
-        allVolumeToolBarSlider.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ALL)));
-        
-        allVolumeMixerSlider.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ALL)));
-        
-        melodyVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_MELODY)));
-        
-        chordVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_CHORDS)));
-        
-        bassVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_BASS)));
-        
-        drumVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_DRUMS)));
-        
-        entryVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ENTRY)));
-        
-    }
+    mixerSliderIgnoreStateChangedEvt = false;
+  }
+   
+
+public void setSynthVolumes(int v)
+  {
+    if( midiSynth != null )
+      {
+        midiSynth.setMasterVolume(v);
+      }
+
+    if( midiSynth2 != null )
+      {
+        midiSynth2.setMasterVolume(v);
+      }
+
+    if( midiSynth3 != null )
+      {
+        midiSynth3.setMasterVolume(v);
+      }
+  }
+
+    
+private void setVolumeDefaults()
+  {
+    allVolumeToolBarSlider.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ALL)));
+
+    allVolumeMixerSlider.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ALL)));
+
+    melodyVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_MELODY)));
+
+    chordVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_CHORDS)));
+
+    bassVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_BASS)));
+
+    drumVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_DRUMS)));
+
+    entryVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ENTRY)));
+  }
     
     
     
@@ -10173,23 +10200,19 @@ public void chordVolumeChanged()
     
     
     private void allVolumeMixerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_allVolumeMixerSliderStateChanged
-        
-        if(jSliderIgnoreStateChangedEvt)
-            
+
+        if( mixerSliderIgnoreStateChangedEvt )
+          {
             return;
-        
-        
-        
-        jSliderIgnoreStateChangedEvt = true;
-        
+          }
+
+        mixerSliderIgnoreStateChangedEvt = true;
+
         allVolumeToolBarSlider.setValue(allVolumeMixerSlider.getValue());
-        
-        jSliderIgnoreStateChangedEvt = false;
-        
-        
-        
+
+        mixerSliderIgnoreStateChangedEvt = false;
+
         masterVolumeChanged();
-        
     }//GEN-LAST:event_allVolumeMixerSliderStateChanged
     
     
@@ -10232,33 +10255,40 @@ public void chordVolumeChanged()
     
     private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
         
-        if(jSliderIgnoreStateChangedEvt)
-            
-            return;
+      volumeSliderChanged(allVolumeToolBarSlider);
         
-        
-        
-        jSliderIgnoreStateChangedEvt = true;
-        
-        allVolumeMixerSlider.setValue(allVolumeToolBarSlider.getValue());
-        
-        jSliderIgnoreStateChangedEvt = false;
-        
-        
-        
-        masterVolumeChanged();
-        
-        
-        
-        if(!allVolumeMixerSlider.getValueIsAdjusting()) {
-            
-            staveRequestFocus();
-            
+      if( !allVolumeToolBarSlider.getValueIsAdjusting() )
+        {
+          staveRequestFocus();
         }
-        
     }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
     
+public void volumeSliderChanged(JSlider volumeSlider)
+  {
     
+    System.out.println("volumeSliderChanged " + volumeSlider.getValue());
+      if( toolbarVolumeSliderIgnoreStateChangedEvt )
+        {
+          return;
+        }
+
+      toolbarVolumeSliderIgnoreStateChangedEvt = true;
+      
+      int value = volumeSlider.getValue();
+
+      allVolumeMixerSlider.setValue(value);
+      
+      if( roadmapFrame != null )
+        {
+          roadmapFrame.setVolumeSlider(value);
+        }
+
+      masterVolumeChanged();
+
+      toolbarVolumeSliderIgnoreStateChangedEvt = false;
+
+
+  }
     
     private void entryMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entryMuteActionPerformed
         
@@ -15110,10 +15140,17 @@ private void setLayoutPreference(Polylist layout)
 
 
         // set the volume sliders
+        
+        int value = midiSynth.getMasterVolume();
 
-        allVolumeMixerSlider.setValue(midiSynth.getMasterVolume());
+        allVolumeMixerSlider.setValue(value);
 
-        allVolumeToolBarSlider.setValue(midiSynth.getMasterVolume());
+        allVolumeToolBarSlider.setValue(value);
+        
+        if( roadmapFrame != null )
+          {
+            roadmapFrame.setVolumeSlider(value);
+          }
 
         melodyVolume.setValue(getScore().getMelodyVolume());
 

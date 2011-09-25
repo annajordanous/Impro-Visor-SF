@@ -167,6 +167,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     public static final String DICTIONARY_EXT = ".dictionary";
     
+    private boolean jSliderIgnoreStateChangedEvt = false;
+    
   /**
    *
    * The file chooser for opening the dictionary
@@ -279,6 +281,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         analyzeButton = new javax.swing.JButton();
         newBrickButton = new javax.swing.JButton();
         keyColorationButton = new javax.swing.JToggleButton();
+        masterVolumePanel = new javax.swing.JPanel();
+        allVolumeToolBarSlider = new javax.swing.JSlider();
         loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
@@ -958,6 +962,34 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(keyColorationButton);
 
+        masterVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog 10", 0, 12))); // NOI18N
+        masterVolumePanel.setToolTipText("Control playback volume."); // NOI18N
+        masterVolumePanel.setMaximumSize(new java.awt.Dimension(80, 40));
+        masterVolumePanel.setMinimumSize(new java.awt.Dimension(80, 40));
+        masterVolumePanel.setName("masterVolumePanel"); // NOI18N
+        masterVolumePanel.setOpaque(false);
+        masterVolumePanel.setPreferredSize(new java.awt.Dimension(80, 40));
+        masterVolumePanel.setLayout(new java.awt.GridBagLayout());
+
+        allVolumeToolBarSlider.setMajorTickSpacing(5);
+        allVolumeToolBarSlider.setMaximum(127);
+        allVolumeToolBarSlider.setToolTipText("Set the volume for sounds on entry."); // NOI18N
+        allVolumeToolBarSlider.setMaximumSize(new java.awt.Dimension(120, 20));
+        allVolumeToolBarSlider.setMinimumSize(new java.awt.Dimension(80, 20));
+        allVolumeToolBarSlider.setName("allVolumeToolBarSlider"); // NOI18N
+        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(80, 20));
+        allVolumeToolBarSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                allVolumeToolBarSliderStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        masterVolumePanel.add(allVolumeToolBarSlider, gridBagConstraints);
+
+        toolBar.add(masterVolumePanel);
+
         loopToggleButton.setBackground(new java.awt.Color(0, 255, 0));
         loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
         loopToggleButton.setText("Loop"); // NOI18N
@@ -1066,7 +1098,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
@@ -2427,6 +2459,36 @@ private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN
 
   }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
 
+private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
+  {//GEN-HEADEREND:event_allVolumeToolBarSliderStateChanged
+     if( jSliderIgnoreStateChangedEvt )
+        {
+          return;
+        }
+
+      jSliderIgnoreStateChangedEvt = true;  
+      
+      notate.volumeSliderChanged(allVolumeToolBarSlider);
+      
+      jSliderIgnoreStateChangedEvt = false;  
+  }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
+
+
+public void setVolumeSlider(int volume)
+  {
+    if( jSliderIgnoreStateChangedEvt )
+      {
+        return;
+      }
+
+    jSliderIgnoreStateChangedEvt = true;
+
+    allVolumeToolBarSlider.setValue(volume);
+
+
+    jSliderIgnoreStateChangedEvt = false;
+  }
+
 //</editor-fold>
     /** Creates the play timer and adds a listener */
     private void initTimer()
@@ -3025,6 +3087,7 @@ private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog addBrickDialog;
+    private javax.swing.JSlider allVolumeToolBarSlider;
     private javax.swing.JButton analyzeButton;
     private javax.swing.JMenuItem analyzeMenuItem;
     private javax.swing.JMenuItem appendToLeadsheetMI;
@@ -3086,6 +3149,7 @@ private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTree libraryTree;
     private javax.swing.JToggleButton loopToggleButton;
+    private javax.swing.JPanel masterVolumePanel;
     private javax.swing.JButton newBrickButton;
     private javax.swing.JMenuItem newRoadMapMI;
     private javax.swing.JMenuItem openLeadsheetMI;
