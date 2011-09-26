@@ -132,8 +132,8 @@ public class Notate
   private static final int ALWAYS_USE_MELODY_INDEX = 2;
   private static final int ALWAYS_USE_STAVE_INDEX = 3;
   
-  private static int MIN_TEMPO = 30;
-  private static int MAX_TEMPO = 300;
+  public static final int MIN_TEMPO = 30;
+  public static final int MAX_TEMPO = 300;
 
   private static int aboutDialogWidth  = 600;
   private static int aboutDialogHeight = 750;
@@ -1473,9 +1473,11 @@ public class Notate
      * configure the playback manager with the components that it should manage
      */
 
-    playbackManager = new PlaybackSliderManager(midiSynth, playbackTime,
-            playbackTotalTime, playbackSlider, repainter);
-
+    playbackManager = new PlaybackSliderManager(midiSynth, 
+                                                playbackTime,
+                                                playbackTotalTime, 
+                                                playbackSlider, 
+                                                repainter);
     }
 
   public Advisor getAdvisor()
@@ -10977,8 +10979,8 @@ private void showFileStepDialog()
     {
     if( value >= MIN_TEMPO && value <= MAX_TEMPO )
       {
-      tempoTF.setText("" + value); // keep these in sync
-      tempoSet.setText("" + value);
+      tempoTF.setText("" + (int)value); // keep these in sync
+      tempoSet.setText("" + (int)value);
 
       tempoSlider.setValue((int)value);
 
@@ -12105,7 +12107,7 @@ private void setLickEnharmonics(MelodyPart lick)
       
                     }//GEN-LAST:event_tempoSetActionPerformed
     
-    double getDefaultTempo()
+    public double getDefaultTempo()
     {
     return Double.parseDouble(Preferences.getPreference(Preferences.DEFAULT_TEMPO));
     }
@@ -13094,112 +13096,94 @@ public void closeWindow()
     
     
     
-    /**
-     *
-     * Get integer value from string.
-     *
-     */
+/**
+ *
+ * Get integer value from string.
+ *
+ */
     
-    
-    
-    public static int intFromString(String string) throws NumberFormatException {
-        
-        return Integer.decode(string).intValue();
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Get integer value from string, with range check
-     *
-     */
-    
-    static int intFromStringInRange(String string, int low, int high, int error) {
-        
-        try {
-            
-            int value = intFromString(string);
-            
-            if( value >= low &&  value <= high ) {
-                
-                return value;
-                
-            }
-            
-            ErrorLog.log(ErrorLog.COMMENT,
-                    
-                    "The number you have entered is out of range: must be between "
-                    
-                    + low + " and " + high);
-            
-            
-            
-            return error; // range error indicator
-            
-        } catch (NumberFormatException e) {
-            
-            invalidInteger(string);
-            
-            return error; // format error indicator
-            
-        }
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Get integer value from TextField, with range check.
-     *
-     * Updates text field with value actually used.
-     *
-     */
-    
-    
-    
-    static int intFromTextField(javax.swing.JTextField field, int low, int high, int error) {
-        
-        int value = intFromStringInRange(field.getText(), low, high, error);
+public static int intFromString(String string) throws NumberFormatException
+  {
+    return Integer.decode(string).intValue();
+  }
+
+
+/**
+ *
+ * Get integer value from string, with range check
+ *
+ */
+
+static int intFromStringInRange(String string, int low, int high, int error)
+  {
+    try
+      {
+        int value = intFromString(string);
 
         if( value >= low && value <= high )
-        {
+          {
             return value;
-        }
-        field.setText("" + error);
-        return error;
-        
-    }
+          }
+
+        ErrorLog.log(ErrorLog.COMMENT,
+                     "The number you have entered is out of range: must be between "
+                + low + " and " + high);
+
+        return error; // range error indicator
+      }
+    catch( NumberFormatException e )
+      {
+        invalidInteger(string);
+
+        return error; // format error indicator
+      }
+  }
+
+  
     
+/**
+ *
+ * Get integer value from TextField, with range check.
+ *
+ * Updates text field with value actually used.
+ *
+ */
     
-    
-    
-    
-    /**
-     *
-     * Get double value from string.
-     *
-     */
-    
-    
-    
-    static double doubleFromString(String string) throws NumberFormatException {
-        
-        return new Double(string).doubleValue();
-        
-    }
-    
-    
-    
+public static int intFromTextField(javax.swing.JTextField field, int low, int high, int error)
+  {
+    int value = intFromStringInRange(field.getText(), low, high, error);
+
+    if( value >= low && value <= high )
+      {
+        return value;
+      }
+    field.setText("" + error);
+    return error;
+  }
+
+
+/**
+ *
+ * Get double value from string.
+ *
+ */
+
+static double doubleFromString(String string) throws NumberFormatException
+  {
+    return new Double(string).doubleValue();
+  }
+
+
   /**
    *
    * Get double value from string, with range check
    *
    */
-  static double doubleFromStringInRange(String string, double low, double high,
-                                         double error)
+
+  static double doubleFromStringInRange(String string, 
+                                        double low, 
+                                        double high,
+                                        double error)
     {
     try
       {
@@ -13227,80 +13211,83 @@ public void closeWindow()
       return error; // format error indicator
       }
     }
-    
-  /**
-   *
-   * Get double value from string, with range check, but no warning dialog
-   *
-   */
-  static double quietDoubleFromStringInRange(String string, double low, double high,
-                                         double error)
-    {
+  
+
+/**
+ *
+ * Get double value from string, with range check, but no warning dialog
+ *
+ */
+  
+public static double quietDoubleFromStringInRange(String string, 
+                                                  double low, 
+                                                  double high,
+                                                  double error)
+  {
     try
       {
-      double value = doubleFromString(string);
+        double value = doubleFromString(string);
 
-      if( value >= low && value <= high )
-        {
-        return value;
-        }
+        if( value >= low && value <= high )
+          {
+            return value;
+          }
 
-      return error; // range error indicator
+        return error; // range error indicator
 
       }
     catch( NumberFormatException e )
       {
-      return error; // format error indicator
+        return error; // format error indicator
       }
-    }
-    
-    
-    /**
-     *
-     * Get double value from TextField, with range check.
-     *
-     * Updates text field with value actually used.
-     *
-     */
-    
-    
-    
-    static double doubleFromTextField(javax.swing.JTextField field, double low, double high, double error)
-    
-    {
-        String text = field.getText().trim();
+  }
 
-        if( text.equals("") )
-          {
-            text = "0";
-          }
-        return doubleFromStringInRange(text, low, high, error);
-        
-    }
-    
-    /**
-     *
-     * Get double value from TextField, with range check.
-     *
-     * No warning is given if input is in error and error value is used.
-     */
-    
-    
-    
-    static double quietDoubleFromTextField(javax.swing.JTextField field, double low, double high, double error)
-    
-    {
-        String text = field.getText().trim();
 
-        if( text.equals("") )
-          {
-            text = "0";
-          }
-        return quietDoubleFromStringInRange(text, low, high, error);
-        
-    }
-    
-    
+/**
+ *
+ * Get double value from TextField, with range check.
+ *
+ * Updates text field with value actually used.
+ *
+ */
+
+public static double doubleFromTextField(javax.swing.JTextField field, 
+                                         double low, 
+                                         double high, 
+                                         double error)
+  {
+    String text = field.getText().trim();
+
+    if( text.equals("") )
+      {
+        text = "0";
+      }
+    return doubleFromStringInRange(text, low, high, error);
+  }
+
+
+/**
+ *
+ * Get double value from TextField, with range check.
+ *
+ * No warning is given if input is in error and error value is used.
+ */
+
+public static double quietDoubleFromTextField(javax.swing.JTextField field, 
+                                              double low, 
+                                              double high, 
+                                              double error)
+  {
+    String text = field.getText().trim();
+
+    if( text.equals("") )
+      {
+        text = "0";
+      }
+    return quietDoubleFromStringInRange(text, low, high, error);
+  }
+
+   
     
     /**
      *

@@ -148,10 +148,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     /** Style of this piece */
     public Style style = Advisor.getStyle("swing");
-    
-    /** Tempo of this piece */
-    public int tempo = 120;
-    
+        
     /** Time signature of this piece */
     public int[] metre = {4,4};
     
@@ -260,7 +257,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jLabel6 = new javax.swing.JLabel();
         prefDialogTitleField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        prefDialogTempoField = new imp.roadmap.IntegerField();
         prefDialogMetreTopField = new imp.roadmap.IntegerField();
         prefDialogMetreBottomField = new imp.roadmap.IntegerField();
         brickDictionaryFrame = new javax.swing.JFrame();
@@ -286,6 +282,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
+        tempoPanel = new javax.swing.JPanel();
+        tempoSet = new javax.swing.JTextField();
+        tempoSlider = new javax.swing.JSlider();
         barsPerLineComboBox = new javax.swing.JComboBox();
         featureWidthSlider = new javax.swing.JSlider();
         roadMapTextEntry = new javax.swing.JTextField();
@@ -618,16 +617,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 0;
         jPanel1.add(jLabel7, gridBagConstraints);
 
-        prefDialogTempoField.setText("120"); // NOI18N
-        prefDialogTempoField.setMinimumSize(new java.awt.Dimension(38, 28));
-        prefDialogTempoField.setName("prefDialogTempoField"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        jPanel1.add(prefDialogTempoField, gridBagConstraints);
-
         prefDialogMetreTopField.setText("4"); // NOI18N
         prefDialogMetreTopField.setMinimumSize(new java.awt.Dimension(23, 28));
         prefDialogMetreTopField.setName("prefDialogMetreTopField"); // NOI18N
@@ -690,10 +679,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         libraryScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         libraryScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        libraryScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        libraryScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         libraryScrollPane.setName("libraryScrollPane"); // NOI18N
 
-        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         libraryTree.setModel(libraryTreeModel);
         libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
         libraryTree.setMaximumSize(new java.awt.Dimension(400, 3000));
@@ -837,7 +826,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "/5", "/4", "/3", "/2", "x1", "x2", "x3", "x4", "x5" }));
         scaleComboBox.setSelectedIndex(4);
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
-        scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
+        scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Scale Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
         scaleComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
@@ -964,7 +953,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(keyColorationButton);
 
-        masterVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog 10", 0, 12))); // NOI18N
+        masterVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         masterVolumePanel.setToolTipText("Control playback volume."); // NOI18N
         masterVolumePanel.setMaximumSize(new java.awt.Dimension(80, 40));
         masterVolumePanel.setMinimumSize(new java.awt.Dimension(80, 40));
@@ -1013,7 +1002,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(loopToggleButton);
 
-        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
+        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playButton.setText("\n"); // NOI18N
         playButton.setToolTipText("Play the selection.\n"); // NOI18N
@@ -1049,11 +1038,80 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(stopButton);
 
+        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (BPM)\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
+        tempoPanel.setToolTipText("Set the playback tempo."); // NOI18N
+        tempoPanel.setMaximumSize(new java.awt.Dimension(160, 50));
+        tempoPanel.setMinimumSize(new java.awt.Dimension(160, 50));
+        tempoPanel.setName("tempoPanel"); // NOI18N
+        tempoPanel.setOpaque(false);
+        tempoPanel.setPreferredSize(new java.awt.Dimension(160, 50));
+        tempoPanel.setLayout(new java.awt.GridBagLayout());
+
+        tempoSet.setFont(new java.awt.Font("Dialog 12", 1, 12)); // NOI18N
+        tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        tempoSet.setText("120"); // NOI18N
+        tempoSet.setToolTipText("Set the tempo for playback in beats per minute."); // NOI18N
+        tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
+        tempoSet.setMinimumSize(new java.awt.Dimension(40, 20));
+        tempoSet.setName("tempoSet"); // NOI18N
+        tempoSet.setPreferredSize(new java.awt.Dimension(40, 20));
+        tempoSet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tempoSetMousePressed(evt);
+            }
+        });
+        tempoSet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tempoSetActionPerformed(evt);
+            }
+        });
+        tempoSet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tempoSetFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tempoSetFocusLost(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 5, 0);
+        tempoPanel.add(tempoSet, gridBagConstraints);
+
+        tempoSlider.setMaximum(300);
+        tempoSlider.setMinimum(30);
+        tempoSlider.setMinorTickSpacing(4);
+        tempoSlider.setToolTipText("Sets the number of beats per minute in playback."); // NOI18N
+        tempoSlider.setValue(160);
+        tempoSlider.setMaximumSize(new java.awt.Dimension(120, 30));
+        tempoSlider.setMinimumSize(new java.awt.Dimension(36, 20));
+        tempoSlider.setName("tempoSlider"); // NOI18N
+        tempoSlider.setPreferredSize(new java.awt.Dimension(100, 20));
+        tempoSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tempoSliderStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 60;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 3, 6, 5);
+        tempoPanel.add(tempoSlider, gridBagConstraints);
+
+        toolBar.add(tempoPanel);
+
         barsPerLineComboBox.setMaximumRowCount(24);
         barsPerLineComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", " " }));
         barsPerLineComboBox.setSelectedIndex(7);
         barsPerLineComboBox.setToolTipText("Scale the maximum number of bars per line.\n"); // NOI18N
-        barsPerLineComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars Per Line ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande 9", 0, 12))); // NOI18N
+        barsPerLineComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars Per Line ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         barsPerLineComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
         barsPerLineComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
         barsPerLineComboBox.setName("barsPerLineComboBox"); // NOI18N
@@ -1074,9 +1132,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         featureWidthSlider.setMinimum(60);
         featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks. Double-click to constrain the setting."); // NOI18N
         featureWidthSlider.setValue(settings.measureLength);
-        featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Feature Width", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 9))); // NOI18N
+        featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Feature Width", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         featureWidthSlider.setFocusable(false);
-        featureWidthSlider.setMaximumSize(new java.awt.Dimension(300, 40));
+        featureWidthSlider.setMaximumSize(new java.awt.Dimension(200, 40));
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(50, 40));
         featureWidthSlider.setName("featureWidthSlider"); // NOI18N
         featureWidthSlider.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -1190,7 +1248,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setToolTipText("Provides a preview of a brick selected from the Brick Dictionary."); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
-        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
@@ -2460,14 +2518,47 @@ private void barsPerLineComboBoxscaleComboReleased(java.awt.event.MouseEvent evt
 private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleChosen
   {//GEN-HEADEREND:event_barsPerLineComboBoxscaleChosen
     settings.setBarsPerLine(Integer.parseInt((String)barsPerLineComboBox.getSelectedItem()));
-
   }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
 
 private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
   {//GEN-HEADEREND:event_allVolumeToolBarSliderStateChanged
-
     setVolumeSlider(allVolumeToolBarSlider.getValue());
   }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
+
+private void tempoSetMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tempoSetMousePressed
+  {//GEN-HEADEREND:event_tempoSetMousePressed
+     tempoSet.requestFocusInWindow();
+   }//GEN-LAST:event_tempoSetMousePressed
+
+private void tempoSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tempoSetActionPerformed
+  {//GEN-HEADEREND:event_tempoSetActionPerformed
+     setTempo((int)Notate.intFromTextField(tempoSet, Notate.MIN_TEMPO, Notate.MAX_TEMPO, (int)notate.getDefaultTempo()));   
+}//GEN-LAST:event_tempoSetActionPerformed
+
+private void tempoSetFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusGained
+  {//GEN-HEADEREND:event_tempoSetFocusGained
+
+     //tempoSetOldTempo = tempoSet.getText();   
+}//GEN-LAST:event_tempoSetFocusGained
+
+private void tempoSetFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusLost
+  {//GEN-HEADEREND:event_tempoSetFocusLost
+
+     updateTempoFromTextField();
+}//GEN-LAST:event_tempoSetFocusLost
+
+private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_tempoSliderStateChanged
+  {//GEN-HEADEREND:event_tempoSliderStateChanged
+
+     if( jSliderIgnoreStateChangedEvt )
+       {
+         return;
+       }
+     int value = tempoSlider.getValue();
+     value = 2 * Math.round(value / 2);
+     setTempo((int) value);
+     //setPlaybackManagerTime(); 
+}//GEN-LAST:event_tempoSliderStateChanged
 
 
 public void setVolumeSlider(int volume)
@@ -3161,7 +3252,6 @@ public void setVolumeSlider(int volume)
     private imp.roadmap.IntegerField prefDialogMetreBottomField;
     private imp.roadmap.IntegerField prefDialogMetreTopField;
     private javax.swing.JComboBox prefDialogStyleComboBox;
-    private imp.roadmap.IntegerField prefDialogTempoField;
     private javax.swing.JTextField prefDialogTitleField;
     private javax.swing.JDialog preferencesDialog;
     private javax.swing.JMenu preferencesMenu;
@@ -3196,6 +3286,9 @@ public void setVolumeSlider(int volume)
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
+    private javax.swing.JPanel tempoPanel;
+    private javax.swing.JTextField tempoSet;
+    private javax.swing.JSlider tempoSlider;
     private javax.swing.JMenuItem togglePhraseMenuItem;
     private javax.swing.JMenuItem toggleSectionMenuItem;
     private javax.swing.JToolBar toolBar;
@@ -3258,7 +3351,7 @@ public void setVolumeSlider(int volume)
         //System.out.println(score.getChordProg().getSectionInfo());
         score.setMetre(getMetre());
         //score.setStyle(style.getName());
-        score.setTempo(tempo);
+        score.setTempo(getTempo());
         score.setTitle(roadMapTitle);
         
         if( auxNotate == null )
@@ -3327,7 +3420,7 @@ public void setVolumeSlider(int volume)
         chordPart.addFromRoadMapFrame(this);
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
-        score.setTempo(tempo);
+        score.setTempo(getTempo());
         int volume = allVolumeToolBarSlider.getValue();
         
         score.setMasterVolume(volume); 
@@ -3510,7 +3603,10 @@ public void setVolumeSlider(int volume)
     /** Returns the tempo */
     public int getTempo()
     {
-        return tempo;
+        return (int)Notate.intFromTextField(tempoSet, 
+                                            Notate.MIN_TEMPO, 
+                                            Notate.MAX_TEMPO, 
+                                            (int)notate.getDefaultTempo());
     }
 
     /** Returns the style */ 
@@ -3529,7 +3625,7 @@ public void setVolumeSlider(int volume)
     public void setMusicalInfo(Score score)
     {
         setMetre(score.getMetre());
-        tempo = (int)score.getTempo();
+        setTempo((int)score.getTempo());
         style = score.getStyle();
     }
 
@@ -3537,7 +3633,6 @@ public void setVolumeSlider(int volume)
     private void activatePreferencesDialog()
     {
         prefDialogTitleField.setText(roadMapTitle);
-        prefDialogTempoField.setText(String.valueOf(tempo));
         prefDialogMetreTopField.setText(String.valueOf(getMetre()[0]));
         prefDialogMetreBottomField.setText(String.valueOf(getMetre()[1]));
         prefDialogStyleComboBox.setSelectedItem(style);
@@ -3561,7 +3656,6 @@ public void setVolumeSlider(int volume)
         int metreTop = prefDialogMetreTopField.getInt();
         int metreBottom = prefDialogMetreBottomField.getInt();
         setMetre(new int[]{metreTop, metreBottom});
-        tempo = prefDialogTempoField.getInt();
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
         roadMapPanel.updateBricks();
     }
@@ -3810,5 +3904,51 @@ public void saveDictionaryAs()
 
     return false;
     }
+  
+  
+
+  
+ private void setTempo(double value)
+    {
+    if( value >= Notate.MIN_TEMPO && value <= Notate.MAX_TEMPO )
+      {
+      tempoSet.setText("" + (int)value);
+
+      tempoSlider.setValue((int)value);
+      notate.getMidiSynthRM().setTempo((float)value);
+      }
+    else
+      {
+      ErrorLog.log(ErrorLog.COMMENT,
+              "The tempo must be in the range "
+            + notate.MIN_TEMPO 
+            + " to " + notate.MAX_TEMPO 
+            + ",\nusing default: " + notate.getDefaultTempo() + ".");
+      return;
+      }
+    }
+  
+  private void updateTempoFromTextField()
+  {
+    try
+      {
+        int value = (int)Double.valueOf(tempoSet.getText()).doubleValue();
+
+        jSliderIgnoreStateChangedEvt = true;
+
+        setTempo(value);
+
+        jSliderIgnoreStateChangedEvt = false;
+      }
+    catch( NumberFormatException e )
+      {
+      tempoSet.setForeground(Color.RED);
+
+      return;
+      }
+
+    tempoSet.setForeground(Color.BLACK);
+  }
+    
 }
 
