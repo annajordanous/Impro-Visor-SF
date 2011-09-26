@@ -511,6 +511,9 @@
           <Properties>
             <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
             <Property name="verticalScrollBarPolicy" type="int" value="22"/>
+            <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Lucida Grande" size="14" style="1"/>
+            </Property>
             <Property name="name" type="java.lang.String" value="libraryScrollPane" noResource="true"/>
           </Properties>
           <AuxValues>
@@ -526,6 +529,9 @@
           <SubComponents>
             <Component class="javax.swing.JTree" name="libraryTree">
               <Properties>
+                <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Lucida Grande" size="14" style="0"/>
+                </Property>
                 <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="libraryTreeModel" type="code"/>
                 </Property>
@@ -2028,6 +2034,9 @@
         <Property name="toolTipText" type="java.lang.String" value="Provides a preview of a brick selected from the Brick Dictionary." noResource="true"/>
         <Property name="verticalScrollBarPolicy" type="int" value="21"/>
         <Property name="doubleBuffered" type="boolean" value="true"/>
+        <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Lucida Grande" size="14" style="1"/>
+        </Property>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[32767, 100]"/>
         </Property>

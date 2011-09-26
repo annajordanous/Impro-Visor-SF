@@ -690,8 +690,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         libraryScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         libraryScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        libraryScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         libraryScrollPane.setName("libraryScrollPane"); // NOI18N
 
+        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         libraryTree.setModel(libraryTreeModel);
         libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
         libraryTree.setMaximumSize(new java.awt.Dimension(400, 3000));
@@ -1011,7 +1013,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(loopToggleButton);
 
-        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
+        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playButton.setText("\n"); // NOI18N
         playButton.setToolTipText("Play the selection.\n"); // NOI18N
@@ -1188,6 +1190,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setToolTipText("Provides a preview of a brick selected from the Brick Dictionary."); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
+        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
@@ -2505,8 +2508,8 @@ public void setVolumeSlider(int volume)
     {
       try 
         {
-        bufferPreviewPanel = new java.awt.image.BufferedImage(previewBufferWidth, previewBufferHeight, BufferedImage.TYPE_INT_RGB);
-        bufferRoadMap = new java.awt.image.BufferedImage(roadMapBufferWidth, roadMapBufferHeight, BufferedImage.TYPE_INT_RGB);
+        bufferPreviewPanel = new BufferedImage(previewBufferWidth, previewBufferHeight, BufferedImage.TYPE_INT_RGB);
+        bufferRoadMap = new BufferedImage(roadMapBufferWidth, roadMapBufferHeight, BufferedImage.TYPE_INT_RGB);
         previewPanel.setBuffer(bufferPreviewPanel);
         roadMapPanel.setBuffer(bufferRoadMap);
         

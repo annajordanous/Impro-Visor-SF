@@ -127,9 +127,11 @@ public class RoadMapSettings {
     
     /* --- Fonts --- */
     /** Font for normal text, such as bricks, joins, rollovers, etc */
+    
     public Font basicFont = new Font("Lucida Grande", Font.BOLD, 14);
     
     /** Font for titles */
+    
     public Font titleFont = new Font("Lucida Grande", Font.BOLD, 24);
     
     /**

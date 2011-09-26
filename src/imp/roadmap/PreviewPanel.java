@@ -33,13 +33,16 @@ public class PreviewPanel extends JPanel
 {
     /** Buffer for drawing */
     private Image buffer;
+    
     /** GraphicBrick containing modified brick */
     public GraphicBrick currentBrick;
+    
     /** The original, unmodified brick */
     private Block protoBrick;
     
     /** Key of the contents of the panel */
     private long currentKey = 0;
+    
     /** Duration (of shortest chord) in the brick in the panel */
     private int currentDuration = 480;
     
@@ -79,8 +82,13 @@ public class PreviewPanel extends JPanel
     public void draw()
     {
         view.setBackground(buffer);
+        
+        Graphics g = buffer.getGraphics();
+        
+        g.setFont(view.getSettings().basicFont);
+        
         if( currentBrick != null ) {
-            currentBrick.drawAt(buffer.getGraphics(),1,1);
+            currentBrick.drawAt(g, 1, 1);
         }
         repaint();
     }
