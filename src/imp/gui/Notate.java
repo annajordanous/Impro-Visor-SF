@@ -676,6 +676,8 @@ public class Notate
   private MidiSynth midiSynth = null; // one midiSynth is created for each Notote instance for volume control and MIDI sequencing
   
   private MidiSynth midiSynth2 = null;
+  
+  private MidiSynth midiSynth3 = null;
 
   private MidiManager midiManager = null; // reference to global midiManager contained in ImproVisor
 
@@ -1005,6 +1007,8 @@ public class Notate
     midiSynth = new MidiSynth(midiManager);
     
     midiSynth2 = new MidiSynth(midiManager);
+
+    midiSynth3 = new MidiSynth(midiManager);
 
     midiRecorder = new MidiNoteActionHandler(this, score);
 
@@ -9578,257 +9582,220 @@ private String getChordRedirectName(int row)
     }//GEN-LAST:event_cascadeMIActionPerformed
     
     
+/**
+ *
+ * Set the status message of the Program Status field
+ *
+ */
     
-    /**
-     *
-     * Set the status message of the Program Status field
-     *
-     */
-    
-    public void setStatus(String text) {
-        
-        programStatusTF.setText(text);
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Get the status message of the Program Status field
-     *
-     */
-    
-    public String getStatus() {
-        
-        return programStatusTF.getText();
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Set the text color of the Program Status field
-     *
-     */
-    
-    public void setStatusColor(Color c) {
-        
-        programStatusTF.setForeground(c);
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Set the mode flag internally for Notate
-     *
-     * Nothing actually happens when the mode is changed, so it is up
-     *
-     * to the calling method to perform the necessary changes that accompany
-     *
-     * a mode switch, and hence this method is private.
-     *
-     */
-    
-    private void setMode(Mode mode) {
-        
-        if(this.mode == mode)
-            
-            return;
-        
-        
-        
-        previousMode = this.mode;
-        
-        if(mode == null)
-            
-            mode = Mode.NORMAL;
-        
-        this.mode = mode;
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Tells other classes what mode the Notate object is in
-     *
-     */
-    
-    public Mode getMode() {
-        
-        return this.mode;
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Stops recording: unregisteres the midiRecorder and changes the mode
-     *
-     */
-    
-    public void stopRecording() {
-        
-        if(mode == Mode.RECORDING) {
-            
-            setMode(previousMode);
-            
-        }
-        
-        playBtn.setEnabled(true);
-        
-        recordBtn.setIcon(recordImageIcon);
-        
-        recordBtn.setBackground(null);
-        
-        midiSynth.unregisterReceiver(midiRecorder);
-        
-        if(stepInputActive) {
-            
-            // if step input was active, reenable it since it is disabled during recording
-            
-            midiSynth.registerReceiver(midiStepInput);
-            
-        }
-        
-        stopPlaying();
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Starts recording: registers the midiRecorder and changes the mode
-     *
-     */
-    
-    private void startRecording() {
-        
-        if(midiManager.getInDevice() == null) {
-            
-            ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
-            
-            return;
-            
-        }
-        
-        
-        
-        setMode(Mode.RECORDING);
-        
-        playBtn.setEnabled(false);
-        
-        recordBtn.setIcon(recordActiveImageIcon);
-        
-        recordBtn.setBackground(Color.RED);
-        
-        
-        
-        midiSynth.registerReceiver(midiRecorder);
-        
-        
-        
-        staveRequestFocus();
-        
-        playScore();
-        
-        
-        
-        midiSynth.unregisterReceiver(midiStepInput);  // disable step input during recording
-        
-        midiSynth.registerReceiver(midiRecorder);
-        
-        midiRecorder.start();   // set time to 0
-        
-    }
-    
-    
-    
-    void stopPlaying() {
-        
-        midiSynth.stop("stop in Notate");
-        
-        if(mode == Mode.RECORDING) {
-            
-            stopRecording();
-            
-        }
-        
-    }
-    
-    
-    
-    private void setStepInput(boolean active) {
-        
-        stepInputActive = active;
-        
-        if(active) {
-            
-            midiSynth.registerReceiver(midiStepInput);
-            
-        } else {
-            
-            midiSynth.unregisterReceiver(midiStepInput);
-            
-        }
-        
-    }
-    
-    
+public void setStatus(String text)
+  {
+    programStatusTF.setText(text);
+  }
+
+
+/**
+ *
+ * Get the status message of the Program Status field
+ *
+ */
+
+public String getStatus()
+  {
+    return programStatusTF.getText();
+  }
+
+
+/**
+ *
+ * Set the text color of the Program Status field
+ *
+ */
+
+public void setStatusColor(Color c)
+  {
+    programStatusTF.setForeground(c);
+  }
+
+/**
+ *
+ * Set the mode flag internally for Notate
+ *
+ * Nothing actually happens when the mode is changed, so it is up
+ *
+ * to the calling method to perform the necessary changes that accompany
+ *
+ * a mode switch, and hence this method is private.
+ *
+ */
+
+private void setMode(Mode mode)
+  {
+    if( this.mode == mode )
+      {
+        return;
+      }
+
+    previousMode = this.mode;
+
+    if( mode == null )
+      {
+        mode = Mode.NORMAL;
+      }
+
+    this.mode = mode;
+   }
+
+
+/**
+ *
+ * Tells other classes what mode the Notate object is in
+ *
+ */
+
+public Mode getMode()
+  {
+   return this.mode;
+  }
+
+
+/**
+ *
+ * Stops recording: unregisteres the midiRecorder and changes the mode
+ *
+ */
+
+public void stopRecording()
+  {
+    if( mode == Mode.RECORDING )
+      {
+        setMode(previousMode);
+      }
+
+    playBtn.setEnabled(true);
+
+    recordBtn.setIcon(recordImageIcon);
+
+    recordBtn.setBackground(null);
+
+    midiSynth.unregisterReceiver(midiRecorder);
+
+    if( stepInputActive )
+      {
+        // if step input was active, reenable it since it is disabled during recording
+
+        midiSynth.registerReceiver(midiStepInput);
+      }
+
+    stopPlaying();
+  }
+
+
+/**
+ *
+ * Starts recording: registers the midiRecorder and changes the mode
+ *
+ */
+
+private void startRecording()
+  {
+    if( midiManager.getInDevice() == null )
+      {
+        ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
+
+        return;
+      }
+
+    setMode(Mode.RECORDING);
+
+    playBtn.setEnabled(false);
+
+    recordBtn.setIcon(recordActiveImageIcon);
+
+    recordBtn.setBackground(Color.RED);
+
+    midiSynth.registerReceiver(midiRecorder);
+
+    staveRequestFocus();
+
+    playScore();
+
+    midiSynth.unregisterReceiver(midiStepInput);  // disable step input during recording
+
+    midiSynth.registerReceiver(midiRecorder);
+
+    midiRecorder.start();   // set time to 0
+  }
+
+
+void stopPlaying()
+  {
+    midiSynth.stop("stop in Notate");
+
+    if( mode == Mode.RECORDING )
+      {
+        stopRecording();
+      }
+  }
+
+private void setStepInput(boolean active)
+  {
+    stepInputActive = active;
+
+    if( active )
+      {
+        midiSynth.registerReceiver(midiStepInput);
+      }
+    else
+      {
+        midiSynth.unregisterReceiver(midiStepInput);
+      }
+  }
+
+   
     
     private void recordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordBtnActionPerformed
-        
-        if(mode == Mode.RECORDING) {
-            
+        if( mode == Mode.RECORDING )
+          {
             stopRecording();
-            
-        } else {
-            
+          }
+        else
+          {
             startRecording();
-            
-        }
-        
+          }
     }//GEN-LAST:event_recordBtnActionPerformed
     
     
     
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
-        
-        if (keyboard != null && keyboard.isVisible())
-        {
+
+        if( keyboard != null && keyboard.isVisible() )
+          {
             keyboard.setPlayback(true);
-        }
+          }
         playScore();
-        
     }//GEN-LAST:event_playBtnActionPerformed
     
     
     
     private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
-        
+
         windowMenu.removeAll();
-        
+
         windowMenu.add(closeWindowMI);
-        
+
         windowMenu.add(cascadeMI);
-        
+
         windowMenu.add(windowMenuSeparator);
-        
-        for(WindowMenuItem w : WindowRegistry.getWindows()) {
-            
+
+        for( WindowMenuItem w : WindowRegistry.getWindows() )
+          {
+
             windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-            
-        }
-        
+
+          }
+
         windowMenu.repaint();
-        
     }//GEN-LAST:event_windowMenuMenuSelected
     
 
@@ -9854,20 +9821,6 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
         lickGeneratorMIActionPerformed(evt);
         
     }//GEN-LAST:event_openGeneratorButtonActionPerformed
-    
-    
-
-    /**
-     * Sets the abstract melody field (formerly called "rhythm" field).
-     @param string
-    
-    public void setRhythmFieldText(String string)
-    {
-    rhythmField.setText(string);
-    rhythmField.setCaretPosition(0);
-    rhythmScrollPane.getViewport().setViewPosition(new Point(0,0));
-    }
-     */
 
 
     public void setLickGenStatus(String string)
@@ -10100,6 +10053,7 @@ private void setMuteAll(boolean muted)
     mixerMasterVolumeChanged();
   }
     
+
 /**
  * Set the volume of all sliders and the score.
  * @param value 
@@ -16874,8 +16828,6 @@ public void playScoreBody(int startAt)
       }
     }
 
-MidiSynth midiSynth3;
-
 /**
  * Play a score, not necessarily the one in this Notate window.
  * Use the "no-style" style, with no looping.
@@ -16926,6 +16878,7 @@ public void playAscore(Score score, String style, int loopCount)
   
   if( midiSynth3 == null )
     {
+      //midiSynth3 = midiSynth;
     midiSynth3 = new MidiSynth(midiManager);
     }
   

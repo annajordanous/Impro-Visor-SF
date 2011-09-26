@@ -2476,6 +2476,8 @@ public void setVolumeSlider(int volume)
 
     jSliderIgnoreStateChangedEvt = true;
     
+    allVolumeToolBarSlider.setValue(volume);
+    
     notate.setSliderVolumes(volume);
 
     jSliderIgnoreStateChangedEvt = false;
