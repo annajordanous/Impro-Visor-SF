@@ -296,10 +296,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         openLeadsheetMI = new javax.swing.JMenuItem();
         printRoadMapMI = new javax.swing.JMenuItem();
-        appendToNewLeadsheetMI = new javax.swing.JMenuItem();
-        appendToLeadsheetMI = new javax.swing.JMenuItem();
-        sendToOriginalLeadsheetMI = new javax.swing.JMenuItem();
-        sendToOriginalLeadsheetAndSaveMI = new javax.swing.JMenuItem();
+        saveAsToNewLeadsheetMI = new javax.swing.JMenuItem();
+        saveToNewLeadsheetMI = new javax.swing.JMenuItem();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         selectAllMenuItem = new javax.swing.JMenuItem();
@@ -1155,7 +1153,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 45));
@@ -1342,47 +1340,27 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         fileMenu.add(printRoadMapMI);
 
-        appendToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        appendToNewLeadsheetMI.setText("Create a new leadsheet and add selected chords to it."); // NOI18N
-        appendToNewLeadsheetMI.setToolTipText("Create a new leadsheet and add selected chords to it."); // NOI18N
-        appendToNewLeadsheetMI.setName("appendToNewLeadsheetMI"); // NOI18N
-        appendToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+        saveAsToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        saveAsToNewLeadsheetMI.setText("Save As to a new leadsheet.\n"); // NOI18N
+        saveAsToNewLeadsheetMI.setToolTipText("Create a new leadsheet and store all chords in it."); // NOI18N
+        saveAsToNewLeadsheetMI.setName("saveAsToNewLeadsheetMI"); // NOI18N
+        saveAsToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                appendToNewLeadsheetMIaction(evt);
+                saveAsToNewLeadsheetMIaction(evt);
             }
         });
-        fileMenu.add(appendToNewLeadsheetMI);
+        fileMenu.add(saveAsToNewLeadsheetMI);
 
-        appendToLeadsheetMI.setText("Append selection chords to most recent leadsheet created.\n\n"); // NOI18N
-        appendToLeadsheetMI.setToolTipText("Append selection chords to most recent leadsheet created, creating one if it doesn't exist.\n"); // NOI18N
-        appendToLeadsheetMI.setName("appendToLeadsheetMI"); // NOI18N
-        appendToLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
+        saveToNewLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveToNewLeadsheetMI.setText("Save to the new leadsheet."); // NOI18N
+        saveToNewLeadsheetMI.setToolTipText("Store entire contents in the newly-created leadsheet."); // NOI18N
+        saveToNewLeadsheetMI.setName("saveToNewLeadsheetMI"); // NOI18N
+        saveToNewLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                appendToLeadsheetMIaction(evt);
+                saveToNewLeadsheetMIaction(evt);
             }
         });
-        fileMenu.add(appendToLeadsheetMI);
-
-        sendToOriginalLeadsheetMI.setText("Store selection over chords in parent leadsheet. CAUTION: Can only be undone by reverting leadsheet."); // NOI18N
-        sendToOriginalLeadsheetMI.setToolTipText("Store selection over chords in parent leadsheet. CAUTION: Can only be undone by reverting leadsheet."); // NOI18N
-        sendToOriginalLeadsheetMI.setName("sendToOriginalLeadsheetMI"); // NOI18N
-        sendToOriginalLeadsheetMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendToOriginalLeadsheetMIaction(evt);
-            }
-        });
-        fileMenu.add(sendToOriginalLeadsheetMI);
-
-        sendToOriginalLeadsheetAndSaveMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        sendToOriginalLeadsheetAndSaveMI.setText("Store selection over chords in, then SAVE, parent leadsheet. EXTRA CAUTION: Cannot be undone!"); // NOI18N
-        sendToOriginalLeadsheetAndSaveMI.setToolTipText("Store selection over chords in, then SAVE, parent leadsheet. EXTRA CAUTION: Cannot be undone!"); // NOI18N
-        sendToOriginalLeadsheetAndSaveMI.setName("sendToOriginalLeadsheetAndSaveMI"); // NOI18N
-        sendToOriginalLeadsheetAndSaveMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendToOriginalLeadsheetAndSaveMIaction(evt);
-            }
-        });
-        fileMenu.add(sendToOriginalLeadsheetAndSaveMI);
+        fileMenu.add(saveToNewLeadsheetMI);
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("Close this window."); // NOI18N
@@ -2182,13 +2160,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         notate.openLeadsheet(false);
 }//GEN-LAST:event_openLeadsheetMIActionPerformed
 
-    private void appendToLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToLeadsheetMIaction
-        if(!roadMapTextEntry.isFocusOwner()) appendSelectionToNotate();
-    }//GEN-LAST:event_appendToLeadsheetMIaction
-
-    private void appendToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendToNewLeadsheetMIaction
-        if(!roadMapTextEntry.isFocusOwner()) sendSelectionToNewNotate();
-    }//GEN-LAST:event_appendToNewLeadsheetMIaction
+    private void saveAsToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsToNewLeadsheetMIaction
+        if(!roadMapTextEntry.isFocusOwner()) 
+          {
+            auxNotate = null;
+            saveToNewLeadsheetMIaction(evt);
+          }
+    }//GEN-LAST:event_saveAsToNewLeadsheetMIaction
 
     private void keyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyComboBoxActionPerformed
         setPreviewKey();
@@ -2343,10 +2321,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         // TODO add your handling code here:
     }//GEN-LAST:event_dialogNameFieldActionPerformed
 
-    private void sendToOriginalLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToOriginalLeadsheetMIaction
-        sendSelectionToOriginalNotate();
-    }//GEN-LAST:event_sendToOriginalLeadsheetMIaction
-
     private void preferencesMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_preferencesMenuMenuSelected
         // TODO add your handling code here:
     }//GEN-LAST:event_preferencesMenuMenuSelected
@@ -2419,12 +2393,14 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 roadMapTextEntry.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
 
-    private void sendToOriginalLeadsheetAndSaveMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendToOriginalLeadsheetAndSaveMIaction
-        selectAllBricks();
-        sendSelectionToOriginalNotate();
-        notate.saveLeadsheet();
-        deselectBricks();
-    }//GEN-LAST:event_sendToOriginalLeadsheetAndSaveMIaction
+    private void saveToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToNewLeadsheetMIaction
+
+          selectAllBricks();
+          sendSelectionToNewNotate();
+          auxNotate.saveLeadsheet();
+          deselectBricks();           
+
+    }//GEN-LAST:event_saveToNewLeadsheetMIaction
 
     private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed
          stopPlayingSelection();
@@ -3154,8 +3130,6 @@ public void setVolumeSlider(int volume)
     private javax.swing.JSlider allVolumeToolBarSlider;
     private javax.swing.JButton analyzeButton;
     private javax.swing.JMenuItem analyzeMenuItem;
-    private javax.swing.JMenuItem appendToLeadsheetMI;
-    private javax.swing.JMenuItem appendToNewLeadsheetMI;
     private javax.swing.JComboBox barsPerLineComboBox;
     private javax.swing.JButton breakButton;
     private javax.swing.JMenuItem breakMenuItem;
@@ -3248,14 +3222,14 @@ public void setVolumeSlider(int volume)
     private javax.swing.JTextField roadMapStatus;
     private javax.swing.JTextField roadMapTextEntry;
     private javax.swing.JMenuBar roadmapMenuBar;
+    private javax.swing.JMenuItem saveAsToNewLeadsheetMI;
     private javax.swing.JMenuItem saveDictionaryAsMI;
+    private javax.swing.JMenuItem saveToNewLeadsheetMI;
     private javax.swing.JComboBox scaleComboBox;
     private javax.swing.JLabel scaleLabel;
     private javax.swing.JMenu sectionMenu;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
-    private javax.swing.JMenuItem sendToOriginalLeadsheetAndSaveMI;
-    private javax.swing.JMenuItem sendToOriginalLeadsheetMI;
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
@@ -3281,6 +3255,8 @@ public void setVolumeSlider(int volume)
      *
      * If the road map is empty, does nothing.
      */ 
+    
+    /*
     public void appendSelectionToNotate()
     {
         if( roadMapPanel.getNumBlocks() < 1 )
@@ -3303,7 +3279,8 @@ public void setVolumeSlider(int volume)
         auxNotate.setVisible(true);
     }
 
-
+*/
+    
     /** Sends the currently-selected blocks to a new Notate window called auxNotate.
      * Any existing associate with that window is detached and lost.
      *
@@ -3311,13 +3288,10 @@ public void setVolumeSlider(int volume)
      *
      * If the road map is empty, does nothing.
      */
+    
     public void sendSelectionToNewNotate()
     {
-        if( roadMapPanel.getNumBlocks() < 1 )
-            return;
-
-        if( !roadMapPanel.hasSelection() )
-            selectAllBricks();
+        selectAllBricks();
 
         ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
