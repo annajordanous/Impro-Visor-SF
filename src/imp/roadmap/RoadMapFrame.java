@@ -2806,10 +2806,13 @@ public void setVolumeSlider(int volume)
         ArrayList<Block> blocks = roadMapPanel.getSelection();
         roadMapPanel.replaceSelection(analyze(blocks));
         
+        settings.showJoins = showJoinsOnCompletion;
+        /*
         if( showJoinsOnCompletion )
           {
             settings.showJoins = true;
           }
+         */
         
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
