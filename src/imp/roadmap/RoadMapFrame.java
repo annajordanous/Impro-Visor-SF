@@ -1181,7 +1181,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapStatus.setEditable(false);
-        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapStatus.setToolTipText("Shows the status of the roadmap."); // NOI18N
         roadMapStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Roadmap status"));
         roadMapStatus.setMaximumSize(new java.awt.Dimension(2147483647, 45));
@@ -1247,7 +1247,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setToolTipText("Provides a preview of a brick selected from the Brick Dictionary."); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
-        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
@@ -1337,7 +1337,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         newRoadMapMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newRoadMapMI.setMnemonic('n');
-        newRoadMapMI.setText("New Roadmap\n"); // NOI18N
+        newRoadMapMI.setText("New Roadmap "); // NOI18N
         newRoadMapMI.setToolTipText("Open a new Roadmap window. The contents can be saved by creating a leadsheet from the roadmap."); // NOI18N
         newRoadMapMI.setName("newRoadMapMI"); // NOI18N
         newRoadMapMI.addActionListener(new java.awt.event.ActionListener() {
@@ -3362,8 +3362,63 @@ public void setVolumeSlider(int volume)
           }
         
         auxNotate.setVisible(true); 
-
       }
+    
+    /**
+     * Create a new notate window for this roadmap, even if empty.
+     * Set notate to be that window.
+     */
+    public Notate createNewNotateFromRoadmap(RoadMapFrame roadmapFrame)
+      {
+        ChordPart chordPart = new ChordPart();
+        chordPart.addFromRoadMapFrame(roadmapFrame);
+        Score score = new Score(chordPart);
+        score.setMetre(getMetre());
+        score.setStyle(style.getName());
+        score.setTempo(getTempo());
+        score.setTitle(roadMapTitle);
+        
+        Notate result = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+ 
+        System.out.println("result = " + result);
+        
+        result.setAutoCreateRoadMap(false);
+         
+        result.setVisible(true); 
+      
+        return result;
+      }
+
+    
+/**
+ * Create an empty road map with its own Notate frame, detatched from the parent.
+ */
+
+public void openEmptyRoadmap()
+  {
+    try
+      {
+        RoadMapFrame roadMapFrame = new RoadMapFrame(notate, "untitled");
+        Notate notate = createNewNotateFromRoadmap(roadMapFrame);
+        //roadMapFrame.setParent(notate);
+        System.out.println("ok so far");
+        roadMapFrame.setRoadMapFrameHeight();
+        roadMapFrame.setVisible(true);
+      }
+    catch( OutOfMemoryError e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "Out of Memory: Please save your work and restart the program:");
+      }
+    catch( Exception e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "NullPointerException");
+      }
+  }
+
+public void setParent(Notate notate)
+  {
+    this.notate = notate;
+  }
 
 
     /** Send selection to original notate, after emptying it.
@@ -3402,7 +3457,7 @@ public void setVolumeSlider(int volume)
     /** Plays the currently-selected blocks. The style is determined from the
      * Notate window where this roadmap was opened.
      *
-     * If not blocks are selected, selects them all first.
+     * If no blocks are selected, selects them all first.
      *
      * If the road map is empty, does nothing.
      */
@@ -3410,11 +3465,13 @@ public void setVolumeSlider(int volume)
         if (roadMapPanel.getNumBlocks() < 1)
             return;
         
-        if (!roadMapPanel.hasSelection())
+        boolean nothingSelected = !roadMapPanel.hasSelection();
+        if (nothingSelected)
             selectAllBricks();
 
         ChordPart chordPart = new ChordPart();
         chordPart.addFromRoadMapFrame(this);
+        
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setTempo(getTempo());
@@ -3429,6 +3486,11 @@ public void setVolumeSlider(int volume)
             notate.playAscore(score, style.getName(), -1);
         else
             notate.playAscore(score, style.getName(), 0);
+        
+        if( nothingSelected )
+          {
+            deselectBricks();
+          }
     }
 
     /** Stops playback */
@@ -3812,24 +3874,6 @@ public void analyze(boolean showJoinsOnCompletion)
       }
   }
 
-
-/**
- * Create an empty road map tied to the parent Notate frame.
- */
-
-public void openEmptyRoadmap()
-  {
-    try 
-      {
-    RoadMapFrame roadmapFrame = new RoadMapFrame(notate, "untitled");
-    roadmapFrame.setRoadMapFrameHeight();
-    roadmapFrame.makeVisible(false);
-      }
-    catch( NullPointerException e)
-      {
-        ErrorLog.log(ErrorLog.SEVERE, "Out of Memory: Please save your work and restart the program");
-      }
-  }
 
 public String getDictionaryFilename()
   {

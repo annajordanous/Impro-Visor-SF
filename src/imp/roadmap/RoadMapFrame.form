@@ -654,7 +654,7 @@
                   <KeyStroke key="Ctrl+N"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="110"/>
-                <Property name="text" type="java.lang.String" value="New Roadmap&#xa;" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="New Roadmap " noResource="true"/>
                 <Property name="toolTipText" type="java.lang.String" value="Open a new Roadmap window. The contents can be saved by creating a leadsheet from the roadmap." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="newRoadMapMI" noResource="true"/>
               </Properties>

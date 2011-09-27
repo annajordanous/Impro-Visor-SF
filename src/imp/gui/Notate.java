@@ -932,7 +932,7 @@ public class Notate
     setTitle(score.getTitle());
     
     setTransposition(score.getTransposition());
-
+    
     // all windows should be registered when created so that the window menu can construct a list of windows
 
     WindowRegistry.registerWindow(this);
@@ -1043,8 +1043,6 @@ public class Notate
     openLSFC.setFileView(lsfv);
 
     openLSFC.setAccessory(lsOpenPreview);
-
-
 
     lsSavePreview = new LeadsheetPreview(saveLSFC);
 
@@ -1295,7 +1293,6 @@ public class Notate
     
     initComponents();
 
-
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
@@ -1336,9 +1333,9 @@ public class Notate
     
     score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
-    sectionInfo = score.getChordProg().getSectionInfo().copy();
+     sectionInfo = score.getChordProg().getSectionInfo().copy();
 
-    showAdviceButton.setSelected(adviceInitiallyOpen);
+     showAdviceButton.setSelected(adviceInitiallyOpen);
 
     impro.setPlayEntrySounds(true);
 
@@ -1356,7 +1353,7 @@ public class Notate
     String setAlwaysUseString =
             Preferences.getPreference(Preferences.ALWAYS_USE_BUTTONS);
 
-    // Set checkbox states.
+     // Set checkbox states.
 
     alwaysUseBass.setSelected(setAlwaysUseString.charAt(ALWAYS_USE_BASS_INDEX) == TRUE_CHECK_BOX);
     alwaysUseChord.setSelected(setAlwaysUseString.charAt(ALWAYS_USE_CHORD_INDEX) == TRUE_CHECK_BOX);
@@ -1367,8 +1364,7 @@ public class Notate
 
     setChordFontSizeSpinner(score.getChordFontSize());
 
-
-    //setBars(defaultBarsPerPart);
+     //setBars(defaultBarsPerPart);
 
     setBars(score.getBarsPerChorus());
 
@@ -12189,16 +12185,24 @@ private void setLickEnharmonics(MelodyPart lick)
       return;
       }
 
-    totalSlots =
+     totalSlots =
             paddingSlots + getCurrentSelectionEnd() - getCurrentSelectionStart();
     
     totalBeats = Math.round(totalSlots/roundTo);
     
     totalSlots = (int)(totalBeats * BEAT);
     
-    lickgenFrame.redrawTriage();
+    System.out.println("Ok here A, totalBeats = " + totalBeats);
 
-    lickgenFrame.setTotalBeats(totalBeats);
+   if( false ) //lickgenFrame != null )
+      {
+      lickgenFrame.redrawTriage();
+
+      lickgenFrame.setTotalBeats(totalBeats);
+      }
+    
+    System.out.println("Ok here B");
+
     }
     
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
@@ -17874,7 +17878,7 @@ public void WriteLeadsheetToFile(File file) {
     this.score = score;
 
     setTitle(score.getTitle());
-
+    
     // reset the current scoreFrame
 
     setupArrays();
@@ -17882,14 +17886,7 @@ public void WriteLeadsheetToFile(File file) {
     setTempo(score.getTempo());
     
     clearLayoutPreference();
-/*
-     * This is done in setPrefsDialog:
-     * Putting it here too causes problems.
-     * 
-    Polylist layout = score.getLayoutList();
 
-    adjustLayout(layout);
-*/
     closeAdviceFrame();
 
     int bars = score.getLength();
@@ -20954,16 +20951,17 @@ public Notate newNotateWithScore(Score newScore, int x, int y)
 {
     score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     //create a new window and show the score
+    
     Notate newNotate = new Notate(newScore,
                                   this.adv,
                                   this.impro,
                                   x, 
                                   y);
-    
+
+    System.out.println("newNotateWithScore newNotate = " + newNotate);
+
     newNotate.setupScore(newScore);
 
-    newNotate.makeVisible(this);
-    
     return newNotate;
 }
 
