@@ -728,7 +728,7 @@ public class RoadMapPanel extends JPanel {
     {
         this.buffer = buffer;
     }
-    
+
     /** Draw all elements of the roadmap*/
     protected void draw()
     { 

@@ -1047,7 +1047,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         tempoPanel.setPreferredSize(new java.awt.Dimension(160, 50));
         tempoPanel.setLayout(new java.awt.GridBagLayout());
 
-        tempoSet.setFont(new java.awt.Font("Dialog 12", 1, 12)); // NOI18N
+        tempoSet.setFont(new java.awt.Font("Dialog 12", 1, 12));
         tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tempoSet.setText("120"); // NOI18N
         tempoSet.setToolTipText("Set the tempo for playback in beats per minute."); // NOI18N
@@ -1153,7 +1153,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.05;
@@ -1162,34 +1162,33 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
-        roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 30));
-        roadMapTextEntry.setMinimumSize(new java.awt.Dimension(900, 30));
+        roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 45));
+        roadMapTextEntry.setMinimumSize(new java.awt.Dimension(600, 45));
         roadMapTextEntry.setName("roadMapTextEntry"); // NOI18N
-        roadMapTextEntry.setPreferredSize(new java.awt.Dimension(1200, 30));
-        roadMapTextEntry.setSize(new java.awt.Dimension(0, 30));
+        roadMapTextEntry.setPreferredSize(new java.awt.Dimension(900, 45));
         roadMapTextEntry.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 textualEntryKeyPressed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.65;
         gridBagConstraints.weighty = 0.08;
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapStatus.setEditable(false);
-        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapStatus.setToolTipText("Shows the status of the roadmap."); // NOI18N
         roadMapStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Roadmap status"));
-        roadMapStatus.setMaximumSize(new java.awt.Dimension(2147483647, 30));
-        roadMapStatus.setMinimumSize(new java.awt.Dimension(12, 30));
+        roadMapStatus.setMaximumSize(new java.awt.Dimension(2147483647, 45));
+        roadMapStatus.setMinimumSize(new java.awt.Dimension(300, 45));
         roadMapStatus.setName("roadMapStatus"); // NOI18N
-        roadMapStatus.setPreferredSize(new java.awt.Dimension(12, 30));
+        roadMapStatus.setPreferredSize(new java.awt.Dimension(300, 45));
         roadMapStatus.setRequestFocusEnabled(false);
-        roadMapStatus.setSize(new java.awt.Dimension(0, 30));
         roadMapStatus.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 roadMapStatustextualEntryKeyPressed(evt);
@@ -1197,10 +1196,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.35;
         gridBagConstraints.weighty = 0.08;
         getContentPane().add(roadMapStatus, gridBagConstraints);
 
@@ -1237,8 +1236,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.75;
@@ -1248,12 +1247,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setToolTipText("Provides a preview of a brick selected from the Brick Dictionary."); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
-        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
         previewScrollPane.setPreferredSize(new java.awt.Dimension(1200, 100));
-        previewScrollPane.setSize(new java.awt.Dimension(0, 100));
         previewScrollPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 previewScrollPanepreviewPaneReleased(evt);
@@ -1267,6 +1265,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
@@ -1288,10 +1287,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.05;
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(clearButton, gridBagConstraints);
@@ -1311,10 +1309,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.05;
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(insertBrickButton, gridBagConstraints);
