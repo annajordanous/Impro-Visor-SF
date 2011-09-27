@@ -252,7 +252,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogAcceptButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         prefDialogStyleComboBox = new javax.swing.JComboBox();
-        jLabel5 = new javax.swing.JLabel();
         prefDialogMeterLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         prefDialogTitleField = new javax.swing.JTextField();
@@ -571,29 +570,24 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(prefDialogStyleComboBox, gridBagConstraints);
 
-        jLabel5.setText("Tempo:"); // NOI18N
-        jLabel5.setName("jLabel5"); // NOI18N
+        prefDialogMeterLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        prefDialogMeterLabel.setText("Metre:"); // NOI18N
+        prefDialogMeterLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        prefDialogMeterLabel.setName("prefDialogMeterLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        jPanel1.add(jLabel5, gridBagConstraints);
-
-        prefDialogMeterLabel.setText("Metre:"); // NOI18N
-        prefDialogMeterLabel.setName("prefDialogMeterLabel"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel1.add(prefDialogMeterLabel, gridBagConstraints);
 
         jLabel6.setText("/"); // NOI18N
         jLabel6.setName("jLabel6"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         jPanel1.add(jLabel6, gridBagConstraints);
 
-        prefDialogTitleField.setText("Untitled"); // NOI18N
         prefDialogTitleField.setName("prefDialogTitleField"); // NOI18N
         prefDialogTitleField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -608,11 +602,15 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(prefDialogTitleField, gridBagConstraints);
 
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Title:"); // NOI18N
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jLabel7.setName("jLabel7"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel1.add(jLabel7, gridBagConstraints);
 
         prefDialogMetreTopField.setText("4"); // NOI18N
@@ -620,7 +618,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogMetreTopField.setName("prefDialogMetreTopField"); // NOI18N
         prefDialogMetreTopField.setPreferredSize(new java.awt.Dimension(23, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         jPanel1.add(prefDialogMetreTopField, gridBagConstraints);
 
@@ -629,7 +627,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogMetreBottomField.setName("prefDialogMetreBottomField"); // NOI18N
         prefDialogMetreBottomField.setPreferredSize(new java.awt.Dimension(23, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         jPanel1.add(prefDialogMetreBottomField, gridBagConstraints);
 
@@ -3196,7 +3194,6 @@ public void setVolumeSlider(int volume)
     private javax.swing.JButton flattenButton;
     private javax.swing.JMenuItem flattenMenuItem;
     private javax.swing.JButton insertBrickButton;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
