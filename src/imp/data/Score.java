@@ -206,6 +206,7 @@ public class Score implements Constants, Serializable {
         
         this.partList = new PartList(1);
         this.chordProg = new ChordPart();
+        setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     }
 
     public Score(int length) {

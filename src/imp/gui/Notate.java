@@ -523,7 +523,7 @@ public class Notate
    * The width of the main frame
    *
    */
-  private int fWidth = 1100;
+  public static final int NOTATE_WIDTH = 1100;
 
   /**
    *
@@ -4610,7 +4610,7 @@ public class Notate
         allPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         allPanel.setLayout(new java.awt.GridBagLayout());
 
-        allVolumeMixerSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
+        allVolumeMixerSlider.setFont(new java.awt.Font("Arial", 0, 8));
         allVolumeMixerSlider.setMajorTickSpacing(20);
         allVolumeMixerSlider.setMaximum(127);
         allVolumeMixerSlider.setMinorTickSpacing(5);
@@ -6402,7 +6402,9 @@ public class Notate
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
+        setMaximumSize(new java.awt.Dimension(1200, 2147483647));
         setName("notateFrame"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1200, 151));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -7087,7 +7089,7 @@ public class Notate
         masterVolumePanel.setLayout(new java.awt.GridBagLayout());
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
-        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11));
         allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
         allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -12125,22 +12127,19 @@ private void setLickEnharmonics(MelodyPart lick)
     
     
     
-    private void openAdviceFrame()
-    
-    {
-        
-        showAdviceButton.setSelected(true);
-        
-        showAdviceButton.setBackground(adviceBtnColorOpen);
-        
-        adviceFrame.setVisible(true);
-        
-        //adviceTree.requestFocusInWindow();
-        
-        setStatus("Select advice option.");
-        
-    }
-    
+private void openAdviceFrame()
+  {
+    showAdviceButton.setSelected(true);
+
+    showAdviceButton.setBackground(adviceBtnColorOpen);
+
+    adviceFrame.setVisible(true);
+
+    //adviceTree.requestFocusInWindow();
+
+    setStatus("Select advice option.");
+  }
+
     
   private void redoAdvice()
     {
@@ -12192,17 +12191,12 @@ private void setLickEnharmonics(MelodyPart lick)
     
     totalSlots = (int)(totalBeats * BEAT);
     
-    System.out.println("Ok here A, totalBeats = " + totalBeats);
-
-   if( false ) //lickgenFrame != null )
+   if( lickgenFrame != null )
       {
       lickgenFrame.redrawTriage();
 
       lickgenFrame.setTotalBeats(totalBeats);
       }
-    
-    System.out.println("Ok here B");
-
     }
     
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
@@ -17974,7 +17968,16 @@ public void WriteLeadsheetToFile(File file) {
     GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
     DisplayMode dm = gs[0].getDisplayMode();
 
-    setSize(fWidth, dm.getHeight() - (isVisible()? getY() : 0));
+    setSize(NOTATE_WIDTH, dm.getHeight() - (isVisible()? getY() : 0));
+  }
+  
+    public void forceNotateFrameHeight()
+  {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
+    DisplayMode dm = gs[0].getDisplayMode();
+
+    setSize(NOTATE_WIDTH, dm.getHeight() - getY());
   }
   
   public void setSavedLeadsheet(File f)
@@ -20935,7 +20938,6 @@ private void closingThisWindow()
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
-    score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     readLeadsheetFile(selectedFile, newScore); 
     
     //create a new window and show the score
@@ -20947,9 +20949,9 @@ public void openInNewWindow(File selectedFile)
     newNotate.makeVisible(this);
 }
 
+
 public Notate newNotateWithScore(Score newScore, int x, int y)
 {
-    score.setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     //create a new window and show the score
     
     Notate newNotate = new Notate(newScore,
@@ -20958,10 +20960,7 @@ public Notate newNotateWithScore(Score newScore, int x, int y)
                                   x, 
                                   y);
 
-    System.out.println("newNotateWithScore newNotate = " + newNotate);
-
     newNotate.setupScore(newScore);
-
     return newNotate;
 }
 

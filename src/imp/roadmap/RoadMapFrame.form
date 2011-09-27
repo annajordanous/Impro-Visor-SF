@@ -640,26 +640,12 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="mnemonic" type="int" value="111"/>
-                <Property name="text" type="java.lang.String" value="Open Leadsheet" noResource="true"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open a leadsheet in the current window." noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Open a leadsheet in parent window." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open a leadsheet in the parent leadsheet window." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="openLeadsheetMI" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openLeadsheetMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="newRoadMapMI">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+N"/>
-                </Property>
-                <Property name="mnemonic" type="int" value="110"/>
-                <Property name="text" type="java.lang.String" value="New Roadmap " noResource="true"/>
-                <Property name="toolTipText" type="java.lang.String" value="Open a new Roadmap window. The contents can be saved by creating a leadsheet from the roadmap." noResource="true"/>
-                <Property name="name" type="java.lang.String" value="newRoadMapMI" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newRoadMapMIActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="printRoadMapMI">
@@ -670,10 +656,57 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="&quot;Print RoadMap&quot;" type="code"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Print the contents of this roadmap." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="printRoadMapMI" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printRoadMapMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="appendToNewLeadsheetMI">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+W"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Create a new leadsheet and add selected chords to it." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create a new leadsheet and add selected chords to it." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="appendToNewLeadsheetMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="appendToNewLeadsheetMIaction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="appendToLeadsheetMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Append selection chords to most recent leadsheet created.&#xa;&#xa;" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Append selection chords to most recent leadsheet created, creating one if it doesn&apos;t exist.&#xa;" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="appendToLeadsheetMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="appendToLeadsheetMIaction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sendToOriginalLeadsheetMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Store selection over chords in parent leadsheet. CAUTION: Can only be undone by reverting leadsheet." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Store selection over chords in parent leadsheet. CAUTION: Can only be undone by reverting leadsheet." noResource="true"/>
+                <Property name="name" type="java.lang.String" value="sendToOriginalLeadsheetMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendToOriginalLeadsheetMIaction"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="sendToOriginalLeadsheetAndSaveMI">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+S"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Store selection over chords in, then SAVE, parent leadsheet. EXTRA CAUTION: Cannot be undone!" noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Store selection over chords in, then SAVE, parent leadsheet. EXTRA CAUTION: Cannot be undone!" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="sendToOriginalLeadsheetAndSaveMI" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendToOriginalLeadsheetAndSaveMIaction"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
@@ -681,7 +714,8 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
-                <Property name="label" type="java.lang.String" value="Quit" noResource="true"/>
+                <Property name="text" type="java.lang.String" value="Close this window." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Closes this window." noResource="true"/>
                 <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
               </Properties>
               <Events>
@@ -917,61 +951,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togglePhraseMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="leadsheetMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Leadsheet" noResource="true"/>
-            <Property name="toolTipText" type="java.lang.String" value="Transfer roadmap chord changes into a leadsheet." noResource="true"/>
-            <Property name="name" type="java.lang.String" value="leadsheetMenu" noResource="true"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="appendToLeadsheetMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Append selection chords to most recent leadsheet created&#xa;&#xa;" noResource="true"/>
-                <Property name="toolTipText" type="java.lang.String" value="Appends the chords in the current selection to a created leadsheet, creating one if none exits." noResource="true"/>
-                <Property name="name" type="java.lang.String" value="appendToLeadsheetMI" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="appendToLeadsheetMIaction"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="appendToNewLeadsheetMI">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+W"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Create a new leadsheet and add selected chords to it  " noResource="true"/>
-                <Property name="toolTipText" type="java.lang.String" value="Create a new leadsheet and add selected chords to it." noResource="true"/>
-                <Property name="name" type="java.lang.String" value="appendToNewLeadsheetMI" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="appendToNewLeadsheetMIaction"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="sendToOriginalLeadsheetMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Reset original leadsheet with selection. CAUTION: Cannot be undone." noResource="true"/>
-                <Property name="toolTipText" type="java.lang.String" value="Clear the original leadsheet and send selection it. CAUTION: This cannot be undone." noResource="true"/>
-                <Property name="name" type="java.lang.String" value="sendToOriginalLeadsheetMI" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendToOriginalLeadsheetMIaction"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="sendToOriginalLeadsheetAndSaveMI">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+S"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Save entire roadmap into original leadsheet. CAUTION: Cannot be undone." noResource="true"/>
-                <Property name="toolTipText" type="java.lang.String" value="Clear the original leadsheet and send the entire roadmap to it. CAUTION: This cannot be undone." noResource="true"/>
-                <Property name="name" type="java.lang.String" value="sendToOriginalLeadsheetAndSaveMI" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendToOriginalLeadsheetAndSaveMIaction"/>
               </Events>
             </MenuItem>
           </SubComponents>
