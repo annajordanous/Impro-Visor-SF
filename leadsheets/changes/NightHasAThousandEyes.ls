@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 1)
 (tempo 200.0)
-(volume 127)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -60,8 +60,8 @@ Am9 | D13b9 | GM9 | D9sus4 |
 
 (part
     (type melody)
-    (title Chorus 1)
-    (composer Bob Keller)
+    (title )
+    (composer )
     (instrument 11)
     (volume 85)
     (key 1)

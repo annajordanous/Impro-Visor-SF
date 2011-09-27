@@ -828,10 +828,18 @@ public static boolean checkJoinability(Block first, Brick second)
          
         for(Polylist p : equivalenceRules)
         {
+          // Don't barf if chord does not exist in vocabulary
+          try
+            {
             if(c.getChord().getChordSymbol().enhMember(p))
             {
                 cSym = ChordSymbol.makeChordSymbol(p.first().toString());
                 break;
+            }
+            }
+          catch(Exception e)
+            {
+              
             }
         }
         

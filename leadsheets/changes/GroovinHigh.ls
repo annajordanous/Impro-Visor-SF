@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 0)
 (tempo 160.0)
-(volume 127)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -48,7 +48,7 @@ F7 | / | Fm7 | Bb7 |
 
 (section (style swing)) 
 
-Gm7 | F#m7 B7 | Fm7 | Bb7 | 
+Gm7 | F#m7 | Fm7 | Bb7 | 
 
 (phrase (style swing)) 
 EbM7 | / | 
@@ -64,7 +64,7 @@ F7 | / | Fm7 | Bb7 |
 
 (section (style swing)) 
 
-Fm7 | Abm7 Db7 | EbM7 | / | 
+Fm7 | Abm7 Db7 | EbM7 | Fm7 Bb7 | 
 
 (part
     (type melody)

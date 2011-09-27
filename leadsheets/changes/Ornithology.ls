@@ -5,8 +5,8 @@
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 120.0)
-(volume 127)
+(tempo 196.0)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 34)
@@ -42,11 +42,11 @@ FM7 | / |
 Fm7 | Bb7 | 
 
 (phrase (style swing)) 
-EbM7 | Am7b5 D7 | Gm7 D7#9 | Gm7 | 
+EbM7 | Am7b5 D7 | Gm7 | / | 
 
 (section (style swing)) 
 
-Bm7 | E7b9 | Am7 | D7b9 | 
+Bm7b5 | E7b9 | Am7 | D7b9 | 
 
 (phrase (style swing)) 
 GM7 | / | Gm7 | C7 | 
@@ -56,11 +56,11 @@ FM7 | / |
 Fm7 | Bb7 | 
 
 (phrase (style swing)) 
-EbM7 | Am7b5 D7 | Gm7 D7#9 | GM7 / Cm7 F7 | 
+EbM7 | Am7b5 D7 | GM7 | Cm7 F7 | 
 
 (section (style swing)) 
 
-Bm7 E7 | Am7 D7 | GM7 | / | 
+Bm7 E7 | Am7 D7 | GM7 | Am7 D7 | 
 
 (part
     (type melody)

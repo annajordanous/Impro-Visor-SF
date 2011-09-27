@@ -6,7 +6,7 @@
 (meter 4 4)
 (key -1)
 (tempo 160.0)
-(volume 127)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -27,7 +27,7 @@
 )
 (part
     (type chords)
-    (title Untitled Part)
+    (title )
     (composer )
     (instrument 0)
     (volume 65)
@@ -37,13 +37,22 @@
 (section (style swing)) 
 
 FM7 | Em7b5 A7 | Dm7 G7 | Cm7 F7 | 
-Bb7 | Am7 D7 | G7 | C7 | 
+Bb7_ | Am7 D7 | G7 | C7 | 
+
+(section (style swing)) 
+
 FM7 | Em7b5 A7 | Dm7 G7 | Cm7 F7 | 
-Bb7 | Am7 D7 | Gm7 C7 | FM7 | 
+Bb7_ | Am7 D7 | Gm7 C7 | FM7 | 
+
+(section (style swing)) 
+
 Cm7 | F7 | BbM7 | / | 
 Ebm7 | Ab7 | DbM7 | Gm7 C7 | 
+
+(section (style swing)) 
+
 FM7 | Em7b5 A7 | Dm7 G7 | Cm7 F7 | 
-Bb7 | Am7 D7 | Gm7 C7 | FM7 | 
+Bb7_ | Am7 D7 | Gm7 C7 | FM7 | 
 
 (part
     (type melody)

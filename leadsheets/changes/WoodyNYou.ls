@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 0)
 (tempo 192.0)
-(volume 127)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -49,7 +49,7 @@ Abm7 Db7 | Abm7 Db7 | Abm7 Db7 | GbM7 |
 
 (section (style swing)) 
 
-Bbm7 Eb7 | Bbm7 Eb7 | Bbm7 Eb7 | Ebm7 Ab7 | 
+Bbm7 Eb7 | Bbm7 Eb7 | Bbm7 Eb7 | AbM7 | 
 
 (section (style swing)) 
 

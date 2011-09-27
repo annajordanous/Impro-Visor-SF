@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 0)
 (tempo 176.0)
-(volume 127)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -37,30 +37,21 @@
 (section (style latin-enhanced)) 
 
 CM7 | / | DbM7 | / | 
-
-(section (style latin-enhanced)) 
-
 Bbm7 | Eb7 | AbM7 | / | 
 
-(phrase (style swing)) 
+(phrase (style latin-enhanced)) 
 Gm7 | C7 | FM7 | / | 
 
-(section (style swing)) 
+(section (style latin-enhanced)) 
 
 Am7 | D7 | Ebm7 Ab7 | Dm7 G7 | 
 
 (section (style latin-enhanced)) 
 
 CM7 | / | DbM7 | / | 
-
-(section (style latin-enhanced)) 
-
 Bbm7 | Eb7 | Gb7 | F7 | 
-
-(section (style swing)) 
-
 Dm7b5 | G7 | CM7 | A7 | 
-Dm7 | G7 | CM7 | / | 
+Dm7 | G7 | CM7 | Dm7 G7 | 
 
 (part
     (type melody)

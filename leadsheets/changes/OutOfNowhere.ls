@@ -5,8 +5,8 @@
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 120.0)
-(volume 127)
+(tempo 160.0)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 34)
@@ -60,7 +60,7 @@ Am7 | E7 | Am7 | F7#11 |
 
 (section (style swing)) 
 
-Bm7 Bbo | Am7 D7 | GM7 | / | 
+Bm7 Bbo | Am7 D7 | GM7 | Am7 D7 | 
 
 (part
     (type melody)

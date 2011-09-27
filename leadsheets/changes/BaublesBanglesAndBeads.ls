@@ -5,8 +5,8 @@
 (comments )
 (meter 3 4)
 (key 0)
-(tempo 120.0)
-(volume 127)
+(tempo 184.0)
+(volume 97)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -15,11 +15,11 @@
 (chord-volume 54)
 (breakpoint 54)
 (layout)
-(style swing
+(style waltz
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low c---)
     (bass-base c--)
     (chord-high a)
     (chord-low c-)
@@ -34,22 +34,22 @@
     (key 0)
 )
 
-(section (style swing)) 
+(section (style waltz)) 
 
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | AbM7 | / | 
 
-(section (style swing)) 
+(section (style waltz)) 
 
 Dm7 | G7 | CM7 | Am7 | 
 Dm7 | G7 | CM7 | / | 
 
-(section (style swing)) 
+(section (style waltz)) 
 
 F#m7 | B7 | EM7 | / | 
 Bbm7 | Eb7 | Cm7 | F7 | 
 
-(section (style swing)) 
+(section (style waltz)) 
 
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | Gb7#11 | F7 | 

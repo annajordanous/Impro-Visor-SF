@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 0)
 (tempo 140.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -15,14 +15,14 @@
 (chord-volume 54)
 (breakpoint 54)
 (layout)
-(style swing
+(style ballad
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low c---)
     (bass-base c--)
-    (chord-high a)
-    (chord-low c-)
+    (chord-high b)
+    (chord-low b--)
     (chord-base c- e- g-)
 )
 (part
@@ -34,35 +34,33 @@
     (key 0)
 )
 
-(phrase (style swing)) 
+(phrase (style ballad)) 
 CM7 A7 | Dm7 G7 | Bm7 E7 Bbm7 Eb7 | Am7 D7 Abm7 Db7 | 
 
-(section (style swing)) 
+(section (style ballad)) 
 
 CM7 A7 | Dm7 G7 | Bb7 A7 | Ab7 G7 | 
 
-(phrase (style swing)) 
+(phrase (style ballad)) 
 CM7 A7 | Dm7 G7 | Bm7 E7 Bbm7 Eb7 | Am7 D7 Abm7 Db7 | 
 
-(phrase (style swing)) 
+(phrase (style ballad)) 
 CM7 A7 | Dm7 G7 | 
-(section (style swing)) 
+(section (style ballad)) 
 
 CM7 Bb7 | CM7 | 
 
-(phrase (style swing)) 
-Em7 A7 | Em7 A7 | DM7 | / | 
+(section (style ballad)) 
 
-(section (style swing)) 
-
+Em7 A7 | Em7 A7 | DM7 Em7 | F#m7 Em7 | 
 Dm7 G7 | Dm7 G7 | CM7 A7 | Dm7 G7 | 
 
-(phrase (style swing)) 
+(phrase (style ballad)) 
 CM7 A7 | Dm7 G7 | Bm7 E7 Bbm7 Eb7 | Am7 D7 Abm7 Db7 | 
 
-(phrase (style swing)) 
+(phrase (style ballad)) 
 CM7 A7 | Dm7 G7 | 
-(section (style swing)) 
+(section (style ballad)) 
 
 CM7 Bb7 | CM7 | 
 

@@ -36,15 +36,15 @@
 
 (section (style swing)) 
 
-F13t | Bb13 Bo7 | F13t | Cm9 F13b9 | 
+F13_ | Bb13 Bo7 | F13_ | Cm9 F13b9 | 
 
 (section (style swing)) 
 
-Bb13 | Bo7 | F13t | D7#5#9 | 
+Bb13 | Bo7 | F13_ | D7#5#9 | 
 
 (section (style swing)) 
 
-Gm9 | C13b9 | F13t D7#5#9 | Gm9 C13b9 | 
+Gm9 | C13b9 | F13_ D7#5#9 | Gm9 C13b9 | 
 
 (part
     (type melody)

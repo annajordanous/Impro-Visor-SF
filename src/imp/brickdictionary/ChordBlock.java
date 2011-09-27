@@ -35,6 +35,12 @@ import polya.Polylist;
 
 
 public class ChordBlock extends Block {
+
+    /**
+     * Suffix on chord symbol used to designate tonic.
+     */
+
+    public static final String TONIC_SUFFIX = "_";
     
     public static enum FlagType {NORMAL, SECTION_END, PHRASE_END} ;
     
@@ -51,10 +57,18 @@ public class ChordBlock extends Block {
         super(chordName);
         this.duration = dur;
         chord = new Chord(chordName, this.duration);
+        // In case the named chord does not exist, don't generate a backtrace.
+        try
+          {
         if (chordName.contains(BACKSLASH))
             key = fixRoot(chord.getChordSymbol().getPolybase().getRootString());
         else
             key = fixRoot(chord.getRoot());
+          }
+        catch( Exception e )
+          {
+            chord = new Chord("NC", this.duration);
+          }
         endValue = Block.NO_END;
         mode = this.findModeFromQuality();
     }
@@ -252,7 +266,7 @@ public class ChordBlock extends Block {
         return symbol.equals("")
             || symbol.equals("m")
             || symbol.startsWith("M")
-            || symbol.endsWith("t");    }
+            || symbol.endsWith(TONIC_SUFFIX);    }
     
     public boolean isGeneralizedTonic() {
         String symbol = getSymbol();
@@ -265,7 +279,7 @@ public class ChordBlock extends Block {
             || symbol.startsWith("m9")
             || symbol.startsWith("m11")
             || symbol.startsWith("m13")
-            || symbol.endsWith("t");    }
+            || symbol.endsWith(TONIC_SUFFIX);    }
     
     /** isSlashChord
      * Describes whether not the ChordBlock is a slash chord

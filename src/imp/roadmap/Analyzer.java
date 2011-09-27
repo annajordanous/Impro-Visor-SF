@@ -48,10 +48,10 @@ public class Analyzer extends Thread
     @Override
     public void run()
       {
-        frame.setStatus("Analyzing: Please wait for OK!");
+        frame.setStatus(" Analyzing: Please wait for OK!");
         frame.setStatusColor(cautionColor);
         frame.analyze(showJoinsOnCompletion);
-        frame.setStatus("OK to Edit");
+        frame.setStatus(" OK to Edit");
         frame.setStatusColor(Color.WHITE);
        }
     

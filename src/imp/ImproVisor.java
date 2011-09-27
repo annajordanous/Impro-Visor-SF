@@ -36,7 +36,7 @@ import imp.util.*;
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.0";
+    public static final String version = "5.01";
     
     private static String lastLeadsheetFileStem = null;
     
