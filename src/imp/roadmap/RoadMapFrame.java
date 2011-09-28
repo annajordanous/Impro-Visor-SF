@@ -65,6 +65,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     private String dictionaryFilename;
     
+    private String dictionaryName;
+    
      /** Communication with leadsheet and score is done through Notate frame. */
     private Notate notate = null;
     
@@ -265,6 +267,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryScrollPane = new javax.swing.JScrollPane();
         libraryTree = new javax.swing.JTree();
         deleteButton = new javax.swing.JButton();
+        reloadButton = new javax.swing.JButton();
         durationComboBox = new javax.swing.JComboBox(durationChoices);
         colorationPreferencesButtonGroup = new javax.swing.ButtonGroup();
         toolBar = new javax.swing.JToolBar();
@@ -662,9 +665,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
         keyComboBox.setToolTipText("Key of the brick."); // NOI18N
         keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root"));
-        keyComboBox.setMinimumSize(new java.awt.Dimension(52, 100));
+        keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         keyComboBox.setName("keyComboBox"); // NOI18N
-        keyComboBox.setPreferredSize(new java.awt.Dimension(52, 100));
+        keyComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
         keyComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 keyComboBoxActionPerformed(evt);
@@ -674,6 +677,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.02;
         brickDictionaryFrame.getContentPane().add(keyComboBox, gridBagConstraints);
@@ -683,7 +687,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         libraryScrollPane.setName("libraryScrollPane"); // NOI18N
 
-        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14));
+        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         libraryTree.setModel(libraryTreeModel);
         libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
         libraryTree.setMaximumSize(new java.awt.Dimension(400, 3000));
@@ -726,9 +730,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         deleteButton.setText("Delete from Dictionary"); // NOI18N
         deleteButton.setToolTipText("Makes the selected brick \"invisible\" in the dictionary."); // NOI18N
         deleteButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        deleteButton.setMaximumSize(new java.awt.Dimension(182, 30));
-        deleteButton.setMinimumSize(new java.awt.Dimension(182, 30));
+        deleteButton.setMaximumSize(new java.awt.Dimension(182, 40));
+        deleteButton.setMinimumSize(new java.awt.Dimension(115, 40));
         deleteButton.setName("deleteButton"); // NOI18N
+        deleteButton.setPreferredSize(new java.awt.Dimension(147, 40));
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
@@ -737,13 +742,38 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.insets = new java.awt.Insets(3, 0, 3, 0);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.02;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         brickDictionaryFrame.getContentPane().add(deleteButton, gridBagConstraints);
+
+        reloadButton.setText("Reload Dictionary"); // NOI18N
+        reloadButton.setToolTipText("Reloads the dictionary, in case it was edited externally."); // NOI18N
+        reloadButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        reloadButton.setMaximumSize(new java.awt.Dimension(182, 40));
+        reloadButton.setMinimumSize(new java.awt.Dimension(115, 40));
+        reloadButton.setName("reloadButton"); // NOI18N
+        reloadButton.setPreferredSize(new java.awt.Dimension(115, 40));
+        reloadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reloadButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.02;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        brickDictionaryFrame.getContentPane().add(reloadButton, gridBagConstraints);
 
         durationComboBox.setSelectedItem(2);
         durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
-        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande 11", 0, 11))); // NOI18N
+        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Duration\n")); // NOI18N
         durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         durationComboBox.setName("durationComboBox"); // NOI18N
         durationComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
@@ -2549,6 +2579,11 @@ private void showKeysCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//
     settings.showKeys = showKeysCheckBoxMI.getState();
   }//GEN-LAST:event_showKeysCheckBoxMIActionPerformed
 
+private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reloadButtonActionPerformed
+  {//GEN-HEADEREND:event_reloadButtonActionPerformed
+    reloadDictionary();
+  }//GEN-LAST:event_reloadButtonActionPerformed
+
 
 public void setVolumeSlider(int volume)
   {
@@ -3268,6 +3303,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JRadioButtonMenuItem relativeToEbutton;
     private javax.swing.JRadioButtonMenuItem relativeToFbutton;
     private javax.swing.JRadioButtonMenuItem relativeToGbutton;
+    private javax.swing.JButton reloadButton;
     private javax.swing.JScrollPane roadMapScrollPane;
     private javax.swing.JTextField roadMapStatus;
     private javax.swing.JTextField roadMapTextEntry;
@@ -3718,6 +3754,7 @@ private void populateRoadmapDictionaryMenu(String dictionaryName)
 
 public void setDictionaryFilename(String dictionaryName)
   {
+    this.dictionaryName = dictionaryName;
     dictionaryFilename = ImproVisor.getDictionaryDirectory() + File.separator + dictionaryName + DictionaryFilter.EXTENSION;
     setDictionaryTitle(dictionaryName);
   }
@@ -3925,5 +3962,14 @@ public void saveDictionaryAs()
       
       return value;
     }
+  
+private void reloadDictionary()
+  {
+    setDictionaryFilename(dictionaryName);
+    newDictionary();
+    populateRoadmapDictionaryMenu(dictionaryName);
+
+    brickDictionaryFrame.setVisible(true);
+  }
 }
 
