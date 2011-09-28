@@ -17983,6 +17983,10 @@ public void WriteLeadsheetToFile(File file) {
   public void setSavedLeadsheet(File f)
   {
       savedLeadsheet = f;
+      if( f != null )
+        {
+        ImproVisor.setLastLeadsheetFileStem(f.getName());
+        }
   }
   
   public boolean savedLeadsheetExists()

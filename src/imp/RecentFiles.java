@@ -131,6 +131,7 @@ public class RecentFiles {
         BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
         recentFiles.write(path);
         recentFiles.close();
+        ImproVisor.setLastLeadsheetFileStem(file.getName());
         }
     }
     
@@ -153,6 +154,7 @@ public class RecentFiles {
         mostRec = new File(path);
         Score score = new Score();
         OpenLeadsheetCommand com = new OpenLeadsheetCommand(mostRec, score);
+        ImproVisor.setLastLeadsheetFileStem(mostRec.getName());
     }
     
     

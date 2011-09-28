@@ -575,7 +575,10 @@ public static File getRecentFilesFile()
 
 public static void setLastLeadsheetFileStem(String stem)
   {
-    lastLeadsheetFileStem = stem;
+    if( stem != null )
+      {
+      lastLeadsheetFileStem = stem;
+      }
   }
 
 public static String getLastLeadsheetFileStem()
