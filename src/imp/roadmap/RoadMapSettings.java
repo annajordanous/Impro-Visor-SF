@@ -147,6 +147,12 @@ public class RoadMapSettings {
     public boolean showBrickNames = true;
     
     /**
+     * whether to show keys in roadmap or not
+     */
+    
+    public boolean showKeys = true;
+    
+    /**
      * Returns the length of the block in the current settings
      * @param block the block
      * @return the length

@@ -497,12 +497,15 @@ public class GraphicBrick {
             g2d.fillRect(x, y, totalLength, blockHeight);
             
             //Key
-            String key = RoadMapSettings.trimString(block.getKeyName()+" "+block.getMode(),
-                    totalLength, metrics);
             g2d.setColor(settings.lineColor);
             g2d.drawRect(x, y, totalLength, blockHeight);
-            g2d.setColor(settings.textColor);
-            g2d.drawString(key, x+5, y+blockHeight/2+5);
+            if( settings.showKeys )
+              {
+                String key = RoadMapSettings.trimString(block.getKeyName()+" "+block.getMode(),
+                        totalLength, metrics);
+                g2d.setColor(settings.textColor);
+                g2d.drawString(key, x+5, y+blockHeight/2+5);
+              }
 
             //Name
             if( settings.showBrickNames )

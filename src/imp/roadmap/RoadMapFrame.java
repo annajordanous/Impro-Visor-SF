@@ -342,8 +342,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         relativeToEbbutton = new javax.swing.JRadioButtonMenuItem();
         relativeToDbutton = new javax.swing.JRadioButtonMenuItem();
         relativeToDbbutton = new javax.swing.JRadioButtonMenuItem();
-        showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        showKeysCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         showBrickNamesCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -1769,16 +1770,16 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         preferencesMenu.add(colorationPreferences);
 
-        showJoinsCheckBoxMI.setSelected(true);
-        showJoinsCheckBoxMI.setText("Show Joins"); // NOI18N
-        showJoinsCheckBoxMI.setToolTipText("Indicate whether to show joins between bricks."); // NOI18N
-        showJoinsCheckBoxMI.setName("showJoinsCheckBoxMI"); // NOI18N
-        showJoinsCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+        showKeysCheckBoxMI.setSelected(true);
+        showKeysCheckBoxMI.setText("Show Keys"); // NOI18N
+        showKeysCheckBoxMI.setToolTipText("Indicate whether to show keys."); // NOI18N
+        showKeysCheckBoxMI.setName("showKeysCheckBoxMI"); // NOI18N
+        showKeysCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showJoinsCheckBoxMIActionPerformed(evt);
+                showKeysCheckBoxMIActionPerformed(evt);
             }
         });
-        preferencesMenu.add(showJoinsCheckBoxMI);
+        preferencesMenu.add(showKeysCheckBoxMI);
 
         showBrickNamesCheckBoxMI.setSelected(true);
         showBrickNamesCheckBoxMI.setText("Show Brick Names"); // NOI18N
@@ -1790,6 +1791,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
         });
         preferencesMenu.add(showBrickNamesCheckBoxMI);
+
+        showJoinsCheckBoxMI.setSelected(true);
+        showJoinsCheckBoxMI.setText("Show Joins"); // NOI18N
+        showJoinsCheckBoxMI.setToolTipText("Indicate whether to show joins between bricks."); // NOI18N
+        showJoinsCheckBoxMI.setName("showJoinsCheckBoxMI"); // NOI18N
+        showJoinsCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showJoinsCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(showJoinsCheckBoxMI);
 
         roadmapMenuBar.add(preferencesMenu);
 
@@ -2530,6 +2542,11 @@ private void showBrickNamesCheckBoxMIActionPerformed(java.awt.event.ActionEvent 
         settings.showBrickNames = showBrickNamesCheckBoxMI.getState();
   }//GEN-LAST:event_showBrickNamesCheckBoxMIActionPerformed
 
+private void showKeysCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showKeysCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_showKeysCheckBoxMIActionPerformed
+    settings.showKeys = showKeysCheckBoxMI.getState();
+  }//GEN-LAST:event_showKeysCheckBoxMIActionPerformed
+
 
 public void setVolumeSlider(int volume)
   {
@@ -3256,6 +3273,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JMenuItem selectAllMenuItem;
     private javax.swing.JCheckBoxMenuItem showBrickNamesCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem showKeysCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JPanel tempoPanel;

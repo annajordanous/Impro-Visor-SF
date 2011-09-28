@@ -736,7 +736,10 @@ public class RoadMapPanel extends JPanel {
        drawGrid();
        drawText();
        drawBricks(settings.showJoins);
-       drawKeyMap();
+       if( settings.showKeys )
+         {
+         drawKeyMap();
+         }
        if(view.isPlaying()) {
            drawPlaySection();
            setPlayLine(view.getMidiSlot() - view.getMidiSlot()%(settings.slotsPerBeat/2));
@@ -906,6 +909,7 @@ public class RoadMapPanel extends JPanel {
             }
         }
         
+
         drawKeyMap();
     }
     
@@ -983,10 +987,14 @@ public class RoadMapPanel extends JPanel {
             int endY = y+lines*settings.getLineOffset();
             
             if(lines > 0) {
-                g2d.setColor(keyColor);
-                g2d.fillRect(x, y, cutoff - x, blockHeight);
-                g2d.fillRect(settings.xOffset, endY,
-                        endX-settings.xOffset, blockHeight);
+                
+                if( settings.showKeys )
+                  {
+                  g2d.setColor(keyColor);
+                  g2d.fillRect(x, y, cutoff - x, blockHeight);
+                  g2d.fillRect(settings.xOffset, endY,
+                          endX-settings.xOffset, blockHeight);
+                  }
                 
                 g2d.setColor(settings.lineColor);
                 g2d.drawLine(x,y,cutoff,y);
@@ -1011,8 +1019,11 @@ public class RoadMapPanel extends JPanel {
                             y+line*settings.getLineOffset() + blockHeight);
                 }
             } else {
-                g2d.setColor(keyColor);
-                g2d.fillRect(x,y, endX - x, blockHeight);
+                if( settings.showKeys )
+                  {
+                  g2d.setColor(keyColor);
+                  g2d.fillRect(x,y, endX - x, blockHeight);
+                  }
                 
                 g2d.setColor(settings.textColor);
                 g2d.drawLine(x,y,endX,y);
@@ -1022,10 +1033,13 @@ public class RoadMapPanel extends JPanel {
             g2d.drawLine(endX, endY, endX, endY+blockHeight);
             g2d.drawLine(x, y, x, y+blockHeight);
             
-            g2d.setColor(settings.textColor);
-            keyName = RoadMapSettings.trimString(keyName, cutoff - x, metrics);
-            keyName = RoadMapSettings.trimString(keyName, settings.getLength((int)dur), metrics);
-            g2d.drawString(keyName, x+2, y+fontOffset);
+            if( settings.showKeys )
+              {
+              g2d.setColor(settings.textColor);
+              keyName = RoadMapSettings.trimString(keyName, cutoff - x, metrics);
+              keyName = RoadMapSettings.trimString(keyName, settings.getLength((int)dur), metrics);
+              g2d.drawString(keyName, x+2, y+fontOffset);
+              }
     }
         
     /** Draws the rollover */
