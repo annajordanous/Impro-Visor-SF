@@ -1331,7 +1331,7 @@ public class Notate
      * See Score.setStyle() for an attempted fix.
      */
     
-    score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+    //score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
      sectionInfo = score.getChordProg().getSectionInfo().copy();
 
@@ -17878,7 +17878,7 @@ public void WriteLeadsheetToFile(File file) {
     setupArrays();
     
     setTempo(score.getTempo());
-    
+        
     clearLayoutPreference();
 
     closeAdviceFrame();

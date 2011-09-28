@@ -256,8 +256,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jLabel6 = new javax.swing.JLabel();
         prefDialogTitleField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        prefDialogMetreTopField = new imp.roadmap.IntegerField();
-        prefDialogMetreBottomField = new imp.roadmap.IntegerField();
+        upperMetre = new javax.swing.JTextField();
+        lowerMetre = new javax.swing.JTextField();
         brickDictionaryFrame = new javax.swing.JFrame();
         keyComboBox = new javax.swing.JComboBox();
         libraryScrollPane = new javax.swing.JScrollPane();
@@ -569,7 +569,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.add(prefDialogStyleComboBox, gridBagConstraints);
 
         prefDialogMeterLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        prefDialogMeterLabel.setText("Metre:"); // NOI18N
+        prefDialogMeterLabel.setText("Time Signature:"); // NOI18N
         prefDialogMeterLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         prefDialogMeterLabel.setName("prefDialogMeterLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -602,7 +602,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Title:"); // NOI18N
-        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jLabel7.setName("jLabel7"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -611,23 +611,26 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel1.add(jLabel7, gridBagConstraints);
 
-        prefDialogMetreTopField.setText("4"); // NOI18N
-        prefDialogMetreTopField.setMinimumSize(new java.awt.Dimension(23, 28));
-        prefDialogMetreTopField.setName("prefDialogMetreTopField"); // NOI18N
-        prefDialogMetreTopField.setPreferredSize(new java.awt.Dimension(23, 28));
+        upperMetre.setToolTipText("Upper time signature"); // NOI18N
+        upperMetre.setName("upperMetre"); // NOI18N
+        upperMetre.setPreferredSize(new java.awt.Dimension(50, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        jPanel1.add(prefDialogMetreTopField, gridBagConstraints);
+        jPanel1.add(upperMetre, gridBagConstraints);
 
-        prefDialogMetreBottomField.setText("4"); // NOI18N
-        prefDialogMetreBottomField.setMinimumSize(new java.awt.Dimension(23, 28));
-        prefDialogMetreBottomField.setName("prefDialogMetreBottomField"); // NOI18N
-        prefDialogMetreBottomField.setPreferredSize(new java.awt.Dimension(23, 28));
+        lowerMetre.setToolTipText("Lower time signature"); // NOI18N
+        lowerMetre.setName("lowerMetre"); // NOI18N
+        lowerMetre.setPreferredSize(new java.awt.Dimension(50, 28));
+        lowerMetre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lowerMetreActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
-        jPanel1.add(prefDialogMetreBottomField, gridBagConstraints);
+        jPanel1.add(lowerMetre, gridBagConstraints);
 
         preferencesDialog.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -1153,7 +1156,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 45));
@@ -2304,7 +2307,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void acceptPreferences()
       {
-      if( prefDialogMetreBottomField.getInt() % 2 == 0) {
+      if( intFromTextField(lowerMetre) % 2 == 0) {
             preferencesDialog.setVisible(false);
             setRoadMapInfo();
         } else
@@ -2504,6 +2507,11 @@ private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIR
      setTempo((int) value);
      //setPlaybackManagerTime(); 
 }//GEN-LAST:event_tempoSliderStateChanged
+
+private void lowerMetreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_lowerMetreActionPerformed
+  {//GEN-HEADEREND:event_lowerMetreActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_lowerMetreActionPerformed
 
 
 public void setVolumeSlider(int volume)
@@ -3181,6 +3189,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JScrollPane libraryScrollPane;
     private javax.swing.JTree libraryTree;
     private javax.swing.JToggleButton loopToggleButton;
+    private javax.swing.JTextField lowerMetre;
     private javax.swing.JPanel masterVolumePanel;
     private javax.swing.JButton newBrickButton;
     private javax.swing.JMenuItem openLeadsheetMI;
@@ -3192,8 +3201,6 @@ public void setVolumeSlider(int volume)
     private javax.swing.JButton prefDialogAcceptButton1;
     private javax.swing.JButton prefDialogCancelButton;
     private javax.swing.JLabel prefDialogMeterLabel;
-    private imp.roadmap.IntegerField prefDialogMetreBottomField;
-    private imp.roadmap.IntegerField prefDialogMetreTopField;
     private javax.swing.JComboBox prefDialogStyleComboBox;
     private javax.swing.JTextField prefDialogTitleField;
     private javax.swing.JDialog preferencesDialog;
@@ -3240,43 +3247,12 @@ public void setVolumeSlider(int volume)
     private javax.swing.JMenuItem transposeUpMenuItem;
     private javax.swing.JMenuItem undoMenuItem;
     private javax.swing.JMenuItem unselectAllMenuItem;
+    private javax.swing.JTextField upperMetre;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
-    /** Appends the currently-selected blocks to a Notate window called auxNotate,
-     * creating that window if none exists.
-     *
-     * If no blocks are selected, selects them all first.
-     *
-     * If the road map is empty, does nothing.
-     */ 
-    
-    /*
-    public void appendSelectionToNotate()
-    {
-        if( roadMapPanel.getNumBlocks() < 1 )
-            return;
-
-        if( !roadMapPanel.hasSelection() )
-            selectAllBricks();
-
-        if( auxNotate == null ) {
-            ChordPart chordPart = new ChordPart();
-            chordPart.addFromRoadMapFrame(this);
-            Score score = new Score(chordPart);
-            score.setMetre(getMetre());
-            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-            auxNotate.forceNotateFrameHeight();
-        } else
-            auxNotate.addToChordPartFromRoadMapFrame(this);
-
-        auxNotate.setAutoCreateRoadMap(false);
-        auxNotate.setVisible(true);
-    }
-
-*/
-    
+ 
     /** Sends the currently-selected blocks to a new Notate window called auxNotate.
      * Any existing associate with that window is detached and lost.
      *
@@ -3289,135 +3265,57 @@ public void saveToNewNotate()
   {
     selectAllBricks();
 
-        ChordPart chordPart = new ChordPart();
+    String styleName = style.getName();
+    ChordPart chordPart = new ChordPart();
+    chordPart.setStyle(styleName);
 
-        chordPart.addFromRoadMapFrame(this);
+    chordPart.addFromRoadMapFrame(this);
 
-        // A small hack to deal with a totally empty chord part.
-        
-        if( chordPart.size() == 0 )
-          {
-            chordPart.addChord("NC", 480);
-          }
-        
-        Score score = new Score(chordPart);
+    // A small hack to deal with a totally empty chord part.
 
-        //System.out.println("new score = " + score.getChordProg());
+    if( chordPart.size() == 0 )
+      {
+        chordPart.addChord("NC", 480);
+      }
 
-        score.setMetre(getMetre());
-        score.setTempo(getTempo());
-        score.setTitle(roadMapTitle);
+    Score score = new Score(chordPart);
 
-        if( auxNotate == null )
-          {
-            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-            //System.out.println("auxNotate = " + auxNotate);
-            auxNotate.forceNotateFrameHeight();
-            auxNotate.setAutoCreateRoadMap(false);
-            auxNotate.setVisible(true);
-            auxNotate.saveAsLeadsheet();
-          }
-        else
-          {
-            auxNotate.setupScore(score);
-            auxNotate.setVisible(true);
-            auxNotate.saveLeadsheet();
-          }
+    score.setMetre(getMetre());
+    score.setTempo(getTempo());
+    score.setTitle(roadMapTitle);
+    score.setStyle(styleName);
+
+    System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
+
+
+    if( auxNotate == null )
+      {
+        // Save As ... branch
+        auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+        //System.out.println("auxNotate = " + auxNotate);
+        auxNotate.forceNotateFrameHeight();
+        auxNotate.setAutoCreateRoadMap(false);
+        auxNotate.setVisible(true);
+        auxNotate.saveAsLeadsheet();
+      }
+    else
+      {
+        // Save ... branch
+        auxNotate.setupScore(score);
+        auxNotate.setVisible(true);
+        auxNotate.saveLeadsheet();
+      }
 
 
     deselectBricks();
   }
-    
-    /**
-     * Create a new notate window for this roadmap, even if empty.
-     * Set notate to be that window.
-     */
-    
-    /*
-    public Notate createNewNotateFromRoadmap(RoadMapFrame roadmapFrame)
-      {
-        ChordPart chordPart = new ChordPart();
-        if( roadMapPanel.hasSelection() )
-          {
-          chordPart.addFromRoadMapFrame(this);
-          }
-        Score score = new Score(chordPart);
-        score.setMetre(getMetre());
-        score.setStyle(style.getName());
-        score.setTempo(getTempo());
-        score.setTitle(roadMapTitle);
-        
-        Notate result = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
- 
-        result.setAutoCreateRoadMap(false);
-         
-        result.setVisible(true); 
-      
-        return result;
-      }
-   */
-    
-/**
- * Create an empty road map with its own Notate frame, detatched from the parent.
- */
-/*
-public void openEmptyRoadmap()
-  {
-    try
-      {
-        RoadMapFrame roadMapFrame = new RoadMapFrame(notate, "untitled");
-        Notate notate = createNewNotateFromRoadmap(roadMapFrame);
-        //roadMapFrame.setParent(notate);
-        System.out.println("ok so far");
-        roadMapFrame.setRoadMapFrameHeight();
-        roadMapFrame.setVisible(true);
-      }
-    catch( OutOfMemoryError e )
-      {
-        ErrorLog.log(ErrorLog.SEVERE, "Out of Memory: Please save your work and restart the program:");
-      }
-    catch( Exception e )
-      {
-        ErrorLog.log(ErrorLog.SEVERE, "NullPointerException");
-      }
-  }
-     * 
-     */
+
 
 public void setParent(Notate notate)
   {
     this.notate = notate;
   }
 
-
-    /** Send selection to original notate, after emptying it.
-     *
-     * If no blocks are selected, selects them all first.
-     *
-     * If the road map is empty, does nothing.
-     */ 
-
-    /*
-    public void sendSelectionToOriginalNotate()
-    {
-        if( roadMapPanel.getNumBlocks() < 1 )
-            return;
-
-        if( !roadMapPanel.hasSelection() )
-            selectAllBricks();
-
-
-        ChordPart chordPart = new ChordPart();
-        chordPart.setStyle(style);
-        chordPart.addFromRoadMapFrame(this);
- 
-        notate.setChordProg(chordPart);
-        boolean savedBit = notate.getAutoCreateRoadMap();
-        notate.setAutoCreateRoadMap(false); // to avoid re mapping
-        notate.setVisible(true);
-        notate.setAutoCreateRoadMap(savedBit);
-    }
-    */
 
     
     /** Call from auxNotate when deleted to prevent dangling reference. */
@@ -3664,8 +3562,8 @@ public void setParent(Notate notate)
     private void activatePreferencesDialog()
     {
         prefDialogTitleField.setText(roadMapTitle);
-        prefDialogMetreTopField.setText(String.valueOf(getMetre()[0]));
-        prefDialogMetreBottomField.setText(String.valueOf(getMetre()[1]));
+        upperMetre.setText(String.valueOf(getMetre()[0]));
+        lowerMetre.setText(String.valueOf(getMetre()[1]));
         prefDialogStyleComboBox.setSelectedItem(style);
         preferencesDialog.setVisible(true);
     }
@@ -3684,8 +3582,8 @@ public void setParent(Notate notate)
     private void setRoadMapInfo()
     {
         setRoadMapTitle(prefDialogTitleField.getText());
-        int metreTop = prefDialogMetreTopField.getInt();
-        int metreBottom = prefDialogMetreBottomField.getInt();
+        int metreTop = intFromTextField(upperMetre);
+        int metreBottom = intFromTextField(lowerMetre);
         setMetre(new int[]{metreTop, metreBottom});
         style = (Style)prefDialogStyleComboBox.getSelectedItem();
         roadMapPanel.updateBricks();
@@ -3963,5 +3861,20 @@ public void saveDictionaryAs()
     tempoSet.setForeground(Color.BLACK);
   }
     
+  private static int intFromTextField(JTextField field)
+    {
+      String text = field.getText();
+      
+      int value = 0;
+      try
+        {
+         value = Integer.parseInt(text); 
+        }
+      catch( Exception e )
+        {
+        }
+      
+      return value;
+    }
 }
 
