@@ -3285,7 +3285,7 @@ public void saveToNewNotate()
     score.setTitle(roadMapTitle);
     score.setStyle(styleName);
 
-    System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
+    // System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
 
 
     if( auxNotate == null )
