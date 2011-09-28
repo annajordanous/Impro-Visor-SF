@@ -722,11 +722,13 @@ public class LickGen implements Constants
     @param length
     @return
      */
-
-public Vector<double[]> fillProbs(ChordPart chordProg, double chordToneProb,
-                                  double scaleToneProb, double colorToneProb,
+public Vector<double[]> fillProbs(ChordPart chordProg, 
+                                  double chordToneProb,
+                                  double scaleToneProb, 
+                                  double colorToneProb,
                                   double chordToneDecayRate,
-                                  int selStart, int length)
+                                  int selStart, 
+                                  int length)
   {
     probs.clear();
     int nextIndex = selStart;
@@ -738,83 +740,83 @@ public Vector<double[]> fillProbs(ChordPart chordProg, double chordToneProb,
     // we haven't gone past the end of the selection.
     while( nextIndex < selStart + length && nextIndex != -1 )
       {
-
         Chord currentChord = chordProg.getCurrentChord(nextIndex);
 
-        // If we've already calculated probabilites for the current chord, then we
-        // don't need to do anything -- advance to the next chord.
-
-        if( chordUsed.contains(currentChord.getName()) )
+        if( currentChord != null )
           {
+            // If we've already calculated probabilites for the current chord, then we
+            // don't need to do anything -- advance to the next chord.
+
+            if( chordUsed.contains(currentChord.getName()) )
+              {
+                nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
+                currentChord = chordProg.getCurrentChord(nextIndex);
+                continue;
+              } // Otherwise, add it to the list of chords that we've examined.
+            else
+              {
+                chordUsed.add(currentChord.getName());
+                // For right now, just set the probabilities in decreasing order based on
+                // the order they appear in the "priority" entry in the vocabulary file.
+              }
+
+            // Init all probabilities to a small value
+
+            double[] p = new double[12];
+            for( int i = 0; i < 12; ++i )
+              {
+                p[i] = 0.0;
+              }
+
+            Polylist scaleTones = Polylist.nil;
+
+            // Get the preferred scale type if it is present.
+
+            if( preferredScale.isEmpty()
+                    || ((String) preferredScale.second()).equals(NONE) )
+              {
+                scaleTones = Polylist.nil;
+              }
+            else if( ((String) preferredScale.second()).equals(FIRST_SCALE) )
+              {
+                scaleTones = currentChord.getFirstScale();
+              }
+            else
+              {
+                // Get the priority for the chord tones and the color tones for the
+                // current chords
+
+                scaleTones = Advisor.getScale((String) preferredScale.first(),
+                                              (String) preferredScale.second());
+              }
+
+            Polylist chordTones = currentChord.getPriority();
+            Polylist colorTones = currentChord.getColor();
+
+            /*
+            System.out.println("currentChord = " + currentChord.toString()
+            + ", chordTones = " + chordTones + ", colorTones = "
+            + colorTones + ", scaleTones = " + scaleTones);
+             */
+
+
+            // Get all the various tone types and set the corresponding probabilities.
+
+            // Note that the notes in the chords themselves can have
+            // probabilities, which over-ride the ones in the lick generator.
+            // Also, the order of setting probabilities means that chord
+            // tones can over-ride scale tones, and color tones can over-ride
+            // both.
+
+            accumulateProbs(scaleTones, scaleToneProb, p);
+            accumulateProbs(chordTones, chordToneProb, p);
+            accumulateProbs(colorTones, colorToneProb, p);
+
+            // Advance to the next chord, and add the probabilities to our vector.
+
             nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
-            currentChord = chordProg.getCurrentChord(nextIndex);
-            continue;
-          } // Otherwise, add it to the list of chords that we've examined.
-        else
-          {
-            chordUsed.add(currentChord.getName());
-          // For right now, just set the probabilities in decreasing order based on
-          // the order they appear in the "priority" entry in the vocabulary file.
+            probs.add(p);
           }
-
-        // Init all probabilities to a small value
-
-        double[] p = new double[12];
-        for( int i = 0; i < 12; ++i )
-          {
-            p[i] = 0.0;
-          }
-
-        Polylist scaleTones = Polylist.nil;
-
-        // Get the preferred scale type if it is present.
-
-        if( preferredScale.isEmpty() ||
-            ((String) preferredScale.second()).equals(NONE) )
-          {
-            scaleTones = Polylist.nil;
-          }
-        else if( ((String) preferredScale.second()).equals(FIRST_SCALE) )
-          {
-            scaleTones = currentChord.getFirstScale();
-          }
-        else
-          {
-          // Get the priority for the chord tones and the color tones for the
-          // current chords
-
-            scaleTones = Advisor.getScale((String) preferredScale.first(),
-                                          (String) preferredScale.second());
-          }
-
-        Polylist chordTones = currentChord.getPriority();
-        Polylist colorTones = currentChord.getColor();
-
-        /*
-        System.out.println("currentChord = " + currentChord.toString()
-        + ", chordTones = " + chordTones + ", colorTones = "
-        + colorTones + ", scaleTones = " + scaleTones);
-         */
-
- 
-        // Get all the various tone types and set the corresponding probabilities.
-
-        // Note that the notes in the chords themselves can have
-        // probabilities, which over-ride the ones in the lick generator.
-        // Also, the order of setting probabilities means that chord
-        // tones can over-ride scale tones, and color tones can over-ride
-        // both.
-
-
-        accumulateProbs(scaleTones, scaleToneProb, p);
-        accumulateProbs(chordTones, chordToneProb, p);
-        accumulateProbs(colorTones, colorToneProb, p);
-
-
-        // Advance to the next chord, and add the probabilities to our vector.
-
-        nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
-        probs.add(p);
       }
 
     return probs;

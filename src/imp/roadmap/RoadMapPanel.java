@@ -282,7 +282,7 @@ public class RoadMapPanel extends JPanel {
     /** Returns a list of the selected blocks*/
     protected ArrayList<Block> getSelection()
     {
-        if(selectionStart != -1 && selectionEnd != -1) {
+        if(graphicMap != null && !graphicMap.isEmpty() && selectionStart != -1 && selectionEnd != -1 ) {
             int chordInd = graphicMap.get(selectionStart).getSelected();
             if(chordInd != -1) {
                 ArrayList<Block> block = new ArrayList();

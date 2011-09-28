@@ -2163,8 +2163,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void saveAsToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsToNewLeadsheetMIaction
         if(!roadMapTextEntry.isFocusOwner()) 
           {
+            // To force saving to a new leadsheet.
             auxNotate = null;
-            saveToNewLeadsheetMIaction(evt);
+            saveToNewNotate();
           }
     }//GEN-LAST:event_saveAsToNewLeadsheetMIaction
 
@@ -2394,12 +2395,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void saveToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToNewLeadsheetMIaction
-
-          selectAllBricks();
-          sendSelectionToNewNotate();
-          auxNotate.saveLeadsheet();
-          deselectBricks();           
-
+          saveToNewNotate();          
     }//GEN-LAST:event_saveToNewLeadsheetMIaction
 
     private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed
@@ -3289,41 +3285,62 @@ public void setVolumeSlider(int volume)
      * If the road map is empty, does nothing.
      */
     
-    public void sendSelectionToNewNotate()
-    {
-        selectAllBricks();
+public void saveToNewNotate()
+  {
+    selectAllBricks();
 
         ChordPart chordPart = new ChordPart();
+
         chordPart.addFromRoadMapFrame(this);
+
+        // A small hack to deal with a totally empty chord part.
+        
+        if( chordPart.size() == 0 )
+          {
+            chordPart.addChord("NC", 480);
+          }
+        
         Score score = new Score(chordPart);
-        //System.out.println(score.getChordProg().getSectionInfo());
+
+        //System.out.println("new score = " + score.getChordProg());
+
         score.setMetre(getMetre());
-        //score.setStyle(style.getName());
         score.setTempo(getTempo());
         score.setTitle(roadMapTitle);
-        
+
         if( auxNotate == null )
           {
-          auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-          auxNotate.forceNotateFrameHeight();
-          auxNotate.setAutoCreateRoadMap(false);
+            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+            //System.out.println("auxNotate = " + auxNotate);
+            auxNotate.forceNotateFrameHeight();
+            auxNotate.setAutoCreateRoadMap(false);
+            auxNotate.setVisible(true);
+            auxNotate.saveAsLeadsheet();
           }
         else
           {
-          auxNotate.setupScore(score);
+            auxNotate.setupScore(score);
+            auxNotate.setVisible(true);
+            auxNotate.saveLeadsheet();
           }
-        
-        auxNotate.setVisible(true); 
-      }
+
+
+    deselectBricks();
+  }
     
     /**
      * Create a new notate window for this roadmap, even if empty.
      * Set notate to be that window.
      */
+    
+    /*
     public Notate createNewNotateFromRoadmap(RoadMapFrame roadmapFrame)
       {
         ChordPart chordPart = new ChordPart();
-        chordPart.addFromRoadMapFrame(roadmapFrame);
+        if( roadMapPanel.hasSelection() )
+          {
+          chordPart.addFromRoadMapFrame(this);
+          }
         Score score = new Score(chordPart);
         score.setMetre(getMetre());
         score.setStyle(style.getName());
@@ -3332,20 +3349,18 @@ public void setVolumeSlider(int volume)
         
         Notate result = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
  
-        System.out.println("result = " + result);
-        
         result.setAutoCreateRoadMap(false);
          
         result.setVisible(true); 
       
         return result;
       }
-
+   */
     
 /**
  * Create an empty road map with its own Notate frame, detatched from the parent.
  */
-
+/*
 public void openEmptyRoadmap()
   {
     try
@@ -3366,6 +3381,8 @@ public void openEmptyRoadmap()
         ErrorLog.log(ErrorLog.SEVERE, "NullPointerException");
       }
   }
+     * 
+     */
 
 public void setParent(Notate notate)
   {
@@ -3379,6 +3396,8 @@ public void setParent(Notate notate)
      *
      * If the road map is empty, does nothing.
      */ 
+
+    /*
     public void sendSelectionToOriginalNotate()
     {
         if( roadMapPanel.getNumBlocks() < 1 )
@@ -3398,6 +3417,7 @@ public void setParent(Notate notate)
         notate.setVisible(true);
         notate.setAutoCreateRoadMap(savedBit);
     }
+    */
 
     
     /** Call from auxNotate when deleted to prevent dangling reference. */
