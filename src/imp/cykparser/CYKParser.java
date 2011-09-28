@@ -250,7 +250,8 @@ public class CYKParser
             
             if( subBlocks == null )
               {
-                ErrorLog.log(ErrorLog.FATAL, "Sorry, Cannot proceed", true);
+                ErrorLog.log(ErrorLog.WARNING, "Brick definition with empty sub-blocks: " + b, true);
+                continue;
               }
             String currentName;
             int size = subBlocks.size();
