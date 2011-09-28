@@ -2966,7 +2966,11 @@ public void setVolumeSlider(int volume)
                     brick = brickLibrary.getBrick(node.toString(), 0);
                 
                 //setDurationChoices(brick);
-                previewPanel.setBrick( brick );
+                
+                if( brick != null )  // This has happened
+                  {
+                  previewPanel.setBrick( brick );
+                  }
 
                 setPreviewKey();
                 setPreviewDuration();

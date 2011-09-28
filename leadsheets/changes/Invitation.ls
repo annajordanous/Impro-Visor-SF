@@ -9,10 +9,10 @@
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-instrument 34)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style latin
@@ -39,26 +39,23 @@ Cm69 | / | / | / |
 
 (section (style latin)) 
 
-Cm9 | F13 | Bb7#11 | / | 
+Cm9 | F13 | Bb7#11_ | / | 
 
 (phrase (style latin)) 
 Ebm69 | / | / | / | 
 
-(section (style latin)) 
-
-Ebm9 | Ab13 | Db7#11 | / | 
-
-(phrase (style swing)) 
+(phrase (style latin)) 
+Ebm9 | Ab13 | Db7#11_ | / | 
 C#m9 | F#13 | Bm69 | / | 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Bm9 | E13 | Am69 | / | 
 
-(phrase (style swing)) 
+(phrase (style latin)) 
 Am9 | D13 | Gm69 | / | 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Eb7#11 | / | D7#11 | Dm7b5 G13b9 | 
 
@@ -67,28 +64,20 @@ Cm69 | / | / | / |
 
 (section (style latin)) 
 
-Cm9 | F13 | Bb7#11 | / | 
-
-(phrase (style latin)) 
-Ebm69 | / | B7#11 | / | 
+Cm9 | F13 | Bb7#11_ | / | 
 
 (section (style latin)) 
 
+Ebm69 | / | B7#11_ | / | 
 F7#11 | Bb7#11 | Ebm69 | Dm9 G13b9 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1
-
- r1+1+1+1+1+1+1+1
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

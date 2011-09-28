@@ -271,7 +271,8 @@
           (chord G7 1))
 
 
-// SuperGenDom is a V or a GenII followed by a V
+// SuperGenDom is a V, or a GenII followed by a V, 
+// or a tritone sub for the latter
 
 (defbrick SuperGenDom(var 1) Major Invisible C
           (chord G7 1))
@@ -279,6 +280,10 @@
 (defbrick SuperGenDom(var 2) Major Invisible C
           (brick GenII C 1)
           (chord G7 1))
+
+(defbrick SuperGenDom(var 3) Major Invisible C
+          (brick GenII C 1)
+          (chord Db7 1))
 
 
 // GenMajorTonic is either a Major I chord 
@@ -399,9 +404,11 @@
           (brick Straight-Approach D 2)
           (brick Somewhere-Cadence C 3))
 
+/*
 (defbrick 7-Chord-Dropback(var 2) Major Cadence Bb
           (brick To-IV-n-Back F 4)
           (brick Straight-Cadence Bb 4))
+*/
 
 (defbrick 7-Chord-Dropback(Minor On) Major Cadence F
           (brick Minor-On Bb 1)
@@ -1017,54 +1024,108 @@
 
 // IV 'n ... stuff (see also "To ...")
 
-(defbrick IV-n-Back(main) Major Cadence C
-          (chord F 1)
-          (chord F#o 1)
-          (chord C/G 1))
+// To get to IV only:
 
-(defbrick IV-n-Back(Blues) Dominant Cadence C
-        (chord C7 1)
-        (chord C#o 1)
-        (chord F 1))
+(defbrick To-IV(main) Major Cadence C
+          (brick Major-On C 1)
+          (brick Cadence  F 2))
 
+// To get back from IV:
+
+(defbrick IV-n-Back Major Cadence C
+          (brick TonicOrDom F 1)
+          (chord F#o          1)
+          (chord C            1))
+
+// To get to IV and get back:
+
+(defbrick To-IV-n-Back Major Cadence C
+          (brick Major-On    C 1)
+          (brick SuperGenDom F 2)
+          (brick IV-n-Back   C 3))
+
+// To get back from IV via Yardbird:
+
+(defbrick IV-n-Yak Major Cadence C
+          (brick TonicOrDom  F 1)
+          (brick GenDom      Eb 1)
+          (brick Major-On    C 1))
+
+// To get to IV and get back via Yardbird:
+
+(defbrick To-IV-n-Yak Major Cadence C
+          (brick Major-On    C 1)
+          (brick SuperGenDom F 2)
+          (brick IV-n-Yak    C 3))
+
+// To get back from IV via Happenstance:
+
+(defbrick IV-n-Hack Major Cadence C
+          (brick TonicOrDom  F 1)
+          (brick Happenstance-Cadence C 2))
+
+// To get to IV and get back via Hapenstance:
+
+(defbrick To-IV-n-Hack Major Cadence C
+          (brick Major-On    C 1)
+          (brick SuperGenDom F 2)
+          (brick IV-n-Hack    C 3))
+
+// To get back from IV via Minor:
+
+(defbrick IV-n-Mack Major Cadence C
+          (brick Major-On F 1)
+          (brick Minor-Plagal-Cadence C 2))
+
+// To get to IV and back via Minor:
+
+(defbrick To-IV-n-Mack Major Cadence C
+          (brick Major-On    C 1)
+          (brick SuperGenDom F 2)
+          (brick IV-n-Mack   C 3))
+
+// IV-n-Bird goes to iii instead of I
+
+(defbrick IV-n-Bird Major Cadence C
+          (brick TonicOrDom  F 1)
+          (brick GenDom      Eb 1)
+          (brick Minor-On    E 1))
+
+// To get to IV and get back via Yardbird:
+
+(defbrick To-IV-n-Bird Major Cadence C
+          (brick Major-On    C 1)
+          (brick SuperGenDom F 2)
+          (brick IV-n-Bird   C 3))
+
+(defbrick IV-n-Bird-SPOT Major Turnaround C
+          (brick TonicOrDom  F  1)
+          (brick GenDom      Eb 1)
+          (brick SPOT        C  2))          
+          
+(defbrick To-IV-n-Bird-SPOT Major Turnaround C
+          (brick Major-On       C 1)
+          (brick SuperGenDom    F 2)
+          (brick IV-n-Bird-SPOT C 3))
+
+(defbrick IV-n-Bauble Major Approach C
+          (brick Upslide F 2)
+          (brick Sad-Approach A 2))
+
+/*
+(defbrick IV-n-Bird-SPOT Major Turnaround C
+          (brick IV-n-Bird C 1)
+          (brick Rainy-Approach C 4))
+*/
+  
+/*
 (defbrick IV-n-Back+Dropback(Blues) Major Dropback F
         (brick Surge Bb 2)
         (brick Dropback F 2))
 
-(defbrick IV-n-back(rainbow) Major To-IV C
-          (chord G/B 1)
-          (chord B7 1)
-          (brick Upslide C 2))
-
 (defbrick IV-n-Back-On-Off-On-II Major On-Off+ C
           (brick Upslide F 4)
           (brick On-Off-On-To-II C 4))
-  
-(defbrick IV-n-Bauble Major Approach C
-          (brick Upslide F 2)
-          (brick Sad-Approach A 2))
-  
-(defbrick IV-n-Bird Major Cadence C
-          (chord F 1)
-          (brick GenDom Eb 1)
-          (chord Em 1))
-
-(defbrick IV-n-Bird-SPOT Major Turnaround C
-          (brick IV-n-Bird C 1)
-          (brick Rainy-Approach C 4))
-  
-(defbrick IV-n-Hack Major Cadence C
-          (brick Major-On F 1)
-          (brick Happenstance-Cadence C 3))
-
-(defbrick IV-n-Mack-Cadence Major Cadence C
-          (brick Major-On F 1)
-          (brick Minor-Plagal-Cadence C 2))
-
-(defbrick IV-n-Yak Major Cadence C
-          (brick TonicOrDom  F 1)
-          (brick GenDom Eb 1)
-          (chord C 1))
 
 (defbrick IV-n-Yak-&-Dropback Major Dropback C
           (brick IV-n-Yak C 3)
@@ -1073,6 +1134,7 @@
 (defbrick IV-n-Yak-+-Pullback-Approach Major Approach C
           (brick On-Off-Major-IV F 2)
           (brick Sad-Approach D 2))
+ */
 
 (defbrick IV-n-Yak-To Major Approach C
         (brick IV-n-Yak C 3)
@@ -1098,34 +1160,10 @@
 // Ladybird stuff
 
 (defbrick Ladybird-Turnaround(main) Major Turnaround C
-          (chord C 1)
-          (chord Eb7 1)
-          (chord AbM7 1)
-          (chord Db7 1))
-
-(defbrick Ladybird-Turnaround(var 1) Major Turnaround C
-          (chord C 1)
-          (chord EbM7 1)
-          (chord AbM7 1)
-          (chord DbM7 1))
-
-(defbrick Ladybird-Turnaround(var 2) Major Turnaround C
-          (chord C 1)
-          (chord EbM7 1)
-          (chord AbM7 1)
-          (chord Db7 1))
-
-(defbrick Ladybird-Turnaround(var 3) Major Turnaround C
-          (chord C 1)
-          (chord Eb7 1)
-          (chord AM7 1)
-          (chord G7 1))
-
-(defbrick Ladybird-Turnaround(var 4) Major Approach Eb
-          (chord EbM7 1)
-          (chord Gb7 1)
-          (chord BM7 1)
-          (chord Bb7 1))
+          (brick Major-On C 1)
+          (brick TonicOrDom Eb 1)
+          (brick TonicOrDom Ab 1)
+          (brick TonicOrDom Db 1))
 
 (defbrick Ladybird-Cadence Major Cadence C
           (brick Ladybird-Turnaround C 2)
@@ -2065,6 +2103,27 @@
           (chord C 1)
           (chord D7 1))
 
+
+// Here "Cadence" means one of a variety of cadences
+
+(defbrick Cadence(perfect) Major Cadence C
+          (brick Perfect-Cadence C 2))
+
+(defbrick Cadence(straight) Major Cadence C
+          (brick Straight-Cadence C 2))
+
+(defbrick Cadence(sad) Major Cadence C
+          (brick Sad-Cadence C 2))
+
+(defbrick Cadence(tritone) Major Cadence C
+          (brick Tritone-Cadence C 2))
+
+(defbrick Cadence(surge) Major Cadence C
+          (brick TonicOrDom F 1)
+          (chord F#o 1)
+          (chord C 1))
+
+/*
 (defbrick To-IV(main) Major To-IV C
           (brick Major-On C 1)
           (brick Perfect-Cadence F 2))
@@ -2072,28 +2131,7 @@
 (defbrick To-IV(tritone) Major To-IV C
           (brick Major-On C 1)
           (brick Tritone-Cadence F 2))
-
-(defbrick To-IV-n-Back(main) Major To-IV C
-          (brick An-Approach F 1)
-          (brick IV-n-Back C 1))
-
-(defbrick To-IV-n-Back(var 1) Major To-IV C
-          (brick To-IV C 3)
-          (chord F#o 1)
-          (brick Major-On C 1))
-
-(defbrick To-IV-n-Back(blues) Dominant To-IV C
-        (chord C 1)
-        (chord F7 1)
-        (chord F#o 1)
-        (chord C 1))
-
-(defbrick To-IV-n-Back(blues var) Dominant To-IV C
-        (chord C 1)
-        (chord C7 1)
-        (chord F7 1)
-        (chord F#o 1)
-        (chord C 1))
+*/
 
 (defbrick To-IV-n-Bird-POT Major Turnaround C
           (chord C 1)
@@ -2102,6 +2140,7 @@
           (chord Bb7 1)
           (brick POT C 4))
 
+/*
 (defbrick To-IV-n-Bird-SPOT(broken down) Major Turnaround C
           (chord C 1)
           (brick GenDom F 1)
@@ -2115,11 +2154,15 @@
           (chord FM7 1)
           (brick GenDom Eb 1)
           (brick SPOT C 4))
+*/
 
+/*
 (defbrick To-IV-n-Bird-SPOT(yak) Major Turnaround C
           (brick To-IV-n-Yak C 4)
           (brick SPOT C 4))
+*/
 
+/*
 (defbrick To-IV-n-Bird-SPOT(var 1) Major Approach C
           (chord C 4)
           (chord Gm7 2)
@@ -2139,11 +2182,13 @@
           (brick Major-On F 2)
           (brick Nowhere-Approach D 6)
           (brick Dominant-Cycle C 4))
-
+*/
+/*
 (defbrick To-IV-n-Bird-SPOT(var 3) Major Turnaround C
           (brick To-IV-n-Yak F 8)
           (brick Tension-SPOT C 4))
-
+*/
+/*
 (defbrick To-IV-n-Bird-SPOT(Yardbird sub) Major Approach C
           (brick Straight-Approach C 4)
           (chord C 2)
@@ -2156,60 +2201,13 @@
           (brick Straight-Cadence F 6)
           (brick Somewhere/Nowhere-Approach Ab 3)
           (brick Extended-Approach C 3))
-
-(defbrick To-IV-n-Hack Major Approach C
-          (chord C 1)
-          (brick Perfect-Cadence F 2)
-          (chord B7 1))
-
-(defbrick To-IV-n-Mack Major Approach C
-          (chord C 1)
-          (brick GenDom F 1)
-          (chord F 1)
-          (chord Fm 1))
-
-(defbrick To-IV-n-Yak-Approach(main) Major Approach Eb
-          (chord EbM7 2)
-          (chord Bbm7 1)
-          (chord Eb7 1)
-          (chord AbM7 2)
-          (chord Abm7 1)
-          (chord Db7 1))
-
-(defbrick To-IV-n-Yak(var) Major Approach Bb
-        (brick Major-On Bb 2)
-        (brick Straight-Cadence-+-Dominant-Overrun Eb 6))
-
+*/
+/*
 
 (defbrick To-IV-n-Yak(rainy) Major Approach Eb
           (brick Rainy-Cadence Eb 10))
 
-(defbrick To-IV-n-Yak-Cadence(main) Major Cadence C
-          (brick To-IV-n-Yak-Approach C 4)
-          (chord C 1))
-
-(defbrick To-IV-n-Yak-Cadence(var 0) Major Cadence C
-          (brick An-Approach F 2)
-          (brick IV-n-Yak C 2))
-
-(defbrick To-IV-n-Yak-Cadence(var 1) Major Cadence F
-          (brick Major-On F 2)
-          (chord Bb7 1)
-          (brick Yardbird-Cadence F 3))
-
-(defbrick To-IV-n-Yak-Cadence(var 2) Major Cadence C
-          (brick To-IV-n-Yak C 3)
-          (chord C 1))
-
-(defbrick To-IV-n-Yak-Cadence(var 3) Major Cadence Bb
-          (brick To-IV Bb 3)
-          (brick Yardbird-Cadence Bb 5))
-
-(defbrick To-IV-n-Yak-Cadence(tritone) Major Cadence Eb
-          (brick Major-On Eb 1)
-          (brick Tritone-Cadence Ab 2)
-          (brick Yardbird-Cadence Eb 2))
-
+*/
 
 // TTFA = Turnaround to Further Away 
 // where "Further Away" means the ii chord, so these are Dropbacks ending on VI7
@@ -2889,3 +2887,7 @@
 (defbrick Lonely-Cadence Major Cadence C
         (brick Lonely-Approach C 4)
         (chord C 1))
+
+(defbrick Descending-Minor-Chromatic-Approach Major Approach Eb
+        (brick Minor-Chromatic-Approach F 2)
+        (brick Straight-Approach Eb 2))
