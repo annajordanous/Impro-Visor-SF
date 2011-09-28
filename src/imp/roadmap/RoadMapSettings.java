@@ -141,6 +141,12 @@ public class RoadMapSettings {
     public boolean showJoins = true;
     
     /**
+     * whether to show brick names in roadmap or not
+     */
+    
+    public boolean showBrickNames = true;
+    
+    /**
      * Returns the length of the block in the current settings
      * @param block the block
      * @return the length

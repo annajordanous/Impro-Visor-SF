@@ -452,7 +452,7 @@ public class GraphicBrick {
             ind++;
         }
         
-        if(block.isBrick()) {
+        if(block.isBrick() && settings.showBrickNames) {
             int totalLength = settings.getBlockLength(block);
             
             String name = block.getName();
@@ -505,14 +505,17 @@ public class GraphicBrick {
             g2d.drawString(key, x+5, y+blockHeight/2+5);
 
             //Name
-            String name = RoadMapSettings.trimString(block.getName(), totalLength, metrics);
-            String variant = ((Brick)block).getVariant();
-            if(!variant.isEmpty())
-                name += " ("+variant+")";
-            g2d.setColor(settings.lineColor);
-            g2d.drawRect(x, y+blockHeight, totalLength, blockHeight);
-            g2d.setColor(settings.textColor);
-            g2d.drawString(name, x+5, y+3*blockHeight/2+5);
+            if( settings.showBrickNames )
+              {
+                String name = RoadMapSettings.trimString(block.getName(), totalLength, metrics);
+                String variant = ((Brick)block).getVariant();
+                if(!variant.isEmpty())
+                    name += " ("+variant+")";
+                g2d.setColor(settings.lineColor);
+                g2d.drawRect(x, y+blockHeight, totalLength, blockHeight);
+                g2d.setColor(settings.textColor);
+                g2d.drawString(name, x+5, y+3*blockHeight/2+5);
+              }
         }
         
         ArrayList<ChordBlock> chords = (ArrayList) block.flattenBlock();

@@ -343,6 +343,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         relativeToDbutton = new javax.swing.JRadioButtonMenuItem();
         relativeToDbbutton = new javax.swing.JRadioButtonMenuItem();
         showJoinsCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        showBrickNamesCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -1779,6 +1780,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         preferencesMenu.add(showJoinsCheckBoxMI);
 
+        showBrickNamesCheckBoxMI.setSelected(true);
+        showBrickNamesCheckBoxMI.setText("Show Brick Names"); // NOI18N
+        showBrickNamesCheckBoxMI.setToolTipText("Indicate whether to show the names of bricks."); // NOI18N
+        showBrickNamesCheckBoxMI.setName("showBrickNamesCheckBoxMI"); // NOI18N
+        showBrickNamesCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showBrickNamesCheckBoxMIActionPerformed(evt);
+            }
+        });
+        preferencesMenu.add(showBrickNamesCheckBoxMI);
+
         roadmapMenuBar.add(preferencesMenu);
 
         windowMenu.setMnemonic('W');
@@ -2513,6 +2525,11 @@ private void lowerMetreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRS
     // TODO add your handling code here:
   }//GEN-LAST:event_lowerMetreActionPerformed
 
+private void showBrickNamesCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showBrickNamesCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_showBrickNamesCheckBoxMIActionPerformed
+        settings.showBrickNames = showBrickNamesCheckBoxMI.getState();
+  }//GEN-LAST:event_showBrickNamesCheckBoxMIActionPerformed
+
 
 public void setVolumeSlider(int volume)
   {
@@ -3237,6 +3254,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JMenu sectionMenu;
     private javax.swing.JButton selectAllBricksButton;
     private javax.swing.JMenuItem selectAllMenuItem;
+    private javax.swing.JCheckBoxMenuItem showBrickNamesCheckBoxMI;
     private javax.swing.JCheckBoxMenuItem showJoinsCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
