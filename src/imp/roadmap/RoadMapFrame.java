@@ -51,6 +51,8 @@ import polya.Tokenizer;
 
 public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener {
 
+    public static final String DICTIONARY_EXT = ".dictionary";
+    
     private int keyColorationOffset = 0;
     
     private String defaultDictionaryName = "My";
@@ -162,7 +164,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     
     FileDialog saveAWT = new FileDialog(this, "Save Dictionary As...", FileDialog.SAVE);
     
-    public static final String DICTIONARY_EXT = ".dictionary";
+    public static final String INVISIBLE = "Invisible";
     
     private boolean jSliderIgnoreStateChangedEvt = false;
     
@@ -2614,7 +2616,9 @@ public void setVolumeSlider(int volume)
         ArrayList<DefaultMutableTreeNode> categories = new ArrayList();
         
         for(String name : categoryNames)
-            categories.add(new DefaultMutableTreeNode(name));
+          {
+          categories.add(new DefaultMutableTreeNode(name));
+          }
         
         DefaultMutableTreeNode node = null;
         
@@ -2639,7 +2643,12 @@ public void setVolumeSlider(int volume)
         }
         
         for(DefaultMutableTreeNode type : categories)
-            root.add(type);
+          {
+            if( !type.toString().equals(INVISIBLE) )
+              {
+              root.add(type);
+              }
+          }
         
         libraryTreeModel = new DefaultTreeModel(root);
     }
