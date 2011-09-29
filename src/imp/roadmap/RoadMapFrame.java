@@ -150,8 +150,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Title of this piece */
     public String roadMapTitle = "Untitled";
     
+    /** Default style name */
+    public String styleName = "swing";
+    
     /** Style of this piece */
-    public Style style = Advisor.getStyle("swing");
+    public Style style = Advisor.getStyle(styleName);
         
     /** Time signature of this piece */
     public int[] metre = {4,4};
@@ -260,6 +263,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jLabel6 = new javax.swing.JLabel();
         prefDialogTitleField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         upperMetre = new javax.swing.JTextField();
         lowerMetre = new javax.swing.JTextField();
         brickDictionaryFrame = new javax.swing.JFrame();
@@ -565,6 +569,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
+        prefDialogStyleComboBox.setMaximumRowCount(30);
         prefDialogStyleComboBox.setModel(styleComboBoxModel);
         prefDialogStyleComboBox.setName("prefDialogStyleComboBox"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -618,6 +623,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel1.add(jLabel7, gridBagConstraints);
 
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Style:"); // NOI18N
+        jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setName("jLabel8"); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        jPanel1.add(jLabel8, gridBagConstraints);
+
         upperMetre.setToolTipText("Upper time signature"); // NOI18N
         upperMetre.setName("upperMetre"); // NOI18N
         upperMetre.setPreferredSize(new java.awt.Dimension(50, 28));
@@ -657,6 +673,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             }
             public void componentHidden(java.awt.event.ComponentEvent evt) {
                 brickDictionaryFrameComponentHidden(evt);
+            }
+        });
+        brickDictionaryFrame.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                keyPressedInDictionaryFrame(evt);
             }
         });
         brickDictionaryFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -714,6 +735,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
             public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
                 libraryTreeSelected(evt);
+            }
+        });
+        libraryTree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                keyPressedDictionaryTree(evt);
             }
         });
         libraryScrollPane.setViewportView(libraryTree);
@@ -2169,7 +2195,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         int clicks = evt.getClickCount();
         TreePath path = libraryTree.getPathForLocation(evt.getX(), evt.getY());
         if(path != null && previewPanel.getBrick() != null && clicks%2==0)
-            addBrickFromPreview();
+          {
+            // If double-clicking with shift down, the brick will be played
+            // after it is added.
+            
+            if( evt.isShiftDown() )
+              {
+                addAndPlayBrickFromPreview();
+              }
+            else
+              {
+                addBrickFromPreview();
+              }
+          }
+            
     }//GEN-LAST:event_libraryTreeMouseClicked
 
     private void transposeDownMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeDownMenuItemActionPerformed
@@ -2462,8 +2501,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_stopButtonPressed
 
     private void insertBrickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBrickButtonActionPerformed
-        dragFromPreview(0, 0);
-        dropFromPreview(0, 0);
+        addBrickFromPreview();
     }//GEN-LAST:event_insertBrickButtonActionPerformed
 
 private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
@@ -2583,6 +2621,19 @@ private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
   {//GEN-HEADEREND:event_reloadButtonActionPerformed
     reloadDictionary();
   }//GEN-LAST:event_reloadButtonActionPerformed
+
+private void keyPressedInDictionaryFrame(java.awt.event.KeyEvent evt)//GEN-FIRST:event_keyPressedInDictionaryFrame
+  {//GEN-HEADEREND:event_keyPressedInDictionaryFrame
+
+  }//GEN-LAST:event_keyPressedInDictionaryFrame
+
+private void keyPressedDictionaryTree(java.awt.event.KeyEvent evt)//GEN-FIRST:event_keyPressedDictionaryTree
+  {//GEN-HEADEREND:event_keyPressedDictionaryTree
+    if( evt.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER )
+      {
+        playSelection();
+      }
+  }//GEN-LAST:event_keyPressedDictionaryTree
 
 
 public void setVolumeSlider(int volume)
@@ -3025,6 +3076,13 @@ public void setVolumeSlider(int volume)
         roadMapPanel.placeBricks();
     }
     
+    /** Adds the current preview brick to the roadmap and plays it */
+    public void addAndPlayBrickFromPreview()
+    {
+        addBrickFromPreview();
+        playSelection();
+    }
+    
     /** Sets the preview brick (from the library), as well as its duration and key. */
     public void setPreview()
     {
@@ -3259,6 +3317,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JButton insertBrickButton;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -3425,6 +3484,7 @@ public void setParent(Notate notate)
             selectAllBricks();
 
         ChordPart chordPart = new ChordPart();
+        chordPart.setStyle(getStyle());
         chordPart.addFromRoadMapFrame(this);
         
         Score score = new Score(chordPart);
@@ -3626,7 +3686,7 @@ public void setParent(Notate notate)
     /** Returns the style */ 
     public Style getStyle()
     {
-        return style;
+        return Advisor.getStyle(styleName);
     }
 
     /** Gets the current playback slot from notate */
@@ -3649,7 +3709,7 @@ public void setParent(Notate notate)
         prefDialogTitleField.setText(roadMapTitle);
         upperMetre.setText(String.valueOf(getMetre()[0]));
         lowerMetre.setText(String.valueOf(getMetre()[1]));
-        prefDialogStyleComboBox.setSelectedItem(style);
+        prefDialogStyleComboBox.setSelectedItem(styleName);
         preferencesDialog.setVisible(true);
     }
     

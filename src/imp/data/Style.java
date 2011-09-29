@@ -55,7 +55,7 @@ public class Style
   /**
    * a String containing the name
    */
-  private String name = "unknown";
+  private String name = "swing"; // Default style
 
   /**
    * a String containing the default name of a Style (a so-called NULL Style)
