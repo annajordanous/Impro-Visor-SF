@@ -2002,18 +2002,14 @@
 
 // Surge
 
+(defbrick Surge(main) Major Misc C
+          (brick TonicOrDom C 1)
+          (chord C#o 1))
+
 (defbrick Surge(var 1) Major Misc C
-          (chord C 1)
+          (brick TonicOrDom C 1)
           (chord C#o 1)
           (chord G/D 1))
-
-(defbrick Surge(var 2) Major Misc C
-          (chord C 1)
-          (chord C#o 1))
-
-(defbrick Surge(var 3) Major Misc C
-          (chord C7 1)
-          (chord C#o 1))
 
 // Supertension (7#4 or 7#110
 
