@@ -538,7 +538,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         preferencesDialog.setTitle("Roadmap Info"); // NOI18N
         preferencesDialog.setMinimumSize(new java.awt.Dimension(400, 200));
         preferencesDialog.setName("preferencesDialog"); // NOI18N
-        preferencesDialog.setPreferredSize(new java.awt.Dimension(400, 200));
 
         jPanel2.setName("jPanel2"); // NOI18N
 
@@ -573,6 +572,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogStyleComboBox.setMaximumRowCount(30);
         prefDialogStyleComboBox.setModel(styleComboBoxModel);
         prefDialogStyleComboBox.setName("prefDialogStyleComboBox"); // NOI18N
+        prefDialogStyleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                styleSelected(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -2638,6 +2642,11 @@ private void keyPressedDictionaryTree(java.awt.event.KeyEvent evt)//GEN-FIRST:ev
       }
   }//GEN-LAST:event_keyPressedDictionaryTree
 
+private void styleSelected(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleSelected
+  {//GEN-HEADEREND:event_styleSelected
+    style = (Style)prefDialogStyleComboBox.getSelectedItem();
+  }//GEN-LAST:event_styleSelected
+
 
 public void setVolumeSlider(int volume)
   {
@@ -3412,9 +3421,8 @@ public void saveToNewNotate()
   {
     selectAllBricks();
 
-    String styleName = style.getName();
     ChordPart chordPart = new ChordPart();
-    chordPart.setStyle(styleName);
+    chordPart.setStyle(getStyle());
 
     chordPart.addFromRoadMapFrame(this);
 
@@ -3430,7 +3438,7 @@ public void saveToNewNotate()
     score.setMetre(getMetre());
     score.setTempo(getTempo());
     score.setTitle(roadMapTitle);
-    score.setStyle(styleName);
+    score.setStyle(getStyle());
 
     // System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
 
@@ -3689,7 +3697,7 @@ public void setParent(Notate notate)
     /** Returns the style */ 
     public Style getStyle()
     {
-        return Advisor.getStyle(styleName);
+        return style;
     }
 
     /** Gets the current playback slot from notate */
@@ -3712,7 +3720,7 @@ public void setParent(Notate notate)
         prefDialogTitleField.setText(roadMapTitle);
         upperMetre.setText(String.valueOf(getMetre()[0]));
         lowerMetre.setText(String.valueOf(getMetre()[1]));
-        prefDialogStyleComboBox.setSelectedItem(styleName);
+        prefDialogStyleComboBox.setSelectedItem(style);
         preferencesDialog.setVisible(true);
     }
     
