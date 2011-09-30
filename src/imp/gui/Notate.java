@@ -75,7 +75,9 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
-
+  public static final int HELP_DIALOG_WIDTH = 980;
+  public static final int HELP_DIALOG_HEIGHT = 600;
+  
   private int DEFAULT_SLIDER_VOLUME = 80;
   
   private static boolean firstTime = true;
@@ -13020,80 +13022,67 @@ public void closeWindow()
   }
     
     
+/**
+ *
+ * Opens the help dialog.
+ *
+ */
+
+public void openHelpDialog()
+  {
+    int height = HELP_DIALOG_HEIGHT;
+
+    if( height > getHeight() )
+      {
+        height = getHeight();
+      }
+
+    int width = HELP_DIALOG_WIDTH;
+
+    if( width > getWidth() )
+      {
+        width = getWidth();
+      }
     
-    /**
-     *
-     * Shows the error dialog centered relative to the current window
-     *
-     */
+    helpDialog.setSize(width, height);
+
+    helpDialog.setLocationRelativeTo(this);
+
+    helpDialog.setVisible(true);
+  }
     
-    
-     /**
-     *
-     * Opens the help dialog.
-     *
-     */
-    
-    public void openHelpDialog() {
-        
-        int height = 600;
-        
-        if(height > getHeight())
-            
-            height = getHeight();
-        
-        if(height < 400)
-            
-            height = 400;
-        
-        
-        
-        int width = 600;
-        
-        if(width > getWidth())
-            
-            width = getWidth();
-        
-        if(width < 400)
-            
-            width = 400;
-        
-        helpDialog.setSize(width, height);
-                
-        helpDialog.setLocationRelativeTo(this);
-        
-        helpDialog.setVisible(true);
-        }
-    
-    /**
-     *
-     * Opens the About dialog.
-     *
-     */
-    
+
     private void aboutMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMIActionPerformed
         showAboutDialog();    
     }//GEN-LAST:event_aboutMIActionPerformed
     
     
-    public void showAboutDialog()
-    {
-        aboutDialog.setSize(aboutDialogWidth, aboutDialogHeight);
-        aboutDialog.setLocationRelativeTo(this);
-        aboutDialog.setVisible(true);
- 
-    }
-    
-    public void setMidiLatency(double latency) {
-        
-        midiLatencyTF.setText(String.valueOf(latency));
-        
-        
-        
-    }
-    
-    
-    
+/**
+ *
+ * Opens the About dialog.
+ *
+ */
+
+public void showAboutDialog()
+  {
+    aboutDialog.setSize(aboutDialogWidth, aboutDialogHeight);
+    aboutDialog.setLocationRelativeTo(this);
+    aboutDialog.setVisible(true);
+  }
+
+
+/**
+ * * Set the MIDI latency.
+ * @param latency 
+ */
+
+public void setMidiLatency(double latency)
+  {
+
+    midiLatencyTF.setText(String.valueOf(latency));
+  }
+
+
 /**
  *
  * Get integer value from string.
