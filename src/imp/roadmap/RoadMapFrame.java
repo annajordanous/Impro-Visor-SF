@@ -53,6 +53,17 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     public static final String DICTIONARY_EXT = ".dictionary";
     
+    /**
+     * Styles in style menu must be in this list, as well as in the styles
+     * directory.
+     */
+    String preferredStyles[] = {"african", "ballad", "bluegrass", "bossa", 
+        "cabaret", "cha-cha-cha", "folk-rock", "funk", "irish", "klezmer",
+        "latin", "mambo", "march", "no-style", 
+        "polka", "reggae-2", "rhumba", "samba", "shuffle", "ska", "swing",
+        "tango", "two-beat", "waltz", "zydeco"};
+
+    
     private int keyColorationOffset = 0;
     
     private String defaultDictionaryName = "My";
@@ -2644,27 +2655,44 @@ private void populateStyleMenu()
 
     for( int i = 0; i < numStyles; i++ )
       {
-        final JMenuItem item = new JMenuItem(styleComboBoxModel.getElementAt(i).toString());
-        styleMenu.add(item);
-
-        item.addActionListener(new java.awt.event.ActionListener()
-        {
-
-        public void actionPerformed(java.awt.event.ActionEvent evt)
+        String name = styleComboBoxModel.getElementAt(i).toString();
+        if( contains(preferredStyles, name) )
           {
+            final JMenuItem item = new JMenuItem(name);
+            styleMenu.add(item);
 
-            styleName = item.getText();
-            try
+            item.addActionListener(new java.awt.event.ActionListener()
+            {
+
+            public void actionPerformed(java.awt.event.ActionEvent evt)
               {
-                style = Advisor.getStyle(styleName);
-                styleMenu.setText("Style: " + styleName);
+
+                styleName = item.getText();
+                try
+                  {
+                    style = Advisor.getStyle(styleName);
+                    styleMenu.setText("Style: " + styleName);
+                  }
+                catch( Exception e )
+                  {
+                  }
               }
-            catch( Exception e )
-              {
-              }
+
+            });
           }
-        });
       }
+  }
+
+static boolean contains(String[] array, String member)
+  {
+    for( int i = 0; i < array.length; i++ )
+      {
+        if( array[i].equals(member) )
+          {
+            return true;
+          }
+      }
+    return false;
   }
 
 
