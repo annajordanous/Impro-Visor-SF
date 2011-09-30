@@ -536,8 +536,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         chordChangeDialog.getContentPane().add(chordDialogDurationComboBox, gridBagConstraints);
 
         preferencesDialog.setTitle("Roadmap Info"); // NOI18N
-        preferencesDialog.setMinimumSize(new java.awt.Dimension(300, 200));
+        preferencesDialog.setMinimumSize(new java.awt.Dimension(400, 200));
         preferencesDialog.setName("preferencesDialog"); // NOI18N
+        preferencesDialog.setPreferredSize(new java.awt.Dimension(400, 200));
 
         jPanel2.setName("jPanel2"); // NOI18N
 
@@ -640,6 +641,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(upperMetre, gridBagConstraints);
 
         lowerMetre.setToolTipText("Lower time signature"); // NOI18N
@@ -653,6 +655,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(lowerMetre, gridBagConstraints);
 
         preferencesDialog.getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -708,7 +711,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         libraryScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
         libraryScrollPane.setName("libraryScrollPane"); // NOI18N
 
-        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        libraryTree.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         libraryTree.setModel(libraryTreeModel);
         libraryTree.setToolTipText("Dictionary of bricks that may be viewed and inserted"); // NOI18N
         libraryTree.setMaximumSize(new java.awt.Dimension(400, 3000));
@@ -799,7 +802,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         durationComboBox.setSelectedItem(2);
         durationComboBox.setToolTipText("Set the duration of this brick (in slots)."); // NOI18N
-        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Duration\n")); // NOI18N
+        durationComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Duration\n"));
         durationComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
         durationComboBox.setName("durationComboBox"); // NOI18N
         durationComboBox.setPreferredSize(new java.awt.Dimension(52, 54));
