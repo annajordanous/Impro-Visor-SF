@@ -226,6 +226,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         populateStyleMenu();
         
+        styleMenu.setText("Style: " + styleName);
+        
         //settings.generateColors(.3f);
     }
 
@@ -260,12 +262,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         prefDialogCancelButton = new javax.swing.JButton();
         prefDialogAcceptButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        prefDialogStyleComboBox = new javax.swing.JComboBox();
         prefDialogMeterLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         prefDialogTitleField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         upperMetre = new javax.swing.JTextField();
         lowerMetre = new javax.swing.JTextField();
         brickDictionaryFrame = new javax.swing.JFrame();
@@ -572,22 +572,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         jPanel1.setName("jPanel1"); // NOI18N
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        prefDialogStyleComboBox.setMaximumRowCount(30);
-        prefDialogStyleComboBox.setModel(styleComboBoxModel);
-        prefDialogStyleComboBox.setName("prefDialogStyleComboBox"); // NOI18N
-        prefDialogStyleComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                styleSelected(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        jPanel1.add(prefDialogStyleComboBox, gridBagConstraints);
-
         prefDialogMeterLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         prefDialogMeterLabel.setText("Time Signature:"); // NOI18N
         prefDialogMeterLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -630,17 +614,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel1.add(jLabel7, gridBagConstraints);
-
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("Style:"); // NOI18N
-        jLabel8.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setName("jLabel8"); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        jPanel1.add(jLabel8, gridBagConstraints);
 
         upperMetre.setToolTipText("Upper time signature"); // NOI18N
         upperMetre.setName("upperMetre"); // NOI18N
@@ -1388,7 +1361,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         fileMenu.setText("File"); // NOI18N
         fileMenu.setMaximumSize(new java.awt.Dimension(50, 40));
         fileMenu.setName("fileMenu"); // NOI18N
-        fileMenu.setPreferredSize(new java.awt.Dimension(50, 20));
+        fileMenu.setPreferredSize(new java.awt.Dimension(50, 21));
 
         openLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetMI.setMnemonic('o');
@@ -1964,6 +1937,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         styleMenu.setText("Style"); // NOI18N
         styleMenu.setToolTipText("Set the overall style of the playback for this roadmap."); // NOI18N
+        styleMenu.setMaximumSize(new java.awt.Dimension(50, 100));
         styleMenu.setName("styleMenu"); // NOI18N
         styleMenu.addMenuListener(new javax.swing.event.MenuListener() {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
@@ -2658,11 +2632,6 @@ private void keyPressedDictionaryTree(java.awt.event.KeyEvent evt)//GEN-FIRST:ev
         playSelection();
       }
   }//GEN-LAST:event_keyPressedDictionaryTree
-
-private void styleSelected(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleSelected
-  {//GEN-HEADEREND:event_styleSelected
-    style = (Style)prefDialogStyleComboBox.getSelectedItem();
-  }//GEN-LAST:event_styleSelected
 
 private void styleMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:event_styleMenuMenuSelected
   {//GEN-HEADEREND:event_styleMenuMenuSelected
@@ -3385,7 +3354,6 @@ public void setVolumeSlider(int volume)
     private javax.swing.JButton insertBrickButton;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -3410,7 +3378,6 @@ public void setVolumeSlider(int volume)
     private javax.swing.JButton prefDialogAcceptButton1;
     private javax.swing.JButton prefDialogCancelButton;
     private javax.swing.JLabel prefDialogMeterLabel;
-    private javax.swing.JComboBox prefDialogStyleComboBox;
     private javax.swing.JTextField prefDialogTitleField;
     private javax.swing.JDialog preferencesDialog;
     private javax.swing.JMenu preferencesMenu;
@@ -3777,7 +3744,6 @@ public void setParent(Notate notate)
         prefDialogTitleField.setText(roadMapTitle);
         upperMetre.setText(String.valueOf(getMetre()[0]));
         lowerMetre.setText(String.valueOf(getMetre()[1]));
-        prefDialogStyleComboBox.setSelectedItem(style);
         preferencesDialog.setVisible(true);
     }
     
@@ -3798,7 +3764,6 @@ public void setParent(Notate notate)
         int metreTop = intFromTextField(upperMetre);
         int metreBottom = intFromTextField(lowerMetre);
         setMetre(new int[]{metreTop, metreBottom});
-        style = (Style)prefDialogStyleComboBox.getSelectedItem();
         roadMapPanel.updateBricks();
     }
     

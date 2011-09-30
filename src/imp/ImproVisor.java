@@ -31,12 +31,12 @@ import imp.util.*;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5
+ * @version 5.03
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.01";
+    public static final String version = "5.03";
     
     private static String lastLeadsheetFileStem = null;
     
@@ -54,11 +54,6 @@ public class ImproVisor implements Constants {
 
     private static String prefsFileName = "My.prefs";
 
-    public static File getRuleFile()
-      {
-      return ruleFile;
-      }
-    
     private static MidiManager midiManager;
     private static MidiSynth midiSynth;
     
@@ -108,6 +103,11 @@ public class ImproVisor implements Constants {
      */
 
     private static Advisor advisor;
+    
+    public static File getRuleFile()
+      {
+      return ruleFile;
+      }
     
     public static MidiManager getMidiManager() {
         return midiManager;
