@@ -1895,7 +1895,7 @@
             </Component>
             <Component class="javax.swing.JComboBox" name="styleComboBox">
               <Properties>
-                <Property name="font" type="java.awt.Font" noResource="true" editor="org.netbeans.beaninfo.editors.FontEditor">
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Lucida Grande" size="14" style="0"/>
                 </Property>
                 <Property name="maximumRowCount" type="int" value="30"/>
@@ -1983,13 +1983,13 @@
           <Properties>
             <Property name="maximum" type="int" value="300"/>
             <Property name="minimum" type="int" value="60"/>
-            <Property name="toolTipText" type="java.lang.String" value="Slide to adjust visual width of bricks. Double-click to constrain the setting." noResource="true"/>
+            <Property name="toolTipText" type="java.lang.String" value="Slide to adjust visual width of bricks. Double-click to constrain the setting so that it changes with the window width." noResource="true"/>
             <Property name="value" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="settings.measureLength" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder justification="2" title="Feature Width">
+                <TitledBorder justification="2" title="Width">
                   <Font PropertyName="font" name="Lucida Grande" size="12" style="0"/>
                 </TitledBorder>
               </Border>

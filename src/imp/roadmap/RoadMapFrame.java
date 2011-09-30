@@ -144,6 +144,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     /** Prefix on the frame title */
     private static String roadMapTitlePrefix = "RoadMap: ";
     
+    /** Title for feature width */
+    private static String featureWidthTitle = "Width";
+    
     /** Suffix for constrained feature width */
     private static String featureWidthSuffix = "(Constrained)";
     
@@ -1143,7 +1146,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.insets = new java.awt.Insets(5, 2, 6, 2);
         tempoPanel.add(tempoSlider, gridBagConstraints);
 
-        styleComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        styleComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         styleComboBox.setMaximumRowCount(30);
         styleComboBox.setModel(getStyleMenuModel());
         styleComboBox.setToolTipText("Select the style for playback and for leadsheet creation."); // NOI18N
@@ -1186,9 +1189,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         featureWidthSlider.setMaximum(300);
         featureWidthSlider.setMinimum(60);
-        featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks. Double-click to constrain the setting."); // NOI18N
+        featureWidthSlider.setToolTipText("Slide to adjust visual width of bricks. Double-click to constrain the setting so that it changes with the window width."); // NOI18N
         featureWidthSlider.setValue(settings.measureLength);
-        featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Feature Width", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
+        featureWidthSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Width", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         featureWidthSlider.setFocusable(false);
         featureWidthSlider.setMaximumSize(new java.awt.Dimension(200, 40));
         featureWidthSlider.setMinimumSize(new java.awt.Dimension(100, 40));
@@ -3753,9 +3756,9 @@ public void setParent(Notate notate)
     private void setFeatureWidthLocked(boolean value)
     {
         javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
-        String title = "Feature Width";
+        String title = featureWidthTitle;
         if(value)
-            title += " "+featureWidthSuffix;
+            title += " " + featureWidthSuffix;
         border.setTitle(title);
     }
     
