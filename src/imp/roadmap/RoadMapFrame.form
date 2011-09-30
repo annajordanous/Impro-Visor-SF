@@ -1341,6 +1341,16 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="styleMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Style" noResource="true"/>
+            <Property name="toolTipText" type="java.lang.String" value="Set the overall style of the playback for this roadmap." noResource="true"/>
+            <Property name="name" type="java.lang.String" value="styleMenu" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="styleMenuMenuSelected"/>
+          </Events>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>

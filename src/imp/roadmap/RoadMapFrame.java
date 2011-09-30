@@ -224,6 +224,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         
         setFeatureWidthLocked(true);
         
+        populateStyleMenu();
+        
         //settings.generateColors(.3f);
     }
 
@@ -363,6 +365,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playSelectionMI = new javax.swing.JMenuItem();
         playAllMI = new javax.swing.JMenuItem();
         stopPlayMI = new javax.swing.JMenuItem();
+        styleMenu = new javax.swing.JMenu();
 
         addBrickDialog.setTitle("Add New Brick"); // NOI18N
         addBrickDialog.setMinimumSize(new java.awt.Dimension(250, 180));
@@ -1959,6 +1962,20 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         roadmapMenuBar.add(playMenu);
 
+        styleMenu.setText("Style"); // NOI18N
+        styleMenu.setToolTipText("Set the overall style of the playback for this roadmap."); // NOI18N
+        styleMenu.setName("styleMenu"); // NOI18N
+        styleMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                styleMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+        roadmapMenuBar.add(styleMenu);
+
         setJMenuBar(roadmapMenuBar);
 
         pack();
@@ -2647,7 +2664,46 @@ private void styleSelected(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styl
     style = (Style)prefDialogStyleComboBox.getSelectedItem();
   }//GEN-LAST:event_styleSelected
 
+private void styleMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:event_styleMenuMenuSelected
+  {//GEN-HEADEREND:event_styleMenuMenuSelected
 
+  }//GEN-LAST:event_styleMenuMenuSelected
+
+private void populateStyleMenu()
+  {
+    int numStyles = styleComboBoxModel.getSize();
+
+    for( int i = 0; i < numStyles; i++ )
+      {
+        final JMenuItem item = new JMenuItem(styleComboBoxModel.getElementAt(i).toString());
+        styleMenu.add(item);
+
+        item.addActionListener(new java.awt.event.ActionListener()
+        {
+
+        public void actionPerformed(java.awt.event.ActionEvent evt)
+          {
+
+            styleName = item.getText();
+            try
+              {
+                style = Advisor.getStyle(styleName);
+                styleMenu.setText("Style: " + styleName);
+              }
+            catch( Exception e )
+              {
+              }
+          }
+        });
+      }
+  }
+
+
+private Notate.StyleComboBoxModel getStyleMenuModel()
+  {
+    return styleComboBoxModel;
+  }
+        
 public void setVolumeSlider(int volume)
   {
     if( jSliderIgnoreStateChangedEvt )
@@ -3392,6 +3448,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JCheckBoxMenuItem showKeysCheckBoxMI;
     private javax.swing.JButton stopButton;
     private javax.swing.JMenuItem stopPlayMI;
+    private javax.swing.JMenu styleMenu;
     private javax.swing.JPanel tempoPanel;
     private javax.swing.JTextField tempoSet;
     private javax.swing.JSlider tempoSlider;
