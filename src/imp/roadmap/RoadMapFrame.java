@@ -996,21 +996,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         masterVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         masterVolumePanel.setToolTipText("Control playback volume."); // NOI18N
-        masterVolumePanel.setMaximumSize(new java.awt.Dimension(80, 40));
-        masterVolumePanel.setMinimumSize(new java.awt.Dimension(80, 40));
+        masterVolumePanel.setMaximumSize(new java.awt.Dimension(120, 40));
+        masterVolumePanel.setMinimumSize(new java.awt.Dimension(100, 40));
         masterVolumePanel.setName("masterVolumePanel"); // NOI18N
         masterVolumePanel.setOpaque(false);
-        masterVolumePanel.setPreferredSize(new java.awt.Dimension(80, 40));
+        masterVolumePanel.setPreferredSize(new java.awt.Dimension(100, 40));
         masterVolumePanel.setLayout(new java.awt.GridBagLayout());
 
         allVolumeToolBarSlider.setMajorTickSpacing(5);
         allVolumeToolBarSlider.setMaximum(127);
         allVolumeToolBarSlider.setToolTipText("Set the master volume."); // NOI18N
         allVolumeToolBarSlider.setValue(80);
-        allVolumeToolBarSlider.setMaximumSize(new java.awt.Dimension(120, 20));
-        allVolumeToolBarSlider.setMinimumSize(new java.awt.Dimension(100, 20));
+        allVolumeToolBarSlider.setMaximumSize(new java.awt.Dimension(200, 20));
+        allVolumeToolBarSlider.setMinimumSize(new java.awt.Dimension(120, 20));
         allVolumeToolBarSlider.setName("allVolumeToolBarSlider"); // NOI18N
-        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(100, 20));
+        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(120, 20));
         allVolumeToolBarSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 allVolumeToolBarSliderStateChanged(evt);
@@ -1120,6 +1120,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.insets = new java.awt.Insets(3, 5, 5, 0);
         tempoPanel.add(tempoSet, gridBagConstraints);
 
@@ -1143,7 +1144,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 60;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 2, 6, 2);
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(5, 1, 6, 1);
         tempoPanel.add(tempoSlider, gridBagConstraints);
 
         styleComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 14));
@@ -1162,6 +1164,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
         tempoPanel.add(styleComboBox, gridBagConstraints);
 
         toolBar.add(tempoPanel);
@@ -2536,7 +2539,7 @@ private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
 
 private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showJoinsCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_showJoinsCheckBoxMIActionPerformed
-    settings.showJoins = showJoinsCheckBoxMI.getState();
+    setShowJoins(showJoinsCheckBoxMI.getState());
   }//GEN-LAST:event_showJoinsCheckBoxMIActionPerformed
 
 private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_dictionaryEditorMIActionPerformed
@@ -2927,13 +2930,7 @@ public void setVolumeSlider(int volume)
         ArrayList<Block> blocks = roadMapPanel.getSelection();
         roadMapPanel.replaceSelection(analyze(blocks));
         
-        settings.showJoins = showJoinsOnCompletion;
-        /*
-        if( showJoinsOnCompletion )
-          {
-            settings.showJoins = true;
-          }
-         */
+        setShowJoins(showJoinsOnCompletion);
         
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
@@ -3626,8 +3623,7 @@ public void setParent(Notate notate)
     {
       //System.out.println("makeVisible analyze = " + analyze);
         // Don't show joins until analysis is done.
-        boolean tempJoins = settings.showJoins;
-        settings.showJoins = false;
+        boolean showJoinsOnCompletion = settings.showJoins;
         
         setVisible(true);
         if( brickLibraryMenuItem.isSelected() )
@@ -3637,7 +3633,8 @@ public void setParent(Notate notate)
         
         if( analyze )
           {
-            analyzeInBackground(tempJoins);
+            setShowJoins(false);
+            analyzeInBackground(showJoinsOnCompletion);
           }
     }
     
@@ -3645,9 +3642,9 @@ public void setParent(Notate notate)
      * Analyze in the background by creating Analyzer Thread.
      */
     
-    public void analyzeInBackground(boolean showJoins)
+    public void analyzeInBackground(boolean showJoinsOnCompletion)
       {
-        new Analyzer(this, showJoins).start();
+        new Analyzer(this, showJoinsOnCompletion).start();
       }
 
     /** Sets the time signature of the roadmap for Americans
@@ -4040,6 +4037,12 @@ private void reloadDictionary()
     populateRoadmapDictionaryMenu(dictionaryName);
 
     brickDictionaryFrame.setVisible(true);
+  }
+
+private void setShowJoins(boolean value)
+  {
+    System.out.println("showJoins = " + value);
+    settings.showJoins = value;
   }
 }
 
