@@ -1,5 +1,5 @@
 (title Stella by Starlight)
-(composer )
+(composer Victor Young)
 (show )
 (year )
 (comments )

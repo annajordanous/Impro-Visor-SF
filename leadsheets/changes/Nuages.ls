@@ -1,11 +1,11 @@
-(title Scrapple from the Apple)
-(composer Charlie Parker)
+(title Nuages)
+(composer Django Reinhardt)
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 184.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -34,25 +34,21 @@
     (key 0)
 )
 
-(section (style swing)) 
-
-Gm7 | C7 | Gm7 | C7 | 
-FM7 F7 | Bb7 Bo7 | Am7 D7 | Gm7 C7 | 
-
-(section (style swing)) 
-
-Gm7 | C7 | Gm7 | C7 | 
-FM7 F7 | Bb7 Bo7 | FM7 | / | 
+(phrase (style swing)) 
+Bbm7 Eb7 | Am7b5 D7b9 | GM7 Am7 | Bm7 | 
+Bbm7 Eb7 | Am7b5 D7b9 | GM7 | / | 
+F#m7b5 | B7 | Em7 | / | 
 
 (section (style swing)) 
 
-Em7 | A7 | Am7 | D7 | 
-Dm7 | G7 | Gm7 | C7 | 
+A7 | / | Am7 | D7 | 
 
 (section (style swing)) 
 
-Gm7 | C7 | Gm7 | C7 | 
-FM7 F7 | Bb7 Bo7 | FM7 | Am7b5 D7b9 | 
+Bbm7 Eb7 | Am7b5 D7b9 | GM7 | / | 
+Ebm7 Ab7 | Dm7b5 G7b9 | CM7 | / | 
+Cm7 F7 | Cm7 F7 | GM7 Am7 | Bm7 | 
+Bbm7 Eb7 | Am7b5 D7b9 | GM7 | / | 
 
 (part
     (type melody)

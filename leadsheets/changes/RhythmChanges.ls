@@ -1,5 +1,5 @@
 (title I've Got Rhythm)
-(composer )
+(composer George Gershwin)
 (show )
 (year )
 (comments )

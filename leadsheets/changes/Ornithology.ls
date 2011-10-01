@@ -1,5 +1,5 @@
 (title Ornithology (How High the Moon))
-(composer )
+(composer Charlie Parker)
 (show )
 (year )
 (comments )

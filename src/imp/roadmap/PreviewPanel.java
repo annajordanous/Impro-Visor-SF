@@ -136,7 +136,11 @@ public class PreviewPanel extends JPanel
      */
     public Block getBlock()
     {
+      if( currentBrick != null )
+        {
         return currentBrick.getBlock();
+        }
+      return null;
     }
     
     /**

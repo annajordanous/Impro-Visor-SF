@@ -194,21 +194,22 @@
 
 // Brick types
 
-(brick-type Approach         45)
-(brick-type Cadence          30)
-(brick-type CESH             10)
-(brick-type Dropback         30)
-(brick-type Ending           30)
-(brick-type Invisible      2000)
-(brick-type Overrun          30)
-(brick-type On-Off         1005)
-(brick-type Off-On         1010)
-(brick-type On-Off+         100)
-(brick-type On              550)
-(brick-type Opening          25)
-(brick-type Pullback         45) // a form of approach
-(brick-type Turnaround       20)
-(brick-type Misc             40)
+(brick-type Approach          45)
+(brick-type Cadence           30)
+(brick-type CESH              10)
+(brick-type Deceptive-Cadence 60)
+(brick-type Dropback          30)
+(brick-type Ending            30)
+(brick-type Invisible       2000)
+(brick-type Overrun           30)
+(brick-type On-Off          1005)
+(brick-type Off-On          1010)
+(brick-type On-Off+          100)
+(brick-type On               550)
+(brick-type Opening           25)
+(brick-type Pullback          45) // a form of approach
+(brick-type Turnaround        20)
+(brick-type Misc              40)
 
 // Invisible bricks
 // These are bricks that are used in constructing other bricks.
@@ -862,6 +863,12 @@
           (brick Somewhere-Cadence C 3)
           (brick Extended-Approach C 4))
 
+(defbrick Dropback-Approach(interpolated) Major Invisible C
+        (brick Straight-Cadence C 6)
+        (brick Long-Approach C 6))
+
+
+
 /*
 (defbrick Dropback-Cadence Major Cadence C
           (brick Tension-Cadence D 3)
@@ -956,6 +963,18 @@
           (brick GenDom D 2)
           (brick GenDom G 2)
           (brick GenDom C 2))
+
+
+// Giant Steps
+
+(defbrick Giant-Step Major Cadence G
+        (brick Major-On B 1)
+        (brick Perfect-Cadence G 2))
+
+(defbrick Giant-Steps Major Cadence Eb
+        (brick Giant-Step G 3)
+        (brick Perfect-Cadence Eb 3))
+
 
 // Happenstance, from "It Could Happen to You"
 
@@ -1108,14 +1127,14 @@
 
 // IV-n-Bird goes to iii instead of I
 
-(defbrick IV-n-Bird Major Cadence C
+(defbrick IV-n-Bird Major Deceptive-Cadence C
           (brick TonicOrDom  F 1)
           (brick GenDom      Eb 1)
           (brick Minor-On    E 1))
 
 // To get to IV and get back via Yardbird:
 
-(defbrick To-IV-n-Bird Major Cadence C
+(defbrick To-IV-n-Bird Major Deceptive-Cadence C
           (brick Major-On    C 1)
           (brick SuperGenDom F 2)
           (brick IV-n-Bird   C 3))
@@ -1253,6 +1272,9 @@
         (brick Minor-Chromatic-Walkdown(3 step) Ab 3)
         (chord G7 1))
 
+(defbrick Minor-Chromatic-Walkdown-Approach Major Approach C
+        (brick Minor-Chromatic-Walkdown Db 3)
+        (chord G7 1))
 
 (defbrick Minor-Dogleg-Slow-Approach Minor Approach G
           (brick Sad-Approach D 2)
@@ -1901,11 +1923,11 @@
 
 (defbrick Stablemates-Approach(var 1) Major Approach C
           (brick Straight-Approach Db 1)
-          (brick Straight-Approach C 1))
+          (brick An-Approach C 1))
 
 (defbrick Stablemates-Approach(var 2) Major Approach C
           (brick Slow-Approach Db 1)
-          (brick Straight-Approach C 1))
+          (brick An-Approach C 1))
 
 
 (defbrick Stablemates-Cadence Major Cadence C
@@ -2825,10 +2847,3 @@
           (brick Major-On C 1))
 
 // User-defined bricks
-
-
-
-
-
-
-

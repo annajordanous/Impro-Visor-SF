@@ -382,7 +382,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
 
             String brickName = b.getName();
 
-            if( brickName.equals("Straight Approach") )
+            if( brickName.endsWith("Straight Approach") )
               {
                
                 Long baseKey = b.getLastChord().getKey(); // alternate b.getKey()
@@ -405,7 +405,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
             // Check if brick is an approach is actually a Launcher.
             // In "Insights" examples, resolution is not required.
 
-            if( b.getType().equals("Approach") && b.isSectionEnd()
+            if( b.getType().endsWith("Approach") && b.isSectionEnd()
                     /* && doesResolve(b, chordList.get(0))*/ ) 
               {
                 // If the name has "Approach", replace it with "Launcher"

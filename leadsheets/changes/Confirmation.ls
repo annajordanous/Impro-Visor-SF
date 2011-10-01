@@ -6,7 +6,7 @@
 (meter 4 4)
 (key -1)
 (tempo 160.0)
-(volume 97)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)

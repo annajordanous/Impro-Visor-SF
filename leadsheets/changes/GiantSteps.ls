@@ -1,5 +1,5 @@
 (title Giant Steps)
-(composer )
+(composer John Coltrane)
 (show )
 (year )
 (comments )

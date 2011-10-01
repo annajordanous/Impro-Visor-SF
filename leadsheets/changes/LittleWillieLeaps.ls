@@ -1,5 +1,5 @@
 (title Little Willie Leaps)
-(composer )
+(composer Charlie Parker)
 (show )
 (year )
 (comments )
@@ -45,7 +45,12 @@ Am7 D7 | Gm7 C7 | Am7b5 | D7#9 |
 Bm7b5 E7#9 | Am7 D7 | Gm7 C7 | FM7 | 
 
 (phrase (style swing)) 
-Em7b5 A7#9 | DmM7 | G7#4 | C7#4 | 
+Em7b5 A7#9 | Dm | 
+(section (style swing)) 
+
+G7#4 | C7#4 | 
+
+(phrase (style swing)) 
 Am7 D7 | Gm7 C7 | Am7 D7 | Gm7 C7 | 
 
 (section (style swing)) 

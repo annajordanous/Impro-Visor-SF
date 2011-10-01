@@ -1,5 +1,5 @@
 (title Invitation)
-(composer )
+(composer Bronislau Kaper)
 (show )
 (year )
 (comments )
@@ -46,16 +46,18 @@ Ebm69 | / | / | / |
 
 (phrase (style latin)) 
 Ebm9 | Ab13 | Db7#11_ | / | 
+
+(phrase (style swing)) 
 C#m9 | F#13 | Bm69 | / | 
 
-(section (style latin)) 
+(section (style swing)) 
 
 Bm9 | E13 | Am69 | / | 
 
-(phrase (style latin)) 
+(phrase (style swing)) 
 Am9 | D13 | Gm69 | / | 
 
-(section (style latin)) 
+(section (style swing)) 
 
 Eb7#11 | / | D7#11 | Dm7b5 G13b9 | 
 
@@ -80,4 +82,6 @@ F7#11 | Bb7#11 | Ebm69 | Dm9 G13b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

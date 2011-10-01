@@ -1,5 +1,5 @@
 (title What is This Thing Called Love? (Hot House))
-(composer )
+(composer Cole Porter)
 (show )
 (year )
 (comments )

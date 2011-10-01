@@ -1,5 +1,5 @@
 (title I'll Remember April)
-(composer )
+(composer Gene de Paul)
 (show )
 (year )
 (comments )

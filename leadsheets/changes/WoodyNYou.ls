@@ -1,5 +1,5 @@
 (title Woody 'n You)
-(composer )
+(composer Dizzy Gillespie)
 (show )
 (year )
 (comments )

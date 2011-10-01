@@ -1,5 +1,5 @@
-(title Invitation)
-(composer )
+(title Groovin' High)
+(composer Dizzy Gillespie)
 (show )
 (year )
 (comments )
@@ -15,14 +15,14 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style latin
-    (swing 0.55)
-    (comp-swing 0.55)
+(style swing
+    (swing 0.67)
+    (comp-swing 0.67)
     (bass-high g-)
     (bass-low c---)
-    (bass-base c--)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,42 +34,37 @@
     (key 0)
 )
 
-(phrase (style latin)) 
-Cm69 | / | / | / | 
+(phrase (style swing)) 
+EbM7 | / | 
+(phrase (style swing)) 
+Am7 | D7 | 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Cm9 | F13 | Bb7#11_ | / | 
+EbM7 | / | Gm7 | C7 | 
 
-(phrase (style latin)) 
-Ebm69 | / | / | / | 
+(phrase (style swing)) 
+F7 | / | Fm7 | Bb7 | 
 
-(phrase (style latin)) 
-Ebm9 | Ab13 | Db7#11_ | / | 
-C#m9 | F#13 | Bm69 | / | 
+(section (style swing)) 
 
-(section (style latin)) 
+Gm7 | F#m7 | Fm7 | Bb7 | 
 
-Bm9 | E13 | Am69 | / | 
+(phrase (style swing)) 
+EbM7 | / | 
+(phrase (style swing)) 
+Am7 | D7 | 
 
-(phrase (style latin)) 
-Am9 | D13 | Gm69 | / | 
+(section (style swing)) 
 
-(section (style latin)) 
+EbM7 | / | Gm7 | C7 | 
 
-Eb7#11 | / | D7#11 | Dm7b5 G13b9 | 
+(phrase (style swing)) 
+F7 | / | Fm7 | Bb7 | 
 
-(phrase (style latin)) 
-Cm69 | / | / | / | 
+(section (style swing)) 
 
-(section (style latin)) 
-
-Cm9 | F13 | Bb7#11_ | / | 
-
-(section (style latin)) 
-
-Ebm69 | / | B7#11_ | / | 
-F7#11 | Bb7#11 | Ebm69 | Dm9 G13b9 | 
+Fm7 | Abm7 Db7 | EbM7 | Fm7 Bb7 | 
 
 (part
     (type melody)
@@ -80,4 +75,4 @@ F7#11 | Bb7#11 | Ebm69 | Dm9 G13b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

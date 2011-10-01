@@ -1,5 +1,5 @@
 (title Baubles, Bangles, and Beads)
-(composer )
+(composer Robert Wright and George Forrest)
 (show )
 (year )
 (comments )
