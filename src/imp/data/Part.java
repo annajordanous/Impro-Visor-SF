@@ -1124,35 +1124,57 @@ public class Part implements Constants, Serializable {
      * Writes the Part to the passed BufferedWriter in Leadsheet notation.
      * @param out       the BufferedWriter to write the Part onto
      */
-    public void saveLeadsheet(BufferedWriter out, String type) throws IOException {
+    
+public void saveLeadsheet(BufferedWriter out, String type) throws IOException
+  {
+    out.write("(part");
+    out.newLine();
+    out.write("    (type " + type + ")");
+    out.newLine();
+    out.write("    (title " + title + ")");
+    out.newLine();
+    out.write("    (composer " + composer + ")");
+    out.newLine();
+    out.write("    (instrument " + instrument + ")");
+    out.newLine();
+    out.write("    (volume " + volume + ")");
+    out.newLine();
+    out.write("    (key " + keySig + ")");
+    out.newLine();
 
-        out.write("(part");        			                     out.newLine();
-        out.write("    (type " + type + ")");		                     out.newLine();
-        out.write("    (title " + title + ")");		                     out.newLine();
-        out.write("    (composer " + composer + ")");                        out.newLine();
-        out.write("    (instrument " + instrument + ")");                    out.newLine();
-        out.write("    (volume " + volume + ")");                            out.newLine();
-        out.write("    (key " + keySig + ")");                               out.newLine();
+    if( this instanceof MelodyPart )
+      {
+        out.write("    (stave " + staveType.toString().toLowerCase() + ")");
+        out.newLine();
+      }
 
-        if( this instanceof MelodyPart )
-          {
-          out.write("    (stave " + staveType.toString().toLowerCase() + ")"); out.newLine();
-          }
-        out.write(")");                                                      out.newLine();
+    out.write(")");
+    out.newLine();
 
-        Note.initializeSaveLeadsheet();
+    Note.initializeSaveLeadsheet();
+
+    PartIterator i = iterator();
+
+    if( this instanceof ChordPart )
+      {
+        SectionInfo sectionInfo = ((ChordPart) this).getSectionInfo();
 
         Integer nextSectionIndex = 0;
-        
-    	PartIterator i = iterator();
-    	while(i.hasNext()) {
-            if(this instanceof ChordPart) {
-                SectionInfo sectionInfo = ((ChordPart)this).getSectionInfo();
-                int nextIndex = i.nextIndex();
 
-                if(nextSectionIndex != null && nextIndex >= nextSectionIndex) {
+        System.out.println("sectionInfo = " + sectionInfo);
+
+        while( i.hasNext() )
+          {
+            int nextIndex = i.nextIndex();
+
+            System.out.println("nextIndex = " + nextIndex);
+
+            if( nextIndex >= nextSectionIndex )
+              {
+                if( nextSectionIndex != null )
+                  {
                     SectionRecord record = sectionInfo.getSectionRecord(nextSectionIndex);
-                    Style s  = sectionInfo.getStyleFromSlots(nextSectionIndex);
+                    Style s = sectionInfo.getStyleFromSlots(nextSectionIndex);
                     if( record.getIsPhrase() )
                       {
                         out.newLine();
@@ -1160,19 +1182,28 @@ public class Part implements Constants, Serializable {
                         out.newLine();
                       }
                     else
-                      {                      
-                      out.newLine();
-                      out.write("(section (style " + s + ")) ");
-                      out.newLine();
-                      out.newLine();
+                      {
+                        out.newLine();
+                        out.write("(section (style " + s + ")) ");
+                        out.newLine();
+                        out.newLine();
                       }
                     nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
-                }
-            }
-            
-	    i.next().saveLeadsheet(out, metre);
-        }
-    }
+                  }
+
+              }
+
+            i.next().saveLeadsheet(out, metre);
+          }
+      }
+    else
+      {
+        while( i.hasNext() )
+          {
+            i.next().saveLeadsheet(out, metre);
+          }
+      }
+  }
     
     /**
      * Returns a PartIterator pointing to the start of the Part that

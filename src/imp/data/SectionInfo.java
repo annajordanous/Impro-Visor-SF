@@ -197,11 +197,12 @@ public class SectionInfo implements Constants, Serializable {
     
     public Style getStyleFromSlots(int n) {        
         ListIterator<SectionRecord> k = records.listIterator();
-        Style s = null;
+        SectionRecord record = k.next();
+        Style s = record.getStyle();
         
         while( k.hasNext() )
           {
-            SectionRecord record = k.next();
+            record = k.next();
             int index = record.getIndex();
             if( index == n )
               {
@@ -220,7 +221,7 @@ public class SectionInfo implements Constants, Serializable {
     
         public SectionRecord getSectionRecord(int n) {        
         ListIterator<SectionRecord> k = records.listIterator();
-        SectionRecord s = null;
+        SectionRecord s = k.next();
         
         while( k.hasNext() )
           {
