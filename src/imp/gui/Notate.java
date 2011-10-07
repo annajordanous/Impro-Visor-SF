@@ -14193,7 +14193,11 @@ private boolean saveMetre()
 
     if( sectionInfo != null )
       {
-      styleList.setSelectedValue(sectionInfo.getStyle(0), true);
+      Style style = sectionInfo.getStyle(0);
+      if( style != null )
+        {
+        styleList.setSelectedValue(style, true);
+        }
       }
 
     sectionListModel.reset();

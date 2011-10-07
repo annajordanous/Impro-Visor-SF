@@ -1173,21 +1173,8 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
               {
                 if( nextSectionIndex != null )
                   {
-                    SectionRecord record = sectionInfo.getSectionRecord(nextSectionIndex);
-                    Style s = sectionInfo.getStyleFromSlots(nextSectionIndex);
-                    if( record.getIsPhrase() )
-                      {
-                        out.newLine();
-                        out.write("(phrase (style " + s + ")) ");
-                        out.newLine();
-                      }
-                    else
-                      {
-                        out.newLine();
-                        out.write("(section (style " + s + ")) ");
-                        out.newLine();
-                        out.newLine();
-                      }
+                    saveSectionInfo(out, sectionInfo, nextSectionIndex);
+
                     nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
                   }
 
@@ -1202,6 +1189,25 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
           {
             i.next().saveLeadsheet(out, metre);
           }
+      }
+  }
+
+private void saveSectionInfo(BufferedWriter out, SectionInfo sectionInfo, int index) throws IOException
+  {
+    SectionRecord record = sectionInfo.getSectionRecord(index);
+    Style s = sectionInfo.getStyleFromSlots(index);
+    if( record.getIsPhrase() )
+      {
+        out.newLine();
+        out.write("(phrase (style " + s + ")) ");
+        out.newLine();
+      }
+    else
+      {
+        out.newLine();
+        out.write("(section (style " + s + ")) ");
+        out.newLine();
+        out.newLine();
       }
   }
     

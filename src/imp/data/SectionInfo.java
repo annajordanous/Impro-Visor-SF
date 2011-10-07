@@ -268,6 +268,10 @@ public class SectionInfo implements Constants, Serializable {
     }
 
     public Style getStyle(int n) {
+        if( records == null)
+          {
+            return null;
+          }
         return records.get(n).getStyle();
     }
 
