@@ -1155,9 +1155,46 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
 
     PartIterator i = iterator();
 
-    if( this instanceof ChordPart )
+    // Should be refactored into separate methods for each derived class
+    
+    if( this instanceof MelodyPart )
+        {
+        while( i.hasNext() )
+          {
+            i.next().saveLeadsheet(out, metre);
+          }
+      }
+   else
       {
         SectionInfo sectionInfo = ((ChordPart) this).getSectionInfo();
+        
+        Iterator<SectionRecord> sec = sectionInfo.iterator();
+        
+        SectionRecord record = sec.next();
+        
+        boolean lastSection = !sec.hasNext();
+        
+        do
+          {
+            saveSectionInfo(out, record);
+            
+            if( sec.hasNext() )
+              {
+              record = sec.next();
+              }
+            else
+              {
+                lastSection = true;
+              }
+            
+            while( i.hasNext() && (lastSection || i.nextIndex() <= record.getIndex()) )
+              {
+                i.next().saveLeadsheet(out, metre);
+              }
+          }
+        while( !lastSection );
+        
+        /*
 
         Integer nextSectionIndex = 0;
 
@@ -1167,30 +1204,61 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
           {
             int nextIndex = i.nextIndex();
 
-            System.out.println("nextIndex = " + nextIndex);
+            System.out.println("nextIndex = " + nextIndex + ", nextSectionIndex = " + nextSectionIndex);
+            
+            Chord chord = ((Chord)i.next()).copy();
 
-            if( nextIndex >= nextSectionIndex )
+            if( nextSectionIndex != null )
               {
-                if( nextSectionIndex != null )
+                if( nextIndex >= nextSectionIndex )
                   {
-                    saveSectionInfo(out, sectionInfo, nextSectionIndex);
+                    if( nextIndex == nextSectionIndex )
+                      {
+                      saveSectionInfo(out, sectionInfo, nextSectionIndex);
 
-                    nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
+                      nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
+                      }
+                    else // nextIndex > nextSectionIndex, i.e. chord goes beyond section
+                      {
+                      int difference = nextIndex - nextSectionIndex;
+                      
+                      chord.setRhythmValue(difference);
+                      System.out.println("revised Chord = " + chord);
+                      
+                      saveSectionInfo(out, sectionInfo, nextSectionIndex);
+
+                      nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
+                      }
                   }
-
               }
 
-            i.next().saveLeadsheet(out, metre);
+            chord.saveLeadsheet(out, metre);
           }
+         
+         */
+      }
+  }
+
+
+private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IOException
+  {
+     Style s = record.getStyle();
+    
+    if( record.getIsPhrase() )
+      {
+        out.newLine();
+        out.write("(phrase (style " + s + ")) ");
+        out.newLine();
       }
     else
       {
-        while( i.hasNext() )
-          {
-            i.next().saveLeadsheet(out, metre);
-          }
+        out.newLine();
+        out.write("(section (style " + s + ")) ");
+        out.newLine();
+        out.newLine();
       }
   }
+
 
 private void saveSectionInfo(BufferedWriter out, SectionInfo sectionInfo, int index) throws IOException
   {
