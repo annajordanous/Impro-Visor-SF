@@ -1174,8 +1174,16 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
         
         boolean lastSection = !sec.hasNext();
         
-        do
+        Chord residualChord = null;
+        
+        int slot = 0;
+        
+        int slotLimit = size();
+        
+        do // do-while
           {
+            System.out.println("record = " + record);
+            
             saveSectionInfo(out, record);
             
             if( sec.hasNext() )
@@ -1184,58 +1192,31 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
               }
             else
               {
-                lastSection = true;
+              lastSection = true;
               }
             
-            while( i.hasNext() && (lastSection || i.nextIndex() <= record.getIndex()) )
-              {
-                i.next().saveLeadsheet(out, metre);
-              }
-          }
-        while( !lastSection );
-        
-        /*
-
-        Integer nextSectionIndex = 0;
-
-        System.out.println("sectionInfo = " + sectionInfo);
-
-        while( i.hasNext() )
-          {
-            int nextIndex = i.nextIndex();
-
-            System.out.println("nextIndex = " + nextIndex + ", nextSectionIndex = " + nextSectionIndex);
+            int nextSectionStart = lastSection? slotLimit : record.getIndex();
             
-            Chord chord = ((Chord)i.next()).copy();
-
-            if( nextSectionIndex != null )
+            System.out.println("next section start = " + nextSectionStart);
+            
+            while( i.hasNext() && (lastSection || slot < nextSectionStart) ) 
               {
-                if( nextIndex >= nextSectionIndex )
+                Chord chord = ((Chord)i.next()).copy();
+                
+                int nextSlot = slot + chord.getRhythmValue();
+                
+                if( nextSlot <= nextSectionStart )
                   {
-                    if( nextIndex == nextSectionIndex )
-                      {
-                      saveSectionInfo(out, sectionInfo, nextSectionIndex);
-
-                      nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
-                      }
-                    else // nextIndex > nextSectionIndex, i.e. chord goes beyond section
-                      {
-                      int difference = nextIndex - nextSectionIndex;
-                      
-                      chord.setRhythmValue(difference);
-                      System.out.println("revised Chord = " + chord);
-                      
-                      saveSectionInfo(out, sectionInfo, nextSectionIndex);
-
-                      nextSectionIndex = sectionInfo.getNextSectionIndex(nextSectionIndex);
-                      }
+                  chord.saveLeadsheet(out, metre);
                   }
+                else
+                  {
+                    System.out.println("overflow at slot " + slot + " " + chord);
+                  }
+                slot = nextSlot;
               }
-
-            chord.saveLeadsheet(out, metre);
           }
-         
-         */
+        while( slot < slotLimit ); // end of do-while
       }
   }
 
@@ -1253,6 +1234,7 @@ private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IO
     else
       {
         out.newLine();
+        out.newLine();
         out.write("(section (style " + s + ")) ");
         out.newLine();
         out.newLine();
@@ -1260,25 +1242,7 @@ private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IO
   }
 
 
-private void saveSectionInfo(BufferedWriter out, SectionInfo sectionInfo, int index) throws IOException
-  {
-    SectionRecord record = sectionInfo.getSectionRecord(index);
-    Style s = sectionInfo.getStyleFromSlots(index);
-    if( record.getIsPhrase() )
-      {
-        out.newLine();
-        out.write("(phrase (style " + s + ")) ");
-        out.newLine();
-      }
-    else
-      {
-        out.newLine();
-        out.write("(section (style " + s + ")) ");
-        out.newLine();
-        out.newLine();
-      }
-  }
-    
+  
     /**
      * Returns a PartIterator pointing to the start of the Part that
      * can iterate over the entire Part
