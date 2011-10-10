@@ -214,8 +214,6 @@ public class StyleEditor
     this.parent = p;
     this.cm = cm;
 
-    ImageIcon violaStyle = new ImageIcon("src/imp/gui/graphics/icons/viola.gif");
-    this.setIconImage(violaStyle.getImage());
     this.setTitle("Style Editor: New Style");
 
     initComponents();

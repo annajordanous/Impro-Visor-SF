@@ -6,7 +6,7 @@
 (meter 6 8)
 (key -2)
 (tempo 142.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -33,6 +33,7 @@
     (volume 65)
     (key -2)
 )
+
 
 (section (style african3)) 
 

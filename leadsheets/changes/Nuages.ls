@@ -39,9 +39,11 @@ Bbm7 Eb7 | Am7b5 D7b9 | GM7 Am7 | Bm7 |
 Bbm7 Eb7 | Am7b5 D7b9 | GM7 | / | 
 F#m7b5 | B7 | Em7 | / | 
 
+
 (section (style swing)) 
 
 A7 | / | Am7 | D7 | 
+
 
 (section (style swing)) 
 

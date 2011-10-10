@@ -34,20 +34,24 @@
     (key 0)
 )
 
+
 (section (style waltz)) 
 
 Bbm7 | Eb7 | AbM7 | F7 | 
 Bbm7 | Eb7 | AbM7 | / | 
+
 
 (section (style waltz)) 
 
 Dm7 | G7 | CM7 | Am7 | 
 Dm7 | G7 | CM7 | / | 
 
+
 (section (style waltz)) 
 
 F#m7 | B7 | EM7 | / | 
 Bbm7 | Eb7 | Cm7 | F7 | 
+
 
 (section (style waltz)) 
 

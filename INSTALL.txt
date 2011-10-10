@@ -1,8 +1,8 @@
-Installing Impro-Visor Version 4 from source:
+Building Impro-Visor Version 5.xx from source:
 
 You will need to have installed already:
 
-    Java Virtual Machine (jvm) version 1.5 or later
+    Java Virtual Machine (jvm) version 1.6 or later
 
     Apache ant
 

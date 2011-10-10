@@ -37,12 +37,14 @@
 (phrase (style latin)) 
 EbM7 | / | Ebm7 | / | 
 
+
 (section (style latin)) 
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
 (phrase (style swing)) 
 Fm7 | Bb7 | EbM7 | / | 
+
 
 (section (style swing)) 
 
@@ -51,12 +53,14 @@ Abm7 | Db7 | GbM7 | Fm7 Bb7 |
 (phrase (style latin)) 
 EbM7 | / | Ebm7 | / | 
 
+
 (section (style latin)) 
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
 (phrase (style swing)) 
 Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
+
 
 (section (style swing)) 
 

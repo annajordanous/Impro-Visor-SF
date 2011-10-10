@@ -6,8 +6,9 @@
 (meter 4 4)
 (key 0)
 (tempo 198.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
@@ -33,20 +34,24 @@
     (key 0)
 )
 
+
 (section (style pedal-bass-3)) 
 
 Am7/D | / | Am7/D | / | 
 DM7 | / | DM7 | / | 
 
+
 (section (style swing)) 
 
 Am7 D7 | G F7 | BbM7 | / | 
 Em7 | / | 
+
 (section (style pedal-bass-3)) 
 
 Am7/D | / | 
 Am7/D | / | DM7 | / | 
 DM7 | / | 
+
 (section (style swing)) 
 
 Am7 D7 | G F7 | 
@@ -56,10 +61,12 @@ Gm7 | / | C7 | / |
 Fm7 | / | Bb7b9 | / | 
 Eb | / | Am7 | D7 | 
 
+
 (section (style pedal-bass-3)) 
 
 Am7/D | / | Am7/D | / | 
 DM7 | / | DM7 | / | 
+
 
 (section (style swing)) 
 

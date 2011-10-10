@@ -34,20 +34,24 @@
     (key -1)
 )
 
+
 (section (style swing)) 
 
 FM7 | Em7b5 A7 | Dm7 G7 | Cm7 F7 | 
 Bb7_ | Am7 D7 | G7 | C7 | 
+
 
 (section (style swing)) 
 
 FM7 | Em7b5 A7 | Dm7 G7 | Cm7 F7 | 
 Bb7_ | Am7 D7 | Gm7 C7 | FM7 | 
 
+
 (section (style swing)) 
 
 Cm7 | F7 | BbM7 | / | 
 Ebm7 | Ab7 | DbM7 | Gm7 C7 | 
+
 
 (section (style swing)) 
 

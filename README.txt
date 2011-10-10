@@ -60,8 +60,8 @@ Stephen Jones, Aaron Wolin
 David Morrison, Martin Hunt, Steven Gomez
 Jim Herold, Brandy McMenamy, Sayuri Soejima
 Emma Carlson, Jon Gillick, Kevin Tang, Stephen Lee
-Chad Waters, John Goodman, Lasconic, Amos Byon,
-Zack Merritt, Xanda Schofield, August Toman-Yih
+Chad Waters, John Goodman, Lasconic, Ryan Wieghard,
+Amos Byon, Zack Merritt, Xanda Schofield, August Toman-Yih
 
 We hope you enjoy using the program. 
 

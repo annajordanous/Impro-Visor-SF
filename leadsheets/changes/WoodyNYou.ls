@@ -34,10 +34,12 @@
     (key 0)
 )
 
+
 (section (style swing)) 
 
 Gm7b5 | C7#9 | Fm7b5 | Bb7#9 | 
 Ebm7b5 | Ab7#9 | DbM7 | / | 
+
 
 (section (style swing)) 
 
@@ -47,9 +49,11 @@ Ebm7b5 | Ab7#9 | DbM7 | / |
 (phrase (style swing)) 
 Abm7 Db7 | Abm7 Db7 | Abm7 Db7 | GbM7 | 
 
+
 (section (style swing)) 
 
 Bbm7 Eb7 | Bbm7 Eb7 | Bbm7 Eb7 | AbM7 | 
+
 
 (section (style swing)) 
 

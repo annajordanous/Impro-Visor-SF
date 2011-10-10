@@ -37,9 +37,11 @@
 (phrase (style ballad)) 
 CM7 A7 | Dm7 G7 | Bm7 E7 Bbm7 Eb7 | Am7 D7 Abm7 Db7 | 
 
+
 (section (style ballad)) 
 
 CM7 A7 | Dm7 G7 | Bb7 A7 | Ab7 G7 | 
+
 
 (section (style ballad)) 
 

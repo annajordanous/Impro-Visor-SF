@@ -6,7 +6,7 @@
 (meter 7 4)
 (key -1)
 (tempo 160.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -33,6 +33,7 @@
     (volume 65)
     (key -1)
 )
+
 
 (section (style soul-surge)) 
 

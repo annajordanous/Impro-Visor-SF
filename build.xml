@@ -1,7 +1,7 @@
 <project name="Impro-Visor" default="compile" basedir=".">
 
 <description>
-Build-file for Impro-Visor 5.04
+Build-file for Impro-Visor 5.05
 
 Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
 
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor504"            />
-    <property name="dist-mac"               value="improvisor504-mac"        />
-    <property name="dist-win"               value="improvisor504-win"        />
-    <property name="zipName"                value="improvisor504.zip"        />
-    <property name="zipMacName"             value="improvisor504mac.zip"     />
+    <property name="distDir"                value="improvisor505"            />
+    <property name="dist-mac"               value="improvisor505-mac"        />
+    <property name="dist-win"               value="improvisor505-win"        />
+    <property name="zipName"                value="improvisor505.zip"        />
+    <property name="zipMacName"             value="improvisor505mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
@@ -300,7 +300,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="zipSrc" depends="cleanSrc" description="zips up the source">
-    <zip destfile="improvisor504-src.zip" basedir="${srcDir}" />
+    <zip destfile="improvisor505-src.zip" basedir="${srcDir}" />
 </target>
 
 <target name="cleanJavadoc" depends="init" description="">
@@ -329,7 +329,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="cleanZipSrc" depends="init" description="removes zipSrc file">
-   <delete file="improvisor504-src.zip" />
+   <delete file="improvisor505-src.zip" />
 </target>
 
 <target name="clean" depends="cleanBuild,cleanTest,cleanDist,cleanZip,cleanSrc,cleanZipSrc,cleanJavadoc" 

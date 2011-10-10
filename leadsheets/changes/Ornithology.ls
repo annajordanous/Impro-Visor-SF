@@ -37,12 +37,14 @@
 (phrase (style swing)) 
 GM7 | / | Gm7 | C7 | 
 FM7 | / | 
+
 (section (style swing)) 
 
 Fm7 | Bb7 | 
 
 (phrase (style swing)) 
 EbM7 | Am7b5 D7 | Gm7 | / | 
+
 
 (section (style swing)) 
 
@@ -51,12 +53,14 @@ Bm7b5 | E7b9 | Am7 | D7b9 |
 (phrase (style swing)) 
 GM7 | / | Gm7 | C7 | 
 FM7 | / | 
+
 (section (style swing)) 
 
 Fm7 | Bb7 | 
 
 (phrase (style swing)) 
 EbM7 | Am7b5 D7 | GM7 | Cm7 F7 | 
+
 
 (section (style swing)) 
 

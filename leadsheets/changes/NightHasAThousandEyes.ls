@@ -34,20 +34,24 @@
     (key 1)
 )
 
+
 (section (style latin-pedal-bass-1)) 
 
 GM9 | / | Am7/G | / | 
 GM9 | / | Am7/G | / | 
+
 
 (section (style swing)) 
 
 Dm9 | G13b9 | CM9 | F13#11 | 
 Bm9 Bbo7 | Am9 D13b9 | GM9 | / | 
 
+
 (section (style latin-pedal-bass-1)) 
 
 GM9 | / | Am7/G | / | 
 GM9 | / | Am7/G | / | 
+
 
 (section (style swing)) 
 

@@ -37,12 +37,14 @@
 (phrase (style swing)) 
 CM7 | / | Fm7 | Bb7 | 
 
+
 (section (style swing)) 
 
 CM7 | / | Bbm7 | Eb7 | 
 
 (phrase (style swing)) 
 AbM7 | / | Am7 | D7 | 
+
 
 (section (style swing)) 
 

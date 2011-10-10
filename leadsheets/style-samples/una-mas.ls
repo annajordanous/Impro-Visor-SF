@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 0)
 (tempo 160.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -34,10 +34,12 @@
     (key 0)
 )
 
+
 (section (style una-mas)) 
 
 F7#5#9 | Bb13b9 | F7#5#9 | Bb13b9 | 
 Bb7#5#9 | Eb13b9 | Bb7#5#9 | Eb13b9 | 
+
 
 (section (style latin)) 
 

@@ -6,8 +6,9 @@
 (meter 5 4)
 (key -6)
 (tempo 160.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
@@ -32,6 +33,7 @@
     (volume 65)
     (key -6)
 )
+
 
 (section (style take-five)) 
 

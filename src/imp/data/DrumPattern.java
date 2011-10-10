@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,6 +139,8 @@ public class DrumPattern extends Pattern implements Constants, Serializable {
 
     /**
      * Adds rules and durations for a drum to this DrumPattern.
+     * Note that there should only be one rule for a given instrument in a pattern.
+     * Hence we will check this and replace any previous rule with the new one
      * @param drum      a Long specifying the MIDI number for the drum
      * @param rules     a Polylist of the rules for this drum
      * @param durations a Polylist of durations for this drum
@@ -146,8 +148,27 @@ public class DrumPattern extends Pattern implements Constants, Serializable {
      * @param ruleAsList the rule in Polylist form, for use in StyleEditorTableModel
      */
     private void addRule(Long drum, Polylist rules, Polylist durations, Long volume, Polylist ruleAsList) {
-        drums = drums.cons(Polylist.list(drum,rules,durations,volume, ruleAsList));
+        Polylist ruleToAdd = Polylist.list(drum, rules, durations, volume, ruleAsList);
+        drums = addRule(drum, ruleToAdd, drums);
+        //System.out.println("drums = " + drums);
     }
+    
+    private Polylist addRule(Long drum, Polylist ruleToAdd, Polylist drums)
+      {
+        if( drums.isEmpty() )
+          {
+            return Polylist.list(ruleToAdd);
+          }
+        
+        Polylist firstRule = (Polylist)drums.first();
+        
+        if( firstRule.first().equals(drum) )
+          {
+            return drums.rest().cons(ruleToAdd);
+          }
+        
+        return addRule(drum, ruleToAdd, drums.rest()).cons(drums.first());
+      }
     
     public Polylist getDrums() {
         return drums;

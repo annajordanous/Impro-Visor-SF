@@ -34,17 +34,21 @@
     (key 0)
 )
 
+
 (section (style swing)) 
 
 BM7 D9 | GM7 Bb9 | EbM7 | Am9 D9 | 
+
 
 (section (style swing)) 
 
 GM7 Bb9 | EbM7 F#9 | BM7 | Fm9 Bb9 | 
 
+
 (section (style swing)) 
 
 EbM9 | Am9 D9 | GM7 | C#m7 F#9 | 
+
 
 (section (style swing)) 
 

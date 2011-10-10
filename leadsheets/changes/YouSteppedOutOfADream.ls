@@ -34,6 +34,7 @@
     (key 0)
 )
 
+
 (section (style latin-enhanced)) 
 
 CM7 | / | DbM7 | / | 
@@ -42,9 +43,11 @@ Bbm7 | Eb7 | AbM7 | / |
 (phrase (style latin-enhanced)) 
 Gm7 | C7 | FM7 | / | 
 
+
 (section (style latin-enhanced)) 
 
 Am7 | D7 | Ebm7 Ab7 | Dm7 G7 | 
+
 
 (section (style latin-enhanced)) 
 

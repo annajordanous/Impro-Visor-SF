@@ -336,9 +336,19 @@ public class DrumPatternDisplay
     
     /**
      * Adds rule to the correct pane and updates pertinent information.
+     * Need to make sure there is only one rule for a given instrument.
      **/
     public void addRule(DrumRuleDisplay rule) {
         if(rule != null) {
+            int instrumentNumber = rule.getInstrumentNumber();
+            for( DrumRuleDisplay d: rules )
+              {
+                if( d.getInstrumentNumber() == instrumentNumber )
+                  {
+                    rules.remove(d);
+                    break;
+                  }
+              }
             rules.add(rule);
             drumRuleHolder.add(rule);
             drumRuleHolder.updateUI();

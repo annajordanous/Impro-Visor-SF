@@ -37,12 +37,14 @@
 (phrase (style latin)) 
 GM7 | Bb7 | EbM7 | AbM7 | 
 
+
 (section (style latin)) 
 
 Am7 | D7 | GM7 | Dm7 G7 | 
 
 (phrase (style latin)) 
 Cm7 | F7 | BbM7 | EbM7 | 
+
 
 (section (style latin)) 
 
@@ -54,6 +56,7 @@ Am7 | D7 | GM7 | Dm7 G7 |
 
 (phrase (style latin)) 
 CM7 | 
+
 (section (style latin)) 
 
 Am7 D7 | Bm7 | Bbo | 
