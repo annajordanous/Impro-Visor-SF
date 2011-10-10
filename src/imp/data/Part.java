@@ -843,6 +843,9 @@ public class Part implements Constants, Serializable {
 
         for(int i = 0; i+beatValue-1 < size; i += beatValue) {
             Style s = sectionInfo.getStyleFromSlots(i);
+            
+            //System.out.println("i = " + i + ", style = " + s );
+            
             double swingValue = s == null ? DEFAULT_SWING : s.getSwing();
 
             // FIX: Notice the problem here when i < size, the original condition, is used.
@@ -1180,43 +1183,79 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
         
         int slotLimit = size();
         
+        int nextSectionStart = slotLimit;
+        
+        //iSystem.out.println("slotLimit = " + slotLimit);
+        
+        Chord chord = null;
+        
+        int sectionsToGo = sectionInfo.size();
+        
         do // do-while
           {
-            System.out.println("record = " + record);
+            //System.out.println("\nrecord = " + record);
             
+            // Save the section record
             saveSectionInfo(out, record);
             
+            // Get the next section record, if any.
             if( sec.hasNext() )
               {
               record = sec.next();
+              nextSectionStart = record.getIndex();
               }
             else
               {
-              lastSection = true;
+              nextSectionStart = slotLimit;
               }
             
-            int nextSectionStart = lastSection? slotLimit : record.getIndex();
+            //System.out.println("next section start = " + nextSectionStart);
             
-            System.out.println("next section start = " + nextSectionStart);
+            // Pack Chords into section
             
-            while( i.hasNext() && (lastSection || slot < nextSectionStart) ) 
+            while( (chord != null || i.hasNext()) && slot < nextSectionStart ) 
               {
-                Chord chord = ((Chord)i.next()).copy();
+                if( chord == null )
+                  {
+                    // Get the next chord
+                    chord = ((Chord)i.next()).copy();
+                  }
+                // Otherwise use the residue of previous chord
                 
+                // Where the next slot would normally be
                 int nextSlot = slot + chord.getRhythmValue();
                 
                 if( nextSlot <= nextSectionStart )
                   {
+                  // This chord fits in the current section.
+                    
                   chord.saveLeadsheet(out, metre);
+                  chord = null;
+                  slot = nextSlot;
                   }
                 else
                   {
-                    System.out.println("overflow at slot " + slot + " " + chord);
+                    // This chord does not fit in the current section.
+                    // Calculate how much of this section can be used.
+                    int available = nextSectionStart - slot;
+                    chord.setRhythmValue(available);
+                    chord.saveLeadsheet(out, metre);
+                    
+                    // Determine what is left over.
+                    int residual = nextSlot - nextSectionStart;
+                    chord.setRhythmValue(residual);
+
+                    //System.out.println("overflow at slot " + slot + ", next section start = " + nextSectionStart + " " + chord + ", residual = " + residual);
+                    
+                    // This should force the end of this while, among other things
+                    
+                    slot = nextSectionStart;
                   }
-                slot = nextSlot;
+                
               }
+          sectionsToGo--;
           }
-        while( slot < slotLimit ); // end of do-while
+        while( sectionsToGo > 0 ); // end of do-while
       }
   }
 

@@ -347,6 +347,15 @@
           (chord C7 1))
 
 
+// MajorOrDom is a chord that is either major or dominant on a given root
+
+(defbrick MajorOrDom(major) Major Invisible C
+          (chord C 1))
+
+(defbrick MajorOrDom(dom) Dominant Invisible C
+          (chord C7 1))
+
+
 // DomOrMinor is a minor, minor 7, or dominant on a given root on degree V of the key.
 
 (defbrick DomOrMinor(minor) Dominant Invisible C
@@ -1068,7 +1077,7 @@
 // To get back from IV:
 
 (defbrick IV-n-Back Major Cadence C
-          (brick TonicOrDom F 1)
+          (brick MajorOrDom F 1)
           (chord F#o          1)
           (chord C            1))
 
@@ -1082,7 +1091,7 @@
 // To get back from IV via Yardbird:
 
 (defbrick IV-n-Yak Major Cadence C
-          (brick TonicOrDom  F 1)
+          (brick MajorOrDom  F 1)
           (brick GenDom      Eb 1)
           (brick Major-On    C 1))
 
@@ -1618,22 +1627,22 @@
 
 // Rainbow
 
-(defbrick Rainbow-Cadence(var 1) Major Cadence C
+(defbrick Rainbow-Cadence(var 1) Major Cadence G
           (chord G  1)
           (chord Bm 1)
           (chord C  1))
 
-(defbrick Rainbow-Cadence(var 2) Dominant Cadence C
+(defbrick Rainbow-Cadence(var 2) Dominant Cadence G
           (chord G/B 1)
           (chord B+ 1)
           (chord C7#11 1))
 
-(defbrick Rainbow-Cadence(var 3) Major Cadence C
+(defbrick Rainbow-Cadence(var 3) Major Cadence G
           (brick Major-On G 1)
           (chord B+ 1)
           (brick Major-On C 1))
 
-(defbrick Rainbow-Cadence(var 4) Major Cadence C
+(defbrick Rainbow-Cadence(var 4) Major Cadence G
           (chord G 1)
           (chord B7 1)
           (chord C 1))
@@ -1838,11 +1847,11 @@
 // "Spring" (opposite of "Autumnal") stuff
 
 (defbrick Spring-Approach(simple) Major Approach C
-          (chord Bm7b5 1)
+          (brick GenII A 1)
           (brick Straight-Approach C 1))
 
 (defbrick Spring-Approach(extended) Major Approach C
-          (chord Bm7b5 1)
+          (brick GenII A 1)
           (chord E7 1)
           (brick Straight-Approach C 2))
 
@@ -2512,13 +2521,23 @@
 
 // Yardbird
 
-(defbrick Yardbird-Approach(main) Major Approach C
+(defbrick Yardbird-Approach Major Approach C
           (chord Fm7 1)
           (chord Bb7 1))
 
+(defbrick Yardbird-Cadence(main) Major Cadence C
+          (brick Yardbird-Approach C 1)
+          (chord C 1))
+
+(defbrick Yardbird-Cadence(var) Major Cadence C
+          (chord Bb7 1)
+          (chord C 1))
+
+/*
 (defbrick Yardbird-Cadence Major Cadence C
           (brick GenDom Eb 1)
           (chord C 1))
+*/
 
 (defbrick Yardbird-Sub-Cadence Major Cadence C
           (chord Dm7 1)
@@ -2847,3 +2866,22 @@
           (brick Major-On C 1))
 
 // User-defined bricks
+
+(defbrick Diatonic-I-ii-iii Minor Approach G
+        (brick Major-On G 1)
+        (brick On-Off-Minor-Somewhere A 2))
+
+(defbrick Diatonic-I-ii-iii-vi Major Approach G
+        (chord GM7 1)
+        (chord Am7 1)
+        (chord Bm7 1)
+        (chord Em7 1))
+
+
+(defbrick On-Off-to-bVII Major On-Off F
+        (brick Major-On F 1)
+        (brick MajorOrDom Eb 1))
+
+(defbrick On-Off-Twice-to-bVII Major On-Off F
+        (brick On-Off-to-bVII F 2)
+        (brick On-Off-to-bVII F 2))

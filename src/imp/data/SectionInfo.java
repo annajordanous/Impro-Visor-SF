@@ -195,52 +195,29 @@ public class SectionInfo implements Constants, Serializable {
         return Block.NO_END;
     }
     
-    public Style getStyleFromSlots(int n) {        
-        ListIterator<SectionRecord> k = records.listIterator();
-        SectionRecord record = k.next();
-        Style s = record.getStyle();
-        
-        while( k.hasNext() )
-          {
-            record = k.next();
-            int index = record.getIndex();
-            if( index == n )
-              {
-                s = record.getStyle();
-                break;
-              }
-            else if( index > n )
-              {
-                k.previous();
-                s = k.previous().getStyle();
-                break;
-              }
-          }
-        return s;
-    }
-    
-        public SectionRecord getSectionRecord(int n) {        
-        ListIterator<SectionRecord> k = records.listIterator();
-        SectionRecord s = k.next();
-        
-        while( k.hasNext() )
-          {
-            SectionRecord record = k.next();
-            int index = record.getIndex();
-            if( index == n )
-              {
-                s = record;
-                break;
-              }
-            else if( index > n )
-              {
-                k.previous();
-                s = record;
-                break;
-              }
-          }
-        return s;
-    }
+public Style getStyleFromSlots(int n)
+  {
+
+    return getSectionRecord(n).getStyle();
+
+  }
+
+public SectionRecord getSectionRecord(int n)
+  {
+    ListIterator<SectionRecord> k = records.listIterator();
+    SectionRecord s = k.next();
+    SectionRecord previous = s;
+    while( s.getIndex() <= n && k.hasNext() )
+      {
+        previous = s;
+        s = k.next();
+      }
+
+    s = s.getIndex() <= n ? s : previous;
+
+    //System.out.println("n = " + n + " using s = " + s);
+    return s;
+  }
 
     public SectionInfo extract(int first, int last, ChordPart chords) {
         SectionInfo si = new SectionInfo(chords);
@@ -268,7 +245,7 @@ public class SectionInfo implements Constants, Serializable {
     }
 
     public Style getStyle(int n) {
-        if( records == null)
+        if( records == null )
           {
             return null;
           }
