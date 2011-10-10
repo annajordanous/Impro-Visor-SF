@@ -1035,7 +1035,7 @@ public class StyleEditor
       out.close();
 
       setStatus("Style saved.");
-      this.setTitle("Style Editor: " + name + ".sty");
+      this.setTitle("Style Editor: " + name + styleExt);
       if( cm != null )
         {
         cm.changedSinceLastSave(false);

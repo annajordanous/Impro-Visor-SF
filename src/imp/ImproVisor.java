@@ -31,12 +31,12 @@ import imp.util.*;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.04
+ * @version 5.05
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.04";
+    public static final String version = "5.05";
     
     private static String lastLeadsheetFileStem = null;
     

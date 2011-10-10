@@ -576,8 +576,11 @@ public static boolean addOneRule(Object ob, int serial, boolean marked,
 public static void readStyles()
   {
 
-  File styleDir = new File(Preferences.getPreference(
-          Preferences.DEFAULT_STYLE_DIRECTORY));
+  File styleDir = ImproVisor.getStyleDirectory();
+  
+  //new File(Preferences.getPreference(
+  //   Preferences.DEFAULT_STYLE_DIRECTORY));
+  
   if( styleDir.canRead() )
     {
     File[] styleFiles = styleDir.listFiles();
