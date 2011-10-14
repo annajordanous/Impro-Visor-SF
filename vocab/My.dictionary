@@ -1,5 +1,5 @@
 /*
- * File: My.dictionary, version 1.1, Mon. Sept. 26, 2011
+ * File: My.dictionary, version 1.2,Wed. Oct. 12, 2011
  * This dictionary text file accompanies the Impro-Visor Application.
  *
  * Copyright (C) 2011 Robert Keller and Harvey Mudd College
@@ -577,13 +577,13 @@
           (brick GenII Bb 1))
 
 (defbrick Chromatic-Minor-Descending(3 steps) Minor Approach C
-          (brick GenII C 1)
-          (brick GenII B 1)
-          (brick GenII Bb 1))
+          (chord Dm7 1)
+          (chord Dbm7 1)
+          (chord Cm7 1))
 
 (defbrick Chromatic-Minor-Descending(4 steps) Minor Approach C
           (brick Chromatic-Minor-Descending(3 steps) C# 3)
-          (brick GenII Bb 1))
+          (chord Cm7 1))
 
 (defbrick Chromatically-Descending-Dominants(3 steps) Major Approach C
           (chord A7 1)
@@ -742,8 +742,8 @@
 
 
 (defbrick Dominant-Cycle(2 steps) Major Approach C
-          (chord D7 1)
-          (chord G7 1))
+          (brick Slow-Approach C 2))
+
 
 (defbrick Dominant-Cycle(3 steps) Major Approach C
           (chord A7 1)
@@ -1479,7 +1479,7 @@
           (brick Extended-Approach C 3))
 
 (defbrick Minor-POT(sad) Minor Turnaround C
-          (brick On-Off-Minor-VI C 2)
+          (chord Cm 2)
           (brick Sad-Approach C 2))
 
 (defbrick Minor-POT(altered dominant) Minor Turnaround C
@@ -1906,11 +1906,13 @@
           (brick Tritone-Approach D 2)
           (brick Straight-Approach C 2))
 
+/*
 (defbrick SPOT(chromatic) Major Turnaround C
           (chord Bb7 1)
           (chord A7 1)
           (chord Ab7 1)
           (chord G7 1))
+*/
 
 (defbrick SPOT(sideslip) Major Turnaround C
           (chord Em7 2)
@@ -2867,9 +2869,10 @@
 
 // User-defined bricks
 
-(defbrick Diatonic-I-ii-iii Minor Approach G
+(defbrick Diatonic-I-ii-iii Major Approach G
         (brick Major-On G 1)
-        (brick On-Off-Minor-Somewhere A 2))
+        (brick Minor-On A 1)
+        (brick Minor-On B 1))
 
 (defbrick Diatonic-I-ii-iii-vi Major Approach G
         (chord GM7 1)
@@ -2885,3 +2888,37 @@
 (defbrick On-Off-Twice-to-bVII Major On-Off F
         (brick On-Off-to-bVII F 2)
         (brick On-Off-to-bVII F 2))
+
+
+
+(defbrick To-IV-n-Back(blues) Major Cadence F
+        (chord F7_ 1)
+        (brick IV-n-Back(blues) F 2))
+
+(defbrick IV-n-Back(blues) Major Cadence F
+        (chord Bb7 1)
+        (chord Bo7 1)
+        (chord F7_ 1))
+
+(defbrick Diatonic-Walk-Down Major Cadence C
+        (chord Em7 1)
+        (chord Dm7 1)
+        (chord C   1))
+
+(defbrick Minor-ii-to-Minor-v Major Approach C
+        (brick On-Off-Minor-Somewhere D 3)
+        (brick Off-On-Minor-VII A 3)
+        (brick Minor-On G 2))
+
+(defbrick To-IV-+-Bird-Approach Major Approach Bb
+        (chord Bb 1)
+        (chord Bb7 1)
+        (chord Eb 1)
+        (chord Ab7 1))
+
+
+
+
+(defbrick Tune-Up-Cadence Major Approach C
+        (brick Minor-On E 1)
+        (brick Perfect-Cadence Bb 3))

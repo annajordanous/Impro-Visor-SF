@@ -1,5 +1,5 @@
 (title Out of Nowhere)
-(composer Johnny Green)
+(composer )
 (show )
 (year )
 (comments )
@@ -9,10 +9,10 @@
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -61,16 +61,18 @@ GM7 | / | Bm7 | E7 |
 (phrase (style swing)) 
 Am7 | E7 | Am7 | F7#11 | 
 
+(phrase (style swing)) 
+Bm7 Bbo | Am7 D7 | GM7 | 
 
 (section (style swing)) 
 
-Bm7 Bbo | Am7 D7 | GM7 | Am7 D7 | 
+Am7 D7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)

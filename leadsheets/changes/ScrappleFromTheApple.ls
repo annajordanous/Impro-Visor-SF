@@ -1,5 +1,5 @@
 (title Scrapple from the Apple)
-(composer Charlie Parker)
+(composer )
 (show )
 (year )
 (comments )

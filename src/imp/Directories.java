@@ -81,4 +81,13 @@ public static String styleExtractDirName = "styleExtract";
  */
 public static String leadsheetDirName = "leadsheets";
 
+/**
+ * Name of the error log file.
+ */
+
+static String errorLogFilename = "Impro-Visor-ErrorLog.txt";
+
+
 }
+
+

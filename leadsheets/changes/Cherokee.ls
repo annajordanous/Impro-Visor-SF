@@ -1,10 +1,10 @@
 (title Cherokee)
-(composer Ray Noble)
+(composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key -1)
+(key 0)
 (tempo 220.0)
 (volume 80)
 (playback-transpose 0)
@@ -12,7 +12,7 @@
 (bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -31,18 +31,14 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -1)
+    (key 0)
 )
 
 
 (section (style swing)) 
 
 BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7#11 | / | 
-
-
-(section (style swing)) 
-
+EbM7 | / | Ab7 | / | 
 BbM7 | / | C7#11 | / | 
 Cm7 | G7 | Cm7 | F7+ | 
 
@@ -50,11 +46,7 @@ Cm7 | G7 | Cm7 | F7+ |
 (section (style swing)) 
 
 BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7#11 | / | 
-
-
-(section (style swing)) 
-
+EbM7 | / | Ab7 | / | 
 BbM7 | / | C7#11 | / | 
 Cm7 | F7 | BbM7 | / | 
 
@@ -74,11 +66,7 @@ Gm7 | C7 | Cm7 | F7+ |
 (section (style swing)) 
 
 BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7#11 | / | 
-
-
-(section (style swing)) 
-
+EbM7 | / | Ab7 | / | 
 BbM7 | / | C7#11 | / | 
 Cm7 | F7 | BbM7 | Cm7 F7 | 
 
@@ -86,11 +74,9 @@ Cm7 | F7 | BbM7 | Cm7 F7 |
     (type melody)
     (title )
     (composer )
-    (instrument 73)
+    (instrument 11)
     (volume 85)
-    (key -1)
+    (key 0)
     (stave treble)
 )
- d1
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

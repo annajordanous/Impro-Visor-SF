@@ -1,5 +1,5 @@
 (title You Stepped out of a Dream)
-(composer Nacio Herb Brown)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,12 +10,12 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
-(style latin-enhanced
+(style latin
     (swing 0.55)
     (comp-swing 0.55)
     (bass-high g-)
@@ -34,26 +34,32 @@
     (key 0)
 )
 
-
-(section (style latin-enhanced)) 
-
+(phrase (style latin)) 
 CM7 | / | DbM7 | / | 
+
+
+(section (style latin)) 
+
 Bbm7 | Eb7 | AbM7 | / | 
 
-(phrase (style latin-enhanced)) 
+(phrase (style latin)) 
 Gm7 | C7 | FM7 | / | 
 
 
-(section (style latin-enhanced)) 
+(section (style latin)) 
 
 Am7 | D7 | Ebm7 Ab7 | Dm7 G7 | 
 
-
-(section (style latin-enhanced)) 
-
+(phrase (style latin)) 
 CM7 | / | DbM7 | / | 
+
+(phrase (style latin)) 
 Bbm7 | Eb7 | Gb7 | F7 | 
 Dm7b5 | G7 | CM7 | A7 | 
+
+
+(section (style latin)) 
+
 Dm7 | G7 | CM7 | Dm7 G7 | 
 
 (part

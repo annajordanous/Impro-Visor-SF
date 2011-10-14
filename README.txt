@@ -1,4 +1,4 @@
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.05,
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.06,
 from Prof. Bob Keller at Harvey Mudd College.
 
 If you need help, please post to the Yahoo! impro-visor user group:

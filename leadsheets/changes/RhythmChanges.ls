@@ -1,5 +1,5 @@
 (title I've Got Rhythm)
-(composer George Gershwin)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,9 +10,9 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -37,18 +37,22 @@
 (phrase (style swing)) 
 BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
+(phrase (style swing)) 
+BbM7 Bb7 | Eb Ab7 | 
 
 (section (style swing)) 
 
-BbM7 Bb7 | Eb Ab7 | Dm7 G7 | Cm7 F7 | 
+Dm7 G7 | Cm7 F7 | 
 
 (phrase (style swing)) 
 BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
+(phrase (style swing)) 
+BbM7 Bb7 | Eb Ab7 | 
 
 (section (style swing)) 
 
-BbM7 Bb7 | Eb Ab7 | BbM7 F7 | BbM7 | 
+BbM7 F7 | BbM7 | 
 
 
 (section (style swing)) 
@@ -59,10 +63,8 @@ Gm7 | C7 | Cm7 | F7 |
 (phrase (style swing)) 
 BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
-
-(section (style swing)) 
-
-BbM7 Bb7 | Eb Ab7 | BbM7 F7 | BbM7 / Cm7 F7 | 
+(phrase (style swing)) 
+BbM7 Bb7 | Eb Ab7 | BbM7 F7 | BbM7 | 
 
 (part
     (type melody)
@@ -73,6 +75,4 @@ BbM7 Bb7 | Eb Ab7 | BbM7 F7 | BbM7 / Cm7 F7 |
     (key 0)
     (stave treble)
 )
- r1+1
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

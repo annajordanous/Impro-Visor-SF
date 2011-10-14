@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,6 +22,7 @@ package imp.util;
 
 import java.io.*;
 import imp.gui.ErrorDialog;
+import imp.ImproVisor;
 
 /**
  * ErrorLog is intended as a singleton class.  It includes static
@@ -56,11 +56,6 @@ static String name[] =
   
 private static String tag = "*** ";
 
-/**
- * Name of the error log file.
- */
-
-static String logfilename = "ImpErrorLog.txt";
 
 /** 
  * severity: FATAL: 
@@ -193,7 +188,7 @@ public static String log(int severity, String message, boolean showDialog)
     {
     try
       {
-      errorStream = new PrintStream(new FileOutputStream(logfilename));
+      errorStream = new PrintStream(new FileOutputStream(ImproVisor.getErrorLogFile()));
       fileOpened = true;
       }
     catch( Exception e )

@@ -31,12 +31,12 @@ import imp.util.*;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.05
+ * @version 5.06
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.05";
+    public static final String version = "5.06";
     
     private static String lastLeadsheetFileStem = null;
     
@@ -508,6 +508,12 @@ public static void copyDir(String subDirName, File homeDir)
                            + subDirName + " to user directory.");
           }
       }
+  }
+
+
+public static File getErrorLogFile()
+  {
+  return new File(getUserDirectory(), Directories.errorLogFilename);
   }
 
 

@@ -1,5 +1,5 @@
 (title I'll Remember April)
-(composer Gene de Paul)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,9 +10,9 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style latin
@@ -41,19 +41,19 @@ GM7 | / | C7#11 | / |
 Gm | Gm+ | Gm6 | Gm+ | 
 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Am7b5 | D7 | Bm7b5 | E7 | 
 Am7 | D7 | GM7 | / | 
 
 
-(section (style swing)) 
+(section (style latin)) 
 
-Cm7 | F7 | Bb | Dm7 G7 | 
+Cm7 | F7 | Bb | Dm7 G7b9 | 
 Cm7 | F7 | BbM7 | / | 
 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Am7 | D7 | GM7 | / | 
 F#m7 | B7 | EM7 | Am7 D7 | 
@@ -64,11 +64,9 @@ F#m7 | B7 | EM7 | Am7 D7 |
 GM7 | / | C7#11 | / | 
 Gm | Gm+ | Gm6 | Gm+ | 
 
-
-(section (style swing)) 
-
+(phrase (style latin)) 
 Am7b5 | D7 | Bm7b5 | E7 | 
-Am7 | D7 | GM7 | Am7 D7 | 
+Am7 | D7 | GM7 | Am7 D7b9 | 
 
 (part
     (type melody)

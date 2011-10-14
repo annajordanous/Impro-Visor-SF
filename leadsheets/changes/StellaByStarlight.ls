@@ -1,5 +1,5 @@
 (title Stella by Starlight)
-(composer Victor Young)
+(composer )
 (show )
 (year )
 (comments )
@@ -10,9 +10,9 @@
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -44,11 +44,11 @@ Fm7 | Bb7 | EbM7 | Ab7#11 |
 
 (phrase (style swing)) 
 BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-
+FM7 | 
 
 (section (style swing)) 
 
-FM7 | Gm7 C7 | Am7b5 | D7#9 | 
+Gm7 C7 | Am7b5 | D7#9 | 
 
 (phrase (style swing)) 
 G7+ | / | Cm7 | / | 
