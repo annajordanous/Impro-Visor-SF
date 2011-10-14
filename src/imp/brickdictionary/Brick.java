@@ -819,7 +819,8 @@ public class Brick extends Block {
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
         long brickDur = this.getDuration();
         String brickType = this.getType();
-        System.err.println(brickName + " " + brickType + " " + brickKey 
+        ErrorLog.log(ErrorLog.WARNING, "Printing brick " 
+                + brickName + " " + brickType + " " + brickKey 
                 + " " + brickDur);
         
         ArrayList<Block> subBlockList = this.getSubBlocks();
@@ -837,7 +838,8 @@ public class Brick extends Block {
                 String currentBrickKeyString = 
                         BrickLibrary.keyNumToName(currentBrickKey);
                 long dur = currentBrick.getDuration();
-                System.err.println("\t" + currentBrickName + " " 
+                ErrorLog.log(ErrorLog.WARNING, "Printing brick "
+                        + currentBrickName + " " 
                         + currentBrickKeyString + " " + dur);
             }
             
@@ -846,7 +848,8 @@ public class Brick extends Block {
                 ChordBlock currentChord = (ChordBlock)currentBlock;
                 String currentChordName = currentChord.getName();
                 int currentDuration = currentChord.getDuration();
-                System.err.println("\t" + currentChordName + " " 
+                ErrorLog.log(ErrorLog.WARNING, "Printing Chord" 
+                        + currentChordName + " " 
                         + currentDuration);
             }
         }

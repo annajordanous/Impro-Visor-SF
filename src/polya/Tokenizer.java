@@ -1,7 +1,7 @@
 /**
  * Polya library: Implements Lisp-like structures in Java.
  *
- * Copyright (C) 2009 Robert Keller
+ * Copyright (C) 2009-2011 Robert Keller
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 package polya;
 
 import java.io.*;
+import imp.util.ErrorLog;
 	
 /**
   *  Tokenizer provides a tokenizer of the package polya.
@@ -74,22 +75,22 @@ public class Tokenizer extends StreamTokenizer
 
   public void exceptionHandler( Exception e )
     {
-    System.err.print("polya.Tokenizer caught ");
+    ErrorLog.log(ErrorLog.WARNING, "polya.Tokenizer caught ");
     if( e instanceof IOException )
       {
-      System.err.println("IOException " + e);
+      ErrorLog.log(ErrorLog.WARNING, "IOException " + e);
       } 
     else if( e instanceof eofException )
       {
-      System.err.println("eofException " + e);
+      ErrorLog.log(ErrorLog.WARNING, "eofException " + e);
       }
     else if( e instanceof NumberFormatException )
       {
-      System.err.println("NumberFormatException " + e);
+      ErrorLog.log(ErrorLog.WARNING, "NumberFormatException " + e);
       }
     else 
       {
-      System.err.println("exception " + e);
+      ErrorLog.log(ErrorLog.WARNING, "exception " + e);
       }
     }
 

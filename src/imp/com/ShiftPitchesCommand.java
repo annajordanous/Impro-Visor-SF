@@ -23,6 +23,7 @@ package imp.com;
 import imp.*;
 import imp.data.*;
 import imp.util.Trace;
+import imp.util.ErrorLog;
 
 /**
  * An undoable Command that can shift a contiguous set of pitches up or down
@@ -138,7 +139,7 @@ public class ShiftPitchesCommand implements Command, Constants {
             }
             
         } catch (Exception ex) {
-            System.err.println("*** Warning: shift pitches failed.");
+            ErrorLog.log(ErrorLog.WARNING, "*** Warning: shift pitches failed.");
         }
     }
     

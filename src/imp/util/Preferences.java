@@ -384,7 +384,7 @@ public static boolean getAlwaysUse(int index)
 
       if( needNewVocabDir )
         {
-        System.err.println("Creating new 'vocab' directory");
+        ErrorLog.log(ErrorLog.WARNING, "Creating new 'vocab' directory");
         newVocabDir.mkdir();
         }
       */
@@ -427,7 +427,7 @@ public static boolean getAlwaysUse(int index)
       }
     catch( Exception e )
       {
-      System.err.println("*** Error: Could not generate preferences file.");
+      ErrorLog.log(ErrorLog.WARNING, "*** Error: Could not generate preferences file.");
       }
     }
 

@@ -23,14 +23,10 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 package jm.music.data;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
+import imp.util.ErrorLog;
 import jm.JMC;
 /*
 import jm.audio.Instrument;
@@ -288,7 +284,7 @@ public class Score implements JMC, Cloneable, Serializable{
 	    try{
 	        vct.removeElement(vct.elementAt(partNumb));
 	    } catch (RuntimeException re){
-                System.err.println("The Part index to be deleted must be within the score.");
+                ErrorLog.log(ErrorLog.WARNING, "The Part index to be deleted must be within the score.");
             }
 	}
     

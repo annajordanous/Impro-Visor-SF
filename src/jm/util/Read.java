@@ -43,8 +43,9 @@ import jm.JMC;
 import jm.audio.io.AudioFileIn;
 import jm.util.XMLParser;
 
-
 import javax.swing.JOptionPane;
+
+import imp.util.ErrorLog;
 
 /**
  * Reads data files and stores the musical information in the supplied Score.
@@ -85,7 +86,7 @@ public class Read implements JMC{
     */ 
     public static void midi(Score s, String fileName) {
         if (s == null) {
-                System.err.println("jMusic Read.midi error: The score is not initialised! I'm doing it for you.");
+                ErrorLog.log(ErrorLog.WARNING, "jMusic Read.midi error: The score is not initialised! I'm doing it for you.");
                 s = new Score();
         }
         s.empty();
@@ -99,7 +100,7 @@ public class Read implements JMC{
                 //System.out.println("MIDI file '"+fileName+"' read into score '" +s.getTitle()+"' Tempo = " + s.getTempo());
                 //System.out.println("-------------------------------------------------------------");
         }catch(IOException e){
-                System.err.println(e);
+                ErrorLog.log(ErrorLog.WARNING, "" + e);
         }
     }
     
@@ -184,7 +185,7 @@ public class Read implements JMC{
     */ 
     public static void jm(Score s, String fileName) {        
         if (s == null) {
-                System.err.println("jMusic Read.jm error: The score is not initialised! I'm doing it for you.");
+                ErrorLog.log(ErrorLog.WARNING, "jMusic Read.jm error: The score is not initialised! I'm doing it for you.");
                 s = new Score();
         }
         s.empty();
@@ -195,11 +196,11 @@ public class Read implements JMC{
             try {
                     s.addPartList(((Score) ois.readObject()).getPartArray());
                     System.out.println("reading");
-            } catch (ClassNotFoundException e) {System.err.println(e);}
+            } catch (ClassNotFoundException e) {ErrorLog.log(ErrorLog.WARNING, "" + e);}
                 System.out.println("jm file '"+fileName+"' read into score '" +s.getTitle()+"'");
                 System.out.println("-------------------------------------------------------------");
             }catch(IOException e){
-            System.err.println(e);
+            ErrorLog.log(ErrorLog.WARNING, "" + e);
         }
     }
     
@@ -210,7 +211,7 @@ public class Read implements JMC{
     */ 
     public static void jm(Part p, String fileName) {  
       if (p == null) {
-            System.err.println("jMusic Read.jm error: The part is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.jm error: The part is not initialised! I'm doing it for you.");
             p = new Part();
         }
         p.empty();
@@ -227,7 +228,7 @@ public class Read implements JMC{
     */ 
     public static void jm(Phrase phr, String fileName) {
     	if (phr == null) {
-            System.err.println("jMusic Read.jm error: The phrase is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.jm error: The phrase is not initialised! I'm doing it for you.");
             phr = new Phrase();
         }
         phr.empty();
@@ -243,7 +244,7 @@ public class Read implements JMC{
     */ 
     public static void jm(CPhrase cphr, String fileName) {  
     	if (cphr == null) {
-            System.err.println("jMusic Read.jm error: The CPhrase is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.jm error: The CPhrase is not initialised! I'm doing it for you.");
             cphr = new CPhrase();
         }
         cphr.empty();
@@ -282,7 +283,7 @@ public class Read implements JMC{
     */ 
     public static void xml(Score s, String fileName) {  
     	if (s == null) {
-            System.err.println("jMusic Read.xml error: The score is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.xml error: The score is not initialised! I'm doing it for you.");
             s = new Score();
         }
         s.empty();
@@ -292,11 +293,11 @@ public class Read implements JMC{
             try {
                 s.addPartList(XMLParser.xmlStringToScore(br.readLine()).getPartArray());
                 System.out.println("reading");
-            } catch (ConversionException e) {System.err.println(e);}
+            } catch (ConversionException e) {ErrorLog.log(ErrorLog.WARNING, "" + e);}
                 System.out.println("xml file '"+fileName+"' read into score '" +s.getTitle()+"'");
                 System.out.println("-------------------------------------------------------------");
             }catch(IOException e){
-            System.err.println(e);
+            ErrorLog.log(ErrorLog.WARNING, "" + e);
         }
     }
     
@@ -308,7 +309,7 @@ public class Read implements JMC{
     */ 
     public static void xml(Part p, String fileName) {  
         if (p == null) {
-            System.err.println("jMusic Read.xml error: The part is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.xml error: The part is not initialised! I'm doing it for you.");
             p = new Part();
         }
         p.empty();
@@ -325,7 +326,7 @@ public class Read implements JMC{
     */ 
     public static void xml(Phrase phr, String fileName) {
     	if (phr == null) {
-            System.err.println("jMusic Read.xml error: The phrase is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.xml error: The phrase is not initialised! I'm doing it for you.");
             phr = new Phrase();
         }
         phr.empty();
@@ -341,7 +342,7 @@ public class Read implements JMC{
     */ 
     public static void xml(CPhrase cphr, String fileName) {  
     	if (cphr == null) {
-            System.err.println("jMusic Read.xml error: The CPhrase is not initialised! I'm doing it for you.");
+            ErrorLog.log(ErrorLog.WARNING, "jMusic Read.xml error: The CPhrase is not initialised! I'm doing it for you.");
             cphr = new CPhrase();
         }
         cphr.empty();

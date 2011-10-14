@@ -24,6 +24,7 @@ import imp.data.*;
 import java.io.*;
 import javax.sound.midi.*;
 import imp.Constants;
+import imp.util.ErrorLog;
 
 /**
  * A Command that exports a score to a midi file
@@ -98,7 +99,7 @@ public class ExportToMidiCommand implements Command, Constants
         catch(IOException e)
         {
             error = e;
-            System.err.println(e);
+            ErrorLog.log(ErrorLog.WARNING, "Internal Error: " + e);
 	}
     }
     

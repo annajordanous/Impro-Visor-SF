@@ -32,6 +32,7 @@ import imp.data.Unit;
 import imp.data.Part.PartIterator;
 import imp.data.musicXML.ChordDescription;
 import imp.data.musicXML.Degree;
+import imp.util.ErrorLog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -107,7 +108,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			os.close();
 		} catch (IOException e) {
 			error = e;
-			System.err.println(e);
+			ErrorLog.log(ErrorLog.WARNING, "Internal Error: " + e);
 		}
 	}
 

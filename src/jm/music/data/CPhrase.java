@@ -30,6 +30,7 @@ package jm.music.data;
  * @version 1.0,Sun Feb 25 18:43:30  2001
 */
 
+import imp.util.ErrorLog;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
@@ -160,8 +161,9 @@ public class CPhrase implements JMC, Cloneable, Serializable{
 
 		if (phrase.getStartTime() >= this.startTime) {
 		    phraseList.addElement(phrase);
-		} else System.err.println("Phrase to added to CPhrase: Phrases added" +
-		        " to a CPhrase must have a start time at ot after the CPhrase start time.");
+		} else ErrorLog.log(ErrorLog.WARNING, "In " + title 
+                        + " Phrase to added to CPhrase: Phrases added" +
+		        " to a CPhrase must have a start time at or after the CPhrase start time.");
 	}
         
     /**

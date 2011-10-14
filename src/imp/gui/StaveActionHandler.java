@@ -2009,7 +2009,7 @@ public void mouseReleased(MouseEvent e)
      }
     catch( Exception j )
      {
-      System.err.println(j + ": Couldn't retrofit.");
+     ErrorLog.log(ErrorLog.WARNING, j + ": Couldn't retrofit.");
       //j.printStackTrace();
      }
 
@@ -2060,7 +2060,7 @@ private void fitUnfiredNotes()
  {
   if( firedIndices.isEmpty() || firedIndices == null )
    {
-    System.err.println("*** Warning: Trying to fit notes in an uninitialized or"
+    ErrorLog.log(ErrorLog.WARNING, "*** Warning: Trying to fit notes in an uninitialized or"
       + " empty curve.");
     return;
 

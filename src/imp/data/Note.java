@@ -342,7 +342,7 @@ public static Note getClosestMatch(int pitch, Polylist tonesPL)
 
   if( !tonesPL.nonEmpty() )
     {
-    System.err.println("*** Error: No tones list to match against.");
+    ErrorLog.log(ErrorLog.WARNING, "*** Error: No tones list to match against.");
     }
 
   Polylist list = tonesPL;
@@ -403,7 +403,7 @@ public static Note getClosestMatchDirectional(int pitch, Polylist tonesPL,
   //System.out.println("getClosestMatchDirectional to " + pitch + " " + tonesPL);
   if( !tonesPL.nonEmpty() )
     {
-    System.err.println("*** Error: No tones list to match against.");
+    ErrorLog.log(ErrorLog.WARNING, "*** Error: No tones list to match against.");
     }
 
   Polylist list = tonesPL;
@@ -909,7 +909,7 @@ public int getDrawnPitch()
   {
   if( drawnPitch == UNDEFINED )
     {
-    //System.err.println("*** Error: Trying to draw a note before determining how it" +
+    //ErrorLog.log(ErrorLog.WARNING, "*** Error: Trying to draw a note before determining how it" +
     //        " should appear. Printing rest.");
     drawnPitch = REST;
     }

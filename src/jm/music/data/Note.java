@@ -19,6 +19,8 @@ package jm.music.data;
 
 import java.io.Serializable;
 
+import imp.util.ErrorLog;
+
 /**
  * The Note class is representative of notes in standard western 
  * music notation. It contains data relavent to music note information 
@@ -245,7 +247,7 @@ public class Note implements Cloneable, Serializable{
 	public Note(int pitch, double rhythmValue, int dynamic, double pan){
 		if (pitch < MIN_PITCH && pitch > REST + 2) { 
 			// bit of a hack to cater for casting error
-			System.err.println("jMusic Note constructor error: Pitch is" 
+			ErrorLog.log(ErrorLog.WARNING, "jMusic Note constructor error: Pitch is" 
 								+ " " +pitch+", it must be no less than " 
 								+  MIN_PITCH + " (REST = " + REST+ ")");
 			System.exit(1);
@@ -298,7 +300,7 @@ public class Note implements Cloneable, Serializable{
 		if (frequency > MIN_FREQUENCY) {
 		this.pitch = frequency;
 		} else {
-            System.err.println("jMusic Note constructor error: Frequency is " +
+            ErrorLog.log(ErrorLog.FATAL, "jMusic Note constructor error: Frequency is " +
                 frequency + ", it must be greater than " + MIN_FREQUENCY + " hertz.");
             System.exit(1);
 		}
@@ -360,7 +362,7 @@ public class Note implements Cloneable, Serializable{
 			? MIN_FREQUENCY : freq;
 			pitchType = FREQUENCY;
 		}catch(RuntimeException re){
-			System.err.println("Error setting note value: " + 
+			ErrorLog.log(ErrorLog.FATAL, "Error setting note value: " + 
                 "You must enter frequency values above "+ MIN_FREQUENCY);
 			System.exit(1);
 		}
@@ -374,7 +376,7 @@ public class Note implements Cloneable, Serializable{
 	*/
 	public int getPitch(){
 		if (pitchType == FREQUENCY && this.pitch != (double)REST) {
-			System.err.println("jMusic error getting Note pitch: Pitch is a frequency - " + 
+			ErrorLog.log(ErrorLog.FATAL, "jMusic error getting Note pitch: Pitch is a frequency - " + 
                 "getPitch() can't be used.");
 			System.exit(1);
 			//return 0; // to do - calculation to work out MIDI note from freq.
@@ -403,7 +405,7 @@ public class Note implements Cloneable, Serializable{
 				? MIN_PITCH
 				: ((pitch > MAX_MIDI_PITCH) ? MAX_MIDI_PITCH : pitch);
 			}catch(RuntimeException re){
-				System.err.println("Error setting pitch value: " + 
+				ErrorLog.log(ErrorLog.WARNING, "Error setting pitch value: " + 
                     "You must enter pitch values between "
 					+ MIN_PITCH + " and " + MAX_MIDI_PITCH);
 			}
@@ -558,7 +560,7 @@ public class Note implements Cloneable, Serializable{
 	*/
 	public void setBreakPoints(int index, double[] points) {
 		if (index < 0 || index > breakPoints.length) {
-			System.err.println("jMusic Note error: BreakPoint index "+ index + 
+			ErrorLog.log(ErrorLog.FATAL, "jMusic Note error: BreakPoint index "+ index + 
 			" is out of range when setting.");
 			System.exit(1);
 		}
@@ -573,12 +575,12 @@ public class Note implements Cloneable, Serializable{
 	*/
 	public double[] getBreakPoints(int index) {
 		if (index < 0 || index > breakPoints.length) {
-			System.err.println("jMusic Note error: BreakPoint index "+ index + 
+			ErrorLog.log(ErrorLog.FATAL, "jMusic Note error: BreakPoint index "+ index + 
 			"is out of range when getting.");
 			System.exit(1);
 		}
 		if (breakPoints[index] == null) {
-			System.err.println("jMusic Note error: Breakpoint index "+ index + " is empty.");
+			ErrorLog.log(ErrorLog.FATAL, "jMusic Note error: Breakpoint index "+ index + " is empty.");
 			System.exit(1);
 		}
 		return this.breakPoints[index];
@@ -649,7 +651,7 @@ public class Note implements Cloneable, Serializable{
 	public static int freqToMidiPitch(double freq) {
 		/* input frequency must be between A0 and A9 */
 		if((freq < 26.73) || (freq > 14496.0)) {
-			System.err.println("freqToMidiPitch error: "+
+			ErrorLog.log(ErrorLog.WARNING, "freqToMidiPitch error: "+
 					  "Frequency " + freq + " is not within the MIDI note range.");
 			return -1;
 		}
@@ -711,7 +713,7 @@ public class Note implements Cloneable, Serializable{
 	public static double midiPitchToFreq(int midiPitch) {
 		//range OK
 		if (midiPitch < 0 || midiPitch > 127) {
-			System.err.println("jMusic Note.midiPitchToFreq error:" +
+			ErrorLog.log(ErrorLog.WARNING, "jMusic Note.midiPitchToFreq error:" +
 					  "midiPitch of " +midiPitch + " is out side valid range.");
 			return -1.0;
 		}

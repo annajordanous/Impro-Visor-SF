@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2009 Nicolas Froment (aka Lasconic), Robert Keller
+ * Copyright (C) 2009-2011 Nicolas Froment (aka Lasconic), Robert Keller
  * and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package imp.data.musicXML;
 
+import imp.util.ErrorLog;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class ChordDescription {
 				e.printStackTrace();
 			}
 		} else {
-			System.err.println("No MusicXML chord description file at " + path);
+			ErrorLog.log(ErrorLog.SEVERE, "No MusicXML chord description file at " + path);
 		}
 	}
 

@@ -22,17 +22,13 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 package jm.music.data;
 
-import jm.util.*;
 import jm.JMC;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
+
+import imp.util.ErrorLog;
 
 
 /**
@@ -175,7 +171,7 @@ public class Part implements Cloneable, Serializable, JMC{
 		this.phraseList = new Vector();
 		
 		if(this.channel > 16){
-			System.err.println(new Exception(
+			ErrorLog.log(ErrorLog.WARNING, "" + new Exception(
 				"jMusic Warning: A MIDI Channel "
 				+ "cannot be greater than 16. "
 				+ "There can be any number of Audio channels."));
@@ -185,7 +181,7 @@ public class Part implements Cloneable, Serializable, JMC{
 		this.channel = channel;
 		
 		if(instrument < NO_INSTRUMENT){
-			System.err.println(new Exception(
+			ErrorLog.log(ErrorLog.FATAL, "" + new Exception(
 				"jMusic EXCEPTION: instrument "
 				+ "value must be greater than 0"));
 			(new Exception()).printStackTrace();
@@ -409,7 +405,7 @@ public class Part implements Cloneable, Serializable, JMC{
 	    try{
 	        vct.removeElement(vct.elementAt(phraseNumb));
 	    } catch (RuntimeException re){
-			System.err.println("The Phrase index to be deleted must be within the part.");
+			ErrorLog.log(ErrorLog.WARNING, "The Phrase index to be deleted must be within the part.");
 		}
 	}
 

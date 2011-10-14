@@ -2321,7 +2321,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
         if(brickLibrary.hasBrick(BrickLibrary.dashless(dialogNameField.getText()))) {
-            System.err.println(dialogNameField.getText());
+            ErrorLog.log(ErrorLog.WARNING, dialogNameField.getText());
             dialogVariantField.setEditable(true);
             dialogVariantLabel.setEnabled(true);
         } else {
@@ -2741,7 +2741,7 @@ public void setVolumeSlider(int volume)
             if(ind != -1)
                 categories.get(ind).add(node);
             else
-                System.err.println(type+" is not in type list.");
+                ErrorLog.log(ErrorLog.WARNING, type + " is not in type list.");
         }
         
         for(DefaultMutableTreeNode type : categories)
@@ -3195,7 +3195,7 @@ public void setVolumeSlider(int volume)
         long startTime = System.currentTimeMillis();
         ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
         long endTime = System.currentTimeMillis();
-        //System.err.println("Analysis: " + (endTime - startTime) + "ms");
+        //ErrorLog.log(ErrorLog.WARNING, "Analysis: " + (endTime - startTime) + "ms");
         
         return result;
     }  

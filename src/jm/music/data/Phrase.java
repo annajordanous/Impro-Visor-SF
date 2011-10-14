@@ -24,16 +24,12 @@
 package jm.music.data;
 
 import jm.JMC;
-import jm.util.*;
 //import jm.gui.cpn.Notate;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
+
+import imp.util.ErrorLog;
 
 /**
 * The Phrase class is representative of a single musical phrase.
@@ -192,7 +188,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
         this.position = new Position(startTime, this);
 		this.append = append;
 		if(instrument < NO_INSTRUMENT){
-			System.err.println(new Exception("jMusic EXCEPTION: instrument " +
+			ErrorLog.log(ErrorLog.FATAL, "" + new Exception("jMusic EXCEPTION: instrument " +
 											 "value must be greater than 0"));
 			(new Exception()).printStackTrace();
 			System.exit(1); //crash ungracefully 
@@ -346,7 +342,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
                 this.addNote(note);
 				//note.setMyPhrase(this);
 			}catch(RuntimeException re){
-				System.err.println("The vector passed to this method must " + "contain Notes only!");
+				ErrorLog.log(ErrorLog.WARNING, "The vector passed to this method must " + "contain Notes only!");
 			}
 		}
 	}
@@ -473,7 +469,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
 				Note knote = new Note(pitchArray[i],rhythmArray[i],dynamic[i]);
 				this.addNote(knote);
 			}catch(RuntimeException re){
-				System.err.println("You must enter arrays of even length");
+				ErrorLog.log(ErrorLog.WARNING, "You must enter arrays of even length");
 			}
 		}
 	}
@@ -495,7 +491,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
 				Note knote = new Note(freqArray[i],rhythmArray[i],dynamic[i]);
 				this.addNote(knote);
 			}catch(RuntimeException re){
-				System.err.println("jMusic Phrase error: You must enter arrays of even length");
+				ErrorLog.log(ErrorLog.WARNING, "jMusic Phrase error: You must enter arrays of even length");
 			}
 		}
 	}
@@ -510,7 +506,8 @@ public class Phrase implements JMC, Cloneable, Serializable{
                 Note knote = new Note((int)pitchAndRhythmArray[i],pitchAndRhythmArray[i+1]);
                 this.addNote(knote);
             }catch(RuntimeException re) {
-                System.err.println("Error adding note list: Possibly the wrong number of values in the pitch and rhythm array.");
+                ErrorLog.log(ErrorLog.WARNING,
+                             "Error adding note list: Possibly the wrong number of values in the pitch and rhythm array.");
             }
         }
     }
@@ -564,7 +561,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
 	    try{
 	        vct.removeElement(vct.elementAt(noteNumb));
 	    } catch (RuntimeException re){
-			System.err.println("Note index to be deleted must be within the phrase.");
+			ErrorLog.log(ErrorLog.WARNING, "Note index to be deleted must be within the phrase.");
 		}
 	}
     
@@ -640,7 +637,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
             //            this.startTime = startTime;
             this.setAppend(false);
         }else{
-            System.err.println("Error setting phrase start time value: You must enter values greater than "+MIN_START_TIME);
+            ErrorLog.log(ErrorLog.WARNING, "Error setting phrase start time value: You must enter values greater than "+MIN_START_TIME);
         }
 	}
     
@@ -1107,7 +1104,7 @@ public class Phrase implements JMC, Cloneable, Serializable{
      */
 	public Phrase copy(int highestPitch, int lowestPitch){
         if (lowestPitch >= highestPitch) {
-            System.err.println("jMusic Phrase copy error: "+ 
+            ErrorLog.log(ErrorLog.FATAL, "jMusic Phrase copy error: "+ 
                                "lowset pitch is not lower than highest pitch");
             System.exit(0);
         }

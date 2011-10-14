@@ -31,6 +31,8 @@ import jm.midi.event.*;
 import jm.midi.event.EndTrack;
 import jm.music.data.*;
 
+import imp.util.ErrorLog;
+
 /**
  * A MIDI parser 
  * @author Andrew Sorensen
@@ -265,7 +267,7 @@ public final class MidiParser implements JMC{
 					//check for frequency rather than MIDI notes
 					int pitch = 0;
 					if (note.getPitchType() == Note.FREQUENCY) {
-						System.err.println("jMusic warning: converting note frequency to the closest MIDI pitch for SMF.");
+						ErrorLog.log(ErrorLog.WARNING, "jMusic warning: converting note frequency to the closest MIDI pitch for SMF.");
 						//System.exit(1);
 						pitch = Note.freqToMidiPitch(note.getFrequency());
 					} else pitch = note.getPitch();

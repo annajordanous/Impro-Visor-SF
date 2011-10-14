@@ -182,8 +182,6 @@ public static String log(int severity, String message, boolean showDialog)
   // Took this line out in order to return the error to the GUI instead
   // But right now it doesn't show!
 
-  System.err.println(line);
-
   if( !fileOpened )
     {
     try
