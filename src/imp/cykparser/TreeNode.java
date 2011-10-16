@@ -102,7 +102,7 @@ public class TreeNode {
         toPrint = true;
         isEnd = chord.isSectionEnd();
         isSub = false;
-        height = 0;
+        height = 1;
     }
     
     /** TreeNode / 3 (Chord)
@@ -124,7 +124,7 @@ public class TreeNode {
         toPrint = true;
         isEnd = chord.isSectionEnd();
         isSub = false;
-        height = 0;
+        height = 1;
     }
     
     /** TreeNode / 4 (UnaryBrick with overlap)
@@ -145,7 +145,7 @@ public class TreeNode {
         toPrint = !(brick.getType().equals(CYKParser.INVISIBLE));
         isEnd = brick.isSectionEnd();
         isSub = false;
-        height = 0;
+        height = 1;
     }
     
     /** TreeNode / 4 (Chord substitution)
@@ -170,7 +170,7 @@ public class TreeNode {
         toPrint = false;
         isEnd = chord.isSectionEnd();
         isSub = true;
-        height = 0;
+        height = 1;
     }    
     
         
@@ -561,11 +561,16 @@ public class TreeNode {
         double cost2 = t.getCost();
         int height1 = getHeight();
         int height2 = t.getHeight();
-        if (cost1 < cost2)
+        
+        if (cost1 < cost2) {
             return true;
-        else if (cost1 == cost2 && height1 < height2)
+        }
+        else if (cost1 == cost2 && height1 > height2) {
             return true;
-        else return false;
+        }
+        else {
+            return false;
+        }
     }                                    
 
     // end of TreeNode class

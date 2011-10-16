@@ -567,7 +567,7 @@ public class CYKParser
                 long newKey = rule.checkProduction(t, edict, sdict);
                 if (!(newKey < 0))
                 {
-                    long cost = rule.getCost() + SUB_COST;
+                    long cost = rule.getCost();
                     TreeNode newNode = new TreeNode(rule.getHead(),
                                     rule.getType(), rule.getMode(), 
                                     t, cost, newKey);
