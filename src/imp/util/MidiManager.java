@@ -250,7 +250,7 @@ public class MidiManager implements Constants {
         else
             midiError = error + "\n" + midiError;
 
-        ErrorLog.log(ErrorLog.WARNING, error, false);
+        ErrorLog.log(ErrorLog.COMMENT, error, false);
     }
     
     public void clearErrorMsgLog() {

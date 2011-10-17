@@ -160,9 +160,10 @@ public static String log(int severity, String message, boolean showDialog)
   {
   // severity must be within range
   assert (severity <= FATAL && severity >= 0);
+  
 
   count[severity]++;
-
+  
   switch( severity )
     {
     case FATAL:
@@ -178,6 +179,11 @@ public static String log(int severity, String message, boolean showDialog)
   // been opened.
 
   String line = tag + name[severity] + ": " + message;
+
+  if( severity == 0 )
+    {
+      return line;   // silent return
+    }
 
   // Took this line out in order to return the error to the GUI instead
   // But right now it doesn't show!

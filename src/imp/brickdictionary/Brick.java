@@ -63,17 +63,23 @@ public class Brick extends Block {
      * @param bricks, a BrickLibrary
      * @param m, the mode (a String)
      */
-     public Brick(String brickName, String brickVariant, long brickKey, String brickType,
-         Polylist contents, BrickLibrary bricks, String m) {
-         super(brickName, brickKey, m);
-         variant = brickVariant;
-         subBlocks = new ArrayList<Block>();
-         this.addSubBlocks(contents, bricks);
-         type = brickType;
-         this.updateDuration();
-         endValue = getSectionEnd();
-     }
-     
+public Brick(String brickName, 
+             String brickVariant, 
+             long brickKey, 
+             String brickType,
+             Polylist contents, 
+             BrickLibrary bricks, 
+             String m)
+  {
+    super(brickName, brickKey, m);
+    variant = brickVariant;
+    subBlocks = new ArrayList<Block>();
+    this.addSubBlocks(contents, bricks);
+    type = brickType;
+    this.updateDuration();
+    endValue = getSectionEnd();
+  }
+
     /** Brick / 6
      * Constructs a Brick based on a complete BrickLibrary
      * 
@@ -84,8 +90,12 @@ public class Brick extends Block {
      * @param bricks, a BrickLibrary
      * @param m, the mode (a String)
      */
-     public Brick(String brickName, long brickKey, String brickType,
-         Polylist contents, BrickLibrary bricks, String m) {
+     public Brick(String brickName, 
+                  long brickKey, 
+                  String brickType,
+                  Polylist contents, 
+                  BrickLibrary bricks, 
+                  String m) {
          super(brickName, brickKey, m);
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks);
@@ -108,9 +118,15 @@ public class Brick extends Block {
      * @param polymap, a LinkedHashMap<String, LinkedList<Polylist>> storing
       *                definitions of other Bricks
      */
-     public Brick(String brickName, String brickVariant, long brickKey, String brickType, 
-             Polylist contents, BrickLibrary bricks, String m, 
-             LinkedHashMap<String, LinkedList<Polylist>> polymap) {
+     public Brick(String brickName, 
+                  String brickVariant, 
+                  long brickKey, 
+                  String brickType, 
+                  Polylist contents, 
+                  BrickLibrary bricks, 
+                  String m, 
+                  LinkedHashMap<String, 
+                  LinkedList<Polylist>> polymap) {
          super(brickName, brickKey, m);
          variant = brickVariant;
          subBlocks = new ArrayList<Block>();
@@ -133,9 +149,12 @@ public class Brick extends Block {
      * @param polymap, a LinkedHashMap<String, LinkedList<Polylist>> storing
       *                definitions of other Bricks
      */
-     public Brick(String brickName, long brickKey, String brickType, 
-             Polylist contents, BrickLibrary bricks, String m, 
-             LinkedHashMap<String, LinkedList<Polylist>> polymap) {
+     public Brick(String brickName,long brickKey, String brickType, 
+             Polylist contents, 
+             BrickLibrary bricks, 
+             String m, 
+             LinkedHashMap<String, 
+             LinkedList<Polylist>> polymap) {
          super(brickName, brickKey, m);
          subBlocks = new ArrayList<Block>();
          this.addSubBlocks(contents, bricks, polymap);
@@ -154,8 +173,12 @@ public class Brick extends Block {
      * @param contents, an ArrayList of component blocks
      * @param m, the mode as a String
      */
-    public Brick(String brickName, String brickVariant, long brickKey, String brickType, 
-            ArrayList<Block> contents, String m) {
+    public Brick(String brickName, 
+                 String brickVariant, 
+                 long brickKey, 
+                 String brickType, 
+                 ArrayList<Block> contents, 
+                 String m) {
         super(brickName, brickKey, m);
         variant = brickVariant;
         subBlocks = contents;
@@ -174,8 +197,11 @@ public class Brick extends Block {
      * @param contents, an ArrayList of component blocks
      * @param m, the mode as a String
      */
-    public Brick(String brickName, long brickKey, String brickType, 
-            ArrayList<Block> contents, String m) {
+    public Brick(String brickName, 
+                 long brickKey, 
+                 String brickType, 
+                 ArrayList<Block> contents, 
+                 String m) {
         super(brickName, brickKey, m);
         subBlocks = new ArrayList<Block>();
         for (Block b : contents)
@@ -239,7 +265,10 @@ public class Brick extends Block {
      * @param name, a String
      * @param brickList, subblocks for a brick
      */
-    public Brick(String brickName, long brickKey, String type, List<Block> brickList) {
+    public Brick(String brickName, 
+                 long brickKey, 
+                 String type, 
+                 List<Block> brickList) {
         super(brickName, brickKey, modeHelper(brickList, brickKey));
         
         this.type = type;
@@ -469,15 +498,16 @@ public class Brick extends Block {
         subBlocks.addAll(subBlockList);
     }
     
-        /** addSubBlocks / 2
+        /** addSubBlocks / 3
      * Constructs the subblocks of a brick by reading in a PolyList and using 
      * a BrickLibrary to convert it to bricks with appropriate subbricks.
      * 
      * @param contents, a PolyList of subbricks
      * @param bricks, a BrickLibrary
      */
-    private void addSubBlocks(Polylist contents, BrickLibrary bricks, 
-            LinkedHashMap<String, LinkedList<Polylist>> polymap) {
+    private void addSubBlocks(Polylist contents, 
+                              BrickLibrary bricks, 
+                              LinkedHashMap<String, LinkedList<Polylist>> polymap) {
         
         List<Block> subBlockList = new ArrayList<Block>();
         

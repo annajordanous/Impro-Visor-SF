@@ -2769,9 +2769,12 @@ public void setVolumeSlider(int volume)
      */
     public void setBackground(Image image)
     {
+      if( image != null )
+        {
         Graphics graphics = image.getGraphics();
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
+        }
     }
     
     /** setBackgrounds <p>

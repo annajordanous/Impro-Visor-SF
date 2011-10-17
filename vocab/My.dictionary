@@ -2916,9 +2916,3 @@
         (chord Eb 1)
         (chord Ab7 1))
 
-
-
-
-(defbrick Tune-Up-Cadence Major Approach C
-        (brick Minor-On E 1)
-        (brick Perfect-Cadence Bb 3))
