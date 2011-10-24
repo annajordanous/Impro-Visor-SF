@@ -849,7 +849,7 @@ public Brick(String brickName,
         String brickKey = BrickLibrary.keyNumToName(this.getKey());
         long brickDur = this.getDuration();
         String brickType = this.getType();
-        ErrorLog.log(ErrorLog.WARNING, "Printing brick " 
+        System.out.println("Printing brick " 
                 + brickName + " " + brickType + " " + brickKey 
                 + " " + brickDur);
         
@@ -868,7 +868,7 @@ public Brick(String brickName,
                 String currentBrickKeyString = 
                         BrickLibrary.keyNumToName(currentBrickKey);
                 long dur = currentBrick.getDuration();
-                ErrorLog.log(ErrorLog.WARNING, "Printing brick "
+                System.out.println("Printing brick "
                         + currentBrickName + " " 
                         + currentBrickKeyString + " " + dur);
             }
@@ -878,7 +878,7 @@ public Brick(String brickName,
                 ChordBlock currentChord = (ChordBlock)currentBlock;
                 String currentChordName = currentChord.getName();
                 int currentDuration = currentChord.getDuration();
-                ErrorLog.log(ErrorLog.WARNING, "Printing Chord" 
+                System.out.println("Printing Chord" 
                         + currentChordName + " " 
                         + currentDuration);
             }

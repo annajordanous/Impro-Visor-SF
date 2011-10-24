@@ -421,7 +421,7 @@ public class BrickLibrary {
      */
     public void exileBrick(Brick brick, String dictionaryFilename) {
         
-        brick.printBrick();
+        //brick.printBrick();
         
         // define the search term (the name) for the given brick
         String brickType = " " + brick.getType() + " ";
