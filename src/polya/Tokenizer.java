@@ -21,7 +21,6 @@
 package polya;
 
 import java.io.*;
-import imp.util.ErrorLog;
 	
 /**
   *  Tokenizer provides a tokenizer of the package polya.
@@ -75,22 +74,22 @@ public class Tokenizer extends StreamTokenizer
 
   public void exceptionHandler( Exception e )
     {
-    ErrorLog.log(ErrorLog.WARNING, "polya.Tokenizer caught ");
+    System.out.print("polya.Tokenizer caught ");
     if( e instanceof IOException )
       {
-      ErrorLog.log(ErrorLog.WARNING, "IOException " + e);
+      System.out.println("IOException " + e);
       } 
     else if( e instanceof eofException )
       {
-      ErrorLog.log(ErrorLog.WARNING, "eofException " + e);
+      System.out.println("eofException " + e);
       }
     else if( e instanceof NumberFormatException )
       {
-      ErrorLog.log(ErrorLog.WARNING, "NumberFormatException " + e);
+      System.out.println("NumberFormatException " + e);
       }
     else 
       {
-      ErrorLog.log(ErrorLog.WARNING, "exception " + e);
+      System.out.println("exception " + e);
       }
     }
 

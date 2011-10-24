@@ -26,7 +26,6 @@ package jm.music.data;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
-import imp.util.ErrorLog;
 import jm.JMC;
 /*
 import jm.audio.Instrument;
@@ -284,7 +283,7 @@ public class Score implements JMC, Cloneable, Serializable{
 	    try{
 	        vct.removeElement(vct.elementAt(partNumb));
 	    } catch (RuntimeException re){
-                ErrorLog.log(ErrorLog.WARNING, "The Part index to be deleted must be within the score.");
+                System.out.println("The Part index to be deleted must be within the score.");
             }
 	}
     

@@ -28,8 +28,6 @@ import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
 
-import imp.util.ErrorLog;
-
 
 /**
  * The Part class is representative of a single instrumental part.
@@ -171,7 +169,7 @@ public class Part implements Cloneable, Serializable, JMC{
 		this.phraseList = new Vector();
 		
 		if(this.channel > 16){
-			ErrorLog.log(ErrorLog.WARNING, "" + new Exception(
+			System.out.println("" + new Exception(
 				"jMusic Warning: A MIDI Channel "
 				+ "cannot be greater than 16. "
 				+ "There can be any number of Audio channels."));
@@ -181,7 +179,7 @@ public class Part implements Cloneable, Serializable, JMC{
 		this.channel = channel;
 		
 		if(instrument < NO_INSTRUMENT){
-			ErrorLog.log(ErrorLog.FATAL, "" + new Exception(
+			System.out.println("" + new Exception(
 				"jMusic EXCEPTION: instrument "
 				+ "value must be greater than 0"));
 			(new Exception()).printStackTrace();
@@ -405,7 +403,7 @@ public class Part implements Cloneable, Serializable, JMC{
 	    try{
 	        vct.removeElement(vct.elementAt(phraseNumb));
 	    } catch (RuntimeException re){
-			ErrorLog.log(ErrorLog.WARNING, "The Phrase index to be deleted must be within the part.");
+			System.out.println("The Phrase index to be deleted must be within the part.");
 		}
 	}
 

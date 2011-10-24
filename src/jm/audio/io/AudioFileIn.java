@@ -22,7 +22,6 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 package jm.audio.io;
 
-import imp.util.ErrorLog;
 import java.io.*;
 import java.util.Vector;
 import javax.sound.sampled.*;
@@ -79,16 +78,16 @@ public class AudioFileIn {
             this.duration = (long)this.fileFormat.getFrameLength() * this.channels;
             this.sampleSize = (format.getSampleSizeInBits())/8;
          }catch(UnsupportedAudioFileException uafe) {
-             ErrorLog.log(ErrorLog.WARNING, "jMusic AudioFileIn warning: '" + fileName 
+             System.out.println("jMusic AudioFileIn warning: '" + fileName 
                                 + "' may not be an audio file.");
-             ErrorLog.log(ErrorLog.WARNING, "Reading it in as raw data...");
+             System.out.println("Reading it in as raw data...");
              this.audioFileSpecified = false;
              this.channels = 1;
              this.sampleSize = 1;
              this.sampleRate = 0;
          }catch(IOException ioe) {
-             ErrorLog.log(ErrorLog.WARNING, "jMusic AudioFileIn error: Cannot read the specified file: " + fileName);
-             ErrorLog.log(ErrorLog.FATAL, "Most likely the file does not exist at this location. Exiting...");
+             System.out.println("jMusic AudioFileIn error: Cannot read the specified file: " + fileName);
+             System.out.println("Most likely the file does not exist at this location. Exiting...");
              System.exit(0);
          }
     }
@@ -204,7 +203,7 @@ public class AudioFileIn {
                 sample = (float)((float)ret/(float)Integer.MAX_VALUE);
                 break;
             default:
-                ErrorLog.log(ErrorLog.WARNING, "Format not accepted");
+                System.out.println( "Format not accepted");
         }
         return sample;
     }    

@@ -30,12 +30,6 @@ package jm.music.data;
  * @version 1.0,Sun Feb 25 18:43:30  2001
 */
 
-import imp.util.ErrorLog;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
@@ -161,7 +155,7 @@ public class CPhrase implements JMC, Cloneable, Serializable{
 
 		if (phrase.getStartTime() >= this.startTime) {
 		    phraseList.addElement(phrase);
-		} else ErrorLog.log(ErrorLog.WARNING, "In " + title 
+		} else System.out.println("In " + title 
                         + " Phrase to added to CPhrase: Phrases added" +
 		        " to a CPhrase must have a start time at or after the CPhrase start time.");
 	}
