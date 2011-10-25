@@ -1,11 +1,11 @@
-(title Ladybird)
-(composer Tadd Dameron)
+(title I've Got Rhythm)
+(composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 184.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
-    (bass-base e--)
+    (bass-low g---)
+    (bass-base c--)
     (chord-high a)
-    (chord-low d-)
+    (chord-low b--)
     (chord-base c- e- g-)
 )
 (part
@@ -35,20 +35,38 @@
 )
 
 (phrase (style swing)) 
-CM7 | / | Fm7 | Bb7 | 
-
-
-(section (style swing)) 
-
-CM7 | / | Bbm7 | Eb7 | 
+BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
 (phrase (style swing)) 
-AbM7 | / | Am7 | D7 | 
+BbM7 Bb7 | Eb Ab7 | 
+
+(section (style swing)) 
+
+Dm7 G7 | Cm7 F7 | 
+
+(phrase (style swing)) 
+BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
+
+(phrase (style swing)) 
+BbM7 Bb7 | Eb Ab7 | 
+
+(section (style swing)) 
+
+BbM7 F7 | BbM7 | 
 
 
 (section (style swing)) 
 
-Dm7 | G7 | CM7 Eb7 | AbM7 Db7 | 
+Am7 | D7 | Dm7 | G7 | 
+Gm7 | C7 | Cm7 | F7 | 
+
+(phrase (style swing)) 
+BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
+
+(phrase (style swing)) 
+BbM7 Bb7 | Eb Ab7 | 
+(phrase (style swing)) 
+BbM7 F7 | BbM7 | 
 
 (part
     (type melody)
@@ -59,4 +77,4 @@ Dm7 | G7 | CM7 Eb7 | AbM7 Db7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

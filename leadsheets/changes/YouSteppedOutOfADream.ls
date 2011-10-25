@@ -9,10 +9,10 @@
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
+(bass-instrument 34)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 40)
+(chord-volume 60)
 (breakpoint 54)
 (layout)
 (style latin
@@ -57,16 +57,18 @@ CM7 | / | DbM7 | / |
 Bbm7 | Eb7 | Gb7 | F7 | 
 Dm7b5 | G7 | CM7 | A7 | 
 
+(phrase (style latin)) 
+Dm7 | G7 | CM7 | 
 
 (section (style latin)) 
 
-Dm7 | G7 | CM7 | Dm7 G7 | 
+Dm7 G7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 0)
     (volume 85)
     (key 0)
     (stave treble)

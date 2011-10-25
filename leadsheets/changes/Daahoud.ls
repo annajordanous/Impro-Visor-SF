@@ -1,11 +1,11 @@
-(title Giant Steps)
+(title Bluesette)
 (composer )
 (show )
 (year )
 (comments )
-(meter 4 4)
+(meter 3 4)
 (key 0)
-(tempo 220.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,14 +15,14 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style swing
+(style waltz
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g--)
+    (bass-low g---)
     (bass-base c--)
     (chord-high a)
-    (chord-low a--)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -35,12 +35,14 @@
 )
 
 
-(section (style swing)) 
+(section (style waltz)) 
 
-BM7 D9 | GM7 Bb9 | EbM7 | Am9 D9 | 
-GM7 Bb9 | EbM7 F#9 | BM7 | Fm9 Bb9 | 
-EbM9 | Am9 D9 | GM7 | C#m7 F#9 | 
-BM7 | Fm9 Bb9 | EbM7 | C#m7 F#9 | 
+BbM7 | / | Am7b5 | D7 | 
+Gm7 | C7 | Fm7 | Bb7 | 
+EbM7 | / | Ebm7 | Ab7 | 
+DbM7 | / | Dbm7 | Gb7 | 
+BM7 | / | Cm7b5 | F7 | 
+Dm7 | Db7 | Cm7 | F7 | 
 
 (part
     (type melody)
@@ -51,4 +53,4 @@ BM7 | Fm9 Bb9 | EbM7 | C#m7 F#9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

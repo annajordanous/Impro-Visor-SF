@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title Jordu)
 (composer )
 (show )
 (year )
@@ -35,36 +35,56 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+D7 G7 | Cm | 
+
+(section (style swing)) 
+
+F7 Bb7 | Eb | 
 
 (phrase (style swing)) 
-Fm7 | Bb7 | EbM7 | 
+D7 G7 | Cm | 
 
 (section (style swing)) 
 
-Ab7#11 | 
+Ab7 | Cm | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-FM7 | 
+D7 G7 | Cm | 
 
 (section (style swing)) 
 
-Gm7 C7 | Am7b5 | D7#9 | 
+F7 Bb7 | Eb | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+D7 G7 | Cm | 
+
+(section (style swing)) 
+
+Ab7 | Cm | 
 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+G7 C7 | F7 Bb7 | Eb7 Ab7 | Db7 | 
 
 
 (section (style swing)) 
 
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+F7 Bb7 | Eb7 Ab7 | Db7 Gb7 | B7 Cm / / | 
+
+(phrase (style swing)) 
+D7 G7 | Cm | 
+
+(section (style swing)) 
+
+F7 Bb7 | Eb | 
+
+(phrase (style swing)) 
+D7 G7 | Cm | 
+
+(section (style swing)) 
+
+Ab7 | Cm | 
 
 (part
     (type melody)

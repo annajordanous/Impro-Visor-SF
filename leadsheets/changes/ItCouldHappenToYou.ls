@@ -1,11 +1,11 @@
-(title On Green Dolphin Street)
+(title Desafinado)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 170.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -34,39 +34,66 @@
     (key 0)
 )
 
+
+(section (style latin)) 
+
+FM7 | / | G7#11 | / | 
+Gm7 | C7 | Am7b5 | D7 | 
+
 (phrase (style latin)) 
-EbM7 | / | Ebm7 | / | 
+Gm7 | Em7b5 A7 | D7 | Am7b5 D7 | 
 
 
 (section (style latin)) 
 
-F/Eb | E/Eb | EbM7 | Gm7 C7 | 
-
-(phrase (style latin)) 
-Fm7 | Bb7 | EbM7 | / | 
+G7 | / | GbM7 | / | 
 
 
 (section (style latin)) 
 
-Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
+FM7 | / | G7#11 | / | 
+Gm7 | C7 | Am7b5 | D7 | 
 
 (phrase (style latin)) 
-EbM7 | / | Ebm7 | / | 
+Gm7 | Bbm7 Eb7 | FM7 | 
+(phrase (style latin)) 
+E7 | 
+
+(phrase (style latin)) 
+AM7 | C7 | Bm7 | E7 | 
+
+(phrase (style latin)) 
+AM7 | A#o | Bm7 | E7 | 
+
+(phrase (style latin)) 
+AM7 | F#m7 | Bm7 | E7 | 
+
+(phrase (style latin)) 
+C | C#o | Dm7 | G7 | 
 
 
 (section (style latin)) 
 
-F/Eb | E/Eb | EbM7 | Gm7 C7 | 
+Gm7 | D7 | Gm7 | C7 | 
 
-(phrase (style latin)) 
-Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
-
-(phrase (style latin)) 
-Gm7 C7 | Fm7 Bb7 | EbM7 | 
 
 (section (style latin)) 
 
-Fm7 Bb7 | 
+FM7 | / | G7#11 | / | 
+Gm7 | C7 | Am7b5 | D7 | 
+
+(phrase (style latin)) 
+Gm7 | Eb7 | FM7 | Abo7 | 
+
+(phrase (style latin)) 
+G7 | / | Bbm7 | Eb7 | 
+
+(phrase (style latin)) 
+G7 | C7 | FM7 | 
+
+(section (style latin)) 
+
+Gm7 C7 | 
 
 (part
     (type melody)
@@ -77,4 +104,4 @@ Fm7 Bb7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

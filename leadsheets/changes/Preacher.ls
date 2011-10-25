@@ -1,4 +1,4 @@
-(title Stella by Starlight)
+(title Bye Bye Blackbird)
 (composer )
 (show )
 (year )
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
-    (bass-base e--)
+    (bass-low g---)
+    (bass-base c--)
     (chord-high a)
-    (chord-low d-)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -35,36 +35,28 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+FM6 | Gm7 C7 | F6 | / | 
+F6 | Abo7 | Gm7 | C7 | 
 
 (phrase (style swing)) 
-Fm7 | Bb7 | EbM7 | 
-
-(section (style swing)) 
-
-Ab7#11 | 
+Gm7 | Gm/F# | Gm7/F | C7 | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-FM7 | 
-
-(section (style swing)) 
-
-Gm7 C7 | Am7b5 | D7#9 | 
+Gm7 | C7 | F6 | / | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+Cm7 F7 | Bm7 E7 | Bbm7 Eb7 | Am7 D7 | 
+
+(phrase (style swing)) 
+Gm7 Gm/F# | Gm7/F Gm/A | Bm7 Eb7 | Gm7 C7 | 
+
+(phrase (style swing)) 
+FM6 | Gm7 C7 | F6 | Am7b5 D7 | 
 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
-
-
-(section (style swing)) 
-
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+Gm7 | C7 | F6 | Gm7 C7 | 
 
 (part
     (type melody)

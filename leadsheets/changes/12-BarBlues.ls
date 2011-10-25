@@ -1,11 +1,11 @@
-(title On Green Dolphin Street)
+(title Blue Bossa)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 98.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,7 +19,7 @@
     (swing 0.55)
     (comp-swing 0.55)
     (bass-high g-)
-    (bass-low c---)
+    (bass-low g---)
     (bass-base c--)
     (chord-high a)
     (chord-low c-)
@@ -34,39 +34,19 @@
     (key 0)
 )
 
-(phrase (style latin)) 
-EbM7 | / | Ebm7 | / | 
-
 
 (section (style latin)) 
 
-F/Eb | E/Eb | EbM7 | Gm7 C7 | 
+Cm69 | / | Fm9 | / | 
 
 (phrase (style latin)) 
-Fm7 | Bb7 | EbM7 | / | 
-
+Dm7b5 | G7#5#9 | Cm69 | / | 
+Ebm9 | Ab13 | DbM9 | / | 
+Dm7b5 | G7#5#9 | Cm69 | 
 
 (section (style latin)) 
 
-Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
-
-(phrase (style latin)) 
-EbM7 | / | Ebm7 | / | 
-
-
-(section (style latin)) 
-
-F/Eb | E/Eb | EbM7 | Gm7 C7 | 
-
-(phrase (style latin)) 
-Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
-
-(phrase (style latin)) 
-Gm7 C7 | Fm7 Bb7 | EbM7 | 
-
-(section (style latin)) 
-
-Fm7 Bb7 | 
+Dm7b5 G7#5#9 | 
 
 (part
     (type melody)
@@ -77,4 +57,4 @@ Fm7 Bb7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

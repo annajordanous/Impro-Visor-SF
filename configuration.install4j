@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.0.9" transformSequenceNumber="3">
-  <directoryPresets config="." />
+  <directoryPresets config="../impro-visor-oct-12" />
   <application name="Impro-Visor" distributionSourceDir="" applicationId="6140-2535-4985-4395" mediaDir="../../Desktop/Impro-Visor Release5.06" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Impro-Visor" publisher="Robert Keller" publisherWeb="http://www.cs.hmc.edu/~keller/jazz/impro-visor" version="5.06" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
@@ -21,7 +21,7 @@
       <mountPoint id="31" root="" location="" mode="755" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="31" file="./improvisor506" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="improvisor506" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+      <dirEntry mountPoint="31" file="../impro-visor-oct-12/improvisor506" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="improvisor506" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude />
       </dirEntry>
     </entries>

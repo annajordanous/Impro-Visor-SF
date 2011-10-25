@@ -1,11 +1,11 @@
-(title Stella by Starlight)
+(title Sweet Lorraine)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
-    (bass-base e--)
-    (chord-high a)
-    (chord-low d-)
+    (bass-low g---)
+    (bass-base c--)
+    (chord-high b)
+    (chord-low g--)
     (chord-base c- e- g-)
 )
 (part
@@ -35,36 +35,40 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+G F7 E7 / | A7 / D7 B7 | 
+(phrase (style swing)) 
+Em | C7 B7 | 
 
 (phrase (style swing)) 
-Fm7 | Bb7 | EbM7 | 
-
-(section (style swing)) 
-
-Ab7#11 | 
+E7 A7 | Am7 D7 | Bm7b5 E7 | Am7 D7+ | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-FM7 | 
-
-(section (style swing)) 
-
-Gm7 C7 | Am7b5 | D7#9 | 
+G F7 E7 / | A7 / D7 B7 | 
+(phrase (style swing)) 
+Em | C7 B7 | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+E7 A7 | Am7 D7 | G | Dm7 G7 | 
 
+(phrase (style swing)) 
+C E7 | Am C7 | 
+(phrase (style swing)) 
+F E7 | Am C7 | 
+
+(phrase (style swing)) 
+F7 E7 | Eb7 D7 | F7 E7 | A7 D7 | 
+
+(phrase (style swing)) 
+G F7 E7 / | A7 / D7 B7 | 
+(phrase (style swing)) 
+Em | C7 B7 | 
+
+(phrase (style swing)) 
+E7 A7 | Am7 D7 | G | 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
-
-
-(section (style swing)) 
-
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+Am7 D7 | 
 
 (part
     (type melody)

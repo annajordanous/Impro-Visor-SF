@@ -1,11 +1,11 @@
-(title Cherokee)
+(title The Song Is You)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 220.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -34,55 +34,55 @@
     (key 0)
 )
 
-
-(section (style swing)) 
-
-BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7 | / | 
-
-
-(section (style swing)) 
-
-BbM7 | / | C7#11 | / | 
-Cm7 | G7 | Cm7 | F7+ | 
-
-
-(section (style swing)) 
-
-BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7 | / | 
-
-
-(section (style swing)) 
-
-BbM7 | / | C7#11 | / | 
-Cm7 | F7 | BbM7 | / | 
+(phrase (style swing)) 
+CM7 | Ebo7 | Dm7 | G7 | 
 
 (phrase (style swing)) 
-C#m7 | F#7 | BM7 | / | 
-Bm7 | E7 | AM7 | / | 
+CM7 | Ebo7 | Dm7 | G7 | 
 
 (phrase (style swing)) 
-Am7 | D7 | GM7 | / | 
-
-
-(section (style swing)) 
-
-Gm7 | C7 | Cm7 | F7+ | 
-
-
-(section (style swing)) 
-
-BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7 | / | 
+Bb7 | A7 | Dm7 | G7 | 
 
 (phrase (style swing)) 
-BbM7 | / | C7#11 | / | 
-Cm7 | F7 | BbM7 | 
+Bb7 | A7 | D7 | G7 | 
+
+(phrase (style swing)) 
+CM7 | Ebo7 | Dm7 | G7 | 
+
+(phrase (style swing)) 
+CM7 | Ebo7 | Dm7 | G7 | 
+
+(phrase (style swing)) 
+Bb7 | A7 | Dm7 | G7 | 
+
+(phrase (style swing)) 
+CM7 | / | 
+(phrase (style swing)) 
+F#m7b5 | B7#9 | 
+
+(phrase (style swing)) 
+EM7 | Fo7 | F#m7 | B7 | 
+
+(phrase (style swing)) 
+EM7 | / | Bbm7b5 | Eb7#9 | 
+
+(phrase (style swing)) 
+Abm | AbmM7 | Abm7 | Abm6 | 
+
+(phrase (style swing)) 
+Db7 | F#7 | B7 | G7 | 
+
+(phrase (style swing)) 
+CM7 | Ebo7 | Dm7 | G7 | 
+
+(phrase (style swing)) 
+CM7 | C7 | FM7 | Fm7 | 
+
 
 (section (style swing)) 
 
-Cm7 F7 | 
+CM7 | A7 | Dm7 | G7 | 
+CM7 | Ebo7 | Dm7 | G7 | 
 
 (part
     (type melody)
