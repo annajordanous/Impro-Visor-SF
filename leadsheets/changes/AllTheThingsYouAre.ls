@@ -1,11 +1,11 @@
-(title Ask Me Now)
+(title All the Things You Are)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 100.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -37,42 +37,33 @@
 
 (section (style swing)) 
 
-Gm7 C7 F#m7 B7 | Fm7 Bb7 Em7 A7 | Ebm7 Ab7#5 | B7b5 Bb7#11 | 
+Fm7 | Bbm7 | Eb7 | AbM7 | 
+DbM7 | Dm7 G7 | CM7 | / | 
 
 
 (section (style swing)) 
 
-Eb7 D7 | DbM7 Eb7#11 | Ebm7 Ab7b9 | B7b5 Bb7b5 A7b5 Ab7#5 | 
+Cm7 | Fm7 | Bb7 | EbM7 | 
+AbM7 | Am7 D7 | GM7 | E7alt | 
 
 
 (section (style swing)) 
 
-Gm7 C7 F#m7 B7 | Fm7 Bb7 Em7 A7 | Ebm7 Ab7#5 | B7b5 Bb7#11 | 
+Am7 | D7 | GM7 | / | 
+F#m7 | B7 | EM7 | C7alt | 
 
 
 (section (style swing)) 
 
-Eb7 D7 | DbM7 Eb7#11 | Ebm7 Ab7b9 | Db6 | 
+Fm7 | Bbm7 | Eb7 | AbM7 | 
+DbM7 | Dbm7 | Cm7 | Bm7 | 
 
-
-(section (style swing)) 
-
-Ebm7 Ab7 | DbM7 / Fm7 E7 | Ebm7 D9 | DbM7 | 
-
+(phrase (style swing)) 
+Bbm7 | Eb7 | AbM7 | 
 
 (section (style swing)) 
 
-Eb7 | Eb7 | Ebm7/Ab Ab7b9 | Gb13#11 | 
-
-
-(section (style swing)) 
-
-Gm7 C7 F#m7 B7 | Fm7 Bb7 Em7 A7 | Ebm7 Ab7#5 | B7b5 Bb7#11 | 
-
-
-(section (style swing)) 
-
-Eb7 D7 | C#M7 Eb7#11 | Ebm7 Ab7b9 | Db6 | 
+Gm7 C7alt | 
 
 (part
     (type melody)
@@ -83,4 +74,4 @@ Eb7 D7 | C#M7 Eb7#11 | Ebm7 Ab7b9 | Db6 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

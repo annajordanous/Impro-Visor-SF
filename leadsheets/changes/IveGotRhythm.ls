@@ -1,11 +1,11 @@
-(title Stella by Starlight)
+(title I've Got Rhythm)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 184.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
-    (bass-base e--)
+    (bass-low g---)
+    (bass-base c--)
     (chord-high a)
-    (chord-low d-)
+    (chord-low b--)
     (chord-base c- e- g-)
 )
 (part
@@ -35,36 +35,38 @@
 )
 
 (phrase (style swing)) 
-Em7b5 | A7 | Cm7 | F7 | 
+BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
 (phrase (style swing)) 
-Fm7 | Bb7 | EbM7 | 
+BbM7 Bb7 | Eb Ab7 | 
 
 (section (style swing)) 
 
-Ab7#11 | 
+Dm7 G7 | Cm7 F7 | 
 
 (phrase (style swing)) 
-BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
-FM7 | 
-
-(section (style swing)) 
-
-Gm7 C7 | Am7b5 | D7#9 | 
+BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
 (phrase (style swing)) 
-G7+ | / | Cm7 | / | 
+BbM7 Bb7 | Eb Ab7 | 
+
+(section (style swing)) 
+
+BbM7 F7 | BbM7 | 
 
 
 (section (style swing)) 
 
-Ab7 | / | BbM7 | / | 
+Am7 | D7 | Dm7 | G7 | 
+Gm7 | C7 | Cm7 | F7 | 
 
+(phrase (style swing)) 
+BbM7 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 | 
 
-(section (style swing)) 
-
-Em7b5 | A7 | Dm7b5 | G7 | 
-Cm7b5 | F7 | BbM7 | / | 
+(phrase (style swing)) 
+BbM7 Bb7 | Eb Ab7 | 
+(phrase (style swing)) 
+BbM7 F7 | BbM7 | 
 
 (part
     (type melody)

@@ -1,28 +1,28 @@
-(title Giant Steps)
+(title Donna Lee)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 220.0)
+(tempo 180.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g--)
+    (bass-low g---)
     (bass-base c--)
     (chord-high a)
-    (chord-low a--)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,21 +34,37 @@
     (key 0)
 )
 
+(phrase (style swing)) 
+AbM7 | / | Bb7 | / | 
+Bbm7 | / Eb7#5 | AbM7 | Ebm7 Ab7#5 | 
+
+(phrase (style swing)) 
+DbM7 | Gb7 | Cm7 | F7b9 | 
+
+(phrase (style swing)) 
+Bb7#11 | / | Bbm7 | Eb7 | 
+
+(phrase (style swing)) 
+AbM7 | / | Bb7 | / | 
+Gm7b5 | C7#9 | Fm | Gm7b5 C7#9 | 
+
+(phrase (style swing)) 
+Fm7 | C7 | Fm7 | Bo7 | 
+
+(phrase (style swing)) 
+Cm7 F7 | Bbm7 Eb7 | AbM7 | 
 
 (section (style swing)) 
 
-BM7 D9 | GM7 Bb9 | EbM7 | Am9 D9 | 
-GM7 Bb9 | EbM7 F#9 | BM7 | Fm9 Bb9 | 
-EbM9 | Am9 D9 | GM7 | C#m7 F#9 | 
-BM7 | Fm9 Bb9 | EbM7 | C#m7 F#9 | 
+Bbm7 Eb7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

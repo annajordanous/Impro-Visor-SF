@@ -1,4 +1,4 @@
-(title 8-Bar Blues)
+(title Just Friends)
 (composer )
 (show )
 (year )
@@ -9,10 +9,10 @@
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -34,19 +34,31 @@
     (key 0)
 )
 
+(phrase (style swing)) 
+BbM7 | / | Bbm7 | Eb7 | 
+FM7 | / | Abm7 | Db7 | 
+
+(phrase (style swing)) 
+Gm7 | C7 | Em7b5 A7alt | Dm7 | 
+G7#11 | / | Gm7 C7 | Cm7 F7 | 
+
+(phrase (style swing)) 
+BbM7 | / | Bbm7 | Eb7 | 
+FM7 | / | Abm7 | Db7 | 
+
 
 (section (style swing)) 
 
-C | C7 | F | Fm | 
-C Am | Dm G7 | C | G7sus4 | 
+Gm7 | C7 | Em7b5 A7alt | Dm | 
+G7 | C7 | FM7 | Cm7 F7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -1,28 +1,28 @@
-(title On Green Dolphin Street)
-(composer )
+(title Giant Steps)
+(composer John Coltrane)
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 220.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
-(style latin
-    (swing 0.55)
-    (comp-swing 0.55)
+(style swing
+    (swing 0.67)
+    (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
+    (bass-low g--)
     (bass-base c--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low a--)
     (chord-base c- e- g-)
 )
 (part
@@ -34,47 +34,33 @@
     (key 0)
 )
 
-(phrase (style latin)) 
-EbM7 | / | Ebm7 | / | 
+
+(section (style swing)) 
+
+BM7 D9 | GM7 Bb9 | EbM7 | Am9 D9 | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-F/Eb | E/Eb | EbM7 | Gm7 C7 | 
-
-(phrase (style latin)) 
-Fm7 | Bb7 | EbM7 | / | 
+GM7 Bb9 | EbM7 F#9 | BM7 | Fm9 Bb9 | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
-
-(phrase (style latin)) 
-EbM7 | / | Ebm7 | / | 
+EbM9 | Am9 D9 | GM7 | C#m7 F#9 | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-F/Eb | E/Eb | EbM7 | Gm7 C7 | 
-
-(phrase (style latin)) 
-Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
-
-(phrase (style latin)) 
-Gm7 C7 | Fm7 Bb7 | EbM7 | 
-
-(section (style latin)) 
-
-Fm7 Bb7 | 
+BM7 | Fm9 Bb9 | EbM7 | C#m7 F#9 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

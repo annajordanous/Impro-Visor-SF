@@ -1,18 +1,18 @@
-(title All or Nothing at All)
+(title Blue and Sentimental)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 152.0)
+(tempo 130.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -34,63 +34,21 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-Am | AmM7 | Am7 | Am6 | 
-
 
 (section (style swing)) 
 
-Am7 | / | Bb7 | / | 
-
-
-(section (style swing)) 
-
-Gm7 Gm7/F | Em7b5 A7b9 | Dm7 | / D#o7 | 
-Dm7 | G7 | CM7 | Bm7b5 E7b9 | 
-
-
-(section (style swing)) 
-
-Am | AmM7 | Am7 | Am6 | 
-Am7 | / | Bb7 | / | 
-
-
-(section (style swing)) 
-
-Gm7 Gm7/F | Em7b5 A7b9 | Dm7 | / D#o7 | 
-Dm7 | G7 | CM7 | Bbm7b5 Eb7b9 | 
-
-
-(section (style swing)) 
-
-AbM7 AbM7#5 | Ab6 AbM7#5 | AbM7 | Bbm7 Eb7 | 
-AbM7 | Db/Ab AbM7 | Eb7 | / | 
-
-
-(section (style swing)) 
-
-Bbm7 | Eb7 | Bbm7 | Gm7b5 C7#5 | 
-Fm7 | Db7 | C7 | E7b9 | 
-
-
-(section (style swing)) 
-
-Am | AmM7 | Am7 | Am6 | 
-Am7 | / | Bb7 | / | 
-
-
-(section (style swing)) 
-
-Gm7 Gm7/F | Em7b5 A7b9 | Dm7 | E7b9 | 
-Am7 | Fm6 | C6 | Bm7b5 E7b9 | 
-
+EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | Gm7 C7b9 Fm7 Bb7b9 | 
+Eb Db7 C7 / | F7 Bb7 | F7 Bb7 | Eb / Bbm7 Eb7 | 
+Ab6 Ao7 | Eb/Bb / Bbm7 Eb7 | Ab6 Ao7 | Eb/Bb / Fm7 Bb7b9 | 
+EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | Eb7 D7 Db7 C7 | 
+F7 Bb7 | Eb Eo7 Fm7 Bb7 | 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

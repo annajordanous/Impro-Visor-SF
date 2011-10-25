@@ -1,28 +1,28 @@
-(title Blue and Sentimental)
+(title Afternoon In Paris)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 100.0)
+(tempo 140.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-instrument 33)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
-    (bass-base c--)
+    (bass-low c---)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -37,18 +37,36 @@
 
 (section (style swing)) 
 
-EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | Gm7 C7b9 Fm7 Bb7b9 | 
-Eb Db7 C7 / | F7 Bb7 | F7 Bb7 | Eb / Bbm7 Eb7 | 
-Ab6 Ao7 | Eb/Bb / Bb7#5 Eb7 | Ab6 Ao7 | Eb/Bb / Fm7 Bb7b9 | 
-EbM7 Db7 C7 / | F7 Bb7 | F7 Bb7 | Eb7 D7 Db7 C7 | 
-F7 Bb7 | Eb Eo7 Fm7 Bb7 | 
+CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
+AbM7 | Dm7b5 G7 | CM7 A7 | Dm7 G7 | 
+
+
+(section (style swing)) 
+
+CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
+AbM7 | Dm7b5 G7 | CM7 | / | 
+
+(phrase (style swing)) 
+Dm7 | G7 | CM7 | Am7 | 
+
+
+(section (style swing)) 
+
+Dm7 | G7 | C#m7 F#7 | Dm7 G7 | 
+
+
+(section (style swing)) 
+
+CM7 | Cm7 F7 | BbM7 | Bbm7 Eb7 | 
+AbM7 | Dm7b5 G7 | CM7 | / | 
+
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

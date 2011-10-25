@@ -1,11 +1,11 @@
-(title A Foggy Day)
+(title Half Nelson)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 180.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -34,20 +34,14 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-FM7 | Ab7 | Gm7 | C7 | 
-FM7 | D7alt | G7 | C7 | 
-FM7 | Cm7 F7 | BbM7 | Bbm7 | 
-FM7 | D7 | G7 | C7alt | 
-FM7 | Ab7 | Gm7 | C7 | 
-FM7 | D7alt | G7 | C7 | 
-FM7 | F7 | BbM7 | Bbm7 | 
-FM7/C Gm7/C | Am7/C Gm7/C | FM7 G7 | Gm7 C7 | 
-FM7 | 
 
 (section (style swing)) 
 
-Gm7 C7b9 | 
+CM7 | / | Fm7 | Bb7 | 
+CM7 | / | Bm7 E7 | Bbm7 Eb7 | 
+AbM7 | / | Am7 | D7 | 
+Dm7 | G7 | CM7 Eb7 | AbM7 Db7#11 | 
+
 (part
     (type melody)
     (title )
@@ -57,4 +51,4 @@ Gm7 C7b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

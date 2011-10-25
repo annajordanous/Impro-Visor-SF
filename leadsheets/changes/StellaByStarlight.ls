@@ -1,11 +1,11 @@
-(title You Stepped out of a Dream)
+(title Stella by Starlight)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 176.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,14 +15,14 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style latin
-    (swing 0.55)
-    (comp-swing 0.55)
+(style swing
+    (swing 0.67)
+    (comp-swing 0.67)
     (bass-high g-)
     (bass-low c---)
-    (bass-base c--)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,35 +34,37 @@
     (key 0)
 )
 
-(phrase (style latin)) 
-CM7 | / | DbM7 | / | 
+(phrase (style swing)) 
+Em7b5 | A7 | Cm7 | F7 | 
+
+(phrase (style swing)) 
+Fm7 | Bb7 | EbM7 | 
+
+(section (style swing)) 
+
+Ab7#11 | 
+
+(phrase (style swing)) 
+BbM7 | Em7b5 A7 | Dm7 | Bbm7 Eb7 | 
+FM7 | 
+
+(section (style swing)) 
+
+Gm7 C7 | Am7b5 | D7#9 | 
+
+(phrase (style swing)) 
+G7+ | / | Cm7 | / | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Bbm7 | Eb7 | AbM7 | / | 
-
-(phrase (style latin)) 
-Gm7 | C7 | FM7 | / | 
+Ab7 | / | BbM7 | / | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Am7 | D7 | Ebm7 Ab7 | Dm7 G7 | 
-
-(phrase (style latin)) 
-CM7 | / | DbM7 | / | 
-
-(phrase (style latin)) 
-Bbm7 | Eb7 | Gb7 | F7 | 
-Dm7b5 | G7 | CM7 | A7 | 
-
-(phrase (style latin)) 
-Dm7 | G7 | CM7 | 
-
-(section (style latin)) 
-
-Dm7 G7 | 
+Em7b5 | A7 | Dm7b5 | G7 | 
+Cm7b5 | F7 | BbM7 | / | 
 
 (part
     (type melody)

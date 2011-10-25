@@ -1,4 +1,4 @@
-(title Jordu)
+(title Doxy)
 (composer )
 (show )
 (year )
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
-    (bass-base e--)
+    (bass-low g---)
+    (bass-base c--)
     (chord-high a)
-    (chord-low d-)
+    (chord-low b--)
     (chord-base c- e- g-)
 )
 (part
@@ -34,57 +34,23 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-D7 G7 | Cm | 
 
 (section (style swing)) 
 
-F7 Bb7 | Eb | 
+Bb7_ Ab7 | G7 | C7 F7 | Bb F7 | 
 
-(phrase (style swing)) 
-D7 G7 | Cm | 
 
 (section (style swing)) 
 
-Ab7 | Cm | 
+Bb7_ Ab7 | G7 | C7 | F7 | 
 
 (phrase (style swing)) 
-D7 G7 | Cm | 
+Bb7_ | / | Eb7 | Eo7 | 
+Bb7_ Ab7 | G7 | 
 
 (section (style swing)) 
 
-F7 Bb7 | Eb | 
-
-(phrase (style swing)) 
-D7 G7 | Cm | 
-
-(section (style swing)) 
-
-Ab7 | Cm | 
-
-
-(section (style swing)) 
-
-G7 C7 | F7 Bb7 | Eb7 Ab7 | Db7 | 
-
-
-(section (style swing)) 
-
-F7 Bb7 | Eb7 Ab7 | Db7 Gb7 | B7 Cm / / | 
-
-(phrase (style swing)) 
-D7 G7 | Cm | 
-
-(section (style swing)) 
-
-F7 Bb7 | Eb | 
-
-(phrase (style swing)) 
-D7 G7 | Cm | 
-
-(section (style swing)) 
-
-Ab7 | Cm | 
+C7 F7 | Bb | 
 
 (part
     (type melody)
@@ -95,4 +61,4 @@ Ab7 | Cm |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

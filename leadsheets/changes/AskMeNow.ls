@@ -1,11 +1,11 @@
-(title Doxy)
+(title Ask Me Now)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 100.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -22,7 +22,7 @@
     (bass-low g---)
     (bass-base c--)
     (chord-high a)
-    (chord-low b--)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -37,20 +37,42 @@
 
 (section (style swing)) 
 
-Bb7_ Ab7 | G7 | C7 F7 | Bb F7 | 
+Gm7 C7 F#m7 B7 | Fm7 Bb7 Em7 A7 | Ebm7 Ab7#5 | B7b5 Bb7#11 | 
 
 
 (section (style swing)) 
 
-Bb7_ Ab7 | G7 | C7 | F7 | 
+Eb7 D7 | DbM7 Eb7#11 | Ebm7 Ab7b9 | B7b5 Bb7b5 A7b5 Ab7#5 | 
 
-(phrase (style swing)) 
-Bb7_ | / | Eb7 | Eo7 | 
-Bb7_ Ab7 | G7 | 
 
 (section (style swing)) 
 
-C7 F7 | Bb | 
+Gm7 C7 F#m7 B7 | Fm7 Bb7 Em7 A7 | Ebm7 Ab7#5 | B7b5 Bb7#11 | 
+
+
+(section (style swing)) 
+
+Eb7 D7 | DbM7 Eb7#11 | Ebm7 Ab7b9 | Db6 | 
+
+
+(section (style swing)) 
+
+Ebm7 Ab7 | DbM7 / Fm7 E7 | Ebm7 D9 | DbM7 | 
+
+
+(section (style swing)) 
+
+Eb7 | Eb7 | Ebm7/Ab Ab7b9 | Gb13#11 | 
+
+
+(section (style swing)) 
+
+Gm7 C7 F#m7 B7 | Fm7 Bb7 Em7 A7 | Ebm7 Ab7#5 | B7b5 Bb7#11 | 
+
+
+(section (style swing)) 
+
+Eb7 D7 | C#M7 Eb7#11 | Ebm7 Ab7b9 | Db6 | 
 
 (part
     (type melody)
@@ -61,4 +83,4 @@ C7 F7 | Bb |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -1,11 +1,11 @@
-(title All the Things You Are)
+(title All or Nothing at All)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 152.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -34,36 +34,55 @@
     (key 0)
 )
 
-
-(section (style swing)) 
-
-Fm7 | Bbm7 | Eb7 | AbM7 | 
-DbM7 | Dm7 G7 | CM7 | / | 
-
-
-(section (style swing)) 
-
-Cm7 | Fm7 | Bb7 | EbM7 | 
-AbM7 | Am7 D7 | GM7 | E7alt | 
-
-
-(section (style swing)) 
-
-Am7 | D7 | GM7 | / | 
-F#m7 | B7 | EM7 | C7alt | 
-
-
-(section (style swing)) 
-
-Fm7 | Bbm7 | Eb7 | AbM7 | 
-DbM7 | Dbm7 | Cm7 | Bm7 | 
-
 (phrase (style swing)) 
-Bbm7 | Eb7 | AbM7 | 
+Am | AmM7 | Am7 | Am6 | 
+
 
 (section (style swing)) 
 
-Gm7 C7alt | 
+Am7 | / | Bb7 | / | 
+
+
+(section (style swing)) 
+
+Gm7 Gm7/F | Em7b5 A7b9 | Dm7 | / D#o7 | 
+Dm7 | G7 | CM7 | Bm7b5 E7b9 | 
+
+
+(section (style swing)) 
+
+Am | AmM7 | Am7 | Am6 | 
+Am7 | / | Bb7 | / | 
+
+
+(section (style swing)) 
+
+Gm7 Gm7/F | Em7b5 A7b9 | Dm7 | / D#o7 | 
+Dm7 | G7 | CM7 | Bbm7b5 Eb7b9 | 
+
+
+(section (style swing)) 
+
+AbM7 AbM7#5 | Ab6 AbM7#5 | AbM7 | Bbm7 Eb7 | 
+AbM7 | Db/Ab AbM7 | Eb7 | / | 
+
+
+(section (style swing)) 
+
+Bbm7 | Eb7 | Bbm7 | Gm7b5 C7#5 | 
+Fm7 | Db7 | C7 | E7b9 | 
+
+
+(section (style swing)) 
+
+Am | AmM7 | Am7 | Am6 | 
+Am7 | / | Bb7 | / | 
+
+
+(section (style swing)) 
+
+Gm7 Gm7/F | Em7b5 A7b9 | Dm7 | E7b9 | 
+Am7 | Fm6 | C6 | Bm7b5 E7b9 | 
 
 (part
     (type melody)
@@ -74,4 +93,4 @@ Gm7 C7alt |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

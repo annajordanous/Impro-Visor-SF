@@ -1,5 +1,5 @@
-(title Here's That Rainy Day)
-(composer Jimmy Van Heusen)
+(title What is This Thing Called Love? (Hot House))
+(composer Cole Porter)
 (show )
 (year )
 (comments )
@@ -15,14 +15,14 @@
 (chord-volume 54)
 (breakpoint 54)
 (layout)
-(style latin
-    (swing 0.55)
-    (comp-swing 0.55)
+(style swing
+    (swing 0.67)
+    (comp-swing 0.67)
     (bass-high g-)
     (bass-low c---)
-    (bass-base c--)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,33 +34,25 @@
     (key 0)
 )
 
-(phrase (style latin)) 
-GM7 | Bb7 | EbM7 | AbM7 | 
+(phrase (style swing)) 
+Gm7b5 | C7 | Fm | / | 
+
+(phrase (style swing)) 
+Dm7b5 | G7 | CM7 | / | 
+Gm7b5 | C7 | Fm | / | 
+
+(phrase (style swing)) 
+Dm7b5 | G7 | CM7 | / | 
+Cm7 | F7 | BbM7 | / | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Am7 | D7 | GM7 | Dm7 G7 | 
+Ab7 | / | G7 | / | 
 
-(phrase (style latin)) 
-Cm7 | F7 | BbM7 | EbM7 | 
-
-
-(section (style latin)) 
-
-Am7 | D7 | GM7 E7 | Am7 D7 | 
-
-(phrase (style latin)) 
-GM7 | Bb7 | EbM7 | AbM7 | 
-Am7 | D7 | GM7 | Dm7 G7 | 
-
-(phrase (style latin)) 
-CM7 | 
-
-(section (style latin)) 
-
-Am7 D7 | Bm7 | Bbo | 
-Am7 | D7 | GM7 E7 | Am7 D7 | 
+(phrase (style swing)) 
+Gm7b5 | C7 | Fm | / | 
+Dm7b5 | G7 | CM7 | / | 
 
 (part
     (type melody)

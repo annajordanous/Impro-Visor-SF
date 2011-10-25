@@ -1,18 +1,18 @@
-(title Cherokee)
+(title Alone Together)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 220.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -37,60 +37,37 @@
 
 (section (style swing)) 
 
-BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7 | / | 
+Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
+Dm | Am7b5 D7 | Gm | / | 
+Bm7 E7 | Gm7 C7 | FM7 | Em7b5 A7 | 
+DM7 | Em7 A7b9 | 
+
+(section (style swing)) 
+
+Dm | Em7b5 A7 | 
+Dm | Em7b5 A7 | Dm | Am7b5 D7 | 
+Gm7 | / | Bm7 E7 | Gm7 C7 | 
+FM7 | Em7b5 A7 | DM7 | / | 
 
 
 (section (style swing)) 
 
-BbM7 | / | C7#11 | / | 
-Cm7 | G7 | Cm7 | F7+ | 
+Am7b5 | D7b9 | Gm | / | 
+Gm7b5 | C7 | FM7 | Em7b5 A7 | 
 
 
 (section (style swing)) 
 
-BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7 | / | 
-
-
-(section (style swing)) 
-
-BbM7 | / | C7#11 | / | 
-Cm7 | F7 | BbM7 | / | 
-
-(phrase (style swing)) 
-C#m7 | F#7 | BM7 | / | 
-Bm7 | E7 | AM7 | / | 
-
-(phrase (style swing)) 
-Am7 | D7 | GM7 | / | 
-
-
-(section (style swing)) 
-
-Gm7 | C7 | Cm7 | F7+ | 
-
-
-(section (style swing)) 
-
-BbM7 | / | Fm7 | Bb7 | 
-EbM7 | / | Ab7 | / | 
-
-(phrase (style swing)) 
-BbM7 | / | C7#11 | / | 
-Cm7 | F7 | BbM7 | 
-
-(section (style swing)) 
-
-Cm7 F7 | 
+Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
+Dm | Bb7 A7 | Dm | / | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

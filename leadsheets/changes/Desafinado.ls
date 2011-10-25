@@ -1,11 +1,11 @@
-(title Half Nelson)
+(title Desafinado)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 170.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,11 +15,11 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style swing
-    (swing 0.67)
-    (comp-swing 0.67)
+(style latin
+    (swing 0.55)
+    (comp-swing 0.55)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low c---)
     (bass-base c--)
     (chord-high a)
     (chord-low c-)
@@ -35,12 +35,65 @@
 )
 
 
-(section (style swing)) 
+(section (style latin)) 
 
-CM7 | / | Fm7 | Bb7 | 
-CM7 | / | Bm7 E7 | Bbm7 Eb7 | 
-AbM7 | / | Am7 | D7 | 
-Dm7 | G7 | CM7 Eb7 | AbM7 Db7#11 | 
+FM7 | / | G7#11 | / | 
+Gm7 | C7 | Am7b5 | D7 | 
+
+(phrase (style latin)) 
+Gm7 | Em7b5 A7 | D7 | Am7b5 D7 | 
+
+
+(section (style latin)) 
+
+G7 | / | GbM7 | / | 
+
+
+(section (style latin)) 
+
+FM7 | / | G7#11 | / | 
+Gm7 | C7 | Am7b5 | D7 | 
+
+(phrase (style latin)) 
+Gm7 | Bbm7 Eb7 | FM7 | 
+(phrase (style latin)) 
+E7 | 
+
+(phrase (style latin)) 
+AM7 | C7 | Bm7 | E7 | 
+
+(phrase (style latin)) 
+AM7 | A#o | Bm7 | E7 | 
+
+(phrase (style latin)) 
+AM7 | F#m7 | Bm7 | E7 | 
+
+(phrase (style latin)) 
+C | C#o | Dm7 | G7 | 
+
+
+(section (style latin)) 
+
+Gm7 | D7 | Gm7 | C7 | 
+
+
+(section (style latin)) 
+
+FM7 | / | G7#11 | / | 
+Gm7 | C7 | Am7b5 | D7 | 
+
+(phrase (style latin)) 
+Gm7 | Eb7 | FM7 | Abo7 | 
+
+(phrase (style latin)) 
+G7 | / | Bbm7 | Eb7 | 
+
+(phrase (style latin)) 
+G7 | C7 | FM7 | 
+
+(section (style latin)) 
+
+Gm7 C7 | 
 
 (part
     (type melody)
@@ -51,4 +104,4 @@ Dm7 | G7 | CM7 Eb7 | AbM7 Db7#11 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

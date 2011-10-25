@@ -1,23 +1,23 @@
-(title Blue Bossa)
+(title 12-Bar Blues)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
-(key 0)
-(tempo 98.0)
+(key -1)
+(tempo 180.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-instrument 33)
+(bass-volume 31)
+(drum-volume 48)
+(chord-volume 37)
 (breakpoint 54)
-(layout)
-(style latin
-    (swing 0.55)
-    (comp-swing 0.55)
+(layout 4)
+(style swing
+    (swing 0.67)
+    (comp-swing 0.67)
     (bass-high g-)
     (bass-low g---)
     (bass-base c--)
@@ -31,30 +31,31 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Cm69 | / | Fm9 | / | 
+F13_ | Bb13 Bo7 | F13_ | Cm9 F13b9 | 
 
-(phrase (style latin)) 
-Dm7b5 | G7#5#9 | Cm69 | / | 
-Ebm9 | Ab13 | DbM9 | / | 
-Dm7b5 | G7#5#9 | Cm69 | 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Dm7b5 G7#5#9 | 
+Bb13 | Bo7 | F13_ | D7#5#9 | 
+
+
+(section (style swing)) 
+
+Gm9 | C13b9 | F13_ D7#5#9 | Gm9 C13b9 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1

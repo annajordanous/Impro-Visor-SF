@@ -2315,7 +2315,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
     private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
         if(brickLibrary.hasBrick(BrickLibrary.dashless(dialogNameField.getText()))) {
-            ErrorLog.log(ErrorLog.WARNING, dialogNameField.getText());
+            // why? ErrorLog.log(ErrorLog.WARNING, dialogNameField.getText());
             dialogVariantField.setEditable(true);
             dialogVariantLabel.setEnabled(true);
         } else {

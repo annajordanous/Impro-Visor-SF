@@ -1,5 +1,5 @@
-(title Here's That Rainy Day)
-(composer )
+(title On Green Dolphin Street)
+(composer Bronislau Kaper)
 (show )
 (year )
 (comments )
@@ -9,10 +9,10 @@
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
-(bass-volume 60)
-(drum-volume 60)
-(chord-volume 60)
+(bass-instrument 33)
+(bass-volume 50)
+(drum-volume 36)
+(chord-volume 54)
 (breakpoint 54)
 (layout)
 (style latin
@@ -35,40 +35,42 @@
 )
 
 (phrase (style latin)) 
-GM7 | Bb7 | EbM7 | AbM7 | 
+EbM7 | / | Ebm7 | / | 
 
 
 (section (style latin)) 
 
-Am7 | D7 | GM7 | Dm7 G7 | 
+F/Eb | E/Eb | EbM7 | Gm7 C7 | 
+
+(phrase (style swing)) 
+Fm7 | Bb7 | EbM7 | / | 
+
+
+(section (style swing)) 
+
+Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
 
 (phrase (style latin)) 
-Cm7 | F7 | BbM7 | EbM7 | 
+EbM7 | / | Ebm7 | / | 
 
 
 (section (style latin)) 
 
-Am7 | D7 | GM7 E7 | Am7 D7 | 
+F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
-(phrase (style latin)) 
-GM7 | Bb7 | EbM7 | AbM7 | 
-Am7 | D7 | GM7 | Dm7 G7 | 
-
-(phrase (style latin)) 
-CM7 | 
-(phrase (style latin)) 
-Am7 D7 | Bm7 | Bbo | 
+(phrase (style swing)) 
+Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
-Am7 | D7 | GM7 E7 | Am7 D7 | 
+Gm7 C7 | Fm7 Bb7 | EbM7 | Fm7 Bb7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)

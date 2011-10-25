@@ -1,9 +1,9 @@
-(title Bluesette)
+(title Daahoud)
 (composer )
 (show )
 (year )
 (comments )
-(meter 3 4)
+(meter 4 4)
 (key 0)
 (tempo 160.0)
 (volume 80)
@@ -15,7 +15,7 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
-(style waltz
+(style swing
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
@@ -34,16 +34,35 @@
     (key 0)
 )
 
+(phrase (style swing)) 
+Ebm7 Ab7 | Dbm7 Gb7 | BM7 | Bb7#5 | 
 
-(section (style waltz)) 
+(phrase (style swing)) 
+Abm7 Gb7 | F7 EM7 | EbM7 | / | 
 
-BbM7 | / | Am7b5 | D7 | 
-Gm7 | C7 | Fm7 | Bb7 | 
-EbM7 | / | Ebm7 | Ab7 | 
-DbM7 | / | Dbm7 | Gb7 | 
-BM7 | / | Cm7b5 | F7 | 
-Dm7 | Db7 | Cm7 | F7 | 
+(phrase (style swing)) 
+Ebm7 Ab7 | Dbm7 Gb7 | BM7 | Bb7#5 | 
 
+(phrase (style swing)) 
+Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+
+(phrase (style swing)) 
+Bbm7 | Eb7alt | AbM7 | Ab6 | 
+
+(phrase (style swing)) 
+Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
+
+(phrase (style swing)) 
+Ebm7 Ab7 | Dbm7 Gb7 | BM7 | Bb7#5 | 
+
+(phrase (style swing)) 
+Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
+
+
+(section (style swing)) 
+
+GbM7 Gb6 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
+EbM7 | 
 (part
     (type melody)
     (title )
@@ -53,4 +72,4 @@ Dm7 | Db7 | Cm7 | F7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
