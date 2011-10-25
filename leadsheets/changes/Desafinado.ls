@@ -1,10 +1,10 @@
 (title Desafinado)
-(composer )
+(composer Antonio Carlos Jobim)
 (show )
-(year )
+(year 1962)
 (comments )
 (meter 4 4)
-(key 0)
+(key -1)
 (tempo 170.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 
@@ -101,7 +101,7 @@ Gm7 C7 |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r4 c8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8

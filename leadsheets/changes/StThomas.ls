@@ -1,7 +1,7 @@
 (title St. Thomas)
-(composer )
+(composer Sonny Rollins)
 (show )
-(year )
+(year 1956)
 (comments )
 (meter 4 4)
 (key 0)
@@ -63,4 +63,4 @@ C G7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 g8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

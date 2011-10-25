@@ -1,11 +1,11 @@
 (title Afternoon In Paris)
-(composer )
+(composer John Lewis)
 (show )
-(year )
+(year 1956)
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 140.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -14,7 +14,7 @@
 (drum-volume 36)
 (chord-volume 54)
 (breakpoint 54)
-(layout)
+(layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -69,4 +69,4 @@ AbM7 | Dm7b5 G7 | CM7 | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ g+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

@@ -1,7 +1,7 @@
 (title Alone Together)
-(composer )
+(composer Arthur Schwartz and Howard Dietz)
 (show )
-(year )
+(year 1932)
 (comments )
 (meter 4 4)
 (key 0)
@@ -14,7 +14,7 @@
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout)
+(layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -70,4 +70,4 @@ Dm | Bb7 A7 | Dm | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ f2+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4

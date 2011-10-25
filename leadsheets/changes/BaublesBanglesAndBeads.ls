@@ -1,10 +1,10 @@
 (title Baubles, Bangles, and Beads)
 (composer Robert Wright and George Forrest)
-(show )
-(year )
+(show Kismet)
+(year 1953)
 (comments )
 (meter 3 4)
-(key 0)
+(key -3)
 (tempo 184.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 
@@ -65,7 +65,7 @@ Bbm7 | Eb7 | AbM7 | / |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ bb4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

@@ -1,10 +1,10 @@
 (title On Green Dolphin Street)
 (composer Bronislau Kaper)
-(show )
-(year )
+(show Green Dolphin Street)
+(year 1947)
 (comments )
 (meter 4 4)
-(key 0)
+(key -3)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 (phrase (style latin)) 
@@ -72,7 +72,7 @@ Gm7 C7 | Fm7 Bb7 | EbM7 | Fm7 Bb7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ eb+2 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

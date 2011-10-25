@@ -1,10 +1,10 @@
 (title Sweet Lorraine)
-(composer )
+(composer Cliff Burwell)
 (show )
-(year )
+(year 1928)
 (comments )
 (meter 4 4)
-(key 0)
+(key 1)
 (tempo 120.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key 1)
 )
 
 (phrase (style swing)) 
@@ -76,7 +76,7 @@ Am7 D7 |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key 1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ b4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

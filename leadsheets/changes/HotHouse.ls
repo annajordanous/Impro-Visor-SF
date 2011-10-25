@@ -1,7 +1,7 @@
 (title What is This Thing Called Love? (Hot House))
 (composer Cole Porter)
-(show )
-(year )
+(show Wake Up and Dream)
+(year 1929)
 (comments )
 (meter 4 4)
 (key 0)
@@ -63,4 +63,4 @@ Dm7b5 | G7 | CM7 | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ bb8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

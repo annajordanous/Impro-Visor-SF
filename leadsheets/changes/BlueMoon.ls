@@ -1,10 +1,10 @@
 (title Blue Moon)
-(composer )
+(composer Richard Rodgers)
 (show )
-(year )
+(year 1934)
 (comments )
 (meter 4 4)
-(key 0)
+(key -3)
 (tempo 100.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 
@@ -64,7 +64,9 @@ Eb Cm7 | Fm7 Bb7 | Eb | / |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ bb1+8
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

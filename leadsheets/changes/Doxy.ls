@@ -1,11 +1,11 @@
 (title Doxy)
-(composer )
+(composer Sonny Rollins)
 (show )
-(year )
+(year 1954)
 (comments )
 (meter 4 4)
-(key 0)
-(tempo 160.0)
+(key -1)
+(tempo 140.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 
@@ -58,7 +58,7 @@ C7 F7 | Bb |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ bb8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

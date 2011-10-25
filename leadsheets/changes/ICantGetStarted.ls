@@ -1,7 +1,7 @@
 (title I Can't Get Started)
-(composer )
-(show )
-(year )
+(composer Vernon Duke)
+(show Ziegfeld Follies of 1936)
+(year 1936)
 (comments )
 (meter 4 4)
 (key 0)
@@ -69,4 +69,4 @@ CM7 Bb7 | CM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ b4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

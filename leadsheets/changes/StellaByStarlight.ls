@@ -1,7 +1,7 @@
 (title Stella by Starlight)
-(composer )
-(show )
-(year )
+(composer Victor Young)
+(show The Uninvited)
+(year 1944)
 (comments )
 (meter 4 4)
 (key 0)
@@ -75,4 +75,6 @@ Cm7b5 | F7 | BbM7 | / |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ a1+8
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

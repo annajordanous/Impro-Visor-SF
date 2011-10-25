@@ -1,7 +1,7 @@
 (title Airegin)
-(composer )
+(composer Sonny Rollins)
 (show )
-(year )
+(year 1954)
 (comments )
 (meter 4 4)
 (key 0)
@@ -14,7 +14,7 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -74,4 +74,4 @@ Bbm7 | Eb7 | AbM7 | Gm7b5 C7alt |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 r8 f8/3 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8+32+120+480

@@ -1,7 +1,7 @@
 (title Yardbird Suite)
-(composer )
+(composer Charlie Parker)
 (show )
-(year )
+(year 1946)
 (comments )
 (meter 4 4)
 (key 0)
@@ -79,4 +79,4 @@ D7 | G7 | C | Dm7 G7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r4 c+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

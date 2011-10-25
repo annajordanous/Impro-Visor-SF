@@ -1,7 +1,7 @@
 (title Sweet and Lovely)
-(composer )
+(composer Gus Arnheim, Charles N. Daniels, Harry Tobias)
 (show )
-(year )
+(year 1931)
 (comments )
 (meter 4 4)
 (key 0)
@@ -75,4 +75,4 @@ F7 | BbM7 Eb7 | CM7 G7 | C6 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ c+2+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4

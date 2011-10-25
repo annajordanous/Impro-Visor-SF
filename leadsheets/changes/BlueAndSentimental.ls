@@ -1,11 +1,11 @@
 (title Blue and Sentimental)
-(composer )
+(composer Count Basie, Jerry Livingston, Mack David)
 (show )
-(year )
+(year 1938)
 (comments )
 (meter 4 4)
-(key 0)
-(tempo 130.0)
+(key -3)
+(tempo 90.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 
@@ -48,7 +48,7 @@ F7 Bb7 | Eb Eo7 Fm7 Bb7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ g8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

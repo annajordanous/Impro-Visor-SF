@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.0.9" transformSequenceNumber="3">
-  <directoryPresets config="./packaging" />
+  <directoryPresets config="." />
   <application name="Impro-Visor" distributionSourceDir="" applicationId="6140-2535-4985-4395" mediaDir="../../Desktop/Impro-Visor Release5.07" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Impro-Visor" publisher="Robert Keller" publisherWeb="http://www.cs.hmc.edu/~keller/jazz/impro-visor" version="5.07" allPathsRelative="true" backupOnSave="false" autoSave="false" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />

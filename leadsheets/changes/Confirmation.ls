@@ -1,7 +1,7 @@
 (title Confirmation)
 (composer Charlie Parker)
 (show )
-(year )
+(year 1946)
 (comments )
 (meter 4 4)
 (key -1)

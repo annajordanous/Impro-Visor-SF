@@ -1,7 +1,7 @@
 (title All or Nothing at All)
-(composer )
+(composer Arthur Altman)
 (show )
-(year )
+(year 1939)
 (comments )
 (meter 4 4)
 (key 0)
@@ -14,7 +14,7 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -93,4 +93,6 @@ Am7 | Fm6 | C6 | Bm7b5 E7b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ e1+4
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

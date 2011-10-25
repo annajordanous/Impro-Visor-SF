@@ -1,10 +1,10 @@
 (title Tune Up)
 (composer Miles Davis)
 (show )
-(year )
+(year 1956)
 (comments )
 (meter 4 4)
-(key 0)
+(key 2)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key 2)
 )
 
 (phrase (style swing)) 
@@ -72,7 +72,7 @@ Em7 | A7 | DM7 | / |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key 2)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ a2+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4

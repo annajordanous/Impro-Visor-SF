@@ -1,11 +1,11 @@
 (title Ask Me Now)
-(composer )
+(composer Thelonious Monk)
 (show )
-(year )
+(year 1947)
 (comments )
 (meter 4 4)
-(key 0)
-(tempo 100.0)
+(key -5)
+(tempo 124.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -5)
 )
 
 
@@ -80,7 +80,7 @@ Eb7 D7 | C#M7 Eb7#11 | Ebm7 Ab7b9 | Db6 |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key -5)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ c+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

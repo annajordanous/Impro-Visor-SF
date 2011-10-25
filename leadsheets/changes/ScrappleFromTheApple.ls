@@ -1,10 +1,10 @@
 (title Scrapple from the Apple)
-(composer )
+(composer Charlie Parker)
 (show )
-(year )
+(year 1947)
 (comments )
 (meter 4 4)
-(key 0)
+(key -1)
 (tempo 184.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 
@@ -64,7 +64,7 @@ FM7 F7 | Bb7 Bo7 | FM7 | Am7b5 D7b9 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 f#8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

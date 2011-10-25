@@ -1,10 +1,10 @@
 (title Donna Lee)
-(composer )
+(composer Miles Davis)
 (show )
-(year )
+(year 1947)
 (comments )
 (meter 4 4)
-(key 0)
+(key -4)
 (tempo 180.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -4)
 )
 
 (phrase (style swing)) 
@@ -64,7 +64,7 @@ Bbm7 Eb7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -4)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r2 eb+8/3 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4+8+32+120+480

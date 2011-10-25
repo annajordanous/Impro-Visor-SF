@@ -1,7 +1,7 @@
 (title Ladybird)
-(composer )
+(composer Tadd Dameron)
 (show )
-(year )
+(year 1947)
 (comments )
 (meter 4 4)
 (key 0)
@@ -55,4 +55,4 @@ Dm7 | G7 | CM7 Eb7 | AbM7 Db7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r4 g4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

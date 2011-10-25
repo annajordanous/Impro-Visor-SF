@@ -1,10 +1,10 @@
 (title Little Willie Leaps)
-(composer )
+(composer Miles Davis)
 (show )
-(year )
+(year 1947)
 (comments )
 (meter 4 4)
-(key 0)
+(key -1)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 (phrase (style swing)) 
@@ -76,7 +76,7 @@ Gm7 C7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 c8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

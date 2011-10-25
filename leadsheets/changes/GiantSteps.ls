@@ -1,10 +1,10 @@
 (title Giant Steps)
 (composer John Coltrane)
 (show )
-(year )
+(year 1960)
 (comments )
 (meter 4 4)
-(key 0)
+(key -3)
 (tempo 220.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 
@@ -60,7 +60,7 @@ BM7 | Fm9 Bb9 | EbM7 | C#m7 F#9 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ f#+2 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

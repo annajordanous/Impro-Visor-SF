@@ -1,5 +1,5 @@
 (title 12-Bar Blues)
-(composer )
+(composer Bob Keller)
 (show )
 (year )
 (comments )

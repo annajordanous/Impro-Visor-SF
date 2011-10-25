@@ -1,10 +1,10 @@
-(title Autumn Leaves)
+(title Autumn Leaves (Les Feuilles Mortes))
 (composer Joseph Kosma)
 (show )
-(year )
+(year 1945)
 (comments )
 (meter 4 4)
-(key -3)
+(key -2)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -3)
+    (key -2)
 )
 
 (phrase (style swing)) 
@@ -72,7 +72,9 @@ Eb7#9 | D7#9 | Gm | G7 |
     (composer )
     (instrument 73)
     (volume 85)
-    (key -3)
+    (key -2)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ eb+1+4
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

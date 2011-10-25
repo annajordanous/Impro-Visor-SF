@@ -1,10 +1,10 @@
 (title Joy Spring)
-(composer )
+(composer Clifford Brown)
 (show )
-(year )
+(year 1955)
 (comments )
 (meter 4 4)
-(key 0)
+(key -1)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 (phrase (style swing)) 
@@ -70,7 +70,7 @@ Am7 D7 | Gm7 C7 | FM7 | Gm7 C7 |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ c+2+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4+8

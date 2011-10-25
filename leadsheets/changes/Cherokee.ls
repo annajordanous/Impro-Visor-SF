@@ -1,10 +1,10 @@
 (title Cherokee)
-(composer )
+(composer Ray Noble)
 (show )
-(year )
+(year 1938)
 (comments )
 (meter 4 4)
-(key 0)
+(key -2)
 (tempo 220.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -2)
 )
 
 
@@ -90,7 +90,7 @@ Cm7 F7 |
     (composer )
     (instrument 0)
     (volume 85)
-    (key 0)
+    (key -2)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ d2 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

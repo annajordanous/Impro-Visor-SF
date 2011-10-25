@@ -1,7 +1,7 @@
 (title Half Nelson)
-(composer )
+(composer Miles Davis)
 (show )
-(year )
+(year 1956)
 (comments )
 (meter 4 4)
 (key 0)
@@ -51,4 +51,4 @@ Dm7 | G7 | CM7 Eb7 | AbM7 Db7#11 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 b8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

@@ -1,7 +1,7 @@
 (title Pennies From Heaven)
-(composer )
+(composer Arthur Johnston)
 (show )
-(year )
+(year 1936)
 (comments )
 (meter 4 4)
 (key 0)
@@ -67,4 +67,4 @@ Dm7 | D7 G7 | C6 | Dm7 G7b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ c+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

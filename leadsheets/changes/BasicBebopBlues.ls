@@ -1,5 +1,5 @@
 (title Basic Bebop Blues)
-(composer )
+(composer Conrad Cork)
 (show )
 (year )
 (comments )

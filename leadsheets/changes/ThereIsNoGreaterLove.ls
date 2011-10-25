@@ -1,10 +1,10 @@
 (title There Is No Greater Love)
-(composer )
+(composer Isham Jones)
 (show )
-(year )
+(year 1936)
 (comments )
 (meter 4 4)
-(key 0)
+(key -2)
 (tempo 120.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -2)
 )
 
 
@@ -70,7 +70,7 @@ C7 | Cm7 F7 | BbM7 | / |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -2)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ bb4+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8

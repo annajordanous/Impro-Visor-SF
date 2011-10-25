@@ -1,10 +1,10 @@
 (title Blue Bossa)
-(composer )
+(composer Kenny Dorham)
 (show )
-(year )
+(year 1963)
 (comments )
 (meter 4 4)
-(key 0)
+(key -3)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 (phrase (style swing)) 
@@ -56,7 +56,7 @@ Dm7b5 G7alt |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ g+4+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8
