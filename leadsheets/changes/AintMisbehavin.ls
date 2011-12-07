@@ -1,11 +1,11 @@
-(title Daahoud)
+(title Ain't Misbehavin')
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -35,40 +35,39 @@
 )
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
+Eb6 Eo7 | Fm7 F#o7 | 
 (phrase (style swing)) 
-Bb7#5 | 
+Gm7 G7 | AbM7 Abm7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+Gm7 C7 | Fm7 Bb7 | G7 C7 | F7 Bb7 | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
+Eb6 Eo7 | Fm7 F#o7 | 
 (phrase (style swing)) 
-Bb7#5 | 
+Gm7 G7 | AbM7 Abm7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+Gm7 C7 | Fm7 Bb7 | Eb6 Abm | Eb6 G7 | 
 
 (phrase (style swing)) 
-Bbm7 | Eb7alt | AbM7 | Ab6 | 
+Cm | Cm+ | Cm6 | C7 | 
+Bb6 G7 | Cm7 F7 | 
+(phrase (style swing)) 
+Bb7 C7 | F7 Bb7 | 
 
 (phrase (style swing)) 
-Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
+Eb6 Eo7 | Fm7 F#o7 | 
+(phrase (style swing)) 
+Gm7 G7 | AbM7 Abm7 | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
-
+Gm7 C7 | Fm7 Bb7 | Eb6 | 
 
 (section (style swing)) 
 
-GbM7 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
-EbM7 | 
+Fm7 Bb7 | 
+
 (part
     (type melody)
     (title )
@@ -78,4 +77,4 @@ EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

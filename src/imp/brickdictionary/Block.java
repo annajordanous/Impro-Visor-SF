@@ -21,6 +21,7 @@
 
 package imp.brickdictionary;
 
+import imp.data.PitchClass;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ import polya.Polylist;
  * Provides an inheritance structure for each.
  * @author Zachary Merritt
  */
-public class Block {
+abstract public class Block {
     
     private static final String OVERLAP_STRING = " + . . .";
     // Data members //
@@ -315,7 +316,12 @@ public class Block {
       {
         return flattenBlock().get(0);
       }
-    
+
+     public long getFirstRoot()
+      {
+        return PitchClass.getPitchClass(getFirstChord().getRoot()).getSemitones();
+      }
+        
     public ChordBlock getLastChord()
       {
         ArrayList<ChordBlock> list = flattenBlock();
@@ -333,10 +339,15 @@ public class Block {
         return "";
       }
     
-    public int getLength()
-      {
-        return 1;
-      }
+    /**
+     * @return number of chords in this Block
+     */
+    abstract public int getLength();
     
-// end of class Block
+    /**
+     * @return whether this block has just one chord
+     */
+    abstract public boolean singleChord();
+
+// end of abstract class Block
 }

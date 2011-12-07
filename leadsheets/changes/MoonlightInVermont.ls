@@ -1,11 +1,11 @@
-(title Bye Bye Blackbird)
+(title Moonlight in Vermont)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 80.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,7 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
-(style swing
+(style ballad
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
@@ -35,34 +35,39 @@
 )
 
 
-(section (style swing)) 
+(section (style ballad)) 
 
-FM6 | Gm7 C7 | F6 | / | 
-F6 | Abo7 | Gm7 | C7 | 
+Eb6 Cm7 | Fm7 E7#9 | Eb6 Cm7 | Db9 | 
+Fm7 Bb7sus4 | Eb6 / Fm7 E7 | 
 
-(phrase (style swing)) 
-Gm7 | Gm/F# | Gm7/F | C7 | 
+(section (style ballad)) 
 
-
-(section (style swing)) 
-
-Gm7 | C7 | F6 | / | 
-
-(phrase (style swing)) 
-F7 | E7 | Eb7 | D7 | 
+Eb6 Cm7 | Fm7 E7#9 | 
+Eb6 Cm7 | Db9 | Fm7 Bb7sus4 | EbM7 | 
 
 
-(section (style swing)) 
+(section (style ballad)) 
 
-Gm7 Gm/F# | Gm7/F Gm/A | Gm7 | C7 | 
+Am7 D7 | GM7 G#o7 | Am7 Ab9 | GM7 | 
 
-(phrase (style swing)) 
-FM6 | Gm7 C7 | F6 | Am7b5 D7 | 
+(phrase (style ballad)) 
+Bbm7 Eb7 | AbM7 Ao7 | 
+(phrase (style ballad)) 
+Bbm7 Eb7 | 
+
+(section (style ballad)) 
+
+AbM7 Bb7alt | 
 
 
-(section (style swing)) 
+(section (style ballad)) 
 
-Gm7 | C7 | F6 | Gm7 C7 | 
+Eb6 Cm7 | Fm7 E7#9 | Eb6 Cm7 | Db9 | 
+Fm7 Bb7sus4 | EbM7 | 
+
+(section (style ballad)) 
+
+F9 E7#9 | EbM7 | 
 
 (part
     (type melody)
@@ -73,4 +78,4 @@ Gm7 | C7 | F6 | Gm7 C7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

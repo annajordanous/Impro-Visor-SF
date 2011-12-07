@@ -1,11 +1,11 @@
-(title Bye Bye Blackbird)
+(title Everything Happens To Me)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 90.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,14 +15,14 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
-(style swing
+(style ballad
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
     (bass-low g---)
     (bass-base c--)
-    (chord-high a)
-    (chord-low c-)
+    (chord-high b)
+    (chord-low b--)
     (chord-base c- e- g-)
 )
 (part
@@ -34,35 +34,29 @@
     (key 0)
 )
 
+(phrase (style ballad)) 
+Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
+EbM7 Ebm7 | Dm7 G7 | 
+(phrase (style ballad)) 
+Cm7 F7 | Bb G7 | 
 
-(section (style swing)) 
+(phrase (style ballad)) 
+Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
+EbM7 Ebm7 | Dm7 G7 | 
+(phrase (style ballad)) 
+Cm7 F7 | Bb | 
 
-FM6 | Gm7 C7 | F6 | / | 
-F6 | Abo7 | Gm7 | C7 | 
+(phrase (style ballad)) 
+Fm7 Bb7 | EbM7 | Fm7 Bb7 | EbM7 | 
+Em7 A7 | DM7 | Gm7 C7 | Cm7 F7 | 
 
-(phrase (style swing)) 
-Gm7 | Gm/F# | Gm7/F | C7 | 
+(phrase (style ballad)) 
+Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
+EbM7 Ebm7 | Dm7 G7 | 
 
+(section (style ballad)) 
 
-(section (style swing)) 
-
-Gm7 | C7 | F6 | / | 
-
-(phrase (style swing)) 
-F7 | E7 | Eb7 | D7 | 
-
-
-(section (style swing)) 
-
-Gm7 Gm/F# | Gm7/F Gm/A | Gm7 | C7 | 
-
-(phrase (style swing)) 
-FM6 | Gm7 C7 | F6 | Am7b5 D7 | 
-
-
-(section (style swing)) 
-
-Gm7 | C7 | F6 | Gm7 C7 | 
+Cm7 F7 | EbM7 | 
 
 (part
     (type melody)

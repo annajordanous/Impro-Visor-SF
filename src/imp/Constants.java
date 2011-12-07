@@ -171,8 +171,6 @@ public interface Constants {
 
     public static int DEFAULT_DURATION = BEAT/2;	// eighth note value
 
-    public static double DEFAULT_SWING = 0.5;
-    
     public static int[] DEFAULT_METRE = {4, 4};
 
     /**

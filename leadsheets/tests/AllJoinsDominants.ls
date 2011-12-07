@@ -1,4 +1,4 @@
-(title Daahoud)
+(title )
 (composer )
 (show )
 (year )
@@ -35,40 +35,87 @@
 )
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
+C | 
+
+(section (style swing)) 
+
+G7 | 
 (phrase (style swing)) 
-Bb7#5 | 
+C | 
+
+(section (style swing)) 
+
+Ab7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+C | 
+
+(section (style swing)) 
+
+A7 | 
+(phrase (style swing)) 
+C | 
+
+(section (style swing)) 
+
+Bb7 | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
+C | 
+
+(section (style swing)) 
+
+B7 | 
 (phrase (style swing)) 
-Bb7#5 | 
+C | 
+
+(section (style swing)) 
+
+C7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+C | 
+
+(section (style swing)) 
+
+Db7 | 
+(phrase (style swing)) 
+C | 
+
+(section (style swing)) 
+
+D7 | 
 
 (phrase (style swing)) 
-Bbm7 | Eb7alt | AbM7 | Ab6 | 
+C | 
+
+(section (style swing)) 
+
+Eb7 | 
+(phrase (style swing)) 
+C | 
+
+(section (style swing)) 
+
+E7 | 
 
 (phrase (style swing)) 
-Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
+C | 
 
-(phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
+(section (style swing)) 
 
+F7 | 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
+C | 
+
+(section (style swing)) 
+
+Gb7 | 
 
 
 (section (style swing)) 
 
-GbM7 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
-EbM7 | 
+C | 
 (part
     (type melody)
     (title )
@@ -78,4 +125,4 @@ EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

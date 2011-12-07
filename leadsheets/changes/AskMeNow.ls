@@ -4,15 +4,15 @@
 (year 1947)
 (comments )
 (meter 4 4)
-(key -5)
+(key 0)
 (tempo 124.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
-(chord-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style swing
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -5)
+    (key 0)
 )
 
 
@@ -59,10 +59,12 @@ Eb7 D7 | DbM7 Eb7#11 | Ebm7 Ab7b9 | Db6 |
 
 Ebm7 Ab7 | DbM7 / Fm7 E7 | Ebm7 D9 | DbM7 | 
 
+(phrase (style swing)) 
+Eb7 | / | 
 
 (section (style swing)) 
 
-Eb7 | Eb7 | Ebm7/Ab Ab7b9 | Gb13#11 | 
+Ebm7/Ab Ab7b9 | Gb13#11 | 
 
 
 (section (style swing)) 
@@ -78,9 +80,9 @@ Eb7 D7 | C#M7 Eb7#11 | Ebm7 Ab7b9 | Db6 |
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
-    (key -5)
+    (key 0)
     (stave treble)
 )
- c+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

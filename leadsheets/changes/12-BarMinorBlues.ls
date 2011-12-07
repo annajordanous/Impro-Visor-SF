@@ -1,11 +1,11 @@
-(title A Foggy Day)
+(title 12-Bar Minor Blues)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 180.0)
+(tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
-    (bass-base c--)
+    (bass-low c---)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,22 +34,21 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-FM7 | Ab7 | Gm7 | C7 | 
-FM7 | D7alt | G7 | C7 | 
-FM7 | Cm7 F7 | BbM7 | Bbm7 | 
-FM7 | D7 | G7 | C7alt | 
-FM7 | Ab7 | Gm7 | C7 | 
-FM7 | D7alt | G7 | C7 | 
-FM7 | F7 | BbM7 | Bbm7 | 
-FM7/C Gm7/C | Am7/C Gm7/C | FM7 G7 | Gm7 C7 | 
-
-(phrase (style swing)) 
-FM7 | 
 
 (section (style swing)) 
 
-Gm7 C7b9 | 
+Cm7 | Fm7 | Cm7 | Gm7b5 C7b9 | 
+
+
+(section (style swing)) 
+
+Fm7 | / | Cm7 | Am7b5 | 
+
+
+(section (style swing)) 
+
+Ab7 | G7 | Cm6 Am7b5 | Dm7b5 G7b9 | 
+
 (part
     (type melody)
     (title )
@@ -59,4 +58,4 @@ Gm7 C7b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1

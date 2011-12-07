@@ -1,5 +1,5 @@
 (title 8-Bar Blues)
-(composer Bob Keller)
+(composer )
 (show )
 (year )
 (comments )
@@ -14,7 +14,7 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout 4)
+(layout)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -38,7 +38,9 @@
 (section (style swing)) 
 
 C | C7 | F | Fm | 
-C Am | Dm G7 | C | G7sus4 | 
+
+(phrase (style swing)) 
+C Am | Dm G7 | C | G7 | 
 
 (part
     (type melody)

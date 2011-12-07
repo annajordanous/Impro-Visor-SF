@@ -1,4 +1,4 @@
-(title Daahoud)
+(title All Of Me)
 (composer )
 (show )
 (year )
@@ -35,40 +35,27 @@
 )
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
+C6 | / | E7 | / | 
+A7 | / | A7 Dm | / | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+E7 | / | Am | / | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
+D7 | / | G7 | / | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+C6 | / | E7 | / | 
+A7 | / | A7 Dm | / | 
 
 (phrase (style swing)) 
-Bbm7 | Eb7alt | AbM7 | Ab6 | 
-
-(phrase (style swing)) 
-Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
-
-(phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
+F6 | Fm | C6 Em7b5/Bb | A7 | 
 
 
 (section (style swing)) 
 
-GbM7 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
-EbM7 | 
+Dm7b5 | G7 | C6 Ebo7 | Dm7 G7 | 
+
 (part
     (type melody)
     (title )
@@ -78,4 +65,4 @@ EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

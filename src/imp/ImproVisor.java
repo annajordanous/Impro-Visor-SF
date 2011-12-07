@@ -31,12 +31,12 @@ import imp.util.*;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.06
+ * @version 5.08
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.07";
+    public static final String version = "5.08";
     
     private static String lastLeadsheetFileStem = null;
     
@@ -247,10 +247,6 @@ private ImproVisor(String leadsheet)
 
     advisor = new Advisor();
 
-    // Create global clipboards
-    this.melodyClipboard = new MelodyPart();
-    this.chordsClipboard = new ChordPart();
-
     // Load the default rule file from the Preferences file
     ruleFilePath = Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE);
     if( ruleFilePath.lastIndexOf(File.separator) == -1 )
@@ -366,6 +362,10 @@ static public Notate getCurrentWindow()
  */
 public MelodyPart getMelodyClipboard()
   {
+    if( melodyClipboard == null )
+      {
+        melodyClipboard = new MelodyPart();
+      }
     return melodyClipboard;
   }
 
@@ -375,6 +375,10 @@ public MelodyPart getMelodyClipboard()
  */
 public ChordPart getChordsClipboard()
   {
+    if( chordsClipboard == null )
+      {
+        chordsClipboard = new ChordPart();
+      }
     return chordsClipboard;
   }
 
@@ -384,7 +388,7 @@ public ChordPart getChordsClipboard()
  */
 public boolean melodyClipboardNonEmpty()
   {
-    return melodyClipboard.size() > 0;
+    return getMelodyClipboard().size() > 0;
   }
 
 /**
@@ -393,7 +397,7 @@ public boolean melodyClipboardNonEmpty()
  */
 public boolean chordsClipboardNonEmpty()
   {
-    return chordsClipboard.size() > 0;
+    return getChordsClipboard().size() > 0;
   }
 
 /**

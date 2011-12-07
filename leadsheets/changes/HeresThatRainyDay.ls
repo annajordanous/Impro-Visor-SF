@@ -1,18 +1,18 @@
 (title Here's That Rainy Day)
-(composer Jimmy Van Heusen)
+(composer )
 (show )
-(year 1953)
+(year )
 (comments )
 (meter 4 4)
-(key 1)
+(key 0)
 (tempo 140.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style latin
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 1)
+    (key 0)
 )
 
 (phrase (style latin)) 
@@ -56,10 +56,12 @@ Am7 | D7 | GM7 | Dm7 G7 |
 
 (phrase (style latin)) 
 CM7 | 
+(phrase (style latin)) 
+Am7 D7 | Bm7 | Bbo | 
+
 
 (section (style latin)) 
 
-Am7 D7 | Bm7 | Bbo | 
 Am7 | D7 | GM7 E7 | Am7 D7 | 
 
 (part
@@ -68,7 +70,7 @@ Am7 | D7 | GM7 E7 | Am7 D7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 1)
+    (key 0)
     (stave treble)
 )
- d4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

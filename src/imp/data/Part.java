@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,11 +45,6 @@ import imp.util.Trace;
  *              and Andrew Brown)
  */
 public class Part implements Constants, Serializable {
-
-    /**
-     * the default metre (numerator and denominator)
-     */
-    public int DEFAULT_METRE = 4;
 
     /**
      * a Vector containing the slots in this Part, each of which
@@ -154,7 +149,7 @@ public class Part implements Constants, Serializable {
         volume = DEFAULT_VOLUME;
         instrument = DEFAULT_INSTRUMENT;
 
-        setMetre(DEFAULT_METRE, DEFAULT_METRE);
+        setMetre(DEFAULT_METRE[0], DEFAULT_METRE[1]);
 
         keySig = DEFAULT_KEYSIG;
         swing = DEFAULT_SWING;

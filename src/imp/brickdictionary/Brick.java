@@ -1047,9 +1047,18 @@ public Brick(String brickName,
     }
     
         
+    @Override
     public int getLength()
       {
         return  flattenBlock().size();
+      }
+    
+    /**
+     * @return whether this block has just one chord
+     */
+     public boolean singleChord()
+      {
+        return getLength() == 1;
       }
     
      // end of class Brick

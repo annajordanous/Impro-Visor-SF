@@ -65,6 +65,8 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_LOAD_STAVE = "default-load-stave";
 
   public static final String DLS_VAL = "1";
+  
+  public static final int DEFAULT_STAVE_TYPE = 1;
 
   public static final String DEFAULT_MELODY_INSTRUMENT =
           "default-melody-instrument";
@@ -338,7 +340,9 @@ public class Preferences implements imp.Constants
 
  public static StaveType getStaveTypeFromPreferences()
   {
-  return StaveType.values()[Integer.parseInt(getPreference(DEFAULT_LOAD_STAVE))];
+  return StaveType.values()[
+          defaultingIntFromString(DEFAULT_STAVE_TYPE, 
+                                  getPreference(DEFAULT_LOAD_STAVE))];
   }
   
  
@@ -465,6 +469,24 @@ public static boolean getAlwaysUse(int index)
       buffer.append(Polylist.list(CREATE_ROADMAP,            CR_VAL));
       return buffer.toPolylist();
     }
+  
+  /**
+ * Parses into from string, defaulting to specified value if parsing fails
+ * @param string 
+ */
+  
+public static int defaultingIntFromString(int defaultInt, String string)
+  {
+     try
+      {
+        return Integer.parseInt(string);
+      }
+    catch( NumberFormatException e )
+      {
+      return defaultInt;
+      }
+  }
+  
   
   
   public static class SavePrefsCommand
@@ -595,6 +617,9 @@ public static boolean getAlwaysUse(int index)
       {
       return undoable;
       }
-
-    }
   }
+ 
+}
+  
+  
+

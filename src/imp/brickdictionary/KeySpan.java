@@ -79,6 +79,7 @@ public class KeySpan {
      */
     public void setKey(long k) {
         keymode.setKey(k);
+        //System.out.println("setting key to " + k + ": " + this);
     }
     
     /** getMode
@@ -110,7 +111,8 @@ public class KeySpan {
      * @param d, the duration as a long
      */
     public void setDuration(long d) {
-        duration = d;
+       duration = d;
+       //System.out.println("setting duration to " + d + ": " + this);
     }
     
     /** 
@@ -118,7 +120,7 @@ public class KeySpan {
      * @param d, the duration as a long
      */
     public void augmentDuration(long d) {
-        duration += d;
+        setDuration(duration + d);
     }
     
     /** toPolylist

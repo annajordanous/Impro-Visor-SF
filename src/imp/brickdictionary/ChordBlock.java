@@ -473,6 +473,17 @@ public class ChordBlock extends Block {
         return BrickLibrary.keyNameToNum(s);
     }
     
+    public int getLength()
+      {
+        return 1;
+      }
+        /**
+     * @return whether this block has just one chord
+     */
+     public boolean singleChord()
+      {
+        return true;
+      }
+    
     // end of class ChordBlock
-   
 }

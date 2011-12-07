@@ -1,11 +1,11 @@
-(title Daahoud)
+(title All of You)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 120.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -35,40 +35,23 @@
 )
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
+Fm7b5 | Eb6 | Fm7b5 | / | 
+Fm7b5 | Eb6 | Abm7 | Db7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+Gm7 | C7#5 | Fm7 | Bb7 | 
+EbM7 Db9 | C7b9 | Fm7 | Bb7 | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
-
-(phrase (style swing)) 
-Bbm7 | Eb7alt | AbM7 | Ab6 | 
-
-(phrase (style swing)) 
-Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
-
-(phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
+Fm7b5 | Eb6 | Fm7b5 | / | 
+Fm7b5 | Eb6 | Gm7 | C7b9 | 
 
 
 (section (style swing)) 
 
-GbM7 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
-EbM7 | 
+AbM7 | Am7b5 D7b9 | Gm7 Db7#11 | C7 | 
+Fm7 C7b9 | Fm7 Bb7 | Eb6 | Bb9sus4 | 
+
 (part
     (type melody)
     (title )
@@ -78,4 +61,4 @@ EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

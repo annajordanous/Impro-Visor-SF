@@ -1,18 +1,18 @@
 (title On Green Dolphin Street)
-(composer Bronislau Kaper)
-(show Green Dolphin Street)
-(year 1947)
+(composer )
+(show )
+(year )
 (comments )
 (meter 4 4)
-(key -3)
+(key 0)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
-(bass-volume 50)
-(drum-volume 36)
-(chord-volume 54)
+(bass-volume 60)
+(drum-volume 60)
+(chord-volume 40)
 (breakpoint 54)
 (layout)
 (style latin
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -3)
+    (key 0)
 )
 
 (phrase (style latin)) 
@@ -42,11 +42,11 @@ EbM7 | / | Ebm7 | / |
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
-(phrase (style swing)) 
+(phrase (style latin)) 
 Fm7 | Bb7 | EbM7 | / | 
 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
 
@@ -58,13 +58,15 @@ EbM7 | / | Ebm7 | / |
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
-(phrase (style swing)) 
+(phrase (style latin)) 
 Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
 
+(phrase (style latin)) 
+Gm7 C7 | Fm7 Bb7 | EbM7 | 
 
-(section (style swing)) 
+(section (style latin)) 
 
-Gm7 C7 | Fm7 Bb7 | EbM7 | Fm7 Bb7 | 
+Fm7 Bb7 | 
 
 (part
     (type melody)
@@ -72,7 +74,7 @@ Gm7 C7 | Fm7 Bb7 | EbM7 | Fm7 Bb7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key -3)
+    (key 0)
     (stave treble)
 )
- eb+2 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

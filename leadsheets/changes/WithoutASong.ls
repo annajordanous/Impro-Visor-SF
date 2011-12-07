@@ -1,10 +1,10 @@
 (title Without A Song)
-(composer Vincent Youmans)
+(composer )
 (show )
-(year 1929)
+(year )
 (comments )
 (meter 4 4)
-(key -3)
+(key 0)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -31,7 +31,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key -3)
+    (key 0)
 )
 
 (phrase (style swing)) 
@@ -94,9 +94,7 @@ EbM7 | Cm7 | Fm7 | Bb7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key -3)
+    (key 0)
     (stave treble)
 )
- d+1+8
-
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

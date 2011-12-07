@@ -1,11 +1,11 @@
-(title Daahoud)
+(title Body and Soul)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 80.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low g--)
     (bass-base c--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low a--)
     (chord-base c- e- g-)
 )
 (part
@@ -35,40 +35,37 @@
 )
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
-
-(phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
-
-(phrase (style swing)) 
-Bbm7 | Eb7alt | AbM7 | Ab6 | 
-
-(phrase (style swing)) 
-Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
-
-(phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
-
+Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb9 | Fm7 Eo | 
+Ebm7 | Cm7 F7 | 
 
 (section (style swing)) 
 
-GbM7 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
-EbM7 | 
+Bbm7 Eb7 Ebm7 Ab7 | Db6 / Fm7b5 Bb7 | 
+
+(phrase (style swing)) 
+Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb9 | Fm7 Eo | 
+Ebm7 | Cm7 F7 | 
+
+(section (style swing)) 
+
+Bbm7 Eb7 Ebm7 Ab7 | Db6 / Em7 A7 | 
+
+(phrase (style swing)) 
+DM7 Em7 | F#m7 Gm6 | 
+
+(section (style swing)) 
+
+F#m7 B7 Em7 A7 | DM7 | 
+Dm7 G7 | Em7 Ebo | Dm7 G7 | C7 B7 Bb7 / | 
+
+(phrase (style swing)) 
+Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb9 | Fm7 Eo | 
+Ebm7 | Cm7 F7 | 
+
+(section (style swing)) 
+
+Bbm7 Eb7 Ebm7 Ab7 | Db6 / Fm7b5 Bb7 | 
+
 (part
     (type melody)
     (title )
@@ -78,4 +75,4 @@ EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -1,11 +1,11 @@
-(title Daahoud)
+(title This I Dig Of You)
 (composer )
 (show )
 (year )
 (comments )
 (meter 4 4)
 (key 0)
-(tempo 160.0)
+(tempo 180.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -19,10 +19,10 @@
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
-    (bass-base c--)
+    (bass-low c---)
+    (bass-base e--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -35,40 +35,27 @@
 )
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
+Bb/F | Cm7/F | Bb/F | Cm7/F | 
+Bb/F | Cm7/F | Bb/F | Fm7 Bb7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+Eb | Em7b5 A7alt | Dm7 | G7 | 
 
 (phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
+Dbm7 | Gb7 | Cm7 | F7 | 
 
 (phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | / | 
+Bb/F | Cm7/F | Bb/F | Cm7/F | 
+Bb/F | Cm7/F | Bb/F | Fm7 Bb7 | 
 
 (phrase (style swing)) 
-Bbm7 | Eb7alt | AbM7 | Ab6 | 
-
-(phrase (style swing)) 
-Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
-
-(phrase (style swing)) 
-Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
-Bb7#5 | 
-
-(phrase (style swing)) 
-Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
+Eb | Em7b5 A7alt | Dm7 | G7 | 
 
 
 (section (style swing)) 
 
-GbM7 | Ebm7 Ab7 | Cm7 B7 | Bb7 | 
-EbM7 | 
+Cm7 | F7 | Bb | Cm7 F7 | 
+
 (part
     (type melody)
     (title )
@@ -78,4 +65,4 @@ EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

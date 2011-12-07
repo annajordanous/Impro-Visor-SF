@@ -35,7 +35,16 @@ public class PostProcessor {
 
     public static boolean traceJoin = false;
     
-    /**
+    
+    private static final String APPROACH = "Approach";
+    
+    private static final String LAUNCHER = "Launcher";
+
+    private static final String STRAIGHT = "Straight";
+    
+    private static final String SAD = "Sad";
+    
+   /**
      * Temporary fix to static method issues
      */
 
@@ -57,19 +66,17 @@ public class PostProcessor {
     
     // For launching other than straight across a section
     
-    public static final String[] RESOLUTIONS = {"", "", "", "", "", "", "Tritone", "", "Happenstance", "Yardbird", "", ""};
+    public static final String[] RESOLUTIONS = {"", "", "", "", /* "3rd Bartok Sub" */ 
+        "", "", "Tritone", "", "Happenstance", "Yardbird", 
+        "", "Nowhere"};
 
-    //public static String[] FIRST_UNSTABLE = {"Approach", "Launcher"};
-
-    //public static String[] FIRST_STABLE = {"Cadence", "CESH", /* "Dropback", */ "Ending", 
-    //    "On", /* "On-Off", */ "On-Off+", "Overrun"};
-
-    //public static String[] SECOND_UNSTABLE = {"Approach", "Cadence", "Launcher", "Misc", "Overrun", "Pullback", "Turnaround"};
     
     // Rules for finding representative chord in diatonicChordCheck
+    
     private static ArrayList<Polylist> equivalenceRules;
     
     // Rules for which chords are diatonic depending on mode
+    
     private static ArrayList<Polylist> diatonicRules;
     
     // Introduced to avoid reading the dictionary repeatedly in checkJoinability.
@@ -177,6 +184,8 @@ public static RoadMap findKeys(RoadMap roadmap)
     current.setMode(lastBlock.getMode());
     current.setDuration(lastBlock.getDuration() + ncDuration);
     
+    //System.out.println("initializing Keyspan to " + current);
+    
     ncDuration = 0;
 
     // Loop through blocks backwards, 
@@ -194,6 +203,8 @@ public static RoadMap findKeys(RoadMap roadmap)
             keymap.add(0, entry);
 
             current = new KeySpan(thisBlock);
+            
+            //System.out.append("new KeySpan " + current);
 
             if( thisBlock.isChord() )
               {
@@ -203,11 +214,14 @@ public static RoadMap findKeys(RoadMap roadmap)
                   {
                     current.setKey(entry.getKey());
                     current.setMode(entry.getMode());
+                    
+                    //System.out.println("initializing new Keyspan to " + current);
                   }
                 // End of current key -- add to the list
                 else
                   {
                     current = new KeySpan(c);
+                   //System.out.append("new KeySpan " + current);
                   }
               }
             // Match mode to second block if first block is an approach or
@@ -240,6 +254,12 @@ public static RoadMap findKeys(RoadMap roadmap)
               {
                 current.augmentDuration(thisBlock.getDuration());
               }
+            else if( thisBlock.singleChord() && diatonicChordCheck(thisBlock.getLastChord(), current.getKey(), current.getMode()))
+              {
+                // RK: In case the block has only one chord, the chord is checked for merging wiht the current key span using diatonicity.
+                // This allows, for example, a ii chord in Major to be merged, even though it is incorporated into a Minor-On brick.
+                current.augmentDuration(thisBlock.getDuration());
+              }
             // Match mode to second block if first block is an approach or
             // launcher that resolves to second block
             else if( isApproachOrLauncher(thisBlock) )
@@ -259,6 +279,8 @@ public static RoadMap findKeys(RoadMap roadmap)
                     keymap.add(0, entry);
 
                     current = new KeySpan(thisBlock);
+                    
+                    //System.out.append("new KeySpan " + current);
 
                     if( ncFlag )
                       {
@@ -275,6 +297,9 @@ public static RoadMap findKeys(RoadMap roadmap)
                 keymap.add(0, entry);
 
                 current = new KeySpan(thisBlock);
+                
+                //System.out.append("new KeySpan " + current);
+                          
 
                 if( ncFlag )
                   {
@@ -321,6 +346,7 @@ public static RoadMap findKeys(RoadMap roadmap)
       {
         keymap.add(0, current);
         current = new KeySpan(-1, "", ncDuration);
+        //System.out.append("new KeySpan " + current);
       }
     
     // Add first KeySpan in song to list
@@ -382,42 +408,53 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
 
             String brickName = b.getName();
 
-            if( brickName.endsWith("Straight Approach") )
+            if( brickName.endsWith(APPROACH) )
               {
                
                 Long baseKey = b.getLastChord().getKey(); // alternate b.getKey()
                 
                 // This call is made in the event of an approach resolving 
                 
-                String altResolution = getAlternateResolution(baseKey, postBlock.getKey());
+                String altResolution = getAlternateResolution(baseKey, postBlock.getFirstRoot()); // was .getKey());
                 
                 //System.out.println(b + " vs " + postBlock + " altResolution = " + altResolution);
                 
                  if( !altResolution.isEmpty() )
                   {
-                    brickName = brickName.replace("Straight", altResolution);
+                    brickName = brickName.replace(STRAIGHT, altResolution);
+                    brickName = brickName.replace(SAD, altResolution);
                     b.setName(brickName);
-                    b.setKey(postBlock.getKey());
+                    //b.setKey((postBlock.getKey() + OCTAVE - getAlternateOffset(baseKey, postBlock.getFirstRoot()))%OCTAVE);
                     b.setMode(postBlock.getMode());
                   }
+                 else
+                   {                
+                   }
               }
 
+            boolean isQualifiedApproach = brickName.contains(APPROACH) && !brickName.equals(APPROACH);
+            boolean isSlowLauncher      = brickName.equals("Dominant Cycle") && b.getLength() == 2;
+            boolean isDoglegApproach    = brickName.equals("Dogleg Approach");
+            
             // Check if brick is an approach is actually a Launcher.
             // In "Insights" examples, resolution is not required.
 
-            if( b.getType().endsWith("Approach") && b.isSectionEnd()
-                    /* && doesResolve(b, chordList.get(0))*/ ) 
+            if( (isQualifiedApproach || isSlowLauncher || isDoglegApproach ) && b.isSectionEnd() )
+                    /* && doesResolve(b, chordList.get(0))*/ 
               {
-                // If the name has "Approach", replace it with "Launcher"
+                // If the name ends in "Approach" but is not just plain "Approach", replace "Approach" with "Launcher"
                 
-                if( brickName.contains("Approach") )
+                if( isDoglegApproach )
                   {
-                    brickName = brickName.replace("Approach", "Launcher");
+                   brickName = "Dogleg Slow Launcher";                   
                   }
-                // If not, append "(Launcher)" to the end
-                else
+                else if( isQualifiedApproach )
                   {
-                    // no for now: brickName = brickName + " (Launcher)";
+                    brickName = brickName.replace(APPROACH, LAUNCHER);
+                  }
+                else if( isSlowLauncher )
+                  {
+                  brickName = "Slow Launcher";
                   }
 
                 b.setName(brickName);
@@ -426,6 +463,7 @@ public static ArrayList<Block> findLaunchers(ArrayList<Block> blocks)
                 // Add altered brick to the list
                 alteredList.add(b);
               }
+
             // If brick is not an approach or does not resolve, add it to 
             // the list 
             else
@@ -535,7 +573,19 @@ public static String getAlternateResolution(long domRoot, long resRoot)
 
     return altResolution;
   }
-  
+
+
+public static int getAlternateOffset(long domRoot, long resRoot)
+  {
+    int BIAS = 7;
+    
+    int domRootInt = Long.valueOf(domRoot).intValue();
+    int resRootInt = Long.valueOf(resRoot).intValue();
+
+    return (resRootInt + BIAS - domRootInt + OCTAVE) % OCTAVE;
+  }
+
+ 
       
 /** 
  * A method that finds joins between two bricks, if any.
@@ -664,7 +714,7 @@ public static String getJoinString(Block b, Block c)
         // Otherwise try to use first dominant in second brick
         else if( cb.isDominant() )
           {
-             domKey = (cb.getKey() + 7) % OCTAVE;
+             domKey = cb.getKey();
              if( traceJoin ) System.out.println("domKey determined by first dominant " + cb + " as: " + BrickLibrary.keyNumToName(domKey) );
              return joinLookup(domKey, baseKey);
           }
@@ -805,7 +855,7 @@ public static boolean checkJoinability(Block first, Brick second)
     public static boolean diatonicChordCheck(ChordBlock c, Long key, 
             String mode) {
         
-        //System.out.println("diatonicChordCheck " + c);
+        //System.out.println("\ndiatonicChordCheck " + c + " " + key + " " + mode);
         
         if( c.isDiminished() )
           {
@@ -822,17 +872,24 @@ public static boolean checkJoinability(Block first, Brick second)
         // Transpose chord down to C
         cTemp.transpose(OCTAVE - offset);
         
+        //System.out.println("cTemp = " + cTemp);
+        
         ChordSymbol cSym = null;
         
         // Get representative chord for c and save it in cSym
          
+        //System.out.println("rules = " + equivalenceRules);
+        
         for(Polylist p : equivalenceRules)
         {
           // Don't barf if chord does not exist in vocabulary
           try
             {
-            if(c.getChord().getChordSymbol().enhMember(p))
+            // RK discovered long-standing bug here 12/1/2011: cTemp was c
+              
+            if(cTemp.getChord().getChordSymbol().enhMember(p))
             {
+                //System.out.println(cTemp + " enharmonic member of " + p);
                 cSym = ChordSymbol.makeChordSymbol(p.first().toString());
                 break;
             }
@@ -843,26 +900,37 @@ public static boolean checkJoinability(Block first, Brick second)
             }
         }
         
+        ChordSymbol tcSym = null;
+        
         // Transpose cSym and c back by offset saved earlier
         if(cSym != null) {
-            cSym = cSym.transpose(offset.intValue());
+            tcSym = cSym.transpose(offset.intValue());
+            //System.out.println("transposing " + cSym + " " + offset + " to " + tcSym);
         }
         
         // Check if cSym is diatonically within key according to mode of second
         // block
+        
+        //System.out.println("tcSym = " + tcSym + " diatonicRules = " + diatonicRules);
+        
         for(Polylist p : diatonicRules)
         {
             String modeTag = p.first().toString();
-            p = p.rest();
+            
+            //System.out.println(tcSym + " vs " + p);
+            
             if(modeTag.equals(mode))
             {
-                if(cSym != null && cSym.enhMember(p))
+                if(cSym != null && tcSym.enhMember(p.rest()))
                 {
+                  //System.out.println(tcSym + " is an enharmnoic member of " + p.rest());
                     isInKey = true;
                     break;
                 }
             }
         }
+        
+        //System.out.println(" " + isInKey);
         return isInKey;
     }
     
@@ -936,7 +1004,7 @@ public static boolean checkJoinability(Block first, Brick second)
     public static boolean isApproachOrLauncher(Block b)
       {
         String type = b.getType();
-        return type.equals("Approach") || type.equals("Launcher");
+        return type.equals(APPROACH) || type.equals(LAUNCHER);
       }
     
     

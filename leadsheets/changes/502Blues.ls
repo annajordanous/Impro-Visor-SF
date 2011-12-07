@@ -1,11 +1,11 @@
-(title A Foggy Day)
+(title 502 Blues)
 (composer )
 (show )
 (year )
 (comments )
-(meter 4 4)
+(meter 3 4)
 (key 0)
-(tempo 180.0)
+(tempo 120.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,11 +15,11 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
-(style swing
+(style waltz
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low g--)
     (bass-base c--)
     (chord-high a)
     (chord-low c-)
@@ -34,22 +34,28 @@
     (key 0)
 )
 
-(phrase (style swing)) 
-FM7 | Ab7 | Gm7 | C7 | 
-FM7 | D7alt | G7 | C7 | 
-FM7 | Cm7 F7 | BbM7 | Bbm7 | 
-FM7 | D7 | G7 | C7alt | 
-FM7 | Ab7 | Gm7 | C7 | 
-FM7 | D7alt | G7 | C7 | 
-FM7 | F7 | BbM7 | Bbm7 | 
-FM7/C Gm7/C | Am7/C Gm7/C | FM7 G7 | Gm7 C7 | 
+(phrase (style waltz)) 
+Am7 | DbM7#5 | Bm7b5 | E7b9 | 
 
-(phrase (style swing)) 
-FM7 | 
+(phrase (style waltz)) 
+Am7 | DbM7#5 | Bm7b5 | E7b9 | 
 
-(section (style swing)) 
+(phrase (style waltz)) 
+Cm7 | F7 | BbM7 Am7 | Abm7 Db7 | 
+F#m7b5 | B7b9 | EM7 | / / E7#5 | 
 
-Gm7 C7b9 | 
+(phrase (style waltz)) 
+Am7 | DbM7#5 | Bm7b5 | E7b9 | 
+
+(phrase (style waltz)) 
+Am7 | DbM7#5 | Bm7b5 | E7b9 | 
+
+
+(section (style waltz)) 
+
+Cm7 | F7 | BbM7 Am7 | Abm7 Db7 | 
+F#m7b5 | B7b9 | Em7 | / | 
+
 (part
     (type melody)
     (title )
@@ -59,4 +65,4 @@ Gm7 C7b9 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

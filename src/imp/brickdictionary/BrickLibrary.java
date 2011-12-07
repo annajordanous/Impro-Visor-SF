@@ -201,9 +201,12 @@ public class BrickLibrary {
             String dropbackMode = brick.getMode();
             String dropbackQualifier = brick.getVariant();
 
-            // take blocks from regular cadence and add the next chord
-            // in the circle of fifths with the same quality as the
-            // resolution
+            // take blocks from regular cadence and add a relative VI dominant
+            // to form a dropback.
+            
+            // FIX: This is not the only possible dropback!!
+            // For example, we want to allow iii-IV's major and minor.
+            
             ArrayList<Block> dropbackBlocks = new ArrayList<Block>();
             dropbackBlocks.add(brick);
             
@@ -211,11 +214,14 @@ public class BrickLibrary {
             
             // was wrong: String dropbackChordName = keyNumToName((prevChord.getKey() + 9) % 12);
             
+            /* I think it was wrong to include this in the first place:
             
             if (dropbackMode.equals("minor"))
                 dropbackChordName += "7b5";
             else
-                dropbackChordName += 7;
+             */
+            
+            dropbackChordName += 7;
             
             
             ChordBlock dropbackChord = 
@@ -226,6 +232,7 @@ public class BrickLibrary {
             // make a new brick from this list of blocks
             Brick dropback = new Brick(dropbackName, dropbackQualifier, dropbackKeyNum,
                     dropbackType, dropbackBlocks, dropbackMode);
+            
             addBrick(dropback);
         }
         
