@@ -10464,101 +10464,61 @@ public void volumeSliderChanged(JSlider volumeSlider)
     
     
     
-    private void devicesChanged() {
-        
+private void devicesChanged()
+  {
 //        MidiDevice.Info oldInDevice = midiManager.getInDeviceInfo();
-        
+
 //        Object oldOutDevice = midiManager.getOutDeviceInfo();
-        
-        
-        
+
 //        midiManager.clearErrorMsgLog();
-        
-        midiManager.setInDevice((MidiDevice.Info) midiInComboBox.getSelectedItem());
-        
-        
-        
-        
-        
+
+    midiManager.setInDevice((MidiDevice.Info) midiInComboBox.getSelectedItem());
+
 //        midiManager.clearErrorMsgLog();
-        
-        midiManager.setOutDevice(midiOutComboBox.getSelectedItem());
-        
-        
-        
-        refreshMidiStatus();
-        
-        
-        
+
+    midiManager.setOutDevice(midiOutComboBox.getSelectedItem());
+
+    refreshMidiStatus();
+
+
 //        // did the device change:
-        
 //        boolean inChanged = oldInDevice != midiManager.getInDeviceInfo();
-        
 //        boolean outChanged = oldOutDevice != midiManager.getOutDeviceInfo();
-        
 //        boolean nothingChanged = !inChanged && !outChanged;
-        
-//
-        
-//
-        
+
 //        /* In no particular order:
-        
 //         * 1. if there was an error and nothing changed, we show the error
-        
 //         * 2. if there was an error on a device that didn't change, and
-        
 //         *    the reload of devices was caused by a change to a different
-        
 //         *    device, then we don't show the error since it probably isn't a
-        
 //         *    new error
-        
 //         * 3. if there was an error on a device, and the user just changed that
-        
 //         *    device, we should always show the error
-        
 //         */
-        
 //
-        
 //        if((outChanged || nothingChanged)
-        
 //                    && midiOutComboBox.getSelectedItem() != null
-        
 //                    && midiManager.getOutDevice() == null
-        
+
 //                || (inChanged || nothingChanged)
-        
 //                    && midiInComboBox.getSelectedItem() != null
-        
 //                    && midiManager.getInDevice() == null)
-        
 //        {
-        
 //            JOptionPane.showMessageDialog(preferencesDialog, "Error setting device:\n" + midiManager.getError(), "Device not ready", JOptionPane.ERROR_MESSAGE);
-        
 //        }
-        
-        
-        
+
+
 //        private void showErrors() {
-        
+
 //            if(midiManager.getError() == null) {
-        
 //                JOptionPane.showMessageDialog(preferencesDialog, "No errors occurred during the last attempt to load the MIDI devices", "No Errors", JOptionPane.INFORMATION_MESSAGE);
-        
 //            } else {
-        
+
 //                JOptionPane.showMessageDialog(preferencesDialog, midiManager.getError(), "Error Log", JOptionPane.ERROR_MESSAGE);
-        
 //            }
-        
 //        }
-    }
-    
-    
-    
+  }
+
     String okMsg = "<html>Status: <em><font color='green'>Device ready</font></em></html>";
     
     String noDevSelectedMsg = "<html>Status: <em><font color='red'>No Device Selected</font></em></html>";
@@ -10569,81 +10529,61 @@ public void volumeSliderChanged(JSlider volumeSlider)
     
     String failMsgEnd = "</font></em></html>";
     
-    public void refreshMidiStatus() {
-        
-        // get midi latency
-        
-        midiLatencyTF.setText(String.valueOf(midiRecorder.getLatency()));
-        
-        
-        
-        // update midiIn status:
-        
-        if(midiOutComboBox.getItemCount() == 0) {
-            
-            midiOutPanel.remove(midiOutComboBox);
-            
-            
-            
-            // no MIDI out devices?  Shouldn't be here anymore since we have a default device now
-            
-            midiOutStatus.setText(noDev);
-            
-        } else {
-            
-            if(!midiOutComboBox.isVisible()) {
-                
-                midiOutPanel.remove(midiOutStatus);
-                
-                midiOutPanel.add(midiOutComboBox);
-                
-                midiOutPanel.add(midiOutStatus);
-                
-            }
-            
-            
-            
-            midiOutStatus.setText(midiManager.getOutDeviceError().equals("")?
-                
-                okMsg
-                    
-                    : failMsgStart + midiManager.getOutDeviceError() + failMsgEnd);
-            
-        }
-        
-        
-        
-        // update midiOut status:
-        
-        if(midiInComboBox.getItemCount() == 0) {
-            
-            midiInPanel.remove(midiInComboBox);
-            
-            midiInStatus.setText(noDev);
-            
-        } else {
-            
-            if(!midiInComboBox.isVisible()) {
-                
-                midiInPanel.remove(midiInStatus);
-                
-                midiInPanel.add(midiInComboBox);
-                
-                midiInPanel.add(midiInStatus);
-                
-            }
-            
-            
-            
-            midiInStatus.setText((midiManager.getInDevice() != null)?
-                
-                okMsg
-                    
-                    : failMsgStart + midiManager.getInDeviceError() + failMsgEnd);
-            
-        }
-        
-    }
+public void refreshMidiStatus()
+  {
+
+    // get midi latency
+
+    midiLatencyTF.setText(String.valueOf(midiRecorder.getLatency()));
+
+    // update midiIn status:
+
+    if( midiOutComboBox.getItemCount() == 0 )
+      {
+        midiOutPanel.remove(midiOutComboBox);
+
+        midiOutStatus.setText(noDev);
+      }
+    else
+      {
+        if( !midiOutComboBox.isVisible() )
+          {
+            midiOutPanel.remove(midiOutStatus);
+
+            midiOutPanel.add(midiOutComboBox);
+
+            midiOutPanel.add(midiOutStatus);
+          }
+
+        midiOutStatus.setText(midiManager.getOutDeviceError().equals("")
+                ? okMsg
+                : failMsgStart + midiManager.getOutDeviceError() + failMsgEnd);
+      }
+
+    // update midiOut status:
+
+    if( midiInComboBox.getItemCount() == 0 )
+      {
+        midiInPanel.remove(midiInComboBox);
+
+        midiInStatus.setText(noDev);
+      }
+    else
+      {
+        if( !midiInComboBox.isVisible() )
+          {
+            midiInPanel.remove(midiInStatus);
+
+            midiInPanel.add(midiInComboBox);
+
+            midiInPanel.add(midiInStatus);
+          }
+
+        midiInStatus.setText((midiManager.getInDevice() != null)
+                ? okMsg
+                : failMsgStart + midiManager.getInDeviceError() + failMsgEnd);
+      }
+  }
     
     
     
@@ -10672,14 +10612,12 @@ private ArrayList<Polylist> data = new ArrayList<Polylist>();
 
 public VoicingTableModel()
   {
-
     data.add(Polylist.list("", "", "", "", "", false));
   }
 
 public void setChordRoot(String root, String bass, NoteSymbol low,
                          NoteSymbol high)
   {
-
     chordRoot = root;
 
     Style s = score.getChordProg().getStyle().copy();
@@ -10691,7 +10629,6 @@ public void setChordRoot(String root, String bass, NoteSymbol low,
     data = Advisor.getVoicingTable(chordRoot, bass, s);
 
     fireTableDataChanged();
-
   }
         
  public String getChordRoot()
@@ -10735,7 +10672,7 @@ public Object getValueAt(int row, int col)
 }
     
     
- public class StyleListModel
+public class StyleListModel
     extends AbstractListModel
 {
 
@@ -10749,21 +10686,16 @@ public int getSize()
         return 0;
       }
     return styles.length();
-
   }
 
 public Object getElementAt(int index)
   {
-
     return (Style) ((Polylist) styles.nth(index)).second();
-
   }
 
 public void reset()
   {
-
     fireContentsChanged(this, 0, getSize());
-
   }
 
 }
@@ -10774,7 +10706,6 @@ public class SectionListModel
 
 public int getSize()
   {
-
     /**
      *
      * Stephen TODO: null pointer exception raised here
@@ -10791,23 +10722,18 @@ public int getSize()
 
 public Object getElementAt(int index)
   {
-
     return sectionInfo.getInfo(index);
-
   }
 
 public void reset()
   {
-
     sectionInfo = score.getChordProg().getSectionInfo().copy();
 
     refresh();
-
   }
 
 public void refresh()
   {
-
     fireContentsChanged(this, 0, sectionInfo.size());
 
     int index = sectionList.getSelectedIndex();
@@ -10826,16 +10752,13 @@ public void refresh()
     delSectionButton.setEnabled(sectionInfo.size() > 1);
 
     setNewSectionEnabled();
-
   }
-
 }
 
 static public class StyleComboBoxModel
     extends AbstractListModel
     implements ComboBoxModel
 {
-
 Polylist styles;
 
 int len;
@@ -10856,7 +10779,6 @@ public int getSize()
 
 public Object getElementAt(int index)
   {
-
     return (Style) ((Polylist) styles.nth(index)).second();
   }
 
@@ -10864,15 +10786,12 @@ private Object selectedItem = null;
 
 public void setSelectedItem(Object anItem)
   {
-
     selectedItem = anItem;
   }
 
 public Object getSelectedItem()
   {
-
     return selectedItem;
-
   }
 
 }
@@ -10895,9 +10814,7 @@ public MidiDeviceChooser(Vector<MidiDevice.Info> devices)
 
 public int getSize()
   {
-
     return devices.size();
-
   }
 
 public Object getElementAt(int index)
