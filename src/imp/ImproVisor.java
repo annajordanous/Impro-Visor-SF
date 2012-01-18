@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,23 +20,24 @@
 
 package imp;
 
-import java.io.*;
-
+import imp.com.LoadAdviceCommand;
 import imp.data.*;
-import imp.com.*;
-import imp.gui.*;
+import imp.gui.Notate;
+import imp.gui.ToolkitImages;
 import imp.util.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.08
+ * @version 5.09
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.08";
+    public static final String version = "5.09";
     
     private static String lastLeadsheetFileStem = null;
     

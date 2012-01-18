@@ -119,8 +119,7 @@ public void findInstalledDevices()
 
     // Scan all found devices and check to see what type they are
     MidiDevice device;
-    //for( int i = 0; i < infos.length; i++ )
-    for( int i = infos.length - 1; i >= 0; i--)
+    for( int i = 0; i < infos.length; i++ )
       {
         try
           {
