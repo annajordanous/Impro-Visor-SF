@@ -195,7 +195,7 @@ public class DrumPattern extends Pattern implements Constants, Serializable {
         
           int duration = 0;
           for(int i = 0; i < durations.length(); i++)
-            duration += Key.getDuration((String)durations.nth(i));
+            duration += Duration.getDuration((String)durations.nth(i));
           if( duration > maxDuration )
           {
             maxDuration = duration;
@@ -223,7 +223,7 @@ public class DrumPattern extends Pattern implements Constants, Serializable {
             m.setVolume(volume.intValue());
 
             for(int j = 0; j < rules.length(); j++) {
-                int dur = Key.getDuration((String)durations.nth(j));
+                int dur = Duration.getDuration((String)durations.nth(j));
                 switch((Integer)rules.nth(j)) {
                     case STRIKE:
                     {

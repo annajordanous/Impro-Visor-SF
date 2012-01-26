@@ -137,7 +137,7 @@ public void setDirection(DirectionType direction)
 
 public int getSlots()
   {
-    return Key.getDuration(durationString);
+    return Duration.getDuration(durationString);
   }
 
 public void setDuration(int slots)
@@ -180,7 +180,7 @@ public static BassPatternElement makeBassPatternElement(Object ob)
             // FIX: What about error checking?
             // Should return null if bad value
             // Just for checking at creation time, rather than later.
-            int duration = Key.getDuration(durationString);
+            int duration = Duration.getDuration(durationString);
 
             if( duration == 0 )
               {
@@ -269,7 +269,7 @@ public static BassPatternElement makeBassPatternElement(Object ob)
 
                     // for checking purposes
 
-                    int duration = Key.getDuration(durationString);
+                    int duration = Duration.getDuration(durationString);
 
                     if( duration == 0 )
                       {

@@ -900,14 +900,14 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
         for (Polylist L = rhythmString; L.nonEmpty(); L = L.rest()) {
             Polylist first = (Polylist)L.first();
             if(first.toString().length() < 7) {  //doesn't contain a slope
-                slots += Key.getDuration(first.first().toString().substring(1));
+                slots += Duration.getDuration(first.first().toString().substring(1));
             }
             else {
                 //get rid of the slopes
                 Polylist rest = first.rest().rest().rest();
                 //loop through the rest of the notes
                 for(Polylist R = rest; R.nonEmpty(); R = R.rest()) {
-                    slots += Key.getDuration(R.first().toString().substring(1)); 
+                    slots += Duration.getDuration(R.first().toString().substring(1)); 
                 }
                
             }
@@ -1591,7 +1591,7 @@ public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
         int len = 0;
         while (rhythm.nonEmpty()) {
             if (rhythm.first() instanceof String) {
-                len += Key.getDuration(((String) rhythm.first()).substring(1));
+                len += Duration.getDuration(((String) rhythm.first()).substring(1));
             } else if (rhythm.first() instanceof Polylist) {
                 // FIX for general case!!
                 len += parseLength(((Polylist) rhythm.first()).rest().rest().rest());
@@ -2017,7 +2017,7 @@ private boolean checkNote(int pos, int pitch, String pitchString,
 // this will be changed later.
     private Note parseNote(String rhythmVal, int beatValue) {
         Note note;
-        int duration = Key.getDuration(rhythmVal.substring(1));
+        int duration = Duration.getDuration(rhythmVal.substring(1));
 
         switch (rhythmVal.charAt(0)) {
             case T_NOTE:

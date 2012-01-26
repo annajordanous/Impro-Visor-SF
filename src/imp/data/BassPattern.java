@@ -310,7 +310,7 @@ public class BassPattern
     for( int i = 0; i < n; i++ )
       {
       String durationString = durations.get(i);
-      duration += Key.getDuration0(durationString);
+      duration += Duration.getDuration0(durationString);
       }
     return duration;
     }
@@ -366,7 +366,7 @@ public class BassPattern
             pitch = new NoteSymbol(
                     pitch.getPitchClass(),
                     pitch.getOctave(),
-                    Key.getDuration0(duration));
+                    Duration.getDuration0(duration));
             Polylist L = Polylist.list(duration, pitch);
             return bassLine.cons(L).reverse();
             }
@@ -536,7 +536,7 @@ public class BassPattern
       NoteSymbol note = new NoteSymbol(
               pitch.getPitchClass(),
               pitch.getOctave(),
-              Key.getDuration0(duration));
+              Duration.getDuration0(duration));
 
       bassLine = bassLine.cons(note);
 

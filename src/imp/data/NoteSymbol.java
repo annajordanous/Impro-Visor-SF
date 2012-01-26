@@ -118,7 +118,7 @@ public class NoteSymbol implements Constants, Serializable {
      if( c == Key.RESTCHAR )
        {
        noteSymbol.pitchClass = null;
-       noteSymbol.duration = Key.getDuration(string.substring(1));
+       noteSymbol.duration = Duration.getDuration(string.substring(1));
        noteSymbol.stringRep = string;
        return noteSymbol;
        }    
@@ -180,7 +180,7 @@ public class NoteSymbol implements Constants, Serializable {
 	 }
        }
 
-     noteSymbol.duration = Key.getDuration(string.substring(index));
+     noteSymbol.duration = Duration.getDuration(string.substring(index));
 
      noteSymbol.establishStringRep(noteSymbol.octave, noteSymbol.duration);
 

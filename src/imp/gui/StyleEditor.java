@@ -3284,7 +3284,7 @@ public class StyleEditor
   // Note that getDuration just returns a default if the argument is ill-formed.
   // This should be fixed eventually.
       
-  int minDuration = Key.getDuration(minDurationString);
+  int minDuration = Duration.getDuration(minDurationString);
    
   return minDuration;
   }
@@ -5861,7 +5861,7 @@ public class StyleEditor
         String item = (String)ob;
         if( item.length() > 1 )
           {
-          int itemSlots = Key.getDuration(item.substring(1));
+          int itemSlots = Duration.getDuration(item.substring(1));
           switch( Character.toLowerCase(item.charAt(0)) )
             {
             case 'r':

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,8 @@ public interface Constants {
      */
     
     public static final int BEAT = 120;
-
+    
+    
     /** Note: All of the following must have no fractional remainder,
      *  Hence no SIXTYFOURTH for example. SIXTYFOURTH_TRIPLET is possible
      *  in principle, but we don't have an image for it yet.
@@ -342,6 +343,7 @@ public interface Constants {
     public static final char DOT       = '.';
     public static final char PLUS      = '+';
     public static final char MINUS     = '-';
+    public static final char RESTCHAR  = 'r';
 
     /**
      * Modes of extracting stuff for transfer

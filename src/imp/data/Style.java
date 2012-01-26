@@ -21,14 +21,20 @@
 
 package imp.data;
 
-import java.io.*;
-import java.util.*;
-import javax.sound.midi.*;
-
-import imp.*;
+import imp.Constants;
 import imp.com.PlayScoreCommand;
-
-import polya.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Random;
+import java.util.Vector;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
+import polya.Polylist;
+import polya.PolylistBuffer;
+import polya.PolylistEnum;
 
 /**
  * An object that contains patterns and parameters for generating an
@@ -1158,7 +1164,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
         String dur = (String)L.first();
         bassline = bassline.allButLast();
         NoteSymbol ns = (NoteSymbol)b.first();
-        int pDur = Key.getDuration0(dur) + ns.toNote().getRhythmValue();
+        int pDur = Duration.getDuration0(dur) + ns.toNote().getRhythmValue();
         ns = new NoteSymbol(ns.getPitchClass(), ns.getOctave(), pDur);
         b = b.rest().cons(ns);
         }

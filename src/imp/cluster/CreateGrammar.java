@@ -21,10 +21,7 @@
 package imp.cluster;
 
 
-import imp.data.ChordPart;
-import imp.data.Key;
-import imp.data.Note;
-import imp.data.Unit;
+import imp.data.*;
 import imp.gui.Notate;
 import java.io.*;
 import java.util.*;
@@ -682,7 +679,7 @@ public class CreateGrammar implements imp.Constants {
                     //check if first beat is rest
                     if (terminal.charAt(0) == 'R') {
                         //check if rest releases on a startbeat
-                        if (Key.getDuration(terminal.substring(1)) % 120 == 0) {
+                        if (Duration.getDuration(terminal.substring(1)) % 120 == 0) {
                             startBeat = 1;
                         } else {
                             startBeat = 0;
@@ -700,7 +697,7 @@ public class CreateGrammar implements imp.Constants {
                     if (terminal.charAt(0) != 'R') {
                         noteCount++;
                     } else {
-                        restDuration += Key.getDuration(terminal.substring(1));
+                        restDuration += Duration.getDuration(terminal.substring(1));
                     }
                     inner = inner.rest();
                 }

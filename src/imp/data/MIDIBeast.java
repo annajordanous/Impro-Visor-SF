@@ -667,7 +667,7 @@ public class MIDIBeast{
          * It should never have been created.
          */
         public static int getSlotValueFor(String s){
-          return Key.getDuration0(s);
+          return Duration.getDuration0(s);
           
           /*
 		if(s.equals("1")) return whole;

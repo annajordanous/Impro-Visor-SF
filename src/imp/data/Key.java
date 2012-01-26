@@ -185,46 +185,13 @@ public class Key
 
   static private int PITCH_NAME_SIZE = 21;
 
-  /**
-   * the symbol used to designate a flat pitch
-   */
-  public static final char FLAT = 'b';
-
-  /**
-   * the symbol used to designate a sharp pitch
-   */
-  public static final char SHARP = '#';
-
-  /**
-   * the symbol used to designate an octave up in the lead sheet notation
-   */
-  public static final char PLUS = '+';
-
-  /**
-   * the character that represents the rest
-   */
-  public static final char RESTCHAR = 'r';
-
-  /**
-   * the symbol used to designate an octave down in the lead sheet notation
-   */
-  public static final char MINUS = '-';
-
-  /**
-   * the symbol used for slash chords in the lead sheet notation
-   */
-  public static final char SLASH = '/';
-
-  /**
-   * the symbol used to increase duration by one-half in the lead sheet notation
-   */
-  public static final char DOT = '.';
-
+  
   /**
    * the difference between semitone indices in the pitches table
    */
   public static final int SEMITONEOFFSET = 7;
 
+  
   /**
    * Construct the static keys.
    */
@@ -235,6 +202,7 @@ public class Key
     this.cPosition = cPosition;
     }
 
+  
   /**
    * Get a key given its name
    */
@@ -252,6 +220,7 @@ public class Key
     return null;	// no such key
     }
 
+  
   /**
    * Get a key given its number of sharps (flats if negative);
    */
@@ -267,6 +236,7 @@ public class Key
     return key[index];
     }
 
+  
   /**
    * Render chromatic pitch as it would be in this key.
    */
@@ -284,6 +254,7 @@ public class Key
     return PitchClass.getPitchClass(chromaticIndices[index][pitchIndex]);
     }
 
+  
   /**
    * Defines how an offset of some number of semitones from the tonic of the key 
    * maps into pitch names.
@@ -302,6 +273,7 @@ public class Key
     return PitchClass.getPitchClass(chromaticIndices[index][offset]);
     }
 
+  
   /**
    * Get the index of this key. (might not be needed)
    */
@@ -310,6 +282,7 @@ public class Key
     return index;
     }
 
+  
   /**
    * Transpose this key to another, by the given number of semitones.
    */
@@ -331,6 +304,7 @@ public class Key
     return key[newIndex];
     }
 
+  
   /**
    * Transpose a PitchClass in this key.
    */
@@ -347,11 +321,13 @@ public class Key
     return key[index].name;
     }
 
+  @Override
   public String toString()
     {
     return name;
     }
 
+  
   /**
    * Get the delta in the line of fifths, corresponding to a key
    * represented by a number of sharps (or negative for flats)
@@ -374,11 +350,13 @@ public class Key
     return newSharps;
     }
 
+  
   public static Polylist transposeChordList(Polylist chordSeq, int rise)
     {
     return transposeChordList(chordSeq, rise, Ckey);
     }
 
+  
   public static Polylist transposeChordList(Polylist chordSeq, int rise,
                                               Key key)
     {
@@ -404,6 +382,7 @@ public class Key
     return newChords.reverse();
     }
 
+  
   public static String transposeChord(String chord, int rise, Key key)
     {
     if( rise == 0 || chord.equals(NOCHORD) )
@@ -474,16 +453,19 @@ public class Key
     return root + body + "/" + newBass;
     }
 
+  
   static String getRoot(String chord)
     {
     return (String)explodeChord(chord).first();
     }
 
+  
   static boolean sameRoot(String chord1, String chord2)
     {
     return getRoot(chord1).equals(getRoot(chord2));
     }
 
+  
   static boolean isValidStem(String stem)
     {
     switch( stem.charAt(0) )
@@ -501,11 +483,13 @@ public class Key
       }
     }
 
+  
   static boolean hasValidStem(String chord)
     {
     return explodeChord(chord) != null;
     }
 
+  
   /**
    * Explode a chord from the leadsheet notation into four parts:
    * the root, the type of chord, the string after a slash, if any,
@@ -557,7 +541,7 @@ public class Key
 
     // Get the type of the chord.
 
-    StringBuffer buffer2 = new StringBuffer();
+    StringBuilder buffer2 = new StringBuilder();
 
     while( index < len && chord.charAt(index) != SLASH )
       {
@@ -595,6 +579,7 @@ public class Key
     return Polylist.list(root, body, afterSlash, bass);
     }
 
+  
   /**
    * Look up a string in a table.
    * Eventually uses of this could be replaced with a map of some kind.
@@ -646,10 +631,12 @@ public static Polylist invalidNotes(Polylist L)
     }
   }
 
+
   /**
    * Get midi pitch from a leadsheet melody note.
    * Duration is ignored.  -1 is returned if the note is a rest.
    */
+
   public static int pitchFromLeadsheet(String string)
     {
     return pitchFromLeadsheet(string, 0);
@@ -665,6 +652,7 @@ public static Polylist invalidNotes(Polylist L)
     return note.getPitch();
     }
 
+  
   /**
    * Transform a leadsheet melody note or rest given as a string to 
    * a Note, e.g. for insertion into a Score.  Note that octave
@@ -682,228 +670,6 @@ public static Polylist invalidNotes(Polylist L)
     return NoteSymbol.makeNoteSymbol(string, rise).toNote();
     }
 
-
-  /* This overlaps noteFromLeadsheet and should be refactored. */
-  public static int durationFromLeadsheet(String string)
-    {
-    int len = string.length();
-
-    if( len == 0 )
-      {
-      return 0;
-      }
-
-    char c = string.charAt(0);
-
-    if( c == RESTCHAR )
-      {
-      int duration = getDuration(string.substring(1));
-      return duration;
-      }
-
-    if( !PitchClass.isValidPitchStart(c) )
-      {
-      return 0;
-      }
-
-    int index = 1;
-
-    boolean natural = true;
-    boolean sharp = false;
-
-    StringBuilder noteBase = new StringBuilder();
-
-    noteBase.append(c);
-
-    if( index < len )
-      {
-      char second = string.charAt(1);
-      if( second == SHARP || second == FLAT )
-        {
-        index++;
-        noteBase.append(second);
-        natural = false;
-        sharp = (second == SHARP);
-        }
-      }
-
-    // Check for any octave shifts specified in the notation
-
-    boolean more = true;
-    while( index < len && more )
-      {
-      switch( string.charAt(index) )
-        {
-        case PLUS:
-          index++;
-          break;
-
-        case MINUS:
-          index++;
-          break;
-
-        default:
-          more = false;
-        }
-      }
-
-    return getDuration(string.substring(index));
-    }
-
-  /**
-   * Use this to get duration from duration string such as
-   * "4+8" as in leadsheet notation, except that a null 
-   * string returns 0 rather than the default value.
-   */
-
-  public static int getDuration0(String item)
-  {
-    if( item.trim().equals("") )
-      {
-      return 0;
-      }
-    else 
-      {
-      return getDuration(item);
-      }
-  }
-  
-  /**
-   * This method provides part of the functionality of noteFromLeadhsheet,
-   * namely getting the duration part of a note or rest.
-   */
-  public static int getDuration(String item)
-    {
-    int len = item.length();
-    int index = 0;
-    if( len == 0 ||
-            !Character.isDigit(item.charAt(index)) )
-      {
-      return DEFAULT_DURATION;
-      }
-    
-    // Check for zero
-    // by trying to convert to a number.
-    // If conversion is unsuccessful or value is 0, 0 will be returned
-    
-    int value = 1;
-    try 
-      {
-        value = Integer.parseInt(item);
-      }
-    catch (Exception ex )
-      {
-      }
-    
-    if( value == 0 )
-      {
-        return 0;
-      }
-
-    int duration = 0;
-    boolean firsttime = true;
-
-    // Example of input is 2.+8/3+32 meaning the value of a dotted halfnote
-    // eighth note triplet, and 32nd note.
-    // Note that there is no + to start with.
-
-    while( index < len && ((item.charAt(index) == PLUS) || firsttime) )
-      {
-      int numerator;
-      int denominator = 1;
-      int this_duration;
-
-      if( firsttime )
-        {
-        firsttime = false; // no leading +
-        }
-      else
-        {
-        index++;		  // skip infix +'s
-        }
-
-      boolean hasDigit = false;
-
-      // Accumulate digits part
-      StringBuffer dur = new StringBuffer();
-      while( index < len && Character.isDigit(item.charAt(index)) )
-        {
-        hasDigit = true;
-        dur.append(item.charAt(index));
-        index++;
-        }
-
-      if( hasDigit )
-        {
-        numerator = new Integer(dur.toString()).intValue();
-        }
-      else
-        {
-        numerator = default_numerator;
-        }
-
-      int slots = WHOLE;  // 1 whole note = 4 quarter  notes
-
-      // Check for tuplet
-      if( index < len && item.charAt(index) == SLASH )
-        {
-        index++;
-        if( index >= len || !Character.isDigit(item.charAt(index)) )
-          {
-          ErrorLog.log(ErrorLog.WARNING,
-                  "Expected digit after / in " + item + " returning default value ");
-          return DEFAULT_DURATION;
-          }
-
-        StringBuffer tuplet = new StringBuffer();
-        while( index < len && Character.isDigit(item.charAt(index)) )
-          {
-          tuplet.append((Character)item.charAt(index));
-          index++;
-          }
-
-        denominator = new Integer(tuplet.toString()).intValue();
-        }
-
-      if( denominator > 1 )
-        {
-        slots *= (denominator - 1); // was 2
-        }
-
-      /* suppress warning -- RK
-      if( slots % (numerator*denominator) != 0 )
-      {
-      ErrorLog.log(ErrorLog.WARNING, "Tuplet value is not exact: " + item
-      + ", doing the best we can");
-      }
-       */
-
-      this_duration = slots / (numerator * denominator);
-
-      // Handle dotted notes, which add to individual duration.
-
-      while( index < len && item.charAt(index) == DOT )
-        {
-        this_duration = (3 * this_duration) / 2;
-        index++;
-        }
-
-      duration += this_duration;
-      }
-
-    if( index < len )
-      {
-      ErrorLog.log(ErrorLog.WARNING,
-              "Ignoring garbage after end of note duration: " + item);
-      }
-
-    if( duration <= 0 )
-      {
-      duration = DEFAULT_DURATION;
-      }
-
-    return duration;
-    }
 
   /**
    * Return a profile of a list of note Strings.
@@ -981,12 +747,15 @@ public static Polylist invalidNotes(Polylist L)
 
     if( includeTrailer )
       {
-      buffer.append(GAP + noteCount + TRAILER);
+      buffer.append(GAP);
+      buffer.append(noteCount);
+      buffer.append(TRAILER);
       }
 
     return buffer.toString();
     }
 
+  
   /**
    * Transpose list of note Strings in leadsheet form by a certain rise
    * returning a list of note Strings.
@@ -1014,54 +783,7 @@ public static Polylist invalidNotes(Polylist L)
     return R.reverse();
     }
 
-  /**
-   * Get duration of a list of note strings.  Count rests,
-   * except for trailing rests
-   * returning an integer duration
-   */
-  public static int getDuration(Polylist L)
-    {
-    Polylist R = L.reverse();
-
-    // ignore any rests at end (beginning of reverse)
-
-    while( R.nonEmpty() )
-      {
-      String note = (String)R.first();
-      if( !isRest(note) )
-        {
-        break;
-        }
-      R = R.rest();
-      }
-
-    int totalDuration = 0;
-
-    while( R.nonEmpty() )
-      {
-      totalDuration += getDuration((String)R.first());
-      R = R.rest();
-      }
-
-    return totalDuration;
-    }
-
-  static boolean isRest(String noteString)
-    {
-    assert (!noteString.equals(""));
-
-    char c = noteString.charAt(0);
-
-    assert (Character.isLowerCase(c));
-
-    if( c == RESTCHAR )
-      {
-      return true;
-      }
-
-    return false;
-    }
-
+ 
   /**
    * Transpose a note String in leadsheet form by a certain rise
    * returning a String.  Returns null if the note String is not well-formed.
@@ -1157,6 +879,7 @@ public static Polylist invalidNotes(Polylist L)
     return result;
     }
 
+  
   /**
    * Transpose list of note Strings in leadsheet form by a certain rise
    * returning a list of numbers representing the notes independent of key.
@@ -1176,6 +899,7 @@ public static Polylist invalidNotes(Polylist L)
     return R.reverse();
     }
 
+  
   /**
    * Transpose a note String in leadsheet form by a certain rise
    * returning a String representing a number, such as "3", "b5", "#2", etc.
@@ -1197,7 +921,7 @@ public static Polylist invalidNotes(Polylist L)
 
     Polylist item = Polylist.explode(noteString).rest();
 
-    StringBuffer noteBase = new StringBuffer();
+    StringBuilder noteBase = new StringBuilder();
     noteBase.append(c);
 
     if( item.nonEmpty() )
@@ -1343,6 +1067,7 @@ public static Polylist invalidNotes(Polylist L)
     return R.reverse();
     }
 
+  
   /**
    * enharmonic determines whether the pitches represented by
    * two strings representing pitch are enharmonically equivalent
@@ -1352,6 +1077,7 @@ public static Polylist invalidNotes(Polylist L)
     return PitchClass.findRise(x, y) == 0;
     }
 
+  
   /**
    * enMember determines whether the first pitch is enharmonically
    * equivalent to some member of a list
@@ -1369,6 +1095,7 @@ public static Polylist invalidNotes(Polylist L)
     return false;
     }
 
+  
   /**
    * Auxiliary unit test method for Key.
    */
@@ -1388,6 +1115,7 @@ public static Polylist invalidNotes(Polylist L)
       }
     }
 
+  
   /**
    * Make a note from a pitch class name specified as one of the Strings
    * in the pitches table.  A pitch class represents many
@@ -1397,12 +1125,14 @@ public static Polylist invalidNotes(Polylist L)
    *
    * If there is a problem with the String, null is returned.
    */
+  
   public static Note makeNote(String pitchClassName, int midiBase,
                                 int duration)
     {
     return makeNoteAbove(pitchClassName, midiBase, 0, duration);
     }
 
+  
   /**
    * Make a note from a pitch class specified as one of the Strings
    * in the pitches table, above a minimum MIDI value.
@@ -1416,6 +1146,7 @@ public static Polylist invalidNotes(Polylist L)
    *
    * If there is a problem with the String, null is returned.
    */
+  
   public static Note makeNoteAbove(String pitchClassName, int midiBase,
                                      int minimum, int duration)
     {
@@ -1435,6 +1166,7 @@ public static Polylist invalidNotes(Polylist L)
     return new Note(midi, natural, sharp, duration);
     }
 
+  
   /**
    * Unit test method for Key.
    */

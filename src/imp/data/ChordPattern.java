@@ -138,7 +138,7 @@ public static ChordPattern makeChordPattern(Polylist L)
       case PUSH:
         {
         String dur = item.first().toString();
-        cp.pushAmount = Key.getDuration(dur);
+        cp.pushAmount = Duration.getDuration(dur);
         //System.out.println("pushAmount " + dur + " = " + cp.pushAmount + " slots");
         }
       }
@@ -166,7 +166,7 @@ public int getDuration()
   int duration = 0;
   for( int i = 0; i < durations.size(); i++ )
     {
-    duration += Key.getDuration(durations.get(i));
+    duration += Duration.getDuration(durations.get(i));
     }
   return duration;
   }
@@ -205,7 +205,7 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
     String duration = j.next();
     Polylist voicing;
 
-    durationMelody.addNote(new Rest(Key.getDuration(duration)));
+    durationMelody.addNote(new Rest(Duration.getDuration(duration)));
 
     switch( rule )
       {
