@@ -18,7 +18,6 @@
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
 /*
  * MidiManager.java
  *
@@ -26,7 +25,6 @@
  *
  * @author Martin Hunt
  */
-
 package imp.util;
 
 import imp.Constants;
@@ -38,31 +36,20 @@ import javax.sound.midi.*;
 
 public class MidiManager implements Constants
 {
+
 private static String midiError = null;
-
-/**
- * vectors of all devices available
- */
-
+// vectors of all devices available
 private Vector<MidiDevice.Info> seqInfo;
 private Vector<MidiDevice.Info> synthInfo;
 private Vector<MidiDevice.Info> midiInInfo;
 private Vector<MidiDevice.Info> midiOutInfo;
-
-/**
- * specific devices and receiver used by this program for MIDI IO
- */
-
+// specific devices and receiver used by this program for MIDI IO
 private MidiDevice out = null;
 private MidiDevice in = null;   // right now, we only support listening to (1) MIDI IN device at a time
 private MidiDevice.Info outInfo = null;
 private MidiDevice.Info inInfo = null;
 private Receiver currentReceiver = null;
 public String defaultDeviceLabel = "Default Device (System)";
-
-/**
- * Info on each device
- */
 
 MidiDevice.Info[] infos;
         
@@ -71,23 +58,16 @@ MidiDevice.Info[] infos;
  * always forward messages to the currently selected MIDI out device. The
  * transmitters are attached in the registerTransmitter function
  */
-
-private MidiRelay publicReceiver = new MidiRelay();
-
-
+private MidiManager.MidiRelay publicReceiver = new MidiManager.MidiRelay();
 /**
  * The publicTransmitter forwards all messages coming from the selected MIDI in
  * device to all registered receivers
  */
-
-private MidiMultiTransmit publicTransmitter = new MidiMultiTransmit();
-
+private MidiManager.MidiMultiTransmit publicTransmitter = new MidiManager.MidiMultiTransmit();
+;
     
-/**
- * flag for echoing MIDI IN to the MIDI OUT
- */
-
-private boolean doEcho = false;
+    // flag for echoing MIDI IN to the MIDI OUT
+    private boolean doEcho = false;
 
 // ========================================
 public MidiManager()
@@ -117,42 +97,34 @@ private void init()
       {
         logError(e.getMessage());
       }
-    Trace.log(0, "MidiManager initialized");
+    //System.out.println("*** MidiManager initialized");
   }
 
 
-/**
- * attempt to list all MIDI IO devices in the system
- */
-
+// attempts to list all MIDI IO devices in the system
 public void findInstalledDevices()
   {
+
     // Obtain information about all the installed synthesizers.
     infos = MidiSystem.getMidiDeviceInfo();
 
-    Trace.log(0, "Found " + infos.length + " MIDI devices:");
-    
-    // Init vectors of device info to store found devices
-    
-    synthInfo =   new Vector<MidiDevice.Info>();
-    seqInfo =     new Vector<MidiDevice.Info>();
-    midiInInfo =  new Vector<MidiDevice.Info>();
+    System.out.println("\nFound " + infos.length + " MIDI devices:");
+    // reinit vectors of device info to store found devices
+    synthInfo = new Vector<MidiDevice.Info>();
+    seqInfo = new Vector<MidiDevice.Info>();
+    midiInInfo = new Vector<MidiDevice.Info>();
     midiOutInfo = new Vector<MidiDevice.Info>();
-    
-    // null represents the default output device. Probably not a good choice.
-    
     midiOutInfo.add(null);
 
     // Scan all found devices and check to see what type they are
-    
+    MidiDevice device;
     for( int i = 0; i < infos.length; i++ )
       {
-        MidiDevice device;
         try
           {
             device = MidiSystem.getMidiDevice(infos[i]);
 
-            Trace.log(0, i + ": " + getDeviceName(device));
+            System.out.println(i + ": " + getDeviceName(device));
           }
         catch( MidiUnavailableException e )
           {
@@ -183,10 +155,7 @@ public void findInstalledDevices()
           }
       }
 
-    Trace.log(0, "Devices found: \n Synthesizers:\n" + synthInfo 
-               + "\n\n Sequencers:\n" + seqInfo 
-               + "\n\n MIDI In:\n" + midiInInfo 
-               + "\n\n MIDI Out:\n" + midiOutInfo);
+    Trace.log(0, "Devices found: \n Synthesizers:\n" + synthInfo + "\n\n Sequencers:\n" + seqInfo + "\n\n MIDI In:\n" + midiInInfo + "\n\n MIDI Out:\n" + midiOutInfo);
   }
 
 // returns the last error message
@@ -202,7 +171,6 @@ public String getError()
  * the MIDI devices on the per-window level (provides a mixer for each window
  * and device sharing across windows)
  */
-
 public void registerTransmitter(Transmitter t)
   {
     t.setReceiver(publicReceiver);
@@ -218,10 +186,7 @@ public void unregisterReceiver(Receiver r)
     publicTransmitter.removeReceiver(r);
   }
 
-/**
- * getters for device info populated by findInstalledDevices()
- */
-
+// getters for device info populated by findInstalledDevices()
 public Vector<MidiDevice.Info> getSequencerInfo()
   {
     return seqInfo;
@@ -242,10 +207,7 @@ public Vector<MidiDevice.Info> getMidiOutInfo()
     return midiOutInfo;
   }
 
-/**
- * getters for current devices and their corresponding info
- */
-
+// getters for current devices and their corresponding info
 public MidiDevice getOutDevice()
   {
     return out;
@@ -275,9 +237,7 @@ public Receiver getReceiver()
     return publicReceiver;
   }
 
-/**
- * getter and setter for echoing midi input messages to the midi output device
- */
+// getter and setter for echoing midi input messages to the midi output device
 public boolean getEcho()
   {
     return doEcho;
@@ -304,11 +264,7 @@ public boolean setEcho(boolean state)
   }
 
 
-/**
- * closes all devices that we opened, called before changing devices, 
- * for example: see setDevices
- */
-
+// closes all devices that we opened, called before changing devices, for example: see setDevices
 public void closeDevices()
   {
     closeInDevice();
@@ -329,13 +285,13 @@ private void closeOutDevice()
 
     if( currentReceiver != null )
       {
-        Trace.log(0, "closing currentReceiver " + currentReceiver);
+        System.out.println("closing currentReceiver " + currentReceiver);
         currentReceiver.close();
       }
     
     if( out != null )
       {
-        Trace.log(0, "closing out " + out);
+        System.out.println("closing out " + currentReceiver);
         out.close();
       }
   }
@@ -415,8 +371,7 @@ public void sendSysExMasterVolumeMsg(int value)
         b.write(SysexMessage.SPECIAL_SYSTEM_EXCLUSIVE);
 
 //          DEBUG CODE:
-//            byte[] bytes = new byte[2]; 
-//            bytes[0] = (byte) (volume >> 7); bytes[1] = (byte) (volume % 128);
+//            byte[] bytes = new byte[2]; bytes[0] = (byte) (volume >> 7); bytes[1] = (byte) (volume % 128);
 //            BigInteger bi = new BigInteger(bytes);
 //            System.out.println(volume + "  " + bi.toString(2));
 
@@ -434,7 +389,7 @@ public void sendSysExMasterVolumeMsg(int value)
 /**
  * sets the input device and reestablishes echo if doEcho is true
  */
-private String inDeviceError;
+private String inDeviceError = "";
 
 public void setInDevice(MidiDevice.Info inInfo)
   {
@@ -473,13 +428,13 @@ public void setInDevice(MidiDevice.Info inInfo)
  * sets the output device and prepares a receiver for the volumeControl
  * transmitted messages
  */
-private String outDeviceError;
+private String outDeviceError = "";
 
 public void setOutDevice(Object outInfoObject)
   {
     MidiDevice.Info outInfo;
 
-    if( outInfoObject.equals(defaultDeviceLabel) )
+    if( outInfoObject == defaultDeviceLabel )
       {
         outInfo = null;
       }
@@ -527,14 +482,11 @@ public void setOutDevice(Object outInfoObject)
       {
         out = null;
         logError(outInfo + " - " + e.getMessage());
-        outDeviceError += (outDeviceError.equals("") ? "" : "\n") + e.getMessage();
+        outDeviceError += (outDeviceError == "" ? "" : "\n") + e.getMessage();
       }
   }
 
-/**
- * open requested MIDI devices and prepare a receiver on the output device
- */
-
+// open requested MIDI devices and prepare a receiver on the output device
 public void setDevices(MidiDevice.Info outInfo, MidiDevice.Info inInfo)
   {
     setInDevice(inInfo);
@@ -553,7 +505,7 @@ public String getInDeviceError()
 
 private void setCurrentReceiver(Receiver receiver)
   {
-    Trace.log(0, "Setting currentReceiver from " + currentReceiver + " to " + receiver);
+    System.out.println("\nSetting currentReceiver from " + currentReceiver + " to " + receiver);
     currentReceiver = receiver;
   }
 
@@ -561,11 +513,9 @@ public String getDeviceName(MidiDevice device)
   {
     return device.getDeviceInfo().toString();
   }
-
 /**
- * play a middle C on the receiver
+ * plays a middle C on the receiver
  */
-
 public boolean test()
   {
     try
@@ -619,6 +569,7 @@ public Receiver getReceiver()
 
 private class MidiMultiTransmit implements Receiver
 {
+
 Vector<Receiver> receiver = new Vector<Receiver>();
 int numReceivers = 0;
 
@@ -643,8 +594,9 @@ public void send(MidiMessage message, long timeStamp)
       }
     catch( java.util.ConcurrentModificationException e )
       {
-        // RK 6/11/2010 Getting exceptions here at end.
+        // RK 6/11/2010 Getting exceptions here at the end.
         // This silently catches them.
+        return;
       }
   }
 
@@ -667,5 +619,6 @@ public void removeReceiver(Receiver receiver)
         this.receiver.remove(receiver);
       }
   }
-  }
+
+}
 }

@@ -67,12 +67,17 @@ private static final int REST = 1;
  */
 private static String keyword[] =
   {
-  "rules", "weight"
+  "rules", "weight", "push"
   };
+
 // indices into the keyword array
 private static final int RULES = 0;
 
 private static final int WEIGHT = 1;
+
+private static final int PUSH = 2;
+
+private int pushAmount = 0; // push amount, in slots
 
 
 /**
@@ -93,6 +98,13 @@ private ChordPattern()
  */
 public static ChordPattern makeChordPattern(Polylist L)
   {
+    
+    // Example of L:
+    // 	(chord-pattern (rules P8 X1 R4 X2 X4)(weight 5))
+    //
+    // P = "push", X = "hit", R = "rest"
+    // P should only occur once, at the beginning
+    
   ChordPattern cp = new ChordPattern();
 
   while( L.nonEmpty() )
@@ -121,6 +133,13 @@ public static ChordPattern makeChordPattern(Polylist L)
         {
         Long w = (Long)item.first();
         cp.setWeight(w.intValue());
+        break;
+        }
+      case PUSH:
+        {
+        String dur = item.first().toString();
+        cp.pushAmount = Key.getDuration(dur);
+        //System.out.println("pushAmount " + dur + " = " + cp.pushAmount + " slots");
         }
       }
     }
@@ -136,8 +155,9 @@ public static ChordPattern makeChordPattern(Polylist L)
  */
 private void addRule(String rule, String duration)
   {
-  rules.add(Leadsheet.lookup(rule, ruleTypes));
-  durations.add(duration);
+
+    rules.add(Leadsheet.lookup(rule, ruleTypes));
+    durations.add(duration);
   }
 
 
@@ -697,4 +717,13 @@ public String forGenerator()
   return rule;
   }
 
+
+/**
+ * Get the "push" amount for this pattern, in slots
+ */
+
+public int getPushAmount()
+  {
+    return pushAmount;
+  }
 }

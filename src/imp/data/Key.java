@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,10 @@
 
 package imp.data;
 
-import imp.*;
-import imp.util.*;
-
+import imp.Constants;
+import imp.util.ErrorLog;
 import java.io.Serializable;
-import polya.*;
-import polya.Polylist.*;
+import polya.Polylist;
 
 /**
  * The Key class deals with keys, their creation from strings, transposition, etc.
@@ -56,9 +54,9 @@ public class Key
 
   public static int default_numerator = 8;	// eighth note default
 
-  public static int gbkey = 0,  dbkey = 1,  abkey = 2,  ebkey = 3,  bbkey = 4,  
-                    fkey = 5,  ckey = 6,  gkey = 7,  dkey = 8,  akey = 9,  
-                    ekey = 10,  bkey = 11,  fskey = 12,  cskey = 13;
+  public static final int gbkey = 0, dbkey = 1, abkey = 2,  ebkey = 3, bbkey = 4,  
+                          fkey = 5,  ckey = 6,  gkey = 7,   dkey = 8,  akey = 9,  
+                          ekey = 10, bkey = 11, fskey = 12, cskey = 13;
 
   private static int CINDEX = 6;
 
@@ -433,7 +431,7 @@ public class Key
     // Deal with slash-chord
 
     PitchClass bass = PitchClass.getPitchClass((String)exploded.fourth());
-    ;
+    
     assert (bass != null);
 
     String newBass = bass.transpose(rise).getChordBase();
@@ -527,7 +525,7 @@ public class Key
       return null;	// Error indicator
       }
 
-    StringBuffer buffer1 = new StringBuffer();
+    StringBuilder buffer1 = new StringBuilder();
 
     buffer1.append(chord.charAt(0));
 
@@ -572,7 +570,7 @@ public class Key
     String bass = root.toLowerCase();	// default
     String afterSlash = "";		// default
 
-    StringBuffer buffer3 = new StringBuffer();
+    StringBuilder buffer3 = new StringBuilder();
 
     if( index < len )
       {
@@ -713,7 +711,7 @@ public static Polylist invalidNotes(Polylist L)
     boolean natural = true;
     boolean sharp = false;
 
-    StringBuffer noteBase = new StringBuffer();
+    StringBuilder noteBase = new StringBuilder();
 
     noteBase.append(c);
 
@@ -783,6 +781,24 @@ public static Polylist invalidNotes(Polylist L)
       {
       return DEFAULT_DURATION;
       }
+    
+    // Check for zero
+    // by trying to convert to a number.
+    // If conversion is unsuccessful or value is 0, 0 will be returned
+    
+    int value = 1;
+    try 
+      {
+        value = Integer.parseInt(item);
+      }
+    catch (Exception ex )
+      {
+      }
+    
+    if( value == 0 )
+      {
+        return 0;
+      }
 
     int duration = 0;
     boolean firsttime = true;
@@ -793,7 +809,7 @@ public static Polylist invalidNotes(Polylist L)
 
     while( index < len && ((item.charAt(index) == PLUS) || firsttime) )
       {
-      int numerator = 0;
+      int numerator;
       int denominator = 1;
       int this_duration;
 
@@ -903,7 +919,7 @@ public static Polylist invalidNotes(Polylist L)
     String TRAILER = "-note:";
 
     Polylist R = Polylist.nil;
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     int noteCount = 0;
 
     int previousPitch = -1;
@@ -1032,7 +1048,7 @@ public static Polylist invalidNotes(Polylist L)
 
   static boolean isRest(String noteString)
     {
-    assert (noteString != "");
+    assert (!noteString.equals(""));
 
     char c = noteString.charAt(0);
 
@@ -1053,7 +1069,7 @@ public static Polylist invalidNotes(Polylist L)
   public static String transposeNoteString(String noteString, int rise,
                                              Key key)
     {
-    assert (noteString != "");
+    assert (!noteString.equals(""));
 
     char c = noteString.charAt(0);
 
@@ -1069,7 +1085,7 @@ public static Polylist invalidNotes(Polylist L)
     boolean natural = true;
     boolean sharp = false;
 
-    StringBuffer noteBase = new StringBuffer();
+    StringBuilder noteBase = new StringBuilder();
     noteBase.append(c);
 
     if( item.nonEmpty() )
@@ -1122,9 +1138,9 @@ public static Polylist invalidNotes(Polylist L)
       octavesUp--;
       }
 
-    // Creat the new octave string.
+    // Create the new octave string.
 
-    StringBuffer octaveString = new StringBuffer();
+    StringBuilder octaveString = new StringBuilder();
     while( octavesUp > 0 )
       {
       octaveString.append(PLUS);
@@ -1168,7 +1184,7 @@ public static Polylist invalidNotes(Polylist L)
                                                       int rise,
                                                       Key key)
     {
-    assert (noteString != "");
+    assert (!noteString.equals(""));
 
     char c = noteString.charAt(0);
 
@@ -1225,7 +1241,7 @@ public static Polylist invalidNotes(Polylist L)
 
     // Creat the new octave string.
 
-    StringBuffer octaveString = new StringBuffer();
+    StringBuilder octaveString = new StringBuilder();
     while( octavesUp > 0 )
       {
       octaveString.append(PLUS);
@@ -1290,7 +1306,7 @@ public static Polylist invalidNotes(Polylist L)
     from = from.toLowerCase();
     to = to.toLowerCase();
 
-    if( from == to )
+    if( from.equals(to) )
       {
       return L;	// No actual transposition needed.
       }

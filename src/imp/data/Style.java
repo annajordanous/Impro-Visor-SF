@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -942,6 +942,8 @@ public class Style
 
     // because we have no data structure to hold multi-voice parts, 
     // we manually sequence polylists for each chord in this method
+    
+    boolean firstTime = true;
 
     MidiEvent evt = MidiSynth.createProgramChangeEvent(chordChannel,
             chordInstrument, time);
@@ -972,7 +974,21 @@ public class Style
         }
       else
         {
-        duration -= pattern.getDuration();
+        // Accommodate possible "pushing" of first chord.
+        // The amount is given in slots.
+
+        if( firstTime )
+            {
+            firstTime = false;
+            int pushAmount = pattern.getPushAmount();
+            time -= pushAmount*seq.getResolution() / BEAT;
+            if( time < 0 )
+                {
+                time = 0;
+                }
+            }
+      
+      duration -= pattern.getDuration();
 
         // we get a polylist containing the chords (each in a polylist)
         // and a "duration melody" which is a MelodyPart representing
@@ -1214,8 +1230,8 @@ static Polylist midiEvent2polylist(MidiEvent event)
     Polylist bassline = Polylist.nil;
 
     int index = startIndex;
-    ChordSymbol chord = null;
-    ChordSymbol nextChord = null;
+    ChordSymbol chord;
+    ChordSymbol nextChord;
     ChordSymbol lastExtension = null;
     NoteSymbol lastNote = bassBase;
     Polylist lastChord = Polylist.nil; // rk 8/06/07 was: chordBase;
