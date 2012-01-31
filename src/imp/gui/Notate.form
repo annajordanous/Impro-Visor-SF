@@ -2478,7 +2478,7 @@
                     <Component class="javax.swing.JComboBox" name="midiOutComboBox">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="midiOut" type="code"/>
+                          <Connection code="midiOutChooser" type="code"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -2517,7 +2517,7 @@
                     <Component class="javax.swing.JComboBox" name="midiInComboBox">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="midiIn" type="code"/>
+                          <Connection code="midiInChooser" type="code"/>
                         </Property>
                       </Properties>
                       <Events>

@@ -51,6 +51,8 @@ private MidiDevice.Info inInfo = null;
 private Receiver currentReceiver = null;
 public String defaultDeviceLabel = "Default Device (System)";
 
+private Receiver defaultReceiver = null;
+
 MidiDevice.Info[] infos;
         
 /**
@@ -77,6 +79,16 @@ public MidiManager()
 
 private void init()
   {
+    try 
+      {
+      defaultReceiver = MidiSystem.getReceiver();
+      }
+    catch( Exception e )
+      {
+        System.out.println("Exception in getting default receiver");
+      }
+    
+    System.out.println("defaultReceiver = " + defaultReceiver);
     findInstalledDevices();
     try
       {
@@ -93,7 +105,8 @@ private void init()
             Object inArray[] = midiInInfo.toArray();
             input = (MidiDevice.Info)inArray[inArray.length-1];
           }
-        setDevices(output, input);
+        setInDevice(input);
+        setOutDevice(output);
       }
     catch( Exception e )
       {
@@ -112,8 +125,6 @@ public void findInstalledDevices()
 
     System.out.println("\nFound " + infos.length + " MIDI devices:");
     // reinit LinkedHashSets of device info to store found devices
-    synthInfo = new LinkedHashSet<MidiDevice.Info>();
-    seqInfo = new LinkedHashSet<MidiDevice.Info>();
     midiInInfo = new LinkedHashSet<MidiDevice.Info>();
     midiOutInfo = new LinkedHashSet<MidiDevice.Info>();
     midiOutInfo.add(null);
@@ -134,12 +145,12 @@ public void findInstalledDevices()
           }
         if( device instanceof Synthesizer )
           {
-            synthInfo.add(infos[i]);
+            midiOutInfo.add(infos[i]);
             System.out.print("Synthesizer ");
           }
         if( device instanceof Sequencer )
           {
-            seqInfo.add(infos[i]);
+            midiInInfo.add(infos[i]);
             System.out.print("Sequencer ");
           }
         if( !(device instanceof Synthesizer) && !(device instanceof Sequencer) )
@@ -148,7 +159,7 @@ public void findInstalledDevices()
             int numReceivers = device.getMaxReceivers();
             int numTransmitters = device.getMaxTransmitters();
             
-            System.out.print("MIDI Port: " + numReceivers + " receivers " + numTransmitters + "transmitters");
+            System.out.print("MIDI Port with " + numReceivers + " receivers, " + numTransmitters + " transmitters");
 
             if( numReceivers > 0 || numReceivers == -1 )
               {
@@ -291,7 +302,7 @@ private void closeOutDevice()
   {
     sendAllSoundsOffMsg();
 
-    if( currentReceiver != null )
+    if( currentReceiver != null && currentReceiver != defaultReceiver )
       {
         System.out.println("closing currentReceiver " + currentReceiver);
         currentReceiver.close();
@@ -299,7 +310,7 @@ private void closeOutDevice()
     
     if( out != null )
       {
-        System.out.println("closing out " + currentReceiver);
+        System.out.println("closing out " + out);
         out.close();
       }
   }
@@ -440,7 +451,11 @@ private String outDeviceError = "";
 
 public void setOutDevice(Object outInfoObject)
   {
-    closeOutDevice();
+    System.out.println("setOutDevice " + outInfoObject + ", outInfo was " + outInfo);
+    if( this.outInfo != null )
+      {
+      closeOutDevice();
+      }
 
     MidiDevice.Info outInfo;
 
@@ -461,7 +476,8 @@ public void setOutDevice(Object outInfoObject)
         if( outInfo == null )
           {
             // use the default receiver
-            setCurrentReceiver(MidiSystem.getReceiver());
+            // This may be wrong, as getReceiver() might not return the default.
+            setCurrentReceiver(defaultReceiver); //MidiSystem.getReceiver());
           }
         else
           {
@@ -479,6 +495,7 @@ public void setOutDevice(Object outInfoObject)
                 setCurrentReceiver(null);
                 logError(outInfo + " - " + e.getMessage());
                 outDeviceError = e.getMessage();
+                System.out.println("out Device error: " + outDeviceError);
               }
 
             Trace.log(2, "MIDI out device set: " + outInfo);
@@ -495,12 +512,6 @@ public void setOutDevice(Object outInfoObject)
       }
   }
 
-// open requested MIDI devices and prepare a receiver on the output device
-public void setDevices(MidiDevice.Info outInfo, MidiDevice.Info inInfo)
-  {
-    setInDevice(inInfo);
-    setOutDevice(outInfo);
-  }
 
 public String getOutDeviceError()
   {

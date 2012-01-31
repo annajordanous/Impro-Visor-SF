@@ -683,7 +683,7 @@ public class Notate
 
   private MidiManager midiManager = null; // reference to global midiManager contained in ImproVisor
 
-  private MidiDeviceChooser midiIn,  midiOut; // combo box models for device choosing in the midi preferences
+  private MidiDeviceChooser midiInChooser,  midiOutChooser; // combo box models for device choosing in the midi preferences
 
   private MidiNoteActionHandler midiRecorder = null; // action handler for recording from midi
 
@@ -997,13 +997,13 @@ public class Notate
 
     midiManager = imp.ImproVisor.getMidiManager();
 
-    midiIn = new MidiDeviceChooser(midiManager, midiManager.getMidiInInfo());
+    midiInChooser = new MidiDeviceChooser(midiManager, midiManager.getMidiInInfo());
 
-    midiOut = new MidiDeviceChooser(midiManager, midiManager.getMidiOutInfo());
+    midiOutChooser = new MidiDeviceChooser(midiManager, midiManager.getMidiOutInfo());
 
-    midiIn.setSelectedItem(midiManager.getInDeviceInfo());
+    midiInChooser.setSelectedItem(midiManager.getInDeviceInfo());
 
-    midiOut.setSelectedItem(midiManager.getOutDeviceInfo());
+    midiOutChooser.setSelectedItem(midiManager.getOutDeviceInfo());
 
 
     midiSynth = new MidiSynth(midiManager);
@@ -2408,7 +2408,7 @@ public class Notate
         stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
         stylePreferences.setLayout(new java.awt.GridBagLayout());
 
-        stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14));
+        stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         stylePrefLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         stylePrefLabel.setText("Section and Style Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2593,7 +2593,7 @@ public class Notate
         chorusPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
         chorusPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel19.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         jLabel19.setText("  Chorus Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2758,7 +2758,7 @@ public class Notate
         leadsheetPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
         leadsheetPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
         jLabel3.setText("  Leadsheet Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3029,7 +3029,7 @@ public class Notate
         globalPreferences.setMinimumSize(new java.awt.Dimension(675, 600));
         globalPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         jLabel2.setText("  Global Program Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3240,7 +3240,7 @@ public class Notate
         defAllPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         defAllPanel.setLayout(new java.awt.GridBagLayout());
 
-        defMasterVolSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        defMasterVolSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         defMasterVolSlider.setMajorTickSpacing(20);
         defMasterVolSlider.setMaximum(127);
         defMasterVolSlider.setMinorTickSpacing(5);
@@ -3263,7 +3263,7 @@ public class Notate
         defEntryPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         defEntryPanel.setLayout(new java.awt.GridBagLayout());
 
-        defEntryVolSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        defEntryVolSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         defEntryVolSlider.setMajorTickSpacing(20);
         defEntryVolSlider.setMaximum(127);
         defEntryVolSlider.setMinorTickSpacing(5);
@@ -3286,7 +3286,7 @@ public class Notate
         defBassVolPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         defBassVolPanel.setLayout(new java.awt.GridBagLayout());
 
-        defBassVolSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        defBassVolSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         defBassVolSlider.setMajorTickSpacing(20);
         defBassVolSlider.setMaximum(127);
         defBassVolSlider.setMinorTickSpacing(5);
@@ -3305,7 +3305,7 @@ public class Notate
         defDrumVolPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         defDrumVolPanel.setLayout(new java.awt.GridBagLayout());
 
-        defDrumVolSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        defDrumVolSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         defDrumVolSlider.setMajorTickSpacing(20);
         defDrumVolSlider.setMaximum(127);
         defDrumVolSlider.setMinorTickSpacing(5);
@@ -3329,7 +3329,7 @@ public class Notate
         defChordVolPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         defChordVolPanel.setLayout(new java.awt.GridBagLayout());
 
-        defChordVolSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        defChordVolSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         defChordVolSlider.setMajorTickSpacing(20);
         defChordVolSlider.setMaximum(127);
         defChordVolSlider.setMinorTickSpacing(5);
@@ -3348,7 +3348,7 @@ public class Notate
         defMelodyVolPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         defMelodyVolPanel.setLayout(new java.awt.GridBagLayout());
 
-        defMelodyVolSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        defMelodyVolSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         defMelodyVolSlider.setMajorTickSpacing(20);
         defMelodyVolSlider.setMaximum(127);
         defMelodyVolSlider.setMinorTickSpacing(5);
@@ -3909,7 +3909,7 @@ public class Notate
         midiOutPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select a device for MIDI output"));
         midiOutPanel.setLayout(new java.awt.GridLayout(2, 0));
 
-        midiOutComboBox.setModel(midiOut);
+        midiOutComboBox.setModel(midiOutChooser);
         midiOutComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 midiOutComboBoxActionPerformed(evt);
@@ -3931,7 +3931,7 @@ public class Notate
         midiInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select a device for MIDI input"));
         midiInPanel.setLayout(new java.awt.GridBagLayout());
 
-        midiInComboBox.setModel(midiIn);
+        midiInComboBox.setModel(midiInChooser);
         midiInComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 midiInComboBoxActionPerformed(evt);
@@ -4019,7 +4019,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         midiPreferences.add(jTabbedPane2, gridBagConstraints);
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
         jLabel4.setText("  MIDI Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4033,7 +4033,7 @@ public class Notate
         contourPreferences.setBackground(new java.awt.Color(255, 255, 255));
         contourPreferences.setLayout(new java.awt.GridBagLayout());
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14));
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
         jLabel10.setText("  Contour Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4050,7 +4050,7 @@ public class Notate
         contToneChoices.setPreferredSize(new java.awt.Dimension(190, 100));
         contToneChoices.setLayout(new java.awt.GridBagLayout());
 
-        drawScaleTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
+        drawScaleTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         drawScaleTonesCheckBox.setSelected(true);
         drawScaleTonesCheckBox.setText("Scale tones");
         drawScaleTonesCheckBox.setContentAreaFilled(false);
@@ -4061,7 +4061,7 @@ public class Notate
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         contToneChoices.add(drawScaleTonesCheckBox, gridBagConstraints);
 
-        drawChordTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
+        drawChordTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         drawChordTonesCheckBox.setSelected(true);
         drawChordTonesCheckBox.setIconTextGap(10);
         drawChordTonesCheckBox.setLabel("Chord tones");
@@ -4073,7 +4073,7 @@ public class Notate
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         contToneChoices.add(drawChordTonesCheckBox, gridBagConstraints);
 
-        drawColorTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12));
+        drawColorTonesCheckBox.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         drawColorTonesCheckBox.setText("Color tones");
         drawColorTonesCheckBox.setIconTextGap(10);
         if (Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1')       drawColorTonesCheckBox.setSelected(true);
@@ -4085,7 +4085,7 @@ public class Notate
 
         generalContourTab.add(contToneChoices, new java.awt.GridBagConstraints());
 
-        defaultDrawingMutedCheckBox.setFont(new java.awt.Font("Dialog", 0, 10));
+        defaultDrawingMutedCheckBox.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         defaultDrawingMutedCheckBox.setSelected(true);
         defaultDrawingMutedCheckBox.setText("Mute drawing sound by default");
         defaultDrawingMutedCheckBox.setIconTextGap(10);
@@ -4337,7 +4337,7 @@ public class Notate
         saveLickFrame.setAlwaysOnTop(true);
         saveLickFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        enterLickTitle.setFont(new java.awt.Font("Dialog", 0, 14));
+        enterLickTitle.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         enterLickTitle.setToolTipText("The name to be given to the selection (need not be unique)");
         enterLickTitle.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -4612,7 +4612,7 @@ public class Notate
         allPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         allPanel.setLayout(new java.awt.GridBagLayout());
 
-        allVolumeMixerSlider.setFont(new java.awt.Font("Arial", 0, 8));
+        allVolumeMixerSlider.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         allVolumeMixerSlider.setMajorTickSpacing(20);
         allVolumeMixerSlider.setMaximum(127);
         allVolumeMixerSlider.setMinorTickSpacing(5);
@@ -4630,7 +4630,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         allPanel.add(allVolumeMixerSlider, gridBagConstraints);
 
-        allMuteMixerBtn.setFont(new java.awt.Font("Arial", 0, 10));
+        allMuteMixerBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         allMuteMixerBtn.setText("Mute All");
         allMuteMixerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4660,7 +4660,7 @@ public class Notate
         entryPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         entryPanel.setLayout(new java.awt.GridBagLayout());
 
-        entryVolume.setFont(new java.awt.Font("Arial", 0, 8));
+        entryVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         entryVolume.setMajorTickSpacing(20);
         entryVolume.setMaximum(127);
         entryVolume.setMinorTickSpacing(5);
@@ -4677,7 +4677,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         entryPanel.add(entryVolume, gridBagConstraints);
 
-        entryMute.setFont(new java.awt.Font("Arial", 0, 10));
+        entryMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         entryMute.setText("Mute");
         entryMute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4709,7 +4709,7 @@ public class Notate
         bassPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         bassPanel.setLayout(new java.awt.GridBagLayout());
 
-        bassVolume.setFont(new java.awt.Font("Arial", 0, 8));
+        bassVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         bassVolume.setMajorTickSpacing(20);
         bassVolume.setMaximum(127);
         bassVolume.setMinorTickSpacing(5);
@@ -4726,7 +4726,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         bassPanel.add(bassVolume, gridBagConstraints);
 
-        bassMute.setFont(new java.awt.Font("Arial", 0, 10));
+        bassMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         bassMute.setText("Mute");
         bassMute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4751,7 +4751,7 @@ public class Notate
         drumPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         drumPanel.setLayout(new java.awt.GridBagLayout());
 
-        drumVolume.setFont(new java.awt.Font("Arial", 0, 8));
+        drumVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         drumVolume.setMajorTickSpacing(20);
         drumVolume.setMaximum(127);
         drumVolume.setMinorTickSpacing(5);
@@ -4768,7 +4768,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         drumPanel.add(drumVolume, gridBagConstraints);
 
-        drumMute.setFont(new java.awt.Font("Arial", 0, 10));
+        drumMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         drumMute.setText("Mute");
         drumMute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4793,7 +4793,7 @@ public class Notate
         chordPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         chordPanel.setLayout(new java.awt.GridBagLayout());
 
-        chordVolume.setFont(new java.awt.Font("Arial", 0, 8));
+        chordVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         chordVolume.setMajorTickSpacing(20);
         chordVolume.setMaximum(127);
         chordVolume.setMinorTickSpacing(5);
@@ -4810,7 +4810,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         chordPanel.add(chordVolume, gridBagConstraints);
 
-        chordMute.setFont(new java.awt.Font("Arial", 0, 10));
+        chordMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         chordMute.setText("Mute");
         chordMute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4835,7 +4835,7 @@ public class Notate
         melodyPanel.setPreferredSize(new java.awt.Dimension(60, 180));
         melodyPanel.setLayout(new java.awt.GridBagLayout());
 
-        melodyVolume.setFont(new java.awt.Font("Arial", 0, 8));
+        melodyVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
         melodyVolume.setMajorTickSpacing(20);
         melodyVolume.setMaximum(127);
         melodyVolume.setMinorTickSpacing(5);
@@ -4852,7 +4852,7 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         melodyPanel.add(melodyVolume, gridBagConstraints);
 
-        melodyMute.setFont(new java.awt.Font("Arial", 0, 10));
+        melodyMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         melodyMute.setText("Mute");
         melodyMute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4892,7 +4892,7 @@ public class Notate
         });
         overrideFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        enterMeasures.setFont(new java.awt.Font("Dialog", 0, 14));
+        enterMeasures.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         enterMeasures.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         enterMeasures.setToolTipText("Set the number of measures for this line.");
         enterMeasures.addActionListener(new java.awt.event.ActionListener() {
@@ -6404,9 +6404,7 @@ public class Notate
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
-        setMaximumSize(new java.awt.Dimension(1200, 2147483647));
         setName("notateFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1200, 151));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -6619,7 +6617,7 @@ public class Notate
         standardToolbar.add(openGeneratorButton);
 
         generateToolbarBtn.setBackground(new java.awt.Color(255, 204, 0));
-        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         generateToolbarBtn.setText("Generate");
         generateToolbarBtn.setToolTipText("Generate melody over selected chords.");
         generateToolbarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6636,7 +6634,7 @@ public class Notate
         standardToolbar.add(generateToolbarBtn);
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
-        freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11));
+        freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         freezeLayoutButton.setText("<html><center>Freeze</center></html>");
         freezeLayoutButton.setToolTipText("Freeze or thaw the current layout");
         freezeLayoutButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6653,7 +6651,7 @@ public class Notate
         standardToolbar.add(freezeLayoutButton);
 
         colorationButton.setBackground(new java.awt.Color(153, 204, 255));
-        colorationButton.setFont(new java.awt.Font("Arial", 0, 11));
+        colorationButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         colorationButton.setText("<html><center>B/W</center></html>");
         colorationButton.setToolTipText("Turn note coloration off or on.");
         colorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6671,7 +6669,7 @@ public class Notate
         standardToolbar.add(colorationButton);
 
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
-        smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11));
+        smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         smartEntryButton.setSelected(true);
         smartEntryButton.setText("<html><center>Simple</center></html>");
         smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
@@ -6690,7 +6688,7 @@ public class Notate
         standardToolbar.add(smartEntryButton);
 
         beamButton.setBackground(new java.awt.Color(51, 255, 255));
-        beamButton.setFont(new java.awt.Font("Arial", 0, 11));
+        beamButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         beamButton.setSelected(true);
         beamButton.setText("<html><center>No Beam</center></html>");
         beamButton.setToolTipText("Beam multiple notes shorter than quarter-note.");
@@ -6770,7 +6768,7 @@ public class Notate
 
         programStatusTF.setBackground(new java.awt.Color(238, 238, 238));
         programStatusTF.setEditable(false);
-        programStatusTF.setFont(new java.awt.Font("Dialog", 1, 10));
+        programStatusTF.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         programStatusTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         programStatusTF.setText("Starting ...");
         programStatusTF.setToolTipText("Tells what the program is doing.");
@@ -6889,7 +6887,7 @@ public class Notate
         });
         playToolBar.add(recordBtn);
 
-        stepInputBtn.setFont(new java.awt.Font("Dialog", 0, 10));
+        stepInputBtn.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
         stepInputBtn.setText("Step");
         stepInputBtn.setToolTipText("Step record from MIDI source.");
         stepInputBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -7012,7 +7010,7 @@ public class Notate
         loopPanel.setLayout(new java.awt.GridBagLayout());
 
         loopButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopButton.setFont(new java.awt.Font("Arial", 0, 11));
+        loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         loopButton.setText("<html><center>Loop</center></html>");
         loopButton.setToolTipText("Toggle playback looping.");
         loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -7037,7 +7035,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 5);
         loopPanel.add(loopButton, gridBagConstraints);
 
-        loopSet.setFont(new java.awt.Font("Dialog", 1, 12));
+        loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         loopSet.setText("2");
         loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
@@ -7091,7 +7089,7 @@ public class Notate
         masterVolumePanel.setLayout(new java.awt.GridBagLayout());
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
-        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
         allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -7137,7 +7135,7 @@ public class Notate
         tempoPanel.setPreferredSize(new java.awt.Dimension(160, 50));
         tempoPanel.setLayout(new java.awt.GridBagLayout());
 
-        tempoSet.setFont(new java.awt.Font("Dialog", 1, 12));
+        tempoSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tempoSet.setToolTipText("Set the tempo for the sheet in beats per minute.");
         tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -7214,7 +7212,7 @@ public class Notate
         partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
-        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12));
+        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -7261,7 +7259,7 @@ public class Notate
         trackerDelayPanel.setPreferredSize(new java.awt.Dimension(50, 45));
         trackerDelayPanel.setLayout(new java.awt.BorderLayout());
 
-        trackerDelayTextField2.setFont(new java.awt.Font("Dialog", 1, 12));
+        trackerDelayTextField2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         trackerDelayTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         trackerDelayTextField2.setToolTipText("Set the delay between the tracker and playback.");
         trackerDelayTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -7302,7 +7300,7 @@ public class Notate
         playToolBar.add(trackerDelayPanel);
 
         earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
-        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         earlyScrollBtn.setSelected(true);
         earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
         earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -7342,7 +7340,7 @@ public class Notate
         textEntryLabel.setText("Textual Entry ");
         textEntryToolBar.add(textEntryLabel);
 
-        textEntry.setFont(new java.awt.Font("Dialog", 0, 14));
+        textEntry.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         textEntry.addActionListener(new java.awt.event.ActionListener() {
@@ -10536,7 +10534,7 @@ public void refreshMidiStatus()
 
     midiLatencyTF.setText(String.valueOf(midiRecorder.getLatency()));
 
-    // update midiIn status:
+    // update midiInChooser status:
 
     if( midiOutComboBox.getItemCount() == 0 )
       {
@@ -10560,7 +10558,7 @@ public void refreshMidiStatus()
                 : failMsgStart + midiManager.getOutDeviceError() + failMsgEnd);
       }
 
-    // update midiOut status:
+    // update midiOutChooser status:
 
     if( midiInComboBox.getItemCount() == 0 )
       {
