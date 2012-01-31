@@ -31,18 +31,19 @@ import imp.Constants;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Vector;
+import java.util.LinkedHashSet;
+import java.util.LinkedHashSet;
 import javax.sound.midi.*;
 
 public class MidiManager implements Constants
 {
 
 private static String midiError = null;
-// vectors of all devices available
-private Vector<MidiDevice.Info> seqInfo;
-private Vector<MidiDevice.Info> synthInfo;
-private Vector<MidiDevice.Info> midiInInfo;
-private Vector<MidiDevice.Info> midiOutInfo;
+// LinkedHashSets of all devices available
+private LinkedHashSet<MidiDevice.Info> seqInfo;
+private LinkedHashSet<MidiDevice.Info> synthInfo;
+private LinkedHashSet<MidiDevice.Info> midiInInfo;
+private LinkedHashSet<MidiDevice.Info> midiOutInfo;
 // specific devices and receiver used by this program for MIDI IO
 private MidiDevice out = null;
 private MidiDevice in = null;   // right now, we only support listening to (1) MIDI IN device at a time
@@ -85,11 +86,11 @@ private void init()
         MidiDevice.Info input = null;
         if( midiOutInfo.size() > 0 )
           {
-            output = midiOutInfo.get(midiOutInfo.size()-1);
+            output = midiOutInfo.iterator().next();
           }
         if( midiInInfo.size() > 0 )
           {
-            input = midiInInfo.get(midiInInfo.size()-1);
+            input = midiInInfo.iterator().next();
           }
         setDevices(output, input);
       }
@@ -109,11 +110,11 @@ public void findInstalledDevices()
     infos = MidiSystem.getMidiDeviceInfo();
 
     System.out.println("\nFound " + infos.length + " MIDI devices:");
-    // reinit vectors of device info to store found devices
-    synthInfo = new Vector<MidiDevice.Info>();
-    seqInfo = new Vector<MidiDevice.Info>();
-    midiInInfo = new Vector<MidiDevice.Info>();
-    midiOutInfo = new Vector<MidiDevice.Info>();
+    // reinit LinkedHashSets of device info to store found devices
+    synthInfo = new LinkedHashSet<MidiDevice.Info>();
+    seqInfo = new LinkedHashSet<MidiDevice.Info>();
+    midiInInfo = new LinkedHashSet<MidiDevice.Info>();
+    midiOutInfo = new LinkedHashSet<MidiDevice.Info>();
     midiOutInfo.add(null);
 
     // Scan all found devices and check to see what type they are
@@ -124,7 +125,7 @@ public void findInstalledDevices()
           {
             device = MidiSystem.getMidiDevice(infos[i]);
 
-            System.out.println(i + ": " + getDeviceName(device));
+            System.out.print(i + ": " + getDeviceName(device) + ": ");
           }
         catch( MidiUnavailableException e )
           {
@@ -133,15 +134,20 @@ public void findInstalledDevices()
         if( device instanceof Synthesizer )
           {
             synthInfo.add(infos[i]);
+            System.out.print("Synthesizer ");
           }
         if( device instanceof Sequencer )
           {
             seqInfo.add(infos[i]);
+            System.out.print("Sequencer ");
           }
         if( !(device instanceof Synthesizer) && !(device instanceof Sequencer) )
           {
+            // The device is an instance of a hardware Midi port.
             int numReceivers = device.getMaxReceivers();
             int numTransmitters = device.getMaxTransmitters();
+            
+            System.out.print("MIDI Port: " + numReceivers + " receivers " + numTransmitters + "transmitters");
 
             if( numReceivers > 0 || numReceivers == -1 )
               {
@@ -153,6 +159,7 @@ public void findInstalledDevices()
                 midiInInfo.add(infos[i]);
               }
           }
+        System.out.println();
       }
 
     Trace.log(0, "Devices found: \n Synthesizers:\n" + synthInfo + "\n\n Sequencers:\n" + seqInfo + "\n\n MIDI In:\n" + midiInInfo + "\n\n MIDI Out:\n" + midiOutInfo);
@@ -187,22 +194,22 @@ public void unregisterReceiver(Receiver r)
   }
 
 // getters for device info populated by findInstalledDevices()
-public Vector<MidiDevice.Info> getSequencerInfo()
+public LinkedHashSet<MidiDevice.Info> getSequencerInfo()
   {
     return seqInfo;
   }
 
-public Vector<MidiDevice.Info> getSeqInfo()
+public LinkedHashSet<MidiDevice.Info> getSeqInfo()
   {
     return synthInfo;
   }
 
-public Vector<MidiDevice.Info> getMidiInInfo()
+public LinkedHashSet<MidiDevice.Info> getMidiInInfo()
   {
     return midiInInfo;
   }
 
-public Vector<MidiDevice.Info> getMidiOutInfo()
+public LinkedHashSet<MidiDevice.Info> getMidiOutInfo()
   {
     return midiOutInfo;
   }
@@ -432,6 +439,8 @@ private String outDeviceError = "";
 
 public void setOutDevice(Object outInfoObject)
   {
+    closeOutDevice();
+
     MidiDevice.Info outInfo;
 
     if( outInfoObject == defaultDeviceLabel )
@@ -443,7 +452,6 @@ public void setOutDevice(Object outInfoObject)
         outInfo = (MidiDevice.Info) outInfoObject;
       }
 
-    closeOutDevice();
     this.outInfo = outInfo;
 
     outDeviceError = "";
@@ -570,7 +578,7 @@ public Receiver getReceiver()
 private class MidiMultiTransmit implements Receiver
 {
 
-Vector<Receiver> receiver = new Vector<Receiver>();
+LinkedHashSet<Receiver> receiver = new LinkedHashSet<Receiver>();
 int numReceivers = 0;
 
 public void send(MidiMessage message, long timeStamp)

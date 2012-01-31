@@ -10801,11 +10801,11 @@ public class MidiDeviceChooser
     implements ComboBoxModel
 {
 
-private Vector<MidiDevice.Info> devices;
+private LinkedHashSet<MidiDevice.Info> devices;
 
 private Object selectedItem = null;
 
-public MidiDeviceChooser(Vector<MidiDevice.Info> devices)
+public MidiDeviceChooser(LinkedHashSet<MidiDevice.Info> devices)
   {
 
     this.devices = devices;
@@ -10819,7 +10819,7 @@ public int getSize()
 
 public Object getElementAt(int index)
   {
-   Object o = devices.elementAt(index);
+   Object o = devices.toArray()[index];
 
     if( o == null )
       {
