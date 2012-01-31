@@ -997,9 +997,9 @@ public class Notate
 
     midiManager = imp.ImproVisor.getMidiManager();
 
-    midiIn = new MidiDeviceChooser(midiManager.getMidiInInfo());
+    midiIn = new MidiDeviceChooser(midiManager, midiManager.getMidiInInfo());
 
-    midiOut = new MidiDeviceChooser(midiManager.getMidiOutInfo());
+    midiOut = new MidiDeviceChooser(midiManager, midiManager.getMidiOutInfo());
 
     midiIn.setSelectedItem(midiManager.getInDeviceInfo());
 
@@ -10796,49 +10796,7 @@ public Object getSelectedItem()
 
 }
 
-public class MidiDeviceChooser
-    extends AbstractListModel
-    implements ComboBoxModel
-{
 
-private LinkedHashSet<MidiDevice.Info> devices;
-
-private Object selectedItem = null;
-
-public MidiDeviceChooser(LinkedHashSet<MidiDevice.Info> devices)
-  {
-
-    this.devices = devices;
-
-  }
-
-public int getSize()
-  {
-    return devices.size();
-  }
-
-public Object getElementAt(int index)
-  {
-   Object o = devices.toArray()[index];
-
-    if( o == null )
-      {
-        return midiManager.defaultDeviceLabel;
-      }
-    return o;
-  }
-
-public void setSelectedItem(Object anItem)
-  {
-    selectedItem = anItem;
-  }
-
-public Object getSelectedItem()
-  {
-    return selectedItem;
-  }
-        
-}
  
 /**
  *

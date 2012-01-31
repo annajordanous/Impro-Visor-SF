@@ -32,7 +32,6 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
-import java.util.LinkedHashSet;
 import javax.sound.midi.*;
 
 public class MidiManager implements Constants
@@ -86,11 +85,13 @@ private void init()
         MidiDevice.Info input = null;
         if( midiOutInfo.size() > 0 )
           {
-            output = midiOutInfo.iterator().next();
+            Object outArray[] = midiOutInfo.toArray();
+            output = (MidiDevice.Info)outArray[outArray.length-1];
           }
         if( midiInInfo.size() > 0 )
           {
-            input = midiInInfo.iterator().next();
+            Object inArray[] = midiInInfo.toArray();
+            input = (MidiDevice.Info)inArray[inArray.length-1];
           }
         setDevices(output, input);
       }
