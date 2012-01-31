@@ -475,6 +475,8 @@ public void setInDevice(MidiDevice.Info inInfo)
       {
         in = null;
       }
+   Preferences.setPreference(Preferences.MIDI_IN, removeWhitespace(inInfo.toString()));
+
   }
 
 /**
@@ -537,6 +539,8 @@ public void setOutDevice(Object outInfoObject)
 
         // setup the publicReceiver
         publicReceiver.setReceiver(currentReceiver);
+        
+        Preferences.setPreference(Preferences.MIDI_OUT, removeWhitespace(outInfoObject.toString()));
       }
     catch( Exception e )
       {
