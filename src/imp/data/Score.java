@@ -926,7 +926,8 @@ public class Score implements Constants, Serializable {
     public boolean[] getCurrentEnharmonics(int index)
     {
         Polylist tones = new Polylist();
-        if(chordProg.getCurrentChord(index).getName() != NOCHORD) {
+        Chord currentChord = chordProg.getCurrentChord(index);
+        if(currentChord != null && !currentChord.getName().equals(NOCHORD)) {
             try {
                 tones = chordProg.getCurrentChord(index).getPriority();
             } catch(NullPointerException e) {

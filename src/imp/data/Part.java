@@ -582,7 +582,7 @@ public class Part implements Constants, Serializable {
      * @param unit              the Unit to set
      */
     public void setUnit(int unitIndex, Unit unit) {
-        if( unitIndex >= size )
+        if( unitIndex >= size || unitIndex < 0 )
         {
             return; // shouldn't happen, but can.
         }

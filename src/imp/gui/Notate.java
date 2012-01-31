@@ -10464,57 +10464,10 @@ public void volumeSliderChanged(JSlider volumeSlider)
     
 private void devicesChanged()
   {
-//        MidiDevice.Info oldInDevice = midiManager.getInDeviceInfo();
-
-//        Object oldOutDevice = midiManager.getOutDeviceInfo();
-
-//        midiManager.clearErrorMsgLog();
-
     midiManager.setInDevice((MidiDevice.Info) midiInComboBox.getSelectedItem());
-
-//        midiManager.clearErrorMsgLog();
-
     midiManager.setOutDevice(midiOutComboBox.getSelectedItem());
 
     refreshMidiStatus();
-
-
-//        // did the device change:
-//        boolean inChanged = oldInDevice != midiManager.getInDeviceInfo();
-//        boolean outChanged = oldOutDevice != midiManager.getOutDeviceInfo();
-//        boolean nothingChanged = !inChanged && !outChanged;
-
-//        /* In no particular order:
-//         * 1. if there was an error and nothing changed, we show the error
-//         * 2. if there was an error on a device that didn't change, and
-//         *    the reload of devices was caused by a change to a different
-//         *    device, then we don't show the error since it probably isn't a
-//         *    new error
-//         * 3. if there was an error on a device, and the user just changed that
-//         *    device, we should always show the error
-//         */
-//
-//        if((outChanged || nothingChanged)
-//                    && midiOutComboBox.getSelectedItem() != null
-//                    && midiManager.getOutDevice() == null
-
-//                || (inChanged || nothingChanged)
-//                    && midiInComboBox.getSelectedItem() != null
-//                    && midiManager.getInDevice() == null)
-//        {
-//            JOptionPane.showMessageDialog(preferencesDialog, "Error setting device:\n" + midiManager.getError(), "Device not ready", JOptionPane.ERROR_MESSAGE);
-//        }
-
-
-//        private void showErrors() {
-
-//            if(midiManager.getError() == null) {
-//                JOptionPane.showMessageDialog(preferencesDialog, "No errors occurred during the last attempt to load the MIDI devices", "No Errors", JOptionPane.INFORMATION_MESSAGE);
-//            } else {
-
-//                JOptionPane.showMessageDialog(preferencesDialog, midiManager.getError(), "Error Log", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
   }
 
     String okMsg = "<html>Status: <em><font color='green'>Device ready</font></em></html>";

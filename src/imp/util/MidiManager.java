@@ -23,7 +23,7 @@
  *
  * Created on June 22, 2006, 3:40 PM
  *
- * @author Martin Hunt
+ * @author Martin Hunt, reworked by Robert Keller, in accord with updated Java
  */
 package imp.util;
 
@@ -36,11 +36,10 @@ import javax.sound.midi.*;
 
 public class MidiManager implements Constants
 {
+private static int traceValue = 2;
 
 private static String midiError = null;
 // LinkedHashSets of all devices available
-private LinkedHashSet<MidiDevice.Info> seqInfo;
-private LinkedHashSet<MidiDevice.Info> synthInfo;
 private LinkedHashSet<MidiDevice.Info> midiInInfo;
 private LinkedHashSet<MidiDevice.Info> midiOutInfo;
 // specific devices and receiver used by this program for MIDI IO
@@ -68,8 +67,9 @@ private MidiManager.MidiRelay publicReceiver = new MidiManager.MidiRelay();
 private MidiManager.MidiMultiTransmit publicTransmitter = new MidiManager.MidiMultiTransmit();
 ;
     
-    // flag for echoing MIDI IN to the MIDI OUT
-    private boolean doEcho = false;
+// flag for echoing MIDI IN to the MIDI OUT
+
+private boolean doEcho = false;
 
 // ========================================
 public MidiManager()
@@ -85,14 +85,14 @@ private void init()
       }
     catch( Exception e )
       {
-        System.out.println("Exception in getting default receiver");
+        Trace.log(traceValue, "Exception in getting default receiver");
       }
     
-    System.out.println("defaultReceiver = " + defaultReceiver);
+    Trace.log(traceValue, "defaultReceiver = " + defaultReceiver);
     findInstalledDevices();
     try
       {
-        // try to open devices by default (use the first output and input device)
+        // try to open devices by default (use the  output and input device)
         MidiDevice.Info output = null;
         MidiDevice.Info input = null;
         if( midiOutInfo.size() > 0 )
@@ -103,7 +103,7 @@ private void init()
         if( midiInInfo.size() > 0 )
           {
             Object inArray[] = midiInInfo.toArray();
-            input = (MidiDevice.Info)inArray[inArray.length-1];
+            input = (MidiDevice.Info)inArray[0];
           }
         setInDevice(input);
         setOutDevice(output);
@@ -112,7 +112,8 @@ private void init()
       {
         logError(e.getMessage());
       }
-    //System.out.println("*** MidiManager initialized");
+
+    //Trace.log(traceValue, "*** MidiManager initialized");
   }
 
 
@@ -123,11 +124,10 @@ public void findInstalledDevices()
     // Obtain information about all the installed synthesizers.
     infos = MidiSystem.getMidiDeviceInfo();
 
-    System.out.println("\nFound " + infos.length + " MIDI devices:");
+    Trace.log(traceValue, "\nFound " + infos.length + " MIDI devices:");
     // reinit LinkedHashSets of device info to store found devices
     midiInInfo = new LinkedHashSet<MidiDevice.Info>();
     midiOutInfo = new LinkedHashSet<MidiDevice.Info>();
-    midiOutInfo.add(null);
 
     // Scan all found devices and check to see what type they are
     MidiDevice device;
@@ -137,7 +137,7 @@ public void findInstalledDevices()
           {
             device = MidiSystem.getMidiDevice(infos[i]);
 
-            System.out.print(i + ": " + getDeviceName(device) + ": ");
+            Trace.log(traceValue, i + ": " + getDeviceName(device) + ": ");
           }
         catch( MidiUnavailableException e )
           {
@@ -146,12 +146,12 @@ public void findInstalledDevices()
         if( device instanceof Synthesizer )
           {
             midiOutInfo.add(infos[i]);
-            System.out.print("Synthesizer ");
+            Trace.log(traceValue, "Synthesizer ");
           }
         if( device instanceof Sequencer )
           {
             midiInInfo.add(infos[i]);
-            System.out.print("Sequencer ");
+            Trace.log(traceValue, "Sequencer ");
           }
         if( !(device instanceof Synthesizer) && !(device instanceof Sequencer) )
           {
@@ -159,7 +159,7 @@ public void findInstalledDevices()
             int numReceivers = device.getMaxReceivers();
             int numTransmitters = device.getMaxTransmitters();
             
-            System.out.print("MIDI Port with " + numReceivers + " receivers, " + numTransmitters + " transmitters");
+            Trace.log(traceValue, "MIDI Port with " + numReceivers + " receivers, " + numTransmitters + " transmitters");
 
             if( numReceivers > 0 || numReceivers == -1 )
               {
@@ -171,10 +171,10 @@ public void findInstalledDevices()
                 midiInInfo.add(infos[i]);
               }
           }
-        System.out.println();
+        Trace.log(traceValue, "");
       }
 
-    Trace.log(0, "Devices found: \n Synthesizers:\n" + synthInfo + "\n\n Sequencers:\n" + seqInfo + "\n\n MIDI In:\n" + midiInInfo + "\n\n MIDI Out:\n" + midiOutInfo);
+    Trace.log(traceValue, "Devices found: " + "\n\n MIDI In:\n" + midiInInfo + "\n\n MIDI Out:\n" + midiOutInfo);
   }
 
 // returns the last error message
@@ -206,15 +206,6 @@ public void unregisterReceiver(Receiver r)
   }
 
 // getters for device info populated by findInstalledDevices()
-public LinkedHashSet<MidiDevice.Info> getSequencerInfo()
-  {
-    return seqInfo;
-  }
-
-public LinkedHashSet<MidiDevice.Info> getSeqInfo()
-  {
-    return synthInfo;
-  }
 
 public LinkedHashSet<MidiDevice.Info> getMidiInInfo()
   {
@@ -304,13 +295,13 @@ private void closeOutDevice()
 
     if( currentReceiver != null && currentReceiver != defaultReceiver )
       {
-        System.out.println("closing currentReceiver " + currentReceiver);
+        Trace.log(traceValue, "closing currentReceiver " + currentReceiver);
         currentReceiver.close();
       }
     
     if( out != null )
       {
-        System.out.println("closing out " + out);
+        Trace.log(traceValue, "closing out " + out);
         out.close();
       }
   }
@@ -392,7 +383,7 @@ public void sendSysExMasterVolumeMsg(int value)
 //          DEBUG CODE:
 //            byte[] bytes = new byte[2]; bytes[0] = (byte) (volume >> 7); bytes[1] = (byte) (volume % 128);
 //            BigInteger bi = new BigInteger(bytes);
-//            System.out.println(volume + "  " + bi.toString(2));
+//            Trace.log(traceValue, volume + "  " + bi.toString(2));
 
         SysexMessage myMsg = new SysexMessage();
         myMsg.setMessage(b.toByteArray(), 8);
@@ -451,7 +442,7 @@ private String outDeviceError = "";
 
 public void setOutDevice(Object outInfoObject)
   {
-    System.out.println("setOutDevice " + outInfoObject + ", outInfo was " + outInfo);
+    Trace.log(traceValue, "setOutDevice " + outInfoObject + ", outInfo was " + outInfo);
     if( this.outInfo != null )
       {
       closeOutDevice();
@@ -495,7 +486,7 @@ public void setOutDevice(Object outInfoObject)
                 setCurrentReceiver(null);
                 logError(outInfo + " - " + e.getMessage());
                 outDeviceError = e.getMessage();
-                System.out.println("out Device error: " + outDeviceError);
+                Trace.log(traceValue, "out Device error: " + outDeviceError);
               }
 
             Trace.log(2, "MIDI out device set: " + outInfo);
@@ -525,7 +516,7 @@ public String getInDeviceError()
 
 private void setCurrentReceiver(Receiver receiver)
   {
-    System.out.println("\nSetting currentReceiver from " + currentReceiver + " to " + receiver);
+    Trace.log(traceValue, "\nSetting currentReceiver from " + currentReceiver + " to " + receiver);
     currentReceiver = receiver;
   }
 
