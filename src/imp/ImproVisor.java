@@ -237,14 +237,13 @@ private ImproVisor(String leadsheet)
 //        } catch (Exception e) {
 //        }
 
-    midiManager = new MidiManager();
-
-    
-    // Make sure to load preferences before loading the Advisor
+    // Make sure to load preferences before loading the MidiManager and Advisor
     
     // Note that loadPreferences will generate a preference file if there is none.
     
     Preferences.loadPreferences();
+
+    midiManager = new MidiManager();
 
     advisor = new Advisor();
 

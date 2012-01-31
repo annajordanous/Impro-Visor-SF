@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,17 @@
 
 package imp.util;
 
-import java.io.*;
-import javax.swing.JCheckBox;
 import imp.ImproVisor;
-import imp.com.*;
-import polya.*;
+import imp.com.Command;
+import imp.com.CommandManager;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import javax.swing.JCheckBox;
+import polya.Polylist;
+import polya.PolylistBuffer;
+import polya.Tokenizer;
 
 /**
  * @author dmorrison, keller
@@ -176,12 +182,18 @@ public class Preferences implements imp.Constants
   
   public static final String DEFAULT_STAVES_PER_PAGE = "8";
   
+  public static final String MIDI_IN = "midi-in";
+  
+  public static final String MIDI_OUT = "midi-out";
+
+  public static final String DEFAULT_MIDI_IN = "RealTimeSequencer";
+  
+  public static final String DEFAULT_MIDI_OUT = "JavaSoundSynthesizer";
 
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
    */
   public static final String DEFAULT_ALWAYS_USE_BUTTONS = "nnnn";
-
 
 
   
@@ -295,7 +307,7 @@ public class Preferences implements imp.Constants
       {
       // Look at the next pref, make sure it's a string.
       Polylist nextPref = (Polylist)search.first();
-      
+      //System.out.println("nextPref = " + nextPref);
       if( !(nextPref.first() instanceof String) )
         {
         ErrorLog.log(ErrorLog.SEVERE, "Malformed Preferences File.");
@@ -313,7 +325,7 @@ public class Preferences implements imp.Constants
       search = search.rest();
       }
 
-    //ErrorLog.log(ErrorLog.WARNING, "Preference " + pref + " does not exist");
+    ErrorLog.log(ErrorLog.WARNING, "Preference " + pref + " does not exist");
     return "";
     }
   
@@ -344,8 +356,17 @@ public class Preferences implements imp.Constants
           defaultingIntFromString(DEFAULT_STAVE_TYPE, 
                                   getPreference(DEFAULT_LOAD_STAVE))];
   }
-  
  
+ public static String getMidiIn()
+   {
+     return getPreference(MIDI_IN);
+   }
+  
+  public static String getMidiOut()
+   {
+     return getPreference(MIDI_OUT);
+   }
+  
 public static boolean getAlwaysUse(int index)
  {
  String alwaysUseButtons = getPreference(ALWAYS_USE_BUTTONS);
@@ -370,10 +391,10 @@ public static boolean getAlwaysUse(int index)
   public static void setCheckBoxPreferences(int index, JCheckBox checkbox)
     {
     char boxStates[] =
-            Preferences.getPreference(Preferences.ALWAYS_USE_BUTTONS).toCharArray();      
+            getPreference(ALWAYS_USE_BUTTONS).toCharArray();      
     boxStates[index] = checkbox.isSelected() ? TRUE_CHECK_BOX : FALSE_CHECK_BOX;
-    Preferences.setPreference(Preferences.ALWAYS_USE_BUTTONS,
-            new String(boxStates));
+    
+    setPreference(ALWAYS_USE_BUTTONS, new String(boxStates));
     }
 
   public static void makeDefaultPrefsFile()
@@ -428,6 +449,8 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + DEFAULT_DRAWING_MUTED + " " + DDM_VAL + ")");
       out.println("(" + ALWAYS_USE_BUTTONS + " " + DEFAULT_ALWAYS_USE_BUTTONS + ")");
       out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");      
+      out.println("(" + MIDI_IN + " " + DEFAULT_MIDI_IN + ")");      
+      out.println("(" + MIDI_OUT + " " + DEFAULT_MIDI_OUT + ")");      
       }
     catch( Exception e )
       {
@@ -467,6 +490,8 @@ public static boolean getAlwaysUse(int index)
       buffer.append(Polylist.list(DEFAULT_DRAWING_MUTED,     DDM_VAL));
       buffer.append(Polylist.list(ALWAYS_USE_BUTTONS,        DEFAULT_ALWAYS_USE_BUTTONS));
       buffer.append(Polylist.list(CREATE_ROADMAP,            CR_VAL));
+      buffer.append(Polylist.list(MIDI_IN,                   DEFAULT_MIDI_IN));      
+      buffer.append(Polylist.list(MIDI_OUT,                  DEFAULT_MIDI_OUT));      
       return buffer.toPolylist();
     }
   

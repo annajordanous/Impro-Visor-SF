@@ -98,12 +98,16 @@ private void init()
         if( midiOutInfo.size() > 0 )
           {
             Object outArray[] = midiOutInfo.toArray();
-            output = (MidiDevice.Info)outArray[outArray.length-1];
+            String midiOutPref = Preferences.getMidiOut();
+            Trace.log(traceValue, "Midi Out Pref = " + midiOutPref);
+            output = (MidiDevice.Info)find(midiOutPref, outArray);
           }
         if( midiInInfo.size() > 0 )
           {
             Object inArray[] = midiInInfo.toArray();
-            input = (MidiDevice.Info)inArray[0];
+            String midiInPref = Preferences.getMidiIn();
+            Trace.log(traceValue, "Midi In Pref = " + midiInPref);
+            input = (MidiDevice.Info)find(midiInPref, inArray);
           }
         setInDevice(input);
         setOutDevice(output);
@@ -114,6 +118,45 @@ private void init()
       }
 
     //Trace.log(traceValue, "*** MidiManager initialized");
+  }
+
+/**
+ * Find an object with given compressed name in array.
+ * Compressed means that whitespace is ignored in the name. 
+ * @param name
+ * @param array
+ * @return 
+ */
+public static Object find(String name, Object array[])
+  {
+    for( int i = 0; i < array.length; i++ )
+      {
+      String compressed = removeWhitespace(array[i].toString());
+      if( compressed.equals(name) )
+        {
+          return array[i];
+        }
+      }
+    return null; // not found  
+  }
+
+/**
+ * Remove whitespace from argument String, returning a new String
+ * @param string
+ * @return 
+ */
+
+public static String removeWhitespace(String string)
+  {
+    StringBuilder buffer = new StringBuilder();
+    for( int i = 0; i < string.length(); i++ )
+      {
+        if( !Character.isWhitespace(string.charAt(i)) )
+          {
+            buffer.append(string.charAt(i));
+          }
+      }
+    return buffer.toString();
   }
 
 

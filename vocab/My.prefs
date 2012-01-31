@@ -26,3 +26,5 @@
 (default-drawing-muted true)
 (always-use-buttons nnnn)
 (create-roadmap n)
+(midi-in RealTimeSequencer)
+(midi-out JavaSoundSynthesizer)
