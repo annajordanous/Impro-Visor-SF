@@ -117,6 +117,8 @@ private void init()
         logError(e.getMessage());
       }
 
+    setEcho(Preferences.getMidiEcho());
+    
     //Trace.log(traceValue, "*** MidiManager initialized");
   }
 
@@ -312,6 +314,7 @@ public boolean setEcho(boolean state)
           {
             publicTransmitter.removeReceiver(publicReceiver);
           }
+        Preferences.setMidiEcho(doEcho);
       }
     return true;
   }

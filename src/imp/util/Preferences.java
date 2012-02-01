@@ -38,6 +38,10 @@ import polya.Tokenizer;
 
 public class Preferences implements imp.Constants
   {
+  public static final String YES = "y";
+  
+  public static final String NO = "n";
+  
   public static final char TRUE_CHECK_BOX = 'y';
 
   public static final char FALSE_CHECK_BOX = 'n';
@@ -169,7 +173,7 @@ public class Preferences implements imp.Constants
   
   public static final String CREATE_ROADMAP = "create-roadmap";
   
-  public static final String CR_VAL = "y";
+  public static final String CR_VAL = YES;
   
   public static final String TREBLE_STRING = "1";
   public static final String BASS_STRING   = "2";
@@ -186,9 +190,13 @@ public class Preferences implements imp.Constants
   
   public static final String MIDI_OUT = "midi-out";
 
+  public static final String MIDI_ECHO = "midi-echo";
+
   public static final String DEFAULT_MIDI_IN = "RealTimeSequencer";
   
   public static final String DEFAULT_MIDI_OUT = "JavaSoundSynthesizer";
+
+  public static final String DEFAULT_MIDI_ECHO = YES;
 
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
@@ -329,7 +337,7 @@ public class Preferences implements imp.Constants
     return "";
     }
   
-  public static StaveType getStavePreference(String staveString, boolean useDefault)
+public static StaveType getStavePreference(String staveString, boolean useDefault)
   {
   if( useDefault || getAlwaysUseStave() )
     {
@@ -357,15 +365,26 @@ public class Preferences implements imp.Constants
                                   getPreference(DEFAULT_LOAD_STAVE))];
   }
  
- public static String getMidiIn()
+public static String getMidiIn()
    {
      return getPreference(MIDI_IN);
    }
   
-  public static String getMidiOut()
+public static String getMidiOut()
    {
      return getPreference(MIDI_OUT);
    }
+
+
+public static boolean getMidiEcho()
+   {
+     return getPreference(MIDI_ECHO).equals(YES);
+   }
+
+public static void setMidiEcho(boolean value)
+  {
+    setPreference(MIDI_ECHO, value ? YES : NO);
+  }
   
 public static boolean getAlwaysUse(int index)
  {
@@ -451,6 +470,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");      
       out.println("(" + MIDI_IN + " " + DEFAULT_MIDI_IN + ")");      
       out.println("(" + MIDI_OUT + " " + DEFAULT_MIDI_OUT + ")");      
+      out.println("(" + MIDI_ECHO + " " + DEFAULT_MIDI_ECHO + ")");      
       }
     catch( Exception e )
       {
@@ -492,6 +512,7 @@ public static boolean getAlwaysUse(int index)
       buffer.append(Polylist.list(CREATE_ROADMAP,            CR_VAL));
       buffer.append(Polylist.list(MIDI_IN,                   DEFAULT_MIDI_IN));      
       buffer.append(Polylist.list(MIDI_OUT,                  DEFAULT_MIDI_OUT));      
+      buffer.append(Polylist.list(MIDI_ECHO,                 DEFAULT_MIDI_ECHO));      
       return buffer.toPolylist();
     }
   
