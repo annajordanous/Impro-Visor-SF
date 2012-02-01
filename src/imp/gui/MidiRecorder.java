@@ -21,24 +21,28 @@
 
 package imp.gui;
 
-import imp.data.*;
-import imp.com.*;
-import javax.sound.midi.*;
-
 import imp.Constants;
+import imp.com.SetNoteAndLengthCommand;
+import imp.data.MelodyPart;
+import imp.data.Note;
+import imp.data.Rest;
+import imp.data.Score;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.Sequencer;
 
 /**
  *
  * @author Martin Hunt. Robert Keller added countInOffset stuff 7/12/2010
  */
 
-public class MidiNoteActionHandler implements Constants, Receiver {
+public class MidiRecorder implements Constants, Receiver {
     Notate notate;
     Score score;
     Sequencer sequencer = null;
     int countInOffset;
     
-    public MidiNoteActionHandler(Notate notate, Score score) {
+    public MidiRecorder(Notate notate, Score score) {
         this.notate = notate;
         this.score = score;
     }
@@ -157,7 +161,7 @@ public class MidiNoteActionHandler implements Constants, Receiver {
                   notate.setCurrentSelectionStartAndEnd(index);
                   }
             } catch(Exception e) {
-                //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiNoteActionHandler: " + e);
+                //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
             }
         }
         
@@ -171,7 +175,7 @@ public class MidiNoteActionHandler implements Constants, Receiver {
             noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
             notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, melodyPart, notate));
         } catch(Exception e) {
-            //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiNoteActionHandler: " + e);
+            //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
         }
         
         notate.repaint();

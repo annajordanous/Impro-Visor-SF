@@ -685,7 +685,7 @@ public class Notate
 
   private MidiDeviceChooser midiInChooser,  midiOutChooser; // combo box models for device choosing in the midi preferences
 
-  private MidiNoteActionHandler midiRecorder = null; // action handler for recording from midi
+  private MidiRecorder midiRecorder = null; // action handler for recording from midi
 
   private MidiStepEntryActionHandler midiStepInput = null; // action handler for step input from midi
 
@@ -1012,7 +1012,7 @@ public class Notate
 
     midiSynth3 = new MidiSynth(midiManager);
 
-    midiRecorder = new MidiNoteActionHandler(this, score);
+    midiRecorder = new MidiRecorder(this, score);
 
     midiStepInput = new MidiStepEntryActionHandler(this);
 
@@ -1778,6 +1778,7 @@ public class Notate
         midiLatencyPanel = new javax.swing.JPanel();
         midiLatencyLabel = new javax.swing.JLabel();
         midiLatencyTF = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
         midiLatencyUnitsLabel = new javax.swing.JLabel();
         midiCalibrationPanel = new MidiLatencyMeasurementTool(this);
         jLabel4 = new javax.swing.JLabel();
@@ -3988,9 +3989,15 @@ public class Notate
         midiLatencyLabel.setText("MIDI Latency: ");
         midiLatencyPanel.add(midiLatencyLabel);
 
-        midiLatencyTF.setText("0.1");
+        midiLatencyTF.setText("" + Preferences.getMidiInLatency());
         midiLatencyTF.setPreferredSize(new java.awt.Dimension(65, 19));
+        midiLatencyTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                midiLatencyTFactionPerformed(evt);
+            }
+        });
         midiLatencyPanel.add(midiLatencyTF);
+        midiLatencyPanel.add(jSeparator3);
 
         midiLatencyUnitsLabel.setText("ms");
         midiLatencyPanel.add(midiLatencyUnitsLabel);
@@ -10484,8 +10491,10 @@ public void refreshMidiStatus()
   {
 
     // get midi latency
+    
+    saveMidiLatency();
 
-    midiLatencyTF.setText(String.valueOf(midiRecorder.getLatency()));
+    //midiLatencyTF.setText(String.valueOf(midiRecorder.getLatency()));
 
     // update midiInChooser status:
 
@@ -13102,179 +13111,147 @@ public static double quietDoubleFromTextField(javax.swing.JTextField field,
 
    
     
-    /**
-     *
-     * Accepts the preferences the user has inputted through the "Preferences"
-     *
-     * dialog.
-     *
-     */
-    
-    private void savePrefs() {
-        
-        /* this should be rewritten...
-         * should probably validate all data first in separate functions, and then
-         * save it...
-         * Right now, it validates and saves as it goes.
-         */
-        
-        boolean closeDialog = true;
-        
-        closeDialog = closeDialog && saveGlobalPreferences();
-        
-        int tempTabIndex = currTabIndex;
-        
-        Rectangle tempView = getCurrentScrollPosition();
-        
-        cm.changedSinceLastSave(true);
-        
-        // Initialize all the preferences except for the length and metre;
-        
-        saveLeadsheetPreferences();
-        
-        closeDialog = closeDialog && saveMidi();
-        
-        closeDialog = closeDialog && saveMetre();
-        
-        closeDialog = closeDialog && saveStylePrefs();
-        
-        closeDialog = closeDialog && saveSectionInfo();
-        
-        if (closeDialog == true) {
-            
-            hideFakeModalDialog(preferencesDialog);
-            
-            scoreTab.setSelectedIndex(tempTabIndex);
-            
-            setCurrentScrollPosition(tempView);
-            
-            requestFocusInWindow(); //staveRequestFocus();
+/**
+ *
+ * Accepts the preferences the user has inputted through the "Preferences"
+ *
+ * dialog.
+ *
+ */
 
-        }
-    }
+private void savePrefs()
+  {
+    /*
+     * this should be rewritten... should probably validate all data first in
+     * separate functions, and then save it... Right now, it validates and saves
+     * as it goes.
+     */
+
+    boolean closeDialog = true;
+
+    closeDialog = closeDialog && saveGlobalPreferences();
+
+    int tempTabIndex = currTabIndex;
+
+    Rectangle tempView = getCurrentScrollPosition();
+
+    cm.changedSinceLastSave(true);
+
+    // Initialize all the preferences except for the length and metre;
+
+    saveLeadsheetPreferences();
+
+    closeDialog = closeDialog && saveMidiLatency();
+
+    closeDialog = closeDialog && saveMetre();
+
+    closeDialog = closeDialog && saveStylePrefs();
+
+    closeDialog = closeDialog && saveSectionInfo();
+
+    if( closeDialog )
+      {
+        hideFakeModalDialog(preferencesDialog);
+
+        scoreTab.setSelectedIndex(tempTabIndex);
+
+        setCurrentScrollPosition(tempView);
+
+        requestFocusInWindow();
+      }
+  }
     
     
     
-    private boolean saveMidi() {
-        
-        double latency = Double.parseDouble(midiLatencyTF.getText());
-        
-        if(latency >= 0) {
-            
-            midiRecorder.setLatency(latency);
-            
-        } else {
-            
+private boolean saveMidiLatency()
+  {
+    double latency = doubleFromTextField(midiLatencyTF, 0, Double.POSITIVE_INFINITY, 0);
+    midiRecorder.setLatency(latency);
+    Preferences.setMidiInLatency(latency);
+    return true;
+  }
+    
+    
+private boolean saveSectionInfo()
+  {
+    score.getChordProg().setSectionInfo(sectionInfo.copy());
+
+    return true;
+  }
+
+private boolean setSectionPrefs()
+  {
+    try
+      {
+        int measure = Integer.valueOf(measureTF.getText());
+
+        int index = sectionList.getSelectedIndex();
+
+        int currentMeasure = sectionInfo.getSectionMeasure(index);
+
+        boolean isPhrase = phraseCheckBox.isSelected();
+
+        if( measure > 0 && measure <= sectionInfo.measures() )
+          {
+            if( measure != currentMeasure && currentMeasure == 1 )
+              {
+                ErrorLog.log(ErrorLog.WARNING, "Cannot move the first section.");
+
+                return false;
+              }
+
+            sectionInfo.adjustSection(index, measure, isPhrase);
+          }
+        else
+          {
+            ErrorLog.log(ErrorLog.WARNING, "That measure number doesn't exist.");
+
+            return false;
+          }
+      }
+    catch( NumberFormatException e )
+      {
+        invalidInteger(measureTF.getText());
+
+        return false;
+      }
+
+    return true;
+  }
+
+private boolean saveStylePrefs()
+  {
+    Style style = sectionInfo.getStyle(sectionList.getSelectedIndex());
+    if( style == null )
+      {
+        return false;
+      }
+
+    try
+      {
+        double swingVal = Double.valueOf(swingTF.getText()).doubleValue();
+
+        if( 0 <= swingVal && swingVal <= 1 )
+          {
+            style.setSwing(swingVal);
+          }
+        else
+          {
             ErrorLog.log(ErrorLog.WARNING,
-                    
-                    "The latency value must be greater than or equal to 0.");
-            
+                         "The swing value must be between 0 and 1.");
+
             return false;
-            
-        }
-        
-        return true;
-        
-    }
-    
-    
-    
-    private boolean saveSectionInfo() {
-        
-        score.getChordProg().setSectionInfo(sectionInfo.copy());
-        
-        return true;
-        
-    }
-    
-    
-    
-    private boolean setSectionPrefs() {
-        
-        try {
-            
-            int measure = Integer.valueOf(measureTF.getText());
-            
-            int index = sectionList.getSelectedIndex();
-            
-            int currentMeasure = sectionInfo.getSectionMeasure(index);
-            
-            boolean isPhrase = phraseCheckBox.isSelected();
-            
-            if(measure > 0 && measure <= sectionInfo.measures()) {
-                
-                if(measure != currentMeasure && currentMeasure == 1) {
-                    
-                    ErrorLog.log(ErrorLog.WARNING, "Cannot move the first section.");
-                    
-                    return false;
-                    
-                }
-                
-                sectionInfo.adjustSection(index, measure, isPhrase);
-                
-            } else {
-                
-                ErrorLog.log(ErrorLog.WARNING, "That measure number doesn't exist.");
-                
-                return false;
-                
-            }
-            
-        } catch (NumberFormatException e) {
-            
-            invalidInteger(measureTF.getText());
-            
-            return false;
-            
-        }
-        
-        
-        
-        return true;
-        
-    }
-    
-    
-    
-    private boolean saveStylePrefs() {
-        
-        Style style = sectionInfo.getStyle(sectionList.getSelectedIndex());
-        if( style == null )
-        {
-          return false;
-        }
-        
-        try {
-            
-            double swingVal = Double.valueOf(swingTF.getText()).doubleValue();
-            
-            if(0 <= swingVal && swingVal <= 1) {
-                
-                style.setSwing(swingVal);
-                
-            } else {
-                
-                ErrorLog.log(ErrorLog.WARNING,
-                        
-                        "The swing value must be between 0 and 1.");
-                
-                return false;
-                
-            }
-            
-        } catch (NumberFormatException e) {
-            
-            invalidInteger(swingTF.getText());
-            
-            return false;
-            
-        }
-        
-        
-        return true;
-        
-    }
+          }
+      }
+    catch( NumberFormatException e )
+      {
+        invalidInteger(swingTF.getText());
+
+        return false;
+      }
+
+    return true;
+  }
     
     
     
@@ -17722,7 +17699,7 @@ public void WriteLeadsheetToFile(File file) {
     
     setTransposition(score.getTransposition());
     
-    midiRecorder = new MidiNoteActionHandler(this, score);
+    midiRecorder = new MidiRecorder(this, score);
     }
 
   public boolean adviceIsShowing()
@@ -20534,6 +20511,12 @@ private void phrasemarksMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-F
     // TODO add your handling code here:
   }//GEN-LAST:event_phrasemarksMIActionPerformed
 
+private void midiLatencyTFactionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_midiLatencyTFactionPerformed
+  {//GEN-HEADEREND:event_midiLatencyTFactionPerformed
+    saveMidiLatency();
+  }//GEN-LAST:event_midiLatencyTFactionPerformed
+
+
 public boolean showPhrasemarks()
   {
     return phrasemarksMI.getState();
@@ -22291,6 +22274,7 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator23;
     private javax.swing.JSeparator jSeparator28;
     private javax.swing.JSeparator jSeparator29;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator30;
     private javax.swing.JSeparator jSeparator31;
     private javax.swing.JSeparator jSeparator32;

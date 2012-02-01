@@ -192,12 +192,15 @@ public class Preferences implements imp.Constants
 
   public static final String MIDI_ECHO = "midi-echo";
 
+  public static final String MIDI_IN_LATENCY = "midi-in-latency";
+
   public static final String DEFAULT_MIDI_IN = "RealTimeSequencer";
   
   public static final String DEFAULT_MIDI_OUT = "JavaSoundSynthesizer";
 
   public static final String DEFAULT_MIDI_ECHO = YES;
 
+  public static final String DEFAULT_MIDI_IN_LATENCY = "0";
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
    */
@@ -386,6 +389,18 @@ public static void setMidiEcho(boolean value)
     setPreference(MIDI_ECHO, value ? YES : NO);
   }
   
+
+public static double getMidiInLatency()
+   {
+     return Double.parseDouble(getPreference(MIDI_IN_LATENCY));
+   }
+
+public static void setMidiInLatency(double value)
+  {
+    setPreference(MIDI_IN_LATENCY, "" + value);
+  }
+  
+
 public static boolean getAlwaysUse(int index)
  {
  String alwaysUseButtons = getPreference(ALWAYS_USE_BUTTONS);
