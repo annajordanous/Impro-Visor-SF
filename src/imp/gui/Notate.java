@@ -1773,7 +1773,6 @@ public class Notate
         midiInComboBox = new javax.swing.JComboBox();
         midiInStatus = new javax.swing.JLabel();
         echoMidiCheckBox = new javax.swing.JCheckBox();
-        reloadDevices = new javax.swing.JButton();
         latencyTab = new javax.swing.JPanel();
         midiLatencyPanel = new javax.swing.JPanel();
         midiLatencyLabel = new javax.swing.JLabel();
@@ -3970,17 +3969,6 @@ public class Notate
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(echoMidiCheckBox, gridBagConstraints);
-
-        reloadDevices.setText("Reload MIDI Devices");
-        reloadDevices.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reloadDevicesActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        devicesTab.add(reloadDevices, gridBagConstraints);
 
         jTabbedPane2.addTab("Devices", devicesTab);
 
@@ -10458,15 +10446,7 @@ public void volumeSliderChanged(JSlider volumeSlider)
     }//GEN-LAST:event_midiOutComboBoxActionPerformed
     
     
-    
-    private void reloadDevicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadDevicesActionPerformed
         
-        midiManager.findInstalledDevices();
-        
-        devicesChanged();
-        
-    }//GEN-LAST:event_reloadDevicesActionPerformed
-    
     
     
 private void devicesChanged()
@@ -22445,7 +22425,6 @@ public void showNewVoicingDialog()
     private javax.swing.JButton redoBtn;
     private javax.swing.JMenuItem redoMI;
     private javax.swing.JMenuItem redoPMI;
-    private javax.swing.JButton reloadDevices;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton resetBtn1;
     private javax.swing.JButton resetBtn2;
