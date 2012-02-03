@@ -165,6 +165,10 @@ public class MelodyPart
    */
   public void setNote(int slotIndex, Note note)
     {
+    if( slotIndex < 0 )
+      {
+        slotIndex = 0;
+      }
     if( note != null && note.getPitch() != REST )
       {
       //System.out.println("setNote at " + slotIndex + " to " + note);
@@ -365,6 +369,10 @@ public class MelodyPart
       return 0;
       }
 
+    if( index < 0 )
+      {
+        return size;
+      }
     int nextIndex = getNextIndex(index);
     while( nextIndex < size - 1 )
       {
@@ -409,6 +417,10 @@ public class MelodyPart
 
   public synchronized void mergeFreeSlots(int index)
     {
+    if( index < 0 )
+      {
+        return;
+      }
     if( getNote(index) == null )
       {
       index = getPrevIndex(index);
