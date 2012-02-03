@@ -169,7 +169,7 @@ public class MelodyPart
       {
         slotIndex = 0;
       }
-    if( note != null && note.getPitch() != REST )
+    if( note != null && note.nonRest() )
       {
       //System.out.println("setNote at " + slotIndex + " to " + note);
 
@@ -280,18 +280,18 @@ public class MelodyPart
 
     /*
     if(getPrevNote(slotIndex) != null
-    && getPrevNote(slotIndex).getPitch() == REST
+    && getPrevNote(slotIndex).isRest()
     && getNextNote(slotIndex) != null
-    && getNextNote(slotIndex).getPitch() == REST) {
+    && getNextNote(slotIndex).isRest()) {
     delUnit(slotIndex);
     delUnit(getNextIndex(slotIndex));
     }
     else if(getPrevNote(slotIndex) != null
-    && getPrevNote(slotIndex).getPitch() == REST) {
+    && getPrevNote(slotIndex).isRest()) {
     delUnit(slotIndex);
     }
     else if(getNextNote(slotIndex) != null
-    && getNextNote(slotIndex).getPitch() == REST) {
+    && getNextNote(slotIndex).isRest()) {
     setUnit(slotIndex, rest);
     delUnit(getNextIndex(slotIndex));
     }
@@ -364,7 +364,7 @@ public class MelodyPart
    */
   public int getFreeSlots(int index)
     {
-    if( getNote(index) != null && getNote(index).getPitch() != REST )
+    if( getNote(index) != null && getNote(index).nonRest() )
       {
       return 0;
       }
@@ -377,7 +377,7 @@ public class MelodyPart
     while( nextIndex < size - 1 )
       {
       if( getNote(nextIndex) != null &&
-              getNote(nextIndex).getPitch() != REST )
+              getNote(nextIndex).nonRest() )
         {
         return nextIndex - index;
         }
@@ -398,7 +398,7 @@ public class MelodyPart
       // if we find a unit that is not a rest, we return the rest slots found so far
       if( current != null )
         {
-        if( current.getPitch() != REST )
+        if( current.nonRest() )
           {
           return restSlots;
           }
@@ -424,12 +424,12 @@ public class MelodyPart
     if( getNote(index) == null )
       {
       index = getPrevIndex(index);
-      if( getNote(index).getPitch() != REST )
+      if( getNote(index).nonRest() )
         {
         return;
         }
       }
-    else if( getNote(index).getPitch() != REST )
+    else if( getNote(index).nonRest() )
       {
       return;
       }
@@ -441,7 +441,7 @@ public class MelodyPart
 
     while( nextIndex < size - 1 )
       {
-      if( nextNote != null && nextNote.getPitch() != REST )
+      if( nextNote != null && nextNote.nonRest() )
         {
         return;
         }
@@ -775,7 +775,7 @@ public class MelodyPart
     // If if it is a note and too long, then we need to tie.
     
 
-//        if(note.getPitch() != REST)
+//        if(note.nonRest())
 //            System.out.println(rhythmValue);
     
     if( firstNoteRV == -1 && (knownRhythmIndex =
@@ -882,7 +882,7 @@ public class MelodyPart
       Note note;
 
       // No accidental stuff in an empty slot or a rest
-      if( getUnit(i) == null || ((Note)getUnit(i)).getPitch() == REST )
+      if( getUnit(i) == null || ((Note)getUnit(i)).isRest() )
         {
         continue;
         }

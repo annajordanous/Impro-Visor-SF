@@ -2924,7 +2924,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
 
 
-        if( part.getNote(current).getPitch() == REST )
+        if( part.getNote(current).isRest() )
           {
             rhythmString = rhythmString.cons("R" + sb.substring(1));
           }
@@ -3326,7 +3326,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
             int rhythm = 0;
 
-            if( part.getNote(current).getPitch() == REST )
+            if( part.getNote(current).isRest() )
               {
                 rhythmString = rhythmString.cons("R" + sb.substring(1));
               }
@@ -4378,7 +4378,7 @@ public MelodyPart generateTheme() {
                             PitchClass.getPitchClass(chordProg.getCurrentChord(i).getRoot()));
                     int index = 0;
                     Note n = adjustedTheme.getNote(index);
-                    while (n.getPitch() == REST) {
+                    while (n.isRest()) {
                         index += n.getRhythmValue();
                         n = adjustedTheme.getNote(index);
                     }

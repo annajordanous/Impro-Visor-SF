@@ -100,7 +100,7 @@ public class SetNoteCommand
     int beatValue = (WHOLE / metre[1]);
     int measureLength = metre[0] * beatValue;
 
-    if( note != null && note.getPitch() != REST )
+    if( note != null && note.nonRest() )
       {
       stopIndex = (slotIndex / measureLength + 2) * measureLength;
       }
@@ -135,7 +135,7 @@ public class SetNoteCommand
       for( int i = slotIndex; i < stopIndex; i++ )
         {
         if( melodyPart.getNote(i) != null &&
-                melodyPart.getNote(i).getPitch() == REST )
+                melodyPart.getNote(i).isRest() )
           {
           restsDeleted.push(i);
           melodyPart.delUnit(i);

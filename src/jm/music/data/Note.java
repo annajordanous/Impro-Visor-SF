@@ -740,7 +740,7 @@ public class Note implements Cloneable, Serializable{
         * @return boolean True if the note is a rest otherwise false.
         */
         public boolean isRest() {
-            if (this.getPitch() == REST) return true;
+            if (this.isRest()) return true;
             else return false;
         }
     

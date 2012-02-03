@@ -92,21 +92,21 @@ public class SetRestCommand implements Command, Constants {
         // part.setRest(slotIndex);
 
         if(part.getPrevNote(slotIndex) != null
-                && part.getPrevNote(slotIndex).getPitch() == REST
+                && part.getPrevNote(slotIndex).isRest()
                 && part.getNextNote(slotIndex) != null
-                && part.getNextNote(slotIndex).getPitch() == REST) {
+                && part.getNextNote(slotIndex).isRest()) {
             part.delUnit(slotIndex);
             part.delUnit(part.getNextIndex(slotIndex));
         }
 
         else if(part.getPrevNote(slotIndex) != null
-                && part.getPrevNote(slotIndex).getPitch() == REST) {
+                && part.getPrevNote(slotIndex).isRest()) {
             part.delUnit(slotIndex);
             undoable = false;
         }
 
         else if(part.getNextNote(slotIndex) != null
-                && part.getNextNote(slotIndex).getPitch() == REST) {
+                && part.getNextNote(slotIndex).isRest()) {
             part.setRest(slotIndex);
             part.delUnit(part.getNextIndex(slotIndex));
         }

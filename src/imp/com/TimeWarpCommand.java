@@ -164,7 +164,7 @@ public class TimeWarpCommand implements Command, Constants {
           Trace.log(2, "in timewarp, lastUnit = " + lastUnit);
 	  if(lastUnit instanceof Note) {
 	      Note note = (Note)lastUnit;
-	      if(note.getPitch() != REST) {
+	      if(note.nonRest()) {
 		  // stopIndex = (lastIndex/(metre*BEAT)+2)*metre*BEAT;
 		  Unit lastSourceUnit = source.getPrevUnit(source.size());
 

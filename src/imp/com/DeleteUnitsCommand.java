@@ -104,9 +104,9 @@ public class DeleteUnitsCommand implements Command, Constants {
             MelodyPart melody = (MelodyPart)part;
 
             if(melody.getPrevNote(startSlot) != null &&
-               melody.getPrevNote(startSlot).getPitch() == REST &&
+               melody.getPrevNote(startSlot).isRest() &&
                melody.getNextNote(endSlot) != null &&
-               melody.getNextNote(endSlot).getPitch() == REST) {
+               melody.getNextNote(endSlot).isRest()) {
                 Command setRest = new SetRestCommand(startSlot, melody);
                 setRest.execute();
             }

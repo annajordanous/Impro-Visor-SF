@@ -1404,7 +1404,7 @@ public int getNonRestSelectionStart()
     for( int index = selectionStart; index <= selectionEnd; index++ )
       {
         Unit unit = origPart.getUnit(index);
-        if( unit instanceof Note && ((Note) unit).getPitch() != REST )
+        if( unit instanceof Note && ((Note) unit).nonRest() )
           {
             return index;
           }
@@ -1424,7 +1424,7 @@ public int getNonRestSelectionEnd()
         if( unit instanceof Note )
           {
             Note note = (Note) unit;
-            if( note.getPitch() != REST )
+            if( note.nonRest() )
               {
                 return index + note.getRhythmValue() - 1;
               }

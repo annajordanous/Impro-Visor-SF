@@ -115,7 +115,7 @@ public class ShiftPitchesCommand implements Command, Constants {
         try {          
             for(int i = startIndex; i <= stopIndex; i++) {
                 Note note = part.getNote(i);
-                if(note != null && note.getPitch() != REST) {
+                if(note != null && note.nonRest()) {
                     note.shiftPitch(shift, keySig);
 
                     if(note.getPitch() < minPitch || note.getPitch() > maxPitch) 
@@ -133,7 +133,7 @@ public class ShiftPitchesCommand implements Command, Constants {
             if (outOfBounds) {
                 for (int i = startIndex; i <= stopIndex; i++) {
                     Note note = part.getNote(i);
-                    if(note != null && note.getPitch() != REST)
+                    if(note != null && note.nonRest())
                         note.shiftPitch(-1*shift, keySig);
                 }
             }

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -498,6 +498,11 @@ public boolean isBlack()
 public boolean isRest()
   {
   return pitch == REST;
+  }
+
+public boolean nonRest()
+  {
+  return pitch != REST;
   }
 
 private static Accidental S = Accidental.SHARP;
