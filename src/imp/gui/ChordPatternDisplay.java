@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,17 @@ package imp.gui;
 import imp.Constants;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
-import imp.data.*;
-import java.awt.*;
+import imp.data.ChordPart;
+import imp.data.MIDIBeast;
+import imp.data.Score;
+import imp.data.Style;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 
 /**
@@ -76,26 +82,28 @@ public class ChordPatternDisplay
     
     boolean playable = false;
     
+    String pushString = "";
+    
    /**
-     * Constructs a new BassPatternDisplay JPanel with default weight 3 and an empty pattern.
+     * Constructs a new ChordPatternDisplay JPanel with default weight 3 and an empty pattern.
      **/
     public ChordPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleParent) {
         super(parent, cm, styleParent);
-        initialize(null, 3);
+        initialize(null, 3, "");
     }
     
    /**
-     * Constructs a new BassPatternDisplay JPanel with weight and rule parameters.
+     * Constructs a new ChordPatternDisplay JPanel with weight and rule parameters.
      **/   
-    public ChordPatternDisplay(String rule, float weight, Notate parent, CommandManager cm, StyleEditor styleParent) {
+    public ChordPatternDisplay(String rule, float weight, String pushString, Notate parent, CommandManager cm, StyleEditor styleParent) {
         super(parent, cm, styleParent);
-        initialize(rule, weight);
+        initialize(rule, weight, pushString);
     }
     
     /**
      * Initializes all elements and components for the BassPatternDisplay GUI and collapses the pane.
      **/
-    private void initialize(String rule, float weight) {
+    private void initialize(String rule, float weight, String pushString) {
         /*Ensures that useful items like rhythm durations for notes are ready for use even
           if the user has not yet generated a style from midi*/
         if(!MIDIBeast.invoked) {
@@ -112,6 +120,8 @@ public class ChordPatternDisplay
         
         setWeight(weight);
         setDisplayText(rule);
+        
+        this.pushString = pushString;
         
         //Initializes attributes needed for collapsing panes and collapses the BassPatternDisplay object.
         expandedDimension = this.getPreferredSize();
@@ -138,10 +148,23 @@ public class ChordPatternDisplay
     }
     
     /**
+     * This is used for saving the pattern to a file, among possibly other uses.
      * @return the text and weight formatted with bass-pattern syntax used by the style classes 
      **/        
     public String getPattern() {
-        return "(chord-pattern (rules " + getDisplayText() + ")(weight " + ((Integer) weightSpinner.getValue()) + "))";
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("(chord-pattern (rules " );
+        buffer.append(getDisplayText());
+        buffer.append(")(weight ");
+        buffer.append((Integer) weightSpinner.getValue());
+        String trimmed = pushString.trim();
+        if( !trimmed.equals("") )
+          {
+            buffer.append(")(push ");
+            buffer.append(pushString);
+          }
+        buffer.append("))");
+        return buffer.toString();
     }    
    
     /**
@@ -162,6 +185,14 @@ public class ChordPatternDisplay
             return lowestWeight;
         }
     }    
+    
+    public void setPushString(String pushString) {
+        this.pushString = pushString;
+    }
+    
+    public String getPushString() {
+        return pushString;
+    }
     
     /**
      * @return the beats in this pattern.

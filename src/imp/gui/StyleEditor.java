@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,24 +21,27 @@
 
 package imp.gui;
 
-import imp.Directories;
-import java.util.*;
-import polya.Polylist;
-import polya.Tokenizer;
-import imp.com.*;
-import imp.data.*;
-import imp.data.BassPatternElement.*;
-import imp.ImproVisor;
-import imp.util.*;
-import java.io.*;
 import imp.Constants;
 import imp.ImproVisor;
-import javax.swing.*;
-import javax.swing.table.*;
+import imp.com.CommandManager;
+import imp.com.OpenLeadsheetCommand;
+import imp.data.*;
+import imp.util.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.*;
-import java.awt.*;
-import javax.swing.JList;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Vector;
+import javax.swing.*;
+import javax.swing.table.TableColumnModel;
+import polya.Polylist;
+import polya.Tokenizer;
 
 /**
  * A spreadsheet GUI for editing Impro-Visor styles.
@@ -231,7 +234,7 @@ public class StyleEditor
     initToolbars();
     setAttributes();
 
-    setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     cm.changedSinceLastSave(false);
     newStyle();
 
@@ -241,6 +244,7 @@ public class StyleEditor
 
     styleTable.addMouseListener(new MouseAdapter()
       {
+      @Override
       public void mouseClicked(MouseEvent evt)
         {
         setStatus("OK");
@@ -264,22 +268,22 @@ public class StyleEditor
   @param colIndex
   @param controlDown
   */
-  public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boolean shiftDown)
-    {
+public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boolean shiftDown)
+  {
     //System.out.println("clicked at row = " + rowIndex + ", col = " + colIndex);
 
-    if( rowIndex >= styleTable.getRowCount() 
-     || colIndex >= styleTable.getColumnCount() 
-     || rowIndex < 0 
-     || colIndex < 0 )
+    if( rowIndex >= styleTable.getRowCount()
+            || colIndex >= styleTable.getColumnCount()
+            || rowIndex < 0
+            || colIndex < 0 )
       {
-      // probably clicked outside the table
-      return;
+        // probably clicked outside the table
+        return;
       }
 
     if( shiftDown && colIndex > 1 )
       {
-      trackWithPianoRoll(colIndex-1);
+        trackWithPianoRoll(colIndex - 1);
       }
 
     currentRow = rowIndex;
@@ -291,135 +295,131 @@ public class StyleEditor
 
     if( controlDown )
       {
-      /* Control down implies select all percussion instruments
-      and play entire pattern*/
+        /*
+         * Control down implies select all percussion instruments and play
+         * entire pattern
+         */
 
-      playPercussionColumn(colIndex);
-      return;
+        playPercussionColumn(colIndex);
       }
-
     else
-    {
-    // Control is not down.
-    // Play the cell if playable
-
-    Object rule = styleTable.getValueAt(rowIndex, colIndex);
-
-    if( rule != null && rule instanceof Playable && isPlayed() )
       {
-      ((Playable)rule).playMe(getAccompanimentSwingValue());
+        // Control is not down.
+        // Play the cell if playable
+
+        Object rule = styleTable.getValueAt(rowIndex, colIndex);
+
+        if( rule != null && rule instanceof Playable && isPlayed() )
+          {
+            ((Playable) rule).playMe(getAccompanimentSwingValue());
+          }
+        updateCache(rowIndex, colIndex, rule);
       }
-    updateCache(rowIndex, colIndex, rule);
-     }
-
-
-
   }
+
 
   /**
    * Play the percussion pattern in the designated column.
    * @param colIndex index of the column to play
    */
 
-
-  void playPercussionColumn(int colIndex)
+void playPercussionColumn(int colIndex)
   {
-            int count = styleTable.getRowCount();
+    int count = styleTable.getRowCount();
 
-      if( count != 0 )
-        {
+    if( count != 0 )
+      {
         styleTable.setRowSelectionInterval(
                 StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW,
                 count - 1);
-        }
-      ListSelectionModel selection =
-              styleTable.getTableHeader().getColumnModel().getSelectionModel();
-
-      selection.setSelectionInterval(colIndex, colIndex);
-
-      Object pattern = allDrumPatterns.elementAt(colIndex);
-
-      if( pattern != null && pattern instanceof Playable && isPlayed() )
-        {
-        ((Playable)pattern).playMe(getAccompanimentSwingValue());
-        }
       }
+    ListSelectionModel selection =
+            styleTable.getTableHeader().getColumnModel().getSelectionModel();
+
+    selection.setSelectionInterval(colIndex, colIndex);
+
+    Object pattern = allDrumPatterns.elementAt(colIndex);
+
+    if( pattern != null && pattern instanceof Playable && isPlayed() )
+      {
+        ((Playable) pattern).playMe(getAccompanimentSwingValue());
+      }
+  }
 
 
- public void playPercussionColumn()
- {
-     playPercussionColumn(selectedColumn);
- }
-
-  /**
-   * Play the chord pattern in the designated column.
-   * @param colIndex index of the column to play
-   */
-
-
-  void playChordColumn(int colIndex)
+public void playPercussionColumn()
   {
-            int count = styleTable.getRowCount();
+    playPercussionColumn(selectedColumn);
+  }
 
-      if( count != 0 )
-        {
+/**
+ * Play the chord pattern in the designated column.
+ *
+ * @param colIndex index of the column to play
+ */
+
+void playChordColumn(int colIndex)
+  {
+    int count = styleTable.getRowCount();
+
+    if( count != 0 )
+      {
         styleTable.setRowSelectionInterval(
                 StyleTableModel.CHORD_PATTERN_ROW,
                 count - 1);
-        }
-      ListSelectionModel selection =
-              styleTable.getTableHeader().getColumnModel().getSelectionModel();
-
-      selection.setSelectionInterval(colIndex, colIndex);
-
-      Object pattern = allChordPatterns.elementAt(colIndex);
-
-      if( pattern != null && pattern instanceof Playable && isPlayed() )
-        {
-        ((Playable)pattern).playMe(getAccompanimentSwingValue());
-        }
       }
+    ListSelectionModel selection =
+            styleTable.getTableHeader().getColumnModel().getSelectionModel();
+
+    selection.setSelectionInterval(colIndex, colIndex);
+
+    Object pattern = allChordPatterns.elementAt(colIndex);
+
+    if( pattern != null && pattern instanceof Playable && isPlayed() )
+      {
+        ((Playable) pattern).playMe(getAccompanimentSwingValue());
+      }
+  }
 
 
- public void playChordColumn()
- {
-     playChordColumn(selectedColumn);
- }
-
-   /**
-   * Play the bass pattern in the designated column.
-   * @param colIndex index of the column to play
-   */
-
-
-  void playBassColumn(int colIndex)
+public void playChordColumn()
   {
-            int count = styleTable.getRowCount();
+    playChordColumn(selectedColumn);
+  }
 
-      if( count != 0 )
-        {
+
+/**
+ * Play the bass pattern in the designated column.
+ * @param colIndex index of the column to play
+ */
+
+void playBassColumn(int colIndex)
+  {
+    int count = styleTable.getRowCount();
+
+    if( count != 0 )
+      {
         styleTable.setRowSelectionInterval(
                 StyleTableModel.BASS_PATTERN_ROW,
                 count - 1);
-        }
-      ListSelectionModel selection =
-              styleTable.getTableHeader().getColumnModel().getSelectionModel();
-
-      selection.setSelectionInterval(colIndex, colIndex);
-
-      Object pattern = allBassPatterns.elementAt(colIndex);
-
-      if( pattern != null && pattern instanceof Playable && isPlayed() )
-        {
-        ((Playable)pattern).playMe(getAccompanimentSwingValue());
-        }
       }
+    ListSelectionModel selection =
+            styleTable.getTableHeader().getColumnModel().getSelectionModel();
 
+    selection.setSelectionInterval(colIndex, colIndex);
 
- public void playBassColumn()
- {
-     playBassColumn(selectedColumn);
- }
+    Object pattern = allBassPatterns.elementAt(colIndex);
+
+    if( pattern != null && pattern instanceof Playable && isPlayed() )
+      {
+        ((Playable) pattern).playMe(getAccompanimentSwingValue());
+      }
+  }
+
+public void playBassColumn()
+  {
+    playBassColumn(selectedColumn);
+  }
 
   /**
    * Update the "cache", a few rows above the actual spreadsheet,
@@ -436,26 +436,6 @@ public class StyleEditor
     
     String text = rule == null ? " " : rule.toString(); //.toUpperCase();
 
-    /*
-     * This scheme, designed to reuse rows in the cache, is more confusing to
-     * the user, in my opinion. As I put it in originally, I am now removing it.
-     * Bob K.
-
-    if( rowIndex == recentRows[0] && colIndex == recentColumns[0] )
-      {
-      styleTextField0.setText(text);
-      }
-    else if( rowIndex == recentRows[1] && colIndex == recentColumns[1] )
-      {
-      styleTextField1.setText(text);
-      }
-    else if( rowIndex == recentRows[2] && colIndex == recentColumns[2] )
-      {
-      styleTextField2.setText(text);
-      }
-    else
-    */
-    
     if( rule instanceof Displayable ) // && lastRuleClicked != rule )
       {
       lastRuleClicked = rule;
@@ -1369,11 +1349,11 @@ public class StyleEditor
     getTableModel().resetPatterns();
 
     // The following three should eventually use BassPatternDisplay etc. instead of BassPattern
-
+/*
     getTableModel().loadDrumPatterns(dp);
     getTableModel().loadBassPatterns(bp);
     getTableModel().loadChordPatterns(cp);
-
+*/
     loadAttributes(style);
 
     // ...into these
@@ -1445,9 +1425,11 @@ public class StyleEditor
     RepresentativeChordRules c = new RepresentativeChordRules(true, minDuration);
     for( int i = 0; i < cp.size(); i++ )
       {
-      String rule = cp.get(i).forGenerator();
-      float weight = cp.get(i).getWeight();
-      chordP.add(c.makeChordPattern(rule, weight));
+      ChordPattern cpi = cp.get(i);
+      String rule = cpi.forGenerator();
+      float weight = cpi.getWeight();
+      //chordP.add(c.makeChordPattern(rule, weight));
+      chordP.add(c.makeChordPattern(cpi));
       }
 
     // Set up for loading patterns into table
@@ -1672,9 +1654,10 @@ public class StyleEditor
 
     for( int i = 0; i < chordPatterns.size(); i++ )
       {
-      float weight = chordPatterns.get(i).getWeight();
+      RepresentativeChordRules.ChordPattern cp = chordPatterns.get(i);
+      float weight = cp.getWeight();
       ChordPatternDisplay c =
-              new ChordPatternDisplay(chordPatterns.get(i).getRule(), weight,
+              new ChordPatternDisplay(cp.getRule(), weight, cp.getPush(),
               this.parent, this.cm, this);
       c.setTitleNumber((i + 1));
       chordHolderPane.add(c);
@@ -1684,6 +1667,7 @@ public class StyleEditor
       StyleTableModel model = getTableModel();
       model.setChordPatternWeight(weight, patternIndex);
       model.setChordPatternBeats(c.getBeats(), patternIndex);
+      model.setChordPatternPush(c.getPushString(), patternIndex);
       //System.out.println("loaded chord pattern at column " + patternIndex);
       allChordPatterns.setElementAt(c, patternIndex);
       }
@@ -2551,8 +2535,9 @@ public class StyleEditor
         just moved to the end of the list. */
         String text = copiedChord.getDisplayText();
         int weight = copiedChord.getWeight();
+        String pushString = copiedChord.getPushString();
         ChordPatternDisplay c =
-                new ChordPatternDisplay(text, weight, parent, cm, this);
+                new ChordPatternDisplay(text, weight, pushString, parent, cm, this);
         c.setTitleNumber(chordHolderPane.getComponentCount() + 1);
         chordHolderPane.add(c);
         chordHolderPane.updateUI();

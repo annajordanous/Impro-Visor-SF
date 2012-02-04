@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,19 @@
 
 package imp.gui;
 
-import javax.swing.table.*;
-import javax.swing.JTable;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
-import java.awt.Component;
 import java.awt.Choice;
+import java.awt.Component;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.TableCellEditor;
 
 /**
  *
- * @author keller
+ * @author Robert Keller
  */
+
 public class StyleCellEditor
         extends DefaultCellEditor
         implements TableCellEditor
@@ -171,7 +172,10 @@ public class StyleCellEditor
       }
 
     // Possible edit of weight entry
-    if( column >= StyleTableModel.FIRST_PATTERN_COLUMN && (row == StyleTableModel.BASS_PATTERN_WEIGHT_ROW || row == StyleTableModel.CHORD_PATTERN_WEIGHT_ROW || row == StyleTableModel.DRUM_PATTERN_WEIGHT_ROW) )
+    if( column >= StyleTableModel.FIRST_PATTERN_COLUMN 
+            && (row == StyleTableModel.BASS_PATTERN_WEIGHT_ROW 
+            || row == StyleTableModel.CHORD_PATTERN_WEIGHT_ROW 
+            || row == StyleTableModel.DRUM_PATTERN_WEIGHT_ROW) )
       {
       Float weight = zeroFloat;
       try
@@ -226,6 +230,17 @@ public class StyleCellEditor
 
       // Return the weight
       return weight;
+      }
+    
+    if( row == StyleTableModel.CHORD_PATTERN_PUSH_ROW )
+      {
+      PatternDisplay ob = styleEditor.getChordPattern(column);
+        if( ob instanceof ChordPatternDisplay )
+          {
+          String pushString = editField.getText().trim();
+          ((ChordPatternDisplay)ob).setPushString(pushString);
+          return pushString;
+          }
       }
 
     if( column == StyleTableModel.INSTRUMENT_INCLUDE_COLUMN && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,16 @@
 
 package imp.gui;
 
-import imp.data.*;
 import imp.Constants;
-import polya.*;
-
-import javax.swing.table.*;
-import javax.swing.JTable;
+import imp.data.BassPattern;
+import imp.data.DrumPattern;
+import imp.data.DrumRule;
+import imp.data.MIDIBeast;
 import java.util.Vector;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import polya.Polylist;
 
 /**
  *
@@ -61,9 +64,9 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     int rowCount = 0;
 
     /* Pattern categories */
-    public static String BASS = "Bass";
-    public static String CHORD = "Chord";
-    public static String PERCUSSION = "Percussion";
+    public static final String BASS = "Bass";
+    public static final String CHORD = "Chord";
+    public static final String PERCUSSION = "Percussion";
     
     public static String categoryName[] = {BASS, CHORD, PERCUSSION};
     
@@ -91,6 +94,7 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
       BASS,
       "Chord Beats",
       "Chord Weight",
+      "Chord Push",
       CHORD,
       "Drum Beats",
       "Drum Weight",
@@ -111,10 +115,11 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     
     JTable theTable;
     
-    public static final String  UNNAMED_PATTERN_NAME = "";
+    public static final String  UNNAMED_PATTERN_NAME   = "";
     public static final Integer DEFAULT_PATTERN_WEIGHT = 10;
-    public static final Integer DEFAULT_PATTERN_BEATS = 0;
-    public static final String  DEFAULT_INSTRUMENT = PERCUSSION;
+    public static final String  DEFAULT_PATTERN_PUSH   = "";
+    public static final Integer DEFAULT_PATTERN_BEATS  = 0;
+    public static final String  DEFAULT_INSTRUMENT     = PERCUSSION;
     
     // Designated columns
 
@@ -131,22 +136,23 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     
     public static final int CHORD_PATTERN_BEATS_ROW         = 3;
     public static final int CHORD_PATTERN_WEIGHT_ROW        = 4;
-    public static final int CHORD_PATTERN_ROW               = 5;
+    public static final int CHORD_PATTERN_PUSH_ROW          = 5;
+    public static final int CHORD_PATTERN_ROW               = 6;
     
-    public static final int DRUM_PATTERN_BEATS_ROW          = 6;
-    public static final int DRUM_PATTERN_WEIGHT_ROW         = 7;
+    public static final int DRUM_PATTERN_BEATS_ROW          = 7;
+    public static final int DRUM_PATTERN_WEIGHT_ROW         = 8;
 
     public static final int FIRST_INSTRUMENT_ROW            = 2;
-    public static final int FIRST_PERCUSSION_INSTRUMENT_ROW = 8;
+    public static final int FIRST_PERCUSSION_INSTRUMENT_ROW = 9;
     
     int lastPatternColumn = PATTERN_COLUMN_BASE;
     int lastPercussionrowUsed = FIRST_PERCUSSION_INSTRUMENT_ROW - 1;
     
-    public static Boolean POSITIVE_INCLUDE_VALUE = Boolean.TRUE;
-    public static Boolean NEGATIVE_INCLUDE_VALUE = Boolean.FALSE;
-    public static Boolean INITIAL_INCLUDE_VALUE = POSITIVE_INCLUDE_VALUE;
+    public static final Boolean POSITIVE_INCLUDE_VALUE = Boolean.TRUE;
+    public static final Boolean NEGATIVE_INCLUDE_VALUE = Boolean.FALSE;
+    public static final Boolean INITIAL_INCLUDE_VALUE = POSITIVE_INCLUDE_VALUE;
     
-    public static Integer INITIAL_INSTRUMENT_VOLUME = 100;
+    public static final Integer INITIAL_INSTRUMENT_VOLUME = 100;
 
     private static boolean setValueTraceValue = false;
     
@@ -193,9 +199,9 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
      
     }
     
-   /** Defining list of row names */
+/** Defining list of row names */
 
-    public void initRowHeaders()
+public void initRowHeaders()
   {
     rowNames = new Vector<String>();
     rowCount = 0;
@@ -231,6 +237,7 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
    setValueAt(BLANK,                    BASS_PATTERN_ROW,          j);
    setValueAt(DEFAULT_PATTERN_BEATS,    CHORD_PATTERN_BEATS_ROW,   j);
    setValueAt(DEFAULT_PATTERN_WEIGHT,   CHORD_PATTERN_WEIGHT_ROW,  j);
+   setValueAt(DEFAULT_PATTERN_PUSH,     CHORD_PATTERN_PUSH_ROW,    j);
    setValueAt(BLANK,                    CHORD_PATTERN_ROW,         j);
    setValueAt(DEFAULT_PATTERN_BEATS,    DRUM_PATTERN_BEATS_ROW,    j);
    setValueAt(DEFAULT_PATTERN_WEIGHT,   DRUM_PATTERN_WEIGHT_ROW,   j);
@@ -250,7 +257,6 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
 
  public void addEmptyColumn(String name)
    {
-    
     Vector<Object> columnContents = new Vector<Object>();
     
     //columnContents.addElement(name);
@@ -353,14 +359,13 @@ public int getNumColumns()
   
  /**
   * The raw interface to setting a value in a cell.
-  * Consider using setCell rather than this, as it performs appropriate
-  * conversions.
   *
   @param value the Object to be stored in the cell
   @param row the row in which the value is stored
   @param col the column in which the value is stored
   */
  
+  @Override
   public void setValueAt(Object value, int row, int col)
   {
     if( setValueTraceValue )
@@ -390,12 +395,14 @@ public int getNumColumns()
     * Determines which cells are editable
     */
    
+    @Override
     public boolean isCellEditable(int row, int col) {
         // the data/cell address is constant, no matter where the cell appears onscreen.
         return ( col >= FIRST_PATTERN_COLUMN 
                   && (  row == BASS_PATTERN_WEIGHT_ROW 
                      || row == BASS_PATTERN_ROW 
                      || row == CHORD_PATTERN_WEIGHT_ROW 
+                     || row == CHORD_PATTERN_PUSH_ROW 
                      || row == CHORD_PATTERN_ROW 
                      || row == DRUM_PATTERN_WEIGHT_ROW 
                      || row >= FIRST_PERCUSSION_INSTRUMENT_ROW
@@ -453,6 +460,10 @@ public int getNumColumns()
    }
  }
  
+/**
+ * Sets for various row positions in a specified column
+ * @param column 
+ */
 
 public void setBassPatternWeight(float weight, int column)
  {
@@ -469,6 +480,11 @@ public void setChordPatternWeight(float weight, int column)
  setValueAt(weight, CHORD_PATTERN_WEIGHT_ROW, column);
  }
 
+public void setChordPatternPush(String push, int column)
+ {
+ setValueAt(push, CHORD_PATTERN_PUSH_ROW, column);
+ }
+
 public void setChordPatternBeats(double beats, int column)
  {
  setValueAt(beats, CHORD_PATTERN_BEATS_ROW, column);
@@ -482,7 +498,7 @@ public void setDrumPatternWeight(float weight, int column)
 public void setDrumPatternBeats(double beats, int column)
  {
  setValueAt(beats, DRUM_PATTERN_BEATS_ROW, column);
-  }
+ }
 
 /**
  * Adapting from Brandy McMenamy's code:
@@ -514,25 +530,25 @@ public void setDrumPatternBeats(double beats, int column)
      }
    
    
-/** Put chord patterns into table, used by ExtractionEditor_1 */
-// May not longer be needed, since we are getting the patterns without it.
-// In any case, using lastPatternColumn is wrong.
- 
-    public void loadChordPatterns(Vector<ChordPattern>  chordPatterns) {
-         for(int i = 0; i < chordPatterns.size(); i++) {
-               ensurePatternSpace();
-               
-              setValueTrace(false);
-              /*
-                ChordPattern pattern = chordPatterns.get(i);
-               
-               setValueAt(pattern, CHORD_PATTERN_ROW, lastPatternColumn);
-               setChordPatternWeight(pattern.getWeight(), lastPatternColumn);
-               setChordPatternBeats(pattern.getDuration()/BEAT, lastPatternColumn);
-               */
-               setValueTrace(false);
-         }
-     }     
+///** Put chord patterns into table, used by ExtractionEditor_1 */
+//// May not longer be needed, since we are getting the patterns without it.
+//// In any case, using lastPatternColumn is wrong.
+// 
+//    public void loadChordPatterns(Vector<ChordPattern>  chordPatterns) {
+//         for(int i = 0; i < chordPatterns.size(); i++) {
+//               ensurePatternSpace();
+//               
+//              setValueTrace(false);
+//              /*
+//                ChordPattern pattern = chordPatterns.get(i);
+//               
+//               setValueAt(pattern, CHORD_PATTERN_ROW, lastPatternColumn);
+//               setChordPatternWeight(pattern.getWeight(), lastPatternColumn);
+//               setChordPatternBeats(pattern.getDuration()/BEAT, lastPatternColumn);
+//               */
+//               setValueTrace(false);
+//         }
+//     }     
 
     public Vector<Long> getInstrumentNumbers()
     {

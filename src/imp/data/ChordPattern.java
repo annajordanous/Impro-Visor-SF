@@ -77,6 +77,9 @@ private static final int WEIGHT = 1;
 
 private static final int PUSH = 2;
 
+
+private String pushString = "";
+
 private int pushAmount = 0; // push amount, in slots
 
 
@@ -137,9 +140,9 @@ public static ChordPattern makeChordPattern(Polylist L)
         }
       case PUSH:
         {
-        String dur = item.first().toString();
-        cp.pushAmount = Duration.getDuration(dur);
-        //System.out.println("pushAmount " + dur + " = " + cp.pushAmount + " slots");
+        cp.pushString = item.first().toString();
+        cp.pushAmount = Duration.getDuration(cp.pushString);
+        //System.out.println("pushAmount " + pushString + " = " + cp.pushAmount + " slots");
         }
       }
     }
@@ -725,5 +728,11 @@ public String forGenerator()
 public int getPushAmount()
   {
     return pushAmount;
+  }
+
+
+public String getPushString()
+  {
+    return pushString;
   }
 }

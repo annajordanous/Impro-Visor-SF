@@ -667,7 +667,7 @@ public class RepresentativeChordRules{
                     Random r = new Random();
                     int randomIndex = r.nextInt(potentialRepList.size());
                     RawRule selectedRule = potentialRepList.get(randomIndex);
-                    ChordPatternGenerator.add(new ChordPattern(selectedRule.getRule(), c.calculateWeight()));
+                    ChordPatternGenerator.add(new ChordPattern(selectedRule.getRule(), c.calculateWeight(), ""));
                 }
             }
         }
@@ -695,11 +695,17 @@ public class RepresentativeChordRules{
 		}
 	}
 	*/
+
         
         public ChordPattern makeChordPattern(String r, float w){
-            return new ChordPattern(r,w);
+            return new ChordPattern(r,w, "");
         }
-        
+
+        public ChordPattern makeChordPattern(imp.data.ChordPattern cp){
+            return new ChordPattern(cp.forGenerator(), cp.getWeight(), cp.getPushString());
+        }
+
+
 	/**
 	 * ChordPattern class
 	 */
@@ -707,22 +713,24 @@ public class RepresentativeChordRules{
 		String rule;
 		float weight;
 		int duration;
+                String push;
                 
 		/**
 		 * @param r - rule
 		 * @param w - weight
 		 */
-		public ChordPattern(String r, float w){
+		public ChordPattern(String r, float w, String push){
 			rule = r; 
 			weight = w;
                         duration = new Double(MIDIBeast.numBeatsInRule(rule)).intValue();
+                        this.push = push;
 		}
 		
 		/**
 		 * Allows for the printing of the chord-pattern in the format that Impro-Visor understands.
 		 */
 		public String toString(){
-			return "(chord-pattern (rules " + rule + ")(weight " + weight + "))";
+			return "(chord-pattern (rules " + rule + ")(weight " + weight + ")(push " + push + ")";
 		}
                 
                 public String getRule(){
@@ -736,6 +744,11 @@ public class RepresentativeChordRules{
                 public int getDuration(){
                     return duration;
                 }
+                
+                public String getPush(){
+                    return push;
+                }
+                
 	}
 	
         public class RawRule{
