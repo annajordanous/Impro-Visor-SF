@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -36,8 +35,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.Iterator;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import polya.Polylist;
@@ -190,14 +188,14 @@ public class StyleEditor
 
   private PatternSet allDrumPatterns;
 
-  /* vector of percussion instrument names */
+  /* array of percussion instrument names */
   
   private ArrayList<String> instrumentIdByRow;
   
   /** Header for rows of table */
   protected JList rowHeader;
 
-  private Vector rowHeaderLabels;
+  private ArrayList<String> rowHeaderLabels;
 
   private RowHeaderRenderer rowHeaderRenderer;
 
@@ -458,7 +456,7 @@ public void playBassColumn()
       {
           Object contents = styleTable.getValueAt(recentRows[0], recentColumns[0]);
           styleTextField0.setText(contents.toString());
-          rowField0.setText("" + rowHeaderLabels.elementAt(recentRows[0]));
+          rowField0.setText("" + rowHeaderLabels.get(recentRows[0]));
           columnField0.setText("" + styleTable.getColumnName(recentColumns[0]));
           setTextFieldColor(contents, styleTextField0);
           setTextFieldColor(contents, rowField0);
@@ -469,7 +467,7 @@ public void playBassColumn()
         {
           Object contents = styleTable.getValueAt(recentRows[1], recentColumns[1]);
           styleTextField1.setText(contents.toString());
-          rowField1.setText("" + rowHeaderLabels.elementAt(recentRows[1]));
+          rowField1.setText("" + rowHeaderLabels.get(recentRows[1]));
           columnField1.setText("" + styleTable.getColumnName(recentColumns[1]));
           setTextFieldColor(contents, styleTextField1);
           setTextFieldColor(contents, rowField1);
@@ -480,7 +478,7 @@ public void playBassColumn()
         {
           Object contents = styleTable.getValueAt(recentRows[2], recentColumns[2]);
           styleTextField2.setText(contents.toString());
-          rowField2.setText("" + rowHeaderLabels.elementAt(recentRows[2]));
+          rowField2.setText("" + rowHeaderLabels.get(recentRows[2]));
           columnField2.setText("" + styleTable.getColumnName(recentColumns[2]));
           setTextFieldColor(contents, styleTextField2);
           setTextFieldColor(contents, rowField2);
@@ -498,14 +496,14 @@ public void playBassColumn()
       }
     }
   
-  public Vector getRowHeaderLabels()
+  public ArrayList<String> getRowHeaderLabels()
     {
     return rowHeaderLabels;
     }
 
   public void addHeaderLabel(String text)
     {
-    rowHeaderLabels.addElement(text);
+    rowHeaderLabels.add(text);
     }
 
   public StyleTableModel getTableModel()
@@ -1359,9 +1357,9 @@ public void playBassColumn()
     Style style = Style.makeStyle(Notate.parseListFromString(s));
 
     // want to change these...
-    Vector<BassPattern> bp = style.getBP();
-    Vector<DrumPattern> dp = style.getDP();
-    Vector<ChordPattern> cp = style.getCP();
+    ArrayList<BassPattern> bp = style.getBP();
+    ArrayList<DrumPattern> dp = style.getDP();
+    ArrayList<ChordPattern> cp = style.getCP();
 
     getTableModel().resetPatterns();
 
@@ -1745,7 +1743,7 @@ public void playBassColumn()
 
           instrumentRow = k + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW;
           instrumentIdByRow.add(instrument);
-          rowHeaderLabels.setElementAt(instrument, instrumentRow);
+          rowHeaderLabels.set(instrumentRow, instrument);
           }
 
         styleTable.setValueAt(newRule, instrumentRow, patternIndex);
@@ -2277,7 +2275,7 @@ public void playBassColumn()
     {
     // Get instrument from first column
 
-    String instrument = (String)getRowHeaderLabels().elementAt(row);
+    String instrument = (String)getRowHeaderLabels().get(row);
 
     // How to create DrumPattern when none exists?
 
@@ -2946,7 +2944,7 @@ public void playBassColumn()
 
   public Long getInstrumentNumberByRow(int row)
   {
-      return getTableModel().getInstrumentNumbers().elementAt(row);
+      return getTableModel().getInstrumentNumbers().get(row);
   }
 
   public boolean isIncludeCell(int row, int col)
@@ -5302,7 +5300,7 @@ public void playBassColumn()
   private void newInstrumentButtonClicked(java.awt.event.ActionEvent evt)//GEN-FIRST:event_newInstrumentButtonClicked
   {//GEN-HEADEREND:event_newInstrumentButtonClicked
     getTableModel().newRow();
-    rowHeader.setListData(rowHeaderLabels);
+    rowHeader.setListData(rowHeaderLabels.toArray());
   }//GEN-LAST:event_newInstrumentButtonClicked
 
   private void styleTextField0ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleTextField0ActionPerformed
@@ -5888,7 +5886,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
     int tableCol = col + 1;       // for playing from pianoroll
 
-    Vector<PianoRollBar> bars = pianoRoll.getSortedBars();
+    ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
 
     int styleEditorRow = StyleTableModel.BASS_PATTERN_ROW;
     int lastPianoRollRow = 0;
@@ -5896,10 +5894,10 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
     StringBuffer patternBuffer = new StringBuffer();
     int nextSlot = 0;
 
-    for( Enumeration e = bars.elements(); e.hasMoreElements(); )
+    for( Iterator e = bars.iterator(); e.hasNext(); )
       {
         
-        PianoRollBar bar = (PianoRollBar) e.nextElement();
+        PianoRollBar bar = (PianoRollBar) e.next();
 
         int barRow = bar.getRow();
 
@@ -5960,7 +5958,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
   {
 
-    Vector<PianoRollBar> bars = pianoRoll.getSortedBars();
+    ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
 
     int styleEditorRow = StyleTableModel.BASS_PATTERN_ROW;
     int lastPianoRollRow = 0;
@@ -5968,10 +5966,10 @@ public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
     StringBuffer patternBuffer = new StringBuffer();
     int nextSlot = 0;
 
-    for( Enumeration e = bars.elements(); e.hasMoreElements(); )
+    for( Iterator e = bars.iterator(); e.hasNext(); )
       {
 
-        PianoRollBar bar = (PianoRollBar) e.nextElement();
+        PianoRollBar bar = (PianoRollBar) e.next();
 
         int barRow = bar.getRow();
 
@@ -6006,7 +6004,7 @@ Playable display = null;
         default:
              DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(parent, cm, this);
              display = new DrumRuleDisplay(this.parent, this.cm, drumPatternDisplay, this);
-             String instrument = getRowHeaders().elementAt(desiredRow - PianoRoll.BASS_CHORD_ROWS + PianoRoll.ROWHEADEROFFSET);
+             String instrument = getRowHeaders().get(desiredRow - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
              ((DrumRuleDisplay)display).setInstrument(instrument);
              break;
@@ -6028,7 +6026,7 @@ Playable display = null;
 public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowButton[])
   {
 
-    Vector<PianoRollBar> bars = pianoRoll.getSortedBars();
+    ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
 
     int lastPianoRollRow = 0;
 
@@ -6042,14 +6040,14 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
     int row = 2;    // Start of percussion rows
 
-    for( Enumeration e = bars.elements(); e.hasMoreElements(); )
+    for( Iterator e = bars.iterator(); e.hasNext(); )
       {
 
-        PianoRollBar bar = (PianoRollBar) e.nextElement();
+        PianoRollBar bar = (PianoRollBar) e.next();
 
         int barRow = bar.getRow();
 
-        if( barRow > row || !e.hasMoreElements() )
+        if( barRow > row || !e.hasNext() )
           {
             // Possibly dump accumulated pattern
 
@@ -6058,8 +6056,8 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
                 // Dump only if non-empty
                 rule = new DrumRuleDisplay(this.parent, this.cm,
                                            drumPatternDisplay, this);
-                String instrument = getRowHeaders().elementAt(
-                    row - PianoRoll.BASS_CHORD_ROWS + PianoRoll.ROWHEADEROFFSET);
+                String instrument = getRowHeaders().get(
+                    row - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
                 rule.setInstrument(instrument);
                 rule.setDisplayText(patternBuffer.toString());
@@ -6491,7 +6489,7 @@ public void untrackWithPianoRoll()
 }
 
 
-  public Vector<String> getRowHeaders()
+  public ArrayList<String> getRowHeaders()
   {
     return getTableModel().getRowHeaders();
   }

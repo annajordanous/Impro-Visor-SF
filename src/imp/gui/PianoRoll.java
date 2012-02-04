@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,13 @@
 
 package imp.gui;
 
-import javax.swing.*;
-import javax.swing.JButton.*;
-import javax.swing.JPanel.*;
-import java.awt.*;
-import java.util.Vector;
-import imp.util.ErrorLog;
 import imp.data.BassPatternElement;
+import imp.util.ErrorLog;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.ArrayList;
+import javax.swing.*;
 
 
 /**
@@ -69,10 +69,6 @@ int xTitleOffset = 10;
 int yTitleOffset = 0;
 int yTitleSpacing = 25;
 
-        // Some row headers have other information than the name of the instrument.
-        // ROWHEADEROFFSET is to skip over all that.
-
-public static final int ROWHEADEROFFSET = 8;
 
 public static final int BASS_CHORD_ROWS = 2;
 
@@ -353,7 +349,7 @@ private StyleEditor styleEditor;
   /**
    * Get the bars from the PianoRoll.
    */
-  public Vector<PianoRollBar> getBars()
+  public ArrayList<PianoRollBar> getBars()
     {
     return pianoRollPanel.getBars();  
     }
@@ -361,7 +357,7 @@ private StyleEditor styleEditor;
   /**
    * Get the bars sorted from the PianoRoll.
    */
-  public Vector<PianoRollBar> getSortedBars()
+  public ArrayList<PianoRollBar> getSortedBars()
     {
     return pianoRollPanel.getSortedBars();  
     }
@@ -381,7 +377,7 @@ private StyleEditor styleEditor;
 
   public void makeRowButtons(JPanel rowTitlePanel)
   {
-     Vector<String> rowHeaders = styleEditor.getRowHeaders();
+     ArrayList<String> rowHeaders = styleEditor.getRowHeaders();
 
       makeRowPressButton(0, "Bass", BASSCOLOR, rowTitlePanel);
       makeRowPressButton(1, "Chord", CHORDCOLOR, rowTitlePanel);
@@ -390,7 +386,7 @@ private StyleEditor styleEditor;
 
       for (int row = 2; row < NUMROWS; row++)
       {
-      String header = rowHeaders.elementAt(row - BASS_CHORD_ROWS + ROWHEADEROFFSET);
+      String header = rowHeaders.get(row - BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
       makeRowToggleButtons(row, header, DRUMSCOLOR, rowTitlePanel);
       }
 
@@ -457,11 +453,11 @@ private StyleEditor styleEditor;
 
   public void setRowButtonLabels(JPanel rowTitlePanel)
   {
-     Vector<String> rowHeaders = styleEditor.getRowHeaders();
+     ArrayList<String> rowHeaders = styleEditor.getRowHeaders();
 
      for (int row = 2; row < NUMROWS; row++)
       {
-      String header = rowHeaders.elementAt(row - BASS_CHORD_ROWS + ROWHEADEROFFSET);
+      String header = rowHeaders.get(row - BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
       rowButton[row].setText(header);
       }
   }
@@ -1482,12 +1478,12 @@ private void addNewBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     int startSlot = pianoRollPanel.nearestTick(clickedSlot, oneTick);    
     
     // Define the size of the bar, or where it ends
-    Vector<PianoRollBar> bars = pianoRollPanel.getBars();
+    ArrayList<PianoRollBar> bars = pianoRollPanel.getBars();
     int barWidth; // in slots
     int maxWidth = SLOTSPERBEAT/2; // the default value, in slots
     for(int i = 0; i < bars.size(); ++i)
       {
-      PianoRollBar bar = bars.elementAt(i);   // go through all the bars
+      PianoRollBar bar = bars.get(i);   // go through all the bars
       if(bar.row == row)                      // in the row we want to add into
         {
         barWidth = bar.startSlot - startSlot; // distance to the next bar (to the right)
@@ -1747,7 +1743,7 @@ public void updateBarEditor(PianoRollBar barBeingEdited)
 
    PianoRollBassBar bar = (PianoRollBassBar)barBeingEdited;
 
-    if( bar != null )
+   if( bar != null )
    {
    barEditorContents.setText(bar.getText().toString());
 

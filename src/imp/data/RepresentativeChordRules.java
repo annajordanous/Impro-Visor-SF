@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,7 +20,8 @@
 
 package imp.data;
 
-import java.util.*;	
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *  Modeled after the RepresentativeBassRules class.
@@ -392,26 +392,7 @@ public class RepresentativeChordRules{
 	* all repeats, and creates a chord pattern for each set of repeats by assigning that pattern 
 	* a weight equal to the number of repeats corresponding to that pattern
 	*/
-	/*public void processDuplicateRules(){
-		for(int i = 0; i < simplifiedPitchesRules.size(); i++)
-			sansDuplicatesRules.add(new String(simplifiedPitchesRules.get(i)));
-		for(int i = 0; i < sansDuplicatesRules.size(); i++){
-			if(sansDuplicatesRules.get(i).equals("Erased Duplicate")) 
-				continue;
-			int weight = 0; 
-			for(int j = 0; j < sansDuplicatesRules.size(); j++){
-				if(simplifiedPitchesRules.get(i).equals(simplifiedPitchesRules.get(j)) && i != j){
-					weight++;
-					sansDuplicatesRules.set(j, "Erased Duplicate");
-				}
-			}
-			if(weight > 0){
-				sansDuplicatesRules.set(i, "Erased Duplicate");
-				ChordPatternGenerator.add(new ChordPattern(simplifiedPitchesRules.get(i), ++weight));
-                                duplicates.add("(" + simplifiedPitchesRules.get(i) + ") found " + weight + " times");
-			}
-		}	
-	}*/
+
         public void processDuplicateRules(){
             ArrayList<Integer> repeats = new ArrayList<Integer>();
             
@@ -438,32 +419,6 @@ public class RepresentativeChordRules{
 	* This method will assign each of the non duplicate patterns to a section which contains only
 	*  patterns of equal beat duration.
 	*/
-	
-        /*
-	public void splitUpIntoSections(){
-		if(debug)
-			System.out.println("\n ## Split up into sections ##");
-		ArrayList<Double> usedBeatCounts = new ArrayList<Double>();
-		for(int i = 0; i < sansDuplicatesRules.size(); i++){
-			if(!sansDuplicatesRules.get(i).equals("Erased Duplicate")){
-			    double beats = calculateBeats(sansDuplicatesRules.get(i));
-				if(debug)
-					System.out.println(sansDuplicatesRules.get(i) + " = " + beats);
-				if(!usedBeatCounts.contains(beats)){ //if section does not exist, create new one
-					if(debug)
-						System.out.println("\tRule created new section");
-					usedBeatCounts.add(beats);
-					sections.add(new Section(beats));
-				}
-				for(int j = 0; j < sections.size(); j++)
-					if(sections.get(j).getBeatCount() == beats){
-						if(debug)
-							System.out.println("\tRule placed into section: " + j);
-						sections.get(j).addRule(i);
-				}
-			}
-		}
-	}*/
         
 	public void splitUpIntoSections(){
             ArrayList<Integer> usedSlotCounts = new ArrayList<Integer>();
@@ -566,37 +521,6 @@ public class RepresentativeChordRules{
             }
         }
         
-        /*
-	public void findTentativeRepresentatives(){
-		for(int i = 0; i < sections.size(); i++){
-			Section s = sections.get(i);
-			Random r = new Random();
-			int randomRuleIndex = r.nextInt(s.size());
-			int indexIntoOriginalRules = s.getRuleIndex().get(randomRuleIndex);
-			s.addCluster(indexIntoOriginalRules);
-			ArrayList<Integer> noRepeats = new ArrayList<Integer>();
-			noRepeats.add(indexIntoOriginalRules);
-			for(int j = 1; j < s.getNumberOfClusters(); j++){
-				double maxDistance = Double.MIN_VALUE;
-				int maxIndex = -1;
-				for(int k = 0; k < s.size(); k++){
-					if(!noRepeats.contains(k)){
-						double distance = 0.0;
-						for(int l = 0; l < s.getClusters().size(); l++){
-							distance += c.getChronoValueAt(s.getRule(k), s.getClusters().get(l).getRepIndex());
-						}
-						if(distance > maxDistance){ 
-							maxDistance = distance; 
-							maxIndex = k; 
-						}
-					}
-				}
-				s.addCluster(s.getRule(maxIndex));
-				noRepeats.add(s.getRule(maxIndex));
-			}
-		}
-	}
-         */
 	
 	/**
 	* This method iterates through each rule of a section and assigns it to a cluster 
@@ -622,25 +546,7 @@ public class RepresentativeChordRules{
             }
         }
         
-        /*
-        public void cluster(){
-		for(int i = 0; i < sections.size(); i++) {
-			Section s = sections.get(i);
-			for(int j = 0; j < s.size(); j++){
-				double minDistance = Double.MAX_VALUE;
-				int minIndex = -1;
-				for(int k = 0; k < s.getNumberOfClusters(); k++){
-					Cluster c = s.getClusters().get(k);	
-					double distance = this.c.getChronoValueAt(s.getRule(j), c.getRepIndex());
-					if(distance < minDistance){
-						minDistance = distance;
-						minIndex = c.getRepIndex();
-					}
-				}
-				s.addRuleToCluster(s.getRule(j)	, minIndex);
-			}
-		}
-	}*/
+
 	
 	/**
 	* This method goes through each cluster and finds the rule
@@ -671,30 +577,7 @@ public class RepresentativeChordRules{
                 }
             }
         }
-        /*
-	public void getRepresentativeRules(){
-		for(int i = 0; i < sections.size(); i++){
-			Section s = sections.get(i);
-			for(int j = 0; j < s.getNumberOfClusters(); j++){
-				Cluster c = s.getClusters().get(j);
-				double minDistance = Double.MAX_VALUE;
-				int minIndex = -1;
-				for(int k = 0; k < c.size(); k++){
-					double totalDistance = 0.0;
-					
-					for(int l = 0; l < c.size(); l++)
-						totalDistance += this.c.getChronoValueAt(c.getRule(k), c.getRule(l));
-					if(totalDistance < minDistance){
-						minDistance = totalDistance;
-						minIndex = c.getRule(k);
-					}
-				}
-				c.setBetterRepIndex(minIndex);
-				ChordPatternGenerator.add(new ChordPattern(sansDuplicatesRules.get(minIndex), c.size()));
-			}
-		}
-	}
-	*/
+
 
         
         public ChordPattern makeChordPattern(String r, float w){
@@ -867,74 +750,7 @@ public class RepresentativeChordRules{
             
         }
         
-        /*
-	public class Section{
-		ArrayList<Cluster> clusters;
-		ArrayList<Integer> ruleIndex;
-		double beatCount;
-		int numClustersAllowed;
-		
-		public Section(){} // YAY JAVA!
-		
-		
-		public Section(double beatCount){
-			ruleIndex = new ArrayList<Integer>();
-			clusters = new ArrayList<Cluster>();
-			this.beatCount = beatCount;
-		}
-		
-		
-		public double getBeatCount(){
-			return beatCount;
-		}
-		
-		
-		public ArrayList<Cluster> getClusters(){
-			return clusters;
-		}
-		
-		
-		public int getRule(int i){
-			return ruleIndex.get(i);
-		}
-		
-		
-		public ArrayList<Integer> getRuleIndex(){
-			return ruleIndex;
-		}
-		
-		public int getNumberOfClusters(){
-			return numClustersAllowed;
-		}
-		
-		
-		public void addRule(int i){
-			ruleIndex.add(i);
-		}
-		
-		
-		public void setNumClustersAllowed(int i){
-			numClustersAllowed = i;
-		}
-		
-		
-		public int size(){
-			return ruleIndex.size();
-		}
-		
-		
-		public void addCluster(int repIndex){
-			clusters.add(new Cluster(repIndex));
-		}
-		
-		
-		public void addRuleToCluster(int ruleIndex, int repIndex){
-			for(int i = 0; i < clusters.size(); i++)
-				if(clusters.get(i).getRepIndex() == repIndex)
-					clusters.get(i).addRule(ruleIndex);
-		}
-	}
-        */
+
 
 	/**
 	 * Cluster class
@@ -1008,78 +824,5 @@ public class RepresentativeChordRules{
             }
         }
         
-	/*
-        public class Cluster{
-		private int repIndex;
-		private int betterRepIndex;
-		private ArrayList<Integer> rules;
-		
-		public Cluster(){}
-		
-		/**
-		 * Sets the repIndex to the one specified
-		 * @param repIndex
-	
-		public Cluster(int repIndex){
-			this.repIndex = repIndex;
-			rules = new ArrayList<Integer>();
-		}
-		
-		/**
-		 * @return repIndex
-	
-		public int getRepIndex(){
-			return repIndex;
-		}
-		
-		/**
-		 * @return betterRepIndex
-	
-		public int getBetterRepIndex(){
-			return betterRepIndex;
-		}
-		
-		/**
-		 * @param i - which rule to get
-		 * @return The rule which corresponds to the number specified.
-	
-		public int getRule(int i){
-			return rules.get(i);
-		}
-		
-		/**
-		 * Sets the betterRepIndex to the integer value specified.
-		 * @param b - the integer to which the betterRepIndex will be set.
-	
-		public void setBetterRepIndex(int b){
-			betterRepIndex = b;
-		}
-		
-		/**
-		 * @return an ArrayList of integers, which represent the rules.
-	
-		public ArrayList<Integer> getRules(){
-			return rules;
-		}
-		
-		/**
-		 * Adds a specified rule to the rules ArrayList. 
-		 * @param ruleIndex - which rule to add to the ArrayList of rules.
-	
-		public void addRule(int ruleIndex){
-			rules.add(ruleIndex);
-		}
-		
-		/**
-		 * @return the size of the rules ArrayList
-	
-		public int size(){
-			return rules.size();
-		}
-                
-                public String getStringRule(int i){
-                    return "(" + MIDIBeast.repChordRules.simplifiedPitchesRules.get(rules.get(i))+ ")";
-                }
-	}
-         */
+
 }

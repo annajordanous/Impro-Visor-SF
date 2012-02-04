@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,15 +21,10 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.data.BassPattern;
-import imp.data.DrumPattern;
-import imp.data.DrumRule;
-import imp.data.MIDIBeast;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import polya.Polylist;
 
 /**
  *
@@ -70,8 +64,8 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     
     public static String categoryName[] = {BASS, CHORD, PERCUSSION};
     
-    public static final int BassCategory = 0;
-    public static final int ChordCategory = 1;
+    public static final int BassCategory       = 0;
+    public static final int ChordCategory      = 1;
     public static final int PercussionCategory = 2;
     
     private static String emptyCell = ""; // Change to make emptiness visible
@@ -107,9 +101,9 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
      };
     
     /** Defining list of row names */
-    Vector<String> rowNames;
+    ArrayList<String> rowNames;
 
-    Vector<Long> instrumentNumbers;
+    ArrayList<Long> instrumentNumbers;
     
     int minRowCount;
     
@@ -203,31 +197,33 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
 
 public void initRowHeaders()
   {
-    rowNames = new Vector<String>();
+    rowNames = new ArrayList<String>();
     rowCount = 0;
-    
+
     for( ; rowCount < initialRowHeaders.length; rowCount++ )
-        {
-        rowNames.addElement(initialRowHeaders[rowCount]);
-        }
+      {
+        rowNames.add(initialRowHeaders[rowCount]);
+      }
 
-      // Create header rows for percussion instruments
-      
-      for( int i = 1; i <= initialPercussionInstruments; i++ )
-        {
-        rowNames.addElement(DEFAULT_INSTRUMENT);
+    // Create header rows for percussion instruments
+
+    for( int i = 1; i <= initialPercussionInstruments; i++ )
+      {
+        rowNames.add(DEFAULT_INSTRUMENT);
         rowCount++;
-        }
-   }
+      }
+  }
 
     
-  public Vector<String> getRowHeaders()
+  public ArrayList<String> getRowHeaders()
   {
     return rowNames;
   }
 
                 
- /** Initialize one pattern column: used when loading style file. */
+ /** Initialize one pattern column: used when loading style file. 
+  * Note that the code in addPatternColumn has to be kept in synch with this.
+  */
 
    public void initializePatternColumn(int j)
    {
@@ -257,17 +253,17 @@ public void initRowHeaders()
 
  public void addEmptyColumn(String name)
    {
-    Vector<Object> columnContents = new Vector<Object>();
+    ArrayList<Object> columnContents = new ArrayList<Object>();
     
     //columnContents.addElement(name);
     
     int numRows = Math.max(minRowCount, getRowCount());
     for( int j = 0; j < numRows; j++)
       {
-      columnContents.addElement(emptyCell);
+      columnContents.add(emptyCell);
       }
     
-    addColumn(name, columnContents);
+    addColumn(name, columnContents.toArray());
 
      }
  
@@ -280,30 +276,30 @@ public void initRowHeaders()
    {
     // Initialized pattern column
    
-    Vector<Object> columnContents = new Vector<Object>();
+    ArrayList<Object> columnContents = new ArrayList<Object>();
     
     // For Bass
-    columnContents.addElement(DEFAULT_PATTERN_BEATS);
-    columnContents.addElement(DEFAULT_PATTERN_WEIGHT);
-    columnContents.addElement(BLANK);  // To allow for instrument sub-header
+    columnContents.add(DEFAULT_PATTERN_BEATS);
+    columnContents.add(DEFAULT_PATTERN_WEIGHT);
+    columnContents.add(BLANK);  // To allow for instrument sub-header
     
     // For Chord
-    columnContents.addElement(DEFAULT_PATTERN_BEATS);
-    columnContents.addElement(DEFAULT_PATTERN_WEIGHT);
-    columnContents.addElement(BLANK);  // To allow for instrument sub-header
+    columnContents.add(DEFAULT_PATTERN_BEATS);
+    columnContents.add(DEFAULT_PATTERN_WEIGHT);
+    columnContents.add(BLANK);
+    columnContents.add(BLANK);  // To allow for instrument sub-header
     
     // For Drum
-    columnContents.addElement(DEFAULT_PATTERN_BEATS);
-    columnContents.addElement(DEFAULT_PATTERN_WEIGHT);
+    columnContents.add(DEFAULT_PATTERN_BEATS);
+    columnContents.add(DEFAULT_PATTERN_WEIGHT);
     
     int numRows = Math.max(minRowCount, getRowCount());
     for( int j = FIRST_PERCUSSION_INSTRUMENT_ROW; j < numRows; j++)
       {
-      columnContents.addElement(emptyCell);
+      columnContents.add(emptyCell);
       }
     
-    addColumn(name, columnContents);
-    
+    addColumn(name, columnContents.toArray());
     }
  
 /**
@@ -311,7 +307,7 @@ public void initRowHeaders()
  * However, the work is done in super.
  */
  
-public void addColumn(String name, Vector<Object> contents)
+public void addColumn(String name, Object[] contents)
 {
   super.addColumn(name, contents);
 }
@@ -332,19 +328,19 @@ public int getNumColumns()
  
  public void addRow(String rowHeader)
   {
-    rowNames.addElement(rowHeader);
+    rowNames.add(rowHeader);
     rowCount++;
     
     int size = getColumnCount();
     //System.out.println("add row named " + rowHeader + ", size = " + size);
-    Vector<Object> row = new Vector<Object>(size);
-    row.addElement(INITIAL_INCLUDE_VALUE);
-    row.addElement(INITIAL_INSTRUMENT_VOLUME);
+    ArrayList<Object> row = new ArrayList<Object>(size);
+    row.add(INITIAL_INCLUDE_VALUE);
+    row.add(INITIAL_INSTRUMENT_VOLUME);
     for( int j = 2; j < size; j++)
     {
-      row.addElement(emptyCell);
+      row.add(emptyCell);
     }
-    super.addRow(row);
+    super.addRow(row.toArray());
     int rowNumber = getRowCount()-1;
     // System.out.println("new row " + rowNumber + " is " + row);
     fireTableRowsInserted(rowNumber, rowNumber);
@@ -419,12 +415,12 @@ public int getNumColumns()
     
   public boolean isChordCell(int row, int col)
     {
-    return getRowHeaders().elementAt(row).equals(CHORD);
+    return getRowHeaders().get(row).equals(CHORD);
     }
   
   public boolean isBassCell(int row, int col)
     {
-    return getRowHeaders().elementAt(row).equals(BASS);
+    return getRowHeaders().get(row).equals(BASS);
     }
   
   public boolean isDrumCell(int row, int col)
@@ -500,7 +496,7 @@ public void setDrumPatternBeats(double beats, int column)
  setValueAt(beats, DRUM_PATTERN_BEATS_ROW, column);
  }
 
-public Vector<Long> getInstrumentNumbers()
+public ArrayList<Long> getInstrumentNumbers()
   {
     return instrumentNumbers;
   }

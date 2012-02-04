@@ -26,7 +26,7 @@ package imp.gui;
  * @author keller
  */
 
-import java.util.Vector;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -40,9 +40,9 @@ class RowHeaderRenderer
 
   JTable table;
 
-  Vector<String> rowHeaders;
+  ArrayList<String> rowHeaders;
 
-  RowHeaderRenderer(Vector<String> rowHeaders, JTable table)
+  RowHeaderRenderer(ArrayList<String> rowHeaders, JTable table)
     {
     this.rowHeaders = rowHeaders;
     this.table = table;
@@ -76,12 +76,12 @@ class RowHeaderRenderer
   
   public String getValue(int index)
   {
-      return rowHeaders.elementAt(index);
+      return rowHeaders.get(index);
   }
   
   public void setValue(String text, int index)
     {
-    rowHeaders.setElementAt(text, index);
+    rowHeaders.set(index, text);
     // Set all instruments in index row to the selected one
     int ncols = table.getColumnCount();
 
@@ -122,7 +122,7 @@ class RowHeaderRenderer
 
     if( index < rowHeaders.size() )
       {
-      setText(rowHeaders.elementAt(index));
+      setText(rowHeaders.get(index));
       }
 
     if( index <= StyleTableModel.BASS_PATTERN_ROW )

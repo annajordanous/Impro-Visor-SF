@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,16 @@
 
 package imp.gui;
 
-import java.awt.Component;
 import java.awt.Color;
-import javax.swing.JTextField;
+import java.awt.Component;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
- * @author keller
+ * @author Robert Keller
  */
 
 public class StyleCellRenderer
@@ -61,6 +61,7 @@ public class StyleCellRenderer
     super();
     }
 
+  @Override
   public Component getTableCellRendererComponent(
           JTable table,
           Object value,

@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,8 +25,8 @@ import imp.com.PlayScoreCommand;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Vector;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
@@ -163,19 +162,19 @@ public class Style
   private NoteSymbol bassBase = NoteSymbol.makeNoteSymbol("c--");
 
   /**
-   * a Vector of this Style's BassPattern objects
+   * a ArrayList of this Style's BassPattern objects
    */
-  private Vector<BassPattern> bassPatterns = new Vector<BassPattern>();
+  private ArrayList<BassPattern> bassPatterns = new ArrayList<BassPattern>();
 
   /**
-   * a Vector of this Style's DrumPattern objects
+   * a ArrayList of this Style's DrumPattern objects
    */
-  private Vector<DrumPattern> drumPatterns = new Vector<DrumPattern>();
+  private ArrayList<DrumPattern> drumPatterns = new ArrayList<DrumPattern>();
 
   /**
-   * a Vector of this Style's ChordPattern objects
+   * a ArrayList of this Style's ChordPattern objects
    */
-  private Vector<ChordPattern> chordPatterns = new Vector<ChordPattern>();
+  private ArrayList<ChordPattern> chordPatterns = new ArrayList<ChordPattern>();
 
   /**
    * a String array containing keywords used in Style specifications
@@ -240,17 +239,17 @@ public class Style
     return bassChannel;
     }
 
-  public Vector<BassPattern> getBP()
+  public ArrayList<BassPattern> getBP()
     {
     return bassPatterns;
     }
 
-  public Vector<DrumPattern> getDP()
+  public ArrayList<DrumPattern> getDP()
     {
     return drumPatterns;
     }
 
-  public Vector<ChordPattern> getCP()
+  public ArrayList<ChordPattern> getCP()
     {
     return chordPatterns;
     }
@@ -259,7 +258,7 @@ public class Style
     {
     if( drumPatterns.size() > 0 )
       {
-      return drumPatterns.elementAt(0).getDuration();
+      return drumPatterns.get(0).getDuration();
       }
     else
       {
@@ -774,19 +773,19 @@ public class Style
     }
 
   /**
-   * Function that takes a Vector of Pattern objects and a duration, 
+   * Function that takes a ArrayList of Pattern objects and a duration, 
    * randomly chooses from the largest Patterns that will fit in that
    * duration, and returns that Pattern.
    * @param <T>       a type variable (referring to a type of Pattern)
-   * @param patterns  a Vector of T objects to choose from
+   * @param patterns  a ArrayList of T objects to choose from
    * @param duration  an int determining the duration to fill
    * @return the Pattern chosen
    */
-  private static <T extends Pattern> T getPattern(Vector<T> patterns,
+  private static <T extends Pattern> T getPattern(ArrayList<T> patterns,
                                                     int duration)
     {
-    // this vector will hold patterns that are the correct duration
-    Vector<T> goodPatterns = new Vector<T>();
+    // this ArrayList will hold patterns that are the correct duration
+    ArrayList<T> goodPatterns = new ArrayList<T>();
 
     // find the largest pattern duration that is less than duration
     int largestDuration = 0;

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +22,16 @@
 package imp.gui;
 
 
-import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.*;
-import java.awt.Color;
-import java.util.Vector;
-import java.util.Enumeration;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import javax.swing.JPanel;
 
 /**
  * PianoRollPanel is a JPanel extension for displaying
@@ -39,7 +41,8 @@ import java.util.Collections;
  * June 2008
  */
 
-public class PianoRollPanel extends JPanel implements MouseListener, MouseMotionListener
+public class PianoRollPanel extends JPanel 
+             implements MouseListener, MouseMotionListener
   {
   int ENDBLOCK_QUANTIZATION = 480;
   int ENDBLOCK_WIDTH = 30;
@@ -50,10 +53,10 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
   private PianoRollGrid grid;
   private PianoRoll pianoRoll;
   
-  private Vector<PianoRollBar> bars = new Vector<PianoRollBar>();
+  private ArrayList<PianoRollBar> bars = new ArrayList<PianoRollBar>();
   
   // Exists for the purpose of allowing copy/cut/paste for bars.
-  private Vector<PianoRollBar> tempBars = new Vector<PianoRollBar>(); // not static!!
+  private ArrayList<PianoRollBar> tempBars = new ArrayList<PianoRollBar>(); // not static!!
   
   private Color bgColor     = PianoRoll.BGCOLOR;
   private Color gridColor   = PianoRoll.GRIDCOLOR;
@@ -94,7 +97,6 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
 
   public PianoRollPanel()
   {
-
   }
 
   /**
@@ -109,7 +111,7 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
     }
   
   /**
-   * Clear the vector of bars.
+   * Clear the array of bars.
    */
   public void clearBars()
     {
@@ -117,7 +119,7 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
     }
   
  /**
-  * Remove a particular bar from the vector of bars.
+  * Remove a particular bar from the array of bars.
   * @param bar - the bar that is to be removed
   */
  public void removeBar(PianoRollBar bar)
@@ -127,7 +129,7 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
    }
   
  /**
-  * Add a particular bar to the vector of bars.
+  * Add a particular bar to the array of bars.
   * @param bar - the bar that is to be added
   */
  public void addBar(PianoRollBar bar)
@@ -138,7 +140,7 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
    }
 
  /**
-  * Add a particular bar to the vector of bars.
+  * Add a particular bar to the array of bars.
   * @param bar - the bar that is to be added
   */
  public void addBarWithOptionalEndBlock(PianoRollBar bar)
@@ -198,9 +200,9 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
   */
  public PianoRollEndBlock placeEndBlock(int row, int position)
  {
- for( Enumeration<PianoRollBar> e = bars.elements(); e.hasMoreElements(); )
+ for( Iterator<PianoRollBar> e = bars.iterator(); e.hasNext(); )
      {
-         PianoRollBar bar = e.nextElement();
+         PianoRollBar bar = e.next();
          if( (bar instanceof PianoRollEndBlock) && bar.getRow() == row)
          {
              // If there already is an end block, set its position
@@ -215,11 +217,11 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
     return endBlock;
  }
 
- private static boolean barExistsInRow(int row, Vector<PianoRollBar> bars)
+ private static boolean barExistsInRow(int row, ArrayList<PianoRollBar> bars)
  {
-     for( Enumeration<PianoRollBar> e = bars.elements(); e.hasMoreElements(); )
+     for( Iterator<PianoRollBar> e = bars.iterator(); e.hasNext(); )
      {
-         if( e.nextElement().getRow() == row )
+         if( e.next().getRow() == row )
          {
              return true;
          }
@@ -230,9 +232,9 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
 
  private PianoRollEndBlock getEndBlockInRow(int row)
  {
-     for( Enumeration<PianoRollBar> e = bars.elements(); e.hasMoreElements(); )
+     for( Iterator<PianoRollBar> e = bars.iterator(); e.hasNext(); )
      {
-         PianoRollBar bar = e.nextElement();
+         PianoRollBar bar = e.next();
 
          if( bar instanceof PianoRollEndBlock && bar.getRow() == row )
          {
@@ -253,6 +255,7 @@ public class PianoRollPanel extends JPanel implements MouseListener, MouseMotion
    * override the paint method to draw the buffer image on this panel's graphics.
    * This method is called implicitly whenever repaint() is called.
    */
+  @Override
   public void paint(Graphics g) 
     {
     g.drawImage(buffer, 0, 0, null);
@@ -568,10 +571,9 @@ public void mouseDragged(MouseEvent e)
 
 public int computeHighMark(int highMark, PianoRollBar bar)
 {
-        for( Enumeration<PianoRollBar> e1 = bars.elements();
-            e1.hasMoreElements(); )
+        for( Iterator<PianoRollBar> e1 = bars.iterator(); e1.hasNext(); )
           {
-            PianoRollBar b = e1.nextElement();
+            PianoRollBar b = e1.next();
             if(  !(b instanceof PianoRollEndBlock) && b != bar && b.getRow() >= FIRST_PERCUSSION_ROW )
               {
                 if( b.getEndSlot() > highMark )
@@ -586,9 +588,9 @@ public int computeHighMark(int highMark, PianoRollBar bar)
 public int getCurrentPercussionEndBlockSlot()
   {
     int slot = 0;
-    for( Enumeration<PianoRollBar> e1 = bars.elements(); e1.hasMoreElements(); )
+    for( Iterator<PianoRollBar> e1 = bars.iterator(); e1.hasNext(); )
       {
-        PianoRollBar b = e1.nextElement();
+        PianoRollBar b = e1.next();
         if( (b instanceof PianoRollEndBlock) && b.getRow() >= FIRST_PERCUSSION_ROW )
           {
             if( b.getStartSlot() > slot )
@@ -608,10 +610,9 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
         if( movingRight || highMark < newStartSlot )
           {
 
-            for( Enumeration<PianoRollBar> e2 = bars.elements();
-                e2.hasMoreElements(); )
+            for( Iterator<PianoRollBar> e2 = bars.iterator(); e2.hasNext(); )
               {
-                PianoRollBar b = e2.nextElement();
+                PianoRollBar b = e2.next();
                 if( b instanceof PianoRollEndBlock && b.getRow() >= FIRST_PERCUSSION_ROW )
                   {
                     b.setStartSlot(newStartSlot);
@@ -636,9 +637,9 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
    */
   public PianoRollBar findBar(int x, int y) 
     {
-    for( Enumeration<PianoRollBar> e = bars.elements(); e.hasMoreElements(); )
+    for( Iterator<PianoRollBar> e = bars.iterator(); e.hasNext(); )
       {
-      PianoRollBar bar = e.nextElement();
+      PianoRollBar bar = e.next();
       if( bar != null && bar.contains(x, y) )
         return bar;
       } 
@@ -759,9 +760,9 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
       grid.drawRow(g, gridColor, y, tickHeight, slotDivisions);
       }
     
-    for( Enumeration<PianoRollBar> e = bars.elements(); e.hasMoreElements(); )
+    for( Iterator<PianoRollBar> e = bars.iterator(); e.hasNext(); )
       {
-      e.nextElement().draw(g);
+      e.next().draw(g);
       }
 
     repaint();
@@ -774,9 +775,9 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
    */
   public boolean collides(PianoRollBar bar)
   {
-    for( Enumeration<PianoRollBar> e = bars.elements(); e.hasMoreElements(); )
+    for( Iterator<PianoRollBar> e = bars.iterator(); e.hasNext(); )
       {
-      PianoRollBar that = e.nextElement();
+      PianoRollBar that = e.next();
       if( that != bar && that.intersects(bar) )
       {
         return true; // collision detected
@@ -790,7 +791,7 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
    * @return the vector of temporary bars, which hold the bars that have been
    *         cut or copied.
    */
-  public Vector<PianoRollBar> getTempBars()
+  public ArrayList<PianoRollBar> getTempBars()
   {
     return tempBars;
   }
@@ -811,9 +812,9 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
    *
    * @return Clone of the Vector containing all of the bars on the piano roll.
    */
-  public Vector<PianoRollBar> getSortedBars()
+  public ArrayList<PianoRollBar> getSortedBars()
     {
-    Vector<PianoRollBar> barsCopy = (Vector<PianoRollBar>)bars.clone();
+    ArrayList<PianoRollBar> barsCopy = (ArrayList<PianoRollBar>)bars.clone();
     Collections.sort(barsCopy, new PianoRollBarComparator());
     return barsCopy;
     }
@@ -825,14 +826,14 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
    */
   public PianoRollBar getLastTempBar()
     {
-    return tempBars.lastElement();
+    return tempBars.get(tempBars.size()-1);
     }
   
   /**
    * 
    * @return The vector containing all of the bars on the piano roll.
    */
-  public Vector<PianoRollBar> getBars()
+  public ArrayList<PianoRollBar> getBars()
     {
     return bars;
     }
