@@ -81,6 +81,7 @@ public class StyleCellEditor
   /**
    * Create a new instance of StyleCellEditor.
    */
+  
   public StyleCellEditor(JTextField textField, StyleEditor styleEditor)
     {
     super(textField);
@@ -102,11 +103,13 @@ public class StyleCellEditor
       }
     }
 
+  
   /** 
    * This method is called when editing is begun.
    * It gets the value stored in the cell and saves it in this editor object.
-  @Override
    */
+  
+  @Override
   public Component getTableCellEditorComponent(JTable table, Object value,
                                                 boolean isSelected, int row,
                                                 int column)
@@ -156,10 +159,13 @@ public class StyleCellEditor
     return new JTextField(styleEditor.setCell(StyleCellRenderer.NULL_DATA_RENDERING, row, column).toString());
     }
 
+  
   /** 
    * This method is called when editing is completed.
    * It must return the new value to be stored in the cell.
    */
+   
+  @Override
   public Object getCellEditorValue()
     {
 

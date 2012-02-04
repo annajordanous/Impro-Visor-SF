@@ -50,7 +50,7 @@ import polya.Tokenizer;
  * object than need be, and these should be replaced with non-graphic
  * counterparts as time permits. Bob Keller did the conversion to
  * the spreadsheet form, using JTable.
- * @author Bob Keller, Jim Herold, Brandy McMenamy, Sayuri Soejima  
+ * @author Robert Keller, Jim Herold, Brandy McMenamy, Sayuri Soejima  
  **/
 
 public class StyleEditor
@@ -99,7 +99,6 @@ public class StyleEditor
   private int selectedColumn = 0;
 
   private boolean pianoRollTracking = false;
-
 
 
    /**
@@ -522,6 +521,7 @@ public void playBassColumn()
   /**
    * @return the Notate for this object
    **/
+  
   public Notate getNotate()
     {
     return parent;
@@ -530,6 +530,7 @@ public void playBassColumn()
   /**
    * @return the CommandManager for this object
    **/
+  
   public CommandManager getCM()
     {
     return cm;
@@ -538,6 +539,7 @@ public void playBassColumn()
   /**
    * Set status field with message to user.
    */
+  
   public void setStatus(String msg)
     {
     styleEditorStatusTF.setText(msg);
@@ -546,6 +548,7 @@ public void playBassColumn()
   /**
    * @return the swing value specified by the user in the text box
    **/
+  
   public double getSwingValue()
     {
     String swingVal = swingTextField.getText().trim();
@@ -567,6 +570,7 @@ public void playBassColumn()
   /**
    * @return the comp-swing value specified by the user in the text box
    **/
+  
   public double getAccompanimentSwingValue()
     {
     String accompanimentSwingVal = accompanimentSwingTextField.getText().trim();
@@ -589,6 +593,7 @@ public void playBassColumn()
    * @param selectMe the BassPatternDispaly that needs to notify the
    * Style GUI that it has been selected.
    **/
+  
   public void setSelectedBass(BassPatternDisplay selectMe)
     {
     lastSelectedBass = curSelectedBass;
@@ -603,6 +608,7 @@ public void playBassColumn()
    * @param selectMe the ChordPatternDisplay that needs to notify the
    * Style GUI that it has been selected.
    **/
+  
   public void setSelectedChord(ChordPatternDisplay selectMe)
     {
     lastSelectedChord = curSelectedChord;
@@ -617,6 +623,7 @@ public void playBassColumn()
    * @param selectMe the DrumPatternDisplay that needs to notify the
    * Style GUI that it has been selected.
    **/
+  
   public void setSelectedDrum(DrumPatternDisplay selectMe)
     {
     lastSelectedDrum = curSelectedDrum;
@@ -630,6 +637,7 @@ public void playBassColumn()
   /**
    * Informs the currently selected BassPatternDisplay, if it exists, to change its appearance to deselected.
    **/
+  
   private void unselectBass(BassPatternDisplay deselectMe)
     {
     if( deselectMe != null )
@@ -641,6 +649,7 @@ public void playBassColumn()
   /**
    * Informs the currently selected ChordPatternDisplay, if it exists, to change its appearance to deselected.
    **/
+  
   private void unselectChord(ChordPatternDisplay deselectMe)
     {
     if( deselectMe != null )
@@ -652,6 +661,7 @@ public void playBassColumn()
   /**
    * Informs the currently selected DrumPatternDisplay, if it exists, to change its appearance to deselected.
    **/
+  
   private void unselectDrum(DrumPatternDisplay deselectMe)
     {
     if( deselectMe != null )
@@ -664,6 +674,7 @@ public void playBassColumn()
    * @return a correctly formmatted String with all legal bass patterns displayed that are marked "include"
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
    **/
+  
   public String getBassPatterns()
     {
     String patterns = "";
@@ -701,6 +712,7 @@ public void playBassColumn()
    * @return a correctly formmatted String with all legal drum patterns displayed that are marked "include"
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
    **/
+  
   public String getDrumPatterns()
     {
     String patterns = "";
@@ -738,6 +750,7 @@ public void playBassColumn()
    * @return a correctly formmatted String with all legal chord patterns displayed that are marked "include"
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
    **/
+  
   public String getChordPatterns()
     {
     String patterns = "";
@@ -775,6 +788,7 @@ public void playBassColumn()
    * @return a correctly formmatted String with all user-specified attributes
    * Saves an error message to MIDIBeast if illegal combinations are used (ex: BassHigh less than BassLow)
    **/
+  
   public String getAttributes()
     {
     String attributes = "";
@@ -913,17 +927,20 @@ public void playBassColumn()
       MIDIBeast.addSaveError("The Chord High note must be higher than the Chord Low note.");
       }
     //error-checking: in case the octave is the same but the chordHigh pitch is lower than the chordLow pitch.
-    if( attrOctaves.indexOf(octaveCH) == attrOctaves.indexOf(octaveCL) && attrPitches.indexOf(octaveCH) < attrPitches.indexOf(octaveCL) )
+    if( attrOctaves.indexOf(octaveCH) == attrOctaves.indexOf(octaveCL) 
+     && attrPitches.indexOf(octaveCH) < attrPitches.indexOf(octaveCL) )
       {
       MIDIBeast.addSaveError("The Chord High note must be higher than the Chord Low note.");
       }
     //error-checking: make sure the chordHigh and the chordLow are at least an octave apart.
-    if( attrOctaves.indexOf(octaveCL) == attrOctaves.indexOf(octaveCH) && attrPitches.indexOf(octaveCL) < attrPitches.indexOf(octaveCH) )
+    if( attrOctaves.indexOf(octaveCL) == attrOctaves.indexOf(octaveCH) 
+     && attrPitches.indexOf(octaveCL) < attrPitches.indexOf(octaveCH) )
       {
       MIDIBeast.addSaveError("The Chord High note and the Chord Low note must be at least an octave apart.");
       }
     //error-checking: make sure the chordHigh and the chordLow are at least an octave apart.
-    if( (attrOctaves.indexOf(octaveCH) - attrOctaves.indexOf(octaveCL)) == 1 && attrPitches.indexOf(octaveCH) < attrPitches.indexOf(octaveCL) )
+    if( (attrOctaves.indexOf(octaveCH) - attrOctaves.indexOf(octaveCL)) == 1 
+      && attrPitches.indexOf(octaveCH) < attrPitches.indexOf(octaveCL) )
       {
       MIDIBeast.addSaveError("The Chord High note and the Chord Low note must be at least an octave apart.");
       }
@@ -1348,12 +1365,6 @@ public void playBassColumn()
 
     getTableModel().resetPatterns();
 
-    // The following three should eventually use BassPatternDisplay etc. instead of BassPattern
-/*
-    getTableModel().loadDrumPatterns(dp);
-    getTableModel().loadBassPatterns(bp);
-    getTableModel().loadChordPatterns(cp);
-*/
     loadAttributes(style);
 
     // ...into these
