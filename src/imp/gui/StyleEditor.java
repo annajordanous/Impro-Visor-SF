@@ -192,7 +192,7 @@ public class StyleEditor
 
   /* vector of percussion instrument names */
   
-  private Vector<String> instrumentIdByRow;
+  private ArrayList<String> instrumentIdByRow;
   
   /** Header for rows of table */
   protected JList rowHeader;
@@ -1698,7 +1698,7 @@ public void playBassColumn()
       drumHolderPane.add(emptyPat);
       }
 
-    instrumentIdByRow = new Vector<String>();
+    instrumentIdByRow = new ArrayList<String>();
 
     for( int i = 0; i < drumPatterns.size(); i++ )
       {
@@ -1730,7 +1730,7 @@ public void playBassColumn()
         int instrumentRow = 0; // for compilation sake
         for( k = 0; k < instrumentIdByRow.size(); k++ )
           {
-          if( instrument.equals(instrumentIdByRow.elementAt(k)) )
+          if( instrument.equals(instrumentIdByRow.get(k)) )
             {
             // found this instrument
             instrumentRow = k + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW;
@@ -1790,80 +1790,12 @@ public void playBassColumn()
     }
   
   /**
-   * Preventes user from selecting items in the edit menu if they are unavailable given the current state
-   * of the GUI. (ex: Can't add a pattern to the attributes pane, can't cut a pattern if none are selected, etc.)
+   * Vestigal: Prevents user from selecting items in the edit menu if they 
+   * are unavailable given the current stat 
+   * can't cut a pattern if none are selected, etc.)
    **/
   private void setEditMenuStatus()
     {
-    /*
-    {
-    cutCellsMI.setEnabled(true);
-    //controls drum rule options
-    if( drumTabPanel.isVisible() )
-    {
-    if( curSelectedDrum == null )
-    {
-    addDrumRuleMI.setEnabled(false);
-    copyDrumRuleMI.setEnabled(false);
-    cutDrumRuleMI.setEnabled(false);
-    pasteDrumRuleMI.setEnabled(false);
-    }
-    else
-    {
-    addDrumRuleMI.setEnabled(true);
-    cutDrumRuleMI.setEnabled(true);
-    if( curSelectedDrum.getSelectedRule() == null )
-    {
-    copyDrumRuleMI.setEnabled(false);
-    cutDrumRuleMI.setEnabled(false);
-    }
-    else
-    {
-    copyDrumRuleMI.setEnabled(true);
-    cutDrumRuleMI.setEnabled(true);
-    }
-    if( copiedInstrument == null )
-    {
-    pasteDrumRuleMI.setEnabled(false);
-    }
-    else
-    {
-    pasteDrumRuleMI.setEnabled(true);
-    }
-    }
-    }
-    else
-    {
-    addDrumRuleMI.setEnabled(false);
-    copyDrumRuleMI.setEnabled(false);
-    cutDrumRuleMI.setEnabled(false);
-    pasteDrumRuleMI.setEnabled(false);
-    }
-    //controls all pattern options
-    if( (bassTabPanel.isVisible() && curSelectedBass == null) ||
-    (drumTabPanel.isVisible() && curSelectedDrum == null) ||
-    (chordTabPanel.isVisible() && curSelectedChord == null) )
-    {
-    //copyPatternMI.setEnabled(false);
-    //cutPatternMI.setEnabled(false);
-    }
-    else
-    {
-    //copyPatternMI.setEnabled(true);
-    //cutPatternMI.setEnabled(true);
-    }
-    if( (bassTabPanel.isVisible() && copiedBass == null) ||
-    (drumTabPanel.isVisible() && copiedDrum == null) ||
-    (chordTabPanel.isVisible() && copiedChord == null) )
-    {
-    //pastePatternMI.setEnabled(false);
-    }
-    else
-    {
-    //pastePatternMI.setEnabled(true);
-    }
-    }
-     */
     }
 
   /**
@@ -1930,11 +1862,11 @@ public void playBassColumn()
     String[] octaves = {"- - - -", "- - -", "- -", "-", "*", "+", "++", "+++",
                         "++++"
     };
-    SpinnerListModel bassHighModel = new SpinnerListModel(octaves);
-    SpinnerListModel bassLowModel = new SpinnerListModel(octaves);
-    SpinnerListModel bassBaseModel = new SpinnerListModel(octaves);
+    SpinnerListModel bassHighModel  = new SpinnerListModel(octaves);
+    SpinnerListModel bassLowModel   = new SpinnerListModel(octaves);
+    SpinnerListModel bassBaseModel  = new SpinnerListModel(octaves);
     SpinnerListModel chordHighModel = new SpinnerListModel(octaves);
-    SpinnerListModel chordLowModel = new SpinnerListModel(octaves);
+    SpinnerListModel chordLowModel  = new SpinnerListModel(octaves);
     SpinnerListModel chordBaseModel = new SpinnerListModel(octaves);
 
     bassHighModel.setValue("-");
