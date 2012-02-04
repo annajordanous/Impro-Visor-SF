@@ -22,8 +22,8 @@ package imp.data;
 
 import imp.util.ErrorLog;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 import polya.Polylist;
 import polya.PolylistBuffer;
 import polya.PolylistEnum;
@@ -42,13 +42,13 @@ public class ChordPattern
 /**
  * the rules for the pattern, stored as indices into the ruleTypes array
  */
-private Vector<Integer> rules;
+private ArrayList<Integer> rules;
 
 /**
  * the durations for the pattern, stored as leadsheet representation of
  * rhythm
  */
-private Vector<String> durations;
+private ArrayList<String> durations;
 
 /**
  * array containing the types of rules
@@ -88,8 +88,8 @@ private int pushAmount = 0; // push amount, in slots
  */
 private ChordPattern()
   {
-  rules = new Vector<Integer>();
-  durations = new Vector<String>();
+  rules = new ArrayList<Integer>();
+  durations = new ArrayList<String>();
   }
 
 
@@ -101,12 +101,12 @@ private ChordPattern()
  */
 public static ChordPattern makeChordPattern(Polylist L)
   {
-    
     // Example of L:
-    // 	(chord-pattern (rules P8 X1 R4 X2 X4)(weight 5))
+    // 	(chord-pattern (rules P8 X1 R4 X2 X4)(weight 5)(push 8/3)
     //
-    // P = "push", X = "hit", R = "rest"
-    // P should only occur once, at the beginning
+    // X = "hit", R = "rest"
+    // The notation for push is the same as a duration.
+    // For example, 8/3 is an eighth-note triplet
     
   ChordPattern cp = new ChordPattern();
 
