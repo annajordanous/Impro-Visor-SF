@@ -269,8 +269,8 @@
             <Container class="javax.swing.JPanel" name="currentStyleTab">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="Current Style">
-                    <Property name="tabTitle" type="java.lang.String" value="Current Style"/>
+                  <JTabbedPaneConstraints tabName="Styles by Section">
+                    <Property name="tabTitle" type="java.lang.String" value="Styles by Section"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -289,8 +289,8 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="usePreviousStyleCheckBox">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Use previous style"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section."/>
+                    <Property name="toolTipText" type="java.lang.String" value="If checked, whatever style was in effect for the previous section will also be used for this section."/>
+                    <Property name="label" type="java.lang.String" value="Use style of previous section"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usePreviousStyleCheckBoxActionPerformed"/>
@@ -455,8 +455,8 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="phraseCheckBox">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Phrase&#xa;"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section."/>
+                    <Property name="text" type="java.lang.String" value="End as Phrase&#xa;"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section. On the lead sheet, a phrase will end with an apostrophe above the staff, rather than a double bar."/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phraseCheckBoxActionPerformed"/>

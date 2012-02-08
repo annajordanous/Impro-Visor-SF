@@ -2437,8 +2437,8 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
 
-        usePreviousStyleCheckBox.setText("Use previous style");
-        usePreviousStyleCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
+        usePreviousStyleCheckBox.setToolTipText("If checked, whatever style was in effect for the previous section will also be used for this section.");
+        usePreviousStyleCheckBox.setLabel("Use style of previous section");
         usePreviousStyleCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usePreviousStyleCheckBoxActionPerformed(evt);
@@ -2585,8 +2585,8 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(delSectionButton, gridBagConstraints);
 
-        phraseCheckBox.setText("Phrase\n");
-        phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
+        phraseCheckBox.setText("End as Phrase\n");
+        phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section. On the lead sheet, a phrase will end with an apostrophe above the staff, rather than a double bar.");
         phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 phraseCheckBoxActionPerformed(evt);
@@ -2598,7 +2598,7 @@ public class Notate
         gridBagConstraints.gridwidth = 2;
         currentStyleTab.add(phraseCheckBox, gridBagConstraints);
 
-        styleTabs.addTab("Current Style", currentStyleTab);
+        styleTabs.addTab("Styles by Section", currentStyleTab);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
