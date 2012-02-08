@@ -38,7 +38,7 @@ boolean isPhrase;
 SectionRecord(String styleName, int index, boolean isPhrase)
   {
     this.styleName = styleName;
-    if( !styleName.equals("*") )
+    if( !styleName.equals(Style.USE_PREVIOUS_STYLE) )
       {
         style = Advisor.getStyle(styleName);
       }
@@ -75,7 +75,7 @@ public Style getStyle()
 
 public String getStyleName()
   {
-    return style == null ? "*" : style.getName();
+    return style == null ? Style.USE_PREVIOUS_STYLE : style.getName();
   }
 
 public void setStyle(Style style)

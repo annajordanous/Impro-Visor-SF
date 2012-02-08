@@ -85,6 +85,8 @@ public class StyleEditor
   static int INSTRUMENT_VOLUME_WIDTH = 180; // Accomodate popup 
 
   static String NO_CHANGE = "No change";
+  
+  static private final String MIDDLE_OCTAVE = "*";
 
   Object lastRuleClicked = null;
 
@@ -792,7 +794,7 @@ public void playBassColumn()
     String attributes = "";
     String octaveBH = (String)bassHighOctave.getValue();
     octaveBH = octaveBH.replaceAll(" -", "-");
-    if( octaveBH.equals("*") )
+    if( octaveBH.equals(MIDDLE_OCTAVE) )
       {
       attributes += "\t(bass-high " + bassHighNote.getSelectedItem() + ")\n";
       }
@@ -804,7 +806,7 @@ public void playBassColumn()
 
     String octaveBL = (String)bassLowOctave.getValue();
     octaveBL = octaveBL.replaceAll(" -", "-");
-    if( octaveBL.equals("*") )
+    if( octaveBL.equals(MIDDLE_OCTAVE) )
       {
       attributes += "\t(bass-low " + bassLowNote.getSelectedItem() + ")\n";
       }
@@ -816,7 +818,7 @@ public void playBassColumn()
 
     String octaveBB = (String)bassBaseOctave.getValue();
     octaveBB = octaveBB.replaceAll(" -", "-");
-    if( octaveBB.equals("*") )
+    if( octaveBB.equals(MIDDLE_OCTAVE) )
       {
       attributes += "\t(bass-base " + bassBaseNote.getSelectedItem() + ")\n";
       }
@@ -897,7 +899,7 @@ public void playBassColumn()
 
     String octaveCH = (String)chordHighOctave.getValue();
     octaveCH = octaveCH.replaceAll(" -", "-");
-    if( octaveCH.equals("*") )
+    if( octaveCH.equals(MIDDLE_OCTAVE) )
       {
       attributes += "\t(chord-high " + chordHighNote.getSelectedItem() + ")\n";
       }
@@ -909,7 +911,7 @@ public void playBassColumn()
 
     String octaveCL = (String)chordLowOctave.getValue();
     octaveCL = octaveCL.replaceAll(" -", "-");
-    if( octaveCL.equals("*") )
+    if( octaveCL.equals(MIDDLE_OCTAVE) )
       {
       attributes += "\t(chord-low " + chordLowNote.getSelectedItem() + ")\n";
       }
@@ -1476,7 +1478,7 @@ public void playBassColumn()
       if( octaveInfo.equals("") )
         {
         //if the octave is the middle, puts the default option, which is the * mark.
-        bassHighOctave.setValue("*");
+        bassHighOctave.setValue(MIDDLE_OCTAVE);
         }
       else
         {
@@ -1501,7 +1503,7 @@ public void playBassColumn()
       octaveInfo = octaveInfo.toString();
       if( octaveInfo.equals("") )
         {
-        bassLowOctave.setValue("*");
+        bassLowOctave.setValue(MIDDLE_OCTAVE);
         }
       else
         {
@@ -1526,7 +1528,7 @@ public void playBassColumn()
       octaveInfo = octaveInfo.toString();
       if( octaveInfo.equals("") )
         {
-        bassBaseOctave.setValue("*");
+        bassBaseOctave.setValue(MIDDLE_OCTAVE);
         }
       else
         {
@@ -1551,7 +1553,7 @@ public void playBassColumn()
       octaveInfo = octaveInfo.toString();
       if( octaveInfo.equals("") )
         {
-        chordHighOctave.setValue("*");
+        chordHighOctave.setValue(MIDDLE_OCTAVE);
         }
       else
         {
@@ -1576,7 +1578,7 @@ public void playBassColumn()
       octaveInfo = octaveInfo.toString();
       if( octaveInfo.equals("") )
         {
-        chordLowOctave.setValue("*");
+        chordLowOctave.setValue(MIDDLE_OCTAVE);
         }
       else
         {
@@ -1835,7 +1837,7 @@ public void playBassColumn()
     attrOctaves.add("---");
     attrOctaves.add("--");
     attrOctaves.add("-");
-    attrOctaves.add("*");
+    attrOctaves.add(MIDDLE_OCTAVE);
     attrOctaves.add("+");
     attrOctaves.add("++");
     attrOctaves.add("+++");
@@ -1857,7 +1859,7 @@ public void playBassColumn()
 
 
     // Just edits the JSpinners, sine the JComboBox code is in the generated code, and thus must be edited through the Design, not through the Source.
-    String[] octaves = {"- - - -", "- - -", "- -", "-", "*", "+", "++", "+++",
+    String[] octaves = {"- - - -", "- - -", "- -", "-", MIDDLE_OCTAVE, "+", "++", "+++",
                         "++++"
     };
     SpinnerListModel bassHighModel  = new SpinnerListModel(octaves);
@@ -1874,7 +1876,7 @@ public void playBassColumn()
     bassBaseModel.setValue("- -");
     bassBaseOctave.setModel(bassBaseModel);
 
-    chordHighModel.setValue("*");
+    chordHighModel.setValue(MIDDLE_OCTAVE);
     chordHighOctave.setModel(chordHighModel);
     chordLowModel.setValue("-");
     chordLowOctave.setModel(chordLowModel);

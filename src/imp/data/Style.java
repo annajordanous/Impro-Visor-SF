@@ -50,6 +50,10 @@ import polya.PolylistEnum;
 public class Style
         implements Constants, Serializable
   {
+  private static String defaultStyleName = "swing";
+  
+  public static final String USE_PREVIOUS_STYLE = "*";
+  
   private static int defaultDrumPatternDuration = 480;
 
   /**
@@ -60,7 +64,7 @@ public class Style
   /**
    * a String containing the name
    */
-  private String name = "swing"; // Default style
+  private String name = defaultStyleName;
 
   /**
    * a String containing the default name of a Style (a so-called NULL Style)

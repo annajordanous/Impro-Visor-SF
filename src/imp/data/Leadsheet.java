@@ -160,7 +160,7 @@ public class Leadsheet
     Style style = score.getChordProg().getStyle();
     if( style == null )
       {
-      out.write("(style " + "*" +")");
+      out.write("(style " + Style.USE_PREVIOUS_STYLE +")");
       out.newLine();
         //ErrorLog.log(ErrorLog.WARNING, "Please fix invalid style to save chords");
       }
@@ -896,92 +896,92 @@ public class Leadsheet
    * slotsAvailable is only the initial slots available; the rest are
    * determined by measure size.
    */
-  static public boolean populatePartWithChords(ChordPart chordProg,
-                                                 Polylist chords,
-                                                 int slotsAvailable,
-                                                 int slotsPerBar)
-    {
+static public boolean populatePartWithChords(ChordPart chordProg,
+                                             Polylist chords,
+                                             int slotsAvailable,
+                                             int slotsPerBar)
+  {
     Polylist L = chords;
     String previousChordName = null;
     int accumulatedDuration = 0;
 
     while( L.nonEmpty() )
       {
-      // Handle one measure or part therof.
+        // Handle one measure or part therof.
 
-      Polylist currentMeasureIngoing = Polylist.nil;
-      while( L.nonEmpty() && !endsBar(L.first()) )
-        {
-        currentMeasureIngoing = currentMeasureIngoing.cons(L.first());
-        L = L.rest();
-        }
-
-      if( L.nonEmpty() )
-        {
-        L = L.rest();	// Get rid of BAR
-        }
-
-      currentMeasureIngoing = currentMeasureIngoing.reverse();
-      int chordsInMeasure = currentMeasureIngoing.length();
-
-      // Check for conformance to slot structure.
-
-      Trace.log(3, "slotsAvailable = " + slotsAvailable +
-              ", chords = " + chordsInMeasure);
-
-      if( chordsInMeasure == 0 )
-        {
-        accumulatedDuration += slotsAvailable;
-        }
-      else
-        {
-        if( slotsAvailable % chordsInMeasure != 0 )
+        Polylist currentMeasureIngoing = Polylist.nil;
+        while( L.nonEmpty() && !endsBar(L.first()) )
           {
-          ErrorLog.log(ErrorLog.SEVERE,
-                  "Number of chords does not conform to slots available: " + chords + ", ignoring.");
-
-          return false;
+            currentMeasureIngoing = currentMeasureIngoing.cons(L.first());
+            L = L.rest();
           }
 
-        int slotsPerChord = slotsAvailable / chordsInMeasure;
-
-        while( currentMeasureIngoing.nonEmpty() )
+        if( L.nonEmpty() )
           {
-          String chordName = (String)currentMeasureIngoing.first();
-          if( chordName.equals(SLASHSTRING) )
-            {
-            accumulatedDuration += slotsPerChord;
-            }
-          else
-            {
-            ChordSymbol symbol = ChordSymbol.makeChordSymbol(chordName);
-            if( symbol == null )
-              {
-              ErrorLog.log(ErrorLog.SEVERE,
-                      "Impro-Visor does not recognize this chord, using " + NOCHORD + ": " + chordName);
-
-              chordName = NOCHORD;
-              }
-            if( previousChordName != null )  // false the first time
-              {
-              // push out the previous chord
-              Chord chord = new Chord(previousChordName,
-                      accumulatedDuration);
-
-              Trace.log(1, "adding chord: " + chord);
-
-              chordProg.addChord(chord);
-
-              // start a new chord
-
-              }
-            accumulatedDuration = slotsPerChord;
-            previousChordName = chordName;
-            }
-          currentMeasureIngoing = currentMeasureIngoing.rest();
+            L = L.rest();	// Get rid of BAR
           }
-        }
-      slotsAvailable = slotsPerBar;	// set up for non-first bar
+
+        currentMeasureIngoing = currentMeasureIngoing.reverse();
+        int chordsInMeasure = currentMeasureIngoing.length();
+
+        // Check for conformance to slot structure.
+
+        Trace.log(3, "slotsAvailable = " + slotsAvailable
+                + ", chords = " + chordsInMeasure);
+
+        if( chordsInMeasure == 0 )
+          {
+            accumulatedDuration += slotsAvailable;
+          }
+        else
+          {
+            if( slotsAvailable % chordsInMeasure != 0 )
+              {
+                ErrorLog.log(ErrorLog.SEVERE,
+                             "Number of chords does not conform to slots available: " + chords + ", ignoring.");
+
+                return false;
+              }
+
+            int slotsPerChord = slotsAvailable / chordsInMeasure;
+
+            while( currentMeasureIngoing.nonEmpty() )
+              {
+                String chordName = (String) currentMeasureIngoing.first();
+                if( chordName.equals(SLASHSTRING) )
+                  {
+                    accumulatedDuration += slotsPerChord;
+                  }
+                else
+                  {
+                    ChordSymbol symbol = ChordSymbol.makeChordSymbol(chordName);
+                    if( symbol == null )
+                      {
+                        ErrorLog.log(ErrorLog.SEVERE,
+                                     "Impro-Visor does not recognize this chord, using " + NOCHORD + ": " + chordName);
+
+                        chordName = NOCHORD;
+                      }
+                    if( previousChordName != null )  // false the first time
+                      {
+                        // push out the previous chord
+                        Chord chord = new Chord(previousChordName,
+                                                accumulatedDuration);
+
+                        Trace.log(1, "adding chord: " + chord);
+
+                        chordProg.addChord(chord);
+
+                        // start a new chord
+
+                      }
+                    accumulatedDuration = slotsPerChord;
+                    previousChordName = chordName;
+                  }
+                currentMeasureIngoing = currentMeasureIngoing.rest();
+              }
+          }
+        slotsAvailable = slotsPerBar;	// set up for non-first bar
       }
 
     // The last chord is treated specially.  It might not be a full
@@ -991,22 +991,23 @@ public class Leadsheet
 
     if( previousChordName != null )
       {
-      // push out the last chord
-      Chord chord = new Chord(previousChordName, 1);
+        // push out the last chord
+        Chord chord = new Chord(previousChordName, 1);
 
-      Trace.log(1, "adding chord: " + chord);
+        Trace.log(1, "adding chord: " + chord);
 
-      chordProg.addChord(chord);
+        chordProg.addChord(chord);
       }
     return true;
-    }
+  }
 
-  static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
-                              int rise, int slotsPerBar, Key key)
-    {
-      
+
+static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
+                           int rise, int slotsPerBar, Key key)
+  {
+
     Style previousStyle = null;
-    
+
     Polylist chordInput = chordInputReversed.cons(NOCHORD).reverse();
     // NOCHORD is to force final output below
 
@@ -1023,190 +1024,182 @@ public class Leadsheet
 
     if( L.nonEmpty() && endsBar(L.first()) )
       {
-      // No Pickup
-      L = L.rest();
+        // No Pickup
+        L = L.rest();
       }
 
     while( L.nonEmpty() )
       {
-      // Collect one bar's worth of chords
-      Polylist chordsInBar = Polylist.nil;
-      int numberOfChords = 0;
-      while( L.nonEmpty() && !endsBar(L.first()) )
-        {
-        if( !(L.first() instanceof Polylist) )
+        // Collect one bar's worth of chords
+        Polylist chordsInBar = Polylist.nil;
+        int numberOfChords = 0;
+        while( L.nonEmpty() && !endsBar(L.first()) )
           {
-          numberOfChords++;
-          }
-        chordsInBar = chordsInBar.cons(L.first());
-        L = L.rest();
-        }
-
-      if( L.nonEmpty() )
-        {
-        L = L.rest();	// lose the bar symbol
-        }
-
-      chordsInBar = chordsInBar.reverse();
-
-      Trace.log(4, "chords in bar = " + chordsInBar);
-
-      int spacing;
-
-      if( numberOfChords <= 0 )
-        {
-        spacing = slotsPerBar;
-        }
-      else if( slotsPerBar % numberOfChords != 0 )
-        {
-        ErrorLog.log(ErrorLog.SEVERE,
-                "This sequence of chords " + chordsInBar 
-                + " in one of the bars does not divide the number of slots per bar evenly, so the sheet will be badly-formed.\n\nAborting sheet construction, please fix and try again.");
-        return;
-        }
-      else
-        {
-        spacing = slotsPerBar / numberOfChords;
-        }
-
-      if( numberOfChords == 0 )
-        {
-        accumulated += slotsPerBar;
-        }
-
-      boolean seenFirstChord = false;
-      while( chordsInBar.nonEmpty() )
-        {
-        Object ob = chordsInBar.first();
-        chordsInBar = chordsInBar.rest();
-        if( ob instanceof Polylist )
-          {
-          // All this code is placeholder until Sections are fully
-          // implemented
-          Polylist item = (Polylist)ob;
-          String dispatcher = (String)item.first();
-          item = item.rest();
-          
-          boolean isPhrase = false;
-          //System.out.println("dispatcher = " + dispatcher);
-          switch( lookup(dispatcher, keyword) )
-            {
-            case STYLE:
-              if( item.nonEmpty() && item.first() instanceof String )
-                {
-                String stylename = (String)item.first();
-                Style style = Advisor.getStyle(stylename);
-                if( style == null )
-                {
-                  ErrorLog.log(ErrorLog.WARNING, "Style " + stylename + " not found");
-                }
-                else
-                {
-                previousStyle = style;
-                
-                item = item.rest();
-                while( item.nonEmpty() )
-                  {
-                  Polylist param = (Polylist)item.first();
-                  item = item.rest();
-                  style.load((String)param.first(), param.rest());
-                  }
-
-                int index = measure * slotsPerBar;
-                if( seenFirstChord )
-                  {
-                  index += slotsPerBar;
-                  }
-                chords.addSection(style.getName(), index, false);
-                }
-              }
-              break;
-
-            case PHRASE:
-                isPhrase = true;
-                /* fall-through */
-                
-            case SECTION:
+            if( !(L.first() instanceof Polylist) )
               {
-                Style style = previousStyle; // default if no style specified
-              
-                String styleName = "*";
-                
-              while( item.nonEmpty() )
-                {
-                if( item.first() instanceof Polylist )
-                  {
-                  Polylist sectItem = (Polylist)item.first();
-                  if( sectItem.first() instanceof String &&
-                          sectItem.first().equals("style") &&
-                          sectItem.second() instanceof String )
-                    {
-                    styleName = (String)sectItem.second();
-                    
-                    if( !styleName.equals("*") )
-                      {
-                      style = Advisor.getStyle(styleName);
-                    
-                      if( style == null )
-                        {
-                        ErrorLog.log(ErrorLog.WARNING, "Style " + styleName + " not found");
-                        style = previousStyle;
-                        }
-                      }
-
-                    //System.out.println("adding section at " + index);
-                    }
-                  }
-                item = item.rest();
-                }
-              int index = measure * slotsPerBar;
-              if( seenFirstChord )
-                {
-                index += slotsPerBar;
-                }
-              chords.addSection(styleName, index, isPhrase);
+                numberOfChords++;
               }
-              break;
- /*               
-            case PHRASE:
-
-                    int index = measure * slotsPerBar;
-                    chords.addSection(previousStyle, index, true);
-                    //System.out.println("adding phrase at " + index);
-
-              break;
-
-*/
-            }
-          continue;
+            chordsInBar = chordsInBar.cons(L.first());
+            L = L.rest();
           }
 
-
-        // if it isn't a Polylist it must be a String
-        String thisChord = (String)ob;
-        seenFirstChord = true;
-
-        if( thisChord.equals(SLASHSTRING) )
+        if( L.nonEmpty() )
           {
-          accumulated += spacing;
+            L = L.rest();	// lose the bar symbol
+          }
+
+        chordsInBar = chordsInBar.reverse();
+
+        Trace.log(4, "chords in bar = " + chordsInBar);
+
+        int spacing;
+
+        if( numberOfChords <= 0 )
+          {
+            spacing = slotsPerBar;
+          }
+        else if( slotsPerBar % numberOfChords != 0 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE,
+                         "This sequence of chords " + chordsInBar
+                    + " in one of the bars does not divide the number of slots per bar evenly, so the sheet will be badly-formed.\n\nAborting sheet construction, please fix and try again.");
+            return;
           }
         else
           {
-          if( previousChord != null )
-            {
-            String chordToAdd = Key.transposeChord(previousChord, rise, key);
-            chords.addChord(chordToAdd, accumulated);
-            }
-
-          previousChord = thisChord;
-          accumulated = spacing;
-
-          // last chord will be forced by NOCHORD inserted at start
+            spacing = slotsPerBar / numberOfChords;
           }
-        }
-      measure++;
+
+        if( numberOfChords == 0 )
+          {
+            accumulated += slotsPerBar;
+          }
+
+        boolean seenFirstChord = false;
+        while( chordsInBar.nonEmpty() )
+          {
+            Object ob = chordsInBar.first();
+            chordsInBar = chordsInBar.rest();
+            if( ob instanceof Polylist )
+              {
+                // All this code is placeholder until Sections are fully
+                // implemented
+                Polylist item = (Polylist) ob;
+                String dispatcher = (String) item.first();
+                item = item.rest();
+
+                boolean isPhrase = false;
+                //System.out.println("dispatcher = " + dispatcher);
+                switch( lookup(dispatcher, keyword) )
+                  {
+                    case STYLE:
+                        if( item.nonEmpty() && item.first() instanceof String )
+                          {
+                            String stylename = (String) item.first();
+                            Style style = Advisor.getStyle(stylename);
+                            if( style == null )
+                              {
+                                ErrorLog.log(ErrorLog.WARNING, "Style " + stylename + " not found");
+                              }
+                            else
+                              {
+                                previousStyle = style;
+
+                                item = item.rest();
+                                while( item.nonEmpty() )
+                                  {
+                                    Polylist param = (Polylist) item.first();
+                                    item = item.rest();
+                                    style.load((String) param.first(), param.rest());
+                                  }
+
+                                int index = measure * slotsPerBar;
+                                if( seenFirstChord )
+                                  {
+                                    index += slotsPerBar;
+                                  }
+                                chords.addSection(style.getName(), index, false);
+                              }
+                          }
+                        break;
+
+                    case PHRASE:
+                        isPhrase = true;
+                    /*
+                     * fall-through
+                     */
+
+                    case SECTION:
+                      {
+                        Style style; // default if no style specified
+
+                        String styleName = Style.USE_PREVIOUS_STYLE;
+
+                        while( item.nonEmpty() )
+                          {
+                            if( item.first() instanceof Polylist )
+                              {
+                                Polylist sectItem = (Polylist) item.first();
+                                if( sectItem.first() instanceof String
+                                        && sectItem.first().equals("style")
+                                        && sectItem.second() instanceof String )
+                                  {
+                                    styleName = (String) sectItem.second();
+
+                                    if( !styleName.equals(Style.USE_PREVIOUS_STYLE) )
+                                      {
+                                        style = Advisor.getStyle(styleName);
+
+                                        if( style == null )
+                                          {
+                                            ErrorLog.log(ErrorLog.WARNING, "Style " + styleName + " not found");
+                                          }
+                                      }
+
+                                    //System.out.println("adding section at " + index);
+                                  }
+                              }
+                            item = item.rest();
+                          }
+                        int index = measure * slotsPerBar;
+                        if( seenFirstChord )
+                          {
+                            index += slotsPerBar;
+                          }
+                        chords.addSection(styleName, index, isPhrase);
+                      }
+                    break;
+
+                  }
+                continue;
+              }
+
+
+            // if it isn't a Polylist it must be a String
+            String thisChord = (String) ob;
+            seenFirstChord = true;
+
+            if( thisChord.equals(SLASHSTRING) )
+              {
+                accumulated += spacing;
+              }
+            else
+              {
+                if( previousChord != null )
+                  {
+                    String chordToAdd = Key.transposeChord(previousChord, rise, key);
+                    chords.addChord(chordToAdd, accumulated);
+                  }
+
+                previousChord = thisChord;
+                accumulated = spacing;
+
+                // last chord will be forced by NOCHORD inserted at start
+              }
+          }
+        measure++;
       }
-    }
+  }
 
   static public void addToMelodyFromPolylist(Polylist in, MelodyPart melody,
                                                int rise, int slotsPerBeat,

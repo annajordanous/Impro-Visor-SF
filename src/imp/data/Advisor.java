@@ -1889,7 +1889,7 @@ public static Style getStyle(String name)
     {
     String defaultStyle = Preferences.getPreference(Preferences.DEFAULT_STYLE);
     // Don't warn more than once about a given style.
-    if( !styleWarnings.contains(name) )
+    if( !name.equals(Style.USE_PREVIOUS_STYLE) && !styleWarnings.contains(name) )
       {
       styleWarnings.add(name);
       ErrorLog.log(ErrorLog.WARNING,

@@ -2842,7 +2842,7 @@ private void drawPart(MelodyPart part, Graphics g)
     // cycle through the entire part
     for( int i = 0; i < cstrLines.length; i++ )
       {
-         if( indicateStyle && style != previousStyle && !styleName.equals("*") )
+         if( indicateStyle && style != previousStyle && !styleName.equals(Style.USE_PREVIOUS_STYLE) )
            {
 //  System.out.println("style = " + style + " vs. " + previousStyle);
            g.drawString(STYLE_MARK + styleName, 

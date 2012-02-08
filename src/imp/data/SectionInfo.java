@@ -53,7 +53,7 @@ public class SectionInfo implements Constants, Serializable {
 
         //style.setChordInstrument(chords.getInstrument(), "SectionInfo");
 
-        addSection("*", 0, false);
+        addSection(Style.USE_PREVIOUS_STYLE, 0, false);
     }
 
     public SectionInfo copy() {
