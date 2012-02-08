@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2011 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
@@ -21,34 +21,39 @@
 
 package imp.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.sound.midi.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import javax.swing.table.*;
-import java.io.*;
-import java.util.*;
-
 import imp.Constants;
 import imp.Constants.ExtractMode;
 import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
+import imp.RecentFiles;
+import imp.cluster.CreateGrammar;
+import imp.com.*;
 import imp.data.*;
 import imp.data.musicXML.ChordDescription;
-import imp.cluster.*;
-import imp.com.*;
-import imp.lickgen.*;
-import imp.RecentFiles;
+import imp.lickgen.LickGen;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
-import imp.util.MidiManager;
-import imp.util.LeadsheetFileView;
-import imp.util.LeadsheetPreview;
-import imp.util.MusicXMLFilter;
-
-import polya.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.sound.midi.MidiDevice;
+import javax.sound.midi.Sequencer;
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import polya.Formatting;
+import polya.Polylist;
+import polya.PolylistBuffer;
+import polya.Tokenizer;
 
 /**
  *
@@ -116,8 +121,8 @@ public class Notate
   public static final Dimension preferencesDialogDimension =
           new Dimension(775, 625);
 
-  public static final Dimension leadsheetEditorDimension = new Dimension(500,
-          600);
+  public static final Dimension leadsheetEditorDimension =
+          new Dimension(500, 600);
 
   private boolean noteColoration = true;
 
@@ -1610,6 +1615,7 @@ public class Notate
         styleTabs = new javax.swing.JTabbedPane();
         currentStyleTab = new javax.swing.JPanel();
         selectAStyleLabel = new javax.swing.JLabel();
+        usePreviousStyleCheckBox = new javax.swing.JCheckBox();
         swingLabel = new javax.swing.JLabel();
         swingTF = new javax.swing.JTextField();
         styleListScrollPane = new javax.swing.JScrollPane();
@@ -2424,21 +2430,33 @@ public class Notate
 
         selectAStyleLabel.setText("Style:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
 
+        usePreviousStyleCheckBox.setText("Use previous style");
+        usePreviousStyleCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
+        usePreviousStyleCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usePreviousStyleCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        currentStyleTab.add(usePreviousStyleCheckBox, gridBagConstraints);
+
         swingLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         swingLabel.setText("Swing:");
         swingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(swingLabel, gridBagConstraints);
@@ -2455,7 +2473,7 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
@@ -2567,7 +2585,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(delSectionButton, gridBagConstraints);
 
-        phraseCheckBox.setText("Phrase ");
+        phraseCheckBox.setText("Phrase\n");
         phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section.");
         phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2575,8 +2593,9 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
         currentStyleTab.add(phraseCheckBox, gridBagConstraints);
 
         styleTabs.addTab("Current Style", currentStyleTab);
@@ -8660,6 +8679,11 @@ private void setSectionParameters()
         
     }//GEN-LAST:event_delSectionButtonActionPerformed
 
+/**
+ * Called when the Section List state changes
+ * @param evt 
+ */
+    
     private void sectionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_sectionListValueChanged
 
       sectionListModel.refresh();
@@ -10672,21 +10696,36 @@ public void reset()
     refresh();
   }
 
+/**
+ * Called when the Section List state changes
+ */
+
 public void refresh()
   {
     fireContentsChanged(this, 0, sectionInfo.size());
 
     int index = sectionList.getSelectedIndex();
 
-    if( index > -1 )
+    if( index >= 0 )
       {
+        SectionRecord record = sectionInfo.getSectionRecord(index);
 
-        styleList.setSelectedValue(sectionInfo.getStyle(index), true);
-
-        measureTF.setText(String.valueOf(sectionInfo.getSectionMeasure(index)));
+        System.out.println("index = " + index + ", selected record = " + record);
         
-        phraseCheckBox.setSelected(sectionInfo.getIsPhrase(index));
-
+        measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
+        
+        phraseCheckBox.setSelected(record.getIsPhrase());
+        
+        if( record.getUsePreviousStyle() )
+          {
+          usePreviousStyleCheckBox.setSelected(true);
+          styleList.clearSelection();
+          }
+        else
+          {
+          usePreviousStyleCheckBox.setSelected(false);
+          styleList.setSelectedValue(record.getStyle(), true); 
+          }
       }
 
     delSectionButton.setEnabled(sectionInfo.size() > 1);
@@ -13170,6 +13209,8 @@ private boolean setSectionPrefs()
         int currentMeasure = sectionInfo.getSectionMeasure(index);
 
         boolean isPhrase = phraseCheckBox.isSelected();
+        
+        boolean usePreviousStyleChecked = usePreviousStyleCheckBox.isSelected();
 
         if( measure > 0 && measure <= sectionInfo.measures() )
           {
@@ -13180,7 +13221,7 @@ private boolean setSectionPrefs()
                 return false;
               }
 
-            sectionInfo.adjustSection(index, measure, isPhrase);
+            sectionInfo.adjustSection(index, measure, isPhrase, usePreviousStyleChecked);
           }
         else
           {
@@ -13233,7 +13274,9 @@ private boolean saveStylePrefs()
     return true;
   }
     
-    
+/**
+ * Called when the StyleList is changed
+ */    
     
 public void updateStyle()
   {
@@ -20496,6 +20539,11 @@ private void midiLatencyTFactionPerformed(java.awt.event.ActionEvent evt)//GEN-F
     saveMidiLatency();
   }//GEN-LAST:event_midiLatencyTFactionPerformed
 
+private void usePreviousStyleCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_usePreviousStyleCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_usePreviousStyleCheckBoxActionPerformed
+    setSectionParameters();
+  }//GEN-LAST:event_usePreviousStyleCheckBoxActionPerformed
+
 
 public boolean showPhrasemarks()
   {
@@ -22525,6 +22573,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton undoBtn;
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
+    private javax.swing.JCheckBox usePreviousStyleCheckBox;
     private javax.swing.JMenu utilitiesMenu;
     private javax.swing.JMenu viewMenu;
     private javax.swing.JLabel visAdviceLabel;

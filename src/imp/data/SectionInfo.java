@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,17 @@
 
 package imp.data;
 
-import imp.*;
+import imp.Constants;
 import imp.brickdictionary.Block;
 import imp.brickdictionary.ChordBlock;
 import java.io.Serializable;
-import java.util.*;
-import javax.sound.midi.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Vector;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
 
 /**
  * SectionInfo was originally done by Stephen Jones when sections were
@@ -39,7 +44,7 @@ import javax.sound.midi.*;
 public class SectionInfo implements Constants, Serializable {
     private ChordPart chords;
     
-    private Vector<SectionRecord> records = new Vector<SectionRecord>();
+    private ArrayList<SectionRecord> records = new ArrayList<SectionRecord>();
 
     public SectionInfo(ChordPart chords) {
         this.chords = chords;
@@ -58,7 +63,7 @@ public class SectionInfo implements Constants, Serializable {
 
     public SectionInfo copy() {
         SectionInfo si = new SectionInfo(chords);
-        si.records = new Vector<SectionRecord>();
+        si.records = new ArrayList<SectionRecord>();
         
         for(SectionRecord record: records )
           {
@@ -105,9 +110,9 @@ public class SectionInfo implements Constants, Serializable {
           {
             SectionRecord record = k.next();
             k.remove();
-            k.add(new SectionRecord(Advisor.getStyle(record.getStyleName()), 
-                                                     record.getIndex(), 
-                                                     record.getIsPhrase()));
+            k.add(new SectionRecord(record.getStyleName(), 
+                                    record.getIndex(), 
+                                    record.getIsPhrase()));
           }
     }
     
@@ -204,25 +209,27 @@ public Style getStyleFromSlots(int n)
 
 public SectionRecord getSectionRecord(int n)
   {
-    ListIterator<SectionRecord> k = records.listIterator();
-    SectionRecord s = k.next();
-    SectionRecord previous = s;
-    while( s.getIndex() <= n && k.hasNext() )
-      {
-        previous = s;
-        s = k.next();
-      }
-
-    s = s.getIndex() <= n ? s : previous;
-
-    //System.out.println("n = " + n + " using s = " + s);
-    return s;
+//    ListIterator<SectionRecord> k = records.listIterator();
+//    SectionRecord s = k.next();
+//    SectionRecord previous = s;
+//    while( s.getIndex() <= n && k.hasNext() )
+//      {
+//        previous = s;
+//        s = k.next();
+//      }
+//
+//    s = s.getIndex() <= n ? s : previous;
+//
+//    //System.out.println("n = " + n + " using s = " + s);
+//    return s;
+//    
+   return records.get(n);
   }
 
     public SectionInfo extract(int first, int last, ChordPart chords) {
         SectionInfo si = new SectionInfo(chords);
         
-        si.records = new Vector<SectionRecord>();
+        si.records = new ArrayList<SectionRecord>();
         
         Iterator<SectionRecord> k = records.iterator();
         
@@ -252,6 +259,14 @@ public SectionRecord getSectionRecord(int n)
         return records.get(n).getStyle();
     }
 
+    public String getStyleName(int n) {
+        if( records == null )
+          {
+            return null;
+          }
+        return records.get(n).getStyleName();
+    }
+        
     public int getStyleIndex(int n) {
         return records.get(n).getIndex();
     }
@@ -309,26 +324,28 @@ public SectionRecord getSectionRecord(int n)
         return chords.size()/measureLength;
     }
     
-    public void adjustSection(int index, int newMeasure, boolean isPhrase) {
+    public void adjustSection(int index, int newMeasure, boolean isPhrase, boolean usePreviousStyleChecked) {
          //System.out.println("1 records = " + records);
          
         // Do not move first record
         // Its phrase value can be set in place
         
-        if(getSectionMeasure(index) == newMeasure)
+        
+         SectionRecord record = records.get(index);
+
+         if(getSectionMeasure(index) == newMeasure)
           {
-            setIsPhrase(index, isPhrase);
+            record.setIsPhrase(isPhrase);
+            if( usePreviousStyleChecked )
+              {
+                record.setUsePreviousStyle();
+              }
             return;
           }
 
-
-        SectionRecord record = records.get(index);
-        String styleName = record.getStyleName();
+        String styleName = usePreviousStyleChecked ? Style.USE_PREVIOUS_STYLE : record.getStyleName();
         deleteSection(index);
-        //System.out.println("2 records = " + records);
         addSection(styleName, measureToSlotIndex(newMeasure), isPhrase);
-        
-        //System.out.println("3 records = " + records);
     }
   
     // Not sure about this:
@@ -377,7 +394,7 @@ public SectionRecord getSectionRecord(int n)
     }
     
     public void setStyle(Style s) {
-        records = new Vector<SectionRecord>();
+        records = new ArrayList<SectionRecord>();
         addSection(s.getName(),0, false);
     }
 

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,25 +20,36 @@
  */
 package imp.gui;
 
-import java.awt.event.*;
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import javax.swing.*;
-import java.util.Vector;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.io.*;
-
 import imp.Constants;
 import imp.brickdictionary.Block;
-import imp.com.*;
+import imp.com.PlayScoreCommand;
+import imp.com.ResolvePitchesCommand;
+import imp.com.ShiftChordsCommand;
+import imp.com.ShiftPitchesCommand;
 import imp.data.*;
-import imp.util.*;
-
-import polya.*;
+import imp.util.ErrorLog;
+import imp.util.MidiPlayListener;
+import imp.util.Preferences;
+import imp.util.Trace;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import polya.Polylist;
+import polya.PolylistBuffer;
 
 /**
- * A Swing Component for displaying a Common Practice Notation stave.
+ * A Java Swing Component for displaying a Common Practice Notation stave.
  * Stave Contains all of the information on a particular Stave, such as what
  * part it is displaying, its key signature, etc. It also contains all of the
  * functions associated with setting construction lines for a Stave, and all of
@@ -53,9 +64,7 @@ public class Stave
         extends JPanel
         implements Constants
 {
-
 String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
-
    
 /**
  * Style and phrase layout parameters

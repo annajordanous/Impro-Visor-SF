@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,19 @@
 
 package imp.data;
 
-import imp.*;
-import imp.util.*;
+import imp.Constants;
+import imp.ImproVisor;
 import imp.gui.Notate;
-import polya.*;
+import imp.util.ErrorLog;
+import imp.util.Preferences;
+import imp.util.ProgramStatus;
+import imp.util.Trace;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+import polya.Polylist;
+import polya.PolylistEnum;
 
 /**
  * Contains a set of rules read and processed during construction that can

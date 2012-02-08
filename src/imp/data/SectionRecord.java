@@ -46,12 +46,6 @@ SectionRecord(String styleName, int index, boolean isPhrase)
     this.isPhrase = isPhrase;
   }
 
-SectionRecord(Style style, int index, boolean isPhrase)
-  {
-    this.style = style;
-    this.index = index;
-    this.isPhrase = isPhrase;
-  }
 
 SectionRecord(SectionRecord orig)
   {
@@ -63,9 +57,20 @@ public boolean getIsPhrase()
     return isPhrase;
   }
 
+public boolean getUsePreviousStyle()
+  {
+    return styleName.equals(Style.USE_PREVIOUS_STYLE);
+  }
+
 public void setIsPhrase(boolean isPhrase)
   {
     this.isPhrase = isPhrase;
+  }
+
+public void setUsePreviousStyle()
+  {
+  styleName = Style.USE_PREVIOUS_STYLE;
+  style = null;
   }
 
 public Style getStyle()
@@ -75,13 +80,19 @@ public Style getStyle()
 
 public String getStyleName()
   {
-    return style == null ? Style.USE_PREVIOUS_STYLE : style.getName();
+    return styleName;
   }
 
 public void setStyle(Style style)
   {
     this.style = style;
   }
+
+public int getSectionMeasure(ChordPart chords) 
+  {
+  int measureLength = chords.getMeasureLength();
+  return index / measureLength + 1;
+    }
 
 public int getIndex()
   {
@@ -106,7 +117,7 @@ public int getSectionType()
 @Override
 public String toString()
   {
-    return "(Section " + style + " " + index + " " + isPhrase + ")";
+    return "(Section " + styleName + " " + index + " " + isPhrase + ")";
   }
 
 }
