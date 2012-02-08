@@ -10708,9 +10708,9 @@ public void refresh()
 
     if( index >= 0 )
       {
-        SectionRecord record = sectionInfo.getSectionRecord(index);
+        SectionRecord record = sectionInfo.getSectionRecordByIndex(index);
 
-        System.out.println("index = " + index + ", selected record = " + record);
+        //System.out.println("index = " + index + ", selected record = " + record);
         
         measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
         
@@ -13221,7 +13221,10 @@ private boolean setSectionPrefs()
                 return false;
               }
 
-            sectionInfo.adjustSection(index, measure, isPhrase, usePreviousStyleChecked);
+            if( measure > 1 )
+              {
+              sectionInfo.adjustSection(index, measure, isPhrase, usePreviousStyleChecked);
+              }
           }
         else
           {
@@ -13242,38 +13245,37 @@ private boolean setSectionPrefs()
 
 private boolean saveStylePrefs()
   {
-    Style style = sectionInfo.getStyle(sectionList.getSelectedIndex());
-    if( style == null )
-      {
-        return false;
-      }
+    SectionRecord record = sectionInfo.getSectionRecordByIndex(sectionList.getSelectedIndex());
 
-    try
+    if( !record.getUsePreviousStyle() )
       {
-        double swingVal = Double.valueOf(swingTF.getText()).doubleValue();
-
-        if( 0 <= swingVal && swingVal <= 1 )
+        Style style = record.getStyle();
+        try
           {
-            style.setSwing(swingVal);
+            double swingVal = Double.valueOf(swingTF.getText()).doubleValue();
+
+            if( 0 <= swingVal && swingVal <= 1 )
+              {
+                style.setSwing(swingVal);
+              }
+            else
+              {
+                ErrorLog.log(ErrorLog.WARNING,
+                             "The swing value must be between 0 and 1.");
+
+                return false;
+              }
           }
-        else
+        catch( NumberFormatException e )
           {
-            ErrorLog.log(ErrorLog.WARNING,
-                         "The swing value must be between 0 and 1.");
+            invalidInteger(swingTF.getText());
 
             return false;
           }
       }
-    catch( NumberFormatException e )
-      {
-        invalidInteger(swingTF.getText());
-
-        return false;
-      }
-
     return true;
   }
-    
+
 /**
  * Called when the StyleList is changed
  */    
@@ -13286,6 +13288,8 @@ public void updateStyle()
       {
         return; // FIX!
       }
+    usePreviousStyleCheckBox.setSelected(false);
+    
     swingTF.setText("" + style.getSwing());
 
     Style sectionStyle = sectionInfo.getStyle(sectionList.getSelectedIndex());

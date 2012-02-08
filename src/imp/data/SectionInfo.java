@@ -203,27 +203,35 @@ public class SectionInfo implements Constants, Serializable {
 public Style getStyleFromSlots(int n)
   {
 
-    return getSectionRecord(n).getStyle();
+    return getSectionRecordBySlot(n).getStyle();
 
   }
 
-public SectionRecord getSectionRecord(int n)
+/**
+ * Get section by slot index
+ * @param slot
+ * @return 
+ */
+public SectionRecord getSectionRecordBySlot(int slot)
   {
-//    ListIterator<SectionRecord> k = records.listIterator();
-//    SectionRecord s = k.next();
-//    SectionRecord previous = s;
-//    while( s.getIndex() <= n && k.hasNext() )
-//      {
-//        previous = s;
-//        s = k.next();
-//      }
-//
-//    s = s.getIndex() <= n ? s : previous;
-//
-//    //System.out.println("n = " + n + " using s = " + s);
-//    return s;
-//    
-   return records.get(n);
+    ListIterator<SectionRecord> k = records.listIterator();
+    SectionRecord s = k.next();
+    SectionRecord previous = s;
+    while( s.getIndex() <= slot && k.hasNext() )
+      {
+        previous = s;
+        s = k.next();
+      }
+
+    s = s.getIndex() <= slot ? s : previous;
+
+    //System.out.println("slot = " + slot + " using s = " + s);
+    return s;
+  }
+
+public SectionRecord getSectionRecordByIndex(int n)
+  {
+    return records.get(n);
   }
 
     public SectionInfo extract(int first, int last, ChordPart chords) {

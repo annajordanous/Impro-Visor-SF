@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,16 +20,19 @@
 
 package imp.data;
 
-import imp.brickdictionary.Block;
-import java.io.*;
-import javax.sound.midi.*;
-import java.util.ArrayList;
-
 import imp.brickdictionary.ChordBlock;
 import imp.roadmap.RoadMapFrame;
-import imp.util.*;
+import imp.util.ErrorLog;
+import imp.util.Trace;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
-import polya.*;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
+import polya.Polylist;
 
 /**
  * An extension of the Part class that contains only Chord objects.
