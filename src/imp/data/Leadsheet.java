@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,15 @@
 
 package imp.data;
 
-import imp.Constants.*;
-import imp.ImproVisor.*;
-import imp.data.Part.*;
-import polya.Polylist.*;
-import java.lang.Character.*;
-import java.io.*;
-import polya.*;
-import polya.Polylist.*;
-import imp.*;
-import imp.util.*;
+import imp.Constants;
+import imp.Constants.StaveType;
+import imp.util.ErrorLog;
+import imp.util.Preferences;
+import imp.util.Trace;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import polya.Polylist;
+import polya.Tokenizer;
 
 public class Leadsheet
         implements Constants
@@ -161,7 +160,9 @@ public class Leadsheet
     Style style = score.getChordProg().getStyle();
     if( style == null )
       {
-      ErrorLog.log(ErrorLog.WARNING, "Please fix invalid style to save chords");
+      out.write("(style " + "*" +")");
+      out.newLine();
+        //ErrorLog.log(ErrorLog.WARNING, "Please fix invalid style to save chords");
       }
     else
       {
@@ -1116,7 +1117,7 @@ public class Leadsheet
                   {
                   index += slotsPerBar;
                   }
-                chords.addSection(style, index, false);
+                chords.addSection(style.getName(), index, false);
                 }
               }
               break;
@@ -1129,6 +1130,8 @@ public class Leadsheet
               {
                 Style style = previousStyle; // default if no style specified
               
+                String styleName = "*";
+                
               while( item.nonEmpty() )
                 {
                 if( item.first() instanceof Polylist )
@@ -1138,15 +1141,18 @@ public class Leadsheet
                           sectItem.first().equals("style") &&
                           sectItem.second() instanceof String )
                     {
-                    String stylename = (String)sectItem.second();
-                    style = Advisor.getStyle(stylename);
+                    styleName = (String)sectItem.second();
                     
-                    if( style == null )
+                    if( !styleName.equals("*") )
                       {
-                      ErrorLog.log(ErrorLog.WARNING, "Style " + stylename + " not found");
-                      style = previousStyle;
+                      style = Advisor.getStyle(styleName);
+                    
+                      if( style == null )
+                        {
+                        ErrorLog.log(ErrorLog.WARNING, "Style " + styleName + " not found");
+                        style = previousStyle;
+                        }
                       }
-
 
                     //System.out.println("adding section at " + index);
                     }
@@ -1158,7 +1164,7 @@ public class Leadsheet
                 {
                 index += slotsPerBar;
                 }
-              chords.addSection(style, index, isPhrase);
+              chords.addSection(styleName, index, isPhrase);
               }
               break;
  /*               

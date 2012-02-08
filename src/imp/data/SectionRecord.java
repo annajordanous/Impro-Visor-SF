@@ -30,10 +30,21 @@ import imp.brickdictionary.Block;
 
 public class SectionRecord
 {
-
-Style style;
+String styleName;
+Style style = null;
 int index;
 boolean isPhrase;
+
+SectionRecord(String styleName, int index, boolean isPhrase)
+  {
+    this.styleName = styleName;
+    if( !styleName.equals("*") )
+      {
+        style = Advisor.getStyle(styleName);
+      }
+    this.index = index;
+    this.isPhrase = isPhrase;
+  }
 
 SectionRecord(Style style, int index, boolean isPhrase)
   {
@@ -44,7 +55,7 @@ SectionRecord(Style style, int index, boolean isPhrase)
 
 SectionRecord(SectionRecord orig)
   {
-    this(orig.getStyle(), orig.getIndex(), orig.getIsPhrase());
+    this(orig.getStyleName(), orig.getIndex(), orig.getIsPhrase());
   }
 
 public boolean getIsPhrase()
@@ -60,6 +71,11 @@ public void setIsPhrase(boolean isPhrase)
 public Style getStyle()
   {
     return style;
+  }
+
+public String getStyleName()
+  {
+    return style == null ? "*" : style.getName();
   }
 
 public void setStyle(Style style)

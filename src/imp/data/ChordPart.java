@@ -287,8 +287,12 @@ public class ChordPart extends Part implements Serializable{
         sectionInfo.setStyle(s);
     }
 
-    public void addSection(Style s, int n, boolean isPhrase) {
-        sectionInfo.addSection(s,n, isPhrase);
+//    public void addSection(Style s, int n, boolean isPhrase) {
+//        sectionInfo.addSection(s,n, isPhrase);
+//    }
+    
+    public void addSection(String styleName, int n, boolean isPhrase) {
+        sectionInfo.addSection(styleName, n, isPhrase);
     }
     
     public Style getStyle() {
@@ -509,7 +513,7 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
             totalSlots += chordBlock.getDuration();
             addChord(chord);
             if( chordBlock.isSectionEnd() ) {
-                addSection(roadmap.getStyle(),sectionStart,chordBlock.isPhraseEnd());
+                addSection(roadmap.getStyle().getName(),sectionStart,chordBlock.isPhraseEnd());
                 sectionStart = totalSlots;
             }
         }

@@ -43,7 +43,7 @@ public class SectionInfo implements Constants, Serializable {
 
     public SectionInfo(ChordPart chords) {
         this.chords = chords;
-        Style style = new Style();
+        //Style style = new Style();
 
         // RK 1/4/2010 The following was causing problems with countin resetting
         // the chord instrument, as reported by a user. It is not clear
@@ -53,7 +53,7 @@ public class SectionInfo implements Constants, Serializable {
 
         //style.setChordInstrument(chords.getInstrument(), "SectionInfo");
 
-        addSection(style, 0, false);
+        addSection("*", 0, false);
     }
 
     public SectionInfo copy() {
@@ -68,17 +68,17 @@ public class SectionInfo implements Constants, Serializable {
         return si;
     }
     
-    public boolean addSection(String name, int n) {
-        Style s = Advisor.getStyle(name);
-        if(s == null)
-            return false;
-        else {
-            addSection(s,n,false);
-            return true;
-        }
-    }
+//    public boolean addSection(String name, int n, boolean isPhrase) {
+//        Style s = Advisor.getStyle(name);
+//        if(s == null)
+//            return false;
+//        else {
+//            addSection(s,n,isPhrase);
+//            return true;
+//        }
+//    }
     
-    public void addSection(Style s, int n, boolean isPhrase) {
+    public void addSection(String styleName, int n, boolean isPhrase) {
         ListIterator<SectionRecord> k = records.listIterator();
         
         while( k.hasNext() )
@@ -96,7 +96,7 @@ public class SectionInfo implements Constants, Serializable {
                 break;
               }
           }
-        k.add(new SectionRecord(s, n, isPhrase));
+        k.add(new SectionRecord(styleName, n, isPhrase));
     }
     
     public void reloadStyles() {
@@ -105,7 +105,7 @@ public class SectionInfo implements Constants, Serializable {
           {
             SectionRecord record = k.next();
             k.remove();
-            k.add(new SectionRecord(Advisor.getStyle(record.getStyle().getName()), 
+            k.add(new SectionRecord(Advisor.getStyle(record.getStyleName()), 
                                                      record.getIndex(), 
                                                      record.getIsPhrase()));
           }
@@ -132,7 +132,7 @@ public class SectionInfo implements Constants, Serializable {
         else
             measure = measure/2 + 1;
         
-        addSection(record.getStyle(), 
+        addSection(record.getStyleName(), 
                    startIndex + measure*measureLength,
                    record.getIsPhrase());
     }
@@ -229,15 +229,15 @@ public SectionRecord getSectionRecord(int n)
         while( k.hasNext() )
           {
             SectionRecord record = k.next();
-            Style s = record.getStyle();
+            String styleName = record.getStyleName();
             int index = record.getIndex() - first;
             if( index < 0 )
               {
-                si.records.add(new SectionRecord(s, 0, record.getIsPhrase()));
+                si.records.add(new SectionRecord(styleName, 0, record.getIsPhrase()));
               }
             else if( index <= last - first )
               {
-                si.records.add(new SectionRecord(s, index, record.getIsPhrase()));
+                si.records.add(new SectionRecord(styleName, index, record.getIsPhrase()));
               }
           }
 
@@ -277,15 +277,15 @@ public SectionRecord getSectionRecord(int n)
     public String getInfo(int index) {
         SectionRecord record = records.get(index);
         
-        Style s = record.getStyle();
+        String styleName = record.getStyleName();
         int startIndex = getSectionMeasure(index);
         int endIndex = measures();
         if(index + 1 < size())
             endIndex = getSectionMeasure(index+1) - 1;
         
-        String info = "mm. " + startIndex + "-" + endIndex + ": " + s;
+        String info = "mm. " + startIndex + "-" + endIndex + ": " + styleName;
         if(startIndex == endIndex)
-            info = "m. " + startIndex + ": " + s;
+            info = "m. " + startIndex + ": " + styleName;
 
         return info;
     }
@@ -323,10 +323,10 @@ public SectionRecord getSectionRecord(int n)
 
 
         SectionRecord record = records.get(index);
-        Style s = record.getStyle();
+        String styleName = record.getStyleName();
         deleteSection(index);
         //System.out.println("2 records = " + records);
-        addSection(s, measureToSlotIndex(newMeasure), isPhrase);
+        addSection(styleName, measureToSlotIndex(newMeasure), isPhrase);
         
         //System.out.println("3 records = " + records);
     }
@@ -341,31 +341,16 @@ public SectionRecord getSectionRecord(int n)
         SectionRecord record = k.next();
         k.remove();
         
-        Style style = record.getStyle();
+        String styleName = record.getStyleName();
         
         if( index == 0 )
           {
             k = records.listIterator(0);
             k.next();
             k.remove();
-            k.add(new SectionRecord(style, 0, false));
+            k.add(new SectionRecord(styleName, 0, false));
           }
         
-        /* original code
-        ListIterator<Style> i = styles.listIterator(index);
-        ListIterator<Integer> j = styleIndices.listIterator(index);
-        i.next();
-        j.next();
-        i.remove();
-        j.remove();
-        if(index == 0) {
-            j = styleIndices.listIterator(0);
-            j.next();
-            j.remove();
-            j.add(0);
-        }
-         *
-         */
     }
     
     public void setSize(int size) {
@@ -393,7 +378,7 @@ public SectionRecord getSectionRecord(int n)
     
     public void setStyle(Style s) {
         records = new Vector<SectionRecord>();
-        addSection(s,0, false);
+        addSection(s.getName(),0, false);
     }
 
     public Style getStyle() {
@@ -537,7 +522,7 @@ public String toString()
     for( SectionRecord record: records )
     {
         buffer.append("(");
-        buffer.append(record.getStyle());
+        buffer.append(record.getStyleName());
         buffer.append(" ");
         buffer.append(record.getIndex());
         buffer.append(" ");

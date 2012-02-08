@@ -1257,19 +1257,19 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
 
 private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IOException
   {
-     Style s = record.getStyle();
+     String styleName = record.getStyleName();
     
     if( record.getIsPhrase() )
       {
         out.newLine();
-        out.write("(phrase (style " + s + ")) ");
+        out.write("(phrase (style " + styleName + ")) ");
         out.newLine();
       }
     else
       {
         out.newLine();
         out.newLine();
-        out.write("(section (style " + s + ")) ");
+        out.write("(section (style " + styleName + ")) ");
         out.newLine();
         out.newLine();
       }

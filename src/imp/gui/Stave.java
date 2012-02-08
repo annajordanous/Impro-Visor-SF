@@ -2791,9 +2791,9 @@ private void drawPart(MelodyPart part, Graphics g)
     lastNoteStemUp = true;
 
     // Next note: use for beaming
-    Note nextNote = null;
+    Note nextNote;
 
-    int inext = -1;
+    int inext;
 
     // the color indices for the notes in the part
     int[] noteColors = this.collectNoteColors(part, g);
@@ -2823,6 +2823,8 @@ private void drawPart(MelodyPart part, Graphics g)
     
     int nextSectionStart;
     
+    String styleName = record.getStyleName();
+    
     boolean indicateStyle = true;
     
     if( sectionIter.hasNext() )
@@ -2836,17 +2838,19 @@ private void drawPart(MelodyPart part, Graphics g)
       }
 
     Style previousStyle = null;
-    
+//System.out.println();    
     // cycle through the entire part
     for( int i = 0; i < cstrLines.length; i++ )
       {
-         if( indicateStyle && style != previousStyle )
+         if( indicateStyle && style != previousStyle && !styleName.equals("*") )
            {
-           g.drawString(STYLE_MARK + style, 
+//  System.out.println("style = " + style + " vs. " + previousStyle);
+           g.drawString(STYLE_MARK + styleName, 
                         xCoordinate - styleXoffset, 
                         headSpace + (staveLine * lineSpacing) - styleYoffset);
                       
            indicateStyle = false;
+           previousStyle = style;
            }
                   
         Note note = part.getNote(i);
@@ -2871,6 +2875,7 @@ private void drawPart(MelodyPart part, Graphics g)
                 {
                   previousStyle = style;
                   style = newStyle;
+                  styleName = newStyle.getName();
                 }
 
                sectionType = record.getSectionType();
