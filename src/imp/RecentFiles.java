@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2012 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
@@ -18,18 +18,12 @@
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package imp;
 
 import imp.com.OpenLeadsheetCommand;
 import imp.data.Score;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Stack;
 
 /**
@@ -37,7 +31,6 @@ import java.util.Stack;
  * This class writes a text file to the 'vocab' folder in order to keep track of
  * the previous leadsheets opened.
  * @author Amos Byon
- * @version 1.7
  */
 public class RecentFiles {
     /**

@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Vector;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
@@ -35,7 +34,7 @@ import javax.sound.midi.Track;
 /**
  * SectionInfo was originally done by Stephen Jones when sections were
  * first added to the software. On July 27, 2011, Robert Keller refactored
- * the code, by transcribing the separate Vectors into a single Vector
+ * the code, by transcribing the separate ArrayLists into a single ArrayList
  * of SectionRecord. The purpose was to enable phrases, and possibly other
  * information to be added more easily.
  * @author keller
@@ -531,9 +530,9 @@ public boolean isSectionStart(int index)
   
 }
 
-public Vector<Integer> getSectionStartIndices()
+public ArrayList<Integer> getSectionStartIndices()
 {
-  Vector<Integer> result = new Vector<Integer>();
+  ArrayList<Integer> result = new ArrayList<Integer>();
   for( SectionRecord record: records )
     {
       result.add(record.getIndex());
