@@ -216,10 +216,13 @@ public static int default_numerator = 8;	// eighth note default
       this_duration = slots / (numerator * denominator);
 
       // Handle dotted notes, which add to individual duration.
+      
+      int increment = this_duration;
 
       while( index < len && item.charAt(index) == DOT )
         {
-        this_duration = (3 * this_duration) / 2;
+        increment /= 2;
+        this_duration += increment;
         index++;
         }
 
