@@ -2104,7 +2104,6 @@ public class Notate
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
-        beamButton = new javax.swing.JToggleButton();
         chordFontSizeSpinner = new javax.swing.JSpinner();
         addTabBtn = new javax.swing.JButton();
         addTabBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -2239,6 +2238,7 @@ public class Notate
         phrasemarksMI = new javax.swing.JCheckBoxMenuItem();
         measureCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
         allCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
+        useBeamsMI = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
         playSelectionMI = new javax.swing.JMenuItem();
         playSelectionToEndMI = new javax.swing.JMenuItem();
@@ -6701,25 +6701,6 @@ public class Notate
         });
         standardToolbar.add(smartEntryButton);
 
-        beamButton.setBackground(new java.awt.Color(51, 255, 255));
-        beamButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        beamButton.setSelected(true);
-        beamButton.setText("<html><center>No Beam</center></html>");
-        beamButton.setToolTipText("Beam multiple notes shorter than quarter-note.");
-        beamButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        beamButton.setFocusable(false);
-        beamButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        beamButton.setMaximumSize(new java.awt.Dimension(55, 30));
-        beamButton.setMinimumSize(new java.awt.Dimension(55, 30));
-        beamButton.setOpaque(true);
-        beamButton.setPreferredSize(new java.awt.Dimension(55, 30));
-        beamButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                beamButtonActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(beamButton);
-
         chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
         chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         chordFontSizeSpinner.setInheritsPopupMenu(true);
@@ -8108,6 +8089,16 @@ public class Notate
             }
         });
         viewMenu.add(allCstrLinesMI);
+
+        useBeamsMI.setSelected(true);
+        useBeamsMI.setText("Use Beams");
+        useBeamsMI.setToolTipText("Connect notes of same duration with beams where possible.");
+        useBeamsMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useBeamsMIActionPerformed(evt);
+            }
+        });
+        viewMenu.add(useBeamsMI);
 
         menuBar.add(viewMenu);
 
@@ -18139,23 +18130,6 @@ public void rectifySelection()
     stave.playSelection(false, getLoopCount(), PlayScoreCommand.USEDRUMS);
   }
 
-    private void beamButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_beamButtonActionPerformed
-    {//GEN-HEADEREND:event_beamButtonActionPerformed
-      if( beamButton.isSelected() )
-        {
-        beamButton.setBackground(new java.awt.Color(51, 255, 255));
-        beamButton.setText("No Beam");
-        beamButton.setSelected(true);
-        }
-      else
-        {
-        beamButton.setBackground(Color.red);
-        beamButton.setText("Beam");
-        beamButton.setSelected(false);
-        }
-      getCurrentStave().setBeaming(beamButton.isSelected());   
-}//GEN-LAST:event_beamButtonActionPerformed
-
     private void defaultTempoTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defaultTempoTFActionPerformed
     {//GEN-HEADEREND:event_defaultTempoTFActionPerformed
       double tempo = doubleFromTextField(defaultTempoTF, MIN_TEMPO, MAX_TEMPO, getDefaultTempo());
@@ -20553,6 +20527,11 @@ private void usePreviousStyleCheckBoxActionPerformed(java.awt.event.ActionEvent 
     setSectionParameters();
   }//GEN-LAST:event_usePreviousStyleCheckBoxActionPerformed
 
+private void useBeamsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useBeamsMIActionPerformed
+  {//GEN-HEADEREND:event_useBeamsMIActionPerformed
+      getCurrentStave().setBeaming(useBeamsMI.isSelected());  
+  }//GEN-LAST:event_useBeamsMIActionPerformed
+
 
 public boolean showPhrasemarks()
   {
@@ -22055,7 +22034,6 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane bassStyleSpecScrollPane;
     private javax.swing.JPanel bassTabPanel;
     private javax.swing.JSlider bassVolume;
-    private javax.swing.JToggleButton beamButton;
     private javax.swing.JRadioButton blackApproachBtn;
     private javax.swing.JRadioButton blackChordBtn;
     private javax.swing.JRadioButton blackColorBtn;
@@ -22583,6 +22561,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton undoBtn;
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
+    private javax.swing.JCheckBoxMenuItem useBeamsMI;
     private javax.swing.JCheckBox usePreviousStyleCheckBox;
     private javax.swing.JMenu utilitiesMenu;
     private javax.swing.JMenu viewMenu;
