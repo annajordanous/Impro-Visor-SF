@@ -954,9 +954,11 @@ public class Style
     
     boolean firstTime = true;
 
-    MidiEvent evt = MidiSynth.createProgramChangeEvent(chordChannel,
-            chordInstrument, time);
-    track.add(evt);
+    // select Bank 0 before program change. Not sure this is correct.
+    //track.add(MidiSynth.createProgramChangeEvent(chordChannel, 0, time));
+
+    track.add(MidiSynth.createProgramChangeEvent(chordChannel,
+            chordInstrument, time));
 
     ChordSymbol symbol = chord.getChordSymbol();
     

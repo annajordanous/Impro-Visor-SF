@@ -942,10 +942,12 @@ public class MelodyPart
     // channel at the same time.  So we can never have more than 16
     // instruments playing at once, and we should add code somewhere
     // to make sure instruments are sorted to the right channels
-    MidiEvent evt = MidiSynth.createProgramChangeEvent(ch, instrument, time);
+    
+    // select Bank 0 before program change. Not sure this is correct
+    // track.add(MidiSynth.createProgramChangeEvent(ch, 0, time));
 
     // add a track for this Part
-    track.add(evt);
+    track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
     // the absolute time is advanced and returned by the next sequence
     // function
