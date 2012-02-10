@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,11 @@
 package imp.com;
 
 import imp.RecentFiles;
-import imp.data.*;
-import imp.util.*;
-import polya.*;
+import imp.data.Leadsheet;
+import imp.data.Score;
+import imp.util.ErrorLog;
 import java.io.*;
+import polya.Tokenizer;
 
 /**
  * A Command that opens a file into a Score.
@@ -70,7 +71,7 @@ public class OpenLeadsheetCommand implements Command {
      * Reads the File into the Score.
      */
     public void execute() {
-        FileInputStream leadStream = null;
+        FileInputStream leadStream;
         
         try {
             leadStream = new FileInputStream(file);
@@ -98,7 +99,7 @@ public static String fileToString(File file)
     }
   InputStreamReader reader = new InputStreamReader(leadStream);
 
-  StringBuffer buffer = new StringBuffer();
+  StringBuilder buffer = new StringBuilder();
 
   try
     {

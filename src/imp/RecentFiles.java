@@ -128,6 +128,69 @@ public class RecentFiles {
         }
     }
     
+    /**
+     * This method is called at the user's option in case of a disastrous 
+     * error in the leadsheet file. Restarting Impro-Visor would just scan
+     * the same error again and again.
+     * The code, for the moment, is taken from writeNewFile(). This should be
+     * cleaned up.
+     * @throws IOException 
+     */
+  public void writeAllButNewFile() throws IOException
+    {
+        File file = ImproVisor.getRecentFilesFile();
+        if( file == null )
+          {
+            return;
+          }
+        try{
+            FileInputStream inStream = new FileInputStream(file);
+            DataInputStream datIn = new DataInputStream(inStream);
+            BufferedReader buffRead = new BufferedReader(new InputStreamReader(datIn));
+            String line;
+            String entered;
+            while((line = buffRead.readLine()) != null)
+            {
+                tempStk.push(line);
+            }
+            String rec;
+            while(!stk.empty())
+            {
+                stk.pop();
+            }
+            while(!tempStk.empty())
+            {
+                rec= (String)tempStk.pop();
+                stk.push(rec);
+            }
+            Stack cleared = removeAnyPrev(stk, path);
+            if(cleared.size() >= MAX_RECENT_FILES)
+            {
+                cleared = truncateLast(cleared);
+                //cleared.push(path);
+            }
+            else
+            {
+                //cleared.push(path);
+            }
+            BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
+            while(!cleared.empty())
+            {
+                recentFiles.write((String)cleared.pop());
+                recentFiles.newLine();
+            }
+            recentFiles.close();
+        }
+        catch(Exception e){
+        BufferedWriter recentFiles = new BufferedWriter(new FileWriter(file));
+        recentFiles.write(path);
+        recentFiles.close();
+        //ImproVisor.setLastLeadsheetFileStem(file.getName());
+        }
+    }
+        
+    
+    
     public void openMostRecent()
     {
        File file = ImproVisor.getRecentFilesFile();

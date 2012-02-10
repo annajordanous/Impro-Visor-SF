@@ -105,6 +105,13 @@ public class ImproVisor implements Constants {
 
     private static Advisor advisor;
     
+    private static RecentFiles recFiles;
+    
+    public static RecentFiles getRecentFiles()
+      {
+        return recFiles;
+      }
+    
     public static File getRuleFile()
       {
       return ruleFile;
@@ -205,6 +212,7 @@ public class ImproVisor implements Constants {
       }
     
     private static ImproVisor instance = null;
+    
     public static ImproVisor getInstance() {
         if(instance == null) {
             instance = new ImproVisor();
@@ -258,7 +266,7 @@ private ImproVisor(String leadsheet)
         ruleFileName = ruleFilePath.substring(ruleFilePath.lastIndexOf(File.separator), ruleFilePath.length());
       }
 
-    LoadAdviceCommand loadAdvice = null;
+    LoadAdviceCommand loadAdvice;
 
     //Trace.log(2, "Loading: " + ruleFileDir + " :: " + ruleFileName);
  
@@ -314,10 +322,9 @@ private ImproVisor(String leadsheet)
         loadAdvice.hideLoadDialog();
       }    
     
-    
     // Load most recent file, if there is one.
 
-    RecentFiles recFiles = new RecentFiles();
+    recFiles = new RecentFiles();
     String pathName = recFiles.getFirstPathName();
     if( pathName != null )
       {
@@ -328,7 +335,7 @@ private ImproVisor(String leadsheet)
             notate.setupLeadsheet(f, false);
           }
       }
-
+    
      notate.makeVisible(createRoadMap);
 
      currentWindow = notate;

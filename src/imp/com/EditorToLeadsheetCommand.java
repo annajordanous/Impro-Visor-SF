@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,12 @@
 
 package imp.com;
 
-import imp.data.*;
+import imp.data.Leadsheet;
+import imp.data.Score;
 import imp.util.BasicEditor;
-import polya.*;
-import java.io.*;
+import java.io.File;
+import java.io.StringReader;
+import polya.Tokenizer;
 
 /**
  * A Command that sends the editor contents to the leadsheet.
@@ -66,14 +68,7 @@ public class EditorToLeadsheetCommand implements Command {
     public void execute() {
         String contents = sourceEditor.getText();
 
-
         StringReader reader = new StringReader(contents);
-
-/*
- ByteArrayInputStream bs = 
-              new ByteArrayInputStream(contents.getBytes());
-        Reader reader = new InputStreamReader(bs);
-*/
 
         Leadsheet.readLeadSheet(new Tokenizer(reader), score);
     }

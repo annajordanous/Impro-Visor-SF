@@ -2555,7 +2555,10 @@ protected void paintComponent(Graphics g)
     selectionCacheReset();
 
     // draw the notes, rests, and stave for each note in the part
-    drawPart(displayPart, g);
+    if( !drawPart(displayPart, g) )
+      {
+        return;
+      }
 
     if( notate.noLockedMeasures() )
       {
@@ -2752,7 +2755,8 @@ public void repaintLineFromCstrLine(int i)
  * @see #drawNote(Note, boolean, Graphics)
  * @see #findSpacing(int, MelodyPart)
  */
-private void drawPart(MelodyPart part, Graphics g)
+
+private boolean drawPart(MelodyPart part, Graphics g)
   {
     Graphics2D g2 = (Graphics2D) g;
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -2821,13 +2825,18 @@ private void drawPart(MelodyPart part, Graphics g)
 
     Iterator<SectionRecord> sectionIter = sectionInfo.iterator();
     
+    if( !sectionIter.hasNext() )
+      {
+        return false;
+      }
+    
     SectionRecord record = sectionIter.next();
 
     Style style = record.getStyle(); // sectionInfo.getStyleFromSlots(0);
 
     int previousSectionType = record.getSectionType(); // sectionInfo.sectionAtSlot(0);
     
-    int sectionType = previousSectionType;
+    int sectionType;
     
     int nextSectionStart;
     
@@ -3386,6 +3395,7 @@ private void drawPart(MelodyPart part, Graphics g)
       }
 
     this.setSize(panelWidth, panelHeight);
+  return true;
   }
 
 /**

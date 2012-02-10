@@ -24,6 +24,7 @@ package imp.data;
 import imp.Constants;
 import imp.Constants.StaveType;
 import imp.util.ErrorLog;
+import imp.util.ErrorLogWithResponse;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.BufferedWriter;
@@ -194,12 +195,12 @@ public class Leadsheet
     return buffer.toString();
     }
 
-  public static void readLeadSheet(Tokenizer in, Score score)
+  public static boolean readLeadSheet(Tokenizer in, Score score)
     {
-    readLeadSheet(in, score, Preferences.getAlwaysUseStave(), Preferences.getStaveTypeFromPreferences());
+    return readLeadSheet(in, score, Preferences.getAlwaysUseStave(), Preferences.getStaveTypeFromPreferences());
     }
   
-  public static void readLeadSheet(Tokenizer in, 
+  public static boolean readLeadSheet(Tokenizer in, 
                                    Score score, 
                                    boolean overrideStaveType, 
                                    StaveType useStaveType)
@@ -210,13 +211,13 @@ public class Leadsheet
 
     boolean headStarted = false;
 
-    String titleString = "LeadsheetTest"; // default;
+    String titleString;
 
-    String composerString = "";        	// default;
+    String composerString;
     
-    String showTitleString = "";
+    String showTitleString;
     
-    String year = "";
+    String year;
 
     int beatValue = WHOLE / score.getMetre()[1];	// These may change as a result of reading metre!!
     int beatsPerBar = score.getMetre()[0];
@@ -404,7 +405,9 @@ public class Leadsheet
                   beatsPerBar = ((Long)item.first()).intValue();
                   if( beatsPerBar > MAX_BEATS_PER_BAR )
                     {
-                    ErrorLog.log(ErrorLog.SEVERE, beatsPerBar + " beats per bar not supported, using " + DEFAULT_BEATS_PER_BAR);
+                    ErrorLog.log(ErrorLog.SEVERE, beatsPerBar 
+                            + " beats per bar not supported, using " 
+                            + DEFAULT_BEATS_PER_BAR);
                     beatsPerBar = DEFAULT_BEATS_PER_BAR;
                     }
                   }
@@ -414,7 +417,9 @@ public class Leadsheet
                   long beat_denominator = ((Long)item.rest().first()).intValue();
                   if( beat_denominator < 1 || beat_denominator > MAX_BEAT_DENOMINATOR)
                     {
-                    ErrorLog.log(ErrorLog.SEVERE, beat_denominator + " not supported in beat denominator, using " + DEFAULT_BEAT_DENOMINATOR);
+                    ErrorLog.log(ErrorLog.SEVERE, beat_denominator 
+                            + " not supported in beat denominator, using " 
+                            + DEFAULT_BEAT_DENOMINATOR);
                     beat_denominator = DEFAULT_BEAT_DENOMINATOR;
                     }
                   beatValue = WHOLE / (int)beat_denominator;
@@ -695,7 +700,8 @@ public class Leadsheet
           if( stringOb.length() > 1 )
             {
             ErrorLog.log(ErrorLog.WARNING,
-                    "A space is required after a bar line, ignoring what follows the bar in: " + ob);
+                    "A space is required after a bar line. "
+                    + "Impro-Visor is ignoring what follows the bar in: " + ob);
             }
 
           if( !firstUnitPassed )
@@ -735,16 +741,24 @@ public class Leadsheet
               }
             else
               {
-              ErrorLog.log(ErrorLog.SEVERE,
-                      "Impro-Visor does not recognize this chord, using NC: " + stringOb);
+              if( ErrorLogWithResponse.log(ErrorLog.WARNING,
+                "Impro-Visor does not recognize this chord: " + stringOb
+                      + "\nusing NC instead") )
+                {
+                  return false;
+                }
               }
             handled = true;
             }
           }
         if( !handled )
           {
-          ErrorLog.log(ErrorLog.SEVERE,
-                  "Unidentified item in input: " + ob + " (of " + ob.getClass() + ")");
+          if( ErrorLogWithResponse.log(ErrorLog.SEVERE,
+           "Unidentified item in input: " + ob 
+                  + "\nJava class is " + ob.getClass()) )
+            {
+              return false;
+            }
           continue;
           }
         }
@@ -769,6 +783,7 @@ public class Leadsheet
     //System.out.println("chord symbols: " + chords.getChordSymbols()); 
     //System.out.println("chord durations: " + chords.getChordDurations()); 
  
+    return true;
     } // readLeadsheet
 
   public static Polylist extractChordsAndMelody(Polylist chordsAndMelody)
@@ -840,7 +855,8 @@ public class Leadsheet
             else
               {
               ErrorLog.log(ErrorLog.SEVERE,
-                      "Impro-Visor does not recognize this chord, using NC: " + stringOb);
+                      "Impro-Visor does not recognize this chord: " + stringOb
+                      + "\nusing NC instead");
               }
             handled = true;
             }
@@ -958,7 +974,8 @@ static public boolean populatePartWithChords(ChordPart chordProg,
                     if( symbol == null )
                       {
                         ErrorLog.log(ErrorLog.SEVERE,
-                                     "Impro-Visor does not recognize this chord, using " + NOCHORD + ": " + chordName);
+                      "Impro-Visor does not recognize this chord: " + chordName
+                      + "\nusing NC instead");
 
                         chordName = NOCHORD;
                       }

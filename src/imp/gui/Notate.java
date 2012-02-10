@@ -17302,8 +17302,9 @@ public void openLeadsheet(boolean openCorpus)
       }
 
     staveRequestFocus();
-  }
-
+    }
+    
+  
 
 /**
  * Reset the command manager
@@ -17357,7 +17358,7 @@ public void cmReset()
  *
  */
   
-public void setupLeadsheet(File file, boolean openCorpus)
+public boolean setupLeadsheet(File file, boolean openCorpus)
   {
     //System.out.println("setupLeadsheet");
     Advisor.useBackupStyles();
@@ -17367,7 +17368,10 @@ public void setupLeadsheet(File file, boolean openCorpus)
 
     // System.out.println("reading file " + file);
     
-    readLeadsheetFile(file, newScore);
+    if( !readLeadsheetFile(file, newScore))
+      {
+        return false;
+      }
     
     setSavedLeadsheet(file);
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -17380,15 +17384,16 @@ public void setupLeadsheet(File file, boolean openCorpus)
 
       }
     staveRequestFocus();
+    return true;
   }
     
 
     /**
      * Reads the File into the Score.
      */
-    public void readLeadsheetFile(File file, Score score)
+    public boolean readLeadsheetFile(File file, Score score)
       {
-        FileInputStream leadStream = null;
+        FileInputStream leadStream;
         
         try {
             leadStream = new FileInputStream(file);
@@ -17397,11 +17402,11 @@ public void setupLeadsheet(File file, boolean openCorpus)
         }
         catch(Exception e) {
             ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + file);
-            return;
+            return false;
             // e.printStackTrace();
         }
 
-        Leadsheet.readLeadSheet(new Tokenizer(leadStream), score);
+        return Leadsheet.readLeadSheet(new Tokenizer(leadStream), score);
     }
 
 /**
@@ -20776,15 +20781,16 @@ private void closingThisWindow()
 public void openInNewWindow(File selectedFile)
 {
     Score newScore = new Score();
-    readLeadsheetFile(selectedFile, newScore); 
-    
-    //create a new window and show the score
-    Notate newNotate = new Notate(newScore,
-                                  this.adv,
-                                  this.impro,
-                                  getNewXlocation(),
-                                  getNewYlocation());
-    newNotate.makeVisible(this);
+    if( readLeadsheetFile(selectedFile, newScore) )
+      {
+        //create a new window and show the score
+        Notate newNotate = new Notate(newScore,
+                                    this.adv,
+                                    this.impro,
+                                    getNewXlocation(),
+                                    getNewYlocation());
+        newNotate.makeVisible(this);
+      }
 }
 
 
