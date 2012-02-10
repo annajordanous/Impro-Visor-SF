@@ -37,9 +37,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -109,11 +108,13 @@ public static int upStemCorrection = 26;
 public static int downStemCorrection = -26;
 public static int beamSpacing = 6;
 public static int upStemBracketCorrection = 15;
+
 /**
  * Action handler for the Stave.
  */
 private StaveActionHandler handleActions;
-Vector<BeamNote> beamNotes = null;
+
+ArrayList<BeamNote> beamNotes = null;
 /**
  * The panel width
  */
@@ -419,7 +420,7 @@ int[] curvePoints = new int[this.getWidth()];
 private int firstBoxX, firstBoxStave, lastBoxX, lastBoxStave;
 private boolean firstBoxFound = false;
 private boolean transparentFill = false;
-Vector<Rectangle> selectionBox = new Vector<Rectangle>();
+ArrayList<Rectangle> selectionBox = new ArrayList<Rectangle>();
 private Color selectionColor = new Color(110, 160, 255, 10);
 private Color selectionHandleColor = new Color(110, 160, 255, 25);
 private Color selectionBorderColor = new Color(80, 100, 205, 90);
@@ -513,11 +514,11 @@ public static class MyOwnFocusTraversalPolicy
         extends FocusTraversalPolicy
 {
 
-Vector<EntryPopup> order;
+ArrayList<EntryPopup> order;
 
-public MyOwnFocusTraversalPolicy(Vector<EntryPopup> order)
+public MyOwnFocusTraversalPolicy(ArrayList<EntryPopup> order)
   {
-    this.order = new Vector<EntryPopup>(order.size());
+    this.order = new ArrayList<EntryPopup>(order.size());
     this.order.addAll(order);
   }
 
@@ -546,7 +547,7 @@ public Component getDefaultComponent(Container focusCycleRoot)
 
 public Component getLastComponent(Container focusCycleRoot)
   {
-    return order.lastElement();
+    return order.get(order.size()-1);
   }
 
 public Component getFirstComponent(Container focusCycleRoot)
@@ -678,12 +679,14 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     partTitleEditor = new EntryPopup("part title", partTitleFont)
     {
 
+   @Override
     public void textToStave(String text)
       {
         Stave.this.setPartTitle(text);
         Stave.this.notate.refreshCurrentTabTitle();
       }
 
+    @Override
     public String staveToText()
       {
         return Stave.this.getPartTitle();
@@ -1300,6 +1303,7 @@ public void setEditable(boolean state)
  * Gets the size of the Stave
  * @return Dimension    set with a width and a height
  */
+@Override
 public Dimension getPreferredSize()
   {
     return new Dimension(this.getSize().width, this.getSize().height);
@@ -2112,7 +2116,7 @@ private void selectionCacheReset()
     selectionBox.clear();
   }
 
-private Vector<EntryPopup> focusOrder = new Vector<EntryPopup>();
+private ArrayList<EntryPopup> focusOrder = new ArrayList<EntryPopup>();
 
 public class EntryPopup
         extends JDialog
@@ -2145,6 +2149,7 @@ public EntryPopup(String name, Font font, int alignment)
     input = new JTextField()
     {
 
+    @Override
     public void paintComponent(Graphics g)
       {
         Graphics2D g2 = (Graphics2D) g;
@@ -2219,6 +2224,7 @@ public boolean checkEvent(MouseEvent e)
     return false;
   }
 
+@Override
 public void setVisible(boolean visible)
   {
     setVisible(visible, true);
@@ -2459,6 +2465,8 @@ private void updateBounds(int width, int height, int descent)
  * @see #drawTimeSig(Graphics)
  * @see #drawPart(MelodyPart, Graphics)
  */
+
+@Override
 protected void paintComponent(Graphics g)
   {
     super.paintComponent(g);
@@ -2657,8 +2665,8 @@ private void drawSelectionBox(Graphics g)
         g.drawRect(r.x, r.y, r.width, r.height);
       }
 
-    Rectangle first = selectionBox.firstElement();
-    Rectangle last = selectionBox.lastElement();
+    Rectangle first = selectionBox.get(0);
+    Rectangle last = selectionBox.get(selectionBox.size()-1);
 
     selectionLHandle.x = first.x - 3;
     selectionLHandle.y = first.y;
@@ -3560,7 +3568,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
               {
                 // Create the beamed group
 
-                beamNotes = new Vector<BeamNote>();
+                beamNotes = new ArrayList<BeamNote>();
                 beamStemUp = stemUp;
               }
 
@@ -3571,7 +3579,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
             if( !beamNotes.isEmpty() )
               {
                 // Reset the x position of the last beamed note, if necessary.
-                beamNotes.lastElement().setX(cstrLines[ilast].getX() + x1Correction);
+                beamNotes.get(beamNotes.size()-1).setX(cstrLines[ilast].getX() + x1Correction);
               }
 
             // Get the x position of this note
@@ -3601,11 +3609,11 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
                 int numNotes = beamNotes.size();
 
                 // Compute the maximum (lowest) and minimum (highest) y value for notes in the group
-                int ymax = beamNotes.firstElement().y;
+                int ymax = beamNotes.get(0).y;
                 int ymin = ymax;
-                for( Enumeration<BeamNote> e = beamNotes.elements(); e.hasMoreElements(); )
+                for( Iterator<BeamNote> e = beamNotes.iterator(); e.hasNext(); )
                   {
-                    int y = e.nextElement().y;
+                    int y = e.next().y;
                     if( y > ymax )
                       {
                         ymax = y;
@@ -3618,8 +3626,8 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
 
                 // Get the first and last notes in the group, which are the beam ends
 
-                BeamNote note1 = beamNotes.firstElement();
-                BeamNote note2 = beamNotes.lastElement();
+                BeamNote note1 = beamNotes.get(0);
+                BeamNote note2 = beamNotes.get(beamNotes.size()-1);
 
                 int xStart = note1.x;
                 int xEnd = note2.x;
@@ -3656,14 +3664,14 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
 
                 g.setColor(Color.black);
 
-                for( Enumeration<BeamNote> e = beamNotes.elements(); e.hasMoreElements(); )
+                for( Iterator<BeamNote> e = beamNotes.iterator(); e.hasNext(); )
                   {
                     // Draw one stem.
                     // Interpolate between yStart and yEnd.
                     // One end of the beam is determined by pitch and is stored in the BeamNote.
                     // The other end is determined by the beam itself.
 
-                    BeamNote n = e.nextElement();
+                    BeamNote n = e.next();
 
                     int yInterp = (int) (yStart + (n.x - xStart) * slope);
                     n.drawStem(g, yInterp);
@@ -4095,7 +4103,7 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
     measureCstrLines[0] = 0;
 
     // initial width before the start of notes
-    int initWidth = 0;
+    int initWidth;
 
     // Find the initial amount of pixel space on the line before a note can
     // be found. Differentiate between the line with clef and signatures
@@ -4122,7 +4130,9 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
         setLineMeasures(tempLineMeasures);
       }
 
-    if( !notate.getAutoAdjust() && notate.hasLockedMeasures() && staveLine < notate.getLockedMeasures().length )   // may get out of bounds index without this
+    if( !notate.getAutoAdjust() 
+            && notate.hasLockedMeasures() 
+            && staveLine < notate.getLockedMeasures().length )   // may get out of bounds index without this
       {
         while( lineMeasureCount < notate.getLockedMeasures()[staveLine] && i < part.size() )
           {
@@ -4677,10 +4687,6 @@ private void drawTupletBracket(int n,
 
         int previousBracketHeight =
                 (headSpace + ((staveLine - 1) * lineSpacing) - 20);
-        if( highestYPos < bracketHeight )
-          {
-            bracketHeight = highestYPos + 8;
-          }
 
         // Draw the first half of the bracket
         int width = (topEnd - start) / 2 - 10;
@@ -4945,7 +4951,7 @@ boolean isaNote(int pitch)
 private Image chooseImage(int pitch, int rhythmValue, int color, boolean beamed, boolean stemUp)
   {
 
-    Image unitImage = null;
+    Image unitImage;
 
     // Is the "note" a rest?
     if( !isaNote(pitch) )
@@ -5335,7 +5341,7 @@ void transposeChordsDownSemitone()
 public void shiftPitch(int startIndex, int endIndex, boolean up,
                        boolean octave)
   {
-    int shift = 0;
+    int shift;
 
     if( up )
       {
@@ -5915,6 +5921,7 @@ SelectionControls()
 
     private int transposeDistance;
 
+    @Override
     public void dragEvent(MouseEvent e)
       {
         int newDistance = (e.getY() - dragStart.y) / 4;
@@ -6006,6 +6013,7 @@ public boolean isMouseOver()
     return mouseOver;
   }
 
+@Override
 protected void paintComponent(Graphics g)
   {
     if( mouseOver )
