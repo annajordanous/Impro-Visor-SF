@@ -50,7 +50,7 @@ import polya.PolylistEnum;
 public class Style
         implements Constants, Serializable
   {
-  private static String defaultStyleName = "swing";
+  private static String defaultStyleName = "no-style";
   
   public static final String USE_PREVIOUS_STYLE = "*";
   
@@ -304,6 +304,11 @@ public class Style
   public String getName()
     {
     return name;
+    }
+  
+  public void setName(String name)
+    {
+      this.name = name;
     }
 
   /**

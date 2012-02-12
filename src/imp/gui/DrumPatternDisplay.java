@@ -1043,8 +1043,11 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
                 return null;
               }
             Style tempStyle = Style.makeStyle(rule);
+            tempStyle.setName("count-in");
             tempStyle.setSwing(swingVal);
             tempStyle.setAccompanimentSwing(swingVal);
+            
+            Advisor.addStyle(tempStyle);
 
             String chord = "NC"; // styleParent.getChord();
 

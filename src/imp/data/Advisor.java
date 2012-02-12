@@ -1914,6 +1914,16 @@ public static Style getStyle(String name)
   return s;
   }
 
+public static void addStyle(String name, Style style)
+  {
+    styles = styles.cons(Polylist.list(name, style));
+  }
+
+public static void addStyle(Style style)
+  {
+    addStyle(style.getName(), style);
+  }
+
 public static ArrayList<Polylist> getVoicingTable(String chordRoot, String bass,
                                                Style style)
   {
