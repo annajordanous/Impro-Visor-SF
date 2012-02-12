@@ -54,7 +54,9 @@ public class Style
   {
   private static LinkedHashMap<String, Style> allStyles = new LinkedHashMap<String, Style>();
   
-  private static int numStyles = 86; // TEMPORARY HACK WORK-AROUND
+  private static Object style[] = null;
+  
+  private static int numStyles = 0; // TEMPORARY HACK WORK-AROUND
 
   private static String defaultStyleName = "no-style";
   
@@ -245,29 +247,30 @@ public class Style
   
   public static boolean noStyles()
     {
-      return allStyles.isEmpty();
+      ensureStyleArray();
+      return style.length == 0;
     }
   
   public static int numberOfStyles()
     {
-      // should be allStyles.size(); TEMPORARY HACK WORK-AROUND
-      return numStyles;
+      ensureStyleArray();
+      return style.length; 
     }
   
-  public static Style getNth(int index)
-    {
-      int i = 0;
-        for( Iterator<Style> it = allStyles.values().iterator(); it.hasNext(); )
-          {
-            Style style = it.next();
-            if( index == i )
-              {
-                return style;
-              }
-            i++;
-          }
-      return null; 
-    }
+    public static Style getNth(int index)
+      {
+        ensureStyleArray();
+        return (Style)style[index];
+      }
+    
+    private static void ensureStyleArray()
+      {
+        if( style == null )
+            {
+            numStyles = allStyles.size();
+            style = allStyles.values().toArray();
+            }       
+      }
   
   /**
    * Gets the voicing type.
