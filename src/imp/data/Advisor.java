@@ -537,8 +537,6 @@ public static boolean addOneRule(Object ob, int serial, boolean marked,
         styleProcessed = true;
         readStyles();
         }
-      // Strip off the word "style" and put it in the styles list                          
-      //return updateStyle(first.rest());
       return true;
       }
     else if( dispatch.equals(CELL) )
@@ -572,7 +570,6 @@ public static boolean addOneRule(Object ob, int serial, boolean marked,
 
 public static void readStyles()
   {
-
   File styleDir = ImproVisor.getStyleDirectory();
   
   //new File(Preferences.getPreference(

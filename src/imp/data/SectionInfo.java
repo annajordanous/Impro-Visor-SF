@@ -391,7 +391,7 @@ public SectionRecord getSectionRecordByIndex(int n)
     }
 
     public boolean setStyle(String name) {
-        Style s = Advisor.getStyle(name);
+        Style s = Style.getStyle(name);
         if(s == null)
             return false;
         else {

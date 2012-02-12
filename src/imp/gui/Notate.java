@@ -8714,7 +8714,7 @@ private void setSectionParameters()
 
     private void styleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_styleListValueChanged
 
-      updateStyle();
+      updateStyleList();
         
     }//GEN-LAST:event_styleListValueChanged
 
@@ -10627,18 +10627,26 @@ public Object getValueAt(int row, int col)
   }
 }
     
-    
+
+/**
+ * This is the Model for the list of Styles that appear in the Style Preferences
+ * Dialog. The list contains references to the actual style objects, but
+ * displays their names.
+ */
+
 public class StyleListModel
     extends AbstractListModel
 {
 public int getSize()
   {
-    return Style.numberOfStyles();
+    int number = Style.numberOfStyles();
+    //System.out.println("in StyleListModel number = " + number);
+    return number;
   }
 
 public Object getElementAt(int index)
   {
-    System.out.println("requesting " + index + " of " + getSize() + " " + Style.getNth(index));
+    //System.out.println("requesting " + index + " of " + getSize() + " " + Style.getNth(index));
     return Style.getNth(index);
   }
 
@@ -10647,7 +10655,18 @@ public void reset()
     fireContentsChanged(this, 0, getSize());
   }
 
+public void adjust()
+  {
+    fireIntervalAdded(this, 0, getSize());
+  }
+
 }
+
+
+/**
+ * This is the Model for the list of Sections that appear in the Style Preferences
+ * Dialog.
+ */
 
 public class SectionListModel
     extends AbstractListModel
@@ -10655,11 +10674,6 @@ public class SectionListModel
 
 public int getSize()
   {
-    /**
-     *
-     * Stephen TODO: null pointer exception raised here
-     *
-     */
     if( sectionInfo == null )
       {
         return 0;
@@ -13256,7 +13270,7 @@ private boolean saveStylePrefs()
  * Called when the StyleList is changed
  */    
     
-public void updateStyle()
+public void updateStyleList()
   {
     Style style = (Style) styleList.getSelectedValue();
 
@@ -13264,6 +13278,7 @@ public void updateStyle()
       {
         return; // FIX!
       }
+    
     usePreviousStyleCheckBox.setSelected(false);
     
     swingTF.setText("" + style.getSwing());
@@ -13272,7 +13287,7 @@ public void updateStyle()
 
     if( sectionStyle == null || !style.getName().equals(sectionStyle.getName()) )
       {
-        //         System.out.println("updateStyle called with style = " + style);
+        //         System.out.println("updateStyleList called with style = " + style);
 
         sectionInfo.addSection(style.getName(), 
                                sectionInfo.getStyleIndex(sectionList.getSelectedIndex()),

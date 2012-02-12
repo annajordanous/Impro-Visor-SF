@@ -52,7 +52,9 @@ import polya.PolylistEnum;
 public class Style
         implements Constants, Serializable
   {
-  private static LinkedHashMap<String, Style> allStyles;
+  private static LinkedHashMap<String, Style> allStyles = new LinkedHashMap<String, Style>();
+  
+  private static int numStyles = 86; // TEMPORARY HACK WORK-AROUND
 
   private static String defaultStyleName = "no-style";
   
@@ -228,11 +230,7 @@ public class Style
   private static final int COMMENTS = 14;
 
   private static final int ACCOMPANIMENT_SWING = 15;
-  
-  static
-    {
-      allStyles = new LinkedHashMap<String, Style>();
-    }
+
 
   public static Style getStyle(String name)
     {
@@ -242,7 +240,7 @@ public class Style
   public static void setStyle(String name, Style style)
     {
       allStyles.put(name, style);
-      System.out.println("setting style " + name + " to " + style + " number = " + allStyles.size());
+      //System.out.println("setting style " + name + " to " + style + " number = " + allStyles.size());
     }
   
   public static boolean noStyles()
@@ -252,9 +250,8 @@ public class Style
   
   public static int numberOfStyles()
     {
-      int n = allStyles.size();
-      System.out.println("n = " + n);
-      return n;
+      // should be allStyles.size(); TEMPORARY HACK WORK-AROUND
+      return numStyles;
     }
   
   public static Style getNth(int index)
