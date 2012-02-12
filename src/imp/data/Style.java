@@ -40,7 +40,7 @@ import polya.PolylistEnum;
 /**
  * An object that contains patterns and parameters for generating an
  * accompaniment.
- * Contains functions to create a style from text, output a style to text,
+ * Contains functions to create a orderedStyle from text, output a orderedStyle to text,
  * and, given a ChordPart, arrange patterns to construct an accompaniment.
  * @see         Pattern
  * @see         BassPattern
@@ -54,10 +54,8 @@ public class Style
   {
   private static LinkedHashMap<String, Style> allStyles = new LinkedHashMap<String, Style>();
   
-  private static Object style[] = null;
+  private static ArrayList<Style> orderedStyles = null;
   
-  private static int numStyles = 0; // TEMPORARY HACK WORK-AROUND
-
   private static String defaultStyleName = "no-style";
   
   public static final String USE_PREVIOUS_STYLE = "*";
@@ -80,7 +78,7 @@ public class Style
   public static String NULL = "";
 
   /**
-   * a boolean that determines whether to use "no-style" behavior
+   * a boolean that determines whether to use "no-orderedStyle" behavior
    */
   private boolean noStyle = false;
 
@@ -242,33 +240,31 @@ public class Style
   public static void setStyle(String name, Style style)
     {
       allStyles.put(name, style);
-      //System.out.println("setting style " + name + " to " + style + " number = " + allStyles.size());
+      //System.out.println("setting orderedStyle " + name + " to " + orderedStyle + " number = " + allStyles.size());
     }
   
   public static boolean noStyles()
     {
-      ensureStyleArray();
-      return style.length == 0;
+      return numberOfStyles() == 0;
     }
   
   public static int numberOfStyles()
     {
       ensureStyleArray();
-      return style.length; 
+      return orderedStyles.size(); 
     }
   
     public static Style getNth(int index)
       {
         ensureStyleArray();
-        return (Style)style[index];
+        return orderedStyles.get(index);
       }
     
     private static void ensureStyleArray()
       {
-        if( style == null )
+        if( orderedStyles == null )
             {
-            numStyles = allStyles.size();
-            style = allStyles.values().toArray();
+            orderedStyles = new ArrayList<Style>(allStyles.values());
             }       
       }
   
@@ -428,7 +424,7 @@ public class Style
    */
   public void setChordInstrument(int inst, String caller)
     {
-    //System.out.println("style from " + caller + " setChordInstrument to " + inst);
+    //System.out.println("orderedStyle from " + caller + " setChordInstrument to " + inst);
     chordInstrument = inst;
     }
 
@@ -478,8 +474,8 @@ public class Style
     }
 
   /**
-   * Returns the no style parameter.
-   * @return determines whether this is a "no-style"
+   * Returns the no orderedStyle parameter.
+   * @return determines whether this is a "no-orderedStyle"
    */
   public boolean noStyle()
     {
@@ -487,8 +483,8 @@ public class Style
     }
 
   /**
-   * Sets the no style parameter.
-   * @param b         a boolean determining whether this is a "no-style"
+   * Sets the no orderedStyle parameter.
+   * @param b         a boolean determining whether this is a "no-orderedStyle"
    */
   public void setNoStyle(boolean b)
     {
@@ -713,7 +709,7 @@ public class Style
 
   /**
    * Saves a Style to text format used in Leadsheets.
-   * @param out       a BufferedWriter to write the style to
+   * @param out       a BufferedWriter to write the orderedStyle to
    */
   public void saveLeadsheet(BufferedWriter out) throws IOException
     {
@@ -907,7 +903,7 @@ public class Style
     }
 
   /**
-   * Using the DrumPattern objects of this style, sequences a drumline
+   * Using the DrumPattern objects of this orderedStyle, sequences a drumline
    * of a specified duration onto the track.
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put drum events on
@@ -981,7 +977,7 @@ public class Style
   }
 
   /**
-   * Using the ChordPattern objects of this style, sequences a chordline
+   * Using the ChordPattern objects of this orderedStyle, sequences a chordline
    * of a specified duration onto the track.
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put chord events on
@@ -1149,7 +1145,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
   }
 
   /**
-   * Using the BassPattern objects of this style, sequences a bassline
+   * Using the BassPattern objects of this orderedStyle, sequences a bassline
    * of a specified duration onto the track.
    * @param bassline  a Polylist of NoteSymbols makeing up the bassline so far
    * @param chord     a ChordSymbol containing the current chord to sequence
@@ -1233,7 +1229,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
     }
 
   /**
-   * Using the Pattern objects of this style, sequences an accompaniment
+   * Using the Pattern objects of this orderedStyle, sequences an accompaniment
    * for the given ChordPart.
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put the accompaniment on
@@ -1253,9 +1249,9 @@ static Polylist midiEvent2polylist(MidiEvent event)
 
 
     /**
-     * Ripped from above, to allow non-style, hence no drums...
+     * Ripped from above, to allow non-orderedStyle, hence no drums...
      *
-   * Using the Pattern objects of this style, sequences an accompaniment
+   * Using the Pattern objects of this orderedStyle, sequences an accompaniment
    * for the given ChordPart.
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put the accompaniment on
@@ -1282,7 +1278,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
 
     if( hasStyle && useDrums )
       {
-      // Introduce drums, if there is a style
+      // Introduce drums, if there is a orderedStyle
 
       makeDrumline(seq, track, startTime, endIndex - startIndex, endLimitIndex);
       }
