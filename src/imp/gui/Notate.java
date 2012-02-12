@@ -2276,6 +2276,7 @@ public class Notate
         helpAboutMI = new javax.swing.JMenuItem();
 
         preferencesDialog.setTitle("Preferences and Settings");
+        preferencesDialog.setAlwaysOnTop(true);
         preferencesDialog.setFocusCycleRoot(false);
         preferencesDialog.getRootPane().setDefaultButton(savePrefsBtn);
         preferencesDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -10630,22 +10631,15 @@ public Object getValueAt(int row, int col)
 public class StyleListModel
     extends AbstractListModel
 {
-
-private Polylist styles = null;
-
 public int getSize()
   {
-    styles = Advisor.getAllStyles();
-    if( styles == null )
-      {
-        return 0;
-      }
-    return styles.length();
+    return Style.numberOfStyles();
   }
 
 public Object getElementAt(int index)
   {
-    return (Style) ((Polylist) styles.nth(index)).second();
+    System.out.println("requesting " + index + " of " + getSize() + " " + Style.getNth(index));
+    return Style.getNth(index);
   }
 
 public void reset()
@@ -10735,21 +10729,12 @@ int len;
 
 public int getSize()
   {
-    styles = Advisor.getAllStyles();
-
-    if( styles == null )
-      {
-        return 0;
-      }
-
-    len = styles.length();
-
-    return len;
+  return Style.numberOfStyles();
   }
 
 public Object getElementAt(int index)
   {
-    return (Style) ((Polylist) styles.nth(index)).second();
+    return Style.getNth(index);
   }
 
 private Object selectedItem = null;
@@ -17351,8 +17336,6 @@ public void cmReset()
   
 public boolean setupLeadsheet(File file, boolean openCorpus)
   {
-    //System.out.println("setupLeadsheet");
-    Advisor.useBackupStyles();
     Score newScore = new Score();
 
     //cm.execute(new OpenLeadsheetCommand(file, newScore));
@@ -17563,12 +17546,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     }
     
-public void WriteLeadsheetToFile(File file) {
-        Advisor.useBackupStyles();
-        
-    }
- 
-    
+
     /* Takes index and finds last index with note in it
      */
     public int getLastNoteIndex(int slot, MelodyPart melpart) {

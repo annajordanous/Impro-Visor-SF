@@ -21,14 +21,21 @@
 
 package imp.gui;
 
+import imp.Constants;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
-import imp.Constants;
-import imp.data.*;
-import java.awt.*;
-import java.util.Vector;
+import imp.data.ChordPart;
+import imp.data.MIDIBeast;
+import imp.data.Score;
+import imp.data.Style;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.util.Enumeration;
-import javax.swing.*;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 
 
@@ -1047,7 +1054,7 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
             tempStyle.setSwing(swingVal);
             tempStyle.setAccompanimentSwing(swingVal);
             
-            Advisor.addStyle(tempStyle);
+            Style.setStyle("count-in", tempStyle);
 
             String chord = "NC"; // styleParent.getChord();
 

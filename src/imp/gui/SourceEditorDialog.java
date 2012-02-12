@@ -190,7 +190,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 break;
             case STYLE:
                 cm.execute(new EditorToStylesCommand(this));
-                parent.reloadStyles();
+                //parent.reloadStyles();
                 break;
             case DICTIONARY:
                 new EditorToDictionaryCommand((RoadMapFrame)frameParent, this).execute();

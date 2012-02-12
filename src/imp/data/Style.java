@@ -26,6 +26,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
@@ -45,11 +47,13 @@ import polya.PolylistEnum;
  * @see         DrumPattern
  * @see         ChordPattern
  * @see         ChordPart
- * @author      Stephen Jones
+ * @author      Stephen Jones, Robert Keller
  */
 public class Style
         implements Constants, Serializable
   {
+  private static LinkedHashMap<String, Style> allStyles;
+
   private static String defaultStyleName = "no-style";
   
   public static final String USE_PREVIOUS_STYLE = "*";
@@ -224,7 +228,50 @@ public class Style
   private static final int COMMENTS = 14;
 
   private static final int ACCOMPANIMENT_SWING = 15;
+  
+  static
+    {
+      allStyles = new LinkedHashMap<String, Style>();
+    }
 
+  public static Style getStyle(String name)
+    {
+      return allStyles.get(name);
+    }
+  
+  public static void setStyle(String name, Style style)
+    {
+      allStyles.put(name, style);
+      System.out.println("setting style " + name + " to " + style + " number = " + allStyles.size());
+    }
+  
+  public static boolean noStyles()
+    {
+      return allStyles.isEmpty();
+    }
+  
+  public static int numberOfStyles()
+    {
+      int n = allStyles.size();
+      System.out.println("n = " + n);
+      return n;
+    }
+  
+  public static Style getNth(int index)
+    {
+      int i = 0;
+        for( Iterator<Style> it = allStyles.values().iterator(); it.hasNext(); )
+          {
+            Style style = it.next();
+            if( index == i )
+              {
+                return style;
+              }
+            i++;
+          }
+      return null; 
+    }
+  
   /**
    * Gets the voicing type.
    * @return the voicing type

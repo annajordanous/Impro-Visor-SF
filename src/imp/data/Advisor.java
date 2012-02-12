@@ -29,7 +29,6 @@ import imp.util.ProgramStatus;
 import imp.util.Trace;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 import polya.Polylist;
 import polya.PolylistEnum;
@@ -88,14 +87,6 @@ private static Polylist chords;
  */
 private static Polylist scales;
 
-/**
- * an association list from style names to Styles
- * maintained in reverse order from what is shown or input.
- */
-
-private static Polylist styles = Polylist.nil;
-
-private static Polylist backupStyles = Polylist.nil;
 
 // cell flavors
 static final int PLAIN_CELL = 0;
@@ -746,43 +737,9 @@ public static boolean updateStyle(Polylist style)
     }
 
   String name = s.getName();
+  
+  Style.setStyle(name, s);
 
-  Polylist newItem = Polylist.list(name, s);
-
-  Polylist L = styles;
-  Polylist R = Polylist.nil; // styles reserved for restoration
-
-  while( L.nonEmpty() )
-    {
-    if( ((Polylist)L.first()).first().equals(name) )
-      {
-      // found style with the given name
-      // debug: System.out.println("found style " + name);
-      L = L.rest().cons(newItem);
-      break;
-      }
-    else
-      {
-      // keep looking
-      R = R.cons(L.first());
-      L = L.rest();
-      }
-    }
-
-  if( L.isEmpty() )
-    {
-    // never found style
-    L = L.cons(newItem);
-    }
-
-  // restore reserved styles
-  while( R.nonEmpty() )
-    {
-    L = L.cons(R.first());
-    R = R.rest();
-    }
-  styles = L;
-  backupStyles = copyStyles(L);
   return true;
   }
 
@@ -1844,32 +1801,6 @@ public Polylist getApproachTree(ChordSymbol chordSymbol,
   }
 
 
-public static void useBackupStyles()
-  {
-  styles = copyStyles(backupStyles);
-
-  }
-
-/* copy styles, e.g. to make backup */
-
-public static Polylist copyStyles(Polylist L)
-  {
-
-  Polylist result = Polylist.nil;
-  while( L.nonEmpty() )
-    {
-    Polylist item = (Polylist)L.first();
-    L = L.rest();
-
-    Style s = (Style)item.second();
-
-    result = result.cons(Polylist.list(item.first(), s.copy()));
-    }
-
-  return result.reverse();
-  }
-
-
 /**
  * Checks the existence of a style
  */
@@ -1884,16 +1815,19 @@ public static boolean styleExists(String name)
  */
 public static Style getStyle(String name)
   {
-  if( styles == null )
+  if( Style.noStyles() )
     {
     ErrorLog.log(ErrorLog.SEVERE,
             "There are no styles. This could be a problem.");
     return null;
     }
-  Polylist item = styles.assoc(name);
-  if( item == null )
+  
+  Style style = Style.getStyle(name);
+  
+  if( style == null )
     {
     String defaultStyle = Preferences.getPreference(Preferences.DEFAULT_STYLE);
+    
     // Don't warn more than once about a given style.
     if( !name.equals(Style.USE_PREVIOUS_STYLE) && !styleWarnings.contains(name) )
       {
@@ -1901,8 +1835,9 @@ public static Style getStyle(String name)
       ErrorLog.log(ErrorLog.WARNING,
               "Requested style '" + name + "' not found, using default: " + defaultStyle + ".");
       }
-    item = styles.assoc(defaultStyle);
-    if( item == null )
+    style = Style.getStyle(defaultStyle);
+    
+    if( style == null )
       {
       ErrorLog.log(ErrorLog.SEVERE,
               "Default style '" + defaultStyle + "' not found. This could be a problem.");
@@ -1910,13 +1845,12 @@ public static Style getStyle(String name)
       }
     }
 
-  Style s = (Style)item.second();
-  return s;
+  return style;
   }
 
 public static void addStyle(String name, Style style)
   {
-    styles = styles.cons(Polylist.list(name, style));
+    Style.setStyle(name, style);
   }
 
 public static void addStyle(Style style)
@@ -3551,7 +3485,6 @@ public static void addMoreRules(Polylist rules)
       addUserRule((Polylist)first);
       }
     }
-  backupStyles = copyStyles(styles).reverse();
   }
 
 
@@ -3609,32 +3542,5 @@ public static Polylist getAllChords()
   return chords;
   }
 
-
-public static Polylist getAllStyles()
-  {
-  return styles;
-  }
-
-
-/**
- * Clears out all styles from ruleArray and from styles and backupStyles.
- */
-public static void clearAllStyles()
-  {
-  styles = Polylist.nil;
-  backupStyles = Polylist.nil;
-  Iterator<Polylist> i = ruleArray.iterator();
-  Iterator<Boolean> j = markArray.iterator();
-  while( i.hasNext() )
-    {
-    Polylist L = i.next();
-    j.next();
-    if( ((String)L.first()).equals(STYLE) )
-      {
-      i.remove();
-      j.remove();
-      }
-    }
-  }
 
 }

@@ -51,16 +51,13 @@ public class EditorToStylesCommand implements Command {
         if(rules.isEmpty())
             return;
         
-        Advisor.clearAllStyles();
-       
         // Add the rules back as style specifications.
         while( rules.nonEmpty() ) {
             if(rules.first() instanceof Polylist)
                 Advisor.addUserRule((Polylist)rules.first());
             rules = rules.rest();
         }
-        
-        Advisor.useBackupStyles();
+
     }
 
     /**
