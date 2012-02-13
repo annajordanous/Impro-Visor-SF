@@ -409,7 +409,7 @@ public class Style
    */
   public void setSwing(double s)
     {
-      System.out.println("setting swing of " + name + " to " + s);
+      //System.out.println("setting swing of " + name + " to " + s);
     swing = s;
     }
 

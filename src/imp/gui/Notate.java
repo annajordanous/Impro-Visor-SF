@@ -7033,7 +7033,7 @@ public class Notate
 
         loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        loopSet.setText("2");
+        loopSet.setText("0");
         loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
         loopSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         loopSet.setMaximumSize(new java.awt.Dimension(30, 20));
