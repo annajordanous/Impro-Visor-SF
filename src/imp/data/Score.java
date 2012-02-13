@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,15 +20,20 @@
 
 package imp.data;
 
-import java.util.*;
-import java.io.*;
-import javax.sound.midi.*;
-
 import imp.Constants;
 import imp.roadmap.RoadMapFrame;
-import imp.util.Trace;
 import imp.util.Preferences;
-import polya.*;
+import imp.util.Trace;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.ListIterator;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
+import polya.Polylist;
 
 /**
  * The Score class is representative of a musical score, containing several
@@ -438,7 +442,9 @@ public class Score implements Constants, Serializable {
         for(int i = 0; i < parts; i++) {
             MelodyPart mp = new MelodyPart(length);
             if(partList.size() > 0)
+                {
                 mp.setInstrument(partList.get(0).getInstrument());
+                }
             partList.add(mp);
         }
     }
@@ -475,7 +481,9 @@ public class Score implements Constants, Serializable {
         ListIterator<MelodyPart> i = partList.listIterator();
 	
         while(i.hasNext())
-	    i.next().setMetre(top, bottom);
+            {
+            i.next().setMetre(top, bottom);
+            }
     }
     
     public void setMetre(int metre[])
@@ -512,7 +520,9 @@ public class Score implements Constants, Serializable {
         chordProg.setKeySignature(keySig);
         ListIterator<MelodyPart> i = partList.listIterator();
         while(i.hasNext())
+            {
             i.next().setKeySignature(keySig);
+            }
     }
     
     /**
@@ -523,19 +533,24 @@ public class Score implements Constants, Serializable {
         return keySig;
     }
     
-    public void setLength(int newLength) {
+    public void setLength(int newLength)
+      {
         if( newLength == length )
-          {
-          return;	// avoid unnecessary setting
-          }
+            {
+            return;	// avoid unnecessary setting
+            }
         Trace.log(3, "setting score length to " + newLength);
         length = newLength;
-        if(chordProg != null)
+        if( chordProg != null )
+            {
             chordProg.setSize(length);
+            }
         Iterator<MelodyPart> i = partList.listIterator();
-        while(i.hasNext())
+        while( i.hasNext() )
+            {
             i.next().setSize(length);
-    }
+            }
+      }
     
     public int getLength()
       {
@@ -675,8 +690,10 @@ public class Score implements Constants, Serializable {
 
         ListIterator<MelodyPart> i = partList.listIterator();
         while(i.hasNext())
+            {
             scoreData += "Part " + i.nextIndex() + ":" + '\n' +
                          i.next().toString() + '\n';
+            }
         return scoreData;
     }
 
@@ -968,10 +985,14 @@ public class Score implements Constants, Serializable {
 	Chord current = chordProg.getCurrentChord(index);
 
         if(current == null || current.getName().equals(NOCHORD))
+            {
             return enh;
+            }
 
         if (tones == null || tones.isEmpty())
+            {
             return enh;
+            }
 
         // Look at all the chord tones in the list and determine whether we need to change
         // any accidental labels from '#' to 'b'
@@ -985,37 +1006,57 @@ public class Score implements Constants, Serializable {
                 switch (first.getPitchString().charAt(0))
                 {
                     case 'c':
-                        if (first.getPitchString().charAt(1) == '#')
+                        if( first.getPitchString().charAt(1) == '#' )
+                            {
                             enh[CSHARP] = true;
+                            }
                         break;
                     case 'd':
-                        if (first.getPitchString().charAt(1) == 'b')
+                        if( first.getPitchString().charAt(1) == 'b' )
+                            {
                             enh[CSHARP] = false;
-                        else if (first.getPitchString().charAt(1) == '#')
+                            }
+                        else if( first.getPitchString().charAt(1) == '#' )
+                            {
                             enh[DSHARP] = true;
+                            }
                         break;
                     case 'e':
-                        if (first.getPitchString().charAt(1) == 'b')
+                        if( first.getPitchString().charAt(1) == 'b' )
+                            {
                             enh[DSHARP] = false;
+                            }
                         break;
                     case 'f':
-                        if (first.getPitchString().charAt(1) == '#')
+                        if( first.getPitchString().charAt(1) == '#' )
+                            {
                             enh[FSHARP] = true;
+                            }
                     case 'g':
-                        if (first.getPitchString().charAt(1) == 'b')
+                        if( first.getPitchString().charAt(1) == 'b' )
+                            {
                             enh[FSHARP] = false;
-                        else if (first.getPitchString().charAt(1) == '#')
+                            }
+                        else if( first.getPitchString().charAt(1) == '#' )
+                            {
                             enh[GSHARP] = true;
+                            }
                         break;
                     case 'a':
-                        if (first.getPitchString().charAt(1) == 'b')
+                        if( first.getPitchString().charAt(1) == 'b' )
+                            {
                             enh[GSHARP] = false;
-                        else if (first.getPitchString().charAt(1) == '#')
+                            }
+                        else if( first.getPitchString().charAt(1) == '#' )
+                            {
                             enh[ASHARP] = true;
+                            }
                         break;
                     case 'b':
-                        if (first.getPitchString().charAt(1) == 'b')
+                        if( first.getPitchString().charAt(1) == 'b' )
+                            {
                             enh[ASHARP] = false;
+                            }
                         break;
                 }
             }
