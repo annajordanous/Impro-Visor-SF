@@ -20481,8 +20481,9 @@ public boolean getCreateRoadMapState()
   {
     return createRoadMapCheckBox.isSelected();
   }
+
 private void layoutTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutTFActionPerformed
-    // TODO add your handling code here:
+    savePrefs(); 
 }//GEN-LAST:event_layoutTFActionPerformed
 
 private void phraseCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phraseCheckBoxActionPerformed

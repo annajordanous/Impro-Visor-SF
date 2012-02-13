@@ -84,7 +84,7 @@ private static int styleYoffset = 50;
  */
 private static final int maxTimeSigWidth = 6;
 private boolean beamingNotes = true;
-public static final int maxMeasuresPerLine = 16;
+public static final int maxMeasuresPerLine = 64;
 private static final int selectionBoxPadding = 8;
 public static int sheetTitleYoffset = 20;
 public static int sheetComposerYoffset = 38;
@@ -2043,7 +2043,13 @@ public Polylist getLayoutList()
     Polylist result = Polylist.nil;
     for( int i = lineMeasures.length - 1; i >= 0; i-- )
       {
-        result = result.cons(new Long(lineMeasures[i]));
+        int lineLength = lineMeasures[i];
+        if( lineLength >= maxMeasuresPerLine )
+            {
+            // Quietly set the length to the max
+            lineLength = maxMeasuresPerLine-1;
+            }
+        result = result.cons(new Long(lineLength));
       }
     return result;
   }
@@ -4088,14 +4094,14 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
     int widthOver = 240;
 
     // Array for the width of each measure. Assumes no line will have more
-    // than 16 measures
+    // than maxMeasuresPerLine measures
 
-    int[] measureWidth = new int[maxMeasuresPerLine];
+    int[] measureWidth = new int[maxMeasuresPerLine+1];
 
     // Array for how many cstr lines are in each measure. Assumes no line
     // will have more than maxMeasuresPerLine measures
 
-    int[] measureCstrLines = new int[maxMeasuresPerLine];
+    int[] measureCstrLines = new int[maxMeasuresPerLine+1];
 
     // initialize the start of each measure array to 0
 
@@ -4134,7 +4140,8 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
             && notate.hasLockedMeasures() 
             && staveLine < notate.getLockedMeasures().length )   // may get out of bounds index without this
       {
-        while( lineMeasureCount < notate.getLockedMeasures()[staveLine] && i < part.size() )
+        int lockedMeasures = notate.getLockedMeasures()[staveLine];
+        while( lineMeasureCount < lockedMeasures && i < part.size() )
           {
 
             // if there is a construction line
@@ -4158,9 +4165,12 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
 
                 // the previous measure has then been filled
                 lineMeasureCount++;
-
+                if( lineMeasureCount >= maxMeasuresPerLine )
+                    {
+                    lineMeasureCount = lockedMeasures;
+                    }
                 // initialize the next units in the measure arrays
-                measureWidth[lineMeasureCount] = 0;
+                 measureWidth[lineMeasureCount] = 0;
                 measureCstrLines[lineMeasureCount] = 0;
               }
 
@@ -4206,6 +4216,11 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
 
                 // the previous measure has then been filled
                 lineMeasureCount++;
+                
+                if( lineMeasureCount >= maxMeasuresPerLine )
+                    {
+                    lineMeasureCount = notate.getLockedMeasures()[staveLine];
+                    }
 
                 // initialize the next units in the measure arrays
                 measureWidth[lineMeasureCount] = 0;
