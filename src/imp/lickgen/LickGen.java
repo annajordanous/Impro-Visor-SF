@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,17 +21,22 @@
 
 package imp.lickgen;
 
-import java.util.*;
-import imp.*;
+import imp.Constants;
+import imp.ImproVisor;
 import imp.cluster.*;
 import imp.data.*;
+import imp.gui.Notate;
 import imp.util.ErrorLog;
 import java.io.File;
-import imp.gui.Notate;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import polya.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Random;
+import java.util.Vector;
+import polya.Polylist;
+import polya.PolylistEnum;
 
 /**
  @author David Morrison
@@ -92,12 +97,12 @@ public class LickGen implements Constants
     public static final String REST_SYMBOL = "R";
     public static int MELODY_GEN_LIMIT = 15;
     private int NOTE_GEN_LIMIT = 100;    
-    public Vector<double[]> probs;  // Array of note probabilities
+    public ArrayList<double[]> probs;  // Array of note probabilities
     private Grammar grammar;
     private double[] pitchUsed = new double[TOTALPITCHES];
     private Polylist preferredScale = Polylist.nil;
-    Vector<String> chordUsed = new Vector<String>();
-    Vector<Integer> chordUsedSection = new Vector<Integer>();    // Indices that are global to an instance
+    ArrayList<String> chordUsed = new ArrayList<String>();
+    ArrayList<Integer> chordUsedSection = new ArrayList<Integer>();    // Indices that are global to an instance
     int position = 0;
     int oldPitch = 0;
 
@@ -147,7 +152,7 @@ public class LickGen implements Constants
     //System.out.println("Lickgen constructor grammarFile = " + grammarFile);
         this.notate = notate;
         grammar = new Grammar(grammarFile);
-        probs = new Vector<double[]>();
+        probs = new ArrayList<double[]>();
         chordUsed.clear();
         chordUsedSection.clear();
         
@@ -294,7 +299,7 @@ public class LickGen implements Constants
         return t;
     }
     
-    //Takes a vector of possible outlines and extends an outline
+    //Takes a ArrayList of possible outlines and extends an outline
     //by 1 measure at the beginning or end if it is 1 measure too short
     private void completeOutlines(Vector<Vector<ClusterSet>> possibleOutlines, int numMeasures) {
         
@@ -664,7 +669,7 @@ public class LickGen implements Constants
      * Get the normalized values in our probability array.
      */
 
-    public Vector<double[]> getProbs() {
+    public ArrayList<double[]> getProbs() {
         return probs;
     }
 
@@ -689,7 +694,7 @@ public class LickGen implements Constants
      * Set note probabilites according to the values specified in the input array.
      */
 
-    public void setProbs(Vector<double[]> p) {
+    public void setProbs(ArrayList<double[]> p) {
         // Clear out all the old probabilities
         probs.clear();
 
@@ -722,7 +727,7 @@ public class LickGen implements Constants
     @param length
     @return
      */
-public Vector<double[]> fillProbs(ChordPart chordProg, 
+public ArrayList<double[]> fillProbs(ChordPart chordProg, 
                                   double chordToneProb,
                                   double scaleToneProb, 
                                   double colorToneProb,
@@ -812,7 +817,7 @@ public Vector<double[]> fillProbs(ChordPart chordProg,
             accumulateProbs(chordTones, chordToneProb, p);
             accumulateProbs(colorTones, colorToneProb, p);
 
-            // Advance to the next chord, and add the probabilities to our vector.
+            // Advance to the next chord, and add the probabilities to our ArrayList.
 
             nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
             probs.add(p);
@@ -870,7 +875,7 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
         }
 
         int distinctDurations = 0;
-        Vector<Integer> noteDurations = new Vector<Integer>();
+        ArrayList<Integer> noteDurations = new ArrayList<Integer>();
         for (int i = minDuration; i >= maxDuration; i /= 2) {
             noteDurations.add(i);
             distinctDurations++;
@@ -2062,8 +2067,8 @@ private boolean checkNote(int pos, int pitch, String pitchString,
 // selected based on the given note probabilities.
     private int getRandomNote(int pitch, int minStep, int maxStep,
             int minPitch, int maxPitch, int section) {
-        Vector<Integer> availPitches = new Vector<Integer>();
-        Vector<Double> availProbs = new Vector<Double>();
+        ArrayList<Integer> availPitches = new ArrayList<Integer>();
+        ArrayList<Double> availProbs = new ArrayList<Double>();
         double probSum = 0.0;
 
         try {

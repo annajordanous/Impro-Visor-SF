@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
  *
  * Impro-Visor is free software; you can redistribute it and/or modifyc
@@ -27,23 +27,24 @@
 
 package imp.gui;
 
-import imp.cluster.*;
-import imp.com.*;
-import imp.data.*;
 import imp.Directories;
 import imp.ImproVisor;
-import imp.lickgen.*;
+import imp.cluster.PolylistComparer;
+import imp.com.*;
+import imp.data.*;
+import imp.lickgen.Grammar;
+import imp.lickgen.LickGen;
 import imp.util.ProfileFilter;
-
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Vector;
 import javax.swing.*;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.plaf.metal.*;
-import javax.swing.JScrollPane;
-import java.util.*;
-
-import polya.*;
+import javax.swing.plaf.metal.MetalButtonUI;
+import polya.Polylist;
+import polya.Tokenizer;
 
 
 /**
@@ -136,10 +137,10 @@ private JFileChooser openCWFC;
 private boolean rectify = true;
 
 /**
- * Vector of JTextField arrays, used to display probabilities used in lick generation
+ * ArrayList of JTextField arrays, used to display probabilities used in lick generation
  */
 
-private Vector<JTextField[]> lickPrefs = new Vector<JTextField[]>();
+private ArrayList<JTextField[]> lickPrefs = new ArrayList<JTextField[]>();
 
 /**
  * this will be set to true during extraction of all measures in a corpus
@@ -2141,10 +2142,10 @@ private void initCompFileChoosers() {
  @return pitch-class probabilities
  */
 
-public Vector<double[]> readProbs()
+public ArrayList<double[]> readProbs()
   {
 
-    Vector<double[]> probs = new Vector<double[]>();
+    ArrayList<double[]> probs = new ArrayList<double[]>();
 
     for( int i = 0; i < lickPrefs.size(); ++i )
       {
@@ -2199,9 +2200,9 @@ public void redrawTriage()
     // We need to keep track of both the chords we've already looked at
     // and the old probability values.
 
-    Vector<String> chordUsed = new Vector<String>();
+    ArrayList<String> chordUsed = new ArrayList<String>();
 
-    Vector<JTextField[]> oldProbs = (Vector<JTextField[]>) lickPrefs.clone();
+    ArrayList<JTextField[]> oldProbs = (ArrayList<JTextField[]>) lickPrefs.clone();
 
 
     int start = notate.getCurrentSelectionStart();
@@ -2219,7 +2220,7 @@ public void redrawTriage()
 
     ChordPart chordPart = notate.getChordProg();
 
-    Vector<Integer> chordChanges = new Vector<Integer>();
+    ArrayList<Integer> chordChanges = new ArrayList<Integer>();
 
     chordChanges.add(start);
 
@@ -2415,7 +2416,7 @@ public void redrawTriage()
     // to make sure that we don't try to write into text fields that aren't there.
     else
       {
-        Vector<double[]> probs = new Vector<double[]>();
+        ArrayList<double[]> probs = new ArrayList<double[]>();
 
         for( int i = 0; i < lickPrefs.size(); ++i )
           {
@@ -2588,14 +2589,14 @@ getAbstractMelody();
         Grammar g = lickgen.getGrammar();
         Polylist rules = g.getRules();
 
-        Vector<Polylist> ruleList = new Vector<Polylist>();
+        ArrayList<Polylist> ruleList = new ArrayList<Polylist>();
         for( Polylist L = rules; L.nonEmpty(); L = L.rest() )
           {
             ruleList.add((Polylist) L.first());
           }
         Collections.sort(ruleList, new PolylistComparer());
 
-        Vector<Polylist> newRules = new Vector<Polylist>();
+        ArrayList<Polylist> newRules = new ArrayList<Polylist>();
 
 
         Polylist previous = Polylist.nil;
@@ -2604,9 +2605,9 @@ getAbstractMelody();
 
         //Note - rules must have form similar to (rule (V4) (N4) 0.22)
 
-        for( Enumeration<Polylist> e = ruleList.elements(); e.hasMoreElements(); )
+        for( Iterator<Polylist> e = ruleList.iterator(); e.hasNext(); )
           {
-            Polylist current = e.nextElement();
+            Polylist current = e.next();
             if( current.first().equals("rule") || current.first().equals("base") )
               {
                 if( (!previous.equals(Polylist.nil)) && current.allButLast().equals(
@@ -2620,7 +2621,7 @@ getAbstractMelody();
                   {
                     if( previous.nonEmpty() )
                       {
-                        newRules.addElement(
+                        newRules.add(
                             Polylist.list(previous.first(), previous.second(),
                                           previous.third(),
                                           accumulatedProbability));
@@ -2631,12 +2632,12 @@ getAbstractMelody();
               }
             else
               {
-                newRules.addElement(current);
+                newRules.add(current);
               }
           }
         if( previous.nonEmpty() )
           {
-            newRules.addElement(Polylist.list(previous.first(),
+            newRules.add(Polylist.list(previous.first(),
                                               previous.second(),
                                               previous.third(),
                                               accumulatedProbability));
@@ -2842,7 +2843,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     Polylist rhythmString = new Polylist();
 
     //pitches of notes in measure not including rests
-    Vector<Integer> notes = new Vector<Integer>();
+    ArrayList<Integer> notes = new ArrayList<Integer>();
 
     //System.out.println("selStart: " + selStart);
     //System.out.println(part.getPrevNote(current));
@@ -3043,7 +3044,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
      */
     //process intervals
-    Vector<Integer> intervals = new Vector<Integer>();
+    ArrayList<Integer> intervals = new ArrayList<Integer>();
     intervals.add(0);
     for( int i = 1; i < notes.size(); i++ )
       {
@@ -3056,7 +3057,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     //}
 
     //process slopes
-    Vector<int[]> slopes = new Vector<int[]>();
+    ArrayList<int[]> slopes = new ArrayList<int[]>();
     int[] slope = new int[3];
     int tracker = 0;
 
@@ -3900,7 +3901,7 @@ private void triageAndGenerate(int number)
                                 return;
                               }
 
-                            Vector<double[]> probs = lickgen.fillProbs(
+                            ArrayList<double[]> probs = lickgen.fillProbs(
                                 notate.getChordProg(),
                                                                        chordToneWeight,
                                                                        scaleToneWeight,
