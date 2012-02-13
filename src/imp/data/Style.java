@@ -265,7 +265,7 @@ public class Style
     
     private static void ensureStyleArray()
       {
-        if( orderedStyles == null )
+        //if( orderedStyles == null )
             {
             orderedStyles = new ArrayList<Style>(allStyles.values());
             }       

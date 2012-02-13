@@ -1055,6 +1055,10 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
             tempStyle.setAccompanimentSwing(swingVal);
             
             Style.setStyle("count-in", tempStyle);
+            
+            // This is necessary so that the StyleListModel menu in notate is reset.
+            // Without it, the contents will be emptied.
+            parent.reloadStyles();
 
             String chord = "NC"; // styleParent.getChord();
 

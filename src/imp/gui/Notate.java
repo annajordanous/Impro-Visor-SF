@@ -10652,11 +10652,13 @@ public Object getElementAt(int index)
 
 public void reset()
   {
+    //System.out.println("reset");
     fireContentsChanged(this, 0, getSize());
   }
 
 public void adjust()
   {
+    //System.out.println("adjust");
     fireIntervalAdded(this, 0, getSize());
   }
 
@@ -13283,9 +13285,9 @@ public void updateStyleList()
     
     swingTF.setText("" + style.getSwing());
 
-    Style sectionStyle = sectionInfo.getStyle(sectionList.getSelectedIndex());
+    //Style sectionStyle = sectionInfo.getStyle(sectionList.getSelectedIndex());
 
-    if( sectionStyle == null || !style.getName().equals(sectionStyle.getName()) )
+    //if( sectionStyle == null || !style.getName().equals(sectionStyle.getName()) )
       {
         //         System.out.println("updateStyleList called with style = " + style);
 
