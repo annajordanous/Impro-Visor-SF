@@ -438,12 +438,17 @@ public long sequence(Sequence seq, int ch, long time, Track track,
     while( k.hasNext() ) //&& (endLimitIndex == ENDSCORE || endIndex <= endLimitIndex) )
       {
         SectionRecord record = k.next();
-        Style style = record.getStyle();
-        if( style == null )
+        Style style;
+        if( record.getUsePreviousStyle() )
           {
             style = mostRecentStyle;
+            //System.out.println("using previous style " + style);
           }
-        mostRecentStyle = style;
+        else
+          {
+            style = record.getStyle();
+            mostRecentStyle = style;
+          }
         
         int startIndex = record.getIndex();
         

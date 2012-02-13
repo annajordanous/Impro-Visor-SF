@@ -838,12 +838,24 @@ public class Part implements Constants, Serializable {
     public void makeSwing(SectionInfo sectionInfo) {
         // The index here iterates through the start of every beat
 
+        Style previousStyle = Style.getStyle("swing"); // TEMP: FIX!
         for(int i = 0; i+beatValue-1 < size; i += beatValue) {
-            Style s = sectionInfo.getStyleFromSlots(i);
+            SectionRecord record = sectionInfo.getSectionRecordBySlot(i);
             
-            //System.out.println("i = " + i + ", style = " + s );
-            
-            double swingValue = s == null ? DEFAULT_SWING : s.getSwing();
+            Style s;
+            if( record.getUsePreviousStyle() )
+                {
+                s = previousStyle;
+                }
+            else
+                {
+                s = record.getStyle();
+                previousStyle = s;
+                }
+                        
+            double swingValue = s.getSwing();
+
+            //System.out.println("i = " + i + ", style = " + s + " swing = " + swingValue);
 
             // FIX: Notice the problem here when i < size, the original condition, is used.
 
@@ -854,8 +866,9 @@ public class Part implements Constants, Serializable {
             Unit unit2 = slots.get(i+1*beatValue/2);
             Unit unit3 = slots.get(i+3*beatValue/4);
 
-            // we only swingValue if there is no second sixteenth note
+            // we only use swingValue if there is no second sixteenth note
             // (we don't want to swingValue a beat of four sixteenths)
+            
             if(unit1 == null && unit2 != null) {
 
                 /* formerly:
