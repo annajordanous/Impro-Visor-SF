@@ -120,7 +120,7 @@ public class LickGen implements Constants
     private int slotsPerMeasure;
     
     //head file data
-    private Vector<Score> headData = new Vector<Score> ();
+    private ArrayList<Score> headData = new ArrayList<Score> ();
     
     //fillmelody parameters from notate
     private int mMinPitch;
@@ -2174,7 +2174,7 @@ private boolean checkNote(int pos, int pitch, String pitchString,
         return grammar;
     }
     
-    public Vector<Score> getHeadData() {
+    public ArrayList<Score> getHeadData() {
         return headData;
     }
 }

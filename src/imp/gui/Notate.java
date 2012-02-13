@@ -40,7 +40,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Vector;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
@@ -2434,6 +2433,7 @@ public class Notate
 
         currentStyleTab.setLayout(new java.awt.GridBagLayout());
 
+        selectAStyleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         selectAStyleLabel.setText("Style:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -2546,6 +2546,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(newSectionButton, gridBagConstraints);
 
+        measureLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         measureLabel.setText("Starting Measure:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -2572,6 +2573,7 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(measureTF, gridBagConstraints);
 
+        sectionLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         sectionLabel.setText("Sections:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -11803,7 +11805,7 @@ public void generateLick(Polylist rhythm)
 
 private void adjustLickToHead(MelodyPart lick)
   {
-    Vector<Score> heads = lickgen.getHeadData();
+    ArrayList<Score> heads = lickgen.getHeadData();
     Score head = null;
     for( int i = 0; i < heads.size(); i++ )
       {
@@ -17523,7 +17525,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     return getMelodyData(score, chorusNumber);
   }
     
-    /*Returns a vector of Strings representing a section of the melody of a
+    /*Returns an ArrayList of Strings representing a section of the melody of a
      *chorus and containing the notes in the section     */
     public ArrayList<String> getMelodyData(Score s, int chorusNumber) {
         MelodyPart melPart = s.getPart(chorusNumber).copy();
