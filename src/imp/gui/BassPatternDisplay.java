@@ -880,16 +880,25 @@ public class BassPatternDisplay extends PatternDisplay
                 c.setStyle(tempStyle);
                 
                 Score s = new Score(4); // Why 4??
-                if(muteChord)s.setChordVolume(0);
-                else s.setChordVolume(styleParent.getVolume());
+                s.setChordProg(c);
+
+                if( muteChord )
+                  {
+                    s.setChordVolume(0);
+                  }
+                else
+                  {
+                    s.setChordVolume(styleParent.getVolume());
+                  }
                 s.setBassVolume(styleParent.getVolume());
                 s.setTempo(styleParent.getTempo());
 
                 MidiSynth synth = parent.getMidiSynth();
 
                 s.setVolumes(synth);
-                s.setChordProg(c);
                 
+                //System.out.println("c = " + c);
+                //System.out.println("s = " + s);
                 parent.cm.execute(new PlayScoreCommand(s, 0, true, synth, parent.getTransposition())); // REVISIT!
                 styleParent.setStatus("OK");
                 

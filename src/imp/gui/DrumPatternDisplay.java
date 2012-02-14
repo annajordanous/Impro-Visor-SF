@@ -1123,6 +1123,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             int duration = tempStyle.getDrumPatternDuration();
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
+            s.setChordProg(c);
 
             if( muteChord )
               {
@@ -1135,7 +1136,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             s.setBassVolume(styleParent.getVolume());
             s.setTempo(tempo);
             s.setVolumes(parent.getMidiSynth());
-            s.setChordProg(c);
 
             parent.cm.execute(new PlayScoreCommand(s, 0, true,
                                                    parent.getMidiSynth(),

@@ -409,8 +409,10 @@ public class Score implements Constants, Serializable {
     
     public void setVolumes(MidiSynth midiSynth) {
         Style style = getChordProg().getStyle();
+        //System.out.println("style = " + style);
         if( style != null )
           {
+          //System.out.println("setting volumes Bass, Drum, Chord = " + bassVolume + " " + drumVolume + " " + chordVolume);
           midiSynth.setChannelVolume(style.getBassChannel(),  bassVolume);
           midiSynth.setChannelVolume(style.getDrumChannel(),  drumVolume);
           midiSynth.setChannelVolume(style.getChordChannel(), chordVolume);

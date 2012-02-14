@@ -270,6 +270,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 c.setStyle(tempStyle);
                 
                 Score s = new Score(4);
+               s.setChordProg(c);
               if( muteChord )
                 {
                 s.setChordVolume(0);
@@ -281,8 +282,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 s.setBassVolume(styleParent.getVolume());
                 s.setTempo(styleParent.getTempo());
                 s.setVolumes(parent.getMidiSynth());
-                s.setChordProg(c);
-                
+                 
                 /* if(styleParent.isLooped()) parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), styleParent.getLoopCount())); 
                 else*/ parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), parent.getTransposition())); 
                 styleParent.setStatus("OK");

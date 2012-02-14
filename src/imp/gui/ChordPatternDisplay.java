@@ -873,10 +873,11 @@ public class ChordPatternDisplay
                 c.setStyle(tempStyle);
                 
                 Score s = new Score(4);
+                s.setChordProg(c);
                 s.setChordVolume(styleParent.getVolume());
                 s.setTempo(styleParent.getTempo());
                 s.setVolumes(parent.getMidiSynth());
-                s.setChordProg(c);
+
                 
                 /*if(styleParent.isLooped()) parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), styleParent.getLoopCount()));
                 else*/ parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), loopCount, parent.getTransposition()));

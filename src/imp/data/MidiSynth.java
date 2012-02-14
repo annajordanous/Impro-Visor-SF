@@ -717,6 +717,7 @@ public void setMasterVolume(int volume)
 
 public void setChannelVolume(int channel, int volume)
   {
+    //System.out.println("setting volume of channel " + channel + " to " + volume);
     volumeControl.setChannelVolume(channel, volume);
   }
 
