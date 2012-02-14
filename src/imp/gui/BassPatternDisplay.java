@@ -865,7 +865,12 @@ public class BassPatternDisplay extends PatternDisplay
                 Style tempStyle = Style.makeStyle(rule);
                 tempStyle.setSwing(swingVal);
                 tempStyle.setAccompanimentSwing(swingVal);
-               
+                tempStyle.setName("bassPattern");
+                Style.setStyle("bassPattern", tempStyle);
+                // This is necessary so that the StyleListModel menu in notate is reset.
+                // Without it, the contents will be emptied.
+                parent.reloadStyles();
+                                       
                 String chord = styleParent.getChord();
                 ChordPart c = new ChordPart();
                 boolean muteChord = styleParent.isChordMuted();

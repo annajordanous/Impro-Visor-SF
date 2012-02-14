@@ -13370,11 +13370,8 @@ public void updateStyleList(Style style)
     
     swingTF.setText("" + style.getSwing());
  
-    sectionInfo.addSection(style.getName(), 
-                           sectionInfo.getStyleIndex(sectionList.getSelectedIndex()),
-                           false);
-
-  }
+    sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
+   }
 
 public int getTimeSigTop() {
     return Integer.parseInt(timeSignatureTopTF.getText());
@@ -22931,7 +22928,7 @@ public void showNewVoicingDialog()
   {
       if( styleEditor == null )
       {
-          styleEditor = new StyleEditor(this, cm);
+          styleEditor = new StyleEditor(this);
       }
 
       return styleEditor;

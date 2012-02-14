@@ -256,7 +256,12 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
  
                 tempStyle.setSwing(swingVal);
                 tempStyle.setAccompanimentSwing(swingVal);
-               
+                tempStyle.setName("drumRule");
+                Style.setStyle("drumRule", tempStyle);
+                // This is necessary so that the StyleListModel menu in notate is reset.
+                // Without it, the contents will be emptied.
+                parent.reloadStyles();
+            
                 String chord = styleParent.getChord();
                 boolean muteChord = styleParent.isChordMuted();
                 int duration = tempStyle.getDP().get(0).getDuration();

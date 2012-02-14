@@ -859,6 +859,11 @@ public class ChordPatternDisplay
                 Style tempStyle = Style.makeStyle(rule);
                 tempStyle.setSwing(swingVal);
                 tempStyle.setAccompanimentSwing(swingVal);
+                tempStyle.setName("chordPattern");
+                Style.setStyle("chordPattern", tempStyle);
+                // This is necessary so that the StyleListModel menu in notate is reset.
+                // Without it, the contents will be emptied.
+                parent.reloadStyles();
                  
                 ChordPart c = new ChordPart();
                 String chord = styleParent.getChord();

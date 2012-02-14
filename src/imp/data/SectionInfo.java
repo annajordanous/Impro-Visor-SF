@@ -103,6 +103,12 @@ public class SectionInfo implements Constants, Serializable {
         k.add(new SectionRecord(styleName, n, isPhrase));
     }
     
+    public void modifySection(Style style, int n, boolean isPhrase)
+      {
+        SectionRecord record = getSectionRecordByIndex(n);
+        record.setStyle(style);
+      }
+    
     public void reloadStyles() {
         ListIterator<SectionRecord> k = records.listIterator();
         while( k.hasNext() )

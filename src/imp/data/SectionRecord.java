@@ -83,9 +83,15 @@ public String getStyleName()
     return styleName;
   }
 
+private void setStyleName(String name)
+  {
+    this.styleName = name;
+  }
+
 public void setStyle(Style style)
   {
     this.style = style;
+    setStyleName(style.getName());
   }
 
 public int getSectionMeasure(ChordPart chords) 

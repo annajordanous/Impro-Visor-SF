@@ -112,8 +112,7 @@ public class StyleEditor
    */
   File styleExtractDir; // set within constructor
 
-  //Useful parent classes
-  private Notate parent;
+  private Notate notate;
 
   private CommandManager cm;
 
@@ -206,15 +205,15 @@ public class StyleEditor
   /**
    * Constructs a new StyleGeneratorEditor JFramel
    */
-  public StyleEditor(Notate p, CommandManager cm)
+  public StyleEditor(Notate notate)
     {
     // Establish Directories
 
     styleDir = ImproVisor.getStyleDirectory();
     styleExtractDir = ImproVisor.getStyleExtractDirectory();
 
-    this.parent = p;
-    this.cm = cm;
+    this.notate = notate;
+    cm = new CommandManager();
 
     this.setTitle("Style Editor: New Style");
 
@@ -524,7 +523,7 @@ public void playBassColumn()
   
   public Notate getNotate()
     {
-    return parent;
+    return notate;
     }
 
   /**
@@ -1026,7 +1025,7 @@ public void playBassColumn()
       Polylist p = Notate.parseListFromString(polyString);
       Polylist t = (Polylist)p.first();
       Advisor.updateStyle(t.rest());
-      parent.styleListModel.reset();
+      notate.styleListModel.reset();
       out.close();
 
       setStatus("Style saved.");
@@ -1036,7 +1035,7 @@ public void playBassColumn()
         cm.changedSinceLastSave(false);
         }
 
-      parent.reCaptureCurrentStyle(); // In case this style is being used currently
+      notate.reCaptureCurrentStyle(); // In case this style is being used currently
       }
     catch( Exception e )
       {
@@ -1630,7 +1629,7 @@ public void playBassColumn()
       float weight = bassPatterns.get(i).getWeight();
       BassPatternDisplay b =
               new BassPatternDisplay(bassPatterns.get(i).getRule(), weight,
-              this.parent, this.cm, this);
+              notate, cm, this);
       b.setTitleNumber((i + 1));
       bassHolderPane.add(b);
 
@@ -1669,7 +1668,7 @@ public void playBassColumn()
       float weight = cp.getWeight();
       ChordPatternDisplay c =
               new ChordPatternDisplay(cp.getRule(), weight, cp.getPush(),
-              this.parent, this.cm, this);
+              notate, cm, this);
       c.setTitleNumber((i + 1));
       chordHolderPane.add(c);
 
@@ -1706,7 +1705,7 @@ public void playBassColumn()
       RepresentativeDrumRules.DrumPattern curPat = drumPatterns.get(i);
       float weight = curPat.getWeight();
       DrumPatternDisplay newPat =
-              new DrumPatternDisplay(weight, this.parent, this.cm, this);
+              new DrumPatternDisplay(weight, notate, cm, this);
 
       //Add the curPat rules into newPat as DrumRuleDisplay objects
 
@@ -1722,7 +1721,7 @@ public void playBassColumn()
         int instrumentNumber = curRule.getInstrumentNumber();
         String instrument = MIDIBeast.getDrumInstrumentName(instrumentNumber);
         DrumRuleDisplay newRule = new DrumRuleDisplay(rule, instrument,
-                this.parent, this.cm, newPat, this);
+                notate, cm, newPat, this);
         newPat.addRule(newRule);
 
         // Find row of instrument in table, or create a new rorw
@@ -1990,13 +1989,13 @@ public void playBassColumn()
     /* For illustration of how to add patterns only:
     //Add one PatternDisplay objects for each type of pattern to the GUI
     for(int i = 0; i < 1; i++) {
-    BassPatternDisplay b = new BassPatternDisplay(this.parent, this.cm, this);
+    BassPatternDisplay b = new BassPatternDisplay(notate, cm, this);
     b.setTitleNumber(i+1);
     b.setDisplayText("B4");
-    DrumPatternDisplay d = new DrumPatternDisplay(this.parent, this.cm, this);
+    DrumPatternDisplay d = new DrumPatternDisplay(notate, cm, this);
     d.fill();
     d.setTitleNumber(i+1);
-    ChordPatternDisplay c = new ChordPatternDisplay(this.parent, this.cm, this);
+    ChordPatternDisplay c = new ChordPatternDisplay(notate, cm, this);
     c.setTitleNumber(i+1);
     c.setDisplayText("X4");
     bassHolderPane.add(b);                
@@ -2244,8 +2243,7 @@ public void playBassColumn()
   public ChordPatternDisplay newChordPatternDisplay(int column,
                                                        String contents)
     {
-    ChordPatternDisplay display = new ChordPatternDisplay(this.parent,
-            this.cm, this);
+    ChordPatternDisplay display = new ChordPatternDisplay(notate, cm, this);
     chordHolderPane.add(display);
     display.setDisplayText(contents);
     display.setTitleNumber(0); // NEEDED?
@@ -2255,8 +2253,7 @@ public void playBassColumn()
 
   public BassPatternDisplay newBassPatternDisplay(int column, String contents)
     {
-    BassPatternDisplay display =
-            new BassPatternDisplay(this.parent, this.cm, this);
+    BassPatternDisplay display = new BassPatternDisplay(notate, cm, this);
     bassHolderPane.add(display);
     display.setDisplayText(contents);
     display.setTitleNumber(0); // NEEDED?
@@ -2266,7 +2263,7 @@ public void playBassColumn()
 
   public DrumPatternDisplay newDrumPatternDisplay()
     {
-    DrumPatternDisplay display = new DrumPatternDisplay(parent, cm, this);
+    DrumPatternDisplay display = new DrumPatternDisplay(notate, cm, this);
     drumHolderPane.add(display);
     drumHolderPane.updateUI();
     return display;
@@ -2308,7 +2305,7 @@ public void playBassColumn()
       }
 
     DrumRuleDisplay display = new DrumRuleDisplay("new", instrument,
-            this.parent, this.cm, curDrum, this);
+            notate, cm, curDrum, this);
     display.setDisplayText(contents);
     curDrum.addRule(display);
 
@@ -2391,8 +2388,7 @@ public void playBassColumn()
         just moved to the end of the list. */
         String text = copiedBass.getDisplayText();
         int weight = copiedBass.getWeight();
-        BassPatternDisplay b = new BassPatternDisplay(text, weight, parent,
-                cm, this);
+        BassPatternDisplay b = new BassPatternDisplay(text, weight, notate, cm, this);
         b.setTitleNumber(bassHolderPane.getComponentCount() + 1);
         bassHolderPane.add(b);
         bassHolderPane.updateUI();
@@ -2424,7 +2420,7 @@ public void playBassColumn()
         /*Must create a new object with the same stats or else the copied pattern is
         just moved to the end of the list. */
         int numRules = copiedDrum.getNumComponents();
-        DrumPatternDisplay d = new DrumPatternDisplay(parent, cm, this);
+        DrumPatternDisplay d = new DrumPatternDisplay(notate, cm, this);
         d.setWeight(copiedDrum.getWeight());
         d.setTitleNumber(drumHolderPane.getComponentCount() + 1);
         for( int i = 0; i < numRules; i++ )
@@ -2438,8 +2434,7 @@ public void playBassColumn()
               String text = rule.getDisplayText();
               String instrument = rule.getInstrument();
               DrumRuleDisplay newRule =
-                      new DrumRuleDisplay(text, instrument, parent, cm, d,
-                      this);
+                      new DrumRuleDisplay(text, instrument, notate, cm, d, this);
               d.addRule(newRule);
               }
             catch( ClassCastException e )
@@ -2480,7 +2475,7 @@ public void playBassColumn()
         int weight = copiedChord.getWeight();
         String pushString = copiedChord.getPushString();
         ChordPatternDisplay c =
-                new ChordPatternDisplay(text, weight, pushString, parent, cm, this);
+                new ChordPatternDisplay(text, weight, pushString, notate, cm, this);
         c.setTitleNumber(chordHolderPane.getComponentCount() + 1);
         chordHolderPane.add(c);
         chordHolderPane.updateUI();
@@ -2498,7 +2493,7 @@ public void playBassColumn()
       {
       if( curSelectedDrum != null )
         {
-        curSelectedDrum.addRule(new DrumRuleDisplay(this.parent, this.cm,
+        curSelectedDrum.addRule(new DrumRuleDisplay(notate, cm,
                 curSelectedDrum, this));
         curSelectedDrum.updateUI();
         }
@@ -2879,8 +2874,7 @@ public void playBassColumn()
         {
         }
 
-      BassPatternDisplay b = 
-              new BassPatternDisplay(this.parent, this.cm, this);
+      BassPatternDisplay b = new BassPatternDisplay(notate, cm, this);
       b.setTitleNumber(bassHolderPane.getComponentCount() + 1);
       b.setDisplayText("B4");
       bassHolderPane.add(b);
@@ -2906,8 +2900,7 @@ public void playBassColumn()
       catch( ArrayIndexOutOfBoundsException e )
         {
         }
-      DrumPatternDisplay d = new DrumPatternDisplay(this.parent, this.cm,
-              this);
+      DrumPatternDisplay d = new DrumPatternDisplay(notate, cm, this);
       // not desired, I think d.fill();
       d.setTitleNumber(drumHolderPane.getComponentCount() + 1);
       drumHolderPane.add(d);
@@ -2934,8 +2927,7 @@ public void playBassColumn()
         {
         }
 
-      ChordPatternDisplay c = new ChordPatternDisplay(this.parent, this.cm,
-              this);
+      ChordPatternDisplay c = new ChordPatternDisplay(notate, cm, this);
       c.setTitleNumber(chordHolderPane.getComponentCount() + 1);
       c.setDisplayText("X4");
       chordHolderPane.add(c);
@@ -5566,7 +5558,7 @@ public void playBassColumn()
 }//GEN-LAST:event_cutCellsButtonActionPerformed
 
     private void commentAreaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_commentAreaPropertyChange
-      cm.changedSinceLastSave(true);
+      // Causes false indication. cm.changedSinceLastSave(true);
     }//GEN-LAST:event_commentAreaPropertyChange
 
     private void bassBaseOctaveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bassBaseOctaveStateChanged
@@ -5997,15 +5989,15 @@ Playable display = null;
 
     switch( desiredRow )
       {
-        case 0: display = new BassPatternDisplay(this.parent, this.cm, this); 
+        case 0: display = new BassPatternDisplay(notate, cm, this); 
         break;
 
-        case 1: display = new ChordPatternDisplay(this.parent, this.cm, this); 
+        case 1: display = new ChordPatternDisplay(notate, cm, this); 
         break;
 
         default:
-             DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(parent, cm, this);
-             display = new DrumRuleDisplay(this.parent, this.cm, drumPatternDisplay, this);
+             DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(notate, cm, this);
+             display = new DrumRuleDisplay(notate, cm, drumPatternDisplay, this);
              String instrument = getRowHeaders().get(desiredRow - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
              ((DrumRuleDisplay)display).setInstrument(instrument);
@@ -6032,8 +6024,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
     int lastPianoRollRow = 0;
 
-    DrumPatternDisplay drumPatternDisplay =
-        new DrumPatternDisplay(parent, cm, this);
+    DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(notate, cm, this);
 
     DrumRuleDisplay rule = null;
     StringBuffer patternBuffer = new StringBuffer();
@@ -6056,8 +6047,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
             if( rowButton[row].isSelected() && !patternBuffer.toString().trim().equals("") )
               {
                 // Dump only if non-empty
-                rule = new DrumRuleDisplay(this.parent, this.cm,
-                                           drumPatternDisplay, this);
+                rule = new DrumRuleDisplay(notate, cm, drumPatternDisplay, this);
                 String instrument = getRowHeaders().get(
                     row - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
@@ -6322,7 +6312,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
     private void newStyleMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStyleMIActionPerformed
       // open a new StyleEditor Window
-      StyleEditor m = new StyleEditor(this.parent, this.cm);
+      StyleEditor m = new StyleEditor(notate);
       m.pack();
       m.setLocationRelativeTo(this);
       m.setLocation(m.getX() + WindowRegistry.defaultXnewWindowStagger, 
@@ -6386,7 +6376,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
     {//GEN-HEADEREND:event_playBtnActionPerformed
       pauseBtn.setEnabled(true);
       stopBtn.setEnabled(true);
-      parent.playScore();
+      notate.playScore();
     }//GEN-LAST:event_playBtnActionPerformed
 
     private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pauseBtnActionPerformed
@@ -6394,7 +6384,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
       pauseBtn.setEnabled(false);
       stopBtn.setEnabled(true);
       playBtn.setEnabled(true);
-      parent.pauseScore();
+      notate.pauseScore();
     }//GEN-LAST:event_pauseBtnActionPerformed
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopBtnActionPerformed
@@ -6403,7 +6393,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
       stopBtn.setEnabled(false);
       playBtn.setEnabled(true);
 
-      parent.stopPlaying();
+      notate.stopPlaying();
     }//GEN-LAST:event_stopBtnActionPerformed
 
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowMIActionPerformed
