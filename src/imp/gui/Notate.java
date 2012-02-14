@@ -22932,7 +22932,15 @@ public void showNewVoicingDialog()
   {
       if( styleEditor == null )
       {
+        File styleFile = ImproVisor.getRecentStyleFile();
+        if( styleFile == null )
+          {
           styleEditor = new StyleEditor(this);
+          }
+        else
+          {
+          styleEditor = new StyleEditor(this, styleFile);
+          }
       }
 
       return styleEditor;

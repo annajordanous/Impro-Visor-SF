@@ -260,6 +260,12 @@ public class StyleEditor
       });
     }
 
+public StyleEditor(Notate notate, File styleFile)
+      {
+        this(notate);
+        loadFromFile(styleFile);
+      }
+
  /**
   * Enter data through a spreadsheet cell.
   @param rowIndex
@@ -1100,6 +1106,7 @@ public void playBassColumn()
         savedStyle = new File(file);
         saveStyle(savedStyle);
         }
+      ImproVisor.setRecentStyleFile(savedStyle);
       }
     else
       {
@@ -1347,12 +1354,13 @@ public void playBassColumn()
     reset();
 
     this.setTitle("Style Editor: " + file.getName());
+    ImproVisor.setRecentStyleFile(file);
 
     // Parse style.
     String s = OpenLeadsheetCommand.fileToString(file);
     // The parens that open and close a style need to be removed so that the 
-    //      polylist parses correctly.  The parens are included in the file to maintain backwards
-    //      compatability with the Style Textual Editor.
+    // polylist parses correctly.  The parens are included in the file 
+    // to maintain backwards compatability with the Style Textual Editor.
     s = s.substring(1, s.length() - 1);
     Polylist poly = Notate.parseListFromString(s);
     Style style = Style.makeStyle(Notate.parseListFromString(s));
@@ -1369,8 +1377,10 @@ public void playBassColumn()
     // ...into these
     ArrayList<RepresentativeDrumRules.DrumPattern> drumP =
             new ArrayList<RepresentativeDrumRules.DrumPattern>();
+    
     ArrayList<RepresentativeBassRules.BassPatternObj> bassP =
             new ArrayList<RepresentativeBassRules.BassPatternObj>();
+    
     ArrayList<RepresentativeChordRules.ChordPattern> chordP =
             new ArrayList<RepresentativeChordRules.ChordPattern>();
 
@@ -2278,7 +2288,7 @@ public void playBassColumn()
 
     // How to create DrumPattern when none exists?
 
-    DrumPatternDisplay curDrum = null;
+    DrumPatternDisplay curDrum;
 
     if( column >= allDrumPatterns.size() )
       {
@@ -2640,7 +2650,7 @@ public void playBassColumn()
     int lastRow = styleTable.getRowCount() - 1;
     int lastCol = styleTable.getColumnCount() - 1;
 
-    int col = currentColumn;
+    int col;
 
     int selectedRows[] = styleTable.getSelectedRows();
     int selectedCols[] = styleTable.getSelectedColumns();
@@ -2770,8 +2780,8 @@ public void playBassColumn()
       return newValue;
       }
 
-    Object beingSet = null;
-    Float weight = new Float(0);
+    Object beingSet;
+    Float weight;
     // FIX: This replicates stuff in StyleCellEditor.java. The latter should be changed to use this code.
     // Also, some of the branches below can be collapsed into one.
     if( isChordCell(row, column) )
@@ -3045,7 +3055,7 @@ public void playBassColumn()
 
       //Get files from user
       String chordFile = "", midiFile = "";
-      String nameForDisplay = "";
+      String nameForDisplay;
       File midiFileEntire = null;
       int midiChoice = midiFileChooser.showOpenDialog(this);
       if( midiChoice == JFileChooser.CANCEL_OPTION )
@@ -5763,8 +5773,6 @@ public void playBassColumn()
       }
     else
       {
-      barColor = null;
-      borderColor = null;
       return;
       }
       
@@ -5862,7 +5870,8 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
            
   
   /**
-   * FIX: Currently everything in the bass is imported as if the bass note, rather than allowing other pitches.
+   * FIX: Currently everything in the bass is imported as if the bass note, 
+   * rather than allowing other pitches.
    *
    * TODO: FIX!! Make sure to update the comments after implementation is complete.
    * Import the first selected column from the piano roll.
@@ -5885,7 +5894,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
     int styleEditorRow = StyleTableModel.BASS_PATTERN_ROW;
     int lastPianoRollRow = 0;
 
-    StringBuffer patternBuffer = new StringBuffer();
+    StringBuilder patternBuffer = new StringBuilder();
     int nextSlot = 0;
 
     for( Iterator e = bars.iterator(); e.hasNext(); )
@@ -5901,7 +5910,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
             // Flush the pattern to the StyleEditor
             setCell(patternBuffer.toString(), styleEditorRow, tableCol);
-            patternBuffer = new StringBuffer();
+            patternBuffer = new StringBuilder();
 
             // Increment the row of the style editor
             switch( styleEditorRow )
@@ -5957,7 +5966,7 @@ public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
     int styleEditorRow = StyleTableModel.BASS_PATTERN_ROW;
     int lastPianoRollRow = 0;
 
-    StringBuffer patternBuffer = new StringBuffer();
+    StringBuilder patternBuffer = new StringBuilder();
     int nextSlot = 0;
 
     for( Iterator e = bars.iterator(); e.hasNext(); )
@@ -5985,7 +5994,7 @@ public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
       }
 //System.out.println("row " + desiredRow + " pattern = " + patternBuffer.toString());
 
-Playable display = null;
+Playable display;
 
     switch( desiredRow )
       {
@@ -6026,7 +6035,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
     DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(notate, cm, this);
 
-    DrumRuleDisplay rule = null;
+    DrumRuleDisplay rule;
     StringBuffer patternBuffer = new StringBuffer();
 
     int nextSlot = 0;

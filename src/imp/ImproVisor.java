@@ -50,9 +50,9 @@ public class ImproVisor implements Constants {
     private static String ruleFileName;
 
     private static File ruleFile;
+    private static File mostRecentStyleFileEdited = null;
     
-    private static String recentFilesFilename =  "vocab" + File.separator + "recentFiles.txt";
-
+    private static String recentFilesFilename = "vocab" + File.separator + "recentFiles.txt";
     private static String prefsFileName = "My.prefs";
 
     private static MidiManager midiManager;
@@ -115,6 +115,16 @@ public class ImproVisor implements Constants {
     public static File getRuleFile()
       {
       return ruleFile;
+      }
+    
+    public static File getRecentStyleFile()
+      {
+      return mostRecentStyleFileEdited;
+      }
+    
+    public static void setRecentStyleFile(File file)
+      {
+        mostRecentStyleFileEdited = file;
       }
     
     public static MidiManager getMidiManager() {
