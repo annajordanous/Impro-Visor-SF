@@ -8761,8 +8761,9 @@ private void setSectionParameters()
     }//GEN-LAST:event_addRestMIActionPerformed
 
     private void styleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_styleListValueChanged
-
-      updateStyleList((Style) styleList.getSelectedValue());
+      Style style = (Style) styleList.getSelectedValue();
+      //System.out.println("style = " + style);
+      updateStyleList(style);
       sectionListModel.refresh();
     }//GEN-LAST:event_styleListValueChanged
 
@@ -13368,9 +13369,12 @@ public void updateStyleList(Style style)
   {
     usePreviousStyleCheckBox.setSelected(false);
     
-    swingTF.setText("" + style.getSwing());
+    if( style != null )
+      {
+      swingTF.setText("" + style.getSwing());
  
-    sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
+      sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
+      }
    }
 
 public int getTimeSigTop() {
