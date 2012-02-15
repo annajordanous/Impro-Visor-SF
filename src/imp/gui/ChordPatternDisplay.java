@@ -270,7 +270,7 @@ public class ChordPatternDisplay
      * Changes the appearance of this ChordPatternDisplay to "selected"
     **/
     public void setSelectedAppearance() {
-        styleParent.setSelectedChord(this);
+        styleEditor.setSelectedChord(this);
         this.northPanel.setBackground(new java.awt.Color(72,164,120));
         northPanel.setBackground(new java.awt.Color(72,164,120));
         includeBox.setBackground(new java.awt.Color(72,164,120));
@@ -863,25 +863,25 @@ public class ChordPatternDisplay
                 Style.setStyle("chordPattern", tempStyle);
                 // This is necessary so that the StyleListModel menu in notate is reset.
                 // Without it, the contents will be emptied.
-                parent.reloadStyles();
+                notate.reloadStyles();
                  
                 ChordPart c = new ChordPart();
-                String chord = styleParent.getChord();
-                boolean muteChord = styleParent.isChordMuted();
+                String chord = styleEditor.getChord();
+                boolean muteChord = styleEditor.isChordMuted();
                 int duration = tempStyle.getCP().get(0).getDuration(); 
                 c.addChord(chord, duration);
                 c.setStyle(tempStyle);
                 
                 Score s = new Score(4);
                 s.setChordProg(c);
-                s.setChordVolume(styleParent.getVolume());
-                s.setTempo(styleParent.getTempo());
-                s.setVolumes(parent.getMidiSynth());
+                s.setChordVolume(styleEditor.getVolume());
+                s.setTempo(styleEditor.getTempo());
+                s.setVolumes(notate.getMidiSynth());
 
                 
-                /*if(styleParent.isLooped()) parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), styleParent.getLoopCount()));
-                else*/ parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), loopCount, parent.getTransposition()));
-                styleParent.setStatus("OK");
+                /*if(styleEditor.isLooped()) notate.cm.execute(new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), styleEditor.getLoopCount()));
+                else*/ notate.cm.execute(new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()));
+                styleEditor.setStatus("OK");
             }
             catch(Exception e) {
                 cannotPlay();

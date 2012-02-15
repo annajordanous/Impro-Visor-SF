@@ -1716,7 +1716,8 @@ styleEditor.playBassColumn(currentColumn);
 }//GEN-LAST:event_playBassButtonActionPerformed
 
 private void closePianoRollWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closePianoRollWindow
-styleEditor.untrackWithPianoRoll();
+    setLooping(false);
+    styleEditor.untrackWithPianoRoll();
 }//GEN-LAST:event_closePianoRollWindow
 
 private void exportToColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnTFActionPerformed

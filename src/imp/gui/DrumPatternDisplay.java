@@ -144,13 +144,13 @@ public class DrumPatternDisplay
      * Fills the DrumPatternDisplay with three empty DrumRuleDisplay objects with default instruments.
      
     public void fill() {
-        DrumRuleDisplay d = new DrumRuleDisplay(null, "Acoustic Bass", this.parent, this.cm, this, styleParent);
+        DrumRuleDisplay d = new DrumRuleDisplay(null, "Acoustic Bass", this.notate, this.cm, this, styleEditor);
         d.setDisplayText("X4");
         this.addRule(d);
-        d = new DrumRuleDisplay(null, "Low Floor Tom", this.parent, this.cm, this, styleParent);
+        d = new DrumRuleDisplay(null, "Low Floor Tom", this.notate, this.cm, this, styleEditor);
         d.setDisplayText("X4");
         this.addRule(d);
-        d = new DrumRuleDisplay(null, "Closed Hi-Hat", this.parent, this.cm, this, styleParent);
+        d = new DrumRuleDisplay(null, "Closed Hi-Hat", this.notate, this.cm, this, styleEditor);
         d.setDisplayText("X4");        
         this.addRule(d);
         d.updateUI();
@@ -454,7 +454,7 @@ public class DrumPatternDisplay
      * Changes the appearance of this DrumPatternDisplay to "selected"
     **/    
     public void setSelectedAppearance() {
-       styleParent.setSelectedDrum(this);
+       styleEditor.setSelectedDrum(this);
        northPanel.setBackground(new java.awt.Color(255,102,0));
        includeBox.setBackground(new java.awt.Color(255,102,0));
        nameTitle.setBackground(new java.awt.Color(255,102,0));
@@ -535,7 +535,7 @@ public class DrumPatternDisplay
      **/
     public void cutSelectedRule() {
         if(curSelectedRule != null) {
-            styleParent.copyDrumRule(curSelectedRule);
+            styleEditor.copyDrumRule(curSelectedRule);
             drumRuleHolder.remove(curSelectedRule);
             curSelectedRule = null;
             drumRuleHolder.updateUI();
@@ -557,7 +557,7 @@ public class DrumPatternDisplay
      * DrumPatternDisplay object via the addRule method.
      **/
     public void pasteRule(DrumRuleDisplay pasteMe) {
-        DrumRuleDisplay newRule = new DrumRuleDisplay(pasteMe.getDisplayText(), pasteMe.getInstrument(), parent, cm, this, styleParent);
+        DrumRuleDisplay newRule = new DrumRuleDisplay(pasteMe.getDisplayText(), pasteMe.getInstrument(), notate, cm, this, styleEditor);
         addRule(newRule);
     }
     /**
@@ -1015,7 +1015,7 @@ public class DrumPatternDisplay
 
     public boolean playMe(double swingVal, int loopCount)
     {
-        return playMe(swingVal, loopCount, styleParent.getTempo());
+        return playMe(swingVal, loopCount, styleEditor.getTempo());
     }//GEN-LAST:event_playPatternBtnActionPerformed
 
 /**
@@ -1058,13 +1058,13 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
             
             // This is necessary so that the StyleListModel menu in notate is reset.
             // Without it, the contents will be emptied.
-            parent.reloadStyles();
+            notate.reloadStyles();
 
-            String chord = "NC"; // styleParent.getChord();
+            String chord = "NC"; // styleEditor.getChord();
 
             ChordPart c = new ChordPart();
 
-            boolean muteChord = styleParent.isChordMuted();
+            boolean muteChord = styleEditor.isChordMuted();
 
             int duration = tempStyle.getDrumPatternDuration();
             c.addChord(chord, duration);
@@ -1114,11 +1114,11 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             Style.setStyle("drumPattern", tempStyle);
             // This is necessary so that the StyleListModel menu in notate is reset.
             // Without it, the contents will be emptied.
-            parent.reloadStyles();
+            notate.reloadStyles();
             
-            String chord = styleParent.getChord();
+            String chord = styleEditor.getChord();
             ChordPart c = new ChordPart();
-            boolean muteChord = styleParent.isChordMuted();
+            boolean muteChord = styleEditor.isChordMuted();
 
             int duration = tempStyle.getDrumPatternDuration();
             c.addChord(chord, duration);
@@ -1131,16 +1131,16 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
               }
             else
               {
-                s.setChordVolume(styleParent.getVolume());
+                s.setChordVolume(styleEditor.getVolume());
               }
-            s.setBassVolume(styleParent.getVolume());
+            s.setBassVolume(styleEditor.getVolume());
             s.setTempo(tempo);
-            s.setVolumes(parent.getMidiSynth());
+            s.setVolumes(notate.getMidiSynth());
 
-            parent.cm.execute(new PlayScoreCommand(s, 0, true,
-                                                   parent.getMidiSynth(),
+            notate.cm.execute(new PlayScoreCommand(s, 0, true,
+                                                   notate.getMidiSynth(),
                                                    loopCount,
-                                                   parent.getTransposition()));
+                                                   notate.getTransposition()));
           }
         catch( Exception e )
           {

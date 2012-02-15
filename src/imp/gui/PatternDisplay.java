@@ -22,7 +22,7 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.com.*;
+import imp.com.CommandManager;
 import java.awt.Color;
 
 /**
@@ -40,27 +40,27 @@ abstract class PatternDisplay
   
   protected boolean playable = true;
 
-  //Useful parent containers.
-  protected StyleEditor styleParent;
+  //Useful notate containers.
+  protected StyleEditor styleEditor;
 
-  protected Notate parent;
+  protected Notate notate;
 
   protected CommandManager cm;
 
-  public PatternDisplay(Notate parent,
+  public PatternDisplay(Notate notate,
                          CommandManager cm,
-                         StyleEditor styleParent)
+                         StyleEditor styleEditor)
     {
-    this.parent = parent;
+    this.notate = notate;
     this.cm = cm;
-    this.styleParent = styleParent;
+    this.styleEditor = styleEditor;
     }
 
    // FIX: Not so useful to not use swing from GUI
      
     public boolean playMe()
     {
-      return playMe(styleParent == null ? NOSWING : styleParent.getSwingValue());
+      return playMe(styleEditor == null ? NOSWING : styleEditor.getSwingValue());
     }
     
 
@@ -86,13 +86,13 @@ abstract class PatternDisplay
   public void cannotPlay()
   {
     playable = false;
-    styleParent.setStatus("Can't play incorrect pattern");
+    styleEditor.setStatus("Can't play incorrect pattern");
   }
 
   public void canPlay()
   {
     playable = true;
-    styleParent.setStatus("OK");
+    styleEditor.setStatus("OK");
   }
 
   abstract public int getWeight();

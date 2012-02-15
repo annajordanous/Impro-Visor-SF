@@ -57,7 +57,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     //Contains a specialized error message for any error that just occurred.
     private String errorMsgRule = safeMsgRule;
     
-    //Useful parent containers.
+    //Useful notate containers.
     private DrumPatternDisplay myParentHolder = null;
     
     private boolean playable = true;
@@ -219,7 +219,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     
     /**
      * Changes the appearance of this DrumRuleDisplay to "selected" and notifies
-     * DrumPatternDisplay parent (if it exists) to deselect any other rules in the pattern.
+     * DrumPatternDisplay notate (if it exists) to deselect any other rules in the pattern.
     **/
     private void setSelectedAppearance() {
        this.rulePanel.setBackground(new java.awt.Color(255,220,112));
@@ -244,7 +244,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 String r = this.getPlayRule();
                 Polylist rule = Notate.parseListFromString(r); 
                 if(rule.isEmpty()) {
-                    styleParent.setStatus("Can't play incorrect pattern");
+                    styleEditor.setStatus("Can't play incorrect pattern");
                     /*
                     ErrorLog.setDialogTitle("Can't Play");
                     ErrorLog.log(ErrorLog.WARNING, "Unable to play the selected rule.");
@@ -260,10 +260,10 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 Style.setStyle("drumRule", tempStyle);
                 // This is necessary so that the StyleListModel menu in notate is reset.
                 // Without it, the contents will be emptied.
-                parent.reloadStyles();
+                notate.reloadStyles();
             
-                String chord = styleParent.getChord();
-                boolean muteChord = styleParent.isChordMuted();
+                String chord = styleEditor.getChord();
+                boolean muteChord = styleEditor.isChordMuted();
                 int duration = tempStyle.getDP().get(0).getDuration();
                 ChordPart c = new ChordPart();
                 c.addChord(chord, duration);
@@ -277,18 +277,18 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 }
               else
                 {
-                s.setChordVolume(styleParent.getVolume());
+                s.setChordVolume(styleEditor.getVolume());
                 }
-                s.setBassVolume(styleParent.getVolume());
-                s.setTempo(styleParent.getTempo());
-                s.setVolumes(parent.getMidiSynth());
+                s.setBassVolume(styleEditor.getVolume());
+                s.setTempo(styleEditor.getTempo());
+                s.setVolumes(notate.getMidiSynth());
                  
-                /* if(styleParent.isLooped()) parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), styleParent.getLoopCount())); 
-                else*/ parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), parent.getTransposition())); 
-                styleParent.setStatus("OK");
+                /* if(styleEditor.isLooped()) notate.cm.execute(new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), styleEditor.getLoopCount())); 
+                else*/ notate.cm.execute(new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), notate.getTransposition())); 
+                styleEditor.setStatus("OK");
             }
             else {
-                styleParent.setStatus("Can't play incorrect pattern");
+                styleEditor.setStatus("Can't play incorrect pattern");
                 /*            
                 ErrorLog.setDialogTitle("Can't Play");
                 ErrorLog.log(ErrorLog.WARNING, "Unable to play the selected rule because " + errorMsgRule);
@@ -299,7 +299,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
  
         }
         catch(Exception e) {
-             styleParent.setStatus("Can't play incorrect pattern");
+             styleEditor.setStatus("Can't play incorrect pattern");
              /*
              ErrorLog.setDialogTitle("Can't Play");
              ErrorLog.log(ErrorLog.WARNING, "Unable to play the selected rule.");
@@ -329,7 +329,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
 
 
     /**
-     * Checks the rule for correctness (uses the time signature in MIDIBeast, which is appropriately updated from a DrumPatternDisplay parent).
+     * Checks the rule for correctness (uses the time signature in MIDIBeast, which is appropriately updated from a DrumPatternDisplay notate).
      * Changes icons, tooltips, and errorMsgRule to appropriate error feedback information.
      * @return true if the rule is a correctly formed and therefore playable by Impro-Visor. Returns false otherwise.
      **/     

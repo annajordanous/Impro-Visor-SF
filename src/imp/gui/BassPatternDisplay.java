@@ -73,16 +73,16 @@ public class BassPatternDisplay extends PatternDisplay
     /**
      * Constructs a new BassPatternDisplay JPanel with default weight 3 and an empty pattern.
      **/
-    public BassPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleEditor) {
-      super(parent, cm, styleEditor);
+    public BassPatternDisplay(Notate notate, CommandManager cm, StyleEditor styleEditor) {
+      super(notate, cm, styleEditor);
         initialize("", 3);
     }
     
     /**
      * Constructs a new BassPatternDisplay JPanel with weight and rule parameters.
      **/
-    public BassPatternDisplay(String rule, float weight, Notate parent, CommandManager cm, StyleEditor styleEditor) {
-      super(parent, cm, styleEditor);
+    public BassPatternDisplay(String rule, float weight, Notate notate, CommandManager cm, StyleEditor styleEditor) {
+      super(notate, cm, styleEditor);
         initialize(rule, weight);
     }
 
@@ -211,7 +211,7 @@ public class BassPatternDisplay extends PatternDisplay
      * Changes the appearance of this BassPatternDisplay to "selected"
     **/
     public void setSelectedAppearance() {
-        styleParent.setSelectedBass(this);  
+        styleEditor.setSelectedBass(this);  
     }
 
    /**
@@ -586,11 +586,11 @@ public boolean playMe(double swingVal, int loopCount)
             Style.setStyle("bassPattern", tempStyle);
             // This is necessary so that the StyleListModel menu in notate is reset.
             // Without it, the contents will be emptied.
-            parent.reloadStyles();
+            notate.reloadStyles();
 
-            String chord = styleParent.getChord();
+            String chord = styleEditor.getChord();
             ChordPart c = new ChordPart();
-            boolean muteChord = styleParent.isChordMuted();
+            boolean muteChord = styleEditor.isChordMuted();
             int duration = tempStyle.getBP().get(0).getDuration();
 
             c.addChord(chord, duration);
@@ -605,19 +605,19 @@ public boolean playMe(double swingVal, int loopCount)
               }
             else
               {
-                s.setChordVolume(styleParent.getVolume());
+                s.setChordVolume(styleEditor.getVolume());
               }
-            s.setBassVolume(styleParent.getVolume());
-            s.setTempo(styleParent.getTempo());
+            s.setBassVolume(styleEditor.getVolume());
+            s.setTempo(styleEditor.getTempo());
 
-            MidiSynth synth = parent.getMidiSynth();
+            MidiSynth synth = notate.getMidiSynth();
 
             s.setVolumes(synth);
 
             //System.out.println("c = " + c);
             //System.out.println("s = " + s);
-            parent.cm.execute(new PlayScoreCommand(s, 0, true, synth, parent.getTransposition())); // REVISIT!
-            styleParent.setStatus("OK");
+            new PlayScoreCommand(s, 0, true, synth, notate.getTransposition()).execute();
+            styleEditor.setStatus("OK");
 
           }
         catch( Exception e )
