@@ -161,7 +161,6 @@ public class Leadsheet
     Style style = score.getChordProg().getStyle();
     if( style == null )
       {
-      out.write("(style " + Style.USE_PREVIOUS_STYLE +")");
       out.newLine();
         //ErrorLog.log(ErrorLog.WARNING, "Please fix invalid style to save chords");
       }
@@ -1151,30 +1150,38 @@ static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
                         Style style; // default if no style specified
 
                         String styleName = Style.USE_PREVIOUS_STYLE;
-
                         while( item.nonEmpty() )
                           {
-                            if( item.first() instanceof Polylist )
+                            if( item.first() instanceof Polylist 
+                             && ((Polylist)item.first()).nonEmpty() )
                               {
                                 Polylist sectItem = (Polylist) item.first();
-                                if( sectItem.first() instanceof String
-                                        && sectItem.first().equals("style")
-                                        && sectItem.second() instanceof String )
+                                if( sectItem.first().equals("style") )
                                   {
-                                    styleName = (String) sectItem.second();
-
-                                    if( !styleName.equals(Style.USE_PREVIOUS_STYLE) )
+                                    if( sectItem.rest().isEmpty() )
                                       {
-                                        style = Advisor.getStyle(styleName);
-
-                                        if( style == null )
-                                          {
-                                            ErrorLog.log(ErrorLog.WARNING, "Style " + styleName + " not found");
-                                          }
+                                        // Empty: Use previous style
                                       }
+                                    else
+                                      {
+                                      // Non-empty: get specified style
 
-                                    //System.out.println("adding section at " + index);
-                                  }
+                                      if( sectItem.second() instanceof String )
+                                        {
+                                        styleName = (String) sectItem.second();
+                                        if( !styleName.equals(Style.USE_PREVIOUS_STYLE) )
+                                          {
+                                           style = Advisor.getStyle(styleName);
+
+                                           if( style == null )
+                                             {
+                                              ErrorLog.log(ErrorLog.WARNING, "Style " + styleName + " not found");
+                                              }
+                                           }
+                                         }
+                                       
+                                       }
+                                     }
                               }
                             item = item.rest();
                           }
@@ -1183,6 +1190,7 @@ static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
                           {
                             index += slotsPerBar;
                           }
+                        System.out.println("style: " + styleName);
                         chords.addSection(styleName, index, isPhrase);
                       }
                     break;
