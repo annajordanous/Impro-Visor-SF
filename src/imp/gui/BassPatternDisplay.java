@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -25,32 +24,20 @@ import imp.Constants;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
 import polya.Polylist;
    
 /**
  * Creates a GUI that displays a bass pattern used in styles.
  * Created Summer 2007
- * @authors  Brandy McMenamy
+ * @authors  Brandy McMenamy, Robert Keller
  */
 public class BassPatternDisplay extends PatternDisplay 
         implements Constants, Playable, Displayable {
    
     public static Color playableColor = Color.orange;
     public static Color unplayableColor = Color.red;
-    
-    //The image that is visible when the pane is collapsed and the pattern is legal.
-    private static ImageIcon goodPattern;  
-    
-    //The image that is visible when the pane is collapsed and the pattern is illegal.
-    private static ImageIcon badPattern;
-    
-    //The image next to the pattern text if the pattern is legal
-    private static ImageIcon goodRule;
-    
-    //The image next to the pattern text if the pattern is illegal
-    private static ImageIcon badRule;
     
     //Various standard messages displayed in tooltips and error dialogs.
     private String safeMsgRule = "This rule is legal.  Click play button to preview it.";
@@ -66,6 +53,9 @@ public class BassPatternDisplay extends PatternDisplay
     //The highest weight allowed for a pattern.
     private int highestWeight = 100;
     
+    private int INITIAL_WEIGHT = 10;
+    private int weight = INITIAL_WEIGHT;
+    
     //The number added to the title of this object to help the user distinguish it from others.
     private int titleNumber = 0; 
 
@@ -77,14 +67,12 @@ public class BassPatternDisplay extends PatternDisplay
     
     //True if the pattern information is displayed, false otherwise
     boolean isExpanded = false;   
-    
-    boolean playable;
-   
+       
     /**
      * Constructs a new BassPatternDisplay JPanel with default weight 3 and an empty pattern.
      **/
-    public BassPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleParent) {
-      super(parent, cm, styleParent);
+    public BassPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleEditor) {
+      super(parent, cm, styleEditor);
         initialize(null, 3);
     }
     
@@ -105,12 +93,7 @@ public class BassPatternDisplay extends PatternDisplay
         if(!MIDIBeast.invoked) {
             MIDIBeast.invoke();
         }
-        
-        goodPattern = new ImageIcon("src/imp/gui/graphics/icons/goodpattern.png");
-        badPattern = new ImageIcon("src/imp/gui/graphics/icons/badPattern.png");
-        goodRule = new ImageIcon("src/imp/gui/graphics/greenCircle.png");
-	badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png");   
-        
+       
         initComponents();
         initWeight();
         
@@ -120,9 +103,7 @@ public class BassPatternDisplay extends PatternDisplay
         //Initializes attributes needed for collapsing panes and collapses the BassPatternDisplay object.
         expandedDimension = this.getPreferredSize();
         collapsedDimension = northPanel.getPreferredSize();
-        southPanel.setVisible(false);
-    //    this.setPreferredSize(collapsedDimension);
-    //    this.setMaximumSize(collapsedDimension);    
+        southPanel.setVisible(false);   
     }
     
     //Accessors:
@@ -159,12 +140,7 @@ public class BassPatternDisplay extends PatternDisplay
      * @return the value found in the weight spinner or lowestWeight if the value is not an Integer.
      **/
     public int getWeight() {
-        try{
-            Integer weight = (Integer) weightSpinner.getValue();
-            return weight;
-        }catch(ClassCastException e) {
-            return lowestWeight;
-        }
+        return weight;
     }
     
     /**
@@ -205,53 +181,36 @@ public class BassPatternDisplay extends PatternDisplay
     /**
      * Sets the weight in the spinner to the parameter weight if it is within the range of lowestWeight to heighestWeight.
      **/    
-    public void setWeight(float weight) {
-        if(weight < lowestWeight) {
-            weightSpinner.setValue((Integer) lowestWeight);
+    public void setWeight(float _weight) {
+        if( _weight < lowestWeight ) {
+            weight = (int) lowestWeight;
         }
-        else if(weight > highestWeight) {
-            weightSpinner.setValue((Integer) highestWeight);
+        else if( _weight > highestWeight) {
+            weight = (int) highestWeight;
         }
         else
-            weightSpinner.setValue((Integer) (int)weight);
+            weight = (int)_weight;
     }
 
     /**
      * Creates the SpinnerModel used for the weight field.
      **/
     private void initWeight() {
-        SpinnerModel model = new SpinnerNumberModel(lowestWeight, lowestWeight, highestWeight, 1);
-        weightSpinner.setModel(model);
+        weight = INITIAL_WEIGHT;
     }
 
     /**
      * Changes the appearance of this BassPatternDisplay to "deselected"
      **/
     public void setDeselectedAppearance() {
-        this.setBackground(new java.awt.Color(255, 255, 255));
-        this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(170, 196, 255), 1, true));
-        northPanel.setBackground(new java.awt.Color(170, 196, 255));
-        includeBox.setBackground(new java.awt.Color(170, 196, 255));    
-        nameTitle.setBackground(new java.awt.Color(170, 196, 255));
-        lengthTitle.setBackground(new java.awt.Color(170, 196, 255));
-        includePlayPanel.setBackground(new java.awt.Color(170, 196, 255));
-        titlePanel.setBackground(new java.awt.Color(170, 196, 255));
+
     }
  
    /**
      * Changes the appearance of this BassPatternDisplay to "selected"
     **/
     public void setSelectedAppearance() {
-        styleParent.setSelectedBass(this);
-        northPanel.setBackground(new java.awt.Color(101, 152, 255));
-        includeBox.setBackground(new java.awt.Color(101, 152, 255));
-        nameTitle.setBackground(new java.awt.Color(101, 152, 255));
-        lengthTitle.setBackground(new java.awt.Color(101, 152, 255));
-        includePlayPanel.setBackground(new java.awt.Color(101, 152, 255));
-        titlePanel.setBackground(new java.awt.Color(101, 152, 255));
-        this.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, 
-               new java.awt.Color(185, 220, 255), new java.awt.Color(153, 204, 255), new java.awt.Color(0, 0, 204), 
-               new java.awt.Color(54, 94, 166)));   
+        styleParent.setSelectedBass(this);  
     }
 
    /**
@@ -293,143 +252,13 @@ public class BassPatternDisplay extends PatternDisplay
 	String rule = getPattern();      
 
     return true;
-
-    /*
-	try{                   
-            //Check for null rules.
-            if(displayText.equals("")){
-                String badText = "WARNING: Please enter a rule.";
-                bassPatternText.setToolTipText(badText);
-                ruleLabel.setIcon(badRule);
-                ruleLabel.setToolTipText(badText);
-                nameTitle.setIcon(badPattern);
-                nameTitle.setToolTipText(unsafeMsgPattern);
-                errorMsg = "Bass pattern " + this.getTitleNumber() + " is empty";
-                return false;
-            }              
-            
-             StringTokenizer st = new StringTokenizer(displayText, " ");
-            Vector<String> tokenizedRule = new Vector<String>();
-            while (st.hasMoreTokens()) {
-                tokenizedRule.add(st.nextToken());
-            }	
-            
-            //For every element, check for invalid pitch items, incorrect formatting of X-notations, and 
-            //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors.
-          for(int i = 0; i < tokenizedRule.size(); i++){
-                String ch0 = java.lang.Character.toString(tokenizedRule.get(i).charAt(0));
-                if( !ch0.equals("U") && !ch0.equals("D"))
-                {
-                String ch1 = i+1 < tokenizedRule.size() ? java.lang.Character.toString(tokenizedRule.get(i).charAt(1)) : "";
-                if((ch0.equals("(") && ch1.equals("X"))){
-                    i += 2; continue;
-                }
-
-     if( !(ch0.equals("B")) && 
-                    !(ch0.equals("R")) &&
-                    !(ch0.equals("C")) &&
-                    !(ch0.equals("S")) && 
-                    !(ch0.equals("=")) &&
-                    !(ch0.equals("A")) &&
-                    !(ch0.equals("N")) &&                                        
-                     !(ch0.equals("(") && ch1.equals("X"))){
-                        String badText = "WARNING: The character " + ch0 + " is not valid.";
-                        bassPatternText.setToolTipText(badText);
-                        ruleLabel.setIcon(badRule);
-                        ruleLabel.setToolTipText(badText);
-                        nameTitle.setIcon(badPattern);
-                        nameTitle.setToolTipText(unsafeMsgPattern);
-                        errorMsg = "Bass pattern " + displayText + " contains an invalid character";
-                        return false;
-                }
-                try{
-                    if(!(ch0.equals("X"))){
-                         java.lang.Integer.parseInt(java.lang.Character.toString(tokenizedRule.get(i).charAt(1)));
-                         if(MIDIBeast.numBeatsInBassRule(displayText) == -1){
-                            String badText = "WARNING: This rule has an unrecognized rhythm duration";
-                            bassPatternText.setToolTipText(badText);
-                            ruleLabel.setIcon(badRule);
-                            ruleLabel.setToolTipText(badText);
-                            nameTitle.setIcon(badPattern);
-                            nameTitle.setToolTipText(unsafeMsgPattern);
-                            errorMsg = "Bass pattern " + displayText + " has an unrecognized rhythm duration";
-                            return false;
-                          }                                       
-                     }
-                }catch(NumberFormatException e){
-                   String badText = "WARNING: Expected a rhythm value.  Found the character " + ch1 + " instead!";
-                   bassPatternText.setToolTipText(badText);
-                   ruleLabel.setIcon(badRule);
-                   ruleLabel.setToolTipText(badText);
-                   nameTitle.setIcon(badPattern);
-                   nameTitle.setToolTipText(unsafeMsgPattern);
-                   errorMsg = "Bass pattern " + displayText + " is syntactically incorrect";
-                   return false;
-                }
-                
-            }
-}
-                        
-            if(Style.makeStyle(Notate.parseListFromString(rule)) == null){
-                String badText = "WARNING: This rule is syntactically incorrect";
-                bassPatternText.setToolTipText(badText);
-                ruleLabel.setIcon(badRule);
-                ruleLabel.setToolTipText(badText);
-                nameTitle.setIcon(badPattern);
-                nameTitle.setToolTipText(unsafeMsgPattern);
-                errorMsg = "Bass pattern " + displayText + " is syntactically incorrect";
-                return false;
-            }
-            else {
-              String goodText = "To preview this rule, press the play button.";
-              bassPatternText.setToolTipText(goodText);
-              ruleLabel.setIcon(goodRule);
-              ruleLabel.setToolTipText(goodText);
-              nameTitle.setIcon(goodPattern);
-              nameTitle.setToolTipText(safeMsgPattern);  
-              errorMsg = safeMsgRule;
-              return true;
-            }
-        }catch(Exception e) {
-            String badText = "WARNING: Unknown error...unable to include rule in style.";
-            bassPatternText.setToolTipText(badText);
-            ruleLabel.setIcon(badRule);
-            ruleLabel.setToolTipText(badText);
-            nameTitle.setIcon(badPattern);
-            nameTitle.setToolTipText(unsafeMsgPattern);
-            errorMsg = "Bass pattern " + displayText + " is syntactically incorrect";
-            return false;
-        }
-     */
     }
     
     /**
      * Collapses and expands the pattern information pane.
      **/
     private void expand() {
-        if(isExpanded == false) {
-            southPanel.setVisible(true);
-       //     this.setPreferredSize(expandedDimension);
-       //     this.setMaximumSize(expandedDimension);
-            
-            northPanel.setToolTipText("Double click to collapse pattern information.");
-            titlePanel.setToolTipText("Double click to collapse pattern information.");
-            lengthTitle.setToolTipText("Double click to collapse pattern information.");
-            includePlayPanel.setToolTipText("Double click to collapse pattern information.");
-            isExpanded = true;
-            
-        } else {
-            southPanel.setVisible(false);
-       //     this.setPreferredSize(collapsedDimension);
-       //     this.setMaximumSize(collapsedDimension);
 
-            northPanel.setToolTipText("Double click to expand pattern information.");
-            titlePanel.setToolTipText("Double click to expand pattern information.");
-            lengthTitle.setToolTipText("Double click to expand pattern information.");
-            includePlayPanel.setToolTipText("Double click to expand pattern information.");
-
-            isExpanded = false;
-        }        
     }
     
     /** This method is called from within the constructor to
@@ -437,353 +266,202 @@ public class BassPatternDisplay extends PatternDisplay
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
-  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-  private void initComponents()
-  {
-    java.awt.GridBagConstraints gridBagConstraints;
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-    northPanel = new javax.swing.JPanel();
-    titlePanel = new javax.swing.JPanel();
-    nameTitle = new javax.swing.JLabel();
-    lengthTitle = new javax.swing.JLabel();
-    includePlayPanel = new javax.swing.JPanel();
-    playPatternBtn = new javax.swing.JButton();
-    includeBox = new javax.swing.JCheckBox();
-    itemPanel = new javax.swing.JPanel();
-    weightLabel = new javax.swing.JLabel();
-    weightSpinner = new javax.swing.JSpinner();
-    southPanel = new javax.swing.JPanel();
-    patternPanel = new javax.swing.JPanel();
-    ruleLabel = new javax.swing.JLabel();
-    bassPatternText = new javax.swing.JTextField();
+        northPanel = new javax.swing.JPanel();
+        titlePanel = new javax.swing.JPanel();
+        nameTitle = new javax.swing.JLabel();
+        lengthTitle = new javax.swing.JLabel();
+        includePlayPanel = new javax.swing.JPanel();
+        playPatternBtn = new javax.swing.JButton();
+        includeBox = new javax.swing.JCheckBox();
+        southPanel = new javax.swing.JPanel();
+        patternPanel = new javax.swing.JPanel();
+        ruleLabel = new javax.swing.JLabel();
+        bassPatternText = new javax.swing.JTextField();
 
-    setBackground(new java.awt.Color(255, 255, 255));
-    setBorder(new javax.swing.border.LineBorder(new java.awt.Color(170, 196, 255), 1, true));
-    setMinimumSize(new java.awt.Dimension(525, 77));
-    setOpaque(false);
-    setPreferredSize(new java.awt.Dimension(527, 77));
-    addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        formMousePressed(evt);
-      }
-    });
-    setLayout(new java.awt.GridBagLayout());
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(new javax.swing.border.LineBorder(new java.awt.Color(170, 196, 255), 1, true));
+        setMinimumSize(new java.awt.Dimension(525, 77));
+        setOpaque(false);
+        setPreferredSize(new java.awt.Dimension(527, 77));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+        });
+        setLayout(new java.awt.GridBagLayout());
 
-    northPanel.setBackground(new java.awt.Color(170, 196, 255));
-    northPanel.setToolTipText("Double click to expand pattern information.");
-    northPanel.setMinimumSize(new java.awt.Dimension(525, 30));
-    northPanel.setPreferredSize(new java.awt.Dimension(525, 30));
-    northPanel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        northPanelMouseClicked(evt);
-      }
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        northPanelMousePressed(evt);
-      }
-    });
-    northPanel.setLayout(new java.awt.BorderLayout());
+        northPanel.setBackground(new java.awt.Color(170, 196, 255));
+        northPanel.setToolTipText("Double click to expand pattern information.");
+        northPanel.setMinimumSize(new java.awt.Dimension(525, 30));
+        northPanel.setPreferredSize(new java.awt.Dimension(525, 30));
+        northPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                northPanelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                northPanelMousePressed(evt);
+            }
+        });
+        northPanel.setLayout(new java.awt.BorderLayout());
 
-    titlePanel.setBackground(new java.awt.Color(170, 196, 255));
-    titlePanel.setToolTipText("Double click to expand pattern information.");
-    titlePanel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        titlePanelMouseClicked(evt);
-      }
-    });
-    titlePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        titlePanel.setBackground(new java.awt.Color(170, 196, 255));
+        titlePanel.setToolTipText("Double click to expand pattern information.");
+        titlePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                titlePanelMouseClicked(evt);
+            }
+        });
+        titlePanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-    nameTitle.setBackground(new java.awt.Color(170, 196, 255));
-    nameTitle.setFont(new java.awt.Font("Tahoma", 1, 11));
-    nameTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/goodpattern.png"))); // NOI18N
-    nameTitle.setText("Bass Pattern");
-    nameTitle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-    nameTitle.setIconTextGap(10);
-    nameTitle.setMaximumSize(new java.awt.Dimension(118, 14));
-    nameTitle.setMinimumSize(new java.awt.Dimension(118, 14));
-    nameTitle.setPreferredSize(new java.awt.Dimension(118, 14));
-    nameTitle.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        nameTitleMouseClicked(evt);
-      }
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        nameTitleMousePressed(evt);
-      }
-    });
-    titlePanel.add(nameTitle);
+        nameTitle.setBackground(new java.awt.Color(170, 196, 255));
+        nameTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        nameTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/goodpattern.png"))); // NOI18N
+        nameTitle.setText("Bass Pattern");
+        nameTitle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        nameTitle.setIconTextGap(10);
+        nameTitle.setMaximumSize(new java.awt.Dimension(118, 14));
+        nameTitle.setMinimumSize(new java.awt.Dimension(118, 14));
+        nameTitle.setPreferredSize(new java.awt.Dimension(118, 14));
+        nameTitle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nameTitleMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                nameTitleMousePressed(evt);
+            }
+        });
+        titlePanel.add(nameTitle);
 
-    lengthTitle.setBackground(new java.awt.Color(170, 196, 255));
-    lengthTitle.setFont(new java.awt.Font("Tahoma", 1, 11));
-    lengthTitle.setText("Length: unknown");
-    lengthTitle.setToolTipText("Double click to expand pattern information.");
-    lengthTitle.setMaximumSize(new java.awt.Dimension(115, 14));
-    lengthTitle.setMinimumSize(new java.awt.Dimension(115, 14));
-    lengthTitle.setPreferredSize(new java.awt.Dimension(115, 14));
-    lengthTitle.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        lengthTitleMouseClicked(evt);
-      }
-    });
-    titlePanel.add(lengthTitle);
+        lengthTitle.setBackground(new java.awt.Color(170, 196, 255));
+        lengthTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lengthTitle.setText("Length: unknown");
+        lengthTitle.setToolTipText("Double click to expand pattern information.");
+        lengthTitle.setMaximumSize(new java.awt.Dimension(115, 14));
+        lengthTitle.setMinimumSize(new java.awt.Dimension(115, 14));
+        lengthTitle.setPreferredSize(new java.awt.Dimension(115, 14));
+        lengthTitle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lengthTitleMouseClicked(evt);
+            }
+        });
+        titlePanel.add(lengthTitle);
 
-    northPanel.add(titlePanel, java.awt.BorderLayout.WEST);
+        northPanel.add(titlePanel, java.awt.BorderLayout.WEST);
 
-    includePlayPanel.setBackground(new java.awt.Color(170, 196, 255));
-    includePlayPanel.setToolTipText("Double click to expand pattern information.");
-    includePlayPanel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        includePlayPanelMouseClicked(evt);
-      }
-    });
+        includePlayPanel.setBackground(new java.awt.Color(170, 196, 255));
+        includePlayPanel.setToolTipText("Double click to expand pattern information.");
+        includePlayPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                includePlayPanelMouseClicked(evt);
+            }
+        });
 
-    playPatternBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/play.png"))); // NOI18N
-    playPatternBtn.setToolTipText("Click to play pattern.");
-    playPatternBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-    playPatternBtn.setIconTextGap(0);
-    playPatternBtn.setMaximumSize(new java.awt.Dimension(20, 20));
-    playPatternBtn.setMinimumSize(new java.awt.Dimension(20, 20));
-    playPatternBtn.setOpaque(false);
-    playPatternBtn.setPreferredSize(new java.awt.Dimension(20, 20));
-    playPatternBtn.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        playPatternBtnActionPerformed(evt);
-      }
-    });
-    includePlayPanel.add(playPatternBtn);
+        playPatternBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/play.png"))); // NOI18N
+        playPatternBtn.setToolTipText("Click to play pattern.");
+        playPatternBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        playPatternBtn.setIconTextGap(0);
+        playPatternBtn.setMaximumSize(new java.awt.Dimension(20, 20));
+        playPatternBtn.setMinimumSize(new java.awt.Dimension(20, 20));
+        playPatternBtn.setPreferredSize(new java.awt.Dimension(20, 20));
+        playPatternBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playPatternBtnActionPerformed(evt);
+            }
+        });
+        includePlayPanel.add(playPatternBtn);
 
-    includeBox.setBackground(new java.awt.Color(170, 196, 255));
-    includeBox.setSelected(true);
-    includeBox.setText("include");
-    includeBox.setToolTipText("Click to exclude this pattern from style.");
-    includeBox.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-    includeBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-    includeBox.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        includeBoxMouseClicked(evt);
-      }
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        includeBoxMousePressed(evt);
-      }
-    });
-    includeBox.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        includeBoxActionPerformed(evt);
-      }
-    });
-    includePlayPanel.add(includeBox);
+        includeBox.setBackground(new java.awt.Color(170, 196, 255));
+        includeBox.setSelected(true);
+        includeBox.setText("include");
+        includeBox.setToolTipText("Click to exclude this pattern from style.");
+        includeBox.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        includeBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        includeBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                includeBoxMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                includeBoxMousePressed(evt);
+            }
+        });
+        includeBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                includeBoxActionPerformed(evt);
+            }
+        });
+        includePlayPanel.add(includeBox);
 
-    northPanel.add(includePlayPanel, java.awt.BorderLayout.EAST);
+        northPanel.add(includePlayPanel, java.awt.BorderLayout.EAST);
 
-    itemPanel.setBackground(new java.awt.Color(255, 255, 255));
-    itemPanel.setMinimumSize(new java.awt.Dimension(530, 33));
-    itemPanel.setOpaque(false);
-    itemPanel.setPreferredSize(new java.awt.Dimension(530, 33));
-    itemPanel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        itemPanelMouseClicked(evt);
-      }
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        itemPanelMousePressed(evt);
-      }
-    });
-    itemPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        add(northPanel, gridBagConstraints);
 
-    weightLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
-    weightLabel.setText("Weight:");
-    weightLabel.setToolTipText("The higher the weight, the greater the likelihood this pattern will play during a song.");
-    weightLabel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mouseClicked(java.awt.event.MouseEvent evt)
-      {
-        weightLabelMouseClicked(evt);
-      }
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        weightLabelMousePressed(evt);
-      }
-    });
-    itemPanel.add(weightLabel);
+        southPanel.setBackground(new java.awt.Color(255, 255, 255));
+        southPanel.setMinimumSize(new java.awt.Dimension(525, 35));
+        southPanel.setPreferredSize(new java.awt.Dimension(525, 35));
+        southPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                southPanelMousePressed(evt);
+            }
+        });
+        southPanel.setLayout(new java.awt.GridBagLayout());
 
-    weightSpinner.setMinimumSize(new java.awt.Dimension(35, 18));
-    weightSpinner.setPreferredSize(new java.awt.Dimension(35, 18));
-    weightSpinner.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        weightSpinnerMousePressed(evt);
-      }
-    });
-    weightSpinner.addChangeListener(new javax.swing.event.ChangeListener()
-    {
-      public void stateChanged(javax.swing.event.ChangeEvent evt)
-      {
-        weightSpinnerStateChanged(evt);
-      }
-    });
-    itemPanel.add(weightSpinner);
+        patternPanel.setBackground(new java.awt.Color(255, 255, 255));
+        patternPanel.setMinimumSize(new java.awt.Dimension(525, 25));
+        patternPanel.setPreferredSize(new java.awt.Dimension(525, 25));
+        patternPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                patternPanelMousePressed(evt);
+            }
+        });
+        patternPanel.setLayout(new java.awt.BorderLayout());
 
-    northPanel.add(itemPanel, java.awt.BorderLayout.CENTER);
+        ruleLabel.setText(" ");
+        ruleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        ruleLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ruleLabelMousePressed(evt);
+            }
+        });
+        patternPanel.add(ruleLabel, java.awt.BorderLayout.WEST);
 
-    gridBagConstraints = new java.awt.GridBagConstraints();
-    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-    gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-    gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-    add(northPanel, gridBagConstraints);
+        bassPatternText.setMinimumSize(new java.awt.Dimension(500, 20));
+        bassPatternText.setPreferredSize(new java.awt.Dimension(500, 20));
+        bassPatternText.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bassPatternTextMousePressed(evt);
+            }
+        });
+        bassPatternText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bassPatternTextActionPerformed(evt);
+            }
+        });
+        bassPatternText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                bassPatternTextFocusLost(evt);
+            }
+        });
+        patternPanel.add(bassPatternText, java.awt.BorderLayout.EAST);
 
-    southPanel.setBackground(new java.awt.Color(255, 255, 255));
-    southPanel.setMinimumSize(new java.awt.Dimension(525, 35));
-    southPanel.setPreferredSize(new java.awt.Dimension(525, 35));
-    southPanel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        southPanelMousePressed(evt);
-      }
-    });
-    southPanel.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        southPanel.add(patternPanel, gridBagConstraints);
 
-    patternPanel.setBackground(new java.awt.Color(255, 255, 255));
-    patternPanel.setMinimumSize(new java.awt.Dimension(525, 25));
-    patternPanel.setPreferredSize(new java.awt.Dimension(525, 25));
-    patternPanel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        patternPanelMousePressed(evt);
-      }
-    });
-    patternPanel.setLayout(new java.awt.BorderLayout());
-
-    ruleLabel.setText(" ");
-    ruleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-    ruleLabel.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        ruleLabelMousePressed(evt);
-      }
-    });
-    patternPanel.add(ruleLabel, java.awt.BorderLayout.WEST);
-
-    bassPatternText.setMinimumSize(new java.awt.Dimension(500, 20));
-    bassPatternText.setPreferredSize(new java.awt.Dimension(500, 20));
-    bassPatternText.addMouseListener(new java.awt.event.MouseAdapter()
-    {
-      public void mousePressed(java.awt.event.MouseEvent evt)
-      {
-        bassPatternTextMousePressed(evt);
-      }
-    });
-    bassPatternText.addActionListener(new java.awt.event.ActionListener()
-    {
-      public void actionPerformed(java.awt.event.ActionEvent evt)
-      {
-        bassPatternTextActionPerformed(evt);
-      }
-    });
-    bassPatternText.addFocusListener(new java.awt.event.FocusAdapter()
-    {
-      public void focusLost(java.awt.event.FocusEvent evt)
-      {
-        bassPatternTextFocusLost(evt);
-      }
-    });
-    patternPanel.add(bassPatternText, java.awt.BorderLayout.EAST);
-
-    gridBagConstraints = new java.awt.GridBagConstraints();
-    gridBagConstraints.gridx = 0;
-    gridBagConstraints.gridy = 0;
-    southPanel.add(patternPanel, gridBagConstraints);
-
-    gridBagConstraints = new java.awt.GridBagConstraints();
-    gridBagConstraints.gridx = 0;
-    gridBagConstraints.gridy = 1;
-    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-    add(southPanel, gridBagConstraints);
-  }// </editor-fold>//GEN-END:initComponents
-
-    private void weightLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightLabelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_weightLabelMouseClicked
-
-    private void itemPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_itemPanelMouseClicked
-
-    private void titlePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titlePanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_titlePanelMouseClicked
-
-    private void includePlayPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includePlayPanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_includePlayPanelMouseClicked
-
-    private void lengthTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lengthTitleMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_lengthTitleMouseClicked
-
-    private void northPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_northPanelMouseClicked
-
-    private void includeBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includeBoxMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_includeBoxMouseClicked
-
-    private void nameTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTitleMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_nameTitleMouseClicked
-
-    private void weightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_weightSpinnerStateChanged
-        cm.changedSinceLastSave(true);
-    }//GEN-LAST:event_weightSpinnerStateChanged
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(southPanel, gridBagConstraints);
+    }// </editor-fold>//GEN-END:initComponents
 
     private void ruleLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ruleLabelMousePressed
         setSelectedAppearance();
@@ -793,34 +471,9 @@ public class BassPatternDisplay extends PatternDisplay
         setSelectedAppearance();
     }//GEN-LAST:event_patternPanelMousePressed
 
-    private void weightSpinnerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightSpinnerMousePressed
-        setSelectedAppearance();
-        
-    }//GEN-LAST:event_weightSpinnerMousePressed
-
-    private void weightLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightLabelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_weightLabelMousePressed
-
-    private void itemPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPanelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_itemPanelMousePressed
-
     private void southPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_southPanelMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_southPanelMousePressed
-
-    private void includeBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includeBoxMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_includeBoxMousePressed
-
-    private void nameTitleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTitleMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_nameTitleMousePressed
-
-    private void northPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_northPanelMousePressed
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         setSelectedAppearance();
@@ -835,86 +488,6 @@ public class BassPatternDisplay extends PatternDisplay
         cm.changedSinceLastSave(true);        
     }//GEN-LAST:event_bassPatternTextFocusLost
     
-    private void playPatternBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnActionPerformed
-      playMe();
-    }
-
-    public boolean playMe(double swingVal)
-    {
-    return playMe(swingVal, 0);
-    }
-
-      /**
-       * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
-       *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
-       */
-
-    public boolean playMe(double swingVal, int loopCount)
-    {
-        canPlay();
-        
-        if(checkStatus()) {
-            try{
-                String r = this.getPattern();
-                Polylist rule = Notate.parseListFromString(r); 
-                if(rule.isEmpty()) {
-                    cannotPlay();
-                    return false;
-                }
-                
-                Style tempStyle = Style.makeStyle(rule);
-                tempStyle.setSwing(swingVal);
-                tempStyle.setAccompanimentSwing(swingVal);
-                tempStyle.setName("bassPattern");
-                Style.setStyle("bassPattern", tempStyle);
-                // This is necessary so that the StyleListModel menu in notate is reset.
-                // Without it, the contents will be emptied.
-                parent.reloadStyles();
-                                       
-                String chord = styleParent.getChord();
-                ChordPart c = new ChordPart();
-                boolean muteChord = styleParent.isChordMuted();
-                int duration = tempStyle.getBP().get(0).getDuration();
-
-                c.addChord(chord, duration);
-                c.setStyle(tempStyle);
-                
-                Score s = new Score(4); // Why 4??
-                s.setChordProg(c);
-
-                if( muteChord )
-                  {
-                    s.setChordVolume(0);
-                  }
-                else
-                  {
-                    s.setChordVolume(styleParent.getVolume());
-                  }
-                s.setBassVolume(styleParent.getVolume());
-                s.setTempo(styleParent.getTempo());
-
-                MidiSynth synth = parent.getMidiSynth();
-
-                s.setVolumes(synth);
-                
-                //System.out.println("c = " + c);
-                //System.out.println("s = " + s);
-                parent.cm.execute(new PlayScoreCommand(s, 0, true, synth, parent.getTransposition())); // REVISIT!
-                styleParent.setStatus("OK");
-                
-            }
-            catch(Exception e) {
-                cannotPlay();
-                return false;                    
-           }
-        }
-        else {
-                cannotPlay();
-                return false; 
-        }
-      return true;
-    }//GEN-LAST:event_playPatternBtnActionPerformed
-
     /**
      * @return the actual text displpayed in the text field
      **/    
@@ -928,31 +501,186 @@ public class BassPatternDisplay extends PatternDisplay
         cm.changedSinceLastSave(true);
     }//GEN-LAST:event_bassPatternTextActionPerformed
 
-    private void includeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_includeBoxActionPerformed
-        //do nothing.  Actually including or excluding from a style is handled in the save sections
-        setSelectedAppearance();
-        if(includeBox.isSelected()) {
-            includeBox.setToolTipText("Click to exclude this pattern from style.");
-        }
-        else {
-            includeBox.setToolTipText("Click to include this pattern from style.");
-        }
-    }//GEN-LAST:event_includeBoxActionPerformed
+private void northPanelMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_northPanelMousePressed
+  {//GEN-HEADEREND:event_northPanelMousePressed
+    setSelectedAppearance();
+  }//GEN-LAST:event_northPanelMousePressed
+
+private void northPanelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_northPanelMouseClicked
+  {//GEN-HEADEREND:event_northPanelMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_northPanelMouseClicked
+
+private void includePlayPanelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_includePlayPanelMouseClicked
+  {//GEN-HEADEREND:event_includePlayPanelMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_includePlayPanelMouseClicked
+
+private void includeBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_includeBoxActionPerformed
+  {//GEN-HEADEREND:event_includeBoxActionPerformed
+    //do nothing.  Actually including or excluding from a style is handled in the save sections
+    setSelectedAppearance();
+    if( includeBox.isSelected() )
+      {
+        includeBox.setToolTipText("Click to exclude this pattern from style.");
+      }
+    else
+      {
+        includeBox.setToolTipText("Click to include this pattern from style.");
+      }
+  }//GEN-LAST:event_includeBoxActionPerformed
+
+private void includeBoxMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_includeBoxMousePressed
+  {//GEN-HEADEREND:event_includeBoxMousePressed
+    setSelectedAppearance();
+  }//GEN-LAST:event_includeBoxMousePressed
+
+private void includeBoxMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_includeBoxMouseClicked
+  {//GEN-HEADEREND:event_includeBoxMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_includeBoxMouseClicked
+
+private void playPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playPatternBtnActionPerformed
+  {//GEN-HEADEREND:event_playPatternBtnActionPerformed
+    playMe();
+  }
+
+public boolean playMe(double swingVal)
+  {
+    return playMe(swingVal, 0);
+  }
+
+/**
+ * If the pattern is legal, creates a style with one chordPart consisting of a
+ * single chord and adds the entire pattern to that style. Uses the volume,
+ * tempo, and chord info from the toolbar.
+ */
+public boolean playMe(double swingVal, int loopCount)
+  {
+    canPlay();
+
+    if( checkStatus() )
+      {
+        try
+          {
+            String r = this.getPattern();
+            Polylist rule = Notate.parseListFromString(r);
+            if( rule.isEmpty() )
+              {
+                cannotPlay();
+                return false;
+              }
+
+            Style tempStyle = Style.makeStyle(rule);
+            tempStyle.setSwing(swingVal);
+            tempStyle.setAccompanimentSwing(swingVal);
+            tempStyle.setName("bassPattern");
+            Style.setStyle("bassPattern", tempStyle);
+            // This is necessary so that the StyleListModel menu in notate is reset.
+            // Without it, the contents will be emptied.
+            parent.reloadStyles();
+
+            String chord = styleParent.getChord();
+            ChordPart c = new ChordPart();
+            boolean muteChord = styleParent.isChordMuted();
+            int duration = tempStyle.getBP().get(0).getDuration();
+
+            c.addChord(chord, duration);
+            c.setStyle(tempStyle);
+
+            Score s = new Score(4); // Why 4??
+            s.setChordProg(c);
+
+            if( muteChord )
+              {
+                s.setChordVolume(0);
+              }
+            else
+              {
+                s.setChordVolume(styleParent.getVolume());
+              }
+            s.setBassVolume(styleParent.getVolume());
+            s.setTempo(styleParent.getTempo());
+
+            MidiSynth synth = parent.getMidiSynth();
+
+            s.setVolumes(synth);
+
+            //System.out.println("c = " + c);
+            //System.out.println("s = " + s);
+            parent.cm.execute(new PlayScoreCommand(s, 0, true, synth, parent.getTransposition())); // REVISIT!
+            styleParent.setStatus("OK");
+
+          }
+        catch( Exception e )
+          {
+            cannotPlay();
+            return false;
+          }
+      }
+    else
+      {
+        cannotPlay();
+        return false;
+      }
+    return true;
+  }//GEN-LAST:event_playPatternBtnActionPerformed
+
+private void titlePanelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_titlePanelMouseClicked
+  {//GEN-HEADEREND:event_titlePanelMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_titlePanelMouseClicked
+
+private void nameTitleMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_nameTitleMousePressed
+  {//GEN-HEADEREND:event_nameTitleMousePressed
+    setSelectedAppearance();
+  }//GEN-LAST:event_nameTitleMousePressed
+
+private void nameTitleMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_nameTitleMouseClicked
+  {//GEN-HEADEREND:event_nameTitleMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_nameTitleMouseClicked
+
+private void lengthTitleMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_lengthTitleMouseClicked
+  {//GEN-HEADEREND:event_lengthTitleMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_lengthTitleMouseClicked
        
-  // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JTextField bassPatternText;
-  private javax.swing.JCheckBox includeBox;
-  private javax.swing.JPanel includePlayPanel;
-  private javax.swing.JPanel itemPanel;
-  private javax.swing.JLabel lengthTitle;
-  private javax.swing.JLabel nameTitle;
-  private javax.swing.JPanel northPanel;
-  private javax.swing.JPanel patternPanel;
-  private javax.swing.JButton playPatternBtn;
-  private javax.swing.JLabel ruleLabel;
-  private javax.swing.JPanel southPanel;
-  private javax.swing.JPanel titlePanel;
-  private javax.swing.JLabel weightLabel;
-  private javax.swing.JSpinner weightSpinner;
-  // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField bassPatternText;
+    private javax.swing.JCheckBox includeBox;
+    private javax.swing.JPanel includePlayPanel;
+    private javax.swing.JLabel lengthTitle;
+    private javax.swing.JLabel nameTitle;
+    private javax.swing.JPanel northPanel;
+    private javax.swing.JPanel patternPanel;
+    private javax.swing.JButton playPatternBtn;
+    private javax.swing.JLabel ruleLabel;
+    private javax.swing.JPanel southPanel;
+    private javax.swing.JPanel titlePanel;
+    // End of variables declaration//GEN-END:variables
 }
