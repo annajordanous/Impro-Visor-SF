@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -35,7 +34,6 @@ abstract class PatternDisplay
         extends javax.swing.JPanel
         implements Constants, Playable
 {
-  
   public static double NOSWING = 0.5;
   
   protected boolean playable = true;
@@ -48,8 +46,8 @@ abstract class PatternDisplay
   protected CommandManager cm;
 
   public PatternDisplay(Notate notate,
-                         CommandManager cm,
-                         StyleEditor styleEditor)
+                        CommandManager cm,
+                        StyleEditor styleEditor)
     {
     this.notate = notate;
     this.cm = cm;
