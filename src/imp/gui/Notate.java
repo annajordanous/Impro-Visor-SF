@@ -22933,6 +22933,9 @@ public void showNewVoicingDialog()
       if( styleEditor == null )
       {
         File styleFile = ImproVisor.getRecentStyleFile();
+        
+        //System.out.println("styleFile = " + styleFile);
+        
         if( styleFile == null )
           {
           styleEditor = new StyleEditor(this);

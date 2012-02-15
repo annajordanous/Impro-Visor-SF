@@ -1361,6 +1361,12 @@ public void playBassColumn()
     // The parens that open and close a style need to be removed so that the 
     // polylist parses correctly.  The parens are included in the file 
     // to maintain backwards compatability with the Style Textual Editor.
+    
+    if( s == null )
+      {
+        ErrorLog.log(ErrorLog.WARNING, "Unable to open style file: " + file.getName());
+        return;
+      }
     s = s.substring(1, s.length() - 1);
     Polylist poly = Notate.parseListFromString(s);
     Style style = Style.makeStyle(Notate.parseListFromString(s));

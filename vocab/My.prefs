@@ -30,3 +30,5 @@
 (midi-out JavaSoundSynthesizer)
 (midi-echo y)
 (midi-in-latency 10.0)
+(recent-style-file swing.sty)
+

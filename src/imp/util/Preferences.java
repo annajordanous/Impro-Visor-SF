@@ -33,7 +33,7 @@ import polya.PolylistBuffer;
 import polya.Tokenizer;
 
 /**
- * @author dmorrison, keller
+ * @author David Morrison, Robert Keller
  */
 
 public class Preferences implements imp.Constants
@@ -193,6 +193,8 @@ public class Preferences implements imp.Constants
   public static final String MIDI_ECHO = "midi-echo";
 
   public static final String MIDI_IN_LATENCY = "midi-in-latency";
+  
+  public static final String RECENT_STYLE_FILE = "recent-style-file";
 
   public static final String DEFAULT_MIDI_IN = "RealTimeSequencer";
   
@@ -201,6 +203,8 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_MIDI_ECHO = YES;
 
   public static final String DEFAULT_MIDI_IN_LATENCY = "0";
+  
+  public static final String DEFAULT_RECENT_STYLE_FILE = "swing.sty";
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
    */
@@ -485,7 +489,8 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");      
       out.println("(" + MIDI_IN + " " + DEFAULT_MIDI_IN + ")");      
       out.println("(" + MIDI_OUT + " " + DEFAULT_MIDI_OUT + ")");      
-      out.println("(" + MIDI_ECHO + " " + DEFAULT_MIDI_ECHO + ")");      
+      out.println("(" + MIDI_ECHO + " " + DEFAULT_MIDI_ECHO + ")"); 
+      out.println("(" + RECENT_STYLE_FILE + DEFAULT_RECENT_STYLE_FILE + ")");
       }
     catch( Exception e )
       {
@@ -528,6 +533,7 @@ public static boolean getAlwaysUse(int index)
       buffer.append(Polylist.list(MIDI_IN,                   DEFAULT_MIDI_IN));      
       buffer.append(Polylist.list(MIDI_OUT,                  DEFAULT_MIDI_OUT));      
       buffer.append(Polylist.list(MIDI_ECHO,                 DEFAULT_MIDI_ECHO));      
+      buffer.append(Polylist.list(RECENT_STYLE_FILE,         DEFAULT_RECENT_STYLE_FILE));      
       return buffer.toPolylist();
     }
   
@@ -586,8 +592,6 @@ public static int defaultingIntFromString(int defaultInt, String string)
         {
         file.println(out.first());
         out = out.rest();
-
-
         }
       }
 

@@ -119,12 +119,21 @@ public class ImproVisor implements Constants {
     
     public static File getRecentStyleFile()
       {
+      if( mostRecentStyleFileEdited == null )
+        {
+         String fileName = Preferences.getPreference(Preferences.RECENT_STYLE_FILE);
+         
+         //System.out.println("fileName = " + fileName);
+         
+         mostRecentStyleFileEdited = new File(getStyleDirectory(), fileName);
+        }
       return mostRecentStyleFileEdited;
       }
     
     public static void setRecentStyleFile(File file)
       {
         mostRecentStyleFileEdited = file;
+        Preferences.setPreference(Preferences.RECENT_STYLE_FILE, file.getName());
       }
     
     public static MidiManager getMidiManager() {
@@ -305,7 +314,7 @@ private ImproVisor(String leadsheet)
 
       }
     
-    // FIrst open a blank Notate window
+    // First open a blank Notate window
 
     // Create a score with default measures in default meter
     Score score = new Score(Notate.defaultBarsPerPart * (BEAT * Notate.defaultMetre));
