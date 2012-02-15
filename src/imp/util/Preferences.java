@@ -440,18 +440,6 @@ public static boolean getAlwaysUse(int index)
     File file = ImproVisor.getPrefsFile();
     try
       {
-      /*
-      File newVocabDir = new File("vocab");
-      boolean needNewVocabDir =
-              !newVocabDir.exists() || !newVocabDir.isDirectory();
-
-      if( needNewVocabDir )
-        {
-        ErrorLog.log(ErrorLog.WARNING, "Creating new 'vocab' directory");
-        newVocabDir.mkdir();
-        }
-      */
-        
       FileOutputStream newFile;
 
       newFile = new FileOutputStream(file); //"vocab" + File.separator + "My.prefs");
@@ -683,7 +671,6 @@ public static int defaultingIntFromString(int defaultInt, String string)
       return undoable;
       }
   }
- 
 }
   
   

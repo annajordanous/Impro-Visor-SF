@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -1190,7 +1189,7 @@ static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
                           {
                             index += slotsPerBar;
                           }
-                        System.out.println("style: " + styleName);
+                        //System.out.println("style: " + styleName);
                         chords.addSection(styleName, index, isPhrase);
                       }
                     break;

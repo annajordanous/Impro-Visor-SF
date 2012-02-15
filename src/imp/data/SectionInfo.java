@@ -72,15 +72,6 @@ public class SectionInfo implements Constants, Serializable {
         return si;
     }
     
-//    public boolean addSection(String name, int n, boolean isPhrase) {
-//        Style s = Advisor.getStyle(name);
-//        if(s == null)
-//            return false;
-//        else {
-//            addSection(s,n,isPhrase);
-//            return true;
-//        }
-//    }
     
     public void addSection(String styleName, int n, boolean isPhrase) {
         ListIterator<SectionRecord> k = records.listIterator();

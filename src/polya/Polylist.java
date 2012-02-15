@@ -1,7 +1,7 @@
 /**
  * Polya library: Implements Lisp-like structures in Java.
  *
- * Copyright (C) 2009-2011 Robert Keller
+ * Copyright (C) 2009-2012 Robert Keller
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,8 +20,9 @@
 
 package polya;
 
-import java.util.*;
-import java.io.*;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.Enumeration;
 
 /**   
 <pre>
@@ -194,9 +194,10 @@ public Polylist rest()
 /**
  *  toString() converts Polylist to string, e.g. for printing
  */
+@Override
 public String toString()
   {
-  StringBuffer buff = new StringBuffer();
+  StringBuilder buff = new StringBuilder();
 
   buff.append("(");
 
@@ -239,7 +240,7 @@ public String toString()
  */
 public String toStringSansParens()
   {
-  StringBuffer buff = new StringBuffer();
+  StringBuilder buff = new StringBuilder();
 
   // See if this is an incremental list; if so, show ...
 
@@ -1018,12 +1019,16 @@ String analysis(int N)
     {
     return spaces(N) + "The empty Polylist\n";
     }
-  StringBuffer buff = new StringBuffer();
+  StringBuilder buff = new StringBuilder();
   buff.append(spaces(N));
   int len = length();
-  buff.append("A Polylist consisting of " + len + " element" + (len > 1
+  buff.append("A Polylist consisting of ");
+  buff.append(len);
+  buff.append(" element");
+  buff.append(len > 1
           ? "s"
-          : "") + ": \n");
+          : "");
+  buff.append(": \n");
   Polylist L = this;
   for( Enumeration e = elements(); e.hasMoreElements();)
     {
@@ -1054,7 +1059,7 @@ static String analysis(Object Ob, int N)
  */
 static String spaces(int N)
   {
-  StringBuffer buff = new StringBuffer();
+  StringBuilder buff = new StringBuilder();
   while( N > 0 )
     {
     buff.append("  ");
@@ -1112,7 +1117,7 @@ public static Polylist explode(String S)
  */
 public String implode()
   {
-  StringBuffer buff = new StringBuffer();
+  StringBuilder buff = new StringBuilder();
   for( Enumeration e = elements(); e.hasMoreElements();)
     {
     buff.append(e.nextElement().toString());
@@ -1123,7 +1128,7 @@ public String implode()
 
 public String implode(String separator)
   {
-  StringBuffer buff = new StringBuffer();
+  StringBuilder buff = new StringBuilder();
   Enumeration e = elements();
   if( !e.hasMoreElements() )
     {
@@ -1132,7 +1137,8 @@ public String implode(String separator)
   buff.append(e.nextElement());
   while( e.hasMoreElements() )
     {
-    buff.append(separator + e.nextElement().toString());
+    buff.append(separator);
+    buff.append(e.nextElement().toString());
     }
   return buff.toString();
   }

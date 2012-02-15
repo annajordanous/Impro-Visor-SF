@@ -289,9 +289,6 @@ public class ChordPart extends Part implements Serializable{
         sectionInfo.setStyle(s);
     }
 
-//    public void addSection(Style s, int n, boolean isPhrase) {
-//        sectionInfo.addSection(s,n, isPhrase);
-//    }
     
     public void addSection(String styleName, int n, boolean isPhrase) {
         sectionInfo.addSection(styleName, n, isPhrase);
@@ -336,6 +333,7 @@ public class ChordPart extends Part implements Serializable{
      * @param last      the last slot in the range
      * @return Part     the Part that contains the extracted chunk
      */
+    @Override
     public ChordPart extract(int first, int last) {
         ChordPart newPart = new ChordPart();
 
