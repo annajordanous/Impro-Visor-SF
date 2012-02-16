@@ -2913,6 +2913,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
               
               if( sectionIter.hasNext() )
                 {
+                // Have gotten java.util.ConcurrentModificationException here
                 record = sectionIter.next();
                 nextSectionStart = record.getIndex();
                 }

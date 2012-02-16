@@ -5743,6 +5743,7 @@ public void playBassColumn()
       }  
 
     pianoRoll.setColumnIn(col, styleName);
+    pianoRoll.setColumnOut(col, styleName);
 
     pianoRoll.display();
     }
