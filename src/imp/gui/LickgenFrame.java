@@ -3682,8 +3682,7 @@ public void resetTriageParameters(boolean menu)
 
     autoFill = Boolean.parseBoolean(lickgen.getParameter(LickGen.AUTO_FILL));
 
-    rectify = Boolean.parseBoolean(lickgen.getParameter(
-        LickGen.RECTIFY));
+    rectify = Boolean.parseBoolean(lickgen.getParameter(LickGen.RECTIFY));
 
     rectifyCheckBox.setSelected(rectify);
 

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,13 @@
 
 package imp.roadmap;
 
+import imp.brickdictionary.Block;
+import imp.brickdictionary.Brick;
+import imp.brickdictionary.ChordBlock;
+import imp.brickdictionary.KeySpan;
+import imp.cykparser.PostProcessor;
 import java.util.ArrayList;
 import java.util.List;
-
-import imp.cykparser.PostProcessor;
-import imp.brickdictionary.*;
-
 import polya.Polylist;
 import polya.PolylistBuffer;
 

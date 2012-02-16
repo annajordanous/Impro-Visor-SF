@@ -454,8 +454,6 @@ public class MelodyPart
       nextIndex = getNextIndex(nextIndex);
       nextNote = getNote(nextIndex);
       }
-
-    return;
     }
 
   /**

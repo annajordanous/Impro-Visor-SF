@@ -9196,7 +9196,7 @@ private String getChordRedirectName(int row)
           }
         else
           {
-            setGrammarFilename(ImproVisor.getGrammarDirectory().getName() + grammarfc.getSelectedFile() + GrammarFilter.EXTENSION);
+            setGrammarFilename(grammarfc.getSelectedFile() + GrammarFilter.EXTENSION);
 
             lickgen.saveGrammar(grammarFilename);
           }
@@ -11736,7 +11736,7 @@ private MelodyPart makeLick(Polylist rhythm)
 
     if( rhythm == null || rhythm.isEmpty() )
       {
-        ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No lick will be generated.");
+        // redundant? ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No lick will be generated.");
         return null;
       }
 
@@ -11766,7 +11766,7 @@ private void putLick(MelodyPart lick)
   {
     if( lick == null )
       {
-        ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
+        // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
         return;
       }
 

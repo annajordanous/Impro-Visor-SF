@@ -115,6 +115,10 @@ public Polylist run(Object data, Notate notate)
           }
         catch( RuleApplicationException e )
           {
+          if( ErrorLogWithResponse.log(ErrorLog.SEVERE, "Problem applying rules: " + e) )
+            {
+              return null;
+            }
           }
       notate.setLickGenStatus("Retrying lick generation (" + (++retryCount) + " cumulative).");
       }
@@ -443,9 +447,8 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
   // If we get here, there's some syntax error with the grammar file.
   catch( ClassCastException e )
     {
-    ErrorLog.log(ErrorLog.SEVERE, "Malformed grammar file, exception: " + e);
-    throw new RuleApplicationException("Malformed grammar file " + e);
-    //return null;
+    ErrorLogWithResponse.log(ErrorLog.SEVERE, "Malformed grammar file, exception: " + e);
+    throw new RuleApplicationException("Error in grammar file");
     }
   }
 
