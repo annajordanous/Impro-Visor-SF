@@ -13295,21 +13295,17 @@ private boolean setSectionPrefs()
 
         boolean isPhrase = phraseCheckBox.isSelected();
         
-        boolean usePreviousStyleChecked = usePreviousStyleCheckBox.isSelected();
+        boolean usePreviousStyleChecked = !(currentMeasure==1) && usePreviousStyleCheckBox.isSelected();
 
         if( measure > 0 && measure <= sectionInfo.measures() )
           {
             if( measure != currentMeasure && currentMeasure == 1 )
               {
-                ErrorLog.log(ErrorLog.WARNING, "Cannot move the first section.");
+                //ErrorLog.log(ErrorLog.WARNING, "Cannot move the first section.");
 
                 return false;
               }
 
-            if( measure > 1 )
-              {
-              sectionInfo.adjustSection(index, measure, isPhrase, usePreviousStyleChecked);
-              }
           }
         else
           {
@@ -13317,6 +13313,7 @@ private boolean setSectionPrefs()
 
             return false;
           }
+      sectionInfo.adjustSection(index, measure, isPhrase, usePreviousStyleChecked);
       }
     catch( NumberFormatException e )
       {
