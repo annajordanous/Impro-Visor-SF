@@ -13,18 +13,11 @@
  * for a particular purpose. See the GNU General Public License for more
  * details.
  *
- *
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
-/*
- * MidiManager.java
- *
- * Created on June 22, 2006, 3:40 PM
- *
- * @author Martin Hunt, reworked by Robert Keller, in accord with updated Java
- */
+
 package imp.util;
 
 import imp.Constants;
@@ -33,6 +26,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import javax.sound.midi.*;
+
+
+/*
+ * MidiManager.java
+ *
+ * Created on June 22, 2006, 3:40 PM
+ *
+ * @author Martin Hunt, reworked by Robert Keller, in accord with updated Java
+ */
 
 public class MidiManager implements Constants
 {
@@ -549,7 +551,7 @@ public void setOutDevice(Object outInfoObject)
       {
         out = null;
         logError(outInfo + " - " + e.getMessage());
-        outDeviceError += (outDeviceError == "" ? "" : "\n") + e.getMessage();
+        outDeviceError += (outDeviceError.equals("") ? "" : "\n") + e.getMessage();
       }
   }
 
@@ -657,7 +659,6 @@ public void send(MidiMessage message, long timeStamp)
       {
         // RK 6/11/2010 Getting exceptions here at the end.
         // This silently catches them.
-        return;
       }
   }
 

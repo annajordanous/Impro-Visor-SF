@@ -257,6 +257,12 @@ public class Style
       return orderedStyles.size(); 
     }
   
+  /**
+   * Used by StyleList in Notate.
+   * @param index
+   * @return 
+   */
+  
     public static Style getNth(int index)
       {
         ensureStyleArray();
@@ -942,15 +948,16 @@ public class Style
 
       // each element of the polylist is a drum part
       // so we go through and sequence each element
-      for( int i = 0; i < drumline.length(); i++ )
+      while( drumline.nonEmpty() )
         {
-        MelodyPart d = (MelodyPart)drumline.nth(i);
+        MelodyPart d = (MelodyPart)drumline.first();
 
         d.setSwing(accompanimentSwing);
         d.setInstrument(drumInstrument);
         d.makeSwing();
 
         d.sequence(seq, drumChannel, time, track, 0, endLimitIndex);
+        drumline = drumline.rest();
         }
       time += (patternDuration * seq.getResolution()) / BEAT;
       }
@@ -1081,12 +1088,14 @@ public class Style
           {
           Polylist v = (Polylist)voicing;
           chord.setVoicing(v);
-          for( int j = 0; j < v.length(); j++ )
+          Polylist L = v;
+          while( L.nonEmpty() )
             {
-            NoteSymbol ns = (NoteSymbol)v.nth(j);
+            NoteSymbol ns = (NoteSymbol)L.first();
             note = ns.toNote();
             note.setRhythmValue(dur);
             note.sequence(seq, track, time, chordChannel, MAX_VOLUME, transposition, endLimitIndex);
+            L = L.rest();
             }
 
           lastChord = v;
