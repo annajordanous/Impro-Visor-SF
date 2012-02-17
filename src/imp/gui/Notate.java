@@ -2105,6 +2105,7 @@ public class Notate
         showAdviceButton = new javax.swing.JToggleButton();
         openGeneratorButton = new javax.swing.JButton();
         generateToolbarBtn = new javax.swing.JButton();
+        recurrentGenButton = new javax.swing.JToggleButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
@@ -6696,6 +6697,26 @@ public class Notate
             }
         });
         standardToolbar.add(generateToolbarBtn);
+
+        recurrentGenButton.setBackground(new java.awt.Color(102, 255, 255));
+        recurrentGenButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        recurrentGenButton.setText("<html><center>Recur</center></html>");
+        recurrentGenButton.setToolTipText("Generate recurrently");
+        recurrentGenButton.setActionCommand("");
+        recurrentGenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        recurrentGenButton.setFocusable(false);
+        recurrentGenButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        recurrentGenButton.setMaximumSize(new java.awt.Dimension(40, 30));
+        recurrentGenButton.setMinimumSize(new java.awt.Dimension(40, 30));
+        recurrentGenButton.setOpaque(true);
+        recurrentGenButton.setPreferredSize(new java.awt.Dimension(40, 30));
+        recurrentGenButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        recurrentGenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recurrentGenButtonActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(recurrentGenButton);
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
@@ -20609,6 +20630,22 @@ private void recentStyleListValueChanged(javax.swing.event.ListSelectionEvent ev
       sectionListModel.refresh();
   }//GEN-LAST:event_recentStyleListValueChanged
 
+private void recurrentGenButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_recurrentGenButtonActionPerformed
+  {//GEN-HEADEREND:event_recurrentGenButtonActionPerformed
+    boolean recurrent = recurrentGenButton.isSelected();
+    lickgenFrame.setRecurrent(recurrent);
+    if( recurrent )
+        {
+        recurrentGenButton.setBackground(new Color(255, 153, 153));
+        recurrentGenButton.setText("Single");
+        }
+      else
+        {
+        recurrentGenButton.setBackground(new Color(153, 204, 255));
+        recurrentGenButton.setText("Recur");
+        }
+  }//GEN-LAST:event_recurrentGenButtonActionPerformed
+
 
 public boolean showPhrasemarks()
   {
@@ -22533,6 +22570,7 @@ public void showNewVoicingDialog()
     private javax.swing.JList recentStyleList;
     private javax.swing.JScrollPane recentStyleListScrollPane;
     private javax.swing.JButton recordBtn;
+    private javax.swing.JToggleButton recurrentGenButton;
     private javax.swing.JRadioButton redApproachBtn;
     private javax.swing.JRadioButton redChordBtn;
     private javax.swing.JRadioButton redColorBtn;

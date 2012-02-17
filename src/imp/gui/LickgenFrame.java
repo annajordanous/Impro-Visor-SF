@@ -3547,7 +3547,7 @@ public void stopPlaying()
 }//GEN-LAST:event_avoidRepeatsCheckboxActionPerformed
 
     private void recurrentCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recurrentCheckboxActionPerformed
-        recurrentIteration = 1;
+ 
 }//GEN-LAST:event_recurrentCheckboxActionPerformed
 
     private void gapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gapFieldActionPerformed
@@ -4258,6 +4258,11 @@ private void triageLick(String lickName, int grade)
       return recurrentCheckbox.isSelected();
   }
 
+  public void setRecurrent(boolean value)
+    {
+      recurrentCheckbox.setSelected(value);
+    }
+  
   public void setTotalBeats(double beats) {
         totalBeats = beats;
         totalBeatsField.setText("" + beats);
