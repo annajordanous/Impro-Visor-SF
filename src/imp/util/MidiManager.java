@@ -480,8 +480,11 @@ public void setInDevice(MidiDevice.Info inInfo)
       {
         in = null;
       }
-   Preferences.setPreference(Preferences.MIDI_IN, removeWhitespace(inInfo.toString()));
-
+    
+    if( inInfo != null )
+      {
+      Preferences.setPreference(Preferences.MIDI_IN, removeWhitespace(inInfo.toString()));
+      }
   }
 
 /**
