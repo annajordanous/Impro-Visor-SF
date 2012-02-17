@@ -9471,7 +9471,6 @@ private String getChordRedirectName(int row)
     cScore.setStyle(s);
 
     new PlayScoreCommand(cScore, 0, false, 0, getTransposition(), false, 4*BEAT).execute();
-
     }
   
   
@@ -16781,15 +16780,15 @@ public void playAscore(Score score, String style, int loopCount)
   
   midiSynth3.setMasterVolume(volume);
   
-  cm.execute(new PlayScoreCommand(score, 
-                                 startTime, 
-                                 swing, 
-                                 midiSynth3, 
-                                 this, 
-                                 loopCount, 
-                                 transposition, 
-                                 useDrums,
-                                 endLimitIndex));     
+  new PlayScoreCommand(score, 
+                       startTime, 
+                       swing, 
+                       midiSynth3, 
+                       this, 
+                       loopCount, 
+                       transposition, 
+                       useDrums,
+                       endLimitIndex).execute();     
 }
 
 /**
@@ -16814,15 +16813,15 @@ public void playAscoreWithStyle(Score score, int loopCount)
   
   midiSynth3.setMasterVolume(volume);
 
-  cm.execute(new PlayScoreCommand(score, 
-                                 startTime, 
-                                 swing, 
-                                 midiSynth3, 
-                                 this, 
-                                 loopCount, 
-                                 transposition, 
-                                 useDrums,
-                                 endLimitIndex));     
+  new PlayScoreCommand(score, 
+                       startTime, 
+                       swing, 
+                       midiSynth3, 
+                       this, 
+                       loopCount, 
+                       transposition, 
+                       useDrums,
+                       endLimitIndex).execute();     
 }
 
 public void stopPlayAscore()
