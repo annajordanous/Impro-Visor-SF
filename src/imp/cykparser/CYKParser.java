@@ -496,6 +496,7 @@ public class CYKParser
             ListIterator iter1 = cykTable[row][row+index].listIterator();
             
             while(iter1.hasNext()) {
+                // Have gotten ConcurrentModificationException here. Not sure why. RK
                 TreeNode symbol1 = (TreeNode)iter1.next();
                 
                 if (!symbol1.isSectionEnd() && !symbol1.isOverlap())
@@ -535,7 +536,11 @@ public class CYKParser
                                 TreeNode newNode = new TreeNode(rule.getHead(),
                                         rule.getType(), rule.getMode(), 
                                         symbol1, symbol2, cost, newKey);
-                                cykTable[row][col].add(newNode);
+                                // Have gotten NullPointerException here. RK
+                                if( cykTable[row][col] != null )
+                                  {
+                                    cykTable[row][col].add(newNode);
+                                  }
 
                                 // Additionally, if this block could overlap with 
                                 // another later one, then we store a TreeNode 

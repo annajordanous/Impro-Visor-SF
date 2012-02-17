@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2011-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,27 +20,37 @@
 
 package imp.roadmap;
 
-import java.awt.*;
-import java.awt.event.*;;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import imp.brickdictionary.*;
-import imp.cykparser.*;
-import imp.data.*;
 import imp.ImproVisor;
-import imp.gui.Notate;
-import imp.gui.PrintUtilitiesRoadMap;
-import imp.gui.SourceEditorDialog;
-import imp.gui.WindowMenuItem;
-import imp.gui.WindowRegistry;
-import imp.util.*;
-
+import imp.brickdictionary.Block;
+import imp.brickdictionary.Brick;
+import imp.brickdictionary.BrickLibrary;
+import imp.brickdictionary.ChordBlock;
+import imp.cykparser.CYKParser;
+import imp.data.*;
+import imp.gui.*;
+import imp.util.DictionaryFilter;
+import imp.util.ErrorLog;
+import imp.util.FileUtilities;
+import imp.util.MidiPlayListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import polya.Tokenizer;
 
 
@@ -293,6 +303,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         loopToggleButton = new javax.swing.JToggleButton();
         playButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
+        playOnClickToggleButton = new javax.swing.JToggleButton();
         tempoPanel = new javax.swing.JPanel();
         tempoSet = new javax.swing.JTextField();
         tempoSlider = new javax.swing.JSlider();
@@ -879,7 +890,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(scaleComboBox);
 
-        breakButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        breakButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         breakButton.setText("Break"); // NOI18N
         breakButton.setToolTipText("Break this brick into constitutent parts."); // NOI18N
         breakButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -897,7 +908,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(breakButton);
 
-        flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        flattenButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         flattenButton.setText("Flatten"); // NOI18N
         flattenButton.setToolTipText("Flatten selected bricks into their constituent chords."); // NOI18N
         flattenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -915,7 +926,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(flattenButton);
 
-        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
+        selectAllBricksButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
         selectAllBricksButton.setText("Select All"); // NOI18N
         selectAllBricksButton.setToolTipText("Select all bricks.\n"); // NOI18N
         selectAllBricksButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -933,7 +944,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(selectAllBricksButton);
 
-        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        analyzeButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         analyzeButton.setToolTipText("Analyze the selection into bricks."); // NOI18N
         analyzeButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         analyzeButton.setFocusable(false);
@@ -951,7 +962,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(analyzeButton);
 
-        newBrickButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        newBrickButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         newBrickButton.setText("Define Brick"); // NOI18N
         newBrickButton.setToolTipText("Define a new brick in the dictionary."); // NOI18N
         newBrickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -970,7 +981,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         toolBar.add(newBrickButton);
 
         keyColorationButton.setBackground(new java.awt.Color(153, 204, 255));
-        keyColorationButton.setFont(new java.awt.Font("Arial 11", 0, 12));
+        keyColorationButton.setFont(new java.awt.Font("Arial 11", 0, 12)); // NOI18N
         keyColorationButton.setText("<html><center>B/W</center></html>"); // NOI18N
         keyColorationButton.setToolTipText("Turn note coloration off or on."); // NOI18N
         keyColorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -1019,7 +1030,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         toolBar.add(masterVolumePanel);
 
         loopToggleButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         loopToggleButton.setText("Loop"); // NOI18N
         loopToggleButton.setToolTipText("Loop the playback until stop is pressed, or loop is toggled."); // NOI18N
         loopToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -1038,7 +1049,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(loopToggleButton);
 
-        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
+        playButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
         playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
         playButton.setText("\n"); // NOI18N
         playButton.setToolTipText("Play the selection.\n"); // NOI18N
@@ -1056,7 +1067,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(playButton);
 
-        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12));
+        stopButton.setFont(new java.awt.Font("Lucida Grande 12", 0, 12)); // NOI18N
         stopButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/stop.gif"))); // NOI18N
         stopButton.setText(" "); // NOI18N
         stopButton.setToolTipText("Stop playing the selection.\n"); // NOI18N
@@ -1074,6 +1085,27 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         });
         toolBar.add(stopButton);
 
+        playOnClickToggleButton.setBackground(new java.awt.Color(0, 255, 0));
+        playOnClickToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        playOnClickToggleButton.setText("<html><center>\nPlay on\n<br>\nClick\n</center></html>\n"); // NOI18N
+        playOnClickToggleButton.setToolTipText("Play brick when brick is clicked.\n"); // NOI18N
+        playOnClickToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        playOnClickToggleButton.setFocusable(false);
+        playOnClickToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        playOnClickToggleButton.setMaximumSize(new java.awt.Dimension(60, 30));
+        playOnClickToggleButton.setMinimumSize(new java.awt.Dimension(60, 30));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
+        playOnClickToggleButton.setName(bundle.getString("RoadMapFrame.playOnClickToggleButton.name")); // NOI18N
+        playOnClickToggleButton.setOpaque(true);
+        playOnClickToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
+        playOnClickToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        playOnClickToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playOnClickToggleButtonPressed(evt);
+            }
+        });
+        toolBar.add(playOnClickToggleButton);
+
         tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (BPM) & Style\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         tempoPanel.setToolTipText("Set the playback tempo."); // NOI18N
         tempoPanel.setMaximumSize(new java.awt.Dimension(300, 50));
@@ -1083,7 +1115,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         tempoPanel.setPreferredSize(new java.awt.Dimension(250, 50));
         tempoPanel.setLayout(new java.awt.GridBagLayout());
 
-        tempoSet.setFont(new java.awt.Font("Dialog 12", 1, 12));
+        tempoSet.setFont(new java.awt.Font("Dialog 12", 1, 12)); // NOI18N
         tempoSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         tempoSet.setText("120"); // NOI18N
         tempoSet.setToolTipText("Set the tempo for playback in beats per minute."); // NOI18N
@@ -1143,7 +1175,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.insets = new java.awt.Insets(5, 1, 6, 1);
         tempoPanel.add(tempoSlider, gridBagConstraints);
 
-        styleComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 14));
+        styleComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         styleComboBox.setMaximumRowCount(30);
         styleComboBox.setModel(getStyleMenuModel());
         styleComboBox.setToolTipText("Select the style for playback and for leadsheet creation."); // NOI18N
@@ -1216,7 +1248,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.weighty = 0.05;
         getContentPane().add(toolBar, gridBagConstraints);
 
-        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        roadMapTextEntry.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapTextEntry.setToolTipText("Enter chords using Leadsheet Notation. Separate measures with , or |."); // NOI18N
         roadMapTextEntry.setBorder(javax.swing.BorderFactory.createTitledBorder("Textual chord entry"));
         roadMapTextEntry.setMaximumSize(new java.awt.Dimension(2147483647, 45));
@@ -1238,7 +1270,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         getContentPane().add(roadMapTextEntry, gridBagConstraints);
 
         roadMapStatus.setEditable(false);
-        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        roadMapStatus.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         roadMapStatus.setToolTipText("Shows the status of the roadmap."); // NOI18N
         roadMapStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Roadmap status"));
         roadMapStatus.setMaximumSize(new java.awt.Dimension(2147483647, 45));
@@ -1304,7 +1336,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         previewScrollPane.setToolTipText("Provides a preview of a brick selected from the Brick Dictionary."); // NOI18N
         previewScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         previewScrollPane.setDoubleBuffered(true);
-        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        previewScrollPane.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         previewScrollPane.setMaximumSize(new java.awt.Dimension(32767, 100));
         previewScrollPane.setMinimumSize(new java.awt.Dimension(900, 100));
         previewScrollPane.setName("previewScrollPane"); // NOI18N
@@ -2013,6 +2045,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                     selectChord(index,jndex);
                 } else
                     selectBrick(index);
+                if( playOnClickToggleButton.isSelected() )
+                  {
+                    playSelection();
+                  }
             } else //TODO, renaming and other outside clicks
                 deselectBricks();
         } else if(evt.getButton() == evt.BUTTON3) {
@@ -2647,6 +2683,20 @@ private void styleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleC
     roadMapScrollPane.requestFocus();
   }//GEN-LAST:event_styleChosen
 
+private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playOnClickToggleButtonPressed
+  {//GEN-HEADEREND:event_playOnClickToggleButtonPressed
+        if( playOnClickToggleButton.isSelected() )
+          {
+            playOnClickToggleButton.setText("<html><center>No Play<br>on Click</center></html>");
+            playOnClickToggleButton.setBackground(Color.RED);
+          }
+        else
+          {
+            playOnClickToggleButton.setText("<html><center>Play<br>on Click</center></html>");
+            playOnClickToggleButton.setBackground(Color.GREEN);
+          }
+  }//GEN-LAST:event_playOnClickToggleButtonPressed
+
 
 private Notate.StyleComboBoxModel getStyleMenuModel()
   {
@@ -2723,7 +2773,7 @@ public void setVolumeSlider(int volume)
           categories.add(new DefaultMutableTreeNode(name));
           }
         
-        DefaultMutableTreeNode node = null;
+        DefaultMutableTreeNode node;
         
         for( LinkedList<Brick> variants : bricks )
         {
@@ -3356,6 +3406,7 @@ public void setVolumeSlider(int volume)
     private javax.swing.JMenuItem playAllMI;
     private javax.swing.JButton playButton;
     private javax.swing.JMenu playMenu;
+    private javax.swing.JToggleButton playOnClickToggleButton;
     private javax.swing.JMenuItem playSelectionMI;
     private javax.swing.JButton prefDialogAcceptButton1;
     private javax.swing.JButton prefDialogCancelButton;
@@ -3998,7 +4049,6 @@ public void saveDictionaryAs()
             + notate.MIN_TEMPO 
             + " to " + notate.MAX_TEMPO 
             + ",\nusing default: " + notate.getDefaultTempo() + ".");
-      return;
       }
     }
   
