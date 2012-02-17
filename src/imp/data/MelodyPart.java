@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,18 @@
 
 package imp.data;
 
+import imp.ImproVisor;
 import imp.com.InsertPartCommand;
 import imp.gui.Notate;
+import imp.util.Trace;
+import java.io.PrintStream;
 import java.lang.reflect.Array;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.io.*;
-
-import javax.sound.midi.*;
-
-import imp.ImproVisor;
-import imp.util.Trace;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
 
 
 /**
@@ -863,7 +863,7 @@ public class MelodyPart
    */
   public void makeAccidentals()
     {
-    Vector<Accidental> accidentalVector = getKeySigVector();
+    ArrayList<Accidental> accidentalVector = getKeySigVector();
 
     // Go through each slot so that we can reset the accidentalVector
     // at the start of each measure
@@ -961,29 +961,34 @@ public class MelodyPart
 
     return time;
     }
+  
 
   /**
-   * Returns a vector of Accidentals corresponding to all possible pitches.
+   * Returns an ArrayList of Accidentals corresponding to all possible pitches.
    * The weird thing about this is that we only end up marking the 
    * accidental independent pitches: C1, D1, E1, G4, A4, etc.
    * This is to make an easy mapping between the pitches as they are
    * stored for playback and elements of this Vector.
-   * @return Vector<Accidental>       the accidental vector
+   * @return ArrayList<Accidental>       the accidental vector
    */
-  public Vector<Accidental> getKeySigVector()
+  public ArrayList<Accidental> getKeySigVector()
     {
-    Vector<Accidental> keySigVector = new Vector<Accidental>(TOTALPITCHES);
-    keySigVector.setSize(TOTALPITCHES);
-
+    ArrayList<Accidental> keySigVector = new ArrayList<Accidental>(TOTALPITCHES); 
+    
+     for( int i = 0; i < TOTALPITCHES; i++ )
+      {
+        keySigVector.add(Accidental.NOTHING);
+      }    
+     
     switch( keySig )
       {
       case CBMAJOR:
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
-                  i % SEMITONES == MODG || i % SEMITONES == MODD ||
-                  i % SEMITONES == MODA || i % SEMITONES == MODE ||
-                  i % SEMITONES == MODB )
+              i % SEMITONES == MODG || i % SEMITONES == MODD ||
+              i % SEMITONES == MODA || i % SEMITONES == MODE ||
+              i % SEMITONES == MODB )
             {
             keySigVector.set(i, Accidental.FLAT);
             }
@@ -998,9 +1003,9 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODC ||
-                  i % SEMITONES == MODG || i % SEMITONES == MODD ||
-                  i % SEMITONES == MODA || i % SEMITONES == MODE ||
-                  i % SEMITONES == MODB )
+              i % SEMITONES == MODG || i % SEMITONES == MODD ||
+              i % SEMITONES == MODA || i % SEMITONES == MODE ||
+              i % SEMITONES == MODB )
             {
             keySigVector.set(i, Accidental.FLAT);
             }
@@ -1015,8 +1020,8 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODG || i % SEMITONES == MODD ||
-                  i % SEMITONES == MODA || i % SEMITONES == MODE ||
-                  i % SEMITONES == MODB )
+              i % SEMITONES == MODA || i % SEMITONES == MODE ||
+              i % SEMITONES == MODB )
             {
             keySigVector.set(i, Accidental.FLAT);
             }
@@ -1031,8 +1036,8 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODD ||
-                  i % SEMITONES == MODA || i % SEMITONES == MODE ||
-                  i % SEMITONES == MODB )
+              i % SEMITONES == MODA || i % SEMITONES == MODE ||
+              i % SEMITONES == MODB )
             {
             keySigVector.set(i, Accidental.FLAT);
             }
@@ -1047,7 +1052,7 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODA || i % SEMITONES == MODE ||
-                  i % SEMITONES == MODB )
+              i % SEMITONES == MODB )
             {
             keySigVector.set(i, Accidental.FLAT);
             }
@@ -1062,7 +1067,7 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODE ||
-                  i % SEMITONES == MODB )
+              i % SEMITONES == MODB )
             {
             keySigVector.set(i, Accidental.FLAT);
             }
@@ -1126,7 +1131,7 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
-                  i % SEMITONES == MODG )
+              i % SEMITONES == MODG )
             {
             keySigVector.set(i, Accidental.SHARP);
             }
@@ -1141,7 +1146,7 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
-                  i % SEMITONES == MODG || i % SEMITONES == MODD )
+              i % SEMITONES == MODG || i % SEMITONES == MODD )
             {
             keySigVector.set(i, Accidental.SHARP);
             }
@@ -1156,8 +1161,8 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
-                  i % SEMITONES == MODG || i % SEMITONES == MODD ||
-                  i % SEMITONES == MODA )
+              i % SEMITONES == MODG || i % SEMITONES == MODD ||
+              i % SEMITONES == MODA )
             {
             keySigVector.set(i, Accidental.SHARP);
             }
@@ -1172,8 +1177,8 @@ public class MelodyPart
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
-                  i % SEMITONES == MODG || i % SEMITONES == MODD ||
-                  i % SEMITONES == MODA || i % SEMITONES == MODE )
+              i % SEMITONES == MODG || i % SEMITONES == MODD ||
+              i % SEMITONES == MODA || i % SEMITONES == MODE )
             {
             keySigVector.set(i, Accidental.SHARP);
             }
