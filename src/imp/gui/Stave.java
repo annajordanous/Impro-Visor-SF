@@ -5429,8 +5429,9 @@ public void play(int startAt)
     // playSelection(true);
 
 
-    notate.cm.execute(new PlayScoreCommand(notate.score, startAt, true,
-                                           notate.getMidiSynth(), notate, notate.getLoopCount(), notate.getTransposition()));
+    new PlayScoreCommand(notate.score, startAt, true,
+                         notate.getMidiSynth(), notate, 
+                         notate.getLoopCount(), notate.getTransposition()).execute();
   }
 
 public void playSelection()
@@ -5498,8 +5499,9 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
     notate.setShowPlayLine(true);
     notate.setKeyboardPlayback(true);
 
-    notate.cm.execute(new PlayScoreCommand(notate.score, startIndex, true,
-                                           notate.getMidiSynth(), notate, loopCount, notate.getTransposition(), useDrums, stopIndex));
+    new PlayScoreCommand(notate.score, startIndex, true,
+                         notate.getMidiSynth(), notate, loopCount, 
+                         notate.getTransposition(), useDrums, stopIndex).execute();
 
     repaint();
   }
@@ -5540,32 +5542,7 @@ public void playSelectionNote(Note note, int selectedIndex)
 
   }
 
-/**
- * Plays the current selection
- *
- * @param startIndex       starting index of the selection of notes
- * @param endIndex         ending index of the selection of notes
- */
 
-/*
-
-public void playRange(int startIndex, int stopIndex, boolean playToEndOfChorus, int loopCount)
-{
-System.out.println("Stave: playRange startIndex = " + startIndex + " stopIndex = " + stopIndex);
-int partSize = getChordProg().getSize();
-
-notate.initCurrentPlaybackTab(startIndex);
-notate.setPlaybackStop(stopIndex);
-
-notate.cm.execute(new PlayScoreCommand(notate.score, startIndex, true,
-notate.getMidiSynth(), notate, loopCount, notate.getTransposition(), PlayScoreCommand.NODRUMS, stopIndex));
-
-notate.setShowPlayLine(true);
-notate.setKeyboardPlayback(true);
-
-repaint();   
-}
- */
 public String getSaveSelection(String title, ExtractMode mode)
   {
     return getSaveSelection(title, mode, 0);
