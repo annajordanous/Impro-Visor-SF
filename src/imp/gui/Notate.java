@@ -20646,6 +20646,26 @@ private void recurrentGenButtonActionPerformed(java.awt.event.ActionEvent evt)//
         }
   }//GEN-LAST:event_recurrentGenButtonActionPerformed
 
+/**
+ * * This is for calling from lickgen frame
+ * @return 
+ */
+
+public void setRecurrent(boolean value)
+  {
+     recurrentGenButton.setSelected(value);
+     if( value )
+        {
+        recurrentGenButton.setBackground(new Color(255, 153, 153));
+        recurrentGenButton.setText("Single");
+        }
+      else
+        {
+        recurrentGenButton.setBackground(new Color(153, 204, 255));
+        recurrentGenButton.setText("Recur");
+        }   
+  }
+
 
 public boolean showPhrasemarks()
   {

@@ -934,7 +934,7 @@ private void initCompFileChoosers() {
         lickgenParametersPanel.add(recurrentCheckbox, gridBagConstraints);
 
         gapField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        gapField.setText("2.0");
+        gapField.setText("1.0");
         gapField.setToolTipText("Sets the leading gap between when the next lick is generated and the previous one ends.");
         gapField.setMaximumSize(new java.awt.Dimension(30, 2147483647));
         gapField.setMinimumSize(new java.awt.Dimension(60, 24));
@@ -3547,7 +3547,7 @@ public void stopPlaying()
 }//GEN-LAST:event_avoidRepeatsCheckboxActionPerformed
 
     private void recurrentCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recurrentCheckboxActionPerformed
- 
+        notate.setRecurrent(recurrentCheckbox.isSelected());
 }//GEN-LAST:event_recurrentCheckboxActionPerformed
 
     private void gapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gapFieldActionPerformed
@@ -4261,6 +4261,7 @@ private void triageLick(String lickName, int grade)
   public void setRecurrent(boolean value)
     {
       recurrentCheckbox.setSelected(value);
+      notate.setRecurrent(value);
     }
   
   public void setTotalBeats(double beats) {
