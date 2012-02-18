@@ -1040,7 +1040,7 @@ public void playBassColumn()
         {
         cm.changedSinceLastSave(false);
         }
-
+      ImproVisor.setRecentStyleFile(file);
       notate.reCaptureCurrentStyle(); // In case this style is being used currently
       }
     catch( Exception e )
@@ -1106,7 +1106,6 @@ public void playBassColumn()
         savedStyle = new File(file);
         saveStyle(savedStyle);
         }
-      ImproVisor.setRecentStyleFile(savedStyle);
       }
     else
       {
