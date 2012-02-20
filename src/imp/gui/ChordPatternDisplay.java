@@ -877,10 +877,8 @@ public class ChordPatternDisplay
                 s.setChordVolume(styleEditor.getVolume());
                 s.setTempo(styleEditor.getTempo());
                 s.setVolumes(notate.getMidiSynth());
-
                 
-                /*if(styleEditor.isLooped()) notate.cm.execute(new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), styleEditor.getLoopCount()));
-                else*/ notate.cm.execute(new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()));
+                new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
                 styleEditor.setStatus("OK");
             }
             catch(Exception e) {

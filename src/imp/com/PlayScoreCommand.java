@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,10 @@
 package imp.com;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.data.*;
 import imp.util.MidiPlayListener;
 import imp.util.Trace;
-import imp.ImproVisor;
 
 /**
  * A Command that sequences and plays a Score, either straight or swung.
@@ -82,25 +82,53 @@ private int transposition = 0;
  */
 private int oneNoteChordPlayValue = BEAT;
 
-public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms,
-                        MidiPlayListener listener, int loopCount,
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing, 
+                        MidiSynth ms,
+                        MidiPlayListener listener, 
+                        int loopCount,
                         int transposition)
   {
-    this(score, startTime, swing, ms, listener, loopCount, transposition,
+    this(score, 
+         startTime, 
+         swing, 
+         ms, 
+         listener, 
+         loopCount, 
+         transposition,
          USEDRUMS);
   }
 
-public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms,
-                        MidiPlayListener listener, int loopCount,
-                        int transposition, boolean useDrums)
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing, 
+                        MidiSynth ms,
+                        MidiPlayListener listener, 
+                        int loopCount,
+                        int transposition, 
+                        boolean useDrums)
   {
-    this(score, startTime, swing, ms, listener, loopCount, transposition,
-         useDrums, ENDSCORE);
+    this(score, 
+         startTime, 
+         swing, 
+         ms, 
+         listener, 
+         loopCount, 
+         transposition,
+         useDrums, 
+         ENDSCORE);
   }
 
-public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms,
-                        MidiPlayListener listener, int loopCount,
-                        int transposition, boolean useDrums, int endLimitIndex)
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing, 
+                        MidiSynth ms,
+                        MidiPlayListener listener, 
+                        int loopCount,
+                        int transposition, 
+                        boolean useDrums, 
+                        int endLimitIndex)
   {
     this.score = score;
     this.swing = swing;
@@ -118,34 +146,70 @@ public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms
  * @param score     the Score to play
  * @param swing     boolean telling if the playback should be swung
  */
-public PlayScoreCommand(Score score, long startTime, boolean swing,
-                        int loopCount, int transposition)
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing,
+                        int loopCount, 
+                        int transposition)
   {
-    this(score, startTime, swing, ImproVisor.getLastMidiSynth(),
-         ImproVisor.getCurrentWindow(), loopCount, transposition, false,
+    this(score, 
+         startTime, 
+         swing, 
+         ImproVisor.getLastMidiSynth(),
+         ImproVisor.getCurrentWindow(), 
+         loopCount, 
+         transposition, 
+         false,
          4 * BEAT);
   }
 
-public PlayScoreCommand(Score score, long startTime, boolean swing,
-                        int loopCount, int transposition, boolean useDrums,
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing,
+                        int loopCount, 
+                        int transposition, 
+                        boolean useDrums,
                         int endLimitIndex)
   {
-    this(score, startTime, swing, ImproVisor.getLastMidiSynth(),
-         ImproVisor.getCurrentWindow(), loopCount, transposition, useDrums,
+    this(score, 
+         startTime, 
+         swing, 
+         ImproVisor.getLastMidiSynth(),
+         ImproVisor.getCurrentWindow(), 
+         loopCount, 
+         transposition, 
+         useDrums,
          endLimitIndex);
   }
 
-public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms,
-                        int loopCount, int transposition)
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing, 
+                        MidiSynth ms,
+                        int loopCount, 
+                        int transposition)
   {
-    this(score, startTime, swing, ms, ImproVisor.getCurrentWindow(), loopCount,
+    this(score, 
+         startTime, 
+         swing, 
+         ms, 
+         ImproVisor.getCurrentWindow(), 
+         loopCount,
          transposition);
   }
 
-public PlayScoreCommand(Score score, long startTime, boolean swing, MidiSynth ms,
+public PlayScoreCommand(Score score, 
+                        long startTime, 
+                        boolean swing, 
+                        MidiSynth ms,
                         int transposition)
   {
-    this(score, startTime, swing, ms, 0, transposition);
+    this(score, 
+         startTime, 
+         swing, 
+         ms, 
+         0, 
+         transposition);
   }
 
 /**
@@ -216,8 +280,7 @@ public void execute()
       }
     catch( Exception e )
       {
-        e.printStackTrace();
-        return;
+        //e.printStackTrace();
       }
   }
 

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,18 @@
 
 package imp.gui;
 
-import imp.com.*;
+import imp.Constants;
+import imp.com.PlayScoreCommand;
+import imp.com.SetChordsCommand;
 import imp.data.*;
 import imp.util.Preferences;
 import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import polya.*;
-
-import imp.Constants;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import polya.Polylist;
 
 /**
  * Created on August 2, 2006, 1:50 PM
@@ -264,7 +266,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             score.setChordProg(chords);
             score.addPart(melody);
 
-            (new PlayScoreCommand(score, 0, true, 0, 0)).execute();
+            new PlayScoreCommand(score, 0, true, 0, 0).execute();
         }
     }//GEN-LAST:event_dataTableMouseClicked
 

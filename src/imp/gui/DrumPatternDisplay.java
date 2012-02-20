@@ -1137,10 +1137,12 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             s.setTempo(tempo);
             s.setVolumes(notate.getMidiSynth());
 
-            notate.cm.execute(new PlayScoreCommand(s, 0, true,
-                                                   notate.getMidiSynth(),
-                                                   loopCount,
-                                                   notate.getTransposition()));
+            new PlayScoreCommand(s, 
+                                 0, 
+                                 true,
+                                 notate.getMidiSynth(),
+                                 loopCount,
+                                 notate.getTransposition()).execute();
           }
         catch( Exception e )
           {

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,22 +22,29 @@
 
 package imp.util;
 
-import imp.ImproVisor;
 import imp.Constants;
-import imp.com.*;
+import imp.ImproVisor;
+import imp.com.OpenLeadsheetCommand;
+import imp.com.PlayScoreCommand;
 import imp.data.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
- * @author  mhunt
+ * @author  Martin Hunt
  */
+
 public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChangeListener, MidiPlayListener, ActionListener, Constants {
     File file = null;
     static MidiSynth midiSynth = null;
@@ -309,7 +316,7 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
           }
         long time = playbackManager.getMicrosecondsFromSlider();
         midiSynth.setTempo((float) score.getTempo());
-        (new PlayScoreCommand(previewTableModel.score, time, true, midiSynth, this, 0, transposition)).execute();
+        new PlayScoreCommand(previewTableModel.score, time, true, midiSynth, this, 0, transposition).execute();
     }
     
     public void propertyChange(PropertyChangeEvent e) {
