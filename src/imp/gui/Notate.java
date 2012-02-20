@@ -18217,7 +18217,7 @@ public void rectifySelection()
   {
     Stave stave = getCurrentStave();
     rectifySelection(stave, getCurrentSelectionStart(), getCurrentSelectionEnd());
-    stave.playSelection(false, getLoopCount(), PlayScoreCommand.USEDRUMS);
+    stave.playSelection(false, getLoopCount(), PlayScoreCommand.NODRUMS);
   }
 
     private void defaultTempoTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defaultTempoTFActionPerformed

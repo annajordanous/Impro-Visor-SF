@@ -215,7 +215,7 @@ public void execute()
   {
     if( ImproVisor.getPlay() )
       {
-      ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
+      ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
 
       //new PlayPartCommand(part.extract(startIndex, stopIndex)).execute();
       }
