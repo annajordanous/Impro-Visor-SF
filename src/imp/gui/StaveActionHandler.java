@@ -2146,14 +2146,14 @@ public void undo()
  }
 
 
-/**
- * Play selection
- */
-public void playSelection()
- {
-  notate.noCountIn();
-  stave.playSelection(true, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
- }
+///**
+// * Play selection
+// */
+//public void playSelection()
+// {
+//  notate.noCountIn();
+//  stave.playSelection(true, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
+// }
 
 
 /**

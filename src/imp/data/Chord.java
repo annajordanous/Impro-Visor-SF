@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
@@ -40,7 +40,7 @@ import polya.PolylistEnum;
 /**
  * The Chord class represents a chord in a chord progression.
  * Right now the Chord only stores its name and its rhythmValue.
- * It has a function called getPitches that returns a Vector
+ * It has a function called getPitches that returns a ArrayList
  * containing the MIDI numbers of all the pitches in the chord.
  * Currently it is just a bunch of if statements with very limited 
  * knowledge (but with enough information to play "Half Nelson")
@@ -535,8 +535,8 @@ public class Chord implements Constants, Unit, Serializable {
 		out.newLine();
     }
     
-private static Vector names;
-private static Vector durations;
+private static ArrayList<String> names;
+private static ArrayList<Integer> durations;
 static int accumulation;
 static int barsOnLine;
 
@@ -547,8 +547,8 @@ static int barsOnLine;
 
     public static void initSaveToLeadsheet()
       {
-      names = new Vector();
-      durations = new Vector();
+      names = new ArrayList<String>();
+      durations = new ArrayList<Integer>();
       accumulation = 0;
       barsOnLine = 0;      
       }
@@ -556,8 +556,8 @@ static int barsOnLine;
 
     public  static void flushChordBuffer(BufferedWriter out, int[] metre, boolean lineBreaks, boolean finalBar) throws IOException
       {
-      int duration = 0;
-      String name = null;
+      int duration;
+      String name;
       int residual = 0;	// residual duration of any long chord
 
       if( !durations.isEmpty() )
@@ -566,12 +566,12 @@ static int barsOnLine;
 
         // Find gcd of durations
 
-        Enumeration e = durations.elements();
+        Iterator<Integer> e = durations.iterator();
 
         // initialize gcd with duration of first chord
         // or the entire space, whichever is less
 
-        int gcd = ((Integer)e.nextElement()).intValue();
+        int gcd = e.next().intValue();
 
         if( gcd >= spaceRemaining )
           {
@@ -587,10 +587,10 @@ static int barsOnLine;
 
         // stop when a duration as long as a bar or more is encountered
 
-        while( e.hasMoreElements() && residual == 0 )
+        while( e.hasNext() && residual == 0 )
           {
 
-          duration = ((Integer)e.nextElement()).intValue();
+          duration = e.next().intValue();
 //System.out.println("duration = " + " space = " + spaceRemaining);
           if( duration >= spaceRemaining )
             {
@@ -620,14 +620,14 @@ static int barsOnLine;
 
         // Now output the chords, up to but not past the long chord
 
-        e = durations.elements();
-        Enumeration f = names.elements();
+        e = durations.iterator();
+        Iterator<String> f = names.iterator();
 
         spaceRemaining = metre[0]*(WHOLE/metre[1]);
 
-        while( e.hasMoreElements() )
+        while( e.hasNext() )
           {
-          name = (String)f.nextElement();			// chord name
+          name = (String)f.next();			// chord name
           
           if( name != null )	// handle extended duration if necessary
             {
@@ -638,7 +638,7 @@ static int barsOnLine;
             out.write(SLASHSTRING + " ");
             }
 
-          duration = ((Integer)e.nextElement()).intValue();	// chord duration
+          duration = e.next().intValue();	// chord duration
 
 //System.out.println("\nchord = " + name + " duration = " + duration + " space = " + spaceRemaining);
 
@@ -660,8 +660,8 @@ static int barsOnLine;
           }
         }
 
-      names = new Vector();
-      durations = new Vector();
+      names = new ArrayList<String>();
+      durations = new ArrayList<Integer>();
 
       // carry any residual value of a long chord to the next measure
 

@@ -843,7 +843,7 @@ public class Score implements Constants, Serializable {
 
 
    /**
-     * Creates and returns a MIDI render out of the Score.
+     * Creates and returns a MIDI sequence from the Score.
      * Calls Part.render on each Part and (for now) creates a new channel
      * for each Part.  This means that you can only have 16 Parts, which
      * should be changed in the future.
