@@ -21,12 +21,18 @@
 
 package imp.data;
 
-import javax.sound.midi.*;
-import java.io.*;
-
 import imp.Constants;
-import imp.util.*;
-import polya.*;
+import imp.util.ErrorLog;
+import imp.util.Trace;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
+import polya.Polylist;
 
 /**
  * The Note class represents a note in a melody.
@@ -1126,13 +1132,17 @@ static int accumulateExactValue(int value, int duration, StringBuffer buffer,
  * @return long     the time that a sequential Note should start
  */
 public long sequence(Sequence seq, Track track, long time, int ch,
-                     int volume, int transposition, int endLimitIndex)
+                     int volume, int transposition)
         throws InvalidMidiDataException
   {
 
   // To trace sequencing info:
-  // System.out.println("Note: time = " + time + " rhythmValue = "
-  // + rhythmValue + " endLimitIndex = " + endLimitIndex);
+  Trace.log(2, "\nchannel = " + ch 
+             + " track = " + track 
+             + " beat = " + time/480.0 
+             + " pitch = " + pitch
+             + " rhythmValue = " + rhythmValue
+             + " volume = " + volume);
   
   int dynamic = volume;
 
@@ -1161,11 +1171,14 @@ public long sequence(Sequence seq, Track track, long time, int ch,
   // create a note on event at the current time
   MidiEvent evt = MidiSynth.createNoteOnEvent(ch, actualPitch, dynamic, time);
   track.add(evt);
+  
+  Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + actualPitch + " time = " + time);
 
   // advance the time and call the note off event
   long offtime = time + timeIncrement;
   evt = MidiSynth.createNoteOffEvent(ch, actualPitch, dynamic, offtime);
   track.add(evt);
+  Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + actualPitch + " time = " + offtime);
 
   return offtime;
   }

@@ -955,8 +955,7 @@ public class MelodyPart
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
       Note note = (Note)i.next();
-      time = note.sequence(seq, track, time, ch, volume,
-              transposition, endLimitIndex);
+      time = note.sequence(seq, track, time, ch, volume, transposition);
       }
 
     return time;

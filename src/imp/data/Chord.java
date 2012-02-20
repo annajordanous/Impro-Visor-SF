@@ -473,7 +473,7 @@ public class Chord implements Constants, Unit, Serializable {
         PolylistEnum tones = usedTones.elements();
 
         int pitch = Key.makeNote(bass.toString(), C2, 0).getPitch();
-        Trace.log(2, "rendering chord " + this + ", tones = " + usedTones + " transposition = " + transposition);
+        Trace.log(2, "\nrendering chord " + this + ", tones = " + usedTones + " transposition = " + transposition);
 
         int actualPitch = pitch + transposition;
         Trace.log(2, "bass " + actualPitch);
@@ -490,14 +490,18 @@ public class Chord implements Constants, Unit, Serializable {
                 pitch = ns.getMIDI();
                 evt = MidiSynth.createNoteOnEvent(ch, pitch, dynamic, time);
                 track.add(evt);
+                Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + pitch + " time = " + time);
+
                 evt = MidiSynth.createNoteOffEvent(ch, pitch, dynamic, offTime);
                 track.add(evt);
+                Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + pitch + " time = " + offTime);
             }
             evt = MidiSynth.createNoteOnEvent(ch, actualPitch, dynamic, time);
             track.add(evt);
+            Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + pitch + " time = " + time);
             evt = MidiSynth.createNoteOffEvent(ch, actualPitch, dynamic, offTime);
             track.add(evt);
-
+            Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + pitch + " time = " + offTime);
         }
 
         return offTime;

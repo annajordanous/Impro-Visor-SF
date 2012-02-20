@@ -1077,6 +1077,7 @@ public class Style
 
       Part.PartIterator i = durationMelody.iterator();
       PolylistEnum e = chords.elements();
+      long newTime = time;
       while( e.hasMoreElements() )
         {
         Object voicing = e.nextElement();
@@ -1094,14 +1095,14 @@ public class Style
             NoteSymbol ns = (NoteSymbol)L.first();
             note = ns.toNote();
             note.setRhythmValue(dur);
-            note.sequence(seq, track, time, chordChannel, MAX_VOLUME, transposition, endLimitIndex);
+            newTime = note.sequence(seq, track, time, chordChannel, MAX_VOLUME, transposition);
             L = L.rest();
             }
 
           lastChord = v;
           }
 
-        time += dur * seq.getResolution() / BEAT;
+        time = newTime; // += dur * seq.getResolution() / BEAT;
         }
       beginning = false;
       }
