@@ -33,7 +33,7 @@ import java.util.Vector;
 /**
  * The Part class is representative of an arbitrarily long melody, played
  * by a specific instrument.
- * A Part contains a sequence of Units stored in the Vector<Unit> slots.
+ * A Part contains a render of Units stored in the Vector<Unit> slots.
  * It also contains information about the Part, such as volume, instrument, etc
  * Units should be added using the setUnit method, which will automatically
  * adjust rhythm values.  In a Part, the 0 slot must never be empty.  In

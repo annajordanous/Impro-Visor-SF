@@ -406,7 +406,7 @@ public SectionRecord getSectionRecordByIndex(int n)
         return getStyle(0);
     }
 
-public long sequence(Sequence seq, int ch, long time, Track track,
+public long render(Sequence seq, int ch, long time, Track track,
                      int transposition, boolean useDrums, int endLimitIndex)
     throws InvalidMidiDataException
   {
@@ -453,7 +453,7 @@ public long sequence(Sequence seq, int ch, long time, Track track,
         
         if( style != null )
           {
-          time = style.sequence(seq, time, track, chords, startIndex, endIndex, transposition, useDrums, endLimitIndex);
+          time = style.render(seq, time, track, chords, startIndex, endIndex, transposition, useDrums, endLimitIndex);
           }
        }
     return time;

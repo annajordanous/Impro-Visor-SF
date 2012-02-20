@@ -826,35 +826,35 @@ public class Score implements Constants, Serializable {
     }
     
     /**
-     * Creates and returns a MIDI sequence out of the Score.
-     * Calls Part.sequence on each Part and (for now) creates a new channel
+     * Creates and returns a MIDI render out of the Score.
+     * Calls Part.render on each Part and (for now) creates a new channel
      * for each Part.  This means that you can only have 16 Parts, which
      * should be changed in the future.
      * @param ppqn       the resolution for the Sequence
-     * @return Sequence  the MIDI sequence
+     * @return Sequence  the MIDI render
      */
-    public Sequence sequence(short ppqn, int transposition)
+    public Sequence render(short ppqn, int transposition)
                                 throws InvalidMidiDataException {
 
         int endIndex = chordProg.size();    // correct?
 
-        return sequence(ppqn, transposition, true, endIndex);
+        return render(ppqn, transposition, true, endIndex);
     }
 
 
    /**
-     * Creates and returns a MIDI sequence out of the Score.
-     * Calls Part.sequence on each Part and (for now) creates a new channel
+     * Creates and returns a MIDI render out of the Score.
+     * Calls Part.render on each Part and (for now) creates a new channel
      * for each Part.  This means that you can only have 16 Parts, which
      * should be changed in the future.
      * @param ppqn       the resolution for the Sequence
-     * @return Sequence  the MIDI sequence
+     * @return Sequence  the MIDI render
      */
 
-    public Sequence sequence(short ppqn, int transposition, boolean useDrums, int endLimitIndex)
+    public Sequence render(short ppqn, int transposition, boolean useDrums, int endLimitIndex)
                                 throws InvalidMidiDataException {
         // to trace sequencing
-        //System.out.println("Score: sequence, start 0, endLimitIndex = " + endLimitIndex);
+        //System.out.println("Score: render, start 0, endLimitIndex = " + endLimitIndex);
         Sequence seq = new Sequence(Sequence.PPQ, ppqn);
 
         long time = 0;
@@ -864,7 +864,7 @@ public class Score implements Constants, Serializable {
 
         if( countInProg != null )
         {
-        // Handle count-in sequence
+        // Handle count-in render
 
         int len = getCountInOffset();
 
@@ -873,8 +873,8 @@ public class Score implements Constants, Serializable {
             endLimitIndex += len;
           }
 
-        new MelodyPart(len).sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
-        time = countInProg.sequence(seq, 1, time, chordTrack, 0, true, endLimitIndex);
+        new MelodyPart(len).render(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
+        time = countInProg.render(seq, 1, time, chordTrack, 0, true, endLimitIndex);
         }
 
         //System.out.println("time = " + time);
@@ -882,10 +882,10 @@ public class Score implements Constants, Serializable {
         ListIterator<MelodyPart> i = partList.listIterator();
         while(i.hasNext() && Style.limitNotReached(time, endLimitIndex) )
         {
-            // sequence the chord progression in parallel with each melody chorus
+            // render the chord progression in parallel with each melody chorus
             
-            long melTime = i.next().sequence(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
-            long chTime = chordProg.sequence(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
+            long melTime = i.next().render(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
+            long chTime = chordProg.render(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
             time = Math.max(melTime, chTime);
        }
         

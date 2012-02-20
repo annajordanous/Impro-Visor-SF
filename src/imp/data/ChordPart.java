@@ -256,6 +256,7 @@ public class ChordPart extends Part implements Serializable{
      * Returns an exact copy of this Part
      * @return Part   copy
      */
+    @Override
     public ChordPart copy() {
         ChordPart newPart = new ChordPart(size);
         PartIterator i = iterator();
@@ -311,7 +312,7 @@ public class ChordPart extends Part implements Serializable{
         return sectionInfo.hasOneSection();
       }
 
-    public long sequence(Sequence seq, 
+    public long render(Sequence seq, 
                          int ch, 
                          long time, 
                          Track track, 
@@ -323,7 +324,7 @@ public class ChordPart extends Part implements Serializable{
     // to trace sequencing info:
     // System.out.println("ChordPart time = " + time + ", endLimitIndex = " + endLimitIndex);
       
-        return sectionInfo.sequence(seq,ch,time,track, transposition, useDrums, endLimitIndex);
+        return sectionInfo.render(seq,ch,time,track, transposition, useDrums, endLimitIndex);
     }
 
 

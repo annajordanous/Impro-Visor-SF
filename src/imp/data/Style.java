@@ -923,7 +923,7 @@ public class Style
                              int duration, int endLimitIndex )
           throws InvalidMidiDataException
     {
-    // tracing sequence info
+    // tracing render info
     //System.out.println("drumline: time = " + time + " duration = " + duration
     // + " endLimitIndex = " + endLimitIndex);
 
@@ -947,7 +947,7 @@ public class Style
       Polylist drumline = pattern.applyRules();
 
       // each element of the polylist is a drum part
-      // so we go through and sequence each element
+      // so we go through and render each element
       while( drumline.nonEmpty() )
         {
         MelodyPart d = (MelodyPart)drumline.first();
@@ -956,7 +956,7 @@ public class Style
         d.setInstrument(drumInstrument);
         d.makeSwing();
 
-        d.sequence(seq, drumChannel, time, track, 0, endLimitIndex);
+        d.render(seq, drumChannel, time, track, 0, endLimitIndex);
         drumline = drumline.rest();
         }
       time += (patternDuration * seq.getResolution()) / BEAT;
@@ -968,7 +968,7 @@ public class Style
    * It is used in multiple files.
    * Sequencing should continue if either play-to-end was specified
    * or the end of select is reached.
-   * In the latter case, is not desired to generate a midi sequence for the
+   * In the latter case, is not desired to generate a midi render for the
    * full score, as that would have to be cut off and causes blips in the
    * sound.
    */
@@ -992,7 +992,7 @@ public class Style
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put chord events on
    * @param time      a long containing the time to start the chordline
-   * @param chord     a ChordSymbol containing the current chord to sequence
+   * @param chord     a ChordSymbol containing the current chord to render
    * @param lastChord a Polylist containing the previous chord
    * @param duration  an int containing the duration of the chordline
    * @return a Polylist containing the last chord used in the chordline
@@ -1008,7 +1008,7 @@ public class Style
     //    + duration + " endLimitIndex = " + endLimitIndex);
 
     // because we have no data structure to hold multi-voice parts, 
-    // we manually sequence polylists for each chord in this method
+    // we manually render polylists for each chord in this method
     
     boolean firstTime = true;
 
@@ -1084,7 +1084,7 @@ public class Style
         Note note = (Note)i.next();
         int dur = note.getRhythmValue();
 
-        // sequence each NoteSymbol in the chord
+        // render each NoteSymbol in the chord
         if( voicing instanceof Polylist )
           {
           Polylist v = (Polylist)voicing;
@@ -1095,7 +1095,7 @@ public class Style
             NoteSymbol ns = (NoteSymbol)L.first();
             note = ns.toNote();
             note.setRhythmValue(dur);
-            newTime = note.sequence(seq, track, time, chordChannel, MAX_VOLUME, transposition);
+            newTime = note.render(seq, track, time, chordChannel, MAX_VOLUME, transposition);
             L = L.rest();
             }
 
@@ -1110,7 +1110,7 @@ public class Style
     // Un-comment this to see voicings
     //System.out.println("voicing " + chord + " as " + lastChord);
     
-    //System.out.println("sequence = " + sequence2polylist(seq));
+    //System.out.println("render = " + sequence2polylist(seq));
     return lastChord;
     }
 
@@ -1161,7 +1161,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
    * Using the BassPattern objects of this Style, sequences a bassline
    * of a specified duration onto the track.
    * @param bassline  a Polylist of NoteSymbols makeing up the bassline so far
-   * @param chord     a ChordSymbol containing the current chord to sequence
+   * @param chord     a ChordSymbol containing the current chord to render
    * @param nextChord a ChordSymbol containing the next chord
    * @param lastNote  a NoteSymbol containing the previous note
    * @param duration  an int containing the duration of the chordline
@@ -1247,16 +1247,16 @@ static Polylist midiEvent2polylist(MidiEvent event)
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put the accompaniment on
    * @param time      a long containing the time to start the accompaniment
-   * @param chordPart the ChordPart to sequence
+   * @param chordPart the ChordPart to render
    * @return a long containing the ending time of the accompaniment
    */
-  public long sequence(Sequence seq, long time, Track track,
+  public long render(Sequence seq, long time, Track track,
                         ChordPart chordPart, int startIndex, int endIndex, int transposition, int endLimitIndex)
           throws InvalidMidiDataException
   {
       // refactored to direct to the method that follows with hasStyle parameter
       
-      return sequence(seq, time, track, chordPart, startIndex, endIndex, transposition, PlayScoreCommand.USEDRUMS, endLimitIndex);
+      return render(seq, time, track, chordPart, startIndex, endIndex, transposition, PlayScoreCommand.USEDRUMS, endLimitIndex);
   }
 
 
@@ -1269,11 +1269,11 @@ static Polylist midiEvent2polylist(MidiEvent event)
    * @param seq       the Sequence that contains the Track
    * @param track     the Track to put the accompaniment on
    * @param time      a long containing the time to start the accompaniment
-   * @param chordPart the ChordPart to sequence
+   * @param chordPart the ChordPart to render
    * @return a long containing the ending time of the accompaniment
    */
 
-  public long sequence(Sequence seq, long time, Track track,
+  public long render(Sequence seq, long time, Track track,
                         ChordPart chordPart, int startIndex, int endIndex, int transposition, boolean useDrums, int endLimitIndex)
           throws InvalidMidiDataException
     {
@@ -1345,7 +1345,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
 
       if( !hasStyle )
         {
-        time = current.sequence(seq, track, time, getChordChannel(), this, prev,
+        time = current.render(seq, track, time, getChordChannel(), this, prev,
                 rhythmValue, transposition, endLimitIndex);
         prev = current;
         if( endIndex <= index )
@@ -1461,7 +1461,7 @@ static Polylist midiEvent2polylist(MidiEvent event)
       bassLine.setInstrument(bassInstrument);
       bassLine.setVolume(MAX_VOLUME);
       bassLine.makeSwing();
-      bassLine.sequence(seq, bassChannel, startTime, track, transposition, endLimitIndex);
+      bassLine.render(seq, bassChannel, startTime, track, transposition, endLimitIndex);
       }
 
     return time;

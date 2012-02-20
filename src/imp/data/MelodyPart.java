@@ -923,11 +923,11 @@ public class MelodyPart
 
   /**
    * Creates a new Track for this Part on the specified channel, and adds
-   * it to the specified Sequence, called by Score.sequence.
+   * it to the specified Sequence, called by Score.render.
    * @param seq     the Sequence to add a Track to
    * @param ch      the channel to put the Track on
    */
-  public long sequence(Sequence seq, int ch, long time, Track track,
+  public long render(Sequence seq, int ch, long time, Track track,
                         int transposition, int endLimitIndex)
           throws InvalidMidiDataException
     {
@@ -947,7 +947,7 @@ public class MelodyPart
     // add a track for this Part
     track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
-    // the absolute time is advanced and returned by the next sequence
+    // the absolute time is advanced and returned by the next render
     // function
 
     endLimitIndex *= magicFactor; 
@@ -955,7 +955,7 @@ public class MelodyPart
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
       Note note = (Note)i.next();
-      time = note.sequence(seq, track, time, ch, volume, transposition);
+      time = note.render(seq, track, time, ch, volume, transposition);
       }
 
     return time;

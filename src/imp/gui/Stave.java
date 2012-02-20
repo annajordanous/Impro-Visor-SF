@@ -5665,7 +5665,7 @@ public String extract(String title, ExtractMode mode, int grade,
                 out.write(" "); // in case following melody with chords, e.g. in control-J from notate
           }
 
-        // Get chord or sequence
+        // Get chord or render
         switch( mode )
           {
             case CELL:

@@ -1205,7 +1205,7 @@ public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
             if (item instanceof Polylist) {
                 // Handle inner-structure by calling fillMelody recursively
                 // Example of inner is (slope 1 3 S16 S16 S16 S16)
-                // Meaning a sequence of four sixteenth notes with a minimum rise
+                // Meaning a render of four sixteenth notes with a minimum rise
                 // of 1 between and a maximum rise of 3.
 
                 Polylist inner = (Polylist) item;

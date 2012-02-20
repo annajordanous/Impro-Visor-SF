@@ -365,7 +365,7 @@ public class Key
       return chordSeq;
       }
 
-    // make a new list of the transposed chords in the sequence
+    // make a new list of the transposed chords in the render
     Polylist newChords = Polylist.nil;
     while( chordSeq.nonEmpty() )
       {

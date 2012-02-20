@@ -2872,7 +2872,7 @@ public void setVolumeSlider(int volume)
         if(name.equals("Transpose") &&
                 roadMapHistory.getLast().getName().equals("Transpose"))
             return; //Multiple transpositions should be the same action
-                    //ISSUE: changing multiple bricks in sequence undoes them all
+                    //ISSUE: changing multiple bricks in render undoes them all
         RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
         roadMapHistory.add(ss);
         roadMapFuture.clear();

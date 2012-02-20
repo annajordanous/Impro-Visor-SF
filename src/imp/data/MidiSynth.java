@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,12 @@
 
 package imp.data;
 
-import imp.util.*;
 import imp.Constants;
-
-import java.util.*;
+import imp.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Vector;
 import javax.sound.midi.*;
 
 /**
@@ -371,7 +373,7 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
 
     tempo = (float) score.getTempo();
 
-    Sequence seq = score.sequence(m_ppqn, transposition, useDrums, endLimitIndex);
+    Sequence seq = score.render(m_ppqn, transposition, useDrums, endLimitIndex);
 
     int magicFactor = Style.getMagicFactor();
 

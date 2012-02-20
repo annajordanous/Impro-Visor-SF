@@ -181,7 +181,7 @@ public int getDuration()
  * @param lastChord a Polylist containing the last chord voicing
  * @return A Polylist that can be sequenced.  This Polylist has two
  *         elements.  The first element is another Polylist that contains
- *         a sequence of chord voicings (each of which is a Polylist of
+ *         a render of chord voicings (each of which is a Polylist of
  *         NoteSymbols.)  The second element is a MelodyPart containing
  *         containing rests, each of which is a duration corresponding to
  *         the voicings.

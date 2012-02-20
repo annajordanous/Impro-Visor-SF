@@ -54,7 +54,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 	// The file to export to
 	private File file;
 
-	// The score we want to export (contains a midi sequence that we can parse)
+	// The score we want to export (contains a midi render that we can parse)
 	private Score score;
 
 	public static String FLAT_PITCHES[] = { "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B", "C" };
@@ -112,7 +112,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		}
 	}
 
-	// Initialize the sequence and write the header chunk.
+	// Initialize the render and write the header chunk.
 	private void write(OutputStreamWriter osw, int transposition) throws IOException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

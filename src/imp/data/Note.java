@@ -24,7 +24,6 @@ package imp.data;
 import imp.Constants;
 import imp.util.ErrorLog;
 import imp.util.Trace;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -36,7 +35,7 @@ import polya.Polylist;
 
 /**
  * The Note class represents a note in a melody.
- * It stores the rhythm value, the MIDI pitch number, and a flag
+ * It stores the rhythm value, the MIDI pitchName number, and a flag
  * that indicates the accidental on the note.  Dynamic might be
  * something added in the future.
  * @see         Unit
@@ -47,14 +46,14 @@ public class Note
         implements Constants, Unit, Serializable
 {
 /**
- * the default pitch constants for a Note
+ * the default pitchName constants for a Note
  */
 public static final int DEFAULT_PITCH = 60;
 
 public static final int UNDEFINED = -2;
 
 /**
- * an int that stores the MIDI pitch number
+ * an int that stores the MIDI pitchName number
  */
 private int pitch;
 
@@ -69,7 +68,7 @@ private Accidental accidental;
 protected int rhythmValue;
 
 /**
- * pitch of the note, disregarding accidentals, used to determine graphic
+ * pitchName of the note, disregarding accidentals, used to determine graphic
  */
 private int drawnPitch = UNDEFINED;
 
@@ -92,8 +91,8 @@ public static int maxRhythmValuePerLine = 480;	// 4 beats
 
 
 /**
- * Creates a Note with the specified pitch, accidental, and rhythm value
- * @param pitch        an int containing the MIDI number for the Note
+ * Creates a Note with the specified pitchName, accidental, and rhythm value
+ * @param pitchName        an int containing the MIDI number for the Note
  * @param accidental   a flag indicating the Note's accidental
  * @param rhythmValue  the rhythm value for the Note
  */
@@ -108,8 +107,8 @@ public Note(int pitch, Accidental accidental, int rhythmValue)
 
 
 /**
- * Creates a Note with the specified pitch and accidental
- * @param pitch        an int containing the MIDI number for the Note
+ * Creates a Note with the specified pitchName and accidental
+ * @param pitchName        an int containing the MIDI number for the Note
  * @param accidental   a flag indicating the Note's accidental
  */
 public Note(int pitch, Accidental accidental)
@@ -119,8 +118,8 @@ public Note(int pitch, Accidental accidental)
 
 
 /**
- * Creates a Note with the specified pitch, SHARP or FLAT, and rhythm value
- * @param pitch        an int containing the MIDI number for the Note
+ * Creates a Note with the specified pitchName, SHARP or FLAT, and rhythm value
+ * @param pitchName        an int containing the MIDI number for the Note
  * @param natural      true if natural, false if sharp or flat
  * @param sharp        true for SHARP, false for FLAT
  * @param rhythmValue  the rhythm value for the Note
@@ -138,8 +137,8 @@ public Note(int pitch, boolean natural, boolean sharp, int rhythmValue)
 
 
 /**
- * Creates a Note with the specified pitch, SHARP or FLAT, and rhythm value
- * @param pitch        an int containing the MIDI number for the Note
+ * Creates a Note with the specified pitchName, SHARP or FLAT, and rhythm value
+ * @param pitchName        an int containing the MIDI number for the Note
  * @param sharp        true for SHARP, false for FLAT
  * @param rhythmValue  the rhythm value for the Note
  */
@@ -154,9 +153,9 @@ public Note(int pitch, boolean sharp, int rhythmValue)
 
 
 /**
- * Creates a Note with the specified pitch, SHARP or FLAT, 
+ * Creates a Note with the specified pitchName, SHARP or FLAT, 
  * and default rhythm value
- * @param pitch        an int containing the MIDI number for the Note
+ * @param pitchName        an int containing the MIDI number for the Note
  * @param sharp        true for SHARP, false for FLAT
  */
 public Note(int pitch, boolean sharp)
@@ -166,8 +165,8 @@ public Note(int pitch, boolean sharp)
 
 
 /**
- * Creates a Note with the specified pitch and rhythm value
- * @param pitch        an int containing the MIDI number for the Note
+ * Creates a Note with the specified pitchName and rhythm value
+ * @param pitchName        an int containing the MIDI number for the Note
  * @param rhythmValue  the Note's rhythmValue
  */
 public Note(int pitch, int rhythmValue)
@@ -181,8 +180,8 @@ public Note(int pitch, int rhythmValue)
 
 
 /**
- * Creates a Note with the specified pitch
- * @param pitch        an int containing the MIDI number for the Note
+ * Creates a Note with the specified pitchName
+ * @param pitchName        an int containing the MIDI number for the Note
  */
 public Note(int pitch)
   {
@@ -206,7 +205,7 @@ public static Note makeRest(int duration)
 public void setRhythmValue(int rhythmValue)
   {
   /*
-  if( pitch != REST && Trace.atLevel(3) )
+  if( pitchName != REST && Trace.atLevel(3) )
     {
     System.out.println("setting rhythm value of " + this + " to " + rhythmValue);
     }
@@ -222,7 +221,7 @@ public void setRhythmValue(int rhythmValue)
 public void augmentRhythmValue(int increment)
   {
   /*
-  if( pitch != REST && Trace.atLevel(3) )
+  if( pitchName != REST && Trace.atLevel(3) )
     {
     System.out.println("setting rhythm value of " + this + " to " + rhythmValue);
     }
@@ -255,7 +254,7 @@ public boolean adjacentPitch(Note other)
 }
 
 /**
- * Sets the Note's accidental based on it's pitch (in key of C-Major)
+ * Sets the Note's accidental based on it's pitchName (in key of C-Major)
  */
 public void setAccidentalFromPitch()
   {
@@ -290,8 +289,8 @@ public Accidental getAccidental()
 
 
 /**
- * Sets the Note's pitch.
- * @param pitch     the pitch to set
+ * Sets the Note's pitchName.
+ * @param pitchName     the pitchName to set
  */
 public void setPitch(int pitch)
   {
@@ -300,8 +299,8 @@ public void setPitch(int pitch)
 
 
 /**
- * Returns the Note's pitch.
- * @return int      the Note's pitch
+ * Returns the Note's pitchName.
+ * @return int      the Note's pitchName
  */
 public int getPitch()
   {
@@ -338,13 +337,13 @@ static Accidental getSharpOrFlat(boolean value)
 
 
 /**
- * Gets the closest match Note to a given pitch, from a polylist of NoteSymbols
- * @return Note  an instance of the 'closest' note in list from the pitch
+ * Gets the closest match Note to a given pitchName, from a polylist of NoteSymbols
+ * @return Note  an instance of the 'closest' note in list from the pitchName
  */
 public static Note getClosestMatch(int pitch, Polylist tonesPL)
   {
   int originalPitch = pitch;
-  //System.out.println("getClosestMatch to " + pitch + " " + tonesPL);
+  //System.out.println("getClosestMatch to " + pitchName + " " + tonesPL);
 
   if( !tonesPL.nonEmpty() )
     {
@@ -364,12 +363,12 @@ public static Note getClosestMatch(int pitch, Polylist tonesPL)
       }
     catch( Exception ep )
       {
-      ep.printStackTrace();
+      //ep.printStackTrace();
       }
     }
 
   /* Search incrementally within the tones list for the 'closest'
-   * acceptable pitch.  This will fit our contour best.
+   * acceptable pitchName.  This will fit our contour best.
    */
   int stepSearch = 0;
   int indexMatch;
@@ -390,7 +389,7 @@ public static Note getClosestMatch(int pitch, Polylist tonesPL)
   Note note = ((NoteSymbol)tonesPL.nth(indexMatch)).toNote();
   note.setPitch(pitch);
   /*
-  if( pitch != originalPitch )
+  if( pitchName != originalPitch )
   {
       System.out.println("closest match to " + new Note(originalPitch).toLeadsheet() + " is " + note.toLeadsheet() + " among " + tonesPL);
   }
@@ -400,13 +399,13 @@ public static Note getClosestMatch(int pitch, Polylist tonesPL)
 
 
 /**
- * Gets the closest match Note at or above a given pitch, from a polylist of NoteSymbols
- * @return Note  an instance of the 'closest' note in list from the pitch
+ * Gets the closest match Note at or above a given pitchName, from a polylist of NoteSymbols
+ * @return Note  an instance of the 'closest' note in list from the pitchName
  */
 public static Note getClosestMatchDirectional(int pitch, Polylist tonesPL,
                                               boolean upward)
   {
-  //System.out.println("getClosestMatchDirectional to " + pitch + " " + tonesPL);
+  //System.out.println("getClosestMatchDirectional to " + pitchName + " " + tonesPL);
   if( !tonesPL.nonEmpty() )
     {
     ErrorLog.log(ErrorLog.WARNING, "*** Error: No tones list to match against.");
@@ -425,12 +424,12 @@ public static Note getClosestMatchDirectional(int pitch, Polylist tonesPL,
       }
     catch( Exception ep )
       {
-      ep.printStackTrace();
+      //ep.printStackTrace();
       }
     }
 
   /* Search incrementally within the tones list for the 'closest'
-   * acceptable pitch.  This will fit our contour best.
+   * acceptable pitchName.  This will fit our contour best.
    */
 
   int indexMatch;
@@ -486,7 +485,7 @@ static boolean black[] =
 
 static public boolean isBlack(int pitch)
   {
-  // There was a problem with pitch being negative. It shouldn't happen.
+  // There was a problem with pitchName being negative. It shouldn't happen.
   while( pitch < 0 )
     {
       pitch += OCTAVE;
@@ -511,13 +510,13 @@ public boolean nonRest()
   return pitch != REST;
   }
 
-private static Accidental S = Accidental.SHARP;
+private static final Accidental S = Accidental.SHARP;
 
-private static Accidental F = Accidental.FLAT;
+private static final Accidental F = Accidental.FLAT;
 
-private static Accidental N = Accidental.NATURAL;
+private static final Accidental N = Accidental.NATURAL;
 
-public static Accidental accidentalByKey[][] =
+public static final Accidental accidentalByKey[][] =
   {
   {
     N, F, N, F, F, N, F, N, F, N, F, F
@@ -566,9 +565,9 @@ public static Accidental accidentalByKey[][] =
 
 
 /**
- * Shifts the pitch up by the amount specified, adjusting the accidental
+ * Shifts the pitchName up by the amount specified, adjusting the accidental
  * if necessary.
- * @param shift     the amount to shift the pitch
+ * @param shift     the amount to shift the pitchName
  * @param keySig    the key signature (to prefer flats or sharps)
  */
 public void shiftPitch(int shift, int keySig)
@@ -661,9 +660,9 @@ public void setEnharmonic(boolean[] enh)
 
   if( accidental != Accidental.NATURAL )
     {
-    String pitch = getPitchClassName();
+    String pitchName = getPitchClassName();
 
-    switch( pitch.charAt(0) )
+    switch( pitchName.charAt(0) )
       {
       case 'c':
         if( accidental == Accidental.SHARP && enh[CSHARP] == false )
@@ -742,12 +741,13 @@ public Note copy()
  * Returns a String representation of the Note
  * @return String   the String representation of the Note
  */
+
+@Override
 public String toString()
   {
-  String noteData = new String("NOTE: [" + getPitchClassName() + ", Pitch = " + pitch +
+  return new String("NOTE: [" + getPitchClassName() + ", Pitch = " + pitch +
           ", " + drawnPitch + "][Accidental = " + accidental +
           "][RhythmValue = " + rhythmValue + "]");
-  return noteData;
   }
 
 
@@ -905,7 +905,7 @@ public String getPitchClassName()
 
 
 /**
- * Sets the pitch of the note used to draw the part
+ * Sets the pitchName of the note used to draw the part
  */
 public void setDrawnPitch(int p)
   {
@@ -914,7 +914,7 @@ public void setDrawnPitch(int p)
 
 
 /**
- * Gets the the drawn pitch
+ * Gets the the drawn pitchName
  */
 public int getDrawnPitch()
   {
@@ -950,7 +950,7 @@ public String toLeadsheet()
   {
   StringBuffer buffer0 = new StringBuffer();
 
-  int pitch = this.pitch;	// make a local version of pitch
+  int pitch = this.pitch;	// make a local version of pitchName
 
   int octave = pitch / 12 - 5;
 
@@ -982,9 +982,7 @@ public String toLeadsheet()
 
   StringBuffer buffer = new StringBuffer();
 
-  int value = rhythmValue;
-
-  value = getDurationString(buffer, rhythmValue);
+  int value = getDurationString(buffer, rhythmValue);
 
   // We don't handle less than 32nd note triplets currently.  For example,
   // 480 is not divisible by 64. However, we could handle 64th note triplets.
@@ -1072,7 +1070,7 @@ public static int getDurationString(StringBuffer bufferOut, int value)
   int residue2 = value;
   String string2 = buffer.toString();
 
-  int choice = 0;  // This is the choice of which decomposition to use.
+  int choice;  // This is the choice of which decomposition to use.
 
   // Both residues are 0, so make the choice based on length
   if( string1.length() <= string2.length() )
@@ -1131,7 +1129,8 @@ static int accumulateExactValue(int value, int duration, StringBuffer buffer,
  * @param ch        the channel to put the Note on
  * @return long     the time that a sequential Note should start
  */
-public long sequence(Sequence seq, Track track, long time, int ch,
+
+public long render(Sequence seq, Track track, long time, int ch,
                      int volume, int transposition)
         throws InvalidMidiDataException
   {
@@ -1181,48 +1180,6 @@ public long sequence(Sequence seq, Track track, long time, int ch,
   Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + actualPitch + " time = " + offtime);
 
   return offtime;
-  }
-
-
-/**
- * Reads the passed BufferedReader and creates a new Note.
- * @param in        the BufferedReader to read the Note from
- * @return Note     the new Note created from the BufferedReader
- */
-public static Note open(BufferedReader in) throws IOException
-  {
-  String str = in.readLine();
-  if( str.equals("") )
-    {
-    return null;
-    }
-  int index = 0;
-
-  String acc = "";
-  while( str.charAt(index) != ' ' )
-    {
-    acc += str.charAt(index);
-    index++;
-    }
-
-  index++;
-  String pitch = "";
-  while( str.charAt(index) != ' ' )
-    {
-    pitch += str.charAt(index);
-    index++;
-    }
-
-  index++;
-  String rv = "";
-  while( index < str.length() )
-    {
-    rv += str.charAt(index);
-    index++;
-    }
-
-  return new Note(Integer.decode(pitch), Accidental.valueOf(acc),
-          Integer.decode(rv));
   }
 
 }

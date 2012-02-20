@@ -291,7 +291,7 @@ public class ChordBlock extends Block {
     }
     
     /** isOverlap
-     * Describes whether the ChordBlock is part of an overlapping sequence
+     * Describes whether the ChordBlock is part of an overlapping render
      * @return a boolean
      */
     @Override

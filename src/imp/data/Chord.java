@@ -20,16 +20,22 @@
 
 package imp.data;
 
-import java.util.*;
-import javax.sound.midi.*;
-import java.io.*;
-
-import polya.*;
-
-import imp.brickdictionary.ChordBlock;
 import imp.Constants;
-import imp.util.Trace;
+import imp.brickdictionary.ChordBlock;
 import imp.util.Preferences;
+import imp.util.Trace;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Vector;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Track;
+import polya.Polylist;
+import polya.PolylistEnum;
 
 /**
  * The Chord class represents a chord in a chord progression.
@@ -411,12 +417,12 @@ public class Chord implements Constants, Unit, Serializable {
      * Returns a String representation of the Chord.
      * @return String   a String representation of the Chord
      */
+    @Override
     public String toString() {
-        String chordData = new String("CHORD: " +
-                                      "[Name = " + getName() +
-                                      "][Voicing = " + voicing +
-                                      "][RhythmValue = " + rhythmValue + "]");
-        return chordData;
+        return new String("CHORD: " +
+                          "[Name = " + getName() +
+                          "][Voicing = " + voicing +
+                          "][RhythmValue = " + rhythmValue + "]");
     }
 
 
@@ -430,7 +436,7 @@ public class Chord implements Constants, Unit, Serializable {
      * @param ch        the channel to put the Chord on
      * @return long      the time that a sequential Chord should start
      */
-    public long sequence(Sequence seq, Track track, long time, int ch, 
+    public long render(Sequence seq, Track track, long time, int ch, 
                          Style style, Chord prev, int rhythmValue, int transposition, int endLimitIndex)
                 throws InvalidMidiDataException {
 

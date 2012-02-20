@@ -19154,7 +19154,7 @@ public void addVoicingToSeq(String v)
 }
 
 /**
- * Adds a voicing to the voicing sequence list.
+ * Adds a voicing to the voicing render list.
  */
 public void addToVoicingSequence()
 {
@@ -19169,7 +19169,7 @@ private void voicingSequenceAddButtonActionPerformed(java.awt.event.ActionEvent 
 }//GEN-LAST:event_voicingSequenceAddButtonActionPerformed
 
 /**
- * Removes the selected voicing from the voicing sequence list.
+ * Removes the selected voicing from the voicing render list.
  * 
  * @param evt
  */
@@ -19198,7 +19198,7 @@ private void voicingSequenceRemoveButtonActionPerformed(java.awt.event.ActionEve
 }//GEN-LAST:event_voicingSequenceRemoveButtonActionPerformed
 
 /**
- * Swaps the selected voicing with the one above it in the voicing sequence.
+ * Swaps the selected voicing with the one above it in the voicing render.
  * 
  * @param evt
  */
@@ -19227,7 +19227,7 @@ private void voicingSequenceUpArrowMouseClicked(java.awt.event.MouseEvent evt) {
 }
 
 /**
- * Swaps the selected voicing with the one below it in the voicing sequence.
+ * Swaps the selected voicing with the one below it in the voicing render.
  * 
  * @param evt
  */
@@ -19298,7 +19298,7 @@ public int getUpperBound()
 }
 
 /**
- * Plays the current sequence of voicings and displays them on the keyboard.
+ * Plays the current render of voicings and displays them on the keyboard.
  * 
  * @param evt
  */
@@ -19342,7 +19342,7 @@ private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent
 }
 
 /**
- * Displays the current voicing if the selection index in the sequence list changes.
+ * Displays the current voicing if the selection index in the render list changes.
  */
 private void displayVoicingfromList()
 {
@@ -19389,7 +19389,7 @@ private void displayVoicingfromList()
 }
 
 /**
- * If the selection index of the voicing sequence list changes, the new voicing
+ * If the selection index of the voicing render list changes, the new voicing
  * is displayed in the voicing entry text field and on the keyboard.
  * 
  * @param evt

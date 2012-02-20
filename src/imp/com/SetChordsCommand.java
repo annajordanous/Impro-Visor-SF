@@ -24,7 +24,7 @@ import imp.data.*;
 import polya.*;
 
 /**
- * An undoable Command that places a sequence of Chords at a certain 
+ * An undoable Command that places a render of Chords at a certain 
  * position in a ChordPart.  
 
  * Works by creating a new Part, then pasting that, exploiting the

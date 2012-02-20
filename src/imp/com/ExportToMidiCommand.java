@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,12 @@
 
 package imp.com;
 
-import imp.data.*;
+import imp.Constants;
+import imp.data.Score;
+import imp.data.Style;
+import imp.util.ErrorLog;
 import java.io.*;
 import javax.sound.midi.*;
-import imp.Constants;
-import imp.util.ErrorLog;
 
 /**
  * A Command that exports a score to a midi file
@@ -35,7 +36,7 @@ public class ExportToMidiCommand implements Command, Constants
     // The file to export to
     private File file;
     
-    // The score we want to export (contains a midi sequence that we can parse)
+    // The score we want to export (contains a midi render that we can parse)
     private Score score;
     
     private int toExport = 0;
@@ -103,7 +104,7 @@ public class ExportToMidiCommand implements Command, Constants
 	}
     }
     
-    // Initialize the sequence and write the header chunk.
+    // Initialize the render and write the header chunk.
     private void write(DataOutputStream dos, int transposition) throws IOException
     {
         Sequence seq = null;
@@ -112,16 +113,16 @@ public class ExportToMidiCommand implements Command, Constants
         score = score.copy();
         score.makeSwing();
 
-        // Try to get the sequence
+        // Try to get the render
         try
         {
-            seq = score.sequence(PPQN, transposition);       
+            seq = score.render(PPQN, transposition);       
         }
         catch (InvalidMidiDataException e)
         {
         }
         
-        // Get the number of tracks in the sequence
+        // Get the number of tracks in the render
         short numOfTracks = 0;
         
         if (toExport == ALL)
@@ -147,7 +148,7 @@ public class ExportToMidiCommand implements Command, Constants
                 e.printStackTrace();
         }	
         
-        // Get the array of tracks from the sequence.
+        // Get the array of tracks from the render.
         Track[] tracks = seq.getTracks();
         
         // write volume messages to tracks
@@ -216,7 +217,7 @@ public class ExportToMidiCommand implements Command, Constants
         buffer.write(timeSig);
         
         // Next we output the tempo; this is a meta-message, so it takes up zero
-        // time in the sequence.
+        // time in the render.
         writeVarLength(0, buffer);
         
         // Tempo is expressed in terms of microseconds per quarter note.
@@ -279,7 +280,7 @@ public class ExportToMidiCommand implements Command, Constants
             buffer.write(msg.getMessage());
         }
         
-        // Hack -- adds on a little time to the last note in the sequence so that things don't get
+        // Hack -- adds on a little time to the last note in the render so that things don't get
         // truncated in Quicktime.  To use, uncomment the stuff below, and change the for loop above
         // to read "for (int i = 1; i < track.size() - 2; ++i)"
         
