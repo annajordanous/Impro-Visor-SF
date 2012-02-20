@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,10 +22,10 @@ package imp.data;
 
 import imp.Constants;
 import imp.util.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Vector;
 import javax.sound.midi.*;
 
 /**
@@ -37,7 +36,7 @@ import javax.sound.midi.*;
  *
  * Integrated with the MidiManager by Martin Hunt, June 2006
  *    added volume control
- *    support for multiple windows, each with it's own mixer
+ *    support for multiple windows, each with its own mixer
  *
  * Notes: 
  *  - if you close the sequencer, you can't just reopen it because the transmitter
@@ -88,10 +87,14 @@ private static long playCounter = 0;
 
 private int countInOffset = 0;
 
+ArrayList<MidiNoteListener> noteListeners = new ArrayList<MidiNoteListener>();
+
+
 public MidiSynth(MidiManager midiManager)
   {
     this(midiManager, DEFAULT_PPQ);
   }
+
 
 public MidiSynth(MidiManager midiManager, short ppqn)
   {
@@ -115,6 +118,7 @@ public MidiSynth(MidiManager midiManager, short ppqn)
  * See http://www.jsresources.org/faq_midi.html#tempo_methods
  @param fBPM
  */
+
 public void setTempo(float fBPM)
 {
     if( sequencer != null )
@@ -133,20 +137,24 @@ public float getTempo()
     return tempo;
   }
 
+
 public void setCountInOffset(int countInOffset)
 {
     this.countInOffset = countInOffset;
 }
+
 
 public int getCountInOffset()
 {
     return countInOffset;
 }
 
+
 public void setPastCountIn()
 {
     setSlot(countInOffset);
 }
+
 
 public long getMicrosecond()
   {
@@ -157,6 +165,7 @@ public long getMicrosecond()
     return (long) (sequencer.getMicrosecondPosition() * magic120 / getTempo() );
   }
 
+
 public long getTotalMicroseconds()
   {
     if( sequencer == null )
@@ -166,6 +175,7 @@ public long getTotalMicroseconds()
 
     return (long) (sequencer.getMicrosecondLength()*(1-getCountInFraction()) * magic120 / getTempo());
   }
+
 
 /**
  @return the fraction of the countIn over the total length, including countIn
@@ -192,6 +202,7 @@ public double getCountInFraction()
     return fraction;
   }
 
+
 /**
  @return the length of the countIn in microseconds
  */
@@ -205,6 +216,7 @@ public long getCountInMicroseconds()
     return (long) (getCountInFraction() * getTotalMicrosecondsWithCountIn());
   }
 
+
 public long getTotalMicrosecondsWithCountIn()
   {
     if( sequencer == null )
@@ -214,10 +226,12 @@ public long getTotalMicrosecondsWithCountIn()
     return (long) (sequencer.getMicrosecondLength() * magic120 / tempo );
   }
 
+
 public long getSlotsPerMicrosecond()
 {
     return sequencer.getTickLength();
 }
+
 
 public void setMicrosecond(long position)
   {
@@ -235,6 +249,7 @@ public void setMicrosecond(long position)
     sequencer.setMicrosecondPosition(value);
  }
 
+
 public void setFraction(double fraction)
 {
     int totalSlots = getTotalSlots();
@@ -242,6 +257,7 @@ public void setFraction(double fraction)
     //System.out.println("setFraction = " + fraction + " totalSlots = " + totalSlots + " slot = " + slot );
     setSlot(slot);
 }
+
 
 public double getFraction()
 {
@@ -261,6 +277,7 @@ public double getFraction()
     return (double)getSlot()/totalSlots;
 }
 
+
 public void setSlot(long slot)
   {
     //System.out.println("setSlot = " + slot);
@@ -277,6 +294,7 @@ public void setSlot(long slot)
 
     sequencer.setTickPosition(value);
   }
+
 
 /**
  @return the slot number, starting after any count-in
@@ -304,6 +322,7 @@ public int getSlot()
       }
   }
 
+
 /**
  @return total number of slots, not counting count-in
  */
@@ -322,10 +341,12 @@ public int getTotalSlots()
       }
   }
 
+
 public boolean finishedPlaying()
   {
     return sequencer == null || sequencer.getTickPosition() >= sequencer.getTickLength();
   }
+
 
 public void play(Score score, 
                  long startTime, 
@@ -339,6 +360,7 @@ public void play(Score score,
          transposition, 
          true);
   }
+
 
 public void play(Score score, 
                  long startTime, 
@@ -354,6 +376,7 @@ public void play(Score score,
          useDrums, 
          -1); // RK 6/11/2010 The last parameter was omitted, causing an infinite loop. I hope this value makes sense.
   }
+
 
 public void play(Score score, 
                  long startIndex, 
@@ -494,6 +517,7 @@ public void play(Score score,
       }
 }
 
+
 public void setLoopStartPoint(long point)
 {
     //System.out.println("setLoopStartPoint " + point);
@@ -507,16 +531,19 @@ public void setLoopEndPoint(long point)
     sequencer.setLoopEndPoint(point);
 }
 
+
 public void setLoopCount(int count)
 {
     sequencer.setLoopCount(count);
 }
+
 
 /**
  * Invoked when a Sequencer has encountered and processed a MetaMessage
  * in the Sequence it is processing.
  * @param metaEvent      the MetaMessage that the sequencer encountered
  */
+
 public void meta(MetaMessage metaEvent)
   {
     Trace.log(3, playCounter + ": MidiSynth metaEvent: " + metaEvent);
@@ -525,6 +552,7 @@ public void meta(MetaMessage metaEvent)
         stop("meta");
       }
   }
+
 
 public void pause()
   {
@@ -543,6 +571,7 @@ public void pause()
       }
   }
 
+
 public void setPlayListener(MidiPlayListener listener)
   {
     Trace.log(3, playCounter + ": Setting MidiPlayListener ");
@@ -553,6 +582,7 @@ public void setPlayListener(MidiPlayListener listener)
       }
     playListener = listener;
   }
+
 
 /**
  * Stop sequencer object
@@ -596,6 +626,7 @@ public void close()
       }
   }
 
+
 /**
  * Create a Note On Event
  * @param channel   the channel to change
@@ -615,6 +646,7 @@ protected static MidiEvent createNoteOnEvent(int channel,
 
     return evt;
   }
+
 
 /**
  * Create a Note Off Event
@@ -636,6 +668,7 @@ protected static MidiEvent createNoteOffEvent(int channel,
     return evt;
   }
 
+
 /**
  * Create a Program Change Event
  * @param channel  the channel to change
@@ -654,6 +687,7 @@ protected static MidiEvent createProgramChangeEvent(int channel,
 
     return evt;
   }
+
 
 /**
  * Create a Control Change event
@@ -674,6 +708,7 @@ protected static MidiEvent createCChangeEvent(int channel,
     MidiEvent evt = new MidiEvent(msg, tick);
     return evt;
   }
+
 
 /**
  * Takes the specified Sequence, finds the longest track and
@@ -708,10 +743,12 @@ protected static void endSequence(Sequence seq)
 
   }
 
+
 public Sequencer getSequencer()
   {
     return sequencer;
   }
+
 
 private void setSequencer()
   {
@@ -737,15 +774,18 @@ private void setSequencer()
       }
   }
 
+
 public int getMasterVolume()
   {
     return volumeControl.getMasterVolume();
   }
 
+
 public void setMasterVolume(int volume)
   {
     volumeControl.setMasterVolume(volume);
   }
+
 
 public void setChannelVolume(int channel, int volume)
   {
@@ -753,27 +793,30 @@ public void setChannelVolume(int channel, int volume)
     volumeControl.setChannelVolume(channel, volume);
   }
 
+
 public void registerReceiver(Receiver r)
   {
     midiManager.registerReceiver(r);
   }
+
 
 public void unregisterReceiver(Receiver r)
   {
     midiManager.unregisterReceiver(r);
   }
 
+
 void registerTransmitter(Transmitter t)
   {
     t.setReceiver(volumeControl);
   }
 
-Vector<MidiNoteListener> noteListeners = new Vector<MidiNoteListener>();
 
 public void registerNoteListener(MidiNoteListener m)
   {
     noteListeners.add(m);
   }
+
 
 public void unregisterNoteListener(MidiNoteListener m)
   {
@@ -785,7 +828,6 @@ public void unregisterNoteListener(MidiNoteListener m)
 
 private class Mixer implements Receiver, Transmitter
 {
-
 Receiver receiver;
 
 private int numChannels;
@@ -865,16 +907,19 @@ public void send(MidiMessage message, long timeStamp)
           {
           }
       }
-  }
+  } // end of inner class Mixer
+
 
 public void close()
   {
   }
 
+
 public void setReceiver(Receiver receiver)
   {
     this.receiver = receiver;
   }
+
 
 public Receiver getReceiver()
   {
@@ -882,6 +927,7 @@ public Receiver getReceiver()
   }
 
 }
+
 
 public void showSequencerStatus()
 {

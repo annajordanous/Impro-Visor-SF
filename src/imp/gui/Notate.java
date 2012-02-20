@@ -144,10 +144,9 @@ public class Notate
   private static int aboutDialogWidth  = 600;
   private static int aboutDialogHeight = 750;
 
+  private static int million = 1000000;
 
-   private static int million = 1000000;
-
-   private int loopsRemaining;
+  private int loopsRemaining;
 
   /**
    *
@@ -331,13 +330,6 @@ public class Notate
    *
    */
   protected PartList partList;
-
-  /**
-   *
-   * next part to be pasted during recurrent loops
-   *
-   */
-  protected MelodyPart nextPart;
 
   /**
    *
@@ -1187,8 +1179,8 @@ public class Notate
 
         // Recurrent generation option
 
-            if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
-                && (slotInPlayback >= totalSlots - gap) )
+        if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
+             && (slotInPlayback >= totalSlots - gap) )
             {
                 setLickGenStatus("Chorus " + getRecurrentIteration());
                 generate(lickgen);
@@ -19811,12 +19803,11 @@ public void generate(LickGen lickgen)
               }
             putLick(solo);
           }
-
       }
 
-    //If the outlines is unable to generate a solo, which might
-    //happen if there are no outlines of the correct length or the soloist
-    //file was not correctly loaded, use the grammar
+    // If the outline is unable to generate a solo, which might
+    // happen if there are no outlines of the correct length or the soloist
+    // file was not correctly loaded, use the grammar.
 
     if( rhythm == null || useOutlines == false )
       {
@@ -19850,6 +19841,7 @@ public void generate(LickGen lickgen)
 
     setLickGenStatus("Done generating melody");
   }
+
 
 /**
  * Rectify the current selection, aligning pitches to harmony.
