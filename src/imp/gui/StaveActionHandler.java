@@ -1,8 +1,7 @@
-
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +13,26 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package imp.gui;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
-
 import imp.Constants;
-import imp.data.*;
-import imp.com.*;
-import imp.util.*;
 import imp.ImproVisor;
+import imp.com.*;
+import imp.data.*;
+import imp.util.ErrorLog;
+import imp.util.Trace;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import javax.swing.Icon;
 import polya.Polylist;
 
 /**
@@ -85,8 +86,7 @@ Chord lastAdviceNext;
  */
 public static final int pitchFromSpacing[] =
  {
-  c4, d4, e4, f4, g4, a4, b4,
-  c5
+  c4, d4, e4, f4, g4, a4, b4, c5
  };
 
 

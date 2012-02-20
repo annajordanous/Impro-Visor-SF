@@ -1078,11 +1078,14 @@ public class Style
       Part.PartIterator i = durationMelody.iterator();
       PolylistEnum e = chords.elements();
       long newTime = time;
+      
+      int dur = 0;
+      
       while( e.hasMoreElements() )
         {
         Object voicing = e.nextElement();
         Note note = (Note)i.next();
-        int dur = note.getRhythmValue();
+        dur = note.getRhythmValue();
 
         // render each NoteSymbol in the chord
         if( voicing instanceof Polylist )
@@ -1102,8 +1105,9 @@ public class Style
           lastChord = v;
           }
 
-        time = newTime; // += dur * seq.getResolution() / BEAT;
         }
+      time += dur * seq.getResolution() / BEAT;
+
       beginning = false;
       }
 
