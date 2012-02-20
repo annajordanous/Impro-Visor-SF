@@ -327,24 +327,49 @@ public boolean finishedPlaying()
     return sequencer == null || sequencer.getTickPosition() >= sequencer.getTickLength();
   }
 
-public void play(Score score, long startTime, int loopCount, int transposition)
+public void play(Score score, 
+                 long startTime, 
+                 int loopCount, 
+                 int transposition)
     throws InvalidMidiDataException
   {
-    play(score, startTime, loopCount, transposition, true);
+    play(score, 
+         startTime, 
+         loopCount, 
+         transposition, 
+         true);
   }
 
-public void play(Score score, long startTime, int loopCount, int transposition,
+public void play(Score score, 
+                 long startTime, 
+                 int loopCount, 
+                 int transposition,
                  boolean useDrums)
     throws InvalidMidiDataException
   {
-    play(score, startTime, loopCount, transposition, useDrums, -1); // RK 6/11/2010 The last parameter was omitted, causing an infinite loop. I hope this value makes sense.
+    play(score, 
+         startTime, 
+         loopCount, 
+         transposition, 
+         useDrums, 
+         -1); // RK 6/11/2010 The last parameter was omitted, causing an infinite loop. I hope this value makes sense.
   }
 
-public void play(Score score, long startIndex, int loopCount, int transposition,
-                 boolean useDrums, int endLimitIndex)
+public void play(Score score, 
+                 long startIndex, 
+                 int loopCount, 
+                 int transposition,
+                 boolean useDrums, 
+                 int endLimitIndex)
     throws InvalidMidiDataException
   {
-    play(score, startIndex, loopCount, transposition, useDrums, endLimitIndex, 0);
+    play(score, 
+         startIndex, 
+         loopCount, 
+         transposition, 
+         useDrums, 
+         endLimitIndex, 
+         0);
 }
 
 
@@ -353,8 +378,13 @@ public void play(Score score, long startIndex, int loopCount, int transposition,
  * @param score   Score data to change to SMF
  * @exception Exception
  */
-public void play(Score score, long startIndex, int loopCount, int transposition,
-                 boolean useDrums, int endLimitIndex, int countInOffset)
+public void play(Score score, 
+                 long startIndex, 
+                 int loopCount, 
+                 int transposition,
+                 boolean useDrums, 
+                 int endLimitIndex, 
+                 int countInOffset)
     throws InvalidMidiDataException
   {
    Trace.log(2,

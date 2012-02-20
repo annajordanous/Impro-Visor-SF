@@ -406,8 +406,13 @@ public SectionRecord getSectionRecordByIndex(int n)
         return getStyle(0);
     }
 
-public long render(Sequence seq, int ch, long time, Track track,
-                     int transposition, boolean useDrums, int endLimitIndex)
+public long render(Sequence seq, 
+                   int ch, 
+                   long time, 
+                   Track track,
+                   int transposition, 
+                   boolean useDrums, 
+                   int endLimitIndex)
     throws InvalidMidiDataException
   {
     // to trace sequencing info:
@@ -418,7 +423,7 @@ public long render(Sequence seq, int ch, long time, Track track,
 
     int chordsSize = chords.size();
     
-    int endIndex = chordsSize;
+    int endIndex;
     
     // m is a second iterator intended to stay one step ahead of k
     // so as to get the start of the next section
