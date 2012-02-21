@@ -1182,7 +1182,8 @@ public class Notate
         if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
              && (slotInPlayback >= totalSlots - gap) )
             {
-                setLickGenStatus("Chorus " + getRecurrentIteration());
+                recurrentIteration++;
+                setLickGenStatus("Chorus " + recurrentIteration);
                 generate(lickgen);
             }
 
@@ -2164,6 +2165,7 @@ public class Notate
         mostRecentLeadsheetNewWindowMI = new javax.swing.JMenuItem();
         fileStepMI = new javax.swing.JMenuItem();
         revertToSavedMI = new javax.swing.JMenuItem();
+        clearHistoryMI = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JSeparator();
         saveLeadsheetMI = new javax.swing.JMenuItem();
         saveAsLeadsheetMI = new javax.swing.JMenuItem();
@@ -7572,6 +7574,15 @@ public class Notate
             }
         });
         fileMenu.add(revertToSavedMI);
+
+        clearHistoryMI.setText("Clear Command History\n");
+        clearHistoryMI.setToolTipText("Clears the history, so that previous commands are forgotten.\n");
+        clearHistoryMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearHistoryMIrevertLeadsheetActionPerformed(evt);
+            }
+        });
+        fileMenu.add(clearHistoryMI);
         fileMenu.add(jSeparator6);
 
         saveLeadsheetMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -20637,6 +20648,11 @@ private void recurrentGenButtonActionPerformed(java.awt.event.ActionEvent evt)//
         }
   }//GEN-LAST:event_recurrentGenButtonActionPerformed
 
+private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearHistoryMIrevertLeadsheetActionPerformed
+  {//GEN-HEADEREND:event_clearHistoryMIrevertLeadsheetActionPerformed
+    cmReset();
+  }//GEN-LAST:event_clearHistoryMIrevertLeadsheetActionPerformed
+
 /**
  * * This is for calling from lickgen frame
  * @return 
@@ -22210,6 +22226,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem chorusPrefsMI;
     private javax.swing.JPanel chorusSpecificPanel;
     private javax.swing.JButton clearButton;
+    private javax.swing.JMenuItem clearHistoryMI;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.ButtonGroup colorColorBtnGrp;
     private javax.swing.JLabel colorToneLabel;

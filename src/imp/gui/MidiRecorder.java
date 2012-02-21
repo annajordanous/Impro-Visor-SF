@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,7 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.com.SetNoteAndLengthCommand;
+import imp.com.SetNoteAndLengthRealTimeCommand;
 import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.Rest;
@@ -48,7 +47,7 @@ public class MidiRecorder implements Constants, Receiver {
     }
     
     
-    double latency = 100;
+    double latency = 0;
     public double getLatency() {
         return latency;
     }
@@ -153,7 +152,7 @@ public class MidiRecorder implements Constants, Receiver {
                 // add rests since nothing was played between now and the previous note
                 if(duration > 0 && index >= 0 ) {
                     Note noteToAdd = new Rest(duration);
-                    notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, melodyPart, notate));
+                    new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
                 }
 
                 if( index >= 0 )
@@ -173,7 +172,7 @@ public class MidiRecorder implements Constants, Receiver {
         
         try {
             noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-            notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, melodyPart, notate));
+            new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
         } catch(Exception e) {
             //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
         }
@@ -228,7 +227,7 @@ public class MidiRecorder implements Constants, Receiver {
         } else {
             Note noteToAdd = new Note(note, duration);
             noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-            notate.execute(new SetNoteAndLengthCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate));
+            new SetNoteAndLengthRealTimeCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate).execute();
         }       
         index += duration;
         

@@ -6400,6 +6400,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="revertLeadsheetActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="clearHistoryMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Clear Command History&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Clears the history, so that previous commands are forgotten.&#xa;"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearHistoryMIrevertLeadsheetActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator6">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveLeadsheetMI">
