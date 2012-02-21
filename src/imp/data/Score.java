@@ -833,12 +833,16 @@ public class Score implements Constants, Serializable {
      * @param ppqn       the resolution for the Sequence
      * @return Sequence  the MIDI render
      */
-    public Sequence render(short ppqn, int transposition)
-                                throws InvalidMidiDataException {
+    public Sequence render(short ppqn, 
+                           int transposition)
+                    throws InvalidMidiDataException {
 
         int endIndex = chordProg.size();    // correct?
 
-        return render(ppqn, transposition, true, endIndex);
+        return render(ppqn, 
+                      transposition, 
+                      true, 
+                      endIndex);
     }
 
 
@@ -851,8 +855,11 @@ public class Score implements Constants, Serializable {
      * @return Sequence  the MIDI render
      */
 
-    public Sequence render(short ppqn, int transposition, boolean useDrums, int endLimitIndex)
-                                throws InvalidMidiDataException {
+    public Sequence render(short ppqn, 
+                           int transposition, 
+                           boolean useDrums, 
+                           int endLimitIndex)
+                    throws InvalidMidiDataException {
         // to trace sequencing
         //System.out.println("Score: render, start 0, endLimitIndex = " + endLimitIndex);
         Sequence seq = new Sequence(Sequence.PPQ, ppqn);
@@ -873,8 +880,20 @@ public class Score implements Constants, Serializable {
             endLimitIndex += len;
           }
 
-        new MelodyPart(len).render(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
-        time = countInProg.render(seq, 1, time, chordTrack, 0, true, endLimitIndex);
+        new MelodyPart(len).render(seq, 
+                                   melodyChannel, 
+                                   time, 
+                                   melodyTrack, 
+                                   transposition, 
+                                   endLimitIndex);
+        
+        time = countInProg.render(seq, 
+                                  1, 
+                                  time, 
+                                  chordTrack, 
+                                  0, 
+                                  true, 
+                                  endLimitIndex);
         }
 
         //System.out.println("time = " + time);
@@ -884,8 +903,20 @@ public class Score implements Constants, Serializable {
         {
             // render the chord progression in parallel with each melody chorus
             
-            long melTime = i.next().render(seq, melodyChannel, time, melodyTrack, transposition, endLimitIndex);
-            long chTime = chordProg.render(seq, 1, time, chordTrack, transposition, useDrums, endLimitIndex);
+            long melTime = i.next().render(seq, 
+                                           melodyChannel,
+                                           time, 
+                                           melodyTrack, 
+                                           transposition, 
+                                           endLimitIndex);
+            
+            long chTime = chordProg.render(seq, 
+                                           1, 
+                                           time, 
+                                           chordTrack, 
+                                           transposition, 
+                                           useDrums, 
+                                           endLimitIndex);
             time = Math.max(melTime, chTime);
        }
         
