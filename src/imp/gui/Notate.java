@@ -1169,7 +1169,7 @@ public class Notate
         //slotInPlayback %= chorusSize;
         
         int slotInChorus = slotInPlayback % chorusSize;
-        
+
         Chord currentChord = chordProg.getCurrentChord(slotInChorus);
         
         if (keyboard != null && keyboard.isVisible() && keyboard.isPlaying())
@@ -18836,11 +18836,11 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
         
         // the current slot number never seems to EXACTLY equal the total
         // slot number, but is usually (experimentally determined) within 20
-        if (totalSlots - slot < 20 )
-        {
-            keyboard.setPlayback(false);
-            buildVoicingTable();
-        }
+//        if (totalSlots - slot < 20 )
+//        {
+//            keyboard.setPlayback(false);
+//            buildVoicingTable();
+//        }
         
     }
     // End code for keyboard playback.
