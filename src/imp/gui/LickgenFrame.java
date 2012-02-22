@@ -4418,7 +4418,7 @@ public MelodyPart generateTheme() {
                     cm.execute(new ReverseCommand(adjustedTheme, 0, length, false));
 
                 ChordPart themeChords = notate.getChordProg().extract(i, i + length);
-                cm.execute(new ResolvePitchesCommand(adjustedTheme, 0, length, themeChords, false, false));
+                cm.execute(new RectifyPitchesCommand(adjustedTheme, 0, length, themeChords, false, false));
 
                 solo.setSize(solo.getSize() + length);
                 solo.pasteSlots(adjustedTheme, i);
@@ -4457,7 +4457,7 @@ public MelodyPart generateTheme() {
 
         // Experimental: Resolve pitches in entire solo: seems to improve things, but
         // may generate some repeated notes.
-        cm.execute(new ResolvePitchesCommand(solo, 0, solo.getSize(), notate.getChordProg(), false, false));
+        cm.execute(new RectifyPitchesCommand(solo, 0, solo.getSize(), notate.getChordProg(), false, false));
 
         notate.pasteMelody(solo);
 

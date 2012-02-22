@@ -32,7 +32,7 @@ import polya.*;
  * @see         MelodyPart
  * @author      Steven Gomez
  */
-public class ResolvePitchesCommand
+public class RectifyPitchesCommand
         implements Command, Constants
   {
   /**
@@ -78,7 +78,7 @@ public class ResolvePitchesCommand
   /**
    * Creates a new Command that can resolve pitches of a set of Notes.
    */
-  public ResolvePitchesCommand(MelodyPart part, int startIndex,
+  public RectifyPitchesCommand(MelodyPart part, int startIndex,
                                 int stopIndex, ChordPart chordProg,
                                 boolean directional, boolean direction)
     {
@@ -95,7 +95,7 @@ public class ResolvePitchesCommand
  */
 public void execute()
   {
-    //Trace.log(2, "executing ResolvePitchesCommand");
+    //Trace.log(2, "executing RectifyPitchesCommand");
 
     Note previousNote = null;
     Note previouslyResolved = null;

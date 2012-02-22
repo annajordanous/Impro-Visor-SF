@@ -15779,7 +15779,7 @@ private void setLayoutPreference(Polylist layout)
 
       ((Advice)object).insertInPart(score.getPart(currTabIndex),
               getCurrentSelectionStart(), cm, this);
-
+//causes double hits: rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
       if( ImproVisor.getPlay() )
         {
         ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.NODRUMS);
@@ -19864,7 +19864,7 @@ public void generate(LickGen lickgen)
 private void rectifySelection(Stave stave, int selectionStart, int selectionEnd)
 {
     ///System.out.println("rectifying from  " + selectionStart + " to " + selectionEnd);
-    stave.resolvePitch(selectionStart, selectionEnd, false, false);
+    stave.rectifySelection(selectionStart, selectionEnd, false, false);
     
 }
 

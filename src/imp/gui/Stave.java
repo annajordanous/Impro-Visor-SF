@@ -22,7 +22,7 @@ package imp.gui;
 import imp.Constants;
 import imp.brickdictionary.Block;
 import imp.com.PlayScoreCommand;
-import imp.com.ResolvePitchesCommand;
+import imp.com.RectifyPitchesCommand;
 import imp.com.ShiftChordsCommand;
 import imp.com.ShiftPitchesCommand;
 import imp.data.*;
@@ -5264,7 +5264,7 @@ void redoAdvice()
 void transposeMelodyHarmonically()
   {
     Trace.log(2, "applying smart transpose");
-    resolvePitch(getSelectionStart(),
+    rectifySelection(getSelectionStart(),
                  getSelectionEnd(), false, false);
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
   }
@@ -5272,7 +5272,7 @@ void transposeMelodyHarmonically()
 void transposeMelodyUpHarmonically()
   {
     Trace.log(2, "applying harmonic transpose up");
-    resolvePitch(getSelectionStart(), getSelectionEndNote(), true, true);
+    rectifySelection(getSelectionStart(), getSelectionEndNote(), true, true);
     notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
   }
@@ -5280,7 +5280,7 @@ void transposeMelodyUpHarmonically()
 void transposeMelodyDownHarmonically()
   {
     Trace.log(2, "applying harmonic transpose down");
-    resolvePitch(getSelectionStart(),
+    rectifySelection(getSelectionStart(),
                  getSelectionEndNote(), true, false);
     notate.noCountIn();
     playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
@@ -5400,10 +5400,10 @@ public void shiftPitch(int startIndex, int endIndex, boolean up,
     repaint();
   }
 
-public void resolvePitch(int startIndex, int endIndex, boolean directional, boolean direction)
+public void rectifySelection(int startIndex, int endIndex, boolean directional, boolean direction)
   {
     notate.cm.execute(
-            new ResolvePitchesCommand(getOrigPart(),
+            new RectifyPitchesCommand(getOrigPart(),
                                       startIndex,
                                       endIndex,
                                       getChordProg(),
