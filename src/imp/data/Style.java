@@ -997,130 +997,138 @@ public class Style
    * @param duration  an int containing the duration of the chordline
    * @return a Polylist containing the last chord used in the chordline
    */
-  private Polylist makeChordline(
-          Sequence seq, 
-          Track track, 
-          long time,
-          Chord chord, 
-          Polylist lastChord,
-          int duration, 
-          int transposition, 
-          int endLimitIndex)
-       throws InvalidMidiDataException
-    {
+private Polylist makeChordline(
+        Sequence seq,
+        Track track,
+        long time,
+        Chord chord,
+        Polylist lastChord,
+        int duration,
+        int transposition,
+        int endLimitIndex)
+        throws InvalidMidiDataException
+  {
     // To trace sequencing info:
     // System.out.println("makeChordLine: time = " + time + " duration = "
     //    + duration + " endLimitIndex = " + endLimitIndex);
 
-    // because we have no data structure to hold multi-voice parts, 
-    // we manually render polylists for each chord in this method
-    
-    boolean firstTime = true;
+    // Because we have no data structure to hold multi-voice parts, 
+    // we manually render polylists for each chord in this method.
 
-    // select Bank 0 before program change. Not sure this is correct.
+    // Select Bank 0 before program change. Not sure this is correct.
     //track.add(MidiSynth.createProgramChangeEvent(chordChannel, 0, time));
 
     track.add(MidiSynth.createProgramChangeEvent(chordChannel,
-            chordInstrument, time));
+                                                 chordInstrument, 
+                                                 time));
 
     ChordSymbol symbol = chord.getChordSymbol();
+
+    // The while loop is in case one pattern does not fill
+    // the required duration. We may need multiple patterns.
     
     boolean beginning = true;
     while( duration > 0 && limitNotReached(time, endLimitIndex) )
       {
-      ChordPattern pattern = getPattern(chordPatterns, duration);
+        // Get the next pattern.
+        ChordPattern pattern = getPattern(chordPatterns, duration);
 
-      Polylist c;
-      if( pattern == null )
-        {
-        // if there's no pattern, and we haven't used a previous
-        // pattern on this chord, then just play the chord for the 
-        // duration
-        if( !beginning )
+        Polylist c;
+        if( pattern == null )
           {
-          break;
+            // if there's no pattern, and we haven't used a previous
+            // pattern on this chord, then just play the chord for the 
+            // duration
+            if( !beginning )
+              {
+                break;
+              }
+            Polylist v = ChordPattern.findVoicing(symbol, lastChord, this);
+            MelodyPart dM = new MelodyPart();
+            dM.addNote(new Rest(duration));
+            duration = 0;
+            c = Polylist.list(Polylist.list(v), dM);
           }
-        Polylist v = ChordPattern.findVoicing(symbol, lastChord, this);
-        MelodyPart dM = new MelodyPart();
-        dM.addNote(new Rest(duration));
-        duration = 0;
-        c = Polylist.list(Polylist.list(v), dM);
-        }
-      else
-        {
-        // Accommodate possible "pushing" of first chord.
-        // The amount is given in slots.
-
-        if( firstTime )
-            {
-            firstTime = false;
-            int pushAmount = pattern.getPushAmount();
-            time -= pushAmount*seq.getResolution() / BEAT;
-            if( time < 0 )
-                {
-                time = 0;
-                }
-            }
-      
-      duration -= pattern.getDuration();
-
-        // we get a polylist containing the chords (each in a polylist)
-        // and a "duration melody" which is a MelodyPart representing
-        // the durations of each chord
-        c = pattern.applyRules(symbol, lastChord);
-        }
-
-      Polylist chords = (Polylist)c.first();
-
-      // since we can't run the swing algorithm on a Polylist of 
-      // NoteSymbols, we can use this "duration melody" which
-      // corresponds to the chords in the above Polylist to find
-      // the correct swung durations of the notes
-      
-      MelodyPart durationMelody = (MelodyPart)c.second();
-      durationMelody.setSwing(accompanimentSwing);
-      durationMelody.makeSwing();
-
-      Part.PartIterator i = durationMelody.iterator();
-      PolylistEnum e = chords.elements();
-      long newTime = time;
-      
-      while( e.hasMoreElements() )
-        {
-        Object voicing = e.nextElement();
-        Note note = (Note)i.next();
-        int dur = note.getRhythmValue();
-
-        // render each NoteSymbol in the chord
-        if( voicing instanceof Polylist )
+        else
           {
-          Polylist v = (Polylist)voicing;
-          chord.setVoicing(v);
-          Polylist L = v;
-          while( L.nonEmpty() )
-            {
-            NoteSymbol ns = (NoteSymbol)L.first();
-            note = ns.toNote();
-            note.setRhythmValue(dur);
-            newTime = note.render(seq, track, time, chordChannel, MAX_VOLUME, transposition);
-            L = L.rest();
-            }
-
-          lastChord = v;
+            if( beginning )
+              {
+               // Accommodate possible "pushing" of first chord.
+               // The amount is given in slots.
+               int pushAmount = pattern.getPushAmount();
+               int deltaT = pushAmount * seq.getResolution() / BEAT;
+               time -= deltaT;
+               if( time < 0 )
+                  {
+                    time = 0;
+                    deltaT = 0;
+                  }
+                
+                duration -= (deltaT + pattern.getDuration());
+              }
+            else
+              {
+              duration -= pattern.getDuration();
+              }
+            // we get a polylist containing the chords (each in a polylist)
+            // and a "duration melody" which is a MelodyPart representing
+            // the durations of each chord
+            c = pattern.applyRules(symbol, lastChord);
           }
-        
-        time = newTime; // += dur * seq.getResolution() / BEAT;
-        }
 
-      beginning = false;
+        Polylist chords = (Polylist) c.first();
+
+        // since we can't run the swing algorithm on a Polylist of 
+        // NoteSymbols, we can use this "duration melody" which
+        // corresponds to the chords in the above Polylist to find
+        // the correct swung durations of the notes
+
+        MelodyPart durationMelody = (MelodyPart) c.second();
+        durationMelody.setSwing(accompanimentSwing);
+        durationMelody.makeSwing();
+
+        Part.PartIterator i = durationMelody.iterator();
+        PolylistEnum e = chords.elements();
+        long newTime = time;
+
+        // Iterate over notes in voicing
+        while( e.hasMoreElements() )
+          {
+            Object voicing = e.nextElement();
+            Note note = (Note) i.next();
+            int dur = note.getRhythmValue();
+
+            // render each NoteSymbol in the chord
+            if( voicing instanceof Polylist )
+              {
+                Polylist v = (Polylist) voicing;
+                chord.setVoicing(v);
+                Polylist L = v;
+                while( L.nonEmpty() )
+                  {
+                    NoteSymbol ns = (NoteSymbol) L.first();
+                    note = ns.toNote();
+                    note.setRhythmValue(dur);
+                    //System.out.println(ns.toString() + " " + (dur/120.) + " at " + time/480.);
+                    newTime = note.render(seq, track, time, chordChannel, MAX_VOLUME, transposition);
+                    L = L.rest();
+                  }
+
+                lastChord = v;
+              }
+
+            time = newTime; // += dur * seq.getResolution() / BEAT;
+          }
+
+        beginning = false;
       }
 
     // Un-comment this to see voicings
     //System.out.println("voicing " + chord + " as " + lastChord);
-    
+
     //System.out.println("render = " + sequence2polylist(seq));
     return lastChord;
-    }
+  }
 
   static Polylist sequence2polylist(Sequence seq)
   {
