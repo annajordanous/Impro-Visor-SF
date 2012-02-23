@@ -113,6 +113,11 @@ public class Notate
 
   public static final int defaultBarsPerPart = 72;
 
+  public static final Dimension leadsheetEditorDimension =
+          new Dimension(500, 600);
+  
+  public static final Dimension lickGenFrameDimension =
+          new Dimension(1100, 750);
   public static final int defaultMeasPerLine = 4;
 
   public static final int defaultMetre = 4;
@@ -120,8 +125,6 @@ public class Notate
   public static final Dimension preferencesDialogDimension =
           new Dimension(775, 625);
 
-  public static final Dimension leadsheetEditorDimension =
-          new Dimension(500, 600);
 
   private boolean noteColoration = true;
 
@@ -2096,9 +2099,12 @@ public class Notate
         });
         drawButton = new javax.swing.JButton();
         showAdviceButton = new javax.swing.JToggleButton();
-        openGeneratorButton = new javax.swing.JButton();
         generateToolbarBtn = new javax.swing.JButton();
         recurrentGenButton = new javax.swing.JToggleButton();
+        gapPanel = new javax.swing.JPanel();
+        generationGapTextField = new javax.swing.JTextField();
+        generationGapSlider = new javax.swing.JSlider();
+        openGeneratorButton = new javax.swing.JButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
@@ -4208,6 +4214,11 @@ public class Notate
         adviceFrame.setAlwaysOnTop(true);
         adviceFrame.setFocusCycleRoot(false);
         adviceFrame.setName("adviceFrame"); // NOI18N
+        adviceFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                adviceWindowClosing(evt);
+            }
+        });
         adviceFrame.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentHidden(java.awt.event.ComponentEvent evt) {
                 adviceFrameComponentHidden(evt);
@@ -4216,11 +4227,6 @@ public class Notate
         adviceFrame.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 adviceFocusGained(evt);
-            }
-        });
-        adviceFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                adviceWindowClosing(evt);
             }
         });
         adviceFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -4269,17 +4275,17 @@ public class Notate
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        adviceScrollListScales.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceScrollListScalesMouseClicked(evt);
+            }
+        });
         adviceScrollListScales.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 adviceScrollListScalesKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adviceScrollListScalesKeyReleased(evt);
-            }
-        });
-        adviceScrollListScales.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adviceScrollListScalesMouseClicked(evt);
             }
         });
         scrollScales.setViewportView(adviceScrollListScales);
@@ -6661,20 +6667,6 @@ public class Notate
         });
         standardToolbar.add(showAdviceButton);
 
-        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
-        openGeneratorButton.setToolTipText("Open the lick generator dialog.");
-        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setOpaque(true);
-        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openGeneratorButtonActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(openGeneratorButton);
-
         generateToolbarBtn.setBackground(new java.awt.Color(255, 204, 0));
         generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         generateToolbarBtn.setText("Generate");
@@ -6711,6 +6703,77 @@ public class Notate
             }
         });
         standardToolbar.add(recurrentGenButton);
+
+        gapPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Generation gap (beats) ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        gapPanel.setMaximumSize(new java.awt.Dimension(140, 50));
+        gapPanel.setMinimumSize(new java.awt.Dimension(140, 50));
+        gapPanel.setOpaque(false);
+        gapPanel.setPreferredSize(new java.awt.Dimension(160, 50));
+        gapPanel.setLayout(new java.awt.GridBagLayout());
+
+        generationGapTextField.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        generationGapTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        generationGapTextField.setText("1.0");
+        generationGapTextField.setToolTipText("Set the tempo for the sheet in beats per minute.");
+        generationGapTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        generationGapTextField.setMaximumSize(new java.awt.Dimension(30, 20));
+        generationGapTextField.setMinimumSize(new java.awt.Dimension(30, 20));
+        generationGapTextField.setPreferredSize(new java.awt.Dimension(30, 20));
+        generationGapTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                generationGapTextFieldMousePressed(evt);
+            }
+        });
+        generationGapTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generationGapActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 5, 0);
+        gapPanel.add(generationGapTextField, gridBagConstraints);
+
+        generationGapSlider.setMajorTickSpacing(5);
+        generationGapSlider.setMaximum(30);
+        generationGapSlider.setMinorTickSpacing(1);
+        generationGapSlider.setToolTipText("Sets the lead before next generation in recurrent generate mode.");
+        generationGapSlider.setValue(10);
+        generationGapSlider.setMaximumSize(new java.awt.Dimension(120, 30));
+        generationGapSlider.setMinimumSize(new java.awt.Dimension(36, 20));
+        generationGapSlider.setPreferredSize(new java.awt.Dimension(100, 20));
+        generationGapSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                generationGapSliderStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 60;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 3, 6, 5);
+        gapPanel.add(generationGapSlider, gridBagConstraints);
+
+        standardToolbar.add(gapPanel);
+
+        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
+        openGeneratorButton.setToolTipText("Open the lick generator dialog.");
+        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setOpaque(true);
+        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openGeneratorButtonActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(openGeneratorButton);
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
@@ -6809,7 +6872,6 @@ public class Notate
         });
         standardToolbar.add(delTabBtn);
 
-        preferencesBtn.setBackground(new java.awt.Color(51, 51, 255));
         preferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/globalprefs.gif"))); // NOI18N
         preferencesBtn.setToolTipText("Open Preferences dialog.");
         preferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -6835,7 +6897,7 @@ public class Notate
         programStatusTF.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Program Status", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         programStatusTF.setMargin(new java.awt.Insets(0, 5, 2, 4));
         programStatusTF.setMaximumSize(new java.awt.Dimension(400, 50));
-        programStatusTF.setMinimumSize(new java.awt.Dimension(250, 30));
+        programStatusTF.setMinimumSize(new java.awt.Dimension(125, 30));
         programStatusTF.setPreferredSize(new java.awt.Dimension(250, 30));
         programStatusTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -11412,6 +11474,7 @@ private void updateTempoFromTextField()
             (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
         }
 
+      lickgenFrame.setSize(lickGenFrameDimension);
       lickgenFrame.setVisible(true);
 
       entryMuteActionPerformed(null);
@@ -20653,6 +20716,31 @@ private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionE
     cmReset();
   }//GEN-LAST:event_clearHistoryMIrevertLeadsheetActionPerformed
 
+private void generationGapTextFieldMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_generationGapTextFieldMousePressed
+  {//GEN-HEADEREND:event_generationGapTextFieldMousePressed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_generationGapTextFieldMousePressed
+
+private void generationGapActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generationGapActionPerformed
+  {//GEN-HEADEREND:event_generationGapActionPerformed
+    double value = doubleFromTextField(generationGapTextField, 0, 3, 1);
+    lickgenFrame.setGap(value);
+    generationGapSlider.setValue((int)(10*value));
+  }//GEN-LAST:event_generationGapActionPerformed
+
+private void generationGapSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_generationGapSliderStateChanged
+  {//GEN-HEADEREND:event_generationGapSliderStateChanged
+    double value = generationGapSlider.getValue()/10.;
+    lickgenFrame.setGap(value);
+    generationGapTextField.setText("" + value);
+  }//GEN-LAST:event_generationGapSliderStateChanged
+
+public void setGenerationGap(double value)
+  {
+    generationGapSlider.setValue((int)(10*value));
+    generationGapTextField.setText("" + value);
+  }
+
 /**
  * * This is for calling from lickgen frame
  * @return 
@@ -22337,9 +22425,12 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
     private javax.swing.JToggleButton freezeLayoutButton;
+    private javax.swing.JPanel gapPanel;
     private javax.swing.JPanel generalContourTab;
     private javax.swing.JMenuItem generateLickInSelection;
     private javax.swing.JButton generateToolbarBtn;
+    private javax.swing.JSlider generationGapSlider;
+    private javax.swing.JTextField generationGapTextField;
     private javax.swing.ButtonGroup generatorButtonGroup;
     private javax.swing.JToggleButton globalBtn;
     private javax.swing.JPanel globalPreferences;
