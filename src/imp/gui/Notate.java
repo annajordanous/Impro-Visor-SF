@@ -6813,7 +6813,7 @@ public class Notate
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
         smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         smartEntryButton.setSelected(true);
-        smartEntryButton.setText("<html><center>Simple<br>Layout</center></html>");
+        smartEntryButton.setText("<html><center>Simple<br>Entry</center></html>");
         smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
         smartEntryButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         smartEntryButton.setFocusable(false);
@@ -18114,13 +18114,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         smartEntry = false;
         smartEntryButton.setBackground(Color.red);
-        smartEntryButton.setText("<html><center>Harmonic<br>Layout</center></html>");
+        smartEntryButton.setText("<html><center>Harmonic<br>Entry</center></html>");
         }
       else
         {
         smartEntry = true;
         smartEntryButton.setBackground(new Color(255, 153, 255));
-        smartEntryButton.setText("<html><center>Simple<br>Layout</center></html>");
+        smartEntryButton.setText("<html><center>Simple<br>Entry</center></html>");
         }
 }//GEN-LAST:event_smartEntryButtonActionPerformed
 
