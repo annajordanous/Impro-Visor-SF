@@ -438,7 +438,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         }
       }
 
-    throw new RuleApplicationException("applyRules, no such rule for " + gen);
+    return gen; // throw new RuleApplicationException("applyRules, no such rule for " + gen);
 
     //ErrorLog.log(ErrorLog.SEVERE,
     //        "No rule exists beginning with " + gen.first() + ".  Abort.");

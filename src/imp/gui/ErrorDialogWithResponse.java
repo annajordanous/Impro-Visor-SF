@@ -81,7 +81,7 @@ public ErrorDialogWithResponse(boolean modal)
         getContentPane().add(errorScroll, gridBagConstraints);
 
         abortErrorBtn.setBackground(new java.awt.Color(51, 255, 0));
-        abortErrorBtn.setText("Bypass reading current input.");
+        abortErrorBtn.setText("Bypass current activity");
         abortErrorBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         abortErrorBtn.setMinimumSize(new java.awt.Dimension(400, 20));
         abortErrorBtn.setOpaque(true);
@@ -106,6 +106,7 @@ public ErrorDialogWithResponse(boolean modal)
 
         okErrorBtn.setBackground(new java.awt.Color(255, 204, 0));
         okErrorBtn.setText("Continue at your own risk.");
+        okErrorBtn.setActionCommand("Continue at your own risk");
         okErrorBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         okErrorBtn.setMinimumSize(new java.awt.Dimension(400, 20));
         okErrorBtn.setOpaque(true);

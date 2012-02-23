@@ -85,6 +85,10 @@ public class RoadMapPanel extends JPanel {
     /** RoadMapFrame containing this panel */
     RoadMapFrame view;
     
+    Graphics g;
+    
+    Graphics2D g2d;
+    
     /** Creates new form RoadMapPanel */
     protected RoadMapPanel(RoadMapFrame view)
     {
@@ -722,11 +726,24 @@ public class RoadMapPanel extends JPanel {
         return rolloverPos;
     }
     
-    /* Drawing and junk */
+    /* Drawing */
+    
     /** Assign this panel a buffer */
+    /* This could be called with buffer = null 
+     * so as to allow buffer etc. to be collected. */
     protected void setBuffer(Image buffer)
     {
         this.buffer = buffer;
+        if( buffer == null )
+          {
+          g = null;
+          g2d = null;
+           }
+        else
+          {
+          g = buffer.getGraphics();
+          g2d = (Graphics2D)g;    
+          }
     }
 
     /** Draw all elements of the roadmap*/
@@ -759,7 +776,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws a cursor line of the desired color at the desired line/slot point */
     private void drawCursorLine(int slotOffset, int line, Color color)
     {
-        Graphics2D g2d = (Graphics2D)buffer.getGraphics();
+        //Graphics2D g2d = (Graphics2D)buffer.getGraphics();
         g2d.setColor(color);
         g2d.setStroke(settings.cursorLine);
         
@@ -798,7 +815,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws the grid */
     private void drawGrid()
     {
-        Graphics g = buffer.getGraphics();
+        //Graphics g = buffer.getGraphics();
 
         for(int i = 0; i < numLines; i++) {
             g.setColor(settings.gridBGColor);
@@ -827,7 +844,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws the roadmap text (title, style, tempo, etc) */
     private void drawText()
     {
-        Graphics g = buffer.getGraphics();
+        //Graphics g = buffer.getGraphics();
         g.setFont(settings.titleFont);
         g.setColor(settings.textColor);
         g.drawString(view.roadMapTitle, settings.xOffset, settings.yOffset - settings.lineSpacing);
@@ -846,7 +863,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws the brick at the given brickInd */
     private void drawBrick(int ind)
     {
-        graphicMap.get(ind).draw(buffer.getGraphics());
+        graphicMap.get(ind).draw(g); //buffer.getGraphics());
         repaint();
     }
     
@@ -854,8 +871,8 @@ public class RoadMapPanel extends JPanel {
     /** Draws all bricks */
     private void drawBricks(boolean showJoins)
     {        
-        Graphics2D g = (Graphics2D)buffer.getGraphics();
-        g.setFont(settings.basicFont);
+        //Graphics2D g = (Graphics2D)buffer.getGraphics();
+        g2d.setFont(settings.basicFont);
         ArrayList<String> joinList = roadMap.getJoins();
         
         int yAdjust = 1;
@@ -878,7 +895,7 @@ public class RoadMapPanel extends JPanel {
                 String joinName = joinList.get(ind);
                 int length = settings.getBlockLength(brick.getBlock());
                 
-                FontMetrics metrics = g.getFontMetrics();
+                FontMetrics metrics = g2d.getFontMetrics();
                 
                 int width = metrics.stringWidth(joinName) + 4;
                 int offset = metrics.getAscent();
@@ -888,24 +905,24 @@ public class RoadMapPanel extends JPanel {
                         settings.lineHeight;
                 joinX = joinX%settings.getLineLength() + settings.xOffset;
         
-                g.setColor(settings.joinBGColor);
-                g.setStroke(settings.basicLine);
+                g2d.setColor(settings.joinBGColor);
+                g2d.setStroke(settings.basicLine);
                 
-                g.fillRect(joinX+1,joinY+yAdjust, width, offset + 2);
+                g2d.fillRect(joinX+1,joinY+yAdjust, width, offset + 2);
         
-                g.setColor(settings.lineColor);
-                g.drawRect(joinX+1,joinY+yAdjust, width, offset + 2);
+                g2d.setColor(settings.lineColor);
+                g2d.drawRect(joinX+1,joinY+yAdjust, width, offset + 2);
                 
-                g.setColor(settings.textColor);
-                g.drawString(joinName,joinX+3, joinY+yAdjust+offset);
+                g2d.setColor(settings.textColor);
+                g2d.drawString(joinName,joinX+3, joinY+yAdjust+offset);
             }
               }
             
             if( ind == insertLineIndex ) {
-                g.setColor(Color.RED);
-                g.setStroke(new BasicStroke(2));
-                g.drawLine(x, y-5, x, y+settings.lineHeight+5);
-                g.setStroke(new BasicStroke(1));
+                g2d.setColor(Color.RED);
+                g2d.setStroke(new BasicStroke(2));
+                g2d.drawLine(x, y-5, x, y+settings.lineHeight+5);
+                g2d.setStroke(new BasicStroke(1));
             }
         }
         
@@ -916,7 +933,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws the given bricks at the given point */
     protected void drawBricksAt(ArrayList<GraphicBrick> bricks, int x, int y)
     {
-        Graphics g = buffer.getGraphics();
+        //Graphics g = buffer.getGraphics();
         
         int xOffset = x;
         
@@ -929,7 +946,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws the keymap */
     private void drawKeyMap()
     {
-        Graphics g = buffer.getGraphics();
+        //Graphics g = buffer.getGraphics();
         
         long currentBeats = 0;
         long lines = 0;
@@ -958,7 +975,7 @@ public class RoadMapPanel extends JPanel {
     /** Draws an individual keySpan */
     private void drawKeySpan(KeySpan keySpan, int x, int y, Graphics g)
     {       //TODO this should really be using beats and junk to find the end
-            Graphics2D g2d = (Graphics2D)g;
+            //Graphics2D g2d = (Graphics2D)g;
         
             g2d.setStroke(settings.brickOutline);
             
@@ -1057,7 +1074,7 @@ public class RoadMapPanel extends JPanel {
                 if(chordInd != -1)
                     text = roadMap.getBlock(brickInd).getChord(chordInd).getName();
 
-                Graphics g = buffer.getGraphics();
+                //Graphics g = buffer.getGraphics();
                 FontMetrics metrics = g.getFontMetrics();
                 int width = metrics.stringWidth(text) + 4;
                 int height = metrics.getAscent() + 2;
