@@ -8852,7 +8852,7 @@ private void setSectionParameters()
       stepInputBtn.setBackground(Color.GREEN);
       }    
     setStepInput(selected);
-
+    staveRequestFocus();
     }//GEN-LAST:event_stepInputBtnActionPerformed
 
     private void addRestMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRestMIActionPerformed
