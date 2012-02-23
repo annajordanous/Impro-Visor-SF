@@ -7009,12 +7009,15 @@ public class Notate
         });
         playToolBar.add(recordBtn);
 
-        stepInputBtn.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        stepInputBtn.setText("Step");
-        stepInputBtn.setToolTipText("Step record from MIDI source.");
+        stepInputBtn.setBackground(new java.awt.Color(0, 255, 0));
+        stepInputBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
+        stepInputBtn.setToolTipText("Step record from MIDI source. Each step uses the current slot showing and advances to the next. Use f and a keys to move forward and backward among slots, if desired, for making corrections.");
+        stepInputBtn.setActionCommand("");
         stepInputBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         stepInputBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stepInputBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        stepInputBtn.setOpaque(true);
         stepInputBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         stepInputBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8835,9 +8838,21 @@ private void setSectionParameters()
 
     }
     private void stepInputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepInputBtnActionPerformed
+      boolean selected = stepInputBtn.isSelected();
+      if( selected )
+      {
+      stepInputBtn.setText("<html><center>Stop</center></html>");
 
-      setStepInput(stepInputBtn.isSelected());
-        
+      stepInputBtn.setBackground(Color.RED);
+      }
+    else
+      {
+      stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
+
+      stepInputBtn.setBackground(Color.GREEN);
+      }    
+    setStepInput(selected);
+
     }//GEN-LAST:event_stepInputBtnActionPerformed
 
     private void addRestMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRestMIActionPerformed
