@@ -50,7 +50,8 @@ Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / |
 (section (style)) 
 
 Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | 
-Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | Cm | 
+Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | 
+Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | 
 
 (part
     (type melody)
@@ -75,46 +76,52 @@ Cm / / Gm7 / | Cm / / Gm7 / | Cm / / Gm7 / | Cm |
 
  f+8 r8 c+4+8 eb+4 c+8
 
- d+8 g+8 r4+8 f+2+4+8
+ d+8 bb8 g8 f8 c+4+8 eb+4
 
- r4+8 eb+8
+ c+8 d+4 f+8 r8 c+4+8
 
- r8 d+8 c+2 f8 r8
+ eb+4 c+8 d+8 g+8 r4+8
 
- f+2+4 r8 bb+8
+ f+2+4+8
 
- g+8 eb+8 r8 c+2+8
+ r4+8 eb+8 r8 d+8 c+2
 
- r4 f8 r8 c+4+8 d+8
+ f8 r8 f+2+8
 
- r4 c+4 f+4 c+4+8
+ r8 bb+8 g+8 eb+8 r4 c+2+8
 
- d+4 bb8 c+8 d+8 eb+8 f+8
+ r4 f8 r8
 
- g+4+8 a+4 f#+8 g+4
+ c+4+8 d+8 r4 c+4
 
- c++4 g+4+8 a+4 f#+8
+ f+4 c+4+8 d+4 bb8
 
- g+8 a+8 bb+8 c++8 d++8 d++2
+ c+8 d+8 eb+8 f+8 g+4+8 a+4
 
- bb+16 g+16 eb+8 r4+8 c++4+8
+ f#+8 g+4 c++4 g+4+8
 
- ab+8 f+8 r2+8
+ a+4 f#+8 g+8 a+8 bb+8 c++8
 
- bb+4+8 eb+8 d+8 b8 c+8 d+8
+ d++8 d++2 bb+16 g+16 eb+8 r4+8
 
- eb+8 f+8 g+8 c+4+8 c+2
+ c++4+8 ab+8 f+8 r2+8
 
- r4 f8 eb8 f8 f+8
+ bb+4+8 eb+8
 
- r8 d+8 eb+8 d+8 c+8 bb8 f8 eb8
+ d+8 b8 c+8 d+8 eb+8 f+8 g+8 c+4+8
 
- f8 f+8 r4 c+8 d+8 eb+8 r8
+ c+2 r4
 
- f4+8 f+8 r8 c+8 eb+8 d+8
+ f8 eb8 f8 f+8 r8 d+8 eb+8 d+8
 
- c+8 r8 f4+8 d+8 r8 b8
+ c+8 bb8 f8 eb8 f8 f+8 r4
 
- c+4+8 a8 g1+2
+ c+8 d+8 eb+8 r8 f4+8 f+8
 
- r1
+ r8 c+8 eb+8 d+8 c+8 r8 f4+8
+
+ d+8 r8 b8 c+4+8 a8
+
+ g1+2
+
+ r1+1+1+2
