@@ -167,7 +167,7 @@ public void execute()
                       {
                         // Move anything else to a usable tone
                       resolved =
-                        Note.getClosestMatch(currentNote.getPitch(), usableTones);
+                        Note.getClosestMatchDirectional(currentNote.getPitch(), usableTones, direction);
 
                       resolved.setRhythmValue(value);
                       }
