@@ -6777,7 +6777,7 @@ public class Notate
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        freezeLayoutButton.setText("<html><center>Freeze</center></html>");
+        freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
         freezeLayoutButton.setToolTipText("Freeze or thaw the current layout");
         freezeLayoutButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         freezeLayoutButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -6794,7 +6794,7 @@ public class Notate
 
         colorationButton.setBackground(new java.awt.Color(153, 204, 255));
         colorationButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        colorationButton.setText("<html><center>B/W</center></html>");
+        colorationButton.setText("<html><center>Black&<br>White</center></html>");
         colorationButton.setToolTipText("Turn note coloration off or on.");
         colorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         colorationButton.setFocusable(false);
@@ -6813,7 +6813,7 @@ public class Notate
         smartEntryButton.setBackground(new java.awt.Color(255, 153, 255));
         smartEntryButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         smartEntryButton.setSelected(true);
-        smartEntryButton.setText("<html><center>Simple</center></html>");
+        smartEntryButton.setText("<html><center>Simple<br>Layout</center></html>");
         smartEntryButton.setToolTipText("Use simple or harmonic note entry (the latter observing chords).");
         smartEntryButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         smartEntryButton.setFocusable(false);
@@ -14373,7 +14373,7 @@ private boolean saveMetre()
     {
     if( frozen )
       {
-      freezeLayoutButton.setText("<html><center>Thaw</center></html>");
+      freezeLayoutButton.setText("<html><center>Thaw<br>Layout</center></html>");
 
       freezeLayoutButton.setBackground(Color.RED);
       }
@@ -14381,7 +14381,7 @@ private boolean saveMetre()
       {
       score.setLayoutList(Polylist.nil);
 
-      freezeLayoutButton.setText("<html><center>Freeze</center></html>");
+      freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
 
       freezeLayoutButton.setBackground(Color.GREEN);
       }
@@ -18097,13 +18097,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         noteColoration = false;
         colorationButton.setBackground(Color.red);
-        colorationButton.setText("Color");
+        colorationButton.setText("<html><center>Color</center></html>");
         }
       else
         {
         noteColoration = true;
         colorationButton.setBackground(new Color(153, 204, 255));
-        colorationButton.setText("B/W");
+        colorationButton.setText("<html><center>Black&<br>White</center></html>");
         }
       
 }//GEN-LAST:event_colorationButtonActionPerformed
@@ -18114,13 +18114,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         {
         smartEntry = false;
         smartEntryButton.setBackground(Color.red);
-        smartEntryButton.setText("Harmonic");
+        smartEntryButton.setText("<html><center>Harmonic<br>Layout</center></html>");
         }
       else
         {
         smartEntry = true;
         smartEntryButton.setBackground(new Color(255, 153, 255));
-        smartEntryButton.setText("Simple");
+        smartEntryButton.setText("<html><center>Simple<br>Layout</center></html>");
         }
 }//GEN-LAST:event_smartEntryButtonActionPerformed
 

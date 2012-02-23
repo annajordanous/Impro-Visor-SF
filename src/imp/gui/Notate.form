@@ -8049,7 +8049,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Freeze&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Freeze&lt;br&gt;Layout&lt;/center&gt;&lt;/html&gt;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Freeze or thaw the current layout"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
@@ -8080,7 +8080,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;B/W&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Black&amp;&lt;br&gt;White&lt;/center&gt;&lt;/html&gt;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Turn note coloration off or on."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
@@ -8113,7 +8113,7 @@
                   <Font name="Arial" size="11" style="0"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Simple&lt;/center&gt;&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;center&gt;Simple&lt;br&gt;Layout&lt;/center&gt;&lt;/html&gt;"/>
                 <Property name="toolTipText" type="java.lang.String" value="Use simple or harmonic note entry (the latter observing chords)."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
