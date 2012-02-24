@@ -2117,7 +2117,6 @@ public class Notate
         });
         delTabBtn = new javax.swing.JButton();
         preferencesBtn = new javax.swing.JButton();
-        programStatusTF = new javax.swing.JTextField();
         playToolBar = new javax.swing.JToolBar();
         countInPanel = new javax.swing.JPanel();
         countInCheckBox = new javax.swing.JCheckBox();
@@ -2279,6 +2278,7 @@ public class Notate
         helpMI = new javax.swing.JMenuItem();
         jSeparator32 = new javax.swing.JSeparator();
         helpAboutMI = new javax.swing.JMenuItem();
+        statusMenu = new javax.swing.JMenu();
 
         preferencesDialog.setTitle("Preferences and Settings");
         preferencesDialog.setAlwaysOnTop(true);
@@ -6888,29 +6888,6 @@ public class Notate
         });
         standardToolbar.add(preferencesBtn);
 
-        programStatusTF.setBackground(new java.awt.Color(238, 238, 238));
-        programStatusTF.setEditable(false);
-        programStatusTF.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
-        programStatusTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        programStatusTF.setText("Starting ...");
-        programStatusTF.setToolTipText("Tells what the program is doing.");
-        programStatusTF.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Program Status", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        programStatusTF.setMargin(new java.awt.Insets(0, 5, 2, 4));
-        programStatusTF.setMaximumSize(new java.awt.Dimension(400, 50));
-        programStatusTF.setMinimumSize(new java.awt.Dimension(125, 30));
-        programStatusTF.setPreferredSize(new java.awt.Dimension(250, 30));
-        programStatusTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                programStatusTFActionPerformed(evt);
-            }
-        });
-        programStatusTF.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                programStatusTFFocusLost(evt);
-            }
-        });
-        standardToolbar.add(programStatusTF);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -8561,6 +8538,9 @@ public class Notate
 
         menuBar.add(helpMenu);
 
+        statusMenu.setText("Status:");
+        menuBar.add(statusMenu);
+
         setJMenuBar(menuBar);
 
         pack();
@@ -9750,19 +9730,7 @@ private String getChordRedirectName(int row)
     
 public void setStatus(String text)
   {
-    programStatusTF.setText(text);
-  }
-
-
-/**
- *
- * Get the status message of the Program Status field
- *
- */
-
-public String getStatus()
-  {
-    return programStatusTF.getText();
+    statusMenu.setText("Status: " + text); //programStatusTF.setText(text);
   }
 
 
@@ -9774,7 +9742,7 @@ public String getStatus()
 
 public void setStatusColor(Color c)
   {
-    programStatusTF.setForeground(c);
+    statusMenu.setForeground(c);
   }
 
 /**
@@ -11295,17 +11263,9 @@ private void updateTempoFromTextField()
         
     }//GEN-LAST:event_adviceFocusGained
     
-    
-    private void programStatusTFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_programStatusTFFocusLost
-         
-    }//GEN-LAST:event_programStatusTFFocusLost
-    
-    
-    
-    private void programStatusTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programStatusTFActionPerformed
         
-    }//GEN-LAST:event_programStatusTFActionPerformed
     
+        
     
     
     private void exportAllToMidiActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_exportAllToMidiActionPerformed
@@ -22693,7 +22653,6 @@ public void showNewVoicingDialog()
     private javax.swing.JButton printBtn;
     private javax.swing.JMenuItem printMI;
     private javax.swing.ButtonGroup productionBtnGrp;
-    private javax.swing.JTextField programStatusTF;
     private javax.swing.JButton purgeCache;
     private javax.swing.JMenuItem quitMI;
     private javax.swing.JRadioButton quoteRadioButton;
@@ -22757,6 +22716,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBoxMenuItem showTitlesMI;
     private javax.swing.JToggleButton smartEntryButton;
     private javax.swing.JToolBar standardToolbar;
+    private javax.swing.JMenu statusMenu;
     private javax.swing.ButtonGroup staveButtonGroup;
     private javax.swing.JPanel staveButtonPanel;
     private javax.swing.ButtonGroup staveChoiceButtonGroup;
