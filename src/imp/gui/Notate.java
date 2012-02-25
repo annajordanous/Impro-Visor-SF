@@ -2104,7 +2104,6 @@ public class Notate
         gapPanel = new javax.swing.JPanel();
         generationGapTextField = new javax.swing.JTextField();
         generationGapSlider = new javax.swing.JSlider();
-        openGeneratorButton = new javax.swing.JButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
@@ -2116,7 +2115,13 @@ public class Notate
             }
         });
         delTabBtn = new javax.swing.JButton();
-        preferencesBtn = new javax.swing.JButton();
+        openGeneratorButton = new javax.swing.JButton();
+        globalPreferencesBtn = new javax.swing.JButton();
+        leadsheetPreferencesBtn = new javax.swing.JButton();
+        chorusPreferencesBtn = new javax.swing.JButton();
+        sectionPreferencesBtn = new javax.swing.JButton();
+        midiPreferencesBtn = new javax.swing.JButton();
+        contourPreferencesBtn = new javax.swing.JButton();
         playToolBar = new javax.swing.JToolBar();
         countInPanel = new javax.swing.JPanel();
         countInCheckBox = new javax.swing.JCheckBox();
@@ -6761,20 +6766,6 @@ public class Notate
 
         standardToolbar.add(gapPanel);
 
-        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
-        openGeneratorButton.setToolTipText("Open the lick generator dialog.");
-        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setOpaque(true);
-        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openGeneratorButtonActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(openGeneratorButton);
-
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         freezeLayoutButton.setText("<html><center>Freeze<br>Layout</center></html>");
@@ -6844,7 +6835,7 @@ public class Notate
         standardToolbar.add(chordFontSizeSpinner);
 
         addTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/addtab.gif"))); // NOI18N
-        addTabBtn.setToolTipText("Add a new chorus tab.");
+        addTabBtn.setToolTipText("Add a new chorus tab, at the end.");
         addTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         addTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         addTabBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -6872,21 +6863,115 @@ public class Notate
         });
         standardToolbar.add(delTabBtn);
 
-        preferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/globalprefs.gif"))); // NOI18N
-        preferencesBtn.setToolTipText("Open Preferences dialog.");
-        preferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        preferencesBtn.setFocusable(false);
-        preferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        preferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
-        preferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        preferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        preferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        preferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
+        openGeneratorButton.setToolTipText("Open the Lick Generator dialog.");
+        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setOpaque(true);
+        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                preferencesBtnActionPerformed(evt);
+                openGeneratorButtonActionPerformed(evt);
             }
         });
-        standardToolbar.add(preferencesBtn);
+        standardToolbar.add(openGeneratorButton);
+
+        globalPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
+        globalPreferencesBtn.setToolTipText("Open Global Preferences dialog.");
+        globalPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        globalPreferencesBtn.setFocusable(false);
+        globalPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        globalPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        globalPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        globalPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        globalPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        globalPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                globalPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(globalPreferencesBtn);
+
+        leadsheetPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
+        leadsheetPreferencesBtn.setToolTipText("Open Leadsheet Preferences dialog.");
+        leadsheetPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        leadsheetPreferencesBtn.setFocusable(false);
+        leadsheetPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        leadsheetPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        leadsheetPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        leadsheetPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        leadsheetPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        leadsheetPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leadsheetPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(leadsheetPreferencesBtn);
+
+        chorusPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
+        chorusPreferencesBtn.setToolTipText("Open Chorus Preferences dialog.");
+        chorusPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chorusPreferencesBtn.setFocusable(false);
+        chorusPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chorusPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        chorusPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        chorusPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        chorusPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chorusPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chorusPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(chorusPreferencesBtn);
+
+        sectionPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
+        sectionPreferencesBtn.setToolTipText("Open Section and Style Preferences dialog.");
+        sectionPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        sectionPreferencesBtn.setFocusable(false);
+        sectionPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sectionPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        sectionPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        sectionPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        sectionPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        sectionPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectionPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(sectionPreferencesBtn);
+
+        midiPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
+        midiPreferencesBtn.setToolTipText("Open MIDI Preferences dialog.");
+        midiPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        midiPreferencesBtn.setFocusable(false);
+        midiPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        midiPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        midiPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        midiPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        midiPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        midiPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                midiPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(midiPreferencesBtn);
+
+        contourPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
+        contourPreferencesBtn.setToolTipText("Open Contour Preferences dialog.");
+        contourPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        contourPreferencesBtn.setFocusable(false);
+        contourPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        contourPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        contourPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        contourPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        contourPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        contourPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contourPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(contourPreferencesBtn);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -8709,12 +8794,6 @@ public class Notate
       openHelpDialog();
         
     }//GEN-LAST:event_helpMIActionPerformed
-
-    private void preferencesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesBtnActionPerformed
-
-      showPreferencesDialog();
-        
-    }//GEN-LAST:event_preferencesBtnActionPerformed
 
     private void contourPrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contourPrefsMIActionPerformed
 
@@ -20710,6 +20789,42 @@ private void generationGapSliderStateChanged(javax.swing.event.ChangeEvent evt)/
     generationGapTextField.setText("" + value);
   }//GEN-LAST:event_generationGapSliderStateChanged
 
+private void leadsheetPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leadsheetPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_leadsheetPreferencesBtnActionPerformed
+      changePrefTab(leadsheetBtn, leadsheetPreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_leadsheetPreferencesBtnActionPerformed
+
+private void chorusPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chorusPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_chorusPreferencesBtnActionPerformed
+      changePrefTab(chorusBtn, chorusPreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_chorusPreferencesBtnActionPerformed
+
+private void sectionPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_sectionPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_sectionPreferencesBtnActionPerformed
+      changePrefTab(styleBtn, stylePreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_sectionPreferencesBtnActionPerformed
+
+private void globalPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_globalPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_globalPreferencesBtnActionPerformed
+      changePrefTab(globalBtn, globalPreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_globalPreferencesBtnActionPerformed
+
+private void midiPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_midiPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_midiPreferencesBtnActionPerformed
+      changePrefTab(midiBtn, midiPreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_midiPreferencesBtnActionPerformed
+
+private void contourPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_contourPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_contourPreferencesBtnActionPerformed
+      changePrefTab(contourBtn, contourPreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_contourPreferencesBtnActionPerformed
+
 public void setGenerationGap(double value)
   {
     generationGapSlider.setValue((int)(10*value));
@@ -22286,6 +22401,7 @@ public void showNewVoicingDialog()
     private javax.swing.JSlider chordVolume;
     private javax.swing.JToggleButton chorusBtn;
     private javax.swing.JPanel chorusPreferences;
+    private javax.swing.JButton chorusPreferencesBtn;
     private javax.swing.JMenuItem chorusPrefsMI;
     private javax.swing.JPanel chorusSpecificPanel;
     private javax.swing.JButton clearButton;
@@ -22302,6 +22418,7 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel contToneChoices;
     private javax.swing.JToggleButton contourBtn;
     private javax.swing.JPanel contourPreferences;
+    private javax.swing.JButton contourPreferencesBtn;
     private javax.swing.JMenuItem contourPrefsMI;
     private javax.swing.JMenuItem contractMelodyBy2;
     private javax.swing.JMenuItem contractMelodyBy3;
@@ -22409,6 +22526,7 @@ public void showNewVoicingDialog()
     private javax.swing.ButtonGroup generatorButtonGroup;
     private javax.swing.JToggleButton globalBtn;
     private javax.swing.JPanel globalPreferences;
+    private javax.swing.JButton globalPreferencesBtn;
     private javax.swing.JMenuItem globalPrefsMI;
     private javax.swing.JTabbedPane globalTabs;
     private javax.swing.ButtonGroup grammarExtractionButtonGroup;
@@ -22530,6 +22648,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField layoutTF;
     private javax.swing.JToggleButton leadsheetBtn;
     private javax.swing.JPanel leadsheetPreferences;
+    private javax.swing.JButton leadsheetPreferencesBtn;
     private javax.swing.JMenuItem leadsheetPrefsMI;
     private javax.swing.JPanel leadsheetSpecificPanel;
     private javax.swing.JLabel leadsheetTitleLabel;
@@ -22571,6 +22690,7 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel midiOutPanel;
     private javax.swing.JLabel midiOutStatus;
     private javax.swing.JPanel midiPreferences;
+    private javax.swing.JButton midiPreferencesBtn;
     private javax.swing.JMenuItem midiPrefsMI;
     private javax.swing.JFrame midiStyleSpec;
     private javax.swing.JButton mixerBtn;
@@ -22644,7 +22764,6 @@ public void showNewVoicingDialog()
     protected javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTextField prefMeasTF;
     private javax.swing.JMenuItem preferencesAcceleratorMI;
-    private javax.swing.JButton preferencesBtn;
     private javax.swing.JDialog preferencesDialog;
     private javax.swing.JMenu preferencesMenu;
     private javax.swing.JScrollPane preferencesScrollPane;
@@ -22709,6 +22828,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel sectionLabel;
     private javax.swing.JList sectionList;
     private javax.swing.JScrollPane sectionListScrollPane;
+    private javax.swing.JButton sectionPreferencesBtn;
     private javax.swing.JLabel selectAStyleLabel;
     private javax.swing.JMenuItem selectAllMI;
     private javax.swing.JToggleButton showAdviceButton;
