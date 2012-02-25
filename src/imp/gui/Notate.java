@@ -2429,6 +2429,7 @@ public class Notate
         preferencesDialog.getContentPane().add(preferencesScrollPane, java.awt.BorderLayout.CENTER);
 
         stylePreferences.setBackground(new java.awt.Color(255, 255, 255));
+        stylePreferences.setToolTipText("Style settings by section");
         stylePreferences.setLayout(new java.awt.GridBagLayout());
 
         stylePrefLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -2671,6 +2672,7 @@ public class Notate
         stylePreferences.add(styleTabs, gridBagConstraints);
 
         chorusPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        chorusPreferences.setToolTipText("Chorus settings");
         chorusPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
         chorusPreferences.setLayout(new java.awt.GridBagLayout());
 
@@ -2836,6 +2838,7 @@ public class Notate
         chorusPreferences.add(jTabbedPane4, gridBagConstraints);
 
         leadsheetPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        leadsheetPreferences.setToolTipText("Leadsheet settings");
         leadsheetPreferences.setPreferredSize(new java.awt.Dimension(563, 507));
         leadsheetPreferences.setLayout(new java.awt.GridBagLayout());
 
@@ -3107,6 +3110,7 @@ public class Notate
         leadsheetPreferences.add(jTabbedPane5, gridBagConstraints);
 
         globalPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        globalPreferences.setToolTipText("Global settings");
         globalPreferences.setMinimumSize(new java.awt.Dimension(675, 600));
         globalPreferences.setLayout(new java.awt.GridBagLayout());
 
@@ -4096,8 +4100,9 @@ public class Notate
         midiPreferences.add(jTabbedPane2, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/midi.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largeMidi.png"))); // NOI18N
         jLabel4.setText("  MIDI Settings");
+        jLabel4.setToolTipText("Settings for MIDI input and output devices");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

@@ -42,6 +42,8 @@ private LinkedHashSet<MidiDevice.Info> devices;
 
 private Object selectedItem = null;
 
+private String nullIndicator = "none";
+
 public MidiDeviceChooser(MidiManager midiManager, LinkedHashSet<MidiDevice.Info> devices)
   {
     this.midiManager = midiManager;
@@ -60,7 +62,7 @@ public Object getElementAt(int index)
 
     if( o == null )
       {
-        return midiManager.defaultDeviceLabel;
+        return nullIndicator;
       }
     return o;
   }
