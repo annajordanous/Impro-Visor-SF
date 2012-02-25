@@ -1596,10 +1596,10 @@ public class Notate
 
         preferencesDialog = new javax.swing.JDialog();
         buttonPanel = new javax.swing.JPanel();
-        styleBtn = new javax.swing.JToggleButton();
-        chorusBtn = new javax.swing.JToggleButton();
-        leadsheetBtn = new javax.swing.JToggleButton();
         globalBtn = new javax.swing.JToggleButton();
+        leadsheetBtn = new javax.swing.JToggleButton();
+        chorusBtn = new javax.swing.JToggleButton();
+        styleBtn = new javax.swing.JToggleButton();
         midiBtn = new javax.swing.JToggleButton();
         contourBtn = new javax.swing.JToggleButton();
         okcancelPanel = new javax.swing.JPanel();
@@ -2301,35 +2301,20 @@ public class Notate
         buttonPanel.setNextFocusableComponent(styleBtn);
         buttonPanel.setPreferredSize(new java.awt.Dimension(112, 70));
 
-        prefsTabBtnGrp.add(styleBtn);
-        styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
-        styleBtn.setSelected(true);
-        styleBtn.setText("Section & Style");
-        styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        styleBtn.setIconTextGap(0);
-        styleBtn.setNextFocusableComponent(chorusBtn);
-        styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        styleBtn.addActionListener(new java.awt.event.ActionListener() {
+        prefsTabBtnGrp.add(globalBtn);
+        globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
+        globalBtn.setText("Global");
+        globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        globalBtn.setIconTextGap(6);
+        globalBtn.setNextFocusableComponent(midiBtn);
+        globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        globalBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                styleBtnActionPerformed(evt);
+                globalBtnActionPerformed(evt);
             }
         });
-        buttonPanel.add(styleBtn);
-
-        prefsTabBtnGrp.add(chorusBtn);
-        chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
-        chorusBtn.setText("Chorus");
-        chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        chorusBtn.setNextFocusableComponent(leadsheetBtn);
-        chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        chorusBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        chorusBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chorusBtnActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(chorusBtn);
+        buttonPanel.add(globalBtn);
 
         prefsTabBtnGrp.add(leadsheetBtn);
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
@@ -2345,20 +2330,35 @@ public class Notate
         });
         buttonPanel.add(leadsheetBtn);
 
-        prefsTabBtnGrp.add(globalBtn);
-        globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
-        globalBtn.setText("Global");
-        globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        globalBtn.setIconTextGap(6);
-        globalBtn.setNextFocusableComponent(midiBtn);
-        globalBtn.setPreferredSize(new java.awt.Dimension(100, 85));
-        globalBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        globalBtn.addActionListener(new java.awt.event.ActionListener() {
+        prefsTabBtnGrp.add(chorusBtn);
+        chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
+        chorusBtn.setText("Chorus");
+        chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chorusBtn.setNextFocusableComponent(leadsheetBtn);
+        chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        chorusBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chorusBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                globalBtnActionPerformed(evt);
+                chorusBtnActionPerformed(evt);
             }
         });
-        buttonPanel.add(globalBtn);
+        buttonPanel.add(chorusBtn);
+
+        prefsTabBtnGrp.add(styleBtn);
+        styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
+        styleBtn.setSelected(true);
+        styleBtn.setText("Section & Style");
+        styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        styleBtn.setIconTextGap(0);
+        styleBtn.setNextFocusableComponent(chorusBtn);
+        styleBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        styleBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        styleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                styleBtnActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(styleBtn);
 
         prefsTabBtnGrp.add(midiBtn);
         midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
@@ -6821,11 +6821,11 @@ public class Notate
         standardToolbar.add(smartEntryButton);
 
         chordFontSizeSpinner.setToolTipText("Specifies the chord font size.");
-        chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        chordFontSizeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Font", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         chordFontSizeSpinner.setInheritsPopupMenu(true);
-        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(75, 45));
-        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(75, 45));
-        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(75, 45));
+        chordFontSizeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
+        chordFontSizeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
+        chordFontSizeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
         chordFontSizeSpinner.setValue(16);
         chordFontSizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -7379,10 +7379,10 @@ public class Notate
         playToolBar.add(tempoPanel);
 
         transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
-        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        transposeSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
-        transposeSpinner.setMinimumSize(new java.awt.Dimension(70, 45));
-        transposeSpinner.setPreferredSize(new java.awt.Dimension(70, 45));
+        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
+        transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
         transposeSpinner.setValue(0);
         transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -7393,8 +7393,8 @@ public class Notate
 
         partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
-        partBarsPanel.setMaximumSize(new java.awt.Dimension(70, 50));
-        partBarsPanel.setMinimumSize(new java.awt.Dimension(70, 50));
+        partBarsPanel.setMaximumSize(new java.awt.Dimension(50, 50));
+        partBarsPanel.setMinimumSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setOpaque(false);
         partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
@@ -7403,9 +7403,9 @@ public class Notate
         partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        partBarsTF1.setMaximumSize(new java.awt.Dimension(60, 15));
-        partBarsTF1.setMinimumSize(new java.awt.Dimension(60, 15));
-        partBarsTF1.setPreferredSize(new java.awt.Dimension(60, 15));
+        partBarsTF1.setMaximumSize(new java.awt.Dimension(45, 15));
+        partBarsTF1.setMinimumSize(new java.awt.Dimension(45, 15));
+        partBarsTF1.setPreferredSize(new java.awt.Dimension(45, 15));
         partBarsTF1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 partBarsTF1MousePressed(evt);
@@ -7440,8 +7440,8 @@ public class Notate
         playToolBar.add(partBarsPanel);
 
         trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        trackerDelayPanel.setMaximumSize(new java.awt.Dimension(80, 63));
-        trackerDelayPanel.setMinimumSize(new java.awt.Dimension(80, 63));
+        trackerDelayPanel.setMaximumSize(new java.awt.Dimension(50, 63));
+        trackerDelayPanel.setMinimumSize(new java.awt.Dimension(50, 63));
         trackerDelayPanel.setOpaque(false);
         trackerDelayPanel.setPreferredSize(new java.awt.Dimension(50, 45));
         trackerDelayPanel.setLayout(new java.awt.BorderLayout());
@@ -7450,9 +7450,9 @@ public class Notate
         trackerDelayTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         trackerDelayTextField2.setToolTipText("Set the delay between the tracker and playback.");
         trackerDelayTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        trackerDelayTextField2.setMaximumSize(new java.awt.Dimension(60, 20));
-        trackerDelayTextField2.setMinimumSize(new java.awt.Dimension(20, 20));
-        trackerDelayTextField2.setPreferredSize(new java.awt.Dimension(50, 20));
+        trackerDelayTextField2.setMaximumSize(new java.awt.Dimension(40, 20));
+        trackerDelayTextField2.setMinimumSize(new java.awt.Dimension(40, 20));
+        trackerDelayTextField2.setPreferredSize(new java.awt.Dimension(40, 20));
         trackerDelayTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trackerDelayTextField2ActionPerformed(evt);
