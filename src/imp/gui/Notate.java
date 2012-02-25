@@ -15654,6 +15654,10 @@ private void setLayoutPreference(Polylist layout)
         addRest();
         break;
 
+      case KeyEvent.VK_S:
+        getCurrentStave().transposeMelodyDownHarmonically();
+        break;
+          
       case KeyEvent.VK_T:
         transposeMelodyUpOctaveActionPerformed(null);
         break;
@@ -15666,6 +15670,12 @@ private void setLayoutPreference(Polylist layout)
         pasteMelodyMIActionPerformed(null);
         break;
 
+      case KeyEvent.VK_W:
+        getCurrentStave().transposeMelodyUpHarmonically();
+        break;
+
+
+                    
       case KeyEvent.VK_DELETE:
       case KeyEvent.VK_BACK_SPACE:
       case KeyEvent.VK_X:
@@ -18213,7 +18223,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListCellsKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListCellsKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListCellsKeyPressed
-    handleAdviceKeyPress(evt);
+
 }//GEN-LAST:event_adviceScrollListCellsKeyPressed
 
     private void adviceScrollListCellsKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListCellsKeyReleased
@@ -18234,7 +18244,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListIdiomsKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListIdiomsKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListIdiomsKeyPressed
-          handleAdviceKeyPress(evt);
+    
 }//GEN-LAST:event_adviceScrollListIdiomsKeyPressed
 
     private void adviceScrollListIdiomsKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListIdiomsKeyReleased
@@ -18260,7 +18270,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListLicksKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListLicksKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListLicksKeyPressed
-    handleAdviceKeyPress(evt);      
+          
 }//GEN-LAST:event_adviceScrollListLicksKeyPressed
 
     private void adviceScrollListLicksKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListLicksKeyReleased
@@ -18286,7 +18296,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListQuotesKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListQuotesKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListQuotesKeyPressed
-    handleAdviceKeyPress(evt); 
+    
 }//GEN-LAST:event_adviceScrollListQuotesKeyPressed
 
     private void adviceScrollListQuotesKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListQuotesKeyReleased
@@ -18312,20 +18322,9 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListScalesKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListScalesKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListScalesKeyPressed
-    handleAdviceKeyPress(evt);
+
 }//GEN-LAST:event_adviceScrollListScalesKeyPressed
 
-    private void handleAdviceKeyPress(java.awt.event.KeyEvent evt)
-      {
-      switch( evt.getKeyCode() )
-        {
-          case java.awt.event.KeyEvent.VK_ENTER:
-              getCurrentStave().playSelection();
-              
-          default:
-              break;
-        }        
-      }
     
     private void adviceScrollListScalesKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListScalesKeyReleased
     {//GEN-HEADEREND:event_adviceScrollListScalesKeyReleased

@@ -2311,6 +2311,10 @@ public void keyPressed(KeyEvent e)
       {
         setVisible(false, false);
       }
+    else
+      {
+        getActionHandler().keyPressed(e);
+      }
     updateWidth();
   }
 

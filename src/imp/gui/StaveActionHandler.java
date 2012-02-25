@@ -2252,7 +2252,7 @@ public void keyPressed(KeyEvent e)
           stave.repaint();
 
           return;
-
+          
         case KeyEvent.VK_DELETE:                                   // same as x
         case KeyEvent.VK_BACK_SPACE:
 
