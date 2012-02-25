@@ -15737,7 +15737,11 @@ private void setLayoutPreference(Polylist layout)
 
     if( getCurrentSelectionStart() != OUT_OF_BOUNDS && getCurrentSelectionEnd() != OUT_OF_BOUNDS )
       {
-      if( e.isControlDown() )
+      if( e.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER)
+          {
+            getCurrentStave().playSelection();
+          }
+      else if( e.isControlDown() )
         {
         controlDownBehavior(e);
         }
@@ -15749,6 +15753,7 @@ private void setLayoutPreference(Polylist layout)
         {
         nothingDownBehavior(e);
         }
+      
       getCurrentStaveActionHandler().handleGridLineSpacing(e);
       }
     }
