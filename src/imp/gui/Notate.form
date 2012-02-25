@@ -54,6 +54,7 @@
                   <Image iconType="3" name="/imp/gui/graphics/preferences/global.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Global"/>
+                <Property name="toolTipText" type="java.lang.String" value="Global preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="6"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -76,7 +77,8 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/preferences/leadsheet.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="LeadSheet"/>
+                <Property name="text" type="java.lang.String" value="Leadsheet"/>
+                <Property name="toolTipText" type="java.lang.String" value="Leadsheet preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                   <ComponentRef name="globalBtn"/>
@@ -99,6 +101,7 @@
                   <Image iconType="3" name="/imp/gui/graphics/preferences/chorus.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Chorus"/>
+                <Property name="toolTipText" type="java.lang.String" value="Chorus preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                   <ComponentRef name="leadsheetBtn"/>
@@ -122,6 +125,7 @@
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Section &amp; Style"/>
+                <Property name="toolTipText" type="java.lang.String" value="Section and style preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -142,9 +146,10 @@
                   <ComponentRef name="prefsTabBtnGrp"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/preferences/keys.png"/>
+                  <Image iconType="3" name="/imp/gui/graphics/preferences/largeMidi.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="MIDI"/>
+                <Property name="toolTipText" type="java.lang.String" value="MIDI preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -165,9 +170,10 @@
                   <ComponentRef name="prefsTabBtnGrp"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/preferences/pencilCursor.png"/>
+                  <Image iconType="3" name="/imp/gui/graphics/preferences/largePencil.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Contour"/>
+                <Property name="toolTipText" type="java.lang.String" value="Drawing (&quot;contour&quot;) tool preferences"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="iconTextGap" type="int" value="0"/>
                 <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -2708,7 +2714,7 @@
               <Font name="Dialog" size="14" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/imp/gui/graphics/preferences/keys.png"/>
+              <Image iconType="3" name="/imp/gui/graphics/preferences/midi.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  MIDI Settings"/>
           </Properties>
@@ -2725,6 +2731,7 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Settings for the drawing (&quot;contour&quot;) tool&#xa;"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
@@ -2735,7 +2742,7 @@
               <Font name="Dialog" size="14" style="1"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/imp/gui/graphics/preferences/pencilCursor.png"/>
+              <Image iconType="3" name="/imp/gui/graphics/preferences/largePencil.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="  Contour Settings"/>
           </Properties>
@@ -8229,7 +8236,7 @@
             <Component class="javax.swing.JButton" name="globalPreferencesBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/preferences/global.png"/>
+                  <Image iconType="3" name="/imp/gui/graphics/preferences/smallGlobe.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Open Global Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -8285,7 +8292,7 @@
             <Component class="javax.swing.JButton" name="chorusPreferencesBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/preferences/chorus.png"/>
+                  <Image iconType="3" name="/imp/gui/graphics/preferences/trebleClef.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Open Chorus Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -8313,7 +8320,7 @@
             <Component class="javax.swing.JButton" name="sectionPreferencesBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/preferences/style.png"/>
+                  <Image iconType="3" name="/imp/gui/graphics/preferences/smallStyle.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Open Section and Style Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -8341,7 +8348,7 @@
             <Component class="javax.swing.JButton" name="midiPreferencesBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imp/gui/graphics/preferences/keys.png"/>
+                  <Image iconType="3" name="/imp/gui/graphics/preferences/smallMidi.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Open MIDI Preferences dialog."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

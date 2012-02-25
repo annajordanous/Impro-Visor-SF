@@ -123,7 +123,7 @@ public class Notate
   public static final int defaultMetre = 4;
 
   public static final Dimension preferencesDialogDimension =
-          new Dimension(775, 625);
+          new Dimension(800, 700);
 
 
   private boolean noteColoration = true;
@@ -2304,6 +2304,7 @@ public class Notate
         prefsTabBtnGrp.add(globalBtn);
         globalBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
         globalBtn.setText("Global");
+        globalBtn.setToolTipText("Global preferences");
         globalBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         globalBtn.setIconTextGap(6);
         globalBtn.setNextFocusableComponent(midiBtn);
@@ -2318,7 +2319,8 @@ public class Notate
 
         prefsTabBtnGrp.add(leadsheetBtn);
         leadsheetBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/leadsheet.png"))); // NOI18N
-        leadsheetBtn.setText("LeadSheet");
+        leadsheetBtn.setText("Leadsheet");
+        leadsheetBtn.setToolTipText("Leadsheet preferences");
         leadsheetBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leadsheetBtn.setNextFocusableComponent(globalBtn);
         leadsheetBtn.setPreferredSize(new java.awt.Dimension(100, 85));
@@ -2333,6 +2335,7 @@ public class Notate
         prefsTabBtnGrp.add(chorusBtn);
         chorusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
         chorusBtn.setText("Chorus");
+        chorusBtn.setToolTipText("Chorus preferences");
         chorusBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         chorusBtn.setNextFocusableComponent(leadsheetBtn);
         chorusBtn.setPreferredSize(new java.awt.Dimension(100, 85));
@@ -2348,6 +2351,7 @@ public class Notate
         styleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
         styleBtn.setSelected(true);
         styleBtn.setText("Section & Style");
+        styleBtn.setToolTipText("Section and style preferences");
         styleBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         styleBtn.setIconTextGap(0);
         styleBtn.setNextFocusableComponent(chorusBtn);
@@ -2361,8 +2365,9 @@ public class Notate
         buttonPanel.add(styleBtn);
 
         prefsTabBtnGrp.add(midiBtn);
-        midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
+        midiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largeMidi.png"))); // NOI18N
         midiBtn.setText("MIDI");
+        midiBtn.setToolTipText("MIDI preferences");
         midiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         midiBtn.setIconTextGap(0);
         midiBtn.setNextFocusableComponent(contourBtn);
@@ -2376,8 +2381,9 @@ public class Notate
         buttonPanel.add(midiBtn);
 
         prefsTabBtnGrp.add(contourBtn);
-        contourBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
+        contourBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largePencil.png"))); // NOI18N
         contourBtn.setText("Contour");
+        contourBtn.setToolTipText("Drawing (\"contour\") tool preferences");
         contourBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         contourBtn.setIconTextGap(0);
         contourBtn.setNextFocusableComponent(styleBtn);
@@ -4090,7 +4096,7 @@ public class Notate
         midiPreferences.add(jTabbedPane2, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/midi.png"))); // NOI18N
         jLabel4.setText("  MIDI Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4101,10 +4107,11 @@ public class Notate
         midiPreferences.add(jLabel4, gridBagConstraints);
 
         contourPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        contourPreferences.setToolTipText("Settings for the drawing (\"contour\") tool\n");
         contourPreferences.setLayout(new java.awt.GridBagLayout());
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/pencilCursor.png"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largePencil.png"))); // NOI18N
         jLabel10.setText("  Contour Settings");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -6877,7 +6884,7 @@ public class Notate
         });
         standardToolbar.add(openGeneratorButton);
 
-        globalPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/global.png"))); // NOI18N
+        globalPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallGlobe.png"))); // NOI18N
         globalPreferencesBtn.setToolTipText("Open Global Preferences dialog.");
         globalPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         globalPreferencesBtn.setFocusable(false);
@@ -6909,7 +6916,7 @@ public class Notate
         });
         standardToolbar.add(leadsheetPreferencesBtn);
 
-        chorusPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/chorus.png"))); // NOI18N
+        chorusPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/trebleClef.png"))); // NOI18N
         chorusPreferencesBtn.setToolTipText("Open Chorus Preferences dialog.");
         chorusPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chorusPreferencesBtn.setFocusable(false);
@@ -6925,7 +6932,7 @@ public class Notate
         });
         standardToolbar.add(chorusPreferencesBtn);
 
-        sectionPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
+        sectionPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallStyle.png"))); // NOI18N
         sectionPreferencesBtn.setToolTipText("Open Section and Style Preferences dialog.");
         sectionPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         sectionPreferencesBtn.setFocusable(false);
@@ -6941,7 +6948,7 @@ public class Notate
         });
         standardToolbar.add(sectionPreferencesBtn);
 
-        midiPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/keys.png"))); // NOI18N
+        midiPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallMidi.png"))); // NOI18N
         midiPreferencesBtn.setToolTipText("Open MIDI Preferences dialog.");
         midiPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         midiPreferencesBtn.setFocusable(false);
