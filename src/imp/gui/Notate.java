@@ -1840,7 +1840,7 @@ public class Notate
         });
         adviceFrame = new javax.swing.JFrame();
         adviceTabbedPane = new javax.swing.JTabbedPane();
-        adviceScroll0 = new javax.swing.JScrollPane();
+        scrollNotes = new javax.swing.JScrollPane();
         adviceTree = new javax.swing.JTree();
         scrollScales = new javax.swing.JScrollPane();
         adviceScrollListScales = new javax.swing.JList();
@@ -4254,10 +4254,10 @@ public class Notate
             }
         });
 
-        adviceScroll0.setDoubleBuffered(true);
-        adviceScroll0.setMinimumSize(new java.awt.Dimension(100, 100));
-        adviceScroll0.setPreferredSize(new java.awt.Dimension(300, 200));
-        adviceScroll0.addFocusListener(new java.awt.event.FocusAdapter() {
+        scrollNotes.setDoubleBuffered(true);
+        scrollNotes.setMinimumSize(new java.awt.Dimension(100, 100));
+        scrollNotes.setPreferredSize(new java.awt.Dimension(300, 200));
+        scrollNotes.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 adviceFocusGained(evt);
             }
@@ -4265,6 +4265,11 @@ public class Notate
 
         adviceTree.setMaximumSize(new java.awt.Dimension(400, 800));
         adviceTree.setMinimumSize(new java.awt.Dimension(50, 50));
+        adviceTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                adviceTreeMousePressed(evt);
+            }
+        });
         adviceTree.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 adviceFocusGained(evt);
@@ -4275,14 +4280,9 @@ public class Notate
                 adviceTreeKeyPressed(evt);
             }
         });
-        adviceTree.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                adviceTreeMousePressed(evt);
-            }
-        });
-        adviceScroll0.setViewportView(adviceTree);
+        scrollNotes.setViewportView(adviceTree);
 
-        adviceTabbedPane.addTab("Notes", adviceScroll0);
+        adviceTabbedPane.addTab("Notes", scrollNotes);
 
         scrollScales.setMinimumSize(new java.awt.Dimension(100, 100));
         scrollScales.setPreferredSize(new java.awt.Dimension(300, 200));
@@ -15331,7 +15331,7 @@ private void setLayoutPreference(Polylist layout)
           {
             case KeyEvent.VK_ENTER:
 
-                staveRequestFocus();
+                getCurrentStave().playSelection();
                 break;
 
             case KeyEvent.VK_UP:
@@ -18213,6 +18213,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListCellsKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListCellsKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListCellsKeyPressed
+    handleAdviceKeyPress(evt);
 }//GEN-LAST:event_adviceScrollListCellsKeyPressed
 
     private void adviceScrollListCellsKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListCellsKeyReleased
@@ -18233,7 +18234,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListIdiomsKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListIdiomsKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListIdiomsKeyPressed
-      // TODO add your handling code here:
+          handleAdviceKeyPress(evt);
 }//GEN-LAST:event_adviceScrollListIdiomsKeyPressed
 
     private void adviceScrollListIdiomsKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListIdiomsKeyReleased
@@ -18259,7 +18260,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListLicksKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListLicksKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListLicksKeyPressed
-      // TODO add your handling code here:
+    handleAdviceKeyPress(evt);      
 }//GEN-LAST:event_adviceScrollListLicksKeyPressed
 
     private void adviceScrollListLicksKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListLicksKeyReleased
@@ -18285,7 +18286,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListQuotesKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListQuotesKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListQuotesKeyPressed
-      // TODO add your handling code here:
+    handleAdviceKeyPress(evt); 
 }//GEN-LAST:event_adviceScrollListQuotesKeyPressed
 
     private void adviceScrollListQuotesKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListQuotesKeyReleased
@@ -18311,9 +18312,21 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListScalesKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListScalesKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListScalesKeyPressed
-      // TODO add your handling code here:
+    handleAdviceKeyPress(evt);
 }//GEN-LAST:event_adviceScrollListScalesKeyPressed
 
+    private void handleAdviceKeyPress(java.awt.event.KeyEvent evt)
+      {
+      switch( evt.getKeyCode() )
+        {
+          case java.awt.event.KeyEvent.VK_ENTER:
+              getCurrentStave().playSelection();
+              
+          default:
+              break;
+        }        
+      }
+    
     private void adviceScrollListScalesKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListScalesKeyReleased
     {//GEN-HEADEREND:event_adviceScrollListScalesKeyReleased
       switch( evt.getKeyCode() )
@@ -22328,7 +22341,6 @@ public void showNewVoicingDialog()
     private javax.swing.JButton addTabBtn;
     protected javax.swing.JFrame adviceFrame;
     private javax.swing.JMenuItem advicePMI;
-    private javax.swing.JScrollPane adviceScroll0;
     private javax.swing.JList adviceScrollListCells;
     private javax.swing.JList adviceScrollListIdioms;
     private javax.swing.JList adviceScrollListLicks;
@@ -22835,6 +22847,7 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane scrollCells;
     private javax.swing.JScrollPane scrollIdioms;
     private javax.swing.JScrollPane scrollLicks;
+    private javax.swing.JScrollPane scrollNotes;
     private javax.swing.JScrollPane scrollQuotes;
     private javax.swing.JScrollPane scrollScales;
     private javax.swing.JLabel sectionLabel;
