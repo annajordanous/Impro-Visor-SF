@@ -788,7 +788,7 @@ public class Notate
 
   private Mode previousMode = Mode.NORMAL;
 
-  private MidiPlayListener.Status isPlaying = MidiPlayListener.Status.STOPPED;
+  private MidiPlayListener.Status playingStatus = MidiPlayListener.Status.STOPPED;
 
   /**
    *
@@ -1136,7 +1136,7 @@ public class Notate
     {
       public void actionPerformed(ActionEvent evt)
         {
-            if( getPlaying() == MidiPlayListener.Status.STOPPED )
+            if( playingStopped() )
             {
                 if (keyboard != null && keyboard.isVisible())
                 {
@@ -9747,7 +9747,7 @@ private String getChordRedirectName(int row)
         
         voicingTestFrame.setVisible(true);
         
-        if (getPlaying() == MidiPlayListener.Status.STOPPED)
+        if ( playingStopped() )
         {
             openKeyboard();
             keyboard.showBass();
@@ -9777,15 +9777,13 @@ private String getChordRedirectName(int row)
     
     
     
-    public void pauseScore() {
-        
-        if(getPlaying() != MidiPlayListener.Status.STOPPED) {
-            
-            midiSynth.pause();
-            
-        }
-        
-    }
+public void pauseScore()
+  {
+    if( !playingStopped() )
+      {
+        midiSynth.pause();
+      }
+  }
     
     
     
@@ -15087,7 +15085,8 @@ private void setLayoutPreference(Polylist layout)
 
         // Get the previous Stave panel's location
 
-        staveScrollPane[scoreTab.getSelectedIndex()].setBGlocation(
+        staveScrollPane[scoreTab.getSelectedIndex()].
+            setBGlocation(
                 staveScrollPane[currTabIndex].getBGlocation().x,
                 staveScrollPane[currTabIndex].getBGlocation().y);
 
@@ -15102,7 +15101,7 @@ private void setLayoutPreference(Polylist layout)
          * since the playback indicator is no longer on the screen
          */
 
-        if( getPlaying() != MidiPlayListener.Status.STOPPED )
+        if( !playingStopped() )
           {
 
           autoScrollOnPlayback = (currentPlaybackTab == currTabIndex);
@@ -16852,17 +16851,14 @@ private void pasteMelody(Part part, Stave stave)
  
 public void playScoreBody(int startAt)
     {
-    if( getPlaying() == MidiPlayListener.Status.PAUSED )
+    if( playingPaused() )
       {
-
       Trace.log(2, "Notate: playScore() - unpausing");
 
       pauseScore();
-
       }
     else
       {
-
       Trace.log(2, "Notate: playScore() - starting or restarting playback");
 
       // makes playback indicator always visible
@@ -16870,8 +16866,7 @@ public void playScoreBody(int startAt)
 
       autoScrollOnPlayback = true;
 
-
-      if( getPlaying() == MidiPlayListener.Status.STOPPED )
+      if( playingStopped() )
         {
         // possible loss of precision below: check this
         startAt = (int)playbackManager.getMicrosecondsFromSlider();
@@ -17126,7 +17121,7 @@ public ChordPart makeCountIn()
     playbackManager.setPlaying(playing, transposition);
 
 
-    isPlaying = playing;
+    playingStatus = playing;
 
     switch( playing )
       {
@@ -17187,7 +17182,17 @@ public ChordPart makeCountIn()
 
   public MidiPlayListener.Status getPlaying()
     {
-    return isPlaying;
+    return playingStatus;
+    }
+  
+  public boolean playingStopped()
+    {
+      return playingStatus == MidiPlayListener.Status.STOPPED;
+    }
+  
+  public boolean playingPaused()
+    {
+      return playingStatus == MidiPlayListener.Status.PAUSED;
     }
 
   /**
@@ -19185,7 +19190,7 @@ private void pianoKeyboardButtonActionPerformed(java.awt.event.ActionEvent evt) 
 //GEN-LAST:event_pianoKeyboardButtonActionPerformed
     
     String v = voicingEntryTF.getText();
-    if (getPlaying() == MidiPlayListener.Status.STOPPED)
+    if ( playingStopped() )
     {
         openKeyboard();
         keyboard.showBass();
@@ -19887,7 +19892,7 @@ private void rootEqualBassCheckboxKeyPressed(java.awt.event.KeyEvent evt) {//GEN
 
 private void pianoKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoKeyboardMIActionPerformed
 
-    if (getPlaying() == MidiPlayListener.Status.STOPPED)
+    if (playingStopped())
     {
         openKeyboard();                                               
     }
@@ -20489,7 +20494,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
         }
         else
         {
-            switch(isPlaying)
+            switch(playingStatus)
             {
                 case PLAYING:
                     midiSynth.pause();
@@ -20645,7 +20650,7 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
         }
         if(currChordIndex != -1)
         {
-            switch(isPlaying)
+            switch(playingStatus)
             {
                 case PLAYING:
                     midiSynth.pause();
@@ -20664,7 +20669,7 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
         }
         else
         {
-            switch(isPlaying)
+            switch(playingStatus)
             {
                 case PLAYING:
                     midiSynth.pause();
