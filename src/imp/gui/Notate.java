@@ -8738,7 +8738,7 @@ public class Notate
   private void loopSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopSetActionPerformed
   {//GEN-HEADEREND:event_loopSetActionPerformed
      staveRequestFocus();
-     getCurrentStave().playSelection(false, getLoopCount());
+     playCurrentSelection(false, getLoopCount());
   }//GEN-LAST:event_loopSetActionPerformed
 
   private void loopButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopButtonActionPerformed
@@ -8751,8 +8751,27 @@ public class Notate
       {
       setToNotLoop();
       }
- 
   }//GEN-LAST:event_loopButtonActionPerformed
+
+public void playCurrentSelection()
+  {
+    playCurrentSelection(false);
+  }
+  
+public void playCurrentSelection(boolean playToEndOfChorus)
+  {
+    playCurrentSelection(playToEndOfChorus, 0);
+  }
+  
+public void playCurrentSelection(boolean playToEndOfChorus, int loopCount)
+  {
+    playCurrentSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
+  }
+  
+public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums)
+  {
+    getCurrentStave().playSelection(playToEndOfChorus, loopCount);
+  }
 
   private void setToLoop()
   {
@@ -11940,7 +11959,7 @@ private void putLick(MelodyPart lick)
 
     // Wait for playing to stop
 
-    getCurrentStave().playSelection();
+    playCurrentSelection();
     impro.setPlayEntrySounds(true);
   }
     
@@ -15331,7 +15350,7 @@ private void setLayoutPreference(Polylist layout)
           {
             case KeyEvent.VK_ENTER:
 
-                getCurrentStave().playSelection();
+                playCurrentSelection();
                 break;
 
             case KeyEvent.VK_UP:
@@ -15739,7 +15758,7 @@ private void setLayoutPreference(Polylist layout)
       {
       if( e.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER)
           {
-            getCurrentStave().playSelection();
+            playCurrentSelection();
           }
       else if( e.isControlDown() )
         {
@@ -20743,13 +20762,13 @@ private void swingTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
   {//GEN-HEADEREND:event_playSelectionMIActionPerformed
     noCountIn();
-    getCurrentStave().playSelection(false, getLoopCount());
+    playCurrentSelection(false, getLoopCount());
   }//GEN-LAST:event_playSelectionMIActionPerformed
 
 private void playSelectionToEndMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionToEndMIActionPerformed
   {//GEN-HEADEREND:event_playSelectionToEndMIActionPerformed
     noCountIn();
-    getCurrentStave().playSelection(true, getLoopCount());
+    playCurrentSelection(true, getLoopCount());
   }//GEN-LAST:event_playSelectionToEndMIActionPerformed
 
 private void phrasemarksMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_phrasemarksMIActionPerformed
