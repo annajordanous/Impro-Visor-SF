@@ -1521,7 +1521,21 @@ public boolean nothingSelected()
  */
 public int getSelectionEnd()
   {
-    return selectionEnd;
+    int trialSelectionEnd = selectionEnd;
+// System.out.println("selectionEnd = " + selectionEnd);
+//    Note note = (Note)getOrigPart().getUnit(trialSelectionEnd);
+//    if( selectionEnd != -1 && (note == null || note.isRest()) )
+//      {
+//        // round up to end of beat
+//        if( trialSelectionEnd % BEAT != 0 )
+//          {
+//            trialSelectionEnd = (BEAT)*(1 + trialSelectionEnd/BEAT);
+//          }
+//      }
+//    
+//     System.out.println("trialSelectionEnd = " + trialSelectionEnd);
+
+    return trialSelectionEnd;
   }
 
 /**
@@ -5484,6 +5498,14 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
 
     int startIndex = getSelectionStart();
     int stopIndex = (playToEndOfChorus ? (partSize - 1) : getSelectionEndNote(selectionEnd));
+    
+    // Attempt at fixing the stopIndex so that 
+    // looping is on a multiple number of whole beats
+    
+    if( loopCount != 1 && stopIndex % BEAT != 0 )
+      {
+        stopIndex = BEAT*(1 + stopIndex/BEAT);
+      }
 
     playSelection(startIndex, stopIndex, loopCount, useDrums);
   }

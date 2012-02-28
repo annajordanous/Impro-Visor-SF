@@ -20023,7 +20023,7 @@ public void generate(LickGen lickgen)
     if( rhythm == null || useOutlines == false )
       {
 
-        if( true ) // useGrammar )
+        if( useGrammar )
           {
             rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
           }
