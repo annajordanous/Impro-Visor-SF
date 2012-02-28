@@ -153,6 +153,7 @@ public class LickGen implements Constants
         this.notate = notate;
         grammar = new Grammar(grammarFile);
         probs = new ArrayList<double[]>();
+        
         chordUsed.clear();
         chordUsedSection.clear();
         
@@ -714,6 +715,7 @@ public class LickGen implements Constants
             }
             probs.add(pArray);
         }
+      //showProbs("setProbs");
     }
 
     /**
@@ -1655,7 +1657,7 @@ public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
             }
             index = chordProg.getNextUniqueChordIndex(pos);
         }
-
+//System.out.println("calcSection, index = " + index + " oldSection = " + oldSection + " section = " + section);
         return section;
     }
 
@@ -2075,6 +2077,14 @@ private boolean checkNote(int pos, int pitch, String pitchString,
             // Loop through all the probabilities and add in any notes that have
             // probability greater than 0.
             for (int i = 0; i < 12; ++i) {
+                // Temporary HACK ALERT; Preventing index out of range. 
+                // Moving to rev. 790
+                // May have something to do with transition from Vector to ArrayList
+                if( section >= probs.size() )
+                  {
+                  section = probs.size()-1;
+                  }
+                
                 if (probs.get(section)[i] != 0) {
                     // We only need to look at pitches that are greater than the minimum
                     // pitch value we want.

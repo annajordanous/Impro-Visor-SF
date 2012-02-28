@@ -82,6 +82,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useGrammarMI1">
               <Properties>
+                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Use Grammar"/>
                 <Property name="toolTipText" type="java.lang.String" value="Indicates whether or not a grammar should be used in lick generation. Without this, generation will be governed only by probabilities set in the fields below."/>
               </Properties>

@@ -2127,6 +2127,7 @@ private void initCompFileChoosers() {
         });
         grammarMenu1.add(showCriticMI1);
 
+        useGrammarMI1.setSelected(true);
         useGrammarMI1.setText("Use Grammar");
         useGrammarMI1.setToolTipText("Indicates whether or not a grammar should be used in lick generation. Without this, generation will be governed only by probabilities set in the fields below.");
         useGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
@@ -2184,7 +2185,6 @@ private void initCompFileChoosers() {
 
 public ArrayList<double[]> readProbs()
   {
-
     ArrayList<double[]> probs = new ArrayList<double[]>();
 
     for( int i = 0; i < lickPrefs.size(); ++i )
@@ -2194,7 +2194,7 @@ public ArrayList<double[]> readProbs()
 
         for( int j = 0; j < 12; ++j )
           {
-            p[j] = notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0,
+            p[j] = Notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0,
                                                    Double.POSITIVE_INFINITY, 0.0);
           }
         probs.add(p);
@@ -2215,7 +2215,7 @@ public void verifyProbs()
       {
         for( int j = 0; j < 12; ++j )
           {
-            notate.doubleFromTextField(lickPrefs.get(i)[j], 0.0,
+            Notate.doubleFromTextField(lickPrefs.get(i)[j], 0.0,
                                        Double.POSITIVE_INFINITY, 1.0);
           }
       }
@@ -2465,13 +2465,13 @@ public void redrawTriage()
 
             for( int j = 0; j < 12; ++j )
               {
-                p[j] = notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 0.0);
+                p[j] = Notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 0.0);
               }
 
             probs.add(p);
           }
          lickgen.setProbs(probs);
-
+     
       }
 
     // This causes the frame to be resized, which is annoying: generatorFrame.pack();
@@ -2535,7 +2535,7 @@ public void setRhythmFieldText(String string)
         Polylist rhythm = new Polylist();
         StringReader rhythmReader = new StringReader(r);
         Tokenizer in = new Tokenizer(rhythmReader);
-        Object ob = null;
+        Object ob;
 
         while( (ob = in.nextSexp()) != Tokenizer.eof )
           {
@@ -4069,7 +4069,7 @@ private void triageAndGenerate(int number)
                         }//GEN-LAST:event_showCriticMI1ActionPerformed
 
                         private void useGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useGrammarMI1ActionPerformed
-                            notate.useGrammarAction();
+                            useGrammarAction();
                         }//GEN-LAST:event_useGrammarMI1ActionPerformed
 
                         private void grammarMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenu1ActionPerformed
@@ -4084,6 +4084,28 @@ public void closeWindow()
   this.setVisible(false);
 
   WindowRegistry.unregisterWindow(this);
+  }
+
+private void useGrammarAction()
+  {
+    useGrammar = useGrammarMI1.isSelected();
+
+    fillMelodyButton.setEnabled(useGrammar);
+
+    genRhythmButton.setEnabled(useGrammar);
+
+    minDurationField.setEnabled(!useGrammar);
+
+    maxDurationField.setEnabled(!useGrammar);
+
+    restProbField.setEnabled(!useGrammar);
+  }
+
+public boolean getUseGrammar()
+  {
+    
+    //System.out.println("useGrammar = " + useGrammar);
+    return useGrammar;
   }
 
                         private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed

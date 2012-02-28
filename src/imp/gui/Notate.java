@@ -429,8 +429,6 @@ public class Notate
 
   private boolean avoidRepeats = true;
 
-  private boolean useGrammar = true;
-
   private boolean autoFill = true;
 
   private int ignoreDuplicateLick;
@@ -9416,17 +9414,7 @@ private String getChordRedirectName(int row)
 
  }
 
- public void useGrammarAction()
-  {
-      useGrammar = lickgenFrame.useGrammarSelected();
-/* REVISIT:
-      minDurationField.setEnabled(!useGrammar);
 
-      maxDurationField.setEnabled(!useGrammar);
-
-      restProbField.setEnabled(!useGrammar);
- */
- }
     public void editGrammar()
     {
       grammarEditor.fillEditor();
@@ -20023,7 +20011,7 @@ public void generate(LickGen lickgen)
     if( rhythm == null || useOutlines == false )
       {
 
-        if( useGrammar )
+        if( lickgenFrame.getUseGrammar() )
           {
             rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
           }
