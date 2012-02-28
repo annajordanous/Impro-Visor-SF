@@ -11074,7 +11074,6 @@ private void showFileStepDialog()
       ErrorLog.log(ErrorLog.COMMENT,
               "The tempo must be in the range " + MIN_TEMPO + " to " + MAX_TEMPO 
             + ",\nusing default: " + getDefaultTempo() + ".");
-      return;
       }
     }
 
@@ -11219,7 +11218,7 @@ private void updateTempoFromTextField()
 
         Trace.log(2, "AdviceButton selected = " + value);
 
-        impro.setShowAdvice(value);
+        ImproVisor.setShowAdvice(value);
 
         showAdviceButton.setBackground(value ? adviceBtnColorOpen : adviceBtnColorClosed);
 
@@ -11544,21 +11543,18 @@ private void updateTempoFromTextField()
     private void openLeadsheetEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openLeadsheetEditorMIActionPerformed
 
     {//GEN-HEADEREND:event_openLeadsheetEditorMIActionPerformed
-        
         // center dialog only the first time it is shown
         
         if(!initLocationLeadsheetEditor) {
             
             leadsheetEditor.setLocationRelativeTo(this);
             
-            initLocationLeadsheetEditor = true;
-            
+            initLocationLeadsheetEditor = true;          
         }
         
         leadsheetEditor.setSize(leadsheetEditorDimension);
         leadsheetEditor.fillEditor();
         leadsheetEditor.setVisible(true);
-        
     }//GEN-LAST:event_openLeadsheetEditorMIActionPerformed
     
     
@@ -11809,9 +11805,10 @@ private void updateTempoFromTextField()
     }
  */
     
-    
-    // Make sure the user has entered acceptable values for each of the other fields   
-    // in the triage frame.
+/**
+  * Make sure the user has entered acceptable values for each of the other fields   
+  * in the triage frame.
+  */
     
 private void verifyTriageFields()
   {
@@ -11828,7 +11825,7 @@ private void saveLick(String saveSelection)
       {
         Polylist selectionAsList = parseListFromString(saveSelection);
 
-        if( adv.addUserRule(selectionAsList) )
+        if( Advisor.addUserRule(selectionAsList) )
           {
             saveAdviceActionPerformed(null);        // automatically save advice
 
@@ -11911,7 +11908,10 @@ private void putLick(MelodyPart lick)
     // We turn play off temporarily, or we get an erroneous sound
     // as ImproVisor plays the inserted note at the same time
     // it plays the selection.
-    impro.setPlayEntrySounds(false);
+    ImproVisor.setPlayEntrySounds(false);
+    
+    // Ideally, would wait here
+    
     pasteMelody(lick);
 
     if( lickgenFrame.rectifySelected() )
@@ -11922,18 +11922,19 @@ private void putLick(MelodyPart lick)
     // Wait for playing to stop
 
     playCurrentSelection();
-    impro.setPlayEntrySounds(true);
+    ImproVisor.setPlayEntrySounds(true);
   }
     
 
-public void generateLick(Polylist rhythm)
+public MelodyPart generateLick(Polylist rhythm)
   {
     MelodyPart lick = makeLick(rhythm);
     if( lickgenFrame.useHeadSelected() )
       {
         adjustLickToHead(lick);
       }
-    putLick(lick);
+    
+    return lick;
   }
     
 
@@ -11964,10 +11965,10 @@ private void adjustLickToHead(MelodyPart lick)
     int end = getCurrentSelectionEnd();
 
     //note in lick
-    Note n = null;
+    Note n;
     //tracks position in lick
     int position = 0;
-    int oldpitch = 0;;
+    int oldpitch = 0;
 
     int numChanged = 0;
     int numSame = 0;
@@ -11975,7 +11976,7 @@ private void adjustLickToHead(MelodyPart lick)
     while( lick.getNextNote(position) != null )
       {
         n = lick.getNextNote(position);
-        int duration = n.getRhythmValue();;
+        int duration = n.getRhythmValue();
         int pitch = n.getPitch();
         int headPitch = headMelody.getPitchSounding(position + start);
         int nextIndex = lick.getNextIndex(position + n.getRhythmValue() - 1);
@@ -12067,7 +12068,6 @@ private void setLickEnharmonics(MelodyPart lick)
         saveLickFrame.requestFocus();
         
         enterLickTitle.requestFocusInWindow();
-        
     }
     
     
@@ -19966,7 +19966,29 @@ public void generate(LickGen lickgen)
                                                   maxDuration,
                                                   restProb);
           }
-        generateLick(rhythm);
+        MelodyPart lick = generateLick(rhythm);
+        
+        //System.out.println("lick generated");
+        
+ // Looping does not help, as play line doesn't get updated while doing it.
+
+//        while( midiSynth.isRunning() )
+//          {
+//            try
+//              {
+//                Thread.sleep(25);
+//              }
+//            catch(Exception e)
+//              {
+//                
+//              }
+//          }
+// If we could start playing before installing the lick on the stave,
+// That might help
+
+       /* Critical Point */
+
+        putLick(lick);
       }
 
     if( rhythm != null )
@@ -19974,11 +19996,7 @@ public void generate(LickGen lickgen)
         lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
       }
 
-    if( nothingWasSelected )
-      {
-        stave.unselectAll();
-      }
-    else if( oneSlotWasSelected )
+    if( oneSlotWasSelected )
       {
         stave.setSelection(selectionStart);
       }

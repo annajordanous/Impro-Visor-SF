@@ -517,6 +517,10 @@ public void play(Score score,
       }
 }
 
+public boolean isRunning()
+  {
+    return sequencer != null && sequencer.isRunning();
+  }
 
 public void setLoopStartPoint(long point)
 {
