@@ -186,7 +186,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 break;
             case GRAMMAR:
                 cm.execute(new EditorToGrammarCommand(parent.getGrammarFileName(), this));
-                parent.reloadGrammar2();
+                parent.reloadGrammar();
                 break;
             case STYLE:
                 cm.execute(new EditorToStylesCommand(this));

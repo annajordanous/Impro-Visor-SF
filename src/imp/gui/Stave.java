@@ -635,21 +635,22 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     this.clearCurvePoints();
 
     sheetTitleEditor = new EntryPopup("leadsheet title", sheetTitleFont,
-                                      EntryPopup.CENTER)
-    {
-    // Make the title the focus root
-
-    public void textToStave(String text)
+                                        EntryPopup.CENTER)
       {
-        Stave.this.notate.setTitle(text);
-      }
+      // Make the title the focus root
 
-    public String staveToText()
-      {
-        return Stave.this.notate.getTitle();
-      }
+      @Override
+      public void textToStave(String text)
+        {
+          Stave.this.notate.setTitle(text);
+        }
 
-    };
+      @Override
+      public String staveToText()
+        {
+          return Stave.this.notate.getTitle();
+        }
+      };
 
     // I'm not sure of the way to make the focus cycle around.
     // The documentation is unclear to me.
@@ -658,77 +659,78 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     focusOrder.add(sheetTitleEditor);
 
     sheetComposerEditor = new EntryPopup("leadsheet composer", composerFont,
-                                         EntryPopup.CENTER)
-    {
-
-    public void textToStave(String text)
+                                           EntryPopup.CENTER)
       {
-        Stave.this.notate.getScore().setComposer(text);
-      }
 
-    public String staveToText()
-      {
-        return Stave.this.notate.getScore().getComposer();
-      }
+      @Override
+      public void textToStave(String text)
+        {
+          Stave.this.notate.getScore().setComposer(text);
+        }
 
-    };
+      @Override
+      public String staveToText()
+        {
+          return Stave.this.notate.getScore().getComposer();
+        }
+      };
 
     focusOrder.add(sheetComposerEditor);
 
 
     partTitleEditor = new EntryPopup("part title", partTitleFont)
-    {
-
-   @Override
-    public void textToStave(String text)
       {
-        Stave.this.setPartTitle(text);
-        Stave.this.notate.refreshCurrentTabTitle();
-      }
+      @Override
+      public void textToStave(String text)
+        {
+          Stave.this.setPartTitle(text);
+          Stave.this.notate.refreshCurrentTabTitle();
+        }
 
-    @Override
-    public String staveToText()
-      {
-        return Stave.this.getPartTitle();
-      }
-
-    };
+      @Override
+      public String staveToText()
+        {
+          return Stave.this.getPartTitle();
+        }
+      };
 
     focusOrder.add(partTitleEditor);
 
 
     partComposerEditor = new EntryPopup("part composer", composerFont)
-    {
-
-    public void textToStave(String text)
       {
-        Stave.this.setComposer(text);
-      }
+      @Override
+      public void textToStave(String text)
+        {
+          Stave.this.setComposer(text);
+        }
 
-    public String staveToText()
-      {
-        return Stave.this.getComposer();
-      }
+      @Override
+      public String staveToText()
+        {
+          return Stave.this.getComposer();
+        }
 
-    };
+      };
 
     focusOrder.add(partComposerEditor);
 
 
     showTitleEditor = new EntryPopup("show", partTitleFont)
-    {
-
-    public void textToStave(String text)
       {
-        Stave.this.notate.getScore().setShowTitle(text);
-      }
+      @Override
+      public void textToStave(String text)
+        {
+          Stave.this.notate.getScore().setShowTitle(text);
+        }
 
-    public String staveToText()
-      {
-        return Stave.this.notate.getScore().getShowTitle();
-      }
+      @Override
+      public String staveToText()
+        {
+          return Stave.this.notate.getScore().getShowTitle();
+        }
 
-    };
+      };
 
     showTitleEditor.setAlignment(EntryPopup.RIGHT);
 
@@ -737,11 +739,13 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     yearEditor = new EntryPopup("year", composerFont)
     {
 
+    @Override
     public void textToStave(String text)
       {
         Stave.this.notate.getScore().setYear(text);
       }
 
+    @Override
     public String staveToText()
       {
         return Stave.this.notate.getScore().getYear();

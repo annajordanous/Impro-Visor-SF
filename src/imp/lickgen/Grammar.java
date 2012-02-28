@@ -20,12 +20,15 @@
 
 package imp.lickgen;
 
-import java.io.*;
-import java.util.*;
-import imp.ImproVisor;
-import imp.util.*;
 import imp.gui.Notate;
-import polya.*;
+import imp.util.ErrorLog;
+import imp.util.ErrorLogWithResponse;
+import java.io.*;
+import java.util.Collection;
+import java.util.Vector;
+import polya.Polylist;
+import polya.PolylistEnum;
+import polya.Tokenizer;
 
 /*
  * @author David Morrison
@@ -541,7 +544,7 @@ public int loadGrammar(String filename)
   try
     {
     Tokenizer in = new Tokenizer(new FileInputStream(filename));
-    Object ob = null;
+    Object ob;
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {

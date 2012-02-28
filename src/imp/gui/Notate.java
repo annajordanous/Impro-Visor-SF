@@ -21162,6 +21162,7 @@ private void notateGrammarMenuAction(java.awt.event.ActionEvent evt) {
     notateGrammarMenu.setText(stem + " grammar");
     grammarFilename = ImproVisor.getGrammarDirectory() + File.separator +  stem + GrammarFilter.EXTENSION;
     lickgen.loadGrammar(grammarFilename);
+    lickgenFrame.resetTriageParameters(false);
 }
 
 public void openCorpus()
@@ -23005,10 +23006,6 @@ public void showNewVoicingDialog()
     lickgen.loadGrammar(grammarFilename);
     }
 
-  public void reloadGrammar2()
-    {
-    lickgen.loadGrammar(grammarFilename);
-    }
 
   void playbackGoToTab(int tab)
     {
