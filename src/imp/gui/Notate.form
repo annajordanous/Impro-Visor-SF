@@ -7083,21 +7083,30 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="phrasemarksMIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="measureCstrLinesMI">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showBracketsCurrentMeasureMI">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Show Construction Lines on Current Measure"/>
+                <Property name="text" type="java.lang.String" value="Show Brackets on Current Measure"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="measureCstrLinesMIActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showBracketsCurrentMeasureMIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="allCstrLinesMI">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showBracketsAllMeasuresMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Show All Construction Lines"/>
+                <Property name="text" type="java.lang.String" value="Show Brackets on All Measures"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allCstrLinesMIActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showBracketsAllMeasuresMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="showConstructionLinesMI">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Show Construction Lines and Boxes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showConstructionLinesMIActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useBeamsMI">

@@ -2590,6 +2590,8 @@ protected void paintComponent(Graphics g)
 
     if( firstBoxFound )
       {
+      if( notate.getShowConstructionLinesAndBoxes() )
+        {
         for( int lineCounter = firstBoxStave; lineCounter <= lastBoxStave; lineCounter++ )
           {
             Rectangle r = new Rectangle(firstBoxX - selectionBoxPadding,
@@ -2606,10 +2608,11 @@ protected void paintComponent(Graphics g)
               }
             selectionBox.add(r);
           }
-
+        
         drawSelectionBox(g);
-
-        selectionBoxDrawn = true;
+        }
+      
+      selectionBoxDrawn = true;
       }
     else
       {
@@ -2617,7 +2620,12 @@ protected void paintComponent(Graphics g)
       }
   }
 
-boolean selectionBoxDrawn = false;
+private boolean selectionBoxDrawn = false;
+
+public boolean getSelectionBoxDrawn()
+  {
+    return selectionBoxDrawn;
+  }
 
 public void paintContour(Graphics g)
   {
@@ -3054,6 +3062,8 @@ private boolean drawPart(MelodyPart part, Graphics g)
         // if there is a construction line at the given index...
         if( cstrLines[i] != null )
           {
+          if( notate.getShowConstructionLinesAndBoxes() )
+            {
             // draw a construction line orange/red if selected
 
             if( i >= selectionStart && i <= selectionEnd )
@@ -3085,8 +3095,9 @@ private boolean drawPart(MelodyPart part, Graphics g)
                                  Color.LIGHT_GRAY, 1, g);
                   }
               }
-
-            if( i == playingSlot && notate.getPlaying() != MidiPlayListener.Status.STOPPED )
+            }
+          
+          if( i == playingSlot && notate.getPlaying() != MidiPlayListener.Status.STOPPED )
               {
                 drawPlayLine(xCoordinate, staveLine, Color.GREEN, 3, g,
                              notate.showPlayLine());

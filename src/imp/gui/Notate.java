@@ -1186,7 +1186,7 @@ public class Notate
              && (slotInPlayback >= totalSlots - gap) )
             {
                 recurrentIteration++;
-                setLickGenStatus("Chorus " + recurrentIteration);
+                setStatus("Chorus " + recurrentIteration);
                 generate(lickgen);
             }
 
@@ -1197,6 +1197,7 @@ public class Notate
 
         if( midiSynth.finishedPlaying() )
           {
+          stopPlaying();
           return;
           }
 
@@ -1415,6 +1416,14 @@ public class Notate
     setSliderVolumes(DEFAULT_SLIDER_VOLUME);
     }
 
+  boolean showConstructionLinesAndBoxes = true;
+  boolean saveConstructionLineState;
+  
+  public boolean getShowConstructionLinesAndBoxes()
+    {
+     return !isPlaying() && showConstructionLinesAndBoxes; 
+    }
+  
   public static void setDefaultButton(JDialog dialog, JButton button)
     {
     dialog.getRootPane().setDefaultButton(button);
@@ -2245,8 +2254,9 @@ public class Notate
         showEmptyTitlesMI = new javax.swing.JCheckBoxMenuItem();
         barNumsMI = new javax.swing.JCheckBoxMenuItem();
         phrasemarksMI = new javax.swing.JCheckBoxMenuItem();
-        measureCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
-        allCstrLinesMI = new javax.swing.JCheckBoxMenuItem();
+        showBracketsCurrentMeasureMI = new javax.swing.JCheckBoxMenuItem();
+        showBracketsAllMeasuresMI = new javax.swing.JCheckBoxMenuItem();
+        showConstructionLinesMI = new javax.swing.JCheckBoxMenuItem();
         useBeamsMI = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
         playSelectionMI = new javax.swing.JMenuItem();
@@ -4318,17 +4328,17 @@ public class Notate
             public Object getElementAt(int i) { return strings[i]; }
         });
         adviceScrollListCells.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        adviceScrollListCells.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceScrollListCellsMouseClicked(evt);
+            }
+        });
         adviceScrollListCells.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 adviceScrollListCellsKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adviceScrollListCellsKeyReleased(evt);
-            }
-        });
-        adviceScrollListCells.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adviceScrollListCellsMouseClicked(evt);
             }
         });
         scrollCells.setViewportView(adviceScrollListCells);
@@ -4343,17 +4353,17 @@ public class Notate
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        adviceScrollListIdioms.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceScrollListIdiomsMouseClicked(evt);
+            }
+        });
         adviceScrollListIdioms.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 adviceScrollListIdiomsKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adviceScrollListIdiomsKeyReleased(evt);
-            }
-        });
-        adviceScrollListIdioms.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adviceScrollListIdiomsMouseClicked(evt);
             }
         });
         scrollIdioms.setViewportView(adviceScrollListIdioms);
@@ -4368,17 +4378,17 @@ public class Notate
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        adviceScrollListLicks.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceScrollListLicksMouseClicked(evt);
+            }
+        });
         adviceScrollListLicks.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 adviceScrollListLicksKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adviceScrollListLicksKeyReleased(evt);
-            }
-        });
-        adviceScrollListLicks.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adviceScrollListLicksMouseClicked(evt);
             }
         });
         scrollLicks.setViewportView(adviceScrollListLicks);
@@ -4393,17 +4403,17 @@ public class Notate
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        adviceScrollListQuotes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adviceScrollListQuotesMouseClicked(evt);
+            }
+        });
         adviceScrollListQuotes.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 adviceScrollListQuotesKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 adviceScrollListQuotesKeyReleased(evt);
-            }
-        });
-        adviceScrollListQuotes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adviceScrollListQuotesMouseClicked(evt);
             }
         });
         scrollQuotes.setViewportView(adviceScrollListQuotes);
@@ -8286,22 +8296,31 @@ public class Notate
         });
         viewMenu.add(phrasemarksMI);
 
-        measureCstrLinesMI.setSelected(true);
-        measureCstrLinesMI.setText("Show Construction Lines on Current Measure");
-        measureCstrLinesMI.addActionListener(new java.awt.event.ActionListener() {
+        showBracketsCurrentMeasureMI.setSelected(true);
+        showBracketsCurrentMeasureMI.setText("Show Brackets on Current Measure");
+        showBracketsCurrentMeasureMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                measureCstrLinesMIActionPerformed(evt);
+                showBracketsCurrentMeasureMIActionPerformed(evt);
             }
         });
-        viewMenu.add(measureCstrLinesMI);
+        viewMenu.add(showBracketsCurrentMeasureMI);
 
-        allCstrLinesMI.setText("Show All Construction Lines");
-        allCstrLinesMI.addActionListener(new java.awt.event.ActionListener() {
+        showBracketsAllMeasuresMI.setText("Show Brackets on All Measures");
+        showBracketsAllMeasuresMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                allCstrLinesMIActionPerformed(evt);
+                showBracketsAllMeasuresMIActionPerformed(evt);
             }
         });
-        viewMenu.add(allCstrLinesMI);
+        viewMenu.add(showBracketsAllMeasuresMI);
+
+        showConstructionLinesMI.setSelected(true);
+        showConstructionLinesMI.setText("Show Construction Lines and Boxes");
+        showConstructionLinesMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showConstructionLinesMIActionPerformed(evt);
+            }
+        });
+        viewMenu.add(showConstructionLinesMI);
 
         useBeamsMI.setSelected(true);
         useBeamsMI.setText("Use Beams");
@@ -9972,6 +9991,8 @@ void stopPlaying()
       {
         stopRecording();
       }
+        
+    setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
   }
 
 private void setStepInput(boolean active)
@@ -16556,7 +16577,7 @@ private void pasteMelody(Part part, Stave stave)
    * Shows the construction lines when the user's mouse is over a measure
    *
    */
-    private void measureCstrLinesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_measureCstrLinesMIActionPerformed
+    private void showBracketsCurrentMeasureMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBracketsCurrentMeasureMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
         {
@@ -16565,7 +16586,7 @@ private void pasteMelody(Part part, Stave stave)
 
         stave.repaint();
         }        
-    }//GEN-LAST:event_measureCstrLinesMIActionPerformed
+    }//GEN-LAST:event_showBracketsCurrentMeasureMIActionPerformed
 
   /**
    *
@@ -16654,7 +16675,7 @@ private void pasteMelody(Part part, Stave stave)
    * Displays the construction lines on the score if checked in the menu
    *
    */
-    private void allCstrLinesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allCstrLinesMIActionPerformed
+    private void showBracketsAllMeasuresMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBracketsAllMeasuresMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
         {
@@ -16667,7 +16688,7 @@ private void pasteMelody(Part part, Stave stave)
 
         }
         
-    }//GEN-LAST:event_allCstrLinesMIActionPerformed
+    }//GEN-LAST:event_showBracketsAllMeasuresMIActionPerformed
 
   /**
    *
@@ -17183,6 +17204,11 @@ public ChordPart makeCountIn()
   public MidiPlayListener.Status getPlaying()
     {
     return playingStatus;
+    }
+  
+  public boolean isPlaying()
+    {
+      return playingStatus == MidiPlayListener.Status.PLAYING;
     }
   
   public boolean playingStopped()
@@ -19942,7 +19968,11 @@ public void refreshGrammarEditor()
 
 public void generate(LickGen lickgen)
 {
-    setLickGenStatus("Generating melody ...");
+    saveConstructionLineState = showConstructionLinesMI.isSelected();
+    // Don't construction show lines while generating
+    setShowConstructionLinesAndBoxes(false);
+    
+    setStatus("Generating melody ...");
 
     Stave stave = getCurrentStave();
     boolean nothingWasSelected = !stave.somethingSelected();
@@ -20020,7 +20050,7 @@ public void generate(LickGen lickgen)
         stave.setSelection(selectionStart);
       }
 
-    setLickGenStatus("Done generating melody");
+    setStatus("Done generating melody");
   }
 
 
@@ -20878,6 +20908,15 @@ private void contourPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt
       showPreferencesDialog();
   }//GEN-LAST:event_contourPreferencesBtnActionPerformed
 
+private void showConstructionLinesMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showConstructionLinesMIActionPerformed
+  {//GEN-HEADEREND:event_showConstructionLinesMIActionPerformed
+    setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
+  }//GEN-LAST:event_showConstructionLinesMIActionPerformed
+
+public void setShowConstructionLinesAndBoxes(boolean value)
+  {
+    showConstructionLinesAndBoxes = value;
+  }
 public void setGenerationGap(double value)
   {
     generationGapSlider.setValue((int)(10*value));
@@ -22376,7 +22415,6 @@ public void showNewVoicingDialog()
     private javax.swing.JList adviceScrollListScales;
     private javax.swing.JTabbedPane adviceTabbedPane;
     protected javax.swing.JTree adviceTree;
-    private javax.swing.JCheckBoxMenuItem allCstrLinesMI;
     private javax.swing.JCheckBox allMuteMixerBtn;
     private javax.swing.JToggleButton allMuteToolBarBtn;
     private javax.swing.JPanel allPanel;
@@ -22718,7 +22756,6 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField lowRangeTF2;
     private javax.swing.JPanel masterVolumePanel;
     private javax.swing.JLabel measErrorLabel;
-    private javax.swing.JCheckBoxMenuItem measureCstrLinesMI;
     private javax.swing.JLabel measureLabel;
     private javax.swing.JTextField measureTF;
     private javax.swing.JLabel measuresPerPartLabel;
@@ -22885,6 +22922,9 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel selectAStyleLabel;
     private javax.swing.JMenuItem selectAllMI;
     private javax.swing.JToggleButton showAdviceButton;
+    private javax.swing.JCheckBoxMenuItem showBracketsAllMeasuresMI;
+    private javax.swing.JCheckBoxMenuItem showBracketsCurrentMeasureMI;
+    private javax.swing.JCheckBoxMenuItem showConstructionLinesMI;
     private javax.swing.JCheckBoxMenuItem showEmptyTitlesMI;
     private javax.swing.JCheckBoxMenuItem showTitlesMI;
     private javax.swing.JToggleButton smartEntryButton;

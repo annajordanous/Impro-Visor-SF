@@ -605,7 +605,7 @@ boolean isDrawing()
 
 boolean activeHandles()
  {
-  if( !stave.selectionBoxDrawn )
+  if( !stave.getSelectionBoxDrawn() )
    {
     return false;
    }
