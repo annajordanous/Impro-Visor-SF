@@ -13564,377 +13564,398 @@ private boolean saveMetre()
     
     
     
-    private boolean saveGlobalPreferences() {
-        
-        boolean close = true;
-        
-        
-        
-        if (enableCache.isSelected())
-            
-            Preferences.setPreference(Preferences.ADV_CACHE_ENABLED, "true");
-        
-        else
-            
-            Preferences.setPreference(Preferences.ADV_CACHE_ENABLED, "false");
-        
-        
-        
-        try {
-            
-            String strCache = cacheSize.getText();
-            
-            String strStyle = defStyleComboBox.getSelectedItem().toString();
-            
-            String strMelody = defMelodyInst.getText();
-            
-            String strChord = defChordInst.getText();
-            
-            String strBass = defBassInst.getText();
-            
-            String strVoicing = voicing.getText();
-            
-            String strDist = chordDist.getText();
-            
-            numStavesPP = Integer.parseInt(numStavesPerPage.getText());
-                        
-            int cache = intFromString(strCache.trim());
-            
-            double tempo = doubleFromTextField(defaultTempoTF, MIN_TEMPO, MAX_TEMPO, getDefaultTempo());
-            
-            int melody = intFromString(strMelody.trim());
-            
-            int chord = intFromString(strChord.trim());
-            
-            int bass = intFromString(strBass.trim());
-            
-            int voice = intFromString(strVoicing.trim());
-            
-            int dist = intFromString(strDist.trim());
-            
-            
-            
-            int masterVol = defMasterVolSlider.getValue();
-            
-            int entryVol = defEntryVolSlider.getValue();
-            
-            int chordVol = defChordVolSlider.getValue();
-            
-            int bassVol = defBassVolSlider.getValue();
-            
-            int drumVol = defDrumVolSlider.getValue();
-            
-            int melodyVol = defMelodyVolSlider.getValue();
-            
-           
-            if (cache < 0) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Cache size must be a positive number.");
-                
-                close = false;
-                
-            } else {
-                
-                Advisor.setCacheCapacity(cache);
-                
-                Preferences.setPreference(Preferences.ADV_CACHE_SIZE, strCache);
-                
-            }
-            
-            
-            
-            Preferences.setPreference(Preferences.DEFAULT_STYLE, strStyle);
-            
-            Preferences.setPreference(Preferences.DEFAULT_TEMPO, "" + tempo);
-            
-            
-            if (melody < 1 || melody > 128) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "The melody instrument must be between 1 and 128");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MELODY_INSTRUMENT, defMelodyInst.getText());
-            
-            
-            
-            if (chord < 1 || chord > 128) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "The chord instrument must be between 1 and 128");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_CHORD_INSTRUMENT, defChordInst.getText());
-            
-            
-            
-            if (bass < 1 || bass > 128) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "The bass instrument must be between 1 and 128");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_BASS_INSTRUMENT, defBassInst.getText());
-            
-            
-            
-            if (voice < 0) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Voicing must be a positive number.");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.MAX_NOTES_IN_VOICING, voicing.getText());
-            
-            
-            
-            if (dist < 0) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Chord distance must be a positive number.");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.CHORD_DIST_ABOVE_ROOT, chordDist.getText());
-            
-            
-            
-            if (masterVol < 0 || masterVol > 127) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Master volume must be between 0 and 127");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MIXER_ALL, String.valueOf(masterVol));
-            
-            
-            
-            if (entryVol < 0 || entryVol > 127) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Entry volume must be between 0 and 127");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MIXER_ENTRY, String.valueOf(entryVol));
-            
-            
-            
-            if (chordVol < 0 || chordVol > 127) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Chord volume must be between 0 and 127");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MIXER_CHORDS, String.valueOf(chordVol));
-            
-            
-            
-            if (bassVol < 0 || bassVol > 127) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Bass volume must be between 0 and 127");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MIXER_BASS, String.valueOf(bassVol));
-            
-            
-            
-            if (drumVol < 0 || drumVol > 127) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Drum volume must be between 0 and 127");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MIXER_DRUMS, String.valueOf(drumVol));
-            
-            
-            
-            if (melodyVol < 0 || melodyVol > 127) {
-                
-                ErrorLog.log(ErrorLog.SEVERE, "Melody volume must be between 0 and 127");
-                
-                close = false;
-                
-            } else
-                
-                Preferences.setPreference(Preferences.DEFAULT_MIXER_MELODY, String.valueOf(melodyVol));
-            
-        } catch (NumberFormatException e) {
-            
-            ErrorLog.log(ErrorLog.SEVERE, e.getMessage());
-            
+private boolean saveGlobalPreferences()
+  {
+    boolean close = true;
+
+    if( enableCache.isSelected() )
+      {
+        Preferences.setPreference(Preferences.ADV_CACHE_ENABLED, "true");
+      }
+    else
+      {
+        Preferences.setPreference(Preferences.ADV_CACHE_ENABLED, "false");
+      }
+
+
+    try
+      {
+        String strCache = cacheSize.getText();
+
+        String strStyle = defStyleComboBox.getSelectedItem().toString();
+
+        String strMelody = defMelodyInst.getText();
+
+        String strChord = defChordInst.getText();
+
+        String strBass = defBassInst.getText();
+
+        String strVoicing = voicing.getText();
+
+        String strDist = chordDist.getText();
+
+        numStavesPP = Integer.parseInt(numStavesPerPage.getText());
+
+        int cache = intFromString(strCache.trim());
+
+        double tempo = doubleFromTextField(defaultTempoTF, MIN_TEMPO, MAX_TEMPO, getDefaultTempo());
+
+        int melody = intFromString(strMelody.trim());
+
+        int chord = intFromString(strChord.trim());
+
+        int bass = intFromString(strBass.trim());
+
+        int voice = intFromString(strVoicing.trim());
+
+        int dist = intFromString(strDist.trim());
+
+        int masterVol = defMasterVolSlider.getValue();
+
+        int entryVol = defEntryVolSlider.getValue();
+
+        int chordVol = defChordVolSlider.getValue();
+
+        int bassVol = defBassVolSlider.getValue();
+
+        int drumVol = defDrumVolSlider.getValue();
+
+        int melodyVol = defMelodyVolSlider.getValue();
+
+
+        if( cache < 0 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Cache size must be a positive number.");
+
             close = false;
-            
-        }
-        
-        
-        setStavePreferenceFromButtons();
-        
-        Preferences.setPreference(Preferences.DEFAULT_VOCAB_FILE, defVocabFile.getText());
-        
-        
-        
-        int visAdvice = 0;
-        
-        if (chordTones.isSelected())
-            
-            visAdvice = visAdvice | 1;
-        
-        if (colorTones.isSelected())
-            
-            visAdvice = visAdvice | 2;
-        
-        if (scaleTones.isSelected())
-            
-            visAdvice = visAdvice | 4;
-        
-        if (approachTones.isSelected())
-            
-            visAdvice = visAdvice | 8;
-        
-        if (chordSubs.isSelected())
-            
-            visAdvice = visAdvice | 16;
-        
-        if (chordExtns.isSelected())
-            
-            visAdvice = visAdvice | 32;
-        
-        if (cells.isSelected())
-            
-            visAdvice = visAdvice | 64;
-        
-        if (idioms.isSelected())
-            
-            visAdvice = visAdvice | 128;
-        
-        if (licks.isSelected())
-            
-            visAdvice = visAdvice | 256;
-        
-        if (quotes.isSelected())
-            
-            visAdvice = visAdvice | 512;
-        
-        
-        
-        Preferences.setPreference(Preferences.VIS_ADV_COMPONENTS, String.valueOf(visAdvice));
-        
-        
-        
-        char[] coloringElts= {'1', '1', '1', '1'};
-        
-        
-        
-        if (redChordBtn.isSelected())
-            
-            coloringElts[0] = '2';
-        
-        if (greenChordBtn.isSelected())
-            
-            coloringElts[0] = '3';
-        
-        if (blueChordBtn.isSelected())
-            
-            coloringElts[0] = '4';
-        
-        if (redColorBtn.isSelected())
-            
-            coloringElts[1] = '2';
-        
-        if (greenColorBtn.isSelected())
-            
-            coloringElts[1] = '3';
-        
-        if (blueColorBtn.isSelected())
-            
-            coloringElts[1] = '4';
-        
-        if (redApproachBtn.isSelected())
-            
-            coloringElts[2] = '2';
-        
-        if (greenApproachBtn.isSelected())
-            
-            coloringElts[2] = '3';
-        
-        if (blueApproachBtn.isSelected())
-            
-            coloringElts[2] = '4';
-        
-        if (redOtherBtn.isSelected())
-            
-            coloringElts[3] = '2';
-        
-        if (greenOtherBtn.isSelected())
-            
-            coloringElts[3] = '3';
-        
-        if (blueOtherBtn.isSelected())
-            
-            coloringElts[3] = '4';
-        
-        
-        
-        String coloring = new String(coloringElts);
-        
-        Preferences.setPreference(Preferences.NOTE_COLORING, coloring);
-        
-        
-        
-        /* Drawing preferences */
-        
-        char[] drawTones = { '1', '1', 'x' };
-        
-        
-        
-        if (!drawScaleTonesCheckBox.isSelected())
-            
-            drawTones[0] = 'x';
-        
-        if (!drawChordTonesCheckBox.isSelected())
-            
-            drawTones[1] = 'x';
-        
-        if (drawColorTonesCheckBox.isSelected())
-            
-            drawTones[2] = '1';
-        
-                
-        String tonePrefs = new String(drawTones);
-        
-        Preferences.setPreference(Preferences.DRAWING_TONES, tonePrefs);
-                
-        Preferences.setPreference(Preferences.DEFAULT_DRAWING_MUTED,
-                
-                "" + defaultDrawingMutedCheckBox.isSelected());
-        
-        Preferences.setPreference(Preferences.SHOW_TRACKING_LINE, "" + trackCheckBox.isSelected());
-        
-        Preferences.setPreference(Preferences.TRACKER_DELAY, "" + trackerDelayTextField.getText());
-        
-        return close;
-    }
+          }
+        else
+          {
+            Advisor.setCacheCapacity(cache);
+
+            Preferences.setPreference(Preferences.ADV_CACHE_SIZE, strCache);
+          }
+
+
+        Preferences.setPreference(Preferences.DEFAULT_STYLE, strStyle);
+
+        Preferences.setPreference(Preferences.DEFAULT_TEMPO, "" + tempo);
+
+        if( melody < 1 || melody > 128 )
+          {
+           ErrorLog.log(ErrorLog.SEVERE, "The melody instrument must be between 1 and 128");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MELODY_INSTRUMENT, defMelodyInst.getText());
+          }
+
+
+
+        if( chord < 1 || chord > 128 )
+          {
+           ErrorLog.log(ErrorLog.SEVERE, "The chord instrument must be between 1 and 128");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_CHORD_INSTRUMENT, defChordInst.getText());
+          }
+
+
+
+        if( bass < 1 || bass > 128 )
+          {
+           ErrorLog.log(ErrorLog.SEVERE, "The bass instrument must be between 1 and 128");
+
+            close = false;
+         }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_BASS_INSTRUMENT, defBassInst.getText());
+          }
+
+
+
+        if( voice < 0 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Voicing must be a positive number.");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.MAX_NOTES_IN_VOICING, voicing.getText());
+          }
+
+
+
+        if( dist < 0 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Chord distance must be a positive number.");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.CHORD_DIST_ABOVE_ROOT, chordDist.getText());
+          }
+
+
+
+        if( masterVol < 0 || masterVol > 127 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Master volume must be between 0 and 127");
+
+            close = false;
+         }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MIXER_ALL, String.valueOf(masterVol));
+          }
+
+
+
+        if( entryVol < 0 || entryVol > 127 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Entry volume must be between 0 and 127");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MIXER_ENTRY, String.valueOf(entryVol));
+          }
+
+
+
+        if( chordVol < 0 || chordVol > 127 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Chord volume must be between 0 and 127");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MIXER_CHORDS, String.valueOf(chordVol));
+          }
+
+
+
+        if( bassVol < 0 || bassVol > 127 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Bass volume must be between 0 and 127");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MIXER_BASS, String.valueOf(bassVol));
+          }
+
+
+        if( drumVol < 0 || drumVol > 127 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Drum volume must be between 0 and 127");
+
+            close = false;
+         }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MIXER_DRUMS, String.valueOf(drumVol));
+          }
+
+
+        if( melodyVol < 0 || melodyVol > 127 )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "Melody volume must be between 0 and 127");
+
+            close = false;
+         }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_MIXER_MELODY, String.valueOf(melodyVol));
+          }
+      }
+    catch( NumberFormatException e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, e.getMessage());
+
+        close = false;
+      }
+
+    setStavePreferenceFromButtons();
+
+    Preferences.setPreference(Preferences.DEFAULT_VOCAB_FILE, defVocabFile.getText());
+
+    int visAdvice = 0;
+
+    if( chordTones.isSelected() )
+      {
+        visAdvice = visAdvice | 1;
+      }
+
+    if( colorTones.isSelected() )
+      {
+        visAdvice = visAdvice | 2;
+      }
+
+    if( scaleTones.isSelected() )
+      {
+        visAdvice = visAdvice | 4;
+      }
+
+    if( approachTones.isSelected() )
+      {
+        visAdvice = visAdvice | 8;
+      }
+
+    if( chordSubs.isSelected() )
+      {
+        visAdvice = visAdvice | 16;
+      }
+
+    if( chordExtns.isSelected() )
+      {
+        visAdvice = visAdvice | 32;
+      }
+
+    if( cells.isSelected() )
+      {
+        visAdvice = visAdvice | 64;
+      }
+
+    if( idioms.isSelected() )
+      {
+        visAdvice = visAdvice | 128;
+      }
+
+    if( licks.isSelected() )
+      {
+        visAdvice = visAdvice | 256;
+      }
+
+    if( quotes.isSelected() )
+      {
+        visAdvice = visAdvice | 512;
+      }
+
+    Preferences.setPreference(Preferences.VIS_ADV_COMPONENTS, String.valueOf(visAdvice));
+
+    char[] coloringElts =
+      {
+        '1', '1', '1', '1'
+      };
+
+
+    if( redChordBtn.isSelected() )
+      {
+        coloringElts[0] = '2';
+      }
+
+    if( greenChordBtn.isSelected() )
+      {
+        coloringElts[0] = '3';
+      }
+
+    if( blueChordBtn.isSelected() )
+      {
+        coloringElts[0] = '4';
+      }
+
+    if( redColorBtn.isSelected() )
+      {
+        coloringElts[1] = '2';
+      }
+
+    if( greenColorBtn.isSelected() )
+      {
+        coloringElts[1] = '3';
+      }
+
+    if( blueColorBtn.isSelected() )
+      {
+        coloringElts[1] = '4';
+      }
+
+    if( redApproachBtn.isSelected() )
+      {
+        coloringElts[2] = '2';
+      }
+
+    if( greenApproachBtn.isSelected() )
+      {
+        coloringElts[2] = '3';
+      }
+
+    if( blueApproachBtn.isSelected() )
+      {
+        coloringElts[2] = '4';
+      }
+
+    if( redOtherBtn.isSelected() )
+      {
+        coloringElts[3] = '2';
+      }
+
+    if( greenOtherBtn.isSelected() )
+      {
+        coloringElts[3] = '3';
+      }
+
+    if( blueOtherBtn.isSelected() )
+      {
+        coloringElts[3] = '4';
+      }
+
+    String coloring = new String(coloringElts);
+
+    Preferences.setPreference(Preferences.NOTE_COLORING, coloring);
+
+    /*
+     * Drawing preferences
+     */
+
+    char[] drawTones =
+      {
+        '1', '1', 'x'
+      };
+
+
+    if( !drawScaleTonesCheckBox.isSelected() )
+      {
+        drawTones[0] = 'x';
+      }
+
+    if( !drawChordTonesCheckBox.isSelected() )
+      {
+        drawTones[1] = 'x';
+      }
+
+    if( drawColorTonesCheckBox.isSelected() )
+      {
+        drawTones[2] = '1';
+      }
+
+
+    String tonePrefs = new String(drawTones);
+
+    Preferences.setPreference(Preferences.DRAWING_TONES, tonePrefs);
+
+    Preferences.setPreference(Preferences.DEFAULT_DRAWING_MUTED,
+                              "" + defaultDrawingMutedCheckBox.isSelected());
+
+    Preferences.setPreference(Preferences.SHOW_TRACKING_LINE, "" + trackCheckBox.isSelected());
+
+    Preferences.setPreference(Preferences.TRACKER_DELAY, "" + trackerDelayTextField.getText());
+
+    return close;
+  }
     
+
     /**
      * Set the value of the preference for Stave
      */
@@ -14250,7 +14271,7 @@ private boolean saveMetre()
 
     partComposerTF.setText(getCurrentOrigPart().getComposer());
 
-    String inst = "";
+    String inst;
 
     if( alwaysUseMelody.isSelected() )
       {
@@ -14339,7 +14360,7 @@ private boolean saveMetre()
 
     // set the stave type buttons
 
-    StaveType tempStaveType = StaveType.TREBLE;
+    StaveType tempStaveType;
     
      // If "always use this" is selected, over-ride with default stave preference
     
@@ -14538,7 +14559,7 @@ private boolean saveMetre()
 
     // set the new breakpoint
 
-    int proposedBreakpoint = 0;
+    int proposedBreakpoint;
 
     try
       {
@@ -14669,13 +14690,13 @@ private boolean saveMetre()
 
     String correctFormat = text.trim();
     if(correctFormat.length()==2)
-    {
+      {
         if(correctFormat.substring(0,1).equals("+"))
         {
             correctFormat = correctFormat.substring(1);
         }
-    }
-      try
+      }
+    try
       {
       int value = Integer.decode(correctFormat);
       if( value >= MIN_KEY && value <= MAX_KEY )
@@ -14703,15 +14724,12 @@ private boolean saveMetre()
     
  
   
-// Set up the metre and length of the leadsheet:
-    
-// top and bottom are the numerator and denominator of the time signature,
-    
-// and opened is a flag that tells whether we're setting the metre from a file
-    
-// or from the preferences dialogue box.
-    
-    
+/** 
+  * Set up the metre and length of the leadsheet:
+  * top and bottom are the numerator and denominator of the time signature,
+  * and opened is a flag that tells whether we're setting the metre from a file
+  * or from the preferences dialogue box.
+  */
     
     public void initMetreAndLength(int top, int bottom, boolean opened) {
         
@@ -14746,6 +14764,7 @@ private boolean saveMetre()
         
         setupArrays();
         }
+    
     
 public void setBars(int bars)
   {
@@ -14815,7 +14834,7 @@ private void adjustLayout(Polylist layout)
 
     int measuresLeft = score.getBarsPerChorus(); //currentMeasures;
 
-    int arrayElements = 0;
+    int arrayElements;
 
     Polylist T = layout;
     
@@ -14823,7 +14842,7 @@ private void adjustLayout(Polylist layout)
 
     int lastLineLength = 0;
 
-    int thisLineLength = 0;
+    int thisLineLength;
 
     for( arrayElements = 0; measuresLeft > 0; arrayElements++ )
       {
@@ -14911,21 +14930,6 @@ private void paintCurrentStaveImmediately(String id)
 public void setLockedMeasures(int[] _lockedMeasures, String msg)
   {
     lockedMeasures = _lockedMeasures;
-    //System.out.print("setLockedMeasures from " + msg + ": ");
-    
-    if( lockedMeasures == null )
-      {
-        //System.out.println("null");
-        return;
-      }
-    
-    /*
-    for( int x: lockedMeasures )
-      {
-        System.out.print(x + " ");
-      }
-    System.out.println();
-    */
   }
 
 
@@ -14951,6 +14955,7 @@ public boolean hasLockedMeasures()
  * This should be checked, although it seems harmless at the moment.
  * @param measures 
  */
+
 private void setTotalMeasures(int measures)
   {
     if( measures == 0 || noLockedMeasures() )
@@ -14999,11 +15004,12 @@ private void setLayoutPreference(Polylist layout)
     
     if( layout != null )
       {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         while( layout.nonEmpty() )
           {
-            buffer.append(layout.first() + " ");
+            buffer.append(layout.first());
+            buffer.append(" ");
 
             layout = layout.rest();
           }
@@ -15169,10 +15175,7 @@ private void setLayoutPreference(Polylist layout)
       getCurrentStave().repaint();
     }//GEN-LAST:event_addTabMIActionPerformed
     
-    
-    
-    
-    
+   
     /**
      *
      * Open up the "Preferences" dialog.
@@ -15185,19 +15188,12 @@ private void setLayoutPreference(Polylist layout)
         
     }//GEN-LAST:event_prefsMIActionPerformed
     
-    
-    
-    
-    
+
     /**
      *
      * Acknowledges the information, then closes the window.
      *
      */
-        
-    
-     
-    // The following code was refactored as it appeared to be cut-and-paste.
     
   private void enterMeasuresCore()
     {
@@ -15276,9 +15272,7 @@ private void setLayoutPreference(Polylist layout)
             Trace.log(2, "adviceUsed set to false");
             
             adviceUsed = false;
-            
         }
-        
     }
     
     
@@ -15288,12 +15282,12 @@ private void setLayoutPreference(Polylist layout)
      *
      */
     
-    public void setAdviceUsed() {
-        
-        Trace.log(2, "adviceUsed set to true");
-        
-        adviceUsed = true;
-    }
+public void setAdviceUsed()
+  {
+    Trace.log(2, "adviceUsed set to true");
+
+    adviceUsed = true;
+  }
     
     /**
      *
@@ -15414,10 +15408,7 @@ private void setLayoutPreference(Polylist layout)
           }
     }//GEN-LAST:event_adviceTreeKeyPressed
 
-    
-    
-    
-    
+
   /**
    *
    * This is called from within and also from StaveActionHandler
@@ -15510,6 +15501,7 @@ private void setLayoutPreference(Polylist layout)
     staveRequestFocus();
     }
 
+  
   /**
    *
    * Behavior when shift key is held down.
@@ -15655,8 +15647,6 @@ private void setLayoutPreference(Polylist layout)
       case KeyEvent.VK_W:
         getCurrentStave().transposeMelodyUpHarmonically();
         break;
-
-
                     
       case KeyEvent.VK_DELETE:
       case KeyEvent.VK_BACK_SPACE:
