@@ -19986,9 +19986,10 @@ public void generate(LickGen lickgen)
 // If we could start playing before installing the lick on the stave,
 // That might help
 
-       /* Critical Point */
 
-        putLick(lick);
+          // Critical point for recurrent generation
+        
+          putLick(lick);
       }
 
     if( rhythm != null )
