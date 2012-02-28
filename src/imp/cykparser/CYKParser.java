@@ -504,6 +504,8 @@ public class CYKParser
                     ListIterator iter2 = cykTable[row+index+1][col].listIterator();
 
                     while(iter2.hasNext()) {
+                        // possible to get ConcurrentModificationException here!
+                        // during fillTable()
                         TreeNode symbol2 = (TreeNode)iter2.next();
                         if (!symbol2.isOverlap()) {
                         // We check every rule against each pair of symbols.

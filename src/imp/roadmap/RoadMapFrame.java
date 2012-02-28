@@ -43,6 +43,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import javax.swing.ComboBoxModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
@@ -873,11 +874,12 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "/5", "/4", "/3", "/2", "x1", "x2", "x3", "x4", "x5" }));
         scaleComboBox.setSelectedIndex(4);
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
-        scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Duration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
-        scaleComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
+        scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, bundle.getString("RoadMapFrame.scaleComboBox.border.title"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
+        scaleComboBox.setMaximumSize(new java.awt.Dimension(80, 45));
         scaleComboBox.setMinimumSize(new java.awt.Dimension(80, 30));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
-        scaleComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
+        scaleComboBox.setPreferredSize(new java.awt.Dimension(80, 30));
         scaleComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 scaleComboBoxscaleComboReleased(evt);
@@ -982,11 +984,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         keyColorationButton.setBackground(new java.awt.Color(153, 204, 255));
         keyColorationButton.setFont(new java.awt.Font("Arial 11", 0, 12)); // NOI18N
-        keyColorationButton.setText("<html><center>B/W</center></html>"); // NOI18N
         keyColorationButton.setToolTipText("Turn note coloration off or on."); // NOI18N
         keyColorationButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         keyColorationButton.setFocusable(false);
         keyColorationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        keyColorationButton.setLabel("<html><center>Gray</center></html>");
         keyColorationButton.setMaximumSize(new java.awt.Dimension(40, 30));
         keyColorationButton.setMinimumSize(new java.awt.Dimension(40, 30));
         keyColorationButton.setName("keyColorationButton"); // NOI18N
@@ -1094,7 +1096,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         playOnClickToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         playOnClickToggleButton.setMaximumSize(new java.awt.Dimension(60, 30));
         playOnClickToggleButton.setMinimumSize(new java.awt.Dimension(60, 30));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
         playOnClickToggleButton.setName(bundle.getString("RoadMapFrame.playOnClickToggleButton.name")); // NOI18N
         playOnClickToggleButton.setOpaque(true);
         playOnClickToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
@@ -1201,10 +1202,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         barsPerLineComboBox.setSelectedIndex(7);
         barsPerLineComboBox.setToolTipText("Set the maximum number of bars per line.\n"); // NOI18N
         barsPerLineComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars/Line ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande 12", 0, 12))); // NOI18N
-        barsPerLineComboBox.setMaximumSize(new java.awt.Dimension(100, 45));
+        barsPerLineComboBox.setMaximumSize(new java.awt.Dimension(80, 45));
         barsPerLineComboBox.setMinimumSize(new java.awt.Dimension(80, 30));
         barsPerLineComboBox.setName("barsPerLineComboBox"); // NOI18N
-        barsPerLineComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
+        barsPerLineComboBox.setPreferredSize(new java.awt.Dimension(80, 30));
         barsPerLineComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 barsPerLineComboBoxscaleComboReleased(evt);
@@ -2437,7 +2438,7 @@ private void adjustForTreeChange()
           {
             settings.keysColored = true;
             keyColorationButton.setBackground(new Color(153, 204, 255));
-            keyColorationButton.setText("B/W");
+            keyColorationButton.setText("Gray");
           }
         roadMapPanel.draw();
     }//GEN-LAST:event_keyColorationButtonActionPerformed
@@ -3496,6 +3497,8 @@ public void saveToNewNotate()
     score.setTempo(getTempo());
     score.setTitle(roadMapTitle);
     score.setStyle(getStyle());
+    score.setDefaultLayout();
+    score.setRoadmapLayout(settings.barsPerLine);
 
     // System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
 
@@ -3769,8 +3772,28 @@ public void setParent(Notate notate)
         setMetre(score.getMetre());
         setTempo((int)score.getTempo());
         setStyle(score.getStyle());
+        setBarsPerLine(score.getRoadmapLayout());
     }
 
+    /**
+     * Set the bars per line parameter for the roadmap layout.
+     * Assumes that exactly the integer values from 1 to size of the
+     * ComboBoxModel are present in the model.
+     * @param bars 
+     */
+    private void setBarsPerLine(int bars)
+      {
+        settings.setBarsPerLine(bars);
+        
+        ComboBoxModel model = barsPerLineComboBox.getModel();
+        int size = model.getSize();
+        if( bars < 1 || bars > size )
+          {
+            return; // cannot set 
+          }
+        barsPerLineComboBox.setSelectedIndex(bars-1);
+      }
+    
     /** Activate the preferences dialog and set the default values */
     private void activatePreferencesDialog()
     {

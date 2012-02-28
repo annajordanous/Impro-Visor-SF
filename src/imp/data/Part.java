@@ -672,7 +672,10 @@ public class Part implements Constants, Serializable {
      * @param unitIndex         the slot containing the Unit to delete
      */
     public void delUnit(int unitIndex) {
-        
+        if( unitIndex < 0 ) 
+          {
+            return;
+          }
         Unit unit = slots.get(unitIndex);
 
         if(unit != null) {

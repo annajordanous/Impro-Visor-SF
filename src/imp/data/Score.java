@@ -49,6 +49,14 @@ import polya.Polylist;
 public class Score implements Constants, Serializable {
 
     /**
+     * Default bars per line layout. Note that, in general, the layout
+     * specification is a list of bars per line, the last of which is used
+     * if there are more lines than list entries.
+     */
+
+    public static String DEFAULT_BARS_PER_LINE = "4";
+    
+    /**
      * The default title
      */
     public static String DEFAULT_TITLE = "";
@@ -154,6 +162,13 @@ public class Score implements Constants, Serializable {
      */
 
     private Polylist layout = Polylist.nil;
+    
+    /**
+     * Layout for generated roadmap. Currently it is only a single number,
+     * bars per line.
+     */
+    
+    private int roadmapLayout = 8;
     
     private int DEFAULT_DRUM_CHANNEL = 9;
  
@@ -576,6 +591,20 @@ public class Score implements Constants, Serializable {
       this.layout = layout;
       }
     
+    public void setDefaultLayout()
+      {
+        this.layout = Polylist.list(DEFAULT_BARS_PER_LINE);
+      }
+    
+    public int getRoadmapLayout()
+      {
+        return roadmapLayout;
+      }
+    
+    public void setRoadmapLayout(int barsPerLine)
+      {
+        roadmapLayout = barsPerLine;
+      }
 
     /**
      * Sets the breakpoint of the Score

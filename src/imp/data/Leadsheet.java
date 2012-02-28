@@ -42,7 +42,7 @@ public class Leadsheet
            "stave", "treble", "bass", "grand", "auto", "none", "layout",
            "bass-volume", "drum-volume", "chord-volume", "style", "section",
            "bass-instrument", "playback-transpose", "show", "year",
-           "chord-font-size", "phrase"
+           "chord-font-size", "phrase", "roadmap-layout"
   };
 
   static final int TITLE = 0;
@@ -113,6 +113,8 @@ public class Leadsheet
 
   static final int PHRASE = 33;
 
+  static final int ROADMAP_LAYOUT = 34;
+
   static final int UNKNOWN = -1;
 
   /**
@@ -155,6 +157,8 @@ public class Leadsheet
     out.write("(" + keyword[BREAKPOINT] + " " + score.getBreakpoint() + ")");
     out.newLine();
     out.write(score.getLayoutList().cons(keyword[LAYOUT]).toString());
+    out.newLine();
+    out.write("(" + keyword[ROADMAP_LAYOUT] + " " + score.getRoadmapLayout() + ")");
     out.newLine();
 
     Style style = score.getChordProg().getStyle();
@@ -452,6 +456,11 @@ public class Leadsheet
                 score.setLayoutList(item);
                 break;
 
+              case ROADMAP_LAYOUT:
+                // FIX: check syntax
+                score.setRoadmapLayout(((Long)item.first()).intValue());
+                break;
+               
               case BARS:
                 // No longer used
                 break;

@@ -8906,12 +8906,14 @@ private void setSectionParameters()
       stepInputBtn.setText("<html><center>Stop</center></html>");
 
       stepInputBtn.setBackground(Color.RED);
+      setMode(Mode.RECORDING);
       }
     else
       {
       stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
 
       stepInputBtn.setBackground(Color.GREEN);
+      setNormalStatus();
       }    
     setStepInput(selected);
     staveRequestFocus();
@@ -9800,7 +9802,9 @@ public void pauseScore()
     
 public void setStatus(String text)
   {
-    statusMenu.setText("Status: " + text); //programStatusTF.setText(text);
+    statusMenu.setText(text); //programStatusTF.setText(text);
+    statusMenu.setOpaque(true);
+    statusMenu.setBackground(Color.green);
   }
 
 
@@ -11159,7 +11163,7 @@ private void updateTempoFromTextField()
 
     if( scoreBarLength < 1 )
       {
-      setStatus("You're kidding, right?");
+      setStatus("Invalid Action");
       return;
       }
 
@@ -12047,38 +12051,37 @@ private void setLickEnharmonics(MelodyPart lick)
     
     
     
-    public void openSaveLickFrame() {
-        
-        Trace.log(2, "Opening save lick selection frame");
-        
-        adviceFrame.setVisible(false);        // avoid interference of key strokes
-        
-        setStatus("Edit save information.");
-        
-        disableAccelerators();
-        
-        saveLickFrame.setSize(new Dimension(500, 250));
-        
-        saveLickFrame.setLocation(40, 60);
-        
-        saveLickFrame.setVisible(true);
-        
-        saveLickFrame.getRootPane().setDefaultButton(okSaveButton);
-        
-        saveLickFrame.requestFocus();
-        
-        enterLickTitle.requestFocusInWindow();
-    }
+public void openSaveLickFrame()
+  {
+    Trace.log(2, "Opening save lick selection frame");
+
+    adviceFrame.setVisible(false);        // avoid interference of key strokes
+
+    setStatus("Edit save information.");
+
+    disableAccelerators();
+
+    saveLickFrame.setSize(new Dimension(500, 250));
+
+    saveLickFrame.setLocation(40, 60);
+
+    saveLickFrame.setVisible(true);
+
+    saveLickFrame.getRootPane().setDefaultButton(okSaveButton);
+
+    saveLickFrame.requestFocus();
+
+    enterLickTitle.requestFocusInWindow();
+  }
     
     
     
-    public String getLickTitle() {
-        
-        Trace.log(2, "Saved selection title is: " + lickTitle);
-        
-        return lickTitle;
-        
-    }
+public String getLickTitle()
+  {
+    Trace.log(2, "Saved selection title is: " + lickTitle);
+
+    return lickTitle;
+  }
     
     
     
@@ -12102,7 +12105,7 @@ private void setLickEnharmonics(MelodyPart lick)
           {
             if( vocfc.getSelectedFile().getName().endsWith(vocabExt) )
               {
-              cm.execute(new SaveAdviceCommand(vocfc.getSelectedFile(), adv));
+              new SaveAdviceCommand(vocfc.getSelectedFile(), adv).execute();
 
               savedVocab = vocfc.getSelectedFile();
               }
@@ -12112,7 +12115,7 @@ private void setLickEnharmonics(MelodyPart lick)
 
                 savedVocab = new File(file);
 
-                cm.execute(new SaveAdviceCommand(savedVocab, adv));
+                new SaveAdviceCommand(savedVocab, adv).execute();
               }
           }
     }//GEN-LAST:event_saveAsAdviceActionPerformed
@@ -12120,47 +12123,41 @@ private void setLickEnharmonics(MelodyPart lick)
     
     
     private void saveAdviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAdviceActionPerformed
-        
-        if (savedVocab != null)
-            
-            cm.execute(new SaveAdviceCommand(savedVocab, adv));
-        
-        else
-            
-            saveAsAdviceActionPerformed(evt);
 
+        if( savedVocab != null )
+          {
+            new SaveAdviceCommand(savedVocab, adv).execute();
+          }
+        else
+          {
+            saveAsAdviceActionPerformed(evt);
+          }
     }//GEN-LAST:event_saveAdviceActionPerformed
     
-    
-        
-    
-    
+     
     private void textEntryLosesFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryLosesFocus
         
-        textEntryLabel.setForeground(Color.red);
-        
+        textEntryLabel.setForeground(Color.red);   
     }//GEN-LAST:event_textEntryLosesFocus
-    
     
     
     private void textEntryGainsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryGainsFocus
         
        textEntryLabel.setForeground(Color.black);
         
-       setNormalStatus();
-        
+       setNormalStatus();     
     }//GEN-LAST:event_textEntryGainsFocus
     
     private void setNormalStatus()
       {
-        setStatus("Enter text for chords and/or melody.");
+        setStatus("Enter chords or melody, open file, etc.");
+        setMode(Mode.NORMAL);
       }
     
     
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         
-        textEntry.setText("");
-        
+        textEntry.setText("");        
     }//GEN-LAST:event_clearButtonActionPerformed
    
   private void setPlayTransposed()
@@ -12185,10 +12182,8 @@ private void setLickEnharmonics(MelodyPart lick)
     }
     
      
-    public void closeAdviceFrame()
-    
+    public void closeAdviceFrame()  
     {
-        
         showAdviceButton.setSelected(false);
         
         showAdviceButton.setBackground(adviceBtnColorClosed);
@@ -12196,7 +12191,6 @@ private void setLickEnharmonics(MelodyPart lick)
         adviceFrame.setVisible(false);
         
         staveRequestFocus();
-        
     }
     
     
@@ -12224,6 +12218,11 @@ private void openAdviceFrame()
     getCurrentStave().repaint();
 
     redrawTriage();
+    }
+  
+  public boolean adviceVisible()
+    {
+      return adviceFrame.isVisible();
     }
 
   /*
@@ -19905,7 +19904,7 @@ public void generate(LickGen lickgen)
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
     
-    setStatus("Generating melody ...");
+    setStatus("Generating melody");
 
     Stave stave = getCurrentStave();
     boolean nothingWasSelected = !stave.somethingSelected();
@@ -19914,12 +19913,12 @@ public void generate(LickGen lickgen)
 
     if( nothingWasSelected )
       {
-        setStatus("Nothing selected, generating entire chorus.");
+        setStatus("Generating entire chorus.");
         selectAll();
       }
     else if( oneSlotWasSelected )
       {
-        setStatus("One slot selected, generating to end of chorus.");
+        setStatus("Generating to end of chorus.");
         stave.setSelectionToEnd();
       }
 
@@ -20002,7 +20001,7 @@ public void generate(LickGen lickgen)
         stave.setSelection(selectionStart);
       }
 
-    setStatus("Done generating melody");
+    setStatus("Generated melody");
   }
 
 
@@ -23346,6 +23345,7 @@ public void makeVisible(Notate oldNotate)
    }
 
 
+@Override
 public void setVisible(boolean value)
   {
     super.setVisible(value);
@@ -23403,9 +23403,9 @@ public boolean getAutoCreateRoadMap()
 
 public void roadMapThis()
   {
+    setStatus("Creating RoadMap");
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
-    //System.out.println("RoadMap has received chords");
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.makeVisible(false);
   }

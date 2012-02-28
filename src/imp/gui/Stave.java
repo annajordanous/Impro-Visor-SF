@@ -814,17 +814,24 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
 @Override
 public boolean requestFocusInWindow()
   {
+    if( notate.adviceVisible() )
+      {
+        notate.setStatus("Select advice option.");
+      }
+    else
+      {
     switch( notate.getMode() )
       {
         case NORMAL:
-            notate.setStatus("Click in notes, or type in textual entry field");
+            notate.setStatus("Enter chords or melody, open file, etc.");
             break;
         case RECORDING:
-            notate.setStatus("Play some notes on a MIDI instrument");
+            notate.setStatus("Play notes on a MIDI instrument.");
             break;
         case DRAWING:
-            notate.setStatus("Draw some notes on the staff with the mouse");
+            notate.setStatus("Draw notes with the mouse (set slots first).");
             break;
+      }
       }
     boolean result = super.requestFocusInWindow();
     Trace.log(2, "stave has focus");
