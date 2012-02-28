@@ -860,7 +860,7 @@
                 <Component class="javax.swing.JLabel" name="generationGapLabel">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="Generation gap (beats)"/>
+                    <Property name="text" type="java.lang.String" value="Recurrent Lead (beats):"/>
                     <Property name="toolTipText" type="java.lang.String" value="Gap in beats before end of chorus, at which point the next chorus is generated&#xa;"/>
                     <Property name="horizontalTextPosition" type="int" value="4"/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -886,16 +886,16 @@
                 <Component class="javax.swing.JTextField" name="gapField">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="2"/>
-                    <Property name="text" type="java.lang.String" value="1.0"/>
+                    <Property name="text" type="java.lang.String" value="1.05"/>
                     <Property name="toolTipText" type="java.lang.String" value="Sets the leading gap between when the next lick is generated and the previous one ends."/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[40, 24]"/>
+                      <Dimension value="[45, 24]"/>
                     </Property>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[40, 24]"/>
+                      <Dimension value="[45, 24]"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[40, 24]"/>
+                      <Dimension value="[45, 24]"/>
                     </Property>
                   </Properties>
                   <Events>

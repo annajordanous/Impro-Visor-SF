@@ -2108,9 +2108,8 @@ public class Notate
         showAdviceButton = new javax.swing.JToggleButton();
         generateToolbarBtn = new javax.swing.JButton();
         recurrentGenButton = new javax.swing.JToggleButton();
-        gapPanel = new javax.swing.JPanel();
-        generationGapTextField = new javax.swing.JTextField();
-        generationGapSlider = new javax.swing.JSlider();
+        generationGapSpinner = new javax.swing.JSpinner();
+        openGeneratorButton = new javax.swing.JButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
         colorationButton = new javax.swing.JToggleButton();
         smartEntryButton = new javax.swing.JToggleButton();
@@ -2122,7 +2121,6 @@ public class Notate
             }
         });
         delTabBtn = new javax.swing.JButton();
-        openGeneratorButton = new javax.swing.JButton();
         globalPreferencesBtn = new javax.swing.JButton();
         leadsheetPreferencesBtn = new javax.swing.JButton();
         chorusPreferencesBtn = new javax.swing.JButton();
@@ -6729,62 +6727,33 @@ public class Notate
         });
         standardToolbar.add(recurrentGenButton);
 
-        gapPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Generation gap (beats) ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        gapPanel.setMaximumSize(new java.awt.Dimension(140, 50));
-        gapPanel.setMinimumSize(new java.awt.Dimension(140, 50));
-        gapPanel.setOpaque(false);
-        gapPanel.setPreferredSize(new java.awt.Dimension(160, 50));
-        gapPanel.setLayout(new java.awt.GridBagLayout());
-
-        generationGapTextField.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        generationGapTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        generationGapTextField.setText("1.0");
-        generationGapTextField.setToolTipText("Set the tempo for the sheet in beats per minute.");
-        generationGapTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        generationGapTextField.setMaximumSize(new java.awt.Dimension(30, 20));
-        generationGapTextField.setMinimumSize(new java.awt.Dimension(30, 20));
-        generationGapTextField.setPreferredSize(new java.awt.Dimension(30, 20));
-        generationGapTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                generationGapTextFieldMousePressed(evt);
-            }
-        });
-        generationGapTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generationGapActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 5, 5, 0);
-        gapPanel.add(generationGapTextField, gridBagConstraints);
-
-        generationGapSlider.setMajorTickSpacing(5);
-        generationGapSlider.setMaximum(30);
-        generationGapSlider.setMinorTickSpacing(1);
-        generationGapSlider.setToolTipText("Sets the lead before next generation in recurrent generate mode.");
-        generationGapSlider.setValue(10);
-        generationGapSlider.setMaximumSize(new java.awt.Dimension(120, 30));
-        generationGapSlider.setMinimumSize(new java.awt.Dimension(36, 20));
-        generationGapSlider.setPreferredSize(new java.awt.Dimension(100, 20));
-        generationGapSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(1.05d, 0.0d, 9.99d, 0.01d));
+        generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
+        generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        generationGapSpinner.setInheritsPopupMenu(true);
+        generationGapSpinner.setMaximumSize(new java.awt.Dimension(70, 45));
+        generationGapSpinner.setMinimumSize(new java.awt.Dimension(70, 45));
+        generationGapSpinner.setPreferredSize(new java.awt.Dimension(70, 45));
+        generationGapSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                generationGapSliderStateChanged(evt);
+                generationLeadSpinnerChanged(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 60;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 3, 6, 5);
-        gapPanel.add(generationGapSlider, gridBagConstraints);
+        standardToolbar.add(generationGapSpinner);
 
-        standardToolbar.add(gapPanel);
+        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
+        openGeneratorButton.setToolTipText("Open the Lick Generator dialog.");
+        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.setOpaque(true);
+        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
+        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openGeneratorButtonActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(openGeneratorButton);
 
         freezeLayoutButton.setBackground(new java.awt.Color(0, 255, 0));
         freezeLayoutButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
@@ -6882,20 +6851,6 @@ public class Notate
             }
         });
         standardToolbar.add(delTabBtn);
-
-        openGeneratorButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/triage.gif"))); // NOI18N
-        openGeneratorButton.setToolTipText("Open the Lick Generator dialog.");
-        openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setOpaque(true);
-        openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openGeneratorButtonActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(openGeneratorButton);
 
         globalPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallGlobe.png"))); // NOI18N
         globalPreferencesBtn.setToolTipText("Open Global Preferences dialog.");
@@ -20841,25 +20796,6 @@ private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionE
     cmReset();
   }//GEN-LAST:event_clearHistoryMIrevertLeadsheetActionPerformed
 
-private void generationGapTextFieldMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_generationGapTextFieldMousePressed
-  {//GEN-HEADEREND:event_generationGapTextFieldMousePressed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_generationGapTextFieldMousePressed
-
-private void generationGapActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generationGapActionPerformed
-  {//GEN-HEADEREND:event_generationGapActionPerformed
-    double value = doubleFromTextField(generationGapTextField, 0, 3, 1);
-    lickgenFrame.setGap(value);
-    generationGapSlider.setValue((int)(10*value));
-  }//GEN-LAST:event_generationGapActionPerformed
-
-private void generationGapSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_generationGapSliderStateChanged
-  {//GEN-HEADEREND:event_generationGapSliderStateChanged
-    double value = generationGapSlider.getValue()/10.;
-    lickgenFrame.setGap(value);
-    generationGapTextField.setText("" + value);
-  }//GEN-LAST:event_generationGapSliderStateChanged
-
 private void leadsheetPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leadsheetPreferencesBtnActionPerformed
   {//GEN-HEADEREND:event_leadsheetPreferencesBtnActionPerformed
       changePrefTab(leadsheetBtn, leadsheetPreferences);
@@ -20901,14 +20837,18 @@ private void showConstructionLinesMIActionPerformed(java.awt.event.ActionEvent e
     setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
   }//GEN-LAST:event_showConstructionLinesMIActionPerformed
 
+private void generationLeadSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_generationLeadSpinnerChanged
+  {//GEN-HEADEREND:event_generationLeadSpinnerChanged
+    lickgenFrame.setGap(Double.parseDouble(generationGapSpinner.getValue().toString()));
+  }//GEN-LAST:event_generationLeadSpinnerChanged
+
 public void setShowConstructionLinesAndBoxes(boolean value)
   {
     showConstructionLinesAndBoxes = value;
   }
 public void setGenerationGap(double value)
   {
-    generationGapSlider.setValue((int)(10*value));
-    generationGapTextField.setText("" + value);
+    generationGapSpinner.setValue(0.01*(int)(100*value));
   }
 
 /**
@@ -22595,12 +22535,10 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
     private javax.swing.JToggleButton freezeLayoutButton;
-    private javax.swing.JPanel gapPanel;
     private javax.swing.JPanel generalContourTab;
     private javax.swing.JMenuItem generateLickInSelection;
     private javax.swing.JButton generateToolbarBtn;
-    private javax.swing.JSlider generationGapSlider;
-    private javax.swing.JTextField generationGapTextField;
+    private javax.swing.JSpinner generationGapSpinner;
     private javax.swing.ButtonGroup generatorButtonGroup;
     private javax.swing.JToggleButton globalBtn;
     private javax.swing.JPanel globalPreferences;

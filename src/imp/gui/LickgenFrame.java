@@ -942,7 +942,7 @@ private void initCompFileChoosers() {
         recurrentCheckbox.getAccessibleContext().setAccessibleName("");
 
         generationGapLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        generationGapLabel.setText("Generation gap (beats)");
+        generationGapLabel.setText("Recurrent Lead (beats):");
         generationGapLabel.setToolTipText("Gap in beats before end of chorus, at which point the next chorus is generated\n");
         generationGapLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         generationGapLabel.setMaximumSize(new java.awt.Dimension(220, 16));
@@ -961,11 +961,11 @@ private void initCompFileChoosers() {
         generationGapLabel.getAccessibleContext().setAccessibleDescription("");
 
         gapField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        gapField.setText("1.0");
+        gapField.setText("1.05");
         gapField.setToolTipText("Sets the leading gap between when the next lick is generated and the previous one ends.");
-        gapField.setMaximumSize(new java.awt.Dimension(40, 24));
-        gapField.setMinimumSize(new java.awt.Dimension(40, 24));
-        gapField.setPreferredSize(new java.awt.Dimension(40, 24));
+        gapField.setMaximumSize(new java.awt.Dimension(45, 24));
+        gapField.setMinimumSize(new java.awt.Dimension(45, 24));
+        gapField.setPreferredSize(new java.awt.Dimension(45, 24));
         gapField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gapFieldActionPerformed(evt);
@@ -3591,7 +3591,7 @@ public void stopPlaying()
 }//GEN-LAST:event_recurrentCheckboxActionPerformed
 
     private void gapFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gapFieldActionPerformed
-    notate.setGenerationGap(Notate.doubleFromTextField(gapField, 0, 3, 1));
+    notate.setGenerationGap(Notate.doubleFromTextField(gapField, 0, 9.99, 1));
 }//GEN-LAST:event_gapFieldActionPerformed
 
     private void regenerateHeadDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenerateHeadDataBtnActionPerformed
