@@ -15,14 +15,15 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low c---)
-    (bass-base e--)
+    (bass-low g---)
+    (bass-base c--)
     (chord-high a)
-    (chord-low d-)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -40,12 +41,12 @@
 Cm7 | Fm7 | Cm7 | Gm7b5 C7b9 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Fm7 | / | Cm7 | Am7b5 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Ab7 | G7 | Cm6 Am7b5 | Dm7b5 G7b9 | 
 

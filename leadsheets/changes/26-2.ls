@@ -4,7 +4,7 @@
 (year )
 (comments )
 (meter 4 4)
-(key 0)
+(key -1)
 (tempo 210.0)
 (volume 80)
 (playback-transpose 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -31,48 +32,52 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 (phrase (style swing)) 
 FM7 Ab7 | DbM7 E7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 AM7 C7 | Cm7 F7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 BbM7 Db7 | GbM7 A7 | 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Dm7 G7 | Gm7 C7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 FM7 Ab7 | DbM7 E7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 AM7 C7 | Cm7 F7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 BbM7 Ab7 | DbM7 E7/B | 
-(phrase (style swing)) 
+
+(section (style)) 
+
 AM7 C7 | FM7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Cm7 F7 | Em7 A7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 DM7 F7 | BbM7 | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Ebm7 | Ab7 | DbM7 | Gm7 C7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 FM7 Ab7 | DbM7 E7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 AM7 C7 | Cm7 F7 | 
 
-(phrase (style swing)) 
-
-(phrase (style swing)) 
+(phrase (style)) 
 BbM7 Ab7 | DbM7 E7/B | 
 
-(section (style swing)) 
+(section (style)) 
 
 AM7 C7 | FM7 C7 | 
 
@@ -80,9 +85,9 @@ AM7 C7 | FM7 C7 |
     (type melody)
     (title )
     (composer )
-    (instrument 11)
+    (instrument 66)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
  r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

@@ -4,7 +4,7 @@
 (year 1942)
 (comments )
 (meter 4 4)
-(key 0)
+(key 1)
 (tempo 184.0)
 (volume 80)
 (playback-transpose 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style latin
     (swing 0.55)
     (comp-swing 0.55)
@@ -31,7 +32,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key 1)
 )
 
 
@@ -47,13 +48,13 @@ Am7b5 | D7 | Bm7b5 | E7 |
 Am7 | D7 | GM7 | / | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Cm7 | F7 | Bb | Dm7 G7b9 | 
 Cm7 | F7 | BbM7 | / | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Am7 | D7 | GM7 | / | 
 F#m7 | B7 | EM7 | Am7 D7 | 
@@ -76,7 +77,7 @@ Am7 | D7 | GM7 | Am7 D7b9 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key 1)
     (stave treble)
 )
  r4 b4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

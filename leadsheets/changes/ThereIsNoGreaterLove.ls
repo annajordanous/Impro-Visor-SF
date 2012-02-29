@@ -5,7 +5,7 @@
 (comments )
 (meter 4 4)
 (key -2)
-(tempo 120.0)
+(tempo 180.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -41,18 +42,20 @@ BbM7 | Eb7 | Ab7#11 | G7 |
 C7 | / | Cm7 | F7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 BbM7 | Eb7 | Ab7#11 | G7 | 
 C7 | Cm7 F7 | BbM7 | / | 
 
-(phrase (style swing)) 
-Am7b5 D7 | Gm | 
-(phrase (style swing)) 
-Am7b5 D7 | Gm | 
+(phrase (style pedal-bass-5)) 
+Am7b5/G D7/G | Gm | 
+(phrase (style)) 
+Am7b5/G D7/G | Gm | 
 
-(phrase (style swing)) 
-Am7b5 D7 | Gm | 
+
+(section (style)) 
+
+Am7b5/G D7/G | Gm | 
 
 (section (style swing)) 
 

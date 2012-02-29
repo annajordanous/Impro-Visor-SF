@@ -1,6 +1,6 @@
 (title Giant Steps)
 (composer John Coltrane)
-(show )
+(show Giant Steps)
 (year 1960)
 (comments )
 (meter 4 4)
@@ -9,12 +9,13 @@
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 33)
-(bass-volume 60)
+(bass-instrument 32)
+(bass-volume 41)
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -40,17 +41,17 @@
 BM7 D9 | GM7 Bb9 | EbM7 | Am9 D9 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 GM7 Bb9 | EbM7 F#9 | BM7 | Fm9 Bb9 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 EbM9 | Am9 D9 | GM7 | C#m7 F#9 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 BM7 | Fm9 Bb9 | EbM7 | C#m7 F#9 | 
 

@@ -14,12 +14,13 @@
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout 4)
-(style swing
-    (swing 0.67)
-    (comp-swing 0.67)
+(layout 4 4 4 2 4 4 4 2 4 4 4 4)
+(roadmap-layout 8)
+(style latin
+    (swing 0.55)
+    (comp-swing 0.55)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low c---)
     (bass-base c--)
     (chord-high a)
     (chord-low c-)
@@ -35,14 +36,14 @@
 )
 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
 Dm | Am7b5 D7 | Gm | / | 
 Bm7 E7 | Gm7 C7 | FM7 | Em7b5 A7 | 
-DM7 | Em7 A7b9 | 
+DM7 | Em7b5 A7b9 | 
 
-(section (style swing)) 
+(section (style)) 
 
 Dm | Em7b5 A7 | 
 Dm | Em7b5 A7 | Dm | Am7b5 D7 | 
@@ -56,7 +57,7 @@ Am7b5 | D7b9 | Gm | / |
 Gm7b5 | C7 | FM7 | Em7b5 A7 | 
 
 
-(section (style swing)) 
+(section (style latin)) 
 
 Dm | Em7b5 A7 | Dm | Em7b5 A7 | 
 Dm | Bb7 A7 | Dm | / | 

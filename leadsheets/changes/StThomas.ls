@@ -1,5 +1,5 @@
 (title St. Thomas)
-(composer )
+(composer Sonny Rollins)
 (show )
 (year )
 (comments )
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style latin
     (swing 0.55)
     (comp-swing 0.55)
@@ -36,21 +37,21 @@
 
 (phrase (style latin)) 
 C | A7 | 
-(phrase (style latin)) 
+(phrase (style)) 
 Dm7 G7 | C | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 C | A7 | 
-(phrase (style latin)) 
+(phrase (style)) 
 Dm7 G7 | C | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Em7b5 | A7 | Dm7 | G7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 C C7 | F F#o | C/G G7 | 
 
-(section (style latin)) 
+(section (style)) 
 
 C G7 | 
 
@@ -63,4 +64,4 @@ C G7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 g8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

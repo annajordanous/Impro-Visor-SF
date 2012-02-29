@@ -1,10 +1,10 @@
-(title Where Is The Love?)
-(composer )
-(show )
-(year )
+(title Where Is The Love)
+(composer Ralph MacDonald and William Salter)
+(show  Roberta Flack and Donny Hathaway)
+(year 1972)
 (comments )
 (meter 4 4)
-(key 0)
+(key 1)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style rock-light-even
     (swing 0.55)
     (comp-swing 0.55)
@@ -31,49 +32,57 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key 1)
 )
 
 (phrase (style rock-light-even)) 
-Eb | Eb7 | Ab | Db7 | 
+G6 | Eb7 | Ab | Db7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Gb6 | BM7 | Bb7sus4 | Bb7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Eb | Gb7 | BM7 | Bb7sus4 Bb7 | 
 
-(phrase (style rock-light-even)) 
+
+(section (style)) 
+
 Eb | Gb7 B | Bb7sus4 | / Bb7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Eb | Eb7 | Ab | Db7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Gb6 | BM7 | Bb7sus4 | Bb7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Eb | Gb7 | BM7 | Bb7sus4 Bb7 | 
 
-(phrase (style rock-light-even)) 
+
+(section (style)) 
+
 Eb | Gb7 B | Bb7sus4 | / Bb7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Eb | Eb7 | AbM7 | Db7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 GbM7 | BM7 | Bb7sus4 | / Bb7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Eb | Eb7 | Ab | Db7 | 
 
-(phrase (style rock-light-even)) 
+
+(section (style)) 
+
 Gb6 | BM7 | Bb7sus4 | Bb7 | 
 
-(phrase (style rock-light-even)) 
+(phrase (style)) 
 Eb | Gb7 | BM7 | Bb7sus4 Bb7 | 
 
-(phrase (style rock-light-even)) 
+
+(section (style)) 
+
 Eb | Gb7 B | Bb7sus4 | / Bb7 | 
 
 (part
@@ -82,7 +91,7 @@ Eb | Gb7 B | Bb7sus4 | / Bb7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key 1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r2 g8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+4+8

@@ -1,7 +1,7 @@
 (title Ornithology (How High the Moon))
-(composer )
+(composer Charlie Parker)
 (show )
-(year )
+(year 1946)
 (comments )
 (meter 4 4)
 (key 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -38,35 +39,35 @@
 GM7 | / | Gm7 | C7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 FM7 | / | Fm7 | Bb7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 EbM7 | Am7b5 D7 | Gm7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 Am7b5 D7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Bm7 | E7b9 | Am7 | D7b9 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 GM7 | / | Gm7 | C7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 FM7 | / | Fm7 | Bb7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 EbM7 | Am7b5 D7 | GM7 | Cm7 F7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Bm7 E7 | Am7 D7 | GM7 | 
 
-(section (style swing)) 
+(section (style)) 
 
 Am7 D7 | 
 

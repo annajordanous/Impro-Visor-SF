@@ -1,20 +1,21 @@
 (title This Can't Be Love)
-(composer )
-(show )
-(year )
+(composer Richard Rodgers)
+(show The Boys from Syracuse)
+(year 1938)
 (comments )
 (meter 4 4)
-(key 0)
+(key 1)
 (tempo 200.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 32)
 (bass-volume 60)
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -31,38 +32,38 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key 1)
 )
 
 (phrase (style swing)) 
 G6 | / | C7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Bm7 | E7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 A7 | Am7 D7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 G6 | / | C7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Bm7 E7 | Am7 D7 | GM7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 F#m7 | B7 | Em | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 B7 | E7 | A7 | D7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 G6 | / | C7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 G6 | 
-(phrase (style swing)) 
+(phrase (style)) 
 Am7 D7 | G | 
 
-(section (style swing)) 
+(section (style)) 
 
 Am7 D7 | 
 
@@ -70,9 +71,9 @@ Am7 D7 |
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
-    (key 0)
+    (key 1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r8 g4+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

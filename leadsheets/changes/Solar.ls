@@ -14,7 +14,8 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)

@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -37,36 +38,36 @@
 (phrase (style swing)) 
 C | Fm7 Bb7 | C Bb7 | A7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 D7 | G7 | 
 
-(section (style swing)) 
+(section (style)) 
 
 Em7 A7 | Dm7 G7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 C | Fm7 Bb7 | C Bb7 | A7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 D7 | G7 | C | / B7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Em | F#m7b5 B7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 Em | A7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Dm | Em7b5 A7 | D7 | Dm7 G7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 C | Fm7 Bb7 | C Bb7 | A7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 D7 | G7 | C | Dm7 G7 | 
 

@@ -1,7 +1,7 @@
 (title Body and Soul)
-(composer )
+(composer Johnny Green)
 (show )
-(year )
+(year 1930)
 (comments )
 (meter 4 4)
 (key 0)
@@ -15,14 +15,15 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
-(style swing
+(roadmap-layout 8)
+(style ballad
     (swing 0.67)
     (comp-swing 0.67)
     (bass-high g-)
-    (bass-low g--)
+    (bass-low c---)
     (bass-base c--)
-    (chord-high a)
-    (chord-low a--)
+    (chord-high b)
+    (chord-low b--)
     (chord-base c- e- g-)
 )
 (part
@@ -34,37 +35,35 @@
     (key 0)
 )
 
-(phrase (style swing)) 
+(phrase (style ballad)) 
 Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb9 | Fm7 Eo | 
 Ebm7 | Cm7 F7 | 
 
-(section (style swing)) 
+(section (style)) 
 
 Bbm7 Eb7 Ebm7 Ab7 | Db6 / Fm7b5 Bb7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb9 | Fm7 Eo | 
 Ebm7 | Cm7 F7 | 
 
-(section (style swing)) 
+(section (style)) 
 
 Bbm7 Eb7 Ebm7 Ab7 | Db6 / Em7 A7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 DM7 Em7 | F#m7 Gm6 | 
 
-(section (style swing)) 
+(section (style)) 
 
 F#m7 B7 Em7 A7 | DM7 | 
 Dm7 G7 | Em7 Ebo | Dm7 G7 | C7 B7 Bb7 / | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Ebm7 Bb7 | Ebm7 Ab7 | DbM7 Gb9 | Fm7 Eo | 
-Ebm7 | Cm7 F7 | 
-
-(section (style swing)) 
-
-Bbm7 Eb7 Ebm7 Ab7 | Db6 / Fm7b5 Bb7 | 
+Ebm7 | Cm7 F7 | Bbm7 Eb7 Ebm7 Ab7 | Db6 / Fm7b5 Bb7 | 
 
 (part
     (type melody)

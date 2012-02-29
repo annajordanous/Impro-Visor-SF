@@ -14,7 +14,8 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -39,14 +40,16 @@
 
 C | C7 | F | Fm | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 C Am | Dm G7 | C | G7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key 0)
     (stave treble)

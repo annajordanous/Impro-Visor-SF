@@ -1,5 +1,5 @@
 (title 502 Blues)
-(composer )
+(composer Jimmy Rowles)
 (show )
 (year )
 (comments )
@@ -14,7 +14,8 @@
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 8)
 (style waltz
     (swing 0.67)
     (comp-swing 0.67)
@@ -37,17 +38,23 @@
 (phrase (style waltz)) 
 Am7 | DbM7#5 | Bm7b5 | E7b9 | 
 
-(phrase (style waltz)) 
+
+(section (style waltz)) 
+
 Am7 | DbM7#5 | Bm7b5 | E7b9 | 
 
-(phrase (style waltz)) 
+
+(section (style waltz)) 
+
 Cm7 | F7 | BbM7 Am7 | Abm7 Db7 | 
 F#m7b5 | B7b9 | EM7 | / / E7#5 | 
 
 (phrase (style waltz)) 
 Am7 | DbM7#5 | Bm7b5 | E7b9 | 
 
-(phrase (style waltz)) 
+
+(section (style waltz)) 
+
 Am7 | DbM7#5 | Bm7b5 | E7b9 | 
 
 

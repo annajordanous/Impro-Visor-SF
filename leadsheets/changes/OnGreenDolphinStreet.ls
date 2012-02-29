@@ -1,7 +1,7 @@
 (title On Green Dolphin Street)
-(composer )
-(show )
-(year )
+(composer Bronislau Kaper)
+(show Green Dolphin Street (film))
+(year 1947)
 (comments )
 (meter 4 4)
 (key 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style latin
     (swing 0.55)
     (comp-swing 0.55)
@@ -38,15 +39,15 @@
 EbM7 | / | Ebm7 | / | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
-(phrase (style latin)) 
+(phrase (style swing)) 
 Fm7 | Bb7 | EbM7 | / | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 Abm7 | Db7 | GbM7 | Fm7 Bb7 | 
 
@@ -54,17 +55,19 @@ Abm7 | Db7 | GbM7 | Fm7 Bb7 |
 EbM7 | / | Ebm7 | / | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 F/Eb | E/Eb | EbM7 | Gm7 C7 | 
 
-(phrase (style latin)) 
+
+(section (style swing)) 
+
 Fm7 | Dm7b5 G7 | Cm7 | Am7b5 D7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Gm7 C7 | Fm7 Bb7 | EbM7 | 
 
-(section (style latin)) 
+(section (style)) 
 
 Fm7 Bb7 | 
 
@@ -77,4 +80,6 @@ Fm7 Bb7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ eb+1+2
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2

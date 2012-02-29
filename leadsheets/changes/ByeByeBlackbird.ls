@@ -1,10 +1,10 @@
 (title Bye Bye Blackbird)
-(composer )
+(composer Ray Henderson)
 (show )
-(year )
+(year 1926)
 (comments )
 (meter 4 4)
-(key 0)
+(key 1)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -31,36 +32,36 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key 1)
 )
 
 
 (section (style swing)) 
 
-FM6 | Gm7 C7 | F6 | / | 
+GM7 | Gm7 C7 | F6 | / | 
 F6 | Abo7 | Gm7 | C7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Gm7 | Gm/F# | Gm7/F | C7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Gm7 | C7 | F6 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 F7 | E7 | Eb7 | D7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Gm7 Gm/F# | Gm7/F Gm/A | Gm7 | C7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 FM6 | Gm7 C7 | F6 | Am7b5 D7 | 
 
 
-(section (style swing)) 
+(section (style)) 
 
 Gm7 | C7 | F6 | Gm7 C7 | 
 
@@ -70,7 +71,7 @@ Gm7 | C7 | F6 | Gm7 C7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key 1)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ b4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

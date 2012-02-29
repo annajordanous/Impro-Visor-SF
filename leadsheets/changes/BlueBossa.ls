@@ -1,6 +1,6 @@
 (title Blue Bossa)
 (composer Kenny Dorham)
-(show )
+(show Page One)
 (year 1963)
 (comments )
 (meter 4 4)
@@ -14,15 +14,16 @@
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout)
-(style swing
-    (swing 0.67)
-    (comp-swing 0.67)
+(layout 4)
+(roadmap-layout 4)
+(style latin
+    (swing 0.55)
+    (comp-swing 0.55)
     (bass-high g-)
-    (bass-low g---)
+    (bass-low c---)
     (bass-base c--)
     (chord-high a)
-    (chord-low b--)
+    (chord-low c-)
     (chord-base c- e- g-)
 )
 (part
@@ -34,21 +35,19 @@
     (key -3)
 )
 
-(phrase (style swing)) 
+(phrase (style latin)) 
 Cm69 | / | Fm7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Dm7b5 | G7alt | Cm69 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Ebm7 | Ab7 | DbM7 | / | 
 
-(phrase (style swing)) 
-Dm7b5 | G7alt | Cm69 | 
 
-(section (style swing)) 
+(section (style)) 
 
-Dm7b5 G7alt | 
+Dm7b5 | G7alt | Cm69 | Dm7b5 G7alt | 
 
 (part
     (type melody)
@@ -59,4 +58,4 @@ Dm7b5 G7alt |
     (key -3)
     (stave treble)
 )
- g+4+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1

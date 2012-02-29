@@ -1,10 +1,10 @@
 (title Moonlight in Vermont)
-(composer )
+(composer John Blackburn and Karl Suessdorf)
 (show )
-(year )
+(year 1943)
 (comments )
 (meter 4 4)
-(key 0)
+(key -3)
 (tempo 80.0)
 (volume 80)
 (playback-transpose 0)
@@ -14,7 +14,8 @@
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout)
+(layout 3 3 3 3 4 4 3 3)
+(roadmap-layout 4)
 (style ballad
     (swing 0.67)
     (comp-swing 0.67)
@@ -31,7 +32,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 
@@ -75,7 +76,7 @@ F9 E7#9 | EbM7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ c+4 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

@@ -4,17 +4,18 @@
 (year )
 (comments )
 (meter 4 4)
-(key 0)
-(tempo 160.0)
+(key -1)
+(tempo 180.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
-(bass-instrument 34)
+(bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 4)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -31,7 +32,7 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -1)
 )
 
 
@@ -39,23 +40,21 @@
 
 FM7 F7 | Bb7 Bo | FM7 | Cm7 F7 | 
 
-(phrase (style swing)) 
-BbM7 | Bo | FM7 | 
+(phrase (style)) 
+BbM7 | Bo | FM7 | Am7 D7 | 
 
-(section (style swing)) 
 
-Am7 D7 | 
+(section (style)) 
 
-(phrase (style swing)) 
 Gm7 | C7 | FM7 Dm7 | Gm7 C7 | 
 
 (part
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
-    (key 0)
+    (key -1)
     (stave treble)
 )
  r1+1+1+1+1+1+1+1+1+1+1+1

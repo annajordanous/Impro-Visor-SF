@@ -1,7 +1,7 @@
 (title You Stepped out of a Dream)
-(composer )
-(show )
-(year )
+(composer Nacio Herb Brown)
+(show Ziegfield Girl)
+(year 1940)
 (comments )
 (meter 4 4)
 (key 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style latin
     (swing 0.55)
     (comp-swing 0.55)
@@ -34,37 +35,39 @@
     (key 0)
 )
 
-(phrase (style latin)) 
-CM7 | / | DbM7 | / | 
-
 
 (section (style latin)) 
 
+CM7 | / | DbM7 | / | 
+
+(phrase (style swing)) 
 Bbm7 | Eb7 | AbM7 | / | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Gm7 | C7 | FM7 | / | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 Am7 | D7 | Ebm7 Ab7 | Dm7 G7 | 
 
-(phrase (style latin)) 
+
+(section (style latin)) 
+
 CM7 | / | DbM7 | / | 
 
 
-(section (style latin)) 
+(section (style swing)) 
 
 Bbm7 | Eb7 | Gb7 | F7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Dm7b5 | G7 | CM7 | A7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Dm7 | G7 | CM7 | 
 
-(section (style latin)) 
+(section (style)) 
 
 Dm7 G7 | 
 
@@ -77,4 +80,4 @@ Dm7 G7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ e8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

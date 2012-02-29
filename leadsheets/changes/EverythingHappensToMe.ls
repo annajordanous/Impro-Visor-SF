@@ -1,7 +1,7 @@
 (title Everything Happens To Me)
-(composer )
+(composer Tom Adair and Matt Dennis)
 (show )
-(year )
+(year 1940)
 (comments )
 (meter 4 4)
 (key 0)
@@ -15,6 +15,7 @@
 (chord-volume 40)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style ballad
     (swing 0.67)
     (comp-swing 0.67)
@@ -37,24 +38,30 @@
 (phrase (style ballad)) 
 Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
 EbM7 Ebm7 | Dm7 G7 | 
-(phrase (style ballad)) 
+
+(section (style)) 
+
 Cm7 F7 | Bb G7 | 
 
-(phrase (style ballad)) 
+(phrase (style)) 
 Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
 EbM7 Ebm7 | Dm7 G7 | 
-(phrase (style ballad)) 
+
+(section (style)) 
+
 Cm7 F7 | Bb | 
 
-(phrase (style ballad)) 
+
+(section (style)) 
+
 Fm7 Bb7 | EbM7 | Fm7 Bb7 | EbM7 | 
 Em7 A7 | DM7 | Gm7 C7 | Cm7 F7 | 
 
-(phrase (style ballad)) 
+(phrase (style)) 
 Cm7 F7 | Dm7 Dbo7 | Cm7 F7 | Dm7b5 G7 | 
 EbM7 Ebm7 | Dm7 G7 | 
 
-(section (style ballad)) 
+(section (style)) 
 
 Cm7 F7 | EbM7 | 
 
@@ -67,4 +74,4 @@ Cm7 F7 | EbM7 |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ d+8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4+8

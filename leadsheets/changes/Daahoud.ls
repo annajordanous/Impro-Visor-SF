@@ -1,10 +1,10 @@
 (title Daahoud)
-(composer )
-(show )
-(year )
+(composer Clifford Brown)
+(show Daahoud)
+(year 1954)
 (comments )
 (meter 4 4)
-(key 0)
+(key -3)
 (tempo 160.0)
 (volume 80)
 (playback-transpose 0)
@@ -14,7 +14,8 @@
 (drum-volume 60)
 (chord-volume 40)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -31,37 +32,45 @@
     (composer )
     (instrument 0)
     (volume 65)
-    (key 0)
+    (key -3)
 )
 
 (phrase (style swing)) 
 Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 Bb7#5 | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Abm7 Gb7 | F7 EM7 | EbM7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 Bb7#5 | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Abm7 Gb7 | F7 EM7 | EbM7 | / | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Bbm7 | Eb7alt | AbM7 | Ab6 | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Abm7 | Db7alt | GbM7 BM7 | Bb7 | 
 
-(phrase (style swing)) 
+(phrase (style)) 
 Ebm7 Ab7 | Dbm7 Gb7 | BM7 | 
-(phrase (style swing)) 
+(phrase (style)) 
 Bb7#5 | 
 
-(phrase (style swing)) 
+
+(section (style)) 
+
 Abm7 Gb7 | F7 EM7 | EbM7 | Abm7 Db7 | 
 
 
@@ -75,7 +84,9 @@ EbM7 |
     (composer )
     (instrument 11)
     (volume 85)
-    (key 0)
+    (key -3)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ f+1+4
+
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+4

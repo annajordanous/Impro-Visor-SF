@@ -14,7 +14,8 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
+(roadmap-layout 8)
 (style latin
     (swing 0.55)
     (comp-swing 0.55)
@@ -40,58 +41,58 @@
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Gm7 | Em7b5 A7 | D7 | Am7b5 D7 | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 G7 | / | GbM7 | / | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Gm7 | Bbm7 Eb7 | FM7 | 
-(phrase (style latin)) 
+(phrase (style)) 
 E7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 AM7 | C7 | Bm7 | E7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 AM7 | A#o | Bm7 | E7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 AM7 | F#m7 | Bm7 | E7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 C | C#o | Dm7 | G7 | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 Gm7 | D7 | Gm7 | C7 | 
 
 
-(section (style latin)) 
+(section (style)) 
 
 FM7 | / | G7#11 | / | 
 Gm7 | C7 | Am7b5 | D7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 Gm7 | Eb7 | FM7 | Abo7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 G7 | / | Bbm7 | Eb7 | 
 
-(phrase (style latin)) 
+(phrase (style)) 
 G7 | C7 | FM7 | 
 
-(section (style latin)) 
+(section (style)) 
 
 Gm7 C7 | 
 
@@ -99,9 +100,9 @@ Gm7 C7 |
     (type melody)
     (title )
     (composer )
-    (instrument 0)
+    (instrument 11)
     (volume 85)
     (key -1)
     (stave treble)
 )
- r4 c8 r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+8
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
