@@ -832,10 +832,15 @@ public boolean requestFocusInWindow()
         case RECORDING:
             notate.setStatus("Play notes on a MIDI instrument.");
             break;
+        case STEP_INPUT:
+            notate.setStatus("Step-enter notes on a MIDI instrument.");
+            break;
         case DRAWING:
             notate.setStatus("Draw notes with the mouse (set slots first).");
             break;
-      }
+        case GENERATING:
+            notate.setStatus("Generating melody");
+            break;      }
       }
     boolean result = super.requestFocusInWindow();
     Trace.log(2, "stave has focus");

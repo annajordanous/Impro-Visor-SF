@@ -67,7 +67,7 @@ public class MidiRecorder implements Constants, Receiver {
     public long getTick() {
         if(sequencer != null && sequencer.isRunning()) {
             int res = sequencer.getSequence().getResolution();                  // ticks per beat
-            double bpms = ((double) sequencer.getTempoInBPM()) / (60 * 1000);    // beats per millisecond
+            double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
             long latencyTicks = Math.round(bpms * res * latency);
 
             return sequencer.getTickPosition() - latencyTicks;
@@ -214,7 +214,7 @@ public class MidiRecorder implements Constants, Receiver {
         if(note != prevNote)
             return;
         
-        Notate notate = imp.ImproVisor.getCurrentWindow();
+        // use the one in constructor: Notate notate = imp.ImproVisor.getCurrentWindow();
         noteOff = lastEvent;
         notePlaying = false;
 

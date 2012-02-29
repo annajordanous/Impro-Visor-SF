@@ -750,6 +750,10 @@ public class Part implements Constants, Serializable {
      * @return int              the index of the previous Unit
      */
     public int getPrevIndex(int slotIndex) {
+    if( slotIndex < 0 )
+      {
+        return -1;
+      }
         ListIterator<Unit> i = slots.listIterator(slotIndex);
         while(i.hasPrevious()) {
             Unit unit = i.previous();
