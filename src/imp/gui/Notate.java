@@ -2878,6 +2878,7 @@ public class Notate
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(breakpointLabel, gridBagConstraints);
 
@@ -2890,18 +2891,21 @@ public class Notate
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(breakpointTF, gridBagConstraints);
 
         scoreTitleTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        scoreTitleTF.setMaximumSize(new java.awt.Dimension(2147483647, 28));
         scoreTitleTF.setNextFocusableComponent(composerField);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
         leadsheetSpecificPanel.add(scoreTitleTF, gridBagConstraints);
 
@@ -2958,12 +2962,14 @@ public class Notate
         composerLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         composerLabel.setText("Composer:");
         composerLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        composerLabel.setPreferredSize(new java.awt.Dimension(90, 17));
+        composerLabel.setMaximumSize(new java.awt.Dimension(68, 28));
+        composerLabel.setMinimumSize(new java.awt.Dimension(68, 28));
+        composerLabel.setPreferredSize(new java.awt.Dimension(90, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(composerLabel, gridBagConstraints);
@@ -2971,24 +2977,30 @@ public class Notate
         leadsheetTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         leadsheetTitleLabel.setText("Leadsheet Title:");
         leadsheetTitleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        leadsheetTitleLabel.setMaximumSize(new java.awt.Dimension(99, 28));
+        leadsheetTitleLabel.setMinimumSize(new java.awt.Dimension(99, 28));
+        leadsheetTitleLabel.setPreferredSize(new java.awt.Dimension(99, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
         leadsheetSpecificPanel.add(leadsheetTitleLabel, gridBagConstraints);
 
         composerField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        composerField.setMaximumSize(new java.awt.Dimension(2147483647, 28));
         composerField.setNextFocusableComponent(timeSignatureTopTF);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(composerField, gridBagConstraints);
 
@@ -3000,6 +3012,7 @@ public class Notate
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(chordIInstLabel, gridBagConstraints);
 
@@ -3011,6 +3024,7 @@ public class Notate
         gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(bassInstLabel, gridBagConstraints);
 
@@ -3021,6 +3035,7 @@ public class Notate
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(keySignatureLabel, gridBagConstraints);
 
@@ -3033,32 +3048,38 @@ public class Notate
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(keySignatureTF, gridBagConstraints);
 
         commentsLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         commentsLabel.setText("Comments:");
+        commentsLabel.setMaximumSize(new java.awt.Dimension(72, 28));
+        commentsLabel.setMinimumSize(new java.awt.Dimension(72, 28));
+        commentsLabel.setPreferredSize(new java.awt.Dimension(72, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(commentsLabel, gridBagConstraints);
 
         commentsTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        commentsTF.setMinimumSize(new java.awt.Dimension(40, 19));
+        commentsTF.setMaximumSize(new java.awt.Dimension(2147483647, 28));
+        commentsTF.setMinimumSize(new java.awt.Dimension(40, 28));
         commentsTF.setNextFocusableComponent(partTitleTF);
-        commentsTF.setPreferredSize(new java.awt.Dimension(11, 23));
+        commentsTF.setPreferredSize(new java.awt.Dimension(11, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(commentsTF, gridBagConstraints);
 
@@ -3066,11 +3087,15 @@ public class Notate
         timeSignatureLabel.setText("Time Signature:");
         timeSignatureLabel.setAlignmentX(1.0F);
         timeSignatureLabel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        timeSignatureLabel.setMaximumSize(new java.awt.Dimension(98, 28));
+        timeSignatureLabel.setMinimumSize(new java.awt.Dimension(98, 28));
+        timeSignatureLabel.setPreferredSize(new java.awt.Dimension(98, 28));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(timeSignatureLabel, gridBagConstraints);
 
@@ -3078,8 +3103,9 @@ public class Notate
 
         timeSignatureTopTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         timeSignatureTopTF.setText("4");
+        timeSignatureTopTF.setMaximumSize(new java.awt.Dimension(2147483647, 28));
         timeSignatureTopTF.setNextFocusableComponent(timeSignatureBottomTF);
-        timeSignatureTopTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        timeSignatureTopTF.setPreferredSize(new java.awt.Dimension(50, 28));
         timeSignatureTopTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 timeSignatureTopTFActionPerformed(evt);
@@ -3089,8 +3115,9 @@ public class Notate
 
         timeSignatureBottomTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         timeSignatureBottomTF.setText("4");
+        timeSignatureBottomTF.setMaximumSize(new java.awt.Dimension(2147483647, 28));
         timeSignatureBottomTF.setNextFocusableComponent(keySignatureTF);
-        timeSignatureBottomTF.setPreferredSize(new java.awt.Dimension(50, 19));
+        timeSignatureBottomTF.setPreferredSize(new java.awt.Dimension(50, 28));
         timeSignaturePanel.add(timeSignatureBottomTF);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3100,18 +3127,21 @@ public class Notate
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 100;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 0.1;
         leadsheetSpecificPanel.add(timeSignaturePanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.1;
         leadsheetSpecificPanel.add(chordInstPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.1;
         leadsheetSpecificPanel.add(bassInstPanel, gridBagConstraints);
 
         jTabbedPane5.addTab("Leadsheet", leadsheetSpecificPanel);
