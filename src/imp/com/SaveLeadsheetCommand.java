@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 package imp.com;
 
 import imp.RecentFiles;
-import imp.data.*;
-import imp.util.*;
-import java.io.*;
+import imp.data.Leadsheet;
+import imp.data.Score;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * A Command that saves a Score into a File.
@@ -80,7 +82,7 @@ public class SaveLeadsheetCommand implements Command {
             out.close();
             RecentFiles recent = new RecentFiles(file.getAbsolutePath());
             recent.writeNewFile();
-            ProgramStatus.setStatus("Lead sheet saved.");
+//            ProgramStatus.setStatus("Lead sheet saved.");
             if(cm != null)
                 cm.changedSinceLastSave(false);
         } catch(Exception e) {

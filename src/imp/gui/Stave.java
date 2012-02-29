@@ -71,7 +71,8 @@ private String PHRASE_MARK = ",";
 private String STYLE_MARK = "Style: ";
 
 private static int DOUBLE_BAR_OFFSET = 5;
-private static int PHRASE_MARK_OFFSET = 30;
+private static int PHRASE_MARK_X_OFFSET = 30;
+private static int PHRASE_MARK_Y_OFFSET = 15;
 private static int styleXoffset = 20;
 private static int styleYoffset = 50;
 
@@ -840,7 +841,17 @@ public boolean requestFocusInWindow()
             break;
         case GENERATING:
             notate.setStatus("Generating melody");
-            break;      }
+            break;      
+        case ROAD_MAP:
+            notate.setStatus("Creating Road Map");
+            break;      
+        case ADVICE:
+            notate.setStatus("Advice");
+            break;
+        case LEADSHEET_SAVED:
+            notate.setStatus("Leadsheet Saved");
+            break;
+        }
       }
     boolean result = super.requestFocusInWindow();
     Trace.log(2, "stave has focus");
@@ -2983,7 +2994,9 @@ private boolean drawPart(MelodyPart part, Graphics g)
                         {
                           Font saveFont = g.getFont();
                           g.setFont(phraseMarkFont);
-                          g.drawString(PHRASE_MARK,  PHRASE_MARK_OFFSET + xSection, ySection);
+                          g.drawString(PHRASE_MARK,  
+                                       PHRASE_MARK_X_OFFSET + xSection, 
+                                       ySection + PHRASE_MARK_Y_OFFSET);
                           g.setFont(saveFont);
                         }
                     }

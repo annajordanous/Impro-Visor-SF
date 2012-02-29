@@ -25,7 +25,6 @@ import imp.ImproVisor;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.Preferences;
-import imp.util.ProgramStatus;
 import imp.util.Trace;
 import java.io.*;
 import java.util.ArrayList;
@@ -802,8 +801,6 @@ public Polylist getAdviceTree(Score score, int index, Note note)
     return null;
     }
 
-  ProgramStatus.setStatus("Getting Advice . . .");
-
   // Get this area's chord, if any
 
   ChordPart chordPart = score.getChordProg();
@@ -926,7 +923,6 @@ public Polylist getAdviceTreeWithCaching(ChordSymbol chordSymbol,
     {
     Trace.log(2,
             "from scratch: " + chordName + " " + nextChordName + " " + notePitch + " " + subs);
-    ProgramStatus.setStatus("Re-computing Advice . . .");
 
     // compute
     tree = getAdviceTree(chordSymbol,

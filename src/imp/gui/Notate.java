@@ -775,7 +775,10 @@ public class Notate
     DRAWING,
     RECORDING,
     STEP_INPUT,
-    GENERATING
+    GENERATING,
+    ROAD_MAP,
+    ADVICE,
+    LEADSHEET_SAVED
     }
 
   /**
@@ -2467,6 +2470,9 @@ public class Notate
 
         usePreviousStyleCheckBox.setToolTipText("If checked, whatever style was in effect for the previous section will also be used for this section.");
         usePreviousStyleCheckBox.setLabel("Use style of previous section");
+        usePreviousStyleCheckBox.setMaximumSize(new java.awt.Dimension(250, 23));
+        usePreviousStyleCheckBox.setMinimumSize(new java.awt.Dimension(250, 23));
+        usePreviousStyleCheckBox.setPreferredSize(new java.awt.Dimension(250, 23));
         usePreviousStyleCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usePreviousStyleCheckBoxActionPerformed(evt);
@@ -2475,6 +2481,8 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         currentStyleTab.add(usePreviousStyleCheckBox, gridBagConstraints);
 
@@ -2575,9 +2583,9 @@ public class Notate
         measureLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         measureLabel.setText("Section's Starting Measure:");
-        measureLabel.setMaximumSize(new java.awt.Dimension(185, 16));
-        measureLabel.setMinimumSize(new java.awt.Dimension(185, 16));
-        measureLabel.setPreferredSize(new java.awt.Dimension(185, 16));
+        measureLabel.setMaximumSize(new java.awt.Dimension(200, 16));
+        measureLabel.setMinimumSize(new java.awt.Dimension(200, 16));
+        measureLabel.setPreferredSize(new java.awt.Dimension(200, 16));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -9860,16 +9868,7 @@ public void setStatus(String text)
   }
 
 
-/**
- *
- * Set the text color of the Program Status field
- *
- */
 
-public void setStatusColor(Color c)
-  {
-    statusMenu.setForeground(c);
-  }
 
 /**
  *
@@ -11388,7 +11387,7 @@ private void updateTempoFromTextField()
     
     private void adviceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_adviceFocusGained
 
-        setStatus("Select advice option.");
+        setMode(Mode.ADVICE);
         
     }//GEN-LAST:event_adviceFocusGained
     
@@ -12204,7 +12203,7 @@ public String getLickTitle()
     
     private void setNormalStatus()
       {
-        setStatus("Enter chords or melody, open file, etc.");
+
         setMode(Mode.NORMAL);
       }
     
@@ -12259,7 +12258,7 @@ private void openAdviceFrame()
 
     //adviceTree.requestFocusInWindow();
 
-    setStatus("Select advice option.");
+    setMode(Mode.ADVICE);
   }
 
     
@@ -12555,7 +12554,7 @@ private boolean saveLeadsheet(File file, Score score)
   {
     SaveLeadsheetCommand s = new SaveLeadsheetCommand(file, score, cm);
 
-    cm.execute(s);
+    s.execute();
 
     if( s.getError() instanceof IOException )
       {
@@ -12563,6 +12562,8 @@ private boolean saveLeadsheet(File file, Score score)
 
         return false;
       }
+    
+    setMode(Mode.LEADSHEET_SAVED);
     return true;
   }
 
@@ -17468,7 +17469,7 @@ public void openLeadsheet(boolean openCorpus)
             
             ImproVisor.setLastLeadsheetFileStem(file.getName());
             
-            (new OpenLeadsheetCommand(file, newScore)).execute();
+            new OpenLeadsheetCommand(file, newScore).execute();
 
             // create a new window and show the score
 
@@ -17571,7 +17572,7 @@ public void openLeadsheet(boolean openCorpus)
 
         setChordFontSizeSpinner(score.getChordFontSize());
       }
-
+    setNormalStatus();
     staveRequestFocus();
     }
     
@@ -19958,7 +19959,7 @@ public void generate(LickGen lickgen)
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
     
-    setStatus("Generating melody");
+    setMode(Mode.GENERATING);
 
     Stave stave = getCurrentStave();
     boolean nothingWasSelected = !stave.somethingSelected();
@@ -19967,12 +19968,10 @@ public void generate(LickGen lickgen)
 
     if( nothingWasSelected )
       {
-        setStatus("Generating entire chorus.");
         selectAll();
       }
     else if( oneSlotWasSelected )
       {
-        setStatus("Generating to end of chorus.");
         stave.setSelectionToEnd();
       }
 
@@ -21733,7 +21732,7 @@ public void showNewVoicingDialog()
   public void displayAdviceTree(int selectedIndex, int row, Note note)
     {
 
-    setStatus("Getting Advice");
+    setMode(Mode.ADVICE);
 
     Trace.log(2, "displayAdviceTree");
 
@@ -21765,8 +21764,6 @@ public void showNewVoicingDialog()
         {
 
         Trace.log(2, "adviceList is null");
-
-        setStatus("");
 
         return;
         }
@@ -23454,7 +23451,7 @@ public boolean getAutoCreateRoadMap()
 
 public void roadMapThis()
   {
-    setStatus("Creating RoadMap");
+    setMode(Mode.ROAD_MAP);
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
@@ -23468,7 +23465,7 @@ public void roadMapThis()
 
 public void roadMapThisAnalyze()
   {
-    setStatus("Analyzing RoadMap");
+    setMode(Mode.ROAD_MAP);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);

@@ -133,7 +133,7 @@ public class SectionInfo implements Constants, Serializable {
         else
             measure = measure/2 + 1;
         
-        addSection(record.getStyleName(), 
+        addSection(Style.USE_PREVIOUS_STYLE, 
                    startIndex + measure*measureLength,
                    record.getIsPhrase());
     }

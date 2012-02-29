@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,16 @@
 
 package imp.com;
 
-import imp.data.*;
-import imp.util.*;
-import imp.gui.*;
-import polya.*;
-import java.io.*;
-import javax.swing.*;
-import java.awt.*;
+import imp.data.Advisor;
+import imp.gui.Notate;
+import imp.util.ErrorLog;
+import imp.util.SplashDialog;
+import java.io.File;
+import java.io.FileInputStream;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import polya.Polylist;
+import polya.Tokenizer;
 
 /**
  * A Command that opens an advice rulebase.
@@ -90,7 +93,6 @@ public class LoadAdviceCommand implements Command, Runnable {
      * Reads the File into the Advisor.
      */
     public void run() {
-        ProgramStatus.setVocabularyRead(false);
         FileInputStream adviceStream = null;
         ld.setLocationRelativeTo(parent);
 
@@ -106,7 +108,7 @@ public class LoadAdviceCommand implements Command, Runnable {
         try {
             adviceStream = new FileInputStream(file);
         } catch(Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         Tokenizer in = new Tokenizer(adviceStream);
@@ -169,8 +171,6 @@ public class LoadAdviceCommand implements Command, Runnable {
 
         if(hideSplash)
             hideLoadDialog();
-
-        ProgramStatus.setVocabularyRead(true);
 
         synchronized(this) {
             doneLoading = true;
