@@ -2451,14 +2451,16 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         stylePreferences.add(stylePrefLabel, gridBagConstraints);
 
+        currentStyleTab.setMaximumSize(new java.awt.Dimension(400, 2147483647));
+        currentStyleTab.setMinimumSize(new java.awt.Dimension(300, 374));
+        currentStyleTab.setPreferredSize(new java.awt.Dimension(300, 376));
         currentStyleTab.setLayout(new java.awt.GridBagLayout());
 
         selectAStyleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         selectAStyleLabel.setText("Style:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
@@ -2471,8 +2473,8 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         currentStyleTab.add(usePreviousStyleCheckBox, gridBagConstraints);
 
@@ -2480,10 +2482,9 @@ public class Notate
         swingLabel.setText("Swing:");
         swingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(swingLabel, gridBagConstraints);
@@ -2500,7 +2501,7 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.5;
@@ -2520,15 +2521,19 @@ public class Notate
         styleListScrollPane.setViewportView(styleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.weighty = 0.4;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(styleListScrollPane, gridBagConstraints);
+
+        sectionListScrollPane.setMaximumSize(new java.awt.Dimension(300, 32767));
+        sectionListScrollPane.setMinimumSize(new java.awt.Dimension(300, 23));
+        sectionListScrollPane.setPreferredSize(new java.awt.Dimension(300, 132));
 
         sectionList.setModel(sectionListModel);
         sectionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -2542,7 +2547,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.75;
@@ -2559,26 +2564,29 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.weighty = 0.05;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(newSectionButton, gridBagConstraints);
 
         measureLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        measureLabel.setText("Starting Measure:");
+        measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        measureLabel.setText("Section's Starting Measure:");
+        measureLabel.setMaximumSize(new java.awt.Dimension(185, 16));
+        measureLabel.setMinimumSize(new java.awt.Dimension(185, 16));
+        measureLabel.setPreferredSize(new java.awt.Dimension(185, 16));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(measureLabel, gridBagConstraints);
 
+        measureTF.setMaximumSize(new java.awt.Dimension(50, 2147483647));
         measureTF.setMinimumSize(new java.awt.Dimension(50, 19));
         measureTF.setPreferredSize(new java.awt.Dimension(50, 19));
         measureTF.addActionListener(new java.awt.event.ActionListener() {
@@ -2613,7 +2621,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.5;
@@ -2621,8 +2629,9 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(delSectionButton, gridBagConstraints);
 
-        phraseCheckBox.setText("End as Phrase\n");
+        phraseCheckBox.setText("End Section as Phrase\n");
         phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section. On the lead sheet, a phrase will end with an apostrophe above the staff, rather than a double bar.");
+        phraseCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 phraseCheckBoxActionPerformed(evt);
@@ -2631,7 +2640,6 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         currentStyleTab.add(phraseCheckBox, gridBagConstraints);
 
@@ -2639,7 +2647,7 @@ public class Notate
         recentStyleLabel.setText("Recent Styles:");
         recentStyleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -2658,9 +2666,9 @@ public class Notate
         recentStyleListScrollPane.setViewportView(recentStyleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.75;
@@ -2869,7 +2877,7 @@ public class Notate
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(breakpointLabel, gridBagConstraints);
 
@@ -2881,7 +2889,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(breakpointTF, gridBagConstraints);
 
@@ -2902,7 +2910,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(measuresPerPartLabel, gridBagConstraints);
@@ -2915,7 +2923,7 @@ public class Notate
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(prefMeasTF, gridBagConstraints);
 
@@ -2933,7 +2941,7 @@ public class Notate
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(tempoTF, gridBagConstraints);
 
@@ -2943,7 +2951,7 @@ public class Notate
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(tempoLabel, gridBagConstraints);
 
@@ -2991,7 +2999,7 @@ public class Notate
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(chordIInstLabel, gridBagConstraints);
 
@@ -3002,7 +3010,7 @@ public class Notate
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(bassInstLabel, gridBagConstraints);
 
@@ -3012,7 +3020,7 @@ public class Notate
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(keySignatureLabel, gridBagConstraints);
 
@@ -3024,7 +3032,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         leadsheetSpecificPanel.add(keySignatureTF, gridBagConstraints);
 
