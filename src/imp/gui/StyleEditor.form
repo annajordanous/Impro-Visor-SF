@@ -708,6 +708,7 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="110"/>
                 <Property name="text" type="java.lang.String" value="New Style"/>
+                <Property name="toolTipText" type="java.lang.String" value="Create a new style."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newStyleMIActionPerformed"/>
@@ -720,6 +721,7 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="111"/>
                 <Property name="text" type="java.lang.String" value="Open style"/>
+                <Property name="toolTipText" type="java.lang.String" value="Open an existing style."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openStyleMIActionPerformed"/>
@@ -734,6 +736,7 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="115"/>
                 <Property name="text" type="java.lang.String" value="Save Style"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the current style."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveStyleMIActionPerformed"/>
@@ -744,8 +747,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+W"/>
                 </Property>
-                <Property name="mnemonic" type="int" value="97"/>
+                <Property name="mnemonic" type="int" value="119"/>
                 <Property name="text" type="java.lang.String" value="Save Style As"/>
+                <Property name="toolTipText" type="java.lang.String" value="Save the style, possibly under a new name."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveStyleAsActionPerformed"/>
@@ -755,8 +759,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitStyleGenMI">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
                 <Property name="mnemonic" type="int" value="120"/>
                 <Property name="text" type="java.lang.String" value="Exit"/>
+                <Property name="toolTipText" type="java.lang.String" value="Close the style editor."/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitStyleGenMIActionPerformed"/>

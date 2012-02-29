@@ -191,7 +191,7 @@ public class StyleEditor
 
   /* array of percussion instrument names */
   
-  private ArrayList<String> instrumentIdByRow;
+  ArrayList<String> instrumentIdByRow;
   
   /** Header for rows of table */
   protected JList rowHeader;
@@ -1014,17 +1014,23 @@ public void playBassColumn()
       out.write(attributes);
       polyString += attributes;
 
-      String bassP = getBassPatterns();
-      out.write(bassP);
-      polyString += bassP;
+      if( isInstrumentIncluded(StyleTableModel.BASS_PATTERN_ROW) )
+        {
+        String bassP = getBassPatterns();
+        out.write(bassP);
+        polyString += bassP;
+        }
 
       String drumP = getDrumPatterns();
       out.write(drumP);
       polyString += drumP;
 
-      String chordP = getChordPatterns();
-      out.write(chordP);
-      polyString += chordP;
+      if( isInstrumentIncluded(StyleTableModel.CHORD_PATTERN_ROW) )
+        {
+        String chordP = getChordPatterns();
+        out.write(chordP);
+        polyString += chordP;
+        }
 
       out.write(")");
       polyString += ")";
@@ -1070,7 +1076,7 @@ public void playBassColumn()
    * @return 0 if the user cancels, 1 otherwise.
    **/
   public int saveStyleAs()
-    {
+    {System.out.println("saveStyleAs()");
     saveStyle.setCurrentDirectory(styleDir);
 
     if( saveStyle.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
@@ -1786,11 +1792,14 @@ public void playBassColumn()
         return -1; // not found
     }
     
+
+    
     public boolean isInstrumentIncluded(String instrumentName)
     {
         //System.out.println("instrument = " + instrumentName);
         int row = findInstrumentRow(instrumentName);
         //System.out.println("row = " + row);
+        
         boolean result;
         if( row < 0 )
         {
@@ -1802,7 +1811,20 @@ public void playBassColumn()
         }
         return result;
     }
+    
+
+    
+    public boolean isDrumInstrumentNumberIncluded(int instrumentNumber)
+      {
+        int row = getRowByDrumInstrumentNumber(instrumentNumber);
+        if( row == -1 )
+          {
+            return false;
+          }
+        return isInstrumentIncluded(row);
+      }
   
+
   /**
    * Vestigal: Prevents user from selecting items in the edit menu if they 
    * are unavailable given the current stat 
@@ -2955,6 +2977,17 @@ public void playBassColumn()
   {
       return getTableModel().getInstrumentNumbers().get(row);
   }
+  
+  public int getRowByDrumInstrumentNumber(int number)
+    {
+      String instrumentName = MIDIBeast.getDrumInstrumentName(number);
+      
+      int row = findInstrumentRow(instrumentName);
+
+      //System.out.println("instrumentNumber = " + number + ", name = " + instrumentName + ", row = " + row);
+      
+      return row;
+    }
 
   public boolean isIncludeCell(int row, int col)
     {
@@ -2963,6 +2996,9 @@ public void playBassColumn()
 
   public boolean isInstrumentIncluded(int row)
     {
+    Object value = styleTable.getValueAt(row, StyleTableModel.INSTRUMENT_INCLUDE_COLUMN);
+    
+    //System.out.println("row = " + row + " value = " + value);
     return styleTable.getValueAt(row, StyleTableModel.INSTRUMENT_INCLUDE_COLUMN).equals(Boolean.TRUE);
     }
 
@@ -3713,7 +3749,7 @@ public void playBassColumn()
 
         helpTabbedPane.addTab("File format", fileFormatPane);
 
-        extractionPane.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 13));
+        extractionPane.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 13)); // NOI18N
         extractionPane.setMinimumSize(new java.awt.Dimension(500, 800));
         extractionPane.setPreferredSize(new java.awt.Dimension(600, 900));
 
@@ -3788,7 +3824,7 @@ public void playBassColumn()
         bassAttrPanel.setPreferredSize(new java.awt.Dimension(250, 115));
         bassAttrPanel.setLayout(new java.awt.GridBagLayout());
 
-        bassHighLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        bassHighLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         bassHighLabel.setText("High:");
         bassHighLabel.setToolTipText("The upper range for the bass part.");
         bassHighLabel.setMaximumSize(new java.awt.Dimension(64, 14));
@@ -3802,7 +3838,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
         bassAttrPanel.add(bassHighLabel, gridBagConstraints);
 
-        bassLowLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        bassLowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         bassLowLabel.setText("Low:");
         bassLowLabel.setToolTipText("The lower range for the base part.");
         bassLowLabel.setMaximumSize(new java.awt.Dimension(61, 14));
@@ -3815,7 +3851,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(3, 3, 0, 0);
         bassAttrPanel.add(bassLowLabel, gridBagConstraints);
 
-        bassBaseLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        bassBaseLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         bassBaseLabel.setText("Nominal:");
         bassBaseLabel.setToolTipText("The base bass note from which to start a bass line.");
         bassBaseLabel.setMaximumSize(new java.awt.Dimension(66, 14));
@@ -3884,7 +3920,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(3, 7, 0, 0);
         bassAttrPanel.add(bassBaseNote, gridBagConstraints);
 
-        bassHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10));
+        bassHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         bassHighOctave.setMinimumSize(new java.awt.Dimension(100, 18));
         bassHighOctave.setPreferredSize(new java.awt.Dimension(100, 18));
         bassHighOctave.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -3900,7 +3936,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
         bassAttrPanel.add(bassHighOctave, gridBagConstraints);
 
-        bassLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10));
+        bassLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         bassLowOctave.setMinimumSize(new java.awt.Dimension(100, 18));
         bassLowOctave.setPreferredSize(new java.awt.Dimension(100, 18));
         bassLowOctave.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -3916,7 +3952,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(3, 2, 0, 0);
         bassAttrPanel.add(bassLowOctave, gridBagConstraints);
 
-        bassBaseOctave.setFont(new java.awt.Font("Tahoma", 0, 10));
+        bassBaseOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         bassBaseOctave.setMinimumSize(new java.awt.Dimension(100, 18));
         bassBaseOctave.setPreferredSize(new java.awt.Dimension(100, 18));
         bassBaseOctave.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -3932,7 +3968,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(3, 2, 0, 0);
         bassAttrPanel.add(bassBaseOctave, gridBagConstraints);
 
-        bassOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 9));
+        bassOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
         bassOctaveLabel.setText("Octave:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3955,7 +3991,7 @@ public void playBassColumn()
         chordAttrPanel.setPreferredSize(new java.awt.Dimension(250, 115));
         chordAttrPanel.setLayout(new java.awt.GridBagLayout());
 
-        chordHighLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        chordHighLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chordHighLabel.setText("High:");
         chordHighLabel.setToolTipText("The upper range for the chord part.");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3965,7 +4001,7 @@ public void playBassColumn()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         chordAttrPanel.add(chordHighLabel, gridBagConstraints);
 
-        chordLowLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        chordLowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chordLowLabel.setText("Low:");
         chordLowLabel.setToolTipText("The lower range for the chord part.");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4016,7 +4052,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(3, 7, 0, 0);
         chordAttrPanel.add(chordLowNote, gridBagConstraints);
 
-        chordHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10));
+        chordHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         chordHighOctave.setMinimumSize(new java.awt.Dimension(100, 18));
         chordHighOctave.setPreferredSize(new java.awt.Dimension(100, 18));
         chordHighOctave.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -4032,7 +4068,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
         chordAttrPanel.add(chordHighOctave, gridBagConstraints);
 
-        chordLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10));
+        chordLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         chordLowOctave.setMinimumSize(new java.awt.Dimension(100, 18));
         chordLowOctave.setPreferredSize(new java.awt.Dimension(100, 18));
         chordLowOctave.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -4048,7 +4084,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(3, 2, 0, 0);
         chordAttrPanel.add(chordLowOctave, gridBagConstraints);
 
-        chordOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 9));
+        chordOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
         chordOctaveLabel.setText("Octave:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -4058,7 +4094,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 4, 0);
         chordAttrPanel.add(chordOctaveLabel, gridBagConstraints);
 
-        voicingLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        voicingLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         voicingLabel.setText("Voicing Type:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -4144,7 +4180,7 @@ public void playBassColumn()
         chordPanel.setLayout(new java.awt.GridBagLayout());
 
         muteChordToggle.setBackground(new java.awt.Color(255, 0, 0));
-        muteChordToggle.setFont(new java.awt.Font("Dialog", 1, 10));
+        muteChordToggle.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         muteChordToggle.setText("Play");
         muteChordToggle.setToolTipText("Mute/unmute the preview chord.");
         muteChordToggle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -4205,7 +4241,7 @@ public void playBassColumn()
         playPanel.setLayout(new java.awt.GridBagLayout());
 
         playToggle.setBackground(new java.awt.Color(0, 250, 0));
-        playToggle.setFont(new java.awt.Font("Dialog", 1, 10));
+        playToggle.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         playToggle.setSelected(true);
         playToggle.setText("Mute");
         playToggle.setToolTipText("Play/don't play the pattern in a cell when clicked.");
@@ -4680,7 +4716,7 @@ public void playBassColumn()
 
         styleEditorStatusTF.setBackground(new java.awt.Color(238, 238, 238));
         styleEditorStatusTF.setEditable(false);
-        styleEditorStatusTF.setFont(new java.awt.Font("Dialog", 1, 10));
+        styleEditorStatusTF.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         styleEditorStatusTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         styleEditorStatusTF.setText("Normal");
         styleEditorStatusTF.setToolTipText("Tells what the editor is doing.");
@@ -4745,7 +4781,7 @@ public void playBassColumn()
         stylePanel.setPreferredSize(new java.awt.Dimension(1300, 400));
         stylePanel.setLayout(new java.awt.GridBagLayout());
 
-        rowLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        rowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         rowLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rowLabel.setText("Row");
         rowLabel.setToolTipText("Most recent rule selected");
@@ -4759,7 +4795,7 @@ public void playBassColumn()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         stylePanel.add(rowLabel, gridBagConstraints);
 
-        columnLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+        columnLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         columnLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         columnLabel.setText("Column");
         columnLabel.setToolTipText("Least recent rule selected");
@@ -4773,7 +4809,7 @@ public void playBassColumn()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         stylePanel.add(columnLabel, gridBagConstraints);
 
-        contentLabel.setFont(new java.awt.Font("Tahoma", 0, 12));
+        contentLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         contentLabel.setToolTipText("Previous rule selected");
         contentLabel.setMaximumSize(new java.awt.Dimension(900, 14));
         contentLabel.setMinimumSize(new java.awt.Dimension(900, 14));
@@ -4921,7 +4957,7 @@ public void playBassColumn()
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 0);
         stylePanel.add(styleTextField0, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 12));
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         jLabel1.setText("<html><b>Double-click</b> table cell to edit pattern. <b>Control-click</b> a column of table to play percussion simultaneously. <b>Shift-click</b> a column to use piano roll editor. </html>\n");
         editInstructionsPanel.add(jLabel1);
 
@@ -5103,6 +5139,7 @@ public void playBassColumn()
         newStyleMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         newStyleMI.setMnemonic('n');
         newStyleMI.setText("New Style");
+        newStyleMI.setToolTipText("Create a new style.");
         newStyleMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newStyleMIActionPerformed(evt);
@@ -5113,6 +5150,7 @@ public void playBassColumn()
         openStyleMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openStyleMI.setMnemonic('o');
         openStyleMI.setText("Open style");
+        openStyleMI.setToolTipText("Open an existing style.");
         openStyleMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openStyleMIActionPerformed(evt);
@@ -5124,6 +5162,7 @@ public void playBassColumn()
         saveStyleMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveStyleMI.setMnemonic('s');
         saveStyleMI.setText("Save Style");
+        saveStyleMI.setToolTipText("Save the current style.");
         saveStyleMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveStyleMIActionPerformed(evt);
@@ -5132,8 +5171,9 @@ public void playBassColumn()
         styFile.add(saveStyleMI);
 
         saveStyleAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        saveStyleAs.setMnemonic('a');
+        saveStyleAs.setMnemonic('w');
         saveStyleAs.setText("Save Style As");
+        saveStyleAs.setToolTipText("Save the style, possibly under a new name.");
         saveStyleAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveStyleAsActionPerformed(evt);
@@ -5142,8 +5182,10 @@ public void playBassColumn()
         styFile.add(saveStyleAs);
         styFile.add(jSeparator3);
 
+        exitStyleGenMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitStyleGenMI.setMnemonic('x');
         exitStyleGenMI.setText("Exit");
+        exitStyleGenMI.setToolTipText("Close the style editor.");
         exitStyleGenMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitStyleGenMIActionPerformed(evt);
@@ -5155,6 +5197,11 @@ public void playBassColumn()
 
         styEdit.setMnemonic('E');
         styEdit.setText("Edit");
+        styEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                styEditMouseClicked(evt);
+            }
+        });
         styEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 styEditActionPerformed(evt);
@@ -5168,11 +5215,6 @@ public void playBassColumn()
         styEdit.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 styEditKeyPressed(evt);
-            }
-        });
-        styEdit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                styEditMouseClicked(evt);
             }
         });
 

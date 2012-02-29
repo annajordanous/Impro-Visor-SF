@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -28,6 +27,7 @@ import imp.data.ChordPart;
 import imp.data.MIDIBeast;
 import imp.data.Score;
 import imp.data.Style;
+import imp.util.ErrorLog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -181,17 +181,24 @@ public class DrumPatternDisplay
         {
             try {
                 DrumRuleDisplay d = e.nextElement();
-
                 // See if instrument is to be included per checkbox in editor
                 // FIX: This is round-about, and should be changed to iterate directly over
                 // table column, rather than going through drumRuleHolder.
 
-                if(d.checkStatus() ) {
-                    pattern += "\n\t\t" + d.getRule();
-                }
+                int instrumentNumber = d.getInstrumentNumber();
+ 
+                //System.out.println("d = " + d.getRule());
+
+                if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
+                  {
+                    if( d.checkStatus() )
+                         {
+                         pattern += "\n\t\t" + d.getRule();
+                         }
                 else {
-                    System.out.println("status check failed");
+                    ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + d.getRule());
                 }
+                  }
              }catch(ClassCastException ex) {}
         }      
         pattern += "\n\t\t(weight " + ((Integer) weightSpinner.getValue()) + ")\n\t)";       
@@ -274,20 +281,6 @@ public class DrumPatternDisplay
             }
        return maxBeats;
     }
-
-    /* old version
-         public int getPatternLength() {
-        Component[] allRules = drumRuleHolder.getComponents();
-        if(allRules.length > 0) {
-            try {
-                DrumRuleDisplay d = (DrumRuleDisplay) allRules[0];
-                if(d.checkRuleStatus())
-                    return (int) MIDIBeast.numBeatsInRule(d.getDisplayText());                
-            }catch(ClassCastException e) {}
-        }
-        return -1;
-    }
-    */
     
     
    /**
