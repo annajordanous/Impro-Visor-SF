@@ -1076,7 +1076,7 @@ public void playBassColumn()
    * @return 0 if the user cancels, 1 otherwise.
    **/
   public int saveStyleAs()
-    {System.out.println("saveStyleAs()");
+    {
     saveStyle.setCurrentDirectory(styleDir);
 
     if( saveStyle.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )

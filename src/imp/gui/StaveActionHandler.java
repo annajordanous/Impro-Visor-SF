@@ -668,6 +668,7 @@ public void mouseClicked(MouseEvent e)
  }
 
 
+
 /**
  * The maximum duration a note should sound on entry.
  */
@@ -1007,9 +1008,6 @@ protected void clearPasteFrom()
  */
 public void mousePressed(MouseEvent e)
  {
-
-  Trace.log(2, "mouse pressed at " + e.getX() + ", " + e.getY());
-
   stave.getCurvePoints()[e.getX()] = e.getY();
 
   if( notate.justPasted )
@@ -1043,8 +1041,8 @@ public void mousePressed(MouseEvent e)
    }
 
   // if you begin to select a group of notes
-  if( !selectingGroup && inNoteArea(e) && (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 && searchForBracket(
-    e) == OUT_OF_BOUNDS )
+  if( !selectingGroup && inNoteArea(e) && (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 
+          && searchForBracket(e) == OUT_OF_BOUNDS )
    {
 
     Trace.log(2, "set up for dragging");
@@ -1213,8 +1211,8 @@ public void mousePressed(MouseEvent e)
      }
    }
   // if the user has a 2+ button mouse and right clicks
-  else if( (e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) != 0 && inNoteArea(
-    e) )
+  else if( (e.getModifiersEx()& MouseEvent.BUTTON3_DOWN_MASK) != 0 
+          && inNoteArea(e) )
    {
 
     // get the current line the mouse is on
@@ -1226,6 +1224,7 @@ public void mousePressed(MouseEvent e)
     notate.popupMenu.show(e.getComponent(), e.getX(), e.getY());
     stave.currentLine = getCurrentLine(e.getY());
    }
+
  }
 
 
