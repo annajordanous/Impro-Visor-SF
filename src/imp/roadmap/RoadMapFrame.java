@@ -43,11 +43,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import javax.swing.ComboBoxModel;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -3644,6 +3640,10 @@ public void setParent(Notate notate)
 
         disposeBuffers();
         dispose();
+        if( notate != null )
+          {
+            notate.setNormalMode();
+          }
     }
 
 

@@ -1180,6 +1180,7 @@ public void playBassColumn()
    **/
   private int closeWindow()
     {
+    notate.setNormalMode();
     if( cm.changedSinceLastSave() )
       {
       int userInput = unsavedStyle();

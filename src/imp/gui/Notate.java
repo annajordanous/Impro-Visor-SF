@@ -776,9 +776,12 @@ public class Notate
     RECORDING,
     STEP_INPUT,
     GENERATING,
-    ROAD_MAP,
+    GENERATED,
+    ROADMAP,
     ADVICE,
-    LEADSHEET_SAVED
+    LEADSHEET_SAVED,
+    STYLE_EDIT,
+    STYLE_SAVED
     }
 
   /**
@@ -8672,7 +8675,7 @@ public class Notate
     }//GEN-LAST:event_chorusBtnActionPerformed
 
   private void styleGenerator1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleGenerator1ActionPerformed
-
+    setMode(Mode.STYLE_EDIT);
     StyleEditor se = getStyleEditor();
     // se.setLocationRelativeTo(this);
     se.pack();
@@ -9882,13 +9885,8 @@ public void setStatus(String text)
  *
  */
 
-private void setMode(Mode mode)
+public void setMode(Mode mode)
   {
-    if( this.mode == mode )
-      {
-        return;
-      }
-
     previousMode = this.mode;
 
     if( mode == null )
@@ -9896,10 +9894,16 @@ private void setMode(Mode mode)
         mode = Mode.NORMAL;
       }
 
-    this.mode = mode;
+   this.mode = mode;
+    
+   repaintAndStaveRequestFocus();
    }
 
-
+public void setNormalMode()
+  {
+    setMode(Mode.NORMAL);
+  }
+        
 /**
  *
  * Tells other classes what mode the Notate object is in
@@ -12242,7 +12246,7 @@ public String getLickTitle()
         showAdviceButton.setBackground(adviceBtnColorClosed);
         
         adviceFrame.setVisible(false);
-        
+        setNormalMode();
         staveRequestFocus();
     }
     
@@ -20054,7 +20058,7 @@ public void generate(LickGen lickgen)
         stave.setSelection(selectionStart);
       }
 
-    setStatus("Generated melody");
+    setMode(Mode.GENERATED);
   }
 
 
@@ -21716,22 +21720,18 @@ public void showNewVoicingDialog()
 
   /**
    *
-   * Displays the advice tree for the chords around the given index.
+   * Displays the advice tree for the chords around the given index
    *
+   * @param selectedIndex     the index currently selected on the stave
    *
+   * @param row               the row to be initially selected
    *
-   * @param selectedIndex         the index currently selected on the stave
-   *
-   * @param row                   the row to be initially selected
-   *
-   * @param focus                 if the advice frame should receive focus or
-   *
-   *                              not
+   * @param focus             if the advice frame should receive focus or not
    *
    */
+  
   public void displayAdviceTree(int selectedIndex, int row, Note note)
     {
-
     setMode(Mode.ADVICE);
 
     Trace.log(2, "displayAdviceTree");
@@ -21755,19 +21755,16 @@ public void showNewVoicingDialog()
 
     if( adv != null )
       {
-
       MelodyPart part = getCurrentStave().getDisplayPart();
       //Note note = part.getNote(selectedIndex);
       adviceList = adv.getAdviceTree(score, selectedIndex, note);
 
       if( adviceList == null )
         {
-
         Trace.log(2, "adviceList is null");
 
         return;
         }
-
 
       adviceMenuItemsScales = new ArrayList<Object>();
       adviceMenuItemsCells  = new ArrayList<Object>();
@@ -23451,7 +23448,7 @@ public boolean getAutoCreateRoadMap()
 
 public void roadMapThis()
   {
-    setMode(Mode.ROAD_MAP);
+    setMode(Mode.ROADMAP);
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
@@ -23465,7 +23462,7 @@ public void roadMapThis()
 
 public void roadMapThisAnalyze()
   {
-    setMode(Mode.ROAD_MAP);
+    setMode(Mode.ROADMAP);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     establishRoadMapFrame();
     score.toRoadMapFrame(roadmapFrame);

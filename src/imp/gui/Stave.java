@@ -821,7 +821,7 @@ public boolean requestFocusInWindow()
   {
     if( notate.adviceVisible() )
       {
-        notate.setStatus("Select advice option.");
+        notate.setStatus("Select Advice.");
       }
     else
       {
@@ -831,7 +831,7 @@ public boolean requestFocusInWindow()
             notate.setStatus("Enter chords or melody, open file, etc.");
             break;
         case RECORDING:
-            notate.setStatus("Play notes on a MIDI instrument.");
+            notate.setStatus("Play notes in real-time on a MIDI instrument.");
             break;
         case STEP_INPUT:
             notate.setStatus("Step-enter notes on a MIDI instrument.");
@@ -842,16 +842,22 @@ public boolean requestFocusInWindow()
         case GENERATING:
             notate.setStatus("Generating melody");
             break;      
-        case ROAD_MAP:
-            notate.setStatus("Creating Road Map");
+        case GENERATED:
+            notate.setStatus("Melody generated");
+            break;         
+        case ROADMAP:
+            notate.setStatus("Creating Roadmap");
             break;      
         case ADVICE:
-            notate.setStatus("Advice");
+            notate.setStatus("Select Advice.");
             break;
         case LEADSHEET_SAVED:
             notate.setStatus("Leadsheet Saved");
             break;
-        }
+        case STYLE_EDIT:
+            notate.setStatus("Editing Style");
+            break;        }
+
       }
     boolean result = super.requestFocusInWindow();
     Trace.log(2, "stave has focus");
