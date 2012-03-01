@@ -17,6 +17,7 @@
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package imp.gui;
 
 import imp.Constants;
@@ -31,8 +32,9 @@ import imp.util.MidiPlayListener;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -40,9 +42,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import polya.Polylist;
 import polya.PolylistBuffer;
 
@@ -637,8 +637,14 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     // make space for any contour curve ahead of time
     this.clearCurvePoints();
 
-    sheetTitleEditor = new EntryPopup("leadsheet title", sheetTitleFont,
-                                        EntryPopup.CENTER)
+    // Create specialized editors on this Stave for various data components
+    // such as title, composer, etc.
+    
+    sheetTitleEditor = new EntryPopup("leadsheet title", 
+                                      sheetTitleFont, 
+                                      barNumFont,
+                                      EntryPopup.CENTER, 
+                                      this)
       {
       // Make the title the focus root
 
@@ -661,27 +667,34 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
 
     focusOrder.add(sheetTitleEditor);
 
-    sheetComposerEditor = new EntryPopup("leadsheet composer", composerFont,
-                                           EntryPopup.CENTER)
-      {
-
-      @Override
-      public void textToStave(String text)
+    sheetComposerEditor = new EntryPopup("leadsheet composer", 
+                                         composerFont, 
+                                         barNumFont,
+                                         EntryPopup.CENTER,  
+                                         this)
         {
-          Stave.this.notate.getScore().setComposer(text);
-        }
 
-      @Override
-      public String staveToText()
-        {
-          return Stave.this.notate.getScore().getComposer();
-        }
-      };
+        @Override
+        public void textToStave(String text)
+            {
+            Stave.this.notate.getScore().setComposer(text);
+            }
+
+        @Override
+        public String staveToText()
+            {
+            return Stave.this.notate.getScore().getComposer();
+            }
+        };
 
     focusOrder.add(sheetComposerEditor);
 
 
-    partTitleEditor = new EntryPopup("part title", partTitleFont)
+    partTitleEditor = new EntryPopup("part title", 
+                                     partTitleFont, 
+                                     barNumFont, 
+                                     EntryPopup.LEFT,  
+                                     this)
       {
       @Override
       public void textToStave(String text)
@@ -700,61 +713,72 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     focusOrder.add(partTitleEditor);
 
 
-    partComposerEditor = new EntryPopup("part composer", composerFont)
-      {
-      @Override
-      public void textToStave(String text)
+    partComposerEditor = new EntryPopup("part composer", 
+                                        composerFont, 
+                                        barNumFont, 
+                                        EntryPopup.LEFT,  
+                                        this)
         {
-          Stave.this.setComposer(text);
-        }
+        @Override
+        public void textToStave(String text)
+            {
+            Stave.this.setComposer(text);
+            }
 
-      @Override
-      public String staveToText()
-        {
-          return Stave.this.getComposer();
-        }
+        @Override
+        public String staveToText()
+            {
+            return Stave.this.getComposer();
+            }
 
-      };
+        };
 
     focusOrder.add(partComposerEditor);
 
 
-    showTitleEditor = new EntryPopup("show", partTitleFont)
-      {
-      @Override
-      public void textToStave(String text)
+    showTitleEditor = new EntryPopup("show", 
+                                     partTitleFont, 
+                                     barNumFont, 
+                                     EntryPopup.RIGHT, 
+                                     this)
         {
-          Stave.this.notate.getScore().setShowTitle(text);
-        }
+        @Override
+        public void textToStave(String text)
+            {
+            Stave.this.notate.getScore().setShowTitle(text);
+            }
 
-      @Override
-      public String staveToText()
-        {
-          return Stave.this.notate.getScore().getShowTitle();
-        }
+        @Override
+        public String staveToText()
+            {
+            return Stave.this.notate.getScore().getShowTitle();
+            }
 
-      };
+        };
 
     showTitleEditor.setAlignment(EntryPopup.RIGHT);
 
     focusOrder.add(showTitleEditor);
 
-    yearEditor = new EntryPopup("year", composerFont)
-    {
+    yearEditor = new EntryPopup("year", 
+                                composerFont, 
+                                barNumFont, 
+                                EntryPopup.RIGHT,  
+                                this)
+        {
+        @Override
+        public void textToStave(String text)
+        {
+            Stave.this.notate.getScore().setYear(text);
+        }
 
-    @Override
-    public void textToStave(String text)
-      {
-        Stave.this.notate.getScore().setYear(text);
-      }
+        @Override
+        public String staveToText()
+        {
+            return Stave.this.notate.getScore().getYear();
+        }
 
-    @Override
-    public String staveToText()
-      {
-        return Stave.this.notate.getScore().getYear();
-      }
-
-    };
+        };
 
     yearEditor.setAlignment(EntryPopup.RIGHT);
 
@@ -817,6 +841,18 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
 
     setSelection(0);
   }
+
+/**
+ * Every Stave is attached to a Notate window.
+ * This method gives access to it.
+ * @return 
+ */
+
+public Notate getNotate()
+  {
+    return notate;
+  }
+
 
 @Override
 public boolean requestFocusInWindow()
@@ -910,6 +946,11 @@ public void changeType(StaveType type)
 public void setPrinting(boolean printing)
   {
     this.printing = printing;
+  }
+
+public boolean getPrinting()
+  {
+    return printing;
   }
 
 /***
@@ -1125,6 +1166,11 @@ public int getPanelHeight()
 public int getPanelWidth()
   {
     return panelWidth;
+  }
+
+public int getHeadSpace()
+  {
+    return headSpace;
   }
 
 /**
@@ -2173,343 +2219,7 @@ private void selectionCacheReset()
 
 private ArrayList<EntryPopup> focusOrder = new ArrayList<EntryPopup>();
 
-public class EntryPopup
-        extends JDialog
-        implements ActionListener, KeyListener, FocusListener
-{
 
-public static final int LEFT = 0, RIGHT = 1, CENTER = 2;
-private Color outline = new Color(230, 230, 230);
-private JTextField input;
-private Font font;
-private FontMetrics fontMetrics;
-private FontMetrics smallFontMetrics;
-private Rectangle bounds;
-private int alignment = LEFT;
-private Graphics g;
-private String name;
-private boolean mouseOver = false;
-
-public EntryPopup(String name, Font font)
-  {
-    this(name, font, LEFT);
-  }
-
-public EntryPopup(String name, Font font, int alignment)
-  {
-    setDefaultLookAndFeelDecorated(false);
-    setUndecorated(true);
-    setOpaque(false);
-
-    input = new JTextField()
-    {
-
-    @Override
-    public void paintComponent(Graphics g)
-      {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        super.paintComponent(g2);
-      }
-
-    };
-
-    getContentPane().add(input);
-    this.name = name;
-    this.font = font;
-    this.fontMetrics = getFontMetrics(font);
-    this.smallFontMetrics = getFontMetrics(barNumFont);
-    this.alignment = alignment;
-    this.bounds = new Rectangle(-1, -1, 0, 0);
-
-    //input.setMargin(new Insets(1, 3, 2, 4));
-    input.setFont(font);
-    input.addKeyListener(this);
-    input.addActionListener(this);
-    input.addFocusListener(this);
-  }
-
-public void setAlignment(int alignment)
-  {
-    this.alignment = alignment;
-  }
-
-public void textToStave(String data)
-  {
-    // override, stores text to stave
-  }
-
-public String staveToText()
-  {
-    // override, returns text to edit
-    return "";
-  }
-
-public void repaintBounds()
-  {
-    Stave.this.repaint(0, 0, panelWidth, headSpace);
-  }
-
-public boolean checkEvent(MouseEvent e)
-  {
-    if( !isVisible() && bounds.contains(e.getPoint()) )
-      {
-        if( !mouseOver )
-          {
-            repaintBounds();
-            mouseOver = true;
-            return e.getID() == e.MOUSE_MOVED;
-          }
-      }
-    else
-      {
-        if( mouseOver )
-          {
-            repaintBounds();
-            mouseOver = false;
-          }
-      }
-
-    if( e.getID() == e.MOUSE_PRESSED && bounds.contains(e.getPoint()) )
-      {
-        setVisible(true);
-        return true;
-      }
-    return false;
-  }
-
-@Override
-public void setVisible(boolean visible)
-  {
-    setVisible(visible, true);
-  }
-
-public void setVisible(boolean visible, boolean save)
-  {
-    if( visible )
-      {
-        input.setText(staveToText());
-        updateBounds(staveToText());
-        Stave.this.repaint();
-      }
-    else if( isVisible() && save )
-      { // check if visible cause we can lose focus when not being visible and thus this method might get called twice
-        textToStave(input.getText());
-      }
-
-    super.setVisible(visible);
-    pack();
-
-    if( visible )
-      {
-        updatePosition();
-        repaint();
-      }
-    else
-      {
-        dispose();
-        Stave.this.repaint();
-      }
-  }
-
-private void updatePosition()
-  {
-    int x = Stave.this.notate.getX() + bounds.x;
-    int y = Stave.this.notate.getY() + bounds.y;
-
-    Component c = Stave.this;
-    while( c.getParent() != null && c != Stave.this.notate )
-      {
-        x += c.getX();
-        y += c.getY();
-        c = c.getParent();
-      }
-
-    setLocation(x - 1, y + 1);
-  }
-
-public void actionPerformed(ActionEvent e)
-  {
-    setVisible(false);
-  }
-
-private void updateWidth()
-  {
-    input.setSize(input.getWidth() + 10, input.getHeight());
-  }
-
-public void focusLost(FocusEvent e)
-  {
-    setVisible(false);
-  }
-
-public void focusGained(FocusEvent e)
-  {
-  }
-
-public void keyTyped(KeyEvent e)
-  {
-    updateWidth();
-  }
-
-public void keyPressed(KeyEvent e)
-  {
-    //System.out.println("keyPressed in Stave: " + e);
-    if( e.getKeyCode() == e.VK_ESCAPE )
-      {
-        setVisible(false, false);
-      }
-    else
-      {
-        getActionHandler().keyPressed(e);
-      }
-    updateWidth();
-  }
-
-public void keyReleased(KeyEvent e)
-  {
-    pack();
-    switch( alignment )
-      {
-        case LEFT:
-            break;
-        case CENTER:
-        case RIGHT:
-            updateBounds(input.getText());
-            updatePosition();
-            break;
-      }
-    repaint();
-  }
-
-private int x = 0, y = 0;
-
-public void draw(Graphics g, int x, int y)
-  {
-    this.x = x;
-    this.y = y;
-
-    if( isVisible() )
-      {
-        return;
-      }
-
-    String text = staveToText().trim();
-    if( text.equals("") && !printing && showEmptyTitles )
-      {
-        g.setFont(barNumFont);
-        if( mouseOver )
-          {
-            text = "click here to add " + name;
-            updateBounds(smallFontMetrics, text);
-          }
-        else
-          {
-            updateBounds(smallFontMetrics, text, 50);
-          }
-
-        bounds.x -= 2;
-        bounds.width += 4;
-        bounds.height -= 3;
-
-        drawFill(g);
-        bounds.height += 2;
-
-        if( mouseOver )
-          {
-            g.setColor(Color.LIGHT_GRAY);
-            g.drawString(text, bounds.x + 2, y - 2);
-          }
-      }
-    else
-      {
-        g.setFont(font);
-        updateBounds(text);
-
-        if( !printing && mouseOver )
-          {
-            bounds.width += 2;
-            bounds.x--;
-            drawFill(g);
-            bounds.x++;
-          }
-
-        g.setColor(titleColor);
-        g.drawString(text, bounds.x, y);
-      }
-
-    g.setColor(Color.BLACK);
-  }
-
-private void drawFill(Graphics g)
-  {
-    int w = 4;
-    g.translate(bounds.x, bounds.y + 1);
-    g.setColor(titleBGHighlightColor);
-    g.fillRect(0, 0, bounds.width, bounds.height + 1);
-    g.setColor(outline);
-
-    g.drawLine(0, 0, w, 0);
-    g.drawLine(0, 0, 0, bounds.height);
-    g.drawLine(0, bounds.height, w, bounds.height);
-    g.translate(bounds.width - 1, 0);
-    g.drawLine(0, 0, -w, 0);
-    g.drawLine(0, 0, 0, bounds.height);
-    g.drawLine(0, bounds.height, -w, bounds.height);
-    g.translate(-bounds.x - bounds.width + 1, -bounds.y - 1);
-  }
-
-private void updateBounds(FontMetrics fontMetrics, String text)
-  {
-    Rectangle2D textSize = fontMetrics.getStringBounds(text, g);
-    int width = (int) Math.ceil(textSize.getWidth());
-    int height = (int) Math.ceil(textSize.getHeight());
-    int descent = (int) Math.ceil(fontMetrics.getDescent());
-    updateBounds(width, height, descent);
-  }
-
-private void updateBounds(FontMetrics fontMetrics, String text, int width)
-  {
-    Rectangle2D textSize = fontMetrics.getStringBounds(text, g);
-    int height = (int) Math.ceil(textSize.getHeight());
-    int descent = (int) Math.ceil(fontMetrics.getDescent());
-    updateBounds(width, height, descent);
-  }
-
-private void updateBounds(String text)
-  {
-    Rectangle2D textSize = fontMetrics.getStringBounds(text, g);
-    int width = (int) Math.ceil(textSize.getWidth());
-    int height = (int) Math.ceil(textSize.getHeight());
-    int descent = (int) Math.ceil(fontMetrics.getDescent());
-    updateBounds(width, height, descent);
-  }
-
-private void updateBounds(int width, int height, int descent)
-  {
-    switch( alignment )
-      {
-        case LEFT:
-            bounds.x = x;
-            break;
-        case RIGHT:
-            bounds.x = x - width;
-            break;
-        case CENTER:
-            bounds.x = x - width / 2;
-            break;
-      }
-    bounds.width = width;
-    bounds.y = y - height;
-    bounds.height = height + descent;
-    if( bounds.width == 0 )
-      {
-        bounds.width = 100;
-      }
-  }
-
-}
 
 /**
  * Draws the stave with all components onto the screen. This methods
