@@ -10,7 +10,7 @@
 (parameter (min-duration 8))
 (parameter (min-interval 0))
 (parameter (min-pitch 40))
-(parameter (rectify false))
+(parameter (rectify true))
 (parameter (rest-prob 0.1))
 (parameter (scale-root C))
 (parameter (scale-tone-weight 0.05))
