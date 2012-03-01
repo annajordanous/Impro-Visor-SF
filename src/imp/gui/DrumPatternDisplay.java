@@ -169,9 +169,12 @@ public class DrumPatternDisplay
     }
 
     /**
+     * @param requireChecked means that the instrument must be checked in the StyleEditor in order
+     * for this pattern to be non-empty.
      * @return all legal drum rules and weight formatted with the drum-pattern syntax used by the style classes 
+     * 
      **/    
-    public String getPattern() {
+    public String getPattern(boolean requireChecked) {
         String pattern = "(drum-pattern ";
 
         //Component[] allRules = drumRuleHolder.getComponents();
@@ -189,7 +192,7 @@ public class DrumPatternDisplay
  
                 //System.out.println("d = " + d.getRule());
 
-                if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
+                if( true ) //styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
                   {
                     if( d.checkStatus() )
                          {
@@ -1034,7 +1037,7 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
       {
         try
           {
-            String p = this.getPattern();
+            String p = this.getPattern(false);
             Polylist rule = Notate.parseListFromString(p);
             //System.out.println("pattern = " + p + "\nrule = " + rule);
             if( rule.isEmpty() )
@@ -1092,7 +1095,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
       {
         try
           {
-            String p = this.getPattern();
+            String p = this.getPattern(false);
             Polylist rule = Notate.parseListFromString(p);
             //System.out.println("pattern = " + p + "\nrule = " + rule);
             if( rule.isEmpty() )

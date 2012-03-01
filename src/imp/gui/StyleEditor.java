@@ -734,11 +734,11 @@ public void playBassColumn()
             {
             if( d.checkStatus() )
               {
-              patterns += "\t" + d.getPattern() + "\n";
+              patterns += "\t" + d.getPattern(true) + "\n";
               }
             else
               {
-              MIDIBeast.addSaveError(d.getPatternError() + " and was not included.");
+              MIDIBeast.addSaveError(d.getPattern(false) + " and was not included.");
               }
             }
           }
