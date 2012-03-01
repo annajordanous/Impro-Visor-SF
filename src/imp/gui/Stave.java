@@ -87,12 +87,14 @@ private static final int maxTimeSigWidth = 6;
 private boolean beamingNotes = true;
 public static final int maxMeasuresPerLine = 64;
 private static final int selectionBoxPadding = 8;
-public static int sheetTitleYoffset = 20;
+
+public static int sheetTitleYoffset    = 20;
 public static int sheetComposerYoffset = 38;
-public static int partTitleYoffset = 30;
-public static int partComposerYoffset = 48;
-public static int showTitleYoffset = 30;
-public static int yearYoffset = 48;
+public static int partTitleYoffset     = 25;
+public static int partComposerYoffset  = 40;
+public static int showTitleYoffset     = 25;
+public static int yearYoffset          = 40;
+
 static int tupletBracketInset = 3;
 static int tupletBracketHeight = 10;
 static int beatBracketHeight = 10;
@@ -859,7 +861,7 @@ public boolean requestFocusInWindow()
             break;        }
 
       }
-    boolean result = super.requestFocusInWindow();
+    boolean result = true; //super.requestFocusInWindow(); This messes things up.
     Trace.log(2, "stave has focus");
     return result;
   }
