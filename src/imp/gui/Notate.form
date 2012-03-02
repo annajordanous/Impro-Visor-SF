@@ -7442,7 +7442,7 @@
         <Menu class="javax.swing.JMenu" name="notateGrammarMenu">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="getDefaultGrammarName()" type="code"/>
+              <Connection code="getDefaultGrammarName() + &quot; grammar&quot;" type="code"/>
             </Property>
           </Properties>
           <Events>

@@ -1440,7 +1440,7 @@ public class Notate
 
   public void postInitComponents()
     {
-    notateGrammarMenu.setText(getDefaultGrammarName());
+    notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
     
     voicingTestFrame.pack();
 
@@ -8527,7 +8527,7 @@ public class Notate
 
         menuBar.add(windowMenu);
 
-        notateGrammarMenu.setText(getDefaultGrammarName());
+        notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
         notateGrammarMenu.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 notateGrammarMenuStateChanged(evt);

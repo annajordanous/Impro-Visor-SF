@@ -233,7 +233,7 @@ public void keyPressed(KeyEvent e)
        
         case KeyEvent.VK_BACK_SPACE: break;
             
-        default: stave.getActionHandler().keyPressed(e);
+        default: // not good. causes actions in stave stave.getActionHandler().keyPressed(e);
       }
     
     updateWidth();
