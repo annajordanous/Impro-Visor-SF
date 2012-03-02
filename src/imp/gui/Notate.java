@@ -727,6 +727,7 @@ public class Notate
  
   private static DefaultTableCellRenderer voicingRenderer = new DefaultTableCellRenderer()
     {
+    @Override
     public Component getTableCellRendererComponent(
             JTable table,
             Object value,
@@ -735,20 +736,13 @@ public class Notate
             int row,
             int column)
       {
-
       Component c = super.getTableCellRendererComponent(
               table, value, isSelected, hasFocus, row, column);
 
-
-
       c.setEnabled((Boolean)table.getModel().getValueAt(row, 5));
 
-
-
       return c;
-
       }
-
     };
 
   /**
@@ -1419,8 +1413,10 @@ public class Notate
       }
 
     setSliderVolumes(DEFAULT_SLIDER_VOLUME);
-    }
 
+    } // end of Notate constructor
+
+  
   boolean showConstructionLinesAndBoxes = true;
   boolean saveConstructionLineState;
   
@@ -12758,6 +12754,7 @@ private void exportToMusicXML()
       @return
       */
 
+    @Override
     public boolean requestFocusInWindow()
     {
         requestFocus();
@@ -15635,17 +15632,15 @@ public void setAdviceUsed()
 
  
   /**
-   *
-   * Behavior when neither shift nor control key is held down.
-   *
+   * Behavior on key stroke when neither shift nor control key is held down.
+   * Currently called only from within 
+   * adviceKeyPressed(KeyEvent e)
    */
     
   public void nothingDownBehavior(KeyEvent e)
   {
     switch( e.getKeyCode() )
       {
-      // neither shift nor control
-
       case KeyEvent.VK_A:
         moveLeft();
         break;

@@ -2177,7 +2177,7 @@ public void keyPressed(KeyEvent e)
 
     /*
      * IMPORTANT:
-     * Don't redo here stuff that has shortcuts/accelerators  in Notate.
+     * Don't redo here stuff that has shortcuts/accelerators in Notate.
      * Otherwise it will get done TWICE
      * because Notate also gets these events, unless we explicitly disable.
      */
@@ -2234,13 +2234,13 @@ public void keyPressed(KeyEvent e)
              */
           return;
         case KeyEvent.VK_A:
-          if( notate.getMode() != Notate.Mode.DRAWING )
+          //if( notate.getMode() != Notate.Mode.DRAWING )
            {
             notate.moveLeft();
            }  // cursor motion
           return;
         case KeyEvent.VK_F:
-          if( notate.getMode() != Notate.Mode.DRAWING )
+          //if( notate.getMode() != Notate.Mode.DRAWING )
            {
             notate.moveRight();
            }
