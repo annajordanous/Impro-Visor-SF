@@ -776,7 +776,9 @@ public class Notate
     LEADSHEET_SAVED,
     STYLE_EDIT,
     STYLE_SAVED,
-    EDIT_LEADSHEET
+    EDIT_LEADSHEET,
+    PLAYING,
+    PLAYING_PAUSED
     }
 
   /**
@@ -8789,7 +8791,9 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount)
   
 public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums)
   {
+    setMode(Mode.PLAYING);
     getCurrentStave().playSelection(playToEndOfChorus, loopCount);
+
   }
 
   private void setToLoop()
@@ -9784,7 +9788,14 @@ private String getChordRedirectName(int row)
     
     
     private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
-
+      if( mode == Mode.PLAYING_PAUSED )
+        {
+          setMode(Mode.PLAYING);
+        }
+      else
+        {
+          setMode(Mode.PLAYING_PAUSED);
+        }
       pauseScore();
       if( keyboard != null )
         {
@@ -9861,10 +9872,10 @@ public void pauseScore()
  */
     
 public void setStatus(String text)
-  {
-    statusMenu.setText(text); //programStatusTF.setText(text);
+  {  
     statusMenu.setOpaque(true);
     statusMenu.setBackground(Color.green);
+    statusMenu.setText(text); 
     statusMenu.repaint();
   }
 
@@ -9897,7 +9908,7 @@ public void setMode(Mode mode)
    switch( mode )
       {
         case NORMAL:
-            setStatus("Enter chords or melody, open file, etc.");
+            setStatus("Play, Enter chords or melody, Open file, etc.");
             break;
         case RECORDING:
             setStatus("Play notes in real-time on a MIDI instrument.");
@@ -9929,7 +9940,12 @@ public void setMode(Mode mode)
         case EDIT_LEADSHEET:
             setStatus("Edit leadsheet textually");
             break;
-       }
+        case PLAYING:
+            setStatus("Playing");
+            break;
+        case PLAYING_PAUSED:
+            setStatus("Playing Paused");
+            break;       }
 
    //repaintAndStaveRequestFocus();
    }
@@ -10000,8 +10016,6 @@ private void startRecording()
         return;
       }
 
-    setMode(Mode.RECORDING);
-
     playBtn.setEnabled(false);
 
     recordBtn.setIcon(recordActiveImageIcon);
@@ -10013,6 +10027,8 @@ private void startRecording()
     staveRequestFocus();
 
     playScore();
+
+    setMode(Mode.RECORDING);
 
     midiSynth.unregisterReceiver(midiStepInput);  // disable step input during recording
 
@@ -10030,7 +10046,7 @@ void stopPlaying()
       {
         stopRecording();
       }
-        
+    setNormalMode();
     setShowConstructionLinesAndBoxes(showConstructionLinesMI.isSelected());
   }
 
@@ -16899,7 +16915,7 @@ private void pasteMelody(Part part, Stave stave)
  
 public void playScoreBody(int startAt)
     {
-    if( playingPaused() )
+      if( playingPaused() )
       {
       Trace.log(2, "Notate: playScore() - unpausing");
 
@@ -16907,6 +16923,7 @@ public void playScoreBody(int startAt)
       }
     else
       {
+
       Trace.log(2, "Notate: playScore() - starting or restarting playback");
 
       // makes playback indicator always visible
@@ -16931,7 +16948,9 @@ public void playScoreBody(int startAt)
       loopsRemaining = getLoopCount();
       getCurrentStave().play(startAt);
       }
+    setMode(Mode.PLAYING);
     }
+
 
 /**
  * Play a score, not necessarily the one in this Notate window.
@@ -17183,6 +17202,8 @@ public ChordPart makeCountIn()
         pauseBtn.setSelected(false);
 
         recordBtn.setEnabled(false);
+        
+        setMode(Mode.PLAYING);
 
         break;
 
@@ -17195,6 +17216,8 @@ public ChordPart makeCountIn()
         pauseBtn.setSelected(true);
 
         recordBtn.setEnabled(false);
+
+        setMode(Mode.PLAYING_PAUSED);
 
         break;
 
@@ -17219,6 +17242,8 @@ public ChordPart makeCountIn()
 
         setPlaybackManagerTime();
 
+        setNormalMode();
+        
         getCurrentStave().repaint();
 
         break;
@@ -17264,21 +17289,16 @@ public ChordPart makeCountIn()
               JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
               null, options, options[1]);
 
-
-
       // the user selected yes
 
       if( choice == 0 )
         {
-
         midiSynth.stop("quit");
 
         adv.showMarkedItems();
-
         System.exit(0);
 
         }
-        
     }//GEN-LAST:event_quitMIActionPerformed
 
   public MidiSynth getMidiSynth()
@@ -17350,7 +17370,7 @@ public ChordPart makeCountIn()
     
     if( selected != null )
       {
-      boolean noErrors = true;
+      boolean noErrors;
 
       if( !selected.endsWith(leadsheetExt) )
         {
@@ -17400,7 +17420,7 @@ public boolean saveAsLeadsheetSwing()
     if( saveLSFC.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
       {
 
-        boolean noErrors = true;
+        boolean noErrors;
         
         File selectedFile = saveLSFC.getSelectedFile();
 
