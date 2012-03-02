@@ -111,6 +111,11 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
 
         setTitle("Editor");
         setAlwaysOnTop(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                windowClosingHandler(evt);
+            }
+        });
 
         sourceEditorScrollPane.setMinimumSize(new java.awt.Dimension(600, 20000));
         sourceEditorScrollPane.setPreferredSize(new java.awt.Dimension(600, 20000));
@@ -157,6 +162,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
         {
             case LEADSHEET:
                 cm.execute(new LeadsheetToEditorCommand(parent.getScore(), this));
+                parent.setStatus("Text loaded from leadsheet");
                 break;
             case GRAMMAR:
                 cm.execute(new GrammarToEditorCommand(parent.getGrammarFileName(), this));
@@ -184,6 +190,7 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 cm.execute(new EditorToLeadsheetCommand(newScore, this));
                 setTitle(newScore.getTitle().equals("")?"Untitled Leadsheet":newScore.getTitle());
                 parent.setupScore(newScore);
+                parent.setStatus("Text transmitted to leadsheet");
                 break;
             case GRAMMAR:
                 cm.execute(new EditorToGrammarCommand(parent.getGrammarFileName(), this));
@@ -197,6 +204,25 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 new EditorToDictionaryCommand((RoadMapFrame)frameParent, this).execute();
                 break;        }
     }//GEN-LAST:event_editorToSourceButtonActionPerformed
+
+private void windowClosingHandler(java.awt.event.WindowEvent evt)//GEN-FIRST:event_windowClosingHandler
+  {//GEN-HEADEREND:event_windowClosingHandler
+        switch (type)
+        {
+            case LEADSHEET:
+                parent.setNormalMode();
+                break;
+            case GRAMMAR:
+
+                break;
+            case STYLE:
+
+                break;
+            case DICTIONARY:
+
+                break;    
+         }
+  }//GEN-LAST:event_windowClosingHandler
     
     //used when calling the grammar to editor button automatically from Notate
     public void performEditorToSourceButton(java.awt.event.ActionEvent evt) {
