@@ -1440,7 +1440,7 @@ public class Notate
 
   public void postInitComponents()
     {
-    notateGrammarMenu.setText("My grammar");
+    notateGrammarMenu.setText(getDefaultGrammarName());
     
     voicingTestFrame.pack();
 
@@ -8527,12 +8527,7 @@ public class Notate
 
         menuBar.add(windowMenu);
 
-        notateGrammarMenu.setText("Grammar: My");
-        notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                notateGrammarMenuActionPerformed(evt);
-            }
-        });
+        notateGrammarMenu.setText(getDefaultGrammarName());
         notateGrammarMenu.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 notateGrammarMenuStateChanged(evt);
@@ -8545,6 +8540,11 @@ public class Notate
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+        notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notateGrammarMenuActionPerformed(evt);
             }
         });
         menuBar.add(notateGrammarMenu);
@@ -20237,7 +20237,6 @@ private void chordSearchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     String redirectName = getChordRedirectName(selectedRow);
     if( redirectName != null )
       {
-
       chordSearchTF.setText(redirectName);
       }
 }//GEN-LAST:event_chordSearchTFActionPerformed
@@ -21273,9 +21272,11 @@ private void notateGrammarMenuAction(java.awt.event.ActionEvent evt) {
     JMenuItem item = (JMenuItem)evt.getSource();
     String stem = item.getText();
     notateGrammarMenu.setText(stem + " grammar");
-    grammarFilename = ImproVisor.getGrammarDirectory() + File.separator +  stem + GrammarFilter.EXTENSION;
+    String extendedName = stem + GrammarFilter.EXTENSION;
+    grammarFilename = ImproVisor.getGrammarDirectory() + File.separator +  extendedName;
     lickgen.loadGrammar(grammarFilename);
     lickgenFrame.resetTriageParameters(false);
+    Preferences.setPreference(Preferences.DEFAULT_GRAMMAR_FILE, extendedName);
 }
 
 public void openCorpus()
@@ -23640,15 +23641,15 @@ public void setLayoutTF(String text)
     layoutTF.setText(text);
   }
 
-private void personalize()
-  {
-  personalizeFC = new JFileChooser();
-  personalizeFC.setDialogType(JFileChooser.SAVE_DIALOG);
-  if(personalizeFC.showDialog(this, "Select a Personal Directory") != JFileChooser.APPROVE_OPTION)
-            return;
-  //userDirectory = personalizeFC.getSelectedFile();
-  }               
+               
 
+public String getDefaultGrammarName()
+  {
+    String fileName = ImproVisor.getGrammarFile().getName();
+    fileName = fileName.subSequence(0, fileName.length() - ".grammar".length()).toString();
+    //System.out.println("fileName = " + fileName);
+    return fileName;
+  }
 }
 
 

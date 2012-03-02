@@ -486,44 +486,44 @@ public static boolean getAlwaysUse(int index)
       }
     }
 
-  public static Polylist initialPrefs()
-    {
-      PolylistBuffer buffer = new PolylistBuffer();
-      
-      buffer.append(Polylist.list(ADV_CACHE_SIZE,            ACS_VAL));
-      buffer.append(Polylist.list(ADV_CACHE_ENABLED,         ACE_VAL));
-      buffer.append(Polylist.list(DEFAULT_LOAD_STAVE,        DLS_VAL));
-      buffer.append(Polylist.list(DEFAULT_MELODY_INSTRUMENT, DMI_VAL));
-      buffer.append(Polylist.list(DEFAULT_CHORD_INSTRUMENT,  DCI_VAL));
-      buffer.append(Polylist.list(DEFAULT_BASS_INSTRUMENT,   DBI_VAL));
-      buffer.append(Polylist.list(DEFAULT_MIXER_ALL,         DMA_VAL));
-      buffer.append(Polylist.list(DEFAULT_MIXER_ENTRY,       DME_VAL));
-      buffer.append(Polylist.list(DEFAULT_MIXER_BASS,        DMB_VAL));
-      buffer.append(Polylist.list(DEFAULT_MIXER_CHORDS,      DMC_VAL));
-      buffer.append(Polylist.list(DEFAULT_MIXER_DRUMS,       DMD_VAL));
-      buffer.append(Polylist.list(DEFAULT_MIXER_MELODY,      DMM_VAL));
-      buffer.append(Polylist.list(DEFAULT_STYLE,             DS_VAL));
-      buffer.append(Polylist.list(DEFAULT_TEMPO,             DT_VAL));
-      buffer.append(Polylist.list(DEFAULT_VOCAB_FILE,        DVF_VAL));
-      buffer.append(Polylist.list(DEFAULT_GRAMMAR_FILE,      DVF_GRAMMAR_VAL));
-      buffer.append(Polylist.list(DEFAULT_STYLE_DIRECTORY,   DSD_VAL));
-      buffer.append(Polylist.list(VIS_ADV_COMPONENTS,        VAC_VAL));
-      buffer.append(Polylist.list(CHORD_DIST_ABOVE_ROOT,     CDAR_VAL));
-      buffer.append(Polylist.list(DEFAULT_CHORD_FONT_SIZE,   DEFAULT_CHORD_FONT_SIZE_VALUE));
-      buffer.append(Polylist.list(MAX_NOTES_IN_VOICING,      MNIV_VAL));
-      buffer.append(Polylist.list(NOTE_COLORING,             NC_VAL));
-      buffer.append(Polylist.list(SHOW_TRACKING_LINE,        STL_VAL));
-      buffer.append(Polylist.list(TRACKER_DELAY,             TD_VAL));
-      buffer.append(Polylist.list(DRAWING_TONES,             DRAWING_TONES_VAL));
-      buffer.append(Polylist.list(DEFAULT_DRAWING_MUTED,     DDM_VAL));
-      buffer.append(Polylist.list(ALWAYS_USE_BUTTONS,        DEFAULT_ALWAYS_USE_BUTTONS));
-      buffer.append(Polylist.list(CREATE_ROADMAP,            CR_VAL));
-      buffer.append(Polylist.list(MIDI_IN,                   DEFAULT_MIDI_IN));      
-      buffer.append(Polylist.list(MIDI_OUT,                  DEFAULT_MIDI_OUT));      
-      buffer.append(Polylist.list(MIDI_ECHO,                 DEFAULT_MIDI_ECHO));      
-      buffer.append(Polylist.list(RECENT_STYLE_FILE,         DEFAULT_RECENT_STYLE_FILE));      
-      return buffer.toPolylist();
-    }
+//  public static Polylist initialPrefs()
+//    {
+//      PolylistBuffer buffer = new PolylistBuffer();
+//      
+//      buffer.append(Polylist.list(ADV_CACHE_SIZE,            ACS_VAL));
+//      buffer.append(Polylist.list(ADV_CACHE_ENABLED,         ACE_VAL));
+//      buffer.append(Polylist.list(DEFAULT_LOAD_STAVE,        DLS_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MELODY_INSTRUMENT, DMI_VAL));
+//      buffer.append(Polylist.list(DEFAULT_CHORD_INSTRUMENT,  DCI_VAL));
+//      buffer.append(Polylist.list(DEFAULT_BASS_INSTRUMENT,   DBI_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MIXER_ALL,         DMA_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MIXER_ENTRY,       DME_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MIXER_BASS,        DMB_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MIXER_CHORDS,      DMC_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MIXER_DRUMS,       DMD_VAL));
+//      buffer.append(Polylist.list(DEFAULT_MIXER_MELODY,      DMM_VAL));
+//      buffer.append(Polylist.list(DEFAULT_STYLE,             DS_VAL));
+//      buffer.append(Polylist.list(DEFAULT_TEMPO,             DT_VAL));
+//      buffer.append(Polylist.list(DEFAULT_VOCAB_FILE,        DVF_VAL));
+//      buffer.append(Polylist.list(DEFAULT_GRAMMAR_FILE,      DVF_GRAMMAR_VAL));
+//      buffer.append(Polylist.list(DEFAULT_STYLE_DIRECTORY,   DSD_VAL));
+//      buffer.append(Polylist.list(VIS_ADV_COMPONENTS,        VAC_VAL));
+//      buffer.append(Polylist.list(CHORD_DIST_ABOVE_ROOT,     CDAR_VAL));
+//      buffer.append(Polylist.list(DEFAULT_CHORD_FONT_SIZE,   DEFAULT_CHORD_FONT_SIZE_VALUE));
+//      buffer.append(Polylist.list(MAX_NOTES_IN_VOICING,      MNIV_VAL));
+//      buffer.append(Polylist.list(NOTE_COLORING,             NC_VAL));
+//      buffer.append(Polylist.list(SHOW_TRACKING_LINE,        STL_VAL));
+//      buffer.append(Polylist.list(TRACKER_DELAY,             TD_VAL));
+//      buffer.append(Polylist.list(DRAWING_TONES,             DRAWING_TONES_VAL));
+//      buffer.append(Polylist.list(DEFAULT_DRAWING_MUTED,     DDM_VAL));
+//      buffer.append(Polylist.list(ALWAYS_USE_BUTTONS,        DEFAULT_ALWAYS_USE_BUTTONS));
+//      buffer.append(Polylist.list(CREATE_ROADMAP,            CR_VAL));
+//      buffer.append(Polylist.list(MIDI_IN,                   DEFAULT_MIDI_IN));      
+//      buffer.append(Polylist.list(MIDI_OUT,                  DEFAULT_MIDI_OUT));      
+//      buffer.append(Polylist.list(MIDI_ECHO,                 DEFAULT_MIDI_ECHO));      
+//      buffer.append(Polylist.list(RECENT_STYLE_FILE,         DEFAULT_RECENT_STYLE_FILE));      
+//      return buffer.toPolylist();
+//    }
   
   /**
  * Parses into from string, defaulting to specified value if parsing fails

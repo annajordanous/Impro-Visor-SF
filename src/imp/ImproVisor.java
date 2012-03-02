@@ -589,7 +589,8 @@ public static File getPrefsFile()
     
 public static File getGrammarFile()
   {
-  return new File(getGrammarDirectory(), "My.grammar"); 
+  return new File(getGrammarDirectory(), 
+          Preferences.getPreference(Preferences.DEFAULT_GRAMMAR_FILE)); 
   }
      
 public static File getRecentFilesFile()

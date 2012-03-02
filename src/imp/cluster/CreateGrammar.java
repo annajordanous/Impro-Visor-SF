@@ -1212,39 +1212,6 @@ public class CreateGrammar implements imp.Constants {
         return averagePoint;
     }
 
-        /* Checks if every line in a file has correct parentheses
-     * Useful for checking for errors in grammar files
-     */ 
-    
-    public static void parenCheck(String inFile) {
-        try {
-            inFile = inFile.replace(imp.Directories.accumulatedProductions, "My.grammar");
-            File f = new File(inFile);
-
-            FileReader rd = new FileReader(f);
-            char[] buf = new char[(int) f.length()];
-            rd.read(buf);
-            String input = new String(buf);
-            String[] rules = input.split("\n");
-            
-            for(int i = 0; i < rules.length; i++) {
-                String current = rules[i];
-                int count = 0;
-                for(int j = 0; j < current.length(); j++) {
-                    if(current.charAt(j) == '(') count++;
-                    if(current.charAt(j) == ')') count--;
-                }
-                //System.out.println(count);
-                if(count != 0) {
-                    System.out.println(count + ": " + current);
-                }
-            }
-    }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    
+  
 }
 

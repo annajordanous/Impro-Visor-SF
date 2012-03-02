@@ -7441,12 +7441,14 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="notateGrammarMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Grammar: My"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="getDefaultGrammarName()" type="code"/>
+            </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notateGrammarMenuActionPerformed"/>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="notateGrammarMenuStateChanged"/>
             <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="notateGrammarMenuMenuSelected"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notateGrammarMenuActionPerformed"/>
           </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="preferencesMenu">
