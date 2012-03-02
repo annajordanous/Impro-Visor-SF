@@ -775,7 +775,8 @@ public class Notate
     ADVICE,
     LEADSHEET_SAVED,
     STYLE_EDIT,
-    STYLE_SAVED
+    STYLE_SAVED,
+    EDIT_LEADSHEET
     }
 
   /**
@@ -9864,6 +9865,7 @@ public void setStatus(String text)
     statusMenu.setText(text); //programStatusTF.setText(text);
     statusMenu.setOpaque(true);
     statusMenu.setBackground(Color.green);
+    statusMenu.repaint();
   }
 
 
@@ -9891,8 +9893,45 @@ public void setMode(Mode mode)
       }
 
    this.mode = mode;
-    
-   repaintAndStaveRequestFocus();
+   
+   switch( mode )
+      {
+        case NORMAL:
+            setStatus("Enter chords or melody, open file, etc.");
+            break;
+        case RECORDING:
+            setStatus("Play notes in real-time on a MIDI instrument.");
+            break;
+        case STEP_INPUT:
+            setStatus("Step-enter notes on a MIDI instrument.");
+            break;
+        case DRAWING:
+            setStatus("Draw notes with the mouse (set slots first).");
+            break;
+        case GENERATING:
+            setStatus("Generating melody");
+            break;      
+        case GENERATED:
+            setStatus("Melody generated");
+            break;         
+        case ROADMAP:
+            setStatus("Creating Roadmap");
+            break;      
+        case ADVICE:
+            setStatus("Select Advice.");
+            break;
+        case LEADSHEET_SAVED:
+            setStatus("Leadsheet Saved");
+            break;
+        case STYLE_EDIT:
+            setStatus("Editing Style");
+            break;
+        case EDIT_LEADSHEET:
+            setStatus("Edit leadsheet textually");
+            break;
+       }
+
+   //repaintAndStaveRequestFocus();
    }
 
 public void setNormalMode()
@@ -11600,7 +11639,9 @@ private void updateTempoFromTextField()
     private void openLeadsheetEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openLeadsheetEditorMIActionPerformed
 
     {//GEN-HEADEREND:event_openLeadsheetEditorMIActionPerformed
-        // center dialog only the first time it is shown
+        setMode(Mode.EDIT_LEADSHEET);
+         
+      // center dialog only the first time it is shown
         
         if(!initLocationLeadsheetEditor) {
             
@@ -23463,8 +23504,6 @@ public void roadMapThisAnalyze()
     score.toRoadMapFrame(roadmapFrame);
     roadmapFrame.setRoadMapTitle(getTitle());
     roadmapFrame.makeVisible(true);
-
-    setNormalStatus();
     setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     staveRequestFocus();
   }
@@ -23476,6 +23515,7 @@ public void roadMapThisAnalyze()
 
 public void openEmptyRoadmap()
   {
+    setMode(Mode.ROADMAP);
     establishRoadMapFrame();
     roadmapFrame.setRoadMapTitle("Untitled");
     roadmapFrame.makeVisible(false);

@@ -677,6 +677,10 @@ public class RoadMapPanel extends JPanel {
     
     private void setPanelSize()
     {
+        if( buffer == null ) 
+          {
+            return;
+          }
         int width = settings.getCutoff() + settings.xOffset;
         int height = settings.getLineOffset()*numLines + settings.yOffset;
         int maxWidth = buffer.getWidth(null);
@@ -686,8 +690,7 @@ public class RoadMapPanel extends JPanel {
             width = maxWidth;
         if(height > maxHeight)
             height = maxHeight;
-        setPreferredSize(
-                new Dimension(width, height));
+        setPreferredSize(new Dimension(width, height));
         revalidate();
     }
     

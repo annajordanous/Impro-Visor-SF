@@ -861,42 +861,7 @@ public boolean requestFocusInWindow()
       {
         notate.setStatus("Select Advice.");
       }
-    else
-      {
-    switch( notate.getMode() )
-      {
-        case NORMAL:
-            notate.setStatus("Enter chords or melody, open file, etc.");
-            break;
-        case RECORDING:
-            notate.setStatus("Play notes in real-time on a MIDI instrument.");
-            break;
-        case STEP_INPUT:
-            notate.setStatus("Step-enter notes on a MIDI instrument.");
-            break;
-        case DRAWING:
-            notate.setStatus("Draw notes with the mouse (set slots first).");
-            break;
-        case GENERATING:
-            notate.setStatus("Generating melody");
-            break;      
-        case GENERATED:
-            notate.setStatus("Melody generated");
-            break;         
-        case ROADMAP:
-            notate.setStatus("Creating Roadmap");
-            break;      
-        case ADVICE:
-            notate.setStatus("Select Advice.");
-            break;
-        case LEADSHEET_SAVED:
-            notate.setStatus("Leadsheet Saved");
-            break;
-        case STYLE_EDIT:
-            notate.setStatus("Editing Style");
-            break;        }
 
-      }
     boolean result = true; //super.requestFocusInWindow(); This messes things up.
     Trace.log(2, "stave has focus");
     return result;

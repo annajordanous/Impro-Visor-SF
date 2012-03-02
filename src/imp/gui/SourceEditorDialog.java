@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,7 +21,7 @@
 package imp.gui;
 
 import imp.com.*;
-import imp.data.*;
+import imp.data.Score;
 import imp.roadmap.RoadMapFrame;
 import imp.util.BasicEditor;
 
@@ -71,11 +70,13 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
     }
 
     private String title = "";
+    @Override
     public void setTitle(String title) {
         this.title = title;
         super.setTitle(titlePrefix + title);
     }
     
+    @Override
     public String getTitle() {
         return title;
     }
@@ -200,7 +201,10 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
     //used when calling the grammar to editor button automatically from Notate
     public void performEditorToSourceButton(java.awt.event.ActionEvent evt) {
         editorToSourceButtonActionPerformed(evt);
+
     }
+    
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editorToSourceButton;

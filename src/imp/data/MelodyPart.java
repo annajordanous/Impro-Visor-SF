@@ -264,7 +264,6 @@ public class MelodyPart
       // cut the note length to correct length
       setRest(slotIndex + origLength);
       }
-    return;
     }
 
   /**
@@ -459,6 +458,7 @@ public class MelodyPart
    * Returns an exact copy of this Part
    * @return Part   copy
    */
+  @Override
   public MelodyPart copy()
     {
     Trace.log(3, "copying melody part of size " + size);
@@ -515,8 +515,8 @@ public class MelodyPart
         try {
             prevIndex = this.getPrevIndex(index);
         } catch (Exception e) {
-            System.out.println("index: " + index);
-            e.printStackTrace();
+            System.out.println("error in MelodyPart.getPitchSounding: index: " + index);
+            //e.printStackTrace();
         }
         Note prevNote = this.getNote(prevIndex);
         if (prevNote.isRest()) {
@@ -1222,6 +1222,8 @@ public class MelodyPart
    * @param last      the last slot in the range
    * @return MelodyPart     the MelodyPart that contains the extracted chunk
    */
+  
+  @Override
   public MelodyPart extract(int first, int last)
     {
     //System.out.println("extract melody from " + first + " to " + last);
@@ -1431,7 +1433,7 @@ public class MelodyPart
  }
   
      /**
-     * 
+     * The only current use is in LickgenFrame.
      * @param selectionStart
      * @param numSlots
      * @returns whether a melody is empty from selectionStart to selectionStart + numSlots
@@ -1468,9 +1470,10 @@ public class MelodyPart
         return true;
     }
  
+ @Override
  public String toString()
   {
-  StringBuffer buffer = new StringBuffer();
+  StringBuilder buffer = new StringBuilder();
   
   int n = slots.size();
   
