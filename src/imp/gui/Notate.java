@@ -7604,6 +7604,9 @@ public class Notate
         scoreTab.setBackground(new java.awt.Color(255, 255, 255));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                scoreTabMousePressedHandler(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 mouseEnteredTabPanel(evt);
             }
@@ -9908,7 +9911,7 @@ public void setMode(Mode mode)
    switch( mode )
       {
         case NORMAL:
-            setStatus("Play, Enter chords or melody, Open file, etc.");
+            setStatus("Play, Enter chords & melody, Open file, etc.");
             break;
         case RECORDING:
             setStatus("Play notes in real-time on a MIDI instrument.");
@@ -20961,6 +20964,11 @@ private void generationLeadSpinnerChanged(javax.swing.event.ChangeEvent evt)//GE
   {//GEN-HEADEREND:event_generationLeadSpinnerChanged
     lickgenFrame.setGap(Double.parseDouble(generationGapSpinner.getValue().toString()));
   }//GEN-LAST:event_generationLeadSpinnerChanged
+
+private void scoreTabMousePressedHandler(java.awt.event.MouseEvent evt)//GEN-FIRST:event_scoreTabMousePressedHandler
+  {//GEN-HEADEREND:event_scoreTabMousePressedHandler
+
+  }//GEN-LAST:event_scoreTabMousePressedHandler
 
 public void setShowConstructionLinesAndBoxes(boolean value)
   {

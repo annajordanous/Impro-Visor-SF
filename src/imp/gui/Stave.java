@@ -4237,7 +4237,7 @@ private int drawTimeSig(Graphics g)
         nine, zero
       };
 
-    if( metre[0] <= 12 )
+    if( metre[0] <= 12 && metre[0] > 0 )
       {
         // If the top number is 10 or greater, we need to draw the digits individually
         if( metre[0] > 9 )
@@ -5701,10 +5701,12 @@ public void setHeight(int height)
 
 public void mouseClicked(MouseEvent e)
   {
+
   }
 
 public void mousePressed(MouseEvent e)
   {
+
   }
 
 public void mouseReleased(MouseEvent e)
@@ -5870,4 +5872,5 @@ public int getNumMeasures()
       }
     return sum;
   }
+
 }

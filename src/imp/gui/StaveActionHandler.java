@@ -42,8 +42,7 @@ import polya.Polylist;
  * @version 1.0, 11 July 2005
  */
 public class StaveActionHandler
-  implements Constants, MouseListener,
-  MouseMotionListener, KeyListener
+  implements Constants, MouseListener, MouseMotionListener, KeyListener
 {
 
 /**
@@ -172,12 +171,6 @@ private Note storedNote = null;
  * Indicades whether button1 has been clicked
  */
 private boolean button1Down = false;
-
-
-/**
- * Indicates if the last mouse click was in the note area
- */
-private boolean clickedInNoteArea = false;
 
 
 /**
@@ -1008,6 +1001,13 @@ protected void clearPasteFrom()
  */
 public void mousePressed(MouseEvent e)
  {
+     if( !inNoteArea(e) )
+    {
+      stave.unselectAll();
+      stave.repaint();
+      return;
+    }
+     
   stave.getCurvePoints()[e.getX()] = e.getY();
 
   if( notate.justPasted )
@@ -1041,7 +1041,7 @@ public void mousePressed(MouseEvent e)
    }
 
   // if you begin to select a group of notes
-  if( !selectingGroup && inNoteArea(e) && (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 
+  if( !selectingGroup && (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 
           && searchForBracket(e) == OUT_OF_BOUNDS )
    {
 
@@ -1071,7 +1071,7 @@ public void mousePressed(MouseEvent e)
    }
 
   // if the button was a left click and within the note area
-  if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 && inNoteArea(e) && !drawing )
+  if( (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0 && !drawing )
    {
 
     Trace.log(2, "clicked in note area");
@@ -1079,7 +1079,6 @@ public void mousePressed(MouseEvent e)
     // get the current line the mouse is on
     currentLine = getCurrentLine(e.getY());
 
-    clickedInNoteArea = true;
     clickedPosX = e.getX();
     clickedPosY = e.getY();
 
@@ -1211,14 +1210,11 @@ public void mousePressed(MouseEvent e)
      }
    }
   // if the user has a 2+ button mouse and right clicks
-  else if( (e.getModifiersEx()& MouseEvent.BUTTON3_DOWN_MASK) != 0 
-          && inNoteArea(e) )
+  else if( (e.getModifiersEx()& MouseEvent.BUTTON3_DOWN_MASK) != 0 )
    {
 
     // get the current line the mouse is on
     currentLine = getCurrentLine(e.getY());
-
-    clickedInNoteArea = true;
 
     // Open a pop-up menu if plain right clicking
     notate.popupMenu.show(e.getComponent(), e.getX(), e.getY());
@@ -2024,7 +2020,6 @@ public void mouseReleased(MouseEvent e)
   selectedBeat = OUT_OF_BOUNDS;
   selectedIndex = OUT_OF_BOUNDS;
 
-  clickedInNoteArea = false;
   clickedOnCstrLine = false;
   clickedOnBracket = false;
 
@@ -2444,13 +2439,18 @@ private int getCurrentLine(int y)
 boolean inNoteArea(MouseEvent e)
  {
   // the maximum x
-  int lastX = stave.STAVE_WIDTH + 20;
+  int lastX = stave.STAVE_WIDTH;
+  
   // the maximum y
-  int lastY = stave.headSpace
-    + ((stave.staveLine + 1) * stave.lineSpacing);
+  int lastY = stave.headSpace + ((stave.staveLine + 1) * stave.lineSpacing);
 
-  // get the current line the mouse is on
+  int extraSpaceAtBottom = 40;
+  
+/* Not sure why this was needed.
+ * // get the current line the mouse is on
   int currentLine = getCurrentLine(e.getY());
+
+
 
   // get the last slot index
   int i;
@@ -2462,7 +2462,6 @@ boolean inNoteArea(MouseEvent e)
    {
     i = 0;
    }
-
   // a loop to find the last slot that holds a note
   if( currentLine == stave.staveLine && stave.cstrLines.length > 0 )
    {
@@ -2472,8 +2471,15 @@ boolean inNoteArea(MouseEvent e)
      }
     lastX = stave.cstrLines[i].getX() + 50;
    }
+*/
+  
+  boolean result =  (e.getX() >= stave.leftMargin)
+                 && (e.getX() <= lastX) 
+                 && (e.getY() < lastY + extraSpaceAtBottom);
+  
+  //System.out.println("inNoteArea = " + result );
 
-  return ((e.getX() <= lastX + 40) && (e.getY() < lastY + 60));
+  return result;
  }
 
 
