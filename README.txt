@@ -1,6 +1,8 @@
 
 Welcome to Impro-Visor (Improvisation Advisor) Version 5.09,
-from Prof. Bob Keller at Harvey Mudd College.
+from Prof. Bob Keller at Harvey Mudd College. 
+
+Release notes for this version may be found at the end.
 
 If you need help, please post to the Yahoo! impro-visor user group:
 
@@ -75,4 +77,128 @@ Claremont, CA 91711
 
 keller@cs.hmc.edu
 
+===============================================================================
 
+Release notes for Impro-Visor 5.09
+
+-------------------------------------------------------------------------------
+Added a new "push" element to style specifications, so that a chord can be
+struck before it appears in the leadsheet. The swing style is the only one
+currently using this feature. The former swing style has been renamed 
+swing-square-comp.
+
+-------------------------------------------------------------------------------
+The Section and Style Settings have been reworked. Now a style for any section
+other than the first can be specified as "Use style of previous section".
+It will appear as an asterisk in the style position. The point of this
+feature is that the style of an entire leadsheet can be changed without
+changing the styles of each section individually. This is important for
+roadmaps, since they will tend to use more sections to indicate harmonic
+phrasing.
+
+-------------------------------------------------------------------------------
+Some problems with MIDI selection have been worked out. It is believed that
+changing MIDI instruments will no longer wedge the program. 
+
+NOTE: Any MIDI instruments used must be in place and running before launching 
+Impro-Visor. This includes software and hardware instruments.
+
+-------------------------------------------------------------------------------
+Preference settings have been changed to 1-click. Icons for the various
+preferences are found at the right end of the icon tool bar. They are,
+left to right:
+
+    Global settings (a picture of the Earth globe)
+
+    Leadsheet settings (a leadsheet image)
+
+    Chorus settings(a treble clef and time signature)
+
+    Style and section settings (stylized note symbols)
+
+    MIDI settings (a MIDI connector cross-section)
+
+    Contour drawing settings (a pencil)
+
+Except for MIDI, these are the same icons as in previous versions. Once the
+preference window is opened, the icons inside can be used to select the
+various types of preference, as before.
+
+-------------------------------------------------------------------------------
+In the Roadmap window, the option of selecting play-on-click. This means
+that clicking a brick will immediately play that brick.
+
+-------------------------------------------------------------------------------
+The number of measures per line for roadmaps is now saved with the leadsheet.
+The default is 8. Currently this number can only be set by starting with a
+roadmap and creating a leadsheet, or by editing the text of the leadsheet
+using the textual editor (or an external editor).
+
+-------------------------------------------------------------------------------
+The small status indicator in the tool bar has been replaced with text
+having green background in the uppermost menu-bar. Some improvements have
+been made in the information conveyed by the status indicator.
+
+-------------------------------------------------------------------------------
+The button for toggling note beaming has been replaced with a checkbox in the
+View Menu.
+
+-------------------------------------------------------------------------------
+A Recur button and Lead Beats spinner have been added next the Generate button.
+We are gradually moving toward the ability to have Impro-Visor generate
+choruses indefinitely. Currently this works by generating the next chorus 
+just before the current chorus ends. The default setting is 1.05 beats before.
+This setting is touchy, in that if it is not just right, the next chorus will
+start too early or too late. The amount of beats required will depend on the
+tempo and the complexity of the generating grammar.
+
+-------------------------------------------------------------------------------
+When a selection or chorus is being played, the slot construction lines are
+temporarily removed. The chord symbols are still shown in red.
+
+-------------------------------------------------------------------------------
+A few new grammars have been added, including some for trading twos and eights,
+with either the computer first ("My") or the player first ("Your"). I also
+added a "Woody Shaw" grammar and a "Wes Montgomery" grammar derived from one
+each of their respective solos. Also, there is a Chord+Approach grammar that
+yields more "inside" melodies, as it does not introduce color tones 
+intentionally.
+
+-------------------------------------------------------------------------------
+Impro-Visor will now remember the last grammar used, and re-open with that
+grammar.
+
+-------------------------------------------------------------------------------
+Impro-Visor will now remember the last style edited, and re-open the style
+editor with that style.
+
+-------------------------------------------------------------------------------
+Fixed a bug in interpreting the textual leadsheet notation, wherein multiple
+dots on a note were wrongly interpreted. For example c2.. is now equivalent to
+c2+4+8
+
+-------------------------------------------------------------------------------
+Fixed a bug in the style editor wherein the checkboxes were being ignored.
+(The checkboxes are an indication not to save the instruments of those rows.)
+
+-------------------------------------------------------------------------------
+Fixed a bug in the lick generator wherein parameters of the grammar, such
+as pitch range, were not being set unless the lick generator control panel
+is opened.
+
+-------------------------------------------------------------------------------
+The recovery from a bad leadsheet file is somewhat improved. It is possible 
+to escape the endless cycle caused by restarting with a bad leadsheet.
+
+-------------------------------------------------------------------------------
+The number of bars per line was increased from 15 to 64.
+
+-------------------------------------------------------------------------------
+The keyboard display, if used, now continues to update after the first
+chorus.
+
+-------------------------------------------------------------------------------
+
+End of release notes for Impro-Visor 5.09
+
+-------------------------------------------------------------------------------
