@@ -82,6 +82,23 @@ keller@cs.hmc.edu
 Release notes for Impro-Visor 5.09
 
 -------------------------------------------------------------------------------
+Windows users: You may need to set your MIDI settings (identified by the
+black circular icon) in Impro-Visor the first time you use this release. Use
+
+    Microsoft GS Wavetable SW Synth  
+if not using other MIDI devices. Use
+
+    Microsoft MIDI Mapper
+
+if using other MIDI devices. The setting
+
+    Java Sound Synthesizer 
+
+might not work.
+
+Impro-Visor should remember your setting the next time you launch.
+
+-------------------------------------------------------------------------------
 Added a new "push" element to style specifications, so that a chord can be
 struck before it appears in the leadsheet. The swing style is the only one
 currently using this feature. The former swing style has been renamed 
