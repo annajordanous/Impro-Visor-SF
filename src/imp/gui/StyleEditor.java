@@ -305,10 +305,14 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
       {
         /*
          * Control down implies select all percussion instruments and play
-         * entire pattern
+         * entire pattern, unless shift is also down, in which case we are
+         * transferring to pianoroll.
          */
 
-        playPercussionColumn(colIndex);
+        if( !shiftDown )
+          {
+          playPercussionColumn(colIndex);           
+          }
       }
     else
       {
@@ -372,11 +376,6 @@ void playPercussionColumn(int colIndex)
       }
   }
 
-
-public void playPercussionColumn()
-  {
-    playPercussionColumn(selectedColumn);
-  }
 
 /**
  * Play the chord pattern in the designated column.

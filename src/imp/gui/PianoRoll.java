@@ -1895,13 +1895,9 @@ public void setLooping(boolean value)
 
 public void updatePlayable()
   {
-   //if( loopToggleButton.isSelected() )
-      {
-        //System.out.println("updatePlayable");
+  //System.out.println("updatePlayable");
         
-        Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
-
-      }
+  Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
   }
 
 
