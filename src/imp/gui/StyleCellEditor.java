@@ -155,7 +155,7 @@ public class StyleCellEditor
 
     // An editor component must be returned.
 
-    return new JTextField(styleEditor.setCell(StyleCellRenderer.NULL_DATA_RENDERING, row, column).toString());
+    return new JTextField(styleEditor.setCell(StyleCellRenderer.NULL_DATA_RENDERING, row, column, StyleEditor.SILENT).toString());
     }
 
   
@@ -268,16 +268,16 @@ public class StyleCellEditor
       String contents = editField.getText().trim();
 
       thing.setDisplayText(contents);
-      return styleEditor.setCell(editField.getText().toUpperCase(), row, column);
+      return styleEditor.setCell(editField.getText().toUpperCase(), row, column, StyleEditor.SILENT);
 
       }
     else if( beingEdited == null )
       {
-      return styleEditor.setCell("", row, column);
+      return styleEditor.setCell("", row, column, StyleEditor.SILENT);
 
       }
 
-    return styleEditor.setCell(editField.getText().toUpperCase(), row, column);
+    return styleEditor.setCell(editField.getText().toUpperCase(), row, column, StyleEditor.SILENT);
     }
 
   }

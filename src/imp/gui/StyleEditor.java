@@ -99,6 +99,10 @@ public class StyleEditor
   private int selectedColumn = 0;
 
   private boolean pianoRollTracking = false;
+  
+  static public final boolean PLAY = true;
+
+  static public final boolean SILENT = false;
 
 
    /**
@@ -2685,7 +2689,7 @@ public void playBassColumn()
         {
         if( getTableModel().isCellEditable(row, col) )
           {
-          setCell(EMPTY, row, col, false);
+          setCell(EMPTY, row, col, SILENT);
           }
         }
       }
@@ -2742,11 +2746,11 @@ public void playBassColumn()
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            setCell(((Polylist)first).toStringSansParens(), row, col, false);
+            setCell(((Polylist)first).toStringSansParens(), row, col, SILENT);
             }
           else
             {
-            setCell(first.toString(), row, col, false);
+            setCell(first.toString(), row, col, SILENT);
             }
           }
         rowIndex++;
@@ -2757,19 +2761,7 @@ public void playBassColumn()
       }
     }
 
-  /**
-   * The main interface for setting values in cells.
-   * This version plays the cell contents if playable.
-  @param text used to determine the contents of the cell
-  @param row row of the cell
-  @param column column of the cell
-  @return the object actually put in the cell
-   */
-  public Object setCell(String text, int row, int column)
-    {
-      return setCell(text, row, column, true);
-    }
-      
+ 
   /**
    * General interface for setting values in cells
   @param text used to determine the contents of the cell
@@ -5413,7 +5405,7 @@ public void playBassColumn()
     if( recentRows[0] >= 0 && recentColumns[0] >= 0 )
       {
       String revisedContent = styleTextField0.getText(); //.toUpperCase();
-      setCell(revisedContent, recentRows[0], recentColumns[0]);
+      setCell(revisedContent, recentRows[0], recentColumns[0], PLAY);
       updateCache(recentRows[0], recentColumns[0], revisedContent);
       }
 }//GEN-LAST:event_styleTextField0ActionPerformed
@@ -5423,7 +5415,7 @@ public void playBassColumn()
     if( recentRows[1] >= 0 && recentColumns[1] >= 0 )
       {
       String revisedContent = styleTextField1.getText(); //.toUpperCase();
-      setCell(revisedContent, recentRows[1], recentColumns[1]);
+      setCell(revisedContent, recentRows[1], recentColumns[1], PLAY);
       updateCache(recentRows[1], recentColumns[1], revisedContent);
     }
 }//GEN-LAST:event_styleTextField1ActionPerformed
@@ -5433,7 +5425,7 @@ public void playBassColumn()
      if( recentRows[2] >= 0 && recentColumns[2] >= 0 )
       {
       String revisedContent = styleTextField2.getText(); //.toUpperCase();
-      setCell(revisedContent, recentRows[2], recentColumns[2]);
+      setCell(revisedContent, recentRows[2], recentColumns[2], PLAY);
       updateCache(recentRows[2], recentColumns[2], revisedContent);
       }
 }//GEN-LAST:event_styleTextField2ActionPerformed
@@ -5490,11 +5482,11 @@ public void playBassColumn()
           if( first instanceof Polylist )
             {
             String contents = ((Polylist)first).toStringSansParens();
-            setCell(contents, row, col, false);
+            setCell(contents, row, col, SILENT);
             }
           else
             {
-            setCell(first.toString(), row, col, false);
+            setCell(first.toString(), row, col, SILENT);
             }
           }
         column = column.rest();
@@ -5560,7 +5552,7 @@ public void playBassColumn()
       for( int rowIndex = rows.length - 1; rowIndex >= 0; rowIndex-- )
         {
         int row = rows[rowIndex];
-        setCell("", row, col, false);
+        setCell("", row, col, SILENT);
         }
       }
     }
@@ -5744,7 +5736,7 @@ public void playBassColumn()
         {
         if( getTableModel().isCellEditable(row, col) )
           {
-          setCell(EMPTY, row, col, false);
+          setCell(EMPTY, row, col, SILENT);
           }
         }
       }
@@ -6021,7 +6013,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
             // A new row is starting.
 
             // Flush the pattern to the StyleEditor
-            setCell(patternBuffer.toString(), styleEditorRow, tableCol, false);
+            setCell(patternBuffer.toString(), styleEditorRow, tableCol, SILENT);
             patternBuffer = new StringBuilder();
 
             // Increment the row of the style editor
@@ -6060,7 +6052,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
       }
 
     // Final flush
-    setCell(patternBuffer.toString(), styleEditorRow, tableCol, false);
+    setCell(patternBuffer.toString(), styleEditorRow, tableCol, SILENT);
     
     pianoRoll.setColumnOut(col, styleName);
   }
@@ -6237,11 +6229,11 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            setCell(((Polylist)first).toStringSansParens(), row, col, false);
+            setCell(((Polylist)first).toStringSansParens(), row, col, SILENT);
             }
           else
             {
-            setCell(first.toString(), row, col, false);
+            setCell(first.toString(), row, col, SILENT);
             }
           }
         column = column.rest();
