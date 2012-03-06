@@ -551,8 +551,6 @@ public void paint(Graphics g)
         rowPatternLabel = new javax.swing.JLabel();
         rowPatternTF = new javax.swing.JTextField();
         bassEditorToggleButton1 = new javax.swing.JToggleButton();
-        loopDelayPanel = new javax.swing.JPanel();
-        loopDelaySlider = new javax.swing.JSlider();
         loopToggleButton = new javax.swing.JToggleButton();
         pianoRollMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
@@ -644,7 +642,7 @@ public void paint(Graphics g)
         barEditorFrame.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         barEditorContents.setEditable(false);
-        barEditorContents.setFont(new java.awt.Font("Dialog", 0, 14));
+        barEditorContents.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         barEditorContents.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         barEditorContents.setToolTipText("Bar contents (in the Style language)");
         barEditorContents.setMinimumSize(new java.awt.Dimension(200, 29));
@@ -1016,7 +1014,7 @@ public void paint(Graphics g)
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        cautionLabelForStylePatterns.setFont(new java.awt.Font("Lucida Grande", 1, 13));
+        cautionLabelForStylePatterns.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         cautionLabelForStylePatterns.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         cautionLabelForStylePatterns.setText("  Long vertical lines are beats.   Bass, Chord, and Percussion sections are independent, not linked together.");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1261,7 +1259,7 @@ public void paint(Graphics g)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         getContentPane().add(importExportPanel, gridBagConstraints);
 
-        playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Play Saved Pattern"));
+        playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Play Pattern as Saved"));
         playPanel.setMinimumSize(new java.awt.Dimension(200, 82));
         playPanel.setPreferredSize(new java.awt.Dimension(200, 82));
         playPanel.setLayout(new java.awt.GridBagLayout());
@@ -1354,31 +1352,8 @@ public void paint(Graphics g)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(bassEditorToggleButton1, gridBagConstraints);
 
-        loopDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Inter-Loop Delay"));
-        loopDelayPanel.setMinimumSize(new java.awt.Dimension(100, 50));
-        loopDelayPanel.setPreferredSize(new java.awt.Dimension(100, 50));
-        loopDelayPanel.setLayout(new java.awt.GridBagLayout());
-
-        loopDelaySlider.setMaximum(5000);
-        loopDelaySlider.setMinimum(500);
-        loopDelaySlider.setValue(2000);
-        loopDelaySlider.setMinimumSize(new java.awt.Dimension(200, 29));
-        loopDelaySlider.setPreferredSize(new java.awt.Dimension(200, 29));
-        loopDelaySlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                loopDelaySliderStateChanged(evt);
-            }
-        });
-        loopDelayPanel.add(loopDelaySlider, new java.awt.GridBagConstraints());
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(loopDelayPanel, gridBagConstraints);
-
         loopToggleButton.setBackground(DRUMSCOLOR);
-        loopToggleButton.setText("Loop Percussion");
+        loopToggleButton.setText("Loop Selected Percussion");
         loopToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loopToggleButton.setOpaque(true);
         loopToggleButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1900,11 +1875,6 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
 
     Playable playable = styleEditor.getPlayableFromRow(this, row);
 
-//    if( !looping )
-//      {
-//        ensureLoopThread(playable);
-//      }
-
     AbstractButton thisButton = rowButton[row];
 
     if( thisButton.isSelected() )
@@ -1921,53 +1891,40 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
     updatePlayable();
   }
 
-private void setLooping(boolean value)
+public void setLooping(boolean value)
   {
-    looping = value;
-    loopToggleButton.setSelected(value);
+  System.out.println("looping = " + value);
 
     Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
-    //ensureLoopThread(playable);
 
     if( value )
       {
-        playable.playMe(styleEditor.getSwingValue());
         loopToggleButton.setBackground(SELECTEDCOLOR);
         loopToggleButton.setText("<html><center>Stop Looping</center></html>");
+        loopToggleButton.setSelected(true);
+        styleEditor.setLooping(true);
+        playable.playMe(styleEditor.getSwingValue());
       }
     else
       {
         playable.stopPlaying();
+        styleEditor.setLooping(false);
         //loopPlayer.setPlaying(false);
         loopToggleButton.setBackground(DRUMSCOLOR);
         loopToggleButton.setText("<html><center>Loop Percussion</center></html>");
+        loopToggleButton.setSelected(false);
       }
   }
 
-//private void ensureLoopThread(Playable playable)
-//  {
-//    if( loopThread == null )
-//      {
-//        loopPlayer = new LoopPlayer(playable,
-//                                    styleEditor.getAccompanimentSwingValue(),
-//                                    msGap);
-//        loopThread = new Thread(loopPlayer);
-//        loopThread.start();
-//      }
-//    else
-//      {
-//        loopPlayer.setPlayable(playable);
-//      }
-//
-//  }
 
 public void updatePlayable()
   {
-    if( looping )
+   if( loopToggleButton.isSelected() )
       {
+        System.out.println("updatePlayable");
+        
         Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
 
- //       ensureLoopThread(playable);
       }
   }
 
@@ -1980,20 +1937,9 @@ private void loopToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//
 // Note that the entire array of rowButton is passed, so that the combination
 // can be discerened.
 
-Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
-
-//ensureLoopThread(playable);
-
     setLooping(loopToggleButton.isSelected());
 
 }//GEN-LAST:event_loopToggleButtonActionPerformed
-
-private void loopDelaySliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_loopDelaySliderStateChanged
-    if( looping )
-    {
-        loopPlayer.setGap(loopDelaySlider.getValue());
-    }
-}//GEN-LAST:event_loopDelaySliderStateChanged
 
 private void downDirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downDirectionActionPerformed
     // TODO add your handling code here:
@@ -2085,8 +2031,6 @@ PianoRollPanel getPanel()
     private javax.swing.JPanel importExportPanel;
     private javax.swing.JComboBox importFromColumnComboBox;
     private javax.swing.JTextField importFromColumnTF;
-    private javax.swing.JPanel loopDelayPanel;
-    private javax.swing.JSlider loopDelaySlider;
     private javax.swing.JToggleButton loopToggleButton;
     private javax.swing.JRadioButton nextToneButton;
     private javax.swing.JRadioButton noAccidental;

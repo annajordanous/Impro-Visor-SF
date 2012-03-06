@@ -321,9 +321,16 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
       }
   }
 
+  boolean looping = false;
+  
   public int getLoopValue()
     {
-      return -1;
+      return looping ? -1 : 0;
+    }
+  
+  public void setLooping(boolean value)
+    {
+    looping = value;
     }
   
   /**
@@ -1969,7 +1976,10 @@ public void playBassColumn()
    **/
   public boolean isPlayed()
     {
-    return playToggle.isSelected();
+    boolean value = playToggle.isSelected() && !isExporting();
+    
+    System.out.println("isPlayed = " + value);
+    return value;
     }
 
   /**
@@ -5420,7 +5430,10 @@ public void playBassColumn()
       int rows[] = styleTable.getSelectedRows();
       pasteRows(rows);
 }//GEN-LAST:event_pasteRowButtonActionPerformed
-
+  public void setMuted(boolean value)
+    {
+      playToggle.setSelected(value);
+    }
   /**
    * Paste copied cells, taking care not to exceed boundaries of the table.
    */
@@ -5736,7 +5749,7 @@ public void playBassColumn()
     }
 
   PianoRoll pianoRoll = null;
-          
+        
   /**
    * Extract the first selected column to the piano roll.
    * If there is no column selected, return silently.
@@ -5745,11 +5758,13 @@ public void playBassColumn()
    */
   public void exportColumnToPianoRoll(StyleEditor styleEditor, int cols[])
   {
+    
     if( pianoRoll == null )
       {
       pianoRoll = new PianoRoll(this, getNewXlocation(), getNewYlocation());
       }    
     exportColumnToPianoRoll(styleEditor, cols, pianoRoll);
+        
   }
           
   /**
@@ -5772,13 +5787,16 @@ public void playBassColumn()
 
   public void exportColumnToPianoRoll(int col, PianoRoll pianoRoll)
     {
+     
     int tableCol = col+1;
 
     if( tableCol < StyleTableModel.FIRST_PATTERN_COLUMN )
     {
         return; // can't extract from row stubs
     }
-
+    
+    setExporting(true);
+    
     pianoRoll.clearBars();
 
     int pianoRollRow = 0; // add bars to this row
@@ -5803,6 +5821,8 @@ public void playBassColumn()
 
     pianoRoll.setColumnIn(col, styleName);
     pianoRoll.setColumnOut(col, styleName);
+
+    setExporting(false);
 
     pianoRoll.display();
     }
@@ -5908,8 +5928,8 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
       {
         //System.out.println("ob = " + ob);
 
-        BassPatternElement element = BassPatternElement.makeBassPatternElement(
-            ob);
+        BassPatternElement element 
+                = BassPatternElement.makeBassPatternElement(ob);
 
         if( element != null )
           {
@@ -6000,12 +6020,15 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
         int gap = bar.getStartSlot() - nextSlot;
         if( gap > 0 )
           {
-            patternBuffer.append(REST_STRING + Note.getDurationString(gap) + " ");
+            patternBuffer.append(REST_STRING);
+            patternBuffer.append(Note.getDurationString(gap));
+            patternBuffer.append(" ");
           }
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
-          patternBuffer.append(bar.getText() + " ");
+          patternBuffer.append(bar.getText());
+          patternBuffer.append(" ");
           nextSlot = bar.getEndSlot() + 1;
           }
       }
@@ -6048,12 +6071,15 @@ public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
         int gap = bar.getStartSlot() - nextSlot;
         if( gap > 0 )
           {
-            patternBuffer.append(REST_STRING + Note.getDurationString(gap) + " ");
+            patternBuffer.append(REST_STRING);
+            patternBuffer.append(Note.getDurationString(gap));
+            patternBuffer.append(" ");
           }
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
-          patternBuffer.append(bar.getText() + " ");
+          patternBuffer.append(bar.getText());
+          patternBuffer.append(" ");
           nextSlot = bar.getEndSlot() + 1;
           }
         }
@@ -6489,9 +6515,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
       
       for(WindowMenuItem w : WindowRegistry.getWindows())
       {
-        
         windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-        
       }
       
       windowMenu.repaint();
@@ -6768,6 +6792,20 @@ public void stopPlaying()
       playBtn.setEnabled(true);
 
       notate.stopPlaying();
+  }
+
+boolean exporting;
+
+private void setExporting(boolean value)
+  {
+    System.out.println("exporting = " + value);
+    exporting = value;
+    pianoRoll.setLooping(false);
+  }
+
+private boolean isExporting()
+  {
+    return exporting;
   }
 
 }
