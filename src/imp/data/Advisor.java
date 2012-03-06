@@ -1811,7 +1811,7 @@ public static Style getStyle(String name)
   if( Style.noStyles() )
     {
     ErrorLog.log(ErrorLog.SEVERE,
-            "There are no styles. This could be a problem.");
+            "There are no styles. This will be a major problem.");
     return null;
     }
   
@@ -1833,7 +1833,7 @@ public static Style getStyle(String name)
     if( style == null )
       {
       ErrorLog.log(ErrorLog.SEVERE,
-              "Default style '" + defaultStyle + "' not found. This could be a problem.");
+              "Default style '" + defaultStyle + "' not found. This will be a problem.");
       return null;
       }
     }

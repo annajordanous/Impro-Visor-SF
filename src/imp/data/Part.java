@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import imp.util.ErrorLog;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.BufferedWriter;
@@ -860,6 +861,11 @@ public class Part implements Constants, Serializable {
                 previousStyle = s;
                 }
                         
+            if( s == null )
+              {
+                ErrorLog.log(ErrorLog.FATAL, "It will not be possible to continue");
+              }
+            
             double swingValue = s.getSwing();
 
             //System.out.println("i = " + i + ", style = " + s + " swing = " + swingValue);

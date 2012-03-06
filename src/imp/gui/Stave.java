@@ -2985,7 +2985,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
 
             for( int j = 0; j <= tupletValue; ++j )
               {
-                int index = 0;
+                int index;
 
                   /* Not sure why there was a conditional here.
                   

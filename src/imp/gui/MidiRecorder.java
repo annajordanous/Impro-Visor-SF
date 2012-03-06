@@ -35,209 +35,280 @@ import javax.sound.midi.Sequencer;
  * @author Martin Hunt. Robert Keller added countInOffset stuff 7/12/2010
  */
 
-public class MidiRecorder implements Constants, Receiver {
-    Notate notate;
-    Score score;
-    Sequencer sequencer = null;
-    int countInOffset;
-    
-    public MidiRecorder(Notate notate, Score score) {
-        this.notate = notate;
-        this.score = score;
-    }
-    
-    
-    double latency = 0;
-    public double getLatency() {
-        return latency;
-    }
-    public void setLatency(double latency) {
-        this.latency = latency;
-    }
-    
-    public long getTime() {
-        if(sequencer != null && sequencer.isRunning()) {
-            return sequencer.getMicrosecondPosition();
-        } else {
-            notate.stopRecording();
-            return -1;
-        }
-    }
-    
-    public long getTick() {
-        if(sequencer != null && sequencer.isRunning()) {
-            int res = sequencer.getSequence().getResolution();                  // ticks per beat
-            double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
-            long latencyTicks = Math.round(bpms * res * latency);
+public class MidiRecorder implements Constants, Receiver
+{
+Notate notate;
+Score score;
+Sequencer sequencer = null;
+int countInOffset;
+long noteOn = 0, noteOff = 0, lastEvent = 0;
+boolean notePlaying = false;
+int prevNote = 0;
+int resolution;
+static final int SNAPTO = BEAT / 4;
 
-            return sequencer.getTickPosition() - latencyTicks;
-        } else {
-            notate.stopRecording();
-            return -1;
-        }
-    }
+double latency = 0;
 
-    /**
-     * This function is called to send a MIDI message to this object for processing
-     */
-    public void send(MidiMessage message, long timeStamp) {
-        byte[] m = message.getMessage();
-        int note, channel, velocity;
-        int highNibble = (m[0] & 0xF0) >> 4;
-        int lowNibble = m[0] & 0x0F;
+public MidiRecorder(Notate notate, Score score)
+  {
+    this.notate = notate;
+    this.score = score;
+  }
 
-        switch(highNibble) {
-            case 9: // note on
-                lastEvent = getTick();
-                if(lastEvent < 0)
-                    return;
-                
-                channel = lowNibble;
-                note = m[1];
-                velocity = m[2];
-                if(velocity == 0) { // this is actually a note-off event, done to allow 'running status': http://www.borg.com/~jglatt/tech/midispec/run.htm
-                    handleNoteOff(note, velocity, channel);
-                } else {
-//                    System.out.println("Note: " + note + "; Velocity: " + velocity + "; Channel: " + channel);
-                    handleNoteOn(note, velocity, channel);
-                }
+public double getLatency()
+  {
+    return latency;
+  }
+
+public void setLatency(double latency)
+  {
+    this.latency = latency;
+  }
+
+public long getTime()
+  {
+    if( sequencer != null && sequencer.isRunning() )
+      {
+        return sequencer.getMicrosecondPosition();
+      }
+    else
+      {
+        notate.stopRecording();
+        return -1;
+      }
+  }
+
+public long getTick()
+  {
+    if( sequencer != null && sequencer.isRunning() )
+      {
+        int res = sequencer.getSequence().getResolution();                  // ticks per beat
+        double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
+        long latencyTicks = Math.round(bpms * res * latency);
+
+        return sequencer.getTickPosition() - latencyTicks;
+      }
+    else
+      {
+        notate.stopRecording();
+        return -1;
+      }
+  }
+
+    
+void start()
+  {
+    this.sequencer = notate.getSequencer();
+    resolution = sequencer.getSequence().getResolution();
+
+    while( (noteOn = getTick()) < 0 )
+      {
+      }
+
+    noteOff = noteOn = getTick();
+    notePlaying = false;
+    notate.setCurrentSelectionStartAndEnd(0);
+
+    countInOffset = score.getCountInOffset();
+  }
+
+
+/**
+ * This function is called by others to send a MIDI message to this object for
+ * processing.
+ */
+    
+public void send(MidiMessage message, long timeStamp)
+  {
+    //System.out.println("received " + MidiFormatting.midiMessage2polylist(message));
+
+    byte[] m = message.getMessage();
+    int note, channel, velocity;
+    int highNibble = (m[0] & 0xF0) >> 4;
+    int lowNibble = m[0] & 0x0F;
+
+    switch( highNibble )
+      {
+        case 9: // note on
+            lastEvent = getTick();
+            if( lastEvent < 0 )
+              {
                 break;
-            case 8: // note off
-                lastEvent = getTick();
-                if(lastEvent < 0)
-                    return;
+              }
+
+            channel = lowNibble;
+            note = m[1];
+            velocity = m[2];
+            if( velocity == 0 )
+              {
+                // this is actually a note-off event, done to allow 
+                // 'running status': 
+                // http://www.borg.com/~jglatt/tech/midispec/run.htm
                 
-                channel = lowNibble;
-                note = m[1];
-                velocity = m[2];
                 handleNoteOff(note, velocity, channel);
+              }
+            else
+              {
+//              System.out.println("Note: " + note + "; Velocity: " + velocity + "; Channel: " + channel);
+                handleNoteOn(note, velocity, channel);
+              }
+            break;
+            
+        case 8: // note off
+            lastEvent = getTick();
+            if( lastEvent < 0 )
+              {
                 break;
-        }
-    }
-    
-    long noteOn = 0, noteOff = 0, lastEvent = 0;
-    boolean notePlaying = false;
-    int prevNote = 0;
-    int resolution;
-    static final int SNAPTO = BEAT / 4;
-    
-    void start() {
-        this.sequencer = notate.getSequencer();
-        while((noteOn = getTick()) < 0) {}
-        resolution = sequencer.getSequence().getResolution();
-        noteOff = noteOn = getTick();
-        notePlaying = false;
-        notate.setCurrentSelectionStartAndEnd(0);
-        
-        countInOffset = score.getCountInOffset();
-    }
-    
-    void handleNoteOn(int note, int velocity, int channel) {
-        // System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
-        
-        MelodyPart melodyPart = notate.getCurrentOrigPart();
-        
-        // new note played, so finish up previous notes or insert rests up to the current note
-        int index;
-        if(notePlaying) {
-            handleNoteOff(prevNote, velocity, channel);
+              }
+
+            channel = lowNibble;
+            note = m[1];
+            velocity = m[2];
             
-        } else {
-            int duration = snapSlots(tickToSlots(noteOff, lastEvent));
+            handleNoteOff(note, velocity, channel);
+            break;
+      }
+    //System.out.println("done with " + MidiFormatting.midiMessage2polylist(message));
+  }
+    
+    
+void handleNoteOn(int note, int velocity, int channel)
+  {
+    //System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
 
-            // this try is here because a function a few steps up in the call hierarchy tends to capture error messages
-            try {
-                index = snapSlots(tickToSlots(noteOff)) - countInOffset;
+    MelodyPart melodyPart = notate.getCurrentOrigPart();
 
-                // add rests since nothing was played between now and the previous note
-                if(duration > 0 && index >= 0 ) {
-                    Note noteToAdd = new Rest(duration);
-                    new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
-                }
+    // new note played, so finish up previous notes or insert rests up to the current note
+    int index;
+    if( notePlaying )
+      {
+        handleNoteOff(prevNote, velocity, channel);
 
-                if( index >= 0 )
-                  {
-                  notate.setCurrentSelectionStartAndEnd(index);
-                  }
-            } catch(Exception e) {
-                //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
-            }
-        }
-        
-        noteOn = lastEvent;
-        index = snapSlots(tickToSlots(noteOn)) - countInOffset;
-        
-        // add current note
-        Note noteToAdd = new Note(note, SNAPTO);
-        
-        try {
-            noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-            new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
-        } catch(Exception e) {
+      }
+    else
+      {
+        int duration = snapSlots(tickToSlots(noteOff, lastEvent));
+
+        // this try is here because a function a few steps up in the call hierarchy tends to capture error messages
+        try
+          {
+            index = snapSlots(tickToSlots(noteOff)) - countInOffset;
+
+            // add rests since nothing was played between now and the previous note
+            if( duration > 0 && index >= 0 )
+              {
+                Note noteToAdd = new Rest(duration);
+                new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
+              }
+
+            if( index >= 0 )
+              {
+                notate.setCurrentSelectionStartAndEnd(index);
+              }
+          }
+        catch( Exception e )
+          {
             //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
-        }
-        
-        notate.repaint();
+          }
+      }
 
-        prevNote = note;
-        notePlaying = true;
-    }
+    noteOn = lastEvent;
+    index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+
+    // add current note
+    Note noteToAdd = new Note(note, SNAPTO);
+
+    try
+      {
+        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
+        new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
+      }
+    catch( Exception e )
+      {
+        //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
+      }
+
+    notate.repaint();
+
+    prevNote = note;
+    notePlaying = true;
+  }
     
 
-    int snapToMultiple(int input, int base) {
-        return base * (int) Math.round(((double) input) / base);
-    }
-    
-    int microsecondsToSlots(long start, long finish) {
-        return microsecondsToSlots(finish - start);
-    }
-    
-    int microsecondsToSlots(long duration) {
-        double tempo = score.getTempo();
-        return (int) (duration / 1000000.0 * (tempo / 60) * BEAT);
-    }
+ void handleNoteOff(int note, int velocity, int channel)
+  {
+    //System.out.println("noteOff: " + noteOff + "; event: " + lastEvent);
 
-    int tickToSlots(long start, long finish) {
-        return tickToSlots(finish - start);
-    }
-    
-    int tickToSlots(long duration) {
-        return (int) (BEAT * duration / resolution);
-    }
-    
-    int snapSlots(int slots) {
-        slots = snapToMultiple(slots, SNAPTO);
-        return slots;
-    }
-    
-    void handleNoteOff(int note, int velocity, int channel) {
-        if(note != prevNote)
-            return;
-        
-        // use the one in constructor: Notate notate = imp.ImproVisor.getCurrentWindow();
-        noteOff = lastEvent;
-        notePlaying = false;
+    if( note != prevNote )
+      {
+        return;
+      }
 
-        int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
-        
-        int duration = snapSlots(tickToSlots(noteOn, noteOff));
-        
-        if(duration == 0) {
-            
-        } else {
-            Note noteToAdd = new Note(note, duration);
-            noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-            new SetNoteAndLengthRealTimeCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate).execute();
-        }       
-        index += duration;
-        
-        notate.setCurrentSelectionStartAndEnd(index);
-        
- //       System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
-        
-        notate.repaint();
-    }
+    // use the one in constructor: Notate notate = imp.ImproVisor.getCurrentWindow();
+    noteOff = lastEvent;
+    notePlaying = false;
 
-    public void close() {
-    }
+    int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+
+    if( index < 0 )
+      {
+        return;
+      }
+
+    int duration = snapSlots(tickToSlots(noteOn, noteOff));
+
+    if( duration == 0 )
+      {
+      }
+    else
+      {
+        Note noteToAdd = new Note(note, duration);
+        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
+        new SetNoteAndLengthRealTimeCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate).execute();
+      }
+    
+    index += duration;
+
+    notate.setCurrentSelectionStartAndEnd(index);
+
+    // System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
+
+    notate.repaint();
+  }
+   
+int snapToMultiple(int input, int base)
+  {
+    return base * (int) Math.round(((double) input) / base);
+  }
+
+int microsecondsToSlots(long start, long finish)
+  {
+    return microsecondsToSlots(finish - start);
+  }
+
+int microsecondsToSlots(long duration)
+  {
+    double tempo = score.getTempo();
+    return (int) (duration / 1000000.0 * (tempo / 60) * BEAT);
+  }
+
+int tickToSlots(long start, long finish)
+  {
+    return tickToSlots(finish - start);
+  }
+
+int tickToSlots(long duration)
+  {
+    return (int) (BEAT * duration / resolution);
+  }
+
+int snapSlots(int slots)
+  {
+    slots = snapToMultiple(slots, SNAPTO);
+    return slots;
+  }
+
+public void close()
+  {
+  }
 }
