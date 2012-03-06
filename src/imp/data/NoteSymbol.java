@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,9 +20,9 @@
 
 package imp.data;
 
-import polya.*;
 import imp.Constants;
 import java.io.Serializable;
+import polya.Polylist;
 
 
 /**
@@ -475,11 +474,11 @@ public class NoteSymbol implements Constants, Serializable {
     }
 
    public String toPitchString() {
-       return toPitchStringBuffer(octave).toString();
+       return toPitchStringBuilder(octave).toString();
    }
 
-   public StringBuffer toPitchStringBuffer(int octave) {
-       StringBuffer buffer0 = new StringBuffer();
+   public StringBuilder toPitchStringBuilder(int octave) {
+       StringBuilder buffer0 = new StringBuilder();
        if( pitchClass == null ) {
            buffer0.append(REST_STRING);
        }
@@ -503,9 +502,9 @@ public class NoteSymbol implements Constants, Serializable {
 
   protected void establishStringRep(int octave, int duration)
     {
-    StringBuffer buffer0 = toPitchStringBuffer(octave);
+    StringBuilder buffer0 = toPitchStringBuilder(octave);
 
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     int value = Note.getDurationString(buffer, duration);
      if( /*value == 0 && */ buffer.length() > 1 )
        {

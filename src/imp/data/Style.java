@@ -28,13 +28,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Random;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Track;
+import javax.sound.midi.*;
 import polya.Polylist;
 import polya.PolylistBuffer;
 import polya.PolylistEnum;
+
 
 /**
  * An object that contains patterns and parameters for generating an
@@ -1089,35 +1087,46 @@ private Polylist makeChordline(
 
         Part.PartIterator i = durationMelody.iterator();
         PolylistEnum e = chords.elements();
-        long newTime = time;
 
         // Iterate over notes in voicing
+        // The duration aspect of individual notes are ignored,
+        // as that comes from the "duration melody".
+        
         while( e.hasMoreElements() )
           {
-            Object voicing = e.nextElement();
-            Note note = (Note) i.next();
-            int dur = note.getRhythmValue();
+            Object voicing = e.nextElement(); // A single chord's voicing
+            
+            Note note = (Note) i.next();      // Note from the "duration melody"
+            
+            int dur = note.getRhythmValue();  // A single chord's duration
 
+            long offTime = time + dur * seq.getResolution() / BEAT;
+        
             // render each NoteSymbol in the chord
             if( voicing instanceof Polylist )
               {
                 Polylist v = (Polylist) voicing;
                 chord.setVoicing(v);
                 Polylist L = v;
+                
+                // All notes in the voicing are rendered at the same start time
+                
                 while( L.nonEmpty() )
                   {
                     NoteSymbol ns = (NoteSymbol) L.first();
                     note = ns.toNote();
                     note.setRhythmValue(dur);
                     //System.out.println(ns.toString() + " " + (dur/120.) + " at " + time/480.);
-                    newTime = note.render(seq, track, time, chordChannel, MAX_VOLUME, transposition);
+
+                    note.render(seq, track, time, offTime, chordChannel, MAX_VOLUME, transposition);
+                    
                     L = L.rest();
                   }
 
                 lastChord = v;
               }
 
-            time = newTime; // += dur * seq.getResolution() / BEAT;
+            time = offTime;
           }
 
         beginning = false;
@@ -1126,9 +1135,10 @@ private Polylist makeChordline(
     // Un-comment this to see voicings
     //System.out.println("voicing " + chord + " as " + lastChord);
 
-    //System.out.println("render = " + sequence2polylist(seq));
+    //System.out.println("MIDI sequence = " + polya.Formatting.prettyFormat(sequence2polylist(seq)));
     return lastChord;
   }
+
 
   static Polylist sequence2polylist(Sequence seq)
   {
@@ -1138,7 +1148,7 @@ private Polylist makeChordline(
 
   for( int i = 0; i < track.length; i++ )
   {
-      buffer.append(Polylist.list("track", i, track2polylist(track[i])));
+      buffer.append(track2polylist(track[i]).cons(i).cons("track"));
   }
 
   return buffer.toPolylist();
@@ -1152,25 +1162,108 @@ static Polylist track2polylist(Track track)
 
   long len = track.size();
 
-  buffer.append(Polylist.list("size", len));
+  buffer.append(Polylist.list("events", len));
 
   for( int i = 0; i < len; i++ )
   {
-      buffer.append(Polylist.list(i, midiEvent2polylist(track.get(i))));
+      buffer.append(midiEvent2polylist(i, track.get(i)));
   }
 
   return buffer.toPolylist();
   }
 
-static Polylist midiEvent2polylist(MidiEvent event)
+static Polylist midiEvent2polylist(int number, MidiEvent event)
   {
   PolylistBuffer buffer = new PolylistBuffer();
+  
+  buffer.append("event");
+  
+  buffer.append(number);
 
   buffer.append(Polylist.list("tick", event.getTick()));
+  
+  buffer.append(Polylist.list("status", decodeMidiStatus(event.getMessage().getStatus())));
 
-  buffer.append(Polylist.list("message", event.getMessage()));
+  buffer.append(midiMessage2polylist(event.getMessage()));
  
   return buffer.toPolylist();
+  }
+
+static Polylist midiMessage2polylist(MidiMessage message)
+  {
+    byte[] data = message.getMessage();
+    int messageLength = message.getLength();
+    PolylistBuffer buffer = new PolylistBuffer();
+    // getStatus() returns status as an integer rather than byte.
+    // As status is the first byte in the array, it is skipped below.
+    buffer.append("message");
+    for( int i = 1; i < messageLength; i++ )
+      {
+        buffer.append(data[i]);
+      }
+  return buffer.toPolylist();
+  }
+
+static String decodeMidiStatus(int number)
+  {
+    String result;
+    switch(number)
+      {
+        case 128: result = "Channel 1 note on"; break;
+        case 129: result = "Channel 2 note on"; break;
+        case 130: result = "Channel 3 note on"; break;
+        case 131: result = "Channel 4 note on"; break;
+        case 132: result = "Channel 5 note on"; break;
+        case 133: result = "Channel 6 note on"; break;
+        case 134: result = "Channel 7 note on"; break;
+        case 135: result = "Channel 8 note on"; break;
+        case 136: result = "Channel 9 note on"; break;
+        case 137: result = "Channel 10 note on"; break;
+        case 138: result = "Channel 11 note on"; break;
+        case 139: result = "Channel 12 note on"; break;
+        case 140: result = "Channel 13 note on"; break;
+        case 141: result = "Channel 14 note on"; break;
+        case 142: result = "Channel 15 note on"; break;
+        case 143: result = "Channel 16 note on"; break;
+ 
+        case 144: result = "Channel 1 note off"; break;
+        case 145: result = "Channel 2 note off"; break;
+        case 146: result = "Channel 3 note off"; break;
+        case 147: result = "Channel 4 note off"; break;
+        case 148: result = "Channel 5 note off"; break;
+        case 149: result = "Channel 6 note off"; break;
+        case 150: result = "Channel 7 note off"; break;
+        case 151: result = "Channel 8 note off"; break;
+        case 152: result = "Channel 9 note off"; break;
+        case 153: result = "Channel 10 note off"; break;
+        case 154: result = "Channel 11 note off"; break;
+        case 155: result = "Channel 12 note off"; break;
+        case 156: result = "Channel 13 note off"; break;
+        case 157: result = "Channel 14 note off"; break;
+        case 158: result = "Channel 15 note off"; break;
+        case 159: result = "Channel 16 note off"; break;
+
+
+        case 192: result = "Channel 1 program change"; break;
+        case 193: result = "Channel 2 program change"; break;
+        case 194: result = "Channel 3 program change"; break;
+        case 195: result = "Channel 4 program change"; break;
+        case 196: result = "Channel 5 program change"; break;
+        case 197: result = "Channel 6 program change"; break;
+        case 198: result = "Channel 7 program change"; break;
+        case 199: result = "Channel 8 program change"; break;
+        case 200: result = "Channel 9 program change"; break;
+        case 201: result = "Channel 10 program change"; break;
+        case 202: result = "Channel 11 program change"; break;
+        case 203: result = "Channel 12 program change"; break;
+        case 204: result = "Channel 13 program change"; break;
+        case 205: result = "Channel 14 program change"; break;
+        case 206: result = "Channel 15 program change"; break;
+        case 207: result = "Channel 16 program change"; break;
+        
+        default: result = "? " + number;
+      }
+    return result;
   }
 
   /**

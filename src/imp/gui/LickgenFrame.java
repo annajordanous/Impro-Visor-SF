@@ -121,16 +121,22 @@ private ComplexityWindowController[] compControllers;
 
 /** Number of beats per measure in the piece */
 private int beatsPerBar;
+
 /** Total number of beats to represent in the solo curve graph */
 private int attrTotal;
+
 /** Granularity at which to look at the bars, i.e. how many beats per division */
 private int attrGranularity; 
+
 /** File extension for solo profiles */
 private String profileExt;
+
 /** Default profile curve for the reset button */
 private File defaultProfile;
+
 /** JFile Chooser for saving solo profiles */
 private JFileChooser saveCWFC;
+
 /** JFile Chooser for opening solo profiles */
 private JFileChooser openCWFC;
 
@@ -2866,7 +2872,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
         //otherwise return a section of rests
         else
           {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             Note n = new Note(72, 1);
             n.getDurationString(sb, slotsPerSection);
             String returnString = "((slope 0 0 R" + sb.substring(1) + "))";
@@ -2961,7 +2967,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
             part.setNote(current, n);
           }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
 
         int value = part.getNote(current).getDurationString(sb, part.getNote(
@@ -3290,20 +3296,26 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
       }
 
     //add in slopes
-    StringBuffer strbuf = new StringBuffer();
+    StringBuilder strbuf = new StringBuilder();
     strbuf.append("(");
     Polylist tempString = rhythmString;
     for( int i = 0; i < slopes.size(); i++ )
       {
         slope = slopes.get(i);
-        strbuf.append("(slope " + slope[0] + " " + slope[1] + " ");
+        strbuf.append("(slope ");
+        strbuf.append(slope[0] );
+        strbuf.append(" ");
+        strbuf.append(slope[1]);
+        strbuf.append(" ");
+        
         int j = 0;
         //get all of notes if last slope
         if( i == slopes.size() - 1 )
           {
             while( tempString.nonEmpty() )
               {
-                strbuf.append(tempString.first().toString() + " ");
+                strbuf.append(tempString.first().toString());
+                strbuf.append(" ");
                 tempString = tempString.rest();
               }
           }
@@ -3312,7 +3324,8 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
             while( j < slope[2] )
               {
                 String temp = tempString.first().toString();
-                strbuf.append(temp + " ");
+                strbuf.append(temp);
+                strbuf.append(" ");
                 //System.out.println(strbuf.toString());
                 tempString = tempString.rest();
                 if( temp.charAt(0) != 'R' )
@@ -3347,7 +3360,8 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
         for( int i = 0; i < chordList.size(); i++ )
           {
             String nextChord = ((Chord) chordList.get(i)).toLeadsheet();
-            strbuf.append(nextChord + " ");
+            strbuf.append(nextChord);
+            strbuf.append(" ");
           }
       }
 
@@ -3367,8 +3381,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
         while( current <= selEnd )
           {
-
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             int value = part.getNote(current).
                 getDurationString(sb, part.getNote(current).getRhythmValue());

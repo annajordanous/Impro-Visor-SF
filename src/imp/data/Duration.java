@@ -239,7 +239,7 @@ public static int default_numerator = 8;	// eighth note default
       {
       duration = DEFAULT_DURATION;
       }
-
+//System.out.println("item = " + item + ", duration = " + duration);
     return duration;
     }    
 }

@@ -401,7 +401,8 @@ public static Note getClosestMatch(int pitch, Polylist tonesPL)
  * Gets the closest match Note at or above a given pitchName, from a polylist of NoteSymbols
  * @return Note  an instance of the 'closest' note in list from the pitchName
  */
-public static Note getClosestMatchDirectional(int pitch, Polylist tonesPL,
+public static Note getClosestMatchDirectional(int pitch, 
+                                              Polylist tonesPL,
                                               boolean upward)
   {
   //System.out.println("getClosestMatchDirectional to " + pitchName + " " + tonesPL);
@@ -744,9 +745,9 @@ public Note copy()
 @Override
 public String toString()
   {
-  return new String("NOTE: [" + getPitchClassName() + ", Pitch = " + pitch +
+  return "NOTE: [" + getPitchClassName() + ", Pitch = " + pitch +
           ", " + drawnPitch + "][Accidental = " + accidental +
-          "][RhythmValue = " + rhythmValue + "]");
+          "][RhythmValue = " + rhythmValue + "]";
   }
 
 
@@ -885,7 +886,7 @@ public String getPitchClassName()
 
   int pitch_within_octave = pitch % OCTAVE;
 
-  StringBuffer buffer = new StringBuffer();
+  StringBuilder buffer = new StringBuilder();
 
   if( accidental == Accidental.SHARP )
     {
@@ -947,9 +948,7 @@ public boolean isDrawnRest()
  */
 public String toLeadsheet()
   {
-  StringBuffer buffer0 = new StringBuffer();
-
-  int pitch = this.pitch;	// make a local version of pitchName
+  StringBuilder buffer0 = new StringBuilder();
 
   int octave = pitch / 12 - 5;
 
@@ -979,7 +978,7 @@ public String toLeadsheet()
       }
     }
 
-  StringBuffer buffer = new StringBuffer();
+  StringBuilder buffer = new StringBuilder();
 
   int value = getDurationString(buffer, rhythmValue);
 
@@ -1006,13 +1005,13 @@ public static String getDurationString(int value)
     {
         return "";
     }
-  StringBuffer buffer = new StringBuffer();
+  StringBuilder buffer = new StringBuilder();
   getDurationString(buffer, value);
   // note that return value above should be 0;
   return buffer.toString().substring(1);
 }
 
-public static int getDurationString(StringBuffer bufferOut, int value)
+public static int getDurationString(StringBuilder bufferOut, int value)
   {
   // Note: The first '+' in buffer will eventually be discarded.
   // Try decomposing in two different orders, then pick the shorter description
@@ -1119,38 +1118,67 @@ static int accumulateExactValue(int value, int duration, StringBuffer buffer,
 
 
 /**
- * Adds the Note at the specified time on the specified Track and
+ * Adds this Note at the specified time on the specified Track and
  * channel in the specified Sequence, then returns the time that a
  * sequential Note should be added.
- * @param seq       the Sequence to add the Note to
- * @param track     the Track in the Sequence to add the Note to
- * @param time      the time to start the Note at
- * @param ch        the channel to put the Note on
- * @return long     the time that a sequential Note should start
+ * @param seq       the Sequence to which to add this Note
+ * @param track     the Track in the Sequence to which to add this Note
+ * @param time      the time at which to start this Note
+ * @param ch        the channel on which to put this Note 
+ * @param volume    the volume (velocity) for on and off
+ * @return long     the time that the next sequential Note, if any, should start
  */
 
-public long render(Sequence seq, Track track, long time, int ch,
-                     int volume, int transposition)
+public long render(Sequence seq, 
+                   Track track, 
+                   long time, 
+                   int ch,
+                   int volume, 
+                   int transposition)
+        throws InvalidMidiDataException
+  {
+    int dur = getRhythmValue();
+    long offTime = time + dur * seq.getResolution() / BEAT;
+    render(seq, track, time, offTime, ch, volume, transposition);
+    
+    return offTime;
+  }
+
+/**
+ * Adds this Note at the specified time on the specified Track and
+ * channel in the specified Sequence, then returns the time that a
+ * sequential Note should be added.
+ * @param seq       the Sequence to which to add this Note
+ * @param track     the Track in the Sequence to which to add this Note
+ * @param time      the time at which to start this Note
+ * @param offTime   the time at which to end this Note
+ * @param ch        the channel on which to put this Note 
+ * @param volume    the volume (velocity) for on and off
+  */
+
+public void render(Sequence seq, 
+                   Track track, 
+                   long time, 
+                   long offTime,
+                   int ch,
+                   int volume, 
+                   int transposition)
         throws InvalidMidiDataException
   {
 
   // To trace sequencing info:
-  Trace.log(2, "\nchannel = " + ch 
-             + " track = " + track 
-             + " beat = " + time/480.0 
-             + " pitch = " + pitch
-             + " rhythmValue = " + rhythmValue
-             + " volume = " + volume);
+//  Trace.log(2, "\nchannel = " + ch 
+//             + " track = " + track 
+//             + " beat = " + time/480.0 
+//             + " pitch = " + pitch
+//             + " rhythmValue = " + rhythmValue
+//             + " volume = " + volume);
   
-  int dynamic = volume;
-
-  long timeIncrement = rhythmValue * seq.getResolution() / BEAT;
-
   if( pitch == REST )
     {
-    // if there is a rest, just advance the time without any MIDI event
+    // if this Note is a rest, do nothing
 
-      return time + timeIncrement;
+      return;
     }
 
   int actualPitch = pitch + transposition;
@@ -1167,18 +1195,16 @@ public long render(Sequence seq, Track track, long time, int ch,
     }
 
   // create a note on event at the current time
-  MidiEvent evt = MidiSynth.createNoteOnEvent(ch, actualPitch, dynamic, time);
+  MidiEvent evt = MidiSynth.createNoteOnEvent(ch, actualPitch, volume, time);
   track.add(evt);
   
-  Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + actualPitch + " time = " + time);
+  //Trace.log(0, "adding to track " + track + " time = " + time + " note on " + " channel = " + ch + " pitch = " + actualPitch + " velocity = " + volume);
 
   // advance the time and call the note off event
-  long offtime = time + timeIncrement;
-  evt = MidiSynth.createNoteOffEvent(ch, actualPitch, dynamic, offtime);
-  track.add(evt);
-  Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + actualPitch + " time = " + offtime);
 
-  return offtime;
+  evt = MidiSynth.createNoteOffEvent(ch, actualPitch, volume, offTime);
+  track.add(evt);
+  //Trace.log(0, "adding to track " + track + " time = " + offTime + " note off " + " channel = " + ch + " pitch = " + actualPitch + " velocity = " + volume);
   }
 
 }

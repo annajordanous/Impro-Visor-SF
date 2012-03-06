@@ -926,8 +926,12 @@ public class MelodyPart
    * @param seq     the Sequence to add a Track to
    * @param ch      the channel to put the Track on
    */
-  public long render(Sequence seq, int ch, long time, Track track,
-                        int transposition, int endLimitIndex)
+  public long render(Sequence seq, 
+                     int ch, 
+                     long time, 
+                     Track track,
+                     int transposition, 
+                     int endLimitIndex)
           throws InvalidMidiDataException
     {
     // to trace sequencing:

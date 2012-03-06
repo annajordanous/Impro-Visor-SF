@@ -164,6 +164,7 @@ private void addRule(String rule, String duration)
   }
 
 
+@Override
 public int getDuration()
   {
   int duration = 0;
@@ -232,7 +233,9 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
       }
     }
 
-  return Polylist.list(chordLine.toPolylist(), durationMelody);
+  Polylist result = Polylist.list(chordLine.toPolylist(), durationMelody);
+//System.out.println("rules = " + rules + ", durations = " + durations + ", result = " + result);
+  return result;
   }
 
 
@@ -524,7 +527,7 @@ public static Polylist placeVoicingAbove(Polylist lastChord,
 
   int difference = lastNote.getMIDI() - voicingNote.getMIDI();
 
-  Polylist newVoicing = Polylist.nil;
+  Polylist newVoicing;
   if( difference > 0 )
     {
     int octaves = (difference / 12) + 1;
@@ -557,7 +560,8 @@ public static Polylist placeVoicingBelow(Polylist lastChord,
 
   int difference = lastNote.getMIDI() - voicingNote.getMIDI();
 
-  Polylist newVoicing = Polylist.nil;
+  Polylist newVoicing;
+  
   if( difference < 0 )
     {
     int octaves = (difference / 12) - 1;
