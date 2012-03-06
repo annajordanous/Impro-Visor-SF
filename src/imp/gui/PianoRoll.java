@@ -1832,11 +1832,6 @@ if( checkPixelBeatConstraint() )
 }
 }//GEN-LAST:event_ticksPerBeatComboBoxActionPerformed
 
-Thread loopThread = null;
-LoopPlayer loopPlayer = null;
-boolean looping = false;
-private long msGap = 2000;
-private long loopCount = 3;
 
 private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
   {
@@ -1853,7 +1848,6 @@ private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
 
 private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int row)
   {
-
     Playable playable = styleEditor.getPlayableFromRow(this, row);
 
     AbstractButton thisButton = rowButton[row];
@@ -1884,7 +1878,8 @@ public void setLooping(boolean value)
         loopToggleButton.setText("<html><center>Stop Looping</center></html>");
         loopToggleButton.setSelected(true);
         styleEditor.setLooping(true);
-        playable.playMe(styleEditor.getSwingValue());
+
+        playable.playMe();
       }
     else
       {
