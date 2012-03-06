@@ -1870,36 +1870,65 @@ public void setLooping(boolean value)
   {
   //System.out.println("looping = " + value);
 
-    Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
-
     if( value )
       {
         loopToggleButton.setBackground(SELECTEDCOLOR);
         loopToggleButton.setText("<html><center>Stop Looping</center></html>");
         loopToggleButton.setSelected(true);
         styleEditor.setLooping(true);
-
-        playable.playMe();
       }
     else
       {
-        playable.stopPlaying();
-        styleEditor.setLooping(false);
-        //loopPlayer.setPlaying(false);
         loopToggleButton.setBackground(DRUMSCOLOR);
         loopToggleButton.setText("<html><center>Loop Percussion</center></html>");
         loopToggleButton.setSelected(false);
+        styleEditor.setLooping(false);
+        stopPlaying();
       }
+    
+    updatePlayable();
   }
 
+public boolean isLooping()
+  {
+    return loopToggleButton.isSelected();
+  }
+
+Playable nowPlaying = null;
 
 public void updatePlayable()
   {
   //System.out.println("updatePlayable");
-        
-  Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
+    
+    if( isLooping() )
+      {
+      stopPlaying();
+      
+      nowPlaying = styleEditor.getPlayablePercussion(this, rowButton);
+      
+      startPlaying();
+      }
+    else
+      {
+       nowPlaying = styleEditor.getPlayablePercussion(this, rowButton);       
+      }
   }
 
+public void stopPlaying()
+  {
+    if( nowPlaying != null )
+      {
+        nowPlaying.stopPlaying();
+      }
+  }
+
+public void startPlaying()
+  {
+    if( nowPlaying != null )
+      {
+        nowPlaying.playMe();
+      }
+  }
 
 private void tempoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempoComboBoxActionPerformed
 styleEditor.setTempo((String)tempoComboBox.getSelectedItem());
