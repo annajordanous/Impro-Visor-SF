@@ -357,7 +357,7 @@ void playPercussionColumn(int colIndex)
 
     if( pattern != null && pattern instanceof Playable && isPlayed() )
       {
-        ((Playable) pattern).playMe(getAccompanimentSwingValue());
+        ((Playable) pattern).playMe();
       }
   }
 

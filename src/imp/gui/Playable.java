@@ -32,6 +32,8 @@ public boolean playMe(double swingVal, int loopVal);
 
 public boolean playMe(double swingVal);  
 
+public boolean playMe();
+
 public void stopPlaying();
 
 public boolean isPlayable();  

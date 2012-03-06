@@ -548,8 +548,6 @@ public void paint(Graphics g)
         playBassButton = new javax.swing.JButton();
         playChordButton = new javax.swing.JButton();
         playPercussionButton = new javax.swing.JButton();
-        rowPatternLabel = new javax.swing.JLabel();
-        rowPatternTF = new javax.swing.JTextField();
         bassEditorToggleButton1 = new javax.swing.JToggleButton();
         loopToggleButton = new javax.swing.JToggleButton();
         pianoRollMenuBar = new javax.swing.JMenuBar();
@@ -1320,23 +1318,6 @@ public void paint(Graphics g)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         getContentPane().add(playPanel, gridBagConstraints);
 
-        rowPatternLabel.setText("  Pattern Last Played:");
-        rowPatternLabel.setVerifyInputWhenFocusTarget(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        getContentPane().add(rowPatternLabel, gridBagConstraints);
-
-        rowPatternTF.setEditable(false);
-        rowPatternTF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(rowPatternTF, gridBagConstraints);
-
         bassEditorToggleButton1.setBackground(BASSCOLOR);
         bassEditorToggleButton1.setText("Open Bass Bar Editor");
         bassEditorToggleButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -2062,8 +2043,6 @@ PianoRollPanel getPanel()
     protected javax.swing.JPopupMenu popupMenu;
     protected javax.swing.JPopupMenu popupMenu2;
     private javax.swing.JRadioButton repeatPitchButton;
-    private javax.swing.JLabel rowPatternLabel;
-    private javax.swing.JTextField rowPatternTF;
     private javax.swing.JPanel rowTitlePanel;
     private javax.swing.ButtonGroup scalePitchButtonGroup;
     private javax.swing.JRadioButton scaleToneButton;

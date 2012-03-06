@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,8 @@
 
 package imp.gui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 /**
  *
@@ -94,13 +95,13 @@ public void drawGrid(Graphics g, Color bgColor, Color gridColor)
         drawVerticalLine(g, gridColor, x);
 
         // Draw bar numbers on specified rows
-        if( i > 0 )
+        if( i >= 0 )
           {
             g.setColor(Color.black);
             for( int k = 0; k < barNumberLabelRow.length; k++ )
               {
                 int labelY = barNumberLabelRow[k] * rowTotal;
-                g.drawString("" + i, x+1, labelY);
+                g.drawString("" + (i+1), x+1, labelY);
               }
           }
       }

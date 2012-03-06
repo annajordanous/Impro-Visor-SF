@@ -58,7 +58,8 @@ abstract class PatternDisplay
      
     public boolean playMe()
     {
-      return playMe(styleEditor == null ? NOSWING : styleEditor.getSwingValue());
+      return playMe(styleEditor == null ? NOSWING : styleEditor.getSwingValue(),
+                    styleEditor.getLoopValue());
     }
     
 
