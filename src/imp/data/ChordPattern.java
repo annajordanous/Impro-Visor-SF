@@ -121,14 +121,15 @@ public static ChordPattern makeChordPattern(Polylist L)
       {
       case RULES:
         {
-        for( int i = 0; i < item.length(); i++ )
+        while( item.nonEmpty() )
           {
-          String s = (String)item.nth(i);
+          String s = (String)item.first();
 
           String rule = s.substring(0, 1);
           String dur = s.substring(1);
 
           cp.addRule(rule, dur);
+          item = item.rest();
           }
         break;
         }
@@ -678,14 +679,17 @@ public static Polylist placeVoicing(Polylist lastChord, Polylist voicing,
 public static int averageLeap(Polylist chord1, Polylist chord2)
   {
   int sum = 0;
-  for( int i = 0; i < chord2.length(); i++ )
+  int num = chord2.length();
+  
+  while( chord2.nonEmpty() ) //( int i = 0; i < chord2.length(); i++ )
     {
-    NoteSymbol note = (NoteSymbol)chord2.nth(i);
+    NoteSymbol note = (NoteSymbol)chord2.first();
     int leap = smallestLeap(chord1, note);
     sum += leap;
+    chord2 = chord2.rest();
     }
 
-  return (int)(sum / (double)chord2.length());
+  return (int)((double)sum / num);
   }
 
 
@@ -699,14 +703,15 @@ public static int smallestLeap(Polylist chord, NoteSymbol note)
   {
   int noteMIDI = note.getMIDI();
   int smallestLeap = 127;
-  for( int i = 0; i < chord.length(); i++ )
+  while( chord.nonEmpty() )
     {
-    NoteSymbol chordNote = (NoteSymbol)chord.nth(i);
+    NoteSymbol chordNote = (NoteSymbol)chord.first();
     int leap = Math.abs(chordNote.getMIDI() - noteMIDI);
     if( leap < smallestLeap )
       {
       smallestLeap = leap;
       }
+    chord = chord.rest();
     }
 
   return smallestLeap;
@@ -715,13 +720,16 @@ public static int smallestLeap(Polylist chord, NoteSymbol note)
 //Added summer2007 for use with Style GUI
 public String forGenerator()
   {
-  String rule = "";
+  StringBuilder rule = new StringBuilder();
+  
   for( int i = 0; i < durations.size(); i++ )
     {
     String nextNote = ruleTypes[rules.get(i)];
-    rule += nextNote + durations.get(i) + " ";
+    rule.append(nextNote);
+    rule.append(durations.get(i));
+    rule.append(" ");
     }
-  return rule;
+  return rule.toString();
   }
 
 
