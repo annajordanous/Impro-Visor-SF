@@ -1848,7 +1848,7 @@ private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
 
     updatePlayable();
 
-    playable.playMe(styleEditor.getAccompanimentSwingValue());
+    playable.playMe();
   }
 
 private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int row)
@@ -1874,7 +1874,7 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
 
 public void setLooping(boolean value)
   {
-  System.out.println("looping = " + value);
+  //System.out.println("looping = " + value);
 
     Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
 
@@ -1900,9 +1900,9 @@ public void setLooping(boolean value)
 
 public void updatePlayable()
   {
-   if( loopToggleButton.isSelected() )
+   //if( loopToggleButton.isSelected() )
       {
-        System.out.println("updatePlayable");
+        //System.out.println("updatePlayable");
         
         Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
 

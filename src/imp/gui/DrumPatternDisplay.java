@@ -997,32 +997,8 @@ public class DrumPatternDisplay
   
     private void playPatternBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnActionPerformed
        playMe();
-    }
-    
-    public boolean playMe(double swingVal)
-    {
-    return playMe(swingVal, getLoopValue());
-    }
-
-      /**
-       * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
-       *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
-       */
-
-    public boolean playMe(double swingVal, int loopCount)
-    {
-        return playMe(swingVal, loopCount, styleEditor.getTempo());
     }//GEN-LAST:event_playPatternBtnActionPerformed
 
-/**
- * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
- *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
- */
-
-public boolean playMe(double swingVal, int loopCount, double tempo)
-{
-    return playMe(swingVal, loopCount, tempo, new Score(4));
-}
 
 /**
  * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds

@@ -22,11 +22,13 @@ package imp.gui;
 
 import imp.Constants;
 import imp.com.CommandManager;
+import imp.data.Score;
 import java.awt.Color;
 
 /**
  * Base class for various pattern display classes:
  * BassPatternDisplay, ChordPatternDisplay, DrumPatternDisplay
+ * Note that the display part of this is no longer used.
  *
  * @author keller
  */
@@ -59,17 +61,33 @@ abstract class PatternDisplay
     public boolean playMe()
     {
       return playMe(styleEditor == null ? NOSWING : styleEditor.getSwingValue(),
-                    styleEditor.getLoopValue());
+                    styleEditor == null ? 0 : styleEditor.getLoopValue());
     }
-    
 
+  
+  //abstract public boolean playMe(double swingValue);
+  
+public boolean playMe(double swingVal)
+    {
+    return playMe(swingVal, getLoopValue());
+    }
+  
+public boolean playMe(double swingVal, int loopCount)
+    {
+        return playMe(swingVal, loopCount, styleEditor.getTempo());
+    }
+      
+public boolean playMe(double swingVal, int loopCount, double tempo)
+{
+    return playMe(swingVal, loopCount, tempo, new Score(4));
+}
+
+ abstract public boolean playMe(double swingVal, int loopCount, double tempo, Score s);
     
   public void stopPlaying()
     {
       styleEditor.stopPlaying();
     }
-  
-  abstract public boolean playMe(double swingValue);
   
   abstract public boolean checkStatus();
   

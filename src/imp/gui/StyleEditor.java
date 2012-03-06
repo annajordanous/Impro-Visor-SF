@@ -313,9 +313,9 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
 
         Object rule = styleTable.getValueAt(rowIndex, colIndex);
 
-        if( rule != null && rule instanceof Playable && isPlayed() )
+        if( rule != null && rule instanceof Playable )
           {
-            ((Playable) rule).playMe(getAccompanimentSwingValue());
+            maybePlay((Playable) rule);
           }
         updateCache(rowIndex, colIndex, rule);
       }
@@ -333,6 +333,13 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
     looping = value;
     }
   
+  private void maybePlay(Playable playable)
+    {
+      if( isPlayed() )
+        {
+          playable.playMe();
+        }
+    }
   /**
    * Play the percussion pattern in the designated column.
    * @param colIndex index of the column to play
@@ -355,9 +362,9 @@ void playPercussionColumn(int colIndex)
 
     Object pattern = allDrumPatterns.elementAt(colIndex);
 
-    if( pattern != null && pattern instanceof Playable && isPlayed() )
+    if( pattern != null && pattern instanceof Playable )
       {
-        ((Playable) pattern).playMe();
+        maybePlay((Playable) pattern);
       }
   }
 
@@ -390,9 +397,9 @@ void playChordColumn(int colIndex)
 
     Object pattern = allChordPatterns.elementAt(colIndex);
 
-    if( pattern != null && pattern instanceof Playable && isPlayed() )
+    if( pattern != null && pattern instanceof Playable )
       {
-        ((Playable) pattern).playMe(getAccompanimentSwingValue());
+        maybePlay((Playable) pattern);
       }
   }
 
@@ -425,9 +432,9 @@ void playBassColumn(int colIndex)
 
     Object pattern = allBassPatterns.elementAt(colIndex);
 
-    if( pattern != null && pattern instanceof Playable && isPlayed() )
+    if( pattern != null && pattern instanceof Playable )
       {
-        ((Playable) pattern).playMe(getAccompanimentSwingValue());
+        maybePlay((Playable) pattern);
       }
   }
 
@@ -1978,7 +1985,7 @@ public void playBassColumn()
     {
     boolean value = playToggle.isSelected() && !isExporting();
     
-    System.out.println("isPlayed = " + value);
+    // System.out.println("isPlayed = " + value);
     return value;
     }
 
@@ -2678,7 +2685,7 @@ public void playBassColumn()
         {
         if( getTableModel().isCellEditable(row, col) )
           {
-          setCell(EMPTY, row, col);
+          setCell(EMPTY, row, col, false);
           }
         }
       }
@@ -2735,11 +2742,11 @@ public void playBassColumn()
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            setCell(((Polylist)first).toStringSansParens(), row, col);
+            setCell(((Polylist)first).toStringSansParens(), row, col, false);
             }
           else
             {
-            setCell(first.toString(), row, col);
+            setCell(first.toString(), row, col, false);
             }
           }
         rowIndex++;
@@ -2751,13 +2758,27 @@ public void playBassColumn()
     }
 
   /**
-   * The main interface for setting values in cells
+   * The main interface for setting values in cells.
+   * This version plays the cell contents if playable.
   @param text used to determine the contents of the cell
   @param row row of the cell
   @param column column of the cell
   @return the object actually put in the cell
    */
   public Object setCell(String text, int row, int column)
+    {
+      return setCell(text, row, column, true);
+    }
+      
+  /**
+   * General interface for setting values in cells
+  @param text used to determine the contents of the cell
+  @param row row of the cell
+  @param column column of the cell
+  @param play whether or not to play the contents, if playable
+  @return the object actually put in the cell
+   */
+  public Object setCell(String text, int row, int column, boolean play)
     {
     Object oldContents = styleTable.getValueAt(row, column);
 
@@ -2839,10 +2860,12 @@ public void playBassColumn()
       double beats = contents.getBeats();
       styleTable.setValueAt(beats, StyleTableModel.CHORD_PATTERN_BEATS_ROW,
               column);
-      if( isPlayed() )
+
+      if( play )
         {
-        contents.playMe(getAccompanimentSwingValue());
+          maybePlay(contents);
         }
+
       }
     else if( isBassCell(row, column) )
       {
@@ -2856,10 +2879,12 @@ public void playBassColumn()
       double beats = contents.getBeats();
       styleTable.setValueAt(beats, StyleTableModel.BASS_PATTERN_BEATS_ROW,
               column);
-      if(  isPlayed() )
+
+      if( play )
         {
-        contents.playMe(getAccompanimentSwingValue());
+          maybePlay(contents);
         }
+
       }
     else if( isDrumCell(row, column) )
       {
@@ -2883,10 +2908,11 @@ public void playBassColumn()
 
       pattern.setWeight(weight.floatValue());
 
-      if( isPlayed() )
+      if( play )
         {
-        contents.playMe(getAccompanimentSwingValue());
+          maybePlay(contents);
         }
+
       styleTable.setValueAt(beats, StyleTableModel.DRUM_PATTERN_BEATS_ROW,
               column);
       }
@@ -5464,11 +5490,11 @@ public void playBassColumn()
           if( first instanceof Polylist )
             {
             String contents = ((Polylist)first).toStringSansParens();
-            setCell(contents, row, col);
+            setCell(contents, row, col, false);
             }
           else
             {
-            setCell(first.toString(), row, col);
+            setCell(first.toString(), row, col, false);
             }
           }
         column = column.rest();
@@ -5534,7 +5560,7 @@ public void playBassColumn()
       for( int rowIndex = rows.length - 1; rowIndex >= 0; rowIndex-- )
         {
         int row = rows[rowIndex];
-        setCell("", row, col);
+        setCell("", row, col, false);
         }
       }
     }
@@ -5554,7 +5580,7 @@ public void playBassColumn()
   {//GEN-HEADEREND:event_chordTypeComboBoxActionPerformed
   if( lastRuleClicked instanceof ChordPatternDisplay )
     {
-    ((ChordPatternDisplay)lastRuleClicked).playMe();
+    maybePlay((ChordPatternDisplay)lastRuleClicked);
     }
   }//GEN-LAST:event_chordTypeComboBoxActionPerformed
 
@@ -5718,7 +5744,7 @@ public void playBassColumn()
         {
         if( getTableModel().isCellEditable(row, col) )
           {
-          setCell(EMPTY, row, col);
+          setCell(EMPTY, row, col, false);
           }
         }
       }
@@ -5995,7 +6021,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
             // A new row is starting.
 
             // Flush the pattern to the StyleEditor
-            setCell(patternBuffer.toString(), styleEditorRow, tableCol);
+            setCell(patternBuffer.toString(), styleEditorRow, tableCol, false);
             patternBuffer = new StringBuilder();
 
             // Increment the row of the style editor
@@ -6034,7 +6060,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
       }
 
     // Final flush
-    setCell(patternBuffer.toString(), styleEditorRow, tableCol);
+    setCell(patternBuffer.toString(), styleEditorRow, tableCol, false);
     
     pianoRoll.setColumnOut(col, styleName);
   }
@@ -6211,11 +6237,11 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
           Object first = column.first();
           if( first instanceof Polylist )
             {
-            setCell(((Polylist)first).toStringSansParens(), row, col);
+            setCell(((Polylist)first).toStringSansParens(), row, col, false);
             }
           else
             {
-            setCell(first.toString(), row, col);
+            setCell(first.toString(), row, col, false);
             }
           }
         column = column.rest();
@@ -6798,7 +6824,7 @@ boolean exporting;
 
 private void setExporting(boolean value)
   {
-    System.out.println("exporting = " + value);
+    //System.out.println("exporting = " + value);
     exporting = value;
     pianoRoll.setLooping(false);
   }

@@ -107,7 +107,8 @@ public boolean playMe(double swingVal)
  * single chord and adds the entire pattern to that style. Uses the volume,
  * tempo, and chord info from the toolbar.
  */
-public boolean playMe(double swingVal, int loopCount)
+
+public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
     canPlay();
 
@@ -141,7 +142,6 @@ public boolean playMe(double swingVal, int loopCount)
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
-            Score s = new Score(4); // Why 4??
             s.setChordProg(c);
 
             if( muteChord )
@@ -153,7 +153,7 @@ public boolean playMe(double swingVal, int loopCount)
                 s.setChordVolume(styleEditor.getVolume());
               }
             s.setBassVolume(styleEditor.getVolume());
-            s.setTempo(styleEditor.getTempo());
+            s.setTempo(tempo);
 
             MidiSynth synth = notate.getMidiSynth();
 

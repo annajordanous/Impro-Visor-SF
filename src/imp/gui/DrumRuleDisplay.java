@@ -28,14 +28,13 @@ import imp.data.Score;
 import imp.data.Style;
 import imp.util.ErrorLog;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import javax.swing.ImageIcon;
 import polya.Polylist;
 
 /**
- * Creates a GUI that displays a drum instrument rule used in styles.
- * Intended to be placed in the drumRuleHolder pane of DrumPatternDisplay
+ * Note: The GUI part of this is defunct, subsumed in StyleEditor now.
  * Created Summer 2007
  * @authors  Brandy McMenamy, Sayuri Soejima
  */
@@ -231,12 +230,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
        }
     } 
     
-    public boolean playMe(double swingVal)
-    {
-    return playMe(swingVal, 0);
-    }
-
-    public boolean playMe(double swingVal, int loopCount)
+    public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     {
         canPlay();
         setSelectedAppearance();
@@ -270,7 +264,6 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 c.addChord(chord, duration);
                 c.setStyle(tempStyle);
                 
-                Score s = new Score(4);
                s.setChordProg(c);
               if( muteChord )
                 {
@@ -281,7 +274,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
                 s.setChordVolume(styleEditor.getVolume());
                 }
                 s.setBassVolume(styleEditor.getVolume());
-                s.setTempo(styleEditor.getTempo());
+                s.setTempo(tempo);
                 s.setVolumes(notate.getMidiSynth());
                  
                 new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), notate.getTransposition()).execute(); 
@@ -351,7 +344,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
             
             Polylist l = Notate.parseListFromString(getPlayRule());            
             StringTokenizer tokenS = new StringTokenizer(displayText, " ");
-            Vector<String> tokenizedRule = new Vector<String>(); 
+            ArrayList<String> tokenizedRule = new ArrayList<String>(); 
  
             while (tokenS.hasMoreTokens()) {
                 tokenizedRule.add(tokenS.nextToken());

@@ -29,15 +29,15 @@ import imp.data.Score;
 import imp.data.Style;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 
 /**
- * Creates a GUI that displays a chord pattern used in styles.
+ * Note: The GUI part of this is defunct, subsumed in StyleEditor now.
  * Created Summer 2007
  * @authors  Brandy McMenamy, Sayuri Soejima
  */
@@ -78,8 +78,6 @@ public class ChordPatternDisplay
     
      //True if the pattern information is displayed, false otherwise 
     boolean isExpanded = false;
-    
-    boolean playable = false;
     
     String pushString = "";
     
@@ -334,7 +332,7 @@ public class ChordPatternDisplay
             }                
             
             StringTokenizer st = new StringTokenizer(displayText, " ");
-            Vector<String> tokenizedRule = new Vector<String>();
+            ArrayList<String> tokenizedRule = new ArrayList<String>();
             while (st.hasMoreTokens()) {
                 tokenizedRule.add(st.nextToken());
             }
@@ -828,22 +826,18 @@ public class ChordPatternDisplay
     }//GEN-LAST:event_chordPatternTextActionPerformed
 
     private void playPatternBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnActionPerformed
-       /* If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
-          the pattern to that style.  Uses the volume, tempo, and chord info from the toolbar. */
+ 
       playMe();
     }
+
     
-    public boolean playMe(double swingVal)
-    {
-    return playMe(swingVal, 0);
-    }
+/**
+ * If the pattern is legal, creates a style with one chordPart consisting of a 
+ * single chord and adds the entire pattern to that style.  
+ * Uses the volume, tempo, and chord info from the toolbar.
+*/
 
-      /**
-       * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
-       *   the entire pattern to that style.  Uses the volume, tempo, and chord info from the toolbar.
-       */
-
-    public boolean playMe(double swingVal, int loopCount)
+public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     {
         canPlay();
         
@@ -870,11 +864,10 @@ public class ChordPatternDisplay
                 int duration = tempStyle.getCP().get(0).getDuration(); 
                 c.addChord(chord, duration);
                 c.setStyle(tempStyle);
-                
-                Score s = new Score(4);
+
                 s.setChordProg(c);
                 s.setChordVolume(styleEditor.getVolume());
-                s.setTempo(styleEditor.getTempo());
+                s.setTempo(tempo);
                 s.setVolumes(notate.getMidiSynth());
                 
                 new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
@@ -895,6 +888,7 @@ public class ChordPatternDisplay
     /**
      * @return the actual text displpayed in the text field
      **/    
+    @Override
     public String toString() {
         return chordPatternText.getText();
     }
