@@ -285,7 +285,7 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
         return;
       }
 
-    if( shiftDown && colIndex > 1 )
+    if( shiftDown && controlDown && colIndex > 1 )
       {
         trackWithPianoRoll(colIndex - 1);
       }
@@ -321,7 +321,11 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
       }
   }
 
-
+  public int getLoopValue()
+    {
+      return -1;
+    }
+  
   /**
    * Play the percussion pattern in the designated column.
    * @param colIndex index of the column to play
@@ -3401,7 +3405,8 @@ public void playBassColumn()
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         closeButtonPanel = new javax.swing.JPanel();
-        cancelBtn1 = new javax.swing.JButton();
+        stopPlaying = new javax.swing.JButton();
+        closeBtn = new javax.swing.JButton();
         saveStyleBtn = new javax.swing.JButton();
         styleSpecificationPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -5017,16 +5022,28 @@ public void playBassColumn()
 
         closeButtonPanel.setLayout(new java.awt.GridBagLayout());
 
-        cancelBtn1.setText("Cancel");
-        cancelBtn1.setDefaultCapable(false);
-        cancelBtn1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        cancelBtn1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        cancelBtn1.addActionListener(new java.awt.event.ActionListener() {
+        stopPlaying.setText("Stop Playing");
+        stopPlaying.setToolTipText("Stop Playing");
+        stopPlaying.setDefaultCapable(false);
+        stopPlaying.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        stopPlaying.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        stopPlaying.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtn1ActionPerformed(evt);
+                stopPlayingActionPerformed(evt);
             }
         });
-        closeButtonPanel.add(cancelBtn1, new java.awt.GridBagConstraints());
+        closeButtonPanel.add(stopPlaying, new java.awt.GridBagConstraints());
+
+        closeBtn.setText("Close");
+        closeBtn.setDefaultCapable(false);
+        closeBtn.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        closeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        closeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeBtnActionPerformed(evt);
+            }
+        });
+        closeButtonPanel.add(closeBtn, new java.awt.GridBagConstraints());
 
         saveStyleBtn.setText("Save Style");
         saveStyleBtn.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -6385,9 +6402,9 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
       styleTable.editingCanceled(null);
 }//GEN-LAST:event_cutCellsMIActionPerformed
 
-    private void cancelBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtn1ActionPerformed
+    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
       closeWindow();
-    }//GEN-LAST:event_cancelBtn1ActionPerformed
+    }//GEN-LAST:event_closeBtnActionPerformed
 
     private void saveStyleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStyleBtnActionPerformed
       saveStyle();
@@ -6447,11 +6464,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopBtnActionPerformed
     {//GEN-HEADEREND:event_stopBtnActionPerformed
-      pauseBtn.setEnabled(false);
-      stopBtn.setEnabled(false);
-      playBtn.setEnabled(true);
-
-      notate.stopPlaying();
+    stopPlaying();
     }//GEN-LAST:event_stopBtnActionPerformed
 
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowMIActionPerformed
@@ -6507,6 +6520,11 @@ saveStyleBtnActionPerformed(null);
 private void pianoRollCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoRollCheckBoxActionPerformed
 trackWithPianoRoll();
 }//GEN-LAST:event_pianoRollCheckBoxActionPerformed
+
+private void stopPlayingActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayingActionPerformed
+  {//GEN-HEADEREND:event_stopPlayingActionPerformed
+    stopPlaying();
+  }//GEN-LAST:event_stopPlayingActionPerformed
 
 private void trackWithPianoRoll()
 {
@@ -6570,7 +6588,6 @@ public void exportColumnToPianoRoll(PianoRoll pianoRoll)
     private javax.swing.JPanel bassTabPanel;
     private javax.swing.JTextArea bassText;
     private javax.swing.JLabel bpmLabel;
-    private javax.swing.JButton cancelBtn1;
     private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JPanel cellsPanel;
@@ -6593,6 +6610,7 @@ public void exportColumnToPianoRoll(PianoRoll pianoRoll)
     private javax.swing.JComboBox chordTypeComboBox;
     private javax.swing.JPanel clipboardPanel;
     private javax.swing.JTextField clipboardTextField;
+    private javax.swing.JButton closeBtn;
     private javax.swing.JPanel closeButtonPanel;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JTextField columnField0;
@@ -6694,6 +6712,7 @@ public void exportColumnToPianoRoll(PianoRoll pianoRoll)
     private javax.swing.JLabel slashLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JButton stopBtn;
+    private javax.swing.JButton stopPlaying;
     private javax.swing.JMenu styEdit;
     private javax.swing.JMenu styFile;
     private javax.swing.JMenu styGenerate;
@@ -6742,7 +6761,14 @@ public int getNewYlocation()
     return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
   }
 
+public void stopPlaying()
+  {
+      pauseBtn.setEnabled(false);
+      stopBtn.setEnabled(false);
+      playBtn.setEnabled(true);
 
+      notate.stopPlaying();
+  }
 
 }
 

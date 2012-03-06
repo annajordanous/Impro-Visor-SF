@@ -1001,7 +1001,7 @@ public class DrumPatternDisplay
     
     public boolean playMe(double swingVal)
     {
-    return playMe(swingVal, 0);
+    return playMe(swingVal, getLoopValue());
     }
 
       /**

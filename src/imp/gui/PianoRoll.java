@@ -1900,10 +1900,10 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
 
     Playable playable = styleEditor.getPlayableFromRow(this, row);
 
-    if( !looping )
-      {
-        ensureLoopThread(playable);
-      }
+//    if( !looping )
+//      {
+//        ensureLoopThread(playable);
+//      }
 
     AbstractButton thisButton = rowButton[row];
 
@@ -1927,37 +1927,39 @@ private void setLooping(boolean value)
     loopToggleButton.setSelected(value);
 
     Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
-    ensureLoopThread(playable);
+    //ensureLoopThread(playable);
 
     if( value )
       {
+        playable.playMe(styleEditor.getSwingValue());
         loopToggleButton.setBackground(SELECTEDCOLOR);
         loopToggleButton.setText("<html><center>Stop Looping</center></html>");
       }
     else
       {
-        loopPlayer.setPlaying(false);
+        playable.stopPlaying();
+        //loopPlayer.setPlaying(false);
         loopToggleButton.setBackground(DRUMSCOLOR);
         loopToggleButton.setText("<html><center>Loop Percussion</center></html>");
       }
   }
 
-private void ensureLoopThread(Playable playable)
-  {
-    if( loopThread == null )
-      {
-        loopPlayer = new LoopPlayer(playable,
-                                    styleEditor.getAccompanimentSwingValue(),
-                                    msGap);
-        loopThread = new Thread(loopPlayer);
-        loopThread.start();
-      }
-    else
-      {
-        loopPlayer.setPlayable(playable);
-      }
-
-  }
+//private void ensureLoopThread(Playable playable)
+//  {
+//    if( loopThread == null )
+//      {
+//        loopPlayer = new LoopPlayer(playable,
+//                                    styleEditor.getAccompanimentSwingValue(),
+//                                    msGap);
+//        loopThread = new Thread(loopPlayer);
+//        loopThread.start();
+//      }
+//    else
+//      {
+//        loopPlayer.setPlayable(playable);
+//      }
+//
+//  }
 
 public void updatePlayable()
   {
@@ -1965,7 +1967,7 @@ public void updatePlayable()
       {
         Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
 
-        ensureLoopThread(playable);
+ //       ensureLoopThread(playable);
       }
   }
 
@@ -1980,7 +1982,7 @@ private void loopToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//
 
 Playable playable = styleEditor.getPlayablePercussion(this, rowButton);
 
-ensureLoopThread(playable);
+//ensureLoopThread(playable);
 
     setLooping(loopToggleButton.isSelected());
 

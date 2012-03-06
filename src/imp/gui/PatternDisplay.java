@@ -62,6 +62,12 @@ abstract class PatternDisplay
     }
     
 
+    
+  public void stopPlaying()
+    {
+      styleEditor.stopPlaying();
+    }
+  
   abstract public boolean playMe(double swingValue);
   
   abstract public boolean checkStatus();
@@ -80,6 +86,11 @@ abstract class PatternDisplay
     playable = checkStatus();
     return playable;
   }
+  
+  public int getLoopValue()
+    {
+      return styleEditor.getLoopValue();
+    }
   
   public void cannotPlay()
   {

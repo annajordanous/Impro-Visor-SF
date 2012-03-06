@@ -58,6 +58,10 @@ public void setGap(long msGap)
 public void setPlaying(boolean play)
   {
     this.play = play;
+    if( !play )
+      {
+        playable.stopPlaying();
+      }
   }
 
 public void run()
