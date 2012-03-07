@@ -1,6 +1,6 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.09,
-from Prof. Bob Keller at Harvey Mudd College. 
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.10,
+from Prof. Bob Keller at Harvey Mudd College, 6 March 2012.
 
 Release notes for this version may be found at the end.
 
@@ -21,7 +21,7 @@ later, including:
 
 The official information site for Impro-Visor is:
 
-    https://www.cs.hmc.edu/~keller/jazz/improvisor
+    http://www.cs.hmc.edu/~keller/jazz/improvisor
 
 which is the same as
 
@@ -31,7 +31,8 @@ The official download site for Impro-Visor is sourceForge:
 
     http://sourceforge.net/projects/impro-visor/
 
-Download the installer that is provided for your platform, then launch the installer.
+Download the installer that is provided for your platform, 
+then launch the installer.
 
 Once the program is installed, there should be a launcher
 
@@ -40,6 +41,10 @@ Once the program is installed, there should be a launcher
 that will run the program itself. The first time the program is run it
 will set up a folder in your user home for your personal version of
 various files.
+
+You may also need to adjust MIDI settings to get sound on your particular
+system. The Impro-Visor MIDI control panel is identified by a black circular
+icon on the right side of the upper icon bar.
 
 Alternatively, you may run by double-clicking the file: 
 
@@ -79,7 +84,30 @@ keller@cs.hmc.edu
 
 ===============================================================================
 
-Release notes for Impro-Visor 5.09
+Release notes for Impro-Visor 5.10
+
+The Style Editor workings have been greatly improved.  Looping now works without
+having to set an inter-loop delay.  Copying and pasting of large groups of 
+cells is silent, as is creation of a pianoroll.
+
+The shortcut for creating a pianoroll for a column is now control-shift-click,
+rather than shift-click as before.  (Shift-click is used to extend a multi-cell
+selection.)
+
+A bug was fixed in style rendering for playback.  It only arose in certain 
+styles, such as una-mas and senor-blues.
+
+A bug was fixed wherein MIDI input entered during count-in would cause
+the program to lock up.
+
+There is a remaining problem with MIDI input.  If used for a long time, 
+memory will fill up and the program will start slowing down and eventually
+need to be restarted.  Usually this won't happen until after a couple of
+choruses have been entered. The problem is being worked.
+
+===============================================================================
+
+Release notes for Impro-Visor 5.09 (pre-release for 5.10)
 
 -------------------------------------------------------------------------------
 Windows users: You may need to set your MIDI settings (identified by the

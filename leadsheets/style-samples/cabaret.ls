@@ -15,6 +15,7 @@
 (chord-volume 39)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style cabaret
     (swing 0.5)
     (comp-swing 0.5)

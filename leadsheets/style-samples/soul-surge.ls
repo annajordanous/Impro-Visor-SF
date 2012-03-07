@@ -15,6 +15,7 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style soul-surge
     (swing 0.67)
     (comp-swing 0.67)

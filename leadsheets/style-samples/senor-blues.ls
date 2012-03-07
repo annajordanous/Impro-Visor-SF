@@ -15,6 +15,7 @@
 (chord-volume 44)
 (breakpoint 54)
 (layout 4 4 4 4 4 4)
+(roadmap-layout 8)
 (style senor-blues
     (swing 0.55)
     (comp-swing 0.55)

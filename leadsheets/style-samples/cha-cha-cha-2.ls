@@ -15,6 +15,7 @@
 (chord-volume 48)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style cha-cha-cha-2
     (swing 0.5)
     (comp-swing 0.5)

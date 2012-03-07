@@ -6,7 +6,7 @@
 (meter 4 4)
 (key -1)
 (tempo 180.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -15,6 +15,7 @@
 (chord-volume 37)
 (breakpoint 54)
 (layout 4)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -34,13 +35,16 @@
     (key -1)
 )
 
+
 (section (style swing)) 
 
 F13 | Bb13 Bo7 | F13 | Cm9 F13b9 | 
 
+
 (section (style swing)) 
 
 Bb13 | Bo7 | F13 | D7#5#9 | 
+
 
 (section (style swing)) 
 

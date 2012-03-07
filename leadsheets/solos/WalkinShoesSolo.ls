@@ -6,7 +6,7 @@
 (meter 4 4)
 (key -3)
 (tempo 160.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -15,6 +15,7 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout 4)
+(roadmap-layout 8)
 (style swing
     (swing 0.67)
     (comp-swing 0.67)
@@ -33,6 +34,7 @@
     (volume 65)
     (key -3)
 )
+
 
 (section (style swing)) 
 

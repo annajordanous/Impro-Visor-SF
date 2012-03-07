@@ -6,7 +6,7 @@
 (meter 4 4)
 (key 1)
 (tempo 200.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
 (bass-instrument 33)
@@ -15,6 +15,7 @@
 (chord-volume 60)
 (breakpoint 54)
 (layout 4)
+(roadmap-layout 8)
 (style latin-pedal-bass-1
     (swing 0.55)
     (comp-swing 0.55)
@@ -34,20 +35,24 @@
     (key 1)
 )
 
+
 (section (style latin-pedal-bass-1)) 
 
 GM9 | / | Am7/G | / | 
 GM9 | / | Am7/G | / | 
+
 
 (section (style swing)) 
 
 Dm9 | G13b9 | CM9 | F13#11 | 
 Bm9 Bbo7 | Am9 D13b9 | GM9 | / | 
 
+
 (section (style latin-pedal-bass-1)) 
 
 GM9 | / | Am7/G | / | 
 GM9 | / | Am7/G | / | 
+
 
 (section (style swing)) 
 

@@ -15,6 +15,7 @@
 (chord-volume 35)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style pedal-bass-1
     (swing 0.5)
     (comp-swing 0.5)

@@ -1,7 +1,7 @@
 <project name="Impro-Visor" default="compile" basedir=".">
 
 <description>
-Build-file for Impro-Visor 5.09
+Build-file for Impro-Visor 5.10
 
 Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
 
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor509"            />
-    <property name="dist-mac"               value="improvisor509-mac"        />
-    <property name="dist-win"               value="improvisor509-win"        />
-    <property name="zipName"                value="improvisor509.zip"        />
-    <property name="zipMacName"             value="improvisor509mac.zip"     />
+    <property name="distDir"                value="improvisor510"            />
+    <property name="dist-mac"               value="improvisor510-mac"        />
+    <property name="dist-win"               value="improvisor510-win"        />
+    <property name="zipName"                value="improvisor510.zip"        />
+    <property name="zipMacName"             value="improvisor510mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
@@ -300,7 +300,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="zipSrc" depends="cleanSrc" description="zips up the source">
-    <zip destfile="improvisor509-src.zip" basedir="${srcDir}" />
+    <zip destfile="improvisor510-src.zip" basedir="${srcDir}" />
 </target>
 
 <target name="cleanJavadoc" depends="init" description="">

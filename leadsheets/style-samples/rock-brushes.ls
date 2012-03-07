@@ -6,14 +6,16 @@
 (meter 4 4)
 (key 0)
 (tempo 160.0)
-(volume 127)
+(volume 80)
 (playback-transpose 0)
+(chord-font-size 16)
 (bass-instrument 33)
 (bass-volume 60)
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style rock-brushes
     (swing 0.5)
     (comp-swing 0.5)
@@ -32,6 +34,7 @@
     (volume 65)
     (key 0)
 )
+
 
 (section (style rock-brushes)) 
 

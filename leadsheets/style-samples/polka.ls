@@ -15,6 +15,7 @@
 (chord-volume 42)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style polka
     (swing 0.5)
     (comp-swing 0.5)

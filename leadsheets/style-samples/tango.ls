@@ -15,6 +15,7 @@
 (chord-volume 48)
 (breakpoint 12)
 (layout)
+(roadmap-layout 8)
 (style tango
     (swing 0.5)
     (comp-swing 0.5)

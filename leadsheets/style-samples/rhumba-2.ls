@@ -15,6 +15,7 @@
 (chord-volume 43)
 (breakpoint 54)
 (layout)
+(roadmap-layout 8)
 (style rhumba-2
     (swing 0.5)
     (comp-swing 0.5)
