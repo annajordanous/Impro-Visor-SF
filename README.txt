@@ -86,20 +86,25 @@ keller@cs.hmc.edu
 
 Release notes for Impro-Visor 5.10
 
+-------------------------------------------------------------------------------
 The Style Editor workings have been greatly improved.  Looping now works without
 having to set an inter-loop delay.  Copying and pasting of large groups of 
 cells is silent, as is creation of a pianoroll.
 
+-------------------------------------------------------------------------------
 The shortcut for creating a pianoroll for a column is now control-shift-click,
 rather than shift-click as before.  (Shift-click is used to extend a multi-cell
 selection.)
 
+-------------------------------------------------------------------------------
 A bug was fixed in style rendering for playback.  It only arose in certain 
 styles, such as una-mas and senor-blues.
 
+-------------------------------------------------------------------------------
 A bug was fixed wherein MIDI input entered during count-in would cause
 the program to lock up.
 
+-------------------------------------------------------------------------------
 There is a remaining problem with MIDI input.  If used for a long time, 
 memory will fill up and the program will start slowing down and eventually
 need to be restarted.  Usually this won't happen until after a couple of
