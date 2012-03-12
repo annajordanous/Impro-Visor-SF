@@ -870,8 +870,6 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "/5", "/4", "/3", "/2", "x1", "x2", "x3", "x4", "x5" }));
         scaleComboBox.setSelectedIndex(4);
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("imp/roadmap/Bundle"); // NOI18N
-        scaleComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, bundle.getString("RoadMapFrame.scaleComboBox.border.title"), javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(80, 45));
         scaleComboBox.setMinimumSize(new java.awt.Dimension(80, 30));
         scaleComboBox.setName("scaleComboBox"); // NOI18N
@@ -1085,14 +1083,13 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
         playOnClickToggleButton.setBackground(new java.awt.Color(0, 255, 0));
         playOnClickToggleButton.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        playOnClickToggleButton.setText("<html><center>\nPlay on\n<br>\nClick\n</center></html>\n"); // NOI18N
+        playOnClickToggleButton.setText("<html><center>\nPlay on\n<br>\nClick\n</center></html>\n");
         playOnClickToggleButton.setToolTipText("Play brick when brick is clicked.\n"); // NOI18N
         playOnClickToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playOnClickToggleButton.setFocusable(false);
         playOnClickToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         playOnClickToggleButton.setMaximumSize(new java.awt.Dimension(60, 30));
         playOnClickToggleButton.setMinimumSize(new java.awt.Dimension(60, 30));
-        playOnClickToggleButton.setName(bundle.getString("RoadMapFrame.playOnClickToggleButton.name")); // NOI18N
         playOnClickToggleButton.setOpaque(true);
         playOnClickToggleButton.setPreferredSize(new java.awt.Dimension(60, 30));
         playOnClickToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
