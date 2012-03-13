@@ -587,10 +587,14 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
         cm.changedSinceLastSave(true);        
     }//GEN-LAST:event_drumInstrumentBoxActionPerformed
 
-    // To satisfy interface for now: FIX
+    public double getPatternLength()
+    {
+      return ((float)MIDIBeast.numBeatsInRule(getDisplayText()));
+    }
+        
     public double getBeats()
     {
-      return 0;
+      return getPatternLength()/BEAT;
     }
     
  // To satisfy interface for now: FIX

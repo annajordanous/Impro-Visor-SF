@@ -325,7 +325,7 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
           {
             maybePlay((Playable) rule);
           }
-        updateCache(rowIndex, colIndex, rule);
+        updateMirror(rowIndex, colIndex, rule);
       }
   }
 
@@ -454,7 +454,7 @@ public void playBassColumn()
    @param rule
    */
   
-  void updateCache(int rowIndex, int colIndex, Object rule)
+  void updateMirror(int rowIndex, int colIndex, Object rule)
     {
     // This part makes the clicked patterns show up in the textfields above the jtable.
     // As different cells are clicked, the patterns are shifted upward.
@@ -484,8 +484,10 @@ public void playBassColumn()
       {
           Object contents = styleTable.getValueAt(recentRows[0], recentColumns[0]);
           styleTextField0.setText(contents.toString());
+          beatsField0.setText("" + ((PatternDisplay)contents).getBeats());
           rowField0.setText("" + rowHeaderLabels.get(recentRows[0]));
           columnField0.setText("" + styleTable.getColumnName(recentColumns[0]));
+          setTextFieldColor(contents, beatsField0);
           setTextFieldColor(contents, styleTextField0);
           setTextFieldColor(contents, rowField0);
           setTextFieldColor(contents, columnField0);
@@ -495,8 +497,10 @@ public void playBassColumn()
         {
           Object contents = styleTable.getValueAt(recentRows[1], recentColumns[1]);
           styleTextField1.setText(contents.toString());
+          beatsField1.setText("" + ((PatternDisplay)contents).getBeats());
           rowField1.setText("" + rowHeaderLabels.get(recentRows[1]));
           columnField1.setText("" + styleTable.getColumnName(recentColumns[1]));
+          setTextFieldColor(contents, beatsField1);
           setTextFieldColor(contents, styleTextField1);
           setTextFieldColor(contents, rowField1);
           setTextFieldColor(contents, columnField1);
@@ -506,8 +510,10 @@ public void playBassColumn()
         {
           Object contents = styleTable.getValueAt(recentRows[2], recentColumns[2]);
           styleTextField2.setText(contents.toString());
+          beatsField2.setText("" + ((PatternDisplay)contents).getBeats());
           rowField2.setText("" + rowHeaderLabels.get(recentRows[2]));
           columnField2.setText("" + styleTable.getColumnName(recentColumns[2]));
+          setTextFieldColor(contents, beatsField2);
           setTextFieldColor(contents, styleTextField2);
           setTextFieldColor(contents, rowField2);
           setTextFieldColor(contents, columnField2);
@@ -2913,7 +2919,7 @@ public void playBassColumn()
       }
 
     styleTable.setValueAt(beingSet, row, column);
-    updateCache(row, column, beingSet); // styleTable.getValueAt(row, column));
+    updateMirror(row, column, beingSet); // styleTable.getValueAt(row, column));
     return beingSet;
     }
 
@@ -3414,13 +3420,17 @@ public void playBassColumn()
         stylePanel = new javax.swing.JPanel();
         rowLabel = new javax.swing.JLabel();
         columnLabel = new javax.swing.JLabel();
+        beatsLabel = new javax.swing.JLabel();
         contentLabel = new javax.swing.JLabel();
+        beatsField2 = new javax.swing.JTextField();
         rowField2 = new javax.swing.JTextField();
         columnField2 = new javax.swing.JTextField();
         styleTextField2 = new javax.swing.JTextField();
+        beatsField1 = new javax.swing.JTextField();
         rowField1 = new javax.swing.JTextField();
         columnField1 = new javax.swing.JTextField();
         styleTextField1 = new javax.swing.JTextField();
+        beatsField0 = new javax.swing.JTextField();
         rowField0 = new javax.swing.JTextField();
         columnField0 = new javax.swing.JTextField();
         styleTextField0 = new javax.swing.JTextField();
@@ -4841,12 +4851,45 @@ public void playBassColumn()
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         stylePanel.add(columnLabel, gridBagConstraints);
 
-        contentLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        beatsLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        beatsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        beatsLabel.setText("Beats\n");
+        beatsLabel.setToolTipText("Computed number of beats\n");
+        beatsLabel.setMaximumSize(new java.awt.Dimension(100, 14));
+        beatsLabel.setMinimumSize(new java.awt.Dimension(100, 14));
+        beatsLabel.setPreferredSize(new java.awt.Dimension(100, 14));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        stylePanel.add(beatsLabel, gridBagConstraints);
+
+        contentLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        contentLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        contentLabel.setText("Pattern\n");
         contentLabel.setToolTipText("Previous rule selected");
         contentLabel.setMaximumSize(new java.awt.Dimension(900, 14));
         contentLabel.setMinimumSize(new java.awt.Dimension(900, 14));
         contentLabel.setPreferredSize(new java.awt.Dimension(900, 14));
         stylePanel.add(contentLabel, new java.awt.GridBagConstraints());
+
+        beatsField2.setEditable(false);
+        beatsField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        beatsField2.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        beatsField2.setMinimumSize(new java.awt.Dimension(100, 22));
+        beatsField2.setPreferredSize(new java.awt.Dimension(100, 22));
+        beatsField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beatsField2ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(beatsField2, gridBagConstraints);
 
         rowField2.setEditable(false);
         rowField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4866,9 +4909,9 @@ public void playBassColumn()
 
         columnField2.setEditable(false);
         columnField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        columnField2.setMaximumSize(new java.awt.Dimension(30, 2147483647));
-        columnField2.setMinimumSize(new java.awt.Dimension(30, 22));
-        columnField2.setPreferredSize(new java.awt.Dimension(30, 22));
+        columnField2.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        columnField2.setMinimumSize(new java.awt.Dimension(100, 22));
+        columnField2.setPreferredSize(new java.awt.Dimension(100, 22));
         columnField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 columnField2ActionPerformed(evt);
@@ -4892,13 +4935,30 @@ public void playBassColumn()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 0);
         stylePanel.add(styleTextField2, gridBagConstraints);
+
+        beatsField1.setEditable(false);
+        beatsField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        beatsField1.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        beatsField1.setMinimumSize(new java.awt.Dimension(100, 22));
+        beatsField1.setPreferredSize(new java.awt.Dimension(100, 22));
+        beatsField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beatsField1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(beatsField1, gridBagConstraints);
 
         rowField1.setEditable(false);
         rowField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4913,9 +4973,9 @@ public void playBassColumn()
 
         columnField1.setEditable(false);
         columnField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        columnField1.setMaximumSize(new java.awt.Dimension(30, 2147483647));
-        columnField1.setMinimumSize(new java.awt.Dimension(30, 22));
-        columnField1.setPreferredSize(new java.awt.Dimension(30, 22));
+        columnField1.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        columnField1.setMinimumSize(new java.awt.Dimension(100, 22));
+        columnField1.setPreferredSize(new java.awt.Dimension(100, 22));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -4934,13 +4994,30 @@ public void playBassColumn()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 0, 0);
         stylePanel.add(styleTextField1, gridBagConstraints);
+
+        beatsField0.setEditable(false);
+        beatsField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        beatsField0.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        beatsField0.setMinimumSize(new java.awt.Dimension(100, 22));
+        beatsField0.setPreferredSize(new java.awt.Dimension(100, 22));
+        beatsField0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beatsField0ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        stylePanel.add(beatsField0, gridBagConstraints);
 
         rowField0.setEditable(false);
         rowField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -4955,9 +5032,9 @@ public void playBassColumn()
 
         columnField0.setEditable(false);
         columnField0.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        columnField0.setMaximumSize(new java.awt.Dimension(30, 2147483647));
-        columnField0.setMinimumSize(new java.awt.Dimension(30, 22));
-        columnField0.setPreferredSize(new java.awt.Dimension(30, 22));
+        columnField0.setMaximumSize(new java.awt.Dimension(100, 2147483647));
+        columnField0.setMinimumSize(new java.awt.Dimension(100, 22));
+        columnField0.setPreferredSize(new java.awt.Dimension(100, 22));
         columnField0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 columnField0ActionPerformed(evt);
@@ -4981,7 +5058,7 @@ public void playBassColumn()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -4990,13 +5067,13 @@ public void playBassColumn()
         stylePanel.add(styleTextField0, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        jLabel1.setText("<html><b>Double-click</b> table cell to edit pattern. <b>Control-click</b> a column of table to play percussion simultaneously. <b>Shift-click</b> a column to use piano roll editor. </html>\n");
+        jLabel1.setText("<html><b>Double-click</b> table cell to edit pattern. <b>Control-click</b> a column of table to play percussion simultaneously. <b>Control-shift-click</b> a column to use piano roll editor. </html>\n");
         editInstructionsPanel.add(jLabel1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         stylePanel.add(editInstructionsPanel, gridBagConstraints);
@@ -5031,7 +5108,7 @@ public void playBassColumn()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -5404,7 +5481,7 @@ public void playBassColumn()
       {
       String revisedContent = styleTextField0.getText(); //.toUpperCase();
       setCell(revisedContent, recentRows[0], recentColumns[0], PLAY);
-      updateCache(recentRows[0], recentColumns[0], revisedContent);
+      updateMirror(recentRows[0], recentColumns[0], revisedContent);
       }
 }//GEN-LAST:event_styleTextField0ActionPerformed
 
@@ -5414,7 +5491,7 @@ public void playBassColumn()
       {
       String revisedContent = styleTextField1.getText(); //.toUpperCase();
       setCell(revisedContent, recentRows[1], recentColumns[1], PLAY);
-      updateCache(recentRows[1], recentColumns[1], revisedContent);
+      updateMirror(recentRows[1], recentColumns[1], revisedContent);
     }
 }//GEN-LAST:event_styleTextField1ActionPerformed
 
@@ -5424,7 +5501,7 @@ public void playBassColumn()
       {
       String revisedContent = styleTextField2.getText(); //.toUpperCase();
       setCell(revisedContent, recentRows[2], recentColumns[2], PLAY);
-      updateCache(recentRows[2], recentColumns[2], revisedContent);
+      updateMirror(recentRows[2], recentColumns[2], revisedContent);
       }
 }//GEN-LAST:event_styleTextField2ActionPerformed
 
@@ -6566,6 +6643,21 @@ private void stopPlayingActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIR
     stopPlaying();
   }//GEN-LAST:event_stopPlayingActionPerformed
 
+private void beatsField0ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_beatsField0ActionPerformed
+  {//GEN-HEADEREND:event_beatsField0ActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_beatsField0ActionPerformed
+
+private void beatsField1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_beatsField1ActionPerformed
+  {//GEN-HEADEREND:event_beatsField1ActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_beatsField1ActionPerformed
+
+private void beatsField2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_beatsField2ActionPerformed
+  {//GEN-HEADEREND:event_beatsField2ActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_beatsField2ActionPerformed
+
 private void trackWithPianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6627,6 +6719,10 @@ public void exportColumnToPianoRoll(PianoRoll pianoRoll)
     private javax.swing.JScrollPane bassStyleSpecScrollPane;
     private javax.swing.JPanel bassTabPanel;
     private javax.swing.JTextArea bassText;
+    private javax.swing.JTextField beatsField0;
+    private javax.swing.JTextField beatsField1;
+    private javax.swing.JTextField beatsField2;
+    private javax.swing.JLabel beatsLabel;
     private javax.swing.JLabel bpmLabel;
     private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;

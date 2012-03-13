@@ -289,7 +289,7 @@ public class DrumPatternDisplay
    /**
     * @return the number of beats in the pattern.
     * RK: This is stubbed until issues can be worked out. We want it to be the maximum number of beats in a rule.
-    * I don't it matters whether the number of beats in different rules are unequal.
+    * I don't think it matters whether the number of beats in different rules are unequal.
     */
     
     public double getBeats() {
