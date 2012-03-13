@@ -40,7 +40,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalButtonUI;
 import polya.Polylist;
@@ -3352,7 +3351,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
         ChordPart chords = notate.getChordProg().extract(selStart,
                                                          selStart + slotsPerSection - 1);
-        Vector chordList = chords.getUnitList();
+        ArrayList<Unit> chordList = chords.getUnitList();
         if( chordList.isEmpty() )
           {
             System.out.println("No chords");

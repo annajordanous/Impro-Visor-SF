@@ -484,12 +484,12 @@ public class MelodyPart
     
        for( int i =  0; i < size; i++ )
         {
-          Unit unit = slots.elementAt(i);
+          Unit unit = slots.get(i);
           if( unit != null )
             {
             unit = unit.copy();
             }
-          newPart.slots.setElementAt(unit, i);
+          newPart.slots.set(i, unit);
         }
 
     newPart.unitCount = unitCount;
@@ -1483,7 +1483,7 @@ public class MelodyPart
   
   for( int i = 0; i < n; i++ )
     {
-    Note note = (Note)slots.elementAt(i);
+    Note note = (Note)slots.get(i);
     if( note != null )
       {
       buffer.append(note.toLeadsheet());

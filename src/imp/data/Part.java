@@ -27,9 +27,9 @@ import imp.util.Trace;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Vector;
 
 /**
  * The Part class is representative of an arbitrarily long melody, played
@@ -53,7 +53,7 @@ public class Part implements Constants, Serializable {
      * a Vector containing the slots in this Part, each of which
      * contains either null or a Unit object (can be note, rest, or chord)
      */
-    protected Vector<Unit> slots;
+    protected ArrayList<Unit> slots;
 
     /**
      * an int containing the number of slots in the Part
@@ -159,8 +159,12 @@ public class Part implements Constants, Serializable {
         composer = DEFAULT_COMPOSER;
  
         this.size = size;
-        slots = new Vector<Unit>(size);
-        slots.setSize(size);
+        slots = new ArrayList<Unit>(size);
+        for( int k = 0; k < size; k++ )
+          {
+            slots.add(null);
+          }
+        //slots.setSize(size);
         if(size != 0) {
             slots.set(0, new Rest(size));     // empty Part has one long rest
             unitCount = 1;
@@ -376,7 +380,7 @@ public class Part implements Constants, Serializable {
     public int getLastActiveSlot() {
       for( int j = slots.size()-1; j >= 0; j-- )
       {
-        Object ob = slots.elementAt(j);
+        Object ob = slots.get(j);
         if( ob instanceof Chord 
           || ob instanceof Note )
         {
@@ -399,8 +403,8 @@ public class Part implements Constants, Serializable {
      * Returns a Vector containing every Unit in this Part.
      * @return Vector   unitList
      */
-    public Vector<Unit> getUnitList() {
-        Vector<Unit> unitList = new Vector<Unit>(unitCount);
+    public ArrayList<Unit> getUnitList() {
+        ArrayList<Unit> unitList = new ArrayList<Unit>(unitCount);
         PartIterator i = iterator();
         while(i.hasNext())
             unitList.add(i.next());
@@ -416,8 +420,13 @@ public class Part implements Constants, Serializable {
 
         int oldSize = this.size;
         this.size = size;
+            for( int k = oldSize; k < size; k++ )
+              {
+                slots.add(null);
+              }
+            
         if(size != 0 && unitCount == 0) {
-            slots.setSize(size);
+            //slots.setSize(size);
             if(this instanceof MelodyPart) {
                 slots.set(0, new Rest(size));
                 unitCount = 1;
@@ -440,14 +449,14 @@ public class Part implements Constants, Serializable {
                 unitCount -= unitsErased;
             }
             Unit unit = getUnit(index);
-            slots.setSize(size);
+            //slots.setSize(size);
             Trace.log(3, "in setSize, setting rhythmValue to " + getUnitRhythmValue(index) + " from " + index);
             unit.setRhythmValue(getUnitRhythmValue(index));
         }
         else if(size == 0)
             unitCount = 0;
 
-        slots.setSize(size);
+        //slots.setSize(size);
     }
     
     /**
@@ -466,12 +475,12 @@ public class Part implements Constants, Serializable {
         
         for( int i =  0; i < size; i++ )
         {
-          Unit unit = slots.elementAt(i);
+          Unit unit = slots.get(i);
           if( unit != null )
             {
             unit = unit.copy();
             }
-          newPart.slots.setElementAt(unit, i);
+          newPart.slots.set(i, unit);
         }
 
         newPart.unitCount = unitCount;
@@ -526,7 +535,11 @@ public class Part implements Constants, Serializable {
         Trace.log(3, "adding " + numSlots + " slots to part");
         Unit prevUnit = getPrevUnit(size-1);	// can 'size' be right, or should it be size-1??
         size += numSlots;
-        slots.setSize(size);
+        for( int k = slots.size(); k < size; k++ )
+          {
+            slots.add(null);
+          }
+        //slots.setSize(size);
         if(prevUnit == null)
             setUnit(0,new Rest());
         else
@@ -551,7 +564,11 @@ public class Part implements Constants, Serializable {
         int newSize = size + rv;
         size = newSize;
 
-        slots.setSize(size);
+        for( int k = slots.size(); k < newSize; k++ )
+          {
+            slots.add(null);
+          }
+        //slots.setSize(size);
         
         if(slots.get(index) == null)
             unitCount++;
@@ -726,8 +743,8 @@ public class Part implements Constants, Serializable {
     public void empty() {
         size = 0;
         unitCount = 0;
-        slots = new Vector<Unit>(size);
-        slots.setSize(0);
+        slots = new ArrayList<Unit>(0);
+        //slots.setSize(0);
     }
 
     /**
@@ -1336,7 +1353,7 @@ private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IO
         /**
          * points to the set of Units to iterate over
          */
-        protected Vector<Unit> slots;
+        protected ArrayList<Unit> slots;
 
         /**
          * the index of the Unit object returned with a call to next()
@@ -1365,7 +1382,7 @@ private void saveSectionInfo(BufferedWriter out, SectionRecord record) throws IO
          * @param unitCount     the number of Unit objects in the Vector<Unit>
          * @param nextIndex     the index of the first Unit to point to
          */
-        public PartIterator(final Vector<Unit> slots, int unitCount, 
+        public PartIterator(final ArrayList<Unit> slots, int unitCount, 
                                                         int nextIndex) {
             this.slots = slots;
             this.unitCount = unitCount;

@@ -24,10 +24,7 @@ package imp.cluster;
 import imp.data.ChordPart;
 import imp.data.Unit;
 import java.io.Serializable;
-import java.util.Hashtable;
-import java.util.Random;
-import java.util.Vector;
-import java.util.Enumeration;
+import java.util.*;
 
 /**
  * This class represents a Cluster in a Cluster Analysis Instance. A Cluster is associated
@@ -134,7 +131,7 @@ public class Cluster implements Serializable{
             //chords in the datapoint
             Vector<String> dpChords = mDataPoints.get(i).getChords();
             //chords in the song
-            Vector<Unit> songChords = chords.getUnitList();
+            ArrayList<Unit> songChords = chords.getUnitList();
             if (chordsMatch(dpChords, songChords)) {
                 pointsWithMatchingChords.add(mDataPoints.get(i));
             }
@@ -162,7 +159,7 @@ public class Cluster implements Serializable{
      * transposition of the chords in songChords
      */
     
-    public boolean chordsMatch(Vector<String> dpChords, Vector<Unit> songChords) {
+    public boolean chordsMatch(Vector<String> dpChords, ArrayList<Unit> songChords) {
         if(dpChords.size() != songChords.size()) return false;
         boolean match = true;
         for(int i = 0; i < dpChords.size(); i++) {

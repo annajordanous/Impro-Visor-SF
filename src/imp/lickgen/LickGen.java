@@ -245,7 +245,7 @@ public class LickGen implements Constants
             curr.addRest(r);
         }
         
-        Vector units = curr.getUnitList();
+        ArrayList<Unit> units = curr.getUnitList();
             //if prev measure and current measure were both tied originally, tie them together
             
             if(startTied && lastWasTied) {
@@ -264,7 +264,7 @@ public class LickGen implements Constants
                 melpart.setSize(melpart.getSize() + ((Note)units.get(0)).getRhythmValue());
                 last = melpart.getLastNote();
                 System.out.println("Second time: " + last.getRhythmValue());
-                units.removeElementAt(0);
+                units.remove(0);
                 }
             }
             
@@ -1002,7 +1002,7 @@ public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
                     beatValue, leapProb, 
                     first, chordProg,
                     start, avoidRepeats);
-            Vector units = p.getUnitList();
+            ArrayList<Unit> units = p.getUnitList();
             for(int i = 0; i < units.size(); i++) {
                 melPart.addNote((Note) units.get(i));
             }

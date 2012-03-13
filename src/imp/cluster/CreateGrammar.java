@@ -21,12 +21,18 @@
 package imp.cluster;
 
 
-import imp.data.*;
+import imp.data.ChordPart;
+import imp.data.Duration;
+import imp.data.Note;
+import imp.data.Unit;
 import imp.gui.Notate;
 import java.io.*;
-import java.util.*;
-import polya.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+import polya.Polylist;
 
 /**
  *
@@ -739,7 +745,7 @@ public class CreateGrammar implements imp.Constants {
         }
         
         //this should only happen for all rests, where rests were not properly merged
-        Vector<Unit> units = p.getUnitList();
+        ArrayList<Unit> units = p.getUnitList();
         if(units.size() != noteTypes.size()) 
             return 0;
            
