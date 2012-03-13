@@ -365,6 +365,11 @@ private StyleEditor styleEditor;
    */
   public void display()
     {
+    if( pianoRollPanel == null )
+      {
+        return;
+      }
+    
     pianoRollPanel.drawAll(buffer.getGraphics());
     //makeRowButtons(rowTitlePanel);
 
