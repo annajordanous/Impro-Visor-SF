@@ -107,24 +107,27 @@ public static DrumPattern makeDrumPattern(Polylist L)
 
         String dispatcher = (String) item.first();
         item = item.rest();
+        
         switch( Leadsheet.lookup(dispatcher, keyword) )
           {
-            case DRUM:
+            case DRUM: // a single drum "rule" in the pattern
               {
                 Long drum = new Long(0);
                 Long volume = new Long(MAX_VOLUME);
                 Polylist r = Polylist.nil;
                 Polylist d = Polylist.nil;
                 Polylist ruleAsList = Polylist.nil;
-                for( int i = 0; i < item.length(); i++ )
+                
+                while( item.nonEmpty() )
                   {
-                    if( item.nth(i) instanceof Long )
+                    Object ob = item.first();
+                    if( ob instanceof Long )
                       {
-                        drum = (Long) item.nth(i);
+                        drum = (Long)ob;
                       }
-                    else if( item.nth(i) instanceof String )
+                    else if( ob instanceof String )
                       {
-                        String s = (String) item.nth(i);
+                        String s = (String)ob;
 
                         int rule = Leadsheet.lookup(s.substring(0, 1), ruleTypes);
 
@@ -134,11 +137,11 @@ public static DrumPattern makeDrumPattern(Polylist L)
                         r = r.cons(rule);
                         d = d.cons(dur);
                       }
-                    else if( item.nth(i) instanceof Polylist )
+                    else if( ob instanceof Polylist )
                       {
-                        Polylist p = (Polylist) item.nth(i);
-                        if( p.first() instanceof String
-                                && ((String) p.first()).equals(keyword[VOLUME]) )
+                        Polylist p = (Polylist)ob;
+                        
+                        if( p.first().equals(keyword[VOLUME]) )
                           {
                             Double f = 1.0;
                             if( p.second() instanceof Long )
@@ -149,20 +152,25 @@ public static DrumPattern makeDrumPattern(Polylist L)
                               {
                                 f = (Double) p.second();
                               }
+                            
                             if( f > 1.0 )
                               {
                                 f = 1.0;
                               }
+                            
                             f *= volume;
                             volume = f.longValue();
                           }
                       }
+                    
+                    item = item.rest();
                   }
 
                 dp.addRule(drum, r.reverse(), d.reverse(), volume, ruleAsList.reverse());
                 break;
               }
-            case WEIGHT:
+                
+            case WEIGHT: // weight of entire pattern
               {
                 Number w = (Number) item.first();
                 dp.setWeight(w.floatValue());
@@ -171,6 +179,7 @@ public static DrumPattern makeDrumPattern(Polylist L)
       }
     return dp;
   }
+
 
 /**
  * Adds rules and durations for a drum to this DrumPattern. Note that there
