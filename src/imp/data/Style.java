@@ -955,7 +955,6 @@ public class Style
         d.setSwing(accompanimentSwing);
         d.setInstrument(drumInstrument);
         d.makeSwing();
-
         d.render(seq, drumChannel, time, track, 0, endLimitIndex);
         drumline = drumline.rest();
         }
@@ -1015,8 +1014,11 @@ private Polylist makeChordline(
     // Because we have no data structure to hold multi-voice parts, 
     // we manually render polylists for each chord in this method.
 
-    // Select Bank 0 before program change. Not sure this is correct.
-    //track.add(MidiSynth.createProgramChangeEvent(chordChannel, 0, time));
+    // Select Bank 0 before program change. 
+    // Not sure this is correct. Check before releasing!
+    
+    track.add(MidiSynth.createBankSelectEventMSB(0, time));
+    track.add(MidiSynth.createBankSelectEventLSB(0, time));
 
     track.add(MidiSynth.createProgramChangeEvent(chordChannel,
                                                  chordInstrument, 

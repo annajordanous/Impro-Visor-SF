@@ -674,6 +674,39 @@ protected static MidiEvent createNoteOffEvent(int channel,
 
 
 /**
+ * Not sure this is correct:
+ * Create a Bank Select MSB Event
+ * @param bankMSB  MSB of the bank to select
+ * @param value    the new value to use
+ * @param tick     the time this event occurs
+ */
+protected static MidiEvent createBankSelectEventMSB(int bankMSB,
+                                                    long tick)
+    throws InvalidMidiDataException
+  {
+    // Bank change is accomplished through control change, using controller
+    // 32 for MSB, and controller 0 for LSB
+    return createCChangeEvent(0, 32, bankMSB, tick);
+  }
+
+/**
+ * Not sure this is correct:
+ * Create a Bank Select LSB Event
+ * @param bankMSB  LSB of the bank to select
+ * @param value    the new value to use
+ * @param tick     the time this event occurs
+ */
+protected static MidiEvent createBankSelectEventLSB(int bankLSB,
+                                                    long tick)
+    throws InvalidMidiDataException
+  {
+    // Bank change is accomplished through control change, using controller
+    // 32 for MSB, and controller 0 for LSB
+    return createCChangeEvent(0, 0, bankLSB, tick);
+  }
+
+
+/**
  * Create a Program Change Event
  * @param channel  the channel to change
  * @param value    the new value to use

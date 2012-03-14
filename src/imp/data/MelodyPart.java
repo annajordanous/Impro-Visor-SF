@@ -944,8 +944,12 @@ public class MelodyPart
     // instruments playing at once, and we should add code somewhere
     // to make sure instruments are sorted to the right channels
     
-    // select Bank 0 before program change. Not sure this is correct
-    // track.add(MidiSynth.createProgramChangeEvent(ch, 0, time));
+    // Select Bank 0 before program change. 
+    // Not sure this is correct. Check before releasing
+    // both here and in Style.java
+    
+    track.add(MidiSynth.createBankSelectEventMSB(0, time));
+    track.add(MidiSynth.createBankSelectEventLSB(0, time));
 
     // add a track for this Part
     track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
