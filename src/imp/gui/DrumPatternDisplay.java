@@ -23,17 +23,13 @@ package imp.gui;
 import imp.Constants;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
-import imp.data.ChordPart;
-import imp.data.Duration;
-import imp.data.MIDIBeast;
-import imp.data.Score;
-import imp.data.Style;
+import imp.data.*;
 import imp.util.ErrorLog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -48,10 +44,7 @@ import polya.Polylist;
 public class DrumPatternDisplay 
         extends PatternDisplay 
         implements Playable, Constants {
-    //The image that is visible when the pane is collapsed and the pattern is legal.
-    private static ImageIcon goodPattern;  
-    //The image that is visible when the pane is collapsed and the pattern is illegal.
-    private static ImageIcon badPattern;
+
     //The image next to the pattern text if the pattern is legal
     private static ImageIcon goodRule;
     //The image next to the pattern text if the pattern is illegal
@@ -86,9 +79,10 @@ public class DrumPatternDisplay
     //True if the pattern information is displayed, false otherwise
     boolean isExpanded = false;
 
-    private Vector<DrumRuleDisplay> rules = new Vector<DrumRuleDisplay>();
+    private ArrayList<DrumRuleDisplay> rules = new ArrayList<DrumRuleDisplay>();
     
     // To satisfy interface only
+    @Override
     public java.awt.Color getColor()
     {
       return null;
@@ -120,10 +114,6 @@ public class DrumPatternDisplay
             MIDIBeast.invoke();
         }
         
-        goodPattern = new ImageIcon("src/imp/gui/graphics/icons/goodpattern.png");
-        badPattern = new ImageIcon("src/imp/gui/graphics/icons/badPattern.png");
-        goodRule = new ImageIcon("src/imp/gui/graphics/greenCircle.png");
-	    badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png");
 
         initComponents();
         initWeight();
@@ -141,24 +131,7 @@ public class DrumPatternDisplay
         checkStatus();
     } 
     
-    /*
-     * Fills the DrumPatternDisplay with three empty DrumRuleDisplay objects with default instruments.
-     
-    public void fill() {
-        DrumRuleDisplay d = new DrumRuleDisplay(null, "Acoustic Bass", this.notate, this.cm, this, styleEditor);
-        d.setDisplayText("X4");
-        this.addRule(d);
-        d = new DrumRuleDisplay(null, "Low Floor Tom", this.notate, this.cm, this, styleEditor);
-        d.setDisplayText("X4");
-        this.addRule(d);
-        d = new DrumRuleDisplay(null, "Closed Hi-Hat", this.notate, this.cm, this, styleEditor);
-        d.setDisplayText("X4");        
-        this.addRule(d);
-        d.updateUI();
-        this.updateUI();
-        setDeselectedAppearance();
-    }
-     */
+
     
     //Accessors:
     
@@ -181,10 +154,10 @@ public class DrumPatternDisplay
         //Component[] allRules = drumRuleHolder.getComponents();
         //for(int i = 0; i < allRules.length; i++) {
 
-        for( Enumeration<DrumRuleDisplay> e = rules.elements(); e.hasMoreElements(); )
+        for( Iterator<DrumRuleDisplay> e = rules.iterator(); e.hasNext(); )
         {
             try {
-                DrumRuleDisplay d = e.nextElement();
+                DrumRuleDisplay d = e.next();
                 // See if instrument is to be included per checkbox in editor
                 // FIX: This is round-about, and should be changed to iterate directly over
                 // table column, rather than going through drumRuleHolder.
@@ -381,12 +354,6 @@ public class DrumPatternDisplay
      * all rules do not have the same number of beats.
      **/
     public void updateLength() {
-      /*
-       if(errorMsg.equals(unequalBeatsMsg)) {
-          lengthTitle.setText("Unknown length");
-          return;
-       }
-       */
 
        float duration = getPatternLength();
 
@@ -405,10 +372,7 @@ public class DrumPatternDisplay
      **/
     public void setDeselectedAppearance() {
         this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255,171,87), 1, true));
-        northPanel.setBackground(new java.awt.Color(255,171,87));
 
-        includePlayPanel.setBackground(new java.awt.Color(255,171,87));
-        titlePanel.setBackground(new java.awt.Color(255,171,87));
 
     }
     
@@ -416,14 +380,7 @@ public class DrumPatternDisplay
      * Changes the appearance of this DrumPatternDisplay to "selected"
     **/    
     public void setSelectedAppearance() {
-       styleEditor.setSelectedDrum(this);
-       northPanel.setBackground(new java.awt.Color(255,102,0));
-       
-       includePlayPanel.setBackground(new java.awt.Color(255,102,0));
-       titlePanel.setBackground(new java.awt.Color(255,102,0));
-       this.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED,
-            new java.awt.Color(255,232,186), new java.awt.Color(255,232,186), new java.awt.Color(255,102,0),
-            new java.awt.Color(255,102,0)));         
+       styleEditor.setSelectedDrum(this);        
     } 
      
     /**
@@ -540,8 +497,6 @@ public class DrumPatternDisplay
 
         northPanel = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
-        includePlayPanel = new javax.swing.JPanel();
-        playPatternBtn = new javax.swing.JButton();
         itemPanel = new javax.swing.JPanel();
         weightLabel = new javax.swing.JLabel();
         weightSpinner = new javax.swing.JSpinner();
@@ -582,35 +537,6 @@ public class DrumPatternDisplay
             }
         });
         northPanel.add(titlePanel, java.awt.BorderLayout.WEST);
-
-        includePlayPanel.setBackground(new java.awt.Color(255, 171, 87));
-        includePlayPanel.setToolTipText("Double click to expand pattern information.");
-        includePlayPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                includePlayPanelMouseClicked(evt);
-            }
-        });
-
-        playPatternBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/play.png"))); // NOI18N
-        playPatternBtn.setToolTipText("Click to play pattern.");
-        playPatternBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        playPatternBtn.setIconTextGap(0);
-        playPatternBtn.setMaximumSize(new java.awt.Dimension(20, 20));
-        playPatternBtn.setMinimumSize(new java.awt.Dimension(20, 20));
-        playPatternBtn.setPreferredSize(new java.awt.Dimension(20, 20));
-        playPatternBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playPatternBtnActionPerformed(evt);
-            }
-        });
-        playPatternBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                playPatternBtnMousePressed(evt);
-            }
-        });
-        includePlayPanel.add(playPatternBtn);
-
-        northPanel.add(includePlayPanel, java.awt.BorderLayout.EAST);
 
         itemPanel.setBackground(new java.awt.Color(255, 255, 255));
         itemPanel.setMinimumSize(new java.awt.Dimension(515, 33));
@@ -734,13 +660,6 @@ public class DrumPatternDisplay
         }
     }//GEN-LAST:event_titlePanelMouseClicked
 
-    private void includePlayPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includePlayPanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_includePlayPanelMouseClicked
-
     private void weightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_weightSpinnerStateChanged
         cm.changedSinceLastSave(true);
     }//GEN-LAST:event_weightSpinnerStateChanged
@@ -752,10 +671,6 @@ public class DrumPatternDisplay
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_formMousePressed
-
-    private void playPatternBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playPatternBtnMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_playPatternBtnMousePressed
 
     private void weightSpinnerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightSpinnerMousePressed
         setSelectedAppearance();
@@ -785,10 +700,6 @@ public class DrumPatternDisplay
         setSelectedAppearance();
     }//GEN-LAST:event_northPanelMousePressed
   
-    private void playPatternBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnActionPerformed
-       playMe();
-    }//GEN-LAST:event_playPatternBtnActionPerformed
-
 
 /**
  * If the pattern is legal, creates a style with one chordPart consisting of a single chord and adds
@@ -938,10 +849,8 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane centerRulePane;
     private javax.swing.JPanel drumRuleHolder;
-    private javax.swing.JPanel includePlayPanel;
     private javax.swing.JPanel itemPanel;
     private javax.swing.JPanel northPanel;
-    private javax.swing.JButton playPatternBtn;
     private javax.swing.JPanel southPanel;
     private javax.swing.JPanel titlePanel;
     private javax.swing.JLabel weightLabel;
