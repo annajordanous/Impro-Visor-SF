@@ -293,9 +293,7 @@ public Polylist applyRules()
         Polylist rules = (Polylist) drum.second();
         Polylist durations = (Polylist) drum.third();
 
-        //Long volume = (Long) drum.fourth();
-
-        m.setVolume(127); //volume.intValue());
+        int localVolume = 127;
 
         while( rules.nonEmpty() )
           {
@@ -305,22 +303,23 @@ public Polylist applyRules()
                   {
                    int dur = Duration.getDuration((String) durations.first());
                    Note note = new Note(pitch.intValue(), dur);
-                    note.setVolume(m.getVolume());
-                    m.addNote(note);
-                    break;
+                   note.setVolume(localVolume);
+                   m.addNote(note);
+                   
+                   //System.out.println("drum " + pitch + " vol = " + localVolume + " dur = " + dur);
+                   break;
                   }
                 case REST:
                   {
                    int dur = Duration.getDuration((String) durations.first());
-                    m.addNote(new Rest(dur));
-                    break;
+                   m.addNote(new Rest(dur));
+                   break;
                   }
                     
                 case VOLUME:
                   {
-                    int vol = Integer.parseInt((String)durations.first());
-                    m.setVolume(vol);
-                    break;
+                   localVolume = Integer.parseInt((String)durations.first());
+                   break;
                   }
               }
             
