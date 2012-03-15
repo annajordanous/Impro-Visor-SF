@@ -3093,7 +3093,7 @@ public void playBassColumn()
       try
         {
         DrumPatternDisplay curDrum = (DrumPatternDisplay)allDrums[i];
-        curDrum.updateLength();
+
         }
       catch( ClassCastException e )
         {

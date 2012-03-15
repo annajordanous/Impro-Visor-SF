@@ -24,6 +24,7 @@ import imp.Constants;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.ChordPart;
+import imp.data.Duration;
 import imp.data.MIDIBeast;
 import imp.data.Score;
 import imp.data.Style;
@@ -277,7 +278,7 @@ public class DrumPatternDisplay
                 DrumRuleDisplay d = (DrumRuleDisplay) allRules[i];
                 if(d.checkStatus())
                 {
-                 float ruleLength = (float)MIDIBeast.numBeatsInRule(d.getDisplayText());
+                 float ruleLength = Duration.getDuration(d.getDisplayText());
                   if( ruleLength > maxBeats )
                   {
                     maxBeats = ruleLength;
@@ -315,7 +316,6 @@ public class DrumPatternDisplay
      * Sets the number in the title to num.
      **/ 
     public void setTitleNumber(int num) {
-        nameTitle.setText("Drum Pattern " + num + ":");        
         titleNumber = num;
     }     
    
@@ -373,10 +373,7 @@ public class DrumPatternDisplay
     {
       return drumRuleHolder.getComponentCount();
     }
-    
-
-    
-
+  
     
    /**
      * Recalculate the length of the pattern text given the time signuatre.
@@ -392,12 +389,7 @@ public class DrumPatternDisplay
        */
 
        float duration = getPatternLength();
-       if(duration == -1){
-           lengthTitle.setText("Unknown length");
-       }
-       else {
-           lengthTitle.setText(duration/MIDIBeast.beat + " beats");
-       }
+
     }
     
      /**
@@ -414,8 +406,7 @@ public class DrumPatternDisplay
     public void setDeselectedAppearance() {
         this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255,171,87), 1, true));
         northPanel.setBackground(new java.awt.Color(255,171,87));
-        nameTitle.setBackground(new java.awt.Color(255,171,87));
-        lengthTitle.setBackground(new java.awt.Color(255,171,87));
+
         includePlayPanel.setBackground(new java.awt.Color(255,171,87));
         titlePanel.setBackground(new java.awt.Color(255,171,87));
 
@@ -427,8 +418,7 @@ public class DrumPatternDisplay
     public void setSelectedAppearance() {
        styleEditor.setSelectedDrum(this);
        northPanel.setBackground(new java.awt.Color(255,102,0));
-       nameTitle.setBackground(new java.awt.Color(255,102,0));
-       lengthTitle.setBackground(new java.awt.Color(255,102,0));
+       
        includePlayPanel.setBackground(new java.awt.Color(255,102,0));
        titlePanel.setBackground(new java.awt.Color(255,102,0));
        this.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED,
@@ -448,25 +438,8 @@ public class DrumPatternDisplay
         updateLength();
         if(!patternLength)
             return false;
-        
-        /* Eliminate this check
-        for(int i = 0; i < allRules.length; i++) {
-            try {        
-                DrumRuleDisplay d = (DrumRuleDisplay) allRules[i];
-                if(!d.checkRuleStatus()) {
-                    errorMsg = unequalBeatsMsg;
-                    nameTitle.setIcon(badPattern);
-                    nameTitle.setToolTipText(unsafeMsgPattern);
-                    return false;
-                }
-            }
-            catch(ClassCastException e) {}
-        }
-        */
           
         errorMsg = safeMsgPattern;
-        nameTitle.setIcon(goodPattern);
-        nameTitle.setToolTipText(safeMsgPattern);
         return true;
     }
 
@@ -476,26 +449,7 @@ public class DrumPatternDisplay
      * Changes icons, tooltips, and errorMsg to appropriate error feedback information.
      **/      
     private boolean checkPatternLength() {
-/* RK Temporarily disable this check           
-        Component[] allRules = drumRuleHolder.getComponents();
-        int previousDur = -1;
-        for(int i = 0; i < allRules.length; i++) {
-            try {        
-                DrumRuleDisplay d = (DrumRuleDisplay) allRules[i];
-                 int nextDur = (int) MIDIBeast.numBeatsInRule(d.getDisplayText());
-                if(previousDur == -1) 
-                    previousDur = nextDur;
-                if(nextDur != previousDur) {
-                    errorMsg = "Drum pattern " + this.getTitleNumber() + " contains rules without the same number of beats";
-                    nameTitle.setIcon(badPattern);
-                    nameTitle.setToolTipText(unequalBeatsMsg);
-                    return false;
-                }     
-            }catch(ClassCastException e) {}
-        }
- */
-       /*This is changed for benifit of updateLength()
-          The decision to change tooltip and icon is handled by the next step in checkPatternLength */
+
         errorMsg = safeMsgRule;
         return true;
     }
@@ -539,21 +493,12 @@ public class DrumPatternDisplay
       //      this.setPreferredSize(expandedDimension);
       //      this.setMaximumSize(expandedDimension);
             
-            northPanel.setToolTipText("Double click to collapse pattern information.");
-            titlePanel.setToolTipText("Double click to collapse pattern information.");
-            lengthTitle.setToolTipText("Double click to collapse pattern information.");
-            includePlayPanel.setToolTipText("Double click to collapse pattern information.");
             isExpanded = true;
             
         } else {
             southPanel.setVisible(false);
       //      this.setPreferredSize(collapsedDimension);
        //     this.setMaximumSize(collapsedDimension);
-
-            northPanel.setToolTipText("Double click to expand pattern information.");
-            titlePanel.setToolTipText("Double click to expand pattern information.");
-            lengthTitle.setToolTipText("Double click to expand pattern information.");
-            includePlayPanel.setToolTipText("Double click to expand pattern information.");
 
             isExpanded = false;
         }        
@@ -595,8 +540,6 @@ public class DrumPatternDisplay
 
         northPanel = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
-        nameTitle = new javax.swing.JLabel();
-        lengthTitle = new javax.swing.JLabel();
         includePlayPanel = new javax.swing.JPanel();
         playPatternBtn = new javax.swing.JButton();
         itemPanel = new javax.swing.JPanel();
@@ -638,40 +581,6 @@ public class DrumPatternDisplay
                 titlePanelMouseClicked(evt);
             }
         });
-
-        nameTitle.setBackground(new java.awt.Color(255, 171, 87));
-        nameTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        nameTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/goodpattern.png"))); // NOI18N
-        nameTitle.setText("Drum Pattern");
-        nameTitle.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        nameTitle.setIconTextGap(10);
-        nameTitle.setMaximumSize(new java.awt.Dimension(118, 14));
-        nameTitle.setMinimumSize(new java.awt.Dimension(118, 14));
-        nameTitle.setPreferredSize(new java.awt.Dimension(118, 14));
-        nameTitle.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                nameTitleMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                nameTitleMousePressed(evt);
-            }
-        });
-        titlePanel.add(nameTitle);
-
-        lengthTitle.setBackground(new java.awt.Color(255, 171, 87));
-        lengthTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lengthTitle.setText("Length: unknown");
-        lengthTitle.setToolTipText("Double click to expand pattern information.");
-        lengthTitle.setMaximumSize(new java.awt.Dimension(115, 14));
-        lengthTitle.setMinimumSize(new java.awt.Dimension(115, 14));
-        lengthTitle.setPreferredSize(new java.awt.Dimension(115, 14));
-        lengthTitle.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lengthTitleMouseClicked(evt);
-            }
-        });
-        titlePanel.add(lengthTitle);
-
         northPanel.add(titlePanel, java.awt.BorderLayout.WEST);
 
         includePlayPanel.setBackground(new java.awt.Color(255, 171, 87));
@@ -825,20 +734,6 @@ public class DrumPatternDisplay
         }
     }//GEN-LAST:event_titlePanelMouseClicked
 
-    private void nameTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTitleMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_nameTitleMouseClicked
-
-    private void lengthTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lengthTitleMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_lengthTitleMouseClicked
-
     private void includePlayPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includePlayPanelMouseClicked
         setSelectedAppearance();
         if(evt.getClickCount() == 2) {
@@ -885,10 +780,6 @@ public class DrumPatternDisplay
     private void southPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_southPanelMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_southPanelMousePressed
-
-    private void nameTitleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTitleMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_nameTitleMousePressed
 
     private void northPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMousePressed
         setSelectedAppearance();
@@ -1049,8 +940,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     private javax.swing.JPanel drumRuleHolder;
     private javax.swing.JPanel includePlayPanel;
     private javax.swing.JPanel itemPanel;
-    private javax.swing.JLabel lengthTitle;
-    private javax.swing.JLabel nameTitle;
     private javax.swing.JPanel northPanel;
     private javax.swing.JButton playPatternBtn;
     private javax.swing.JPanel southPanel;
