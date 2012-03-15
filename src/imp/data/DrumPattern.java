@@ -136,34 +136,6 @@ public static DrumPattern makeDrumPattern(Polylist L)
                         r = r.cons(rule);
                         d = d.cons(dur);
                       }
-                    /*
-                    else if( ob instanceof Polylist )
-                      {
-                        Polylist p = (Polylist)ob;
-                        
-                        if( p.first().equals(keyword[VOLUME]) )
-                          {
-                            Double f = 1.0;
-                            if( p.second() instanceof Long )
-                              {
-                                f = ((Long) p.second()).doubleValue();
-                              }
-                            else if( p.second() instanceof Double )
-                              {
-                                f = (Double) p.second();
-                              }
-                            
-                            if( f > 1.0 )
-                              {
-                                f = 1.0;
-                              }
-                            
-                            f *= volume;
-                            volume = f.longValue();
-                          }
-                       
-                      }
-                    */
                     
                     item = item.rest();
                   }
@@ -199,13 +171,13 @@ public static DrumPattern makeDrumPattern(Polylist L)
 private void addRule(Long drum, Polylist rules, Polylist durations, Long volume, Polylist ruleAsList)
   {
     Polylist ruleToAdd = Polylist.list(drum, rules, durations, volume, ruleAsList);
+    System.out.println("in addRule(), ruleToAdd = " + ruleToAdd);
     drums = addRule(drum, ruleToAdd, drums);
   }
 
 
 private Polylist addRule(Long drum, Polylist ruleToAdd, Polylist drums)
   {
-    //System.out.println("in addRule(), ruleToAdd = " + ruleToAdd);
     if( drums.isEmpty() )
       {
         return Polylist.list(ruleToAdd);

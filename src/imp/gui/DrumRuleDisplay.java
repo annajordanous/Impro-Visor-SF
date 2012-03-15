@@ -99,14 +99,14 @@ private void initialize(String rule, String instrument)
  */
 public String getDisplayText()
   {
-    return getRuleText(); // drumRuleText.getText().trim();
+    return ruleText.trim();
   }
 
 /**
  * @return the text formatted with drum-rule syntax to be included with the
  * overall drum-pattern
-     *
  */
+
 public String getRule(int volume)
   {
 
@@ -117,10 +117,7 @@ public String getRule(int volume)
     return rule;
   }
 
-public String getRuleText()
-  {
-    return ruleText;
-  }
+
 
 public void setRuleText(String text)
   {
@@ -131,8 +128,8 @@ public void setRuleText(String text)
 /**
  * @return the text formatted as if it were the only rule in a drum-pattern.
  * Used to play the rule.
-     *
  */
+
 public String getPlayRule()
   {
     int volume = 127; // FIX
@@ -141,7 +138,6 @@ public String getPlayRule()
 
 /**
  * @return the most recent error message that occurred.
-     *
  */
 public String getErrorMsgRule()
   {
@@ -150,7 +146,6 @@ public String getErrorMsgRule()
 
 /**
  * @return the instrument selected in the combo box
-     *
  */
 public String getInstrument()
   {
@@ -159,8 +154,7 @@ public String getInstrument()
   }
 
 /**
- * @return the number of the instrument
-     *
+ * @return the number of the instrument*
  */
 public int getInstrumentNumber()
   {
@@ -170,7 +164,6 @@ public int getInstrumentNumber()
 //Mutators:
 /**
  * Sets the displayed text to parameter rule and updates its legality feedback
-     *
  */
 public void setDisplayText(String rule)
   {
@@ -180,8 +173,6 @@ public void setDisplayText(String rule)
 
 /**
  * Sets the selected instrument to parameter instrument if it exists in the
- * combo box
-     *
  */
 public void setInstrument(String instrument)
   {
@@ -295,8 +286,8 @@ public String toString()
  *
  * @return true if the rule is a correctly formed and therefore playable by
  * Impro-Visor. Returns false otherwise.
-     *
  */
+
 public boolean checkStatus()
   {
     String displayText = getDisplayText();
@@ -360,7 +351,7 @@ public boolean checkStatus()
 
 public double getPatternLength()
   {
-    return Duration.getDuration(getDisplayText()); //((float)MIDIBeast.numBeatsInRule(getDisplayText()));
+    return Duration.getDuration(getDisplayText());
   }
 
 public double getBeats()
@@ -368,8 +359,4 @@ public double getBeats()
     return getPatternLength() / BEAT;
   }
 
-
-
-// Variables declaration - do not modify
-// End of variables declaration
 }
