@@ -154,7 +154,6 @@ public class BassPattern
     //
     //         (bass-pattern (rules B4+8 (X 5 4) B4 A8) (weight 10))
     //
-
     while( L.nonEmpty() )
       {
       Object segment = L.first();
@@ -175,7 +174,6 @@ public class BassPattern
                 {
                 Object entry = item.first(); // e.g. B4+8
                 item = item.rest();          // e.g. ((X 5 4) B4 A8)
-//System.out.println("entry = " + entry);
                 if( entry instanceof Polylist )
                   {
                   // e.g. (X 5 4)
@@ -225,8 +223,8 @@ public class BassPattern
               break;
 
             case WEIGHT:
-              Long w = (Long)item.first();
-              bp.setWeight(w.intValue());
+              Number w = (Number)item.first();
+              bp.setWeight(w.floatValue());
               break;
 
             default:

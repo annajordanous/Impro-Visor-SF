@@ -97,6 +97,7 @@ private void initialize(String rule, float weight)
     setDisplayText(rule);
   }
 
+@Override
 public boolean playMe(double swingVal)
   {
     return playMe(swingVal, 0);
@@ -133,6 +134,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             // This is necessary so that the StyleListModel menu in notate is reset.
             // Without it, the contents will be emptied.
             notate.reloadStyles();
+            
 
             String chord = styleEditor.getChord();
             ChordPart c = new ChordPart();
