@@ -43,15 +43,6 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     
     public static Color playableColor = Color.yellow;
     public static Color unplayableColor = Color.red;
-
-    //The image that is visible when the pane is collapsed and the pattern is legal.
-    private static ImageIcon goodPattern;  
-    //The image that is visible when the pane is collapsed and the pattern is illegal.
-    private static ImageIcon badPattern;
-    //The image next to the pattern text if the pattern is legal
-    private static ImageIcon goodRule;
-    //The image next to the pattern text if the pattern is illegal
-    private static ImageIcon badRule;
     
     //The message displayed in tooltips and error dialogs if the rule is legal
     private String safeMsgRule = "This rule is legal.  Click play button to preview it.";
@@ -98,11 +89,6 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
         if(!MIDIBeast.invoked) {
             MIDIBeast.invoke();
         }
-        
-        goodPattern = new ImageIcon("src/imp/gui/graphics/icons/goodpattern.png");
-        badPattern = new ImageIcon("src/imp/gui/graphics/icons/badPattern.png");
-        goodRule = new ImageIcon("src/imp/gui/graphics/greenCircle.png");
-	    badRule = new ImageIcon("src/imp/gui/graphics/redSquare.png");
 
         initComponents();
         
@@ -369,7 +355,7 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
 
     public double getPatternLength()
     {
-      return Duration.getDuration(getDisplayText())/BEAT; //((float)MIDIBeast.numBeatsInRule(getDisplayText()));
+      return Duration.getDuration(getDisplayText()); //((float)MIDIBeast.numBeatsInRule(getDisplayText()));
     }
         
     public double getBeats()
