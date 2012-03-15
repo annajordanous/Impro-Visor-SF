@@ -43,8 +43,6 @@ public class DrumPatternDisplay
         extends PatternDisplay 
         implements Playable, Constants {
 
-    float weight = 0;
-    
     //The image next to the pattern text if the pattern is legal
     private static ImageIcon goodRule;
     //The image next to the pattern text if the pattern is illegal
@@ -88,7 +86,7 @@ public class DrumPatternDisplay
       return null;
     }
     
-    /**g
+    /**
      * Constructs a new DrumPatternDisplay JPanel with default weight 3 and an empty pattern.
      **/
     public DrumPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleParent) {
@@ -113,7 +111,6 @@ public class DrumPatternDisplay
         if(!MIDIBeast.invoked) {
             MIDIBeast.invoke();
         }
-        
 
         initComponents();
          
@@ -121,11 +118,6 @@ public class DrumPatternDisplay
         
         //Initializes attributes needed for collapsing panes and collapses the BassPatternDisplay object.
         expandedDimension = this.getPreferredSize();
-
-        southPanel.setVisible(false);
-      //  this.setPreferredSize(collapsedDimension);
-      //  this.setMaximumSize(collapsedDimension);
-        setDeselectedAppearance();
         
         checkStatus();
     } 
@@ -149,9 +141,6 @@ public class DrumPatternDisplay
      **/    
     public String getPattern(boolean requireChecked) {
         String pattern = "(drum-pattern ";
-
-        //Component[] allRules = drumRuleHolder.getComponents();
-        //for(int i = 0; i < allRules.length; i++) {
 
         for( Iterator<DrumRuleDisplay> e = rules.iterator(); e.hasNext(); )
         {
@@ -204,71 +193,59 @@ public class DrumPatternDisplay
          return errorMsg;
     } 
     
-    /**
-     * @return the value found in the weight spinner or lowestWeight if the value is not an Integer.
-     **/
-    public float getWeight() {
-           return weight;
-    }
 
     /**
      * @return the number of components in the drumRuleHolder pane (this is where DrumRuleDisplay objects are added)
      **/
     public int getNumComponents() {
-        return drumRuleHolder.getComponentCount();
+        return rules.size();
     }
     
     /**
-     * @return the ith components in the drumRuleHolder pane if there is an ith component.  Return null otherwise.
+     * @return the ith components in the drumRuleHolder pane if there is an 
+     * ith component.  Return null otherwise.
      **/    
     public Component getComponentAt(int i) {
-        if(i >= 0 && i < drumRuleHolder.getComponentCount())
-            return drumRuleHolder.getComponent(i);
         return null;
     }
     
    /**
-    * @return the length of the pattern, which is the length of the first DrumRuleDisplay rule. Returns -1 if the rule is malformed
+    * @return the length of the pattern, which is the length of the first 
+    * DrumRuleDisplay rule. Returns -1 if the rule is malformed
     *  or there are no rules in the pane.
     * Checks for equal lengths between rules are handled elsewhere for speed reasons.
     *
     * NOTE: Length here is in slots, not beats!!
     **/      
-    public float getPatternLength() {
-        Component[] allRules = drumRuleHolder.getComponents();
-        int numRules = allRules.length;
-        
-        float maxBeats = 0;
-        
-        for( int i = 0; i < numRules; i++ )
-            {
-                DrumRuleDisplay d = (DrumRuleDisplay) allRules[i];
-                if(d.checkStatus())
-                {
-                 float ruleLength = Duration.getDuration(d.getDisplayText());
-                  if( ruleLength > maxBeats )
-                  {
-                    maxBeats = ruleLength;
-                  }
-                }
-            }
-       return maxBeats;
-    }
-    
-    
+
+public double getPatternLength()
+  {
+    double maxBeats = 0;
+
+    for( DrumRuleDisplay d : rules )
+      {
+        if( d.checkStatus() )
+          {
+            double ruleLength = d.getPatternLength();
+            if( ruleLength > maxBeats )
+              {
+                maxBeats = ruleLength;
+              }
+          }
+      }
+    return maxBeats;
+  }
+     
    /**
     * @return the number of beats in the pattern.
-    * RK: This is stubbed until issues can be worked out. We want it to be the maximum number of beats in a rule.
-    * I don't think it matters whether the number of beats in different rules are unequal.
     */
     
     public double getBeats() {
-      float patternLength = getPatternLength();
+      double patternLength = getPatternLength();
       
       return patternLength >= 0 ? patternLength/BEAT : -1;
     }
 
- 
     
     /**
      * @return curSelectedRule
@@ -286,13 +263,7 @@ public class DrumPatternDisplay
         titleNumber = num;
     }     
    
-    /**
-     * Sets the weight in the spinner to the parameter weight if it is within the range of lowestWeight to heighestWeight.
-     **/        
-    public void setWeight(float weight) {
-        this.weight = (float)weight;
-    }
-    
+
     /**
      * Adds rule to the correct pane and updates pertinent information.
      * Need to make sure there is only one rule for a given instrument.
@@ -309,7 +280,7 @@ public class DrumPatternDisplay
                   }
               }
             rules.add(rule);
-            drumRuleHolder.add(rule);
+            //drumRuleHolder.add(rule);
             checkStatus();
         }
     }
@@ -319,8 +290,7 @@ public class DrumPatternDisplay
      **/
     public void removeRule(DrumRuleDisplay rule) {
         if(rule != null) {
-            drumRuleHolder.remove(rule);
-            drumRuleHolder.updateUI();
+
         }
     }
     
@@ -331,7 +301,7 @@ public class DrumPatternDisplay
     
     public int getRuleCount()
     {
-      return drumRuleHolder.getComponentCount();
+      return rules.size();
     }
   
     
@@ -342,7 +312,7 @@ public class DrumPatternDisplay
      **/
     public void updateLength() {
 
-       float duration = getPatternLength();
+       double duration = getPatternLength();
 
     }
      
@@ -351,14 +321,14 @@ public class DrumPatternDisplay
      * Changes the appearance of this DrumPatternDisplay to "deselected" and unselects any selected rule.
      **/
     public void setDeselectedAppearance() {
-        this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255,171,87), 1, true));
+
     }
     
    /**
      * Changes the appearance of this DrumPatternDisplay to "selected"
     **/    
     public void setSelectedAppearance() {
-       styleEditor.setSelectedDrum(this);        
+        
     } 
      
     /**
@@ -368,7 +338,6 @@ public class DrumPatternDisplay
      *  and therefore playable by Impro-Visor. Returns false otherwise.
      **/    
     public boolean checkStatus() {
-        Component[] allRules = drumRuleHolder.getComponents();
         boolean patternLength = checkPatternLength();
         updateLength();
         if(!patternLength)
@@ -395,9 +364,9 @@ public class DrumPatternDisplay
     public void cutSelectedRule() {
         if(curSelectedRule != null) {
             styleEditor.copyDrumRule(curSelectedRule);
-            drumRuleHolder.remove(curSelectedRule);
+
             curSelectedRule = null;
-            drumRuleHolder.updateUI();
+
         }
     }
     
@@ -406,9 +375,9 @@ public class DrumPatternDisplay
      **/
     
     public void cutRule(DrumRuleDisplay ruleToCut) {
-            drumRuleHolder.remove(ruleToCut);
+
             curSelectedRule = null;
-            drumRuleHolder.updateUI();
+
         }
 
     /**
@@ -424,18 +393,11 @@ public class DrumPatternDisplay
     **/   
     private void expand() {
         if(isExpanded == false) {
-            southPanel.setVisible(true);
-      //      this.setPreferredSize(expandedDimension);
-      //      this.setMaximumSize(expandedDimension);
             
             isExpanded = true;
             
         } else {
-            southPanel.setVisible(false);
-      //      this.setPreferredSize(collapsedDimension);
-       //     this.setMaximumSize(collapsedDimension);
-
-            isExpanded = false;
+             isExpanded = false;
         }        
     }
     
@@ -444,11 +406,10 @@ public class DrumPatternDisplay
      * Changes icons, tooltips, and errorMsg to appropriate error feedback information.
      **/      
     public String getDisplayText() {
-        StringBuffer buffer = new StringBuffer();
-        Component[] allRules = drumRuleHolder.getComponents();
-        for(int i = 0; i < allRules.length; i++) {
+        StringBuilder buffer = new StringBuilder();
+
+        for( DrumRuleDisplay d: rules ) {
             try {        
-                DrumRuleDisplay d = (DrumRuleDisplay) allRules[i];
                 buffer.append("(");
                 buffer.append(d.getDisplayText());
                 buffer.append(") ");
@@ -459,9 +420,10 @@ public class DrumPatternDisplay
         return buffer.toString();
     }
     
+    @Override
     public String toString()
     {
-      return "DrumPatternDisplay with " + drumRuleHolder.getComponents().length + " rules";
+      return "DrumPatternDisplay with " + rules.size() + " rules";
     }
 
     /** This method is called from within the constructor to
@@ -471,11 +433,6 @@ public class DrumPatternDisplay
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        southPanel = new javax.swing.JPanel();
-        centerRulePane = new javax.swing.JScrollPane();
-        drumRuleHolder = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 171, 87), 1, true));
@@ -487,70 +444,11 @@ public class DrumPatternDisplay
             }
         });
         setLayout(new java.awt.GridBagLayout());
-
-        southPanel.setBackground(new java.awt.Color(255, 255, 255));
-        southPanel.setMinimumSize(new java.awt.Dimension(490, 200));
-        southPanel.setOpaque(false);
-        southPanel.setPreferredSize(new java.awt.Dimension(490, 200));
-        southPanel.setRequestFocusEnabled(false);
-        southPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                southPanelMousePressed(evt);
-            }
-        });
-        southPanel.setLayout(new java.awt.GridBagLayout());
-
-        centerRulePane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        centerRulePane.setMinimumSize(new java.awt.Dimension(515, 200));
-        centerRulePane.setPreferredSize(new java.awt.Dimension(515, 200));
-        centerRulePane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                centerRulePaneMousePressed(evt);
-            }
-        });
-
-        drumRuleHolder.setBackground(new java.awt.Color(255, 255, 255));
-        drumRuleHolder.setAutoscrolls(true);
-        drumRuleHolder.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                drumRuleHolderMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                drumRuleHolderMousePressed(evt);
-            }
-        });
-        drumRuleHolder.setLayout(new javax.swing.BoxLayout(drumRuleHolder, javax.swing.BoxLayout.Y_AXIS));
-        centerRulePane.setViewportView(drumRuleHolder);
-
-        southPanel.add(centerRulePane, new java.awt.GridBagConstraints());
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
-        add(southPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void drumRuleHolderMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drumRuleHolderMouseExited
-// ignore this one...can't delete!!!! :'(
-    }//GEN-LAST:event_drumRuleHolderMouseExited
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_formMousePressed
-
-    private void drumRuleHolderMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drumRuleHolderMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_drumRuleHolderMousePressed
-
-    private void centerRulePaneMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_centerRulePaneMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_centerRulePaneMousePressed
-
-    private void southPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_southPanelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_southPanelMousePressed
   
 
 /**
@@ -699,8 +597,5 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
    
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane centerRulePane;
-    private javax.swing.JPanel drumRuleHolder;
-    private javax.swing.JPanel southPanel;
     // End of variables declaration//GEN-END:variables
 }
