@@ -757,8 +757,8 @@ public void playBassColumn()
         if( ob instanceof DrumPatternDisplay )
           {
           DrumPatternDisplay d = (DrumPatternDisplay)ob;
-          if( d.getIncludedStatus() )
-            {
+          
+
             if( d.checkStatus() )
               {
               patterns += "\t" + d.getPattern(true) + "\n";
@@ -767,7 +767,7 @@ public void playBassColumn()
               {
               MIDIBeast.addSaveError(d.getPattern(false) + " and was not included.");
               }
-            }
+
           }
         }
       catch( ClassCastException e )

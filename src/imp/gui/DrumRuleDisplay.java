@@ -122,9 +122,9 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
     /**
      * @return the text formatted with drum-rule syntax to be included with the overall drum-pattern
      **/
-    public String getRule() {
+    public String getRule(int volume) {
 
-        String rule = "(drum " + getInstrumentNumber() + " " + getDisplayText() + ")";
+        String rule = "(drum " + getInstrumentNumber() + " " + "V" + volume + " " + getDisplayText() + ")";
 
         //System.out.println("rule = " + rule);
         
@@ -147,7 +147,8 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
      * @return the text formatted as if it were the only rule in a drum-pattern.  Used to play the rule.
      **/    
     public String getPlayRule() {
-        return "(drum-pattern " + getRule() + "(weight 100))";
+        int volume = 127; // FIX
+        return "(drum-pattern " + getRule(volume) + "(weight 100))";
     }
     
     /**
@@ -328,7 +329,8 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
      **/     
     public boolean checkStatus() {
         String displayText = getDisplayText();
-        String rule = getRule();
+        int volume = 127; // FIX
+        String rule = getRule(volume);
         playable = true;
         
         try {  

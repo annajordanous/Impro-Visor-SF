@@ -192,14 +192,16 @@ public class DrumPatternDisplay
  
                 //System.out.println("d = " + d.getRule());
 
-                if( true ) //styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
+                int volume = 127; // FIX
+                
+                if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) ) // NOT WORKING
                   {
                     if( d.checkStatus() )
                          {
-                         pattern += "\n\t\t" + d.getRule();
+                         pattern += "\n\t\t" + d.getRule(volume);
                          }
                 else {
-                    ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + d.getRule());
+                    ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + d.getRule(volume));
                 }
                   }
              }catch(ClassCastException ex) {}
@@ -297,13 +299,7 @@ public class DrumPatternDisplay
       
       return patternLength >= 0 ? patternLength/BEAT : -1;
     }
-    
-   /**
-     * @return the selected value of the checkbox marked "include" in the upper right corner
-     **/
-    public boolean getIncludedStatus() {
-        return includeBox.isSelected();
-    }
+
  
     
     /**
