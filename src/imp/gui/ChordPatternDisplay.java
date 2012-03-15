@@ -170,18 +170,7 @@ public class ChordPatternDisplay
     public String getRuleError() {
         return errorMsg;
     }   
-    
-    /**
-     * @return the value found in the weight spinner or lowestWeight if the value is not an Integer.
-     **/
-    public int getWeight() {
-        try{
-            Integer weight = (Integer) weightSpinner.getValue();
-            return weight;
-        }catch(ClassCastException e) {
-            return lowestWeight;
-        }
-    }    
+
     
     public void setPushString(String pushString) {
         this.pushString = pushString;
@@ -227,20 +216,7 @@ public class ChordPatternDisplay
         updateElements();
     }
     
-    /**
-     * Sets the weight in the spinner to the parameter weight if it is within the range of lowestWeight to heighestWeight.
-     **/    
-    public void setWeight(float weight) {
-        if(weight < lowestWeight) {
-            weightSpinner.setValue((Integer) lowestWeight);
-        }
-        else if(weight > highestWeight) {
-            weightSpinner.setValue((Integer) highestWeight);
-        }
-        else
-            weightSpinner.setValue((Integer) (int)weight);
-    }
-    
+
     /**
      * Creates the SpinnerModel used for the weight field.
      **/

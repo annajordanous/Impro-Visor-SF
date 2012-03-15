@@ -368,11 +368,7 @@ public double getBeats()
     return getPatternLength() / BEAT;
   }
 
-// To satisfy interface for now: FIX
-public int getWeight()
-  {
-    return 0;
-  }
+
 
 // Variables declaration - do not modify
 // End of variables declaration

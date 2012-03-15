@@ -2455,7 +2455,7 @@ public void playBassColumn()
         /*Must create a new object with the same stats or else the copied pattern is
         just moved to the end of the list. */
         String text = copiedBass.getDisplayText();
-        int weight = copiedBass.getWeight();
+        float weight = copiedBass.getWeight();
         BassPatternDisplay b = new BassPatternDisplay(text, weight, notate, cm, this);
         b.setTitleNumber(bassHolderPane.getComponentCount() + 1);
         bassHolderPane.add(b);
@@ -2540,7 +2540,7 @@ public void playBassColumn()
         /*Must create a new object with the same stats or else the copied pattern is
         just moved to the end of the list. */
         String text = copiedChord.getDisplayText();
-        int weight = copiedChord.getWeight();
+        float weight = copiedChord.getWeight();
         String pushString = copiedChord.getPushString();
         ChordPatternDisplay c =
                 new ChordPatternDisplay(text, weight, pushString, notate, cm, this);

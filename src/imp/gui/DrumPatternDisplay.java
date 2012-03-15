@@ -45,6 +45,8 @@ public class DrumPatternDisplay
         extends PatternDisplay 
         implements Playable, Constants {
 
+    float weight = 0;
+    
     //The image next to the pattern text if the pattern is legal
     private static ImageIcon goodRule;
     //The image next to the pattern text if the pattern is illegal
@@ -208,13 +210,8 @@ public class DrumPatternDisplay
     /**
      * @return the value found in the weight spinner or lowestWeight if the value is not an Integer.
      **/
-    public int getWeight() {
-        try{
-            Integer weight = (Integer) weightSpinner.getValue();
-            return weight;
-        }catch(ClassCastException e) {
-            return lowestWeight;
-        }
+    public float getWeight() {
+           return weight;
     }
 
     /**
@@ -296,14 +293,7 @@ public class DrumPatternDisplay
      * Sets the weight in the spinner to the parameter weight if it is within the range of lowestWeight to heighestWeight.
      **/        
     public void setWeight(float weight) {
-        if(weight < lowestWeight) {
-            weightSpinner.setValue((Integer) lowestWeight);
-        }
-        else if(weight > highestWeight) {
-            weightSpinner.setValue((Integer) highestWeight);
-        }
-        else
-            weightSpinner.setValue((Integer) (int)weight);
+        this.weight = (float)weight;
     }
     
     /**
@@ -496,9 +486,7 @@ public class DrumPatternDisplay
         java.awt.GridBagConstraints gridBagConstraints;
 
         northPanel = new javax.swing.JPanel();
-        titlePanel = new javax.swing.JPanel();
         itemPanel = new javax.swing.JPanel();
-        weightLabel = new javax.swing.JLabel();
         weightSpinner = new javax.swing.JSpinner();
         southPanel = new javax.swing.JPanel();
         centerRulePane = new javax.swing.JScrollPane();
@@ -529,15 +517,6 @@ public class DrumPatternDisplay
         });
         northPanel.setLayout(new java.awt.BorderLayout());
 
-        titlePanel.setBackground(new java.awt.Color(255, 171, 87));
-        titlePanel.setToolTipText("Double click to expand pattern information.");
-        titlePanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                titlePanelMouseClicked(evt);
-            }
-        });
-        northPanel.add(titlePanel, java.awt.BorderLayout.WEST);
-
         itemPanel.setBackground(new java.awt.Color(255, 255, 255));
         itemPanel.setMinimumSize(new java.awt.Dimension(515, 33));
         itemPanel.setOpaque(false);
@@ -552,19 +531,6 @@ public class DrumPatternDisplay
             }
         });
         itemPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        weightLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        weightLabel.setText("Weight:");
-        weightLabel.setToolTipText("The higher the weight, the greater the likelihood this pattern will play during a song.");
-        weightLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                weightLabelMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                weightLabelMousePressed(evt);
-            }
-        });
-        itemPanel.add(weightLabel);
 
         weightSpinner.setMinimumSize(new java.awt.Dimension(35, 18));
         weightSpinner.setPreferredSize(new java.awt.Dimension(35, 18));
@@ -632,13 +598,6 @@ public class DrumPatternDisplay
         add(southPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void weightLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightLabelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_weightLabelMouseClicked
-
     private void itemPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPanelMouseClicked
         setSelectedAppearance();
         if(evt.getClickCount() == 2) {
@@ -652,13 +611,6 @@ public class DrumPatternDisplay
             expand();
         }
     }//GEN-LAST:event_northPanelMouseClicked
-
-    private void titlePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titlePanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_titlePanelMouseClicked
 
     private void weightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_weightSpinnerStateChanged
         cm.changedSinceLastSave(true);
@@ -675,10 +627,6 @@ public class DrumPatternDisplay
     private void weightSpinnerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightSpinnerMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_weightSpinnerMousePressed
-
-    private void weightLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightLabelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_weightLabelMousePressed
 
     private void itemPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPanelMousePressed
         setSelectedAppearance();
@@ -852,8 +800,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     private javax.swing.JPanel itemPanel;
     private javax.swing.JPanel northPanel;
     private javax.swing.JPanel southPanel;
-    private javax.swing.JPanel titlePanel;
-    private javax.swing.JLabel weightLabel;
     private javax.swing.JSpinner weightSpinner;
     // End of variables declaration//GEN-END:variables
 }

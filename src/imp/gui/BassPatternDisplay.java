@@ -48,7 +48,7 @@ private int lowestWeight = 1;
 //The highest weight allowed for a pattern.
 private int highestWeight = 100;
 private int INITIAL_WEIGHT = 10;
-private int weight = INITIAL_WEIGHT;
+private float weight = INITIAL_WEIGHT;
 //The number added to the title of this object to help the user distinguish it from others.
 private int titleNumber = 0;
 
@@ -205,15 +205,6 @@ public String getRuleError()
     return errorMsg;
   }
 
-/**
- * @return the value found in the weight spinner or lowestWeight if the value is
- * not an Integer.
-     *
- */
-public int getWeight()
-  {
-    return weight;
-  }
 
 /**
  * @return the beats in this pattern.
@@ -260,26 +251,7 @@ public void setDisplayText(String text)
     updateElements();
   }
 
-/**
- * Sets the weight in the spinner to the parameter weight if it is within the
- * range of lowestWeight to heighestWeight.
-     *
- */
-public void setWeight(float _weight)
-  {
-    if( _weight < lowestWeight )
-      {
-        weight = (int) lowestWeight;
-      }
-    else if( _weight > highestWeight )
-      {
-        weight = (int) highestWeight;
-      }
-    else
-      {
-        weight = (int) _weight;
-      }
-  }
+
 
 /**
  * Creates the SpinnerModel used for the weight field.

@@ -46,6 +46,8 @@ abstract class PatternDisplay
   protected Notate notate;
 
   protected CommandManager cm;
+  
+  float weight = 0;
 
   public PatternDisplay(Notate notate,
                         CommandManager cm,
@@ -123,7 +125,15 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
     styleEditor.setStatus("OK");
   }
 
-  abstract public int getWeight();
+  public float getWeight()
+    {
+      return weight;
+    }
+  
+  public void setWeight(float weight)
+    {
+      this.weight = weight;
+    }
   
   abstract public double getBeats();
 
