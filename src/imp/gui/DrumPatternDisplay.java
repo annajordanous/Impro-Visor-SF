@@ -118,13 +118,12 @@ public class DrumPatternDisplay
         
 
         initComponents();
-        initWeight();
-        
+         
         setWeight(weight);
         
         //Initializes attributes needed for collapsing panes and collapses the BassPatternDisplay object.
         expandedDimension = this.getPreferredSize();
-        collapsedDimension = northPanel.getPreferredSize();
+
         southPanel.setVisible(false);
       //  this.setPreferredSize(collapsedDimension);
       //  this.setMaximumSize(collapsedDimension);
@@ -182,7 +181,7 @@ public class DrumPatternDisplay
                   }
              }catch(ClassCastException ex) {}
         }      
-        pattern += "\n\t\t(weight " + ((Integer) weightSpinner.getValue()) + ")\n\t)";       
+        pattern += "\n\t\t(weight " + getWeight() + ")\n\t)";       
         return pattern;
     }
     
@@ -348,22 +347,13 @@ public class DrumPatternDisplay
        float duration = getPatternLength();
 
     }
-    
-     /**
-     * Creates the SpinnerModel used for the weight field.
-     **/   
-    private void initWeight() {
-        SpinnerModel model = new SpinnerNumberModel(lowestWeight, lowestWeight, highestWeight, 1);
-        weightSpinner.setModel(model);
-    }    
+     
 
     /**
      * Changes the appearance of this DrumPatternDisplay to "deselected" and unselects any selected rule.
      **/
     public void setDeselectedAppearance() {
         this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255,171,87), 1, true));
-
-
     }
     
    /**
@@ -485,9 +475,6 @@ public class DrumPatternDisplay
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        northPanel = new javax.swing.JPanel();
-        itemPanel = new javax.swing.JPanel();
-        weightSpinner = new javax.swing.JSpinner();
         southPanel = new javax.swing.JPanel();
         centerRulePane = new javax.swing.JScrollPane();
         drumRuleHolder = new javax.swing.JPanel();
@@ -502,57 +489,6 @@ public class DrumPatternDisplay
             }
         });
         setLayout(new java.awt.GridBagLayout());
-
-        northPanel.setBackground(new java.awt.Color(255, 171, 87));
-        northPanel.setMinimumSize(new java.awt.Dimension(527, 30));
-        northPanel.setPreferredSize(new java.awt.Dimension(527, 30));
-        northPanel.setRequestFocusEnabled(false);
-        northPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                northPanelMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                northPanelMousePressed(evt);
-            }
-        });
-        northPanel.setLayout(new java.awt.BorderLayout());
-
-        itemPanel.setBackground(new java.awt.Color(255, 255, 255));
-        itemPanel.setMinimumSize(new java.awt.Dimension(515, 33));
-        itemPanel.setOpaque(false);
-        itemPanel.setPreferredSize(new java.awt.Dimension(515, 33));
-        itemPanel.setRequestFocusEnabled(false);
-        itemPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                itemPanelMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                itemPanelMousePressed(evt);
-            }
-        });
-        itemPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        weightSpinner.setMinimumSize(new java.awt.Dimension(35, 18));
-        weightSpinner.setPreferredSize(new java.awt.Dimension(35, 18));
-        weightSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                weightSpinnerStateChanged(evt);
-            }
-        });
-        weightSpinner.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                weightSpinnerMousePressed(evt);
-            }
-        });
-        itemPanel.add(weightSpinner);
-
-        northPanel.add(itemPanel, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        add(northPanel, gridBagConstraints);
 
         southPanel.setBackground(new java.awt.Color(255, 255, 255));
         southPanel.setMinimumSize(new java.awt.Dimension(490, 200));
@@ -598,24 +534,6 @@ public class DrumPatternDisplay
         add(southPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void itemPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_itemPanelMouseClicked
-
-    private void northPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_northPanelMouseClicked
-
-    private void weightSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_weightSpinnerStateChanged
-        cm.changedSinceLastSave(true);
-    }//GEN-LAST:event_weightSpinnerStateChanged
-
     private void drumRuleHolderMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drumRuleHolderMouseExited
 // ignore this one...can't delete!!!! :'(
     }//GEN-LAST:event_drumRuleHolderMouseExited
@@ -623,14 +541,6 @@ public class DrumPatternDisplay
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_formMousePressed
-
-    private void weightSpinnerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_weightSpinnerMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_weightSpinnerMousePressed
-
-    private void itemPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPanelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_itemPanelMousePressed
 
     private void drumRuleHolderMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drumRuleHolderMousePressed
         setSelectedAppearance();
@@ -643,10 +553,6 @@ public class DrumPatternDisplay
     private void southPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_southPanelMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_southPanelMousePressed
-
-    private void northPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_northPanelMousePressed
   
 
 /**
@@ -797,9 +703,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane centerRulePane;
     private javax.swing.JPanel drumRuleHolder;
-    private javax.swing.JPanel itemPanel;
-    private javax.swing.JPanel northPanel;
     private javax.swing.JPanel southPanel;
-    private javax.swing.JSpinner weightSpinner;
     // End of variables declaration//GEN-END:variables
 }
