@@ -912,6 +912,7 @@ public class Score implements Constants, Serializable {
         new MelodyPart(len).render(seq, 
                                    melodyChannel, 
                                    time, 
+                                   getMelodyVolume(),
                                    melodyTrack, 
                                    transposition, 
                                    endLimitIndex);
@@ -935,6 +936,7 @@ public class Score implements Constants, Serializable {
             long melTime = i.next().render(seq, 
                                            melodyChannel,
                                            time, 
+                                           getMelodyVolume(),
                                            melodyTrack, 
                                            transposition, 
                                            endLimitIndex);

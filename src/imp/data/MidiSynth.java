@@ -647,7 +647,6 @@ protected static MidiEvent createNoteOnEvent(int channel,
     ShortMessage msg = new ShortMessage();
     msg.setMessage(0x90 + channel, pitch, velocity);
     MidiEvent evt = new MidiEvent(msg, tick);
-
     return evt;
   }
 

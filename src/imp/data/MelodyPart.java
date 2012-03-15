@@ -928,7 +928,8 @@ public class MelodyPart
    */
   public long render(Sequence seq, 
                      int ch, 
-                     long time, 
+                     long time,
+                     int volume,
                      Track track,
                      int transposition, 
                      int endLimitIndex)

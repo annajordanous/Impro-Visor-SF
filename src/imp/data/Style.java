@@ -933,7 +933,7 @@ public class Style
       // Get a drum pattern, if any
 
       DrumPattern pattern = getPattern(drumPatterns, duration);
-
+      
       // if there's no suitable pattern, play nothing
       if( pattern == null )
         {
@@ -955,7 +955,7 @@ public class Style
         d.setSwing(accompanimentSwing);
         d.setInstrument(drumInstrument);
         d.makeSwing();
-        d.render(seq, drumChannel, time, track, 0, endLimitIndex);
+        d.render(seq, drumChannel, time, d.getVolume(), track, 0, endLimitIndex);
         drumline = drumline.rest();
         }
       time += (patternDuration * seq.getResolution()) / BEAT;
@@ -1490,6 +1490,7 @@ private Polylist makeChordline(
       bassLine.render(seq, 
                       bassChannel, 
                       startTime, 
+                      MAX_VOLUME,   // FIX
                       track, 
                       transposition, 
                       endLimitIndex);

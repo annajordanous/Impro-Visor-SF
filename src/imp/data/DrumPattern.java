@@ -99,7 +99,6 @@ private DrumPattern()
 public static DrumPattern makeDrumPattern(Polylist L)
   {
     DrumPattern dp = new DrumPattern();
-
     while( L.nonEmpty() )
       {
         Polylist item = (Polylist) L.first();
@@ -175,6 +174,7 @@ public static DrumPattern makeDrumPattern(Polylist L)
                 Number w = (Number) item.first();
                 dp.setWeight(w.floatValue());
               }
+
           }
       }
     return dp;
@@ -197,12 +197,12 @@ private void addRule(Long drum, Polylist rules, Polylist durations, Long volume,
   {
     Polylist ruleToAdd = Polylist.list(drum, rules, durations, volume, ruleAsList);
     drums = addRule(drum, ruleToAdd, drums);
-    //System.out.println("drums = " + drums);
   }
 
 
 private Polylist addRule(Long drum, Polylist ruleToAdd, Polylist drums)
   {
+    //System.out.println("in addRule(), ruleToAdd = " + ruleToAdd);
     if( drums.isEmpty() )
       {
         return Polylist.list(ruleToAdd);
@@ -287,6 +287,7 @@ public Polylist applyRules()
         Polylist durations = (Polylist) drum.third();
 
         Long volume = (Long) drum.fourth();
+
         m.setVolume(volume.intValue());
 
         while( rules.nonEmpty() )
