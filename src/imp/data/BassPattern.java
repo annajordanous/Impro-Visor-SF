@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,18 +20,21 @@
 
 package imp.data;
 
-import java.util.*;
-import imp.util.*;
 import imp.Constants;
+import imp.util.ErrorLog;
 import java.io.Serializable;
-import polya.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
+import polya.Polylist;
 
 /**
  * Contains a rhythmic pattern for use in a bassline and methods needed to
  * realize that bassline according to the rules of the pattern.
  * @see Style
- * @author Stephen Jones
+ * @author Stephen Jones, Stephen Lee, Robert Keller
  */
+
 public class BassPattern
         extends Pattern
         implements Constants, Serializable
@@ -45,27 +47,25 @@ public class BassPattern
   /**
    * the rules for the pattern, stored as indices into the ruleTypes array
    */
-  private Vector<Integer> rules;
+  private ArrayList<Integer> rules;
 
   /**
    * the durations for the pattern, stored as leadsheet representation of
    * rhythm
    */
-  private Vector<String> durations;
+  private ArrayList<String> durations;
 
   /**
    * the modifiers for the pattern, e.g. U, D
    */
 
-  private Vector<String> modifiers;
+  private ArrayList<String> modifiers;
 
   /**
    * array containing the types of rules
    */
-  private static String ruleTypes[] = {"X", "1", "2", "3", "4", "5",
-                                         "6", "7", "B", "C", "S", "A", "N", "R",
-                                            "="
-  };
+  private static String ruleTypes[] = {"X", "1", "2", "3", "4", "5", "6", "7", 
+                                       "B", "C", "S", "A", "N", "R", "=" };
 
   /**
    * indices into the ruleTypes array
@@ -136,9 +136,9 @@ public class BassPattern
    */
   private BassPattern()
     {
-    rules = new Vector<Integer>();
-    durations = new Vector<String>();
-    modifiers = new Vector<String>();
+    rules = new ArrayList<Integer>();
+    durations = new ArrayList<String>();
+    modifiers = new ArrayList<String>();
     }
 
   /**
@@ -301,6 +301,7 @@ public class BassPattern
     modifiers.add(modifier);
     }
 
+  @Override
   public int getDuration()
     {
     int duration = 0;
@@ -350,7 +351,8 @@ public class BassPattern
 
       switch( rule )
         {
-        case PITCH: // Allow X for bass too, as a convenience in cutting and pasting in editor
+        case PITCH: // Allow X for bass too, 
+                    // as a convenience in cutting and pasting in editor
         case BASS:
           {
           pitch = new NoteSymbol(chord.getBass());
@@ -358,6 +360,7 @@ public class BassPattern
           }
         case NEXT:
           {
+          // FIX: This may be broken (octave jumps). Please check
           pitch = new NoteSymbol(nextChord.getBass());
           if( !i.hasNext() )
             {
@@ -509,7 +512,7 @@ public class BassPattern
 
       if( !pitch.isRest() && rule != EQUAL )
         {
-       // System.out.println("Original pitch is " + pitch.getMIDI() );
+         // System.out.println("Original pitch is " + pitch.getMIDI() );
 
           // Why -24??
 
@@ -543,9 +546,7 @@ public class BassPattern
         lastNote = note;
         }
      }
-      
-     
-
+ 
     return bassLine.reverse();
     }
 
@@ -619,8 +620,8 @@ public class BassPattern
    * @return a NoteSymbol that is the placed pitch
    */
   public static NoteSymbol placePitch(NoteSymbol pitch,
-                                        NoteSymbol base,
-                                          int indicator)
+                                      NoteSymbol base,
+                                      int indicator)
     { 
       switch( indicator )
       {
@@ -651,7 +652,7 @@ public class BassPattern
    * @return a NoteSymbol that is the placed pitch
    */
   public static NoteSymbol placePitchAbove(NoteSymbol pitch,
-                                             NoteSymbol base)
+                                           NoteSymbol base)
     {
     int semitones = base.getSemitonesAbove(pitch);
     return base.transpose(semitones);
@@ -665,7 +666,7 @@ public class BassPattern
    * @return a NoteSymbol that is the placed pitch
    */
   public static NoteSymbol placePitchBelow(NoteSymbol pitch,
-                                             NoteSymbol base)
+                                           NoteSymbol base)
     {
     // Note the role reversal of pitch and base from the previous method
     int semitones = pitch.getSemitonesAbove(base);
@@ -682,8 +683,8 @@ public class BassPattern
    * @return a NoteSymbol that is the placed pitch
    */
   public static NoteSymbol placePitchNear(NoteSymbol pitch,
-                                            NoteSymbol base,
-                                            Style style)
+                                          NoteSymbol base,
+                                          Style style)
     {
     NoteSymbol low = style.getBassLow();
     NoteSymbol high = style.getBassHigh();
