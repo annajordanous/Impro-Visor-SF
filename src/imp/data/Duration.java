@@ -111,8 +111,7 @@ public static int default_numerator = 8;	// eighth note default
     {
     int len = item.length();
     int index = 0;
-    if( len == 0 ||
-            !Character.isDigit(item.charAt(index)) )
+    if( len == 0 || !Character.isDigit(item.charAt(index)) )
       {
       return DEFAULT_DURATION;
       }

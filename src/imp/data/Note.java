@@ -57,6 +57,11 @@ public static final int UNDEFINED = -2;
 private int pitch;
 
 /**
+ * The MIDI Volume (velocity) of this note, range 0-127
+ */
+private int volume = 127;
+
+/**
  * a flag that indicates the accidental on the Note
  */
 private Accidental accidental;
@@ -187,6 +192,11 @@ public Note(int pitch)
   this(pitch, DEFAULT_RHYTHM_VALUE);
   }
 
+
+public void setVolume(int volume)
+  {
+    this.volume = volume > 127 ? 127 : (volume < 0 ? 0 : volume);
+  }
 
 /**
  * Creates a rest with the indicated rhythmValue.
@@ -1139,7 +1149,7 @@ public long render(Sequence seq,
   {
     int dur = getRhythmValue();
     long offTime = time + dur * seq.getResolution() / BEAT;
-    render(seq, track, time, offTime, ch, volume, transposition);
+    render(seq, track, time, offTime, ch, this.volume, transposition);
     
     return offTime;
   }
@@ -1197,7 +1207,6 @@ public void render(Sequence seq,
   // create a note on event at the current time
   MidiEvent evt = MidiSynth.createNoteOnEvent(ch, actualPitch, volume, time);
   track.add(evt);
-  
   //Trace.log(0, "adding to track " + track + " time = " + time + " note on " + " channel = " + ch + " pitch = " + actualPitch + " velocity = " + volume);
 
   // advance the time and call the note off event

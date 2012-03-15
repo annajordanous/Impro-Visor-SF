@@ -933,7 +933,7 @@ public class Style
       // Get a drum pattern, if any
 
       DrumPattern pattern = getPattern(drumPatterns, duration);
-      
+      //System.out.println("pattern = " + pattern + ", duration = " + duration);
       // if there's no suitable pattern, play nothing
       if( pattern == null )
         {

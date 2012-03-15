@@ -56,13 +56,14 @@ private Polylist drums;
 
 private static String ruleTypes[] =
   {
-    "X", "R"
+    "X", "R", "V"
   };
 
 
 // indices into the ruleTypes array
 private static final int STRIKE = 0;
 private static final int REST = 1;
+private static final int VOLUME = 2;
 
 
 /**
@@ -78,7 +79,6 @@ private static String keyword[] =
 // indices into the keyword array
 private static final int DRUM = 0;
 private static final int WEIGHT = 1;
-private static final int VOLUME = 2;
 
 
 /**
@@ -136,6 +136,7 @@ public static DrumPattern makeDrumPattern(Polylist L)
                         r = r.cons(rule);
                         d = d.cons(dur);
                       }
+                    /*
                     else if( ob instanceof Polylist )
                       {
                         Polylist p = (Polylist)ob;
@@ -160,7 +161,9 @@ public static DrumPattern makeDrumPattern(Polylist L)
                             f *= volume;
                             volume = f.longValue();
                           }
+                       
                       }
+                    */
                     
                     item = item.rest();
                   }
@@ -240,18 +243,21 @@ public int getDuration()
 
     while( L.nonEmpty() )
       {
-        Polylist drum = (Polylist) drums.first();
+        Polylist pattern = (Polylist) drums.first();
 
-        Polylist durations = (Polylist) drum.nth(2);
-
+        // drum.first() is the instrument number, not used here
+        Polylist M = (Polylist) pattern.second();
+        Polylist N = (Polylist) pattern.third();
         int duration = 0;
-
-        Polylist M = durations;
 
         while( M.nonEmpty() )
           {
-            duration += Duration.getDuration((String) M.first());
+            if( !M.first().equals(VOLUME) )
+              {
+              duration += Duration.getDuration((String) N.first());
+              }
             M = M.rest();
+            N = N.rest();
           }
 
         if( duration > maxDuration )
@@ -276,6 +282,7 @@ public Polylist applyRules()
     Polylist drumline = Polylist.nil;
 
     Polylist L = drums;
+    //System.out.println("drums = " + drums);
 
     while( L.nonEmpty() )
       {
@@ -286,23 +293,33 @@ public Polylist applyRules()
         Polylist rules = (Polylist) drum.second();
         Polylist durations = (Polylist) drum.third();
 
-        Long volume = (Long) drum.fourth();
+        //Long volume = (Long) drum.fourth();
 
-        m.setVolume(volume.intValue());
+        m.setVolume(127); //volume.intValue());
 
         while( rules.nonEmpty() )
           {
-            int dur = Duration.getDuration((String) durations.first());
             switch( (Integer) rules.first() )
               {
                 case STRIKE:
                   {
-                    m.addNote(new Note(pitch.intValue(), dur));
+                   int dur = Duration.getDuration((String) durations.first());
+                   Note note = new Note(pitch.intValue(), dur);
+                    note.setVolume(m.getVolume());
+                    m.addNote(note);
                     break;
                   }
                 case REST:
                   {
+                   int dur = Duration.getDuration((String) durations.first());
                     m.addNote(new Rest(dur));
+                    break;
+                  }
+                    
+                case VOLUME:
+                  {
+                    int vol = Integer.parseInt((String)durations.first());
+                    m.setVolume(vol);
                     break;
                   }
               }
