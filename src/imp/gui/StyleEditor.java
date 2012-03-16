@@ -63,11 +63,13 @@ public class StyleEditor
   /** Off-color for play/mute buttons */
   static public Color OFF_COLOR = Color.RED;
   
-  static public String HIT_STRING = "X";
+  static public final String HIT_STRING = "X";
   
-  static public String REST_STRING = "R";
+  static public final String REST_STRING = "R";
 
-  static public String BASS_STRING = "B";
+  static public final String VOLUME_STRING = "V";
+
+  static public final String BASS_STRING = "B";
 
   int nextPattern = 0;
   
@@ -1425,46 +1427,36 @@ public void playBassColumn()
 
 
     // Change drums, which use a Polylist notation that must be disected for the table.
+    
     RepresentativeDrumRules d = new RepresentativeDrumRules(true);
+    
     for( int i = 0; i < dp.size(); i++ )
       {
       RepresentativeDrumRules.DrumPattern aDrumPattern = d.makeDrumPattern();
       DrumPattern curPat = dp.get(i);
-      Polylist allDrums = curPat.getDrums();
-
-      while( allDrums.nonEmpty() )
-        { //all of the drum rules for this particular pattern
+      
+      for( DrumRuleRep drumPat : curPat.getDrums() )
+        { 
         RepresentativeDrumRules.DrumRule aDrumRule = d.makeDrumRule();
-        Polylist drumPat = (Polylist)allDrums.first(); //the current drum pattern
-        String inst = drumPat.first().toString(); // the instrument number
-        String hitOrRest = drumPat.rest().first().toString(); //"X" or "R" values
-        String durations = drumPat.rest().rest().first().toString(); //the musical duration
-        hitOrRest = hitOrRest.substring(1, hitOrRest.length() - 1); //remove the extra parentheses
-        durations = durations.substring(1, durations.length() - 1);
-
-        //reconstruct the rules
-        String[] notes = hitOrRest.split(" ");
-        String[] durs = durations.split(" ");
-        aDrumRule.setInstrumentNumber(Integer.parseInt(inst));
-        for( int j = 0; j < notes.length && j < durs.length; j++ )
+        
+        aDrumRule.setInstrumentNumber(drumPat.getInstrument());
+        
+        for( DrumRuleRep.Element element: drumPat.getElements() )
           {
-          String note = notes[j];
-          String dur = durs[j];
           String ele = "";
-          if( Integer.parseInt(note) == 1 )
+          String suffix = element.getSuffix();
+          switch( element.getType() )
             {
-            ele += REST_STRING;
+              case 'X': ele = HIT_STRING    + suffix; break;
+              case 'R': ele = REST_STRING   + suffix; break;
+              case 'V': ele = VOLUME_STRING + suffix; break;
+              default: assert false;
             }
-          else
-            {
-            ele += HIT_STRING;
-            }
-          ele += dur;
+  
           aDrumRule.addElement(ele);
           }
 
         aDrumPattern.addRule(aDrumRule);
-        allDrums = allDrums.rest();
         }
       drumP.add(aDrumPattern);
       aDrumPattern.setWeight(curPat.getWeight());
@@ -6265,13 +6257,15 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
             int gap = bar.getStartSlot() - nextSlot;
             if( gap > 0 )
               {
-                patternBuffer.append(
-                    REST_STRING + Note.getDurationString(gap) + " ");
+                patternBuffer.append(REST_STRING);
+                patternBuffer.append(Note.getDurationString(gap));
+                patternBuffer.append(" ");
               }
 
             if( !(bar instanceof PianoRollEndBlock) )
               {
-                patternBuffer.append(bar.getText() + " ");
+                patternBuffer.append(bar.getText());
+                patternBuffer.append(" ");
                 nextSlot = bar.getEndSlot() + 1;
               }
           }
@@ -6416,8 +6410,10 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
       MIDIBeast.maxBassPatternLength =
               maxPatternLengthComboBox.getSelectedIndex();  // FIX: Not good to use a global this way.
+      
       MIDIBeast.maxChordPatternLength =
               maxChordPatternLengthComboBox.getSelectedIndex();
+      
       MIDIBeast.maxDrumPatternLength =
               maxDrumPatternLengthComboBox.getSelectedIndex();
 

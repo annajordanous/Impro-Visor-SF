@@ -19,8 +19,10 @@
  */
 
 package imp.data;
+
 import imp.Constants;
 import java.io.Serializable;
+import java.util.ArrayList;
 import polya.Polylist;
 
 /**
@@ -37,33 +39,27 @@ public class DrumPattern extends Pattern implements Constants, Serializable
 public static int defaultDrumPatternDuration = 480;
 
 /**
- * The list representation of the rules in this pattern
- */
-Polylist listRules = Polylist.nil;
-
-
-/**
  * a Polylist of drum Polylists, the structure of each drum Polylist is: (DRUM
  * RULES DURATIONS)
  */
 
-private Polylist drums;
+private ArrayList<DrumRuleRep> drums;
 
 
 /**
  * array containing the types of rules
  */
 
-private static String ruleTypes[] =
+public static final String ruleTypes[] =
   {
     "X", "R", "V"
   };
 
 
 // indices into the ruleTypes array
-private static final int STRIKE = 0;
-private static final int REST = 1;
-private static final int VOLUME = 2;
+public static final int STRIKE = 0;
+public static final int REST = 1;
+public static final int VOLUME = 2;
 
 
 /**
@@ -86,7 +82,7 @@ private static final int WEIGHT = 1;
  */
 private DrumPattern()
   {
-    drums = Polylist.nil;
+    drums = new ArrayList<DrumRuleRep>();
   }
 
 /**
@@ -111,36 +107,7 @@ public static DrumPattern makeDrumPattern(Polylist L)
           {
             case DRUM: // a single drum "rule" in the pattern
               {
-                Long drum = new Long(0);
-                Long volume = new Long(MAX_VOLUME);
-                Polylist r = Polylist.nil;
-                Polylist d = Polylist.nil;
-                Polylist ruleAsList = Polylist.nil;
-                
-                while( item.nonEmpty() )
-                  {
-                    Object ob = item.first();
-                    if( ob instanceof Long )
-                      {
-                        drum = (Long)ob;
-                      }
-                    else if( ob instanceof String )
-                      {
-                        String s = (String)ob;
-
-                        int rule = Leadsheet.lookup(s.substring(0, 1), ruleTypes);
-
-                        ruleAsList = ruleAsList.cons(s);  // save in list form for possible display
-
-                        String dur = s.substring(1);
-                        r = r.cons(rule);
-                        d = d.cons(dur);
-                      }
-                    
-                    item = item.rest();
-                  }
-
-                dp.addRule(drum, r.reverse(), d.reverse(), volume, ruleAsList.reverse());
+                dp.addRule(new DrumRuleRep(item));
                 break;
               }
                 
@@ -148,8 +115,8 @@ public static DrumPattern makeDrumPattern(Polylist L)
               {
                 Number w = (Number) item.first();
                 dp.setWeight(w.floatValue());
+                break;
               }
-
           }
       }
     return dp;
@@ -168,33 +135,21 @@ public static DrumPattern makeDrumPattern(Polylist L)
  * @param ruleAsList the rule in Polylist form, for use in StyleEditorTableModel
  */
 
-private void addRule(Long drum, Polylist rules, Polylist durations, Long volume, Polylist ruleAsList)
+private void addRule(DrumRuleRep rep)
   {
-    Polylist ruleToAdd = Polylist.list(drum, rules, durations, volume, ruleAsList);
-    System.out.println("in addRule(), ruleToAdd = " + ruleToAdd);
-    drums = addRule(drum, ruleToAdd, drums);
+    for( DrumRuleRep existing : drums )
+      {
+        if( existing.getInstrument() == rep.getInstrument() )
+          {
+            drums.remove(existing);
+            break;
+          }
+      }
+    drums.add(rep);
   }
 
 
-private Polylist addRule(Long drum, Polylist ruleToAdd, Polylist drums)
-  {
-    if( drums.isEmpty() )
-      {
-        return Polylist.list(ruleToAdd);
-      }
-
-    Polylist firstRule = (Polylist) drums.first();
-
-    if( firstRule.first().equals(drum) )
-      {
-        return drums.rest().cons(ruleToAdd);
-      }
-
-    return addRule(drum, ruleToAdd, drums.rest()).cons(drums.first());
-  }
-
-
-public Polylist getDrums()
+public ArrayList<DrumRuleRep> getDrums()
   {
     return drums;
   }
@@ -210,40 +165,26 @@ public int getDuration()
     // here we're basing the duration of this DrumPattern on the 
     // the max duration across all drums
 
-    Polylist L = drums;
     int maxDuration = 0;
 
-    while( L.nonEmpty() )
+    for( DrumRuleRep rep: drums )
       {
-        Polylist pattern = (Polylist) drums.first();
-
         // drum.first() is the instrument number, not used here
-        Polylist M = (Polylist) pattern.second();
-        Polylist N = (Polylist) pattern.third();
-        int duration = 0;
 
-        while( M.nonEmpty() )
-          {
-            if( !M.first().equals(VOLUME) )
-              {
-              duration += Duration.getDuration((String) N.first());
-              }
-            M = M.rest();
-            N = N.rest();
-          }
+        int duration = rep.getDuration();
 
         if( duration > maxDuration )
           {
             maxDuration = duration;
           }
-        L = L.rest();
       }
+    
     return maxDuration;
   }
   
 
 /**
- * Realizes the drum patterns as a Polylist of MelodyPart objects to be
+ * Renders this drum pattern as a Polylist of MelodyPart objects to be
  * sequenced.
  *
  * @return a Polylist of MelodyPart objects
@@ -253,54 +194,43 @@ public Polylist applyRules()
   {
     Polylist drumline = Polylist.nil;
 
-    Polylist L = drums;
-    //System.out.println("drums = " + drums);
-
-    while( L.nonEmpty() )
+    for( DrumRuleRep rep: drums )
       {
         MelodyPart m = new MelodyPart();
-        Polylist drum = (Polylist) L.first();
-
-        Long pitch = (Long) drum.first();
-        Polylist rules = (Polylist) drum.second();
-        Polylist durations = (Polylist) drum.third();
-
+        int pitch = rep.getInstrument();
+        
         int localVolume = 127;
 
-        while( rules.nonEmpty() )
+        for( DrumRuleRep.Element element: rep.getElements() )
           {
-            switch( (Integer) rules.first() )
+            switch( element.getType() )
               {
-                case STRIKE:
+                case 'X':
                   {
-                   int dur = Duration.getDuration((String) durations.first());
-                   Note note = new Note(pitch.intValue(), dur);
+                   int dur = Duration.getDuration(element.getSuffix());
+                   Note note = new Note(pitch, dur);
                    note.setVolume(localVolume);
                    m.addNote(note);
                    
                    //System.out.println("drum " + pitch + " vol = " + localVolume + " dur = " + dur);
                    break;
                   }
-                case REST:
+                case 'R':
                   {
-                   int dur = Duration.getDuration((String) durations.first());
+                   int dur = Duration.getDuration(element.getSuffix());
                    m.addNote(new Rest(dur));
                    break;
                   }
                     
-                case VOLUME:
+                case 'V':
                   {
-                   localVolume = Integer.parseInt((String)durations.first());
+                   localVolume = Integer.parseInt(element.getSuffix());
                    break;
                   }
               }
             
-            rules = rules.rest();
-            durations = durations.rest();
           }
         drumline = drumline.cons(m);
-
-        L = L.rest();
       }
 
     return drumline;

@@ -37,8 +37,7 @@ import javax.swing.ImageIcon;
 import polya.Polylist;
 
 /**
- * Creates a GUI that displays a drum pattern used in styles. Created Summer
- * 2007 @authors Brandy McMenamy, Sayuri Soejima
+ * Created Summer 2007 @authors Brandy McMenamy, Sayuri Soejima
  */
 public class DrumPatternDisplay
         extends PatternDisplay

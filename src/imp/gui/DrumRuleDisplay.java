@@ -22,7 +22,11 @@ package imp.gui;
 
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
-import imp.data.*;
+import imp.data.ChordPart;
+import imp.data.DrumRuleRep;
+import imp.data.MIDIBeast;
+import imp.data.Score;
+import imp.data.Style;
 import imp.util.ErrorLog;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -38,10 +42,13 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
 
 public static Color playableColor = Color.yellow;
 public static Color unplayableColor = Color.red;
+
 //The message displayed in tooltips and error dialogs if the rule is legal
 private String safeMsgRule = "This rule is legal.  Click play button to preview it.";
+
 //Contains a specialized error message for any error that just occurred.
 private String errorMsgRule = safeMsgRule;
+
 //Useful notate containers.
 private DrumPatternDisplay myParentHolder = null;
 private String instrumentString = "";
@@ -351,7 +358,7 @@ public boolean checkStatus()
 
 public double getPatternLength()
   {
-    return Duration.getDuration(getDisplayText());
+    return DrumRuleRep.makeDrumRuleRep(getRule(127)).getDuration(); //Duration.getDuration(getDisplayText());
   }
 
 public double getBeats()

@@ -184,8 +184,11 @@ public static int default_numerator = 8;	// eighth note default
         index++;
         if( index >= len || !Character.isDigit(item.charAt(index)) )
           {
+          /* FIX: suppress warning for now, as the app will hang.
           ErrorLog.log(ErrorLog.WARNING,
                   "Expected digit after / in " + item + " returning default value ");
+                  *
+          */
           return DEFAULT_DURATION;
           }
 
@@ -204,7 +207,7 @@ public static int default_numerator = 8;	// eighth note default
         slots *= (denominator - 1); // was 2
         }
 
-      /* suppress warning -- RK
+      /* FIX: suppress warning for now, as the app will hang.
       if( slots % (numerator*denominator) != 0 )
       {
       ErrorLog.log(ErrorLog.WARNING, "Tuplet value is not exact: " + item
@@ -230,8 +233,10 @@ public static int default_numerator = 8;	// eighth note default
 
     if( index < len )
       {
+      /* FIX: suppress warning for now, as the app will hang.
       ErrorLog.log(ErrorLog.WARNING,
               "Ignoring garbage after end of note duration: " + item);
+      */
       }
 
     if( duration <= 0 )
