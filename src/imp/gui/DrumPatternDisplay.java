@@ -157,19 +157,16 @@ public String getPattern(boolean requireChecked)
 
             int instrumentNumber = d.getInstrumentNumber();
 
-            //System.out.println("d = " + d.getRule());
-
-            int volume = 127; // FIX
-
             if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) ) // NOT WORKING
               {
+                String rep = d.getRule();
                 if( d.checkStatus() )
                   {
-                    pattern += "\n\t\t" + d.getRule(volume);
+                    pattern += "\n\t\t" + rep;
                   }
                 else
                   {
-                    ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + d.getRule(volume));
+                    ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + rep);
                   }
               }
           }

@@ -126,18 +126,11 @@ public class StyleCellEditor
       }
 
     // Handle instrument inclusion entry
-    if( column == StyleTableModel.INSTRUMENT_INCLUDE_COLUMN && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
+    if( column == StyleTableModel.INSTRUMENT_INCLUDE_COLUMN 
+        && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
       {
       inclusionCheckbox.setSelected(beingEdited.equals(Boolean.TRUE));
       return inclusionCheckbox;
-      }
-
-    // Handle instrument volume entry
-    if( column == StyleTableModel.INSTRUMENT_VOLUME_COLUMN && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
-      {
-      volumeChoiceMenu.select("" + VOLUME_NOMINAL);
-
-      return volumeChoiceMenu;
       }
 
     // Handle pattern and rule entries
@@ -179,8 +172,8 @@ public class StyleCellEditor
     // Possible edit of weight entry
     if( column >= StyleTableModel.FIRST_PATTERN_COLUMN 
             && (row == StyleTableModel.BASS_PATTERN_WEIGHT_ROW 
-            || row == StyleTableModel.CHORD_PATTERN_WEIGHT_ROW 
-            || row == StyleTableModel.DRUM_PATTERN_WEIGHT_ROW) )
+             || row == StyleTableModel.CHORD_PATTERN_WEIGHT_ROW 
+             || row == StyleTableModel.DRUM_PATTERN_WEIGHT_ROW) )
       {
       Float weight = zeroFloat;
       try
@@ -248,15 +241,10 @@ public class StyleCellEditor
           }
       }
 
-    if( column == StyleTableModel.INSTRUMENT_INCLUDE_COLUMN && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
+    if( column == StyleTableModel.INSTRUMENT_INCLUDE_COLUMN 
+     && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
       {
       return inclusionCheckbox.isSelected();
-      }
-
-    if( column == StyleTableModel.INSTRUMENT_VOLUME_COLUMN && row >= StyleTableModel.FIRST_INSTRUMENT_ROW )
-      {
-      // Return instrument volume value.
-      return volumeChoiceMenu.getSelectedItem();
       }
 
     // Handle pattern and rule values.

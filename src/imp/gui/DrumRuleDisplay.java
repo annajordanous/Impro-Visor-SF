@@ -22,11 +22,7 @@ package imp.gui;
 
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
-import imp.data.ChordPart;
-import imp.data.DrumRuleRep;
-import imp.data.MIDIBeast;
-import imp.data.Score;
-import imp.data.Style;
+import imp.data.*;
 import imp.util.ErrorLog;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -114,10 +110,10 @@ public String getDisplayText()
  * overall drum-pattern
  */
 
-public String getRule(int volume)
+public String getRule()
   {
 
-    String rule = "(drum " + getInstrumentNumber() + " " + "V" + volume + " " + getDisplayText() + ")";
+    String rule = "(drum " + getInstrumentNumber() + " " + getDisplayText() + ")";
 
     //System.out.println("rule = " + rule);
 
@@ -139,8 +135,7 @@ public void setRuleText(String text)
 
 public String getPlayRule()
   {
-    int volume = 127; // FIX
-    return "(drum-pattern " + getRule(volume) + "(weight 100))";
+    return "(drum-pattern " + getRule() + "(weight 100))";
   }
 
 /**
@@ -298,8 +293,7 @@ public String toString()
 public boolean checkStatus()
   {
     String displayText = getDisplayText();
-    int volume = 127; // FIX
-    String rule = getRule(volume);
+    String rule = getRule();
     playable = true;
 
     try
@@ -358,7 +352,7 @@ public boolean checkStatus()
 
 public double getPatternLength()
   {
-    return DrumRuleRep.makeDrumRuleRep(getRule(127)).getDuration(); //Duration.getDuration(getDisplayText());
+    return DrumRuleRep.makeDrumRuleRep(getRule()).getDuration(); //Duration.getDuration(getDisplayText());
   }
 
 public double getBeats()

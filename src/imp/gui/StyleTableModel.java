@@ -35,17 +35,18 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
   
     /** These determine number of table columns and rows */
   
-    /* Caution: If initialNumberOfPatterns is less than 92, the header gets out of sync
+    /* Caution: If initialNumberOfPatterns is less than 93, the header gets out of sync
        with the table when new columns are added. I have no idea why. It could be a bug
        in Java.  They sync up again if the column boundary is adjusted in any minor way
        and the scrollbar is scrolled slightly, but not unless this is done.  Also, adding
        a new column disturbs the width of the initial columns.
      */
   
-    public static int initialNumberOfPatterns = 92;
-    public static int initialExtraColumns = 2;
+    public static int initialNumberOfPatterns = 95;
+    public static int initialExtraColumns = 1;
     
     int initialPercussionInstruments = 30;  
+    
     // FIX: An out-of-bounds error can occur if table is enlarged sufficiently
     //       at imp.gui.StyleTableModel.isChordCell(StyleTableModel.java:333)
     //    at imp.gui.StyleEditor.isChordCell(StyleEditor.java:2017)
@@ -118,8 +119,7 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     // Designated columns
 
     public static final int INSTRUMENT_INCLUDE_COLUMN = 0;
-    public static final int INSTRUMENT_VOLUME_COLUMN = 1;
-    public static final int FIRST_PATTERN_COLUMN = 2;
+    public static final int FIRST_PATTERN_COLUMN = 1;
     public static final int PATTERN_COLUMN_BASE = FIRST_PATTERN_COLUMN - 1;
     
     // Designated rows
@@ -146,8 +146,6 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
     public static final Boolean NEGATIVE_INCLUDE_VALUE = Boolean.FALSE;
     public static final Boolean INITIAL_INCLUDE_VALUE = POSITIVE_INCLUDE_VALUE;
     
-    public static final Integer INITIAL_INSTRUMENT_VOLUME = 100;
-
     private static boolean setValueTraceValue = false;
     
     /**
@@ -162,16 +160,15 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
       
       theTable.setColumnModel(new StyleTableColumnModel(theTable));
 
-       // Create row headers. These will determine how long columns are.
+      // Create row headers. These will determine how long columns are.
       
       initRowHeaders();
             
-       // Create the  non-pattern columns
+      // Create the  non-pattern columns
 
-        addEmptyColumn("Use");
-        addEmptyColumn("Volume");
+       addEmptyColumn("Use");
 
-        // Add columns  for initial blank patterns
+      // Add columns  for initial blank patterns
       
       while( patternColumnCount < initialNumberOfPatterns  )
         {
@@ -179,16 +176,13 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
         }
 
      
-     // Indicate int two columns that all instruments are included and set their volumes to the default
-     setValueAt(INITIAL_INCLUDE_VALUE,     BASS_PATTERN_ROW,  INSTRUMENT_INCLUDE_COLUMN);
-     setValueAt(INITIAL_INSTRUMENT_VOLUME, BASS_PATTERN_ROW,  INSTRUMENT_VOLUME_COLUMN);
-     setValueAt(INITIAL_INCLUDE_VALUE,     CHORD_PATTERN_ROW, INSTRUMENT_INCLUDE_COLUMN);
-     setValueAt(INITIAL_INSTRUMENT_VOLUME, CHORD_PATTERN_ROW, INSTRUMENT_VOLUME_COLUMN);
+     // Indicate int two columns that all instruments are included
+     setValueAt(INITIAL_INCLUDE_VALUE, BASS_PATTERN_ROW,  INSTRUMENT_INCLUDE_COLUMN);
+     setValueAt(INITIAL_INCLUDE_VALUE, CHORD_PATTERN_ROW, INSTRUMENT_INCLUDE_COLUMN);
      int nrows =  getRowCount();
      for( int i = FIRST_PERCUSSION_INSTRUMENT_ROW; i < nrows; i++ )
       {
       setValueAt(INITIAL_INCLUDE_VALUE,     i, INSTRUMENT_INCLUDE_COLUMN);
-      setValueAt(INITIAL_INSTRUMENT_VOLUME, i, INSTRUMENT_VOLUME_COLUMN);
       }
      
     }
@@ -335,7 +329,6 @@ public int getNumColumns()
     //System.out.println("add row named " + rowHeader + ", size = " + size);
     ArrayList<Object> row = new ArrayList<Object>(size);
     row.add(INITIAL_INCLUDE_VALUE);
-    row.add(INITIAL_INSTRUMENT_VOLUME);
     for( int j = 2; j < size; j++)
     {
       row.add(emptyCell);
@@ -404,7 +397,7 @@ public int getNumColumns()
                      || row >= FIRST_PERCUSSION_INSTRUMENT_ROW
                      )
                )
-            || ( (col == INSTRUMENT_INCLUDE_COLUMN || col == INSTRUMENT_VOLUME_COLUMN) 
+            || ( col == INSTRUMENT_INCLUDE_COLUMN 
                   && (  row == BASS_PATTERN_ROW 
                      || row == CHORD_PATTERN_ROW 
                      || row >= FIRST_PERCUSSION_INSTRUMENT_ROW
