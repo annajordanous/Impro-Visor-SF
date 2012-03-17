@@ -361,7 +361,7 @@ public void mouseClicked(MouseEvent e)
               {
                 pianoRoll.disablePasteBar();
               }
-            pianoRoll.popupMenu.show(this, x, y);
+            pianoRoll.barCreatePopupMenu.show(this, x, y);
           }
         else // clicked on a bar
           {
@@ -372,7 +372,7 @@ public void mouseClicked(MouseEvent e)
               }
             if( bar.isSelected() )
               {
-                pianoRoll.popupMenu2.show(this, x, y);
+                pianoRoll.barEditPopupMenu.show(this, x, y);
               }
             else
               {
@@ -689,14 +689,14 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
    * @return the Bar that is added the row and column specified, with the
    *         specified numSlots size.
    */
-  public void addBar(int row, int startSlot, int numSlots, Object text, Color barColor, Color borderColor)
+  public void addBar(int row, int startSlot, int numSlots, Object text, Color barColor, Color borderColor, int volume)
     {
     if( row >= numRows )
       {
         return; // can't add
       }
     //System.out.println("added bar at row = " + row + ", startSlot = " + startSlot + ", slots = " + numSlots);
-    PianoRollBar bar = new PianoRollBar(row, startSlot, numSlots, text, barColor, borderColor, grid, pianoRoll);
+    PianoRollBar bar = new PianoRollBar(row, startSlot, numSlots, text, barColor, borderColor, volume, grid, pianoRoll);
     addBarWithOptionalEndBlock(bar);
     }
 

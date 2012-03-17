@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,8 +20,9 @@
 
 package imp.gui;
 
-import java.awt.*;
 import imp.data.Note;
+import java.awt.Color;
+import java.awt.Graphics;
 
 /**
  *
@@ -52,14 +52,28 @@ public class PianoRollBar
 
   protected boolean resizable = true;
 
-
+  int volume = 127;
   
-  public PianoRollBar(int row, int startSlot, int numSlots, Color barColor, Color borderColor, PianoRollGrid grid, PianoRoll pianoRoll)
+  public PianoRollBar(int row, 
+                      int startSlot, 
+                      int numSlots, 
+                      Color barColor, 
+                      Color borderColor, 
+                      PianoRollGrid grid, 
+                      PianoRoll pianoRoll)
     {
-    this(row, startSlot, numSlots, "X", barColor, borderColor, grid, pianoRoll);
+    this(row, startSlot, numSlots, "X", barColor, borderColor, 127, grid, pianoRoll);
     }
 
-  public PianoRollBar(int row, int startSlot, int numSlots, Object text, Color barColor, Color borderColor, PianoRollGrid grid, PianoRoll pianoRoll)
+  public PianoRollBar(int row, 
+                      int startSlot, 
+                      int numSlots, 
+                      Object text, 
+                      Color barColor, 
+                      Color borderColor, 
+                      int volume,
+                      PianoRollGrid grid, 
+                      PianoRoll pianoRoll)
     {
     this.row         = row;
     this.startSlot   = startSlot;
@@ -69,6 +83,7 @@ public class PianoRollBar
     this.pianoRoll   = pianoRoll;
     this.barColor    = barColor;
     this.borderColor = borderColor;
+    this.volume      = volume;
     }
 
 /**
@@ -86,6 +101,7 @@ public PianoRollBar(PianoRollBar bar)
     this.pianoRoll   = bar.pianoRoll;
     this.barColor    = bar.barColor;
     this.borderColor = bar.borderColor;
+    this.volume      = bar.volume;
     }
 
 /**
@@ -376,6 +392,7 @@ public boolean isSelected()
    *
    * @return a string with information about the bar's location and width.
    */
+  @Override
   public String toString() 
     {
     return "Bar at row = " + row + ", startSlot = " + startSlot + ", slots = " + numSlots;
@@ -394,4 +411,14 @@ public boolean isSelected()
   {
       return tabColor;
   }
+  
+  public int getVolume()
+    {
+      return volume;
+    }
+  
+  public void setVolume(int volume)
+    {
+      this.volume = volume;
+    }
   }

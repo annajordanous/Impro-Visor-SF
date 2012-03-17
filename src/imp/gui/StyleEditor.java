@@ -5858,7 +5858,7 @@ public void playBassColumn()
      
     int tableCol = col+1;
 
-    if( tableCol < StyleTableModel.FIRST_PATTERN_COLUMN )
+    if( col < StyleTableModel.FIRST_PATTERN_COLUMN )
     {
         return; // can't extract from row stubs
     }
@@ -5871,24 +5871,24 @@ public void playBassColumn()
     
     // Extract the bass into the Piano Roll
     int bassRow = StyleTableModel.BASS_PATTERN_ROW;
-    exportBass(tableCol, pianoRoll, bassRow, pianoRollRow);
+    exportBass(col, pianoRoll, bassRow, pianoRollRow);
     pianoRollRow += 1;
 
     // Extract the chord into the Piano Roll
     int chordRow = StyleTableModel.CHORD_PATTERN_ROW;
-    exportChordAndDrums(tableCol, pianoRoll, chordRow, pianoRollRow);
+    exportChordAndDrums(col, pianoRoll, chordRow, pianoRollRow);
     pianoRollRow += 1;
     
     // Extract the drums into the Piano Roll
     int drumStartRow = StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW;
     for( int row = drumStartRow; row < styleTable.getRowCount(); row++ )
       {
-      exportChordAndDrums(tableCol, pianoRoll, row, pianoRollRow);
+      exportChordAndDrums(col, pianoRoll, row, pianoRollRow);
       pianoRollRow += 1;
       }  
 
-    pianoRoll.setColumnIn(col, styleName);
-    pianoRoll.setColumnOut(col, styleName);
+    pianoRoll.setColumnIn(tableCol, styleName);
+    pianoRoll.setColumnOut(tableCol, styleName);
 
     setExporting(false);
 
@@ -5936,6 +5936,9 @@ public void playBassColumn()
 
     Tokenizer in = new Tokenizer(patternReader);
 
+    int volume = 127;
+    int itemSlots;
+    
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
       if( ob instanceof String )
@@ -5943,21 +5946,31 @@ public void playBassColumn()
         String item = (String)ob;
         if( item.length() > 1 )
           {
-          int itemSlots = Duration.getDuration(item.substring(1));
-          switch( Character.toLowerCase(item.charAt(0)) )
+           switch( Character.toLowerCase(item.charAt(0)) )
             {
             case 'r':
-              //System.out.println("\tadding rest of " + itemSlots + " slots.");
+              itemSlots = Duration.getDuration(item.substring(1));
+             //System.out.println("\tadding rest of " + itemSlots + " slots.");
               slots += itemSlots;  // skip space
               break;
 
             case 'x':
               //System.out.println("\tadding hit of " + itemSlots + " slots.");
-              pianoRoll.addBar(pianoRollRow, slots, itemSlots, "x", barColor,
-                      borderColor);
+              itemSlots = Duration.getDuration(item.substring(1));
+              pianoRoll.addBar(pianoRollRow, 
+                               slots, 
+                               itemSlots, 
+                               "x", 
+                               barColor,
+                               borderColor, 
+                               volume);
               slots += itemSlots;
               break;
-            }
+                
+            case 'v':
+              volume = Integer.parseInt(item.substring(1));
+
+              break;            }
           }
         }
       }
@@ -6103,7 +6116,8 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
     // Final flush
     setCell(patternBuffer.toString(), styleEditorRow, tableCol, SILENT);
-    
+
+    pianoRoll.setColumnIn(col, styleName);
     pianoRoll.setColumnOut(col, styleName);
   }
 

@@ -210,23 +210,29 @@ private StyleEditor styleEditor;
     grid.drawBar(buffer.getGraphics(), barColor, borderColor, tabColor, row, startSlot, numSlots);
     }
   
-  
-  /**
-   * Add a bar to this PianoRoll and draw it.
-   */
-  public void addBar(int row, int startSlot, int numSlots, Color barColor, Color borderColor)
-    {
-    addBar(row, startSlot, numSlots, "X", barColor, borderColor);
-    }
 
   /** 
    * Add a bar to this PianoRoll and draw it.
    */
-  public void addBar(int row, int startSlot, int numSlots, Object text, Color barColor, Color borderColor)
+  public void addBar(int row, 
+                     int startSlot, 
+                     int numSlots, 
+                     Object text, 
+                     Color barColor, 
+                     Color borderColor,
+                     int volume)
     {
     //System.out.println("adding bar text: " + text);
 
-    PianoRollBar bar = new PianoRollBar(row, startSlot, numSlots, text, barColor, borderColor, grid, this);
+    PianoRollBar bar = new PianoRollBar(row, 
+                                        startSlot, 
+                                        numSlots, 
+                                        text, 
+                                        barColor, 
+                                        borderColor,
+                                        volume,
+                                        grid, 
+                                        this);
 
     addBar(bar);
     }
@@ -483,11 +489,11 @@ public void paint(Graphics g)
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        popupMenu = new javax.swing.JPopupMenu();
+        barCreatePopupMenu = new javax.swing.JPopupMenu();
         addNewBar = new javax.swing.JMenuItem();
         pasteBar = new javax.swing.JMenuItem();
         noAction = new javax.swing.JMenuItem();
-        popupMenu2 = new javax.swing.JPopupMenu();
+        barEditPopupMenu = new javax.swing.JPopupMenu();
         copyBar = new javax.swing.JMenuItem();
         cutBar = new javax.swing.JMenuItem();
         deleteBar = new javax.swing.JMenuItem();
@@ -530,9 +536,15 @@ public void paint(Graphics g)
         scalePitchButtonGroup = new javax.swing.ButtonGroup();
         accidentalButtonGroup = new javax.swing.ButtonGroup();
         directionButtonGroup = new javax.swing.ButtonGroup();
+        barVolumeDialog = new javax.swing.JDialog();
+        bassEditorToggleButton1 = new javax.swing.JToggleButton();
         cautionLabelForStylePatterns = new javax.swing.JLabel();
-        pianoRollScrollPane = new JScrollPane(pianoRollPanel);
         rowTitlePanel = new javax.swing.JPanel();
+        pianoRollScrollPane = new JScrollPane(pianoRollPanel);
+        barVolumePanel = new javax.swing.JPanel();
+        barVolumeLabel = new javax.swing.JLabel();
+        barVolumeTF = new javax.swing.JTextField();
+        barVolumeSlider = new javax.swing.JSlider();
         pianoRollResolutionsPanel = new javax.swing.JPanel();
         bpmLabel = new javax.swing.JLabel();
         tempoComboBox = new javax.swing.JComboBox();
@@ -553,7 +565,6 @@ public void paint(Graphics g)
         playBassButton = new javax.swing.JButton();
         playChordButton = new javax.swing.JButton();
         playPercussionButton = new javax.swing.JButton();
-        bassEditorToggleButton1 = new javax.swing.JToggleButton();
         loopToggleButton = new javax.swing.JToggleButton();
         pianoRollMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
@@ -570,7 +581,7 @@ public void paint(Graphics g)
                 addNewBarActionPerformed(evt);
             }
         });
-        popupMenu.add(addNewBar);
+        barCreatePopupMenu.add(addNewBar);
 
         pasteBar.setText("Paste bar");
         pasteBar.setToolTipText("Paste bar");
@@ -582,14 +593,14 @@ public void paint(Graphics g)
                 pasteBarActionPerformed(evt);
             }
         });
-        popupMenu.add(pasteBar);
+        barCreatePopupMenu.add(pasteBar);
 
         noAction.setText("Release");
         noAction.setToolTipText("");
         noAction.setEnabled(false);
         noAction.setMinimumSize(new java.awt.Dimension(200, 100));
         noAction.setSelected(true);
-        popupMenu.add(noAction);
+        barCreatePopupMenu.add(noAction);
 
         copyBar.setText("Copy bar");
         copyBar.setToolTipText("Copy bar");
@@ -600,7 +611,7 @@ public void paint(Graphics g)
                 copyBarActionPerformed(evt);
             }
         });
-        popupMenu2.add(copyBar);
+        barEditPopupMenu.add(copyBar);
 
         cutBar.setText("Cut bar");
         cutBar.setToolTipText("Cut bar");
@@ -611,10 +622,10 @@ public void paint(Graphics g)
                 cutBarActionPerformed(evt);
             }
         });
-        popupMenu2.add(cutBar);
+        barEditPopupMenu.add(cutBar);
 
         deleteBar.setText("Delete bar");
-        deleteBar.setToolTipText("Delete bar");
+        deleteBar.setToolTipText("Delete this bar");
         deleteBar.setMinimumSize(new java.awt.Dimension(200, 100));
         deleteBar.setSelected(true);
         deleteBar.addActionListener(new java.awt.event.ActionListener() {
@@ -622,7 +633,7 @@ public void paint(Graphics g)
                 deleteBarActionPerformed(evt);
             }
         });
-        popupMenu2.add(deleteBar);
+        barEditPopupMenu.add(deleteBar);
 
         barEditorFrame.setTitle("Bass Bar Editor");
         barEditorFrame.setAlwaysOnTop(true);
@@ -1008,6 +1019,9 @@ public void paint(Graphics g)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         barEditorFrame.getContentPane().add(beatsTextField, gridBagConstraints);
 
+        barVolumeDialog.setBounds(new java.awt.Rectangle(0, 22, 30, 200));
+        barVolumeDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Piano Roll Style Pattern Editor");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -1017,15 +1031,46 @@ public void paint(Graphics g)
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        bassEditorToggleButton1.setBackground(BASSCOLOR);
+        bassEditorToggleButton1.setText("Open Bass Bar Editor");
+        bassEditorToggleButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        bassEditorToggleButton1.setMaximumSize(new java.awt.Dimension(140, 20));
+        bassEditorToggleButton1.setMinimumSize(new java.awt.Dimension(140, 20));
+        bassEditorToggleButton1.setOpaque(true);
+        bassEditorToggleButton1.setPreferredSize(new java.awt.Dimension(140, 20));
+        bassEditorToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bassEditorToggleButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        getContentPane().add(bassEditorToggleButton1, gridBagConstraints);
+
         cautionLabelForStylePatterns.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         cautionLabelForStylePatterns.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         cautionLabelForStylePatterns.setText("  Long vertical lines are beats.   Bass, Chord, and Percussion sections are independent, not linked together.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         getContentPane().add(cautionLabelForStylePatterns, gridBagConstraints);
+
+        rowTitlePanel.setMinimumSize(new java.awt.Dimension(240, 550));
+        rowTitlePanel.setPreferredSize(new java.awt.Dimension(240, 550));
+        rowTitlePanel.setLayout(null);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(rowTitlePanel, gridBagConstraints);
 
         pianoRollScrollPane.setToolTipText("Each bar represents an interval for which the instrument is played.");
         pianoRollScrollPane.setViewportBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -1034,7 +1079,7 @@ public void paint(Graphics g)
         pianoRollScrollPane.setPreferredSize(new java.awt.Dimension(680, 580));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -1042,16 +1087,65 @@ public void paint(Graphics g)
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(pianoRollScrollPane, gridBagConstraints);
 
-        rowTitlePanel.setMinimumSize(new java.awt.Dimension(240, 550));
-        rowTitlePanel.setPreferredSize(new java.awt.Dimension(240, 550));
-        rowTitlePanel.setLayout(null);
+        barVolumePanel.setLayout(new java.awt.GridBagLayout());
+
+        barVolumeLabel.setBackground(new java.awt.Color(255, 255, 255));
+        barVolumeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        barVolumeLabel.setText("Bar Volume (velocity)\n");
+        barVolumeLabel.setToolTipText("Sets the velocity for this bar and any following ones, up to the next bar with a velocity set.");
+        barVolumeLabel.setMaximumSize(new java.awt.Dimension(150, 16));
+        barVolumeLabel.setMinimumSize(new java.awt.Dimension(150, 16));
+        barVolumeLabel.setPreferredSize(new java.awt.Dimension(150, 16));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weightx = 0.1;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(rowTitlePanel, gridBagConstraints);
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.2;
+        barVolumePanel.add(barVolumeLabel, gridBagConstraints);
+
+        barVolumeTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        barVolumeTF.setText("127");
+        barVolumeTF.setToolTipText("The volume is a MIDI \"velocity\", in the range 0-127.");
+        barVolumeTF.setMaximumSize(new java.awt.Dimension(60, 2147483647));
+        barVolumeTF.setMinimumSize(new java.awt.Dimension(60, 28));
+        barVolumeTF.setPreferredSize(new java.awt.Dimension(60, 28));
+        barVolumeTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barVolumeTFActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        barVolumePanel.add(barVolumeTF, gridBagConstraints);
+
+        barVolumeSlider.setMajorTickSpacing(10);
+        barVolumeSlider.setMaximum(127);
+        barVolumeSlider.setPaintTicks(true);
+        barVolumeSlider.setToolTipText("Set the volume of the selected bar.");
+        barVolumeSlider.setMaximumSize(new java.awt.Dimension(500, 29));
+        barVolumeSlider.setMinimumSize(new java.awt.Dimension(500, 29));
+        barVolumeSlider.setPreferredSize(new java.awt.Dimension(500, 29));
+        barVolumeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                barVolumeSliderStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.6;
+        barVolumePanel.add(barVolumeSlider, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.weightx = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        getContentPane().add(barVolumePanel, gridBagConstraints);
 
         pianoRollResolutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Resolutions"));
         pianoRollResolutionsPanel.setLayout(new java.awt.GridBagLayout());
@@ -1163,11 +1257,12 @@ public void paint(Graphics g)
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.4;
         getContentPane().add(pianoRollResolutionsPanel, gridBagConstraints);
 
         importExportPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("From/To Style Editor  "));
@@ -1255,11 +1350,11 @@ public void paint(Graphics g)
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.1;
         getContentPane().add(importExportPanel, gridBagConstraints);
 
         playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Play Pattern as Saved"));
@@ -1318,25 +1413,11 @@ public void paint(Graphics g)
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 0.2;
         getContentPane().add(playPanel, gridBagConstraints);
-
-        bassEditorToggleButton1.setBackground(BASSCOLOR);
-        bassEditorToggleButton1.setText("Open Bass Bar Editor");
-        bassEditorToggleButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        bassEditorToggleButton1.setOpaque(true);
-        bassEditorToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bassEditorToggleButton1ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(bassEditorToggleButton1, gridBagConstraints);
 
         loopToggleButton.setBackground(DRUMSCOLOR);
         loopToggleButton.setText("Loop Selected Percussion");
@@ -1349,8 +1430,9 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
         getContentPane().add(loopToggleButton, gridBagConstraints);
 
         windowMenu.setMnemonic('W');
@@ -1482,6 +1564,7 @@ if( bar != null )
    selectedBar = bar;
    bar.setSelected(true);
    updateBarEditor(selectedBar);
+   setVolumeIndicators(bar.getVolume());
    pianoRollPanel.drawAll(buffer.getGraphics());
    }
 }
@@ -1980,6 +2063,44 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     windowMenu.repaint();
 }//GEN-LAST:event_windowMenuMenuSelected
 
+private void barVolumeTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barVolumeTFActionPerformed
+  {//GEN-HEADEREND:event_barVolumeTFActionPerformed
+    int value = Integer.parseInt(barVolumeTF.getText());
+    
+    if( value > 127 )
+      {
+        value = 127;
+      }
+    else if( value < 0 )
+      {
+        value = 0;
+      }
+    
+    setVolumeIndicators(value);
+    setBarVolume(value);
+  }//GEN-LAST:event_barVolumeTFActionPerformed
+
+private void barVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_barVolumeSliderStateChanged
+  {//GEN-HEADEREND:event_barVolumeSliderStateChanged
+    int value = barVolumeSlider.getValue();
+    barVolumeTF.setText("" + value);
+    setBarVolume(value);
+  }//GEN-LAST:event_barVolumeSliderStateChanged
+
+private void setBarVolume(int value)
+  {
+    if( selectedBar != null )
+      {
+        selectedBar.setVolume(value);
+      }
+  }
+
+private void setVolumeIndicators(int value)
+  {
+    barVolumeTF.setText("" + value);
+    
+    barVolumeSlider.setValue(value);    
+  }
 
 private boolean checkPixelBeatConstraint()
 {
@@ -2008,8 +2129,15 @@ PianoRollPanel getPanel()
     private javax.swing.JPanel accidentalPanel;
     private javax.swing.JMenuItem addNewBar;
     private javax.swing.JRadioButton approachToneButton;
+    protected javax.swing.JPopupMenu barCreatePopupMenu;
+    protected javax.swing.JPopupMenu barEditPopupMenu;
     private javax.swing.JTextField barEditorContents;
     protected javax.swing.JFrame barEditorFrame;
+    private javax.swing.JDialog barVolumeDialog;
+    private javax.swing.JLabel barVolumeLabel;
+    private javax.swing.JPanel barVolumePanel;
+    private javax.swing.JSlider barVolumeSlider;
+    private javax.swing.JTextField barVolumeTF;
     private javax.swing.JToggleButton bassEditorToggleButton1;
     private javax.swing.JRadioButton bassNoteButton;
     private javax.swing.JLabel beatsLabel;
@@ -2065,8 +2193,6 @@ PianoRollPanel getPanel()
     private javax.swing.JButton playChordButton;
     private javax.swing.JPanel playPanel;
     private javax.swing.JButton playPercussionButton;
-    protected javax.swing.JPopupMenu popupMenu;
-    protected javax.swing.JPopupMenu popupMenu2;
     private javax.swing.JRadioButton repeatPitchButton;
     private javax.swing.JPanel rowTitlePanel;
     private javax.swing.ButtonGroup scalePitchButtonGroup;
