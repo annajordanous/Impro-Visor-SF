@@ -1164,7 +1164,8 @@ public void playBassColumn()
    * if the user has not previously saved the current style
    * @return 0 if the user cancels, 1 otherwise
    **/
-  private int saveStyle()
+  
+  public int saveStyle()
     {
     if( savedStyle != null )
       {

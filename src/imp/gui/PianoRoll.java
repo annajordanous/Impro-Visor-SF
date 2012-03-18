@@ -1062,9 +1062,9 @@ public void paint(Graphics g)
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         getContentPane().add(cautionLabelForStylePatterns, gridBagConstraints);
 
-        rowTitlePanel.setMaximumSize(new java.awt.Dimension(220, 32767));
-        rowTitlePanel.setMinimumSize(new java.awt.Dimension(220, 550));
-        rowTitlePanel.setPreferredSize(new java.awt.Dimension(220, 550));
+        rowTitlePanel.setMaximumSize(new java.awt.Dimension(200, 32767));
+        rowTitlePanel.setMinimumSize(new java.awt.Dimension(200, 550));
+        rowTitlePanel.setPreferredSize(new java.awt.Dimension(200, 550));
         rowTitlePanel.setLayout(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1360,6 +1360,7 @@ public void paint(Graphics g)
         getContentPane().add(importExportPanel, gridBagConstraints);
 
         playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Play Pattern as Saved", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        playPanel.setMaximumSize(new java.awt.Dimension(200, 2147483647));
         playPanel.setMinimumSize(new java.awt.Dimension(200, 82));
         playPanel.setPreferredSize(new java.awt.Dimension(200, 82));
         playPanel.setLayout(new java.awt.GridBagLayout());
@@ -1424,7 +1425,10 @@ public void paint(Graphics g)
         loopToggleButton.setBackground(DRUMSCOLOR);
         loopToggleButton.setText("Loop Selected Percussion");
         loopToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        loopToggleButton.setMaximumSize(new java.awt.Dimension(200, 20));
+        loopToggleButton.setMinimumSize(new java.awt.Dimension(200, 20));
         loopToggleButton.setOpaque(true);
+        loopToggleButton.setPreferredSize(new java.awt.Dimension(200, 20));
         loopToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loopToggleButtonActionPerformed(evt);
@@ -1437,11 +1441,14 @@ public void paint(Graphics g)
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(loopToggleButton, gridBagConstraints);
 
-        SaveEntireStyleButton.setBackground(DRUMSCOLOR);
+        SaveEntireStyleButton.setBackground(new java.awt.Color(255, 51, 51));
         SaveEntireStyleButton.setText("Save Entire Style");
         SaveEntireStyleButton.setToolTipText("Saves this Column and the entire style to the file.");
         SaveEntireStyleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        SaveEntireStyleButton.setMaximumSize(new java.awt.Dimension(200, 20));
+        SaveEntireStyleButton.setMinimumSize(new java.awt.Dimension(200, 20));
         SaveEntireStyleButton.setOpaque(true);
+        SaveEntireStyleButton.setPreferredSize(new java.awt.Dimension(200, 20));
         SaveEntireStyleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveEntireStyleButtonActionPerformed(evt);
@@ -2112,7 +2119,7 @@ private void barVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN
 
 private void SaveEntireStyleButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SaveEntireStyleButtonActionPerformed
   {//GEN-HEADEREND:event_SaveEntireStyleButtonActionPerformed
-    // TODO add your handling code here:
+    styleEditor.saveStyle();
   }//GEN-LAST:event_SaveEntireStyleButtonActionPerformed
 
 private void setBarVolume(int value)
