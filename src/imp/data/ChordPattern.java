@@ -135,7 +135,7 @@ public static ChordPattern makeChordPattern(Polylist L)
         }
       case WEIGHT:
         {
-        Long w = (Long)item.first();
+        Number w = (Number)item.first();
         cp.setWeight(w.intValue());
         break;
         }

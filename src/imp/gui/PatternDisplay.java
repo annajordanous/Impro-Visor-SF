@@ -114,9 +114,15 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
     }
   
   public void cannotPlay()
+    {
+      cannotPlay("no reason given");
+    }
+  
+  public void cannotPlay(String reason)
   {
     playable = false;
-    styleEditor.setStatus("Can't play incorrect pattern");
+System.out.println("Cannot play because " + reason);
+    styleEditor.setStatus("Cannot play because " + reason);
   }
 
   public void canPlay()

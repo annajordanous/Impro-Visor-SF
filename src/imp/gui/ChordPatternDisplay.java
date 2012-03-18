@@ -314,19 +314,19 @@ public boolean checkStatus()
                     && !(charString.equals("R"))
                     && !(charString.equals("V")) )
               {
-                cannotPlay();
+                cannotPlay("unknown character in pattern");
                 return false;
               }
           }
 
         if( Style.makeStyle(l) == null )
           {
-            cannotPlay();
+            cannotPlay("can't make style");
             return false;
           }
         else if( MIDIBeast.numBeatsInRule(displayText) == -1 )
           {
-            cannotPlay();
+            cannotPlay("can't compute beats");
             return false;
           }
         else
@@ -336,7 +336,7 @@ public boolean checkStatus()
       }
     catch( Exception e )
       {
-        cannotPlay();
+        cannotPlay("exception " + e);
         return false;
       }
   }
@@ -386,9 +386,6 @@ public boolean checkStatus()
         includePlayPanel = new javax.swing.JPanel();
         playPatternBtn = new javax.swing.JButton();
         includeBox = new javax.swing.JCheckBox();
-        itemPanel = new javax.swing.JPanel();
-        weightLabel = new javax.swing.JLabel();
-        weightSpinner = new javax.swing.JSpinner();
         southPanel = new javax.swing.JPanel();
         patternPanel = new javax.swing.JPanel();
         ruleLabel = new javax.swing.JLabel();
@@ -505,49 +502,6 @@ public boolean checkStatus()
         includePlayPanel.add(includeBox);
 
         northPanel.add(includePlayPanel, java.awt.BorderLayout.EAST);
-
-        itemPanel.setBackground(new java.awt.Color(255, 255, 255));
-        itemPanel.setMinimumSize(new java.awt.Dimension(521, 33));
-        itemPanel.setOpaque(false);
-        itemPanel.setPreferredSize(new java.awt.Dimension(521, 33));
-        itemPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                itemPanelMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                itemPanelMousePressed(evt);
-            }
-        });
-        itemPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        weightLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        weightLabel.setText("Weight:");
-        weightLabel.setToolTipText("The higher the weight, the greater the likelihood this pattern will play during a song.");
-        weightLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                weightLabelMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                weightLabelMousePressed(evt);
-            }
-        });
-        itemPanel.add(weightLabel);
-
-        weightSpinner.setMinimumSize(new java.awt.Dimension(35, 18));
-        weightSpinner.setPreferredSize(new java.awt.Dimension(35, 18));
-        weightSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                weightSpinnerStateChanged(evt);
-            }
-        });
-        weightSpinner.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                weightSpinnerMousePressed(evt);
-            }
-        });
-        itemPanel.add(weightSpinner);
-
-        northPanel.add(itemPanel, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -696,57 +650,61 @@ public boolean checkStatus()
 
     
 /**
- * If the pattern is legal, creates a style with one chordPart consisting of a 
- * single chord and adds the entire pattern to that style.  
- * Uses the volume, tempo, and chord info from the toolbar.
-*/
-
+ * If the pattern is legal, creates a style with one chordPart consisting of a
+ * single chord and adds the entire pattern to that style. Uses the volume,
+ * tempo, and chord info from the toolbar.
+ */
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
-    {
-        canPlay();
-        
-        if(checkStatus()) {
-            try{
-                String r = this.getPattern();
-                Polylist rule = Notate.parseListFromString(r); 
-                if(rule.isEmpty()) {
-                    cannotPlay();
-                    return false;
-                }
-                Style tempStyle = Style.makeStyle(rule);
-                tempStyle.setSwing(swingVal);
-                tempStyle.setAccompanimentSwing(swingVal);
-                tempStyle.setName("chordPattern");
-                Style.setStyle("chordPattern", tempStyle);
-                // This is necessary so that the StyleListModel menu in notate is reset.
-                // Without it, the contents will be emptied.
-                notate.reloadStyles();
-                 
-                ChordPart c = new ChordPart();
-                String chord = styleEditor.getChord();
-                boolean muteChord = styleEditor.isChordMuted();
-                int duration = tempStyle.getCP().get(0).getDuration(); 
-                c.addChord(chord, duration);
-                c.setStyle(tempStyle);
+  {
+    canPlay();
 
-                s.setChordProg(c);
-                s.setChordVolume(styleEditor.getVolume());
-                s.setTempo(tempo);
-                s.setVolumes(notate.getMidiSynth());
-                
-                new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
-                styleEditor.setStatus("OK");
-            }
-            catch(Exception e) {
-                cannotPlay();
-                return false;                    
-           }
-        }
-        else {
-                cannotPlay();
-                return false; 
-        }         
-        return true;
+    if( checkStatus() )
+      {
+        try
+          {
+            String r = this.getPattern();
+            Polylist rule = Notate.parseListFromString(r);
+            if( rule.isEmpty() )
+              {
+                cannotPlay("empty rule");
+                return false;
+              }
+            Style tempStyle = Style.makeStyle(rule);
+            tempStyle.setSwing(swingVal);
+            tempStyle.setAccompanimentSwing(swingVal);
+            tempStyle.setName("chordPattern");
+            Style.setStyle("chordPattern", tempStyle);
+            // This is necessary so that the StyleListModel menu in notate is reset.
+            // Without it, the contents will be emptied.
+            notate.reloadStyles();
+
+            ChordPart c = new ChordPart();
+            String chord = styleEditor.getChord();
+            boolean muteChord = styleEditor.isChordMuted();
+            int duration = tempStyle.getCP().get(0).getDuration();
+            c.addChord(chord, duration);
+            c.setStyle(tempStyle);
+
+            s.setChordProg(c);
+            s.setChordVolume(styleEditor.getVolume());
+            s.setTempo(tempo);
+            s.setVolumes(notate.getMidiSynth());
+
+            new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
+            styleEditor.setStatus("OK");
+          }
+        catch( Exception e )
+          {
+            cannotPlay("exception " + e);
+            return false;
+          }
+      }
+    else
+      {
+        cannotPlay("check status failed");
+        return false;
+      }
+    return true;
     }//GEN-LAST:event_playPatternBtnActionPerformed
 
     /**
@@ -767,50 +725,11 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             includeBox.setToolTipText("Click to include this pattern from style.");
         }
     }//GEN-LAST:event_includeBoxActionPerformed
-
-private void itemPanelMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_itemPanelMousePressed
-  {//GEN-HEADEREND:event_itemPanelMousePressed
-    setSelectedAppearance();
-  }//GEN-LAST:event_itemPanelMousePressed
-
-private void itemPanelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_itemPanelMouseClicked
-  {//GEN-HEADEREND:event_itemPanelMouseClicked
-    setSelectedAppearance();
-    if( evt.getClickCount() == 2 )
-      {
-        expand();
-      }
-  }//GEN-LAST:event_itemPanelMouseClicked
-
-private void weightSpinnerMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_weightSpinnerMousePressed
-  {//GEN-HEADEREND:event_weightSpinnerMousePressed
-    setSelectedAppearance();
-  }//GEN-LAST:event_weightSpinnerMousePressed
-
-private void weightSpinnerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_weightSpinnerStateChanged
-  {//GEN-HEADEREND:event_weightSpinnerStateChanged
-    cm.changedSinceLastSave(true);
-  }//GEN-LAST:event_weightSpinnerStateChanged
-
-private void weightLabelMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_weightLabelMousePressed
-  {//GEN-HEADEREND:event_weightLabelMousePressed
-    setSelectedAppearance();
-  }//GEN-LAST:event_weightLabelMousePressed
-
-private void weightLabelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_weightLabelMouseClicked
-  {//GEN-HEADEREND:event_weightLabelMouseClicked
-    setSelectedAppearance();
-    if( evt.getClickCount() == 2 )
-      {
-        expand();
-      }
-  }//GEN-LAST:event_weightLabelMouseClicked
       
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField chordPatternText;
     private javax.swing.JCheckBox includeBox;
     private javax.swing.JPanel includePlayPanel;
-    private javax.swing.JPanel itemPanel;
     private javax.swing.JLabel lengthTitle;
     private javax.swing.JLabel nameTitle;
     private javax.swing.JPanel northPanel;
@@ -819,7 +738,5 @@ private void weightLabelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:e
     private javax.swing.JLabel ruleLabel;
     private javax.swing.JPanel southPanel;
     private javax.swing.JPanel titlePanel;
-    private javax.swing.JLabel weightLabel;
-    private javax.swing.JSpinner weightSpinner;
     // End of variables declaration//GEN-END:variables
 }
