@@ -253,6 +253,7 @@ public class StyleEditor
         Point pt = evt.getPoint();
         int rowIndex = styleTable.rowAtPoint(pt);
         int colIndex = styleTable.columnAtPoint(pt);
+        //System.out.println("clicked row = " + rowIndex + ", col = " + colIndex);
         enterFromCell(rowIndex, colIndex, evt.isControlDown(), evt.isShiftDown());
 /*
         if( pianoRollTracking )
@@ -289,9 +290,10 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
         return;
       }
 
-    if( shiftDown && controlDown && colIndex > 1 )
+    if( shiftDown && controlDown && colIndex >= 1 )
       {
-        trackWithPianoRoll(colIndex - 1);
+        trackWithPianoRoll(colIndex);
+        return;
       }
 
     currentRow = rowIndex;
@@ -5824,41 +5826,28 @@ public void playBassColumn()
    * If there is no piano roll yet, create one.
    @param cols
    */
-  public void exportColumnToPianoRoll(StyleEditor styleEditor, int cols[])
+  public void exportColumnToPianoRoll(int cols[])
   {
-    
-    if( pianoRoll == null )
-      {
-      pianoRoll = new PianoRoll(this, getNewXlocation(), getNewYlocation());
-      }    
-    exportColumnToPianoRoll(styleEditor, cols, pianoRoll);
-        
-  }
-          
-  /**
-   * Extract the first selected column to the piano roll.
-   * If there is no column selected, return silently.
-   * If there is no piano roll yet, create one.
-   @param cols
-   */
-  public void exportColumnToPianoRoll(StyleEditor styleEditor, int cols[], PianoRoll pianoRoll)
-    {
     if( cols.length <= 0 )
       {
       return;
       }
     
-    int col = cols[0];
+    int col = cols[0];    
+    
+    if( pianoRoll == null )
+      {
+      pianoRoll = new PianoRoll(this, getNewXlocation(), getNewYlocation());
+      }
+    
     exportColumnToPianoRoll(col, pianoRoll);
-    }
-
+  }
 
   public void exportColumnToPianoRoll(int col, PianoRoll pianoRoll)
     {
-     
     int tableCol = col+1;
 
-    if( col < StyleTableModel.FIRST_PATTERN_COLUMN )
+    if( tableCol < StyleTableModel.FIRST_PATTERN_COLUMN )
     {
         return; // can't extract from row stubs
     }
@@ -5887,8 +5876,7 @@ public void playBassColumn()
       pianoRollRow += 1;
       }  
 
-    pianoRoll.setColumnIn(tableCol, styleName);
-    pianoRoll.setColumnOut(tableCol, styleName);
+    pianoRoll.setColumnsInOut(col, styleName);
 
     setExporting(false);
 
@@ -6054,7 +6042,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
         return;
       }
 
-    int tableCol = col + 1;       // for playing from pianoroll
+    int tableCol = col;       // for playing from pianoroll
 
     ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
 
@@ -6117,8 +6105,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
     // Final flush
     setCell(patternBuffer.toString(), styleEditorRow, tableCol, SILENT);
 
-    pianoRoll.setColumnIn(col, styleName);
-    pianoRoll.setColumnOut(col, styleName);
+    pianoRoll.setColumnOut(col);
   }
 
 /**
@@ -6665,7 +6652,7 @@ private void trackWithPianoRoll(int column)
 
 private void trackWithPianoRollCommon(int selectedColumns[])
 {
-  exportColumnToPianoRoll(this, selectedColumns);
+  exportColumnToPianoRoll(selectedColumns);
   pianoRollCheckBox.setSelected(true);
   pianoRollTracking = true;
 }
@@ -6687,12 +6674,7 @@ public void untrackWithPianoRoll()
     return getTableModel().getRowHeaders();
   }
 
-public void exportColumnToPianoRoll(PianoRoll pianoRoll)
-{
-  int selectedColumns[] = columnModel.getSelectedColumns();
-  exportColumnToPianoRoll(this, selectedColumns, pianoRoll);
-}
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField accompanimentSwingTextField;
     private javax.swing.JButton addColumnButton;

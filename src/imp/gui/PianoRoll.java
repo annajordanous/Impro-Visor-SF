@@ -154,7 +154,7 @@ private StyleEditor styleEditor;
   public int x;
   public int y;
 
-  private int currentColumn = 1;
+  private int styleEditorColumn = 1;
 
 
   private PianoRollBar selectedBar = null;
@@ -566,6 +566,7 @@ public void paint(Graphics g)
         playChordButton = new javax.swing.JButton();
         playPercussionButton = new javax.swing.JButton();
         loopToggleButton = new javax.swing.JToggleButton();
+        SaveEntireStyleButton = new javax.swing.JToggleButton();
         pianoRollMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -1061,8 +1062,9 @@ public void paint(Graphics g)
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
         getContentPane().add(cautionLabelForStylePatterns, gridBagConstraints);
 
-        rowTitlePanel.setMinimumSize(new java.awt.Dimension(240, 550));
-        rowTitlePanel.setPreferredSize(new java.awt.Dimension(240, 550));
+        rowTitlePanel.setMaximumSize(new java.awt.Dimension(220, 32767));
+        rowTitlePanel.setMinimumSize(new java.awt.Dimension(220, 550));
+        rowTitlePanel.setPreferredSize(new java.awt.Dimension(220, 550));
         rowTitlePanel.setLayout(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1265,7 +1267,7 @@ public void paint(Graphics g)
         gridBagConstraints.weightx = 0.4;
         getContentPane().add(pianoRollResolutionsPanel, gridBagConstraints);
 
-        importExportPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("From/To Style Editor  "));
+        importExportPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Import/Export From/To Style Editor  "));
         importExportPanel.setMinimumSize(new java.awt.Dimension(333, 82));
         importExportPanel.setPreferredSize(new java.awt.Dimension(333, 82));
         importExportPanel.setLayout(new java.awt.GridBagLayout());
@@ -1327,7 +1329,7 @@ public void paint(Graphics g)
         importExportPanel.add(exportToColumnTF, gridBagConstraints);
 
         importFromColumnComboBox.setMaximumRowCount(30);
-        importFromColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", " " }));
+        importFromColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", " " }));
         importFromColumnComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importFromColumnComboBoxActionPerformed(evt);
@@ -1357,7 +1359,7 @@ public void paint(Graphics g)
         gridBagConstraints.weightx = 0.1;
         getContentPane().add(importExportPanel, gridBagConstraints);
 
-        playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Play Pattern as Saved"));
+        playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Play Pattern as Saved", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         playPanel.setMinimumSize(new java.awt.Dimension(200, 82));
         playPanel.setPreferredSize(new java.awt.Dimension(200, 82));
         playPanel.setLayout(new java.awt.GridBagLayout());
@@ -1430,10 +1432,27 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(loopToggleButton, gridBagConstraints);
+
+        SaveEntireStyleButton.setBackground(DRUMSCOLOR);
+        SaveEntireStyleButton.setText("Save Entire Style");
+        SaveEntireStyleButton.setToolTipText("Saves this Column and the entire style to the file.");
+        SaveEntireStyleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        SaveEntireStyleButton.setOpaque(true);
+        SaveEntireStyleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveEntireStyleButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        getContentPane().add(SaveEntireStyleButton, gridBagConstraints);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -1689,30 +1708,29 @@ private void pasteBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
       }
 }//GEN-LAST:event_pasteBarActionPerformed
 
-
-public void setColumnIn(int col, String styleName)
+public void setColumnsInOut(int col, String styleName)
 {
-    setCurrentColumn(col, styleName);
+    setTitle("Piano-Roll Pattern Editor: Column " + col + " of " + styleName);
+    setColumnIn(col);
+    setColumnOut(col);
+    styleEditorColumn = col;
+}
+
+public void setColumnIn(int col)
+{
     importFromColumnTF.setText("" + col);
     importFromColumnComboBox.setSelectedIndex(col-1);
 }
 
-public void setColumnOut(int col, String styleName)
+public void setColumnOut(int col)
 {
-    setCurrentColumn(col, styleName);
-    exportToColumnTF.setText("" + col);
+  exportToColumnTF.setText("" + col);
     exportToColumnComboBox.setSelectedIndex(col-1);
 }
 
 
-public void setCurrentColumn(int col, String styleName)
-{
-    currentColumn = col + 1;
-    setTitle("Piano-Roll Pattern Editor: Column " + col + " of " + styleName);
-}
-
 /**
- * 
+ * Call to move a column From the Piano Roll to the Style Editor
  * @param evt
  */
 
@@ -1729,6 +1747,11 @@ private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         styleEditor.importColumnFromPianoRoll(this, col);
       }
 }//GEN-LAST:event_exportButtonActionPerformed
+
+/**
+ * Call to move a column From the Style Editor to the Piano Roll
+ * @param evt
+ */
 
 private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
     int minColumn = 1; // FIX
@@ -1747,15 +1770,15 @@ private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_importButtonActionPerformed
 
 private void playPercussionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPercussionButtonActionPerformed
-styleEditor.playPercussionColumn(currentColumn);
+styleEditor.playPercussionColumn(styleEditorColumn);
 }//GEN-LAST:event_playPercussionButtonActionPerformed
 
 private void playChordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordButtonActionPerformed
-styleEditor.playChordColumn(currentColumn);
+styleEditor.playChordColumn(styleEditorColumn);
 }//GEN-LAST:event_playChordButtonActionPerformed
 
 private void playBassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBassButtonActionPerformed
-styleEditor.playBassColumn(currentColumn);
+styleEditor.playBassColumn(styleEditorColumn);
 }//GEN-LAST:event_playBassButtonActionPerformed
 
 private void closePianoRollWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closePianoRollWindow
@@ -2087,6 +2110,11 @@ private void barVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN
     setBarVolume(value);
   }//GEN-LAST:event_barVolumeSliderStateChanged
 
+private void SaveEntireStyleButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SaveEntireStyleButtonActionPerformed
+  {//GEN-HEADEREND:event_SaveEntireStyleButtonActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_SaveEntireStyleButtonActionPerformed
+
 private void setBarVolume(int value)
   {
     if( selectedBar != null )
@@ -2125,6 +2153,7 @@ PianoRollPanel getPanel()
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton SaveEntireStyleButton;
     private javax.swing.ButtonGroup accidentalButtonGroup;
     private javax.swing.JPanel accidentalPanel;
     private javax.swing.JMenuItem addNewBar;
