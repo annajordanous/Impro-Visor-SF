@@ -549,7 +549,7 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
     canPlay();
-
+System.out.println("playing " + this);
     if( checkStatus() )
       {
         try

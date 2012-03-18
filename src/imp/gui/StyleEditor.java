@@ -6097,6 +6097,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
+          patternBuffer.append("V" + bar.getVolume() + " ");
           patternBuffer.append(bar.getText());
           patternBuffer.append(" ");
           nextSlot = bar.getEndSlot() + 1;
