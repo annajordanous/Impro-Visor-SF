@@ -32,8 +32,6 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 
 /**
@@ -190,7 +188,7 @@ public class ChordPatternDisplay
      * @return the selected value of the checkbox marked "include" in the upper right corner
      **/
     public boolean getIncludedStatus() {
-        return includeBox.isSelected();
+        return true;
     }
  
     //Mutators:
@@ -199,7 +197,7 @@ public class ChordPatternDisplay
      * Sets the number in the title to num.
      **/         
     public void setTitleNumber(int num) {
-        nameTitle.setText("Chord Pattern " + num + ":");
+
         titleNumber = num;
     }
 
@@ -218,14 +216,7 @@ public class ChordPatternDisplay
      * Changes the appearance of this ChordPatternDisplay to "deselected"
      **/
     public void setDeselectedAppearance() {
-        this.setBackground(new java.awt.Color(255, 255, 255));
-        this.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(91,181,137), 1, true));
-        northPanel.setBackground(new java.awt.Color(138,214,177));
-        includeBox.setBackground(new java.awt.Color(138,214,177));
-        nameTitle.setBackground(new java.awt.Color(138,214,177));
-        lengthTitle.setBackground(new java.awt.Color(138,214,177));
-        includePlayPanel.setBackground(new java.awt.Color(138,214,177));
-        titlePanel.setBackground(new java.awt.Color(138,214,177));
+
     }
     
    /**
@@ -233,27 +224,14 @@ public class ChordPatternDisplay
     **/
     public void setSelectedAppearance() {
         styleEditor.setSelectedChord(this);
-        this.northPanel.setBackground(new java.awt.Color(72,164,120));
-        northPanel.setBackground(new java.awt.Color(72,164,120));
-        includeBox.setBackground(new java.awt.Color(72,164,120));
-        nameTitle.setBackground(new java.awt.Color(72,164,120));
-        lengthTitle.setBackground(new java.awt.Color(72,164,120));
-        includePlayPanel.setBackground(new java.awt.Color(72,164,120));
-        titlePanel.setBackground(new java.awt.Color(72,164,120));
-        this.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, 
-                new java.awt.Color(164, 244, 198), new java.awt.Color(164, 244, 198), new java.awt.Color(2, 83, 42), 
-                new java.awt.Color(2, 83, 42)));         
+     
     }
     
     /**
      * Update the length title in the northern pane to reflect changes in text.
      **/    
     public void updateLength() {
-       int duration = (int) MIDIBeast.numBeatsInRule(getDisplayText());
-       if(duration == -1)
-            lengthTitle.setText("Unknown length");
-       else
-            lengthTitle.setText(((double) duration/MIDIBeast.beat) + " beats"); 
+
     }
    
     /**
@@ -347,25 +325,10 @@ public boolean checkStatus()
     **/   
     private void expand() {
         if(isExpanded == false) {
-            southPanel.setVisible(true);
-       //     this.setPreferredSize(expandedDimension);
-       //     this.setMaximumSize(expandedDimension);
-            
-            northPanel.setToolTipText("Double click to collapse pattern information.");
-            titlePanel.setToolTipText("Double click to collapse pattern information.");
-            lengthTitle.setToolTipText("Double click to collapse pattern information.");
-            includePlayPanel.setToolTipText("Double click to collapse pattern information.");
+
             isExpanded = true;
             
         } else {
-            southPanel.setVisible(false);
-      //      this.setPreferredSize(collapsedDimension);
-      //      this.setMaximumSize(collapsedDimension);
-
-            northPanel.setToolTipText("Double click to expand pattern information.");
-            titlePanel.setToolTipText("Double click to expand pattern information.");
-            lengthTitle.setToolTipText("Double click to expand pattern information.");
-            includePlayPanel.setToolTipText("Double click to expand pattern information.");
 
             isExpanded = false;
         }        
@@ -383,9 +346,6 @@ public boolean checkStatus()
         titlePanel = new javax.swing.JPanel();
         nameTitle = new javax.swing.JLabel();
         lengthTitle = new javax.swing.JLabel();
-        includePlayPanel = new javax.swing.JPanel();
-        playPatternBtn = new javax.swing.JButton();
-        includeBox = new javax.swing.JCheckBox();
         southPanel = new javax.swing.JPanel();
         patternPanel = new javax.swing.JPanel();
         ruleLabel = new javax.swing.JLabel();
@@ -458,51 +418,6 @@ public boolean checkStatus()
 
         northPanel.add(titlePanel, java.awt.BorderLayout.WEST);
 
-        includePlayPanel.setBackground(new java.awt.Color(138, 214, 177));
-        includePlayPanel.setToolTipText("Double click to expand pattern information.");
-
-        playPatternBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/play.png"))); // NOI18N
-        playPatternBtn.setToolTipText("Click to play pattern.");
-        playPatternBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        playPatternBtn.setIconTextGap(0);
-        playPatternBtn.setMaximumSize(new java.awt.Dimension(20, 20));
-        playPatternBtn.setMinimumSize(new java.awt.Dimension(20, 20));
-        playPatternBtn.setPreferredSize(new java.awt.Dimension(20, 20));
-        playPatternBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playPatternBtnActionPerformed(evt);
-            }
-        });
-        playPatternBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                playPatternBtnMousePressed(evt);
-            }
-        });
-        includePlayPanel.add(playPatternBtn);
-
-        includeBox.setBackground(new java.awt.Color(138, 214, 177));
-        includeBox.setSelected(true);
-        includeBox.setText("include");
-        includeBox.setToolTipText("Click to exclude this pattern from style.");
-        includeBox.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        includeBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        includeBox.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                includeBoxMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                includeBoxMousePressed(evt);
-            }
-        });
-        includeBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                includeBoxActionPerformed(evt);
-            }
-        });
-        includePlayPanel.add(includeBox);
-
-        northPanel.add(includePlayPanel, java.awt.BorderLayout.EAST);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -566,34 +481,6 @@ public boolean checkStatus()
         add(southPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void includeBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includeBoxMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_includeBoxMouseClicked
-
-    private void lengthTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lengthTitleMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_lengthTitleMouseClicked
-
-    private void nameTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTitleMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_nameTitleMouseClicked
-
-    private void titlePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titlePanelMouseClicked
-        setSelectedAppearance();
-        if(evt.getClickCount() == 2) {
-            expand();
-        }
-    }//GEN-LAST:event_titlePanelMouseClicked
-
     private void northPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMouseClicked
         setSelectedAppearance();
         if(evt.getClickCount() == 2) {
@@ -618,18 +505,6 @@ public boolean checkStatus()
         setSelectedAppearance();
     }//GEN-LAST:event_patternPanelMousePressed
 
-    private void playPatternBtnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playPatternBtnMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_playPatternBtnMousePressed
-
-    private void includeBoxMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_includeBoxMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_includeBoxMousePressed
-
-    private void nameTitleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameTitleMousePressed
-        setSelectedAppearance();
-    }//GEN-LAST:event_nameTitleMousePressed
-
     private void northPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_northPanelMousePressed
         setSelectedAppearance();
     }//GEN-LAST:event_northPanelMousePressed
@@ -643,12 +518,38 @@ public boolean checkStatus()
         cm.changedSinceLastSave(true);        
     }//GEN-LAST:event_chordPatternTextActionPerformed
 
-    private void playPatternBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnActionPerformed
- 
-      playMe();
-    }
+private void titlePanelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_titlePanelMouseClicked
+  {//GEN-HEADEREND:event_titlePanelMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_titlePanelMouseClicked
 
-    
+private void lengthTitleMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_lengthTitleMouseClicked
+  {//GEN-HEADEREND:event_lengthTitleMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_lengthTitleMouseClicked
+
+private void nameTitleMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_nameTitleMousePressed
+  {//GEN-HEADEREND:event_nameTitleMousePressed
+    setSelectedAppearance();
+  }//GEN-LAST:event_nameTitleMousePressed
+
+private void nameTitleMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_nameTitleMouseClicked
+  {//GEN-HEADEREND:event_nameTitleMouseClicked
+    setSelectedAppearance();
+    if( evt.getClickCount() == 2 )
+      {
+        expand();
+      }
+  }//GEN-LAST:event_nameTitleMouseClicked
+
 /**
  * If the pattern is legal, creates a style with one chordPart consisting of a
  * single chord and adds the entire pattern to that style. Uses the volume,
@@ -705,7 +606,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
         return false;
       }
     return true;
-    }//GEN-LAST:event_playPatternBtnActionPerformed
+  }
 
     /**
      * @return the actual text displpayed in the text field
@@ -714,27 +615,13 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
     public String toString() {
         return chordPatternText.getText();
     }
-
-    private void includeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_includeBoxActionPerformed
-        //do nothing.  Actually including or excluding from a style is handled in the save sections
-        setSelectedAppearance();
-        if(includeBox.isSelected()) {
-            includeBox.setToolTipText("Click to exclude this pattern from style.");
-        }
-        else {
-            includeBox.setToolTipText("Click to include this pattern from style.");
-        }
-    }//GEN-LAST:event_includeBoxActionPerformed
       
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField chordPatternText;
-    private javax.swing.JCheckBox includeBox;
-    private javax.swing.JPanel includePlayPanel;
     private javax.swing.JLabel lengthTitle;
     private javax.swing.JLabel nameTitle;
     private javax.swing.JPanel northPanel;
     private javax.swing.JPanel patternPanel;
-    private javax.swing.JButton playPatternBtn;
     private javax.swing.JLabel ruleLabel;
     private javax.swing.JPanel southPanel;
     private javax.swing.JPanel titlePanel;
