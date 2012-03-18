@@ -3085,7 +3085,6 @@ public void playBassColumn()
       try
         {
         ChordPatternDisplay curChord = (ChordPatternDisplay)allChords[i];
-        curChord.updateLength();
         }
       catch( ClassCastException e )
         {
