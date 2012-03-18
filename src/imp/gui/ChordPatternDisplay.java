@@ -148,7 +148,7 @@ public class ChordPatternDisplay
         buffer.append("(chord-pattern (rules " );
         buffer.append(getDisplayText());
         buffer.append(")(weight ");
-        buffer.append((Integer) weightSpinner.getValue());
+        buffer.append(getWeight());
         String trimmed = pushString.trim();
         if( !trimmed.equals("") )
           {
@@ -274,101 +274,73 @@ public class ChordPatternDisplay
     return unplayableColor;
     }
    
-   /**
-     * Checks the pattern for correctness for the given time signature.
-     * Changes icons, tooltips, and errorMsg to appropriate error feedback information.
-     * @return true if the pattern is a correctly formed and therefore playable by Impro-Visor. Returns false otherwise.
-     **/ 
-    public boolean checkStatus() {
-        String displayText = getDisplayText();
-	String rule = getPattern();
-        
-	try{
-            //Check for null rules.
-            if(displayText.equals("")){
-                String badText = "WARNING: Please enter a pattern.";
-                chordPatternText.setToolTipText(badText);
-                ruleLabel.setIcon(badRule);
-                ruleLabel.setToolTipText(badText);
-                nameTitle.setIcon(badPattern);
-                nameTitle.setToolTipText(unsafeMsgPattern);
-                errorMsg = "Chord pattern " + this.getTitleNumber() + " is empty";
-                return false;
-            }                
-            
-            StringTokenizer st = new StringTokenizer(displayText, " ");
-            ArrayList<String> tokenizedRule = new ArrayList<String>();
-            while (st.hasMoreTokens()) {
-                tokenizedRule.add(st.nextToken());
-            }
-            
-            //For every element, check for invalid pitch items, incorrect formatting of X-notations, and 
-            //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors
-            for(int i = 0; i < tokenizedRule.size(); i++){                            
-                if(!(java.lang.Character.toString(tokenizedRule.get(i).charAt(0)).equals("X")) && !(java.lang.Character.toString(tokenizedRule.get(i).charAt(0)).equals("R"))){
-                        String badText = "WARNING: The character " + java.lang.Character.toString(tokenizedRule.get(i).charAt(0)) + " is not valid.";
-                        chordPatternText.setToolTipText(badText);
-                        ruleLabel.setIcon(badRule);
-                        ruleLabel.setToolTipText(badText);
-                        nameTitle.setIcon(badPattern);
-                        nameTitle.setToolTipText(unsafeMsgPattern);
-                        errorMsg = "Chord pattern " + displayText + " contains an invalid character";
-                        return false;
-                }
-                try{
-                    Integer.parseInt(java.lang.Character.toString(tokenizedRule.get(i).charAt(1)));
-                    if(MIDIBeast.numBeatsInRule(displayText) == -1){
-                        String badText = "WARNING: This rule contains an unrecognized rhythm duration";
-                        chordPatternText.setToolTipText(badText);
-                        ruleLabel.setIcon(badRule);
-                        ruleLabel.setToolTipText(badText);
-                        nameTitle.setIcon(badPattern);
-                        nameTitle.setToolTipText(unsafeMsgPattern);
-                        errorMsg = "Chord pattern " + displayText + " has an unrecognized rhythm duration";
-                        return false;                                                
-                    }
-                }catch(NumberFormatException e){
-                    String badText = "WARNING: Expected a rhythm value.  Found the character " + java.lang.Character.toString(tokenizedRule.get(i).charAt(1)) + " instead!";
-                    chordPatternText.setToolTipText(badText);
-                    ruleLabel.setIcon(badRule);
-                    ruleLabel.setToolTipText(badText);
-                    nameTitle.setIcon(badPattern);
-                    nameTitle.setToolTipText(unsafeMsgPattern);
-                    errorMsg = "Chord pattern " + displayText + " is syntactically incorrect";
-                    return false;
-                }                                  
-           }                     
-            if(Style.makeStyle(Notate.parseListFromString(rule)) == null){
-                String badText = "WARNING: This rule is syntactically incorrect.";
-                chordPatternText.setToolTipText(badText);
-                ruleLabel.setIcon(badRule);
-                ruleLabel.setToolTipText(badText);
-                nameTitle.setIcon(badPattern);
-                nameTitle.setToolTipText(unsafeMsgPattern);
-                errorMsg = "Chord pattern " + displayText + " is syntactically incorrect";
-                return false;
-            }
-            else {
-                String goodText = "To preview this pattern, press the play button.";
-                chordPatternText.setToolTipText(goodText);
-                ruleLabel.setIcon(goodRule);
-                ruleLabel.setToolTipText(goodText);
-                nameTitle.setIcon(goodPattern);
-                nameTitle.setToolTipText(safeMsgPattern);  
-                errorMsg = safeMsgRule;
-                return true;
-            }
-	}catch(Exception e) {
-            String badText = "WARNING: Unknown error...unable to include rule in style.";
-            chordPatternText.setToolTipText(badText);
-            ruleLabel.setIcon(badRule);
-            ruleLabel.setToolTipText(badText);
-            nameTitle.setIcon(badPattern);
-            nameTitle.setToolTipText(unsafeMsgPattern);
-            errorMsg = "Chord pattern " + displayText + " is syntactically incorrect";
+/**
+ * Checks the pattern for correctness for the given time signature. Changes
+ * icons, tooltips, and errorMsg to appropriate error feedback information.
+ *
+ * @return true if the pattern is a correctly formed and therefore playable by
+ * Impro-Visor. Returns false otherwise.
+     *
+ */
+public boolean checkStatus()
+  {
+    String displayText = getDisplayText();
+
+    playable = true;
+
+    try
+      {
+        //Check for null rules.
+        if( displayText.equals("") )
+          {
             return false;
-	}
-    }
+          }
+
+        Polylist l = Notate.parseListFromString(displayText);
+        StringTokenizer tokenS = new StringTokenizer(displayText, " ");
+        ArrayList<String> tokenizedRule = new ArrayList<String>();
+
+        while( tokenS.hasMoreTokens() )
+          {
+            tokenizedRule.add(tokenS.nextToken());
+          }
+
+        //For every element, check for invalid "hit" or "rest" items, and 
+        //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors         
+        for( int i = 0; i < tokenizedRule.size(); i++ )
+          {
+            String charString = java.lang.Character.toString(tokenizedRule.get(i).charAt(0));
+            if( !(charString.equals("X"))
+                    && !(charString.equals("R"))
+                    && !(charString.equals("V")) )
+              {
+                cannotPlay();
+                return false;
+              }
+          }
+
+        if( Style.makeStyle(l) == null )
+          {
+            cannotPlay();
+            return false;
+          }
+        else if( MIDIBeast.numBeatsInRule(displayText) == -1 )
+          {
+            cannotPlay();
+            return false;
+          }
+        else
+          {
+            return true;
+          }
+      }
+    catch( Exception e )
+      {
+        cannotPlay();
+        return false;
+      }
+  }
+
     
     /**
     * Collapses and expands the pattern information pane.

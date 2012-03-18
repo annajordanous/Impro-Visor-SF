@@ -790,8 +790,9 @@ public void playBassColumn()
     }
 
   /**
-   * @return a correctly formmatted String with all legal chord patterns displayed that are marked "include"
-   * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
+   * @return a correctly formatted String with all legal chord patterns 
+   * displayed that are marked "include".  Saves a pattern's error message 
+   * to MIDIBeast if a pattern is incorrectly formatted.
    **/
   
   public String getChordPatterns()
