@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,7 +21,7 @@
 package imp.data;
 
 import imp.util.ErrorLog;
-import polya.*;
+import polya.Polylist;
 
 /**
  *
@@ -34,7 +33,7 @@ public class BassPatternElement
 public enum BassNoteType
 {
 
-BASS, PITCH, REPEAT, CHORD, SCALE, APPROACH, NEXT, REST, UNKNOWN
+BASS, PITCH, REPEAT, CHORD, SCALE, APPROACH, NEXT, REST, VOLUME, UNKNOWN
 
 };
 
@@ -158,10 +157,12 @@ public static BassPatternElement makeBassPatternElement(Object ob)
             return null; // should never happen
           }
         
+        String durationString = stringOb.substring(1);
+
         if( stringOb.startsWith("V") )
           {
             // volume
-            return null; // FIX!!!
+            return new BassPatternElement(BassNoteType.VOLUME, durationString);
           }
 
         BassNoteType noteType = getBassNoteType(stringOb.charAt(0));
@@ -173,8 +174,6 @@ public static BassPatternElement makeBassPatternElement(Object ob)
             return null;
 
           }
-        String durationString = stringOb.substring(1);
-
         if( durationString.equals("") )
           {
             ErrorLog.log(ErrorLog.WARNING,
@@ -353,6 +352,10 @@ static public BassNoteType getBassNoteType(char c)
         case 'R':
         case 'r':
             return BassNoteType.REST;
+
+        case 'V':
+        case 'v':
+            return BassNoteType.VOLUME;
 
         default:
             return BassNoteType.UNKNOWN;

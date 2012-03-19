@@ -5993,30 +5993,39 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
     int slots = 0;
 
     boolean patternExists = false;
+    
+    int volume = 127;
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
-        //System.out.println("ob = " + ob);
+        System.out.println("ob = " + ob);
 
         BassPatternElement element 
                 = BassPatternElement.makeBassPatternElement(ob);
 
         if( element != null )
-          {
+            {
             // null could be due to a reported error.
             if( element.nonRest() )
-              {
+            {
                 //System.out.println("element = " + element);
-
-                PianoRollBassBar bar = new PianoRollBassBar(slots, element,
-                                                            pianoRoll);
-
-                pianoRoll.addBar(bar);
-                patternExists = true;
-              }
+                if( element.getNoteType() == BassPatternElement.BassNoteType.VOLUME )
+                  {
+                    volume = Integer.parseInt(element.getDurationString());
+                  }
+                else
+                  {
+                  PianoRollBassBar bar = new PianoRollBassBar(slots, 
+                                                              element, 
+                                                              volume,
+                                                              pianoRoll);
+                  pianoRoll.addBar(bar);
+                  patternExists = true;
+                  }
+            }
 
             slots += element.getSlots();
-          }
+            }
       }
     if( patternExists )
       {
@@ -6052,13 +6061,19 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
     StringBuilder patternBuffer = new StringBuilder();
     int nextSlot = 0;
-
+    int volume = 127;
+    
     for( Iterator e = bars.iterator(); e.hasNext(); )
       {
-        
         PianoRollBar bar = (PianoRollBar) e.next();
 
         int barRow = bar.getRow();
+        
+        if( !(bar instanceof PianoRollEndBlock) && bar.getVolume() != volume )
+          {
+            volume = bar.getVolume();
+            patternBuffer.append("V" + volume + " ");
+          }
 
         for( ; barRow > lastPianoRollRow; lastPianoRollRow++ )
           {
@@ -6097,7 +6112,6 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
-          patternBuffer.append("V" + bar.getVolume() + " ");
           patternBuffer.append(bar.getText());
           patternBuffer.append(" ");
           nextSlot = bar.getEndSlot() + 1;

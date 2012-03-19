@@ -1564,7 +1564,7 @@ private void addNewBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     // Actually make the bar with the width and starting positions defined above
     PianoRollBar newBar = 
         barColor == BASSCOLOR ? //BassNoteType noteType, int degree, AccidentalType accidental, String durationString, DirectionType direction
-            new PianoRollBassBar(startSlot, new BassPatternElement(DEFAULT_DURATION_STRING), this)
+            new PianoRollBassBar(startSlot, new BassPatternElement(DEFAULT_DURATION_STRING), 127, this)
           : new PianoRollBar(row, startSlot, maxWidth, barColor, borderColor, grid, this);
     
     if(!pianoRollPanel.collides(newBar))  // if an added bar wouldn't collide 
@@ -1697,8 +1697,10 @@ private void pasteBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
       {
         if( row == BASS_ROW )
           {
+            PianoRollBassBar bassBar = (PianoRollBassBar)bar;
             addBarWithOptionalEndBlock(new PianoRollBassBar(startSlot,
-                                        ((PianoRollBassBar) bar).getElementCopy(),
+                                        bassBar.getElementCopy(),
+                                        bassBar.getVolume(),
                                         this));
           }
       // Don't paste if row does not correspond to instrument

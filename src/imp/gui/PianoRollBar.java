@@ -62,9 +62,21 @@ public class PianoRollBar
                       PianoRollGrid grid, 
                       PianoRoll pianoRoll)
     {
-    this(row, startSlot, numSlots, "X", barColor, borderColor, 127, grid, pianoRoll);
+    this(row, startSlot, numSlots, barColor, borderColor, 127, grid, pianoRoll);
     }
 
+  public PianoRollBar(int row, 
+                      int startSlot, 
+                      int numSlots, 
+                      Color barColor, 
+                      Color borderColor, 
+                      int volume,
+                      PianoRollGrid grid, 
+                      PianoRoll pianoRoll)
+    {
+    this(row, startSlot, numSlots, "X", barColor, borderColor, volume, grid, pianoRoll);
+    }
+  
   public PianoRollBar(int row, 
                       int startSlot, 
                       int numSlots, 

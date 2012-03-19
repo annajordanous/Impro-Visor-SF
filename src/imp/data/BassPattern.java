@@ -161,6 +161,7 @@ public class BassPattern
     while( L.nonEmpty() )
       {
       Object segment = L.first();
+System.out.println("segment = " + segment);
       L = L.rest();
       if( segment instanceof Polylist && ((Polylist)segment).nonEmpty() ) // e.g. (rules B4+8 (X 5 4) B4 A8)
         {
@@ -177,6 +178,7 @@ public class BassPattern
               while( item.nonEmpty() )
                 {
                 Object entry = item.first(); // e.g. B4+8
+System.out.println("raw rule = " + entry);
                 item = item.rest();          // e.g. ((X 5 4) B4 A8)
                 if( entry instanceof Polylist )
                   {
@@ -276,6 +278,7 @@ public class BassPattern
    */
   private void addRule(String rule, String durationString, String modifier)
     {
+System.out.println("addRule: rule = " + rule + ", duration = " + durationString + ", modifier = " + modifier);
     if( rule.length() == 2 )       // e.g. b5, #4
       {                             // get the rule, alter it
        String prefix = rule.substring(0,1);
@@ -312,8 +315,14 @@ public class BassPattern
     int n = durations.size();
     for( int i = 0; i < n; i++ )
       {
-      String durationString = durations.get(i);
-      duration += Duration.getDuration0(durationString);
+      if( rules.get(i) != VOLUME )
+        {
+        // Don't count volume in duration
+        String durationString = durations.get(i);
+System.out.println("getting duration of " + durationString);
+        duration += Duration.getDuration0(durationString);
+System.out.println("duration = " + duration);
+        }
       }
     return duration;
     }
@@ -346,15 +355,23 @@ public class BassPattern
     // indicator for directional placement
     int indicator = STAY;
     
+    int volume = 127;
+    
     while( i.hasNext() )
       {
       int rule = i.next();
       String duration = j.next();
       String modifier = m.next();
-      NoteSymbol pitch;
+      NoteSymbol pitch = null;
 
       switch( rule )
         {
+        case VOLUME:
+          {
+          volume = Integer.parseInt(duration);
+          break;
+          }
+            
         case PITCH: // Allow X for bass too, 
                     // as a convenience in cutting and pasting in editor
         case BASS:
@@ -853,4 +870,9 @@ public class BassPattern
     return rule;
     }
 
+  @Override
+  public String toString()
+    {
+      return "BassPattern rules = " + rules + ", durations = " + durations + ", totalDuration = " + getDuration();
+    }
   }

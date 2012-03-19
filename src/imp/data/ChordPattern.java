@@ -151,7 +151,7 @@ public static ChordPattern makeChordPattern(Polylist L)
         }
       }
     }
-  System.out.println("makeChordPattern on " + M + " returns " + cp);
+  //System.out.println("makeChordPattern on " + M + " returns " + cp);
   return cp;
   }
 

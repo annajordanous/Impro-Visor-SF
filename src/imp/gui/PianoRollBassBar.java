@@ -31,9 +31,9 @@ public class PianoRollBassBar extends PianoRollBar
 {
     private BassPatternElement element;
 
-    public PianoRollBassBar(int startSlot, BassPatternElement element, PianoRoll pianoRoll)
+    public PianoRollBassBar(int startSlot, BassPatternElement element, int volume, PianoRoll pianoRoll)
     {
-        super(PianoRoll.BASS_ROW, startSlot, element.getSlots(), PianoRoll.BASSCOLOR, PianoRoll.BARBORDERCOLOR, pianoRoll.getGrid(), pianoRoll);
+        super(PianoRoll.BASS_ROW, startSlot, element.getSlots(), PianoRoll.BASSCOLOR, PianoRoll.BARBORDERCOLOR, volume, pianoRoll.getGrid(), pianoRoll);
         this.element = element;
     }
 
@@ -43,7 +43,7 @@ public class PianoRollBassBar extends PianoRollBar
 
 public PianoRollBassBar(PianoRollBassBar bar)
     {
-        this(bar.startSlot, bar.element, bar.pianoRoll);
+        this(bar.startSlot, bar.element, bar.volume, bar.pianoRoll);
     }
 
 /**

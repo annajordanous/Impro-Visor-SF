@@ -28,8 +28,8 @@ import java.awt.Color;
 import polya.Polylist;
 
 /**
- * Creates a GUI that displays a bass pattern used in styles. Created Summer
- * 2007 @authors Brandy McMenamy; Robert Keller removed the GUI component
+ * Created Summer 2007 @authors Brandy McMenamy; 
+ * Robert Keller removed the GUI component
  */
 public class BassPatternDisplay extends PatternDisplay
         implements Constants, Playable, Displayable
@@ -43,12 +43,7 @@ private String safeMsgPattern = "This pattern is legal.  Click play button to pr
 private String unsafeMsgPattern = "This pattern contains an illegal rule.";
 //Contains a specialized error message for any error that just occurred.
 private String errorMsg = safeMsgRule;
-//The lowest weight allowed for a pattern.
-private int lowestWeight = 1;
-//The highest weight allowed for a pattern.
-private int highestWeight = 100;
-private int INITIAL_WEIGHT = 10;
-private float weight = INITIAL_WEIGHT;
+
 //The number added to the title of this object to help the user distinguish it from others.
 private int titleNumber = 0;
 
@@ -90,8 +85,6 @@ private void initialize(String rule, float weight)
       {
         MIDIBeast.invoke();
       }
-
-    initWeight();
 
     setWeight(weight);
     setDisplayText(rule);
@@ -210,17 +203,37 @@ public String getRuleError()
 
 /**
  * @return the beats in this pattern.
-     *
+ *
  */
+//public double getBeats()
+//  {
+//    double slots = MIDIBeast.numBeatsInBassRule(getDisplayText());
+//    if( slots < 0 )
+//      {
+//        return -1;
+//      }
+//    return slots / BEAT;
+//  }
+
+    public BassPattern getBassPattern()
+      {
+        Polylist list = (Polylist)Polylist.PolylistFromString(getPattern());
+        Polylist argument = ((Polylist)list.first()).rest();
+        BassPattern bassPattern = BassPattern.makeBassPattern(argument);
+System.out.println("pattern = " + getPattern() + ", argument = " + argument +", BassPattern = " + bassPattern);
+        return bassPattern;
+      }
+    
+public int getPatternLength()
+  {
+    return getBassPattern().getDuration(); //Duration.getDuration(getDisplayText());
+  }
+
 public double getBeats()
   {
-    double slots = MIDIBeast.numBeatsInBassRule(getDisplayText());
-    if( slots < 0 )
-      {
-        return -1;
-      }
-    return slots / BEAT;
+    return ((double)getPatternLength()) / BEAT;
   }
+
 
 /**
  * @return the selected value of the checkbox marked "include" in the upper
@@ -251,17 +264,6 @@ public void setDisplayText(String text)
   {
     bassPatternText = text;
     updateElements();
-  }
-
-
-
-/**
- * Creates the SpinnerModel used for the weight field.
-     *
- */
-private void initWeight()
-  {
-    weight = INITIAL_WEIGHT;
   }
 
 /**
