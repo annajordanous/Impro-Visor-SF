@@ -154,11 +154,17 @@ public class ChordPatternDisplay
      * @return the beats in this pattern.
      **/    
     public double getBeats() {
-     double slots = ChordPattern.makeChordPattern((Polylist)Polylist.PolylistFromString(getPattern()).rest()).getDuration();
+     double slots = getChordPattern().getDuration();
      return slots/BEAT; 
      }
     
-
+    public ChordPattern getChordPattern()
+      {
+        Polylist list = (Polylist)Polylist.PolylistFromString(getPattern());
+        ChordPattern chordPattern = ChordPattern.makeChordPattern(list.rest());
+        System.out.println("pattern = " + getPattern() + ", list = " + list +", ChordPattern = " + chordPattern);
+        return chordPattern;
+      }
     /**
      * @return the selected value of the checkbox marked "include" in the upper right corner
      **/

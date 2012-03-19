@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import polya.Polylist;
+import polya.PolylistBuffer;
 
 /**
  * Contains a rhythmic pattern for use in a bassline and methods needed to
@@ -65,7 +66,8 @@ public class BassPattern
    * array containing the types of rules
    */
   private static String ruleTypes[] = {"X", "1", "2", "3", "4", "5", "6", "7", 
-                                       "B", "C", "S", "A", "N", "R", "=" };
+                                       "B", "C", "S", "A", "N", "R", "=", "U",
+                                       "D", "V"};
 
   /**
    * indices into the ruleTypes array
@@ -89,6 +91,8 @@ public class BassPattern
   private static final int UP       = 15;
 
   private static final int DOWN     = 16;
+
+  private static final int VOLUME   = 17;
 
 
 
@@ -557,9 +561,25 @@ public class BassPattern
    */
   public static Object getRandomItem(Polylist L)
     {
+    L = filterOutStrings(L);
     return L.nth(gen.nextInt(L.length()));
     }
 
+  public static Polylist filterOutStrings(Polylist L)
+    {
+    PolylistBuffer buffer = new PolylistBuffer();
+    while( L.nonEmpty() )
+      {
+        Object ob = L.first();
+        if( !(ob instanceof String) )
+          {
+            buffer.append(ob);
+          }
+        L = L.rest();
+      }
+    
+    return buffer.toPolylist();
+    }
   /**
    * Takes a list of notes and an index interval and returns the
    * NoteSymbol at that index.

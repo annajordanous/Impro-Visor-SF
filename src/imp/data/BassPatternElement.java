@@ -157,6 +157,12 @@ public static BassPatternElement makeBassPatternElement(Object ob)
           {
             return null; // should never happen
           }
+        
+        if( stringOb.startsWith("V") )
+          {
+            // volume
+            return null; // FIX!!!
+          }
 
         BassNoteType noteType = getBassNoteType(stringOb.charAt(0));
 
