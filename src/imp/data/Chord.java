@@ -71,11 +71,6 @@ public class Chord implements Constants, Unit, Serializable {
     public static final String DEFAULT_NAME = NOCHORD;
 
     /**
-     * the default dynamic volume for the chord
-     */
-    public static final int DEFAULT_CHORD_DYNAMIC = DEFAULT_DYNAMIC-10;
-
-    /**
      * the ChordSymbol for this chord (which contains the name)
      */
 

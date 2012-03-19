@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -41,11 +40,6 @@ public interface Unit {
      * the default rhythm value for a Unit
      */
     public static final int DEFAULT_RHYTHM_VALUE = Constants.BEAT;
-
-    /**
-     * the default dynamic volume for a Unit
-     */
-    public static final int DEFAULT_DYNAMIC = 85;
 
     /**
      * Sets the Unit's rhythm value.

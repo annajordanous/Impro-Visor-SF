@@ -989,30 +989,30 @@ public class Style
    * Using the ChordPattern objects of this Style, sequences a chordline
    * of a specified duration onto the track.
    * @param seq       the Sequence that contains the Track
-   * @param track     the Track to put chord events on
+   * @param track     the Track to put currentChord events on
    * @param time      a long containing the time to start the chordline
-   * @param chord     a ChordSymbol containing the current chord to render
-   * @param lastChord a Polylist containing the previous chord
+   * @param currentChord     a ChordSymbol containing the currentChord currentChord to render
+   * @param previousChord a Polylist containing the previous currentChord
    * @param duration  an int containing the duration of the chordline
-   * @return a Polylist containing the last chord used in the chordline
+   * @return a Polylist containing the last currentChord used in the chordline
    */
 private Polylist makeChordline(
         Sequence seq,
         Track track,
         long time,
-        Chord chord,
-        Polylist lastChord,
+        Chord currentChord,
+        Polylist previousChord,
         int duration,
         int transposition,
         int endLimitIndex)
         throws InvalidMidiDataException
   {
-    // To trace sequencing info:
-    // System.out.println("makeChordLine: time = " + time + " duration = "
-    //    + duration + " endLimitIndex = " + endLimitIndex);
+    // To trace rendering info:
+    System.out.println("makeChordLine: time = " + time + " duration = "
+        + duration + " endLimitIndex = " + endLimitIndex);
 
     // Because we have no data structure to hold multi-voice parts, 
-    // we manually render polylists for each chord in this method.
+    // we manually render polylists for each currentChord in this method.
 
     // Select Bank 0 before program change. 
     // Not sure this is correct. Check before releasing!
@@ -1024,7 +1024,7 @@ private Polylist makeChordline(
                                                  chordInstrument, 
                                                  time));
 
-    ChordSymbol symbol = chord.getChordSymbol();
+    ChordSymbol symbol = currentChord.getChordSymbol();
 
     // The while loop is in case one pattern does not fill
     // the required duration. We may need multiple patterns.
@@ -1032,20 +1032,22 @@ private Polylist makeChordline(
     boolean beginning = true;
     while( duration > 0 && limitNotReached(time, endLimitIndex) )
       {
-        // Get the next pattern.
+        // Get a pattern for this chord.
+        // A pattern can contain volume information.
+        
         ChordPattern pattern = getPattern(chordPatterns, duration);
 
         Polylist c;
         if( pattern == null )
           {
             // if there's no pattern, and we haven't used a previous
-            // pattern on this chord, then just play the chord for the 
+            // pattern on this currentChord, then just play the currentChord for the 
             // duration
             if( !beginning )
               {
                 break;
               }
-            Polylist v = ChordPattern.findVoicing(symbol, lastChord, this);
+            Polylist v = ChordPattern.findVoicing(symbol, previousChord, this);
             MelodyPart dM = new MelodyPart();
             dM.addNote(new Rest(duration));
             duration = 0;
@@ -1055,7 +1057,7 @@ private Polylist makeChordline(
           {
             if( beginning )
               {
-               // Accommodate possible "pushing" of first chord.
+               // Accommodate possible "pushing" of first currentChord.
                // The amount is given in slots.
                int pushAmount = pattern.getPushAmount();
                int deltaT = pushAmount * seq.getResolution() / BEAT;
@@ -1074,60 +1076,82 @@ private Polylist makeChordline(
               }
             // we get a polylist containing the chords (each in a polylist)
             // and a "duration melody" which is a MelodyPart representing
-            // the durations of each chord
-            c = pattern.applyRules(symbol, lastChord);
+            // the durations of each currentChord
+            c = pattern.applyRules(symbol, previousChord);
           }
-
-        Polylist chords = (Polylist) c.first();
 
         // since we can't run the swing algorithm on a Polylist of 
         // NoteSymbols, we can use this "duration melody" which
         // corresponds to the chords in the above Polylist to find
         // the correct swung durations of the notes
 
+        // chords is a list of lists of notes, each outer list representing
+        // a chord voicing. Note that volume settings can be amongst these
+        // notes.
+        
+        // durationMelody is the pattern, consisting of rests of various
+        // durations.
+        
+        Polylist chords = (Polylist) c.first();
         MelodyPart durationMelody = (MelodyPart) c.second();
+        
         durationMelody.setSwing(accompanimentSwing);
         durationMelody.makeSwing();
 
         Part.PartIterator i = durationMelody.iterator();
         PolylistEnum e = chords.elements();
 
-        // Iterate over notes in voicing
+        // Iterate over notes in one voicing
         // The duration aspect of individual notes are ignored,
         // as that comes from the "duration melody".
         
+        int volume = 127;
+        
         while( e.hasMoreElements() )
           {
-            Object voicing = e.nextElement(); // A single chord's voicing
+            Object voicing = e.nextElement(); // A single currentChord's voicing
             
+            // Note that voicing should be a Polylist, and may contain volume
+                    
             Note note = (Note) i.next();      // Note from the "duration melody"
             
-            int dur = note.getRhythmValue();  // A single chord's duration
+            int dur = note.getRhythmValue();  // A single currentChord's duration
 
             long offTime = time + dur * seq.getResolution() / BEAT;
         
-            // render each NoteSymbol in the chord
+            // render each NoteSymbol in the currentChord
             if( voicing instanceof Polylist )
               {
                 Polylist v = (Polylist) voicing;
-                chord.setVoicing(v);
+                currentChord.setVoicing(v);
                 Polylist L = v;
                 
                 // All notes in the voicing are rendered at the same start time
                 
                 while( L.nonEmpty() )
                   {
-                    NoteSymbol ns = (NoteSymbol) L.first();
-                    note = ns.toNote();
-                    note.setRhythmValue(dur);
-                    //System.out.println(ns.toString() + " " + (dur/120.) + " at " + time/480.);
-
-                    note.render(seq, track, time, offTime, chordChannel, MAX_VOLUME, transposition);
-                    
+                    Object ob = L.first();
+                    if( ob instanceof NoteSymbol )
+                      {
+                      NoteSymbol ns = (NoteSymbol)ob;
+                      note = ns.toNote();
+                      note.setRhythmValue(dur);
+System.out.println("rendering note " + note + " with volume " + volume);
+                      note.render(seq, track, time, offTime, chordChannel, volume, transposition);
+                      }
+                    else if( ob instanceof String )
+                      {
+                        // Possibly volume information
+                        String st = (String) ob;
+                        if( st.startsWith("v") )
+                          {
+                            volume = Integer.parseInt(st.substring(1));
+                          }
+                      }
                     L = L.rest();
                   }
 
-                lastChord = v;
+                previousChord = v;
               }
 
             time = offTime;
@@ -1137,10 +1161,10 @@ private Polylist makeChordline(
       }
 
     // Un-comment this to see voicings
-    //System.out.println("voicing " + chord + " as " + lastChord);
+    //System.out.println("voicing " + currentChord + " as " + previousChord);
 
     //System.out.println("MIDI sequence = " + MidiFormatting.prettyFormat(sequence2polylist(seq)));
-    return lastChord;
+    return previousChord;
   }
 
 
@@ -1148,9 +1172,9 @@ private Polylist makeChordline(
    * Using the BassPattern objects of this Style, sequences a bassline
    * of a specified duration onto the track.
    * @param bassline  a Polylist of NoteSymbols makeing up the bassline so far
-   * @param chord     a ChordSymbol containing the current chord to render
+   * @param chord     a ChordSymbol containing the currentChord chord to render
    * @param nextChord a ChordSymbol containing the next chord
-   * @param lastNote  a NoteSymbol containing the previous note
+   * @param previousBassNote  a NoteSymbol containing the previous note
    * @param duration  an int containing the duration of the chordline
    * @return a Polylist of NoteSymbols to be sequenced
    */
@@ -1190,7 +1214,7 @@ private Polylist makeChordline(
         b = pattern.applyRules(chord, nextChord, lastNote);
         }
 
-      // set lastNote to the correct value
+      // set previousBassNote to the correct value
       Polylist d = b.reverse();
       while( d.nonEmpty() )
         {
@@ -1312,12 +1336,14 @@ private Polylist makeChordline(
     int index = startIndex;
     ChordSymbol chord;
     ChordSymbol nextChord;
-    ChordSymbol lastExtension = null;
-    NoteSymbol lastNote = bassBase;
-    Polylist lastChord = Polylist.nil; // rk 8/06/07 was: chordBase;
+    ChordSymbol previousExtension = null;
+    NoteSymbol previousBassNote = bassBase;
+    Polylist previousChord = Polylist.nil; // rk 8/06/07 was: chordBase;
 
     int numNotes = 1;
 
+    // Iterating over one ChordPart with i
+    
     while( (i.hasNext() || next != null) && (endLimitIndex == ENDSCORE || index <= endLimitIndex) )
       {
       if( next == null )
@@ -1326,9 +1352,9 @@ private Polylist makeChordline(
         next = (Chord)i.next();
         }
 
-      Chord current = next;
+      Chord currentChord = next;
 
-      int rhythmValue = current.getRhythmValue();
+      int rhythmValue = currentChord.getRhythmValue();
       if( startIndex > index )
         {
         rhythmValue -= startIndex - index;
@@ -1353,7 +1379,7 @@ private Polylist makeChordline(
 
       if( !hasStyle )
         {
-        time = current.render(seq, 
+        time = currentChord.render(seq, 
                               track, 
                               time, 
                               getChordChannel(), 
@@ -1362,7 +1388,7 @@ private Polylist makeChordline(
                               rhythmValue, 
                               transposition, 
                               endLimitIndex);
-        prev = current;
+        prev = currentChord;
         if( endIndex <= index )
           {
           break;
@@ -1373,7 +1399,7 @@ private Polylist makeChordline(
           }
         }
 
-      chord = current.getChordSymbol();
+      chord = currentChord.getChordSymbol();
       if( next == null || next.getChordSymbol().isNOCHORD() )
         {
         nextChord = chord;
@@ -1390,31 +1416,31 @@ private Polylist makeChordline(
           {
           if( gen.nextInt(3) == 0 )
             {
-            chord = extend(chord, lastExtension);
+            chord = extend(chord, previousExtension);
             }
-          lastExtension = chord;
+          previousExtension = chord;
           }
 
-        lastChord = makeChordline(seq, 
+        previousChord = makeChordline(seq, 
                                   track, 
                                   time,
-                                  current, 
-                                  lastChord, 
+                                  currentChord, 
+                                  previousChord, 
                                   rhythmValue, 
                                   transposition, 
                                   endLimitIndex);
         }
 
       // adjust bass octave between patterns only, not within
-      if( lastNote.higher(getBassHigh()) )
+      if( previousBassNote.higher(getBassHigh()) )
         {
-        lastNote = lastNote.transpose(-12);
-        //System.out.println("downward to " + lastNote);
+        previousBassNote = previousBassNote.transpose(-12);
+        //System.out.println("downward to " + previousBassNote);
         }
-      else if( getBassLow().higher(lastNote) )
+      else if( getBassLow().higher(previousBassNote) )
         {
-        lastNote = lastNote.transpose(12);
-        //System.out.println("upward to " + lastNote);
+        previousBassNote = previousBassNote.transpose(12);
+        //System.out.println("upward to " + previousBassNote);
         }
 
       if( !chord.isNOCHORD() && hasStyle )
@@ -1422,7 +1448,7 @@ private Polylist makeChordline(
         bassline = makeBassline(bassline,
                                 chord, 
                                 nextChord, 
-                                lastNote, 
+                                previousBassNote, 
                                 rhythmValue, 
                                 transposition);
         
@@ -1436,7 +1462,7 @@ private Polylist makeChordline(
             d = d.rest();
             if( !ns.isRest() )
               {
-              lastNote = ns;
+              previousBassNote = ns;
               break;
               }
             }
@@ -1501,9 +1527,9 @@ private Polylist makeChordline(
 
 
   /**
-   * Extend the current chord based on a previous chord.
+   * Extend the currentChord chord based on a previous chord.
    * @param chord     a ChordSymbol containing the chord to extend
-   * @param lastChord a ChordSymbol containing the previous chord
+   * @param previousChord a ChordSymbol containing the previous chord
    * @return a ChordSymbol containing the extended chord
    */
   public static ChordSymbol extend(ChordSymbol chord, ChordSymbol lastChord)

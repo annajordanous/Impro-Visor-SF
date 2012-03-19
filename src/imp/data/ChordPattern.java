@@ -55,12 +55,14 @@ private ArrayList<String> durations;
  */
 private static String ruleTypes[] =
   {
-  "X", "R"
+  "X", "R", "V"
   };
 // indices into the ruleTypes array
 private static final int STRIKE = 0;
 
 private static final int REST = 1;
+
+private static final int VOLUME = 2;
 
 /**
  * array containing ChordPattern keywords
@@ -181,13 +183,17 @@ public int getDuration()
  * Realizes the Pattern into a sequencable Polylist.
  * @param chord     the ChordSymbol to voice
  * @param lastChord a Polylist containing the last chord voicing
- * @return A Polylist that can be sequenced.  This Polylist has two
- *         elements.  The first element is another Polylist that contains
- *         a render of chord voicings (each of which is a Polylist of
- *         NoteSymbols.)  The second element is a MelodyPart containing
+ * @return A Polylist that can be sequenced.  This Polylist has two elements.
+ * 
+ *         The first element is another Polylist that contains
+ *         a sequence of chord voicings (each of which is a Polylist of
+ *         NoteSymbols, including possibly volume settings.)  
+ * 
+ *         The second element is a MelodyPart containing
  *         containing rests, each of which is a duration corresponding to
  *         the voicings.
  */
+
 public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
   {
   Iterator<Integer> i = rules.iterator();
@@ -203,6 +209,8 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
   MelodyPart durationMelody = new MelodyPart();
 
   PolylistBuffer chordLine = new PolylistBuffer();
+  
+  int volume = 127;
 
   while( i.hasNext() )
     {
@@ -210,13 +218,17 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
     String duration = j.next();
     Polylist voicing;
 
-    durationMelody.addNote(new Rest(Duration.getDuration(duration)));
-
+    // Process the symbols in the pattern into notes and rests,
+    // inserting volume indication when the volume changes.
+    
     switch( rule )
       {
       case STRIKE:
         {
-        voicing = findVoicing(chord, lastChord, style);
+        // Add the volume indicator to the front of the voicing.
+        durationMelody.addNote(new Rest(Duration.getDuration(duration)));
+         
+        voicing = findVoicing(chord, lastChord, style).cons("v" + volume);
         if( voicing == null )
           {
           break;
@@ -228,14 +240,22 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
         }
       case REST:
         {
+        durationMelody.addNote(new Rest(Duration.getDuration(duration)));
         chordLine.append(NoteSymbol.makeNoteSymbol("r" + duration));
+        break;
+        }
+          
+      case VOLUME:
+        {
+        volume = Integer.parseInt(duration);
         break;
         }
       }
     }
 
   Polylist result = Polylist.list(chordLine.toPolylist(), durationMelody);
-//System.out.println("rules = " + rules + ", durations = " + durations + ", result = " + result);
+
+  System.out.println("rules = " + rules + ", durations = " + durations + ", result = " + result);
   return result;
   }
 
