@@ -23,10 +23,7 @@ package imp.gui;
 import imp.Constants;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
-import imp.data.ChordPart;
-import imp.data.MIDIBeast;
-import imp.data.Score;
-import imp.data.Style;
+import imp.data.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -157,9 +154,7 @@ public class ChordPatternDisplay
      * @return the beats in this pattern.
      **/    
     public double getBeats() {
-     double slots = MIDIBeast.numBeatsInBassRule(getDisplayText());
-     if( slots < 0 )
-       return -1;
+     double slots = ChordPattern.makeChordPattern((Polylist)Polylist.PolylistFromString(getPattern()).rest()).getDuration();
      return slots/BEAT; 
      }
     
@@ -268,8 +263,8 @@ public boolean checkStatus()
           {
             String charString = java.lang.Character.toString(tokenizedRule.get(i).charAt(0));
             if( !(charString.equals("X"))
-                    && !(charString.equals("R"))
-                    && !(charString.equals("V")) )
+             && !(charString.equals("R"))
+             && !(charString.equals("V")) )
               {
                 cannotPlay("unknown character in pattern");
                 return false;

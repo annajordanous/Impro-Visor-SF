@@ -110,6 +110,8 @@ public static ChordPattern makeChordPattern(Polylist L)
     // The notation for push is the same as a duration.
     // For example, 8/3 is an eighth-note triplet
     
+  Polylist M = L;
+    
   ChordPattern cp = new ChordPattern();
 
   while( L.nonEmpty() )
@@ -149,7 +151,7 @@ public static ChordPattern makeChordPattern(Polylist L)
         }
       }
     }
-
+  System.out.println("makeChordPattern on " + M + " returns " + cp);
   return cp;
   }
 
@@ -168,14 +170,29 @@ private void addRule(String rule, String duration)
 
 
 @Override
+/**
+ * Get the duration, in slots
+ * @return 
+ */
 public int getDuration()
   {
-  int duration = 0;
-  for( int i = 0; i < durations.size(); i++ )
-    {
-    duration += Duration.getDuration(durations.get(i));
-    }
-  return duration;
+    int duration = 0;
+    
+    Iterator<Integer> r = rules.iterator();
+    Iterator<String> d = durations.iterator();
+    
+    while( r.hasNext() )
+      {
+        Integer rule = r.next();
+        String dur = d.next();
+        if( rule.intValue() == 0 || rule.intValue() == 1 )
+          {
+            // Ignore volume in computing duration
+            duration += Duration.getDuration(dur);
+          }
+      }
+    
+    return duration;
   }
 
 
@@ -199,6 +216,8 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
   Iterator<Integer> i = rules.iterator();
   Iterator<String> j = durations.iterator();
 
+  System.out.println("applyRules in: Chord = " + chord + ", rules = " + rules + ", durations = " + durations);
+
   String chordRoot = chord.getRootString();
   ChordForm chordForm = chord.getChordForm();
   Key key = chordForm.getKey(chordRoot);
@@ -216,8 +235,8 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
     {
     int rule = i.next();
     String duration = j.next();
-    Polylist voicing;
 
+    System.out.println("     rule = " + rule + ", duration = " + duration);
     // Process the symbols in the pattern into notes and rests,
     // inserting volume indication when the volume changes.
     
@@ -228,13 +247,13 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
         // Add the volume indicator to the front of the voicing.
         durationMelody.addNote(new Rest(Duration.getDuration(duration)));
          
-        voicing = findVoicing(chord, lastChord, style).cons("v" + volume);
+        Polylist voicing = findVoicing(chord, lastChord, style);
         if( voicing == null )
           {
           break;
           }
 
-        chordLine.append(voicing);
+        chordLine.append(voicing.cons("v" + volume));
         lastChord = voicing;
         break;
         }
@@ -255,7 +274,7 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
 
   Polylist result = Polylist.list(chordLine.toPolylist(), durationMelody);
 
-  System.out.println("rules = " + rules + ", durations = " + durations + ", result = " + result);
+  System.out.println("applyRules: Chord = " + chord + ", rules = " + rules + ", durations = " + durations + ", result = " + result);
   return result;
   }
 
@@ -766,5 +785,11 @@ public int getPushAmount()
 public String getPushString()
   {
     return pushString;
+  }
+
+@Override
+public String toString()
+  {
+    return "ChordPattern: " + rules + " " + durations;
   }
 }

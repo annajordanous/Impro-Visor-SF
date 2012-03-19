@@ -130,6 +130,8 @@ public int getDuration()
             case 'X':
             case 'R':
                 duration += Duration.getDuration(element.getSuffix());
+            case 'V':
+                // ignore volume
           }
       }
     

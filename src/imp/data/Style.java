@@ -1037,6 +1037,7 @@ private Polylist makeChordline(
         
         ChordPattern pattern = getPattern(chordPatterns, duration);
 
+    System.out.println("\nmakeChordLine on " + currentChord + " using ChordPattern " + pattern);
         Polylist c;
         if( pattern == null )
           {
@@ -1080,6 +1081,8 @@ private Polylist makeChordline(
             c = pattern.applyRules(symbol, previousChord);
           }
 
+        System.out.println("result of applying, c (chords, duration melody) = " + c);
+        
         // since we can't run the swing algorithm on a Polylist of 
         // NoteSymbols, we can use this "duration melody" which
         // corresponds to the chords in the above Polylist to find
@@ -1101,20 +1104,20 @@ private Polylist makeChordline(
         Part.PartIterator i = durationMelody.iterator();
         PolylistEnum e = chords.elements();
 
-        // Iterate over notes in one voicing
-        // The duration aspect of individual notes are ignored,
-        // as that comes from the "duration melody".
-        
+System.out.println("chords = " + chords);
+
         int volume = 127;
         
         while( e.hasMoreElements() )
           {
             Object voicing = e.nextElement(); // A single currentChord's voicing
-            
-            // Note that voicing should be a Polylist, and may contain volume
+
+             // Note that voicing should be a Polylist, and may contain volume
                     
             Note note = (Note) i.next();      // Note from the "duration melody"
             
+           System.out.println("voicing = " + voicing + ", note = " + note);
+
             int dur = note.getRhythmValue();  // A single currentChord's duration
 
             long offTime = time + dur * seq.getResolution() / BEAT;
