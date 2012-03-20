@@ -89,6 +89,44 @@ public class NoteSymbol implements Constants, Serializable {
      * 120      c                5
      * 127      g                5
      */
+    
+       /** constructor */
+
+  private NoteSymbol()
+    {
+    }
+
+
+   /** constructor */
+
+   public NoteSymbol(PitchClass pitchClass)
+     {
+     this(pitchClass, 0, BEAT/2);
+     } 
+
+
+   /** constructor */
+
+   public NoteSymbol(NoteSymbol that)
+     {
+     this(that.getPitchClass());
+     } 
+
+
+   /** constructor */
+
+   public NoteSymbol(PitchClass pitchClass, int octave, int duration)
+    {
+    this(pitchClass, octave, duration, defaultVolume);
+    }
+
+    public NoteSymbol(PitchClass pitchClass, int octave, int duration, int volume)
+    {
+    this.pitchClass = pitchClass;
+    this.duration = duration;
+    this.volume = volume;
+    establishStringRep(octave, duration);
+    }
 
     /**
      * Creates a NoteSymbol from a leadsheet String.
@@ -196,6 +234,12 @@ public class NoteSymbol implements Constants, Serializable {
      }
 
 
+    public int getVolume()
+      {
+        return volume;
+      }
+    
+    
     /**
      * Set the probability of this note symbol in its context.
      @param probability
@@ -455,44 +499,6 @@ public class NoteSymbol implements Constants, Serializable {
 //System.out.println("transposing NoteSymbol " + this + " by " + rise + " to " + newNoteSymbol);
 
     return newNoteSymbol;
-    }
-
-   /** constructor */
-
-  private NoteSymbol()
-    {
-    }
-
-
-   /** constructor */
-
-   public NoteSymbol(PitchClass pitchClass)
-     {
-     this(pitchClass, 0, BEAT/2);
-     } 
-
-
-   /** constructor */
-
-   public NoteSymbol(NoteSymbol that)
-     {
-     this(that.getPitchClass());
-     } 
-
-
-   /** constructor */
-
-   public NoteSymbol(PitchClass pitchClass, int octave, int duration)
-    {
-    this(pitchClass, octave, duration, defaultVolume);
-    }
-
-    public NoteSymbol(PitchClass pitchClass, int octave, int duration, int volume)
-    {
-    this.pitchClass = pitchClass;
-    this.duration = duration;
-    this.volume = volume;
-    establishStringRep(octave, duration);
     }
 
    public String toPitchString() {

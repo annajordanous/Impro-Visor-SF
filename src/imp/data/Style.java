@@ -1139,7 +1139,7 @@ System.out.println("chords = " + chords);
                       NoteSymbol ns = (NoteSymbol)ob;
                       note = ns.toNote();
                       note.setRhythmValue(dur);
-System.out.println("rendering note " + note + " with volume " + volume);
+System.out.println("rendering chord note " + note + " with volume " + volume);
                       note.render(seq, track, time, offTime, chordChannel, volume, transposition);
                       }
                     else if( ob instanceof String )
@@ -1247,7 +1247,7 @@ System.out.println("noteSymbols = " + b);
         bassline = bassline.allButLast();
         NoteSymbol ns = (NoteSymbol)b.first();
         int pDur = Duration.getDuration0(dur) + ns.toNote().getRhythmValue();
-        ns = new NoteSymbol(ns.getPitchClass(), ns.getOctave(), pDur);
+        ns = new NoteSymbol(ns.getPitchClass(), ns.getOctave(), pDur, ns.getVolume());
         b = b.rest().cons(ns);
         }
 
@@ -1447,7 +1447,7 @@ System.out.println("returned bassline = " + bassline);
         previousBassNote = previousBassNote.transpose(12);
         //System.out.println("upward to " + previousBassNote);
         }
-System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = " + hasStyle);
+//System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = " + hasStyle);
       if( !chord.isNOCHORD() && hasStyle )
         {
         bassline = makeBassline(bassline,
@@ -1511,22 +1511,8 @@ System.out.println("\nbassline = " + bassline);
       // add each note to our bassline melody
       while( bassline.nonEmpty() )
         {
-        Object ob = bassline.first();
-        if( ob instanceof NoteSymbol )
-          {
-          bassLine.addNote(((NoteSymbol)ob).toNote());
-          }
-        /*
-        else if( ob instanceof String )
-          {
-            String string = (String) ob;
-            if( string.startsWith("v") )
-              {
-                volume = Integer.parseInt(string.substring(1));
-              }
-          }
-          *
-        */
+        NoteSymbol noteSymbol = (NoteSymbol)bassline.first();
+        bassLine.addNote(noteSymbol.toNote());
         bassline = bassline.rest();
         }
 

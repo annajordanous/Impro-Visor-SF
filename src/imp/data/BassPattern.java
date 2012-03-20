@@ -178,7 +178,7 @@ System.out.println("segment = " + segment);
               while( item.nonEmpty() )
                 {
                 Object entry = item.first(); // e.g. B4+8
-System.out.println("\nraw rule = " + entry);
+//System.out.println("\nraw rule = " + entry);
                 item = item.rest();          // e.g. ((X 5 4) B4 A8)
                 if( entry instanceof Polylist )
                   {
@@ -277,7 +277,7 @@ System.out.println("\nraw rule = " + entry);
    */
   private void addRule(String rule, String durationString, String modifier)
     {
-System.out.println("\naddRule: rule = " + rule + ", duration = " + durationString + ", modifier = " + modifier);
+//System.out.println("\naddRule: rule = " + rule + ", duration = " + durationString + ", modifier = " + modifier);
     if( rule.length() == 2 )       // e.g. b5, #4
       {                             // get the rule, alter it
        String prefix = rule.substring(0,1);
@@ -305,7 +305,7 @@ System.out.println("\naddRule: rule = " + rule + ", duration = " + durationStrin
     }
     durations.add(durationString);
     modifiers.add(modifier);
-System.out.println("after addRule: rules = " + rules + ", durations = " + durations);
+//System.out.println("after addRule: rules = " + rules + ", durations = " + durations);
     }
 
   /**
@@ -348,7 +348,7 @@ System.out.println("after addRule: rules = " + rules + ", durations = " + durati
 
     // the returned bassline is a Polylist of NoteSymbols
     Polylist bassLine = Polylist.nil;
-System.out.println("in applyRules");
+//System.out.println("in applyRules");
     String chordRoot = chord.getRootString();
     ChordForm chordForm = chord.getChordForm();
     Key key = chordForm.getKey(chordRoot);
@@ -365,7 +365,7 @@ System.out.println("in applyRules");
       String duration = j.next();
       String modifier = m.next();
       NoteSymbol pitch = null;
-System.out.println("applying bass rule " + rule + ", duration = " + duration + ", modifier = " + modifier);
+//System.out.println("applying bass rule " + rule + ", duration = " + duration + ", modifier = " + modifier);
       switch( rule )
         {
         case VOLUME:
