@@ -218,7 +218,7 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
   
   lastChord = BassPattern.filterOutStrings(lastChord);
 
-  System.out.println("applyRules in: Chord = " + chord + ", rules = " + rules + ", durations = " + durations);
+  //System.out.println("applyRules in: Chord = " + chord + ", rules = " + rules + ", durations = " + durations);
 
   String chordRoot = chord.getRootString();
   ChordForm chordForm = chord.getChordForm();
@@ -238,7 +238,7 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
     int rule = i.next();
     String duration = j.next();
 
-    System.out.println("     rule = " + rule + ", duration = " + duration);
+    //System.out.println("     rule = " + rule + ", duration = " + duration);
     // Process the symbols in the pattern into notes and rests,
     // inserting volume indication when the volume changes.
     
@@ -281,7 +281,7 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
 
   Polylist result = Polylist.list(chordLine.toPolylist(), durationMelody);
 
-  System.out.println("applyRules: Chord = " + chord + ", rules = " + rules + ", durations = " + durations + ", result (chordline, durations) = " + result);
+  //System.out.println("applyRules: Chord = " + chord + ", rules = " + rules + ", durations = " + durations + ", result (chordline, durations) = " + result);
   return result;
   }
 

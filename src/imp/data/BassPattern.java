@@ -161,7 +161,7 @@ public class BassPattern
     while( L.nonEmpty() )
       {
       Object segment = L.first();
-System.out.println("segment = " + segment);
+//System.out.println("segment = " + segment);
       L = L.rest();
       if( segment instanceof Polylist && ((Polylist)segment).nonEmpty() ) // e.g. (rules B4+8 (X 5 4) B4 A8)
         {
