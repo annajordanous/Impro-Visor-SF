@@ -1190,10 +1190,10 @@ System.out.println("rendering note " + note + " with volume " + volume);
           int transposition)
           throws InvalidMidiDataException
     {
-
     while( duration > 0 )
       {
       BassPattern pattern = getPattern(bassPatterns, duration);
+System.out.println("makeBassLine pattern = " + pattern + ", duration = " + duration);
 
       // just skip this area if there is no appropriate pattern
       if( pattern == null )
@@ -1216,6 +1216,8 @@ System.out.println("rendering note " + note + " with volume " + volume);
         {
         b = pattern.applyRules(chord, nextChord, lastNote);
         }
+
+System.out.println("noteSymbols = " + b);
 
       // set previousBassNote to the correct value
       Polylist d = b.reverse();
@@ -1251,7 +1253,7 @@ System.out.println("rendering note " + note + " with volume " + volume);
 
       bassline = bassline.append(b);
       }
-
+System.out.println("returned bassline = " + bassline);
     return bassline;
     }
 
@@ -1445,7 +1447,7 @@ System.out.println("rendering note " + note + " with volume " + volume);
         previousBassNote = previousBassNote.transpose(12);
         //System.out.println("upward to " + previousBassNote);
         }
-
+System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = " + hasStyle);
       if( !chord.isNOCHORD() && hasStyle )
         {
         bassline = makeBassline(bassline,
@@ -1454,8 +1456,8 @@ System.out.println("rendering note " + note + " with volume " + volume);
                                 previousBassNote, 
                                 rhythmValue, 
                                 transposition);
+System.out.println("Finished making bassline = " + bassline);
         
-        //System.out.println("adding to bassline " + bassline);
         Polylist d = bassline.reverse();
         while( d.nonEmpty() )
           {
@@ -1488,6 +1490,7 @@ System.out.println("rendering note " + note + " with volume " + volume);
         break;
         }
       }
+System.out.println("\nbassline = " + bassline);
 
     if( bassline.nonEmpty() )
       {

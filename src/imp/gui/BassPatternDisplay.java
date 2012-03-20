@@ -104,6 +104,7 @@ public boolean playMe(double swingVal)
 
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
+System.out.println("\nTrying to play " + this);
     canPlay();
 
     if( checkStatus() )
@@ -114,7 +115,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             Polylist rule = Notate.parseListFromString(r);
             if( rule.isEmpty() )
               {
-                cannotPlay();
+                cannotPlay("Empty bass pattern");
                 return false;
               }
 
@@ -133,7 +134,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             ChordPart c = new ChordPart();
             boolean muteChord = styleEditor.isChordMuted();
             int duration = tempStyle.getBP().get(0).getDuration();
-
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
@@ -153,19 +153,18 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             MidiSynth synth = notate.getMidiSynth();
 
             s.setVolumes(synth);
-
             new PlayScoreCommand(s, 0, true, synth, notate.getTransposition()).execute();
             styleEditor.setStatus("OK");
           }
         catch( Exception e )
           {
-            cannotPlay();
+            cannotPlay("Exception " + e);
             return false;
           }
       }
     else
       {
-        cannotPlay();
+        cannotPlay("Status check failed");
         return false;
       }
     return true;
@@ -217,10 +216,10 @@ public String getRuleError()
 
     public BassPattern getBassPattern()
       {
-        Polylist list = (Polylist)Polylist.PolylistFromString(getPattern());
+        Polylist list = Polylist.PolylistFromString(getPattern());
         Polylist argument = ((Polylist)list.first()).rest();
         BassPattern bassPattern = BassPattern.makeBassPattern(argument);
-System.out.println("pattern = " + getPattern() + ", argument = " + argument +", BassPattern = " + bassPattern);
+//System.out.println("pattern = " + getPattern() + ", argument = " + argument +", BassPattern = " + bassPattern);
         return bassPattern;
       }
     
@@ -323,9 +322,6 @@ public Color getUnplayableColor()
 
 public boolean checkStatus()
   {
-    String displayText = getDisplayText();
-    String rule = getPattern();
-
     return true;
   }
 

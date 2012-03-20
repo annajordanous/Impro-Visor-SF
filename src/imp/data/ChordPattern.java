@@ -185,7 +185,7 @@ public int getDuration()
       {
         Integer rule = r.next();
         String dur = d.next();
-        if( rule.intValue() == 0 || rule.intValue() == 1 )
+        if( rule.intValue() != 2 )
           {
             // Ignore volume in computing duration
             duration += Duration.getDuration(dur);

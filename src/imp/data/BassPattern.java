@@ -178,7 +178,7 @@ System.out.println("segment = " + segment);
               while( item.nonEmpty() )
                 {
                 Object entry = item.first(); // e.g. B4+8
-System.out.println("raw rule = " + entry);
+System.out.println("\nraw rule = " + entry);
                 item = item.rest();          // e.g. ((X 5 4) B4 A8)
                 if( entry instanceof Polylist )
                   {
@@ -205,8 +205,7 @@ System.out.println("raw rule = " + entry);
                 else if( entry instanceof String )
                   {
                   String rule = (String)entry;
-
-                  // simply add +/- onto bp
+                  
                   if( rule.equals(NOTEPLUS) || rule.equals(NOTEMINUS) )
                     {
                     //System.out.println("entry is " + (String)entry);
@@ -278,7 +277,7 @@ System.out.println("raw rule = " + entry);
    */
   private void addRule(String rule, String durationString, String modifier)
     {
-System.out.println("addRule: rule = " + rule + ", duration = " + durationString + ", modifier = " + modifier);
+System.out.println("\naddRule: rule = " + rule + ", duration = " + durationString + ", modifier = " + modifier);
     if( rule.length() == 2 )       // e.g. b5, #4
       {                             // get the rule, alter it
        String prefix = rule.substring(0,1);
@@ -306,8 +305,13 @@ System.out.println("addRule: rule = " + rule + ", duration = " + durationString 
     }
     durations.add(durationString);
     modifiers.add(modifier);
+System.out.println("after addRule: rules = " + rules + ", durations = " + durations);
     }
 
+  /**
+   * Get duration in slots.
+   * @return 
+   */
   @Override
   public int getDuration()
     {
@@ -319,9 +323,7 @@ System.out.println("addRule: rule = " + rule + ", duration = " + durationString 
         {
         // Don't count volume in duration
         String durationString = durations.get(i);
-System.out.println("getting duration of " + durationString);
         duration += Duration.getDuration0(durationString);
-System.out.println("duration = " + duration);
         }
       }
     return duration;
@@ -346,7 +348,7 @@ System.out.println("duration = " + duration);
 
     // the returned bassline is a Polylist of NoteSymbols
     Polylist bassLine = Polylist.nil;
-
+System.out.println("in applyRules");
     String chordRoot = chord.getRootString();
     ChordForm chordForm = chord.getChordForm();
     Key key = chordForm.getKey(chordRoot);
@@ -363,7 +365,7 @@ System.out.println("duration = " + duration);
       String duration = j.next();
       String modifier = m.next();
       NoteSymbol pitch = null;
-
+System.out.println("applying bass rule " + rule + ", duration = " + duration + ", modifier = " + modifier);
       switch( rule )
         {
         case VOLUME:

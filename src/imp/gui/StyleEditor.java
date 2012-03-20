@@ -5982,7 +5982,7 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
   {
     Object contents = styleTable.getValueAt(styleEditorRow, col);
 
-    //System.out.println("Using pattern " + contents + ".");    
+    System.out.println("exporting pattern " + contents + ".");    
 
     StringReader patternReader = new StringReader(contents.toString());
 
@@ -5998,10 +5998,10 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
-        System.out.println("ob = " + ob);
-
         BassPatternElement element 
                 = BassPatternElement.makeBassPatternElement(ob);
+
+        System.out.println("export ob = " + ob +  ", bassPatternElement = " + element);
 
         if( element != null )
             {
@@ -6021,10 +6021,13 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
                                                               pianoRoll);
                   pianoRoll.addBar(bar);
                   patternExists = true;
+                  slots += element.getSlots();
                   }
             }
-
-            slots += element.getSlots();
+            else
+              {
+              slots += element.getSlots();
+              }
             }
       }
     if( patternExists )
@@ -6069,11 +6072,11 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
         int barRow = bar.getRow();
         
-        if( !(bar instanceof PianoRollEndBlock) && bar.getVolume() != volume )
-          {
-            volume = bar.getVolume();
-            patternBuffer.append("V" + volume + " ");
-          }
+//        if( !(bar instanceof PianoRollEndBlock) && bar.getVolume() != volume )
+//          {
+//            volume = bar.getVolume();
+//            patternBuffer.append("V" + volume + " ");
+//          }
 
         for( ; barRow > lastPianoRollRow; lastPianoRollRow++ )
           {
@@ -6112,6 +6115,13 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
+          if( bar.getVolume() != volume )
+            {
+            volume = bar.getVolume();
+            patternBuffer.append("V");
+            patternBuffer.append(volume);
+            patternBuffer.append(" ");
+            }
           patternBuffer.append(bar.getText());
           patternBuffer.append(" ");
           nextSlot = bar.getEndSlot() + 1;

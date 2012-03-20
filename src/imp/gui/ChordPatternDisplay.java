@@ -160,8 +160,10 @@ public class ChordPatternDisplay
     
     public ChordPattern getChordPattern()
       {
-        Polylist list = (Polylist)Polylist.PolylistFromString(getPattern());
-        ChordPattern chordPattern = ChordPattern.makeChordPattern(list.rest());
+        Polylist list = Polylist.PolylistFromString(getPattern());
+        Polylist argument = ((Polylist)list.first()).rest();
+        
+        ChordPattern chordPattern = ChordPattern.makeChordPattern(argument);
 //System.out.println("pattern = " + getPattern() + ", list = " + list +", ChordPattern = " + chordPattern);
         return chordPattern;
       }
