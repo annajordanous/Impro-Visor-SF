@@ -56,6 +56,15 @@ public class NoteSymbol implements Constants, Serializable {
      */
 
     private int duration;
+    
+    public static int defaultVolume = 127;
+    
+    /**
+     * Volume
+     */
+    
+    private int volume = defaultVolume;
+    
 
     private String stringRep;
 
@@ -132,7 +141,7 @@ public class NoteSymbol implements Constants, Serializable {
      boolean natural = true;
      boolean sharp = false;
 
-     StringBuffer noteBase = new StringBuffer();
+     StringBuilder noteBase = new StringBuilder();
 
      noteBase.append(c);
 
@@ -264,6 +273,7 @@ public class NoteSymbol implements Constants, Serializable {
         && enharmonic(other);
     }
 
+  @Override
   public boolean equals(Object other)
      {
      if( other instanceof NoteSymbol )
@@ -402,7 +412,7 @@ public class NoteSymbol implements Constants, Serializable {
 
   public Note toNote()
     {
-      return toNote(127);
+      return toNote(volume);
     }
   
   public Note toNote(int volume)
@@ -474,9 +484,14 @@ public class NoteSymbol implements Constants, Serializable {
 
    public NoteSymbol(PitchClass pitchClass, int octave, int duration)
     {
+    this(pitchClass, octave, duration, defaultVolume);
+    }
+
+    public NoteSymbol(PitchClass pitchClass, int octave, int duration, int volume)
+    {
     this.pitchClass = pitchClass;
     this.duration = duration;
-
+    this.volume = volume;
     establishStringRep(octave, duration);
     }
 

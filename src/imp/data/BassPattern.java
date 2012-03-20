@@ -561,9 +561,8 @@ if( pitch != null )
       NoteSymbol note = new NoteSymbol(
               pitch.getPitchClass(),
               pitch.getOctave(),
-              Duration.getDuration0(duration));
-
-      bassLine = bassLine.cons("v" + volume);
+              Duration.getDuration0(duration),
+              volume);
 
       bassLine = bassLine.cons(note);
       
@@ -644,8 +643,7 @@ if( pitch != null )
 
     Polylist L = Polylist.nil;
     L = L.cons(notes.nth((rootPos + interval) % notes.length()));
-    L =
-            L.cons(notes.nth((rootPos - interval + notes.length()) % notes.length()));
+    L = L.cons(notes.nth((rootPos - interval + notes.length()) % notes.length()));
 
     return L;
     }

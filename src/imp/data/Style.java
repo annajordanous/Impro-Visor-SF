@@ -1514,8 +1514,9 @@ System.out.println("\nbassline = " + bassline);
         Object ob = bassline.first();
         if( ob instanceof NoteSymbol )
           {
-          bassLine.addNote(((NoteSymbol)ob).toNote(volume));
+          bassLine.addNote(((NoteSymbol)ob).toNote());
           }
+        /*
         else if( ob instanceof String )
           {
             String string = (String) ob;
@@ -1524,6 +1525,8 @@ System.out.println("\nbassline = " + bassline);
                 volume = Integer.parseInt(string.substring(1));
               }
           }
+          *
+        */
         bassline = bassline.rest();
         }
 
