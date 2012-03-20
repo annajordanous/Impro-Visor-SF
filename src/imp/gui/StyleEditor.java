@@ -6001,7 +6001,7 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
         BassPatternElement element 
                 = BassPatternElement.makeBassPatternElement(ob);
 
-        System.out.println("export ob = " + ob +  ", bassPatternElement = " + element);
+        //System.out.println("export ob = " + ob +  ", bassPatternElement = " + element);
 
         if( element != null )
             {
@@ -6136,7 +6136,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
 /**
  * Create a pattern for immediate playing.
-
+ * This looks similar to other code.
  @param pianoRoll
  @param desiredRow
  @return
@@ -6144,7 +6144,6 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
 public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
   {
-
     ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
 
     int styleEditorRow = StyleTableModel.BASS_PATTERN_ROW;
@@ -6153,9 +6152,10 @@ public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
     StringBuilder patternBuffer = new StringBuilder();
     int nextSlot = 0;
 
+    int volume = 127;
+    
     for( Iterator e = bars.iterator(); e.hasNext(); )
       {
-
         PianoRollBar bar = (PianoRollBar) e.next();
 
         int barRow = bar.getRow();
@@ -6173,6 +6173,13 @@ public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
+          if( bar.getVolume() != volume )
+            {
+            volume = bar.getVolume();
+            patternBuffer.append("V");
+            patternBuffer.append(volume);
+            patternBuffer.append(" ");
+            }
           patternBuffer.append(bar.getText());
           patternBuffer.append(" ");
           nextSlot = bar.getEndSlot() + 1;
@@ -6229,6 +6236,8 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
     int row = 2;    // Start of percussion rows
 
+    int volume = 127;
+    
     for( Iterator e = bars.iterator(); e.hasNext(); )
       {
 
@@ -6274,6 +6283,13 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
 
             if( !(bar instanceof PianoRollEndBlock) )
               {
+                 if( bar.getVolume() != volume )
+                    {
+                    volume = bar.getVolume();
+                    patternBuffer.append("V");
+                    patternBuffer.append(volume);
+                    patternBuffer.append(" ");
+                    }
                 patternBuffer.append(bar.getText());
                 patternBuffer.append(" ");
                 nextSlot = bar.getEndSlot() + 1;
