@@ -370,7 +370,7 @@ System.out.println("applying bass rule " + rule + ", duration = " + duration + "
         {
         case VOLUME:
           {
-          //volume = Integer.parseInt(duration);
+          volume = Integer.parseInt(duration);
           break;
           }
             
@@ -563,8 +563,10 @@ if( pitch != null )
               pitch.getOctave(),
               Duration.getDuration0(duration));
 
-      bassLine = bassLine.cons(note);
+      bassLine = bassLine.cons("v" + volume);
 
+      bassLine = bassLine.cons(note);
+      
       if( !note.isRest() )
         {
         lastNote = note;

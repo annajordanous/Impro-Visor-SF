@@ -402,13 +402,20 @@ public class NoteSymbol implements Constants, Serializable {
 
   public Note toNote()
     {
+      return toNote(127);
+    }
+  
+  public Note toNote(int volume)
+    {
     if( pitchClass == null )
       {
       return Note.makeRest(duration);
       }
     else
       {
-      return PitchClass.makeNote(pitchClass, getMIDIoctave(), duration);
+      Note note = PitchClass.makeNote(pitchClass, getMIDIoctave(), duration);
+      note.setVolume(volume);
+      return note;
       }
     }
 

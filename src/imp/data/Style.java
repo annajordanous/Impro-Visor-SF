@@ -1229,7 +1229,7 @@ System.out.println("noteSymbols = " + b);
           d = d.rest();
           if( !ns.isRest() )
             {
-            lastNote = ns;
+            lastNote = ns;  // Not used ??
             break;
             }
           }
@@ -1457,7 +1457,6 @@ System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = 
                                 rhythmValue, 
                                 transposition);
 System.out.println("Finished making bassline = " + bassline);
-        
         Polylist d = bassline.reverse();
         while( d.nonEmpty() )
           {
@@ -1507,11 +1506,24 @@ System.out.println("\nbassline = " + bassline);
         bassline = bassline.replaceLast(ns);
         }
 
+      int volume = 127;
 
       // add each note to our bassline melody
       while( bassline.nonEmpty() )
         {
-        bassLine.addNote(((NoteSymbol)bassline.first()).toNote());
+        Object ob = bassline.first();
+        if( ob instanceof NoteSymbol )
+          {
+          bassLine.addNote(((NoteSymbol)ob).toNote(volume));
+          }
+        else if( ob instanceof String )
+          {
+            String string = (String) ob;
+            if( string.startsWith("v") )
+              {
+                volume = Integer.parseInt(string.substring(1));
+              }
+          }
         bassline = bassline.rest();
         }
 
