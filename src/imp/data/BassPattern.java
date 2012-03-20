@@ -370,7 +370,7 @@ System.out.println("applying bass rule " + rule + ", duration = " + duration + "
         {
         case VOLUME:
           {
-          volume = Integer.parseInt(duration);
+          //volume = Integer.parseInt(duration);
           break;
           }
             
@@ -532,7 +532,8 @@ System.out.println("applying bass rule " + rule + ", duration = " + duration + "
           }
 
         }
-
+if( pitch != null )
+  {
       if( !pitch.isRest() && rule != EQUAL )
         {
          // System.out.println("Original pitch is " + pitch.getMIDI() );
@@ -569,7 +570,7 @@ System.out.println("applying bass rule " + rule + ", duration = " + duration + "
         lastNote = note;
         }
      }
- 
+      }
     return bassLine.reverse();
     }
 
