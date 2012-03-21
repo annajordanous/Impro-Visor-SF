@@ -371,7 +371,7 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
             case VOLUME:
               {
                 melodySymbol = new VolumeSymbol(duration);
-                System.out.println("creating VolumeSymbol: " + melodySymbol);
+                //System.out.println("creating VolumeSymbol: " + melodySymbol);
                 break;
               }
 

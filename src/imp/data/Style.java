@@ -25,9 +25,7 @@ import imp.com.PlayScoreCommand;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Random;
+import java.util.*;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
@@ -493,7 +491,7 @@ public class Style
 
   /**
    * Sets the noStyle parameter.
-   * @param b         a boolean determining whether this is a "no-style"
+   * @param basslineSegment         a boolean determining whether this is a "no-style"
    */
   public void setNoStyle(boolean b)
     {
@@ -1104,7 +1102,7 @@ private Polylist makeChordline(
         Part.PartIterator i = durationMelody.iterator();
         PolylistEnum e = chords.elements();
 
-System.out.println("chord line = " + chords);
+        //System.out.println("chord line = " + chords);
 
         int volume = 127;
         
@@ -1177,15 +1175,15 @@ System.out.println("chord line = " + chords);
    * 
    * This method is called only once, from render in this same class.
    * 
-   * @param bassline  a Polylist of NoteSymbols making up the bassline so far
+   * @param bassline  a LinkedList of NoteSymbols making up the bassline so far
    * @param chord     a ChordSymbol containing the currentChord chord to render
    * @param nextChord a ChordSymbol containing the next chord
    * @param previousBassNote  a NoteSymbol containing the previous note
    * @param duration  an int containing the duration of the bassline
    * @return a Polylist of NoteSymbols to be sequenced
    */
-  private Polylist makeBassline(
-          Polylist bassline,
+  private void addToBassline(
+          LinkedList bassline,
           ChordSymbol chord, 
           ChordSymbol nextChord,
           NoteSymbol previousNote, 
@@ -1193,6 +1191,7 @@ System.out.println("chord line = " + chords);
           int transposition)
           throws InvalidMidiDataException
     {
+    //System.out.println("addToBassline " + chord);
     while( duration > 0 )
       {
       BassPattern pattern = getPattern(bassPatterns, duration);
@@ -1202,7 +1201,7 @@ System.out.println("chord line = " + chords);
       if( pattern == null )
         {
         Rest r = new Rest(duration);
-        bassline = bassline.addToEnd(NoteSymbol.makeNoteSymbol(r.toLeadsheet()));
+        bassline.add(NoteSymbol.makeNoteSymbol(r.toLeadsheet()));
         break;
         }
 
@@ -1210,21 +1209,21 @@ System.out.println("chord line = " + chords);
 
       // we get a Polylist of NoteSymbols back from the applyRules 
       // function
-      Polylist b;
+      Polylist basslineSegment;
       if( duration > 0 )
         {
-        b = pattern.applyRules(chord, chord, previousNote);
+        basslineSegment = pattern.applyRules(chord, chord, previousNote);
         }
       else
         {
-        b = pattern.applyRules(chord, nextChord, previousNote);
+        basslineSegment = pattern.applyRules(chord, nextChord, previousNote);
         }
 
-//System.out.println("bassline noteSymbols = " + b);
+      // System.out.println("basslineSegment = " + basslineSegment);
 
       // set previousNote to the correct value
       
-      Polylist d = b.reverse();
+      Polylist d = basslineSegment.reverse();
       while( d.nonEmpty() )
         {
         if( d.first() instanceof NoteSymbol )
@@ -1242,23 +1241,28 @@ System.out.println("chord line = " + chords);
 
       // What does this do?
       
-      Object lastOb = bassline.last();
-      
-      if( bassline.nonEmpty() && lastOb instanceof Polylist )
+      if( !bassline.isEmpty() )
         {
-        Polylist L = (Polylist)lastOb;
-        String dur = (String)L.first();
-        bassline = bassline.allButLast();
-        NoteSymbol ns = (NoteSymbol)b.first();
-        int pDur = Duration.getDuration0(dur) + ns.toNote().getRhythmValue();
-        ns = new NoteSymbol(ns.getPitchClass(), ns.getOctave(), pDur, ns.getVolume());
-        b = b.rest().cons(ns);
+        Object lastOb = bassline.getLast();
+        if( lastOb instanceof Polylist )
+          {
+            Polylist L = (Polylist)lastOb;
+            String dur = (String)L.first();
+            bassline.removeLast();
+            NoteSymbol ns = (NoteSymbol)basslineSegment.first();
+            int pDur = Duration.getDuration0(dur) + ns.toNote().getRhythmValue();
+            ns = new NoteSymbol(ns.getPitchClass(), ns.getOctave(), pDur, ns.getVolume());
+            basslineSegment = basslineSegment.rest().cons(ns);
+          }
         }
+      //System.out.println("new basslineSegment = " + basslineSegment);
 
-      bassline = bassline.append(b);
+      while( basslineSegment.nonEmpty() )
+        {
+          bassline.add(basslineSegment.first() );
+          basslineSegment = basslineSegment.rest();
+        }
       }
-//System.out.println("returned bassline from makeBassline = " + bassline);
-    return bassline;
     }
 
   /**
@@ -1341,7 +1345,7 @@ public long render(Sequence seq,
     Chord next = null;
     Chord prev = null;
 
-    Polylist bassline = Polylist.nil;
+    LinkedList bassline = new LinkedList();
 
     int index = startIndex;
     ChordSymbol chord;
@@ -1453,42 +1457,35 @@ public long render(Sequence seq,
             previousBassNote = previousBassNote.transpose(12);
             //System.out.println("upward to " + previousBassNote);
           }
-//System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = " + hasStyle);
+        
+//System.out.println("\nAbout to add to bassline, chord = " + chord + ", hasStyle = " + hasStyle);
         if( !chord.isNOCHORD() && hasStyle )
           {
-            bassline = makeBassline(bassline,
+                       addToBassline(bassline,
                                     chord,
                                     nextChord,
                                     previousBassNote,
                                     rhythmValue,
                                     transposition);
-            System.out.println("Finished making bassline = " + bassline);
 
             // Sets previousBassNote to last NoteSymbol in bassline
-            
-            Polylist d = bassline.reverse();
-            while( d.nonEmpty() )
+ 
+            for( Iterator it = bassline.descendingIterator(); it.hasNext(); )
               {
-                Object ob = d.first();
-                if( ob instanceof NoteSymbol )
+                Object ob = it.next();
+                if( ob instanceof NoteSymbol)
                   {
-                    NoteSymbol ns = (NoteSymbol) d.first();
-
-                    if( !ns.isRest() )
-                      {
-                        previousBassNote = ns;
-                        break;
-                      }
+                    previousBassNote = (NoteSymbol)ob;
+                    break;
                   }
-
-                d = d.rest();
               }
+
           }
         else
           {
             Rest r = new Rest(rhythmValue);
             NoteSymbol rest = NoteSymbol.makeNoteSymbol(r.toLeadsheet());
-            bassline = bassline.addToEnd(rest);
+            bassline.add(rest);
           }
 
         time += rhythmValue * seq.getResolution() / BEAT;
@@ -1501,27 +1498,27 @@ public long render(Sequence seq,
 
     // Finished iterating over ChordPart
     
-    if( bassline.nonEmpty() )
+    if( !bassline.isEmpty() )
       {
-        //System.out.println("\nbassline prior to creating bassMelody = " + bassline);
+        System.out.println("\nbassline prior to creating bassMelody = " + bassline);
 
         MelodyPart bassMelody = new MelodyPart();
 
-        Object last = bassline.last(); // was reverse().first();
+        Object last = bassline.getLast();
 
         if( last instanceof Polylist )
           {
             Polylist L = (Polylist) last;
             NoteSymbol ns = (NoteSymbol) L.second();
-            bassline = bassline.replaceLast(ns);
+            bassline.removeLast();
+            bassline.add(ns);
           }
 
         int volume = 127;
 
         // add each note to our bassline melody
-        while( bassline.nonEmpty() )
+        for( Object ob: bassline )
           {
-            Object ob = bassline.first();
             if( ob instanceof NoteSymbol )
               {
                 NoteSymbol noteSymbol = (NoteSymbol) ob;
@@ -1537,7 +1534,6 @@ public long render(Sequence seq,
               {
                 assert false;
               }
-            bassline = bassline.rest();
           }
 
         bassMelody.setSwing(accompanimentSwing);
