@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,9 +45,17 @@ public static int defaultDrumPatternDuration = 480;
 
 private ArrayList<DrumRuleRep> drums;
 
+/**
+ * Symbols used in drum patterns
+ */
+
+public static final char DRUM_HIT    = 'X';
+public static final char DRUM_REST   = 'R';
+public static final char DRUM_VOLUME = 'V';
+
 
 /**
- * array containing the types of rules
+ * array containing the types of rules as Strings
  */
 
 public static final String ruleTypes[] =
@@ -190,9 +198,9 @@ public int getDuration()
  * @return a Polylist of MelodyPart objects
  */
     
-public Polylist applyRules()
+public DrumLine applyRules()
   {
-    Polylist drumline = Polylist.nil;
+    DrumLine drumline = new DrumLine();
 
     for( DrumRuleRep rep: drums )
       {
@@ -205,24 +213,24 @@ public Polylist applyRules()
           {
             switch( element.getType() )
               {
-                case 'X':
+                case DRUM_HIT:
                   {
                    int dur = Duration.getDuration(element.getSuffix());
                    Note note = new Note(pitch, dur);
                    note.setVolume(localVolume);
                    m.addNote(note);
                    
-                   //System.out.println("drum " + pitch + " vol = " + localVolume + " dur = " + dur);
                    break;
                   }
-                case 'R':
+                    
+                case DRUM_REST:
                   {
                    int dur = Duration.getDuration(element.getSuffix());
                    m.addNote(new Rest(dur));
                    break;
                   }
                     
-                case 'V':
+                case DRUM_VOLUME:
                   {
                    localVolume = Integer.parseInt(element.getSuffix());
                    break;
@@ -230,7 +238,8 @@ public Polylist applyRules()
               }
             
           }
-        drumline = drumline.cons(m);
+        
+        drumline.add(m);
       }
 
     return drumline;

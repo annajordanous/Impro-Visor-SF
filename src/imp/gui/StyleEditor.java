@@ -632,86 +632,6 @@ public void playBassColumn()
       }
     }
 
-  /**
-   * @param selectMe the BassPatternDispaly that needs to notify the
-   * Style GUI that it has been selected.
-   **/
-  
-  public void setSelectedBass(BassPatternDisplay selectMe)
-    {
-    lastSelectedBass = curSelectedBass;
-    curSelectedBass = selectMe;
-    if( lastSelectedBass != null && lastSelectedBass != curSelectedBass )
-      {
-      unselectBass(lastSelectedBass);
-      }
-    }
-
-  /**
-   * @param selectMe the ChordPatternDisplay that needs to notify the
-   * Style GUI that it has been selected.
-   **/
-  
-  public void setSelectedChord(ChordPatternDisplay selectMe)
-    {
-    lastSelectedChord = curSelectedChord;
-    curSelectedChord = selectMe;
-    if( lastSelectedChord != null && lastSelectedChord != curSelectedChord )
-      {
-      unselectChord(lastSelectedChord);
-      }
-    }
-
-  /**
-   * @param selectMe the DrumPatternDisplay that needs to notify the
-   * Style GUI that it has been selected.
-   **/
-  
-  public void setSelectedDrum(DrumPatternDisplay selectMe)
-    {
-    lastSelectedDrum = curSelectedDrum;
-    curSelectedDrum = selectMe;
-    if( lastSelectedDrum != null && lastSelectedDrum != curSelectedDrum )
-      {
-      unselectDrum(lastSelectedDrum);
-      }
-    }
-
-  /**
-   * Informs the currently selected BassPatternDisplay, if it exists, to change its appearance to deselected.
-   **/
-  
-  private void unselectBass(BassPatternDisplay deselectMe)
-    {
-    if( deselectMe != null )
-      {
-      deselectMe.setDeselectedAppearance();
-      }
-    }
-
-  /**
-   * Informs the currently selected ChordPatternDisplay, if it exists, to change its appearance to deselected.
-   **/
-  
-  private void unselectChord(ChordPatternDisplay deselectMe)
-    {
-    if( deselectMe != null )
-      {
-      deselectMe.setDeselectedAppearance();
-      }
-    }
-
-  /**
-   * Informs the currently selected DrumPatternDisplay, if it exists, to change its appearance to deselected.
-   **/
-  
-  private void unselectDrum(DrumPatternDisplay deselectMe)
-    {
-    if( deselectMe != null )
-      {
-      deselectMe.setDeselectedAppearance();
-      }
-    }
 
   /**
    * @return a correctly formmatted String with all legal bass patterns displayed that are marked "include"
@@ -739,7 +659,7 @@ public void playBassColumn()
               }
             else
               {
-              MIDIBeast.addSaveError(b.getRuleError() + " and was not included.");
+              //MIDIBeast.addSaveError(b.getRuleError() + " and was not included.");
               }
             }
           }
@@ -816,7 +736,7 @@ public void playBassColumn()
               }
             else
               {
-              MIDIBeast.addSaveError(b.getRuleError() + " and was not included.");
+              //MIDIBeast.addSaveError(b.getRuleError() + " and was not included.");
               }
             }
           }
@@ -3044,54 +2964,7 @@ public void playBassColumn()
     return isDrumCell(row, col) || isBassCell(row, col) || isChordCell(row, col);
     }
 
-  /**
-   * Update the bass, drums, and chord titles to reflect the length shown in the time signature field of the GUI
-   **/
-  public void updateAllLengths()
-    {
-    //Bass
-    Component[] allBass = bassHolderPane.getComponents();
-    for( int i = 0; i < allBass.length; i++ )
-      {
-      try
-        {
-        BassPatternDisplay curBass = (BassPatternDisplay)allBass[i];
-        curBass.updateLength();
-        }
-      catch( ClassCastException e )
-        {
-        }
-      }
-
-
-    //Drums
-    Component[] allDrums = drumHolderPane.getComponents();
-    //  drumHo
-    for( int i = 0; i < allDrums.length; i++ )
-      {
-      try
-        {
-        DrumPatternDisplay curDrum = (DrumPatternDisplay)allDrums[i];
-
-        }
-      catch( ClassCastException e )
-        {
-        }
-      }
-
-    //Chords
-    Component[] allChords = chordHolderPane.getComponents();
-    for( int i = 0; i < allChords.length; i++ )
-      {
-      try
-        {
-        ChordPatternDisplay curChord = (ChordPatternDisplay)allChords[i];
-        }
-      catch( ClassCastException e )
-        {
-        }
-      }
-    }
+ 
 
   /**
    * Asks user for a .mid and .ls file, then runs the generating classes for bass, drums, and chords
@@ -5682,7 +5555,6 @@ public void playBassColumn()
         {
         int denominator = Integer.parseInt(denomField.getText());
         MIDIBeast.changeDenomSig(denominator);
-        updateAllLengths();
         }
       catch( NumberFormatException e )
         {
@@ -5694,7 +5566,6 @@ public void playBassColumn()
         {
         int numerator = Integer.parseInt(numField.getText());
         MIDIBeast.changeNumSig(numerator);
-        updateAllLengths();
         }
       catch( NumberFormatException e )
         {

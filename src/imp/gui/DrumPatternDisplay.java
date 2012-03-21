@@ -33,32 +33,16 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.ImageIcon;
 import polya.Polylist;
 
 /**
- * Created Summer 2007 @authors Brandy McMenamy, Sayuri Soejima
+ * Created Summer 2007 @authors Brandy McMenamy, Sayuri Soejima.
+ * Robert Keller removed unused GUI component
  */
 public class DrumPatternDisplay
         extends PatternDisplay
         implements Playable, Constants
 {
-
-//The image next to the pattern text if the pattern is legal
-private static ImageIcon goodRule;
-//The image next to the pattern text if the pattern is illegal
-private static ImageIcon badRule;
-//Various standard messages displayed in tooltips and error dialogs.
-private String safeMsgRule = "This rule is legal.  Click play button to preview it.";
-private String safeMsgPattern = "This pattern is legal.  Click play button to preview it.";
-private String unsafeMsgPattern = "This pattern contains an illegal rule.";
-//Contains a specialized error message for any error that just occurred.
-private String errorMsg = safeMsgRule;
-private String unequalBeatsMsg = "All drum rules must have the same number of beats";
-//The lowest weight allowed for a pattern.
-private int lowestWeight = 1;
-//The highest weight allowed for a pattern.
-private int highestWeight = 100;
 //The number added to the title of this object to help the user distinguish it from others.
 private int titleNumber = 0;
 //The dimension to use when the pane is expanded.  By default, it is the size of the entire panel
@@ -187,18 +171,6 @@ public void setDisplayText(String string)
   {
   }
 
-/**
- * @return the most recent error message that occurred for the entire pattern
- *
- */
-public String getPatternError()
-  {
-    /*
-     * Disable if(errorMsg.equals(unequalBeatsMsg)) errorMsg = "Drum pattern " +
-     * this.getTitleNumber() + " contains an illegal rule";
-     */
-    return errorMsg;
-  }
 
 /**
  * @return the number of components in the drumRuleHolder pane (this is where
@@ -327,39 +299,6 @@ public int getRuleCount()
 
 
 /**
- * Recalculate the length of the pattern text given the time signuatre. Displays
- * "unknown" if the pattern is incorrectly formatted or a rule has unknown
- * rhythm durations or all rules do not have the same number of beats.
- */
-
-public void updateLength()
-  {
-    double duration = getPatternLength();
-  }
-
-
-/**
- * Changes the appearance of this DrumPatternDisplay to "deselected" and
- * unselects any selected rule.
- *
- */
-
-public void setDeselectedAppearance()
-  {
-  }
-
-
-/**
- * Changes the appearance of this DrumPatternDisplay to "selected"
- *
- */
-
-public void setSelectedAppearance()
-  {
-  }
-
-
-/**
  * Checks the pattern for correctness. Changes icons, tooltips, and errorMsg to
  * appropriate error feedback information.
  *
@@ -371,29 +310,6 @@ public void setSelectedAppearance()
 
 public boolean checkStatus()
   {
-    boolean patternLength = checkPatternLength();
-    updateLength();
-    if( !patternLength )
-      {
-        return false;
-      }
-
-    errorMsg = safeMsgPattern;
-    return true;
-  }
-
-
-/**
- * @return true if all rules in the pattern have the same number of beats.
- * Returns false otherwise. Changes icons, tooltips, and errorMsg to appropriate
- * error feedback information.
- *
- */
-
-private boolean checkPatternLength()
-  {
-
-    errorMsg = safeMsgRule;
     return true;
   }
 

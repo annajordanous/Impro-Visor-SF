@@ -29,7 +29,7 @@ import polya.Polylist;
 
 /**
  * Created Summer 2007 @authors Brandy McMenamy; 
- * Robert Keller removed the GUI component
+ * Robert Keller removed the unused GUI component
  */
 public class BassPatternDisplay extends PatternDisplay
         implements Constants, Playable, Displayable
@@ -37,12 +37,6 @@ public class BassPatternDisplay extends PatternDisplay
 
 public static Color playableColor = Color.orange;
 public static Color unplayableColor = Color.red;
-//Various standard messages displayed in tooltips and error dialogs.
-private String safeMsgRule = "This rule is legal.  Click play button to preview it.";
-private String safeMsgPattern = "This pattern is legal.  Click play button to preview it.";
-private String unsafeMsgPattern = "This pattern contains an illegal rule.";
-//Contains a specialized error message for any error that just occurred.
-private String errorMsg = safeMsgRule;
 
 //The number added to the title of this object to help the user distinguish it from others.
 private int titleNumber = 0;
@@ -104,7 +98,6 @@ public boolean playMe(double swingVal)
 
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
-System.out.println("\nTrying to play " + this);
     canPlay();
 
     if( checkStatus() )
@@ -190,29 +183,7 @@ public String getPattern()
     return "(bass-pattern (rules " + getDisplayText() + ")(weight " + getWeight() + "))";
   }
 
-/**
- * @return the most recent error message that occurred.
-     *
- */
-public String getRuleError()
-  {
-    return errorMsg;
-  }
 
-
-/**
- * @return the beats in this pattern.
- *
- */
-//public double getBeats()
-//  {
-//    double slots = MIDIBeast.numBeatsInBassRule(getDisplayText());
-//    if( slots < 0 )
-//      {
-//        return -1;
-//      }
-//    return slots / BEAT;
-//  }
 
     public BassPattern getBassPattern()
       {
@@ -262,44 +233,9 @@ public void setTitleNumber(int num)
 public void setDisplayText(String text)
   {
     bassPatternText = text;
-    updateElements();
+
   }
 
-/**
- * Changes the appearance of this BassPatternDisplay to "deselected"
-     *
- */
-public void setDeselectedAppearance()
-  {
-  }
-
-/**
- * Changes the appearance of this BassPatternDisplay to "selected"
-    *
- */
-public void setSelectedAppearance()
-  {
-    styleEditor.setSelectedBass(this);
-  }
-
-/**
- * Update the length title in the northern pane to reflect changes in text.
-     *
- */
-public void updateLength()
-  {
-    double duration = MIDIBeast.numBeatsInBassRule(getDisplayText());
-  }
-
-/**
- * Update the user feedback items.
-     *
- */
-public void updateElements()
-  {
-    checkStatus();
-    updateLength();
-  }
 
 public Color getPlayableColor()
   {
@@ -337,6 +273,4 @@ public String toString()
     return bassPatternText.trim();
   }
 
-// Variables declaration - do not modify
-// End of variables declaration
 }

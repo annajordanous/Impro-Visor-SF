@@ -917,8 +917,11 @@ public class Style
    * @param time      a long containing the time to start the drumline
    * @param duration  an int containing the duration of the drumline
    */
-  private void makeDrumline(Sequence seq, Track track, long time,
-                             int duration, int endLimitIndex )
+  private void makeDrumline(Sequence seq, 
+                            Track track, 
+                            long time,
+                            int duration, 
+                            int endLimitIndex )
           throws InvalidMidiDataException
     {
     // tracing render info
@@ -941,21 +944,21 @@ public class Style
       int patternDuration = pattern.getDuration();
       duration -= patternDuration;
 
-      // we get a polylist containing drum parts
-      Polylist drumline = pattern.applyRules();
+      // we get a Polylist containing drum parts
+      
+      DrumLine drumline = pattern.applyRules();
 
-      // each element of the polylist is a drum part
+      // Each element of the Polylist is a drum part in the form of a MelodyPart
       // so we go through and render each element
-      while( drumline.nonEmpty() )
+      
+      for( MelodyPart d: drumline.getParts() )
         {
-        MelodyPart d = (MelodyPart)drumline.first();
-
         d.setSwing(accompanimentSwing);
         d.setInstrument(drumInstrument);
         d.makeSwing();
         d.render(seq, drumChannel, time, d.getVolume(), track, 0, endLimitIndex);
-        drumline = drumline.rest();
         }
+      
       time += (patternDuration * seq.getResolution()) / BEAT;
       }
     }
@@ -1209,15 +1212,9 @@ private Polylist makeChordline(
 
       // we get a Polylist of NoteSymbols back from the applyRules 
       // function
-      Polylist basslineSegment;
-      if( duration > 0 )
-        {
-        basslineSegment = pattern.applyRules(chord, chord, previousNote);
-        }
-      else
-        {
-        basslineSegment = pattern.applyRules(chord, nextChord, previousNote);
-        }
+      Polylist basslineSegment = duration > 0?
+                              pattern.applyRules(chord, chord, previousNote)
+                            : pattern.applyRules(chord, nextChord, previousNote);
 
       // System.out.println("basslineSegment = " + basslineSegment);
 
@@ -1500,7 +1497,7 @@ public long render(Sequence seq,
     
     if( !bassline.isEmpty() )
       {
-        System.out.println("\nbassline prior to creating bassMelody = " + bassline);
+        //System.out.println("\nbassline prior to creating bassMelody = " + bassline);
 
         MelodyPart bassMelody = new MelodyPart();
 

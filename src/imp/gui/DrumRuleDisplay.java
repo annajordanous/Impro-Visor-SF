@@ -39,12 +39,6 @@ public class DrumRuleDisplay extends PatternDisplay implements Playable, Display
 public static Color playableColor = Color.yellow;
 public static Color unplayableColor = Color.red;
 
-//The message displayed in tooltips and error dialogs if the rule is legal
-private String safeMsgRule = "This rule is legal.  Click play button to preview it.";
-
-//Contains a specialized error message for any error that just occurred.
-private String errorMsgRule = safeMsgRule;
-
 //Useful notate containers.
 private DrumPatternDisplay myParentHolder = null;
 private String instrumentString = "";
@@ -138,13 +132,6 @@ public String getPlayRule()
     return "(drum-pattern " + getRule() + "(weight 100))";
   }
 
-/**
- * @return the most recent error message that occurred.
- */
-public String getErrorMsgRule()
-  {
-    return errorMsgRule;
-  }
 
 /**
  * @return the instrument selected in the combo box
