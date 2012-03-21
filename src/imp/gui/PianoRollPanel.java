@@ -819,6 +819,63 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
     }
 
   /**
+   *
+   * @return Clone of the Vector containing all of the bars on the piano roll.
+   */
+  public ArrayList<PianoRollBar> getSortedBarsInRow(int row)
+    {
+    ArrayList<PianoRollBar> barsInRow = new ArrayList<PianoRollBar>();
+    
+    for( PianoRollBar bar: bars )
+      {
+        if( bar.getRow() == row )
+          {
+            barsInRow.add(bar);
+          }
+      }
+ 
+    Collections.sort(barsInRow, new PianoRollBarComparator());
+    return barsInRow;
+    }
+  
+  public PianoRollBar getPredecessor(PianoRollBar bar)
+    {
+      int row = bar.getRow();
+      ArrayList<PianoRollBar> barsInRow = getSortedBarsInRow(row);
+      PianoRollBar predecessor = null;
+      for( PianoRollBar b: barsInRow )
+        {
+          if( b.equals(bar) )
+            {
+              return predecessor;
+            }
+          predecessor = b;
+        }
+      return null;
+    }
+  
+  public int getImputedVolume(PianoRollBar bar)
+    {
+      int row = bar.getRow();
+      ArrayList<PianoRollBar> barsInRow = getSortedBarsInRow(row);
+      
+      int volume = 127;
+       PianoRollBar predecessor = null;
+      for( PianoRollBar b: barsInRow )
+        {
+          if( !b.getVolumeImplied() )
+            {
+              volume = b.getVolume();
+            }
+          if( b.equals(bar) )
+            {
+              return volume;
+            }
+        }
+      return volume;
+    }
+  
+  /**
    * Gets the last element in the tempBars vector, which is the bar
    * that was last copied or cut.
    * @return the bar which was last copied/cut

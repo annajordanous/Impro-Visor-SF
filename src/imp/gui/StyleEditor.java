@@ -6071,12 +6071,6 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
         PianoRollBar bar = (PianoRollBar) e.next();
 
         int barRow = bar.getRow();
-        
-//        if( !(bar instanceof PianoRollEndBlock) && bar.getVolume() != volume )
-//          {
-//            volume = bar.getVolume();
-//            patternBuffer.append("V" + volume + " ");
-//          }
 
         for( ; barRow > lastPianoRollRow; lastPianoRollRow++ )
           {
@@ -6115,7 +6109,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
-          if( bar.getVolume() != volume )
+          if( !bar.getVolumeImplied() && bar.getVolume() != volume )
             {
             volume = bar.getVolume();
             patternBuffer.append("V");

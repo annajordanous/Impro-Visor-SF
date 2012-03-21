@@ -28,7 +28,6 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.*;
 
-
 /**
  *
  * @author  Robert Keller, Sayuri Soejima
@@ -545,6 +544,7 @@ public void paint(Graphics g)
         barVolumeLabel = new javax.swing.JLabel();
         barVolumeTF = new javax.swing.JTextField();
         barVolumeSlider = new javax.swing.JSlider();
+        barVolumeImpliedCheckBox = new javax.swing.JCheckBox();
         pianoRollResolutionsPanel = new javax.swing.JPanel();
         bpmLabel = new javax.swing.JLabel();
         tempoComboBox = new javax.swing.JComboBox();
@@ -1135,11 +1135,23 @@ public void paint(Graphics g)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.6;
         barVolumePanel.add(barVolumeSlider, gridBagConstraints);
+
+        barVolumeImpliedCheckBox.setSelected(true);
+        barVolumeImpliedCheckBox.setText("Implied");
+        barVolumeImpliedCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barVolumeImpliedCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        barVolumePanel.add(barVolumeImpliedCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1590,7 +1602,13 @@ if( bar != null )
    selectedBar = bar;
    bar.setSelected(true);
    updateBarEditor(selectedBar);
-   setVolumeIndicators(bar.getVolume());
+   
+   boolean volumeImplied = bar.getVolumeImplied();
+   barVolumeImpliedCheckBox.setSelected(volumeImplied);
+   barVolumeSlider.setEnabled(!volumeImplied);
+   barVolumeTF.setEnabled(!volumeImplied);
+   int imputedVolume = pianoRollPanel.getImputedVolume(selectedBar); 
+   setVolumeIndicators(imputedVolume);
    pianoRollPanel.drawAll(buffer.getGraphics());
    }
 }
@@ -2124,9 +2142,20 @@ private void SaveEntireStyleButtonActionPerformed(java.awt.event.ActionEvent evt
     styleEditor.saveStyle();
   }//GEN-LAST:event_SaveEntireStyleButtonActionPerformed
 
+private void barVolumeImpliedCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barVolumeImpliedCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_barVolumeImpliedCheckBoxActionPerformed
+    boolean volumeImplied = barVolumeImpliedCheckBox.isSelected();
+    if( selectedBar != null )
+      {
+        selectedBar.setVolumeImplied(volumeImplied); 
+      }
+    barVolumeSlider.setEnabled(!volumeImplied);
+    barVolumeTF.setEnabled(!volumeImplied);
+  }//GEN-LAST:event_barVolumeImpliedCheckBoxActionPerformed
+
 private void setBarVolume(int value)
   {
-    if( selectedBar != null )
+    if( selectedBar != null && !selectedBar.getVolumeImplied() )
       {
         selectedBar.setVolume(value);
       }
@@ -2172,6 +2201,7 @@ PianoRollPanel getPanel()
     private javax.swing.JTextField barEditorContents;
     protected javax.swing.JFrame barEditorFrame;
     private javax.swing.JDialog barVolumeDialog;
+    private javax.swing.JCheckBox barVolumeImpliedCheckBox;
     private javax.swing.JLabel barVolumeLabel;
     private javax.swing.JPanel barVolumePanel;
     private javax.swing.JSlider barVolumeSlider;

@@ -54,6 +54,8 @@ public class PianoRollBar
 
   int volume = 127;
   
+  boolean volumeImplied = true;
+  
   public PianoRollBar(int row, 
                       int startSlot, 
                       int numSlots, 
@@ -105,15 +107,16 @@ public class PianoRollBar
 
 public PianoRollBar(PianoRollBar bar)
     {
-    this.row         = bar.row;
-    this.startSlot   = bar.startSlot;
-    this.numSlots    = bar.numSlots;
-    this.text        = bar.text;
-    this.grid        = bar.grid;
-    this.pianoRoll   = bar.pianoRoll;
-    this.barColor    = bar.barColor;
-    this.borderColor = bar.borderColor;
-    this.volume      = bar.volume;
+    this.row           = bar.row;
+    this.startSlot     = bar.startSlot;
+    this.numSlots      = bar.numSlots;
+    this.text          = bar.text;
+    this.grid          = bar.grid;
+    this.pianoRoll     = bar.pianoRoll;
+    this.barColor      = bar.barColor;
+    this.borderColor   = bar.borderColor;
+    this.volume        = bar.volume;
+    this.volumeImplied = bar.volumeImplied;
     }
 
 /**
@@ -140,6 +143,16 @@ public boolean isSelected()
 {
     return selected;
 }
+
+public void setVolumeImplied(boolean value)
+  {
+    volumeImplied = value;
+  }
+
+public boolean getVolumeImplied()
+  {
+    return volumeImplied;
+  }
 
   /**
    * Draw the bar onto the grid.
