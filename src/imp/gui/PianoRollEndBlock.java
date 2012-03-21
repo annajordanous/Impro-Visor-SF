@@ -37,7 +37,7 @@ static Color END_BLOCK_COLOR = Color.red;
 
  public PianoRollEndBlock(int row, int startSlot, int numSlots, PianoRoll pianoRoll)
     {
-    super(row, startSlot, END_BLOCK_LENGTH, END_BLOCK_COLOR, END_BLOCK_COLOR, Color.black, 0, pianoRoll.getGrid(), pianoRoll);
+    super(row, startSlot, END_BLOCK_LENGTH, END_BLOCK_COLOR, END_BLOCK_COLOR, Color.black, 0, false, pianoRoll.getGrid(), pianoRoll);
 
     resizable = false;
     }

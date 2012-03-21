@@ -664,24 +664,6 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
 
 
   /**
-   * 
-   * @param row - at which row to add the bar
-   * @param col - at which column to add the bar
-   * @param numSlots - how many slots the bar should represent
-   * @return the Bar that is added the row and column specified, with the
-   *         specified numSlots size.
-   */
-  public void addBar(int row, int startSlot, int numSlots, Color barColor, Color borderColor)
-    {
-    if( row >= numRows )
-      {
-        return; // can't add
-      }
-    PianoRollBar bar = new PianoRollBar(row, startSlot, numSlots, barColor, borderColor, grid, pianoRoll);
-    addBarWithOptionalEndBlock(bar);
-    }
-
-  /**
    *
    * @param row - at which row to add the bar
    * @param col - at which column to add the bar
@@ -696,7 +678,7 @@ public void alignPercussionEndBlocks(PianoRollBar bar, PianoRollEndBlock endBloc
         return; // can't add
       }
     //System.out.println("added bar at row = " + row + ", startSlot = " + startSlot + ", slots = " + numSlots);
-    PianoRollBar bar = new PianoRollBar(row, startSlot, numSlots, text, barColor, borderColor, volume, grid, pianoRoll);
+    PianoRollBar bar = new PianoRollBar(row, startSlot, numSlots, text, barColor, borderColor, volume, true, grid, pianoRoll);
     addBarWithOptionalEndBlock(bar);
     }
 

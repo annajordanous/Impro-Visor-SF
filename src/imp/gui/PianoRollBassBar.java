@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,9 +30,9 @@ public class PianoRollBassBar extends PianoRollBar
 {
     private BassPatternElement element;
 
-    public PianoRollBassBar(int startSlot, BassPatternElement element, int volume, PianoRoll pianoRoll)
+    public PianoRollBassBar(int startSlot, BassPatternElement element, int volume, boolean volumeImplied, PianoRoll pianoRoll)
     {
-        super(PianoRoll.BASS_ROW, startSlot, element.getSlots(), PianoRoll.BASSCOLOR, PianoRoll.BARBORDERCOLOR, volume, pianoRoll.getGrid(), pianoRoll);
+        super(PianoRoll.BASS_ROW, startSlot, element.getSlots(), PianoRoll.BASSCOLOR, PianoRoll.BARBORDERCOLOR, volume, volumeImplied, pianoRoll.getGrid(), pianoRoll);
         this.element = element;
     }
 
@@ -43,13 +42,14 @@ public class PianoRollBassBar extends PianoRollBar
 
 public PianoRollBassBar(PianoRollBassBar bar)
     {
-        this(bar.startSlot, bar.element, bar.volume, bar.pianoRoll);
+        this(bar.startSlot, bar.element, bar.volume, bar.volumeImplied, bar.pianoRoll);
     }
 
 /**
  * Over-rides copy in PianoRollBar
  */
 
+@Override
 public PianoRollBassBar copy()
 {
     return new PianoRollBassBar(this);
@@ -66,6 +66,7 @@ public PianoRollBassBar copy()
         //System.out.println("Setting bass parameters to " + getText());
     }
 
+    @Override
     public void setNumSlots(int slots)
     {
         super.setNumSlots(slots);
@@ -103,6 +104,7 @@ public PianoRollBassBar copy()
         return element.getDirectionString();
     }
 
+    @Override
     public Object getText()
     {
         return element.getText();

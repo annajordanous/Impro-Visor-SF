@@ -5926,6 +5926,8 @@ public void playBassColumn()
     Tokenizer in = new Tokenizer(patternReader);
 
     int volume = 127;
+    boolean volumeImplied = true;
+    
     int itemSlots;
     
     while( (ob = in.nextSexp()) != Tokenizer.eof )
@@ -5952,14 +5954,18 @@ public void playBassColumn()
                                "x", 
                                barColor,
                                borderColor, 
-                               volume);
+                               volume,
+                               volumeImplied);
+              volumeImplied = true;
               slots += itemSlots;
               break;
                 
             case 'v':
               volume = Integer.parseInt(item.substring(1));
+              volumeImplied = false;
 
-              break;            }
+              break;
+             }
           }
         }
       }
@@ -5995,6 +6001,7 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
     boolean patternExists = false;
     
     int volume = 127;
+    boolean volumeImplied = true;
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
@@ -6012,13 +6019,16 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
                 if( element.getNoteType() == BassPatternElement.BassNoteType.VOLUME )
                   {
                     volume = Integer.parseInt(element.getDurationString());
+                    volumeImplied = false;
                   }
                 else
                   {
                   PianoRollBassBar bar = new PianoRollBassBar(slots, 
                                                               element, 
                                                               volume,
+                                                              volumeImplied,
                                                               pianoRoll);
+                  volumeImplied = true;
                   pianoRoll.addBar(bar);
                   patternExists = true;
                   slots += element.getSlots();

@@ -55,17 +55,6 @@ public class PianoRollBar
   int volume = 127;
   
   boolean volumeImplied = true;
-  
-  public PianoRollBar(int row, 
-                      int startSlot, 
-                      int numSlots, 
-                      Color barColor, 
-                      Color borderColor, 
-                      PianoRollGrid grid, 
-                      PianoRoll pianoRoll)
-    {
-    this(row, startSlot, numSlots, barColor, borderColor, 127, grid, pianoRoll);
-    }
 
   public PianoRollBar(int row, 
                       int startSlot, 
@@ -73,10 +62,11 @@ public class PianoRollBar
                       Color barColor, 
                       Color borderColor, 
                       int volume,
+                      boolean volumeImplied,
                       PianoRollGrid grid, 
                       PianoRoll pianoRoll)
     {
-    this(row, startSlot, numSlots, "X", barColor, borderColor, volume, grid, pianoRoll);
+    this(row, startSlot, numSlots, "X", barColor, borderColor, volume, volumeImplied, grid, pianoRoll);
     }
   
   public PianoRollBar(int row, 
@@ -86,18 +76,20 @@ public class PianoRollBar
                       Color barColor, 
                       Color borderColor, 
                       int volume,
+                      boolean volumeImplied,
                       PianoRollGrid grid, 
                       PianoRoll pianoRoll)
     {
-    this.row         = row;
-    this.startSlot   = startSlot;
-    this.numSlots    = numSlots;
-    this.text        = text;
-    this.grid        = grid;
-    this.pianoRoll   = pianoRoll;
-    this.barColor    = barColor;
-    this.borderColor = borderColor;
-    this.volume      = volume;
+    this.row           = row;
+    this.startSlot     = startSlot;
+    this.numSlots      = numSlots;
+    this.text          = text;
+    this.grid          = grid;
+    this.pianoRoll     = pianoRoll;
+    this.barColor      = barColor;
+    this.borderColor   = borderColor;
+    this.volume        = volume;
+    this.volumeImplied = volumeImplied;
     }
 
 /**
