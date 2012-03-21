@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,15 +23,14 @@ package imp.data;
 /**
  * A Pattern is base class for accompaniment patterns that have
  * a certain duration and weight.
- * This simplifies the code for choosing a random pattern
- * based on duration and weight.
+ * This simplifies the code for choosing a random pattern.
  * @see Style
  * @author Stephen Jones, converted by Robert Keller from Interface to Class 12/1/2007
  */
 
 public class Pattern {
     /**
-     * the Style this DrumPattern belongs to
+     * the Style this to which this Pattern belongs
      */
   
     protected Style style;

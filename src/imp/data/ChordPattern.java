@@ -24,6 +24,7 @@ import imp.util.ErrorLog;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import polya.Polylist;
 import polya.PolylistBuffer;
 import polya.PolylistEnum;
@@ -211,7 +212,7 @@ public int getDuration()
  *         the voicings.
  */
 
-public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
+public ChordPatternVoiced applyRules(ChordSymbol chord, Polylist lastChord)
   {
   Iterator<Integer> i = rules.iterator();
   Iterator<String> j = durations.iterator();
@@ -229,7 +230,7 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
   // don't really have a proper way to store music with multiple voices
   MelodyPart durationMelody = new MelodyPart();
 
-  PolylistBuffer chordLine = new PolylistBuffer();
+  LinkedList<Polylist> chordLine = new LinkedList<Polylist>();
   
   int volume = 127;
 
@@ -246,7 +247,6 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
       {
       case STRIKE:
         {
-//System.out.println("STRIKE");
         // Add the volume indicator to the front of the voicing.
         durationMelody.addNote(new Rest(Duration.getDuration(duration)));
          
@@ -258,28 +258,28 @@ public Polylist applyRules(ChordSymbol chord, Polylist lastChord)
           //break;
           }
 
-        chordLine.append(voicing.cons("v" + volume));
+        chordLine.add(voicing.cons("v" + volume));
         lastChord = voicing;
         break;
         }
+          
       case REST:
         {
-//System.out.println("REST");
         durationMelody.addNote(new Rest(Duration.getDuration(duration)));
-        chordLine.append(NoteSymbol.makeNoteSymbol("r" + duration));
+        chordLine.add(Polylist.nil); // was NoteSymbol.makeNoteSymbol("r" + duration));
         break;
         }
           
       case VOLUME:
         {
-//System.out.println("VOLUME");
+        // Volume will take effect when next chord voicing is appended.
         volume = Integer.parseInt(duration);
         break;
         }
       }
     }
 
-  Polylist result = Polylist.list(chordLine.toPolylist(), durationMelody);
+  ChordPatternVoiced result = new ChordPatternVoiced(chordLine, durationMelody);
 
   //System.out.println("applyRules: Chord = " + chord + ", rules = " + rules + ", durations = " + durations + ", result (chordline, durations) = " + result);
   return result;

@@ -1036,7 +1036,8 @@ private Polylist makeChordline(
         ChordPattern pattern = getPattern(chordPatterns, duration);
 
     //System.out.println("\nmakeChordLine on " + currentChord + " using ChordPattern " + pattern);
-        Polylist c;
+        ChordPatternVoiced c;
+        
         if( pattern == null )
           {
             // if there's no pattern, and we haven't used a previous
@@ -1050,7 +1051,9 @@ private Polylist makeChordline(
             MelodyPart dM = new MelodyPart();
             dM.addNote(new Rest(duration));
             duration = 0;
-            c = Polylist.list(Polylist.list(v), dM);
+            LinkedList<Polylist> L = new LinkedList<Polylist>();
+            L.add(v);
+            c = new ChordPatternVoiced(L, dM);
           }
         else
           {
@@ -1093,24 +1096,21 @@ private Polylist makeChordline(
         // durationMelody is the pattern, consisting of rests of various
         // durations.
         
-        Polylist chords = (Polylist) c.first();
-        MelodyPart durationMelody = (MelodyPart) c.second();
+        LinkedList<Polylist> voicings = c.getVoicings();
+        MelodyPart durationMelody = c.getDurations();
         
         durationMelody.setSwing(accompanimentSwing);
         durationMelody.makeSwing();
 
         Part.PartIterator i = durationMelody.iterator();
-        PolylistEnum e = chords.elements();
 
         //System.out.println("chord line = " + chords);
 
         int volume = 127;
         
-        while( e.hasMoreElements() )
+        for( Polylist voicing: voicings )
           {
-            Object voicing = e.nextElement(); // A single currentChord's voicing
-
-             // Note that voicing should be a Polylist, and may contain volume
+          // Note that voicing should be a Polylist, and may contain volume
                     
             Note note = (Note) i.next();      // Note from the "duration melody"
             
