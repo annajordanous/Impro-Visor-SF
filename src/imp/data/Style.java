@@ -1174,18 +1174,21 @@ System.out.println("chord line = " + chords);
   /**
    * Using the BassPattern objects of this Style, sequences a bassline
    * of a specified duration onto the track.
-   * @param bassline  a Polylist of NoteSymbols makeing up the bassline so far
+   * 
+   * This method is called only once, from render in this same class.
+   * 
+   * @param bassline  a Polylist of NoteSymbols making up the bassline so far
    * @param chord     a ChordSymbol containing the currentChord chord to render
    * @param nextChord a ChordSymbol containing the next chord
    * @param previousBassNote  a NoteSymbol containing the previous note
-   * @param duration  an int containing the duration of the chordline
+   * @param duration  an int containing the duration of the bassline
    * @return a Polylist of NoteSymbols to be sequenced
    */
   private Polylist makeBassline(
           Polylist bassline,
           ChordSymbol chord, 
           ChordSymbol nextChord,
-          NoteSymbol lastNote, 
+          NoteSymbol previousNote, 
           int duration,
           int transposition)
           throws InvalidMidiDataException
@@ -1210,39 +1213,40 @@ System.out.println("chord line = " + chords);
       Polylist b;
       if( duration > 0 )
         {
-        b = pattern.applyRules(chord, chord, lastNote);
+        b = pattern.applyRules(chord, chord, previousNote);
         }
       else
         {
-        b = pattern.applyRules(chord, nextChord, lastNote);
+        b = pattern.applyRules(chord, nextChord, previousNote);
         }
 
 //System.out.println("bassline noteSymbols = " + b);
 
-      // set previousBassNote to the correct value
+      // set previousNote to the correct value
+      
       Polylist d = b.reverse();
       while( d.nonEmpty() )
         {
         if( d.first() instanceof NoteSymbol )
           {
           NoteSymbol ns = (NoteSymbol)d.first();
-          d = d.rest();
           if( !ns.isRest() )
             {
-            lastNote = ns;  // Not used ??
+            previousNote = ns; 
             break;
             }
           }
-        else
-          {
-          d = d.rest();
-          }
+
+        d = d.rest();
         }
 
-      if( bassline.nonEmpty() &&
-              bassline.reverse().first() instanceof Polylist )
+      // What does this do?
+      
+      Object lastOb = bassline.last();
+      
+      if( bassline.nonEmpty() && lastOb instanceof Polylist )
         {
-        Polylist L = (Polylist)bassline.last();
+        Polylist L = (Polylist)lastOb;
         String dur = (String)L.first();
         bassline = bassline.allButLast();
         NoteSymbol ns = (NoteSymbol)b.first();
@@ -1253,7 +1257,7 @@ System.out.println("chord line = " + chords);
 
       bassline = bassline.append(b);
       }
-System.out.println("returned bassline = " + bassline);
+//System.out.println("returned bassline from makeBassline = " + bassline);
     return bassline;
     }
 
@@ -1290,37 +1294,38 @@ System.out.println("returned bassline = " + bassline);
   }
 
 
-
-    /**
-     * Ripped from above, to allow non-style, hence no drums...
-     *
-   * Using the Pattern objects of this Style, sequences an accompaniment
-   * for the given ChordPart.
-   * @param seq       the Sequence that contains the Track
-   * @param track     the Track to put the accompaniment on
-   * @param time      a long containing the time to start the accompaniment
-   * @param chordPart the ChordPart to render
-   * @return a long containing the ending time of the accompaniment
-   */
-
-  public long render(Sequence seq, 
-                     long time, 
-                     Track track,
-                     ChordPart chordPart, 
-                     int startIndex, 
-                     int endIndex, 
-                     int transposition, 
-                     boolean useDrums, 
-                     int endLimitIndex)
-          throws InvalidMidiDataException
-    {
+/**
+ * Ripped from above, to allow non-style, hence no drums...
+ *
+ * Using the Pattern objects of this Style, sequences an accompaniment for the
+ * given ChordPart.
+ *
+ * @param seq the Sequence that contains the Track
+ * @param track the Track to put the accompaniment on
+ * @param time a long containing the time to start the accompaniment
+ * @param chordPart the ChordPart to render
+ * @return a long containing the ending time of the accompaniment
+ */
+  
+public long render(Sequence seq,
+                   long time,
+                   Track track,
+                   ChordPart chordPart,
+                   int startIndex,
+                   int endIndex,
+                   int transposition,
+                   boolean useDrums,
+                   int endLimitIndex)
+        throws InvalidMidiDataException
+  {
     boolean hasStyle = !noStyle();
 
     // to trace sequencing info:
     //System.out.println("Sequencing Style: " + this + " startIndex = " + startIndex
     // + " endIndex = " + endIndex + " endLimitIndex = " + endLimitIndex + " useDrums = " + useDrums + " hasStyle = " + hasStyle);
 
-
+    // i iterates over the Chords in the ChordPart.
+    
     Part.PartIterator i =
             chordPart.iterator(chordPart.getCurrentChordIndex(startIndex));
 
@@ -1328,9 +1333,9 @@ System.out.println("returned bassline = " + bassline);
 
     if( hasStyle && useDrums )
       {
-      // Introduce drums, if there is a Style
+        // Introduce drums, if there is a Style
 
-      makeDrumline(seq, track, startTime, endIndex - startIndex, endLimitIndex);
+        makeDrumline(seq, track, startTime, endIndex - startIndex, endLimitIndex);
       }
 
     Chord next = null;
@@ -1348,189 +1353,208 @@ System.out.println("returned bassline = " + bassline);
     int numNotes = 1;
 
     // Iterating over one ChordPart with i
-    
-    while( (i.hasNext() || next != null) && (endLimitIndex == ENDSCORE || index <= endLimitIndex) )
+
+    while( (i.hasNext() || next != null) 
+        && (endLimitIndex == ENDSCORE || index <= endLimitIndex) )
       {
-      if( next == null )
-        {
-        index = i.nextIndex();
-        next = (Chord)i.next();
-        }
-
-      Chord currentChord = next;
-
-      int rhythmValue = currentChord.getRhythmValue();
-      if( startIndex > index )
-        {
-        rhythmValue -= startIndex - index;
-        }
-
-      if( i.hasNext() )
-        {
-        index = i.nextIndex();
-
-        next = (Chord)i.next();
-        }
-      else
-        {
-        next = null;
-        index = chordPart.size();
-        }
-
-      if( endIndex <= index )
-        {
-        rhythmValue -= index - endIndex;
-        }
-
-      if( !hasStyle )
-        {
-        time = currentChord.render(seq, 
-                              track, 
-                              time, 
-                              getChordChannel(), 
-                              this, 
-                              prev,
-                              rhythmValue, 
-                              transposition, 
-                              endLimitIndex);
-        prev = currentChord;
-        if( endIndex <= index )
+        if( next == null )
           {
-          break;
+            index = i.nextIndex();
+            next = (Chord) i.next();
+          }
+
+        Chord currentChord = next;
+
+        int rhythmValue = currentChord.getRhythmValue();
+        if( startIndex > index )
+          {
+            rhythmValue -= startIndex - index;
+          }
+
+        if( i.hasNext() )
+          {
+            index = i.nextIndex();
+
+            next = (Chord) i.next();
           }
         else
           {
-          continue;
-          }
-        }
-
-      chord = currentChord.getChordSymbol();
-      if( next == null || next.getChordSymbol().isNOCHORD() )
-        {
-        nextChord = chord;
-        }
-      else
-        {
-        nextChord = next.getChordSymbol();
-        }
-
-
-      if( !chord.isNOCHORD() && hasStyle )
-        {
-        if( useExtensions )
-          {
-          if( gen.nextInt(3) == 0 )
-            {
-            chord = extend(chord, previousExtension);
-            }
-          previousExtension = chord;
+            next = null;
+            index = chordPart.size();
           }
 
-        previousChord = makeChordline(seq, 
-                                  track, 
-                                  time,
-                                  currentChord, 
-                                  previousChord, 
-                                  rhythmValue, 
-                                  transposition, 
-                                  endLimitIndex);
-        }
-
-      // adjust bass octave between patterns only, not within
-      if( previousBassNote.higher(getBassHigh()) )
-        {
-        previousBassNote = previousBassNote.transpose(-12);
-        //System.out.println("downward to " + previousBassNote);
-        }
-      else if( getBassLow().higher(previousBassNote) )
-        {
-        previousBassNote = previousBassNote.transpose(12);
-        //System.out.println("upward to " + previousBassNote);
-        }
-//System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = " + hasStyle);
-      if( !chord.isNOCHORD() && hasStyle )
-        {
-        bassline = makeBassline(bassline,
-                                chord, 
-                                nextChord, 
-                                previousBassNote, 
-                                rhythmValue, 
-                                transposition);
-System.out.println("Finished making bassline = " + bassline);
-        Polylist d = bassline.reverse();
-        while( d.nonEmpty() )
+        if( endIndex <= index )
           {
-          if( d.first() instanceof NoteSymbol )
-            {
-            NoteSymbol ns = (NoteSymbol)d.first();
-            d = d.rest();
-            if( !ns.isRest() )
+            rhythmValue -= index - endIndex;
+          }
+
+        if( !hasStyle )
+          {
+            time = currentChord.render(seq,
+                                       track,
+                                       time,
+                                       getChordChannel(),
+                                       this,
+                                       prev,
+                                       rhythmValue,
+                                       transposition,
+                                       endLimitIndex);
+            prev = currentChord;
+            if( endIndex <= index )
               {
-              previousBassNote = ns;
-              break;
+                break;
               }
-            }
-          else
-            {
-            d = d.rest();
-            }
+            else
+              {
+                continue;
+              }
           }
-        }
-      else
-        {
-        Rest r = new Rest(rhythmValue);
-        NoteSymbol rest = NoteSymbol.makeNoteSymbol(r.toLeadsheet());
-        bassline = bassline.addToEnd(rest); // was reverse().cons(rest).reverse();
-        }
 
-      time += rhythmValue * seq.getResolution() / BEAT;
-      if( endIndex <= index )
-        {
-        break;
-        }
+        chord = currentChord.getChordSymbol();
+        if( next == null || next.getChordSymbol().isNOCHORD() )
+          {
+            nextChord = chord;
+          }
+        else
+          {
+            nextChord = next.getChordSymbol();
+          }
+
+
+        if( !chord.isNOCHORD() && hasStyle )
+          {
+            if( useExtensions )
+              {
+                if( gen.nextInt(3) == 0 )
+                  {
+                    chord = extend(chord, previousExtension);
+                  }
+                previousExtension = chord;
+              }
+
+            previousChord = makeChordline(seq,
+                                          track,
+                                          time,
+                                          currentChord,
+                                          previousChord,
+                                          rhythmValue,
+                                          transposition,
+                                          endLimitIndex);
+          }
+
+        // adjust bass octave between patterns only, not within
+        if( previousBassNote.higher(getBassHigh()) )
+          {
+            previousBassNote = previousBassNote.transpose(-12);
+            //System.out.println("downward to " + previousBassNote);
+          }
+        else if( getBassLow().higher(previousBassNote) )
+          {
+            previousBassNote = previousBassNote.transpose(12);
+            //System.out.println("upward to " + previousBassNote);
+          }
+//System.out.println("\nAbout to make bassline, chord = " + chord + ", hasStyle = " + hasStyle);
+        if( !chord.isNOCHORD() && hasStyle )
+          {
+            bassline = makeBassline(bassline,
+                                    chord,
+                                    nextChord,
+                                    previousBassNote,
+                                    rhythmValue,
+                                    transposition);
+            System.out.println("Finished making bassline = " + bassline);
+
+            // Sets previousBassNote to last NoteSymbol in bassline
+            
+            Polylist d = bassline.reverse();
+            while( d.nonEmpty() )
+              {
+                Object ob = d.first();
+                if( ob instanceof NoteSymbol )
+                  {
+                    NoteSymbol ns = (NoteSymbol) d.first();
+
+                    if( !ns.isRest() )
+                      {
+                        previousBassNote = ns;
+                        break;
+                      }
+                  }
+
+                d = d.rest();
+              }
+          }
+        else
+          {
+            Rest r = new Rest(rhythmValue);
+            NoteSymbol rest = NoteSymbol.makeNoteSymbol(r.toLeadsheet());
+            bassline = bassline.addToEnd(rest);
+          }
+
+        time += rhythmValue * seq.getResolution() / BEAT;
+        
+        if( endIndex <= index )
+          {
+            break;
+          }
       }
-System.out.println("\nbassline = " + bassline);
 
+    // Finished iterating over ChordPart
+    
     if( bassline.nonEmpty() )
       {
-       //System.out.println("sequencing bassline " + bassline);
-       
-      MelodyPart bassLine = new MelodyPart();
+        //System.out.println("\nbassline prior to creating bassMelody = " + bassline);
 
-      Object last = bassline.last(); // was reverse().first();
+        MelodyPart bassMelody = new MelodyPart();
 
-      if( last instanceof Polylist )
-        {
-        Polylist L = (Polylist)last;
-        NoteSymbol ns = (NoteSymbol)L.second();
-        bassline = bassline.replaceLast(ns);
-        }
+        Object last = bassline.last(); // was reverse().first();
 
-      int volume = 127;
+        if( last instanceof Polylist )
+          {
+            Polylist L = (Polylist) last;
+            NoteSymbol ns = (NoteSymbol) L.second();
+            bassline = bassline.replaceLast(ns);
+          }
 
-      // add each note to our bassline melody
-      while( bassline.nonEmpty() )
-        {
-        NoteSymbol noteSymbol = (NoteSymbol)bassline.first();
-        bassLine.addNote(noteSymbol.toNote());
-        bassline = bassline.rest();
-        }
+        int volume = 127;
 
-      bassLine.setSwing(accompanimentSwing);
-      bassLine.setInstrument(bassInstrument);
-      bassLine.setVolume(MAX_VOLUME);
-      bassLine.makeSwing();
-      bassLine.render(seq, 
-                      bassChannel, 
-                      startTime, 
-                      MAX_VOLUME,   // FIX
-                      track, 
-                      transposition, 
-                      endLimitIndex);
+        // add each note to our bassline melody
+        while( bassline.nonEmpty() )
+          {
+            Object ob = bassline.first();
+            if( ob instanceof NoteSymbol )
+              {
+                NoteSymbol noteSymbol = (NoteSymbol) ob;
+                bassMelody.addNote(noteSymbol.toNote());
+              }
+            else if( ob instanceof VolumeSymbol )
+              {
+                VolumeSymbol volumeSymbol = (VolumeSymbol) ob;
+                bassMelody.setVolume(volumeSymbol.getVolume());
+                //System.out.println("setting bassMelodyVolume to " + volumeSymbol);
+              }
+            else
+              {
+                assert false;
+              }
+            bassline = bassline.rest();
+          }
+
+        bassMelody.setSwing(accompanimentSwing);
+        bassMelody.setInstrument(bassInstrument);
+        bassMelody.setVolume(MAX_VOLUME);
+        bassMelody.makeSwing();
+        bassMelody.render(seq,
+                          bassChannel,
+                          startTime,
+                          MAX_VOLUME, // FIX
+                          track,
+                          transposition,
+                          endLimitIndex);
       }
 
     return time;
-    }
+  }
 
 
   /**

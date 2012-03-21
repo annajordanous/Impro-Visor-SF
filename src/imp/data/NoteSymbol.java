@@ -24,7 +24,6 @@ import imp.Constants;
 import java.io.Serializable;
 import polya.Polylist;
 
-
 /**
  * A NoteSymbol represents a note symbolically, and is typically created
  * from a leadsheet string.  A NoteSymbol can also represent a rest,
@@ -35,7 +34,7 @@ import polya.Polylist;
  * @see         Leadsheet
  * @author      Robert Keller
  */
-public class NoteSymbol implements Constants, Serializable {
+public class NoteSymbol implements MelodySymbol, Constants, Serializable {
 
     /**
      * the PitchClass of this note.  A rest is represented by a pitchClass value of null.
@@ -784,11 +783,11 @@ static Polylist noteSymbolListToStringList(Polylist noteSymbolList, int rise)
 
 
 
-private static Accidental S = Accidental.SHARP;
-private static Accidental F = Accidental.FLAT;
-private static Accidental N = Accidental.NATURAL;
+private static final Accidental S = Accidental.SHARP;
+private static final Accidental F = Accidental.FLAT;
+private static final Accidental N = Accidental.NATURAL;
 
-public static Accidental accidentalByKey[][] = {
+public static final Accidental accidentalByKey[][] = {
                                          { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* gb */
                                          { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* db */
                                          { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* ab */

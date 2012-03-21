@@ -329,18 +329,18 @@ public class BassPattern
     return duration;
     }
 
-  /**
-   * Realizes the Pattern into a sequencable Polylist
-   * @param chord     the ChordSymbol to use for the bassline
-   * @param nextChord the ChordSymbol that comes next in the progression
-   * @param lastNote  a NoteSymbol containing the previous bassline note
-   * @return A Polylist of NoteSymbol objects that make up the bassline.
-   * Note: Bassline is built in reverse by consing, then reversed as
-   *       the final step.
-   */
-  public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
-                              NoteSymbol lastNote)
-    {
+/**
+ * Realizes the Pattern into a sequencable Polylist
+ *
+ * @param chord the ChordSymbol to use for the bassline
+ * @param nextChord the ChordSymbol that comes next in the progression
+ * @param lastNote a NoteSymbol containing the previous bassline note
+ * @return A Polylist of NoteSymbol objects that make up the bassline. Note:
+ * Bassline is built in reverse by consing, then reversed as the final step.
+ */
+public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
+                           NoteSymbol lastNote)
+  {
     //System.out.println("last Note is " + lastNote.getMIDI() );
     Iterator<Integer> i = rules.iterator();
     Iterator<String> j = durations.iterator();
@@ -353,227 +353,250 @@ public class BassPattern
     ChordForm chordForm = chord.getChordForm();
     Key key = chordForm.getKey(chordRoot);
     int rise = PitchClass.findRise(chordRoot);
-  
+
     // indicator for directional placement
     int indicator = STAY;
-    
+
     int volume = 127;
-    
+
     while( i.hasNext() )
       {
-      int rule = i.next();
-      String duration = j.next();
-      String modifier = m.next();
-      NoteSymbol pitch = null;
+        int rule = i.next();
+        String duration = j.next();
+        String modifier = m.next();
+        MelodySymbol melodySymbol;
 //System.out.println("applying bass rule " + rule + ", duration = " + duration + ", modifier = " + modifier);
-      switch( rule )
-        {
-        case VOLUME:
+        switch( rule )
           {
-          volume = Integer.parseInt(duration);
-          break;
-          }
-            
-        case PITCH: // Allow X for bass too, 
-                    // as a convenience in cutting and pasting in editor
-        case BASS:
-          {
-          pitch = new NoteSymbol(chord.getBass());
-          break;
-          }
-        case NEXT:
-          {
-          // FIX: This may be broken (octave jumps). Please check
-          pitch = new NoteSymbol(nextChord.getBass());
-          if( !i.hasNext() )
-            {
-            pitch = new NoteSymbol(
-                    pitch.getPitchClass(),
-                    pitch.getOctave(),
-                    Duration.getDuration0(duration));
-            Polylist L = Polylist.list(duration, pitch);
-            return bassLine.cons(L).reverse();
-            }
-
-          break;
-          }
-        case CHORD:
-          {
-          Polylist chordTones =
-                  (Polylist)chordForm.getSpell(chordRoot, key);
-          if( chordTones.length() > 1 )
-            {
-            chordTones = lastNote.enhDrop(chordTones);
-            }
-          pitch = (NoteSymbol)getRandomItem(chordTones);
-
-          break;
-          }
-        case SCALE:
-          {
-          Polylist scales = (Polylist)chordForm.getScales();
-          if( scales == null || scales.isEmpty() )
-            {
-            Polylist chordTones =
-                    (Polylist)chordForm.getSpell(chordRoot, key);
-            if( chordTones.length() > 1 )
+            case VOLUME:
               {
-              chordTones = lastNote.enhDrop(chordTones);
-              }
-            pitch = (NoteSymbol)getRandomItem(chordTones);
-            break;
-            }
-          Polylist scale = (Polylist)scales.first();
-
-          NoteSymbol tonic =
-                  NoteSymbol.makeNoteSymbol((String)scale.first());
-
-          String scaleType =
-                  Advisor.concatListWithSpaces(scale.rest());
-
-          ScaleForm scaleForm = Advisor.getScale(scaleType);
-
-          Polylist tones = scaleForm.getSpell(tonic);
-          tones = NoteSymbol.transposeNoteSymbolList(tones, rise);
-          tones = tones.reverse().rest().reverse();
-
-          Polylist seconds = getIntervals(2, tones, lastNote);
-          Polylist thirds = getIntervals(3, tones, lastNote);
-          tones = seconds.append(thirds);
-
-          if( tones.length() > 1 )
-            {
-            tones = lastNote.enhDrop(tones);
-            }
-          pitch = (NoteSymbol)getRandomItem(tones);
-
-
-          break;
-          }
-        case APPROACH:
-          {
-          pitch = new NoteSymbol(nextChord.getBass());
-          Polylist approach =
-                  Polylist.list(pitch.transpose(1), pitch.transpose(-1));
-          if( approach.length() > 1 )
-            {
-            approach = lastNote.enhDrop(approach);
-            }
-          pitch = (NoteSymbol)getRandomItem(approach);
-          break;
-          }
-        case REST:
-          {
-          pitch = NoteSymbol.makeNoteSymbol("r");
-          break;
-          }
-        case EQUAL:
-           {
-            pitch = null;         // initialize
-            pitch = placePitch(pitch, lastNote, rule);
-            break;
-           }
-        default:
-          {                             // higher than 99 means flat/sharp
-          if( (rule > 0 && rule < 8) || rule > 99 ) 
-            {
-            Polylist scales = (Polylist)chordForm.getScales();
-
-            if( scales == null || scales.isEmpty() )
-              {
-              Polylist chordTones =
-                      (Polylist)chordForm.getSpell(chordRoot, key);
-              if( chordTones.length() > 1 )
-                {
-                chordTones = lastNote.enhDrop(chordTones);
-                }
-              pitch = (NoteSymbol)getRandomItem(chordTones);
-              break;
+                melodySymbol = new VolumeSymbol(duration);
+                System.out.println("creating VolumeSymbol: " + melodySymbol);
+                break;
               }
 
-            Polylist scale = (Polylist)scales.first();
+            case PITCH: // Allow X for bass too, 
+            // as a convenience in cutting and pasting in editor
+            case BASS:
+              {
+                melodySymbol = new NoteSymbol(chord.getBass());
+                break;
+              }
 
-            NoteSymbol tonic =
-                    NoteSymbol.makeNoteSymbol((String)scale.first());
+            case NEXT:
+              {
+                // FIX: This may be broken (octave jumps). Please check
+                NoteSymbol noteSymbol = new NoteSymbol(nextChord.getBass());
+                if( i.hasNext() )
+                  {
+                    melodySymbol = noteSymbol;
+                  }
+                else
+                  {
+                    melodySymbol = new NoteSymbol(
+                            noteSymbol.getPitchClass(),
+                            noteSymbol.getOctave(),
+                            Duration.getDuration0(duration));
+                  }
+                Polylist L = Polylist.list(duration, melodySymbol);
+                return bassLine.cons(L).reverse();
+              }
 
-            String scaleType =
-                    Advisor.concatListWithSpaces(scale.rest());
+            case CHORD:
+              {
+                Polylist chordTones =
+                        (Polylist) chordForm.getSpell(chordRoot, key);
+                if( chordTones.length() > 1 )
+                  {
+                    chordTones = lastNote.enhDrop(chordTones);
+                  }
+                melodySymbol = (NoteSymbol) getRandomItem(chordTones);
 
-            ScaleForm scaleForm = Advisor.getScale(scaleType);
+                break;
+              }
 
-            Polylist tones = scaleForm.getSpell(tonic);
-            tones = NoteSymbol.transposeNoteSymbolList(tones, rise);
-            tones = tones.reverse().rest().reverse();
+            case SCALE:
+              {
+                Polylist scales = (Polylist) chordForm.getScales();
+                if( scales == null || scales.isEmpty() )
+                  {
+                    Polylist chordTones =
+                            (Polylist) chordForm.getSpell(chordRoot, key);
+                    if( chordTones.length() > 1 )
+                      {
+                        chordTones = lastNote.enhDrop(chordTones);
+                      }
+                    melodySymbol = (NoteSymbol) getRandomItem(chordTones);
+                    break;
+                  }
+                Polylist scale = (Polylist) scales.first();
 
-                // flattened notes
-            if( rule > FLATTEN && rule < FLATTEN + 8 )
-            {
-                rule = rule - FLATTEN;
-                pitch = getInterval(rule, tones);
-                pitch = pitch.transpose(-1);
-            }   // sharpened notes
-            else if( rule > SHARPEN && rule < SHARPEN + 8 )
-            {
-                rule = rule - SHARPEN;
-                pitch = getInterval(rule, tones);
-                pitch = pitch.transpose(1);
-            }
+                NoteSymbol tonic =
+                        NoteSymbol.makeNoteSymbol((String) scale.first());
+
+                String scaleType =
+                        Advisor.concatListWithSpaces(scale.rest());
+
+                ScaleForm scaleForm = Advisor.getScale(scaleType);
+
+                Polylist tones = scaleForm.getSpell(tonic);
+                tones = NoteSymbol.transposeNoteSymbolList(tones, rise);
+                tones = tones.reverse().rest().reverse();
+
+                Polylist seconds = getIntervals(2, tones, lastNote);
+                Polylist thirds = getIntervals(3, tones, lastNote);
+                tones = seconds.append(thirds);
+
+                if( tones.length() > 1 )
+                  {
+                    tones = lastNote.enhDrop(tones);
+                  }
+                melodySymbol = (NoteSymbol) getRandomItem(tones);
+
+
+                break;
+              }
+
+            case APPROACH:
+              {
+                NoteSymbol noteSymbol = new NoteSymbol(nextChord.getBass());
+                Polylist approach = Polylist.list(noteSymbol.transpose(1),
+                                                  noteSymbol.transpose(-1));
+                if( approach.length() > 1 )
+                  {
+                    approach = lastNote.enhDrop(approach);
+                  }
+
+                melodySymbol = (NoteSymbol) getRandomItem(approach);
+                break;
+              }
+
+            case REST:
+              {
+                melodySymbol = NoteSymbol.makeNoteSymbol("r");
+                break;
+              }
+
+            case EQUAL:
+              {
+                melodySymbol = placePitch(null, lastNote, rule);
+                break;
+              }
+
+            default:
+              {                             // higher than 99 means flat/sharp
+                if( (rule > 0 && rule < 8) || rule > 99 )
+                  {
+                    Polylist scales = (Polylist) chordForm.getScales();
+
+                    if( scales == null || scales.isEmpty() )
+                      {
+                        Polylist chordTones =
+                                (Polylist) chordForm.getSpell(chordRoot, key);
+                        if( chordTones.length() > 1 )
+                          {
+                            chordTones = lastNote.enhDrop(chordTones);
+                          }
+                        melodySymbol = (NoteSymbol) getRandomItem(chordTones);
+                        break;
+                      }
+
+                    Polylist scale = (Polylist) scales.first();
+
+                    NoteSymbol tonic =
+                            NoteSymbol.makeNoteSymbol((String) scale.first());
+
+                    String scaleType =
+                            Advisor.concatListWithSpaces(scale.rest());
+
+                    ScaleForm scaleForm = Advisor.getScale(scaleType);
+
+                    Polylist tones = scaleForm.getSpell(tonic);
+                    tones = NoteSymbol.transposeNoteSymbolList(tones, rise);
+                    tones = tones.reverse().rest().reverse();
+
+                    // flattened notes
+                    if( rule > FLATTEN && rule < FLATTEN + 8 )
+                      {
+                        rule = rule - FLATTEN;
+                        NoteSymbol noteSymbol = getInterval(rule, tones);
+                        melodySymbol = noteSymbol.transpose(-1);
+                      }   // sharpened notes
+                    else if( rule > SHARPEN && rule < SHARPEN + 8 )
+                      {
+                        rule = rule - SHARPEN;
+                        NoteSymbol noteSymbol = getInterval(rule, tones);
+                        melodySymbol = noteSymbol.transpose(1);
+                      }
+                    else
+                      {
+                        melodySymbol = getInterval(rule, tones);
+                      }
+                  }
+                else
+                  {
+                    melodySymbol = new NoteSymbol(chord.getBass());
+                  }
+
+                break;
+              }
+
+          }
+        if( melodySymbol != null )
+          {
+            if( melodySymbol instanceof NoteSymbol )
+              {
+                NoteSymbol noteSymbol = (NoteSymbol) melodySymbol;
+
+                if( !noteSymbol.isRest() && rule != EQUAL )
+                  {
+                    // System.out.println("Original melodySymbol is " + melodySymbol.getMIDI() );
+
+                    // Why -24??
+
+                    noteSymbol = noteSymbol.transpose(-24);
+                    //pitch = placePitchNear(melodySymbol, lastNote, style);
+
+                    if( modifier.equals("U") )
+                      {
+                        noteSymbol = placePitch(noteSymbol, lastNote, UP);
+                      }
+                    else if( modifier.equals("D") )
+                      {
+                        noteSymbol = placePitch(noteSymbol, lastNote, DOWN);
+                      }
+                    else
+                      {
+                        noteSymbol = placePitchNear(noteSymbol, lastNote, style);
+                        noteSymbol = pressure(noteSymbol, style);
+                      }
+                  }
+
+                NoteSymbol note = new NoteSymbol(
+                        noteSymbol.getPitchClass(),
+                        noteSymbol.getOctave(),
+                        Duration.getDuration0(duration),
+                        volume);
+
+                bassLine = bassLine.cons(note);
+
+                if( !note.isRest() )
+                  {
+                    lastNote = note;
+                  }
+              }
+            else if( melodySymbol instanceof VolumeSymbol )
+              {
+                bassLine = bassLine.cons(melodySymbol);
+              }
             else
-            {
-              pitch = getInterval(rule, tones);
-            }
-           }
-          else
-            {
-            pitch = new NoteSymbol(chord.getBass());
-            }
-
-          break;
+              {
+                assert false;
+              }
           }
-
-        }
-if( pitch != null )
-  {
-      if( !pitch.isRest() && rule != EQUAL )
-        {
-         // System.out.println("Original pitch is " + pitch.getMIDI() );
-
-          // Why -24??
-
-          pitch = pitch.transpose(-24);
-          //pitch = placePitchNear(pitch, lastNote, style);
-
-        if( modifier.equals("U") )
-          {
-          pitch = placePitch(pitch, lastNote, UP);
-          }
-         else if( modifier.equals("D") )
-          {
-          pitch = placePitch(pitch, lastNote, DOWN);
-          }
-         else
-          {
-          pitch = placePitchNear(pitch, lastNote, style);
-          pitch = pressure(pitch, style);
-          }
-        }
-
-      NoteSymbol note = new NoteSymbol(
-              pitch.getPitchClass(),
-              pitch.getOctave(),
-              Duration.getDuration0(duration),
-              volume);
-
-      bassLine = bassLine.cons(note);
-      
-      if( !note.isRest() )
-        {
-        lastNote = note;
-        }
-     }
       }
     return bassLine.reverse();
-    }
+  }
 
   /**
    * Returns a random item from a given Polylist.
@@ -601,6 +624,8 @@ if( pitch != null )
     
     return buffer.toPolylist();
     }
+  
+  
   /**
    * Takes a list of notes and an index interval and returns the
    * NoteSymbol at that index.
@@ -614,6 +639,7 @@ if( pitch != null )
     return (NoteSymbol)notes.nth(interval);
     }
 
+  
   /**
    * Returns the notes that are a certaing index interval away from a given
    * root.
@@ -649,15 +675,14 @@ if( pitch != null )
     }
 
 
-
   /**
-   * Takes a pitch NoteSymbol and a base NoteSymbol and transposes the
-   * pitch to be within the octave above or below the base depending on
+   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
+   * melodySymbol to be within the octave above or below the base depending on
    * the indicator passed in.
-   * @param pitch     a NoteSymbol that is the pitch to place
+   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
    * @param base      a NoteSymbol that is the base note
    * @param indicator  an int determining direction of placement
-   * @return a NoteSymbol that is the placed pitch
+   * @return a NoteSymbol that is the placed melodySymbol
    */
   public static NoteSymbol placePitch(NoteSymbol pitch,
                                       NoteSymbol base,
@@ -683,13 +708,12 @@ if( pitch != null )
     }
 
 
-
   /**
-   * Takes a pitch NoteSymbol and a base NoteSymbol and transposes the
-   * pitch to be within the octave above the base.
-   * @param pitch     a NoteSymbol that is the pitch to place
+   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
+   * melodySymbol to be within the octave above the base.
+   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
    * @param base      a NoteSymbol that is the base note
-   * @return a NoteSymbol that is the placed pitch
+   * @return a NoteSymbol that is the placed melodySymbol
    */
   public static NoteSymbol placePitchAbove(NoteSymbol pitch,
                                            NoteSymbol base)
@@ -698,29 +722,31 @@ if( pitch != null )
     return base.transpose(semitones);
     }
 
+  
   /**
-   * Takes a pitch NoteSymbol and a base NoteSymbol and transposes the
-   * pitch to be within the octave below the base.
-   * @param pitch     a NoteSymbol that is the pitch to place
+   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
+   * melodySymbol to be within the octave below the base.
+   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
    * @param base      a NoteSymbol that is the base note
-   * @return a NoteSymbol that is the placed pitch
+   * @return a NoteSymbol that is the placed melodySymbol
    */
   public static NoteSymbol placePitchBelow(NoteSymbol pitch,
                                            NoteSymbol base)
     {
-    // Note the role reversal of pitch and base from the previous method
+    // Note the role reversal of melodySymbol and base from the previous method
     int semitones = pitch.getSemitonesAbove(base);
     return base.transpose(-semitones);
     }
 
+  
   /**
-   * Takes a pitch NoteSymbol and a base NoteSymbol and transposes the
-   * pitch to be near the base and within the given range.
-   * @param pitch     a NoteSymbol that is the pitch to place
+   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
+   * melodySymbol to be near the base and within the given range.
+   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
    * @param base      a NoteSymbol that is the base note
    * @param low       a NoteSymbol that is the lower range
    * @param high      a NoteSymbol that is the upper range
-   * @return a NoteSymbol that is the placed pitch
+   * @return a NoteSymbol that is the placed melodySymbol
    */
   public static NoteSymbol placePitchNear(NoteSymbol pitch,
                                           NoteSymbol base,
@@ -728,7 +754,7 @@ if( pitch != null )
     {
     NoteSymbol low = style.getBassLow();
     NoteSymbol high = style.getBassHigh();
-    //System.out.println("placePitchNear " + pitch + ", style = " + style + ", low = " + low + ", base = " + base + ", high = " + high);
+    //System.out.println("placePitchNear " + melodySymbol + ", style = " + style + ", low = " + low + ", base = " + base + ", high = " + high);
     int rise = base.getSemitonesAbove(pitch);
     NoteSymbol note;
 
@@ -738,21 +764,21 @@ if( pitch != null )
 
     if( drop_down )
       {
-      note = placePitchBelow(pitch, base);
+      note = placePitchBelow(melodySymbol, base);
       if( note.getMIDI() < low.getMIDI() - MARGIN )
         {
         note = note.transpose(12);
-        // note = placePitchAbove(pitch, base);
+        // note = placePitchAbove(melodySymbol, base);
         }
      //System.out.println("base = " + base + ", rise = " + rise + ", note = " + note + " below");
      }
     else
       {
-      note = placePitchAbove(pitch, base);
+      note = placePitchAbove(melodySymbol, base);
       if( note.getMIDI() > high.getMIDI() + MARGIN )
         {
         note = note.transpose(-12);
-        // note = placePitchBelow(pitch, base);
+        // note = placePitchBelow(melodySymbol, base);
         }
      //System.out.println("base = " + base + ", rise = " + rise + ", note = " + note + " above");
       }*/
@@ -775,20 +801,19 @@ if( pitch != null )
        else if( pitch.getMIDI() > base.getMIDI() + MARGIN )
         pitch = pitch.transpose(-12);
       }
-      //  System.out.println("PITCH IS " + pitch.getMIDI());
+      //  System.out.println("PITCH IS " + melodySymbol.getMIDI());
       }
       return pitch;
     }
 
 
-
   /**
-   * Takes a pitch NoteSymbol and a range and transposes the
-   * pitch probabilistically based on its position in the range.
-   * @param pitch     a NoteSymbol that is the pitch to place
+   * Takes a melodySymbol NoteSymbol and a range and transposes the
+   * melodySymbol probabilistically based on its position in the range.
+   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
    * @param low       a NoteSymbol that is the lower range
    * @param high      a NoteSymbol that is the upper range
-   * @return a NoteSymbol that is the placed pitch
+   * @return a NoteSymbol that is the placed melodySymbol
    */
   public static NoteSymbol pressure( NoteSymbol pitch, Style style )
     {
@@ -804,7 +829,7 @@ if( pitch != null )
    NoteSymbol softmarginhigh = center.transpose(SOFTMARGIN);
    NoteSymbol softmarginlow = center.transpose(-SOFTMARGIN);
 
-   // take probability linearly based on pitch position in margins
+   // take probability linearly based on melodySymbol position in margins
    if( pitch.getMIDI() > softmarginhigh.getMIDI() ) 
     {
     int numerator = pitch.getMIDI() - softmarginhigh.getMIDI();
@@ -829,7 +854,7 @@ if( pitch != null )
      pitch = pitch.transpose(12);
      }
     }
-    //System.out.println("New pitch is " + pitch.getMIDI());
+    //System.out.println("New melodySymbol is " + melodySymbol.getMIDI());
     return pitch;
    }
 

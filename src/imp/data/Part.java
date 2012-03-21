@@ -194,7 +194,7 @@ public class Part implements Constants, Serializable {
     }
 
     /**
-     * Sets the volume for this Part.
+     * Sets the current volume for this Part.
      * @param volume    an int representing the volume
      */
     public void setVolume(int volume) {

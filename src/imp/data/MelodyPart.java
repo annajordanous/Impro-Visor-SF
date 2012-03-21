@@ -146,6 +146,7 @@ public class MelodyPart
             }
         }
         addUnit(note);
+        note.setVolume(getVolume());
     }
 
   /**
