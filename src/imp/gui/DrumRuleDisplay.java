@@ -87,6 +87,8 @@ private void initialize(String rule, String instrument)
 
     setRuleText(rule);
     setInstrument(instrument);
+    
+    //System.out.println("rule = " + getRule());
   }
 
 //Accessors:

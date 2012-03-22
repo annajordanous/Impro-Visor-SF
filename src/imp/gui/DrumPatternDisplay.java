@@ -113,7 +113,9 @@ public int getTitleNumber()
 
 /**
  * @param requireChecked means that the instrument must be checked in the
- * StyleEditor in order for this pattern to be non-empty.
+ * StyleEditor in order for this pattern to be non-empty. For example,
+ * checked is not required for count-in, so this method is called with argument
+ * false in that case.
  * @return all legal drum rules and weight formatted with the drum-pattern
  * syntax used by the style classes
  */
@@ -135,7 +137,7 @@ public String getPattern(boolean requireChecked)
 
             int instrumentNumber = d.getInstrumentNumber();
 
-            if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
+            if( !requireChecked || styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
               {
                 String rep = d.getRule();
                 if( d.checkStatus() )
@@ -409,9 +411,9 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
       {
         try
           {
-            String p = this.getPattern(false);
+            String p = this.getPattern(false); 
+            // false means checked instrument not required.
             Polylist rule = Notate.parseListFromString(p);
-            //System.out.println("pattern = " + p + "\nrule = " + rule);
             if( rule.isEmpty() )
               {
                 cannotPlay();
@@ -430,15 +432,14 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
 
             String chord = "NC"; // styleEditor.getChord();
 
-            ChordPart c = new ChordPart();
+            ChordPart chordPart = new ChordPart();
 
             boolean muteChord = styleEditor.isChordMuted();
 
             int duration = tempStyle.getDrumPatternDuration();
-            c.addChord(chord, duration);
-            c.setStyle(tempStyle);
-
-            return c;
+            chordPart.addChord(chord, duration);
+            chordPart.setStyle(tempStyle);
+            return chordPart;
           }
         catch( Exception e )
           {

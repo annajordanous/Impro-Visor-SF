@@ -1288,7 +1288,7 @@ public class MelodyPart
     {
     // insertion sort pitches into sorted linked list
 
-    LinkedList ordered = new LinkedList();
+    LinkedList<Note> ordered = new LinkedList<Note>();
     for( int i = first; i <= last; i++ )
       {
       Unit unit = getUnit(i);
@@ -1299,11 +1299,11 @@ public class MelodyPart
         if( pitch != REST )
           {
           boolean found = false;
-          ListIterator it = ordered.listIterator(0);
+          ListIterator<Note> it = ordered.listIterator(0);
           int position = 0;
           while( !found && it.hasNext() )
             {
-            Note element = (Note)it.next();
+            Note element = it.next();
             int thatPitch = element.getPitch();
             if( pitch < thatPitch )
               {
