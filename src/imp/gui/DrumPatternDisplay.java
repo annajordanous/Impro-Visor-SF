@@ -30,7 +30,6 @@ import imp.data.Style;
 import imp.util.ErrorLog;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 import polya.Polylist;
@@ -45,14 +44,10 @@ public class DrumPatternDisplay
 {
 //The number added to the title of this object to help the user distinguish it from others.
 private int titleNumber = 0;
-//The dimension to use when the pane is expanded.  By default, it is the size of the entire panel
-private Dimension expandedDimension;
-//The dimension to use when the pane is collapsed.  By default, it is the size of the northern panel's preferred size.
-private Dimension collapsedDimension;
+
 //The currently selected DrumRuleDisplay
 private DrumRuleDisplay curSelectedRule = null;
-//The previously selected DrumRuleDisplay
-private DrumRuleDisplay lastSelectedRule = null;
+
 //True if the pattern information is displayed, false otherwise
 boolean isExpanded = false;
 private ArrayList<DrumRuleDisplay> rules = new ArrayList<DrumRuleDisplay>();
@@ -103,9 +98,6 @@ private void initialize(float weight)
 
     setWeight(weight);
 
-    //Initializes attributes needed for collapsing panes and collapses the BassPatternDisplay object.
-    expandedDimension = this.getPreferredSize();
-
     checkStatus();
   }
 
@@ -128,7 +120,9 @@ public int getTitleNumber()
 
 public String getPattern(boolean requireChecked)
   {
-    String pattern = "(drum-pattern ";
+    StringBuilder buffer = new StringBuilder();
+    
+    buffer.append("(drum-pattern ");
 
     for( Iterator<DrumRuleDisplay> e = rules.iterator(); e.hasNext(); )
       {
@@ -146,7 +140,8 @@ public String getPattern(boolean requireChecked)
                 String rep = d.getRule();
                 if( d.checkStatus() )
                   {
-                    pattern += "\n\t\t" + rep;
+                    buffer.append("\n\t\t"); // pretty-printing
+                    buffer.append(rep);
                   }
                 else
                   {
@@ -158,8 +153,11 @@ public String getPattern(boolean requireChecked)
           {
           }
       }
-    pattern += "\n\t\t(weight " + getWeight() + ")\n\t)";
-    return pattern;
+    buffer.append("\n\t\t(weight ");
+    buffer.append(getWeight());
+    buffer.append(")\n\t)");
+    
+    return buffer.toString();
   }
 
 /**

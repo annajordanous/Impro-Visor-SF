@@ -146,7 +146,7 @@ public class MelodyPart
             }
         }
         addUnit(note);
-        note.setVolume(getVolume());
+        //System.out.println("melody part gets note " + note);
     }
 
   /**
@@ -212,35 +212,7 @@ public class MelodyPart
       Part newMeasures = new Part(measuresToAdd * measureLength);
       (new InsertPartCommand(parent, this, size, newMeasures)).execute();
       }
-
-//        Note currNote = getNote(slotIndex);
-//        int currLength = currNote.getRhythmValue();
-//        if(currNote != null && currLength > origLength) {
-//            // if current note is longer than this note, shorten the current note to make room
-//            int diff = currLength - origLength;
-//            Note newNote = currNote.copy();
-//            newNote.setRhythmValue(diff);
-//            setNote(slotIndex + origLength, newNote);
-//            setNote(slotIndex, note);
-//            return;
-//        }
-//        
-//        int prevIndex = getPrevIndex(slotIndex);
-//        Note prevNote = getNote(prevIndex);
-//        if(prevNote != null) {
-//            int prevLength = prevNote.getRhythmValue();
-//            if(prevLength - (slotIndex - prevIndex) < origLength) {
-//                // make room if needed by setting rests at the locations of notes that will be covered by the new note
-//                setRest(slotIndex);
-//                int freeSlots = getFreeSlots(slotIndex);
-//                int nextIndex = slotIndex + freeSlots;
-//                while(freeSlots < origLength) {
-//                    setRest(slotIndex + freeSlots);
-//                    freeSlots = getFreeSlots(slotIndex);
-//                }
-//            }
-//        }
-//        
+       
     // make room if needed by setting rests at the locations of notes that will be covered by the new note
     setRest(slotIndex);
     int freeSlots = getFreeSlots(slotIndex);
@@ -267,6 +239,7 @@ public class MelodyPart
       }
     }
 
+  
   /**
    * Sets the specified slot to the given rest
    * @param slotIndex         the index of the slot to set at
@@ -276,29 +249,9 @@ public class MelodyPart
     {
     Trace.log(2, "setRest at " + slotIndex + " to " + rest);
     setUnit(slotIndex, rest);
-
-    /*
-    if(getPrevNote(slotIndex) != null
-    && getPrevNote(slotIndex).isRest()
-    && getNextNote(slotIndex) != null
-    && getNextNote(slotIndex).isRest()) {
-    delUnit(slotIndex);
-    delUnit(getNextIndex(slotIndex));
-    }
-    else if(getPrevNote(slotIndex) != null
-    && getPrevNote(slotIndex).isRest()) {
-    delUnit(slotIndex);
-    }
-    else if(getNextNote(slotIndex) != null
-    && getNextNote(slotIndex).isRest()) {
-    setUnit(slotIndex, rest);
-    delUnit(getNextIndex(slotIndex));
-    }
-    else
-    setUnit(slotIndex, rest);
-     */
     }
 
+  
   /**
    * sets a Rest at the given slot index
    * @param slotIndex         the index of the slot to set at
@@ -308,6 +261,7 @@ public class MelodyPart
     setRest(slotIndex, new Rest());
     }
 
+  
   /**
    * Returns the note at the given slot index
    * @param slotIndex         the index of the note to get
@@ -318,6 +272,7 @@ public class MelodyPart
     return (Note)getUnit(slotIndex);
     }
 
+  
   /**
    * Returns the Note after the indicated slot index.
    * @param slotIndex         the index to start searching at
@@ -328,6 +283,7 @@ public class MelodyPart
     return (Note)getNextUnit(slotIndex);
     }
 
+  
   /**
    * Returns the Note before the indicated slot index.
    * @param slotIndex         the index to start searching at
@@ -338,6 +294,7 @@ public class MelodyPart
     return (Note)getPrevUnit(slotIndex);
     }
 
+  
   /**
    * Gets the lowest pitch in the MelodyPart
    * @return int              lowest pitch
@@ -347,6 +304,7 @@ public class MelodyPart
     return lowestPitch;
     }
 
+  
   /**
    * Gets the highest pitch in the MelodyPart
    * @return int              highest pitch
@@ -356,6 +314,7 @@ public class MelodyPart
     return highestPitch;
     }
 
+  
   /**
    * Returns the number of slots from the index to the next Note.
    * @param index     the index to get the free slots
@@ -385,6 +344,7 @@ public class MelodyPart
     return size - index;
     }
 
+  
   public int getFreeSlotsFromEnd()
     {
     int slotIndex = getSize() - 1;
@@ -414,6 +374,7 @@ public class MelodyPart
     return restSlots;
     }
 
+  
   public synchronized void mergeFreeSlots(int index)
     {
     if( index < 0 )
@@ -455,6 +416,7 @@ public class MelodyPart
       }
     }
 
+  
   /**
    * Returns an exact copy of this Part
    * @return Part   copy
@@ -465,23 +427,6 @@ public class MelodyPart
     Trace.log(3, "copying melody part of size " + size);
 
     MelodyPart newPart = new MelodyPart(size);
-
-    /*
-    PartIterator i = iterator();
-    try
-      {
-      while( i.hasNext() )
-        {
-        newPart.slots.set(i.nextIndex(), i.next().copy());
-        }
-      }
-    catch(Exception e)
-      {
-      // Both NullpointerExecption and ArrayIndexOutOfBoundsException have occurred
-      // here. This should be investigated.
-      // For now, let's use it as an early exit.
-      }
-*/
     
        for( int i =  0; i < size; i++ )
         {
@@ -930,7 +875,6 @@ public class MelodyPart
   public long render(Sequence seq, 
                      int ch, 
                      long time,
-                     int volume,
                      Track track,
                      int transposition, 
                      int endLimitIndex)
@@ -964,7 +908,7 @@ public class MelodyPart
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
       Note note = (Note)i.next();
-      time = note.render(seq, track, time, ch, volume, transposition);
+      time = note.render(seq, track, time, ch, transposition);
       }
 
     return time;
@@ -1469,14 +1413,7 @@ public class MelodyPart
             if(n == null) return true; //there is no next note
             if(!n.isRest()) return false;
         }
-        //for(int i = selectionStart; i < selectionStart + numSlots; i++) {
-        //    Object ob = slots.elementAt(i);
-        //    if(ob instanceof Note) {
-        //        Note n = (Note)ob;
-        //        if(!n.isRest())
-        //            return false;
-        //    }
-        //}
+
         return true;
     }
  
@@ -1487,11 +1424,21 @@ public class MelodyPart
   
   int n = slots.size();
   
+  int currentVolume = 127;
+  
   for( int i = 0; i < n; i++ )
     {
     Note note = (Note)slots.get(i);
     if( note != null )
       {
+      //System.out.println("note volume = " + note.getVolume());
+      if( note.getVolume() != currentVolume )
+        {
+          currentVolume = note.getVolume();
+          buffer.append("v");
+          buffer.append(currentVolume);
+          buffer.append(" ");
+        }
       buffer.append(note.toLeadsheet());
       buffer.append(" ");
       }

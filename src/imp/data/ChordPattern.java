@@ -251,14 +251,14 @@ public ChordPatternVoiced applyRules(ChordSymbol chord, Polylist lastChord)
         durationMelody.addNote(new Rest(Duration.getDuration(duration)));
          
         Polylist voicing = findVoicing(chord, lastChord, style);
-//System.out.println("findVoicing " + chord + " vs " + lastChord + " gives " + (voicing == null ? "null" : voicing));
+
         if( voicing == null )
           {
           voicing = Polylist.nil;
           //break;
           }
 
-        chordLine.add(voicing.cons("v" + volume));
+        chordLine.add(voicing.cons(new VolumeSymbol(volume)));
         lastChord = voicing;
         break;
         }

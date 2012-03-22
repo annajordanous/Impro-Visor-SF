@@ -61,6 +61,7 @@ private Polylist ruleAsList;
  * Construct a DrumRule Representation from an S-expression
  * @param raw 
  */
+
 public DrumRuleRep(Polylist raw)
   {
     assert raw.nonEmpty();
@@ -95,7 +96,9 @@ public DrumRuleRep(Polylist raw)
 
             char type = s.charAt(0);
             
-            assert type == 'X' || type == 'R' || type == 'V';
+            assert type == DrumPattern.DRUM_STRIKE 
+                || type == DrumPattern.DRUM_REST 
+                || type == DrumPattern.DRUM_VOLUME;
 
             String suffix = s.substring(1);
             
@@ -136,11 +139,15 @@ public int getDuration()
       {
         switch( element.getType() )
           {
-            case 'X':
-            case 'R':
+            case DrumPattern.DRUM_STRIKE :
+                // fall through
+            case DrumPattern.DRUM_REST:
                 duration += Duration.getDuration(element.getSuffix());
-            case 'V':
+                break;
+                
+            case DrumPattern.DRUM_VOLUME:
                 // ignore volume
+                break;
           }
       }
     

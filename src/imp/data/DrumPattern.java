@@ -49,7 +49,7 @@ private ArrayList<DrumRuleRep> drums;
  * Symbols used in drum patterns
  */
 
-public static final char DRUM_HIT    = 'X';
+public static final char DRUM_STRIKE = 'X';
 public static final char DRUM_REST   = 'R';
 public static final char DRUM_VOLUME = 'V';
 
@@ -131,6 +131,21 @@ public static DrumPattern makeDrumPattern(Polylist L)
   }
 
 
+public static boolean isValidDrumPatternChar(char x)
+  {
+   switch( x )
+     {
+       case DRUM_STRIKE: 
+       case DRUM_REST: 
+       case DRUM_VOLUME: 
+           return true;
+           
+       default:
+           return false;
+     }
+  }
+
+
 /**
  * Adds rules and durations for a drum to this DrumPattern. Note that there
  * should only be one rule for a given instrument in a pattern. Hence we will
@@ -204,8 +219,8 @@ public DrumLine applyRules()
 
     for( DrumRuleRep rep: drums )
       {
-        MelodyPart m = new MelodyPart();
-        int pitch = rep.getInstrument();
+        MelodyPart melodyPart = new MelodyPart();
+        int drumInstrument = rep.getInstrument();
         
         int localVolume = 127;
 
@@ -213,12 +228,12 @@ public DrumLine applyRules()
           {
             switch( element.getType() )
               {
-                case DRUM_HIT:
+                case DRUM_STRIKE:
                   {
                    int dur = Duration.getDuration(element.getSuffix());
-                   Note note = new Note(pitch, dur);
+                   Note note = new Note(drumInstrument, dur);
                    note.setVolume(localVolume);
-                   m.addNote(note);
+                   melodyPart.addNote(note);
                    
                    break;
                   }
@@ -226,7 +241,7 @@ public DrumLine applyRules()
                 case DRUM_REST:
                   {
                    int dur = Duration.getDuration(element.getSuffix());
-                   m.addNote(new Rest(dur));
+                   melodyPart.addNote(new Rest(dur));
                    break;
                   }
                     
@@ -236,10 +251,9 @@ public DrumLine applyRules()
                    break;
                   }
               }
-            
           }
         
-        drumline.add(m);
+        drumline.add(melodyPart);
       }
 
     return drumline;

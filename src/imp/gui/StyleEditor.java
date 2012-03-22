@@ -5865,7 +5865,7 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
   {
     Object contents = styleTable.getValueAt(styleEditorRow, col);
 
-    System.out.println("exporting pattern " + contents + ".");    
+    //System.out.println("exporting bass pattern " + contents + ".");    
 
     StringReader patternReader = new StringReader(contents.toString());
 
