@@ -1,5 +1,5 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.11,
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.12,
 from Prof. Bob Keller at Harvey Mudd College, 6 March 2012.
 
 Release notes for this version may be found at the end.
@@ -81,6 +81,21 @@ Harvey Mudd College
 Claremont, CA 91711
 
 keller@cs.hmc.edu
+
+===============================================================================
+
+Release notes for Impro-Visor 5.12
+
+Added volume specification options to style specifications.
+
+Changed Style Editor and Piano Roll Editor to accomodate volumes.
+
+Now the percussion instrument names can be names rather than numbers as before.
+Numbers are still accepted, but when style files are written, names will be
+used.
+
+Updated most style files to use names for percussion instruments.
+
 
 ===============================================================================
 

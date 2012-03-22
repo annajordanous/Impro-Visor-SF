@@ -1691,9 +1691,15 @@ public void playBassColumn()
         RepresentativeDrumRules.DrumRule curRule = theRules.get(j);
         String rule = curRule.getDisplayRule();
         int instrumentNumber = curRule.getInstrumentNumber();
+        
         String instrument = MIDIBeast.getDrumInstrumentName(instrumentNumber);
-        DrumRuleDisplay newRule = new DrumRuleDisplay(rule, instrument,
-                notate, cm, newPat, this);
+        
+        DrumRuleDisplay newRule = new DrumRuleDisplay(rule, 
+                                                      instrument,
+                                                      notate, 
+                                                      cm, 
+                                                      newPat, 
+                                                      this);
         newPat.addRule(newRule);
 
         // Find row of instrument in table, or create a new rorw

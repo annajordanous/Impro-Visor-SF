@@ -106,8 +106,8 @@ public String getDisplayText()
 
 public String getRule()
   {
-
-    String rule = "(drum " + getInstrumentNumber() + " " + getDisplayText() + ")";
+    String instrumentName = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
+    String rule = "(drum " + instrumentName + " " + getDisplayText() + ")";
 
     //System.out.println("rule = " + rule);
 

@@ -141,7 +141,7 @@ public String getPattern(boolean requireChecked)
 
             int instrumentNumber = d.getInstrumentNumber();
 
-            if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) ) // NOT WORKING
+            if( styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
               {
                 String rep = d.getRule();
                 if( d.checkStatus() )
@@ -465,7 +465,7 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
     canPlay();
-System.out.println("playing " + this);
+//System.out.println("playing " + this);
     if( checkStatus() )
       {
         try

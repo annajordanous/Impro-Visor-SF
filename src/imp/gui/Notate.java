@@ -8828,13 +8828,11 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
 
   public void reloadStyles()
     {
-
     reCaptureCurrentStyle();
 
     styleListModel.reset();
 
     sectionListModel.reset();
-
     }
 
   public void reCaptureCurrentStyle()
@@ -8939,20 +8937,17 @@ private void setSectionParameters()
   {
       if( lickgenFrame.toCriticSelected() )
         {
-
         getCurrentStave().lockSelectionWidth(16 * EIGHTH);
 
         getCurrentStave().repaint();
-
         }
       else
         {
-
         getCurrentStave().unlockSelectionWidth();
-
         }
-
     }
+    
+    
     private void stepInputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepInputBtnActionPerformed
       boolean selected = stepInputBtn.isSelected();
       if( selected )

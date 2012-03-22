@@ -1126,7 +1126,7 @@ private Polylist makeChordline(
             // render each NoteSymbol in the currentChord
             if( voicing instanceof Polylist )
               {
-                Polylist v = (Polylist) voicing;
+                Polylist v = voicing;
                 currentChord.setVoicing(v);
                 Polylist L = v;
                 
