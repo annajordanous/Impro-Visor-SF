@@ -143,7 +143,60 @@ public class MIDIBeast{
           "Open Cuica", 
           "Mute Triangle", 
           "Open Triangle"};
+
+                /**
+	 * Thes names are used in style files, so that spaces are avoided.
+	 */
+	public static final String[] spacelessDrumName = {
+          "Acoustic_Bass_Drum", 
+          "Bass_Drum_1", 
+          "Side_Stick", 
+          "Acoustic_Snare",
+	  "Hand_Clap", 
+          "Electric_Snare", 	
+          "Low_Floor_Tom", 
+          "Closed_Hi-Hat", 
+          "High_Floor_Tom", 
+          "Pedal_Hi-Hat",
+          "Low_Tom", 
+          "Open_Hi-Hat", 
+          "Low-Mid_Tom", 
+          "Hi-Mid_Tom", 
+          "Crash_Cymbal_1", 
+          "High_Tom", 
+          "Ride_Cymbal_1",
+          "Chinese_Cymbal", 
+          "Ride_Bell", 
+          "Tambourine", 
+          "Splash_Cymbal", 
+          "Cowbell", 
+          "Crash_Cymbal_2", 
+	  "Vibraslap", 
+          "Ride_Cymbal_2", 
+          "Hi_Bongo", 
+          "Low_Bongo", 
+          "Mute_Hi_Conga", 
+          "Open_Hi_Conga",
+	  "Low_Conga", 
+          "High_Timbale", 
+          "Low_Timbale", 
+          "High_Agogo", 
+          "Low_Agogo", 
+          "Cabasa", 
+          "Maracas",
+	  "Short_Whistle", 
+          "Long_Whistle", 
+          "Short_Guiro", 
+          "Long_Guiro", 
+          "Claves", 
+          "Hi_Wood_Block",
+	  "Low_Wood_Block", 
+          "Mute_Cuica", 
+          "Open_Cuica", 
+          "Mute_Triangle", 
+          "Open_Triangle"};
         
+
 
 	/**
          *@param String midiFile
@@ -406,7 +459,32 @@ public class MIDIBeast{
                 //System.out.println("instrument named " + instrumentName + " not found");
 		return -1;
 	}
-	
+
+ 
+
+public static String spacelessDrumNameFromNumber(int number)
+  {
+    int index = number-35;
+    
+    if( index < 0 || index >= spacelessDrumName.length )
+      {
+        return "Unknown";
+      }
+    
+    return spacelessDrumName[index];
+  }
+
+public static int numberFromSpacelessDrumName(String name)
+  {
+    for( int index = 0; index < spacelessDrumName.length; index++ )
+      {
+        if( name.equals(spacelessDrumName[index]) )
+          {
+            return index + 35;
+          }
+      }
+    return -1; // not found
+  }
 	/**
          *@param num
          *Given an integer MIDI instrument number, this function returns the 

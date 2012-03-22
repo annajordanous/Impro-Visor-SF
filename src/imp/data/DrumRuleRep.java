@@ -66,10 +66,19 @@ public DrumRuleRep(Polylist raw)
     assert raw.nonEmpty();
 
     Object first = raw.first();
-
-    assert first instanceof Long;
-
-    drumNumber = ((Long) first).intValue();
+    
+    if( first instanceof Long )
+      {
+        drumNumber = ((Long) first).intValue();
+      }
+    else if( first instanceof String )
+      {
+        drumNumber = MIDIBeast.numberFromSpacelessDrumName((String)first);
+      }
+    else
+      {
+        assert false;
+      }
 
     raw = raw.rest();
 
