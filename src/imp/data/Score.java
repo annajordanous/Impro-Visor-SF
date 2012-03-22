@@ -170,9 +170,19 @@ public class Score implements Constants, Serializable {
     
     private int roadmapLayout = 8;
     
+    
+    /**
+     * Default MIDI channels. Note that these are 1 less than how they
+     * appear to the software user.
+     */
+    
     private int DEFAULT_DRUM_CHANNEL = 9;
  
     private int DEFAULT_BASS_CHANNEL = 6;
+    
+    private int DEFAULT_CHORD_CHANNEL = 3;
+
+    private int DEFAULT_MELODY_CHANNEL = 0;
 
     /**
      * Creates an empty Score with default title, tempo, and volume.
@@ -295,7 +305,6 @@ public class Score implements Constants, Serializable {
       return activeBars;  // TEMP!
     }
     
-    private int melodyChannel = 0;
     private int chordVolume = 60;
     private int bassVolume = 60;
     private int drumVolume = 60;
@@ -418,20 +427,10 @@ public class Score implements Constants, Serializable {
         return masterVolumeMuted;
     }
     
-    public int getMelodyChannel() {
-        return melodyChannel;
-    }
-    
     public void setVolumes(MidiSynth midiSynth) {
-        Style style = getChordProg().getStyle();
-        //System.out.println("style = " + style);
-        if( style != null )
-          {
-          //System.out.println("setting volumes Bass, Drum, Chord = " + bassVolume + " " + drumVolume + " " + chordVolume);
-          midiSynth.setChannelVolume(style.getBassChannel(),  bassVolume);
-          midiSynth.setChannelVolume(style.getDrumChannel(),  drumVolume);
-          midiSynth.setChannelVolume(style.getChordChannel(), chordVolume);
-          }
+        midiSynth.setChannelVolume(getBassChannel(),  bassVolume);
+        midiSynth.setChannelVolume(getDrumChannel(),  drumVolume);
+        midiSynth.setChannelVolume(getChordChannel(), chordVolume);
         midiSynth.setChannelVolume(getMelodyChannel(), melodyVolume);
     }
     
@@ -910,14 +909,14 @@ public class Score implements Constants, Serializable {
           }
 
         new MelodyPart(len).render(seq, 
-                                   melodyChannel, 
+                                   getMelodyChannel(), 
                                    time, 
                                    melodyTrack, 
                                    transposition, 
                                    endLimitIndex);
         
         time = countInProg.render(seq, 
-                                  1, 
+                                  getDrumChannel(), 
                                   time, 
                                   chordTrack, 
                                   0, 
@@ -933,14 +932,14 @@ public class Score implements Constants, Serializable {
             // render the chord progression in parallel with each melody chorus
             
             long melTime = i.next().render(seq, 
-                                           melodyChannel,
+                                           getMelodyChannel(),
                                            time, 
                                            melodyTrack, 
                                            transposition, 
                                            endLimitIndex);
             
             long chTime = chordProg.render(seq, 
-                                           1, 
+                                           getChordChannel(),  // irrelevant?
                                            time, 
                                            chordTrack, 
                                            transposition, 
@@ -1212,6 +1211,20 @@ public int getBassChannel()
     Style style = getStyle();
     
     return style == null ? DEFAULT_BASS_CHANNEL : style.getBassChannel();
+   }
+
+public int getChordChannel()
+  {
+    Style style = getStyle();
+    
+    return style == null ? DEFAULT_CHORD_CHANNEL : style.getChordChannel();
+   }
+
+public int getMelodyChannel()
+  {
+    Style style = getStyle();
+    
+    return style == null ? DEFAULT_MELODY_CHANNEL : style.getMelodyChannel();
    }
 
 public void addChord(Chord chord)

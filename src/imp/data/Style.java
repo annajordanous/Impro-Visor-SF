@@ -126,14 +126,19 @@ public class Style
   /**
    * an int determining the MIDI channel for chords
    */
+  static private int melodyChannel = 0;
+
+  /**
+   * an int determining the MIDI channel for chords
+   */
   static private int chordChannel = 3;
 
-  /**
-   * an int determining the MIDI instrument for chords
+    /**
+   * an int determining the MIDI channel for bass
    */
-  static private int chordInstrument = 1;
+  static private int bassChannel = 6;
 
-  /**
+/**
    * an int determining the MIDI channel for drums
    */
   static private int drumChannel = 9;
@@ -144,9 +149,9 @@ public class Style
   static private int drumInstrument = 1;
 
   /**
-   * an int determining the MIDI channel for bass
+   * an int determining the MIDI instrument for chords
    */
-  static private int bassChannel = 6;
+  static private int chordInstrument = 1;
 
   /**
    * an int determining the MIDI instrument for bass
@@ -284,15 +289,6 @@ public class Style
     return voicingType;
     }
 
-  /**
-   * Gets the bass channel.
-   * @return the bass channel
-   */
-  public int getBassChannel()
-    {
-    return bassChannel;
-    }
-
   public ArrayList<BassPattern> getBP()
     {
     return bassPatterns;
@@ -338,6 +334,15 @@ public class Style
     return drumChannel;
     }
 
+    /**
+   * Gets the bass channel.
+   * @return the bass channel
+   */
+  public int getBassChannel()
+    {
+    return bassChannel;
+    }
+
   /**
    * Gets the chord channel.
    * @return the chord channel
@@ -346,6 +351,16 @@ public class Style
     {
     return chordChannel;
     }
+  
+  /**
+   * Gets the melody channel.
+   * @return the melody channel
+   */
+  public int getMelodyChannel()
+    {
+    return melodyChannel;
+    }
+
 
   /**
    * Gets the name.
@@ -1201,7 +1216,7 @@ static Polylist filterOutVolumes(Polylist L)
    * @return a Polylist of NoteSymbols to be sequenced
    */
   private void addToBassline(
-          LinkedList bassline,
+          LinkedList<MelodySymbol> bassline,
           ChordSymbol chord, 
           ChordSymbol nextChord,
           NoteSymbol previousNote, 
@@ -1271,7 +1286,7 @@ static Polylist filterOutVolumes(Polylist L)
 
       while( basslineSegment.nonEmpty() )
         {
-          bassline.add(basslineSegment.first() );
+          bassline.add((MelodySymbol)basslineSegment.first() );
           basslineSegment = basslineSegment.rest();
         }
       }
@@ -1312,6 +1327,7 @@ static Polylist filterOutVolumes(Polylist L)
 
 /**
  * Ripped from above, to allow non-style, hence no drums...
+ * This is called from SectionInfo.
  *
  * Using the Pattern objects of this Style, sequences an accompaniment for the
  * given ChordPart.
@@ -1357,7 +1373,7 @@ public long render(Sequence seq,
     Chord next = null;
     Chord prev = null;
 
-    LinkedList bassline = new LinkedList();
+    LinkedList<MelodySymbol> bassline = new LinkedList<MelodySymbol>();
 
     int index = startIndex;
     ChordSymbol chord;
