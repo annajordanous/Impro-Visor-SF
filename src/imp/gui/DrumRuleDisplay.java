@@ -48,7 +48,7 @@ private String ruleText = "";
 /**
  * Constructs a new DrumRuleDisplay JPanel with default empty rule and
  * instrument "Acoustic Bass Drum".
-     *
+ *
  */
 public DrumRuleDisplay(Notate parent, CommandManager cm, DrumPatternDisplay myParentHolder, StyleEditor styleParent)
   {
@@ -72,7 +72,7 @@ public DrumRuleDisplay(String rule, String instrument, Notate parent, CommandMan
 
 /**
  * Initializes all elements and components for the DrumRuleDisplay GUI
-     *
+ *
  */
 private void initialize(String rule, String instrument)
   {
@@ -139,7 +139,6 @@ public String getPlayRule()
 public String getInstrument()
   {
     return instrumentString;
-    //return (String) drumInstrumentBox.getSelectedItem();
   }
 
 /**
@@ -188,7 +187,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             Polylist rule = Notate.parseListFromString(r);
             if( rule.isEmpty() )
               {
-                styleEditor.setStatus("Can't play incorrect pattern");
+                styleEditor.setStatus("Can't play incorrect drum pattern " + getRule());
                 return false;
               }
             Style tempStyle = Style.makeStyle(rule);
@@ -226,23 +225,15 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
           }
         else
           {
-            styleEditor.setStatus("Can't play incorrect pattern");
-            /*
-             * ErrorLog.setDialogTitle("Can't Play");
-             * ErrorLog.log(ErrorLog.WARNING, "Unable to play the selected rule
-             * because " + errorMsgRule); ErrorLog.setDialogTitle("");
-             */
+            ErrorLog.log(ErrorLog.WARNING, "Can't play incorrect drum pattern " + getRule());
             return false;
           }
 
       }
     catch( Exception e )
       {
-        styleEditor.setStatus("Can't play incorrect pattern");
-        /*
-         * ErrorLog.setDialogTitle("Can't Play"); ErrorLog.log(ErrorLog.WARNING,
-         * "Unable to play the selected rule."); ErrorLog.setDialogTitle("");
-         */
+        ErrorLog.log(ErrorLog.WARNING, "Can't play incorrect drum pattern ");
+
         return false;
       }
     return isPlayable();
@@ -304,24 +295,17 @@ public boolean checkStatus()
         //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors         
         for( int i = 0; i < tokenizedRule.size(); i++ )
           {
-            String charString = java.lang.Character.toString(tokenizedRule.get(i).charAt(0));
-            if( !(charString.equals("X"))
-             && !(charString.equals("R"))
-             && !(charString.equals("V")) )
+            char c = tokenizedRule.get(i).charAt(0);
+            if( !DrumPattern.isValidDrumPatternChar(c) )
               {
-                cannotPlay();
+                cannotPlay("invalid character in drum pattern");
                 return false;
               }
           }
 
         if( Style.makeStyle(l) == null )
           {
-            cannotPlay();
-            return false;
-          }
-        else if( MIDIBeast.numBeatsInRule(displayText) == -1 )
-          {
-            cannotPlay();
+            cannotPlay("invalid drum pattern");
             return false;
           }
         else
@@ -331,7 +315,7 @@ public boolean checkStatus()
       }
     catch( Exception e )
       {
-        cannotPlay();
+        cannotPlay("error in drum pattern");
         return false;
       }
   }
@@ -339,7 +323,7 @@ public boolean checkStatus()
 
 public double getPatternLength()
   {
-    return DrumRuleRep.makeDrumRuleRep(getRule()).getDuration(); //Duration.getDuration(getDisplayText());
+    return DrumRuleRep.makeDrumRuleRep(getRule()).getDuration();
   }
 
 public double getBeats()

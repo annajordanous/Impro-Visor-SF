@@ -195,7 +195,20 @@ public Note(int pitch)
 
 public void setVolume(int volume)
   {
-    this.volume = volume > 127 ? 127 : (volume < 0 ? 0 : volume);
+    if( volume > 127 )
+      {
+        this.volume = 127;
+      }
+    else if( volume < 0 )
+      {
+        this.volume = 0;
+      }
+    else this.volume = volume;
+  }
+
+public int getVolume()
+  {
+    return volume;
   }
 
 /**
@@ -743,6 +756,7 @@ public Note copy()
   newNote.drawnPitch = drawnPitch;
   newNote.tied = tied;
   newNote.firstTie = firstTie;
+  newNote.volume = volume;
   return newNote;
   }
 
@@ -757,7 +771,7 @@ public String toString()
   {
   return "NOTE: [" + getPitchClassName() + ", Pitch = " + pitch +
           ", " + drawnPitch + "][Accidental = " + accidental +
-          "][RhythmValue = " + rhythmValue + "]";
+          "][RhythmValue = " + rhythmValue + "][volume = " + volume + "]";
   }
 
 
@@ -786,7 +800,6 @@ public void saveLeadsheet(BufferedWriter out, int[] metre) throws IOException
 public void saveLeadsheet(BufferedWriter out, int[] metre, boolean lineBreaks)
         throws IOException
   {
-
   String outString = toLeadsheet();
 
   Trace.log(3, "saving note to leadsheet: " + outString);
@@ -1131,25 +1144,23 @@ static int accumulateExactValue(int value, int duration, StringBuffer buffer,
  * Adds this Note at the specified time on the specified Track and
  * channel in the specified Sequence, then returns the time that a
  * sequential Note should be added.
- * @param seq       the Sequence to which to add this Note
- * @param track     the Track in the Sequence to which to add this Note
- * @param time      the time at which to start this Note
- * @param ch        the channel on which to put this Note 
- * @param volume    the volume (velocity) for on and off
- * @return long     the time that the next sequential Note, if any, should start
+ * @param seq           the Sequence to which to add this Note
+ * @param track         the Track in the Sequence to which to add this Note
+ * @param time          the time at which to start this Note
+ * @param ch            the channel on which to put this Note 
+ * @param transposition amount by which to transpose this note in semitones
  */
 
 public long render(Sequence seq, 
                    Track track, 
                    long time, 
-                   int ch,
-                   int volume, 
+                   int ch, 
                    int transposition)
         throws InvalidMidiDataException
   {
     int dur = getRhythmValue();
     long offTime = time + dur * seq.getResolution() / BEAT;
-    render(seq, track, time, offTime, ch, this.volume, transposition);
+    render(seq, track, time, offTime, ch, transposition);
     
     return offTime;
   }
@@ -1163,7 +1174,7 @@ public long render(Sequence seq,
  * @param time      the time at which to start this Note
  * @param offTime   the time at which to end this Note
  * @param ch        the channel on which to put this Note 
- * @param volume    the volume (velocity) for on and off
+ * @param transposition amount by which to transpose this note in semitones
   */
 
 public void render(Sequence seq, 
@@ -1171,18 +1182,16 @@ public void render(Sequence seq,
                    long time, 
                    long offTime,
                    int ch,
-                   int volume, 
                    int transposition)
         throws InvalidMidiDataException
   {
 
-  // To trace sequencing info:
+  // To trace rendering info:
 //  Trace.log(2, "\nchannel = " + ch 
 //             + " track = " + track 
 //             + " beat = " + time/480.0 
 //             + " pitch = " + pitch
-//             + " rhythmValue = " + rhythmValue
-//             + " volume = " + volume);
+//             + " rhythmValue = " + rhythmValue);
   
   if( pitch == REST )
     {
@@ -1207,13 +1216,13 @@ public void render(Sequence seq,
   // create a note on event at the current time
   MidiEvent evt = MidiSynth.createNoteOnEvent(ch, actualPitch, volume, time);
   track.add(evt);
-  //Trace.log(0, "adding to track " + track + " time = " + time + " note on " + " channel = " + ch + " pitch = " + actualPitch + " velocity = " + volume);
+  //Trace.log(0, " channel = " + ch + " time = " + time + " note on " + " pitch = " + actualPitch + " velocity = " + volume);
 
   // advance the time and call the note off event
 
   evt = MidiSynth.createNoteOffEvent(ch, actualPitch, volume, offTime);
   track.add(evt);
-  //Trace.log(0, "adding to track " + track + " time = " + offTime + " note off " + " channel = " + ch + " pitch = " + actualPitch + " velocity = " + volume);
+  // Trace.log(0, " channel = " + ch + " offTime = " + time + " note off " + " pitch = " + actualPitch + " velocity = " + volume);
   }
 
 }

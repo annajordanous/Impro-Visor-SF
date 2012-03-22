@@ -947,6 +947,8 @@ public class Style
       // we get a Polylist containing drum parts
       
       DrumLine drumline = pattern.applyRules();
+      
+      //System.out.println("drumline = " + drumline);
 
       // Each element of the Polylist is a drum part in the form of a MelodyPart
       // so we go through and render each element
@@ -956,7 +958,7 @@ public class Style
         d.setSwing(accompanimentSwing);
         d.setInstrument(drumInstrument);
         d.makeSwing();
-        d.render(seq, drumChannel, time, d.getVolume(), track, 0, endLimitIndex);
+        d.render(seq, drumChannel, time, track, 0, endLimitIndex);
         }
       
       time += (patternDuration * seq.getResolution()) / BEAT;
@@ -1127,7 +1129,8 @@ private Polylist makeChordline(
             if( voicing instanceof Polylist )
               {
                 Polylist v = voicing;
-                currentChord.setVoicing(v);
+                Polylist filtered = filterOutVolumes(voicing);
+                currentChord.setVoicing(filtered);
                 Polylist L = v;
                 
                 // All notes in the voicing are rendered at the same start time
@@ -1140,22 +1143,19 @@ private Polylist makeChordline(
                       NoteSymbol ns = (NoteSymbol)ob;
                       note = ns.toNote();
                       note.setRhythmValue(dur);
+                      note.setVolume(volume);  // note of chord
 //System.out.println("rendering chord note " + note + " with volume " + volume);
-                      note.render(seq, track, time, offTime, chordChannel, volume, transposition);
+                      note.render(seq, track, time, offTime, chordChannel, transposition);
                       }
-                    else if( ob instanceof String )
+                    else if( ob instanceof VolumeSymbol )
                       {
-                        // Possibly volume information
-                        String st = (String) ob;
-                        if( st.startsWith("v") )
-                          {
-                            volume = Integer.parseInt(st.substring(1));
-                          }
+                       volume = ((VolumeSymbol)ob).getVolume();
                       }
+                    
                     L = L.rest();
                   }
 
-                previousChord = v;
+                previousChord = filtered;
               }
 
             time = offTime;
@@ -1171,6 +1171,21 @@ private Polylist makeChordline(
     return previousChord;
   }
 
+
+static Polylist filterOutVolumes(Polylist L)
+  {
+    if( L.isEmpty() )
+      {
+        return L;
+      }
+    
+    if( L.first() instanceof VolumeSymbol )
+      {
+        return filterOutVolumes(L.rest());
+      }
+    
+    return filterOutVolumes(L.rest()).cons(L.first());
+  }
 
   /**
    * Using the BassPattern objects of this Style, sequences a bassline
@@ -1511,7 +1526,7 @@ public long render(Sequence seq,
             bassline.add(ns);
           }
 
-        int volume = 127;
+        int volume = MAX_VOLUME;
 
         // add each note to our bassline melody
         for( Object ob: bassline )
@@ -1519,12 +1534,14 @@ public long render(Sequence seq,
             if( ob instanceof NoteSymbol )
               {
                 NoteSymbol noteSymbol = (NoteSymbol) ob;
-                bassMelody.addNote(noteSymbol.toNote());
+                Note note = noteSymbol.toNote();
+                note.setVolume(volume);
+                bassMelody.addNote(note);
               }
             else if( ob instanceof VolumeSymbol )
               {
                 VolumeSymbol volumeSymbol = (VolumeSymbol) ob;
-                bassMelody.setVolume(volumeSymbol.getVolume());
+                volume = volumeSymbol.getVolume();
                 //System.out.println("setting bassMelodyVolume to " + volumeSymbol);
               }
             else
@@ -1535,12 +1552,10 @@ public long render(Sequence seq,
 
         bassMelody.setSwing(accompanimentSwing);
         bassMelody.setInstrument(bassInstrument);
-        bassMelody.setVolume(MAX_VOLUME);
         bassMelody.makeSwing();
         bassMelody.render(seq,
                           bassChannel,
                           startTime,
-                          MAX_VOLUME, // FIX
                           track,
                           transposition,
                           endLimitIndex);
