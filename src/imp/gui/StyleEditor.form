@@ -786,11 +786,20 @@
           <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="pianoRollCheckBox">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Open Piano Roll Editor"/>
+                <Property name="text" type="java.lang.String" value="Use Piano Roll Editor"/>
                 <Property name="toolTipText" type="java.lang.String" value="Open the piano roll editor for graphical editing of columns.&#xa;(Shift click to set the column.)&#xa;"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pianoRollCheckBoxActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trackWithPianoRoll">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Track Columns with Piano Roll&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="If the piano roll editor is open, change its column as spreadsheet columns are clicked."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trackWithPianoRollActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="cutCellsMI">

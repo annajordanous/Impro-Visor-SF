@@ -1812,7 +1812,7 @@ styleEditor.playBassColumn(styleEditorColumn);
 
 private void closePianoRollWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closePianoRollWindow
     setLooping(false);
-    styleEditor.untrackWithPianoRoll();
+    styleEditor.unusePianoRoll();
 }//GEN-LAST:event_closePianoRollWindow
 
 private void exportToColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnTFActionPerformed

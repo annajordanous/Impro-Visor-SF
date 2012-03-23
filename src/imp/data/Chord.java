@@ -23,7 +23,6 @@ package imp.data;
 import imp.Constants;
 import imp.brickdictionary.ChordBlock;
 import imp.util.Preferences;
-import imp.util.Trace;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
-import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 import polya.Polylist;
 import polya.PolylistEnum;
@@ -392,9 +390,10 @@ public class Chord implements Constants, Unit, Serializable {
             case COLOR_TONE:
               int delta = note.getPitch() - nextNote.getPitch();
               if( delta == 1 || delta == -1 )
-              {
+                {
                 return APPROACH_TONE;
-              }
+                }
+                break;
             default: break;
             }
       return singleClassification;
@@ -414,10 +413,10 @@ public class Chord implements Constants, Unit, Serializable {
      */
     @Override
     public String toString() {
-        return new String("CHORD: " +
-                          "[Name = " + getName() +
-                          "][Voicing = " + voicing +
-                          "][RhythmValue = " + rhythmValue + "]");
+        return "CHORD: " +
+               "[Name = " + getName() +
+               "][Voicing = " + voicing +
+               "][RhythmValue = " + rhythmValue + "]";
     }
 
 
@@ -430,8 +429,14 @@ public class Chord implements Constants, Unit, Serializable {
      * @param ch        the channel to put the Chord on
      * @return long      the time that a sequential Chord should start
      */
-    public long render(MidiSequence seq, long time, int ch, 
-                         Style style, Chord prev, int rhythmValue, int transposition, int endLimitIndex)
+    public long render(MidiSequence seq, 
+                       long time, 
+                       int ch, 
+                       Style style, 
+                       Chord prev, 
+                       int rhythmValue, 
+                       int transposition, 
+                       int endLimitIndex)
                 throws InvalidMidiDataException {
 
         Track track = seq.getChordTrack();
@@ -475,10 +480,10 @@ public class Chord implements Constants, Unit, Serializable {
         PolylistEnum tones = usedTones.elements();
 
         int pitch = Key.makeNote(bass.toString(), C2, 0).getPitch();
-        Trace.log(2, "\nrendering chord " + this + ", tones = " + usedTones + " transposition = " + transposition);
+        //Trace.log(2, "\nrendering chord " + this + ", tones = " + usedTones + " transposition = " + transposition);
 
         int actualPitch = pitch + transposition;
-        Trace.log(2, "bass " + actualPitch);
+        //Trace.log(2, "bass " + actualPitch);
         
         if( voicing == null )
           {
