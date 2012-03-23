@@ -17095,8 +17095,7 @@ public ChordPart makeCountIn()
       {
         String pattern1 = "X4 R4 X4 R4 X4 X4 X4 X4";
         DrumRuleDisplay drumRule1 =
-            new DrumRuleDisplay(pattern1, instrument[1], this, cm,
-                            drumPattern, se);
+            new DrumRuleDisplay(pattern1, instrument[1], this, cm, se);
 
         drumPattern.addRule(drumRule1);
       }
@@ -17134,10 +17133,8 @@ public ChordPart makeCountIn()
 
        DrumRuleDisplay drumRule[] =
          {
-         new DrumRuleDisplay(pattern[0], instrument[0], this, cm,
-                            drumPattern, se),
-         new DrumRuleDisplay(pattern[1], instrument[1], this, cm,
-                            drumPattern, se)
+         new DrumRuleDisplay(pattern[0], instrument[0], this, cm, se),
+         new DrumRuleDisplay(pattern[1], instrument[1], this, cm, se)
          };
 
       // Add the created rules to the drum pattern.

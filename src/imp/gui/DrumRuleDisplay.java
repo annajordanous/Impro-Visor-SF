@@ -40,20 +40,20 @@ public static Color playableColor = Color.yellow;
 public static Color unplayableColor = Color.red;
 
 //Useful notate containers.
-private DrumPatternDisplay myParentHolder = null;
 private String instrumentString = "";
 private int instrumentNumber = -1;
 private String ruleText = "";
+
+DrumRuleRep ruleRep;
 
 /**
  * Constructs a new DrumRuleDisplay JPanel with default empty rule and
  * instrument "Acoustic Bass Drum".
  *
  */
-public DrumRuleDisplay(Notate parent, CommandManager cm, DrumPatternDisplay myParentHolder, StyleEditor styleParent)
+public DrumRuleDisplay(Notate parent, CommandManager cm, StyleEditor styleParent)
   {
     super(parent, cm, styleParent);
-    this.myParentHolder = myParentHolder;
     initialize(null, "Acoustic Bass Drum");
   }
 
@@ -61,10 +61,13 @@ public DrumRuleDisplay(Notate parent, CommandManager cm, DrumPatternDisplay myPa
  * Constructs a new DrumRuleDisplay JPanel with rule and instrument parameters
      *
  */
-public DrumRuleDisplay(String rule, String instrument, Notate parent, CommandManager cm, DrumPatternDisplay myParentHolder, StyleEditor styleParent)
+public DrumRuleDisplay(String rule, 
+                       String instrument, 
+                       Notate parent, 
+                       CommandManager cm, 
+                       StyleEditor styleParent)
   {
     super(parent, cm, styleParent);
-    this.myParentHolder = myParentHolder;
 
     //System.out.println("new DrumRuleDisplay " + rule + " " + instrument);
     initialize(rule, instrument);
@@ -84,8 +87,22 @@ private void initialize(String rule, String instrument)
       {
         MIDIBeast.invoke();
       }
+    
+    System.out.println("making DrumRuleRep from " + rule);
 
     setRuleText(rule);
+    
+    if( ruleText.equals("") )
+      {
+        return; // empty, therefore no actual rule
+      }
+    
+    ruleRep = DrumRuleRep.makeDrumRuleRep("(" + instrument + " " + ruleText + ")");
+    if( !ruleRep.getStatus() )
+      {
+        cannotPlay("error in pattern text");
+      }
+    
     setInstrument(instrument);
     
     //System.out.println("rule = " + getRule());
@@ -121,7 +138,7 @@ public String getRule()
 public void setRuleText(String text)
   {
     //System.out.println("setting rule text to " + text);
-    ruleText = text;
+    ruleText = text.trim();
   }
 
 /**

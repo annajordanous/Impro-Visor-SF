@@ -1700,8 +1700,7 @@ public void playBassColumn()
         DrumRuleDisplay newRule = new DrumRuleDisplay(rule, 
                                                       instrument,
                                                       notate, 
-                                                      cm, 
-                                                      newPat, 
+                                                      cm,  
                                                       this);
         newPat.addRule(newRule);
 
@@ -2303,7 +2302,7 @@ public void playBassColumn()
       }
 
     DrumRuleDisplay display = new DrumRuleDisplay("new", instrument,
-            notate, cm, curDrum, this);
+            notate, cm, this);
     display.setDisplayText(contents);
     curDrum.addRule(display);
 
@@ -2432,7 +2431,7 @@ public void playBassColumn()
               String text = rule.getDisplayText();
               String instrument = rule.getInstrument();
               DrumRuleDisplay newRule =
-                      new DrumRuleDisplay(text, instrument, notate, cm, d, this);
+                      new DrumRuleDisplay(text, instrument, notate, cm, this);
               d.addRule(newRule);
               }
             catch( ClassCastException e )
@@ -2491,8 +2490,7 @@ public void playBassColumn()
       {
       if( curSelectedDrum != null )
         {
-        curSelectedDrum.addRule(new DrumRuleDisplay(notate, cm,
-                curSelectedDrum, this));
+        curSelectedDrum.addRule(new DrumRuleDisplay(notate, cm, this));
         curSelectedDrum.updateUI();
         }
       }
@@ -6094,7 +6092,7 @@ Playable display;
 
         default:
              DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(notate, cm, this);
-             display = new DrumRuleDisplay(notate, cm, drumPatternDisplay, this);
+             display = new DrumRuleDisplay(notate, cm, this);
              String instrument = getRowHeaders().get(desiredRow - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
              ((DrumRuleDisplay)display).setInstrument(instrument);
@@ -6146,7 +6144,7 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
             if( rowButton[row].isSelected() && !patternBuffer.toString().trim().equals("") )
               {
                 // Dump only if non-empty
-                rule = new DrumRuleDisplay(notate, cm, drumPatternDisplay, this);
+                rule = new DrumRuleDisplay(notate, cm, this);
                 String instrument = getRowHeaders().get(
                     row - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
