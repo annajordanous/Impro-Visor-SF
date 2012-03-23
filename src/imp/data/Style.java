@@ -143,10 +143,6 @@ public class Style
    */
   static private int drumChannel = 9;
 
-  /**
-   * an int determining the MIDI instrument for drums
-   */
-  static private int drumInstrument = 1;
 
   /**
    * an int determining the MIDI instrument for chords
@@ -477,23 +473,7 @@ public class Style
     return bassInstrument;
     }
 
-  /**
-   * Sets the drum instrument.
-   * @param inst      an int containing the drum instrument
-   */
-  public void setDrumInstrument(int inst)
-    {
-    drumInstrument = inst;
-    }
 
-  /**
-   * Gets the drum instrument.
-   * @return the drum instrument
-   */
-  public int getDrumInstrument()
-    {
-    return drumInstrument;
-    }
 
   /**
    * Returns the noStyle parameter.
@@ -933,7 +913,6 @@ public class Style
    * @param duration  an int containing the duration of the drumline
    */
   private void makeDrumline(MidiSequence seq, 
-                            Track track, 
                             long time,
                             int duration, 
                             int endLimitIndex )
@@ -971,7 +950,7 @@ public class Style
       for( MelodyPart d: drumline.getParts() )
         {
         d.setSwing(accompanimentSwing);
-        d.setInstrument(drumInstrument);
+        Track track = seq.getDrumTrack(d.getInstrument());
         d.makeSwing();
         d.render(seq, drumChannel, time, track, 0, endLimitIndex);
         }
@@ -1016,7 +995,6 @@ public class Style
    */
 private Polylist makeChordline(
         MidiSequence seq,
-        Track track,
         long time,
         Chord currentChord,
         Polylist previousChord,
@@ -1034,6 +1012,8 @@ private Polylist makeChordline(
 
     // Select Bank 0 before program change. 
     // Not sure this is correct. Check before releasing!
+    
+    Track track = seq.getChordTrack();
     
     track.add(MidiSynth.createBankSelectEventMSB(0, time));
     track.add(MidiSynth.createBankSelectEventLSB(0, time));
@@ -1162,7 +1142,7 @@ private Polylist makeChordline(
                       note.setRhythmValue(dur);
                       note.setVolume(volume);  // note of chord
 //System.out.println("rendering chord note " + note + " with volume " + volume);
-                      note.render(ms, track, time, offTime, chordChannel, transposition);
+                      note.render(ms, seq.getChordTrack(), time, offTime, chordChannel, transposition);
                       }
                     else if( ob instanceof VolumeSymbol )
                       {
@@ -1305,7 +1285,6 @@ static Polylist filterOutVolumes(Polylist L)
    */
   public long render(MidiSequence seq, 
                      long time, 
-                     Track track,
                      ChordPart chordPart, 
                      int startIndex, 
                      int endIndex, 
@@ -1317,7 +1296,6 @@ static Polylist filterOutVolumes(Polylist L)
       
       return render(seq, 
                     time, 
-                    track, 
                     chordPart, 
                     startIndex, 
                     endIndex, 
@@ -1343,7 +1321,6 @@ static Polylist filterOutVolumes(Polylist L)
   
 public long render(MidiSequence seq,
                    long time,
-                   Track track,
                    ChordPart chordPart,
                    int startIndex,
                    int endIndex,
@@ -1369,7 +1346,7 @@ public long render(MidiSequence seq,
       {
         // Introduce drums, if there is a Style
 
-        makeDrumline(seq, track, startTime, endIndex - startIndex, endLimitIndex);
+        makeDrumline(seq, startTime, endIndex - startIndex, endLimitIndex);
       }
 
     Chord next = null;
@@ -1466,7 +1443,6 @@ public long render(MidiSequence seq,
               }
 
             previousChord = makeChordline(seq,
-                                          track,
                                           time,
                                           currentChord,
                                           previousChord,
@@ -1573,7 +1549,7 @@ public long render(MidiSequence seq,
         bassMelody.render(seq,
                           bassChannel,
                           startTime,
-                          track,
+                          seq.getBassTrack(),
                           transposition,
                           endLimitIndex);
       }

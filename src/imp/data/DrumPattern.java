@@ -221,6 +221,7 @@ public DrumLine applyRules()
       {
         MelodyPart melodyPart = new MelodyPart();
         int drumInstrument = rep.getInstrument();
+        melodyPart.setInstrument(drumInstrument);
         
         int localVolume = 127;
 
