@@ -84,6 +84,8 @@ private String errorMessage = null;
 
 public DrumRuleRep(Polylist raw)
   {
+    Polylist original = raw;
+    
      Object first = raw.first();
     
     if( first instanceof Long )
@@ -118,7 +120,7 @@ public DrumRuleRep(Polylist raw)
                 || type == DrumPattern.DRUM_REST 
                 || type == DrumPattern.DRUM_VOLUME ) )
                     {
-                      errorMessage = "Each pattern element must begin with one of 'X', 'R', or 'V'";
+                      errorMessage = "Each pattern element must begin with one of 'X', 'R', or 'V', but this one begins with '" + type + "': " + original;
                     }
 
             String suffix = s.substring(1);

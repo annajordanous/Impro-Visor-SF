@@ -1695,7 +1695,7 @@ public void playBassColumn()
         String rule = curRule.getDisplayRule();
         int instrumentNumber = curRule.getInstrumentNumber();
         
-        String instrument = MIDIBeast.getDrumInstrumentName(instrumentNumber);
+        String instrument = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
         
         DrumRuleDisplay newRule = new DrumRuleDisplay(rule, 
                                                       instrument,
@@ -2301,7 +2301,7 @@ public void playBassColumn()
       curDrum = newDrumPatternDisplay();
       }
 
-    DrumRuleDisplay display = new DrumRuleDisplay("new", instrument,
+    DrumRuleDisplay display = new DrumRuleDisplay("", instrument,
             notate, cm, this);
     display.setDisplayText(contents);
     curDrum.addRule(display);

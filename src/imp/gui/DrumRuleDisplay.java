@@ -23,7 +23,7 @@ package imp.gui;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
-import imp.util.ErrorLog;
+import imp.util.ErrorNonModal;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -88,7 +88,7 @@ private void initialize(String rule, String instrument)
         MIDIBeast.invoke();
       }
     
-    System.out.println("making DrumRuleRep from " + rule);
+System.out.println("making DrumRuleRep from " + rule);
 
     setRuleText(rule);
     
@@ -100,7 +100,7 @@ private void initialize(String rule, String instrument)
     ruleRep = DrumRuleRep.makeDrumRuleRep("(" + instrument + " " + ruleText + ")");
     if( !ruleRep.getStatus() )
       {
-        cannotPlay("error in pattern text");
+        cannotPlay("error in pattern text: " + ruleRep.getErrorMessage());
       }
     
     setInstrument(instrument);
@@ -184,13 +184,13 @@ public void setDisplayText(String rule)
 public void setInstrument(String instrument)
   {
     instrumentString = instrument;
-    instrumentNumber = MIDIBeast.getDrumInstrumentNumber(instrument);
+    instrumentNumber = MIDIBeast.numberFromSpacelessDrumName(instrument);
 
     //System.out.println("getting instrument number for " + instrument + " = " + instrumentNumber);
 
     if( instrumentNumber < 0 )
       {
-        ErrorLog.log(ErrorLog.WARNING, "Instrument has no corresponding number: " + instrument);
+        ErrorNonModal.log("Instrument has no corresponding number: " + instrument);
       }
 
   }
@@ -244,14 +244,14 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
           }
         else
           {
-            ErrorLog.log(ErrorLog.WARNING, "Can't play incorrect drum pattern " + getRule());
+            ErrorNonModal.log("Can't play incorrect drum pattern " + getRule());
             return false;
           }
 
       }
     catch( Exception e )
       {
-        ErrorLog.log(ErrorLog.WARNING, "Can't play incorrect drum pattern ");
+        ErrorNonModal.log("Can't play incorrect drum pattern " + getRule());
 
         return false;
       }
@@ -292,51 +292,51 @@ public boolean checkStatus()
     String displayText = getDisplayText();
     String rule = getRule();
     playable = true;
-
-    try
-      {
-        //Check for null rules.
-        if( displayText.equals("") )
-          {
-            return false;
-          }
-
-        Polylist l = Notate.parseListFromString(getPlayRule());
-        StringTokenizer tokenS = new StringTokenizer(displayText, " ");
-        ArrayList<String> tokenizedRule = new ArrayList<String>();
-
-        while( tokenS.hasMoreTokens() )
-          {
-            tokenizedRule.add(tokenS.nextToken());
-          }
-
-        //For every element, check for invalid "hit" or "rest" items, and 
-        //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors         
-        for( int i = 0; i < tokenizedRule.size(); i++ )
-          {
-            char c = tokenizedRule.get(i).charAt(0);
-            if( !DrumPattern.isValidDrumPatternChar(c) )
-              {
-                cannotPlay("invalid character in drum pattern");
-                return false;
-              }
-          }
-
-        if( Style.makeStyle(l) == null )
-          {
-            cannotPlay("invalid drum pattern");
-            return false;
-          }
-        else
-          {
-            return true;
-          }
-      }
-    catch( Exception e )
-      {
-        cannotPlay("error in drum pattern");
-        return false;
-      }
+    return playable;
+//    try
+//      {
+//        //Check for null rules.
+//        if( displayText.equals("") )
+//          {
+//            return false;
+//          }
+//
+//        Polylist l = Notate.parseListFromString(getPlayRule());
+//        StringTokenizer tokenS = new StringTokenizer(displayText, " ");
+//        ArrayList<String> tokenizedRule = new ArrayList<String>();
+//
+//        while( tokenS.hasMoreTokens() )
+//          {
+//            tokenizedRule.add(tokenS.nextToken());
+//          }
+//
+//        //For every element, check for invalid "hit" or "rest" items, and 
+//        //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors         
+//        for( int i = 0; i < tokenizedRule.size(); i++ )
+//          {
+//            char c = tokenizedRule.get(i).charAt(0);
+//            if( !DrumPattern.isValidDrumPatternChar(c) )
+//              {
+//                cannotPlay("invalid character in drum pattern: " + c + " in " + rule);
+//                return false;
+//              }
+//          }
+//
+//        if( Style.makeStyle(l) == null )
+//          {
+//            cannotPlay("invalid drum pattern: " + rule);
+//            return false;
+//          }
+//        else
+//          {
+//            return true;
+//          }
+//      }
+//    catch( Exception e )
+//      {
+//        cannotPlay("error in drum pattern: " + rule);
+//        return false;
+//      }
   }
 
 
