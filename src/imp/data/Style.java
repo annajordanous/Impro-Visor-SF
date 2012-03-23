@@ -1425,7 +1425,6 @@ public long render(MidiSequence seq,
         if( !hasStyle )
           {
             time = currentChord.render(seq,
-                                       track,
                                        time,
                                        getChordChannel(),
                                        this,

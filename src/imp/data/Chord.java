@@ -426,15 +426,16 @@ public class Chord implements Constants, Unit, Serializable {
      * in the specified Sequence, then returns the time that a sequential
      * Chord should be added.
      * @param seq       the Sequence to add the Chord to
-     * @param track     the Track in the Sequence to add the Chord to
      * @param time      the time to start the Chord at
      * @param ch        the channel to put the Chord on
      * @return long      the time that a sequential Chord should start
      */
-    public long render(MidiSequence seq, Track track, long time, int ch, 
+    public long render(MidiSequence seq, long time, int ch, 
                          Style style, Chord prev, int rhythmValue, int transposition, int endLimitIndex)
                 throws InvalidMidiDataException {
 
+        Track track = seq.getChordTrack();
+        
         int dynamic = MAX_VOLUME;
         
         ChordSymbol prevSym = null;
@@ -491,18 +492,18 @@ public class Chord implements Constants, Unit, Serializable {
                 pitch = ns.getMIDI();
                 evt = MidiSynth.createNoteOnEvent(ch, pitch, dynamic, time);
                 track.add(evt);
-                Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + pitch + " time = " + time);
+                //Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + pitch + " time = " + time);
 
                 evt = MidiSynth.createNoteOffEvent(ch, pitch, dynamic, offTime);
                 track.add(evt);
-                Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + pitch + " time = " + offTime);
+                //Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + pitch + " time = " + offTime);
             }
             evt = MidiSynth.createNoteOnEvent(ch, actualPitch, dynamic, time);
             track.add(evt);
-            Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + pitch + " time = " + time);
+            //Trace.log(2, "adding to track " + track + " note on " + " channel = " + ch + " pitch = " + pitch + " time = " + time);
             evt = MidiSynth.createNoteOffEvent(ch, actualPitch, dynamic, offTime);
             track.add(evt);
-            Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + pitch + " time = " + offTime);
+            //Trace.log(2, "adding to track " + track + " note off " + " channel = " + ch + " pitch = " + pitch + " time = " + offTime);
         }
 
         return offTime;

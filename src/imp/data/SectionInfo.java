@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.Sequence;
 import javax.sound.midi.Track;
 
 /**
@@ -463,12 +462,12 @@ public long render(MidiSequence seq,
     return time;
   }
 
-public ArrayList<imp.brickdictionary.Block> toBlockList()
+public ArrayList<Block> toBlockList()
 {
-    ArrayList<imp.brickdictionary.Block> blocks = new ArrayList();
+    ArrayList<Block> blocks = new ArrayList<Block>();
     int chordsSize = chords.size();
     
-    int endIndex = chordsSize;
+    int endIndex;
     
     // m is a second iterator intended to stay one step ahead of k
     // so as to get the start of the next section
@@ -546,6 +545,7 @@ public ArrayList<Integer> getSectionStartIndices()
     return result;
 }
 
+@Override
 public String toString()
   {
     StringBuilder buffer = new StringBuilder();
