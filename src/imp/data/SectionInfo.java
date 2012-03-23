@@ -456,7 +456,14 @@ public long render(MidiSequence seq,
         
         if( style != null )
           {
-          time = style.render(seq, time, chords, startIndex, endIndex, transposition, useDrums, endLimitIndex);
+          time = style.render(seq, 
+                              time, 
+                              chords, 
+                              startIndex, 
+                              endIndex, 
+                              transposition, 
+                              useDrums, 
+                              endLimitIndex);
           }
        }
     return time;

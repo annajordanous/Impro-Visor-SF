@@ -255,12 +255,12 @@ public class StyleEditor
         int colIndex = styleTable.columnAtPoint(pt);
         //System.out.println("clicked row = " + rowIndex + ", col = " + colIndex);
         enterFromCell(rowIndex, colIndex, evt.isControlDown(), evt.isShiftDown());
-/*
+
         if( pianoRollTracking )
           {
-            trackWithPianoRoll(colIndex);
+            usePianoRoll(colIndex);
           }
- */
+ 
         }
       });
     }
@@ -292,7 +292,7 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
 
     if( shiftDown && controlDown && colIndex >= 1 )
       {
-        trackWithPianoRoll(colIndex);
+        usePianoRoll(colIndex);
         return;
       }
 
@@ -3324,6 +3324,7 @@ public void playBassColumn()
         exitStyleGenMI = new javax.swing.JMenuItem();
         styEdit = new javax.swing.JMenu();
         pianoRollCheckBox = new javax.swing.JCheckBoxMenuItem();
+        trackWithPianoRoll = new javax.swing.JCheckBoxMenuItem();
         cutCellsMI = new javax.swing.JMenuItem();
         copyCellsMI = new javax.swing.JMenuItem();
         pasteCellsMI = new javax.swing.JMenuItem();
@@ -5196,7 +5197,7 @@ public void playBassColumn()
             }
         });
 
-        pianoRollCheckBox.setText("Open Piano Roll Editor");
+        pianoRollCheckBox.setText("Use Piano Roll Editor");
         pianoRollCheckBox.setToolTipText("Open the piano roll editor for graphical editing of columns.\n(Shift click to set the column.)\n");
         pianoRollCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5204,6 +5205,15 @@ public void playBassColumn()
             }
         });
         styEdit.add(pianoRollCheckBox);
+
+        trackWithPianoRoll.setText("Track Columns with Piano Roll\n");
+        trackWithPianoRoll.setToolTipText("If the piano roll editor is open, change its column as spreadsheet columns are clicked.");
+        trackWithPianoRoll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trackWithPianoRollActionPerformed(evt);
+            }
+        });
+        styEdit.add(trackWithPianoRoll);
 
         cutCellsMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         cutCellsMI.setMnemonic('a');
@@ -6538,7 +6548,16 @@ saveStyleBtnActionPerformed(null);
 }//GEN-LAST:event_saveStyleBtn1ActionPerformed
 
 private void pianoRollCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoRollCheckBoxActionPerformed
-trackWithPianoRoll();
+if( pianoRollCheckBox.isSelected() ) 
+  {
+    usePianoRoll();
+  }
+else
+  {
+    unusePianoRoll();
+    trackWithPianoRoll.setSelected(false);
+    pianoRoll.setVisible(false);
+  }
 }//GEN-LAST:event_pianoRollCheckBoxActionPerformed
 
 private void stopPlayingActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayingActionPerformed
@@ -6561,23 +6580,27 @@ private void beatsField2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIR
     // TODO add your handling code here:
   }//GEN-LAST:event_beatsField2ActionPerformed
 
-private void trackWithPianoRoll()
+private void trackWithPianoRollActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trackWithPianoRollActionPerformed
+  {//GEN-HEADEREND:event_trackWithPianoRollActionPerformed
+    pianoRollTracking = trackWithPianoRoll.isSelected();
+  }//GEN-LAST:event_trackWithPianoRollActionPerformed
+
+private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
-  trackWithPianoRollCommon(selectedColumns);
+  usePianoRoll(selectedColumns);
 }
 
-private void trackWithPianoRoll(int column)
+private void usePianoRoll(int column)
 {
   int selectedColumns[] = {column};
-  trackWithPianoRollCommon(selectedColumns);
+  usePianoRoll(selectedColumns);
 }
 
-private void trackWithPianoRollCommon(int selectedColumns[])
+private void usePianoRoll(int selectedColumns[])
 {
   exportColumnToPianoRoll(selectedColumns);
   pianoRollCheckBox.setSelected(true);
-  pianoRollTracking = true;
 }
 
 
@@ -6585,7 +6608,7 @@ private void trackWithPianoRollCommon(int selectedColumns[])
  * This should be called from PianoRoll when closing.
  */
 
-public void untrackWithPianoRoll()
+public void unusePianoRoll()
 {
   pianoRollCheckBox.setSelected(false);
   pianoRollTracking = false;
@@ -6766,6 +6789,7 @@ public void untrackWithPianoRoll()
     private javax.swing.JComboBox tempoComboBox;
     private javax.swing.JPanel timeSigPanel;
     private javax.swing.JPanel toolbarPanel;
+    private javax.swing.JCheckBoxMenuItem trackWithPianoRoll;
     private javax.swing.JLabel voicingLabel;
     private javax.swing.JComboBox voicingType;
     private javax.swing.JLabel volLabel;
