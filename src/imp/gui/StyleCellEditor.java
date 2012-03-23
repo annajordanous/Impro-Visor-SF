@@ -265,7 +265,7 @@ public class StyleCellEditor
 
       }
 
-    return styleEditor.setCell(editField.getText().toUpperCase(), row, column, StyleEditor.SILENT);
+    return styleEditor.setCell(editField.getText().toUpperCase(), row, column, StyleEditor.PLAY);
     }
 
   }

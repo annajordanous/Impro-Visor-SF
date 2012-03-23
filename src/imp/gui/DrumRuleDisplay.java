@@ -40,7 +40,7 @@ public static Color playableColor = Color.yellow;
 public static Color unplayableColor = Color.red;
 
 //Useful notate containers.
-private String instrumentString = "";
+private String instrumentName;
 private int instrumentNumber = -1;
 private String ruleText = "";
 
@@ -54,7 +54,7 @@ DrumRuleRep ruleRep;
 public DrumRuleDisplay(Notate parent, CommandManager cm, StyleEditor styleParent)
   {
     super(parent, cm, styleParent);
-    initialize(null, "Acoustic Bass Drum");
+    initialize("", "Acoustic_Bass_Drum");
   }
 
 /**
@@ -81,31 +81,18 @@ private void initialize(String rule, String instrument)
   {
     /*
      * Ensures that useful items like rhythm durations for notes are ready for
-     * use even if the user has not yet generated a style from midi
+     * use even if the user has not yet generated a spatyle from midi
      */
-    if( !MIDIBeast.invoked )
-      {
-        MIDIBeast.invoke();
-      }
+//    if( !MIDIBeast.invoked )
+//      {
+//        MIDIBeast.invoke();
+//      }
     
-System.out.println("making DrumRuleRep from " + rule);
+//System.out.println("making DrumRuleRep for " + instrument + " from " + rule);
 
-    setRuleText(rule);
-    
-    if( ruleText.equals("") )
-      {
-        return; // empty, therefore no actual rule
-      }
-    
-    ruleRep = DrumRuleRep.makeDrumRuleRep("(" + instrument + " " + ruleText + ")");
-    if( !ruleRep.getStatus() )
-      {
-        cannotPlay("error in pattern text: " + ruleRep.getErrorMessage());
-      }
-    
     setInstrument(instrument);
     
-    //System.out.println("rule = " + getRule());
+    setRuleText(rule);
   }
 
 //Accessors:
@@ -125,7 +112,7 @@ public String getDisplayText()
 
 public String getRule()
   {
-    String instrumentName = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
+    instrumentName = MIDIBeast.spacelessDrumNameFromNumber(instrumentNumber);
     String rule = "(drum " + instrumentName + " " + getDisplayText() + ")";
 
     //System.out.println("rule = " + rule);
@@ -139,6 +126,13 @@ public void setRuleText(String text)
   {
     //System.out.println("setting rule text to " + text);
     ruleText = text.trim();
+    ruleRep = new DrumRuleRep(instrumentName + " " + ruleText);
+
+    if( !ruleRep.getStatus() )
+      {
+        ErrorNonModal.log("Error in drum pattern text: " + ruleRep.getErrorMessage());
+        cannotPlay(ruleRep.getErrorMessage());
+      }
   }
 
 /**
@@ -146,7 +140,7 @@ public void setRuleText(String text)
  * Used to play the rule.
  */
 
-public String getPlayRule()
+public String getFullPattern()
   {
     return "(drum-pattern " + getRule() + "(weight 100))";
   }
@@ -157,7 +151,7 @@ public String getPlayRule()
  */
 public String getInstrument()
   {
-    return instrumentString;
+    return instrumentName;
   }
 
 /**
@@ -175,7 +169,7 @@ public int getInstrumentNumber()
 public void setDisplayText(String rule)
   {
     setRuleText(rule);
-    //checkStatus();
+    checkStatus();
   }
 
 /**
@@ -183,30 +177,31 @@ public void setDisplayText(String rule)
  */
 public void setInstrument(String instrument)
   {
-    instrumentString = instrument;
+    instrumentName = instrument;
     instrumentNumber = MIDIBeast.numberFromSpacelessDrumName(instrument);
 
     //System.out.println("getting instrument number for " + instrument + " = " + instrumentNumber);
 
     if( instrumentNumber < 0 )
       {
-        ErrorNonModal.log("Instrument has no corresponding number: " + instrument);
+        String message = "Instrument has no corresponding number: " + instrument;
+        ErrorNonModal.log(message);
+        cannotPlay(message);
       }
-
   }
 
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
-    canPlay();
     try
       {
         if( checkStatus() )
           {
-            String r = this.getPlayRule();
+            String r = this.getFullPattern();
+            //System.out.println("fullPattern = " + r);
             Polylist rule = Notate.parseListFromString(r);
             if( rule.isEmpty() )
               {
-                styleEditor.setStatus("Can't play incorrect drum pattern " + getRule());
+                ErrorNonModal.log("Incorrect drum pattern " + ruleRep.getErrorMessage());
                 return false;
               }
             Style tempStyle = Style.makeStyle(rule);
@@ -244,14 +239,15 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
           }
         else
           {
-            ErrorNonModal.log("Can't play incorrect drum pattern " + getRule());
+            cannotPlay();
+            ErrorNonModal.log("Incorrect drum pattern " + ruleRep.getErrorMessage());           
             return false;
           }
 
       }
     catch( Exception e )
       {
-        ErrorNonModal.log("Can't play incorrect drum pattern " + getRule());
+        ErrorNonModal.log("Incorrect drum pattern " + ruleRep.getErrorMessage());
 
         return false;
       }
@@ -289,54 +285,7 @@ public String toString()
 
 public boolean checkStatus()
   {
-    String displayText = getDisplayText();
-    String rule = getRule();
-    playable = true;
-    return playable;
-//    try
-//      {
-//        //Check for null rules.
-//        if( displayText.equals("") )
-//          {
-//            return false;
-//          }
-//
-//        Polylist l = Notate.parseListFromString(getPlayRule());
-//        StringTokenizer tokenS = new StringTokenizer(displayText, " ");
-//        ArrayList<String> tokenizedRule = new ArrayList<String>();
-//
-//        while( tokenS.hasMoreTokens() )
-//          {
-//            tokenizedRule.add(tokenS.nextToken());
-//          }
-//
-//        //For every element, check for invalid "hit" or "rest" items, and 
-//        //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors         
-//        for( int i = 0; i < tokenizedRule.size(); i++ )
-//          {
-//            char c = tokenizedRule.get(i).charAt(0);
-//            if( !DrumPattern.isValidDrumPatternChar(c) )
-//              {
-//                cannotPlay("invalid character in drum pattern: " + c + " in " + rule);
-//                return false;
-//              }
-//          }
-//
-//        if( Style.makeStyle(l) == null )
-//          {
-//            cannotPlay("invalid drum pattern: " + rule);
-//            return false;
-//          }
-//        else
-//          {
-//            return true;
-//          }
-//      }
-//    catch( Exception e )
-//      {
-//        cannotPlay("error in drum pattern: " + rule);
-//        return false;
-//      }
+    return ruleRep.getStatus();
   }
 
 
