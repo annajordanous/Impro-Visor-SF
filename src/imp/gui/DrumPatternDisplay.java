@@ -353,7 +353,6 @@ public void pasteRule(DrumRuleDisplay pasteMe)
                                                   pasteMe.getInstrument(), 
                                                   notate, 
                                                   cm, 
-                                                  this, 
                                                   styleEditor);
     addRule(newRule);
   }

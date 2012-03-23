@@ -29,6 +29,19 @@ import polya.Polylist;
 
 public class DrumRuleRep
 {
+
+    public DrumRuleRep(String ruleText)
+      {
+        throw new UnsupportedOperationException("Not yet implemented");
+      }
+
+/**
+ * Element represents one element of a rule.
+ * It consists of a type and a suffix.
+ * For example, if the rule is X4+8, then the type is 'X' and the suffix is "4+8".
+ * For X and R types, the suffix represents a duration string.
+ * For V types, the suffix represents a volume setting 0-127.
+ */
 public class Element
 {
 char elementType;
@@ -49,7 +62,7 @@ public String getSuffix()
   {
     return suffix;
   }
-}
+} // end of inner class Element
 
 private int drumNumber;
 
@@ -58,15 +71,20 @@ private ArrayList<Element> elements;
 private Polylist ruleAsList;
 
 /**
+ * If the raw Polylist was erroneous, errorMessage will be set.
+ */
+
+private String errorMessage = null;
+
+
+/**
  * Construct a DrumRule Representation from an S-expression
  * @param raw 
  */
 
 public DrumRuleRep(Polylist raw)
   {
-    assert raw.nonEmpty();
-
-    Object first = raw.first();
+     Object first = raw.first();
     
     if( first instanceof Long )
       {
@@ -78,7 +96,7 @@ public DrumRuleRep(Polylist raw)
       }
     else
       {
-        assert false;
+        errorMessage = "The first element needs to be a drum instrument number or one of the standard names for the instrument with _ rather than spaces";
       }
 
     raw = raw.rest();
@@ -96,9 +114,12 @@ public DrumRuleRep(Polylist raw)
 
             char type = s.charAt(0);
             
-            assert type == DrumPattern.DRUM_STRIKE 
+            if( !( type == DrumPattern.DRUM_STRIKE 
                 || type == DrumPattern.DRUM_REST 
-                || type == DrumPattern.DRUM_VOLUME;
+                || type == DrumPattern.DRUM_VOLUME ) )
+                    {
+                      errorMessage = "Each pattern element must begin with one of 'X', 'R', or 'V'";
+                    }
 
             String suffix = s.substring(1);
             
@@ -158,5 +179,20 @@ public int getDuration()
 public String toString()
   {
     return ruleAsList.cons(drumNumber).toString();
+  }
+
+public boolean getStatus()
+  {
+    return errorMessage == null;
+  }
+
+public String getErrorMessage()
+  {
+    return errorMessage == null ? "" : errorMessage;
+  }
+
+private void setError(String error)
+  {
+    errorMessage = error;
   }
 }
