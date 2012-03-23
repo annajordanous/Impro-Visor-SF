@@ -89,6 +89,11 @@ public class MIDIBeast{
         public static ArrayList<RepresentativeChordRules.ChordPattern> selectedChordRules;
         
         public static boolean invoked = false;
+        
+        static 
+          {
+            invoke();
+          }
 
         /**
 	 * All drum instruments supported by general midi.  The indices + 35 corresponds to the

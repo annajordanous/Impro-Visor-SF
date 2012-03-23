@@ -17,6 +17,7 @@
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
 package imp.data;
 
 import java.util.ArrayList;
@@ -29,11 +30,6 @@ import polya.Polylist;
 
 public class DrumRuleRep
 {
-
-    public DrumRuleRep(String ruleText)
-      {
-        throw new UnsupportedOperationException("Not yet implemented");
-      }
 
 /**
  * Element represents one element of a rule.
@@ -64,6 +60,7 @@ public String getSuffix()
   }
 } // end of inner class Element
 
+
 private int drumNumber;
 
 private ArrayList<Element> elements;
@@ -78,7 +75,18 @@ private String errorMessage = null;
 
 
 /**
- * Construct a DrumRule Representation from an S-expression
+ * Construct a DrumRuleRep from a String
+ * @param rawString 
+ */
+
+public DrumRuleRep(String rawString)
+  {
+    this(Polylist.PolylistFromString(rawString));
+  }
+
+
+/**
+ * Construct a DrumRuleRep from an S-expression
  * @param raw 
  */
 
@@ -98,7 +106,9 @@ public DrumRuleRep(Polylist raw)
       }
     else
       {
-        errorMessage = "The first element needs to be a drum instrument number or one of the standard names for the instrument with _ rather than spaces";
+        errorMessage = "The first element needs to be a drum instrument "
+                     + "number or one of the standard names for the instrument "
+                     + "with _ rather than spaces: " + raw;
       }
 
     raw = raw.rest();
@@ -115,19 +125,45 @@ public DrumRuleRep(Polylist raw)
             String s = (String) ob;
 
             char type = s.charAt(0);
-            
-            if( !( type == DrumPattern.DRUM_STRIKE 
-                || type == DrumPattern.DRUM_REST 
-                || type == DrumPattern.DRUM_VOLUME ) )
-                    {
-                      errorMessage = "Each pattern element must begin with one of 'X', 'R', or 'V', but this one begins with '" + type + "': " + original;
-                    }
-
             String suffix = s.substring(1);
             
-            elements.add(new Element(type, suffix));
+            switch( type )
+              {
+                case DrumPattern.DRUM_STRIKE:
+                case DrumPattern.DRUM_REST:
+                  {
+                    int duration = Duration.getDuration0(suffix);
+                    if( duration <= 0 )
+                      {
+                        errorMessage = "The duration in " + s
+                                + " is invalid in " + original;
+                      }
+                  }
+                    break;
+                    
+                case DrumPattern.DRUM_VOLUME:
+                  {
+                    VolumeSymbol vs = new VolumeSymbol(s);
+                    if( vs == null )
+                      {
+                        errorMessage = "Error in volume symbol in"  + original;
+                        break;
+                      }
+                  }
+                    break;
+                    
+                default:
+                     errorMessage = "Each pattern element must begin with one "
+                            + "of 'X', 'R', or 'V', but this one begins with '" 
+                            + type + "': " + original;                   
+                }
+          elements.add(new Element(type, suffix));
           }
-
+        else
+          {
+            errorMessage = "Pattern does not begin correctly: " + original;
+            
+          }
         raw = raw.rest();
       }
   }
