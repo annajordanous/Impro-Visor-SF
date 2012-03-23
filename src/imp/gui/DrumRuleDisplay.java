@@ -78,16 +78,7 @@ public DrumRuleDisplay(String rule,
  *
  */
 private void initialize(String rule, String instrument)
-  {
-    /*
-     * Ensures that useful items like rhythm durations for notes are ready for
-     * use even if the user has not yet generated a spatyle from midi
-     */
-//    if( !MIDIBeast.invoked )
-//      {
-//        MIDIBeast.invoke();
-//      }
-    
+  {    
 //System.out.println("making DrumRuleRep for " + instrument + " from " + rule);
 
     setInstrument(instrument);
@@ -137,12 +128,12 @@ public void setRuleText(String text)
 
 /**
  * @return the text formatted as if it were the only rule in a drum-pattern.
- * Used to play the rule.
+ * Used to play the rule. Note that the weight is arbitrary.
  */
 
 public String getFullPattern()
   {
-    return "(drum-pattern " + getRule() + "(weight 100))";
+    return "(drum-pattern " + getRule() + "(weight 10))";
   }
 
 
@@ -291,7 +282,7 @@ public boolean checkStatus()
 
 public double getPatternLength()
   {
-    return DrumRuleRep.makeDrumRuleRep(getRule()).getDuration();
+    return ruleRep.getDuration();
   }
 
 public double getBeats()
