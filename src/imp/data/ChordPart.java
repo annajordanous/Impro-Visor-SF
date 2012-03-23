@@ -312,7 +312,7 @@ public class ChordPart extends Part implements Serializable{
         return sectionInfo.hasOneSection();
       }
 
-    public long render(Sequence seq, 
+    public long render(MidiSequence seq, 
                          long time, 
                          Track track, 
                          int transposition, 

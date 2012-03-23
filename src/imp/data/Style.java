@@ -932,7 +932,7 @@ public class Style
    * @param time      a long containing the time to start the drumline
    * @param duration  an int containing the duration of the drumline
    */
-  private void makeDrumline(Sequence seq, 
+  private void makeDrumline(MidiSequence seq, 
                             Track track, 
                             long time,
                             int duration, 
@@ -1015,7 +1015,7 @@ public class Style
    * @return a Polylist containing the last currentChord used in the chordline
    */
 private Polylist makeChordline(
-        Sequence seq,
+        MidiSequence seq,
         Track track,
         long time,
         Chord currentChord,
@@ -1150,6 +1150,8 @@ private Polylist makeChordline(
                 
                 // All notes in the voicing are rendered at the same start time
                 
+                Sequence ms = seq.getSequence();
+                
                 while( L.nonEmpty() )
                   {
                     Object ob = L.first();
@@ -1160,7 +1162,7 @@ private Polylist makeChordline(
                       note.setRhythmValue(dur);
                       note.setVolume(volume);  // note of chord
 //System.out.println("rendering chord note " + note + " with volume " + volume);
-                      note.render(seq, track, time, offTime, chordChannel, transposition);
+                      note.render(ms, track, time, offTime, chordChannel, transposition);
                       }
                     else if( ob instanceof VolumeSymbol )
                       {
@@ -1301,14 +1303,14 @@ static Polylist filterOutVolumes(Polylist L)
    * @param chordPart the ChordPart to render
    * @return a long containing the ending time of the accompaniment
    */
-  public long render(Sequence seq, 
+  public long render(MidiSequence seq, 
                      long time, 
                      Track track,
-                      ChordPart chordPart, 
-                      int startIndex, 
-                      int endIndex, 
-                      int transposition, 
-                      int endLimitIndex)
+                     ChordPart chordPart, 
+                     int startIndex, 
+                     int endIndex, 
+                     int transposition, 
+                     int endLimitIndex)
           throws InvalidMidiDataException
   {
       // refactored to direct to the method that follows with hasStyle parameter
@@ -1339,7 +1341,7 @@ static Polylist filterOutVolumes(Polylist L)
  * @return a long containing the ending time of the accompaniment
  */
   
-public long render(Sequence seq,
+public long render(MidiSequence seq,
                    long time,
                    Track track,
                    ChordPart chordPart,

@@ -913,7 +913,7 @@ public class Score implements Constants, Serializable {
 //                                   transposition, 
 //                                   endLimitIndex);
         
-        time = countInProg.render(seq.getSequence(),  
+        time = countInProg.render(seq,  
                                   time, 
                                   seq.getChordTrack(), 
                                   0, 
@@ -928,14 +928,14 @@ public class Score implements Constants, Serializable {
         {
             // render the chord progression in parallel with each melody chorus
             
-            long melTime = i.next().render(seq.getSequence(), 
+            long melTime = i.next().render(seq, 
                                            getMelodyChannel(),
                                            time, 
                                            seq.getMelodyTrack(), 
                                            transposition, 
                                            endLimitIndex);
             
-            long chTime = chordProg.render(seq.getSequence(), 
+            long chTime = chordProg.render(seq, 
                                            time, 
                                            seq.getChordTrack(), 
                                            transposition, 
