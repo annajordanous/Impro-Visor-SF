@@ -1320,7 +1320,6 @@ public void playBassColumn()
     reset();
 
     this.setTitle("Style Editor: " + file.getName());
-    ImproVisor.setRecentStyleFile(file);
 
     // Parse style.
     String s = OpenLeadsheetCommand.fileToString(file);
@@ -1333,6 +1332,10 @@ public void playBassColumn()
         ErrorLog.log(ErrorLog.WARNING, "Unable to open style file: " + file.getName());
         return;
       }
+    
+    savedStyle = file;
+    ImproVisor.setRecentStyleFile(file);
+    
     s = s.substring(1, s.length() - 1);
     Polylist poly = Notate.parseListFromString(s);
     Style style = Style.makeStyle(Notate.parseListFromString(s));
