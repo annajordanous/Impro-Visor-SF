@@ -890,7 +890,7 @@ public class Score implements Constants, Serializable {
                     throws InvalidMidiDataException {
         // to trace sequencing
         //System.out.println("Score: render, start 0, endLimitIndex = " + endLimitIndex);
-        MidiSequence seq = new MidiSequence();
+        MidiSequence seq = new MidiSequence(ppqn);
 
         long time = 0;
         
