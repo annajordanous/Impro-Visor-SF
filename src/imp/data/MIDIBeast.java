@@ -195,8 +195,6 @@ public class MIDIBeast{
           "Open_Cuica", 
           "Mute_Triangle", 
           "Open_Triangle"};
-        
-
 
 	/**
          *@param String midiFile

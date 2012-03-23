@@ -890,13 +890,10 @@ public class Score implements Constants, Serializable {
                     throws InvalidMidiDataException {
         // to trace sequencing
         //System.out.println("Score: render, start 0, endLimitIndex = " + endLimitIndex);
-        Sequence seq = new Sequence(Sequence.PPQ, ppqn);
+        MidiSequence seq = new MidiSequence();
 
         long time = 0;
         
-        Track chordTrack = seq.createTrack();
-        Track melodyTrack = seq.createTrack();
-
         if( countInProg != null )
         {
         // Handle count-in render
@@ -908,17 +905,17 @@ public class Score implements Constants, Serializable {
             endLimitIndex += len;
           }
 
-        new MelodyPart(len).render(seq, 
-                                   getMelodyChannel(), 
-                                   time, 
-                                   melodyTrack, 
-                                   transposition, 
-                                   endLimitIndex);
+// Not sure why this was ever needed, as the melody parts are rendered below
+//        new MelodyPart(len).render(seq.getSequence(), 
+//                                   getMelodyChannel(), 
+//                                   time, 
+//                                   seq.getMelodyTrack(), 
+//                                   transposition, 
+//                                   endLimitIndex);
         
-        time = countInProg.render(seq, 
-                                  getDrumChannel(), 
+        time = countInProg.render(seq.getSequence(),  
                                   time, 
-                                  chordTrack, 
+                                  seq.getChordTrack(), 
                                   0, 
                                   true, 
                                   endLimitIndex);
@@ -931,17 +928,16 @@ public class Score implements Constants, Serializable {
         {
             // render the chord progression in parallel with each melody chorus
             
-            long melTime = i.next().render(seq, 
+            long melTime = i.next().render(seq.getSequence(), 
                                            getMelodyChannel(),
                                            time, 
-                                           melodyTrack, 
+                                           seq.getMelodyTrack(), 
                                            transposition, 
                                            endLimitIndex);
             
-            long chTime = chordProg.render(seq, 
-                                           getChordChannel(),  // irrelevant?
+            long chTime = chordProg.render(seq.getSequence(), 
                                            time, 
-                                           chordTrack, 
+                                           seq.getChordTrack(), 
                                            transposition, 
                                            useDrums, 
                                            endLimitIndex);
@@ -951,11 +947,11 @@ public class Score implements Constants, Serializable {
         //System.out.println("seq = " + seq);
 
         // Find the longest track, and put a Stop event at the end of it
-        MidiSynth.endSequence(seq);
-        Trace.log(3, "done sequencing  tickLength = " + seq.getTickLength());
+        MidiSynth.endSequence(seq.getSequence());
+        Trace.log(3, "done rendering, tickLength = " + seq.getSequence().getTickLength());
 
         //System.out.println("countIn size = " + getCountInOffset());
-        return seq;
+        return seq.getSequence();
     }
 
     public int getCountInOffset()
