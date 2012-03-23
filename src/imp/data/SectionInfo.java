@@ -407,7 +407,6 @@ public SectionRecord getSectionRecordByIndex(int n)
     }
 
 public long render(Sequence seq, 
-                   int ch, 
                    long time, 
                    Track track,
                    int transposition, 

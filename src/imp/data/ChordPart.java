@@ -313,7 +313,6 @@ public class ChordPart extends Part implements Serializable{
       }
 
     public long render(Sequence seq, 
-                         int ch, 
                          long time, 
                          Track track, 
                          int transposition, 
@@ -324,7 +323,7 @@ public class ChordPart extends Part implements Serializable{
     // to trace sequencing info:
     // System.out.println("ChordPart time = " + time + ", endLimitIndex = " + endLimitIndex);
       
-        return sectionInfo.render(seq,ch,time,track, transposition, useDrums, endLimitIndex);
+        return sectionInfo.render(seq, time, track, transposition, useDrums, endLimitIndex);
     }
 
 
