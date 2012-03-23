@@ -431,7 +431,7 @@ public class Chord implements Constants, Unit, Serializable {
      * @param ch        the channel to put the Chord on
      * @return long      the time that a sequential Chord should start
      */
-    public long render(Sequence seq, Track track, long time, int ch, 
+    public long render(MidiSequence seq, Track track, long time, int ch, 
                          Style style, Chord prev, int rhythmValue, int transposition, int endLimitIndex)
                 throws InvalidMidiDataException {
 

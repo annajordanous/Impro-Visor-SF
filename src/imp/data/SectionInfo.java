@@ -406,7 +406,7 @@ public SectionRecord getSectionRecordByIndex(int n)
         return getStyle(0);
     }
 
-public long render(Sequence seq, 
+public long render(MidiSequence seq, 
                    long time, 
                    Track track,
                    int transposition, 

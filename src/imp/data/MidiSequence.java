@@ -96,4 +96,9 @@ public Track getMelodyTrack()
   {
     return trackMelody;
   }
+
+public int getResolution()
+  {
+    return sequence.getResolution();
+  }
 }

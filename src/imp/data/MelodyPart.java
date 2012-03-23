@@ -872,7 +872,7 @@ public class MelodyPart
    * @param seq     the Sequence to add a Track to
    * @param ch      the channel to put the Track on
    */
-  public long render(Sequence seq, 
+  public long render(MidiSequence seq, 
                      int ch, 
                      long time,
                      Track track,
@@ -908,7 +908,7 @@ public class MelodyPart
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
       Note note = (Note)i.next();
-      time = note.render(seq, track, time, ch, transposition);
+      time = note.render(seq.getSequence(), track, time, ch, transposition);
       }
 
     return time;
