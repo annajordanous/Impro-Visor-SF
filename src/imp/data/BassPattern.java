@@ -243,7 +243,7 @@ public class BassPattern
         }
       else
         {
-        return unrecognizedItemError(L.first());
+        return unrecognizedItemError(segment);
         }
       }
 

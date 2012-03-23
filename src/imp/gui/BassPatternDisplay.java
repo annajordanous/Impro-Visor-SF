@@ -42,6 +42,7 @@ public static Color unplayableColor = Color.red;
 private int titleNumber = 0;
 
 String bassPatternText = "";
+BassPattern bassPattern;
 
 /**
  * Constructs a new BassPatternDisplay JPanel with default weight 3 and an empty
@@ -71,15 +72,6 @@ public BassPatternDisplay(String rule, float weight, Notate notate, CommandManag
  */
 private void initialize(String rule, float weight)
   {
-    /*
-     * Ensures that useful items like rhythm durations for notes are ready for
-     * use even if the user has not yet generated a style from midi
-     */
-    if( !MIDIBeast.invoked )
-      {
-        MIDIBeast.invoke();
-      }
-
     setWeight(weight);
     setDisplayText(rule);
   }
@@ -121,7 +113,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             // This is necessary so that the StyleListModel menu in notate is reset.
             // Without it, the contents will be emptied.
             notate.reloadStyles();
-            
 
             String chord = styleEditor.getChord();
             ChordPart c = new ChordPart();
@@ -147,7 +138,6 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
 
             s.setVolumes(synth);
             new PlayScoreCommand(s, 0, true, synth, notate.getTransposition()).execute();
-            styleEditor.setStatus("OK");
           }
         catch( Exception e )
           {
@@ -166,7 +156,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
 //Accessors:
 /**
  * @return the actual text displpayed in the text field
-     *
+ *
  */
 public String getDisplayText()
   {
@@ -185,18 +175,21 @@ public String getPattern()
 
 
 
-    public BassPattern getBassPattern()
-      {
-        Polylist list = Polylist.PolylistFromString(getPattern());
-        Polylist argument = ((Polylist)list.first()).rest();
-        BassPattern bassPattern = BassPattern.makeBassPattern(argument);
-//System.out.println("pattern = " + getPattern() + ", argument = " + argument +", BassPattern = " + bassPattern);
-        return bassPattern;
-      }
-    
+public BassPattern getBassPattern()
+    {
+    Polylist list = Polylist.PolylistFromString(getPattern());
+    Polylist argument = ((Polylist)list.first()).rest();
+    bassPattern = BassPattern.makeBassPattern(argument);
+//System.out.println("\npattern = " + getPattern() 
+//                 + "\nargument = " + argument 
+//                 + "\nBassPattern = " + bassPattern);
+    return bassPattern;
+    }
+
+
 public int getPatternLength()
   {
-    return getBassPattern().getDuration(); //Duration.getDuration(getDisplayText());
+    return getBassPattern().getDuration();
   }
 
 public double getBeats()
@@ -232,8 +225,15 @@ public void setTitleNumber(int num)
  */
 public void setDisplayText(String text)
   {
-    bassPatternText = text;
-
+    bassPatternText = text.trim();
+    if( bassPatternText.equals("") )
+      {
+        return;
+      }
+//System.out.println("bassPatternText = " + bassPatternText);
+    Polylist list = Polylist.PolylistFromString('(' + bassPatternText + ')');
+    Polylist argument = ((Polylist)list.first()).rest();
+    bassPattern = BassPattern.makeBassPattern(argument);
   }
 
 

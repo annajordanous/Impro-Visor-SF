@@ -17063,11 +17063,11 @@ public ChordPart makeCountIn()
   {
     String instrument[] =
       {
-        "High Tom", "Side Stick"
+        "High_Tom", "Side_Stick"
 
       // possible alternates:
-      // "Low Bongo", "Hi Bongo"
-      // "Acoustic Bass Drum", "Acoustic Snare"
+      // "Low_Bongo", "Hi_Bongo"
+      // "Acoustic_Bass_Drum", "Acoustic_Snare"
       };
 
     double tempo = score.getTempo();
