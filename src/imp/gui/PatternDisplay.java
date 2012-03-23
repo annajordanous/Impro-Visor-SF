@@ -23,6 +23,7 @@ package imp.gui;
 import imp.Constants;
 import imp.com.CommandManager;
 import imp.data.Score;
+import imp.util.ErrorNonModal;
 import java.awt.Color;
 
 /**
@@ -121,14 +122,13 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
   public void cannotPlay(String reason)
   {
     playable = false;
-System.out.println("Cannot play because " + reason);
-    styleEditor.setStatus("Cannot play because " + reason);
+  ErrorNonModal.log("Cannot play because " + reason);
   }
 
   public void canPlay()
   {
     playable = true;
-    styleEditor.setStatus("OK");
+    //styleEditor.setStatus("OK");
   }
 
   public float getWeight()
