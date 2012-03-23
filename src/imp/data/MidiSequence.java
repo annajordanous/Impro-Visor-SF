@@ -44,9 +44,14 @@ Track trackMelody;
 
 public MidiSequence()
   {
+  this(DEFAULT_PPQ);
+  }
+
+public MidiSequence(int ppqn)
+  {
   try
     {
-    sequence = new Sequence(Sequence.PPQ, DEFAULT_PPQ); 
+    sequence = new Sequence(Sequence.PPQ, ppqn); 
     trackDrums = new Track[MIDIBeast.spacelessDrumName.length];
     trackChords = sequence.createTrack();
     trackBass   = sequence.createTrack();
@@ -78,6 +83,7 @@ public Track getDrumTrack(int midiNumber)
     if(  track == null )
       {
         trackDrums[index] = track = sequence.createTrack();
+        //System.out.println("track created for " + MIDIBeast.getDrumInstrumentName(midiNumber));
       }
     return track;
   }
