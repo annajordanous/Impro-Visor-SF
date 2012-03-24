@@ -638,10 +638,8 @@ public void playBassColumn()
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
    **/
   
-  public String getBassPatterns()
+  public void getBassPatterns(StringBuilder buffer)
     {
-    StringBuilder buffer = new StringBuilder();
-
     java.util.Enumeration pats = allBassPatterns.elements();
     while( pats.hasMoreElements() )
       {
@@ -670,7 +668,6 @@ public void playBassColumn()
         {
         }
       }
-    return buffer.toString();
     }
 
   /**
@@ -678,10 +675,8 @@ public void playBassColumn()
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
    **/
   
-  public String getDrumPatterns()
+  public void getDrumPatterns(StringBuilder buffer)
     {
-    StringBuilder buffer = new StringBuilder();
-    
     java.util.Enumeration pats = allDrumPatterns.elements();
     while( pats.hasMoreElements() )
       {
@@ -711,8 +706,6 @@ public void playBassColumn()
         {
         }
       }
-
-    return buffer.toString();
     }
 
   /**
@@ -721,10 +714,8 @@ public void playBassColumn()
    * to MIDIBeast if a pattern is incorrectly formatted.
    **/
   
-  public String getChordPatterns()
+  public void getChordPatterns(StringBuilder buffer)
     {
-    StringBuilder buffer = new StringBuilder();
-
     java.util.Enumeration pats = allChordPatterns.elements();
     while( pats.hasMoreElements() )
       {
@@ -753,7 +744,6 @@ public void playBassColumn()
         {
         }
       }
-    return buffer.toString();
     }
 
   /**
@@ -971,40 +961,37 @@ public void playBassColumn()
         {
         }
 
-      String polyString = "";
-      out.write("(style\n");
-      polyString += "(style\n";
-      out.write("\t(name " + name + ")\n");
-      polyString += "\t(name " + name + ")\n";
+      StringBuilder buffer = new StringBuilder();
+
+      buffer.append("(style\n");
+      buffer.append("\t(name ");
+      buffer.append(name);
+      buffer.append(")\n");
 
       String attributes = getAttributes();
-      out.write(attributes);
-      polyString += attributes;
+      buffer.append(attributes);
 
       if( isInstrumentIncluded(StyleTableModel.BASS_PATTERN_ROW) )
         {
-        String bassP = getBassPatterns();
-        out.write(bassP);
-        polyString += bassP;
+        getBassPatterns(buffer);
         }
 
-      String drumP = getDrumPatterns();
-      out.write(drumP);
-      polyString += drumP;
+      getDrumPatterns(buffer);
 
       if( isInstrumentIncluded(StyleTableModel.CHORD_PATTERN_ROW) )
         {
-        String chordP = getChordPatterns();
-        out.write(chordP);
-        polyString += chordP;
+        getChordPatterns(buffer);
         }
 
-      out.write(")");
-      polyString += ")";
-      Polylist p = Notate.parseListFromString(polyString);
+      buffer.append(")");
+      
+      String styleResult = buffer.toString();
+      
+      Polylist p = Notate.parseListFromString(styleResult);
       Polylist t = (Polylist)p.first();
       Advisor.updateStyle(t.rest());
       notate.styleListModel.reset();
+      out.write(styleResult);
       out.close();
 
       setStatus("Style saved.");
@@ -1023,19 +1010,6 @@ public void playBassColumn()
 
     styleName = name;
 
-    ArrayList<String> errors = MIDIBeast.savingErrors;
-    if( errors.size() > 0 )
-      {
-      String allErrors = "";
-      for( int i = 0; i < errors.size(); i++ )
-        {
-        //System.out.println("Adding different spot");
-        allErrors += "\n" + errors.get(i);
-        }
-      ErrorLog.setDialogTitle("Saving Errors");
-      ErrorLog.log(ErrorLog.WARNING, allErrors);
-      }
-    ErrorLog.setDialogTitle("");
     }
 
   /**
