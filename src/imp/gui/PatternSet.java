@@ -21,7 +21,7 @@
 
 package imp.gui;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.JTable;
 
 /**
@@ -32,7 +32,7 @@ import javax.swing.JTable;
  * @author keller
  */
 public class PatternSet
-        extends Vector<PatternDisplay>
+        extends ArrayList<PatternDisplay>
 {
   protected String setTitle;
 
@@ -67,23 +67,13 @@ public class PatternSet
     // the corresponding table column index
     clear();
     nextPatternIndex =
-            
          StyleTableModel.initialExtraColumns + StyleTableModel.initialNumberOfPatterns;
+
     lastPatternColumnUsed = StyleTableModel.initialExtraColumns - 1;
     for( int i = 0; i < nextPatternIndex; i++ )
       {
       add(null);
       }
-    }
-
-  public void addToRowHeader(Vector<String> rowHeader)
-    {
-    for( int i = 0; i < rowHeadSegment.length; i++ )
-      {
-      rowHeader.add(rowHeadSegment[i]);
-      }
-
-    rowHeader.add(setTitle);
     }
 
   public int getLastPatternColumnUsed()
@@ -99,7 +89,7 @@ public class PatternSet
   public void removePattern(PatternDisplay pattern)
     {
     int index = indexOf(pattern);
-    setElementAt(null, index);
+    set(index, null);
     //System.out.println("removing pattern: " + pattern + " at index " + index);
     }
 }
