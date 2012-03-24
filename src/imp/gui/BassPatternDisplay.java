@@ -90,19 +90,12 @@ public boolean playMe(double swingVal)
 
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
-    canPlay();
-
     if( checkStatus() )
       {
         try
           {
             String r = this.getPattern();
             Polylist rule = Notate.parseListFromString(r);
-            if( rule.isEmpty() )
-              {
-                cannotPlay("Empty bass pattern");
-                return false;
-              }
 
             Style tempStyle = Style.makeStyle(rule);
             tempStyle.setSwing(swingVal);
@@ -147,7 +140,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
       }
     else
       {
-        cannotPlay("Status check failed");
+        cannotPlay(bassPattern.getErrorMessage());
         return false;
       }
     return true;
@@ -177,12 +170,6 @@ public String getPattern()
 
 public BassPattern getBassPattern()
     {
-    Polylist list = Polylist.PolylistFromString(getPattern());
-    Polylist argument = ((Polylist)list.first()).rest();
-    bassPattern = BassPattern.makeBassPattern(argument);
-//System.out.println("\npattern = " + getPattern() 
-//                 + "\nargument = " + argument 
-//                 + "\nBassPattern = " + bassPattern);
     return bassPattern;
     }
 
@@ -230,10 +217,12 @@ public void setDisplayText(String text)
       {
         return;
       }
-//System.out.println("bassPatternText = " + bassPatternText);
     Polylist list = Polylist.PolylistFromString('(' + bassPatternText + ')');
-    Polylist argument = ((Polylist)list.first()).rest();
-    bassPattern = BassPattern.makeBassPattern(argument);
+    bassPattern = BassPattern.makeBassPattern(Polylist.list(((Polylist)list.first()).cons("rules")));
+    if( !bassPattern.getStatus() )
+      {
+        cannotPlay(bassPattern.getErrorMessage());
+      }
   }
 
 
@@ -258,7 +247,7 @@ public Color getUnplayableColor()
 
 public boolean checkStatus()
   {
-    return true;
+    return bassPattern.getStatus();
   }
 
 

@@ -40,6 +40,10 @@ public class Pattern {
      */
     protected float weight = 10;
 
+    
+    private String errorMessage = null;
+
+
     /**
      * Gets the duration. This is intended to be overridden by specific types of Pattern.
      * @return the duration
@@ -89,4 +93,19 @@ public class Pattern {
     {
       style = s;
     }
+    
+public boolean getStatus()
+  {
+    return errorMessage == null;
+  }
+
+public String getErrorMessage()
+  {
+    return errorMessage == null ? "" : errorMessage;
+  }
+
+protected void setError(String error)
+  {
+    errorMessage = error;
+  }
 }
