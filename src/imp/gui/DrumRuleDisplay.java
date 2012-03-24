@@ -111,7 +111,7 @@ public String getRule()
     return rule;
   }
 
-
+// "(drum " + getInstrument() + " (rules " + ruleText + "))";
 
 public void setRuleText(String text)
   {
