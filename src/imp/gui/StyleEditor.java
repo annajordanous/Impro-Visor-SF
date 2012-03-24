@@ -370,7 +370,7 @@ void playPercussionColumn(int colIndex)
 
     selection.setSelectionInterval(colIndex, colIndex);
 
-    Object pattern = allDrumPatterns.elementAt(colIndex);
+    Object pattern = allDrumPatterns.get(colIndex);
 
     if( pattern != null && pattern instanceof Playable )
       {
@@ -400,7 +400,7 @@ void playChordColumn(int colIndex)
 
     selection.setSelectionInterval(colIndex, colIndex);
 
-    Object pattern = allChordPatterns.elementAt(colIndex);
+    Object pattern = allChordPatterns.get(colIndex);
 
     if( pattern != null && pattern instanceof Playable )
       {
@@ -435,7 +435,7 @@ void playBassColumn(int colIndex)
 
     selection.setSelectionInterval(colIndex, colIndex);
 
-    Object pattern = allBassPatterns.elementAt(colIndex);
+    Object pattern = allBassPatterns.get(colIndex);
 
     if( pattern != null && pattern instanceof Playable )
       {
@@ -640,12 +640,12 @@ public void playBassColumn()
   
   public void getBassPatterns(StringBuilder buffer)
     {
-    java.util.Enumeration pats = allBassPatterns.elements();
-    while( pats.hasMoreElements() )
+    Iterator pats = allBassPatterns.iterator();
+    while( pats.hasNext() )
       {
       try
         {
-        Object ob = pats.nextElement();
+        Object ob = pats.next();
         if( ob instanceof BassPatternDisplay )
           {
           BassPatternDisplay b = (BassPatternDisplay)ob;
@@ -659,7 +659,7 @@ public void playBassColumn()
               }
             else
               {
-              //MIDIBeast.addSaveError(b.getRuleError() + " and was not included.");
+              // pattern not included
               }
             }
           }
@@ -677,12 +677,12 @@ public void playBassColumn()
   
   public void getDrumPatterns(StringBuilder buffer)
     {
-    java.util.Enumeration pats = allDrumPatterns.elements();
-    while( pats.hasMoreElements() )
+    Iterator pats = allDrumPatterns.iterator();
+    while( pats.hasNext() )
       {
       try
         {
-        Object ob = pats.nextElement();
+        Object ob = pats.next();
         if( ob instanceof DrumPatternDisplay )
           {
           DrumPatternDisplay d = (DrumPatternDisplay)ob;
@@ -697,9 +697,8 @@ public void playBassColumn()
               }
             else
               {
-              //MIDIBeast.addSaveError(d.getPattern(false) + " and was not included.");
+              // pattern not included
               }
-
           }
         }
       catch( ClassCastException e )
@@ -716,12 +715,12 @@ public void playBassColumn()
   
   public void getChordPatterns(StringBuilder buffer)
     {
-    java.util.Enumeration pats = allChordPatterns.elements();
-    while( pats.hasMoreElements() )
+    Iterator pats = allChordPatterns.iterator();
+    while( pats.hasNext() )
       {
       try
         {
-        Object ob = pats.nextElement();
+        Object ob = pats.next();
         if( ob instanceof ChordPatternDisplay )
           {
           ChordPatternDisplay b = (ChordPatternDisplay)ob;
@@ -735,7 +734,7 @@ public void playBassColumn()
               }
             else
               {
-              //MIDIBeast.addSaveError(b.getRuleError() + " and was not included.");
+              // pattern not included
               }
             }
           }
@@ -1596,7 +1595,7 @@ public void playBassColumn()
       model.setBassPatternWeight(weight, patternIndex);
       model.setBassPatternBeats(b.getBeats(), patternIndex);
       //System.out.println("loaded bass pattern at column " + patternIndex);
-      allBassPatterns.setElementAt(b, patternIndex);
+      allBassPatterns.set(patternIndex, b);
 
       styleTable.setValueAt(b.getWeight(),
               StyleTableModel.BASS_PATTERN_WEIGHT_ROW,
@@ -1636,7 +1635,7 @@ public void playBassColumn()
       model.setChordPatternBeats(c.getBeats(), patternIndex);
       model.setChordPatternPush(c.getPushString(), patternIndex);
       //System.out.println("loaded chord pattern at column " + patternIndex);
-      allChordPatterns.setElementAt(c, patternIndex);
+      allChordPatterns.set(patternIndex, c);
       }
     chordHolderPane.revalidate();
     }
@@ -1714,7 +1713,7 @@ public void playBassColumn()
         }
       newPat.setTitleNumber((i + 1));
       drumHolderPane.add(newPat);
-      allDrumPatterns.setElementAt(newPat, patternIndex);
+      allDrumPatterns.set(patternIndex, newPat);
       double beats = newPat.getBeats();
       model.setDrumPatternBeats(beats, patternIndex);
       }
@@ -1996,17 +1995,17 @@ public void playBassColumn()
    */
   public PatternDisplay getBassPattern(int index)
     {
-    return allBassPatterns.elementAt(index);
+    return allBassPatterns.get(index);
     }
 
   public PatternDisplay getChordPattern(int index)
     {
-    return allChordPatterns.elementAt(index);
+    return allChordPatterns.get(index);
     }
 
   public PatternDisplay getDrumPattern(int index)
     {
-    return allDrumPatterns.elementAt(index);
+    return allDrumPatterns.get(index);
     }
 
   private void newTable()
@@ -2226,7 +2225,7 @@ public void playBassColumn()
     chordHolderPane.add(display);
     display.setDisplayText(contents);
     display.setTitleNumber(0); // NEEDED?
-    allChordPatterns.setElementAt(display, column);
+    allChordPatterns.set(column, display);
     return display;
     }
 
@@ -2236,7 +2235,7 @@ public void playBassColumn()
     bassHolderPane.add(display);
     display.setDisplayText(contents);
     display.setTitleNumber(0); // NEEDED?
-    allBassPatterns.setElementAt(display, column);
+    allBassPatterns.set(column, display);
     return display;
     }
 
@@ -2264,7 +2263,7 @@ public void playBassColumn()
       allDrumPatterns.add(newDrumPatternDisplay());
       }
 
-    PatternDisplay curPattern = allDrumPatterns.elementAt(column);
+    PatternDisplay curPattern = allDrumPatterns.get(column);
 
     // Use existing drum pattern display, or create new one.
 
@@ -2288,7 +2287,7 @@ public void playBassColumn()
     display.setDisplayText(contents);
     curDrum.addRule(display);
 
-    allDrumPatterns.setElementAt(curDrum, column);
+    allDrumPatterns.set(column, curDrum);
     return display;
     }
 
@@ -2706,7 +2705,7 @@ public void playBassColumn()
       {
       DrumRuleDisplay drumRule = (DrumRuleDisplay)oldContents;
       DrumPatternDisplay drumPattern =
-              (DrumPatternDisplay)allDrumPatterns.elementAt(column);
+              (DrumPatternDisplay)allDrumPatterns.get(column);
       drumPattern.removeRule(drumRule);
       //System.out.println("removing rule, count becomes: " + drumPattern.getRuleCount());
       if( drumPattern.getRuleCount() == 0 )
