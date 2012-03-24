@@ -153,7 +153,7 @@ public class BassPattern
    */
   public static BassPattern makeBassPattern(Polylist L)
     {
-System.out.println("makeBassPattern " + L);
+//System.out.println("makeBassPattern " + L);
     Polylist original = L;
     BassPattern bp = new BassPattern();
     // Example pattern:

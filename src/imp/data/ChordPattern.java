@@ -58,6 +58,7 @@ private static String ruleTypes[] =
   {
   "X", "R", "V"
   };
+
 // indices into the ruleTypes array
 private static final int STRIKE = 0;
 
@@ -111,7 +112,7 @@ public static ChordPattern makeChordPattern(Polylist L)
     // The notation for push is the same as a duration.
     // For example, 8/3 is an eighth-note triplet
     
-  Polylist M = L;
+  Polylist original = L;
     
   ChordPattern cp = new ChordPattern();
 
@@ -132,27 +133,58 @@ public static ChordPattern makeChordPattern(Polylist L)
 
           String rule = s.substring(0, 1);
           String dur = s.substring(1);
-
-          cp.addRule(rule, dur);
+          
+          char c = rule.charAt(0);
+          
+          switch( c )
+            {
+              case 'X':
+              case 'R':
+              case 'V':
+                  cp.addRule(rule, dur);
+                  break;
+                  
+              default:
+                  cp.setError("Unrecognized " + rule 
+                            + " in chord pattern " + original);
+                  return cp;
+            }
+          
           item = item.rest();
           }
         break;
         }
+          
       case WEIGHT:
         {
-        Number w = (Number)item.first();
-        cp.setWeight(w.intValue());
+        try
+          {
+          Number w = (Number)item.first();
+          cp.setWeight(w.intValue());
+          break;
+          }
+        catch( Exception e )
+          {
+            cp.setError("Expected weight value, but found " + item.first()
+                      + " in " + original);
+          }
         break;
         }
+          
       case PUSH:
         {
         cp.pushString = item.first().toString();
         cp.pushAmount = Duration.getDuration(cp.pushString);
         //System.out.println("pushAmount " + pushString + " = " + cp.pushAmount + " slots");
+        break;
         }
+          
+      default:
+          cp.setError("Error in chord pattern " + original);
+          return cp;
       }
     }
-  //System.out.println("makeChordPattern on " + M + " returns " + cp);
+  //System.out.println("makeChordPattern on " + original + " returns " + cp);
   return cp;
   }
 
