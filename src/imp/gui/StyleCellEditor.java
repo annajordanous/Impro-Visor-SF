@@ -256,7 +256,7 @@ public class StyleCellEditor
       String contents = editField.getText().trim();
 
       thing.setDisplayText(contents);
-      return styleEditor.setCell(editField.getText().toUpperCase(), row, column, StyleEditor.SILENT);
+      return styleEditor.setCell(editField.getText().toUpperCase(), row, column, StyleEditor.PLAY);
 
       }
     else if( beingEdited == null )

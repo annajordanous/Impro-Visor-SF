@@ -21,13 +21,17 @@
 package imp.data;
 import java.util.ArrayList;
 
+/**
+ * Utilities for MIDI
+ * @author Brandy McMenamee, Jim Herold, Robert Keller
+ */
 public class MIDIBeast{
 
         /**
          * All of these variables, except for beat, outght to be specifically set
          * before each main style generator occurs.  They are initialize to defaults
          * in order to avoid potential un-anticipated bugs.
-         **/
+         */
 	public static jm.music.data.Score score;
 	public static double numerator = 4; 
 	public static double denominator = 4;
@@ -100,54 +104,54 @@ public class MIDIBeast{
 	 * general midi number of the instrument (ex: indice 0 is "acoustic Bass Drum," which has
 	 * midi number 35).
 	 */
-	public static final String[] drumNames = {
-          "Acoustic Bass Drum", 
-          "Bass Drum 1", 
-          "Side Stick", 
-          "Acoustic Snare",
-	  "Hand Clap", 
-          "Electric Snare", 	
-          "Low Floor Tom", 
-          "Closed Hi-Hat", 
-          "High Floor Tom", 
-          "Pedal Hi-Hat",
-          "Low Tom", 
-          "Open Hi-Hat", 
-          "Low-Mid Tom", 
-          "Hi-Mid Tom", 
-          "Crash Cymbal 1", 
-          "High Tom", 
-          "Ride Cymbal 1",
-          "Chinese Cymbal", 
-          "Ride Bell", 
-          "Tambourine", 
-          "Splash Cymbal", 
-          "Cowbell", 
-          "Crash Cymbal 2", 
-	  "Vibraslap", 
-          "Ride Cymbal 2", 
-          "Hi Bongo", 
-          "Low Bongo", 
-          "Mute Hi Conga", 
-          "Open Hi Conga",
-	  "Low Conga", 
-          "High Timbale", 
-          "Low Timbale", 
-          "High Agogo", 
-          "Low Agogo", 
-          "Cabasa", 
-          "Maracas",
-	  "Short Whistle", 
-          "Long Whistle", 
-          "Short Guiro", 
-          "Long Guiro", 
-          "Claves", 
-          "Hi Wood Block",
-	  "Low Wood Block", 
-          "Mute Cuica", 
-          "Open Cuica", 
-          "Mute Triangle", 
-          "Open Triangle"};
+//	public static final String[] drumNames = {
+//          "Acoustic Bass Drum", 
+//          "Bass Drum 1", 
+//          "Side Stick", 
+//          "Acoustic Snare",
+//	  "Hand Clap", 
+//          "Electric Snare", 	
+//          "Low Floor Tom", 
+//          "Closed Hi-Hat", 
+//          "High Floor Tom", 
+//          "Pedal Hi-Hat",
+//          "Low Tom", 
+//          "Open Hi-Hat", 
+//          "Low-Mid Tom", 
+//          "Hi-Mid Tom", 
+//          "Crash Cymbal 1", 
+//          "High Tom", 
+//          "Ride Cymbal 1",
+//          "Chinese Cymbal", 
+//          "Ride Bell", 
+//          "Tambourine", 
+//          "Splash Cymbal", 
+//          "Cowbell", 
+//          "Crash Cymbal 2", 
+//	  "Vibraslap", 
+//          "Ride Cymbal 2", 
+//          "Hi Bongo", 
+//          "Low Bongo", 
+//          "Mute Hi Conga", 
+//          "Open Hi Conga",
+//	  "Low Conga", 
+//          "High Timbale", 
+//          "Low Timbale", 
+//          "High Agogo", 
+//          "Low Agogo", 
+//          "Cabasa", 
+//          "Maracas",
+//	  "Short Whistle", 
+//          "Long Whistle", 
+//          "Short Guiro", 
+//          "Long Guiro", 
+//          "Claves", 
+//          "Hi Wood Block",
+//	  "Low Wood Block", 
+//          "Mute Cuica", 
+//          "Open Cuica", 
+//          "Mute Triangle", 
+//          "Open Triangle"};
 
                 /**
 	 * Thes names are used in style files, so that spaces are avoided.
@@ -432,36 +436,36 @@ public class MIDIBeast{
 		return (int) (Math.round((beat * d)/precision)*precision);
 	}
         
-        /**
-	 * @param midiNumber the number of the drum instrument
-	 * @return the name of the instrument corresponding to midiNumber 
-	 * or "Unknown Instrument" if none were found.
-	 */
-	public static String getDrumInstrumentName(int midiNumber) {
-		String instrument = "Unknown Instrument";
-		try {
-			//subtract 35 because midi drum numbers start at 35
-			instrument = drumNames[midiNumber-35];
-		}
-		catch (ArrayIndexOutOfBoundsException e) {}
-		return instrument;
-	}
-       /**
-	 * @param instrumentName the name of the drum instrument
-	 * @return the midi number corresponding to the instrument or
-	 * -1 if none were found.
-	 */
-	public static int getDrumInstrumentNumber(String instrumentName) {
-		for(int i = 0; i < MIDIBeast.drumNames.length; i++) {
-			if(MIDIBeast.drumNames[i].equalsIgnoreCase(instrumentName)) {
-				//add 35 because midi drum numbers start at 35
-                //System.out.println("instrument named " + instrumentName + " maps to " + (i + 35));
-				return i+35;
-			}
-		}
-                //System.out.println("instrument named " + instrumentName + " not found");
-		return -1;
-	}
+//        /**
+//	 * @param midiNumber the number of the drum instrument
+//	 * @return the name of the instrument corresponding to midiNumber 
+//	 * or "Unknown Instrument" if none were found.
+//	 */
+//	public static String getDrumInstrumentName(int midiNumber) {
+//		String instrument = "Unknown Instrument";
+//		try {
+//			//subtract 35 because midi drum numbers start at 35
+//			instrument = drumNames[midiNumber-35];
+//		}
+//		catch (ArrayIndexOutOfBoundsException e) {}
+//		return instrument;
+//	}
+//       /**
+//	 * @param instrumentName the name of the drum instrument
+//	 * @return the midi number corresponding to the instrument or
+//	 * -1 if none were found.
+//	 */
+//	public static int getDrumInstrumentNumber(String instrumentName) {
+//		for(int i = 0; i < MIDIBeast.drumNames.length; i++) {
+//			if(MIDIBeast.drumNames[i].equalsIgnoreCase(instrumentName)) {
+//				//add 35 because midi drum numbers start at 35
+//                //System.out.println("instrument named " + instrumentName + " maps to " + (i + 35));
+//				return i+35;
+//			}
+//		}
+//                //System.out.println("instrument named " + instrumentName + " not found");
+//		return -1;
+//	}
 
  
 
