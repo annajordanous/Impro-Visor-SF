@@ -43,20 +43,19 @@ public class ChordPatternDisplay
 
     //The number added to the title of this object to help the user distinguish it from others.
     private int titleNumber = 0;
-    
-     //True if the pattern information is displayed, false otherwise 
-    boolean isExpanded = false;
-    
+
     String pushString = "";
     
-    private String patternText;
+    private String chordPatternText;
+    
+    private ChordPattern chordPattern;
     
    /**
      * Constructs a new ChordPatternDisplay JPanel with default weight 3 and an empty pattern.
      **/
     public ChordPatternDisplay(Notate parent, CommandManager cm, StyleEditor styleParent) {
         super(parent, cm, styleParent);
-        initialize(null, 3, "");
+        initialize("", 3, "");
     }
     
    /**
@@ -71,12 +70,7 @@ public class ChordPatternDisplay
      * Initializes all elements and components for the BassPatternDisplay GUI and collapses the pane.
      **/
     private void initialize(String rule, float weight, String pushString) {
-        /*Ensures that useful items like rhythm durations for notes are ready for use even
-          if the user has not yet generated a style from midi*/
-        if(!MIDIBeast.invoked) {
-            MIDIBeast.invoke();
-        }
-        
+  
         setWeight(weight);
         setDisplayText(rule);
         
@@ -96,7 +90,7 @@ public class ChordPatternDisplay
      * @return the actual text displpayed in the text field
      **/       
     public String getDisplayText() {
-        return patternText.trim();
+        return chordPatternText.trim();
     }
     
     /**
@@ -165,10 +159,20 @@ public class ChordPatternDisplay
     /**
      * Sets the text in the text field to the parameter text and updates the user feedback information.
      **/ 
-    public void setDisplayText(String text) {
-        patternText = text;
-    }
-    
+    public void setDisplayText(String text) 
+        {
+    chordPatternText = text.trim();
+    if( chordPatternText.equals("") )
+      {
+        return;
+      }
+    Polylist list = Polylist.PolylistFromString('(' + chordPatternText + ')');
+    chordPattern = ChordPattern.makeChordPattern(Polylist.list(((Polylist)list.first()).cons("rules")));
+    if( !chordPattern.getStatus() )
+      {
+        cannotPlay(chordPattern.getErrorMessage());
+      }
+  }
     
    public Color getPlayableColor()
     {
@@ -191,61 +195,11 @@ public class ChordPatternDisplay
    
 public boolean checkStatus()
   {
-    String displayText = getDisplayText();
-
-    playable = true;
-
-    try
-      {
-        //Check for null rules.
-        if( displayText.equals("") )
-          {
-            return false;
-          }
-
-        Polylist l = Notate.parseListFromString(displayText);
-        StringTokenizer tokenS = new StringTokenizer(displayText, " ");
-        ArrayList<String> tokenizedRule = new ArrayList<String>();
-
-        while( tokenS.hasMoreTokens() )
-          {
-            tokenizedRule.add(tokenS.nextToken());
-          }
-
-        //For every element, check for invalid "hit" or "rest" items, and 
-        //invalid rhythm durations.  By checking each element, we are able to give clearer feedback about errors         
-        for( int i = 0; i < tokenizedRule.size(); i++ )
-          {
-            String charString = java.lang.Character.toString(tokenizedRule.get(i).charAt(0));
-            if( !(charString.equals("X"))
-             && !(charString.equals("R"))
-             && !(charString.equals("V")) )
-              {
-                cannotPlay("unknown character in pattern");
-                return false;
-              }
-          }
-
-        if( Style.makeStyle(l) == null )
-          {
-            cannotPlay("can't make style");
-            return false;
-          }
-        else if( MIDIBeast.numBeatsInRule(displayText) == -1 )
-          {
-            cannotPlay("can't compute beats");
-            return false;
-          }
-        else
-          {
-            return true;
-          }
-      }
-    catch( Exception e )
-      {
-        cannotPlay("exception " + e);
-        return false;
-      }
+  if( chordPattern != null )
+    {
+      return chordPattern.getStatus();
+    }
+  else return false;
   }
 
 /**
@@ -255,19 +209,13 @@ public boolean checkStatus()
  */
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
-    canPlay();
-
     if( checkStatus() )
       {
         try
           {
             String r = this.getPattern();
             Polylist rule = Notate.parseListFromString(r);
-            if( rule.isEmpty() )
-              {
-                cannotPlay("empty rule");
-                return false;
-              }
+
             Style tempStyle = Style.makeStyle(rule);
             tempStyle.setSwing(swingVal);
             tempStyle.setAccompanimentSwing(swingVal);
@@ -300,8 +248,11 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
       }
     else
       {
-        cannotPlay("check status failed");
-        return false;
+        if( chordPattern != null )
+          {
+          cannotPlay(chordPattern.getErrorMessage());
+          return false;
+          }
       }
     return true;
   }
@@ -311,7 +262,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
      **/    
     @Override
     public String toString() {
-        return patternText;
+        return chordPatternText;
     }
            
 }
