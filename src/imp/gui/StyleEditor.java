@@ -640,7 +640,7 @@ public void playBassColumn()
   
   public String getBassPatterns()
     {
-    String patterns = "";
+    StringBuilder buffer = new StringBuilder();
 
     java.util.Enumeration pats = allBassPatterns.elements();
     while( pats.hasMoreElements() )
@@ -655,7 +655,9 @@ public void playBassColumn()
             {
             if( b.checkStatus() )
               {
-              patterns += "\t" + b.getPattern() + "\n";
+              buffer.append("\t");
+              buffer.append(b.getPattern());
+              buffer.append("\n");
               }
             else
               {
@@ -668,7 +670,7 @@ public void playBassColumn()
         {
         }
       }
-    return patterns;
+    return buffer.toString();
     }
 
   /**
@@ -678,7 +680,8 @@ public void playBassColumn()
   
   public String getDrumPatterns()
     {
-    String patterns = "";
+    StringBuilder buffer = new StringBuilder();
+    
     java.util.Enumeration pats = allDrumPatterns.elements();
     while( pats.hasMoreElements() )
       {
@@ -689,14 +692,17 @@ public void playBassColumn()
           {
           DrumPatternDisplay d = (DrumPatternDisplay)ob;
           
+          //System.out.println("d = " + d.getPattern(true) );
 
             if( d.checkStatus() )
               {
-              patterns += "\t" + d.getPattern(true) + "\n";
+              buffer.append("\t");
+              buffer.append(d.getPattern(true));
+              buffer.append("\n");
               }
             else
               {
-              MIDIBeast.addSaveError(d.getPattern(false) + " and was not included.");
+              //MIDIBeast.addSaveError(d.getPattern(false) + " and was not included.");
               }
 
           }
@@ -706,7 +712,7 @@ public void playBassColumn()
         }
       }
 
-    return patterns;
+    return buffer.toString();
     }
 
   /**
@@ -717,7 +723,7 @@ public void playBassColumn()
   
   public String getChordPatterns()
     {
-    String patterns = "";
+    StringBuilder buffer = new StringBuilder();
 
     java.util.Enumeration pats = allChordPatterns.elements();
     while( pats.hasMoreElements() )
@@ -732,7 +738,9 @@ public void playBassColumn()
             {
             if( b.checkStatus() )
               {
-              patterns += "\t" + b.getPattern() + "\n";
+              buffer.append("\t");
+              buffer.append(b.getPattern());
+              buffer.append("\n");
               }
             else
               {
@@ -745,7 +753,7 @@ public void playBassColumn()
         {
         }
       }
-    return patterns;
+    return buffer.toString();
     }
 
   /**
@@ -2929,7 +2937,7 @@ public void playBassColumn()
   
   public int getRowByDrumInstrumentNumber(int number)
     {
-      String instrumentName = MIDIBeast.getDrumInstrumentName(number);
+      String instrumentName = MIDIBeast.spacelessDrumNameFromNumber(number);
       
       int row = findInstrumentRow(instrumentName);
 

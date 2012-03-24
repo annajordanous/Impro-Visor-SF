@@ -87,15 +87,6 @@ public DrumPatternDisplay(float weight, Notate parent, CommandManager cm, StyleE
  */
 private void initialize(float weight)
   {
-    /*
-     * Ensures that useful items like rhythm durations for notes are ready for
-     * use even if the user has not yet generated a style from midi
-     */
-    if( !MIDIBeast.invoked )
-      {
-        MIDIBeast.invoke();
-      }
-
     setWeight(weight);
 
     checkStatus();
@@ -131,11 +122,14 @@ public String getPattern(boolean requireChecked)
         try
           {
             DrumRuleDisplay d = e.next();
+            
             // See if instrument is to be included per checkbox in editor
             // FIX: This is round-about, and should be changed to iterate directly over
             // table column, rather than going through drumRuleHolder.
 
             int instrumentNumber = d.getInstrumentNumber();
+
+            //System.out.println("drumrule = " + instrumentNumber + " " + d.getRule() + styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber));
 
             if( !requireChecked || styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber) )
               {
@@ -269,7 +263,6 @@ public void addRule(DrumRuleDisplay rule)
               }
           }
         rules.add(rule);
-        checkStatus();
       }
   }
 
@@ -462,8 +455,6 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
 
 public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
   {
-    canPlay();
-//System.out.println("playing " + this);
     if( checkStatus() )
       {
         try
