@@ -134,7 +134,7 @@ public class BassPattern
   private static final int RULES = 0;
 
   private static final int WEIGHT = 1;
-
+  
   /**
    * Creates a new BassPatern (only used by the factory).
    */
@@ -153,6 +153,8 @@ public class BassPattern
    */
   public static BassPattern makeBassPattern(Polylist L)
     {
+System.out.println("makeBassPattern " + L);
+    Polylist original = L;
     BassPattern bp = new BassPattern();
     // Example pattern:
     //
@@ -199,7 +201,8 @@ public class BassPattern
                     }
                   else
                     {
-                    return unrecognizedItemError(segment);
+                    bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+                    return bp;
                     }
                   }
                 else if( entry instanceof String )
@@ -217,12 +220,31 @@ public class BassPattern
                   // e.g. B4+8 or A8
                   String duration = rule.substring(1);
                   rule = rule.substring(0, 1);
-                  bp.addRule(rule, duration);
+                  char c = rule.charAt(0);
+                  switch( c )
+                    {
+                      case 'A':
+                      case 'B':
+                      case 'C':
+                      case 'N':
+                      case 'R':
+                      case 'S':
+                      case 'V':
+                      case 'X':
+                      case '=':
+                          bp.addRule(rule, duration);
+                          break;
+                          
+                      default:
+                          bp.setError("unrecognized " + rule + " in bass pattern: " + original);
+                          return bp;
+                     }
                    }
                   }
                 else
                   {
-                  return unrecognizedItemError(segment);
+                  bp.setError("unrecognized " + entry + " in bass pattern: " + original);
+                  return bp;
                   }
                 }
               break;
@@ -233,32 +255,26 @@ public class BassPattern
               break;
 
             default:
-              return unrecognizedItemError(dispatcher);
+              bp.setError("unrecognized " + dispatcher + " in bass pattern: " + original);
+              return bp;
             }
           }
         else
           {
-          return unrecognizedItemError(segment);
+          bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+          return bp;
           }
         }
       else
         {
-        return unrecognizedItemError(segment);
+        bp.setError("unrecognized " + segment + " in bass pattern: " + original);
+        return bp;
         }
       }
 
     return bp;
     }
 
-  /**
-   * Report an error.
-   */
-  static private BassPattern unrecognizedItemError(Object irritant)
-    {
-    ErrorLog.log(ErrorLog.WARNING,
-            "Ignoring unrecognized item in bass pattern: " + irritant, false);
-    return null;
-    }
 
   /**
    * Adds a rule and duration to this BassPattern.
