@@ -2089,74 +2089,74 @@ public void playBassColumn()
     instrumentMenu.add(NO_CHANGE);
     final JMenu bassDrumMenu = new JMenu("Bass Drums");
     addSubMenu(instrumentMenu, bassDrumMenu);
-    addMenuLeaf(bassDrumMenu, "Acoustic Bass Drum");
-    addMenuLeaf(bassDrumMenu, "Bass Drum 1");
+    addMenuLeaf(bassDrumMenu, "Acoustic_Bass_Drum");
+    addMenuLeaf(bassDrumMenu, "Bass_Drum_1");
 
-    final JMenu snareDrumMenu = new JMenu("Snare Drums");
+    final JMenu snareDrumMenu = new JMenu("Snare_Drums");
     addSubMenu(instrumentMenu, snareDrumMenu);
-    addMenuLeaf(snareDrumMenu, "Acoustic Snare");
-    addMenuLeaf(snareDrumMenu, "Electric Snare");
-    addMenuLeaf(snareDrumMenu, "Side Stick");
+    addMenuLeaf(snareDrumMenu, "Acoustic_Snare");
+    addMenuLeaf(snareDrumMenu, "Electric_Snare");
+    addMenuLeaf(snareDrumMenu, "Side_Stick");
 
     final JMenu tomMenu = new JMenu("Tom-toms");
     addSubMenu(instrumentMenu, tomMenu);
-    addMenuLeaf(tomMenu, "Low Tom");
-    addMenuLeaf(tomMenu, "Low-Mid Tom");
-    addMenuLeaf(tomMenu, "Hi-Mid Tom");
-    addMenuLeaf(tomMenu, "High Tom");
-    addMenuLeaf(tomMenu, "Low Floor Tom");
-    addMenuLeaf(tomMenu, "High Floor Tom");
+    addMenuLeaf(tomMenu, "Low_Tom");
+    addMenuLeaf(tomMenu, "Low-Mid_Tom");
+    addMenuLeaf(tomMenu, "Hi-Mid_Tom");
+    addMenuLeaf(tomMenu, "High_Tom");
+    addMenuLeaf(tomMenu, "Low_Floor_Tom");
+    addMenuLeaf(tomMenu, "High_Floor_Tom");
 
     final JMenu cymbalMenu = new JMenu("Cymbals");
     addSubMenu(instrumentMenu, cymbalMenu);
-    addMenuLeaf(cymbalMenu, "Ride Cymbal 1");
-    addMenuLeaf(cymbalMenu, "Ride Cymbal 2");
-    addMenuLeaf(cymbalMenu, "Closed Hi-Hat");
-    addMenuLeaf(cymbalMenu, "Open Hi-Hat");
-    addMenuLeaf(cymbalMenu, "Pedal Hi-Hat");
-    addMenuLeaf(cymbalMenu, "Crash Cymbal 1");
-    addMenuLeaf(cymbalMenu, "Crash Cymbal 2");
-    addMenuLeaf(cymbalMenu, "Splash Cymbal");
-    addMenuLeaf(cymbalMenu, "Chinese Cymbal");
+    addMenuLeaf(cymbalMenu, "Ride_Cymbal_1");
+    addMenuLeaf(cymbalMenu, "Ride_Cymbal_2");
+    addMenuLeaf(cymbalMenu, "Closed_Hi-Hat");
+    addMenuLeaf(cymbalMenu, "Open_Hi-Hat");
+    addMenuLeaf(cymbalMenu, "Pedal_Hi-Hat");
+    addMenuLeaf(cymbalMenu, "Crash_Cymbal_1");
+    addMenuLeaf(cymbalMenu, "Crash_Cymbal_2");
+    addMenuLeaf(cymbalMenu, "Splash_Cymbal");
+    addMenuLeaf(cymbalMenu, "Chinese_Cymbal");
 
-    final JMenu bongoMenu = new JMenu("Bongos/Congas/Timables");
+    final JMenu bongoMenu = new JMenu("Bongos/Congas/Timbales");
     addSubMenu(instrumentMenu, bongoMenu);
-    addMenuLeaf(bongoMenu, "Hi Bongo");
-    addMenuLeaf(bongoMenu, "Low Bongo");
-    addMenuLeaf(bongoMenu, "Low Conga");
-    addMenuLeaf(bongoMenu, "Mute Hi Conga");
-    addMenuLeaf(bongoMenu, "Open Hi Conga");
-    addMenuLeaf(bongoMenu, "Low Timbale");
-    addMenuLeaf(bongoMenu, "High Timbale");
+    addMenuLeaf(bongoMenu, "Hi_Bongo");
+    addMenuLeaf(bongoMenu, "Low_Bongo");
+    addMenuLeaf(bongoMenu, "Low_Conga");
+    addMenuLeaf(bongoMenu, "Mute_Hi_Conga");
+    addMenuLeaf(bongoMenu, "Open_Hi_Conga");
+    addMenuLeaf(bongoMenu, "Low_Timbale");
+    addMenuLeaf(bongoMenu, "High_Timbale");
 
     final JMenu latinMenu = new JMenu("Other Latin Percussion");
     addSubMenu(instrumentMenu, latinMenu);
     addMenuLeaf(latinMenu, "Cabasa");
     addMenuLeaf(latinMenu, "Claves");
     addMenuLeaf(latinMenu, "Maracas");
-    addMenuLeaf(latinMenu, "Low Wood Block");
-    addMenuLeaf(latinMenu, "Hi Wood Block");
-    addMenuLeaf(latinMenu, "Mute Cuica");
-    addMenuLeaf(latinMenu, "Open Cuica");
-    addMenuLeaf(latinMenu, "Short Guiro");
-    addMenuLeaf(latinMenu, "Long Guiro");
+    addMenuLeaf(latinMenu, "Low_Wood_Block");
+    addMenuLeaf(latinMenu, "Hi_Wood_Block");
+    addMenuLeaf(latinMenu, "Mute_Cuica");
+    addMenuLeaf(latinMenu, "Open_Cuica");
+    addMenuLeaf(latinMenu, "Short_Guiro");
+    addMenuLeaf(latinMenu, "Long_Guiro");
 
     final JMenu bellMenu = new JMenu("Bells");
     addSubMenu(instrumentMenu, bellMenu);
-    addMenuLeaf(bellMenu, "Ride Bell");
-    addMenuLeaf(bellMenu, "Low Agogo");
-    addMenuLeaf(bellMenu, "High Agogo");
+    addMenuLeaf(bellMenu, "Ride_Bell");
+    addMenuLeaf(bellMenu, "Low_Agogo");
+    addMenuLeaf(bellMenu, "High_Agogo");
     addMenuLeaf(bellMenu, "Cowbell");
     addMenuLeaf(bellMenu, "Tambourine");
-    addMenuLeaf(bellMenu, "Mute Triangle");
-    addMenuLeaf(bellMenu, "Open Triangle");
+    addMenuLeaf(bellMenu, "Mute_Triangle");
+    addMenuLeaf(bellMenu, "Open_Triangle");
 
     final JMenu miscMenu = new JMenu("Miscellaneous");
     addSubMenu(instrumentMenu, miscMenu);
-    addMenuLeaf(miscMenu, "Hand Clap");
+    addMenuLeaf(miscMenu, "Hand_Clap");
     addMenuLeaf(miscMenu, "Vibraslap");
-    addMenuLeaf(miscMenu, "Short Whistle");
-    addMenuLeaf(miscMenu, "Long Whistle");
+    addMenuLeaf(miscMenu, "Short_Whistle");
+    addMenuLeaf(miscMenu, "Long_Whistle");
 
     MouseListener mouseListener = new MouseAdapter()
       {
