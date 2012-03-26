@@ -2092,13 +2092,13 @@ public void playBassColumn()
     addMenuLeaf(bassDrumMenu, "Acoustic_Bass_Drum");
     addMenuLeaf(bassDrumMenu, "Bass_Drum_1");
 
-    final JMenu snareDrumMenu = new JMenu("Snare_Drums");
+    final JMenu snareDrumMenu = new JMenu("Snare Drums");
     addSubMenu(instrumentMenu, snareDrumMenu);
     addMenuLeaf(snareDrumMenu, "Acoustic_Snare");
     addMenuLeaf(snareDrumMenu, "Electric_Snare");
     addMenuLeaf(snareDrumMenu, "Side_Stick");
 
-    final JMenu tomMenu = new JMenu("Tom-toms");
+    final JMenu tomMenu = new JMenu("Tom-Toms");
     addSubMenu(instrumentMenu, tomMenu);
     addMenuLeaf(tomMenu, "Low_Tom");
     addMenuLeaf(tomMenu, "Low-Mid_Tom");
@@ -2160,6 +2160,7 @@ public void playBassColumn()
 
     MouseListener mouseListener = new MouseAdapter()
       {
+      @Override
       public void mouseClicked(MouseEvent e)
         {
         // selectedRowIndex is not local, for communication with actionPerformed
@@ -2252,7 +2253,7 @@ public void playBassColumn()
     {
     // Get instrument from first column
 
-    String instrument = (String)getRowHeaderLabels().get(row);
+    String instrument = getRowHeaderLabels().get(row);
 
     // How to create DrumPattern when none exists?
 

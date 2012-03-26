@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,36 @@ package imp.data;
  * @author keller
  */
 
-public interface MelodySymbol
+public class MelodySymbol
 {
     
+/**
+ * Make a melody symbol from a String representing either a note, rest, or
+ * volume.
+ * @param string
+ * @return 
+ */
+public static MelodySymbol makeMelodySymbol(String string)
+  {
+    char firstChar = string.charAt(0);
+    switch (firstChar )
+      {
+        case 'a':
+        case 'b':
+        case 'c':
+        case 'd':
+        case 'e':
+        case 'f':
+        case 'g':
+            
+        case 'r':
+            return NoteSymbol.makeNoteSymbol(string);
+            
+        case 'v':
+            return VolumeSymbol.makeVolumeSymbol(string);
+            
+        default:
+            return null;
+      }
+  }
 }

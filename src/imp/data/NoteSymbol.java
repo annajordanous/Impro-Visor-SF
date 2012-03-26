@@ -34,7 +34,8 @@ import polya.Polylist;
  * @see         Leadsheet
  * @author      Robert Keller
  */
-public class NoteSymbol implements MelodySymbol, Constants, Serializable {
+public class NoteSymbol extends MelodySymbol
+                        implements Constants, Serializable {
 
     /**
      * the PitchClass of this note.  A rest is represented by a pitchClass value of null.

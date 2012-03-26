@@ -25,7 +25,7 @@ package imp.data;
  * @author keller
  */
 
-public class VolumeSymbol implements MelodySymbol
+public class VolumeSymbol extends MelodySymbol
 {
 static final public int MAX_VOLUME = 127;
 
@@ -42,8 +42,8 @@ public VolumeSymbol(int volume)
   }
 
 /**
- * construct a VolumeSymbol from a string. If the string is mal-formed, 
- * MAX_VOLUME results.
+ * construct a VolumeSymbol from a string giving the volume. 
+ * If the string is mal-formed, MAX_VOLUME results.
  * @param string 
  */
 
@@ -69,6 +69,11 @@ public static int clipToRange(int volume)
 public int getVolume()
   {
     return volume;
+  }
+
+public static VolumeSymbol makeVolumeSymbol(String string)
+  {
+    return new VolumeSymbol(string.substring(1));
   }
 
 @Override
