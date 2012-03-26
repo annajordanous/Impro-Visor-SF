@@ -36,9 +36,8 @@ public class Leadsheet
   {
   static String keyword[] =
           {"title", "key", "meter", "bars", "tempo", "transpose", "volume",
-           "part", "type",
-           "instrument", "chords", "melody", "swing", "breakpoint", "composer",
-           "comments",
+           "part", "type", "instrument", "chords", "melody", "swing", 
+           "breakpoint", "composer", "comments",
            "stave", "treble", "bass", "grand", "auto", "none", "layout",
            "bass-volume", "drum-volume", "chord-volume", "style", "section",
            "bass-instrument", "playback-transpose", "show", "year",
@@ -177,7 +176,7 @@ public class Leadsheet
 
   public static String concatElements(Polylist item)
     {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     if( item.nonEmpty() )
       {
       buffer.append(item.first());
@@ -197,18 +196,35 @@ public class Leadsheet
     return buffer.toString();
     }
 
+  /**
+   * Read leadsheet from tokens provided by Tokenizer into Score
+   * @param in
+   * @param score
+   * @return 
+   */
+  
   public static boolean readLeadSheet(Tokenizer in, Score score)
     {
-    return readLeadSheet(in, score, Preferences.getAlwaysUseStave(), Preferences.getStaveTypeFromPreferences());
+    return readLeadSheet(in, 
+                         score, 
+                         Preferences.getAlwaysUseStave(), 
+                         Preferences.getStaveTypeFromPreferences());
     }
   
+
+   /**
+   * Read leadsheet from tokens provided by Tokenizer into Score, with
+   * a given StaveType, which can be overridden.
+   * @param in
+   * @param score
+   * @return 
+   */
+  
   public static boolean readLeadSheet(Tokenizer in, 
-                                   Score score, 
-                                   boolean overrideStaveType, 
-                                   StaveType useStaveType)
+                                      Score score, 
+                                      boolean overrideStaveType, 
+                                      StaveType useStaveType)
     {
-    //System.out.println("override = " + overrideStaveType + ", type = " + useStaveType);
-    
     int rise = 0;
 
     boolean headStarted = false;
@@ -679,7 +695,7 @@ public class Leadsheet
             }
           }
         }
-      else if( ob instanceof NoteSymbol )
+      else if( ob instanceof MelodySymbol )
         {
         melodyInputReversed = melodyInputReversed.cons(ob);
         }
@@ -731,10 +747,10 @@ public class Leadsheet
           if( Character.isLowerCase(firstChar) )
             {
             // Melody note or rest
-            NoteSymbol noteSymbol = NoteSymbol.makeNoteSymbol(stringOb);
-            if( noteSymbol != null )
+            MelodySymbol melodySymbol = MelodySymbol.makeMelodySymbol(stringOb);
+            if( melodySymbol != null )
               {
-              melodyInputReversed = melodyInputReversed.cons(noteSymbol);
+              melodyInputReversed = melodyInputReversed.cons(melodySymbol);
               handled = true;
               }
             }
@@ -801,7 +817,7 @@ public class Leadsheet
     while( chordsAndMelody.nonEmpty() )
       {
       Object ob = chordsAndMelody.first();
-      if( ob instanceof NoteSymbol )
+      if( ob instanceof MelodySymbol )
         {
         melodyReversed = melodyReversed.cons(ob);
         }
@@ -880,35 +896,53 @@ public class Leadsheet
             melodyReversed.reverse());
     }
 
+  /**
+   * Add a Polylist of MelodySymbols or Strings that can be converted to
+   * MelodySymbols, in reverse, to a MelodyPart.
+   * @param melodyInputReversed
+   * @param melody
+   * @param rise
+   * @param beatValue
+   * @param key 
+   */
   public static void addToMelodyPart(Polylist melodyInputReversed,
-                                       MelodyPart melody, int rise,
-                                       int beatValue, Key key)
+                                     MelodyPart melody, 
+                                     int rise,
+                                     int beatValue, 
+                                     Key key)
     {
+    int volume = MAX_VOLUME;
     int totalDuration = 0;
     Polylist melodyInput = melodyInputReversed.reverse();
     while( melodyInput.nonEmpty() )
       {
       Object ob = melodyInput.first();
-      NoteSymbol noteSymbol = null;
-      if( ob instanceof String )
+      MelodySymbol melodySymbol = null;
+      
+      if( ob instanceof MelodySymbol )
         {
-        noteSymbol = NoteSymbol.makeNoteSymbol((String)ob);
+          melodySymbol = (MelodySymbol)ob;
         }
-      else if( ob instanceof NoteSymbol )
+      else if( ob instanceof String )
         {
-        noteSymbol = (NoteSymbol)ob;
+        melodySymbol = MelodySymbol.makeMelodySymbol((String)ob);
         }
 
-      if( noteSymbol == null )
+      if( melodySymbol == null )
         {
         ErrorLog.log(ErrorLog.SEVERE,
-                "unrecognized melody note ignored: " + noteSymbol);
+                "unrecognized melody note ignored: " + ob + ob.getClass().getName());
         }
-      else
+      else if( melodySymbol instanceof NoteSymbol )
         {
-        Note note = noteSymbol.transpose(rise).toNote();
+        Note note = ((NoteSymbol)melodySymbol).transpose(rise).toNote();
+        note.setVolume(volume);
         melody.addNote(note);
         totalDuration += note.getRhythmValue();
+        }
+      else if( melodySymbol  instanceof VolumeSymbol )
+        {
+        volume = ((VolumeSymbol)melodySymbol).getVolume();
         }
 
       melodyInput = melodyInput.rest();
@@ -1238,6 +1272,8 @@ static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
                                                int rise, int slotsPerBeat,
                                                Key key)
     {
+    int volume = MAX_VOLUME;
+    
     while( in.nonEmpty() )
       {
       Object ob = in.first();
@@ -1245,8 +1281,13 @@ static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
       if( ob instanceof NoteSymbol )
         {
         Note note = ((NoteSymbol)ob).transpose(rise).toNote();
+        note.setVolume(volume);
         melody.addNote(note);
         handled = true;
+        }
+      else if( ob instanceof VolumeSymbol )
+        {
+        volume = ((VolumeSymbol)ob).getVolume();
         }
       else if( ob instanceof String )
         {
