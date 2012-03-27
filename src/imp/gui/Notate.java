@@ -591,15 +591,6 @@ public class Notate
    */
   private boolean preDrawingEntryMuted = false;
 
-  /**
-   *
-   * Flag for entry sound muting during drawing.
-   *
-   * Initially based on default preferences.
-   *
-   */
-  private boolean drawingEntryMuted = Preferences.getDefaultDrawingMuted();
-          
 
   /**
    *
@@ -1811,7 +1802,6 @@ public class Notate
         drawScaleTonesCheckBox = new javax.swing.JCheckBox();
         drawChordTonesCheckBox = new javax.swing.JCheckBox();
         drawColorTonesCheckBox = new javax.swing.JCheckBox();
-        defaultDrawingMutedCheckBox = new javax.swing.JCheckBox();
         staveButtonGroup = new javax.swing.ButtonGroup();
         popupMenu = new javax.swing.JPopupMenu();
         overrideMeasPMI = new javax.swing.JMenuItem();
@@ -4244,22 +4234,6 @@ public class Notate
         contToneChoices.add(drawColorTonesCheckBox, gridBagConstraints);
 
         generalContourTab.add(contToneChoices, new java.awt.GridBagConstraints());
-
-        defaultDrawingMutedCheckBox.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        defaultDrawingMutedCheckBox.setSelected(Preferences.getDefaultDrawingMuted());
-        defaultDrawingMutedCheckBox.setText("Mute drawing sound by default");
-        defaultDrawingMutedCheckBox.setIconTextGap(10);
-        if (Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("false"))       defaultDrawingMutedCheckBox.setSelected(false);
-        defaultDrawingMutedCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                defaultDrawingMutedCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipady = 25;
-        generalContourTab.add(defaultDrawingMutedCheckBox, gridBagConstraints);
 
         jTabbedPane3.addTab("General", generalContourTab);
 
@@ -10571,11 +10545,6 @@ public void volumeSliderChanged(JSlider volumeSlider)
         entryVolume.setEnabled(!entryMute.isSelected());
         
         impro.setPlayEntrySounds(!entryMute.isSelected());
-        
-        if(getMode() == Mode.DRAWING) {
-            
-            drawingEntryMuted = entryMute.isSelected();
-        }
     }//GEN-LAST:event_entryMuteActionPerformed
     
     
@@ -11405,10 +11374,6 @@ private void updateTempoFromTextField()
             setMode(Mode.DRAWING);
 
             preDrawingEntryMuted = entryMute.isSelected();
-
-            entryMute.setSelected(drawingEntryMuted);
-
-            entryMuteActionPerformed(null);
 
             drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
                 "graphics/toolbar/cursor.gif")));
@@ -14078,12 +14043,9 @@ private boolean saveGlobalPreferences()
         drawTones[2] = '1';
       }
 
-
     String tonePrefs = new String(drawTones);
 
     Preferences.setPreference(Preferences.DRAWING_TONES, tonePrefs);
-
-    Preferences.setDefaultDrawingMuted(defaultDrawingMutedCheckBox.isSelected());
 
     Preferences.setPreference(Preferences.SHOW_TRACKING_LINE, Preferences.booleanToYesNo(trackCheckBox.isSelected()));
 
@@ -14371,9 +14333,6 @@ private boolean saveGlobalPreferences()
     drawScaleTonesCheckBox.setSelected(drawTones.charAt(0) == '1');
     drawChordTonesCheckBox.setSelected(drawTones.charAt(1) == '1');
     drawColorTonesCheckBox.setSelected(drawTones.charAt(2) == '1');
-
-    defaultDrawingMutedCheckBox.setSelected(Preferences.getDefaultDrawingMuted());
-
     
     // ===== update Style panel
 
@@ -20999,11 +20958,6 @@ private void showTrackingLineCheckBoxActionPerformed(java.awt.event.ActionEvent 
     Preferences.setShowTrackingLine(trackCheckBox.isSelected());
   }//GEN-LAST:event_showTrackingLineCheckBoxActionPerformed
 
-private void defaultDrawingMutedCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defaultDrawingMutedCheckBoxActionPerformed
-  {//GEN-HEADEREND:event_defaultDrawingMutedCheckBoxActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_defaultDrawingMutedCheckBoxActionPerformed
-
 public void setShowConstructionLinesAndBoxes(boolean value)
   {
     showConstructionLinesAndBoxes = value;
@@ -22460,9 +22414,11 @@ public void showNewVoicingDialog()
 
     }
 
+  /**
+   * Set the preferences for contour drawing.
+   */
   private void resetDrawingPrefs()
     {
-
     drawScaleTonesCheckBox.setSelected(
             Preferences.getPreference(Preferences.DRAWING_TONES).charAt(0) == '1');
 
@@ -22471,17 +22427,13 @@ public void showNewVoicingDialog()
 
     drawColorTonesCheckBox.setSelected(
             Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1');
-
-    defaultDrawingMutedCheckBox.setSelected(
-            Preferences.getDefaultDrawingMuted());
-    }
+     }
 
   private ImageIcon playButton =
           new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"));
 
   private ImageIcon pauseButton =
           new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"));
-
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -22640,7 +22592,6 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel defVocabFileLabel;
     private javax.swing.JPanel defVolumes;
     private javax.swing.JSpinner defaultChordFontSizeSpinner;
-    private javax.swing.JCheckBox defaultDrawingMutedCheckBox;
     private javax.swing.JPanel defaultStaveTypePanel;
     private javax.swing.JTextField defaultTempoTF;
     private javax.swing.JPanel defaultsTab;

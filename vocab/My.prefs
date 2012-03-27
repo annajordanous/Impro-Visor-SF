@@ -23,7 +23,6 @@
 (show-tracking-line y)
 (tracker-delay 0)
 (contour-drawing-tones 1xx)
-(default-drawing-muted true)
 (always-use-buttons nnnn)
 (create-roadmap n)
 (midi-in KEYBOARD)
