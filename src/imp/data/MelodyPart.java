@@ -23,6 +23,7 @@ package imp.data;
 import imp.ImproVisor;
 import imp.com.InsertPartCommand;
 import imp.gui.Notate;
+import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
@@ -879,6 +880,8 @@ public class MelodyPart
                      int endLimitIndex)
           throws InvalidMidiDataException
     {
+      
+    boolean sendBankSelect = Preferences.getMidiSendBankSelect();
     // to trace sequencing:
     //System.out.println("Sequencing MelodyPart on track " + track + " time = " + time + " endLimitIndex = " + endLimitIndex);
       
@@ -893,12 +896,16 @@ public class MelodyPart
     // Not sure this is correct. Check before releasing
     // both here and in Style.java
     
-    track.add(MidiSynth.createBankSelectEventMSB(0, time));
-    track.add(MidiSynth.createBankSelectEventLSB(0, time));
-
-    // add a track for this Part
+    // set program change. Do we need this for every call?
+    
     track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
+    if( sendBankSelect )
+      {
+      track.add(MidiSynth.createBankSelectEventMSB(0, time));
+      track.add(MidiSynth.createBankSelectEventLSB(0, time));
+      }
+    
     // the absolute time is advanced and returned by the next render
     // function
 
@@ -907,7 +914,7 @@ public class MelodyPart
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
       Note note = (Note)i.next();
-      time = note.render(seq.getSequence(), track, time, ch, transposition);
+      time = note.render(seq.getSequence(), track, time, ch, transposition, sendBankSelect);
       }
 
     return time;

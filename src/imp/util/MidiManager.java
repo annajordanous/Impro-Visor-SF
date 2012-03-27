@@ -62,6 +62,7 @@ MidiDevice.Info[] infos;
  * transmitters are attached in the registerTransmitter function
  */
 private MidiManager.MidiRelay publicReceiver = new MidiManager.MidiRelay();
+
 /**
  * The publicTransmitter forwards all messages coming from the selected MIDI in
  * device to all registered receivers
@@ -69,9 +70,12 @@ private MidiManager.MidiRelay publicReceiver = new MidiManager.MidiRelay();
 private MidiManager.MidiMultiTransmit publicTransmitter = new MidiManager.MidiMultiTransmit();
 ;
     
-// flag for echoing MIDI IN to the MIDI OUT
+/**
+ * flag for echoing MIDI IN to the MIDI OUT
+ */
 
 private boolean doEcho = false;
+
 
 // ========================================
 public MidiManager()
@@ -294,7 +298,10 @@ public Receiver getReceiver()
     return publicReceiver;
   }
 
-// getter and setter for echoing midi input messages to the midi output device
+/**
+ * getter and setter for echoing midi input messages to the midi output device
+ */
+
 public boolean getEcho()
   {
     return doEcho;
@@ -320,6 +327,7 @@ public boolean setEcho(boolean state)
       }
     return true;
   }
+
 
 
 // closes all devices that we opened, called before changing devices, for example: see setDevices
