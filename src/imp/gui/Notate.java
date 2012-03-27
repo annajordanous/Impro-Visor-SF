@@ -4893,6 +4893,11 @@ public class Notate
         melodyChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         melodyChannelSpinner.setValue(Preferences.getMelodyChannel());
         melodyChannelSpinner.setVerifyInputWhenFocusTarget(false);
+        melodyChannelSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                melodyChannelSpinnerChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -4943,6 +4948,11 @@ public class Notate
         chordChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
         chordChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         chordChannelSpinner.setValue(Preferences.getChordChannel());
+        chordChannelSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chordChannelSpinnerChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
@@ -4995,6 +5005,11 @@ public class Notate
         bassChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
         bassChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         bassChannelSpinner.setValue(Preferences.getBassChannel());
+        bassChannelSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bassChannelSpinnerChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
@@ -5045,6 +5060,11 @@ public class Notate
         drumChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
         drumChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         drumChannelSpinner.setValue(Preferences.getDrumChannel());
+        drumChannelSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                drumChannelSpinnerChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
@@ -21059,6 +21079,26 @@ private void showTrackingLineCheckBoxActionPerformed(java.awt.event.ActionEvent 
   {//GEN-HEADEREND:event_showTrackingLineCheckBoxActionPerformed
     Preferences.setShowTrackingLine(trackCheckBox.isSelected());
   }//GEN-LAST:event_showTrackingLineCheckBoxActionPerformed
+
+private void melodyChannelSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_melodyChannelSpinnerChanged
+  {//GEN-HEADEREND:event_melodyChannelSpinnerChanged
+    ImproVisor.setMelodyChannel(((Integer)melodyChannelSpinner.getValue()).intValue() - 1);
+  }//GEN-LAST:event_melodyChannelSpinnerChanged
+
+private void chordChannelSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_chordChannelSpinnerChanged
+  {//GEN-HEADEREND:event_chordChannelSpinnerChanged
+     ImproVisor.setChordChannel(((Integer)chordChannelSpinner.getValue()).intValue() - 1);
+  }//GEN-LAST:event_chordChannelSpinnerChanged
+
+private void bassChannelSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_bassChannelSpinnerChanged
+  {//GEN-HEADEREND:event_bassChannelSpinnerChanged
+    ImproVisor.setBassChannel(((Integer)bassChannelSpinner.getValue()).intValue() - 1);
+  }//GEN-LAST:event_bassChannelSpinnerChanged
+
+private void drumChannelSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_drumChannelSpinnerChanged
+  {//GEN-HEADEREND:event_drumChannelSpinnerChanged
+    ImproVisor.setDrumChannel(((Integer)drumChannelSpinner.getValue()).intValue() - 1);
+  }//GEN-LAST:event_drumChannelSpinnerChanged
 
 public void setShowConstructionLinesAndBoxes(boolean value)
   {

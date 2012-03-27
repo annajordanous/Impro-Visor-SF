@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.util.Preferences;
 import java.io.BufferedWriter;
@@ -124,27 +125,7 @@ public class Style
    */
   private NoteSymbol chordHigh = NoteSymbol.makeNoteSymbol("a");
 
-  /**
-   * an int determining the MIDI channel for chords
-   */
-  static private int melodyChannel = 0;
-
-  /**
-   * an int determining the MIDI channel for chords
-   */
-  static private int chordChannel = 3;
-
-    /**
-   * an int determining the MIDI channel for bass
-   */
-  static private int bassChannel = 6;
-
-/**
-   * an int determining the MIDI channel for drums
-   */
-  static private int drumChannel = 9;
-
-
+ 
   /**
    * an int determining the MIDI instrument for chords
    */
@@ -320,42 +301,6 @@ public class Style
   public int getTotalPatterns()
     {
     return bassPatterns.size() + chordPatterns.size() + drumPatterns.size();
-    }
-
-  /**
-   * Gets the drum channel.
-   * @return the drum channel
-   */
-  public int getDrumChannel()
-    {
-    return drumChannel;
-    }
-
-    /**
-   * Gets the bass channel.
-   * @return the bass channel
-   */
-  public int getBassChannel()
-    {
-    return bassChannel;
-    }
-
-  /**
-   * Gets the chord channel.
-   * @return the chord channel
-   */
-  public int getChordChannel()
-    {
-    return chordChannel;
-    }
-  
-  /**
-   * Gets the melody channel.
-   * @return the melody channel
-   */
-  public int getMelodyChannel()
-    {
-    return melodyChannel;
     }
 
 
@@ -953,7 +898,7 @@ public class Style
         d.setSwing(accompanimentSwing);
         Track track = seq.getDrumTrack(d.getInstrument());
         d.makeSwing();
-        d.render(seq, drumChannel, time, track, 0, endLimitIndex);
+        d.render(seq, ImproVisor.getDrumChannel(), time, track, 0, endLimitIndex);
         }
       
       time += (patternDuration * seq.getResolution()) / BEAT;
@@ -1022,7 +967,7 @@ private Polylist makeChordline(
       track.add(MidiSynth.createBankSelectEventLSB(0, time));
       }
 
-    track.add(MidiSynth.createProgramChangeEvent(chordChannel,
+    track.add(MidiSynth.createProgramChangeEvent(ImproVisor.getChordChannel(),
                                                  chordInstrument, 
                                                  time));
 
@@ -1146,7 +1091,7 @@ private Polylist makeChordline(
                       note.setRhythmValue(dur);
                       note.setVolume(volume);  // note of chord
 //System.out.println("rendering chord note " + note + " with volume " + volume);
-                      note.render(ms, seq.getChordTrack(), time, offTime, chordChannel, transposition);
+                      note.render(ms, seq.getChordTrack(), time, offTime, ImproVisor.getChordChannel(), transposition);
                       }
                     else if( ob instanceof VolumeSymbol )
                       {
@@ -1407,7 +1352,7 @@ public long render(MidiSequence seq,
           {
             time = currentChord.render(seq,
                                        time,
-                                       getChordChannel(),
+                                       ImproVisor.getChordChannel(),
                                        this,
                                        prev,
                                        rhythmValue,
@@ -1551,7 +1496,7 @@ public long render(MidiSequence seq,
         bassMelody.setInstrument(bassInstrument);
         bassMelody.makeSwing();
         bassMelody.render(seq,
-                          bassChannel,
+                          ImproVisor.getBassChannel(),
                           startTime,
                           seq.getBassTrack(),
                           transposition,
