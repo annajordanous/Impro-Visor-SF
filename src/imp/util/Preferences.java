@@ -167,7 +167,7 @@ public class Preferences implements imp.Constants
 
   public static final String DEFAULT_DRAWING_MUTED = "default-drawing-muted";
 
-  public static final String DDM_VAL = "true";
+  public static final String DDM_VAL = YES;
 
   public static final String ALWAYS_USE_BUTTONS = "always-use-buttons";
   
@@ -426,6 +426,18 @@ public static void setMidiInLatency(double value)
     setPreference(MIDI_IN_LATENCY, "" + value);
   }
   
+
+public static boolean getDefaultDrawingMuted()
+   {
+     return getPreference(DEFAULT_DRAWING_MUTED).equals(YES);
+   }
+
+public static void setDefaultDrawingMuted(boolean value)
+  {
+    setPreference(DEFAULT_DRAWING_MUTED, value ? YES : NO);
+  }
+  
+
 
 public static boolean getAlwaysUse(int index)
  {

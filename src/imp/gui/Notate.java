@@ -598,8 +598,8 @@ public class Notate
    * Initially based on default preferences.
    *
    */
-  private boolean drawingEntryMuted =
-          (Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("true"));
+  private boolean drawingEntryMuted = Preferences.getDefaultDrawingMuted();
+          
 
   /**
    *
@@ -4246,10 +4246,15 @@ public class Notate
         generalContourTab.add(contToneChoices, new java.awt.GridBagConstraints());
 
         defaultDrawingMutedCheckBox.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
-        defaultDrawingMutedCheckBox.setSelected(true);
+        defaultDrawingMutedCheckBox.setSelected(Preferences.getDefaultDrawingMuted());
         defaultDrawingMutedCheckBox.setText("Mute drawing sound by default");
         defaultDrawingMutedCheckBox.setIconTextGap(10);
         if (Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("false"))       defaultDrawingMutedCheckBox.setSelected(false);
+        defaultDrawingMutedCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultDrawingMutedCheckBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -14078,8 +14083,7 @@ private boolean saveGlobalPreferences()
 
     Preferences.setPreference(Preferences.DRAWING_TONES, tonePrefs);
 
-    Preferences.setPreference(Preferences.DEFAULT_DRAWING_MUTED,
-                              "" + defaultDrawingMutedCheckBox.isSelected());
+    Preferences.setDefaultDrawingMuted(defaultDrawingMutedCheckBox.isSelected());
 
     Preferences.setPreference(Preferences.SHOW_TRACKING_LINE, Preferences.booleanToYesNo(trackCheckBox.isSelected()));
 
@@ -14368,7 +14372,7 @@ private boolean saveGlobalPreferences()
     drawChordTonesCheckBox.setSelected(drawTones.charAt(1) == '1');
     drawColorTonesCheckBox.setSelected(drawTones.charAt(2) == '1');
 
-    defaultDrawingMutedCheckBox.setSelected(Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("true"));
+    defaultDrawingMutedCheckBox.setSelected(Preferences.getDefaultDrawingMuted());
 
     
     // ===== update Style panel
@@ -20995,6 +20999,11 @@ private void showTrackingLineCheckBoxActionPerformed(java.awt.event.ActionEvent 
     Preferences.setShowTrackingLine(trackCheckBox.isSelected());
   }//GEN-LAST:event_showTrackingLineCheckBoxActionPerformed
 
+private void defaultDrawingMutedCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defaultDrawingMutedCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_defaultDrawingMutedCheckBoxActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_defaultDrawingMutedCheckBoxActionPerformed
+
 public void setShowConstructionLinesAndBoxes(boolean value)
   {
     showConstructionLinesAndBoxes = value;
@@ -22464,8 +22473,7 @@ public void showNewVoicingDialog()
             Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1');
 
     defaultDrawingMutedCheckBox.setSelected(
-            Preferences.getPreference(Preferences.DEFAULT_DRAWING_MUTED).equals("true"));
-
+            Preferences.getDefaultDrawingMuted());
     }
 
   private ImageIcon playButton =
