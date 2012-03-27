@@ -622,4 +622,53 @@ public static String getLastLeadsheetFileStem()
   {
     return lastLeadsheetFileStem;
   }
+
+private static int melodyChannel = 0;
+
+private static int chordChannel = 3;
+
+private static int bassChannel = 6;
+
+private static int drumChannel = 9;
+
+
+public static int getMelodyChannel()
+  {
+    return melodyChannel;
+  }
+    
+public static int getChordChannel()
+  {
+    return chordChannel;
+  }
+    
+public static int getBassChannel()
+  {
+    return bassChannel;
+  }
+    
+public static int getDrumChannel()
+  {
+    return drumChannel;
+  }
+ 
+public static void setMelodyChannel(int value)
+  {
+    melodyChannel = value;
+  }
+
+public static void setChordChannel(int value)
+  {
+    chordChannel = value;
+  }
+
+public static void setBassChannel(int value)
+  {
+    bassChannel = value;
+  }
+   
+public static void setDrumChannel(int value)
+  {
+    drumChannel = value;
+  }
 }

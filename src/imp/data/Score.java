@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.roadmap.RoadMapFrame;
 import imp.util.Preferences;
 import imp.util.Trace;
@@ -32,7 +33,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
-import javax.sound.midi.Track;
 import polya.Polylist;
 
 /**
@@ -170,19 +170,6 @@ public class Score implements Constants, Serializable {
     
     private int roadmapLayout = 8;
     
-    
-    /**
-     * Default MIDI channels. Note that these are 1 less than how they
-     * appear to the software user.
-     */
-    
-    private int DEFAULT_DRUM_CHANNEL = 9;
- 
-    private int DEFAULT_BASS_CHANNEL = 6;
-    
-    private int DEFAULT_CHORD_CHANNEL = 3;
-
-    private int DEFAULT_MELODY_CHANNEL = 0;
 
     /**
      * Creates an empty Score with default title, tempo, and volume.
@@ -427,13 +414,7 @@ public class Score implements Constants, Serializable {
         return masterVolumeMuted;
     }
     
-//    public void setVolumes(MidiSynth midiSynth) {
-//        midiSynth.setChannelVolume(getBassChannel(),  bassVolume);
-//        midiSynth.setChannelVolume(getDrumChannel(),  drumVolume);
-//        midiSynth.setChannelVolume(getChordChannel(), chordVolume);
-//        midiSynth.setChannelVolume(getMelodyChannel(), melodyVolume);
-//    }
-    
+
     public int boundVolume(int vol) {
         if(vol > MAX_VOLUME)
             return MAX_VOLUME;
@@ -904,14 +885,6 @@ public class Score implements Constants, Serializable {
           {
             endLimitIndex += len;
           }
-
-// Not sure why this was ever needed, as the melody parts are rendered below
-//        new MelodyPart(len).render(seq.getSequence(), 
-//                                   getMelodyChannel(), 
-//                                   time, 
-//                                   seq.getMelodyTrack(), 
-//                                   transposition, 
-//                                   endLimitIndex);
         
         time = countInProg.render(seq,  
                                   time, 
@@ -929,7 +902,7 @@ public class Score implements Constants, Serializable {
             // render the chord progression in parallel with each melody chorus
             
             long melTime = i.next().render(seq, 
-                                           getMelodyChannel(),
+                                           ImproVisor.getMelodyChannel(),
                                            time, 
                                            seq.getMelodyTrack(), 
                                            transposition, 
@@ -1195,33 +1168,7 @@ public Style getStyle()
     return chordProg.getStyle();
 }
 
-public int getDrumChannel()
-  {
-    Style style = getStyle();
-    
-    return style == null ? DEFAULT_DRUM_CHANNEL : style.getDrumChannel();
-   }
 
-public int getBassChannel()
-  {
-    Style style = getStyle();
-    
-    return style == null ? DEFAULT_BASS_CHANNEL : style.getBassChannel();
-   }
-
-public int getChordChannel()
-  {
-    Style style = getStyle();
-    
-    return style == null ? DEFAULT_CHORD_CHANNEL : style.getChordChannel();
-   }
-
-public int getMelodyChannel()
-  {
-    Style style = getStyle();
-    
-    return style == null ? DEFAULT_MELODY_CHANNEL : style.getMelodyChannel();
-   }
 
 public void addChord(Chord chord)
   {

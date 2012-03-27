@@ -21,6 +21,7 @@
 package imp.com;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.data.Score;
 import imp.data.Style;
 import imp.util.ErrorLog;
@@ -156,25 +157,25 @@ public class ExportToMidiCommand implements Command, Constants
 
         try {
             ShortMessage volMsg = new ShortMessage();
-            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, currentStyle.getBassChannel(), 7, score.getBassMuted()?0:score.getBassVolume());
+            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, ImproVisor.getBassChannel(), 7, score.getBassMuted()?0:score.getBassVolume());
             tracks[0].add(new MidiEvent(volMsg, 0));
         } catch(InvalidMidiDataException e) {}
         
         try {
             ShortMessage volMsg = new ShortMessage();
-            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, currentStyle.getDrumChannel(), 7, score.getDrumMuted()?0:score.getDrumVolume());
+            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, ImproVisor.getDrumChannel(), 7, score.getDrumMuted()?0:score.getDrumVolume());
             tracks[0].add(new MidiEvent(volMsg, 0));
         } catch(InvalidMidiDataException e) {}
         
         try {
             ShortMessage volMsg = new ShortMessage();
-            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, currentStyle.getChordChannel(), 7, score.getChordMuted()?0:score.getChordVolume());
+            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, ImproVisor.getChordChannel(), 7, score.getChordMuted()?0:score.getChordVolume());
             tracks[0].add(new MidiEvent(volMsg, 0));
         } catch(InvalidMidiDataException e) {}
         
         try {
             ShortMessage volMsg = new ShortMessage();
-            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, score.getMelodyChannel(), 7, score.getMelodyMuted()?0:score.getMelodyVolume());
+            volMsg.setMessage(ShortMessage.CONTROL_CHANGE, ImproVisor.getMelodyChannel(), 7, score.getMelodyMuted()?0:score.getMelodyVolume());
             tracks[0].add(new MidiEvent(volMsg, 0));
         } catch(InvalidMidiDataException e) {}
         
