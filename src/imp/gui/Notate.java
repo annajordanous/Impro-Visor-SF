@@ -1786,6 +1786,7 @@ public class Notate
         midiInStatus = new javax.swing.JLabel();
         echoMidiCheckBox = new javax.swing.JCheckBox();
         sendSetBankCheckBox = new javax.swing.JCheckBox();
+        jSpinner1 = new javax.swing.JSpinner();
         latencyTab = new javax.swing.JPanel();
         midiLatencyPanel = new javax.swing.JPanel();
         midiLatencyLabel = new javax.swing.JLabel();
@@ -1888,23 +1889,26 @@ public class Notate
         allPanel = new javax.swing.JPanel();
         allVolumeMixerSlider = new javax.swing.JSlider();
         allMuteMixerBtn = new javax.swing.JCheckBox();
-        jSeparator28 = new javax.swing.JSeparator();
         entryPanel = new javax.swing.JPanel();
         entryVolume = new javax.swing.JSlider();
         entryMute = new javax.swing.JCheckBox();
         jSeparator29 = new javax.swing.JSeparator();
-        bassPanel = new javax.swing.JPanel();
-        bassVolume = new javax.swing.JSlider();
-        bassMute = new javax.swing.JCheckBox();
-        drumPanel = new javax.swing.JPanel();
-        drumVolume = new javax.swing.JSlider();
-        drumMute = new javax.swing.JCheckBox();
-        chordPanel = new javax.swing.JPanel();
-        chordVolume = new javax.swing.JSlider();
-        chordMute = new javax.swing.JCheckBox();
         melodyPanel = new javax.swing.JPanel();
         melodyVolume = new javax.swing.JSlider();
         melodyMute = new javax.swing.JCheckBox();
+        melodyChannelSpinner = new javax.swing.JSpinner();
+        chordPanel = new javax.swing.JPanel();
+        chordVolume = new javax.swing.JSlider();
+        chordMute = new javax.swing.JCheckBox();
+        chordChannelSpinner = new javax.swing.JSpinner();
+        bassPanel = new javax.swing.JPanel();
+        bassVolume = new javax.swing.JSlider();
+        bassMute = new javax.swing.JCheckBox();
+        bassChannelSpinner = new javax.swing.JSpinner();
+        drumPanel = new javax.swing.JPanel();
+        drumVolume = new javax.swing.JSlider();
+        drumMute = new javax.swing.JCheckBox();
+        drumChannelSpinner = new javax.swing.JSpinner();
         overrideFrame = new javax.swing.JFrame();
         enterMeasures = new javax.swing.JTextField();
         lineLabel = new javax.swing.JLabel();
@@ -4122,6 +4126,7 @@ public class Notate
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(sendSetBankCheckBox, gridBagConstraints);
+        devicesTab.add(jSpinner1, new java.awt.GridBagConstraints());
 
         jTabbedPane2.addTab("Devices", devicesTab);
 
@@ -4744,6 +4749,8 @@ public class Notate
         mixerDialog.setAlwaysOnTop(true);
         mixerDialog.setFocusable(false);
         mixerDialog.setFocusableWindowState(false);
+        mixerDialog.setMinimumSize(new java.awt.Dimension(521, 400));
+        mixerDialog.setPreferredSize(new java.awt.Dimension(424, 400));
         mixerDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         allPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "All", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
@@ -4758,7 +4765,9 @@ public class Notate
         allVolumeMixerSlider.setOrientation(javax.swing.JSlider.VERTICAL);
         allVolumeMixerSlider.setPaintTicks(true);
         allVolumeMixerSlider.setValue(80);
-        allVolumeMixerSlider.setPreferredSize(new java.awt.Dimension(51, 150));
+        allVolumeMixerSlider.setMaximumSize(new java.awt.Dimension(38, 256));
+        allVolumeMixerSlider.setMinimumSize(new java.awt.Dimension(38, 256));
+        allVolumeMixerSlider.setPreferredSize(new java.awt.Dimension(51, 256));
         allVolumeMixerSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 allVolumeMixerSliderStateChanged(evt);
@@ -4787,13 +4796,6 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         mixerDialog.getContentPane().add(allPanel, gridBagConstraints);
 
-        jSeparator28.setForeground(new java.awt.Color(153, 255, 255));
-        jSeparator28.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        mixerDialog.getContentPane().add(jSeparator28, gridBagConstraints);
-
         entryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Entry", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         entryPanel.setOpaque(false);
         entryPanel.setPreferredSize(new java.awt.Dimension(60, 180));
@@ -4805,6 +4807,8 @@ public class Notate
         entryVolume.setMinorTickSpacing(5);
         entryVolume.setOrientation(javax.swing.JSlider.VERTICAL);
         entryVolume.setPaintTicks(true);
+        entryVolume.setMaximumSize(new java.awt.Dimension(38, 150));
+        entryVolume.setMinimumSize(new java.awt.Dimension(38, 150));
         entryVolume.setPreferredSize(new java.awt.Dimension(51, 150));
         entryVolume.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -4830,7 +4834,7 @@ public class Notate
         entryPanel.add(entryMute, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 1.0;
@@ -4842,132 +4846,6 @@ public class Notate
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         mixerDialog.getContentPane().add(jSeparator29, gridBagConstraints);
-
-        bassPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bass", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
-        bassPanel.setOpaque(false);
-        bassPanel.setPreferredSize(new java.awt.Dimension(60, 180));
-        bassPanel.setLayout(new java.awt.GridBagLayout());
-
-        bassVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
-        bassVolume.setMajorTickSpacing(20);
-        bassVolume.setMaximum(127);
-        bassVolume.setMinorTickSpacing(5);
-        bassVolume.setOrientation(javax.swing.JSlider.VERTICAL);
-        bassVolume.setPaintTicks(true);
-        bassVolume.setPreferredSize(new java.awt.Dimension(51, 150));
-        bassVolume.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                bassVolumeStateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        bassPanel.add(bassVolume, gridBagConstraints);
-
-        bassMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        bassMute.setText("Mute");
-        bassMute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bassMuteActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        bassPanel.add(bassMute, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        mixerDialog.getContentPane().add(bassPanel, gridBagConstraints);
-
-        drumPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Drums", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
-        drumPanel.setOpaque(false);
-        drumPanel.setPreferredSize(new java.awt.Dimension(60, 180));
-        drumPanel.setLayout(new java.awt.GridBagLayout());
-
-        drumVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
-        drumVolume.setMajorTickSpacing(20);
-        drumVolume.setMaximum(127);
-        drumVolume.setMinorTickSpacing(5);
-        drumVolume.setOrientation(javax.swing.JSlider.VERTICAL);
-        drumVolume.setPaintTicks(true);
-        drumVolume.setPreferredSize(new java.awt.Dimension(51, 150));
-        drumVolume.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                drumVolumeStateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        drumPanel.add(drumVolume, gridBagConstraints);
-
-        drumMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        drumMute.setText("Mute");
-        drumMute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                drumMuteActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        drumPanel.add(drumMute, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        mixerDialog.getContentPane().add(drumPanel, gridBagConstraints);
-
-        chordPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chords", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
-        chordPanel.setOpaque(false);
-        chordPanel.setPreferredSize(new java.awt.Dimension(60, 180));
-        chordPanel.setLayout(new java.awt.GridBagLayout());
-
-        chordVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
-        chordVolume.setMajorTickSpacing(20);
-        chordVolume.setMaximum(127);
-        chordVolume.setMinorTickSpacing(5);
-        chordVolume.setOrientation(javax.swing.JSlider.VERTICAL);
-        chordVolume.setPaintTicks(true);
-        chordVolume.setPreferredSize(new java.awt.Dimension(51, 150));
-        chordVolume.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chordVolumeStateChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        chordPanel.add(chordVolume, gridBagConstraints);
-
-        chordMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        chordMute.setText("Mute");
-        chordMute.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordMuteActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        chordPanel.add(chordMute, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.weighty = 1.0;
-        mixerDialog.getContentPane().add(chordPanel, gridBagConstraints);
 
         melodyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Melody", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
         melodyPanel.setOpaque(false);
@@ -5005,11 +4883,172 @@ public class Notate
         melodyPanel.add(melodyMute, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 1.0;
         mixerDialog.getContentPane().add(melodyPanel, gridBagConstraints);
+
+        melodyChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
+        melodyChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        melodyChannelSpinner.setValue(Preferences.getMelodyChannel());
+        melodyChannelSpinner.setVerifyInputWhenFocusTarget(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        mixerDialog.getContentPane().add(melodyChannelSpinner, gridBagConstraints);
+
+        chordPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chords", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        chordPanel.setOpaque(false);
+        chordPanel.setPreferredSize(new java.awt.Dimension(60, 180));
+        chordPanel.setLayout(new java.awt.GridBagLayout());
+
+        chordVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
+        chordVolume.setMajorTickSpacing(20);
+        chordVolume.setMaximum(127);
+        chordVolume.setMinorTickSpacing(5);
+        chordVolume.setOrientation(javax.swing.JSlider.VERTICAL);
+        chordVolume.setPaintTicks(true);
+        chordVolume.setPreferredSize(new java.awt.Dimension(51, 150));
+        chordVolume.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chordVolumeStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        chordPanel.add(chordVolume, gridBagConstraints);
+
+        chordMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        chordMute.setText("Mute");
+        chordMute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordMuteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        chordPanel.add(chordMute, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        mixerDialog.getContentPane().add(chordPanel, gridBagConstraints);
+
+        chordChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
+        chordChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        chordChannelSpinner.setValue(Preferences.getChordChannel());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        mixerDialog.getContentPane().add(chordChannelSpinner, gridBagConstraints);
+
+        bassPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bass", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        bassPanel.setOpaque(false);
+        bassPanel.setPreferredSize(new java.awt.Dimension(60, 180));
+        bassPanel.setLayout(new java.awt.GridBagLayout());
+
+        bassVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
+        bassVolume.setMajorTickSpacing(20);
+        bassVolume.setMaximum(127);
+        bassVolume.setMinorTickSpacing(5);
+        bassVolume.setOrientation(javax.swing.JSlider.VERTICAL);
+        bassVolume.setPaintTicks(true);
+        bassVolume.setMaximumSize(new java.awt.Dimension(38, 150));
+        bassVolume.setMinimumSize(new java.awt.Dimension(38, 150));
+        bassVolume.setPreferredSize(new java.awt.Dimension(51, 150));
+        bassVolume.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bassVolumeStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        bassPanel.add(bassVolume, gridBagConstraints);
+
+        bassMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        bassMute.setText("Mute");
+        bassMute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bassMuteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        bassPanel.add(bassMute, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        mixerDialog.getContentPane().add(bassPanel, gridBagConstraints);
+
+        bassChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
+        bassChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        bassChannelSpinner.setValue(Preferences.getBassChannel());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 1;
+        mixerDialog.getContentPane().add(bassChannelSpinner, gridBagConstraints);
+
+        drumPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Drums", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        drumPanel.setOpaque(false);
+        drumPanel.setPreferredSize(new java.awt.Dimension(60, 180));
+        drumPanel.setLayout(new java.awt.GridBagLayout());
+
+        drumVolume.setFont(new java.awt.Font("Arial", 0, 8)); // NOI18N
+        drumVolume.setMajorTickSpacing(20);
+        drumVolume.setMaximum(127);
+        drumVolume.setMinorTickSpacing(5);
+        drumVolume.setOrientation(javax.swing.JSlider.VERTICAL);
+        drumVolume.setPaintTicks(true);
+        drumVolume.setPreferredSize(new java.awt.Dimension(51, 150));
+        drumVolume.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                drumVolumeStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        drumPanel.add(drumVolume, gridBagConstraints);
+
+        drumMute.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        drumMute.setText("Mute");
+        drumMute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drumMuteActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        drumPanel.add(drumMute, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        mixerDialog.getContentPane().add(drumPanel, gridBagConstraints);
+
+        drumChannelSpinner.setModel(new javax.swing.SpinnerNumberModel(7, 1, 16, 1));
+        drumChannelSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
+        drumChannelSpinner.setValue(Preferences.getDrumChannel());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 1;
+        mixerDialog.getContentPane().add(drumChannelSpinner, gridBagConstraints);
 
         overrideFrame.setTitle("Override Measures");
         overrideFrame.setAlwaysOnTop(true);
@@ -10184,23 +10223,21 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
     {//GEN-HEADEREND:event_formFocusGained
         
         
-        
     }//GEN-LAST:event_formFocusGained
     
     
     
-    public void focus() {
-        
-        setVisible(true);
-        
-        toFront();
-        
-        requestFocus();
-        
-        staveRequestFocus();
-        
-    }
-    
+public void focus()
+  {
+    setVisible(true);
+
+    toFront();
+
+    requestFocus();
+
+    staveRequestFocus();
+  }
+
     
     
     private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
@@ -10210,14 +10247,54 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
         
     }//GEN-LAST:event_resetBtnActionPerformed
     
+    public void setVolumes(MidiSynth midiSynth) {
+        midiSynth.setChannelVolume(getBassChannel(),   bassVolume.getValue());
+        midiSynth.setChannelVolume(getDrumChannel(),   drumVolume.getValue());
+        midiSynth.setChannelVolume(getChordChannel(),  chordVolume.getValue());
+        midiSynth.setChannelVolume(getMelodyChannel(), melodyVolume.getValue());
+    }
     
     
-    private void drumMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drumMuteActionPerformed
-        
-        drumVolumeChanged();
-        
-    }//GEN-LAST:event_drumMuteActionPerformed
+public int getMelodyChannel()
+  {
+    return ((Integer)melodyChannelSpinner.getValue()).intValue() - 1;
+  }
     
+public int getChordChannel()
+  {
+    return ((Integer)chordChannelSpinner.getValue()).intValue() - 1;
+  }
+    
+public int getBassChannel()
+  {
+    return ((Integer)bassChannelSpinner.getValue()).intValue() - 1;
+  }
+    
+public int getDrumChannel()
+  {
+    return ((Integer)drumChannelSpinner.getValue()).intValue() - 1;
+  }
+ 
+public void setMelodyChannel(int value)
+  {
+    melodyChannelSpinner.setValue(value+1);
+  }
+
+public void setChordChannel(int value)
+  {
+    chordChannelSpinner.setValue(value+1);
+  }
+
+public void setBassChannel(int value)
+  {
+    bassChannelSpinner.setValue(value+1);
+  }
+   
+public void setDrumChannel(int value)
+  {
+    drumChannelSpinner.setValue(value+1);
+  }
+
 private void setChannelVolumes(int channel, int volume)
   {
     if( midiSynth != null )
@@ -10232,8 +10309,15 @@ private void setChannelVolumes(int channel, int volume)
       {
         midiSynth3.setChannelVolume(channel, volume);
       }
-  
   }
+
+    private void drumMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drumMuteActionPerformed
+        
+        drumVolumeChanged();
+        
+    }//GEN-LAST:event_drumMuteActionPerformed
+    
+
 private void drumVolumeChanged()
   {
     // set flag to for unsaved changes
@@ -10250,11 +10334,11 @@ private void drumVolumeChanged()
 
     if( score.getDrumMuted() )
       {
-        setChannelVolumes(score.getDrumChannel(), 0);
+        setDrumVolume(0);
       }
     else
       {
-        setChannelVolumes(score.getDrumChannel(), v);
+        setDrumVolume(v);
       }
   }
 
@@ -10274,11 +10358,11 @@ private void bassVolumeChanged()
 
     if( score.getBassMuted() )
       {
-        setChannelVolumes(score.getBassChannel(), 0);
+        setBassVolume(0);
       }
     else
       {
-       setChannelVolumes(score.getBassChannel(), v);
+       setBassVolume(v);
       }
   }
 
@@ -10298,11 +10382,11 @@ private void melodyVolumeChanged()
 
     if( score.getMelodyMuted() )
       {
-        setChannelVolumes(score.getMelodyChannel(), 0);
+        setMelodyVolume(0);
       }
     else
       {
-        setChannelVolumes(score.getMelodyChannel(), v);
+        setMelodyVolume(v);
       }
   }
    
@@ -10326,16 +10410,34 @@ public void chordVolumeChanged()
       {
         if( score.getChordMuted() )
           {
-            setChannelVolumes(style.getChordChannel(), 0);
+            setChordVolume(0);
           }
         else
           {
-            setChannelVolumes(style.getChordChannel(), v);
+            setChordVolume(v);
           }
       }
   }
     
+public void setMelodyVolume(int v)
+  {
+    setChannelVolumes(getMelodyChannel(), v);
+  }
     
+public void setChordVolume(int v)
+  {
+    setChannelVolumes(getChordChannel(), v);
+  }
+    
+public void setBassVolume(int v)
+  {
+    setChannelVolumes(getBassChannel(), v);
+  }
+    
+public void setDrumVolume(int v)
+  {
+    setChannelVolumes(getDrumChannel(), v);
+  }
     
 private void setMuteAll(boolean muted)
   {
@@ -22467,6 +22569,7 @@ public void showNewVoicingDialog()
     private javax.swing.JRadioButton autoStave;
     private javax.swing.JRadioButton autoStaveBtn;
     private javax.swing.JCheckBoxMenuItem barNumsMI;
+    private javax.swing.JSpinner bassChannelSpinner;
     private javax.swing.JLabel bassInstLabel;
     private javax.swing.JPanel bassInstPanel;
     private javax.swing.JCheckBox bassMute;
@@ -22504,6 +22607,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JRadioButton cellRadioButton;
     private javax.swing.JCheckBox cells;
+    private javax.swing.JSpinner chordChannelSpinner;
     private javax.swing.ButtonGroup chordColorBtnGrp;
     private javax.swing.JTextField chordDist;
     private javax.swing.JLabel chordDistLabel;
@@ -22606,6 +22710,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBox drawChordTonesCheckBox;
     private javax.swing.JCheckBox drawColorTonesCheckBox;
     private javax.swing.JCheckBox drawScaleTonesCheckBox;
+    private javax.swing.JSpinner drumChannelSpinner;
     private javax.swing.JCheckBox drumMute;
     private javax.swing.JPanel drumPanel;
     private javax.swing.JPanel drumTabPanel;
@@ -22736,7 +22841,6 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator21;
     private javax.swing.JSeparator jSeparator22;
     private javax.swing.JSeparator jSeparator23;
-    private javax.swing.JSeparator jSeparator28;
     private javax.swing.JSeparator jSeparator29;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator30;
@@ -22747,6 +22851,7 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
@@ -22791,6 +22896,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel measureLabel;
     private javax.swing.JTextField measureTF;
     private javax.swing.JLabel measuresPerPartLabel;
+    private javax.swing.JSpinner melodyChannelSpinner;
     private javax.swing.JPanel melodyInstPanel;
     private javax.swing.JLabel melodyInsttLabel;
     private javax.swing.JCheckBox melodyMute;

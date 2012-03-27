@@ -118,18 +118,18 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
 
             if( muteChord )
               {
-                s.setChordVolume(0);
+                notate.setChordVolume(0);
               }
             else
               {
-                s.setChordVolume(styleEditor.getVolume());
+                notate.setChordVolume(styleEditor.getVolume());
               }
-            s.setBassVolume(styleEditor.getVolume());
+            notate.setBassVolume(styleEditor.getVolume());
             s.setTempo(tempo);
 
             MidiSynth synth = notate.getMidiSynth();
 
-            s.setVolumes(synth);
+            //notate.setVolumes(synth);
             new PlayScoreCommand(s, 0, true, synth, notate.getTransposition()).execute();
           }
         catch( Exception e )

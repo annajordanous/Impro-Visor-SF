@@ -427,12 +427,12 @@ public class Score implements Constants, Serializable {
         return masterVolumeMuted;
     }
     
-    public void setVolumes(MidiSynth midiSynth) {
-        midiSynth.setChannelVolume(getBassChannel(),  bassVolume);
-        midiSynth.setChannelVolume(getDrumChannel(),  drumVolume);
-        midiSynth.setChannelVolume(getChordChannel(), chordVolume);
-        midiSynth.setChannelVolume(getMelodyChannel(), melodyVolume);
-    }
+//    public void setVolumes(MidiSynth midiSynth) {
+//        midiSynth.setChannelVolume(getBassChannel(),  bassVolume);
+//        midiSynth.setChannelVolume(getDrumChannel(),  drumVolume);
+//        midiSynth.setChannelVolume(getChordChannel(), chordVolume);
+//        midiSynth.setChannelVolume(getMelodyChannel(), melodyVolume);
+//    }
     
     public int boundVolume(int vol) {
         if(vol > MAX_VOLUME)

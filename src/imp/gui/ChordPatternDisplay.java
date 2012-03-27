@@ -207,7 +207,7 @@ public boolean checkStatus()
  * single chord and adds the entire pattern to that style. Uses the volume,
  * tempo, and chord info from the toolbar.
  */
-public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
+public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
   {
     if( checkStatus() )
       {
@@ -232,12 +232,12 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
-            s.setChordProg(c);
-            s.setChordVolume(styleEditor.getVolume());
-            s.setTempo(tempo);
-            s.setVolumes(notate.getMidiSynth());
+            score.setChordProg(c);
+            notate.setChordVolume(styleEditor.getVolume());
+            score.setTempo(tempo);
+            //score.setVolumes(notate.getMidiSynth());
 
-            new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
+            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
             styleEditor.setStatus("OK");
           }
         catch( Exception e )

@@ -533,7 +533,25 @@ public static void setShowTrackingLine(boolean value)
     setPreference(SHOW_TRACKING_LINE, booleanToYesNo(value));
   }
   
-  
+public static int getMelodyChannel()
+  {
+    return 1;
+  }
+
+public static int getChordChannel()
+  {
+    return 4;
+  }
+
+public static int getBassChannel()
+  {
+    return 7;
+  }
+
+public static int getDrumChannel()
+  {
+    return 10;
+  }
   
   public static class SavePrefsCommand
           implements Command

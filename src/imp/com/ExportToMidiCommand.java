@@ -104,7 +104,7 @@ public class ExportToMidiCommand implements Command, Constants
 	}
     }
     
-    // Initialize the render and write the header chunk.
+    // Initialize the sequence and write the header chunk.
     private void write(DataOutputStream dos, int transposition) throws IOException
     {
         Sequence seq = null;
@@ -122,7 +122,7 @@ public class ExportToMidiCommand implements Command, Constants
         {
         }
         
-        // Get the number of tracks in the render
+        // Get the number of tracks in the sequence
         short numOfTracks = 0;
         
         if (toExport == ALL)

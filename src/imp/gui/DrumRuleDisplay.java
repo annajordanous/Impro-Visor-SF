@@ -181,7 +181,7 @@ public void setInstrument(String instrument)
       }
   }
 
-public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
+public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
   {
     try
       {
@@ -212,20 +212,20 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
-            s.setChordProg(c);
+            score.setChordProg(c);
             if( muteChord )
               {
-                s.setChordVolume(0);
+                notate.setChordVolume(0);
               }
             else
               {
-                s.setChordVolume(styleEditor.getVolume());
+                notate.setChordVolume(styleEditor.getVolume());
               }
-            s.setBassVolume(styleEditor.getVolume());
-            s.setTempo(tempo);
-            s.setVolumes(notate.getMidiSynth());
+            notate.setBassVolume(styleEditor.getVolume());
+            score.setTempo(tempo);
+            //s.setVolumes(notate.getMidiSynth());
 
-            new PlayScoreCommand(s, 0, true, notate.getMidiSynth(), notate.getTransposition()).execute();
+            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), notate.getTransposition()).execute();
             styleEditor.setStatus("OK");
           }
         else
