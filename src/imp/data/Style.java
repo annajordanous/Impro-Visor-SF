@@ -22,6 +22,7 @@ package imp.data;
 
 import imp.Constants;
 import imp.com.PlayScoreCommand;
+import imp.util.Preferences;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -1015,8 +1016,11 @@ private Polylist makeChordline(
     
     Track track = seq.getChordTrack();
     
-    track.add(MidiSynth.createBankSelectEventMSB(0, time));
-    track.add(MidiSynth.createBankSelectEventLSB(0, time));
+    if( Preferences.getMidiSendBankSelect())
+      {
+      track.add(MidiSynth.createBankSelectEventMSB(0, time));
+      track.add(MidiSynth.createBankSelectEventLSB(0, time));
+      }
 
     track.add(MidiSynth.createProgramChangeEvent(chordChannel,
                                                  chordInstrument, 

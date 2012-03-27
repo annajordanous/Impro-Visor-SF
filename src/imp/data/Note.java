@@ -1155,9 +1155,14 @@ public long render(Sequence seq,
                    Track track, 
                    long time, 
                    int ch, 
-                   int transposition)
+                   int transposition,
+                   boolean sendBankSelect)
         throws InvalidMidiDataException
   {
+    if( sendBankSelect )
+      {
+        
+      }
     int dur = getRhythmValue();
     long offTime = time + dur * seq.getResolution() / BEAT;
     render(seq, track, time, offTime, ch, transposition);

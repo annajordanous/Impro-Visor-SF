@@ -1531,6 +1531,7 @@ public class Notate
 
   private String windowTitle;
 
+  @Override
   public void setTitle(String title)
     {
     super.setTitle(windowTitlePrefix + (title.trim().equals("") ? "" : windowTitlePrefixSeparator) + title.trim());
@@ -1543,6 +1544,7 @@ public class Notate
     windowTitle = title;
     }
 
+    @Override
   public String getTitle()
     {
     return windowTitle;
@@ -1792,6 +1794,7 @@ public class Notate
         midiInComboBox = new javax.swing.JComboBox();
         midiInStatus = new javax.swing.JLabel();
         echoMidiCheckBox = new javax.swing.JCheckBox();
+        sendSetBankCheckBox = new javax.swing.JCheckBox();
         latencyTab = new javax.swing.JPanel();
         midiLatencyPanel = new javax.swing.JPanel();
         midiLatencyLabel = new javax.swing.JLabel();
@@ -3948,7 +3951,13 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(15, 0, 10, 0);
         appearanceTab.add(visAdviceLabel, gridBagConstraints);
 
+        trackCheckBox.setSelected(Preferences.getShowTrackingLine());
         trackCheckBox.setText("Show Tracking Line");
+        trackCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showTrackingLineCheckBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -4098,7 +4107,7 @@ public class Notate
         devicesTab.add(midiInPanel, gridBagConstraints);
 
         echoMidiCheckBox.setSelected(midiManager.getEcho());
-        echoMidiCheckBox.setText("echo MIDI input (send MIDI messages from MIDI input to MIDI output)");
+        echoMidiCheckBox.setLabel("Echo MIDI input (send MIDI messages from MIDI input to MIDI output).");
         echoMidiCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 echoMidiCheckBoxActionPerformed(evt);
@@ -4109,6 +4118,20 @@ public class Notate
         gridBagConstraints.gridy = 4;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(echoMidiCheckBox, gridBagConstraints);
+
+        sendSetBankCheckBox.setSelected(Preferences.getMidiSendBankSelect());
+        sendSetBankCheckBox.setLabel("Send SetBank-to-0 MIDI messages with each note.");
+        sendSetBankCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendSetBankCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
+        devicesTab.add(sendSetBankCheckBox, gridBagConstraints);
 
         jTabbedPane2.addTab("Devices", devicesTab);
 
@@ -14058,7 +14081,7 @@ private boolean saveGlobalPreferences()
     Preferences.setPreference(Preferences.DEFAULT_DRAWING_MUTED,
                               "" + defaultDrawingMutedCheckBox.isSelected());
 
-    Preferences.setPreference(Preferences.SHOW_TRACKING_LINE, "" + trackCheckBox.isSelected());
+    Preferences.setPreference(Preferences.SHOW_TRACKING_LINE, Preferences.booleanToYesNo(trackCheckBox.isSelected()));
 
     Preferences.setPreference(Preferences.TRACKER_DELAY, "" + trackerDelayTextField.getText());
 
@@ -20962,6 +20985,16 @@ private void scoreTabMousePressedHandler(java.awt.event.MouseEvent evt)//GEN-FIR
 
   }//GEN-LAST:event_scoreTabMousePressedHandler
 
+private void sendSetBankCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_sendSetBankCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_sendSetBankCheckBoxActionPerformed
+    Preferences.setMidiSendBankSelect(sendSetBankCheckBox.isSelected());
+  }//GEN-LAST:event_sendSetBankCheckBoxActionPerformed
+
+private void showTrackingLineCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showTrackingLineCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_showTrackingLineCheckBoxActionPerformed
+    Preferences.setShowTrackingLine(trackCheckBox.isSelected());
+  }//GEN-LAST:event_showTrackingLineCheckBoxActionPerformed
+
 public void setShowConstructionLinesAndBoxes(boolean value)
   {
     showConstructionLinesAndBoxes = value;
@@ -22961,6 +22994,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton sectionPreferencesBtn;
     private javax.swing.JLabel selectAStyleLabel;
     private javax.swing.JMenuItem selectAllMI;
+    private javax.swing.JCheckBox sendSetBankCheckBox;
     private javax.swing.JToggleButton showAdviceButton;
     private javax.swing.JCheckBoxMenuItem showBracketsAllMeasuresMI;
     private javax.swing.JCheckBoxMenuItem showBracketsCurrentMeasureMI;

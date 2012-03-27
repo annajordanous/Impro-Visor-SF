@@ -2478,8 +2478,14 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="trackCheckBox">
                   <Properties>
+                    <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Preferences.getShowTrackingLine()" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Show Tracking Line"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTrackingLineCheckBoxActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="trackCheckBox.setSelected(Boolean.parseBoolean(Preferences.getPreference(Preferences.SHOW_TRACKING_LINE)));"/>
                   </AuxValues>
@@ -2728,7 +2734,7 @@
                     <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="midiManager.getEcho()" type="code"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="echo MIDI input (send MIDI messages from MIDI input to MIDI output)"/>
+                    <Property name="label" type="java.lang.String" value="Echo MIDI input (send MIDI messages from MIDI input to MIDI output)."/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="echoMidiCheckBoxActionPerformed"/>
@@ -2736,6 +2742,22 @@
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                       <GridBagConstraints gridX="0" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="11" insetsBottom="10" insetsRight="11" anchor="10" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="sendSetBankCheckBox">
+                  <Properties>
+                    <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="Preferences.getMidiSendBankSelect()" type="code"/>
+                    </Property>
+                    <Property name="label" type="java.lang.String" value="Send SetBank-to-0 MIDI messages with each note."/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendSetBankCheckBoxActionPerformed"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="5" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="11" insetsBottom="10" insetsRight="11" anchor="10" weightX="0.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
