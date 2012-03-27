@@ -722,11 +722,11 @@ public class ExtractionEditor extends javax.swing.JDialog {
         
         Score s = new Score(4);
         s.setBassVolume(styleGenerator.getVolume());
-        if(muteChord) s.setChordVolume(0);
-        else s.setChordVolume(styleGenerator.getVolume());
-        s.setDrumVolume(styleGenerator.getVolume());
+        if(muteChord) parent.setChordVolume(0);
+        else parent.setChordVolume(styleGenerator.getVolume());
+        parent.setDrumVolume(styleGenerator.getVolume());
         s.setTempo(styleGenerator.getTempo());
-        s.setVolumes(parent.getMidiSynth());
+        //s.setVolumes(parent.getMidiSynth());
         s.setChordProg(c);
 
         parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), parent.getTransposition()));   
@@ -787,7 +787,7 @@ public class ExtractionEditor extends javax.swing.JDialog {
         else s.setChordVolume(styleGenerator.getVolume());
         s.setDrumVolume(styleGenerator.getVolume());
         s.setTempo(styleGenerator.getTempo());
-        s.setVolumes(parent.getMidiSynth());
+        //s.setVolumes(parent.getMidiSynth());
         s.setChordProg(c);
 
         parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), parent.getTransposition()));

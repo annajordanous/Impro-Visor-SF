@@ -453,7 +453,7 @@ public ChordPart makeCountIn(double swingVal, int loopCount, double tempo)
  * tempo, and chord info from the toolbar.
  */
 
-public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
+public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
   {
     if( checkStatus() )
       {
@@ -483,21 +483,21 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             int duration = tempStyle.getDrumPatternDuration();
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
-            s.setChordProg(c);
+            score.setChordProg(c);
 
             if( muteChord )
               {
-                s.setChordVolume(0);
+                notate.setChordVolume(0);
               }
             else
               {
-                s.setChordVolume(styleEditor.getVolume());
+                notate.setChordVolume(styleEditor.getVolume());
               }
-            s.setBassVolume(styleEditor.getVolume());
-            s.setTempo(tempo);
-            s.setVolumes(notate.getMidiSynth());
+            notate.setBassVolume(styleEditor.getVolume());
+            score.setTempo(tempo);
+            //s.setVolumes(notate.getMidiSynth());
 
-            new PlayScoreCommand(s,
+            new PlayScoreCommand(score,
                                  0,
                                  true,
                                  notate.getMidiSynth(),

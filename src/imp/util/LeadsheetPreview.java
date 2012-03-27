@@ -294,7 +294,7 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
             previewTableModel.loadScore(file);
             
             playbackManager.setTotalTimeSeconds(previewTableModel.score.getTotalTime());
-            previewTableModel.score.setVolumes(midiSynth);
+            //previewTableModel.score.setVolumes(midiSynth);
             if( wasPlaying )
               playLeadsheet(0);
         }
