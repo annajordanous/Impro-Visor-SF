@@ -206,6 +206,23 @@ public class Preferences implements imp.Constants
   
   public static final String DEFAULT_MIDI_SEND_BANK_SELECT = NO;
   
+  public static final String MELODY_CHANNEL = "melody-channel";
+  
+  public static final String CHORD_CHANNEL = "chord-channel";
+  
+  public static final String BASS_CHANNEL = "bass-channel";
+  
+  public static final String DRUM_CHANNEL = "drum-channel";
+   
+  public static final String DEFAULT_MELODY_CHANNEL = "1";
+  
+  public static final String DEFAULT_CHORD_CHANNEL = "4";
+  
+  public static final String DEFAULT_BASS_CHANNEL = "7";
+  
+  public static final String DEFAULT_DRUM_CHANNEL = "10";
+  
+  
   public static final String DEFAULT_RECENT_STYLE_FILE = "swing.sty";
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
@@ -498,6 +515,10 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + MIDI_OUT + " " + DEFAULT_MIDI_OUT + ")");      
       out.println("(" + MIDI_ECHO + " " + DEFAULT_MIDI_ECHO + ")"); 
       out.println("(" + MIDI_SEND_BANK_SELECT + " " + DEFAULT_MIDI_SEND_BANK_SELECT + ")"); 
+      out.println("(" + MELODY_CHANNEL + " " + DEFAULT_MELODY_CHANNEL + ")");
+      out.println("(" + CHORD_CHANNEL + " " + DEFAULT_CHORD_CHANNEL + ")");
+      out.println("(" + BASS_CHANNEL + " " + DEFAULT_BASS_CHANNEL + ")");
+      out.println("(" + DRUM_CHANNEL + " " + DEFAULT_DRUM_CHANNEL + ")");
       out.println("(" + RECENT_STYLE_FILE + DEFAULT_RECENT_STYLE_FILE + ")");
       }
     catch( Exception e )
@@ -535,23 +556,25 @@ public static void setShowTrackingLine(boolean value)
   
 public static int getMelodyChannel()
   {
-    return 1;
+    return Integer.parseInt(getPreference(MELODY_CHANNEL));
   }
 
 public static int getChordChannel()
   {
-    return 4;
+    return Integer.parseInt(getPreference(CHORD_CHANNEL));
   }
 
 public static int getBassChannel()
   {
-    return 7;
+    return Integer.parseInt(getPreference(BASS_CHANNEL));
   }
 
 public static int getDrumChannel()
   {
-    return 10;
+    return Integer.parseInt(getPreference(DRUM_CHANNEL));
   }
+
+
   
   public static class SavePrefsCommand
           implements Command

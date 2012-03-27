@@ -269,6 +269,8 @@ private ImproVisor(String leadsheet)
     // Note that loadPreferences will generate a preference file if there is none.
     
     Preferences.loadPreferences();
+    
+    setChannelsFromPreferences();
 
     midiManager = new MidiManager();
 
@@ -631,6 +633,13 @@ private static int bassChannel = 6;
 
 private static int drumChannel = 9;
 
+private void setChannelsFromPreferences()
+  {
+    setMelodyChannel(Preferences.getMelodyChannel()-1);
+    setChordChannel(Preferences.getChordChannel()-1);
+    setBassChannel(Preferences.getBassChannel()-1);
+    setDrumChannel(Preferences.getDrumChannel()-1);
+  }
 
 public static int getMelodyChannel()
   {
@@ -655,20 +664,24 @@ public static int getDrumChannel()
 public static void setMelodyChannel(int value)
   {
     melodyChannel = value;
+    Preferences.setPreference(Preferences.MELODY_CHANNEL, ""+(value+1));
   }
 
 public static void setChordChannel(int value)
   {
     chordChannel = value;
+    Preferences.setPreference(Preferences.CHORD_CHANNEL, ""+(value+1));
   }
 
 public static void setBassChannel(int value)
   {
     bassChannel = value;
+    Preferences.setPreference(Preferences.BASS_CHANNEL, ""+(value+1));
   }
    
 public static void setDrumChannel(int value)
   {
     drumChannel = value;
+    Preferences.setPreference(Preferences.DRUM_CHANNEL, ""+(value+1));
   }
 }
