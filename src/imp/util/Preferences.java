@@ -165,8 +165,6 @@ public class Preferences implements imp.Constants
 
   public static final String DRAWING_TONES_VAL = "1xx";
 
-  public static final String DEFAULT_DRAWING_MUTED = "default-drawing-muted";
-
   public static final String DDM_VAL = YES;
 
   public static final String ALWAYS_USE_BUTTONS = "always-use-buttons";
@@ -425,18 +423,6 @@ public static void setMidiInLatency(double value)
   {
     setPreference(MIDI_IN_LATENCY, "" + value);
   }
-  
-
-public static boolean getDefaultDrawingMuted()
-   {
-     return getPreference(DEFAULT_DRAWING_MUTED).equals(YES);
-   }
-
-public static void setDefaultDrawingMuted(boolean value)
-  {
-    setPreference(DEFAULT_DRAWING_MUTED, value ? YES : NO);
-  }
-  
 
 
 public static boolean getAlwaysUse(int index)
@@ -506,7 +492,6 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + SHOW_TRACKING_LINE + " " + STL_VAL + ")");
       out.println("(" + TRACKER_DELAY + " " + TD_VAL + ")");
       out.println("(" + DRAWING_TONES + " " + DRAWING_TONES_VAL + ")");
-      out.println("(" + DEFAULT_DRAWING_MUTED + " " + DDM_VAL + ")");
       out.println("(" + ALWAYS_USE_BUTTONS + " " + DEFAULT_ALWAYS_USE_BUTTONS + ")");
       out.println("(" + CREATE_ROADMAP + " " + CR_VAL + ")");      
       out.println("(" + MIDI_IN + " " + DEFAULT_MIDI_IN + ")");      
