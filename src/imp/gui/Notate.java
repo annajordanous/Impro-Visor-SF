@@ -1909,6 +1909,7 @@ public class Notate
         drumVolume = new javax.swing.JSlider();
         drumMute = new javax.swing.JCheckBox();
         drumChannelSpinner = new javax.swing.JSpinner();
+        channelSelectLabel = new javax.swing.JLabel();
         overrideFrame = new javax.swing.JFrame();
         enterMeasures = new javax.swing.JTextField();
         lineLabel = new javax.swing.JLabel();
@@ -5069,6 +5070,14 @@ public class Notate
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
         mixerDialog.getContentPane().add(drumChannelSpinner, gridBagConstraints);
+
+        channelSelectLabel.setText("<html>\n<b>Caution:</b> Changing a<br>\nchannel setting<br>\nimmediately saves it<br>\nas a preference.\n</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        mixerDialog.getContentPane().add(channelSelectLabel, gridBagConstraints);
 
         overrideFrame.setTitle("Override Measures");
         overrideFrame.setAlwaysOnTop(true);
@@ -22647,6 +22656,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JRadioButton cellRadioButton;
     private javax.swing.JCheckBox cells;
+    private javax.swing.JLabel channelSelectLabel;
     private javax.swing.JSpinner chordChannelSpinner;
     private javax.swing.ButtonGroup chordColorBtnGrp;
     private javax.swing.JTextField chordDist;
