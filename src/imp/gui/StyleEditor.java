@@ -98,8 +98,6 @@ public class StyleEditor
 
   private int selectedColumn = 0;
 
-  private boolean pianoRollTracking = false;
-  
   static public final boolean PLAY = true;
 
   static public final boolean SILENT = false;
@@ -266,17 +264,15 @@ public class StyleEditor
                       evt.isControlDown(), 
                       evt.isShiftDown());
 
-        if( pianoRollTracking )
-          {
-            usePianoRoll(colIndex);
             if( evt.isControlDown() )
               {
                 playPercussionColumn(colIndex);
               }
-            else
-              {
-                
-              }
+
+            if( trackWithPianoRoll.isSelected() )
+          {
+            usePianoRoll(colIndex);
+
           }
  
         }
@@ -6558,7 +6554,7 @@ private void beatsField2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIR
 
 private void trackWithPianoRollActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trackWithPianoRollActionPerformed
   {//GEN-HEADEREND:event_trackWithPianoRollActionPerformed
-    pianoRollTracking = trackWithPianoRoll.isSelected();
+    
   }//GEN-LAST:event_trackWithPianoRollActionPerformed
 
 private void usePianoRoll()
@@ -6587,7 +6583,7 @@ private void usePianoRoll(int selectedColumns[])
 public void unusePianoRoll()
 {
   pianoRollCheckBox.setSelected(false);
-  pianoRollTracking = false;
+  trackWithPianoRoll.setSelected(false);
 }
 
 
