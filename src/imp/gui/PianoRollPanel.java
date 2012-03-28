@@ -123,7 +123,7 @@ public class PianoRollPanel extends JPanel
  public void removeBar(PianoRollBar bar)
    {
    bars.remove(bar);
-    pianoRoll.updatePlayable();
+    pianoRoll.updatePlayablePercussion();
     //System.out.println("removed bar at row = " + bar.getRow() + ", startSlot = " + bar.getStartSlot() + ", slots = " + bar.getNumSlots());
    }
   
@@ -135,7 +135,7 @@ public class PianoRollPanel extends JPanel
    {
    //System.out.println("added bar at row = " + bar.getRow() + ", startSlot = " + bar.getStartSlot() + ", slots = " + bar.getNumSlots());
    bars.add(bar);
-   pianoRoll.updatePlayable();
+   pianoRoll.updatePlayablePercussion();
    }
 
  /**
@@ -313,7 +313,7 @@ public class PianoRollPanel extends JPanel
   public void mouseReleased(MouseEvent e) 
     {
     currentBar = null;
-    pianoRoll.updatePlayable();
+    pianoRoll.updatePlayablePercussion();
     }
 
   public void mouseEntered(MouseEvent e) 

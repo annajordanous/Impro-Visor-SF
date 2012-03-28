@@ -264,17 +264,10 @@ public class StyleEditor
                       evt.isControlDown(), 
                       evt.isShiftDown());
 
-            if( evt.isControlDown() )
-              {
-                playPercussionColumn(colIndex);
-              }
-
-            if( trackWithPianoRoll.isSelected() )
+        if( trackWithPianoRoll.isSelected() )
           {
             usePianoRoll(colIndex);
-
           }
- 
         }
       });
     }
@@ -5690,7 +5683,7 @@ void playBassColumn(int colIndex)
    * If there is no piano roll yet, create one.
    @param cols
    */
-  public void exportColumnToPianoRoll(int cols[])
+  public void styleEditorColumnToPianoRoll(int cols[])
   {
     if( cols.length <= 0 )
       {
@@ -5704,10 +5697,10 @@ void playBassColumn(int colIndex)
       pianoRoll = new PianoRoll(this, getNewXlocation(), getNewYlocation());
       }
     
-    exportColumnToPianoRoll(col, pianoRoll);
+    styleEditorColumnToPianoRoll(col, pianoRoll);
   }
 
-  public void exportColumnToPianoRoll(int col, PianoRoll pianoRoll)
+  public void styleEditorColumnToPianoRoll(int col, PianoRoll pianoRoll)
     {
     int tableCol = col+1;
 
@@ -5724,19 +5717,19 @@ void playBassColumn(int colIndex)
     
     // Extract the bass into the Piano Roll
     int bassRow = StyleTableModel.BASS_PATTERN_ROW;
-    exportBass(col, pianoRoll, bassRow, pianoRollRow);
+    styleEditorBassToPianoRoll(col, pianoRoll, bassRow, pianoRollRow);
     pianoRollRow += 1;
 
     // Extract the chord into the Piano Roll
     int chordRow = StyleTableModel.CHORD_PATTERN_ROW;
-    exportChordAndDrums(col, pianoRoll, chordRow, pianoRollRow);
+    styleEditorChordAndDrumsToPianoRoll(col, pianoRoll, chordRow, pianoRollRow);
     pianoRollRow += 1;
     
     // Extract the drums into the Piano Roll
     int drumStartRow = StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW;
     for( int row = drumStartRow; row < styleTable.getRowCount(); row++ )
       {
-      exportChordAndDrums(col, pianoRoll, row, pianoRollRow);
+      styleEditorChordAndDrumsToPianoRoll(col, pianoRoll, row, pianoRollRow);
       pianoRollRow += 1;
       }  
 
@@ -5745,6 +5738,8 @@ void playBassColumn(int colIndex)
     setExporting(false);
 
     pianoRoll.display();
+    
+    pianoRoll.updatePlayablePercussion();
     }
   
   /**
@@ -5759,7 +5754,7 @@ void playBassColumn(int colIndex)
    * @param pianoRollRow - the row in the PianoRoll into which the extracted
    *                       pattern's bar representation should be added
    */
-  private void exportChordAndDrums(int col, PianoRoll pianoRoll, int styleEditorRow, int pianoRollRow)
+  private void styleEditorChordAndDrumsToPianoRoll(int col, PianoRoll pianoRoll, int styleEditorRow, int pianoRollRow)
     {
     Color barColor, borderColor;
     int slots = 0;
@@ -5846,8 +5841,10 @@ void playBassColumn(int colIndex)
    * @param pianoRollRow - the row in the PianoRoll into which the extracted
    *                       pattern's bar representation should be added
    */
-private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
-                        int pianoRollRow)
+private void styleEditorBassToPianoRoll(int col, 
+                                        PianoRoll pianoRoll, 
+                                        int styleEditorRow,
+                                        int pianoRollRow)
   {
     Object contents = styleTable.getValueAt(styleEditorRow, col);
 
@@ -5917,7 +5914,8 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
    * @param cols
    * @param pianoRoll
    */
-public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
+
+public void pianoRollToStyleEditorColumn(PianoRoll pianoRoll, int col)
   {
     if( pianoRoll == null )
       {
@@ -5997,6 +5995,7 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
     pianoRoll.setColumnOut(col);
   }
 
+
 /**
  * Create a pattern for immediate playing.
  * This looks similar to other code.
@@ -6005,12 +6004,9 @@ public void importColumnFromPianoRoll(PianoRoll pianoRoll, int col)
  @return
  */
 
-public Playable getPlayableFromRow(PianoRoll pianoRoll, int desiredRow)
+public Playable getPlayableFromPianoRollRow(PianoRoll pianoRoll, int desiredRow)
   {
     ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
-
-    int styleEditorRow = StyleTableModel.BASS_PATTERN_ROW;
-    int lastPianoRollRow = 0;
 
     StringBuilder patternBuffer = new StringBuilder();
     int nextSlot = 0;
@@ -6062,7 +6058,6 @@ Playable display;
         break;
 
         default:
-             DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(notate, cm, this);
              display = new DrumRuleDisplay(notate, cm, this);
              String instrument = getRowHeaders().get(desiredRow - PianoRoll.BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
 
@@ -6075,20 +6070,21 @@ Playable display;
     return display;
   }
 
-/**
- * Create a pattern for immediate playing.
 
+/**
+ * Create a drum pattern for immediate playing.
+ * Selected drums are determined by the array rowButton,
+ * which is passed in from PianoRoll.
+ *
  @param pianoRoll
  @param desiredRow
  @return
  */
 
-public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowButton[])
+public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll, 
+                                                   AbstractButton rowButton[])
   {
-
     ArrayList<PianoRollBar> bars = pianoRoll.getSortedBars();
-
-    int lastPianoRollRow = 0;
 
     DrumPatternDisplay drumPatternDisplay = new DrumPatternDisplay(notate, cm, this);
 
@@ -6124,7 +6120,6 @@ public Playable getPlayablePercussion(PianoRoll pianoRoll, AbstractButton rowBut
                 drumPatternDisplay.addRule(rule);
 
                 //System.out.println("rule " + instrument + " = " + rule.getDisplayText());
-
               }
 
             // Start new row
@@ -6571,7 +6566,7 @@ private void usePianoRoll(int column)
 
 private void usePianoRoll(int selectedColumns[])
 {
-  exportColumnToPianoRoll(selectedColumns);
+  styleEditorColumnToPianoRoll(selectedColumns);
   pianoRollCheckBox.setSelected(true);
 }
 
@@ -6806,7 +6801,7 @@ private void setExporting(boolean value)
   {
     //System.out.println("exporting = " + value);
     exporting = value;
-    pianoRoll.setLooping(false);
+    //pianoRoll.setLooping(false);
   }
 
 private boolean isExporting()

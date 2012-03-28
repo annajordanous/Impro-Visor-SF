@@ -1754,7 +1754,7 @@ public void setColumnIn(int col)
 public void setColumnOut(int col)
 {
   exportToColumnTF.setText("" + col);
-    exportToColumnComboBox.setSelectedIndex(col-1);
+  exportToColumnComboBox.setSelectedIndex(col-1);
 }
 
 
@@ -1773,7 +1773,7 @@ private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
     if( col > 0 )
       {
-        styleEditor.importColumnFromPianoRoll(this, col);
+        styleEditor.pianoRollToStyleEditorColumn(this, col);
       }
 }//GEN-LAST:event_exportButtonActionPerformed
 
@@ -1787,17 +1787,14 @@ private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     int maxColumn = styleEditor.getNumColumns();
 
     int col = intFromTextField(importFromColumnTF, minColumn, maxColumn, 0); // FIX!
-    
-    System.out.println("importButtonAction " + col);
-
 
     // col <= 0 indicates an error
 
     if( col > 0 )
       {
         importFromColumnComboBox.setSelectedIndex(col - 1);
-        styleEditor.exportColumnToPianoRoll(col, this);
-        updatePlayable();
+        styleEditor.styleEditorColumnToPianoRoll(col, this);
+        updatePlayablePercussion();
       }
 }//GEN-LAST:event_importButtonActionPerformed
 
@@ -1978,18 +1975,18 @@ private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
   {
     setLooping(false);
     
-    Playable playable = styleEditor.getPlayableFromRow(this, row);
+    Playable playable = styleEditor.getPlayableFromPianoRollRow(this, row);
 
     AbstractButton thisButton = rowButton[row];
 
-    updatePlayable();
+    updatePlayablePercussion();
 
     playable.playMe();
   }
 
 private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int row)
   {
-    Playable playable = styleEditor.getPlayableFromRow(this, row);
+    Playable playable = styleEditor.getPlayableFromPianoRollRow(this, row);
 
     AbstractButton thisButton = rowButton[row];
 
@@ -2004,7 +2001,7 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
         thisButton.setBackground(DRUMSCOLOR);
       }
 
-    updatePlayable();
+    updatePlayablePercussion();
   }
 
 public void setLooping(boolean value)
@@ -2024,35 +2021,45 @@ public void setLooping(boolean value)
         loopToggleButton.setSelected(false);
         styleEditor.setLooping(false);
         stopPlaying();
-      }
-    
-    updatePlayable();
+      }   
   }
 
 
 Playable nowPlaying = null;
 
-public void updatePlayable()
+
+/**
+ * Update nowPlaying to include the instruments defined by selected buttons
+ * in array rowButton.
+ * 
+ * If looping, i.e. already playing, stop playing in order to do this.
+ */
+public void updatePlayablePercussion()
   {
-  //System.out.println("updatePlayable");
+  //System.out.println("updatePlayablePercussion");
     
     if( loopToggleButton.isSelected() )
       {
       stopPlaying();
       
-      nowPlaying = styleEditor.getPlayablePercussion(this, rowButton);
+      nowPlaying = getPlayablePercussion();
       
       startPlaying();
       }
     else
       {
-       nowPlaying = styleEditor.getPlayablePercussion(this, rowButton);       
+       nowPlaying = getPlayablePercussion();       
       }
+  }
 
+private Playable getPlayablePercussion()
+  {
+    return styleEditor.getPlayablePercussionFromPianoRoll(this, rowButton);
   }
 
 public void stopPlaying()
   {
+    //System.out.println("stopPlaying: " + nowPlaying);
     if( nowPlaying != null )
       {
         nowPlaying.stopPlaying();
@@ -2065,6 +2072,11 @@ public void startPlaying()
       {
         nowPlaying.playMe();
       }
+  }
+
+public boolean nowPlaying()
+  {
+    return nowPlaying != null;
   }
 
 private void tempoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempoComboBoxActionPerformed
