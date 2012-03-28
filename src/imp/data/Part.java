@@ -32,14 +32,15 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
- * The Part class is representative of an arbitrarily long melody, played
- * by a specific instrument.
- * A Part contains a render of Units stored in the Vector<Unit> slots.
- * It also contains information about the Part, such as volume, instrument, etc
+ * The Part class is representative of an arbitrarily long melody or chord part, 
+ * played by a specific instrument.
+ * A Part contains a sequence of Units stored in the ArrayList<Unit> slots.
+ * 
+ * It also contains information about the Part, such as volume, instrument, etc.
  * Units should be added using the setUnit method, which will automatically
  * adjust rhythm values.  In a Part, the 0 slot must never be empty.  In
- * its default state it contains a Rest.  If delUnit is called on the 0 slot,
- * then it is replaced with a Rest.
+ * its default state it contains a Rest or NC.  
+ * If delUnit is called on the 0 slot, then it is replaced with a Rest or NC.
  * @see         Unit
  * @see         Note
  * @see         Chord
@@ -50,7 +51,7 @@ import java.util.ListIterator;
 public class Part implements Constants, Serializable {
 
     /**
-     * a Vector containing the slots in this Part, each of which
+     * an ArrayList containing the slots in this Part, each of which
      * contains either null or a Unit object (can be note, rest, or chord)
      */
     protected ArrayList<Unit> slots;
@@ -216,7 +217,6 @@ public class Part implements Constants, Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
 
    
     /**
@@ -399,190 +399,201 @@ public class Part implements Constants, Serializable {
         return instrument;
     }
 
-    /**
-     * Returns a Vector containing every Unit in this Part.
-     * @return Vector   unitList
-     */
-    public ArrayList<Unit> getUnitList() {
-        ArrayList<Unit> unitList = new ArrayList<Unit>(unitCount);
-        PartIterator i = iterator();
-        while(i.hasNext())
-            unitList.add(i.next());
-        return unitList;
-    }
-
-    public void setSize(int size) {
-
-        Trace.log(3, "setting size of part to " + size);
-
-        if(size == this.size)
-            return;
-
-        int oldSize = this.size;
-        this.size = size;
-            for( int k = oldSize; k < size; k++ )
-              {
-                slots.add(null);
-              }
-            
-        if(size != 0 && unitCount == 0) {
-            //slots.setSize(size);
-            if(this instanceof MelodyPart) {
-                slots.set(0, new Rest(size));
-                unitCount = 1;
-            }
-            else {
-                slots.set(0, new Chord(size));
-                unitCount = 1;
-            }
-        }
-        else if(size != 0 && unitCount != 0) {
-            int index;
-            if(size > oldSize)
-                index = getPrevIndex(oldSize);
-            else {
-                index = getPrevIndex(size);
-                int unitsErased = 0;
-                for(int i = size; i < oldSize; i++)
-                    if(slots.get(i) != null)
-                        unitsErased++;
-                unitCount -= unitsErased;
-            }
-            Unit unit = getUnit(index);
-            //slots.setSize(size);
-            Trace.log(3, "in setSize, setting rhythmValue to " + getUnitRhythmValue(index) + " from " + index);
-            unit.setRhythmValue(getUnitRhythmValue(index));
-        }
-        else if(size == 0)
-            unitCount = 0;
-
-        //slots.setSize(size);
-    }
+/**
+ * Returns an ArrayList containing every Unit in this Part.
+ *
+ * @return ArrayList unitList
+ */
     
-    /**
-     * Returns an exact copy of this Part
-     * @return Part   copy
-     */
-    public Part copy() {
-        Trace.log(3, "copying part of size " + size);
+public ArrayList<Unit> getUnitList()
+  {
+    ArrayList<Unit> unitList = new ArrayList<Unit>(unitCount);
+    PartIterator i = iterator();
+    while( i.hasNext() )
+      {
+        unitList.add(i.next());
+      }
+    return unitList;
+  }
 
-        Part newPart = new Part(size);
-        /*
-        PartIterator i = iterator();
-        while(i.hasNext())
-            newPart.slots.set(i.nextIndex(), i.next().copy());
-        */
+
+/**
+ * Change the size (number of slots) in this Part, and also set unitCount.
+ * @param newSize 
+ */
+
+public void setSize(int newSize)
+  {
+    //Trace.log(0, "setting size of part to " + newSize + "(" + newSize / BEAT + " beats)");
+
+    if( newSize == size )
+      {
+        return;
+      }
+    
+    ArrayList<Unit> newSlots = new ArrayList<Unit>(newSize);
+    
+    int slotsToCopy = Math.min(size, newSize);
+    
+    int lastUnitIndex = 0;
+    
+    int newUnitCount = 0;
+    
+    int j;
+    
+    Unit lastUnit = null;
+    
+    for( j = 0; j < slotsToCopy; j++ )
+      {
+        Unit unit = slots.get(j);
         
-        for( int i =  0; i < size; i++ )
-        {
-          Unit unit = slots.get(i);
-          if( unit != null )
-            {
-            unit = unit.copy();
-            }
-          newPart.slots.set(i, unit);
-        }
-
-        newPart.unitCount = unitCount;
-        newPart.title = title;
-        newPart.volume = volume;
-        newPart.instrument = instrument;
-        newPart.swing = swing;
-        newPart.setMetre(metre[0], metre[1]);
-        newPart.keySig = keySig;
-        return newPart;
-    }
-
-    /**
-     * Returns a String representation of this Part.
-     * The String contains information on every Unit in the Part.
-     * @return String   representation of Part
-     */
-    public String toString() {
-        String partData = "";
-        PartIterator i = iterator();
-        while(i.hasNext()) {
-            partData +=  "Beat " + i.nextIndex()/beatValue + 
-                        " Slot " + i.nextIndex()%beatValue + 
-                        ": " +  i.next().toString() + '\n';
-        }
-        return partData;
-    }
-
-    /**
-     * Adds a beat to the Part, adjusting the last unit rhythm value.
-     */
-    public void addBeat() {
-        addBeats(1);
-    }
-
-    /**
-     * Adds the specified number of beats to the Part, adjusting the last 
-     * unit rhythm value.
-     * @param beats     the number of beats to add
-     */
-    public void addBeats(int beats) {
-        Trace.log(3, "adding " + beats + " beats to part");
-        addSlots(beats*beatValue);
-    }
-
-    /**
-     * Adds the specified number of slots to the Part, adjusting the last
-     * unit rhythm value.
-     * @param numSlots     the number of slots to add
-     */
-    public void addSlots(int numSlots) {
-        Trace.log(3, "adding " + numSlots + " slots to part");
-        Unit prevUnit = getPrevUnit(size-1);	// can 'size' be right, or should it be size-1??
-        size += numSlots;
-        for( int k = slots.size(); k < size; k++ )
+        if( unit == null )
           {
-            slots.add(null);
+            newSlots.add(null);
           }
-        //slots.setSize(size);
-        if(prevUnit == null)
-            setUnit(0,new Rest());
         else
-            {
-            int newValue = prevUnit.getRhythmValue() + numSlots;
-            Trace.log(3, "in addSlots, setting rhythmValue to " + newValue);
-            prevUnit.setRhythmValue(newValue);
-            }
-    }
-
-    /**
-     * Adds a Unit to the end of the Part, extending the length as it goes.
-     * Note that 0 duration units should not be added, as they will cause this
-     * to fail.
-     * @param unit      the Unit to add
-     */
-    public void addUnit(Unit unit) {
-        //Trace.log(3, "adding unit to end of part " + unit.toLeadsheet());
-
-        int rv = unit.getRhythmValue();
-        int index = size;
-        int newSize = size + rv;
-        size = newSize;
-
-        for( int k = slots.size(); k < newSize; k++ )
           {
-            slots.add(null);
+            unit = unit.copy();
+            newSlots.add(unit);
+            newUnitCount++;
+            lastUnitIndex = j;
+            lastUnit = unit;
           }
-        //slots.setSize(size);
-        
-        if(slots.get(index) == null)
-            unitCount++;
-        
-        slots.set(index, unit);
+      }
+    
+    // u, if not null, is the last unit and lastUnitIndex is its index.
+    
+    // If newSize > size, fill the rest of newSlots.
+    
+    for( ; j < newSize; j++ )
+      {
+        newSlots.add(null);
+      }
+    
+    // If there is a last unit, its rhythmValue may need lengthening or
+    // shortening to conform to the length of the new part.
+    
+    if( lastUnit != null )
+      {
+      lastUnit.setRhythmValue(newSize - lastUnitIndex);
+      }
 
-        //rk Hack to remove accidental if key signature covers it.
-        // This tends to reduce the number of accidentals in the notation.
+    
+    // Install the new slots, etc.
+    
+    slots = newSlots;
+    
+    size = newSize;
+    
+    unitCount = newUnitCount;
 
-        if( unit instanceof Note )
+    //System.out.println("size of part is now " + slots.size());
+    //System.out.println(toString());
+  }
+
+
+/**
+ * Returns an exact copy of this Part
+ *
+ * @return Part copy
+ */
+
+public Part copy()
+  {
+    Trace.log(3, "copying part of size " + size);
+
+    Part newPart = new Part(size);
+    /*
+     * PartIterator i = iterator(); while(i.hasNext())
+     * newPart.slots.set(i.nextIndex(), i.next().copy());
+     */
+
+    for( int i = 0; i < size; i++ )
+      {
+        Unit unit = slots.get(i);
+        if( unit != null )
           {
-          Note note = (Note) unit;
-          if( note.isAccidentalInKey(keySig) )
-            {
+            unit = unit.copy();
+          }
+        newPart.slots.set(i, unit);
+      }
+
+    newPart.unitCount = unitCount;
+    newPart.title = title;
+    newPart.volume = volume;
+    newPart.instrument = instrument;
+    newPart.swing = swing;
+    newPart.setMetre(metre[0], metre[1]);
+    newPart.keySig = keySig;
+    return newPart;
+  }
+
+
+/**
+ * Returns a String representation of this Part. The String contains information
+ * on every Unit in the Part.
+ *
+ * @return String representation of Part
+ */
+
+@Override
+public String toString()
+  {
+    StringBuilder partData = new StringBuilder();
+    PartIterator i = iterator();
+    while( i.hasNext() )
+      {
+        partData.append("Beat ");
+        partData.append(i.nextIndex() / beatValue);
+        partData.append(" Slot ");
+        partData.append(i.nextIndex() % beatValue);
+        partData.append(": ");
+        partData.append(i.next().toString());
+        partData.append('\n');
+      }
+    return partData.toString();
+  }
+
+
+
+
+/**
+ * Adds a Unit to the end of the Part, extending the length as it goes. Note
+ * that 0 duration units should not be added, as they will cause this to fail.
+ *
+ * @param unit the Unit to add
+ */
+
+public void addUnit(Unit unit)
+  {
+    //Trace.log(3, "adding unit to end of part " + unit.toLeadsheet());
+
+    int rv = unit.getRhythmValue();
+    int index = size;
+    int newSize = size + rv;
+    size = newSize;
+
+    for( int k = slots.size(); k < newSize; k++ )
+      {
+        slots.add(null);
+      }
+    //slots.setSize(size);
+
+    if( slots.get(index) == null )
+      {
+        unitCount++;
+      }
+
+    slots.set(index, unit);
+
+    //rk Hack to remove accidental if key signature covers it.
+    // This tends to reduce the number of accidentals in the notation.
+
+    if( unit instanceof Note )
+      {
+        Note note = (Note) unit;
+        if( note.isAccidentalInKey(keySig) )
+          {
             // If the note shows as accidentaly in the key,
             // see if toggling it will help, and if not, 
             // toggle back.
@@ -590,252 +601,320 @@ public class Part implements Constants, Serializable {
             note.toggleEnharmonic();
             if( note.isAccidentalInKey(keySig) )
               {
-              note.toggleEnharmonic();
+                note.toggleEnharmonic();
               }
-            }
           }
-    }
+      }
+  }
 
-    /**
-     * Sets the slot at the specified unitIndex to the specified Unit.
-     * @param unitIndex         the index of the slot to put the Unit in
-     * @param unit              the Unit to set
-     */
-    public void setUnit(int unitIndex, Unit unit) {
-        if( unitIndex >= size || unitIndex < 0 )
-        {
-            return; // shouldn't happen, but can.
-        }
-
-        //Trace.log(0, "setting Unit at " + unitIndex + " to " + (unit == null ? null : unit.toLeadsheet()));
-        // if we want to set it to empty, we are effectively deleting it
-        if(unit == null) {
-            delUnit(unitIndex);	// Tracing this produces too much output
-            return;
-        }
-
-        //Trace.log(3, "setting Unit at " + unitIndex + " to " + unit.toLeadsheet());
-
-        //rk: I really do not follow the logic having to do with old note values.
-
-        Unit oldUnit = slots.get(unitIndex);
-
-        int rv = getUnitRhythmValue(unitIndex);
-        
-        // if the slot is empty, we need to find what the rhythm value should be
-
-        if(oldUnit == null) {
-
-           // Note: When next unit is a rest, the above may had the effect of cutting the inserted note short!!
-           // See compensating code below.
-
-            int nextIndex = getNextIndex(unitIndex);
-
-            unitCount++;
-            Unit prevUnit = getPrevUnit(unitIndex);
-            if(prevUnit != null)
-                {
-                //Trace.log(3, "in setUnit - A, setting rhythmValue");
-                // we also need to change the rv of the previous Unit
-                prevUnit.setRhythmValue(prevUnit.getRhythmValue() - rv);
-                }
-        }
-      else
-        {
-            // if there was already a Unit there, we already know the rv
-            rv = oldUnit.getRhythmValue();
-        }
-
-        //Trace.log(3, "in setUnit - B, setting rhythmValue");
-        unit.setRhythmValue(rv);
-        slots.set(unitIndex,unit);
-    }
     
-    public void splitUnit(int slotIndex) {
-        Unit origSplitUnit = getUnit(slotIndex);
-        
-        // check to see if there is a unit to split
-        if(origSplitUnit != null) {
-            return;
-        }
-        
-        int prevIndex = getPrevIndex(slotIndex);
-        origSplitUnit = getUnit(prevIndex);
-        int origRhythmValue = origSplitUnit.getRhythmValue();
-
-        // if previous unit extends into this slot, we need to split it
-        if(prevIndex + origRhythmValue >= slotIndex) {
-            Unit splitUnit = origSplitUnit.copy();
-            splitUnit.setRhythmValue(origRhythmValue + prevIndex - slotIndex);
-            setUnit(slotIndex, splitUnit);  // this call shortens the original note too
-        } else {
-            // nothing to split, but if we actually did get here, things would be broken since the slot to split at is null
-            //Trace.log(3, "Error: SplitUnitCommand found inconsistencies with the Part");
-        }
-    }
+/**
+ * Sets the slot at the specified unitIndex to the specified Unit.
+ *
+ * @param unitIndex the index of the slot to put the Unit in
+ * @param unit the Unit to set
+ */
     
-    /**
-     * Return the index at the start of the measure
-     * in which index occurs.
-     */
-
-    int startMeasure(int index, int measuresOffset)
-      {  
-      return measureLength * (measuresOffset + index / measureLength);
+public void setUnit(int unitIndex, Unit unit)
+  {
+    if( unitIndex >= size || unitIndex < 0 )
+      {
+        return; // shouldn't happen, but can.
       }
 
-    /**
-     * Deletes the unit at the specified index, adjusting the rhythm value
-     * of the preceding Unit.
-     * @param unitIndex         the slot containing the Unit to delete
-     */
-    public void delUnit(int unitIndex) {
-        if( unitIndex < 0 ) 
+    //Trace.log(0, "setting Unit at " + unitIndex + " to " + (unit == null ? null : unit.toLeadsheet()));
+    // if we want to set it to empty, we are effectively deleting it
+    if( unit == null )
+      {
+        delUnit(unitIndex);	// Tracing this produces too much output
+        return;
+      }
+
+    //Trace.log(3, "setting Unit at " + unitIndex + " to " + unit.toLeadsheet());
+
+    //rk: I really do not follow the logic having to do with old note values.
+
+    Unit oldUnit = slots.get(unitIndex);
+
+    int rv = getUnitRhythmValue(unitIndex);
+
+    // if the slot is empty, we need to find what the rhythm value should be
+
+    if( oldUnit == null )
+      {
+        // Note: When next unit is a rest, the above may had the effect of cutting the inserted note short!!
+        // See compensating code below.
+
+        int nextIndex = getNextIndex(unitIndex);
+
+        unitCount++;
+        Unit prevUnit = getPrevUnit(unitIndex);
+        if( prevUnit != null )
           {
-            return;
+            //Trace.log(3, "in setUnit - A, setting rhythmValue");
+            // we also need to change the rv of the previous Unit
+            prevUnit.setRhythmValue(prevUnit.getRhythmValue() - rv);
           }
-        Unit unit = slots.get(unitIndex);
+      }
+    else
+      {
+        // if there was already a Unit there, we already know the rv
+        rv = oldUnit.getRhythmValue();
+      }
 
-        if(unit != null) {
+    //Trace.log(3, "in setUnit - B, setting rhythmValue");
+    unit.setRhythmValue(rv);
+    slots.set(unitIndex, unit);
+  }
 
-            //Trace.log(0, "delUnit at " + unitIndex + ", was " + unit);
 
-            int rv = unit.getRhythmValue();
-            slots.set(unitIndex, null);
-            unitCount--;
-            Unit prevUnit = getPrevUnit(unitIndex);
+public void splitUnit(int slotIndex)
+  {
+    Unit origSplitUnit = getUnit(slotIndex);
 
-            //Trace.log(3, "prevUnit = " + prevUnit);
+    // check to see if there is a unit to split
+    if( origSplitUnit != null )
+      {
+        return;
+      }
 
-            // if there was a Unit before it, we need to adjust the rv
-            if(prevUnit != null)
-                {
-                //Trace.log(0, "in delUnit, setting rhythmValue");
-                prevUnit.setRhythmValue(prevUnit.getRhythmValue() + rv);
-                }
+    int prevIndex = getPrevIndex(slotIndex);
+    origSplitUnit = getUnit(prevIndex);
+    int origRhythmValue = origSplitUnit.getRhythmValue();
 
-            // if there was no Unit before it, then we just deleted the
-            // 0 slot, which must never be empty, so put something there
+    // if previous unit extends into this slot, we need to split it
+    if( prevIndex + origRhythmValue >= slotIndex )
+      {
+        Unit splitUnit = origSplitUnit.copy();
+        splitUnit.setRhythmValue(origRhythmValue + prevIndex - slotIndex);
+        setUnit(slotIndex, splitUnit);  // this call shortens the original note too
+      }
+    else
+      {
+        // nothing to split, but if we actually did get here, things would be 
+        // broken since the slot to split at is null
+        //Trace.log(3, "Error: SplitUnitCommand found inconsistencies with the Part");
+      }
+  }
 
-            else if (this instanceof imp.data.MelodyPart )
-                setUnit(0, new Rest());
-            else if (this instanceof imp.data.ChordPart )
-                setUnit(0, new Chord(NOCHORD));
-        }
-    }
 
-    /**
-     * Deletes all Units in the specified range, adjusting the rhythm 
-     * value of the preceding Unit.
-     * @param first     the index of the first Unit in the range
-     * @param last      the index of the last Unit in the range
-     */
-    public void delUnits(int first, int last) {
-        //Trace.log(2, "delUnits from " + last + " down to " + first);
+/**
+ * Return the index at the start of the measure in which index occurs.
+ */
+int startMeasure(int index, int measuresOffset)
+  {
+    return measureLength * (measuresOffset + index / measureLength);
+  }
 
-        for(int i = last; i >= first; i--)
-            delUnit(i);
-    }
+    
+/**
+ * Deletes the unit at the specified index, adjusting the rhythm value of the
+ * preceding Unit.
+ *
+ * @param unitIndex the slot containing the Unit to delete
+ */
+    
+public void delUnit(int unitIndex)
+  {
+    if( unitIndex < 0 )
+      {
+        return;
+      }
+    
+    Unit unit = slots.get(unitIndex);
 
-    /**
-     * Totally empties the Part and resets the size to zero.
-     */
-    public void empty() {
-        size = 0;
-        unitCount = 0;
-        slots = new ArrayList<Unit>(0);
-        //slots.setSize(0);
-    }
+    if( unit != null )
+      {
+        //Trace.log(0, "delUnit at " + unitIndex + ", was " + unit);
 
-    /**
-     * Returns the Unit before the slot specified by the index.
-     * The function iterates backwards from the specified slot and
-     * returns the first Unit it reaches.  If no Unit is reached, it 
-     * returns null.
-     * @param slotIndex         the slot of the Unit to start on
-     * @return Unit             the previous Unit
-     */
-    public Unit getPrevUnit(int slotIndex) {
-        int i = getPrevIndex(slotIndex);
-        if(i == -1)
-            return null;
-        return slots.get(i);
-    }
+        int rv = unit.getRhythmValue();
+        slots.set(unitIndex, null);
+        unitCount--;
+        Unit prevUnit = getPrevUnit(unitIndex);
 
-    /**
-     * Returns the index of the Unit previous to the index indicated.
-     * @param slotIndex         the index of the slot to start searching from
-     * @return int              the index of the previous Unit
-     */
-    public int getPrevIndex(int slotIndex) {
+        //Trace.log(3, "prevUnit = " + prevUnit);
+
+        // If there was a Unit before it, we need to adjust its rv.
+        
+        if( prevUnit != null )
+          {
+            //Trace.log(0, "in delUnit, setting rhythmValue");
+            prevUnit.setRhythmValue(prevUnit.getRhythmValue() + rv);
+          }
+        
+        // If there was no Unit before it, then we just deleted the
+        // 0 slot, which must never be empty, so put something appropriate there.
+        
+        else if( this instanceof imp.data.MelodyPart )
+          {
+            setUnit(0, new Rest());
+          }
+        else if( this instanceof imp.data.ChordPart )
+          {
+            setUnit(0, new Chord(NOCHORD));
+          }
+      }
+  }
+
+
+/**
+ * Deletes all Units in the specified range, adjusting the rhythm value of the
+ * preceding Unit.
+ *
+ * @param first the index of the first Unit in the range
+ * @param last the index of the last Unit in the range
+ */
+
+public void delUnits(int first, int last)
+  {
+    //Trace.log(2, "delUnits from " + last + " down to " + first);
+    
+    // It seems like this approach could be fairly slow
+    
+    for( int i = last; i >= first; i-- )
+      {
+        delUnit(i);
+      }
+  }
+
+
+/**
+ * Totally empties the Part and resets the size to zero.
+ */
+
+public void empty()
+  {
+    size = 0;
+    unitCount = 0;
+    slots = new ArrayList<Unit>(0);
+    //slots.setSize(0);
+  }
+
+
+/**
+ * Returns the Unit before the slot specified by the index. The function
+ * iterates backwards from the specified slot and returns the first Unit it
+ * reaches. If no Unit is reached, it returns null.
+ *
+ * @param slotIndex the slot of the Unit to start on
+ * @return Unit the previous Unit
+ */
+
+public Unit getPrevUnit(int slotIndex)
+  {
+    int i = getPrevIndex(slotIndex);
+    if( i == -1 )
+      {
+        return null;
+      }
+    return slots.get(i);
+  }
+
+
+/**
+ * Returns the index of the Unit previous to the index indicated.
+ *
+ * @param slotIndex the index of the slot to start searching from
+ * @return int the index of the previous Unit
+ */
+
+public int getPrevIndex(int slotIndex)
+  {
     if( slotIndex < 0 )
       {
         return -1;
       }
-        ListIterator<Unit> i = slots.listIterator(slotIndex);
-        while(i.hasPrevious()) {
-            Unit unit = i.previous();
-            if(unit != null)
-                return i.nextIndex();
-        }
-        return -1;
-    }
+    ListIterator<Unit> i = slots.listIterator(slotIndex);
+    while( i.hasPrevious() )
+      {
+        Unit unit = i.previous();
+        if( unit != null )
+          {
+            return i.nextIndex();
+          }
+      }
+    return -1;
+  }
 
-    /**
-     * Returns the next Unit after the indicated slot.
-     * @param slotIndex         the index of the slot to start searching from
-     * @return Unit             the next Unit
-     */
-    public Unit getNextUnit(int slotIndex) {
-        int i = getNextIndex(slotIndex);
-        if(i >= size)
-            return null;
-        return slots.get(i);
-    }
-    
-    /**
-     * Returns the index of the next Unit after the indicated slot.
-     * @param slotIndex         the index of the slot to start searching from
-     * @return int              the index of the next Unit
-     */
-    public int getNextIndex(int slotIndex) {
-        Unit unit = slots.get(slotIndex);
-        int nextIndex = size;
-        if(unit != null) {
-            nextIndex = slotIndex + unit.getRhythmValue();
-        }
-        else {
-            ListIterator<Unit> i = slots.listIterator(slotIndex);
-            while(i.hasNext()) {
-                nextIndex = i.nextIndex();
-                if(i.next() != null)
-                    break;
-            }
-        }
-        if(nextIndex >= size)
-            return size;     // What to do in this case?
-        return nextIndex;
-    }
-    
-    /**
-     * Returns the rhythm value of a unit starting at the unitIndex.
-     * This function can be called on an empty slot to see what
-     * rhythm value a Unit would have if it was in that slot.
-     * @param unitIndex         the index of the Unit in question
-     * @return int           the rhythm value of the Unit
-     */
-    public int getUnitRhythmValue(int unitIndex) {
-        // Start on the next Unit over, since we can call this on an 
-        // empty slot
-        int rv = 1;
-        ListIterator<Unit> i = slots.listIterator(++unitIndex);
-        while(i.hasNext()) {
-            if(i.next() != null)
-                return rv;
-            rv++;
-        }
-        return rv;
-    }
+
+/**
+ * Returns the next Unit after the indicated slot.
+ *
+ * @param slotIndex the index of the slot to start searching from
+ * @return Unit the next Unit
+ */
+
+public Unit getNextUnit(int slotIndex)
+  {
+    int i = getNextIndex(slotIndex);
+    if( i >= size )
+      {
+        return null;
+      }
+    return slots.get(i);
+  }
+
+
+/**
+ * Returns the index of the next Unit after the indicated slot.
+ *
+ * @param slotIndex the index of the slot to start searching from
+ * @return int the index of the next Unit
+ */
+
+public int getNextIndex(int slotIndex)
+  {
+    Unit unit = slots.get(slotIndex);
+    int nextIndex = size;
+    if( unit != null )
+      {
+        nextIndex = slotIndex + unit.getRhythmValue();
+      }
+    else
+      {
+        ListIterator<Unit> i = slots.listIterator(slotIndex);
+        while( i.hasNext() )
+          {
+            nextIndex = i.nextIndex();
+            if( i.next() != null )
+              {
+                break;
+              }
+          }
+      }
+    if( nextIndex >= size )
+      {
+        return size;     // What to do in this case?
+      }
+    return nextIndex;
+  }
+
+
+/**
+ * Returns the rhythm value of a unit starting at the unitIndex. This function
+ * can be called on an empty slot to see what rhythm value a Unit would have if
+ * it was in that slot.
+ *
+ * @param unitIndex the index of the Unit in question
+ * @return int the rhythm value of the Unit
+ */
+
+public int getUnitRhythmValue(int unitIndex)
+  {
+    // Start on the next Unit over, since we can call this on an 
+    // empty slot
+    int rv = 1;
+    ListIterator<Unit> i = slots.listIterator(++unitIndex);
+    while( i.hasNext() )
+      {
+        if( i.next() != null )
+          {
+            return rv;
+          }
+        rv++;
+      }
+    return rv;
+  }
 
     
     public Part fitPart(int freeSlots) {
