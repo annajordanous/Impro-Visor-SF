@@ -1945,7 +1945,6 @@ private void importFromColumnComboBoxActionPerformed(java.awt.event.ActionEvent 
 
 private void exportToColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnComboBoxActionPerformed
     exportToColumnTF.setText(exportToColumnComboBox.getSelectedItem().toString());
-    exportButtonActionPerformed(null);
 }//GEN-LAST:event_exportToColumnComboBoxActionPerformed
 
 private void importFromColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnTFActionPerformed
