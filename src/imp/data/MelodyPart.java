@@ -901,7 +901,7 @@ public class MelodyPart
     track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
     if( sendBankSelect )
-      {
+      { 
       track.add(MidiSynth.createBankSelectEventMSB(0, time));
       track.add(MidiSynth.createBankSelectEventLSB(0, time));
       }
