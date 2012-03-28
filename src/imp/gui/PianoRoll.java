@@ -1787,6 +1787,9 @@ private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     int maxColumn = styleEditor.getNumColumns();
 
     int col = intFromTextField(importFromColumnTF, minColumn, maxColumn, 0); // FIX!
+    
+    System.out.println("importButtonAction " + col);
+
 
     // col <= 0 indicates an error
 
@@ -1940,7 +1943,6 @@ openBarEditor();
 
 private void importFromColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnComboBoxActionPerformed
     importFromColumnTF.setText(importFromColumnComboBox.getSelectedItem().toString());
-    importButtonActionPerformed(null);
 }//GEN-LAST:event_importFromColumnComboBoxActionPerformed
 
 private void exportToColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnComboBoxActionPerformed
@@ -2007,14 +2009,13 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
 
 public void setLooping(boolean value)
   {
-  //System.out.println("looping = " + value);
-
     if( value )
       {
         loopToggleButton.setBackground(SELECTEDCOLOR);
         loopToggleButton.setText("<html><center>Stop Looping</center></html>");
         loopToggleButton.setSelected(true);
         styleEditor.setLooping(true);
+        startPlaying();
       }
     else
       {
@@ -2028,10 +2029,6 @@ public void setLooping(boolean value)
     updatePlayable();
   }
 
-public boolean isLooping()
-  {
-    return loopToggleButton.isSelected();
-  }
 
 Playable nowPlaying = null;
 
@@ -2039,7 +2036,7 @@ public void updatePlayable()
   {
   //System.out.println("updatePlayable");
     
-    if( isLooping() )
+    if( loopToggleButton.isSelected() )
       {
       stopPlaying();
       
@@ -2051,6 +2048,7 @@ public void updatePlayable()
       {
        nowPlaying = styleEditor.getPlayablePercussion(this, rowButton);       
       }
+
   }
 
 public void stopPlaying()
