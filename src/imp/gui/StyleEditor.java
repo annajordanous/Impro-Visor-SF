@@ -49,7 +49,7 @@ import polya.Tokenizer;
  * counterparts as time permits. Bob Keller did the conversion to
  * the spreadsheet form, using JTable.
  * @author Robert Keller, Jim Herold, Brandy McMenamy, Sayuri Soejima  
- **/
+ */
 
 public class StyleEditor
         extends javax.swing.JFrame
@@ -206,6 +206,13 @@ public class StyleEditor
 
   protected int selectedRowIndex = -1;
 
+  
+  public StyleEditor(Notate notate, File styleFile)
+      {
+        this(notate);
+        loadFromFile(styleFile);
+      }
+
   /**
    * Constructs a new StyleGeneratorEditor JFramel
    */
@@ -254,30 +261,41 @@ public class StyleEditor
         int rowIndex = styleTable.rowAtPoint(pt);
         int colIndex = styleTable.columnAtPoint(pt);
         //System.out.println("clicked row = " + rowIndex + ", col = " + colIndex);
-        enterFromCell(rowIndex, colIndex, evt.isControlDown(), evt.isShiftDown());
+        enterFromCell(rowIndex, 
+                      colIndex, 
+                      evt.isControlDown(), 
+                      evt.isShiftDown());
 
         if( pianoRollTracking )
           {
             usePianoRoll(colIndex);
+            if( evt.isControlDown() )
+              {
+                playPercussionColumn(colIndex);
+              }
+            else
+              {
+                
+              }
           }
  
         }
       });
     }
 
-public StyleEditor(Notate notate, File styleFile)
-      {
-        this(notate);
-        loadFromFile(styleFile);
-      }
 
- /**
+  /**
   * Enter data through a spreadsheet cell.
+  * Called only from the mouseClicked method above.
   @param rowIndex
   @param colIndex
   @param controlDown
   */
-public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boolean shiftDown)
+  
+public void enterFromCell(int rowIndex, 
+                          int colIndex, 
+                          boolean controlDown, 
+                          boolean shiftDown)
   {
     //System.out.println("clicked at row = " + rowIndex + ", col = " + colIndex);
 
@@ -307,30 +325,42 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
       {
         /*
          * Control down implies select all percussion instruments and play
-         * entire pattern, unless shift is also down, in which case we are
-         * transferring to pianoroll.
+         * entire pattern, unless shift is also down, in which case we 
+         * transferred to pianoroll above and returned.
          */
 
-        if( !shiftDown )
-          {
-          playPercussionColumn(colIndex);           
-          }
+      playPercussionColumn(colIndex);           
       }
     else
       {
         // Control is not down.
         // Play the cell if playable
 
-        Object rule = styleTable.getValueAt(rowIndex, colIndex);
-
-        if( rule != null && rule instanceof Playable )
-          {
-            maybePlay((Playable) rule);
-          }
-        updateMirror(rowIndex, colIndex, rule);
+        maybePlayAt(rowIndex, colIndex);
       }
   }
 
+
+  private void maybePlayAt(int rowIndex, int colIndex)
+    {
+        Object rule = styleTable.getValueAt(rowIndex, colIndex);
+
+        maybePlay(rule);
+
+        updateMirror(rowIndex, colIndex, rule);      
+    }
+  
+  
+  
+  private void maybePlay(Object ob)
+    {
+      if( ob != null && ob instanceof Playable && isPlayed() )
+        {
+          ((Playable)ob).playMe();
+        }
+    }
+  
+  
   boolean looping = false;
   
   public int getLoopValue()
@@ -343,13 +373,7 @@ public void enterFromCell(int rowIndex, int colIndex, boolean controlDown, boole
     looping = value;
     }
   
-  private void maybePlay(Playable playable)
-    {
-      if( isPlayed() )
-        {
-          playable.playMe();
-        }
-    }
+  
   /**
    * Play the percussion pattern in the designated column.
    * @param colIndex index of the column to play
@@ -370,12 +394,7 @@ void playPercussionColumn(int colIndex)
 
     selection.setSelectionInterval(colIndex, colIndex);
 
-    Object pattern = allDrumPatterns.get(colIndex);
-
-    if( pattern != null && pattern instanceof Playable )
-      {
-        maybePlay((Playable) pattern);
-      }
+    maybePlay(allDrumPatterns.get(colIndex));
   }
 
 
@@ -400,18 +419,7 @@ void playChordColumn(int colIndex)
 
     selection.setSelectionInterval(colIndex, colIndex);
 
-    Object pattern = allChordPatterns.get(colIndex);
-
-    if( pattern != null && pattern instanceof Playable )
-      {
-        maybePlay((Playable) pattern);
-      }
-  }
-
-
-public void playChordColumn()
-  {
-    playChordColumn(selectedColumn);
+    maybePlay(allChordPatterns.get(colIndex));
   }
 
 
@@ -435,18 +443,9 @@ void playBassColumn(int colIndex)
 
     selection.setSelectionInterval(colIndex, colIndex);
 
-    Object pattern = allBassPatterns.get(colIndex);
-
-    if( pattern != null && pattern instanceof Playable )
-      {
-        maybePlay((Playable) pattern);
-      }
+    maybePlay(allBassPatterns.get(colIndex));
   }
 
-public void playBassColumn()
-  {
-    playBassColumn(selectedColumn);
-  }
 
   /**
    * Update the "cache", a few rows above the actual spreadsheet,
@@ -528,10 +527,10 @@ public void playBassColumn()
           setTextFieldColor(contents, styleTextField2);
           setTextFieldColor(contents, rowField2);
           setTextFieldColor(contents, columnField2);
-        }
-        
+        }      
     }
 
+  
   public void setTextFieldColor(Object contents, JTextField field)
     {
     if( contents instanceof Playable )
@@ -563,7 +562,7 @@ public void playBassColumn()
 
   /**
    * @return the Notate for this object
-   **/
+   */
   
   public Notate getNotate()
     {
@@ -572,7 +571,7 @@ public void playBassColumn()
 
   /**
    * @return the CommandManager for this object
-   **/
+   */
   
   public CommandManager getCM()
     {
@@ -590,7 +589,7 @@ public void playBassColumn()
 
   /**
    * @return the swing value specified by the user in the text box
-   **/
+   */
   
   public double getSwingValue()
     {
@@ -612,7 +611,7 @@ public void playBassColumn()
 
   /**
    * @return the comp-swing value specified by the user in the text box
-   **/
+   */
   
   public double getAccompanimentSwingValue()
     {
@@ -636,7 +635,7 @@ public void playBassColumn()
   /**
    * @return a correctly formmatted String with all legal bass patterns displayed that are marked "include"
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
-   **/
+   */
   
   public void getBassPatterns(StringBuilder buffer)
     {
@@ -657,10 +656,6 @@ public void playBassColumn()
               buffer.append(b.getPattern());
               buffer.append("\n");
               }
-            else
-              {
-              // pattern not included
-              }
             }
           }
         }
@@ -670,10 +665,11 @@ public void playBassColumn()
       }
     }
 
+  
   /**
    * @return a correctly formmatted String with all legal drum patterns displayed that are marked "include"
    * Saves a pattern's error message to MIDIBeast if a pattern is incorrectly formmatted.
-   **/
+   */
   
   public void getDrumPatterns(StringBuilder buffer)
     {
@@ -695,10 +691,6 @@ public void playBassColumn()
               buffer.append(d.getPattern(true));
               buffer.append("\n");
               }
-            else
-              {
-              // pattern not included
-              }
           }
         }
       catch( ClassCastException e )
@@ -707,11 +699,12 @@ public void playBassColumn()
       }
     }
 
+  
   /**
    * @return a correctly formatted String with all legal chord patterns 
    * displayed that are marked "include".  Saves a pattern's error message 
    * to MIDIBeast if a pattern is incorrectly formatted.
-   **/
+   */
   
   public void getChordPatterns(StringBuilder buffer)
     {
@@ -732,10 +725,6 @@ public void playBassColumn()
               buffer.append(b.getPattern());
               buffer.append("\n");
               }
-            else
-              {
-              // pattern not included
-              }
             }
           }
         }
@@ -745,10 +734,11 @@ public void playBassColumn()
       }
     }
 
+  
   /**
    * @return a correctly formmatted String with all user-specified attributes
    * Saves an error message to MIDIBeast if illegal combinations are used (ex: BassHigh less than BassLow)
-   **/
+   */
   
   public String getAttributes()
     {
@@ -911,9 +901,11 @@ public void playBassColumn()
     return attributes;
     }
 
+  
   /**
    * Fills the preview toolbar with all options for playback.
-   **/
+   */
+  
   public void initToolbars()
     {
     Polylist p = Advisor.getAllChords();
@@ -938,10 +930,12 @@ public void playBassColumn()
     tempoComboBox.setSelectedIndex(13);
     }
 
+  
   /**
    * Saves the current style to file and updates the list of available styles 
    * so that the new style is available in the Style Preferences dialog
-   **/
+   */
+  
   public void saveStyle(File file)
     {
     MIDIBeast.newSave();
@@ -1008,13 +1002,14 @@ public void playBassColumn()
       }
 
     styleName = name;
-
     }
 
+  
   /**
    * Opens a browser for saving current style with a user-specified name and place. 
    * @return 0 if the user cancels, 1 otherwise.
-   **/
+   */
+  
   public int saveStyleAs()
     {
     saveStyle.setCurrentDirectory(styleDir);
@@ -1065,7 +1060,7 @@ public void playBassColumn()
    * A controller that opens the Save Style As dialog 
    * if the user has not previously saved the current style
    * @return 0 if the user cancels, 1 otherwise
-   **/
+   */
   
   public int saveStyle()
     {
@@ -1085,7 +1080,7 @@ public void playBassColumn()
    * @return 1 if the user selects "save before closing/opening"
    *         0 if the user selects "cancel"
    *        -1 if the user selects "don't save before closing/opening"
-   **/
+   */
   public int unsavedStyle()
     {
     //If we are going to lose changes upon closing the style editor, prompt the user
@@ -1118,7 +1113,7 @@ public void playBassColumn()
    * Controls the closing operations of the StyleGenerator
    * Prompts the user to save changes if information will be lost if the program closes
    * @return -1 if the program should ultimately close.  Return 1 otherwise.
-   **/
+   */
   private int closeWindow()
     {
     notate.setNormalMode();
@@ -1163,7 +1158,7 @@ public void playBassColumn()
    * (Originally intended to update titles after various user-requested sorting operations.
    * These operations were removed from the GUI because they seemed slow and not too useful.)
    * Currently used when cutting a pattern.
-   **/
+   */
   private void updateBassTitles()
     {
     Component[] allItems = bassHolderPane.getComponents();
@@ -1185,7 +1180,7 @@ public void playBassColumn()
    * (Originally intended to update titles after various user-requested sorting operations.
    * These operations were removed from the GUI because they seemed slow and not too useful.)
    *  Currently used when cutting a pattern.
-   **/
+   */
   private void updateDrumTitles()
     {
     Component[] allItems = drumHolderPane.getComponents();
@@ -1207,7 +1202,7 @@ public void playBassColumn()
    * (Originally intended to update titles after various user-requested sorting operations.
    * These operations were removed from the GUI because they seemed slow and not too useful.)
    * Currently used when cutting a pattern.
-   **/
+   */
   private void updateChordTitles()
     {
     Component[] allItems = chordHolderPane.getComponents();
@@ -1226,7 +1221,7 @@ public void playBassColumn()
 
   /**
    * Sets up the file browsers and their attributes used by this GUI
-   **/
+   */
   private void initFileChoosers()
     {
     LeadsheetFileView styView = new LeadsheetFileView();
@@ -1267,7 +1262,7 @@ public void playBassColumn()
 
   /**
    * Shows the Open File dialog and calls loadFromFile() to parse and display the style.
-   **/
+   */
   public void openStyle()
     {
     if( openStyle.getCurrentDirectory().getAbsolutePath().equals("/") )
@@ -1295,7 +1290,7 @@ public void playBassColumn()
   /**
    *
    * Reads file, parses style, and changes the three patterns of a style into objects expected in the styleTable.
-   **/
+   */
   public void loadFromFile(File file)
     {
     reset();
@@ -1356,6 +1351,8 @@ public void playBassColumn()
         
         aDrumRule.setInstrumentNumber(drumPat.getInstrument());
         
+        // This syntax checking should be done in the DrumRule constructor.
+        
         for( DrumRuleRep.Element element: drumPat.getElements() )
           {
           String ele = "";
@@ -1412,7 +1409,7 @@ public void playBassColumn()
   /**
    * Loads the attribute information from style into the Attributes tab
    * Uses a default if unknown information is encountered
-   **/
+   */
   private void loadAttributes(Style style)
     {
     String infoBH = style.getBassHigh().toString();
@@ -1558,7 +1555,7 @@ public void playBassColumn()
 
   /**
    * Creates a Jpanel displayed when opening or generating a style does not produce any patterns of a particular type.
-   **/
+   */
   private JPanel createEmptyPatternPanel(String type)
     {
     JPanel emptyPat = new JPanel();
@@ -1570,7 +1567,7 @@ public void playBassColumn()
   /*
    * Creates one BassPatternDisplay object for each element of bassPatterns with its weight and pattern text.
    * Removes all previous information from the bassHolderPane and adds each of the new display objects
-   **/
+   */
   public void loadBassPatterns(ArrayList<RepresentativeBassRules.BassPatternObj> bassPatterns)
     {
     bassHolderPane.removeAll();
@@ -1608,7 +1605,7 @@ public void playBassColumn()
   /*
    * Creates one ChordPatternDisplay object for each element of bassPatterns with its weight and pattern text.
    * Removes all previous information from the bassHolderPane and adds each of the new display objects
-   **/
+   */
   public void loadChordPatterns(ArrayList<RepresentativeChordRules.ChordPattern> chordPatterns)
     {
     chordHolderPane.removeAll();
@@ -1643,7 +1640,7 @@ public void playBassColumn()
   /*
    * Creates one DrumPatternDisplay object for each element of bassPatterns with its weight and pattern text.
    * Removes all previous information from the bassHolderPane and adds each of the new display objects
-   **/
+   */
   public void loadDrumPatterns(ArrayList<RepresentativeDrumRules.DrumPattern> drumPatterns)
     {
     drumHolderPane.removeAll();
@@ -1769,14 +1766,14 @@ public void playBassColumn()
    * Vestigal: Prevents user from selecting items in the edit menu if they 
    * are unavailable given the current stat 
    * can't cut a pattern if none are selected, etc.)
-   **/
+   */
   private void setEditMenuStatus()
     {
     }
 
   /**
    * Copies the currently selected bass, drum, or chord object for the tab that is showing.
-   **/
+   */
   private void copyPatternMI()
     {
     if( bassTabPanel.isVisible() )
@@ -1804,7 +1801,7 @@ public void playBassColumn()
 
   /**
    *  Resets the Attributes tab in the Style Specification panel to defaults.
-   **/
+   */
   private void setAttributes()
     {
 
@@ -1864,7 +1861,7 @@ public void playBassColumn()
 
   /**
    * @return the chord selected in the preview options
-   **/
+   */
   public String getChord()
     {
     return chordPitchComboBox.getSelectedItem().toString() + chordTypeComboBox.getSelectedItem().toString();
@@ -1872,7 +1869,7 @@ public void playBassColumn()
 
   /**
    * @return the mute option in the preview options
-   **/
+   */
   public boolean isChordMuted()
     {
     return !muteChordToggle.isSelected();
@@ -1880,7 +1877,7 @@ public void playBassColumn()
 
   /**
    * @return the volume setting in the preview options
-   **/
+   */
   public int getVolume()
     {
     return masterVolumeSlider.getValue();
@@ -1888,7 +1885,7 @@ public void playBassColumn()
 
   /**
    * @return the tempo setting in the preview options
-   **/
+   */
   public int getTempo()
     {
     return Integer.parseInt(tempoComboBox.getSelectedItem().toString());
@@ -1901,7 +1898,7 @@ public void playBassColumn()
 
   /**
    * @return true if the play button is selected, false otherwise
-   **/
+   */
   public boolean isPlayed()
     {
     boolean value = playToggle.isSelected() && !isExporting();
@@ -1912,7 +1909,7 @@ public void playBassColumn()
 
   /**
    * Clears all tabs, resets attributes to defaults, and resets all selected information to null
-   **/
+   */
   public void reset()
     {
 
@@ -1936,7 +1933,7 @@ public void playBassColumn()
 
   /**
    * Updates the UI for every pane
-   **/
+   */
   private void refreshAll()
     {
     bassHolderPane.updateUI();
@@ -1948,7 +1945,7 @@ public void playBassColumn()
    * Creates a new style by reseting the UI and then filling each pattern pane with three
    * empty patterns.  Also triggers saving options if changes would be lost when creating
    * a new style.
-   **/
+   */
   private void newStyle()
     {
     /*
@@ -2295,7 +2292,7 @@ public void playBassColumn()
   /**
    * Makes a copy of the currently selected pattern (if it exists) for the
    * tab that is visible and then removes it from the GUI.
-   **/
+   */
   private void cutPattern()
     {
     copyPatternMI();
@@ -2337,7 +2334,7 @@ public void playBassColumn()
 
   /**
    * Pastes the copied pattern, if it exists, for the currently visible tab
-   **/
+   */
   private void pastePattern()
     {
     if( bassTabPanel.isVisible() )
@@ -2465,7 +2462,7 @@ public void playBassColumn()
 
   /**
    * Add an empty drum rule to the currently selected drum pattern.
-   **/
+   */
   private void addDrumRule()
     {
     if( drumTabPanel.isVisible() )
@@ -2480,7 +2477,7 @@ public void playBassColumn()
 
   /**
    * Copy DrumRuleDisplay copyMe
-   **/
+   */
   public void copyDrumRule(DrumRuleDisplay copyMe)
     {
     if( drumTabPanel.isVisible() )
@@ -2491,7 +2488,7 @@ public void playBassColumn()
 
   /**
    * Copy the currently selected drum rule for the currently selected drum pattern.
-   **/
+   */
   private void copyDrumRule()
     {
     if( drumTabPanel.isVisible() )
@@ -2505,7 +2502,7 @@ public void playBassColumn()
 
   /**
    * Cut the currently selected drum rule
-   **/
+   */
   private void cutDrumRule()
     {
     if( drumTabPanel.isVisible() )
@@ -2519,7 +2516,7 @@ public void playBassColumn()
 
   /**
    * Paste the copiedInstrument rule into the currently selected drum panel
-   **/
+   */
   private void pasteDrumRule()
     {
     if( drumTabPanel.isVisible() )
@@ -2818,7 +2815,7 @@ public void playBassColumn()
 
   /**
    * Adds an empty bass/drum/chord PatternDisplay objecct to the currently visible tab
-   **/
+   */
   public void addPattern()
     {
     //Remove panel displaying "no bass patterns found" if it exists.
@@ -2958,7 +2955,7 @@ public void playBassColumn()
   /**
    * Asks user for a .mid and .ls file, then runs the generating classes for bass, drums, and chords
    * and displays the results.
-   **/
+   */
   public void generateStyleFromMidi()
     {
     //Prompt user to save if generating will lose changes
@@ -5918,10 +5915,6 @@ private void exportBass(int col, PianoRoll pianoRoll, int styleEditorRow,
            
   
   /**
-   * FIX: Currently everything in the bass is imported as if the bass note, 
-   * rather than allowing other pitches.
-   *
-   * TODO: FIX!! Make sure to update the comments after implementation is complete.
    * Import the first selected column from the piano roll.
    * If there is no column selected, create one.
    * If there is no piano roll yet, return silently.
