@@ -93,11 +93,11 @@ public class StyleTableModel extends DefaultTableModel implements TableModel, Co
       CHORD,
       "Drum Beats",
       "Drum Weight",
-      "Acoustic Bass Drum",
-      "Acoustic Snare",
-      "Ride Cymbal 1",
-      "Closed Hi-Hat",
-      "Open Hi-Hat",
+      "Acoustic_Bass_Drum",
+      "Acoustic_Snare",
+      "Ride_Cymbal_1",
+      "Closed_Hi-Hat",
+      "Open_Hi-Hat",
       PERCUSSION
      };
     
