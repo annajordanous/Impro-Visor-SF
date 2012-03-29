@@ -1886,11 +1886,12 @@ void playBassColumn(int colIndex)
   }
 
   /**
-   * @return true if the play button is selected, false otherwise
+   * @return true if the play button is selected and we are not
+   * in the process of exporting to the pianoroll.
    */
   public boolean isPlayed()
     {
-    boolean value = playToggle.isSelected() && !isExporting();
+    boolean value = playToggle.isSelected() && !exportingToPianoRoll;
     
     // System.out.println("isPlayed = " + value);
     return value;
@@ -5175,7 +5176,8 @@ void playBassColumn(int colIndex)
         });
         styEdit.add(pianoRollCheckBox);
 
-        trackWithPianoRoll.setText("Track Columns with Piano Roll\n");
+        trackWithPianoRoll.setSelected(true);
+        trackWithPianoRoll.setText("Track Columns with Piano Roll when Piano Roll is open.\n");
         trackWithPianoRoll.setToolTipText("If the piano roll editor is open, change its column as spreadsheet columns are clicked.");
         trackWithPianoRoll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5848,7 +5850,7 @@ private void styleEditorBassToPianoRoll(int col,
   {
     Object contents = styleTable.getValueAt(styleEditorRow, col);
 
-    //System.out.println("exporting bass pattern " + contents + ".");    
+    //System.out.println("exportingToPianoRoll bass pattern " + contents + ".");    
 
     StringReader patternReader = new StringReader(contents.toString());
 
@@ -6795,18 +6797,24 @@ public void stopPlaying()
       notate.stopPlaying();
   }
 
-boolean exporting;
+boolean exportingToPianoRoll = false;
+boolean pianoRollWasLooping  = false;
 
 private void setExporting(boolean value)
   {
     //System.out.println("exporting = " + value);
-    exporting = value;
-    //pianoRoll.setLooping(false);
-  }
-
-private boolean isExporting()
-  {
-    return exporting;
+    exportingToPianoRoll = value;
+    
+    if( value )
+      {
+        pianoRollWasLooping = pianoRoll.getLooping();
+        pianoRoll.setLooping(false);
+        stopPlaying();
+      }
+    else if( pianoRollWasLooping )
+      {
+        pianoRoll.setLooping(true);
+      }
   }
 
 }
