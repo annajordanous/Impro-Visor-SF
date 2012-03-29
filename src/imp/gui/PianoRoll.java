@@ -1971,6 +1971,13 @@ if( checkPixelBeatConstraint() )
 }//GEN-LAST:event_ticksPerBeatComboBoxActionPerformed
 
 
+/**
+ * This is called when a (non-toggle) button at the left end of a row is pressed.
+ * It corresponds to bass and chord instruments, which don't get looped.
+ * @param evt
+ * @param row 
+ */
+
 private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
   {
     setLooping(false);
@@ -1980,9 +1987,21 @@ private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
     AbstractButton thisButton = rowButton[row];
 
     updatePlayablePercussion();
+    
+    if( playable != null )
+      {
+      playable.playMe();
+      }
 
-    playable.playMe();
   }
+
+
+/**
+ * This is called when a toggle button at the left end of a row is toggled.
+ * It corresponds to  percussion instruments, and starts looping them.
+ * @param evt
+ * @param row 
+ */
 
 private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int row)
   {
@@ -2004,6 +2023,12 @@ private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int r
     updatePlayablePercussion();
   }
 
+
+/**
+ * Sets selected percussion instruments to loop or not.
+ * @param value 
+ */
+
 public void setLooping(boolean value)
   {
     if( value )
@@ -2024,6 +2049,16 @@ public void setLooping(boolean value)
       }   
   }
 
+/**
+ * This is for communication with StyleEditor, so that it can determine whether
+ * or not the pianoroll is looping.
+ * @return 
+ */
+public boolean getLooping()
+  {
+    return loopToggleButton.isSelected();
+  }
+
 
 Playable nowPlaying = null;
 
@@ -2032,8 +2067,10 @@ Playable nowPlaying = null;
  * Update nowPlaying to include the instruments defined by selected buttons
  * in array rowButton.
  * 
- * If looping, i.e. already playing, stop playing in order to do this.
+ * If looping, i.e. already playing, stop playing in order to update.,
+ * then restart following the update.
  */
+
 public void updatePlayablePercussion()
   {
   //System.out.println("updatePlayablePercussion");

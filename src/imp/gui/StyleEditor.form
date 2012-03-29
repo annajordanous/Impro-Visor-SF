@@ -795,7 +795,8 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trackWithPianoRoll">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Track Columns with Piano Roll&#xa;"/>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Track Columns with Piano Roll when Piano Roll is open.&#xa;"/>
                 <Property name="toolTipText" type="java.lang.String" value="If the piano roll editor is open, change its column as spreadsheet columns are clicked."/>
               </Properties>
               <Events>
