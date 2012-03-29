@@ -5176,7 +5176,6 @@ void playBassColumn(int colIndex)
         });
         styEdit.add(pianoRollCheckBox);
 
-        trackWithPianoRoll.setSelected(true);
         trackWithPianoRoll.setText("Track Columns with Piano Roll when Piano Roll is open.\n");
         trackWithPianoRoll.setToolTipText("If the piano roll editor is open, change its column as spreadsheet columns are clicked.");
         trackWithPianoRoll.addActionListener(new java.awt.event.ActionListener() {

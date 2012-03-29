@@ -1786,7 +1786,7 @@ public class Notate
         midiInStatus = new javax.swing.JLabel();
         echoMidiCheckBox = new javax.swing.JCheckBox();
         sendSetBankCheckBox = new javax.swing.JCheckBox();
-        jSpinner1 = new javax.swing.JSpinner();
+        jLabel1 = new javax.swing.JLabel();
         latencyTab = new javax.swing.JPanel();
         midiLatencyPanel = new javax.swing.JPanel();
         midiLatencyLabel = new javax.swing.JLabel();
@@ -4127,7 +4127,13 @@ public class Notate
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(sendSetBankCheckBox, gridBagConstraints);
-        devicesTab.add(jSpinner1, new java.awt.GridBagConstraints());
+
+        jLabel1.setText("MIDI channel assignments are found in the Mixer panel.");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        devicesTab.add(jLabel1, gridBagConstraints);
 
         jTabbedPane2.addTab("Devices", devicesTab);
 
@@ -4751,7 +4757,6 @@ public class Notate
         mixerDialog.setFocusable(false);
         mixerDialog.setFocusableWindowState(false);
         mixerDialog.setMinimumSize(new java.awt.Dimension(521, 400));
-        mixerDialog.setPreferredSize(new java.awt.Dimension(424, 400));
         mixerDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         allPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "All", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 10))); // NOI18N
@@ -22831,6 +22836,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -22901,7 +22907,6 @@ public void showNewVoicingDialog()
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
