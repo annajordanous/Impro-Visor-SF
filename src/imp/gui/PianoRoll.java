@@ -382,6 +382,7 @@ private StyleEditor styleEditor;
 
     setRowButtonLabels(rowTitlePanel);
     setVisible(true);
+    toFront();
     }
 
   private AbstractButton rowButton[] = new AbstractButton[NUMROWS];
@@ -543,7 +544,6 @@ public void paint(Graphics g)
         rowTitlePanel = new javax.swing.JPanel();
         pianoRollScrollPane = new JScrollPane(pianoRollPanel);
         barVolumePanel = new javax.swing.JPanel();
-        barVolumeLabel = new javax.swing.JLabel();
         barVolumeTF = new javax.swing.JTextField();
         barVolumeSlider = new javax.swing.JSlider();
         barVolumeImpliedCheckBox = new javax.swing.JCheckBox();
@@ -1035,6 +1035,7 @@ public void paint(Graphics g)
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         bassEditorToggleButton1.setBackground(BASSCOLOR);
+        bassEditorToggleButton1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         bassEditorToggleButton1.setText("Open Bass Bar Editor");
         bassEditorToggleButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bassEditorToggleButton1.setMaximumSize(new java.awt.Dimension(140, 20));
@@ -1048,8 +1049,8 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(bassEditorToggleButton1, gridBagConstraints);
 
@@ -1058,7 +1059,7 @@ public void paint(Graphics g)
         cautionLabelForStylePatterns.setText("  Long vertical lines are beats.   Bass, Chord, and Percussion sections are independent, not linked together.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
@@ -1070,7 +1071,7 @@ public void paint(Graphics g)
         rowTitlePanel.setLayout(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 1.0;
@@ -1083,7 +1084,7 @@ public void paint(Graphics g)
         pianoRollScrollPane.setPreferredSize(new java.awt.Dimension(680, 580));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -1091,20 +1092,8 @@ public void paint(Graphics g)
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(pianoRollScrollPane, gridBagConstraints);
 
+        barVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bar Volume (MIDI Velocity)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         barVolumePanel.setLayout(new java.awt.GridBagLayout());
-
-        barVolumeLabel.setBackground(new java.awt.Color(255, 255, 255));
-        barVolumeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        barVolumeLabel.setText("Bar Volume (velocity)\n");
-        barVolumeLabel.setToolTipText("Sets the velocity for this bar and any following ones, up to the next bar with a velocity set.");
-        barVolumeLabel.setMaximumSize(new java.awt.Dimension(150, 16));
-        barVolumeLabel.setMinimumSize(new java.awt.Dimension(150, 16));
-        barVolumeLabel.setPreferredSize(new java.awt.Dimension(150, 16));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 0.2;
-        barVolumePanel.add(barVolumeLabel, gridBagConstraints);
 
         barVolumeTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         barVolumeTF.setText("127");
@@ -1157,22 +1146,23 @@ public void paint(Graphics g)
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.8;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         getContentPane().add(barVolumePanel, gridBagConstraints);
 
-        pianoRollResolutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Resolutions"));
+        pianoRollResolutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grid Resolutions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         pianoRollResolutionsPanel.setLayout(new java.awt.GridBagLayout());
 
         bpmLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        bpmLabel.setText("Tempo (Beats per Minute)");
+        bpmLabel.setText("Editor Tempo (Beats per Minute)");
         bpmLabel.setToolTipText("Tempo in Beats Per Minute");
         bpmLabel.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         pianoRollResolutionsPanel.add(bpmLabel, gridBagConstraints);
 
@@ -1189,13 +1179,13 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         pianoRollResolutionsPanel.add(tempoComboBox, gridBagConstraints);
 
         pixelsPerBeatLabel.setText("Visual (30-120 pixels per beat)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         pianoRollResolutionsPanel.add(pixelsPerBeatLabel, gridBagConstraints);
@@ -1211,7 +1201,7 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(7, 0, 0, 0);
@@ -1226,7 +1216,7 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         pianoRollResolutionsPanel.add(pixelsPerBeatComboBox, gridBagConstraints);
 
@@ -1235,7 +1225,7 @@ public void paint(Graphics g)
         ticksPerBeatLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         pianoRollResolutionsPanel.add(ticksPerBeatLabel, gridBagConstraints);
@@ -1251,7 +1241,7 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(7, 3, 0, 0);
@@ -1267,13 +1257,13 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         pianoRollResolutionsPanel.add(ticksPerBeatComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -1281,7 +1271,7 @@ public void paint(Graphics g)
         gridBagConstraints.weightx = 0.4;
         getContentPane().add(pianoRollResolutionsPanel, gridBagConstraints);
 
-        importExportPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Import/Export From/To Style Editor  "));
+        importExportPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import/Export From/To Style Editor  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importExportPanel.setMinimumSize(new java.awt.Dimension(333, 82));
         importExportPanel.setPreferredSize(new java.awt.Dimension(333, 82));
         importExportPanel.setLayout(new java.awt.GridBagLayout());
@@ -1366,14 +1356,14 @@ public void paint(Graphics g)
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.1;
         getContentPane().add(importExportPanel, gridBagConstraints);
 
-        playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Play Pattern as Saved", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Play Pattern as Saved", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         playPanel.setMaximumSize(new java.awt.Dimension(200, 2147483647));
         playPanel.setMinimumSize(new java.awt.Dimension(200, 82));
         playPanel.setPreferredSize(new java.awt.Dimension(200, 82));
@@ -1430,13 +1420,14 @@ public void paint(Graphics g)
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(playPanel, gridBagConstraints);
 
         loopToggleButton.setBackground(DRUMSCOLOR);
+        loopToggleButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         loopToggleButton.setText("Loop Selected Percussion");
         loopToggleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         loopToggleButton.setMaximumSize(new java.awt.Dimension(200, 20));
@@ -1450,12 +1441,13 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(loopToggleButton, gridBagConstraints);
 
         SaveEntireStyleButton.setBackground(new java.awt.Color(255, 51, 51));
+        SaveEntireStyleButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         SaveEntireStyleButton.setText("Save Entire Style");
         SaveEntireStyleButton.setToolTipText("Saves this Column and the entire style to the file.");
         SaveEntireStyleButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -1470,7 +1462,7 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(SaveEntireStyleButton, gridBagConstraints);
@@ -2250,7 +2242,6 @@ PianoRollPanel getPanel()
     protected javax.swing.JFrame barEditorFrame;
     private javax.swing.JDialog barVolumeDialog;
     private javax.swing.JCheckBox barVolumeImpliedCheckBox;
-    private javax.swing.JLabel barVolumeLabel;
     private javax.swing.JPanel barVolumePanel;
     private javax.swing.JSlider barVolumeSlider;
     private javax.swing.JTextField barVolumeTF;
