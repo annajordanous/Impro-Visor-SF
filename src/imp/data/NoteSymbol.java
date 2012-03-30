@@ -109,7 +109,7 @@ public class NoteSymbol extends MelodySymbol
 
    public NoteSymbol(NoteSymbol that)
      {
-     this(that.getPitchClass());
+     this(that.getPitchClass(), that.octave, that.duration, that.volume);
      } 
 
 
@@ -123,6 +123,7 @@ public class NoteSymbol extends MelodySymbol
     public NoteSymbol(PitchClass pitchClass, int octave, int duration, int volume)
     {
     this.pitchClass = pitchClass;
+    this.octave = octave;
     this.duration = duration;
     this.volume = volume;
     establishStringRep(octave, duration);

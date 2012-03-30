@@ -1164,6 +1164,7 @@ static Polylist filterOutVolumes(Polylist L)
       // just skip this area if there is no appropriate pattern
       if( pattern == null )
         {
+//System.out.println("null pattern");
         Rest r = new Rest(duration);
         bassline.add(NoteSymbol.makeNoteSymbol(r.toLeadsheet()));
         break;
@@ -1173,53 +1174,53 @@ static Polylist filterOutVolumes(Polylist L)
 
       // we get a Polylist of NoteSymbols back from the applyRules 
       // function
-      Polylist basslineSegment = duration > 0?
+      LinkedList<Object> basslineSegment = duration > 0?
                               pattern.applyRules(chord, chord, previousNote)
                             : pattern.applyRules(chord, nextChord, previousNote);
 
       // System.out.println("basslineSegment = " + basslineSegment);
 
-      // set previousNote to the correct value
+      // Find the last non-rest in the segment.
       
-      Polylist d = basslineSegment.reverse();
-      while( d.nonEmpty() )
+      Iterator it = basslineSegment.descendingIterator();
+      while( it.hasNext() )
         {
-        if( d.first() instanceof NoteSymbol )
-          {
-          NoteSymbol ns = (NoteSymbol)d.first();
-          if( !ns.isRest() )
-            {
-            previousNote = ns; 
-            break;
-            }
-          }
-
-        d = d.rest();
+           Object ob = it.next();
+           if( ob instanceof NoteSymbol )
+             {
+               NoteSymbol ns = (NoteSymbol)ob;
+               if( !ns.isRest() )
+                 {
+                   previousNote = ns;
+                   break;
+                 }
+             }
         }
-
+      
       // What does this do?
       
       if( !bassline.isEmpty() )
         {
         Object lastOb = bassline.getLast();
-        if( lastOb instanceof Polylist )
+        if( lastOb instanceof Polylist && basslineSegment.getFirst() instanceof NoteSymbol )
           {
+System.out.println("mystery code on bassline " + bassline);
             Polylist L = (Polylist)lastOb;
             String dur = (String)L.first();
             bassline.removeLast();
-            NoteSymbol ns = (NoteSymbol)basslineSegment.first();
+            NoteSymbol ns = (NoteSymbol)basslineSegment.getFirst();
             int pDur = Duration.getDuration0(dur) + ns.toNote().getRhythmValue();
             ns = new NoteSymbol(ns.getPitchClass(), ns.getOctave(), pDur, ns.getVolume());
-            basslineSegment = basslineSegment.rest().cons(ns);
+            basslineSegment.set(0, ns);
           }
         }
       //System.out.println("new basslineSegment = " + basslineSegment);
 
-      while( basslineSegment.nonEmpty() )
+      for( Object ob: basslineSegment )
         {
-          bassline.add((MelodySymbol)basslineSegment.first() );
-          basslineSegment = basslineSegment.rest();
+          bassline.add((MelodySymbol)ob);
         }
+      
       }
     }
 
@@ -1399,41 +1400,45 @@ public long render(MidiSequence seq,
                                           transposition,
                                           endLimitIndex);
           }
-
+System.out.println("previousBassNote " + previousBassNote + " low = " + getBassLow() + " high = " + getBassHigh());
         // adjust bass octave between patterns only, not within
         if( previousBassNote.higher(getBassHigh()) )
           {
             previousBassNote = previousBassNote.transpose(-12);
-            //System.out.println("downward to " + previousBassNote);
+            System.out.println("downward to " + previousBassNote);
           }
         else if( getBassLow().higher(previousBassNote) )
           {
             previousBassNote = previousBassNote.transpose(12);
-            //System.out.println("upward to " + previousBassNote);
+            System.out.println("upward to " + previousBassNote);
           }
         
 //System.out.println("\nAbout to add to bassline, chord = " + chord + ", hasStyle = " + hasStyle);
         if( !chord.isNOCHORD() && hasStyle )
           {
-                       addToBassline(bassline,
-                                    chord,
-                                    nextChord,
-                                    previousBassNote,
-                                    rhythmValue,
-                                    transposition);
+            addToBassline(bassline,
+                        chord,
+                        nextChord,
+                        previousBassNote,
+                        rhythmValue,
+                        transposition);
 
             // Sets previousBassNote to last NoteSymbol in bassline
  
             for( Iterator it = bassline.descendingIterator(); it.hasNext(); )
               {
                 Object ob = it.next();
-                if( ob instanceof NoteSymbol)
+                if( ob instanceof NoteSymbol )
                   {
-                    previousBassNote = (NoteSymbol)ob;
-                    break;
+                    NoteSymbol ns = (NoteSymbol)ob;
+                    
+                    if( !ns.isRest() )
+                      {
+                      previousBassNote = ns;
+                      break;
+                      }
                   }
               }
-
           }
         else
           {
@@ -1449,7 +1454,7 @@ public long render(MidiSequence seq,
             break;
           }
       }
-
+System.out.println("bassline = " + bassline);
     // Finished iterating over ChordPart
     
     if( !bassline.isEmpty() )

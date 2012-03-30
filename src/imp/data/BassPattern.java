@@ -25,6 +25,7 @@ import imp.util.ErrorLog;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 import polya.Polylist;
 import polya.PolylistBuffer;
@@ -354,7 +355,7 @@ public class BassPattern
  * @return A Polylist of NoteSymbol objects that make up the bassline. Note:
  * Bassline is built in reverse by consing, then reversed as the final step.
  */
-public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
+public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
                            NoteSymbol lastNote)
   {
     //System.out.println("last Note is " + lastNote.getMIDI() );
@@ -362,8 +363,7 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
     Iterator<String> j = durations.iterator();
     Iterator<String> m = modifiers.iterator();
 
-    // the returned bassline is a Polylist of NoteSymbols
-    Polylist bassLine = Polylist.nil;
+    LinkedList<Object> basslineSegment = new LinkedList<Object>();
 //System.out.println("in applyRules");
     String chordRoot = chord.getRootString();
     ChordForm chordForm = chord.getChordForm();
@@ -415,7 +415,8 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
                             Duration.getDuration0(duration));
                   }
                 Polylist L = Polylist.list(duration, melodySymbol);
-                return bassLine.cons(L).reverse();
+                basslineSegment.add(L);
+                return basslineSegment;
               }
 
             case CHORD:
@@ -495,7 +496,7 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
 
             case EQUAL:
               {
-                melodySymbol = placePitch(null, lastNote, rule);
+                melodySymbol = lastNote; //placePitch(null, lastNote, rule);
                 break;
               }
 
@@ -503,12 +504,12 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
               {                             // higher than 99 means flat/sharp
                 if( (rule > 0 && rule < 8) || rule > 99 )
                   {
-                    Polylist scales = (Polylist) chordForm.getScales();
+                    Polylist scales = chordForm.getScales();
 
                     if( scales == null || scales.isEmpty() )
                       {
                         Polylist chordTones =
-                                (Polylist) chordForm.getSpell(chordRoot, key);
+                                 chordForm.getSpell(chordRoot, key);
                         if( chordTones.length() > 1 )
                           {
                             chordTones = lastNote.enhDrop(chordTones);
@@ -558,6 +559,7 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
               }
 
           }
+        
         if( melodySymbol != null )
           {
             if( melodySymbol instanceof NoteSymbol )
@@ -594,7 +596,7 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
                         Duration.getDuration0(duration),
                         volume);
 
-                bassLine = bassLine.cons(note);
+                basslineSegment.add(note);
 
                 if( !note.isRest() )
                   {
@@ -603,15 +605,17 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
               }
             else if( melodySymbol instanceof VolumeSymbol )
               {
-                bassLine = bassLine.cons(melodySymbol);
+                basslineSegment.add(melodySymbol);
               }
             else
               {
                 assert false;
               }
           }
+      System.out.println("rule = " + ruleTypes[rule] + " melodySymbol = " + melodySymbol);
       }
-    return bassLine.reverse();
+    
+    return basslineSegment;
   }
 
   /**
@@ -714,45 +718,79 @@ public Polylist applyRules(ChordSymbol chord, ChordSymbol nextChord,
         {
          return placePitchBelow(pitch, base);
         }
-        case EQUAL:
+        default:
         {
-         return base;
+         return pitch;
         }
       }
-      // shouldn't get here
-      return null;
+
     }
 
 
   /**
-   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
-   * melodySymbol to be within the octave above the base.
-   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
+   * Transposes a melodySymbol NoteSymbol to be within the octave above
+   * the base NoteSymbol.
+   * @param pitch a NoteSymbol that is the melodySymbol to place
    * @param base      a NoteSymbol that is the base note
    * @return a NoteSymbol that is the placed melodySymbol
    */
+  
   public static NoteSymbol placePitchAbove(NoteSymbol pitch,
                                            NoteSymbol base)
     {
-    int semitones = base.getSemitonesAbove(pitch);
-    return base.transpose(semitones);
+    NoteSymbol result = new NoteSymbol(pitch);
+    
+    int diff = base.getSemitonesAbove(result);
+    
+    if( diff < 0 )
+      {
+        result.transpose(-diff);
+      }
+    else if( diff >= 12 )
+      {
+        result.transpose(-(diff-12));
+      }
+    
+    System.out.println("\nplace " + pitch + " above " + base + " diff = " + diff + ", yields " + result);
+    return result;
     }
 
   
   /**
-   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
-   * melodySymbol to be within the octave below the base.
+   * Transposes a melodySymbol NoteSymbol to be within the octave below
+   * the base NoteSymbol.
    * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
    * @param base      a NoteSymbol that is the base note
    * @return a NoteSymbol that is the placed melodySymbol
    */
+  
   public static NoteSymbol placePitchBelow(NoteSymbol pitch,
                                            NoteSymbol base)
     {
-    // Note the role reversal of melodySymbol and base from the previous method
-    int semitones = pitch.getSemitonesAbove(base);
-    return base.transpose(-semitones);
+    NoteSymbol result = new NoteSymbol(pitch);
+    
+    int diff = base.getSemitonesAbove(result);
+    
+    if( diff > 0 )
+      {
+        result.transpose(-diff);
+      }
+    else if( diff <= -12 )
+      {
+        result.transpose(-(diff-12));
+      }
+    
+        System.out.println("\nplace " + pitch + " below " + base + " yields " + result);
+
+    return result;
     }
+  
+//  {
+//    int semitones = base.getSemitonesAbove(pitch);
+//    // Note the role reversal of melodySymbol and base from the previous method
+//    int semitones = pitch.getSemitonesAbove(base);
+//    return base.transpose(-semitones);
+//    }
 
   
   /**
