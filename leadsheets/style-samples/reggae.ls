@@ -38,7 +38,7 @@
 
 (section (style reggae)) 
 
-NC | Eb7 Eo7 | Bb | Bb/F E13 | 
+Bb | Eb7 Eo7 | Bb | Bb/F E13 | 
 Eb7 | Eo7 | Bb/F | G7b9 | 
 Cm7/F | / | Bb Db9 | C7 B7 | 
 

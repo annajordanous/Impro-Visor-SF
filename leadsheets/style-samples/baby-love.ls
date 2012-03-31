@@ -44,7 +44,7 @@ Dm7 | C | Fmaj7 Em7 | Dm7 G7sus |
 C | Cmaj7/B | A7 | Dm7 | 
 Dm7 | C | Dm7 | C | 
 Dm7 | C | Fmaj7 Em7 | Dm7 G7sus | 
-C | 
+
 (part
     (type melody)
     (title )
@@ -54,4 +54,4 @@ C |
     (key 0)
     (stave treble)
 )
- r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
+ r1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1
