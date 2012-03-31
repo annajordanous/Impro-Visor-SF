@@ -1400,7 +1400,7 @@ public long render(MidiSequence seq,
                                           transposition,
                                           endLimitIndex);
           }
-System.out.println("previousBassNote " + previousBassNote + " low = " + getBassLow() + " high = " + getBassHigh());
+        //System.out.println("previousBassNote " + previousBassNote + " low = " + getBassLow() + " high = " + getBassHigh());
         // adjust bass octave between patterns only, not within
         if( previousBassNote.higher(getBassHigh()) )
           {
@@ -1454,13 +1454,12 @@ System.out.println("previousBassNote " + previousBassNote + " low = " + getBassL
             break;
           }
       }
-System.out.println("bassline = " + bassline);
+    //System.out.println("bassline = " + bassline);
+    
     // Finished iterating over ChordPart
     
     if( !bassline.isEmpty() )
       {
-        //System.out.println("\nbassline prior to creating bassMelody = " + bassline);
-
         MelodyPart bassMelody = new MelodyPart();
 
         Object last = bassline.getLast();
