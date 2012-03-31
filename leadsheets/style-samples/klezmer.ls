@@ -19,9 +19,9 @@
 (style klezmer
     (swing 0.5)
     (comp-swing 0.5)
-    (bass-high c-)
-    (bass-low c--)
-    (bass-base g--)
+    (bass-high g-)
+    (bass-low c---)
+    (bass-base c--)
     (chord-high c)
     (chord-low c-)
     (chord-base c- e- g-)

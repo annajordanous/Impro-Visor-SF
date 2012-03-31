@@ -14,7 +14,7 @@
 (drum-volume 60)
 (chord-volume 60)
 (breakpoint 54)
-(layout)
+(layout 4)
 (roadmap-layout 8)
 (style rhumba
     (swing 0.5)
