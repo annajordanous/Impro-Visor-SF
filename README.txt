@@ -90,9 +90,6 @@ Added volume specification options to style specifications. (Use Vnnn where
 nnn is an integer between 0 and 127 to control volume in notes following
 this term, up to the next V setting.)
 
-Adjusted many of the style files to include some volume elements, and reduced
-some redundant style patterns.
-
 Changed Style Editor and Piano Roll Editor to accommodate volumes.
 
 Changed the layout of the Piano Roll Editor so that controls are at the top.
@@ -101,7 +98,14 @@ Now the percussion instrument names can be names rather than numbers as before.
 Numbers are still accepted, but when style files are written, names will be
 used.
 
-Updated style files to use names for percussion instruments.
+Now MIDI channels can be assigned (in the Mixer panel), rather than be
+confined to fixed settings (melody = 1, chords = 4, bass = 7, drums = 10).
+
+Now there is an option to send MIDI Bank 0 Select before notes. This is
+set in the MIDI Preferences panel.
+
+Updated style files to use names for percussion instruments, added some 
+volume settings, and removed some redundant or unwanted patterns.
 
 Fixed a problem in rendering bass lines, which was causing the bass instrument
 to move out of range.
