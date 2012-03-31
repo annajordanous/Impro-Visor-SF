@@ -1405,12 +1405,12 @@ public long render(MidiSequence seq,
         if( previousBassNote.higher(getBassHigh()) )
           {
             previousBassNote = previousBassNote.transpose(-12);
-            System.out.println("downward to " + previousBassNote);
+            //System.out.println("downward to " + previousBassNote);
           }
         else if( getBassLow().higher(previousBassNote) )
           {
             previousBassNote = previousBassNote.transpose(12);
-            System.out.println("upward to " + previousBassNote);
+            //System.out.println("upward to " + previousBassNote);
           }
         
 //System.out.println("\nAbout to add to bassline, chord = " + chord + ", hasStyle = " + hasStyle);

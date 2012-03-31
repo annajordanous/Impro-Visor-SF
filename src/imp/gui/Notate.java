@@ -12324,6 +12324,11 @@ public String getLickTitle()
     
     private void saveAsAdviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsAdviceActionPerformed
 
+        if( vocfc == null )
+          {
+            return;
+          }
+        
         vocfc.setDialogTitle("Save Vocabluary As");
         vocfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
 
