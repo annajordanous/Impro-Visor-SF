@@ -496,7 +496,7 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
 
             case EQUAL:
               {
-                melodySymbol = lastNote; 
+                melodySymbol = new NoteSymbol(lastNote); 
                 break;
               }
 
@@ -577,11 +577,11 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
 
                     if( modifier.equals("U") )
                       {
-                        noteSymbol = placePitch(noteSymbol, lastNote, UP);
+                        noteSymbol = placePitchAbove(noteSymbol, lastNote);
                       }
                     else if( modifier.equals("D") )
                       {
-                        noteSymbol = placePitch(noteSymbol, lastNote, DOWN);
+                        noteSymbol = placePitchBelow(noteSymbol, lastNote);
                       }
                     else
                       {
@@ -695,36 +695,6 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
     }
 
 
-  /**
-   * Takes a melodySymbol NoteSymbol and a base NoteSymbol and transposes the
-   * melodySymbol to be within the octave above or below the base depending on
-   * the indicator passed in.
-   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
-   * @param base      a NoteSymbol that is the base note
-   * @param indicator  an int determining direction of placement
-   * @return a NoteSymbol that is the placed melodySymbol
-   */
-  public static NoteSymbol placePitch(NoteSymbol pitch,
-                                      NoteSymbol base,
-                                      int indicator)
-    { 
-      switch( indicator )
-      {
-        case UP:
-        {
-         return placePitchAbove(pitch, base);
-        }
-        case DOWN:
-        {
-         return placePitchBelow(pitch, base);
-        }
-        default:
-        {
-         return pitch;
-        }
-      }
-
-    }
 
 public static NoteSymbol placePitchAbove(NoteSymbol pitch,
                                            NoteSymbol base)
@@ -748,71 +718,6 @@ public static NoteSymbol placePitchAbove(NoteSymbol pitch,
     int semitones = pitch.getSemitonesAbove(base);
     return base.transpose(-semitones);
     }
-
-//  /**
-//   * Transposes a melodySymbol NoteSymbol to be within the octave above
-//   * the base NoteSymbol.
-//   * @param pitch a NoteSymbol that is the melodySymbol to place
-//   * @param base      a NoteSymbol that is the base note
-//   * @return a NoteSymbol that is the placed melodySymbol
-//   */
-//  
-//  public static NoteSymbol placePitchAbove(NoteSymbol pitch,
-//                                           NoteSymbol base)
-//    {
-//    NoteSymbol result = new NoteSymbol(pitch);
-//    
-//    int diff = base.getSemitonesAbove(result);
-//    
-//    if( diff < 0 )
-//      {
-//        result.transpose(-diff);
-//      }
-//    else if( diff >= 12 )
-//      {
-//        result.transpose(-(diff-12));
-//      }
-//    
-//    //System.out.println("\nplace " + pitch + " above " + base + " diff = " + diff + ", yields " + result);
-//    return result;
-//    }
-//
-//  
-//  /**
-//   * Transposes a melodySymbol NoteSymbol to be within the octave below
-//   * the base NoteSymbol.
-//   * @param melodySymbol     a NoteSymbol that is the melodySymbol to place
-//   * @param base      a NoteSymbol that is the base note
-//   * @return a NoteSymbol that is the placed melodySymbol
-//   */
-//  
-//  public static NoteSymbol placePitchBelow(NoteSymbol pitch,
-//                                           NoteSymbol base)
-//    {
-//    NoteSymbol result = new NoteSymbol(pitch);
-//    
-//    int diff = base.getSemitonesAbove(result);
-//    
-//    if( diff > 0 )
-//      {
-//        result.transpose(-diff);
-//      }
-//    else if( diff <= -12 )
-//      {
-//        result.transpose(-(diff-12));
-//      }
-//    
-//    // System.out.println("\nplace " + pitch + " below " + base + " yields " + result);
-//
-//    return result;
-//    }
-  
-//  {
-//    int semitones = base.getSemitonesAbove(pitch);
-//    // Note the role reversal of melodySymbol and base from the previous method
-//    int semitones = pitch.getSemitonesAbove(base);
-//    return base.transpose(-semitones);
-//    }
 
   
   /**
