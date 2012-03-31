@@ -5977,7 +5977,7 @@ public void pianoRollToStyleEditorColumn(PianoRoll pianoRoll, int col)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
-          if( !bar.getVolumeImplied() && bar.getVolume() != volume )
+          if( !bar.getVolumeImplied() ) //&& bar.getVolume() != volume )
             {
             volume = bar.getVolume();
             patternBuffer.append("V");
@@ -6033,7 +6033,7 @@ public Playable getPlayableFromPianoRollRow(PianoRoll pianoRoll, int desiredRow)
 
         if( !(bar instanceof PianoRollEndBlock) )
           {
-          if( bar.getVolume() != volume )
+          if( !bar.getVolumeImplied() ) //bar.getVolume() != volume )
             {
             volume = bar.getVolume();
             patternBuffer.append("V");
@@ -6142,7 +6142,7 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
 
             if( !(bar instanceof PianoRollEndBlock) )
               {
-                 if( bar.getVolume() != volume )
+                 if( !bar.getVolumeImplied() ) // bar.getVolume() != volume )
                     {
                     volume = bar.getVolume();
                     patternBuffer.append("V");
