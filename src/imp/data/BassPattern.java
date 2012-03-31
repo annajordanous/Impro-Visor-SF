@@ -612,7 +612,7 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
                 assert false;
               }
           }
-      System.out.println("rule = " + ruleTypes[rule] + " melodySymbol = " + melodySymbol);
+      //System.out.println("rule = " + ruleTypes[rule] + " melodySymbol = " + melodySymbol);
       }
     
     return basslineSegment;
@@ -751,7 +751,7 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
         result.transpose(-(diff-12));
       }
     
-    System.out.println("\nplace " + pitch + " above " + base + " diff = " + diff + ", yields " + result);
+    //System.out.println("\nplace " + pitch + " above " + base + " diff = " + diff + ", yields " + result);
     return result;
     }
 
@@ -780,7 +780,7 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
         result.transpose(-(diff-12));
       }
     
-        System.out.println("\nplace " + pitch + " below " + base + " yields " + result);
+    // System.out.println("\nplace " + pitch + " below " + base + " yields " + result);
 
     return result;
     }
@@ -916,7 +916,8 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
   //Added summer2007 for use with Style GUI
   public String forGenerator()
     {
-    String rule = "";
+    StringBuilder buffer = new StringBuilder();
+    
     for( int i = 0; i < durations.size(); i++ )
       {
       //System.out.println("i: " + i);
@@ -942,14 +943,23 @@ public LinkedList<Object> applyRules(ChordSymbol chord, ChordSymbol nextChord,
       try
         {
         Integer.parseInt(nextNote);
-        rule += "(X " +  accidental + nextNote + " " + durations.get(i) + " " + modifiers.get(i) + ") ";
+        buffer.append("(X ");
+        buffer.append(accidental);
+        buffer.append(nextNote);
+        buffer.append(" ");
+        buffer.append(durations.get(i));
+        buffer.append(" ");
+        buffer.append(modifiers.get(i));
+        buffer.append(") ");
         }
       catch( NumberFormatException e )
         {
-        rule += nextNote + durations.get(i) + " ";
+        buffer.append(nextNote);
+        buffer.append(durations.get(i));
+        buffer.append(" ");
         }
       }
-    return rule;
+    return buffer.toString();
     }
 
   @Override
