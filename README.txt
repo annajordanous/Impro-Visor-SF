@@ -86,15 +86,28 @@ keller@cs.hmc.edu
 
 Release notes for Impro-Visor 5.12
 
-Added volume specification options to style specifications.
+Added volume specification options to style specifications. (Use Vnnn where
+nnn is an integer between 0 and 127 to control volume in notes following
+this term, up to the next V setting.)
 
-Changed Style Editor and Piano Roll Editor to accomodate volumes.
+Adjusted many of the style files to include some volume elements, and reduced
+some redundant style patterns.
+
+Changed Style Editor and Piano Roll Editor to accommodate volumes.
+
+Changed the layout of the Piano Roll Editor so that controls are at the top.
 
 Now the percussion instrument names can be names rather than numbers as before.
 Numbers are still accepted, but when style files are written, names will be
 used.
 
-Updated most style files to use names for percussion instruments.
+Updated style files to use names for percussion instruments.
+
+Fixed a problem in rendering bass lines, which was causing the bass instrument
+to move out of range.
+
+Fixed a problem with saving styles containing weights with decimal points
+which would cause them to fail to load.
 
 
 ===============================================================================
