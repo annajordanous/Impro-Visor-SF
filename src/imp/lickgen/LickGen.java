@@ -748,7 +748,6 @@ public ArrayList<double[]> fillProbs(ChordPart chordProg,
     while( nextIndex < selStart + length && nextIndex != -1 )
       {
         Chord currentChord = chordProg.getCurrentChord(nextIndex);
-
         if( currentChord != null )
           {
             // If we've already calculated probabilites for the current chord, then we
@@ -821,9 +820,14 @@ public ArrayList<double[]> fillProbs(ChordPart chordProg,
 
             // Advance to the next chord, and add the probabilities to our ArrayList.
 
-            nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
             probs.add(p);
           }
+      // 2 April 2012, this was positioned inside the loop above,
+      // causing an infinite loop. It may have come to fore because
+      // of changes made to ChordPart in release 5.12
+        
+      nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
+
       }
 
     return probs;

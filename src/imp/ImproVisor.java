@@ -32,12 +32,12 @@ import java.io.IOException;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.12
+ * @version 5.13
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.12";
+    public static final String version = "5.13";
     
     private static String lastLeadsheetFileStem = null;
     

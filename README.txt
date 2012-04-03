@@ -1,6 +1,6 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.12,
-from Prof. Bob Keller at Harvey Mudd College, 6 March 2012.
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.13,
+from Prof. Bob Keller at Harvey Mudd College, 2 April 2012.
 
 Release notes for this version may be found at the end.
 
@@ -84,6 +84,12 @@ keller@cs.hmc.edu
 
 ===============================================================================
 
+Release notes for Impro-Visor 5.13
+
+Bug fix: Selecting New Leadsheet (control-N) caused the program to hang.
+
+===============================================================================
+
 Release notes for Impro-Visor 5.12
 
 Added volume specification options to style specifications. (Use Vnnn where
@@ -103,6 +109,10 @@ confined to fixed settings (melody = 1, chords = 4, bass = 7, drums = 10).
 
 Now there is an option to send MIDI Bank 0 Select before notes. This is
 set in the MIDI Preferences panel.
+
+Now each percussion instrument is assigned a separate MIDI track. This can
+be useful if the MIDI output is used as input to a Digital Audio Workstation,
+for example.
 
 Updated style files to use names for percussion instruments, added some 
 volume settings, and removed some redundant or unwanted patterns.

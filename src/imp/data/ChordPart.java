@@ -23,6 +23,7 @@ package imp.data;
 import imp.brickdictionary.ChordBlock;
 import imp.roadmap.RoadMapFrame;
 import imp.util.ErrorLog;
+import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -413,37 +414,6 @@ public int getNextUniqueChordIndex(int slotIndex)
         return newPart;
     }
  
-   
-    /**
-     * Reads the passed BufferedReader and creates a new ChordPart.
-     * @param in                the BufferedReader to read from
-     * @return ChordPart        the ChordPart read from the BufferedReader
-     */
-    public static ChordPart open(BufferedReader in) throws IOException {
-    	ChordPart chords = new ChordPart();
-
-        chords.title = in.readLine();
-        chords.setInstrument(Integer.decode(in.readLine()));
-        chords.volume = Integer.decode(in.readLine());
-        chords.keySig = Integer.decode(in.readLine());
-
-        int metreTop = Integer.decode(in.readLine());
-        int metreBottom = Integer.decode(in.readLine());
-        chords.setMetre(metreTop, metreBottom);
-
-        chords.swing = Double.parseDouble(in.readLine());
-        
-    	Chord chord = Chord.open(in);
-    	while(chord != null) {
-    		chords.addChord(chord);
-    		chord = Chord.open(in);
-    	}
-    	
-    	if(chords.unitCount == 0)
-    		return null;
-    		
-    	return chords;
-    }
     
 /**
  * Get the ChordSymbols of this ChordPart as an ArrayList<ChordSymbol>

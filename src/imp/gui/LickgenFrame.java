@@ -2341,8 +2341,6 @@ public void redrawTriage()
 
         String[] notes = notate.getNoteLabels(chordChanges.get(i));
 
-
-
         // Since there are twelve chromatic pitches we need to consider,
         // loop through twelve times.
 
@@ -2438,7 +2436,7 @@ public void redrawTriage()
         lickPrefs.add(prefs);
       }
       }
-
+    
     JScrollPane sp = new JScrollPane(panel);
 
     sp.getVerticalScrollBar().setUnitIncrement(10);
@@ -2447,7 +2445,7 @@ public void redrawTriage()
 
     chordProbPanel.setPreferredSize(new Dimension(600, 200));
 
-    // We have to call validate before anything will appear on the screen.
+   // We have to call validate before anything will appear on the screen.
 
     validate();
 
@@ -2472,14 +2470,12 @@ public void redrawTriage()
               {
                 p[j] = Notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 0.0);
               }
-
             probs.add(p);
           }
          lickgen.setProbs(probs);
      
       }
-
-    // This causes the frame to be resized, which is annoying: generatorFrame.pack();
+     // This causes the frame to be resized, which is annoying: generatorFrame.pack();
   }
 
 
@@ -3953,13 +3949,13 @@ private void triageAndGenerate(int number)
                               }
 
                             ArrayList<double[]> probs = lickgen.fillProbs(
-                                notate.getChordProg(),
-                                                                       chordToneWeight,
-                                                                       scaleToneWeight,
-                                                                       colorToneWeight,
-                                                                       chordToneDecayRate,
-                                                                       notate.getCurrentSelectionStart(),
-                                                                       notate.getTotalSlots());
+                                    notate.getChordProg(),
+                                    chordToneWeight,
+                                    scaleToneWeight,
+                                    colorToneWeight,
+                                    chordToneDecayRate,
+                                    notate.getCurrentSelectionStart(),
+                                    notate.getTotalSlots());
 
                             for( int i = 0; i < probs.size(); ++i )
                               {
@@ -4020,7 +4016,7 @@ private void triageAndGenerate(int number)
                             else
                               {
                                 theme = new MelodyPart(
-                                    themeField.getText().trim());
+                                        themeField.getText().trim());
                               }
                             generateSolo(theme, cm);
                             playSelection();
@@ -4038,9 +4034,9 @@ private void triageAndGenerate(int number)
 
                         private void pasteThemeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteThemeBtnActionPerformed
                             MelodyPart sel =
-                                notate.getCurrentStave().getDisplayPart().extract(
-                                notate.getCurrentSelectionStart(),
-                                notate.getCurrentSelectionEnd());
+                                    notate.getCurrentStave().getDisplayPart().extract(
+                                    notate.getCurrentSelectionStart(),
+                                    notate.getCurrentSelectionEnd());
                             Part.PartIterator i = sel.iterator();
                             String theme = "";
                             while( i.hasNext() )
@@ -4053,15 +4049,15 @@ private void triageAndGenerate(int number)
 }//GEN-LAST:event_pasteThemeBtnActionPerformed
 
                         private void openGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openGrammarMI1ActionPerformed
-                           notate.openGrammar();
+                            notate.openGrammar();
                         }//GEN-LAST:event_openGrammarMI1ActionPerformed
 
                         private void showLogMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogMI1ActionPerformed
-                           notate.openLog();
+                            notate.openLog();
                         }//GEN-LAST:event_showLogMI1ActionPerformed
 
                         private void saveGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGrammarMI1ActionPerformed
-                           notate.saveGrammarAs();
+                            notate.saveGrammarAs();
                         }//GEN-LAST:event_saveGrammarMI1ActionPerformed
 
                         private void editGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGrammarMI1ActionPerformed
@@ -4073,7 +4069,7 @@ private void triageAndGenerate(int number)
                         }//GEN-LAST:event_reloadGrammarMI1ActionPerformed
 
                         private void toCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMI1ActionPerformed
-                           notate.toCritic();
+                            notate.toCritic();
                         }//GEN-LAST:event_toCriticMI1ActionPerformed
 
                         private void showCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCriticMI1ActionPerformed

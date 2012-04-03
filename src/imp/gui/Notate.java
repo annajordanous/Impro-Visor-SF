@@ -924,7 +924,7 @@ public class Notate
   public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
     {
     super();
-    
+
     setTitle(score.getTitle());
     
     setTransposition(score.getTransposition());
@@ -1283,7 +1283,6 @@ public class Notate
       };
 
 
-
     lickgen = new LickGen(ImproVisor.getGrammarFile().getAbsolutePath(), this); //orig
 
     ChordDescription.load(ImproVisor.getVocabDirectory() + File.separator + musicxmlFile);
@@ -1351,6 +1350,7 @@ public class Notate
     String setAlwaysUseString =
             Preferences.getPreference(Preferences.ALWAYS_USE_BUTTONS);
 
+
      // Set checkbox states.
 
     alwaysUseBass.setSelected(setAlwaysUseString.charAt(ALWAYS_USE_BASS_INDEX) == TRUE_CHECK_BOX);
@@ -1367,7 +1367,7 @@ public class Notate
     setBars(score.getBarsPerChorus());
 
     updateSelection();
-    
+
     Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener()
       {
       public void eventDispatched(AWTEvent event)
@@ -1391,9 +1391,10 @@ public class Notate
           }
         }
       }, 
+                                                    
       AWTEvent.KEY_EVENT_MASK);
 
-      setVolumeDefaults();
+    setVolumeDefaults();
 
     cm.changedSinceLastSave(false);
 
@@ -9220,12 +9221,10 @@ private void setSectionParameters()
       else if( o instanceof Polylist )
         {
         ErrorLog.log(ErrorLog.WARNING, "No slot selected for insertion.");
-        return;
         }
       else
         {
         ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
-        return;
         }
     }//GEN-LAST:event_insertVoicingButtonActionPerformed
 
@@ -9294,17 +9293,20 @@ private void setSectionParameters()
       else
         {
         ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
-        return;
         }
      }
     
     /**
-     * Plays the chord at the given index.
+     * Plays the chord at the given index, if any
      * @param index 
      */
     public void playChordAtIndex(int index)
     {
         Chord chordToPlay = chordProg.getChord(index);
+        if( chordToPlay == null )
+          {
+            return;
+          }
         Style currStyle = ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
         Score tempScore = new Score();
         tempScore.addPart();
@@ -9433,14 +9435,13 @@ public void playCurrentVoicing()
       else
         {
         ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
-        return;
-        }
-        
+        }       
 }
 
+
 /**
- *Determine whether the chord name in the indicated row of the voicing table
- *is a synonym for another name (e.g. by specifiying (uses ...)). If so,
+ * Determine whether the chord name in the indicated row of the voicing table
+ * is a synonym for another name (e.g. by specifiying (uses ...)). If so,
  * return that name. Otherwise return null.
  @param row
  @return
@@ -9505,7 +9506,6 @@ private String getChordRedirectName(int row)
       }
 
     lickgenFrame.toFront();
-
  }
 
 
@@ -9517,6 +9517,7 @@ private String getChordRedirectName(int row)
       grammarEditor.setVisible(true);
       grammarEditor.toFront();
     }
+    
     public void loadGrammar()
     {
       lickgen.loadGrammar(grammarFilename);
@@ -9614,16 +9615,14 @@ private String getChordRedirectName(int row)
 
               if( voicingOb != null )
                 {
-                Polylist L = (Polylist)voicingOb;
-
                 s = s.copy();
 
                 s.setChordLow(NoteSymbol.makeNoteSymbol("c-----"));
 
                 s.setChordHigh(NoteSymbol.makeNoteSymbol("g+++++"));
 
-                L = ChordPattern.findFirstVoicingAndExtension(
-                        c, s.getChordBase(), s, false);
+                Polylist L = ChordPattern.findFirstVoicingAndExtension(
+                                           c, s.getChordBase(), s, false);
 
                 c.setVoicing((Polylist)L.first());
 
@@ -9813,11 +9812,8 @@ private String getChordRedirectName(int row)
  
     
     private void buildTableButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buildTableButtonActionPerformed
-    
     {
-        
         buildVoicingTable();
-        
     }//GEN-LAST:event_buildTableButtonActionPerformed
     
     
@@ -9835,25 +9831,23 @@ private String getChordRedirectName(int row)
     private boolean initLocationVoicingFrame = false;
     
     private void voicingTestMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingTestMIActionPerformed
-        
-        if(!initLocationVoicingFrame) {
-            
+
+        if( !initLocationVoicingFrame )
+          {
             voicingTestFrame.setLocationRelativeTo(this);
-            
+
             initLocationVoicingFrame = true;
-            
-        }
-        
+          }
+
         buildVoicingTable();
-        
+
         voicingTestFrame.setVisible(true);
-        
-        if ( playingStopped() )
-        {
+
+        if( playingStopped() )
+          {
             openKeyboard();
             keyboard.showBass();
-        }
-        
+          }
     }//GEN-LAST:event_voicingTestMIActionPerformed
     
     
@@ -9880,7 +9874,6 @@ private String getChordRedirectName(int row)
           selectVoicing(v, currentChord);
           }
         }
-
     }//GEN-LAST:event_pauseBtnActionPerformed
     
     
@@ -9896,27 +9889,28 @@ public void pauseScore()
     
     
     private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tempoSliderStateChanged
-        
-        if(jSliderIgnoreStateChangedEvt)
-            
+
+        if( jSliderIgnoreStateChangedEvt )
+          {
             return;
-        
+          }
+
         int value = tempoSlider.getValue();
-        
+
         value = 2 * Math.round(value / 2);
-        
+
         setTempo((double) value);
 
         setPlaybackManagerTime();
-        
-        if(!tempoSlider.getValueIsAdjusting()) {
-            
+
+        if( !tempoSlider.getValueIsAdjusting() )
+          {
             staveRequestFocus();
-        }        
+          }
     }//GEN-LAST:event_tempoSliderStateChanged
     
 
-    private void setPlaybackManagerTime()
+private void setPlaybackManagerTime()
     {
         establishCountIn();
         playbackManager.setTotalTime(million*score.getTotalTime());
@@ -12498,15 +12492,14 @@ private void openAdviceFrame()
       {
       return;
       }
-
      totalSlots =
-            paddingSlots + getCurrentSelectionEnd() - getCurrentSelectionStart();
+           paddingSlots + getCurrentSelectionEnd() - getCurrentSelectionStart();
     
     totalBeats = Math.round(totalSlots/roundTo);
     
     totalSlots = (int)(totalBeats * BEAT);
     
-   if( lickgenFrame != null )
+    if( lickgenFrame != null )
       {
       lickgenFrame.redrawTriage();
 
