@@ -23,6 +23,7 @@ package imp.data;
 import imp.Constants;
 import imp.brickdictionary.Block;
 import imp.brickdictionary.ChordBlock;
+import imp.util.Preferences;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -46,7 +47,6 @@ public class SectionInfo implements Constants, Serializable {
 
     public SectionInfo(ChordPart chords) {
         this.chords = chords;
-        //Style style = new Style();
 
         // RK 1/4/2010 The following was causing problems with countin resetting
         // the chord instrument, as reported by a user. It is not clear
@@ -56,7 +56,7 @@ public class SectionInfo implements Constants, Serializable {
 
         //style.setChordInstrument(chords.getInstrument(), "SectionInfo");
 
-        addSection(Style.USE_PREVIOUS_STYLE, 0, false);
+        addSection(Preferences.getPreference(Preferences.DEFAULT_STYLE), 0, false);
     }
 
     public SectionInfo copy() {
