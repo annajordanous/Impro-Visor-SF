@@ -80,7 +80,7 @@ public class MIDIBeast{
         public static RepresentativeChordRules repChordRules;
         
         //Generation Preferences
-        public static boolean showExtraction = false;
+        public static boolean showExtraction = true;
         public static boolean chordTones = true;
         public static boolean mergeBassRests = false;
         public static boolean importDrums = true;

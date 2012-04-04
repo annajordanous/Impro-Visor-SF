@@ -3021,7 +3021,8 @@ void playBassColumn(int colIndex)
                     false, this, cm, 1);
             drumExtraction.setLocationRelativeTo(this);
             drumExtraction.setVisible(true);
-            }
+ System.out.println("drums set visible");
+           }
           else
             {
             loadDrumPatterns(d.getRepresentativePatterns());

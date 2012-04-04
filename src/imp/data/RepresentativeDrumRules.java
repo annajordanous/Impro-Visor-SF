@@ -20,7 +20,9 @@
  */
 
 package imp.data;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -588,18 +590,37 @@ public class RepresentativeDrumRules{
             }
             
              public String[] getRules(){
+           System.out.println("in getRules() patterns = " + patterns + "\nrulesWithoutDuplicates = " + rulesWithoutDuplicates);
                     String[] toReturn = new String[patterns.size()+1];
                     toReturn[0] = "Cluster";
-                    for(int i = 0; i < patterns.size(); i++){
+                    for(int i = 1; i < patterns.size(); i++){
                         toReturn[i+1] = "    (drum-pattern \n";
-                        String[] split = rulesWithoutDuplicates.get(patterns.get(i).getIndex()).split("\n");
-                        for(int j = 0; j < split.length; j++){
+                        
+                        UniqueDrumPattern pattern = patterns.get(i);
+            System.out.println("uniqueDrumPattern " + i + " = " + pattern);
+            
+            //            String rule = rulesWithoutDuplicates.get(pattern.getIndex());
+            
+            // System.out.println("rule = " + rule);
+            
+                        //String[] split = rule.split("\n");
+            
+                        String[] split = pattern.toString().split("\n"); // What if
+                       
+            
+            System.out.println("split " + i + " = " + split);
+            for( int k = 0; k < split.length; k++ )
+              {
+                System.out.println("split + " + i + " " + k + " = " + split[k]);
+              }
+                        for(int j = 1; j < split.length; j++){
                             int firstParensIndex = split[j].indexOf('(');
                             int lastParensIndex = split[j].indexOf(')');
                             String drumNumber = split[j].substring(firstParensIndex+1, lastParensIndex);
                             String drumString = split[j].substring(lastParensIndex+1);
                             toReturn[i+1] += "        (drum " + drumNumber + " " + drumString + ")\n";
                         }
+             System.out.println("toReturn " + (i+1) + " = " + toReturn[i+1]);
                     }
                     
                     return toReturn;
