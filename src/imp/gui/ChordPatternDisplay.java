@@ -21,6 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
@@ -237,7 +238,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
             score.setTempo(tempo);
             //score.setVolumes(notate.getMidiSynth());
 
-            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), loopCount, notate.getTransposition()).execute();
+            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), ImproVisor.getCurrentWindow(), loopCount, notate.getTransposition()).execute();
             styleEditor.setStatus("OK");
           }
         catch( Exception e )

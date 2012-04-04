@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,6 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.com.SetChordsCommand;
 import imp.data.*;
@@ -37,8 +37,9 @@ import polya.Polylist;
 /**
  * Created on August 2, 2006, 1:50 PM
  *
- * @author  Martin
+ * @author  Martin Hunt
  */
+
 public class CriticDialog extends javax.swing.JDialog implements Constants {
  
     private CriticTableModel dataModel;
@@ -66,6 +67,8 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
         public Class getType() {
             return type;
         }
+        
+        @Override
         public String toString() {
             return name;
         }
@@ -266,7 +269,15 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             score.setChordProg(chords);
             score.addPart(melody);
 
-            new PlayScoreCommand(score, 0, true, 0, 0).execute();
+            new PlayScoreCommand(score, 
+                                 0, 
+                                 true, 
+                                 ImproVisor.getLastMidiSynth(),
+                                 ImproVisor.getCurrentWindow(),
+                                 0, 
+                                 0,
+                                 false,
+                                 BEAT*4).execute();
         }
     }//GEN-LAST:event_dataTableMouseClicked
 
@@ -522,10 +533,12 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             return TCol.values().length;
         }
 
+        @Override
         public String getColumnName(int col) {
             return TCol.values()[col].toString();
         }
         
+        @Override
         public Class getColumnClass(int col) {
             return TCol.values()[col].getType();
         }
@@ -558,10 +571,12 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
             fireTableDataChanged();
         }
 
+        @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return columnIndex != TCol.PLAYBTN.ordinal();
         }
 
+        @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             int name = TCol.NAME.ordinal();
             int grade = TCol.GRADE.ordinal();

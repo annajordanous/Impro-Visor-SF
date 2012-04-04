@@ -173,9 +173,12 @@ public static ChordPattern makeChordPattern(Polylist L)
           
       case PUSH:
         {
-        cp.pushString = item.first().toString();
-        cp.pushAmount = Duration.getDuration(cp.pushString);
+        if( item.nonEmpty() )
+          {
+          cp.pushString = item.first().toString();
+          cp.pushAmount = Duration.getDuration(cp.pushString);
         //System.out.println("pushAmount " + pushString + " = " + cp.pushAmount + " slots");
+          }
         break;
         }
           
