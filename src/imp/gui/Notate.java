@@ -1176,7 +1176,7 @@ public class Notate
         // Recurrent generation option
 
         if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
-             && (slotInPlayback >= totalSlots - gap) )
+             && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
             {
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
@@ -2113,6 +2113,7 @@ public class Notate
         showAdviceButton = new javax.swing.JToggleButton();
         generateToolbarBtn = new javax.swing.JButton();
         recurrentGenButton = new javax.swing.JToggleButton();
+        improviseButton = new javax.swing.JToggleButton();
         generationGapSpinner = new javax.swing.JSpinner();
         openGeneratorButton = new javax.swing.JButton();
         freezeLayoutButton = new javax.swing.JToggleButton();
@@ -6852,6 +6853,24 @@ public class Notate
         });
         standardToolbar.add(recurrentGenButton);
 
+        improviseButton.setBackground(new java.awt.Color(0, 255, 0));
+        improviseButton.setText("Improvise");
+        improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
+        improviseButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        improviseButton.setFocusable(false);
+        improviseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        improviseButton.setMaximumSize(new java.awt.Dimension(65, 30));
+        improviseButton.setMinimumSize(new java.awt.Dimension(65, 30));
+        improviseButton.setOpaque(true);
+        improviseButton.setPreferredSize(new java.awt.Dimension(65, 30));
+        improviseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        improviseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                improviseButtonActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(improviseButton);
+
         generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(1.05d, 0.0d, 9.99d, 0.01d));
         generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
         generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
@@ -9714,8 +9733,7 @@ private String getChordRedirectName(int row)
 
     Chord c = new Chord(o, BEAT * 4);
 
-    Style s =
-            ImproVisor.getCurrentWindow().score.getChordProg().getStyle().copy();
+    Style s = score.getChordProg().getStyle().copy();
 
     s.setNoStyle(true);
     
@@ -9740,7 +9758,15 @@ private String getChordRedirectName(int row)
 
     cScore.setStyle(s);
 
-    new PlayScoreCommand(cScore, 0, false, 0, getTransposition(), false, 4*BEAT).execute();
+    new PlayScoreCommand(cScore, 
+                         0, 
+                         false, 
+                         midiSynth, 
+                         this, 
+                         0, 
+                         getTransposition(), 
+                         false, 
+                         4*BEAT).execute();
     }
   
   
@@ -20160,9 +20186,15 @@ public void generate(LickGen lickgen)
       {
         // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
         // was commented out:
-        lickgen.getFillMelodyParameters(minPitch, maxPitch, minInterval,
-                                  maxInterval, BEAT, leapProb, chordProg,
-                                       0, avoidRepeats);
+        lickgen.getFillMelodyParameters(minPitch, 
+                                        maxPitch, 
+                                        minInterval,
+                                        maxInterval, 
+                                        BEAT, 
+                                        leapProb, 
+                                        chordProg,
+                                        0, 
+                                        avoidRepeats);
 
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
         if( solo != null )
@@ -20180,7 +20212,7 @@ public void generate(LickGen lickgen)
     // happen if there are no outlines of the correct length or the soloist
     // file was not correctly loaded, use the grammar.
 
-    if( rhythm == null || useOutlines == false )
+    if( rhythm == null || !useOutlines )
       {
 
         if( lickgenFrame.getUseGrammar() )
@@ -20193,6 +20225,7 @@ public void generate(LickGen lickgen)
                                                   maxDuration,
                                                   restProb);
           }
+        
         MelodyPart lick = generateLick(rhythm);
         
         //System.out.println("lick generated");
@@ -21111,6 +21144,29 @@ private void drumChannelSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-F
   {//GEN-HEADEREND:event_drumChannelSpinnerChanged
     ImproVisor.setDrumChannel(((Integer)drumChannelSpinner.getValue()).intValue() - 1);
   }//GEN-LAST:event_drumChannelSpinnerChanged
+
+private void improviseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_improviseButtonActionPerformed
+  {//GEN-HEADEREND:event_improviseButtonActionPerformed
+    improviseButtonToggled();
+  }//GEN-LAST:event_improviseButtonActionPerformed
+
+public void improviseButtonToggled()
+  {
+    boolean improvisationOn = improviseButton.isSelected();
+    lickgenFrame.setRecurrent(improvisationOn);
+
+    if( improvisationOn )
+      {
+        generate(lickgen);
+        improviseButton.setBackground(new Color(255, 0, 0));
+        improviseButton.setText("<html><center>Stop<br>Improvising</center></html>");
+       }
+    else
+      {
+        improviseButton.setBackground(new Color(0, 255, 0));
+        improviseButton.setText("<html><center>Improvise</center></html>");
+      }
+  }
 
 public void setShowConstructionLinesAndBoxes(boolean value)
   {
@@ -22825,6 +22881,7 @@ public void showNewVoicingDialog()
     private javax.swing.JRadioButton idiomRadioButton;
     private javax.swing.JCheckBox idioms;
     private javax.swing.JButton ignoreDuplicate;
+    private javax.swing.JToggleButton improviseButton;
     private javax.swing.JMenuItem insertRestMeasure;
     private javax.swing.JButton insertVoicingButton;
     private javax.swing.JMenuItem invertMelody;

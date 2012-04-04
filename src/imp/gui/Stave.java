@@ -5170,9 +5170,13 @@ public void play(int startAt)
     // playSelection(true);
 
 
-    new PlayScoreCommand(notate.score, startAt, true,
-                         notate.getMidiSynth(), notate, 
-                         notate.getLoopCount(), notate.getTransposition()).execute();
+    new PlayScoreCommand(notate.score, 
+                         startAt, 
+                         true,
+                         notate.getMidiSynth(), 
+                         notate, 
+                         notate.getLoopCount(), 
+                         notate.getTransposition()).execute();
   }
 
 public void playSelection()
@@ -5248,9 +5252,14 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
     notate.setShowPlayLine(true);
     notate.setKeyboardPlayback(true);
 
-    new PlayScoreCommand(notate.score, startIndex, true,
-                         notate.getMidiSynth(), notate, loopCount, 
-                         notate.getTransposition(), useDrums, stopIndex).execute();
+    new PlayScoreCommand(notate.score, 
+                         startIndex, 
+                         true,
+                         notate.getMidiSynth(), 
+                         notate, loopCount, 
+                         notate.getTransposition(), 
+                         useDrums, 
+                         stopIndex).execute();
 
     repaint();
   }

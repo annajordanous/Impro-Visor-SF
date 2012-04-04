@@ -20,6 +20,7 @@
 
 package imp.gui;
 
+import imp.ImproVisor;
 import imp.com.*;
 import imp.data.*;
 import imp.util.ErrorLog;
@@ -712,7 +713,7 @@ public class ExtractionEditor extends javax.swing.JDialog {
             ErrorLog.log(ErrorLog.WARNING, "Internal Error:"  + "Extraction Editor: Empty Rule");
             return;
         }
-
+System.out.println("rule for style = " + rule);
         Style tempStyle = Style.makeStyle(rule);
         ChordPart c = new ChordPart();
         String chord = styleGenerator.getChord();
@@ -729,7 +730,13 @@ public class ExtractionEditor extends javax.swing.JDialog {
         //s.setVolumes(parent.getMidiSynth());
         s.setChordProg(c);
 
-        parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), parent.getTransposition()));   
+        parent.cm.execute(new PlayScoreCommand(s, 
+                                               0, 
+                                               true, 
+                                               parent.getMidiSynth(), 
+                                               ImproVisor.getCurrentWindow(), 
+                                               0, 
+                                               parent.getTransposition()));   
     }
     
     private void playRawRuleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playRawRuleButtonActionPerformed
@@ -790,7 +797,13 @@ public class ExtractionEditor extends javax.swing.JDialog {
         //s.setVolumes(parent.getMidiSynth());
         s.setChordProg(c);
 
-        parent.cm.execute(new PlayScoreCommand(s, 0, true, parent.getMidiSynth(), parent.getTransposition()));
+        parent.cm.execute(new PlayScoreCommand(s, 
+                                               0, 
+                                               true, 
+                                               parent.getMidiSynth(), 
+                                               ImproVisor.getCurrentWindow(), 
+                                               0, 
+                                               parent.getTransposition()));
     }
     
     

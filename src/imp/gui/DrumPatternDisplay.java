@@ -21,6 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.ChordPart;
@@ -501,6 +502,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
                                  0,
                                  true,
                                  notate.getMidiSynth(),
+                                 ImproVisor.getCurrentWindow(),
                                  loopCount,
                                  notate.getTransposition()).execute();
           }

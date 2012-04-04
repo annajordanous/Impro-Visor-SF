@@ -20,6 +20,7 @@
 
 package imp.gui;
 
+import imp.ImproVisor;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
@@ -225,7 +226,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
             score.setTempo(tempo);
             //s.setVolumes(notate.getMidiSynth());
 
-            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), notate.getTransposition()).execute();
+            new PlayScoreCommand(score, 0, true, notate.getMidiSynth(), ImproVisor.getCurrentWindow(), 0, notate.getTransposition()).execute();
             styleEditor.setStatus("OK");
           }
         else
