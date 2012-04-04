@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,7 +30,9 @@ import java.util.Random;
 * is removing duplicates and clustering the remaining rules.
 *
 * 7/21/2007
-* @author Brandy McMenamy and Jim Herold
+* @author Brandy McMenamy and Jim Herold, Robert Keller did significant
+* debugging to get revision 936, because this just didn't work before.
+* Also took out lots of already-commented-out code.
 */
 public class RepresentativeDrumRules{
 	private boolean debug = false;
@@ -45,11 +46,13 @@ public class RepresentativeDrumRules{
 	*       )
 	*/
 	private ArrayList<String> representativeRules;
+        
 	/**
 	* This field contains the chronotonic values for all of
 	* the rules found in the song
 	*/
 	private DrumChronotonic chronotonic;
+        
 	/**
 	* Any rules found to be unique will be grouped with rules 
 	* that are found to be chronotonicall similar. This field
@@ -62,17 +65,21 @@ public class RepresentativeDrumRules{
 	* The String of Original Rules found in the song
 	*/
 	private ArrayList<String> originalRules;
+        
 	/**
 	* This is an altered version of the originalRules field. It is of equal 
 	* length, but all duplicate rules are replaced by the String "Duplicate"
 	*/
-	private ArrayList<String> rulesWithoutDuplicates;
+	// defunct: private ArrayList<String> rulesWithoutDuplicates;
+        
 	/**
 	* This ArrayList contains the indices into the original Rules ArrayList 
 	* of all rules that were not found to be duplicate
 	*/
 	private ArrayList<Integer> uniqueRuleIndex;
+        
 	private int numberOfUniqueRules;
+        
 	/**
 	* The number of rules to be taken from the remaining unique rules
 	* is currently hardcoded as a percentage.
@@ -85,6 +92,7 @@ public class RepresentativeDrumRules{
 	* an ojbect form that can be easily used by the style generator GUI
 	*/
 	private ArrayList<DrumPattern> drumPatterns;
+        
         private ArrayList<UniqueDrumPattern> uniquePatterns = new ArrayList<UniqueDrumPattern>();
         
         private ArrayList<String> duplicates = new ArrayList<String>();
@@ -122,17 +130,6 @@ public class RepresentativeDrumRules{
                         representativeRules = new ArrayList<String>();
                         createRepresentativePatterns();
                         turnRepresentativesIntoObjects();
-                        /*
-                        rulesWithoutDuplicates = new ArrayList<String>();
-                        uniqueRuleIndex = new ArrayList<Integer>();
-                        processDuplicates();
-                        if(uniqueRuleIndex.size() > 0){
-                                findTenativeRepresentatives();
-                                cluster();
-                                findRepresentatives();
-                        }
-                        turnRepresentativesIntoObjects();
-                         */
                     }
                 }
             }
@@ -156,7 +153,7 @@ public class RepresentativeDrumRules{
                         this.originalRules = dpg.getPatterns();
                         representativeRules = new ArrayList<String>();
                         clusters = new ArrayList<Cluster>();
-                        rulesWithoutDuplicates = new ArrayList<String>();
+                        //rulesWithoutDuplicates = new ArrayList<String>();
                         uniqueRuleIndex = new ArrayList<Integer>();
                         processDuplicates();
                         if(uniqueRuleIndex.size() > 0){
@@ -199,8 +196,9 @@ public class RepresentativeDrumRules{
 	* and it puts the String "Duplicate" in the ArrayList
 	* rulesWithoutDuplicates.
 	*/
+        
 	public void processDuplicates(){
-            ArrayList<Integer> usedIndices = new ArrayList();
+            ArrayList<Integer> usedIndices = new ArrayList<Integer>();
             for(int i = 0; i < originalRules.size(); i++){
                 if(usedIndices.contains(i)) continue;
                 int multiplicity = 0;
@@ -222,76 +220,17 @@ public class RepresentativeDrumRules{
             }
         }
         
-        /*
-        public void processDuplicates(){
-		int duplicates = 0;
-		for(int i = 0; i < originalRules.size(); i++)
-			rulesWithoutDuplicates.add(originalRules.get(i));
-		for(int i = 0; i < originalRules.size(); i++){
-			int weight = 0;
-			if(!rulesWithoutDuplicates.get(i).equals("Duplicate"))
-				for(int j = 1; j < originalRules.size(); j++){
-					if(originalRules.get(i).equals(originalRules.get(j)) && i != j){
-						weight++;
-						rulesWithoutDuplicates.set(j, "Duplicate");
-					}
-				}
-			if(weight > 0){
-				rulesWithoutDuplicates.set(i, "Duplicate");
-				addRule(originalRules.get(i), weight+1);
-				duplicates += weight+1;
-                                String[] split = originalRules.get(i).split("\n");
-                                String duplicateRule = "    (drum-pattern\n";                        
-                                for(int j = 0; j < split.length; j++){
-                                    int firstParensIndex = split[j].indexOf('(');
-                                    int lastParensIndex = split[j].indexOf(')');
-                                    String drumNumber = split[j].substring(firstParensIndex+1, lastParensIndex);
-                                    String drumString = split[j].substring(lastParensIndex+1);
-                                    duplicateRule += "        (drum " + drumNumber + " " + drumString + ")\n";
-                                }
-                                this.duplicates.add(duplicateRule);
-                        }
-                    if(!rulesWithoutDuplicates.get(i).equals("Duplicate")) uniqueRuleIndex.add(i);				
-		}	
-		numberOfUniqueRules = originalRules.size() - duplicates;
-		if(debug){
-			System.out.println("## After Processing Duplicates ##");
-			System.out.println("\tNew Rule Array");
-			for(int i = 0; i < rulesWithoutDuplicates.size(); i++){
-				System.out.println("\t\tRule " + i + ":");
-				String[] split =  rulesWithoutDuplicates.get(i).split("\n");
-				for(int j = 0; j < split.length; j++)
-					System.out.println("\t\t\t" + split[j]);
-				}
-			System.out.println("\n\tRepresentative Rules found from duplicates");
-			for(int i = 0; i < representativeRules.size(); i++){
-				String[] split = representativeRules.get(i).split("\n");
-				for(int j = 0; j < split.length; j++)
-					System.out.println("\t\t" + split[j]);
-			}
-		}
-	}
-         */
+
 
 	/**
 	* @param String the rule from the ArrayList originalRules that is to be added
 	* @param int the weight of the rule
-	* This method takes the two paramaters and puts them in a String that exactly matches
+	* This method takes the two parameters and puts them in a String that exactly matches
 	* the drum rule form that improvisor is expecting
 	*/
+        
 	public void addRule(String rule, float weight){
 		if(debug) System.out.println("Adding: " + rule);
-		/*String spc = "    ";
-		String s = "(drum-pattern \n";
-		String[] split = rule.split("\n");
-		for(int i =  0; i < split.length; i++){
-			if(split[i].substring(split[i].indexOf(')')+1).equals("R1 "))continue;
-			s += spc + "(drum ";
-			s += split[i].substring(split[i].indexOf('(')+1, split[i].indexOf(')')) + " ";
-			s += split[i].substring(split[i].indexOf(')')+1, split[i].length()-1) + ")\n";
-		}
-		s += spc + "(weight " + (weight+1) + ")\n)";
-		representativeRules.add(s);*/
                 
                 String s = "";
 		String[] split = rule.split("\n");
@@ -311,6 +250,7 @@ public class RepresentativeDrumRules{
 	* Chronotonic. This method starts by choosing one of the unique rules by random. It then 
 	* picks representatives whos distance from each other representative is maximal.
 	*/
+        
 	public void findTenativeRepresentatives(){
             ArrayList<Integer> selectedRules = new ArrayList<Integer>(); //Prevent a rule from being selected more than once
             int numberOfClusters = (int)(uniquePatterns.size() * percentageOfClusters);
@@ -349,62 +289,13 @@ public class RepresentativeDrumRules{
                     System.out.println(clusters.get(i));
             }
         }
-        
-        /*
-        public void findTenativeRepresentatives(){
-		ArrayList<Integer> selectedRules = new ArrayList<Integer>(); //Prevent a rule from being picked as a representative more than once
-		int selectedRule = -1;
-		int numberOfClusters = (int)(percentageOfClusters * numberOfUniqueRules);
-                if(maxNumberOfClusters != -1 && numberOfClusters > maxNumberOfClusters)
-                    numberOfClusters = maxNumberOfClusters;
-                Random r = new Random();
-		clusters.add(new Cluster(uniqueRuleIndex.get(r.nextInt(uniqueRuleIndex.size()))));
-		for(int i = 1; i < numberOfClusters; i++){
-			int maxIndex = 0; 
-			double maxDistance = 0.0;
-			for(int j = 0; j < uniqueRuleIndex.size(); j++){
-				if(!selectedRules.contains(j)){
-					double distance = 0.0;
-					for(int k = 0; k < clusters.size(); k++){
-						distance += chronotonic.getChronValueAt(uniqueRuleIndex.get(j), clusters.get(k).getTenativeRepIndex());
-					}
-					if(distance > maxDistance){
-						maxDistance = distance;
-						maxIndex = uniqueRuleIndex.get(j);
-						selectedRule = j;
-					}
-				}
-			}
-			selectedRules.add(selectedRule);
-			clusters.add(new Cluster(maxIndex));
-		}
-		if(debug){
-			System.out.println("## After findTenativeRepresentatives() ##");
-			System.out.println("\tNumber of Unique Rules: " + numberOfUniqueRules);
-			System.out.println("\tNumber of Clusters: " + numberOfClusters);
-			System.out.println("\tUnique Rules");
-			for(int i = 0; i < uniqueRuleIndex.size(); i++){
-				System.out.println("\t\tNumber : " + i);
-				String[] split =  rulesWithoutDuplicates.get(uniqueRuleIndex.get(i)).split("\n");
-				for(int j = 0; j < split.length; j++)
-					System.out.println("\t\t\t" + split[j]);
-			}
-			System.out.println("\tCluster Tenative Representatives");
-			for(int i = 0; i < clusters.size(); i++){
-				System.out.println("\t\tNumber " + i);
-				String[] split = rulesWithoutDuplicates.get(clusters.get(i).getTenativeRepIndex()).split("\n");
-				for(int j = 0; j < split.length; j++)
-					System.out.println("\t\t\t"+split[j]);
-			}
-		}
-	}
-         */
 	
 	/**
 	* This method goes through each of teh unique rules and assigns
-	* them to the cluster whos tenative representative is closest
+	* them to the cluster whose tenative representative is closest
 	* as determined by the Chronotonic
 	*/
+        
         public void cluster(){
             for(int i = 0; i < uniquePatterns.size(); i++){
                 UniqueDrumPattern currentPattern = uniquePatterns.get(i);
@@ -428,28 +319,6 @@ public class RepresentativeDrumRules{
             }
         }
        
-        /*
-	public void cluster(){
-		for(int i = 0; i < uniqueRuleIndex.size(); i++){
-			int minIndex = 0;
-			double minDistance = Double.MAX_VALUE;
-			for(int j = 0; j < clusters.size(); j++){
-				double distance = chronotonic.getChronValueAt(uniqueRuleIndex.get(i), clusters.get(j).getTenativeRepIndex());
-				if(distance < minDistance){
-					minIndex = j;
-					minDistance = distance;
-				}
-			}
-			clusters.get(minIndex).addRule(uniqueRuleIndex.get(i));
-		}
-		if(debug){
-			System.out.println("## After cluster() ##");
-			System.out.println("\tClusters");
-			for(int i = 0; i < clusters.size(); i++)
-				System.out.println(clusters.get(i));
-		}
-	}
-         */
 	
 	/**
 	* Each cluster gives one rule to the final representative rules ArrayList.
@@ -485,35 +354,7 @@ public class RepresentativeDrumRules{
                 
             }
         }
-        
-        /*
-	public void findRepresentatives(){
-		for(int i = 0; i < clusters.size(); i++){
-			double minDistance = Double.MAX_VALUE;
-			int minIndex = 0;
-			for(int j = 0; j < clusters.get(i).size(); j++){
-				double distance = 0.0; 
-				for(int k = 0; k < clusters.get(i).size(); k++)
-					distance += chronotonic.getChronValueAt(clusters.get(i).getRuleIndex(j), clusters.get(i).getRuleIndex(k));
-				if(distance < minDistance){
-					minDistance = distance; 
-					minIndex = clusters.get(i).getRuleIndex(j);
-				}
-			}
-			addRule(rulesWithoutDuplicates.get(minIndex), clusters.get(i).size());
-		}
-		if(debug){
-			System.out.println("## After findRepresentatives() ##");
-			for(int i = 0; i < representativeRules.size(); i++){
-				String[] split = representativeRules.get(i).split("\n");
-				for(int j = 0; j < split.length; j++){
-					if(j == 0 || j == split.length-1) System.out.println("    " + split[j]);
-					else System.out.println("        " + split[j]);
-				}
-			}
-		}
-	}
-         **/
+
         
         /*Takes the representative patterns and puts them in a text
         * Format ready for improvisor to read   \
@@ -590,29 +431,20 @@ public class RepresentativeDrumRules{
             }
             
              public String[] getRules(){
-           System.out.println("in getRules() patterns = " + patterns + "\nrulesWithoutDuplicates = " + rulesWithoutDuplicates);
+                    // Here is where serious problems occurred. 
+                    // former rulesWithoutDuplicates was always null.
+                    // switched to using patterns instead.
+                 
                     String[] toReturn = new String[patterns.size()+1];
                     toReturn[0] = "Cluster";
                     for(int i = 1; i < patterns.size(); i++){
                         toReturn[i+1] = "    (drum-pattern \n";
                         
                         UniqueDrumPattern pattern = patterns.get(i);
-            System.out.println("uniqueDrumPattern " + i + " = " + pattern);
-            
-            //            String rule = rulesWithoutDuplicates.get(pattern.getIndex());
-            
-            // System.out.println("rule = " + rule);
-            
-                        //String[] split = rule.split("\n");
+                        //System.out.println("uniqueDrumPattern " + i + " = " + pattern);
             
                         String[] split = pattern.toString().split("\n"); // What if
                        
-            
-            System.out.println("split " + i + " = " + split);
-            for( int k = 0; k < split.length; k++ )
-              {
-                System.out.println("split + " + i + " " + k + " = " + split[k]);
-              }
                         for(int j = 1; j < split.length; j++){
                             int firstParensIndex = split[j].indexOf('(');
                             int lastParensIndex = split[j].indexOf(')');
@@ -620,72 +452,11 @@ public class RepresentativeDrumRules{
                             String drumString = split[j].substring(lastParensIndex+1);
                             toReturn[i+1] += "        (drum " + drumNumber + " " + drumString + ")\n";
                         }
-             System.out.println("toReturn " + (i+1) + " = " + toReturn[i+1]);
                     }
                     
                     return toReturn;
                 }
         }
-        
-        /*
-        public class Cluster{
-		private int tenativeRepIndex;
-		private int repIndex;
-		private ArrayList<Integer> memberIndex;
-		
-		public Cluster(int i){
-			tenativeRepIndex = i;
-			memberIndex = new ArrayList<Integer>();
-		}
-		
-		public int getTenativeRepIndex(){
-			return tenativeRepIndex;
-		}
-		
-		public int getRuleIndex(int i){
-			return memberIndex.get(i);
-		}
-		
-		public int size(){
-			return memberIndex.size();
-		}
-		
-		public void addRule(int i){
-			memberIndex.add(i);
-		}
-		
-		public String toString(){
-			String s = "Cluster: \n";
-			s += "\tTenative Representative Index: " + tenativeRepIndex + "\n";
-			s += "\tRepresentative Index: " + repIndex + "\n";
-			for(int i = 0; i < memberIndex.size(); i++){
-				s += "\tMember " + i + " (Index " + memberIndex.get(i) + "): \n"; 
-				String[] split = rulesWithoutDuplicates.get(memberIndex.get(i)).split("\n");
-				for(int j = 0; j < split.length; j++)
-					s += "\t\t" + split[j] + "\n";
-			}
-			return s;
-		}
-                
-                public String[] getRules(){
-                    String[] toReturn = new String[memberIndex.size()+1];
-                    toReturn[0] = "Cluster";
-                    for(int i = 0; i < memberIndex.size(); i++){
-                        toReturn[i+1] = "    (drum-pattern \n";
-                        String[] split = rulesWithoutDuplicates.get(memberIndex.get(i)).split("\n");
-                        for(int j = 0; j < split.length; j++){
-                            int firstParensIndex = split[j].indexOf('(');
-                            int lastParensIndex = split[j].indexOf(')');
-                            String drumNumber = split[j].substring(firstParensIndex+1, lastParensIndex);
-                            String drumString = split[j].substring(lastParensIndex+1);
-                            toReturn[i+1] += "        (drum " + drumNumber + " " + drumString + ")\n";
-                        }
-                    }
-                    
-                    return toReturn;
-                }
-	}
-         */
 	
 	/**
 	* This method takes the String form of the representative rules and turns them into 
@@ -803,6 +574,7 @@ public class RepresentativeDrumRules{
                 return s;
             }
             
+            @Override
             public String toString(){
                 String s = "Drum Pattern Index: " + index + " Multiplicity: " + multiplicity + "\n";
                 for(int i = 0; i < this.size(); i++)
@@ -832,6 +604,7 @@ public class RepresentativeDrumRules{
                     return rule.trim().equals("R1");
                 }
             
+            @Override
             public String toString(){
                 return "(" + instrumentNumber + ")" + rule;
             }
@@ -866,6 +639,7 @@ public class RepresentativeDrumRules{
                     return MIDIBeast.drumMeasureSize;
                 }
 		
+                @Override
 		public String toString(){
 			String s = "    (drum-pattern\n";
 			for(int i = 0; i < drumRules.size(); i++)
@@ -911,6 +685,7 @@ public class RepresentativeDrumRules{
 			return elements.get(i);
 		}
 		
+                @Override
 		public String toString(){
 			String s = "        (drum " + drumInstrumentNumber + " ";
 			for(int i = 0; i < elements.size(); i++)
