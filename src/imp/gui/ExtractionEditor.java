@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,20 @@
 package imp.gui;
 
 import imp.ImproVisor;
-import imp.com.*;
+import imp.com.CommandManager;
+import imp.com.PlayScoreCommand;
 import imp.data.*;
 import imp.util.ErrorLog;
-import java.util.*;
+import java.util.ArrayList;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
-import javax.swing.*;
 
 
 /**
- *
+ * I think there was originally a form for this, but it seems to have gotten
+ * lost some how.
+ * 
  * @author  Jim Herold
  */
 public class ExtractionEditor extends javax.swing.JDialog {
@@ -75,8 +79,7 @@ public class ExtractionEditor extends javax.swing.JDialog {
         this.cm = cm;
         this.type = type;
         this.minDuration = minDuration;
-        
-                        
+                         
         initComponents();
         setSize(900,425);
         
@@ -84,7 +87,6 @@ public class ExtractionEditor extends javax.swing.JDialog {
         numberOfClustersSpinner.setModel(model);
         
         setPotentialParts();
-                
         
         switch(type){
         
@@ -92,17 +94,17 @@ public class ExtractionEditor extends javax.swing.JDialog {
                         setBassDefaults();
                         doubleDrumLength.setVisible(false);
                         repBassRules = MIDIBeast.repBassRules;
-                        System.out.println("Here");
                         addBassSelectedRules();
-                        System.out.println("Now here");
                         addBassRawRules();
                         break;
+                
             case DRUM:  setTitle("Drum Extraction");
                         setDrumDefaults();
                         repDrumRules = MIDIBeast.repDrumRules;
                         addDrumRawRules();
                         addDrumSelectedRules();
                         break;
+                
             case CHORD: setTitle("Chord Extraction");
                         setChordDefaults();
                         doubleDrumLength.setVisible(false);
@@ -140,9 +142,9 @@ public class ExtractionEditor extends javax.swing.JDialog {
     
     
     public void addBassRawRules(){
-        System.out.println("This should happen.");
-        for(int i = 0; i < MIDIBeast.repBassRules.getSimplifiedPitchesRules().size(); i++)
-            System.out.println(MIDIBeast.repBassRules.getSimplifiedPitchesRules().get(i));
+//        System.out.println("This should happen.");
+//        for(int i = 0; i < MIDIBeast.repBassRules.getSimplifiedPitchesRules().size(); i++)
+//            System.out.println(MIDIBeast.repBassRules.getSimplifiedPitchesRules().get(i));
         ArrayList<RepresentativeBassRules.Section> sections = repBassRules.getSections();
         ArrayList<String> rawRules = new ArrayList<String>();
         //Add Clustered Rules
@@ -310,6 +312,7 @@ public class ExtractionEditor extends javax.swing.JDialog {
         });
         rawRulesJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         rawRulesJList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rawRulesJListMouseClicked(evt);
             }
@@ -374,6 +377,7 @@ public class ExtractionEditor extends javax.swing.JDialog {
         });
         selectedRulesJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         selectedRulesJList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 selectedRulesJListMouseClicked(evt);
             }
@@ -613,7 +617,7 @@ public class ExtractionEditor extends javax.swing.JDialog {
         Integer maxNumberOfClusters = (Integer)numberOfClustersSpinner.getValue();
         switch(type){
             case BASS:
-                        System.out.println("NO");
+                        //System.out.println("NO");
                         int selectedBassIndex = potentialInstrumentsJList.getSelectedIndex();
                         jm.music.data.Part selectedBassPart = MIDIBeast.allParts.get(selectedBassIndex); //Implement part selection
                         MIDIBeast.repBassRules = new RepresentativeBassRules(startBeat, endBeat, maxNumberOfClusters, selectedBassPart);
@@ -641,8 +645,8 @@ public class ExtractionEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_regenerateButtonActionPerformed
 
     private void checkForAndThrowErrors(){
-        double endBeat = 0.0;
-        double startBeat = 0.0;
+        double endBeat;
+        double startBeat;
         try{
                 endBeat = Double.parseDouble(endBeatTextField.getText());
                 startBeat = Double.parseDouble(startBeatTextField.getText());
@@ -713,7 +717,8 @@ public class ExtractionEditor extends javax.swing.JDialog {
             ErrorLog.log(ErrorLog.WARNING, "Internal Error:"  + "Extraction Editor: Empty Rule");
             return;
         }
-System.out.println("rule for style = " + rule);
+        
+        //System.out.println("rule for style = " + rule);
         Style tempStyle = Style.makeStyle(rule);
         ChordPart c = new ChordPart();
         String chord = styleGenerator.getChord();
