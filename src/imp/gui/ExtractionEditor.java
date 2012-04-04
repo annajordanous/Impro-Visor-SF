@@ -87,7 +87,6 @@ public class ExtractionEditor extends javax.swing.JDialog {
         numberOfClustersSpinner.setModel(model);
         
         setPotentialParts();
-System.out.println("Extraction editor for " + type);        
         switch(type){
         
             case BASS:  setTitle("Bass Extraction");
@@ -102,7 +101,6 @@ System.out.println("Extraction editor for " + type);
                         setDrumDefaults();
                         repDrumRules = MIDIBeast.repDrumRules;
                         addDrumRawRules();
-System.out.println("drum rules added: " + repDrumRules);
                         addDrumSelectedRules();
                         break;
                 
@@ -168,12 +166,11 @@ System.out.println("drum rules added: " + repDrumRules);
     public void addDrumRawRules(){
         ArrayList<RepresentativeDrumRules.Cluster> clusters = repDrumRules.getClusters();
          ArrayList<String> rawRules = new ArrayList<String>();
-System.out.println("clusters = " + clusters);
+
          for(int i = 1; i < clusters.size(); i++){
-             RepresentativeDrumRules.Cluster cluster = clusters.get(i);
-System.out.println("cluster " + i + " = " + cluster);
+            RepresentativeDrumRules.Cluster cluster = clusters.get(i);
             String[] clusterRules = cluster.getRules();
-System.out.println("clusterRules " + i + " = " + clusterRules);
+            //System.out.println("clusterRules " + i + " = " + clusterRules);
             rawRules.add(clusterRules[0]);
             for(int j = 1; j < clusterRules.length; j++)
                 rawRules.add(clusterRules[j] + "(weight 1))");
