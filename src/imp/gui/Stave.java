@@ -1693,10 +1693,16 @@ public int getPasteFromEnd()
  */
 private void initCstrLines()
   {
-    cstrLines = new CstrLine[(displayPart.size())];
+    int numCstrLines = displayPart.size();
+    
+    int beats = numCstrLines/beatValue;
+    
+    cstrLines = new CstrLine[numCstrLines];
+    
+    //System.out.println("numCstrLines = " + numCstrLines);
 
     // set the subdivisions for each beat
-    for( int i = 0; i < displayPart.size() / beatValue; i++ )
+    for( int i = 0; i < beats; i++ )
       {
         int subDivs = calcSubDivs(i);
         if( subDivs < defaultSubDivs && defaultSubDivs % subDivs == 0 )
