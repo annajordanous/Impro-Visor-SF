@@ -46,19 +46,25 @@ public MelodyPart get(int i)
 public void set(int i, MelodyPart part)
   {
     theList.ensureCapacity(i);
+    for( int j = theList.size(); j <= i; j++ )
+      {
+        theList.add(null);
+      }
     theList.set(i, part);
   }
 
 public void setSize(int size)
   {
     theList.ensureCapacity(size);
+    for( int j = theList.size(); j < size; j++ )
+      {
+        theList.add(null);
+      }
   }
 
 public void add(MelodyPart part)
   {
-    int currentSize = theList.size();
-    theList.ensureCapacity(1+currentSize);
-    theList.add(currentSize, part);
+    theList.add(part);
   }
 
 public void remove(int i)

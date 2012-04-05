@@ -452,7 +452,10 @@ public class Score implements Constants, Serializable {
      */
     public void addPart(MelodyPart part) {
         Trace.log(2, "adding existing melody part to score");
-        setLength(part.size());
+        if( length < part.size() )
+          {
+            setLength(part.size());
+          }
         partList.add(part);
     }
     
