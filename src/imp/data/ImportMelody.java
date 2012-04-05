@@ -115,9 +115,9 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     // Convert each jMusic Note to an Impro-Visor Note.
 
-    for( jm.music.data.Note noteIn : noteArray )
+    for( Note note : roundedNoteArray )
       {
-        partOut.addNote(convertToImpNote(noteIn));
+        partOut.addNote(note);
       }
   }
 
