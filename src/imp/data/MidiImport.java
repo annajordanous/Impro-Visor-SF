@@ -28,6 +28,7 @@ import imp.util.MidiFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import javax.swing.JFileChooser;
 
 /**
@@ -55,13 +56,14 @@ public MidiImport(Notate notate)
   }
 
 
-public void importMidi()
+public LinkedList<MidiImportRecord> importMidi()
   {
     File file = getFile();
     if( file != null )
       {
-        readMidiFile(file.getAbsolutePath());
+        return readMidiFile(file.getAbsolutePath());
       }
+    return null;
   }
 
 
@@ -70,7 +72,7 @@ public void importMidi()
  * 
  */
 
-public void readMidiFile(String midiFileName)
+public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
   {
     notate.setStatus("MIDI File Imported");
     
@@ -90,11 +92,14 @@ public void readMidiFile(String midiFileName)
 
     //System.out.println("importMelody = " + importMelody);
 
+    LinkedList<MidiImportRecord> records = new LinkedList<MidiImportRecord>();
+    
     for( int i = 0; i < importMelody.size(); i++ )
       {
       try
         {
         jm.music.data.Part part = importMelody.getPart(i);
+        int channel = part.getChannel();
         //System.out.println("---------------------------------------------");
         //System.out.println("part " + i + " raw = " + part);
         int numTracks = part.getSize();
@@ -103,16 +108,27 @@ public void readMidiFile(String midiFileName)
             //System.out.println("part " + i + " track " + j + " converted = ");
             MelodyPart partOut = new MelodyPart();
             importMelody.convertToImpPart(part, j, partOut);
+            
+            MidiImportRecord record = new MidiImportRecord(channel, j, partOut);
+            records.add(record);
             //System.out.println(partOut);
-            notate.addChorus(partOut);
+            
+            //notate.addChorus(partOut);
           }
         }
       catch( java.lang.OutOfMemoryError e )
         {
         ErrorLog.log(ErrorLog.SEVERE, "There is not enough memory to continue importing this MIDI file.");
-        return;
+        return null;
         }
       }
+    
+    for( MidiImportRecord record: records )
+      {
+        System.out.println(record);
+      }
+    
+    return records;
   }
 
 

@@ -40,6 +40,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedList;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
@@ -21065,8 +21066,20 @@ private void improviseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN
 
 private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiMIActionPerformed
   {//GEN-HEADEREND:event_importMidiMIActionPerformed
-    new MidiImport(this).importMidi();
+    MidiImport midiImport = new MidiImport(this);
+    LinkedList<MidiImportRecord> records = midiImport.importMidi();
+    if( records != null )
+      {
+        MidiImportFrame frame = new MidiImportFrame(this);
+        frame.load(records);
+        frame.setVisible(true);
+      }
   }//GEN-LAST:event_importMidiMIActionPerformed
+
+public void importMidiFile()
+  {
+    new MidiImport(this).importMidi();
+  }
 
 public void improviseButtonToggled()
   {
