@@ -100,62 +100,13 @@ public class MIDIBeast{
           }
 
         /**
-	 * All drum instruments supported by general midi.  The indices + 35 corresponds to the
-	 * general midi number of the instrument (ex: indice 0 is "acoustic Bass Drum," which has
-	 * midi number 35).
+	 * All drum instruments supported by general midi.  The indices + 35 
+         * correspond to the general midi number of the instrument 
+         * (e.g.: index 0 is "acoustic Bass Drum," which has midi number 35).
+         *
+	 * These names are used in style files, so that spaces are avoided.
 	 */
-//	public static final String[] drumNames = {
-//          "Acoustic Bass Drum", 
-//          "Bass Drum 1", 
-//          "Side Stick", 
-//          "Acoustic Snare",
-//	  "Hand Clap", 
-//          "Electric Snare", 	
-//          "Low Floor Tom", 
-//          "Closed Hi-Hat", 
-//          "High Floor Tom", 
-//          "Pedal Hi-Hat",
-//          "Low Tom", 
-//          "Open Hi-Hat", 
-//          "Low-Mid Tom", 
-//          "Hi-Mid Tom", 
-//          "Crash Cymbal 1", 
-//          "High Tom", 
-//          "Ride Cymbal 1",
-//          "Chinese Cymbal", 
-//          "Ride Bell", 
-//          "Tambourine", 
-//          "Splash Cymbal", 
-//          "Cowbell", 
-//          "Crash Cymbal 2", 
-//	  "Vibraslap", 
-//          "Ride Cymbal 2", 
-//          "Hi Bongo", 
-//          "Low Bongo", 
-//          "Mute Hi Conga", 
-//          "Open Hi Conga",
-//	  "Low Conga", 
-//          "High Timbale", 
-//          "Low Timbale", 
-//          "High Agogo", 
-//          "Low Agogo", 
-//          "Cabasa", 
-//          "Maracas",
-//	  "Short Whistle", 
-//          "Long Whistle", 
-//          "Short Guiro", 
-//          "Long Guiro", 
-//          "Claves", 
-//          "Hi Wood Block",
-//	  "Low Wood Block", 
-//          "Mute Cuica", 
-//          "Open Cuica", 
-//          "Mute Triangle", 
-//          "Open Triangle"};
-
-                /**
-	 * Thes names are used in style files, so that spaces are avoided.
-	 */
+        
 	public static final String[] spacelessDrumName = {
           "Acoustic_Bass_Drum", 
           "Bass_Drum_1", 
@@ -213,12 +164,15 @@ public class MIDIBeast{
          * Time Signature, note rhythm values, and all instruments found in the
          * song.
          */
+        
         public static void initialize(String midiFile, String chordFile){
             invoke();
             midiFileName = midiFile;
             chordFileName = chordFile;
  
             jm.util.Read.midi(score, midiFileName);
+            
+System.out.println("score from MIDI = " + score);
 
             numerator = score.getNumerator();
             denominator = score.getDenominator();
