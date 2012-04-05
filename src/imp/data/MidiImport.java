@@ -22,6 +22,7 @@ package imp.data;
 
 import imp.ImproVisor;
 import imp.gui.Notate;
+import imp.util.ErrorLog;
 import imp.util.LeadsheetFileView;
 import imp.util.MidiFilter;
 import java.io.File;
@@ -87,6 +88,8 @@ public void importMidi()
 
 public void readMidiFile(String midiFileName)
   {
+    notate.setStatus("MIDI File Imported");
+    
     score = new jm.music.data.Score();
     allParts = new ArrayList<jm.music.data.Part>();
 
@@ -106,7 +109,8 @@ public void readMidiFile(String midiFileName)
 
     //System.out.println("importMelody = " + importMelody);
 
-    int partNo = 0;
+    try
+      {
     for( int i = 0; i < importMelody.size(); i++ )
       {
         jm.music.data.Part part = importMelody.getPart(i);
@@ -121,6 +125,11 @@ public void readMidiFile(String midiFileName)
             //System.out.println(partOut);
             notate.addChorus(partOut);
           }
+      }
+      }
+    catch( java.lang.OutOfMemoryError e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "There is not enough memory to import this MIDI file.");
       }
   }
 
