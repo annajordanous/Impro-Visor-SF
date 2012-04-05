@@ -15415,21 +15415,25 @@ private void setLayoutPreference(Polylist layout)
      */
     
     private void addTabMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabMIActionPerformed
-
+    int length = score.getLength();
+    MelodyPart mp = new MelodyPart(length);
+    mp.setInstrument(score.getPart(0).getInstrument());
+    addChorus(mp);  
+    }//GEN-LAST:event_addTabMIActionPerformed
+    
+    
+ public void addChorus(MelodyPart mp)
+   {
       int keySig = getCurrentStave().getKeySignature();
 
-      if( partList != null )
-        {
-        score.addPart();
-        }
-      else
-        {
-       MelodyPart mp = new MelodyPart(16 * measureLength);
-
-        mp.setInstrument(score.getPart(0).getInstrument());
-
+        int progSize = score.getChordProg().size();
+        if( mp.size() <  progSize)
+          {
+            // Pad the new melody part with rests so that there is no gap.
+            mp.addRest(new Rest(progSize-mp.size()));
+          }
         score.addPart(mp);
-        }
+        partList.add(mp);
 
       // reset the current scoreFrame
 
@@ -15437,10 +15441,9 @@ private void setLayoutPreference(Polylist layout)
 
       getCurrentStave().setKeySignature(keySig);
 
-      getCurrentStave().repaint();
-    }//GEN-LAST:event_addTabMIActionPerformed
-    
-   
+      getCurrentStave().repaint();    
+   }
+ 
     /**
      *
      * Open up the "Preferences" dialog.
@@ -16256,212 +16259,138 @@ public void setAdviceUsed()
     
     
     
-    /**
-     *
-     * Enter chords and melody from text field
-     *
-     */
+/**
+ *
+ * Enter chords and melody from text field
+ *
+ */
     
-    
-    
-    private void enterBoth()
-    
-    {
-        
-        if( slotIsSelected() )
-            
-        {
-            
-            String chordText = textEntry.getText();
-            
-            
-            
-            if( !chordText.equals("") ) {
-                
-                Trace.log(2, "Entering chords and melody: " + chordText);
-                
-                cm.execute(new SetChordsCommand(
-                        
-                        getCurrentSelectionStart(),
-                        
-                        parseListFromString(chordText),
-                        
-                        chordProg,
-                        
-                        partList.get(currTabIndex) ));
-                
-                
-                
-                redoAdvice();
-                
-            }
-            
-        }
-        
-    }
-    
-    
-    
-    
-    
-    /**
-     *
-     * Enter chords from text field
-     *
-     */
-    
-    
-    
-    void enterChords()
-    
-    {
-        
-        if( slotIsSelected() ) {
-            
-            String windowText = textEntry.getText();
-            
-            
-            
-            if( !windowText.equals("") ) {
-                
-                Trace.log(2, "Entering chords from: " + windowText);
-                
-                
-                
-                cm.execute(new SetChordsCommand(
-                        
-                        getCurrentSelectionStart(),
-                        
-                        parseListFromString(windowText),
-                        
-                        chordProg,
-                        
-                        null) );
-                
-                
-                
-                redoAdvice();
-                
-            }
-            
-        }
-        
-    }
-    
-    
-    
-    
-    
-    /**
-     *
-     * Enter melody only from text field
-     *
-     */
-    
-    
-    
-    void enterMelody() {
-        
-        if( slotIsSelected() ) {
-            
-            String windowText = textEntry.getText();
-            
-            
-            
-// The difference between this and the previous command is found
-            
-// in how the arguments to the SetChordCommands constructor are
-            
-// handled.  It is what separates chords from melody.
-            
-            
-            
-            if( !windowText.equals("") ) {
-                
-                
-                
-                Trace.log(2, "Entering melody from: " + windowText);
-                
-                
-                
-                cm.execute(new SetChordsCommand(
-                        
-                        getCurrentSelectionStart(),
-                        
-                        parseListFromString(windowText),
-                        
-                        null,
-                        
-                        partList.get(currTabIndex) ));
-                
-                
-                
-                redoAdvice();
-                
-            }
-            
-        }
-        
-    }
-    
-    
-    
-    /**
-     *
-     * Shows the advice frame or removes it.
-     *
-     */
-    
-    private void adviceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adviceMIActionPerformed
-        
-        if ( oneSlotSelected() )
-        {
-          int slot = getCurrentSelectionStart();
-          displayAdviceTree(slot, 0, getCurrentStave().getOrigPart().getNote(slot));
-        }
+private void enterBoth()
+  {
+    if( slotIsSelected() )
+      {
+        String chordText = textEntry.getText();
 
-        
-    }//GEN-LAST:event_adviceMIActionPerformed
-    
-    
-    
-    
-    
-    /**
-     *
-     * Pastes the selection to the Stave to the clipboard
-     *
-     */
-    
-    public void pasteMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMelodyMIActionPerformed
-        
-        pasteMelody();
-        
-    }//GEN-LAST:event_pasteMelodyMIActionPerformed
-    
-    
-    
-    
-    
-    void pasteMelody() {
-        
-        Trace.log(2, "paste melody");
-        
-        // paste notes
-        
-        if (impro.melodyClipboardNonEmpty()) {
+        if( !chordText.equals("") )
+          {
+            Trace.log(2, "Entering chords and melody: " + chordText);
+
+            cm.execute(new SetChordsCommand(
+                    getCurrentSelectionStart(),
+                    parseListFromString(chordText),
+                    chordProg,
+                    partList.get(currTabIndex)));
             
-            pasteMelody(impro.getMelodyClipboard());
-            
-        }
-        
-    }
-    
-    
-    
-private void pasteMelody(Part part, Stave stave)
+            redoAdvice();
+          }
+      }
+  }
+
+
+/**
+ *
+ * Enter chords from text field
+ *
+ */
+
+void enterChords()
   {
 
+    if( slotIsSelected() )
+      {
+        String windowText = textEntry.getText();
+
+        if( !windowText.equals("") )
+          {
+            Trace.log(2, "Entering chords from: " + windowText);
+
+            cm.execute(new SetChordsCommand(
+                    getCurrentSelectionStart(),
+                    parseListFromString(windowText),
+                    chordProg,
+                    null));
+
+            redoAdvice();
+          }
+      }
+  }
+
+
+/**
+ *
+ * Enter melody only from text field
+ *
+ */
+
+void enterMelody()
+  {
+   if( slotIsSelected() )
+      {
+        String windowText = textEntry.getText();
+
+// The difference between this and the previous command is found
+// in how the arguments to the SetChordCommands constructor are
+// handled.  It is what separates chords from melody.
+
+        if( !windowText.equals("") )
+          {
+            Trace.log(2, "Entering melody from: " + windowText);
+
+            cm.execute(new SetChordsCommand(
+                    getCurrentSelectionStart(),
+                    parseListFromString(windowText),
+                    null,
+                    partList.get(currTabIndex)));
+
+            redoAdvice();
+          }
+      }
+  }
+
+   
+    
+/**
+ *
+ * Shows the advice frame or removes it.
+ *
+ */
+    private void adviceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adviceMIActionPerformed
+
+        if( oneSlotSelected() )
+          {
+            int slot = getCurrentSelectionStart();
+            displayAdviceTree(slot, 0, getCurrentStave().getOrigPart().getNote(slot));
+          }
+    }//GEN-LAST:event_adviceMIActionPerformed
+
+    
+/**
+ *
+ * Pastes the selection to the Stave to the clipboard
+ *
+ */
+    
+    public void pasteMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMelodyMIActionPerformed
+
+        pasteMelody();
+
+    }//GEN-LAST:event_pasteMelodyMIActionPerformed
+    
+ void pasteMelody()
+  {
+    Trace.log(2, "paste melody");
+
+    // paste notes
+
+    if( impro.melodyClipboardNonEmpty() )
+      {
+        pasteMelody(impro.getMelodyClipboard());
+      }
+  }
+ 
+
+private void pasteMelody(Part part, Stave stave)
+  {
     if( slotIsSelected() )
       {
         int i = getCurrentSelectionStart(stave) / beatValue;
@@ -16475,7 +16404,6 @@ private void pasteMelody(Part part, Stave stave)
                                         getCurrentOrigPart(stave),
                                         getCurrentSelectionStart(stave),
                                         !alwaysPasteOver, true, this));
-
         justPasted = true;
 
         paintCurrentStaveImmediately("pasteMelody");
@@ -16484,18 +16412,14 @@ private void pasteMelody(Part part, Stave stave)
 
         setItemStates();
       }
-
   }
-    
-    
-    
-    public void pasteMelody(Part part) {
-        
-        pasteMelody(part, getCurrentStave());
-        
-    }
-    
-    
+
+
+public void pasteMelody(Part part)
+  {
+    pasteMelody(part, getCurrentStave());
+  }
+
     
     /**
      *
@@ -16510,93 +16434,72 @@ private void pasteMelody(Part part, Stave stave)
     }//GEN-LAST:event_pasteChordsMIActionPerformed
     
     
-    
-    void pasteChords() {
-        
-        Trace.log(2, "paste chords");
-        
-        if ( slotIsSelected() ) {
-            
-            // paste chords
-            
-            if (impro.chordsClipboardNonEmpty() )
-                
-                cm.execute(new SafePasteCommand(impro.getChordsClipboard(),
-                        
-                        getCurrentStave().getChordProg(),
-                        
-                        getCurrentSelectionStart(), !alwaysPasteOver, true, this));
-            
-            paintCurrentStaveImmediately("paste Chords");
+ void pasteChords()
+  {
+    Trace.log(2, "paste chords");
 
-            // set the menu and button states
-            redoAdvice();
-            setItemStates();
-            
-        }
-        
-    }
+    if( slotIsSelected() )
+      {
+        // paste chords
+
+        if( impro.chordsClipboardNonEmpty() )
+          {
+            cm.execute(new SafePasteCommand(impro.getChordsClipboard(),
+                                            getCurrentStave().getChordProg(),
+                                            getCurrentSelectionStart(), !alwaysPasteOver, true, this));
+          }
+
+        paintCurrentStaveImmediately("paste Chords");
+
+        // set the menu and button states
+        redoAdvice();
+        setItemStates();
+      }
+  }
+   
     
-    
-    
-    /**
-     *
-     * Copys the selection of notes from the Stave to the clipboard
-     *
-     */
+/**
+ *
+ * Copy the selection of notes from the Stave to the clipboard
+ *
+ */
     
     public void copyMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMelodyMIActionPerformed
         
         copyMelody();
         
     }//GEN-LAST:event_copyMelodyMIActionPerformed
+  
+    
+void copyMelody()
+  {
+    Trace.log(2, "copy melody");
+
+    if( slotIsSelected() )
+      {
+        cm.execute(new CopyCommand(getCurrentOrigPart(),
+                                   impro.getMelodyClipboard(),
+                                   getCurrentSelectionStart(),
+                                   getCurrentSelectionEnd()));
+
+        getCurrentStave().setPasteFromStart(getCurrentSelectionStart());
+
+        getCurrentStave().setPasteFromEnd(getCurrentSelectionEnd());
+
+        getCurrentStave().repaint();
+
+        // set the menu and button states
+
+        setItemStates();
+      }
+  }
     
     
-    
-    void copyMelody() {
-        
-        Trace.log(2, "copy melody");
-        
-        if ( slotIsSelected() ) {
-            
-            cm.execute(new CopyCommand(getCurrentOrigPart(),
-                    
-                    impro.getMelodyClipboard(),
-                    
-                    getCurrentSelectionStart(),
-                    
-                    getCurrentSelectionEnd()));
-            
-            
-            
-            getCurrentStave().setPasteFromStart(
-                    
-                    getCurrentSelectionStart());
-            
-            getCurrentStave().setPasteFromEnd(
-                    
-                    getCurrentSelectionEnd());
-            
-            
-            
-            getCurrentStave().repaint();
-            
-            
-            
-            // set the menu and button states
-            
-            setItemStates();
-            
-        }
-        
-    }
-    
-    
-    /**
-     *
-     * Cuts the selection of notes from the Stave to the clipboard
-     *
-     */
+/**
+ *
+ * Cuts the selection of notes from the Stave to the clipboard
+ *
+ */
     
     public void cutMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMelodyMIActionPerformed
         
@@ -16604,129 +16507,122 @@ private void pasteMelody(Part part, Stave stave)
         
     }//GEN-LAST:event_cutMelodyMIActionPerformed
     
-  
   void cutMelody()
-    {
+  {
     Trace.log(2, "cut melody");
 
     if( slotIsSelected() )
       {
-      cm.execute(new CutCommand(getCurrentOrigPart(),
-              impro.getMelodyClipboard(),
-              getCurrentSelectionStart(),
-              getCurrentSelectionEnd()));
-      
-      getCurrentStave().setPasteFromStart(
-              getCurrentSelectionStart());
+        cm.execute(new CutCommand(getCurrentOrigPart(),
+                                  impro.getMelodyClipboard(),
+                                  getCurrentSelectionStart(),
+                                  getCurrentSelectionEnd()));
 
-      getCurrentStave().setPasteFromEnd(
-              getCurrentSelectionEnd());
+        getCurrentStave().setPasteFromStart(
+                getCurrentSelectionStart());
 
-      setCurrentSelectionEnd(getCurrentSelectionStart());
+        getCurrentStave().setPasteFromEnd(
+                getCurrentSelectionEnd());
 
-      setItemStates();
+        setCurrentSelectionEnd(getCurrentSelectionStart());
+
+        setItemStates();
       }
-    
+
     redoAdvice();
-    }
-    
-    
-    
-  void reverseMelody()
-    {
+  }
+
+void reverseMelody()
+  {
     Trace.log(2, "reverse melody");
 
     if( slotIsSelected() )
       {
-      if( !getCurrentStave().trimSelection() )
-        {
-        return;  // all rests
-        }
-      
-      noCountIn();
+        if( !getCurrentStave().trimSelection() )
+          {
+            return;  // all rests
+          }
 
-      cm.execute(new ReverseCommand(getCurrentOrigPart(),
-              getCurrentSelectionStart(),
-              getCurrentSelectionEnd(), true));
+        noCountIn();
 
-      getCurrentStave().setPasteFromStart(
-              getCurrentSelectionStart());
+        cm.execute(new ReverseCommand(getCurrentOrigPart(),
+                                      getCurrentSelectionStart(),
+                                      getCurrentSelectionEnd(), true));
 
-      getCurrentStave().setPasteFromEnd(
-              getCurrentSelectionEnd());
+        getCurrentStave().setPasteFromStart(
+                getCurrentSelectionStart());
 
-      redoAdvice();
+        getCurrentStave().setPasteFromEnd(
+                getCurrentSelectionEnd());
 
-      // set the menu and button states
+        redoAdvice();
 
-      setItemStates();
+        // set the menu and button states
+
+        setItemStates();
       }
-    }
-    
-    
-    
-  void invertMelody()
-    {
+  }
+
+void invertMelody()
+  {
     Trace.log(2, "invert melody");
 
     if( slotIsSelected() )
       {
-      if( !getCurrentStave().trimSelection() )
-        {
-        return;  // all rests
-        }
+        if( !getCurrentStave().trimSelection() )
+          {
+            return;  // all rests
+          }
 
-      noCountIn();
-      cm.execute(new InvertCommand(getCurrentOrigPart(),
-              getCurrentSelectionStart(),
-              getCurrentSelectionEnd(), true));
+        noCountIn();
+        cm.execute(new InvertCommand(getCurrentOrigPart(),
+                                     getCurrentSelectionStart(),
+                                     getCurrentSelectionEnd(), true));
 
-      getCurrentStave().setPasteFromStart(
-              getCurrentSelectionStart());
+        getCurrentStave().setPasteFromStart(
+                getCurrentSelectionStart());
 
-      getCurrentStave().setPasteFromEnd(
-              getCurrentSelectionEnd());
+        getCurrentStave().setPasteFromEnd(
+                getCurrentSelectionEnd());
 
-      redoAdvice();
+        redoAdvice();
 
-      // set the menu and button states
+        // set the menu and button states
 
-      setItemStates();
+        setItemStates();
       }
-    }
-    
-    
-    
-  void timeWarpMelody(int num, int denom)
-    {
+  }
+
+
+void timeWarpMelody(int num, int denom)
+  {
     Trace.log(2, "time-warp melody by " + num + "/" + denom);
 
     if( slotIsSelected() && num > 0 && denom > 0 )
       {
-      if( !getCurrentStave().trimSelection() )
-        {
-        return;  // all rests
-        }
+        if( !getCurrentStave().trimSelection() )
+          {
+            return;  // all rests
+          }
 
-      cm.execute(new TimeWarpCommand(getCurrentOrigPart(),
-              getCurrentSelectionStart(),
-              getCurrentSelectionEnd(), true, num, denom));
+        cm.execute(new TimeWarpCommand(getCurrentOrigPart(),
+                                       getCurrentSelectionStart(),
+                                       getCurrentSelectionEnd(), true, num, denom));
 
-      getCurrentStave().setPasteFromStart(
-              getCurrentSelectionStart());
+        getCurrentStave().setPasteFromStart(
+                getCurrentSelectionStart());
 
-      getCurrentStave().setPasteFromEnd(
-              getCurrentSelectionEnd());
+        getCurrentStave().setPasteFromEnd(
+                getCurrentSelectionEnd());
 
-      redoAdvice();
+        redoAdvice();
 
-      // set the menu and button states
+        // set the menu and button states
 
-      setItemStates();
+        setItemStates();
       }
-    }
+  }
 
-    
     
   /**
    *
@@ -16814,8 +16710,10 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 
-      PrintUtilities.printComponent(getCurrentStave(), staveScrollPane[currTabIndex].getNumLines(), numStavesPP, grandStaveBtn.isSelected());
-
+      PrintUtilities.printComponent(getCurrentStave(), 
+                                    staveScrollPane[currTabIndex].getNumLines(), 
+                                    numStavesPP, 
+                                    grandStaveBtn.isSelected());
 
       // printAllStaves();
       
@@ -16830,6 +16728,7 @@ private void pasteMelody(Part part, Stave stave)
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));      
     }//GEN-LAST:event_printMIActionPerformed
 
+    
  /**
    * Print all staves, rather than just the current one.
    */
@@ -16848,7 +16747,10 @@ private void pasteMelody(Part part, Stave stave)
        setUpStavesToPrint(component[i]);
    }
    try{
-        PrintUtilities.printMultipleComponents(component, staveScrollPane[currTabIndex].getNumLines(), numStavesPP, grandStaveBtn.isSelected());
+        PrintUtilities.printMultipleComponents(component,  
+                                               staveScrollPane[currTabIndex].getNumLines(), 
+                                               numStavesPP, 
+                                               grandStaveBtn.isSelected());
    } catch (OutOfMemoryError e) {
        ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to print this many choruses, try printing each chorus individually");
    }
@@ -16868,54 +16770,50 @@ private void pasteMelody(Part part, Stave stave)
  
   /**
    *
-   * Displays the construction lines on the score if checked in the menu
+   * Display the construction lines on the score if checked in the menu
    *
    */
+ 
     private void showBracketsAllMeasuresMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBracketsAllMeasuresMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
         {
-
         Stave stave = staveScrollPane[i].getStave();
 
         stave.setShowAllCL(!stave.getShowAllCL());
 
         stave.repaint();
-
         }
-        
     }//GEN-LAST:event_showBracketsAllMeasuresMIActionPerformed
 
   /**
    *
-   * Displays the bar numbers on the score if checked in the menu
+   * Display the bar numbers on the score if checked in the menu
    *
    */
+    
     private void barNumsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barNumsMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
         {
-
         Stave stave = staveScrollPane[i].getStave();
 
         stave.setShowBarNums(!stave.getShowBarNums());
 
         stave.repaint();
-
         }
-        
     }//GEN-LAST:event_barNumsMIActionPerformed
 
   /**
    *
-   * Displays the title of the score if checked in the menu
+   * Display the title of the score if checked in the menu
    *
    */
+    
     private void showTitlesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTitlesMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
         {
-
         Stave stave = staveScrollPane[i].getStave();
 
         // Show sheet title on first tab only
@@ -16923,16 +16821,15 @@ private void pasteMelody(Part part, Stave stave)
         stave.setShowPartTitle(showTitlesMI.isSelected());
 
         stave.repaint();
-
         }
-        
     }//GEN-LAST:event_showTitlesMIActionPerformed
 
   /**
    *
-   * Stops the playback of the score if selected
+   * Stop the playback of the score if selected
    *
    */
+    
     public void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayMIActionPerformed
 
       stopPlaying();
@@ -16941,11 +16838,12 @@ private void pasteMelody(Part part, Stave stave)
 
   /**
    *
-   * Displays the score in a particular <code>type</code> --grand, treble, or
+   * Display the score in a particular <code>type</code> --grand, treble, or
    *
    * bass-- depending on the variety of pitches in the score
    *
    */
+    
     private void autoStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoStaveMIActionPerformed
 
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -16961,10 +16859,10 @@ private void pasteMelody(Part part, Stave stave)
       getCurrentOrigPart().setStaveType(StaveType.AUTO);
 
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-  
     }//GEN-LAST:event_autoStaveMIActionPerformed
 
-  private void setCurrentStaveType(StaveType t)
+    
+private void setCurrentStaveType(StaveType t)
   {
     //System.out.println("setCurrentStaveType(" + t + ")");
 
@@ -16975,23 +16873,23 @@ private void pasteMelody(Part part, Stave stave)
 
     switch( t )
       {
-      case TREBLE:
-        trebleStaveBtn.setSelected(true);
-        break;
+        case TREBLE:
+            trebleStaveBtn.setSelected(true);
+            break;
 
-      case BASS:
-        bassStaveBtn.setSelected(true);
-        break;
+        case BASS:
+            bassStaveBtn.setSelected(true);
+            break;
 
-      case GRAND:
-        grandStaveBtn.setSelected(true);
-        break;
+        case GRAND:
+            grandStaveBtn.setSelected(true);
+            break;
 
-      case AUTO:
-        autoStaveBtn.setSelected(true);
-        break;
+        case AUTO:
+            autoStaveBtn.setSelected(true);
+            break;
 
-      //  case NONE:   noStaveBtn.setSelected(true);     break;
+        //  case NONE:   noStaveBtn.setSelected(true);     break;
       }
 
     stave.changeType(t);
@@ -17002,27 +16900,30 @@ private void pasteMelody(Part part, Stave stave)
   
   /**
    *
-   * Displays the score as a grand stave
+   * Display the score as a grand stave
    *
    */
+
     private void grandStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grandStaveMIActionPerformed
       setCurrentStaveType(StaveType.GRAND);
     }//GEN-LAST:event_grandStaveMIActionPerformed
 
   /**
    *
-   * Displays the score in bass clef format
+   * Display the score in bass clef format
    *
    */
+    
     private void bassStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassStaveMIActionPerformed
       setCurrentStaveType(StaveType.BASS);
     }//GEN-LAST:event_bassStaveMIActionPerformed
 
   /**
    *
-   * Displays the score in treble clef format
+   * Display the score in treble clef format
    *
    */
+    
     private void trebleStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trebleStaveMIActionPerformed
       setCurrentStaveType(StaveType.TREBLE);
     }//GEN-LAST:event_trebleStaveMIActionPerformed
@@ -17034,12 +16935,11 @@ private void pasteMelody(Part part, Stave stave)
    */
     public void playAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playAllMIActionPerformed
 
-        if (keyboard != null)
-        {
+        if( keyboard != null )
+          {
             keyboard.setPlayback(true);
-        }
+          }
         playScore();
-        
     }//GEN-LAST:event_playAllMIActionPerformed
 
  public void establishCountIn()
@@ -21635,9 +21535,10 @@ public void showNewVoicingDialog()
 
   /**
    * Set the indexed preference with a value from the corresponding CheckBox.
-  @param index
-  @param checkbo
+   @param index
+   @param checkbo
    */
+
   void setCheckBoxPreferences(int index, JCheckBox checkbox)
     {
     char boxStates[] =
@@ -21647,19 +21548,18 @@ public void showNewVoicingDialog()
             new String(boxStates));
     }
 
+  
   /**
-   *
-   * Sets up arrays for Part and Stave classes, which will be displayed in
+   * Set up arrays for Part and Stave classes, which will be displayed in
    *
    * scoreFrame. The array of Staves initializes every <code>stave</code> to
    *
    * the <code>type</code> TREBLE.
    *
-   *
-   *
    * @see Stave#Stave(String, Notate)
    *
    */
+  
   public void setupArrays()
     {
     int size = score.size();
@@ -21701,14 +21601,11 @@ public void showNewVoicingDialog()
         {
         public void adjustmentValueChanged(AdjustmentEvent e)
           {
-
           if( e.getValueIsAdjusting() )
             {
             autoScrollOnPlayback = false;
             }
-
           }
-
         };
 
       pane.getHorizontalScrollBar().addAdjustmentListener(scrollListener);
@@ -21716,13 +21613,11 @@ public void showNewVoicingDialog()
       pane.getVerticalScrollBar().addAdjustmentListener(scrollListener);
 
 
-
       // Set the scroll bars in have more response to up and down arrows
 
       pane.getHorizontalScrollBar().setUnitIncrement(30);
 
       pane.getVerticalScrollBar().setUnitIncrement(30);
-
 
 
       // Set the notation components for this particular stave
@@ -21734,7 +21629,6 @@ public void showNewVoicingDialog()
       pane.resetViewportView();
 
       pane.getAccessibleContext().setAccessibleParent(scoreTab);
-
 
 
       // Setup the Stave component in the pane
@@ -21770,11 +21664,10 @@ public void showNewVoicingDialog()
       refreshTabTitle(i);
 
       scoreTab.setSelectedComponent(pane);
-
       }
 
 
-    /*
+    /**
      * update GUI to reflect total time of the score
      */
 
@@ -21783,6 +21676,7 @@ public void showNewVoicingDialog()
     updateAllStaves();
     }
 
+  
   /**
    *
    * Updates the JPanel with all of the staves and redraws it
@@ -21790,6 +21684,7 @@ public void showNewVoicingDialog()
    * @see Stave#paint(Graphics)
    *
    */
+  
   public void updateAllStaves()
     {
 
@@ -21812,6 +21707,7 @@ public void showNewVoicingDialog()
       }
     }
 
+  
     /**
      * Change the chord font size in each Stave.
      */
@@ -21824,17 +21720,17 @@ public void showNewVoicingDialog()
       }
     }
 
+    
   /**
    *
-   * Converts a polylist to the form required by the advice tree
-   *
-   *
+   * Convert a polylist to the form required by the advice tree
    *
    * @param item                          a polylist
    *
    * @return DefaultMutableTreeNode       the root of a tree
    *
    */
+    
   public DefaultMutableTreeNode polylistToTree(Polylist item)
     {
 
@@ -21860,11 +21756,10 @@ public void showNewVoicingDialog()
     return tree;
     }
 
+  
   public void polylistToMenus(Polylist item)
     {
-
     // ignore for now: DefaultMutableTreeNode root = new DefaultMutableTreeNode(item.first());
-
 
     item = item.rest();
 
@@ -21906,8 +21801,10 @@ public void showNewVoicingDialog()
 
       }
 
+    
     final Object[] menuContentsScales = adviceMenuItemsScales.toArray();
-
+    
+    
     adviceScrollListScales.setModel(new javax.swing.AbstractListModel()
       {
       public int getSize()
@@ -21996,8 +21893,7 @@ public void showNewVoicingDialog()
           " idioms", " licks", " quotes");
 
   /**
-   *
-   * Displays the advice tree for the chords around the given index
+   * Display the advice tree for the chords around the given index
    *
    * @param selectedIndex     the index currently selected on the stave
    *
@@ -22103,9 +21999,10 @@ public void showNewVoicingDialog()
     return true;
     }
 
+  
   /**
    *
-   * Displays the window allowing overriding of measures
+   * Display the window allowing overriding of measures
    *
    */
   public void displayOverrideMeasures()
@@ -22132,9 +22029,9 @@ public void showNewVoicingDialog()
     Trace.log(2, "override measures frame has focus");
     }
 
+  
   /**
-   *
-   * Overrides the number of measures within lockedMeasures. The behavior now
+   * Override the number of measures within lockedMeasures. The behavior now
    *
    * is to add any measures from a "shrunk" line to the end of the part, or to
    *
@@ -22213,8 +22110,6 @@ public void showNewVoicingDialog()
           int[] tempLockedMeasures =
                   new int[lockedMeasures.length + 1];
 
-
-
           for( int k = 0; k < lockedMeasures.length; k++ )
             {
             tempLockedMeasures[k] = lockedMeasures[k];
@@ -22264,6 +22159,7 @@ public void showNewVoicingDialog()
       }
     }
 
+  
   /**
    *
    * Sets all of the menu and button states
@@ -22442,7 +22338,6 @@ public void showNewVoicingDialog()
       reverseMelody.setEnabled(true);
 
       invertMelody.setEnabled(true);
-
       }
     else
       {
@@ -22535,9 +22430,9 @@ public void showNewVoicingDialog()
       {
       overrideMeasPMI.setEnabled(true);
       }
-
     }
 
+  
   /**
    *
    * Disable accelerators.  We do this for a work-around: When letters are typed into the
@@ -22553,9 +22448,9 @@ public void showNewVoicingDialog()
    * re-enable the accelerators upon hitting return in the text entry field.
    *
    */
+  
   protected void disableAccelerators()
     {
-
     addRestMI.setEnabled(false);
 
 
@@ -22635,12 +22530,13 @@ public void showNewVoicingDialog()
     saveSelectionAsLick.setEnabled(false);
     
     // REVISIT generateLickButton.setEnabled(false);
-
     }
 
+  
   /**
    * Set the preferences for contour drawing.
    */
+  
   private void resetDrawingPrefs()
     {
     drawScaleTonesCheckBox.setSelected(
@@ -22653,6 +22549,7 @@ public void showNewVoicingDialog()
             Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1');
      }
 
+  
   private ImageIcon playButton =
           new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"));
 

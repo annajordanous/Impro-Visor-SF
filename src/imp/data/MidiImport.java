@@ -35,13 +35,12 @@ import javax.swing.JFileChooser;
  * @author keller, adapted from code in MIDIBeast by Brandy McMenamy and Jim
  * Herold
  */
+
 public class MidiImport
 {
-Notate notate;
 
+Notate notate;
 private static jm.music.data.Score score;
-private static String midiFileName = "";
-private static double numerator = 4;
 private static double denominator = 4;
 private static ArrayList<jm.music.data.Part> allParts;
 public static int whole;
@@ -59,7 +58,6 @@ public static int sixtyfourth;
 public static int sixtyfourthtriplet;
 public static int beat = 120;
 public static int precision = 5;
-
 private JFileChooser midiFileChooser = new JFileChooser();
 
 public MidiImport(Notate notate)
@@ -68,13 +66,14 @@ public MidiImport(Notate notate)
     initFileChooser();
   }
 
+
 public void importMidi()
   {
-  File file = getFile();
-  if( file != null )
-    {
-    readMidiFile(file.getAbsolutePath());
-    }
+    File file = getFile();
+    if( file != null )
+      {
+        readMidiFile(file.getAbsolutePath());
+      }
   }
 
 
@@ -86,34 +85,42 @@ public void importMidi()
  * found in the song.
  */
 
-public static void readMidiFile(String midiFileName)
+public void readMidiFile(String midiFileName)
   {
     score = new jm.music.data.Score();
     allParts = new ArrayList<jm.music.data.Part>();
 
     jm.util.Read.midi(score, midiFileName);
 
-//System.out.println("score from MIDI = " + score);
+    //System.out.println("score from MIDI = " + score);
 
-    numerator = score.getNumerator();
     denominator = score.getDenominator();
 
     calculateNoteTypes();
 
     jm.music.data.Part[] temp = score.getPartArray();
+
     allParts.addAll(Arrays.asList(temp));
-    
+
     ImportMelody importMelody = new ImportMelody(score);
-    
+
     //System.out.println("importMelody = " + importMelody);
-    
+
     int partNo = 0;
     for( int i = 0; i < importMelody.size(); i++ )
       {
         jm.music.data.Part part = importMelody.getPart(i);
-        System.out.println("---------------------------------------------");
-        System.out.println("part " + i + " = ");
-        System.out.println(importMelody.convertToImpString(part));        
+        //System.out.println("---------------------------------------------");
+        //System.out.println("part " + i + " raw = " + part);
+        int numTracks = part.getSize();
+        for( int j = 0; j < numTracks; j++ )
+          {
+            //System.out.println("part " + i + " track " + j + " converted = ");
+            MelodyPart partOut = new MelodyPart();
+            importMelody.convertToImpPart(part, j, partOut);
+            //System.out.println(partOut);
+            notate.addChorus(partOut);
+          }
       }
   }
 
@@ -131,8 +138,6 @@ private File getFile()
         if( midiChoice == JFileChooser.APPROVE_OPTION )
           {
             midiFileEntire = midiFileChooser.getSelectedFile();
-System.out.println("midiFileEntire = " + midiFileEntire);
-            midiFileName = midiFileEntire.getAbsolutePath();
           }
         String nameForDisplay = midiFileChooser.getSelectedFile().getName();
       }
@@ -166,7 +171,6 @@ private void initFileChooser()
  * triplets. I changed them on 12/1/2007. However, the whole thing should be
  * checked over carefully. RK
  */
-
 public static void calculateNoteTypes()
   {
     whole = (int) (denominator * beat);
@@ -266,6 +270,6 @@ public static void calculateNoteTypes()
       {
         sixtyfourthtriplet = -1;
       }
-
   }
+
 }
