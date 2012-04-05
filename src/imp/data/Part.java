@@ -566,7 +566,7 @@ public String toString()
 
 public void addUnit(Unit unit)
   {
-    //Trace.log(3, "adding unit to end of part " + unit.toLeadsheet());
+    //Trace.log(0, "adding unit to end of part " + unit.toLeadsheet());
 
     int rv = unit.getRhythmValue();
     int index = size;
@@ -579,7 +579,7 @@ public void addUnit(Unit unit)
       }
     //slots.setSize(size);
 
-    if( slots.get(index) == null )
+    if( rv > 0 && slots.get(index) == null )
       {
         unitCount++;
       }
