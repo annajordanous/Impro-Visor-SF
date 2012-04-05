@@ -566,19 +566,28 @@ public String toString()
 
 public void addUnit(Unit unit)
   {
-    //Trace.log(0, "adding unit to end of part " + unit.toLeadsheet());
-
+ 
     int rv = unit.getRhythmValue();
-    int index = size;
-    int newSize = size + rv;
+    if( rv == 0 )
+      {
+        // Not sure how a unit can have 0 as its rhythm value, but it does 
+        // happen, and it causes problems.
+        return;
+      }
+    //Trace.log(0, "adding unit to end of part " + unit.toLeadsheet() + ", rv = " + rv + ", slots.size() = " + slots.size());
+
+    int index = slots.size();
+    int newSize = slots.size() + rv;
     size = newSize;
 
-    for( int k = slots.size(); k < newSize; k++ )
+    slots.ensureCapacity(newSize);
+
+    for( int k = index; k < newSize; k++ )
       {
         slots.add(null);
       }
-    //slots.setSize(size);
-
+     //Trace.log(0, "now slots.size() = " + slots.size() + ", index = " + index);
+   
     if( rv > 0 && slots.get(index) == null )
       {
         unitCount++;

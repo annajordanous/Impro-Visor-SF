@@ -123,10 +123,10 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
         }
       }
     
-    for( MidiImportRecord record: records )
-      {
-        System.out.println(record);
-      }
+//    for( MidiImportRecord record: records )
+//      {
+//        System.out.println(record);
+//      }
     
     return records;
   }

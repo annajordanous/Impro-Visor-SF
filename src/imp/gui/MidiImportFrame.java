@@ -48,12 +48,31 @@ public void load(LinkedList<MidiImportRecord> records)
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        selectTracksLabel = new javax.swing.JLabel();
+        trackSelectScrollPane = new javax.swing.JScrollPane();
         importedTrackList = new javax.swing.JList();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(204, 204, 204));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        selectTracksLabel.setBackground(new java.awt.Color(153, 255, 0));
+        selectTracksLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        selectTracksLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        selectTracksLabel.setText("Please select the tracks to be imported one at a time. Each track will be put in a separate chorus in the leadsheet.");
+        selectTracksLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        selectTracksLabel.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        getContentPane().add(selectTracksLabel, gridBagConstraints);
+
+        trackSelectScrollPane.setMinimumSize(new java.awt.Dimension(400, 100));
+        trackSelectScrollPane.setOpaque(false);
+        trackSelectScrollPane.setPreferredSize(new java.awt.Dimension(600, 300));
+
+        importedTrackList.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         importedTrackList.setModel(trackListModel);
         importedTrackList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         importedTrackList.setToolTipText("Select the track to be imported");
@@ -62,19 +81,16 @@ public void load(LinkedList<MidiImportRecord> records)
                 importTrackSelected(evt);
             }
         });
-        jScrollPane1.setViewportView(importedTrackList);
+        trackSelectScrollPane.setViewportView(importedTrackList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 20;
-        gridBagConstraints.ipady = 117;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(88, 168, 72, 189);
-        getContentPane().add(jScrollPane1, gridBagConstraints);
+        getContentPane().add(trackSelectScrollPane, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -88,6 +104,7 @@ private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList importedTrackList;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel selectTracksLabel;
+    private javax.swing.JScrollPane trackSelectScrollPane;
     // End of variables declaration//GEN-END:variables
 }
