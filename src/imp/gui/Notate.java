@@ -2192,6 +2192,7 @@ public class Notate
         saveAsLeadsheetMI = new javax.swing.JMenuItem();
         exportAllToMidi = new javax.swing.JMenuItem();
         exportChorusToMusicXML = new javax.swing.JMenuItem();
+        importMidiMI = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         loadAdvMI = new javax.swing.JMenuItem();
         saveAdvice = new javax.swing.JMenuItem();
@@ -7870,6 +7871,14 @@ public class Notate
             }
         });
         fileMenu.add(exportChorusToMusicXML);
+
+        importMidiMI.setText("Import MIDI File");
+        importMidiMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importMidiMIActionPerformed(evt);
+            }
+        });
+        fileMenu.add(importMidiMI);
         fileMenu.add(jSeparator2);
 
         loadAdvMI.setText("Load Vocabulary");
@@ -21150,6 +21159,11 @@ private void improviseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN
     improviseButtonToggled();
   }//GEN-LAST:event_improviseButtonActionPerformed
 
+private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiMIActionPerformed
+  {//GEN-HEADEREND:event_importMidiMIActionPerformed
+    new MidiImport(this).importMidi();
+  }//GEN-LAST:event_importMidiMIActionPerformed
+
 public void improviseButtonToggled()
   {
     boolean improvisationOn = improviseButton.isSelected();
@@ -22881,6 +22895,7 @@ public void showNewVoicingDialog()
     private javax.swing.JRadioButton idiomRadioButton;
     private javax.swing.JCheckBox idioms;
     private javax.swing.JButton ignoreDuplicate;
+    private javax.swing.JMenuItem importMidiMI;
     private javax.swing.JToggleButton improviseButton;
     private javax.swing.JMenuItem insertRestMeasure;
     private javax.swing.JButton insertVoicingButton;
