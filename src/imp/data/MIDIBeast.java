@@ -33,8 +33,8 @@ public class MIDIBeast{
  * avoid potential un-anticipated bugs.
  */
 public static jm.music.data.Score score;
-public static double numerator = 4;
-public static double denominator = 4;
+public static int numerator = 4;
+public static int denominator = 4;
 public static String midiFileName = "";
 public static String chordFileName = "";
 public static ArrayList<jm.music.data.Part> allParts = new ArrayList<jm.music.data.Part>();
@@ -190,7 +190,7 @@ public static void initialize(String midiFile, String chordFile)
       }
 
 
-    calculateNoteTypes();
+    calculateNoteTypes(denominator);
   }
 
 
@@ -204,7 +204,7 @@ public static void invoke()
     savingErrors = new ArrayList<String>();
     score = new jm.music.data.Score();
     allParts = new ArrayList<jm.music.data.Part>();
-    calculateNoteTypes();
+    calculateNoteTypes(denominator);
     invoked = true;
   }
 
@@ -217,7 +217,7 @@ public static void invoke()
 public static void changeDenomSig(int denom)
   {
     denominator = denom;
-    calculateNoteTypes();
+    calculateNoteTypes(denominator);
   }
 
 
@@ -229,7 +229,7 @@ public static void changeDenomSig(int denom)
 public static void changeNumSig(int num)
   {
     numerator = num;
-    calculateNoteTypes();
+    calculateNoteTypes(denominator);
   }
 
 
@@ -242,7 +242,7 @@ public static void changeTimeSig(int num, int denom)
   {
     numerator = num;
     denominator = denom;
-    calculateNoteTypes();
+    calculateNoteTypes(denominator);
   }
 
 
@@ -256,9 +256,9 @@ public static void changeTimeSig(int num, int denom)
  * checked over carefully. RK
  */
 
-public static void calculateNoteTypes()
+public static void calculateNoteTypes(int denominator)
   {
-    whole = (int) (denominator * beat);
+    whole = denominator * beat;
 
     if( whole % 3 == 0 )
       {
@@ -355,6 +355,11 @@ public static void calculateNoteTypes()
       {
         sixtyfourthtriplet = -1;
       }
+  }
+
+public static void calculateNoteTypes()
+  {
+    calculateNoteTypes(denominator);
   }
 
 
