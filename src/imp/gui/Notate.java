@@ -15432,6 +15432,10 @@ private void setLayoutPreference(Polylist layout)
             // Pad the new melody part with rests so that there is no gap.
             mp.addRest(new Rest(progSize-mp.size()));
           }
+        else if( progSize < mp.size() )
+          {
+            score.getChordProg().addChord(NOCHORD, mp.size()-progSize);
+          }
         score.addPart(mp);
         partList.add(mp);
 

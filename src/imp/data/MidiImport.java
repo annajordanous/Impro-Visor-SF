@@ -109,10 +109,10 @@ public void readMidiFile(String midiFileName)
 
     //System.out.println("importMelody = " + importMelody);
 
-    try
-      {
     for( int i = 0; i < importMelody.size(); i++ )
       {
+      try
+        {
         jm.music.data.Part part = importMelody.getPart(i);
         //System.out.println("---------------------------------------------");
         //System.out.println("part " + i + " raw = " + part);
@@ -125,11 +125,12 @@ public void readMidiFile(String midiFileName)
             //System.out.println(partOut);
             notate.addChorus(partOut);
           }
-      }
-      }
-    catch( java.lang.OutOfMemoryError e )
-      {
-        ErrorLog.log(ErrorLog.SEVERE, "There is not enough memory to import this MIDI file.");
+        }
+      catch( java.lang.OutOfMemoryError e )
+        {
+        ErrorLog.log(ErrorLog.SEVERE, "There is not enough memory to continue importing this MIDI file.");
+        return;
+        }
       }
   }
 
