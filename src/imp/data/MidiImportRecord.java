@@ -20,6 +20,8 @@
 
 package imp.data;
 
+import java.util.Iterator;
+
 /**
  * Records relevant information about one track, including
  * the Impro-Visor MelodyPart to which the track is translated
@@ -30,23 +32,103 @@ public class MidiImportRecord implements Comparable
 int channel;
 int trackNumber;
 MelodyPart melodyPart;
+int distinctPitches;
+int restSlots;
+int nonRestSlots;
+int initialRestSlots;
+double occupancy;
 
 public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart)
 {
   this.channel = channel;
   this.trackNumber = trackNumber;
   this.melodyPart = melodyPart;
+  getStatistics();
 }
-   
+
+private void getStatistics()
+  {
+    // Count number of distinct pitches in the melodyPart
+    distinctPitches = 0;
+    restSlots = 0;
+    nonRestSlots = 0;
+    initialRestSlots = 0;
+    
+    int pitchCount[] = new int[128];
+    
+    for( int j = 0; j < pitchCount.length; j++ )
+      {
+        pitchCount[j] = 0;
+      }
+    
+    boolean hasNonRest = false;
+    Iterator<Unit> it = melodyPart.iterator();
+    
+    while( it.hasNext() )
+      {
+        Note note = (Note)it.next();
+        if( note != null )
+          {
+            int rhythmValue = note.getRhythmValue();
+            if( note.isRest() )
+              {
+                restSlots += rhythmValue;
+                if( !hasNonRest )
+                  {
+                  initialRestSlots += rhythmValue;
+                  }
+              }
+            else
+              {
+              nonRestSlots += rhythmValue;
+              int pitch = note.getPitch();
+              pitchCount[pitch]++;
+              hasNonRest = true;
+              }
+          }
+      }
+    
+    int totalSlots = restSlots + nonRestSlots;
+    
+    occupancy = 0;
+    
+    if( totalSlots > 0 )
+      {
+        occupancy = ((double)nonRestSlots)/totalSlots;
+      }
+    
+    for( int j = 0; j < pitchCount.length; j++ )
+      {
+        if( pitchCount[j] > 0 )
+          {
+            distinctPitches++;
+          }
+      }
+  }
+
 public MelodyPart getPart()
   {
     return melodyPart;
   }
 
+public int getChannel()
+  {
+    return channel;
+  }
+
 @Override
 public String toString()
   {
-  return "channel " + (channel+1) + ", track " + trackNumber + ": " + melodyPart.toString();   
+  int occupancyPercent = (int)(100*occupancy);
+  int totalBeats = (restSlots + nonRestSlots)/imp.Constants.BEAT;
+  int initialRestBeats = initialRestSlots/imp.Constants.BEAT;
+  
+  return "channel " + (channel+1) + ", track " + trackNumber 
+          + " [" + totalBeats + " beats, " 
+          + initialRestBeats + " initial rest beats, "
+          + distinctPitches + " distinct pitches, "
+          + occupancyPercent + "% occupied]: " 
+          + melodyPart.toString();   
   }
 
 @Override

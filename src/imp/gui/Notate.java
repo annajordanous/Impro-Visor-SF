@@ -80,6 +80,9 @@ public class Notate
         extends javax.swing.JFrame
         implements Constants, MidiPlayListener
   {
+  public static int midiImportXoffset = 200;
+  public static int midiImportYoffset = 200;
+  
   public static final int HELP_DIALOG_WIDTH = 980;
   public static final int HELP_DIALOG_HEIGHT = 600;
   
@@ -21078,6 +21081,7 @@ private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
       {
         MidiImportFrame frame = new MidiImportFrame(this, midiImport.getFilenameDisplay());
         frame.load(records);
+        frame.setLocation(midiImportXoffset, midiImportYoffset);
         frame.setVisible(true);
       }
   }//GEN-LAST:event_importMidiMIActionPerformed
