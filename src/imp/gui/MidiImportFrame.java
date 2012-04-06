@@ -23,6 +23,7 @@ package imp.gui;
 import imp.data.MelodyPart;
 import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
+import imp.data.Score;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 
@@ -205,7 +206,7 @@ private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event
 
 private void playMIDIimportTrackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMIDIimportTrackActionPerformed
   {//GEN-HEADEREND:event_playMIDIimportTrackActionPerformed
-    // TODO add your handling code here:
+    playSelectedTrack();
   }//GEN-LAST:event_playMIDIimportTrackActionPerformed
 
 private void importTrackToLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importTrackToLeadsheetActionPerformed
@@ -256,7 +257,10 @@ private void playSelectedTrack()
     
     if( part != null )
       {
-        notate.addChorus(part);
+        Score score = new Score();
+        score.addPart(part);
+        //System.out.println("score = " + score);
+        notate.playAscore(score);
       }
   }
 
