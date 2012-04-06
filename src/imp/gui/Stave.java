@@ -974,8 +974,16 @@ public void setPart(MelodyPart part)
     this.displayPart.makeAccidentals();
     this.displayPart.makeTies();
 
-    // initialize the CstrLine array
-    initCstrLines();
+    try
+      {
+      // initialize the CstrLine array
+      initCstrLines();
+      }
+    catch( OutOfMemoryError e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "Out of Memory");
+        return;
+      }
 
     repaint();
   }
