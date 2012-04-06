@@ -28,25 +28,25 @@ import imp.util.MidiFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import javax.swing.JFileChooser;
 
 /**
  * Midi File Importing
  *
- * @author keller, adapted from code in MIDIBeast by Brandy McMenamy and Jim
- * Herold
+ * @author Robert Keller, adapted from code in MIDIBeast 
+ * by Brandy McMenamy and Jim Herold
  */
 
 public class MidiImport
 {
 
 Notate notate;
+String filenameDisplay;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
 
-public static int beat = 120;
-public static int precision = 5;
 private JFileChooser midiFileChooser = new JFileChooser();
 
 public MidiImport(Notate notate)
@@ -78,13 +78,22 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
     
     score = new jm.music.data.Score();
     
-    allParts = new ArrayList<jm.music.data.Part>();
-
-    jm.util.Read.midi(score, midiFileName);
+    try
+      {
+      jm.util.Read.midi(score, midiFileName);
+      }
+    catch( Error e )
+      {
+        ErrorLog.log(ErrorLog.WARNING, "reading of MIDI file " + midiFileName 
+                     + " failed for some reason (jMusic exception).");
+        return null;
+      }
 
     //System.out.println("score from MIDI = " + score);
 
     MIDIBeast.calculateNoteTypes(score.getDenominator());
+
+    allParts = new ArrayList<jm.music.data.Part>();
 
     allParts.addAll(Arrays.asList(score.getPartArray()));
 
@@ -123,6 +132,8 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
         }
       }
     
+    Collections.sort(records);
+    
 //    for( MidiImportRecord record: records )
 //      {
 //        System.out.println(record);
@@ -146,7 +157,7 @@ private File getFile()
           {
             midiFileEntire = midiFileChooser.getSelectedFile();
           }
-        String nameForDisplay = midiFileChooser.getSelectedFile().getName();
+        filenameDisplay = midiFileChooser.getSelectedFile().getName();
       }
     catch( Exception e )
       {
@@ -166,6 +177,12 @@ private void initFileChooser()
     midiFileChooser.resetChoosableFileFilters();
     midiFileChooser.addChoosableFileFilter(new MidiFilter());
     midiFileChooser.setFileView(fileView);
+  }
+
+
+public String getFilenameDisplay()
+  {
+    return filenameDisplay;
   }
 
 }

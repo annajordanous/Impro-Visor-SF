@@ -83,7 +83,7 @@ public class RepresentativeBassRules{
             try{
         	ImportBass im = new ImportBass();
                 if(im.canContinue == true) {
-                    BassPatternGenerator b = new BassPatternGenerator();
+                    BassPatternExtractor b = new BassPatternExtractor();
                     if(b.canContinue == true) {
                         c = new BassChronotonic();
 
@@ -185,7 +185,7 @@ public class RepresentativeBassRules{
                     this.maxNumberOfClusters = maxNumberOfClusters;
                 ImportBass im = new ImportBass(startBeat, endBeat, selectedPart);
                 if(im.canContinue == true) {
-                    BassPatternGenerator b = new BassPatternGenerator(startBeat, endBeat);
+                    BassPatternExtractor b = new BassPatternExtractor(startBeat, endBeat);
                     if(b.canContinue == true) {
                         c = new BassChronotonic();
 
@@ -347,7 +347,7 @@ public class RepresentativeBassRules{
 	
 	public void changePart(jm.music.data.Part p)throws Exception{
 		new ImportBass(p);
-		new BassPatternGenerator();
+		new BassPatternExtractor();
 		new BassChronotonic();
 		initialize();
 		simplifyRulePitches();

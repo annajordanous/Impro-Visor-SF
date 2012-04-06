@@ -264,79 +264,98 @@ public int getNextUniqueChordIndex(int slotIndex)
         return (Chord)getPrevUnit(slotIndex);
     }
     
-    /**
-     * Returns an exact copy of this Part
-     * @return Part   copy
-     */
-    @Override
-    public ChordPart copy() {
-        ChordPart newPart = new ChordPart(size);
-        PartIterator i = iterator();
-        while(i.hasNext())
-            newPart.slots.set(i.nextIndex(), i.next().copy());
+/**
+ * Returns an exact copy of this Part
+ *
+ * @return Part copy
+ */
 
-        newPart.sectionInfo = sectionInfo.copy();
-        newPart.unitCount = unitCount;
-        newPart.title = title;
-        newPart.composer = composer;
-        newPart.volume = volume;
-        newPart.setInstrument(instrument);
-        newPart.keySig = keySig;
-        newPart.setMetre(metre[0], metre[1]);
-        newPart.swing = swing;
-              
-        return newPart;
-    }
-
-    public void setChordInstrument(int instrument)
-    {
-    //System.out.println("chordPart setChordInstrument to " + instrument);
-        super.setInstrument(instrument);
-    }
-
-    public boolean setStyle(String name) {
-        return sectionInfo.setStyle(name);
-    }
-    
-    public void setStyle(Style s) {
-        sectionInfo.setStyle(s);
-    }
-
-    
-    public void addSection(String styleName, int n, boolean isPhrase) {
-        sectionInfo.addSection(styleName, n, isPhrase);
-    }
-    
-    public Style getStyle() {
-        return sectionInfo.getStyle();
-    }
-
-    public SectionInfo getSectionInfo() {
-        return sectionInfo;
-    }
-
-    public void setSectionInfo(SectionInfo si) {
-        sectionInfo = si;
-    }
-    
-    public boolean hasOneSection()
+@Override
+public ChordPart copy()
+  {
+    ChordPart newPart = new ChordPart(size);
+    PartIterator i = iterator();
+    while( i.hasNext() )
       {
-        return sectionInfo.hasOneSection();
+        int nextIndex = i.nextIndex();
+        Unit unit = i.next();
+        if( unit == null )
+          {
+            newPart.slots.set(nextIndex, null);
+          }
+        else
+          {
+            newPart.slots.set(nextIndex, unit.copy());
+          }
       }
 
-    public long render(MidiSequence seq, 
-                         long time, 
-                         Track track, 
-                         int transposition, 
-                         boolean useDrums, 
-                         int endLimitIndex)
-                 throws InvalidMidiDataException 
-     {
+    newPart.sectionInfo = sectionInfo.copy();
+    newPart.unitCount = unitCount;
+    newPart.title = title;
+    newPart.composer = composer;
+    newPart.volume = volume;
+    newPart.setInstrument(instrument);
+    newPart.keySig = keySig;
+    newPart.setMetre(metre[0], metre[1]);
+    newPart.swing = swing;
+
+    return newPart;
+  }
+
+public void setChordInstrument(int instrument)
+  {
+    //System.out.println("chordPart setChordInstrument to " + instrument);
+    super.setInstrument(instrument);
+  }
+
+public boolean setStyle(String name)
+  {
+    return sectionInfo.setStyle(name);
+  }
+
+public void setStyle(Style s)
+  {
+    sectionInfo.setStyle(s);
+  }
+
+public void addSection(String styleName, int n, boolean isPhrase)
+  {
+    sectionInfo.addSection(styleName, n, isPhrase);
+  }
+
+public Style getStyle()
+  {
+    return sectionInfo.getStyle();
+  }
+
+public SectionInfo getSectionInfo()
+  {
+    return sectionInfo;
+  }
+
+public void setSectionInfo(SectionInfo si)
+  {
+    sectionInfo = si;
+  }
+
+public boolean hasOneSection()
+  {
+    return sectionInfo.hasOneSection();
+  }
+
+public long render(MidiSequence seq,
+                   long time,
+                   Track track,
+                   int transposition,
+                   boolean useDrums,
+                   int endLimitIndex)
+        throws InvalidMidiDataException
+  {
     // to trace sequencing info:
     // System.out.println("ChordPart time = " + time + ", endLimitIndex = " + endLimitIndex);
-      
-        return sectionInfo.render(seq, time, track, transposition, useDrums, endLimitIndex);
-    }
+
+    return sectionInfo.render(seq, time, track, transposition, useDrums, endLimitIndex);
+  }
 
 
     /**

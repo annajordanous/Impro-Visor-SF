@@ -1174,11 +1174,15 @@ public void mousePressed(MouseEvent e)
         selectingGroup = false;
        }
 
-      if( !stave.getChordProg().getCurrentChord(selectedIndex).getName().equals(
-        "NC") )
-       {
-        redoAdvice(selectedIndex);
-       }
+      ChordPart chordProg = stave.getChordProg();
+      if( chordProg != null )
+        {
+        Chord chord = chordProg.getCurrentChord(selectedIndex);
+        if( chord != null && !chord.isNOCHORD() )
+          {
+          redoAdvice(selectedIndex);
+         }
+        }
 
       stave.repaint();
       return;

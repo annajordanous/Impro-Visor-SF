@@ -50,361 +50,492 @@ import java.util.ListIterator;
  */
 public class Part implements Constants, Serializable {
 
-    /**
-     * an ArrayList containing the slots in this Part, each of which
-     * contains either null or a Unit object (can be note, rest, or chord)
-     */
-    protected ArrayList<Unit> slots;
+/**
+ * an ArrayList containing the slots in this Part, each of which contains either
+ * null or a Unit object (can be note, rest, or chord)
+ */
 
-    /**
-     * an int containing the number of slots in the Part
-     */
-    protected int size;
+protected ArrayList<Unit> slots;
+
+
+/**
+ * an int containing the number of slots in the Part
+ */
+
+protected int size;
+
+
+/**
+ * an int containing the number of slots that contain a Unit object
+ */
+
+protected int unitCount;
+
+
+/**
+ * a String containing the title of this Part
+ */
+
+protected String title;
+
+
+/**
+ * The default composer
+ */
+
+public static String DEFAULT_COMPOSER = "";
+
+
+/**
+ * a String containing the composer of this Part
+ */
+
+protected String composer;
+
+
+/**
+ * an int representing the instrument of this Part
+ */
+
+protected int instrument;
+
+
+/**
+ * an int representing the volume of this Part
+ */
+
+protected int volume;
+
+
+/**
+ * the key signature of the part
+ */
+
+protected int keySig;
+
+
+/**
+ * the metre of the part
+ */
+
+protected int metre[] = new int[2];
+protected int beatValue;
+protected int measureLength;
+
+
+/**
+ * the swingValue constant for the Part
+ */
+
+protected double swing;
+
+
+/**
+ * the default title
+ */
+
+public static final String DEFAULT_TITLE = "";
+
+
+/**
+ * the default instrument
+ */
+
+public static final int DEFAULT_INSTRUMENT = 0;
+
+
+/**
+ * the default volume
+ */
+
+public static final int DEFAULT_VOLUME = 85;
+
+
+/**
+ * the default number of slots
+ */
+
+public static final int DEFAULT_SIZE = 0;
+
+
+/**
+ * the default key signature
+ */
+public int DEFAULT_KEYSIG = 0;
+
+/**
+ * swingValue constant
+ */
+
+public static final double DEFAULT_SWING = 0.67; // Don't use 2./3
+
+
+protected StaveType staveType = Preferences.getStaveTypeFromPreferences();
+
+/**
+ * Creates a Part with the specified number of slots and a rest in the first
+ * slot.
+ *
+ * @param size the number of slots to create in the Part
+ */
     
-    /**
-     * an int containing the number of slots that contain a 
-     * Unit object
-     */
-    protected int unitCount;
+public Part(int size)
+  {
+    title = DEFAULT_TITLE;
+    volume = DEFAULT_VOLUME;
+    instrument = DEFAULT_INSTRUMENT;
 
-    /**
-     * a String containing the title of this Part
-     */
-    protected String title;
+    setMetre(DEFAULT_METRE[0], DEFAULT_METRE[1]);
 
-    /**
-     * The default composer
-     */
-    public static String DEFAULT_COMPOSER = "";
+    keySig = DEFAULT_KEYSIG;
+    swing = DEFAULT_SWING;
+    composer = DEFAULT_COMPOSER;
 
-    /**
-     * a String containing the composer of this Part
-     */
-    protected String composer;
-
-    /**
-     * an int representing the instrument of this Part
-     */
-    protected int instrument;
-
-    /**
-     * an int representing the volume of this Part
-     */
-    protected int volume;
-
-    /**
-     * the key signature of the part
-     */
-    protected int keySig;
-
-    /**
-     * the metre of the part
-     */
-    protected int metre[] = new int[2];
-
-    protected int beatValue;
-    protected int measureLength;
-
-    /**
-     * the swingValue constant for the Part
-     */
-    protected double swing;
-    
-    /**
-     * the default title
-     */
-    public static final String DEFAULT_TITLE = "";
-
-    /**
-     * the default instrument
-     */
-    public static final int DEFAULT_INSTRUMENT = 0;
-
-    /**
-     * the default volume
-     */
-    public static final int DEFAULT_VOLUME = 85;    
-
-    /**
-     * the default number of slots
-     */
-    public static final int DEFAULT_SIZE = 0;
-
-    /**
-     * the default key signature
-     */
-    public int DEFAULT_KEYSIG = 0;
-
-    /**
-     * swingValue constant
-     */
-    public static final double DEFAULT_SWING = 0.67;	//rk 2./3 looks very awkward when expanded
-
-
-    protected StaveType staveType = Preferences.getStaveTypeFromPreferences(); // getPreferredStaveType();
-
-    /**
-     * Creates a Part with the specified number of slots and
-     * a rest in the first slot.
-     * @param size     the number of slots to create in the Part
-     */
-    public Part(int size) {
-        title = DEFAULT_TITLE;
-        volume = DEFAULT_VOLUME;
-        instrument = DEFAULT_INSTRUMENT;
-
-        setMetre(DEFAULT_METRE[0], DEFAULT_METRE[1]);
-
-        keySig = DEFAULT_KEYSIG;
-        swing = DEFAULT_SWING;
-        composer = DEFAULT_COMPOSER;
- 
-        this.size = size;
+    this.size = size;
+    try
+      {
         slots = new ArrayList<Unit>(size);
         for( int k = 0; k < size; k++ )
           {
             slots.add(null);
           }
         //slots.setSize(size);
-        if(size != 0) {
+        if( size != 0 )
+          {
             slots.set(0, new Rest(size));     // empty Part has one long rest
             unitCount = 1;
-        }
-    }
-    
-    StaveType getPreferredStaveType()
-    {
-    return staveType; //Preferences.getStaveTypeFromPreferences();  // This is not correct. Need to pass type to constructor
-    }
+          }
+      }
+    catch( OutOfMemoryError e )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "Out of memory");
+      }
+  }
 
-    /**
-     * Creates a Part with the default size.
-     */
-    public Part() {
-        this(DEFAULT_SIZE);
-    }
-    
-    /**
-     * Sets the instrument of this Part.
-     * @param instrument        an int representing the instrument
-     */
-    public void setInstrument(int instrument)
-    {
+
+StaveType getPreferredStaveType()
+  {
+    return staveType;
+  }
+
+
+/**
+ * Creates a Part with the default size.
+ */
+
+public Part()
+  {
+    this(DEFAULT_SIZE);
+  }
+
+
+/**
+ * Sets the instrument of this Part.
+ *
+ * @param instrument an int representing the instrument
+ */
+
+public void setInstrument(int instrument)
+  {
     //System.out.println("setting instrumcnt to " + instrument + " in " + this);
-        this.instrument = instrument;
-    }
+    this.instrument = instrument;
+  }
 
-    /**
-     * Sets the current volume for this Part.
-     * @param volume    an int representing the volume
-     */
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
 
-    /**
-     * Gets the volume for this Part.
-     * @return int      the volume
-     */
-    public int getVolume() {
-        return volume;
-    }
+/**
+ * Sets the current volume for this Part.
+ *
+ * @param volume an int representing the volume
+ */
 
-    /**
-     * Sets the title of this Part.
-     * @param title     a String containing the title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
+public void setVolume(int volume)
+  {
+    this.volume = volume;
+  }
 
-   
-    /**
-     * Returns the title of this Part.
-     * @return String   title
-     */
-    public String getTitle() {
-        return title;
-    }
-    
-    /**
-     * Sets the composer of the Part
-     * @param composer   a String representing the composer of the Part
-     */
-    public void setComposer(String composer) {
-        this.composer = composer;
-    }
-    
-    /**
-     * Returns the composer of the Part
-     * @return composer    the composer of the Part
-     */
-    public String getComposer() {
-        return composer;
-    }
 
-    /**
-     * Sets the staveType of the Part
-     * @param staveType   a String representing the staveType of the Part
-     */
-    public void setStaveType(StaveType staveType) {
-        this.staveType = staveType;
-    }
-    
-    /**
-     * Returns the staveType of the Part
-     * @return staveType    the staveType of the Part
-     */
-    public StaveType getStaveType() {
-        return staveType;
-    }
-    
-    public int getMeasureLength() {
-        return measureLength;
-    }
-    
-    /**
-     * Sets the metre of this Part
-     * @param metre     the metre to set the part to
-     */
-    public void setMetre(int top, int bottom) {
-        metre[0] = top;
-        metre[1] = bottom;
-        beatValue = WHOLE/metre[1];
-        measureLength = beatValue * metre[0];
-    }
-    
-    /**
-     * Returns the metre of this Part
-     * @return int      the metre
-     */
-    public int[] getMetre() {
-        return metre;
-    }
+/**
+ * Gets the volume for this Part.
+ *
+ * @return int the volume
+ */
 
-   /**
-     * Sets the key signature of this Part
-     * @param keySig    the key signature to set the part to
-     */
-    public void setKeySignature(int keySig) {
-        this.keySig = keySig;
-    }
-    
-    /**
-     * Sets the swingValue of this Part
-     * @param swingValue     the swingValue value
-     */
-    public void setSwing(double swing) {
-        this.swing = swing;
-    }
-    
-    /**
-     * Returns the key signature of this Part
-     * @return int      the key signature
-     */
-    public int getKeySignature() {
-        return keySig;
-    }
+public int getVolume()
+  {
+    return volume;
+  }
 
-    /**
-     * Returns the swingValue value for this part
-     * @return the swingValue value for this part
-     */
-    public double getSwing() {
-        return swing;
-    }
 
-    /**
-     * Returns the number of Beats in this Part.
-     * @return int      number of Beats
-     */
-    public int getNumBeats() {
-        return size/beatValue;
-    }
+/**
+ * Sets the title of this Part.
+ *
+ * @param title a String containing the title
+ */
 
-    /**
-     * Returns the number of slots in this Part.
-     * @return int      number of slots
-     */
-    public int getSize() {
-        return size;
-    }
-    
-    /**
-     * Returns the number of slots in this Part.
-     * @return int      number of slots
-     */
-    public int size() {
-        return size;
-    }
+public void setTitle(String title)
+  {
+    this.title = title;
+  }
 
-    /**
-     * Returns the end time of the Part.
-     * @return int   the end time of the Part
-     */
-    public int getEndTime() {
-        return size;
-    }
-    
-    /**
-     * Returns the number of measures
-     */
-    public int getBars() {
-      int bars = (int)Math.ceil(size/measureLength);
-      //System.out.println("bars = " + bars);
-      return bars;
-    }
-    
-    /**
-     * Returns the number of active measures, meaning ones
-     * that contain the start of a chord or non-rest note
-     * @return int   the end time of the Part
-     */
-    public int getActiveBars() {
-      int lastActiveSlot = getLastActiveSlot();
-      //System.out.println("last active slot = " + lastActiveSlot);
-      if( lastActiveSlot < 0 )
-        {
+
+/**
+ * Returns the title of this Part.
+ *
+ * @return String title
+ */
+
+public String getTitle()
+  {
+    return title;
+  }
+
+
+/**
+ * Sets the composer of the Part
+ *
+ * @param composer a String representing the composer of the Part
+ */
+
+public void setComposer(String composer)
+  {
+    this.composer = composer;
+  }
+
+
+/**
+ * Returns the composer of the Part
+ *
+ * @return composer the composer of the Part
+ */
+
+public String getComposer()
+  {
+    return composer;
+  }
+
+
+/**
+ * Sets the staveType of the Part
+ *
+ * @param staveType a String representing the staveType of the Part
+ */
+
+public void setStaveType(StaveType staveType)
+  {
+    this.staveType = staveType;
+  }
+
+
+/**
+ * Returns the staveType of the Part
+ *
+ * @return staveType the staveType of the Part
+ */
+
+public StaveType getStaveType()
+  {
+    return staveType;
+  }
+
+
+public int getMeasureLength()
+  {
+    return measureLength;
+  }
+
+
+/**
+ * Sets the metre of this Part
+ *
+ * @param metre the metre to set the part to
+ */
+
+public void setMetre(int top, int bottom)
+  {
+    metre[0] = top;
+    metre[1] = bottom;
+    beatValue = WHOLE / metre[1];
+    measureLength = beatValue * metre[0];
+  }
+
+
+/**
+ * Returns the metre of this Part
+ *
+ * @return int the metre
+ */
+
+public int[] getMetre()
+  {
+    return metre;
+  }
+
+
+/**
+ * Sets the key signature of this Part
+ *
+ * @param keySig the key signature to set the part to
+ */
+
+public void setKeySignature(int keySig)
+  {
+    this.keySig = keySig;
+  }
+
+/**
+ * Sets the swingValue of this Part
+ *
+ * @param swingValue the swingValue value
+ */
+
+public void setSwing(double swing)
+  {
+    this.swing = swing;
+  }
+
+
+/**
+ * Returns the key signature of this Part
+ *
+ * @return int the key signature
+ */
+
+public int getKeySignature()
+  {
+    return keySig;
+  }
+
+
+/**
+ * Returns the swingValue value for this part
+ *
+ * @return the swingValue value for this part
+ */
+
+public double getSwing()
+  {
+    return swing;
+  }
+
+
+/**
+ * Returns the number of Beats in this Part.
+ *
+ * @return int number of Beats
+ */
+
+public int getNumBeats()
+  {
+    return size / beatValue;
+  }
+
+
+/**
+ * Returns the number of slots in this Part.
+ *
+ * @return int number of slots
+ */
+
+public int getSize()
+  {
+    return size;
+  }
+
+
+/**
+ * Returns the number of slots in this Part.
+ *
+ * @return int number of slots
+ */
+
+public int size()
+  {
+    return size;
+  }
+
+
+/**
+ * Returns the end time of the Part.
+ *
+ * @return int the end time of the Part
+ */
+
+public int getEndTime()
+  {
+    return size;
+  }
+
+
+/**
+ * Returns the number of measures
+ */
+
+public int getBars()
+  {
+    int bars = (int) Math.ceil(size / measureLength);
+    //System.out.println("bars = " + bars);
+    return bars;
+  }
+
+
+/**
+ * Returns the number of active measures, meaning ones that contain the start of
+ * a chord or non-rest note
+ *
+ * @return int the end time of the Part
+ */
+
+public int getActiveBars()
+  {
+    int lastActiveSlot = getLastActiveSlot();
+    //System.out.println("last active slot = " + lastActiveSlot);
+    if( lastActiveSlot < 0 )
+      {
         return 0;
-        }
-      
-      int activeBars = 1 + (int)Math.ceil(lastActiveSlot/measureLength);
-      return activeBars;
-    }
-    
-   
-    /**
-     * Returns the last active slot, if any.
-     * If none is active, then return -1.
-     */
-    public int getLastActiveSlot() {
-      for( int j = slots.size()-1; j >= 0; j-- )
+      }
+
+    int activeBars = 1 + (int) Math.ceil(lastActiveSlot / measureLength);
+    return activeBars;
+  }
+
+
+/**
+ * Returns the last active slot, if any. If none is active, then return -1.
+ */
+
+public int getLastActiveSlot()
+  {
+    for( int j = slots.size() - 1; j >= 0; j-- )
       {
         Object ob = slots.get(j);
-        if( ob instanceof Chord 
-          || ob instanceof Note )
-        {
-          return j;
-        }
+        if( ob instanceof Chord
+                || ob instanceof Note )
+          {
+            return j;
+          }
       }
-     return -1;
-     }
-    
+    return -1;
+  }
 
-    /**
-     * Returns an int representing the instrument of this Part.
-     * @return int      instrument
-     */
-    public int getInstrument() {
-        return instrument;
-    }
+
+/**
+ * Returns an int representing the instrument of this Part.
+ *
+ * @return int instrument
+ */
+
+public int getInstrument()
+  {
+    return instrument;
+  }
+
 
 /**
  * Returns an ArrayList containing every Unit in this Part.
  *
  * @return ArrayList unitList
  */
-    
+
 public ArrayList<Unit> getUnitList()
   {
     ArrayList<Unit> unitList = new ArrayList<Unit>(unitCount);
@@ -1345,8 +1476,11 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
               {
                 if( chord == null )
                   {
-                    // Get the next chord
-                    chord = ((Chord)i.next()).copy();
+                    Chord nextChord = (Chord)i.next();
+                    if( nextChord != null )
+                      {
+                        chord = nextChord.copy();
+                      }
                   }
                 // Otherwise use the residue of previous chord
                 

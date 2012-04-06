@@ -55,8 +55,9 @@ public static int thirtysecondtriplet;
 public static int sixtyfourth;
 public static int sixtyfourthtriplet;
 public static int beat = 120;
-public static int precision = 5;
-public static int round = 20;
+public static int minPrecision = 20;
+public static int precision = minPrecision;
+private static int roundThreshold = 20; // Used in rounding bass patterns
 public static int slotsPerMeasure = 480;
 public static int drumMeasureSize = 480;
 // Note: The next three need to be in sync with the combo boxes 
@@ -355,6 +356,11 @@ public static void calculateNoteTypes(int denominator)
       {
         sixtyfourthtriplet = -1;
       }
+    
+    if( precision < minPrecision )
+      {
+        precision = minPrecision;
+      }
   }
 
 public static void calculateNoteTypes()
@@ -447,15 +453,6 @@ public static String stringDuration(int numberOfSlots)
   }
 
 
-/**
- * @param d Takes a double rhythm duration and turns it into an integer value
- * representing how many slots that note takes up.
- */
-
-public static int doubleValToSlots(double d)
-  {
-    return (int) (Math.round((beat * d) / precision) * precision);
-  }
 
 
 public static String spacelessDrumNameFromNumber(int number)
@@ -761,8 +758,20 @@ public static String pitchOf(int pitchNumber)
 
 public static int findSlots(double duration, int precision)
   {
+    int slots = (int) Math.round(beat * duration / precision) * precision;
+ //System.out.println("duration " + duration + " -> " + slots + " slots, precision " + precision);
+    return slots;
+  }
 
-    return (int) Math.round(beat * duration / precision) * precision;
+
+/**
+ * @param d Takes a double rhythm duration and turns it into an integer value
+ * representing how many slots that note takes up.
+ */
+
+public static int doubleValToSlots(double duration)
+  {
+    return findSlots(duration, precision);
   }
 
 
@@ -782,6 +791,11 @@ public static int getSlotValueForElement(String s)
     return slotTotal;
   }
 
+
+public static boolean belowRoundingThreshold(String s)
+  {
+    return getSlotValueForElement(s) < roundThreshold;
+  }
 
 /**
  * @param ruleElement Takes a rule element (eg X8+32) and returns just the

@@ -21,11 +21,12 @@ DefaultListModel trackListModel;
 /**
  * Creates new form MidiImportFrame
  */
-public MidiImportFrame(Notate notate)
+public MidiImportFrame(Notate notate, String filenameDisplay)
   {
     trackListModel = new DefaultListModel();
     initComponents();
     this.notate = notate;
+    this.setTitle("MIDI Tracks in " + filenameDisplay);
   }
 
 public void load(LinkedList<MidiImportRecord> records)
