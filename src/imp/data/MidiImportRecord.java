@@ -25,7 +25,7 @@ package imp.data;
  * the Impro-Visor MelodyPart to which the track is translated
  * @author keller
  */
-public class MidiImportRecord
+public class MidiImportRecord implements Comparable
 {
 int channel;
 int trackNumber;
@@ -47,5 +47,31 @@ public MelodyPart getPart()
 public String toString()
   {
   return "channel " + (channel+1) + ", track " + trackNumber + ": " + melodyPart.toString();   
+  }
+
+@Override
+public int compareTo(Object ob)
+  {
+   if( !(ob instanceof Comparable) )
+     {
+       return -1;
+     }
+   MidiImportRecord that = (MidiImportRecord)ob;
+   if( channel < that.channel )
+     {
+       return -1;
+     }
+   if( channel == that.channel )
+     {
+       if( trackNumber < that.trackNumber )
+         {
+           return -1;
+         }
+       if( trackNumber == that.trackNumber )
+         {
+           return 0;
+         }
+     }
+   return 1;
   }
 }

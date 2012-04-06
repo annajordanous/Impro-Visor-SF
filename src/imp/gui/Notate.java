@@ -770,7 +770,8 @@ public class Notate
     STYLE_SAVED,
     EDIT_LEADSHEET,
     PLAYING,
-    PLAYING_PAUSED
+    PLAYING_PAUSED,
+    IMPORTING_MIDI
     }
 
   /**
@@ -7873,7 +7874,8 @@ public class Notate
         });
         fileMenu.add(exportChorusToMusicXML);
 
-        importMidiMI.setText("Import MIDI File");
+        importMidiMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        importMidiMI.setText("Import MIDI Tracks from File");
         importMidiMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importMidiMIActionPerformed(evt);
@@ -10048,7 +10050,10 @@ public void setMode(Mode mode)
             break;
         case PLAYING_PAUSED:
             setStatus("Playing Paused");
-            break;       }
+            break; 
+        case IMPORTING_MIDI:
+            setStatus("Importing MIDI");
+            break;      }
 
    //repaintAndStaveRequestFocus();
    }
@@ -21066,11 +21071,12 @@ private void improviseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN
 
 private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiMIActionPerformed
   {//GEN-HEADEREND:event_importMidiMIActionPerformed
+    setMode(Mode.IMPORTING_MIDI);
     MidiImport midiImport = new MidiImport(this);
     LinkedList<MidiImportRecord> records = midiImport.importMidi();
     if( records != null )
       {
-        MidiImportFrame frame = new MidiImportFrame(this);
+        MidiImportFrame frame = new MidiImportFrame(this, midiImport.getFilenameDisplay());
         frame.load(records);
         frame.setVisible(true);
       }
