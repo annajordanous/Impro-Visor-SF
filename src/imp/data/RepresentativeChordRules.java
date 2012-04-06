@@ -34,7 +34,7 @@ public class RepresentativeChordRules{
         private double percentageOfClusters = 0.25;
         private int numberOfUniqueRules;
 	private ChordChronotonic c;
-	private ChordPatternGenerator b;
+	private ChordPatternExtractor b;
 	private ArrayList<String> simplifiedPitchesRules;
 	private ArrayList<String> sansDuplicatesRules;
 	private ArrayList<Section> sections;
@@ -64,7 +64,7 @@ public class RepresentativeChordRules{
 	 * @throws Exception
 	 */
 	public void changePart(jm.music.data.Part p)throws Exception{
-		b = new ChordPatternGenerator(minDuration);
+		b = new ChordPatternExtractor(minDuration);
 		c = new ChordChronotonic(b);
 		initialize();
 		simplifyRulePitches();
@@ -97,7 +97,7 @@ public class RepresentativeChordRules{
                 if(im.canContinue == true){
                     this.midiFileName = MIDIBeast.midiFileName;
                     this.chordFileName = MIDIBeast.chordFileName;
-                    b = new ChordPatternGenerator(minDuration);                    
+                    b = new ChordPatternExtractor(minDuration);                    
                     if(b.canContinue == true){
                         c = new ChordChronotonic(b);
                         initialize();
@@ -187,7 +187,7 @@ public class RepresentativeChordRules{
                     this.maxNumberOfClusters = maxNumberOfClusters;
                 ImportChords im = new ImportChords(startBeat, endBeat, selectedPart);
                 if(im.canContinue){
-                    ChordPatternGenerator cpg = new ChordPatternGenerator(startBeat, endBeat, minDuration);
+                    ChordPatternExtractor cpg = new ChordPatternExtractor(startBeat, endBeat, minDuration);
                     if(cpg.canContinue){
                         c = new ChordChronotonic(cpg);
                         initialize();

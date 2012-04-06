@@ -111,7 +111,7 @@ public class RepresentativeDrumRules{
             try{
 		ImportDrums im = new ImportDrums();
                 if(im.canContinue) {
-                    DrumPatternGenerator dpg = new DrumPatternGenerator();
+                    DrumPatternExtractor dpg = new DrumPatternExtractor();
                     if(dpg.canContinue) {
                         chronotonic = new DrumChronotonic(dpg.getPatterns(), dpg.getNumberOfInstruments());
                         if(debug)
@@ -145,7 +145,7 @@ public class RepresentativeDrumRules{
             try{
 		ImportDrums im = new ImportDrums(startBeat, endBeat, selectedDrumPart);
                 if(im.canContinue) {
-                    DrumPatternGenerator dpg = new DrumPatternGenerator();
+                    DrumPatternExtractor dpg = new DrumPatternExtractor();
                     if(dpg.canContinue) {
                         chronotonic = new DrumChronotonic(dpg.getPatterns(), dpg.getNumberOfInstruments());
                         if(debug)

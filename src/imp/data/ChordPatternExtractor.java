@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,10 @@
 
 package imp.data;
 
-import java.util.*;
-import java.io.*;
-import imp.com.*;
 import imp.Constants;
+import imp.com.OpenLeadsheetCommand;
+import java.io.File;
+import java.util.ArrayList;
 
 
 /**
@@ -35,7 +35,8 @@ import imp.Constants;
  * @ Modeled after BassPatterns
  * July 2007 - Sayuri Soejima
  */
-public class ChordPatternGenerator implements Constants {
+
+public class ChordPatternExtractor implements Constants {
 	private boolean debug = false;
         public boolean canContinue = true;
 	private ArrayList<String> rules;
@@ -55,7 +56,7 @@ public class ChordPatternGenerator implements Constants {
 	 * @param chordFileName - the leadsheet file from which to read the 
          *                        chord progression.
 	 */
-	public ChordPatternGenerator(int minDuration)throws Exception {
+	public ChordPatternExtractor(int minDuration)throws Exception {
                 this.minDuration = minDuration;
 		init();
                 if(canContinue){
@@ -77,7 +78,7 @@ public class ChordPatternGenerator implements Constants {
                 }                    
 	}
 	
-        public ChordPatternGenerator(double startBeat, double endBeat, int minDuration)throws Exception {
+        public ChordPatternExtractor(double startBeat, double endBeat, int minDuration)throws Exception {
             this.startBeat = startBeat;
             this.endBeat = endBeat;
             this.minDuration = minDuration;
@@ -304,6 +305,7 @@ public class ChordPatternGenerator implements Constants {
 		/**
 		 * @return a String with the name of the chord as well as the duration (as a double).
 		 */
+                @Override
 		public String toString() {
 			return name+"   "+duration;
 		}
