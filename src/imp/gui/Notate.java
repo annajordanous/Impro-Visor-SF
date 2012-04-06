@@ -2116,8 +2116,6 @@ public class Notate
         });
         drawButton = new javax.swing.JButton();
         showAdviceButton = new javax.swing.JToggleButton();
-        generateToolbarBtn = new javax.swing.JButton();
-        recurrentGenButton = new javax.swing.JToggleButton();
         improviseButton = new javax.swing.JToggleButton();
         generationGapSpinner = new javax.swing.JSpinner();
         openGeneratorButton = new javax.swing.JButton();
@@ -6822,43 +6820,6 @@ public class Notate
         });
         standardToolbar.add(showAdviceButton);
 
-        generateToolbarBtn.setBackground(new java.awt.Color(255, 204, 0));
-        generateToolbarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        generateToolbarBtn.setText("Generate");
-        generateToolbarBtn.setToolTipText("Generate melody over selected chords.");
-        generateToolbarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        generateToolbarBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        generateToolbarBtn.setMaximumSize(new java.awt.Dimension(55, 30));
-        generateToolbarBtn.setMinimumSize(new java.awt.Dimension(55, 30));
-        generateToolbarBtn.setOpaque(true);
-        generateToolbarBtn.setPreferredSize(new java.awt.Dimension(55, 30));
-        generateToolbarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generateToolbarBtnActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(generateToolbarBtn);
-
-        recurrentGenButton.setBackground(new java.awt.Color(102, 255, 255));
-        recurrentGenButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        recurrentGenButton.setText("<html><center>Recur</center></html>");
-        recurrentGenButton.setToolTipText("Generate recurrently");
-        recurrentGenButton.setActionCommand("");
-        recurrentGenButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        recurrentGenButton.setFocusable(false);
-        recurrentGenButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        recurrentGenButton.setMaximumSize(new java.awt.Dimension(40, 30));
-        recurrentGenButton.setMinimumSize(new java.awt.Dimension(40, 30));
-        recurrentGenButton.setOpaque(true);
-        recurrentGenButton.setPreferredSize(new java.awt.Dimension(40, 30));
-        recurrentGenButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        recurrentGenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recurrentGenButtonActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(recurrentGenButton);
-
         improviseButton.setBackground(new java.awt.Color(0, 255, 0));
         improviseButton.setText("Improvise");
         improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
@@ -8923,11 +8884,6 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
       loopButton.setText("<html><center>Loop</center></html>");
       loopButton.setBackground(Color.GREEN);
   }
-
-    private void generateToolbarBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateToolbarBtnActionPerformed
-    {//GEN-HEADEREND:event_generateToolbarBtnActionPerformed
-      generate(lickgen);
-    }//GEN-LAST:event_generateToolbarBtnActionPerformed
 
   public void showCritic()
   {
@@ -20965,22 +20921,6 @@ private void recentStyleListValueChanged(javax.swing.event.ListSelectionEvent ev
       sectionListModel.refresh();
   }//GEN-LAST:event_recentStyleListValueChanged
 
-private void recurrentGenButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_recurrentGenButtonActionPerformed
-  {//GEN-HEADEREND:event_recurrentGenButtonActionPerformed
-    boolean recurrent = recurrentGenButton.isSelected();
-    lickgenFrame.setRecurrent(recurrent);
-    if( recurrent )
-        {
-        recurrentGenButton.setBackground(new Color(255, 153, 153));
-        recurrentGenButton.setText("Single");
-        }
-      else
-        {
-        recurrentGenButton.setBackground(new Color(153, 204, 255));
-        recurrentGenButton.setText("Recur");
-        }
-  }//GEN-LAST:event_recurrentGenButtonActionPerformed
-
 private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearHistoryMIrevertLeadsheetActionPerformed
   {//GEN-HEADEREND:event_clearHistoryMIrevertLeadsheetActionPerformed
     cmReset();
@@ -21129,6 +21069,9 @@ public void setGenerationGap(double value)
     generationGapSpinner.setValue(0.01*(int)(100*value));
   }
 
+boolean recurrentImprovisation = false;
+
+
 /**
  * * This is for calling from lickgen frame
  * @return 
@@ -21136,17 +21079,7 @@ public void setGenerationGap(double value)
 
 public void setRecurrent(boolean value)
   {
-     recurrentGenButton.setSelected(value);
-     if( value )
-        {
-        recurrentGenButton.setBackground(new Color(255, 153, 153));
-        recurrentGenButton.setText("Single");
-        }
-      else
-        {
-        recurrentGenButton.setBackground(new Color(153, 204, 255));
-        recurrentGenButton.setText("Recur");
-        }   
+    recurrentImprovisation = value;
   }
 
 
@@ -22806,7 +22739,6 @@ public void showNewVoicingDialog()
     private javax.swing.JToggleButton freezeLayoutButton;
     private javax.swing.JPanel generalContourTab;
     private javax.swing.JMenuItem generateLickInSelection;
-    private javax.swing.JButton generateToolbarBtn;
     private javax.swing.JSpinner generationGapSpinner;
     private javax.swing.ButtonGroup generatorButtonGroup;
     private javax.swing.JToggleButton globalBtn;
@@ -23069,7 +23001,6 @@ public void showNewVoicingDialog()
     private javax.swing.JList recentStyleList;
     private javax.swing.JScrollPane recentStyleListScrollPane;
     private javax.swing.JButton recordBtn;
-    private javax.swing.JToggleButton recurrentGenButton;
     private javax.swing.JRadioButton redApproachBtn;
     private javax.swing.JRadioButton redChordBtn;
     private javax.swing.JRadioButton redColorBtn;
