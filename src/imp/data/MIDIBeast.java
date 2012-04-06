@@ -55,7 +55,7 @@ public static int thirtysecondtriplet;
 public static int sixtyfourth;
 public static int sixtyfourthtriplet;
 public static int beat = 120;
-public static int minPrecision = 60;
+public static int minPrecision = 30;
 public static int precision = minPrecision;
 private static int roundThreshold = 20; // Used in rounding bass patterns
 public static int slotsPerMeasure = 480;
@@ -157,6 +157,10 @@ public static final String[] spacelessDrumName =
     "Open_Triangle"
   };
 
+public static void setResolution(int resolution)
+  {
+    minPrecision = resolution;
+  }
 
 /**
  * @param String midiFile

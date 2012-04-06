@@ -21022,7 +21022,7 @@ private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
     LinkedList<MidiImportRecord> records = midiImport.importMidi();
     if( records != null )
       {
-        MidiImportFrame frame = new MidiImportFrame(this, midiImport.getFilenameDisplay());
+        MidiImportFrame frame = new MidiImportFrame(this, midiImport);
         frame.load(records);
         frame.setLocation(midiImportXoffset, midiImportYoffset);
         frame.setVisible(true);

@@ -1,9 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * This Java Class is part of the Impro-Visor Application
+ *
+ * Copyright (C) 2012 Robert Keller and Harvey Mudd College
+ *
+ * Impro-Visor is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of merchantability or fitness
+ * for a particular purpose. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
+ * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
 package imp.gui;
 
+import imp.data.MelodyPart;
+import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
@@ -15,22 +33,25 @@ import javax.swing.DefaultListModel;
 public class MidiImportFrame extends javax.swing.JFrame
 {
 Notate notate;
-
+MidiImport midiImport;
 DefaultListModel trackListModel;
 
 /**
  * Creates new form MidiImportFrame
  */
-public MidiImportFrame(Notate notate, String filenameDisplay)
+public MidiImportFrame(Notate notate, MidiImport midiImport)
   {
     trackListModel = new DefaultListModel();
     initComponents();
     this.notate = notate;
-    this.setTitle("MIDI Tracks in " + filenameDisplay);
+    this.midiImport = midiImport;
+    setTitle("MIDI Tracks in " + midiImport.getFilenameDisplay());
+    importResolutionComboBox.setSelectedItem(new Integer(midiImport.getResolution()));
   }
 
 public void load(LinkedList<MidiImportRecord> records)
   {
+    //System.out.println("loading");
     trackListModel.clear();
     
     int channelNumber = 1;
@@ -45,6 +66,15 @@ public void load(LinkedList<MidiImportRecord> records)
       }
   }
 
+private void reload()
+  {
+    LinkedList<MidiImportRecord> records = midiImport.reImportMidi();
+    if( records != null )
+      {
+        load(records);
+      }
+  }
+
 /**
  * This method is called from within the constructor to initialize the form.
  * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,13 +85,20 @@ public void load(LinkedList<MidiImportRecord> records)
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        midiImportTopPanel = new javax.swing.JPanel();
         selectTracksLabel = new javax.swing.JLabel();
         trackSelectScrollPane = new javax.swing.JScrollPane();
         importedTrackList = new javax.swing.JList();
+        midiImportButtonPanel = new javax.swing.JPanel();
+        playMIDIimportTrack = new javax.swing.JButton();
+        importTrackToLeadsheet = new javax.swing.JButton();
+        importResolutionComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
         getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        midiImportTopPanel.setLayout(new java.awt.GridBagLayout());
 
         selectTracksLabel.setBackground(new java.awt.Color(153, 255, 0));
         selectTracksLabel.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -72,8 +109,12 @@ public void load(LinkedList<MidiImportRecord> records)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(selectTracksLabel, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        midiImportTopPanel.add(selectTracksLabel, gridBagConstraints);
+
+        getContentPane().add(midiImportTopPanel, new java.awt.GridBagConstraints());
 
         trackSelectScrollPane.setMinimumSize(new java.awt.Dimension(400, 100));
         trackSelectScrollPane.setOpaque(false);
@@ -96,25 +137,136 @@ public void load(LinkedList<MidiImportRecord> records)
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weighty = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(trackSelectScrollPane, gridBagConstraints);
+
+        midiImportButtonPanel.setLayout(new java.awt.GridBagLayout());
+
+        playMIDIimportTrack.setText("Play Selected Track");
+        playMIDIimportTrack.setToolTipText("Plays the selected MIDI track");
+        playMIDIimportTrack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playMIDIimportTrackActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        midiImportButtonPanel.add(playMIDIimportTrack, gridBagConstraints);
+
+        importTrackToLeadsheet.setText("Import Selected Track to Leadsheet");
+        importTrackToLeadsheet.setToolTipText("Imports the track selected above to the leadsheet as a new chorus.");
+        importTrackToLeadsheet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importTrackToLeadsheetActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        midiImportButtonPanel.add(importTrackToLeadsheet, gridBagConstraints);
+
+        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "480", "240", "120", "60", "40", "30", "20", "15", "10", "5", "1" }));
+        importResolutionComboBox.setSelectedIndex(5);
+        importResolutionComboBox.setToolTipText("Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution in Slots", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        importResolutionComboBox.setMinimumSize(new java.awt.Dimension(180, 50));
+        importResolutionComboBox.setPreferredSize(new java.awt.Dimension(180, 50));
+        importResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importMidiNoteResolutionChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.1;
+        getContentPane().add(midiImportButtonPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
   {//GEN-HEADEREND:event_importTrackSelected
+ 
+  }//GEN-LAST:event_importTrackSelected
+
+private void playMIDIimportTrackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMIDIimportTrackActionPerformed
+  {//GEN-HEADEREND:event_playMIDIimportTrackActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_playMIDIimportTrackActionPerformed
+
+private void importTrackToLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importTrackToLeadsheetActionPerformed
+  {//GEN-HEADEREND:event_importTrackToLeadsheetActionPerformed
+    importSelectedTrack();
+  }//GEN-LAST:event_importTrackToLeadsheetActionPerformed
+
+private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiNoteResolutionChanged
+  {//GEN-HEADEREND:event_importMidiNoteResolutionChanged
+    reImportWithNewResolution();
+  }//GEN-LAST:event_importMidiNoteResolutionChanged
+
+private void reImportWithNewResolution()
+  {
+    int newResolution = Integer.parseInt((String)importResolutionComboBox.getSelectedItem());
+    midiImport.setResolution(newResolution);
+    reload();
+  }
+
+private MelodyPart getSelectedTrackMelody()
+  {
     int index = importedTrackList.getSelectedIndex();
+    if( index < 0 )
+      {
+        return null;
+      }
     Object ob = trackListModel.get(index);
     if( ob instanceof MidiImportRecord )
       {
-      notate.addChorus(((MidiImportRecord)ob).getPart());
-      }
-  }//GEN-LAST:event_importTrackSelected
+      return ((MidiImportRecord)ob).getPart();
+      } 
+    return null;
+  }
 
+private void importSelectedTrack()
+  {
+    MelodyPart part = getSelectedTrackMelody();
+    
+    if( part != null )
+      {
+        notate.addChorus(part);
+      }
+  }
+
+private void playSelectedTrack()
+  {
+   MelodyPart part = getSelectedTrackMelody();
+    
+    if( part != null )
+      {
+        notate.addChorus(part);
+      }
+  }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox importResolutionComboBox;
+    private javax.swing.JButton importTrackToLeadsheet;
     private javax.swing.JList importedTrackList;
+    private javax.swing.JPanel midiImportButtonPanel;
+    private javax.swing.JPanel midiImportTopPanel;
+    private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
     private javax.swing.JScrollPane trackSelectScrollPane;
     // End of variables declaration//GEN-END:variables

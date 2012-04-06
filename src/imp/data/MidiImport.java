@@ -41,8 +41,9 @@ import javax.swing.JFileChooser;
 
 public class MidiImport
 {
-
+File file;
 Notate notate;
+private int resolution = 20;
 String filenameDisplay;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
@@ -55,12 +56,33 @@ public MidiImport(Notate notate)
     initFileChooser();
   }
 
+public int getResolution()
+  {
+    return resolution;
+  }
+
+public void setResolution(int newResolution)
+  {
+    resolution = newResolution;
+    //System.out.println("setting resolution to " + resolution);
+  }
 
 public LinkedList<MidiImportRecord> importMidi()
   {
-    File file = getFile();
+    file = getFile();
     if( file != null )
       {
+        return readMidiFile(file.getAbsolutePath());
+      }
+    return null;
+  }
+
+
+public LinkedList<MidiImportRecord> reImportMidi()
+  {
+    if( file != null )
+      {
+        //System.out.println("reImporting with resolution " + getResolution());
         return readMidiFile(file.getAbsolutePath());
       }
     return null;
@@ -91,6 +113,7 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
 
     //System.out.println("score from MIDI = " + score);
 
+    MIDIBeast.setResolution(resolution);
     MIDIBeast.calculateNoteTypes(score.getDenominator());
 
     allParts = new ArrayList<jm.music.data.Part>();
