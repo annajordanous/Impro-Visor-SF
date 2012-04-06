@@ -33,8 +33,14 @@ public void load(LinkedList<MidiImportRecord> records)
   {
     trackListModel.clear();
     
+    int channelNumber = 1;
     for( final MidiImportRecord record: records)
       {
+        if(record.getChannel() > channelNumber )
+          {
+            trackListModel.addElement("-------------------------------------");
+            channelNumber = record.getChannel();
+          }
         trackListModel.addElement(record);
       }
   }
@@ -99,7 +105,11 @@ public void load(LinkedList<MidiImportRecord> records)
 private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
   {//GEN-HEADEREND:event_importTrackSelected
     int index = importedTrackList.getSelectedIndex();
-    notate.addChorus(((MidiImportRecord)trackListModel.get(index)).getPart());
+    Object ob = trackListModel.get(index);
+    if( ob instanceof MidiImportRecord )
+      {
+      notate.addChorus(((MidiImportRecord)ob).getPart());
+      }
   }//GEN-LAST:event_importTrackSelected
 
 
