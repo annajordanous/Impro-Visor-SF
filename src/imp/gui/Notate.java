@@ -10152,7 +10152,7 @@ private void startRecording()
 void stopPlaying()
   {
     midiSynth.stop("stop in Notate");
-
+    improvisationOff();
     if( mode == Mode.RECORDING )
       {
         stopRecording();
@@ -21100,7 +21100,7 @@ public void improviseButtonToggled()
       {
         generate(lickgen);
         improviseButton.setBackground(new Color(255, 0, 0));
-        improviseButton.setText("<html><center>Stop<br>Improvising</center></html>");
+        improviseButton.setText("<html><center>Quit</center></html>");
        }
     else
       {
@@ -21109,10 +21109,21 @@ public void improviseButtonToggled()
       }
   }
 
+
+public void improvisationOff()
+  {
+    improviseButton.setSelected(false);
+    lickgenFrame.setRecurrent(false);
+    improviseButton.setBackground(new Color(0, 255, 0));
+    improviseButton.setText("<html><center>Improvise</center></html>");
+  }
+
+
 public void setShowConstructionLinesAndBoxes(boolean value)
   {
     showConstructionLinesAndBoxes = value;
   }
+
 public void setGenerationGap(double value)
   {
     generationGapSpinner.setValue(0.01*(int)(100*value));
