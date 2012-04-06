@@ -55,7 +55,7 @@ public static int thirtysecondtriplet;
 public static int sixtyfourth;
 public static int sixtyfourthtriplet;
 public static int beat = 120;
-public static int minPrecision = 20;
+public static int minPrecision = 60;
 public static int precision = minPrecision;
 private static int roundThreshold = 20; // Used in rounding bass patterns
 public static int slotsPerMeasure = 480;

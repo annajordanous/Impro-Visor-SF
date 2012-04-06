@@ -796,6 +796,11 @@ public class Leadsheet
 
     addToChordPart(chordInputReversed, chords, rise, measureLength, key);
     addToMelodyPart(melodyInputReversed, melody, rise, beatValue, key);
+    
+    if( melody.getUnit(0) == null )
+      {
+        melody.addRest(new Rest(BEAT));
+      }
 
     // Jim: Uncomment this to see note classifications on standard out
 

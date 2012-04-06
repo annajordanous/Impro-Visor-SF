@@ -2136,6 +2136,7 @@ public class Notate
         sectionPreferencesBtn = new javax.swing.JButton();
         midiPreferencesBtn = new javax.swing.JButton();
         contourPreferencesBtn = new javax.swing.JButton();
+        earlyScrollBtn = new javax.swing.JToggleButton();
         playToolBar = new javax.swing.JToolBar();
         countInPanel = new javax.swing.JPanel();
         countInCheckBox = new javax.swing.JCheckBox();
@@ -2165,7 +2166,6 @@ public class Notate
         partBarsTF1 = new javax.swing.JTextField();
         trackerDelayPanel = new javax.swing.JPanel();
         trackerDelayTextField2 = new javax.swing.JTextField();
-        earlyScrollBtn = new javax.swing.JToggleButton();
         parallaxSpinner = new javax.swing.JSpinner();
         textEntryToolBar = new javax.swing.JToolBar();
         textEntryLabel = new javax.swing.JLabel();
@@ -6824,12 +6824,13 @@ public class Notate
         improviseButton.setText("Improvise");
         improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
         improviseButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        improviseButton.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         improviseButton.setFocusable(false);
         improviseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        improviseButton.setMaximumSize(new java.awt.Dimension(65, 30));
-        improviseButton.setMinimumSize(new java.awt.Dimension(65, 30));
+        improviseButton.setMaximumSize(new java.awt.Dimension(70, 30));
+        improviseButton.setMinimumSize(new java.awt.Dimension(70, 30));
         improviseButton.setOpaque(true);
-        improviseButton.setPreferredSize(new java.awt.Dimension(65, 30));
+        improviseButton.setPreferredSize(new java.awt.Dimension(70, 30));
         improviseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         improviseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7058,6 +7059,24 @@ public class Notate
             }
         });
         standardToolbar.add(contourPreferencesBtn);
+
+        earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
+        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        earlyScrollBtn.setSelected(true);
+        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
+        earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        earlyScrollBtn.setFocusable(false);
+        earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setOpaque(true);
+        earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                earlyScrollBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(earlyScrollBtn);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -7571,24 +7590,6 @@ public class Notate
         trackerDelayPanel.add(trackerDelayTextField2, java.awt.BorderLayout.CENTER);
 
         playToolBar.add(trackerDelayPanel);
-
-        earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
-        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        earlyScrollBtn.setSelected(true);
-        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
-        earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        earlyScrollBtn.setFocusable(false);
-        earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.setOpaque(true);
-        earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                earlyScrollBtnActionPerformed(evt);
-            }
-        });
-        playToolBar.add(earlyScrollBtn);
 
         parallaxSpinner.setToolTipText("Sets the vertical parallax for mouse clicks on staves.");
         parallaxSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Parallax", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
@@ -20280,11 +20281,13 @@ private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         "Yes", "No"
       };
 
-    int choice = JOptionPane.showOptionDialog(this,
-        "Do you wish to delete the current chorus?\n\nThis can't be undone.",
-        "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+    // Fix: Uncomment for the non-developer.
+//    int choice = JOptionPane.showOptionDialog(this,
+//        "Do you wish to delete the current chorus?\n\nThis can't be undone.",
+//        "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
+//        JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
+    int choice = 0;
     // the user selected yes
 
     if( choice == 0 && currTabIndex >= 0

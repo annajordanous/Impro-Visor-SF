@@ -21,6 +21,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 package jm.midi;
 
+import imp.util.ErrorLog;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -254,7 +255,7 @@ public final class SMF implements JMC{
                         eventLength = MidiUtil.readVarLength(dis);
                         event = jm.midi.MidiUtil.createMetaEvent(type); 
                     }else if(status >= 0xF0){ //System Exclusive --- NOT SUPPORTED
-                        System.out.println("SysEX---");
+                        ErrorLog.log(ErrorLog.WARNING, "SysEX in file not supported");
                         eventLength = MidiUtil.readVarLength( dis);
                     }else if(status >= 0x80){ //MIDI voice event 
                         short selection = (short) (status / 0x10);
