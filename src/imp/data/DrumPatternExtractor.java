@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
  */
 
 package imp.data;
-import jm.music.data.*;
-import java.util.*;
+import java.util.ArrayList;
+import jm.music.data.Phrase;
 
 /**
 * Brandy McMenamy and James Thomas Herold
@@ -30,7 +30,7 @@ import java.util.*;
 * and turns it into an ArrayList of Strings, each of which closely resembles an improvisor drum style rule.
 */
 
-public class DrumPatternGenerator{
+public class DrumPatternExtractor{
 	private boolean debug = false;
         public boolean canContinue = true;
 	
@@ -70,7 +70,7 @@ public class DrumPatternGenerator{
 	/**
 	* @param Part the durm part to be processed
 	*/
-	public DrumPatternGenerator(){
+	public DrumPatternExtractor(){
 		processDrums();
 		createMeasures();
 		getMeasurePatterns();
@@ -388,6 +388,7 @@ public class DrumPatternGenerator{
 					rules.get(i).markAsHit(slot);
 		}
 	
+                @Override
 		public String toString(){
 			String s = "";
 			for(int i = 0; i < rules.size(); i++)
@@ -422,6 +423,7 @@ public class DrumPatternGenerator{
 			rules[index] = 'X';
 		}
 		
+                @Override
 		public String toString(){
 			String s = "[ " + drumNumber + " ][ ";
 			for(int i = 0; i < rules.length; i++){

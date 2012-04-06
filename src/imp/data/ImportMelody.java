@@ -79,16 +79,18 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
                              MelodyPart partOut)
   {
     noteArray = new ArrayList<jm.music.data.Note>();
-    roundedNoteArray = new ArrayList<Note>();
-
+ 
     try
       {
         mainPhrase = melodyPart.getPhraseArray()[trackNumber];
         getNoteArray();
         //if(MIDIBeast.mergeMelodyRests) mergeRests();
 
-        roundDurations(MIDIBeast.precision);
-        if( roundedNoteArray.size() == 0 )
+        // This is a key step in getting melodies to be acceptable to Impro-Visor
+        
+        roundedNoteArray = roundDurations(MIDIBeast.precision, noteArray);
+        
+        if( roundedNoteArray.isEmpty() )
           {
             ErrorLog.log(ErrorLog.WARNING, "note array of size zero, unable to continue");
           }
@@ -188,8 +190,10 @@ public void mergeRests()
  * @param precision
  */
 
-public void roundDurations(int precision)
+public ArrayList<Note> roundDurations(int precision, ArrayList<jm.music.data.Note> noteArray)
   {
+    roundedNoteArray = new ArrayList<Note>();
+
     for( int i = 0; i < noteArray.size(); i++ )
       {
         Note noteOut = convertToImpNote(noteArray.get(i));
@@ -202,11 +206,10 @@ public void roundDurations(int precision)
         int totalNoteDuration = 0;
         for( int i = 0; i < roundedNoteArray.size(); i++ )
           {
-            System.out.println(roundedNoteArray.get(i));
             totalNoteDuration += roundedNoteArray.get(i).getRhythmValue();
           }
-        System.out.println("Total note duration: " + totalNoteDuration);
       }
+    return roundedNoteArray;
   }
 
 }

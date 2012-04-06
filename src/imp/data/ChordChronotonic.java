@@ -43,7 +43,7 @@ import java.util.*;
 
 public class ChordChronotonic {
 	private boolean debug = false;
-	private ChordPatternGenerator ChordPatternGenerator;
+	private ChordPatternExtractor ChordPatternGenerator;
 	private ArrayList<String> originalRules; //rules with rhythms and pitch
 	private ArrayList<ArrayList<String>> rhythmValues; //same as stringRules except no pitch info
 	private ArrayList<ArrayList<Double>> histoRules; //in histogram form
@@ -86,7 +86,7 @@ public class ChordChronotonic {
 	 * @param info - ArrayList<String> where each String is a chord-line style
 	 * specification of rhythms
 	 */
-	public ChordChronotonic(ChordPatternGenerator b) {
+	public ChordChronotonic(ChordPatternExtractor b) {
             try {
                 ChordPatternGenerator = b;
                 originalRules = b.getRules();
