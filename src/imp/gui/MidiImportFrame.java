@@ -92,6 +92,7 @@ private void reload()
         importedTrackList = new javax.swing.JList();
         midiImportButtonPanel = new javax.swing.JPanel();
         playMIDIimportTrack = new javax.swing.JButton();
+        stopPlayingTrackButton = new javax.swing.JButton();
         importTrackToLeadsheet = new javax.swing.JButton();
         importResolutionComboBox = new javax.swing.JComboBox();
 
@@ -161,6 +162,16 @@ private void reload()
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(playMIDIimportTrack, gridBagConstraints);
 
+        stopPlayingTrackButton.setText("Stop");
+        stopPlayingTrackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stopPlayingTrackButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        midiImportButtonPanel.add(stopPlayingTrackButton, gridBagConstraints);
+
         importTrackToLeadsheet.setText("Import Selected Track to Leadsheet (or double click)");
         importTrackToLeadsheet.setToolTipText("Imports the track selected above to the leadsheet as a new chorus. Alternatively, double click the entry.");
         importTrackToLeadsheet.addActionListener(new java.awt.event.ActionListener() {
@@ -169,7 +180,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -187,7 +198,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
 
@@ -230,6 +241,11 @@ private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-F
         case 3: playSelectedTrack(); break;
       }
   }//GEN-LAST:event_importedTrackListMouseClicked
+
+private void stopPlayingTrackButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayingTrackButtonActionPerformed
+  {//GEN-HEADEREND:event_stopPlayingTrackButtonActionPerformed
+    notate.stopPlayAscore();
+  }//GEN-LAST:event_stopPlayingTrackButtonActionPerformed
 
 private void reImportWithNewResolution()
   {
@@ -284,6 +300,7 @@ private void playSelectedTrack()
     private javax.swing.JPanel midiImportTopPanel;
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
+    private javax.swing.JButton stopPlayingTrackButton;
     private javax.swing.JScrollPane trackSelectScrollPane;
     // End of variables declaration//GEN-END:variables
 }
