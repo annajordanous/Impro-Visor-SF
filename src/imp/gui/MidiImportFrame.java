@@ -47,7 +47,6 @@ public MidiImportFrame(Notate notate, MidiImport midiImport)
     this.notate = notate;
     this.midiImport = midiImport;
     setTitle("MIDI Tracks in " + midiImport.getFilenameDisplay());
-    importResolutionComboBox.setSelectedItem(new Integer(midiImport.getResolution()));
   }
 
 public void load(LinkedList<MidiImportRecord> records)
@@ -55,7 +54,7 @@ public void load(LinkedList<MidiImportRecord> records)
     //System.out.println("loading");
     trackListModel.clear();
     
-    int channelNumber = 1;
+    int channelNumber = 0;
     for( final MidiImportRecord record: records)
       {
         if(record.getChannel() > channelNumber )
@@ -65,6 +64,7 @@ public void load(LinkedList<MidiImportRecord> records)
           }
         trackListModel.addElement(record);
       }
+    importedTrackList.setSelectedIndex(0);
   }
 
 private void reload()
@@ -129,6 +129,9 @@ private void reload()
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 importTrackSelected(evt);
             }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importedTrackListMouseClicked(evt);
+            }
         });
         trackSelectScrollPane.setViewportView(importedTrackList);
 
@@ -144,8 +147,8 @@ private void reload()
 
         midiImportButtonPanel.setLayout(new java.awt.GridBagLayout());
 
-        playMIDIimportTrack.setText("Play Selected Track");
-        playMIDIimportTrack.setToolTipText("Plays the selected MIDI track");
+        playMIDIimportTrack.setText("Play Selected Track (or triple click)");
+        playMIDIimportTrack.setToolTipText("Plays the selected MIDI track. Alternatively, triple click the entry.");
         playMIDIimportTrack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playMIDIimportTrackActionPerformed(evt);
@@ -158,8 +161,8 @@ private void reload()
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(playMIDIimportTrack, gridBagConstraints);
 
-        importTrackToLeadsheet.setText("Import Selected Track to Leadsheet");
-        importTrackToLeadsheet.setToolTipText("Imports the track selected above to the leadsheet as a new chorus.");
+        importTrackToLeadsheet.setText("Import Selected Track to Leadsheet (or double click)");
+        importTrackToLeadsheet.setToolTipText("Imports the track selected above to the leadsheet as a new chorus. Alternatively, double click the entry.");
         importTrackToLeadsheet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importTrackToLeadsheetActionPerformed(evt);
@@ -172,8 +175,8 @@ private void reload()
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(importTrackToLeadsheet, gridBagConstraints);
 
-        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "480", "240", "120", "60", "40", "30", "20", "15", "10", "5", "1" }));
-        importResolutionComboBox.setSelectedIndex(5);
+        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "480", "360", "240", "120", "80", "60", "40", "30", "20", "15", "10", "5", "1" }));
+        importResolutionComboBox.setSelectedIndex(8);
         importResolutionComboBox.setToolTipText("Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
         importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution in Slots", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importResolutionComboBox.setMinimumSize(new java.awt.Dimension(180, 50));
@@ -218,6 +221,15 @@ private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GE
   {//GEN-HEADEREND:event_importMidiNoteResolutionChanged
     reImportWithNewResolution();
   }//GEN-LAST:event_importMidiNoteResolutionChanged
+
+private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
+  {//GEN-HEADEREND:event_importedTrackListMouseClicked
+    switch(evt.getClickCount() )
+      {
+        case 2: importSelectedTrack(); break;
+        case 3: playSelectedTrack(); break;
+      }
+  }//GEN-LAST:event_importedTrackListMouseClicked
 
 private void reImportWithNewResolution()
   {

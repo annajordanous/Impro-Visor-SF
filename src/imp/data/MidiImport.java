@@ -43,7 +43,8 @@ public class MidiImport
 {
 File file;
 Notate notate;
-private int resolution = 20;
+private int defaultResolution = 20;
+private int resolution;
 String filenameDisplay;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
@@ -53,6 +54,7 @@ private JFileChooser midiFileChooser = new JFileChooser();
 public MidiImport(Notate notate)
   {
     this.notate = notate;
+    setResolution(defaultResolution);
     initFileChooser();
   }
 

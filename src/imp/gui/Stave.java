@@ -10,7 +10,7 @@
  *
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * merchantability or fitness for a particular purpose.  See the
+ * merchantability or fitness for a particular purpose.  See thesetS
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -2104,7 +2104,6 @@ public int[] getLineMeasures()
  */
 public void setLineMeasures(int[] _lineMeasures)
   {
-
     lineMeasures = _lineMeasures;
   }
 
