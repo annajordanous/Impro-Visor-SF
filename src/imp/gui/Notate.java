@@ -15400,7 +15400,8 @@ private void setLayoutPreference(Polylist layout)
           }
         else if( progSize < mp.size() )
           {
-            score.getChordProg().addChord(NOCHORD, mp.size()-progSize);
+            score.setLength(mp.size());
+            setBars(score.getBarsPerChorus());
           }
         score.addPart(mp);
         partList.add(mp);
