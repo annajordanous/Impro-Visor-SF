@@ -33,6 +33,8 @@ int channel;
 int trackNumber;
 MelodyPart melodyPart;
 int distinctPitches;
+int lowPitch;
+int highPitch;
 int restSlots;
 int nonRestSlots;
 int initialRestSlots;
@@ -43,12 +45,17 @@ public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart)
   this.channel = channel;
   this.trackNumber = trackNumber;
   this.melodyPart = melodyPart;
+  lowPitch = 256;
+  highPitch = -1;
   getStatistics();
 }
 
+/**
+ * Compute various statistics for the part inferred from this channel and track.
+ */
+
 private void getStatistics()
   {
-    // Count number of distinct pitches in the melodyPart
     distinctPitches = 0;
     restSlots = 0;
     nonRestSlots = 0;
@@ -83,6 +90,14 @@ private void getStatistics()
               nonRestSlots += rhythmValue;
               int pitch = note.getPitch();
               pitchCount[pitch]++;
+              if( pitch > highPitch )
+                {
+                  highPitch = pitch;
+                }
+              if( pitch < lowPitch )
+                {
+                  lowPitch = pitch;
+                }
               hasNonRest = true;
               }
           }
@@ -123,10 +138,19 @@ public String toString()
   int totalBeats = (restSlots + nonRestSlots)/imp.Constants.BEAT;
   int initialRestBeats = initialRestSlots/imp.Constants.BEAT;
   
+  String rangeString;
+  
+  switch(distinctPitches)
+    {
+      case 0:  rangeString = ""; break;
+      case 1:  rangeString = "1 distinct pitch: " + lowPitch + ", "; break;
+      default: rangeString = distinctPitches + " distinct pitches: " + lowPitch + " to " + highPitch + ", ";
+    }
+  
   return "channel " + (channel+1) + ", track " + trackNumber 
           + " [" + totalBeats + " beats, " 
           + initialRestBeats + " initial rest beats, "
-          + distinctPitches + " distinct pitches, "
+          + rangeString
           + occupancyPercent + "% occupied]: " 
           + melodyPart.toString();   
   }
