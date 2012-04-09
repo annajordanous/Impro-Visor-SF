@@ -6692,7 +6692,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="importMidiMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+T"/>
+                  <KeyStroke key="Ctrl+M"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Import MIDI Tracks from File"/>
               </Properties>
@@ -7004,6 +7004,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="expandMelodyBy2">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+2"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Expand melody by 2"/>
               </Properties>
               <Events>
@@ -7012,6 +7015,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="expandMelodyBy3">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+3"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Expand melody by 3"/>
               </Properties>
               <Events>
@@ -7020,6 +7026,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="contractMelodyBy2">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+2"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Contract melody by 2"/>
               </Properties>
               <Events>
@@ -7028,6 +7037,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="contractMelodyBy3">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+3"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Contract melody by 3"/>
               </Properties>
               <Events>
@@ -7097,6 +7109,17 @@
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator21">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="insertChorusTabMI">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+T"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Insert New Chorus Tab"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertChorusTabMIActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="insertRestMeasure">
               <Properties>
@@ -8139,9 +8162,6 @@
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
                   </Border>
-                </Property>
-                <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
-                  <Rectangle value="[0, 0, 0, 0]"/>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
