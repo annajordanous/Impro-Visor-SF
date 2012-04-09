@@ -1122,7 +1122,7 @@ public void mousePressed(MouseEvent e)
         stave.repaint();
         return;
        }
-      else if( e.isShiftDown() && stave.nothingSelected() )
+      else if( e.isShiftDown() && stave.oneSlotSelected() )
        {
 
         Trace.log(2, "shift: single line selected");
@@ -2165,6 +2165,11 @@ public void keyPressed(KeyEvent e)
     // Don't trace the shift key alone.
     Trace.log(3, "Key event: " + e);
    }
+  
+  if( stave.nothingSelected() )
+    {
+      stave.setSelection(0);
+    }
 
   notate.resetAdviceUsed();
 

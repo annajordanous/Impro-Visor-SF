@@ -51,6 +51,7 @@ public MidiImportFrame(Notate notate, MidiImport midiImport)
 
 public void load(LinkedList<MidiImportRecord> records)
   {
+    int saveIndex = importedTrackList.getSelectedIndex();
     //System.out.println("loading");
     trackListModel.clear();
     
@@ -64,7 +65,7 @@ public void load(LinkedList<MidiImportRecord> records)
           }
         trackListModel.addElement(record);
       }
-    importedTrackList.setSelectedIndex(0);
+    importedTrackList.setSelectedIndex(saveIndex);
   }
 
 private void reload()
