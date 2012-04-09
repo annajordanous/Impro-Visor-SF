@@ -22,7 +22,6 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 package jm.midi;
 
-import imp.util.ErrorLog;
 import java.io.*;
 import java.util.Vector;
 
@@ -147,7 +146,7 @@ public final class MidiUtil implements JMC{
                     break;
                 }
             }
-            ErrorLog.log(ErrorLog.SEVERE, "jMusic Error reading file - sorry!\nTry to continue reading anyway");
+            System.out.println("note: jMusic Error reading file - sorry!\nTry to continue reading anyway");
  
             return 0.0;
 	}
