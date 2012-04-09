@@ -2239,6 +2239,7 @@ public class Notate
         saveSelectionAsLick = new javax.swing.JMenuItem();
         generateLickInSelection = new javax.swing.JMenuItem();
         jSeparator21 = new javax.swing.JSeparator();
+        insertChorusTabMI = new javax.swing.JMenuItem();
         insertRestMeasure = new javax.swing.JMenuItem();
         addRestMI = new javax.swing.JMenuItem();
         resolvePitches = new javax.swing.JMenuItem();
@@ -6824,7 +6825,6 @@ public class Notate
         improviseButton.setText("Improvise");
         improviseButton.setToolTipText("Toggle to turn auto-improvisation on or off");
         improviseButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        improviseButton.setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         improviseButton.setFocusable(false);
         improviseButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         improviseButton.setMaximumSize(new java.awt.Dimension(70, 30));
@@ -7839,7 +7839,7 @@ public class Notate
         });
         fileMenu.add(exportChorusToMusicXML);
 
-        importMidiMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        importMidiMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         importMidiMI.setText("Import MIDI Tracks from File");
         importMidiMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8100,6 +8100,7 @@ public class Notate
         });
         editMenu.add(invertMelody);
 
+        expandMelodyBy2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.SHIFT_MASK));
         expandMelodyBy2.setText("Expand melody by 2");
         expandMelodyBy2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8108,6 +8109,7 @@ public class Notate
         });
         editMenu.add(expandMelodyBy2);
 
+        expandMelodyBy3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.SHIFT_MASK));
         expandMelodyBy3.setText("Expand melody by 3");
         expandMelodyBy3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8116,6 +8118,7 @@ public class Notate
         });
         editMenu.add(expandMelodyBy3);
 
+        contractMelodyBy2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
         contractMelodyBy2.setText("Contract melody by 2");
         contractMelodyBy2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8124,6 +8127,7 @@ public class Notate
         });
         editMenu.add(contractMelodyBy2);
 
+        contractMelodyBy3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
         contractMelodyBy3.setText("Contract melody by 3");
         contractMelodyBy3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8183,6 +8187,15 @@ public class Notate
         });
         editMenu.add(generateLickInSelection);
         editMenu.add(jSeparator21);
+
+        insertChorusTabMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        insertChorusTabMI.setText("Insert New Chorus Tab");
+        insertChorusTabMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertChorusTabMIActionPerformed(evt);
+            }
+        });
+        editMenu.add(insertChorusTabMI);
 
         insertRestMeasure.setText("Insert a Measure of Rest");
         insertRestMeasure.addActionListener(new java.awt.event.ActionListener() {
@@ -15381,13 +15394,17 @@ private void setLayoutPreference(Polylist layout)
      */
     
     private void addTabMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabMIActionPerformed
+    addTab(); 
+    }//GEN-LAST:event_addTabMIActionPerformed
+    
+public void addTab()
+  {
     int length = score.getLength();
     MelodyPart mp = new MelodyPart(length);
     mp.setInstrument(score.getPart(0).getInstrument());
-    addChorus(mp);  
-    }//GEN-LAST:event_addTabMIActionPerformed
-    
-    
+    addChorus(mp);      
+  }
+ 
  public void addChorus(MelodyPart mp)
    {
       int keySig = getCurrentStave().getKeySignature();
@@ -21030,6 +21047,11 @@ private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
       }
   }//GEN-LAST:event_importMidiMIActionPerformed
 
+private void insertChorusTabMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_insertChorusTabMIActionPerformed
+  {//GEN-HEADEREND:event_insertChorusTabMIActionPerformed
+    addTab();
+  }//GEN-LAST:event_insertChorusTabMIActionPerformed
+
 public void importMidiFile()
   {
     new MidiImport(this).importMidi();
@@ -22768,6 +22790,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton ignoreDuplicate;
     private javax.swing.JMenuItem importMidiMI;
     private javax.swing.JToggleButton improviseButton;
+    private javax.swing.JMenuItem insertChorusTabMI;
     private javax.swing.JMenuItem insertRestMeasure;
     private javax.swing.JButton insertVoicingButton;
     private javax.swing.JMenuItem invertMelody;

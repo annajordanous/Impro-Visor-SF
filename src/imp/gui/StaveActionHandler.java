@@ -2163,7 +2163,7 @@ public void keyPressed(KeyEvent e)
   if( e.getKeyCode() != KeyEvent.VK_ENTER )
    {
     // Don't trace the shift key alone.
-    Trace.log(2, "Key event: " + e);
+    Trace.log(3, "Key event: " + e);
    }
 
   notate.resetAdviceUsed();
