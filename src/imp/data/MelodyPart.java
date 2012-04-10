@@ -23,6 +23,7 @@ package imp.data;
 import imp.ImproVisor;
 import imp.com.InsertPartCommand;
 import imp.gui.Notate;
+import imp.util.ErrorLog;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.PrintStream;
@@ -425,7 +426,8 @@ public class MelodyPart
   public MelodyPart copy()
     {
     Trace.log(3, "copying melody part of size " + size);
-
+    try
+      {
     MelodyPart newPart = new MelodyPart(size);
     
        for( int i =  0; i < size; i++ )
@@ -449,6 +451,12 @@ public class MelodyPart
     newPart.swing = swing;
     newPart.instrument = instrument;
     return newPart;
+      }
+    catch( Error e )
+      {
+        ErrorLog.log(ErrorLog.FATAL, "Not enough memory to copy part.");
+        return null;
+      }
     }
 
       public int getPitchSounding(int index) {

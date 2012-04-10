@@ -83,7 +83,7 @@ public class BassChronotonic {
 		}
             }
             catch(Exception e) {
-                MIDIBeast.addError("Sorry, there was an unknown internal error while generating " +
+                MIDIBeast.addError("Sorry, there was an unknown internal error while extracting " +
                     "the bass patterns.");    
             }
 	}

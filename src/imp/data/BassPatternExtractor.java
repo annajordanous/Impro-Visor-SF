@@ -284,7 +284,9 @@ private ArrayList<String> rules()
 
         slotCount = 0;
         int noteNumber = 0;
-        while( slotCount < curChord.getDurationInSlots() && curChord.getDurationInSlots() > 0 && noteNumber < notes.size() )
+        while( slotCount < curChord.getDurationInSlots() 
+            && curChord.getDurationInSlots() > 0 
+            && noteNumber < notes.size() )
           {
             noteNumber++;
             curNote = notes.get(0);
@@ -303,9 +305,11 @@ private ArrayList<String> rules()
               {
                 //a note spans more than one chord
                 int inChordDuration = curNote.getNumberOfSlots() - (slotCount - curChord.getDurationInSlots());
-                SlottedNote inChordNote = new SlottedNote(inChordDuration, curNote.getPitch());
-                int outChordDuration = Math.abs(curNote.getNumberOfSlots() - inChordDuration);
-                SlottedNote outChordNote = new SlottedNote(outChordDuration, curNote.getPitch());
+                
+               SlottedNote inChordNote = new SlottedNote(inChordDuration, curNote.getPitch());
+               int outChordDuration = Math.abs(curNote.getNumberOfSlots() - inChordDuration);
+             
+               SlottedNote outChordNote = new SlottedNote(outChordDuration, curNote.getPitch());
 
                 //create a rule for the part of the note in current chord
                 String s = formatRule(inChordNote, nextNote, curChord, nextChord);
@@ -420,7 +424,7 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
     try
       {
         String s = MIDIBeast.stringDuration(note.getNumberOfSlots()) + " ";
-        String returnString = "";
+
         if( note.getPitch().equalsIgnoreCase("r") ) //rest
           {
             return "R" + s;
@@ -431,7 +435,7 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
           {
             if( note.getPitch().equalsIgnoreCase(curChord.getSlashBass()) )
               {
-                returnString += "B";
+                return "B" + s;
               }
             if( nextChord != null )
               {
@@ -439,25 +443,25 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
                   {
                     if( note.getPitch().equalsIgnoreCase(nextChord.getSlashBass()) ) //root of next chord
                       {
-                        returnString += "N";
+                        return "C" + s; // FIX: was "N" + s;
                       }
                     int dist = distanceInHalfSteps(note.getPitch(), nextChord.getSlashBass());
                     if( dist == 1 || dist == 11 ) //approach tone to next chord (within 2 half steps either side)
                       {
-                        returnString += "A";
+                        return "A" + s;
                       }
                   }
                 else
                   {
                     if( note.getPitch().equalsIgnoreCase(nextChord.getChordRoot()) ) //root of next chord
                       {
-                        returnString += "N";
+                        return "C" + s; // FIX: was "N" + s;
                       }
 
                     int dist = distanceInHalfSteps(note.getPitch(), nextChord.getChordRoot());
                     if( dist == 1 || dist == 11 ) //approach tone to next chord (within 1 half step either side)
                       {
-                        returnString += "A";
+                        return "A" + s;
                       }
                   }
               }
@@ -466,19 +470,19 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
           {
             if( note.getPitch().equalsIgnoreCase(curChord.getChordRoot()) ) //root of current chord
               {
-                returnString += "B";
+                return "B" + s;
               }
             if( nextChord != null )
               {
                 if( note.getPitch().equalsIgnoreCase(nextChord.getChordRoot()) ) //root of next chord
                   {
-                    returnString += "N";
+                    return "C" + s; // FIX: was "N" + s;
                   }
 
                 int dist = distanceInHalfSteps(note.getPitch(), nextChord.getChordRoot());
                 if( dist == 1 || dist == 11 ) //approach tone to next chord (within 1 half step either side)
                   {
-                    returnString += "A";
+                    return "A" + s;
                   }
               }
           }
@@ -488,7 +492,7 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
             int sv = getScaleValue(note, curChord);
             if( sv == 5 )
               {
-                returnString += "X(" + sv + ")";
+                return "X(" + sv + ")" + s; // The format will be changed in postprocessing
               }
             else
               {
@@ -508,20 +512,18 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
                       }
                     else if( upcomingNote != null && thisChord.classify(thisNote, upcomingNote, upcomingChord) == 0 )
                       {
-                        returnString += "C";
+                        return "C" + s;
                       }
                   }
                 if( sv > 1 )	//position within scale
                   {
-                    returnString += "X(" + sv + ")";
+                    return "X(" + sv + ")" + s; // The format will be changed in postprocessing
                   }
-                if( returnString.length() == 0 )
-                  {
-                    return "C" + s; //a note not in the scale
-                  }
+
+                return "C" + s; //a note not in the scale
               }
           }
-        return returnString + s;
+
       }
     catch( Exception e )
       {
@@ -530,6 +532,7 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
                 + "probably due to an incorrect format of the chord file.");
         return "";
       }
+    return "";
   }
 
 
