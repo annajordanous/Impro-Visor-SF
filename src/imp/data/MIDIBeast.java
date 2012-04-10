@@ -54,8 +54,12 @@ public static int thirtysecond;
 public static int thirtysecondtriplet;
 public static int sixtyfourth;
 public static int sixtyfourthtriplet;
+public static int quarterquintuplet;
+public static int eighthquintuplet;
+public static int sixteenthquintuplet;
+public static int thirtysecondquintuplet;
 public static int beat = 120;
-public static int minPrecision = 30;
+public static int minPrecision = 20;
 public static int precision = minPrecision;
 private static int roundThreshold = 20; // Used in rounding bass patterns
 public static int slotsPerMeasure = 480;
@@ -263,7 +267,7 @@ public static void changeTimeSig(int num, int denom)
 
 public static void calculateNoteTypes(int denominator)
   {
-    whole = denominator * beat;
+    whole = 4*beat; // I don't think this is time signature dependent! denominator * beat;
 
     if( whole % 3 == 0 )
       {
@@ -380,6 +384,29 @@ public static void calculateNoteTypes()
 
 public static String stringDuration(int numberOfSlots)
   {
+     if( numberOfSlots <= 0 )
+      {
+    System.out.print("stringDuration(" + numberOfSlots +")");
+       String result = "";
+        System.out.println("exception " + result);
+        new Exception("negative duration").printStackTrace();
+        return result;
+      }
+     
+    //System.out.print("stringDuration(" + numberOfSlots +")");
+    
+    StringBuilder buffer = new StringBuilder();
+    Note.getDurationString(buffer, numberOfSlots);
+    String result = buffer.toString();
+
+    //System.out.println(" = " + result);
+    return buffer.toString().substring(1);
+
+
+    /* This is the version from Brandy and Jim. It sometimes hangs.
+     * It would have been better to exploit the existing technology in
+     * Note.getDurationString.
+     * 
     String s = "";
     if( numberOfSlots == 0 )
       {
@@ -453,7 +480,13 @@ public static String stringDuration(int numberOfSlots)
             numberOfSlots -= sixtyfourthtriplet;
           }
       }
-    return s.substring(0, s.length() - 1);
+    String result = s.substring(0, s.length() - 1);
+    
+    System.out.println(" = " + result);
+    return result;
+    *
+    */
+
   }
 
 

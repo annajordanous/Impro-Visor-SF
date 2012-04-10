@@ -212,37 +212,51 @@ public class DrumPatternExtractor{
 	* For that reason, each Phrase is broken up into a measure. The notes from all 
 	* Phrases in the same measure are then put together into one Measure object.
 	*/
-	public void createMeasures(){
-		measures = new ArrayList<Measure>();
-		for(int i = 0; i < drumNoteArray.size(); i++){
-			ArrayList<SlottedNote> currentPhrase = drumNoteArray.get(i);
-			int measureNumber = 0;
-			int slotsSoFar = 0;
-			ArrayList<SlottedNote> notes = new ArrayList<SlottedNote>();
-			for(int j = 0; j < currentPhrase.size();j++){
-				SlottedNote currentNote = currentPhrase.get(j);
-				slotsSoFar += currentNote.getNumberOfSlots();
-				if(slotsSoFar < MIDIBeast.drumMeasureSize)
-					notes.add(currentNote);
-				else{
-                                        if(slotsSoFar > MIDIBeast.drumMeasureSize){
-						currentPhrase.add(j+1, new SlottedNote(slotsSoFar - MIDIBeast.drumMeasureSize, currentNote.getPitchNumber()));
-						currentNote.setNumberOfSlots(currentNote.getNumberOfSlots() - (slotsSoFar - MIDIBeast.drumMeasureSize));
-					}
-					notes.add(currentNote);
-					if(i==0) measures.add(new Measure());
-					measures.get(measureNumber++).addNotes(notes);
-					slotsSoFar = 0;
-					notes = new ArrayList<SlottedNote>();
-				}
-			}
-		}
-		if(debug){
-			System.out.println("## After createMeasures() ##");
-			for(int i = 0; i < measures.size(); i++)
-				System.out.println(measures.get(i));
-		}
-	}
+public void createMeasures()
+  {
+    int drumMeasureSize = MIDIBeast.drumMeasureSize;
+    measures = new ArrayList<Measure>();
+    for( int i = 0; i < drumNoteArray.size(); i++ )
+      {
+        ArrayList<SlottedNote> currentPhrase = drumNoteArray.get(i);
+        int measureNumber = 0;
+        int slotsSoFar = 0;
+        ArrayList<SlottedNote> notes = new ArrayList<SlottedNote>();
+        for( int j = 0; j < currentPhrase.size(); j++ )
+          {
+            SlottedNote currentNote = currentPhrase.get(j);
+            slotsSoFar += currentNote.getNumberOfSlots();
+            if( slotsSoFar < drumMeasureSize )
+              {
+                notes.add(currentNote);
+              }
+            else
+              {
+                if( slotsSoFar > drumMeasureSize )
+                  {
+                    currentPhrase.add(j + 1, new SlottedNote(slotsSoFar - drumMeasureSize, currentNote.getPitchNumber()));
+                    currentNote.setNumberOfSlots(currentNote.getNumberOfSlots() - (slotsSoFar - drumMeasureSize));
+                  }
+                notes.add(currentNote);
+                if( measureNumber >= measures.size() ) // was i == 0 )
+                  {
+                    measures.add(new Measure());
+                  }
+                measures.get(measureNumber++).addNotes(notes);
+                slotsSoFar = 0;
+                notes = new ArrayList<SlottedNote>();
+              }
+          }
+      }
+    if( debug )
+      {
+        System.out.println("## After createMeasures() ##");
+        for( int i = 0; i < measures.size(); i++ )
+          {
+            System.out.println(measures.get(i));
+          }
+      }
+  }
 
 	
 	/**

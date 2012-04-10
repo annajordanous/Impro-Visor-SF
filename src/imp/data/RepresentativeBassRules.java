@@ -20,7 +20,9 @@
  */
 
 package imp.data;
-import java.util.*;	
+import java.util.ArrayList;
+import java.util.Random;
+import polya.Polylist;
 
 /**
 * This class is used to take a Drum Part object as obtained from 
@@ -79,6 +81,7 @@ public class RepresentativeBassRules{
             return simplifiedPitchesRules;
         }
         
+        
         public RepresentativeBassRules(){
             try{
         	ImportBass im = new ImportBass();
@@ -101,7 +104,7 @@ public class RepresentativeBassRules{
                                 for(int i = 0; i < simplifiedPitchesRules.size(); i++)
                                         System.out.println(simplifiedPitchesRules.get(i));
                         }
-                        if(MIDIBeast.maxBassPatternLength!=0.0) truncateBassPatterns();
+                        //FIX: Broken: if(MIDIBeast.maxBassPatternLength!=0.0) truncateBassPatterns();
                         processDuplicateRules();
                         if(debug){
                                 System.out.println("\n## After processDuplicateRules() ##");
@@ -382,8 +385,10 @@ public class RepresentativeBassRules{
 			simplifiedPitchesRules.add(simplifyPitchInfo(MIDIBeast.originalBassRules.get(i)));
 	}
         
-        //If a maximum bass pattern length is specified, this method will truncate each bass pattern in excess of the desired length
-        //To the specified length
+        // If a maximum bass pattern length is specified, this method will 
+        // truncate each bass pattern in excess of the desired length
+        // to the specified length
+        // But this is broken
         private void truncateBassPatterns(){
             ArrayList<String> tempRules = new ArrayList<String>();
             double maxLength = MIDIBeast.maxBassPatternLength;
@@ -404,10 +409,12 @@ public class RepresentativeBassRules{
                         }
                         if(duration > maxSlotLength){
                             String type = "";
-                            if(split[j].charAt(0) == 'X') type = split[j].substring(0,4);
+                            if(split[j].charAt(0) == 'X') type = split[j].substring(0,4);  // FIX: Broken Here
                             else type = Character.toString(split[j].charAt(0));
                             int slotLength = MIDIBeast.numBeatsInBassRule(split[j]) - (duration - maxSlotLength);
                             int slotLength2 = MIDIBeast.numBeatsInBassRule(split[j]) - slotLength;
+                            
+                            // FIX: slotLength can be negative here!
                             String length = MIDIBeast.stringDuration(slotLength);
                             String length2 = MIDIBeast.stringDuration(slotLength2);
                             temp += type+length;
@@ -436,65 +443,97 @@ public class RepresentativeBassRules{
         }
 	
 	/**
+        * rk 10 April 2012: This has been broken for a long time.
+        * The problem is that e.g. X(5)4 is no longer used. Now it would be (X 5 4)
+        * In any case, it would be better to treat the string as a Polylist,
+        * rather than re-parsing it character by character.
+        * 
+        * I am not sure what AX is supposed to mean; delving into it.
+        * 
 	* This method is called on each rule by simplifyRulePitches() it handles the logic involved in simplifying
 	* the pitch info
 	* @param String - The pattern element(eg NAX(5)4) that is to be simplified
 	* @return String - The simplified string (eg X(5)4)
+        * 
 	*/
-	public String simplifyPitchInfo(String s){
-                s = s.substring(1, s.length()-1); //Remove Parens
-		String[] ruleElements = s.split(" ");
-		String returnString = "";
-		for(int i = 0; i < ruleElements.length; i++){
-			int rhythmIndex = 0;                 
-			for(int j = 0; j < ruleElements[i].length();j++){
-				if(ruleElements[i].charAt(j) == '('){ rhythmIndex = j  + 3; break; }
-				if(ruleElements[i].charAt(j) > 47 && ruleElements[i].charAt(j) < 58) { rhythmIndex = j; break; }
-			}
-			int xIndex = ruleElements[i].indexOf('X');
-			if(ruleElements[i].indexOf('B') != -1) returnString += "B" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-			else if(ruleElements[i].indexOf('R') != -1) returnString += "R" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-                        else if(ruleElements[i].indexOf('C') != -1) returnString += "C" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-			else if(xIndex != -1) {
-                            returnString += ruleElements[i].substring(xIndex, xIndex+4) + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-                        }
-			else if(ruleElements[i].indexOf('A') != -1) returnString += "A" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-			else if(ruleElements[i].indexOf('N') != -1) returnString += "N" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-			else returnString += "O" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
-		}
-		return returnString;
-	}
+//	public String oldSimplifyPitchInfo(String s){
+//                s = s.substring(1, s.length()-1); //Remove Parens
+//		String[] ruleElements = s.split(" ");
+//		String returnString = "";
+//		for(int i = 0; i < ruleElements.length; i++){
+//			int rhythmIndex = 0;                 
+//			for(int j = 0; j < ruleElements[i].length();j++){
+//				if(ruleElements[i].charAt(j) == '('){ rhythmIndex = j  + 3; break; }
+//				if(ruleElements[i].charAt(j) > 47 && ruleElements[i].charAt(j) < 58) { rhythmIndex = j; break; }
+//			}
+//			int xIndex = ruleElements[i].indexOf('X');
+//			if(ruleElements[i].indexOf('B') != -1) returnString += "B" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//			else if(ruleElements[i].indexOf('R') != -1) returnString += "R" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//                        else if(ruleElements[i].indexOf('C') != -1) returnString += "C" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//			else if(xIndex != -1) {
+//                            returnString += ruleElements[i].substring(xIndex, xIndex+4) + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//                        }
+//			else if(ruleElements[i].indexOf('A') != -1) returnString += "A" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//			else if(ruleElements[i].indexOf('N') != -1) returnString += "N" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//			else returnString += "O" + ruleElements[i].substring(rhythmIndex, ruleElements[i].length()) + " ";
+//		}
+//		return returnString;
+//	}
 	
+        // New version 10 April, changes old style X rule into new
+        public String simplifyPitchInfo(String s){  // work in progress, 10 April 2012
+                Polylist L = (Polylist)(Polylist.PolylistFromString(s).first()); // due to extra level of nesting
+               //System.out.print("string = " + s + ", polylist = " + L);
+               StringBuilder buffer = new StringBuilder();
+                while( L.nonEmpty() )
+                  {
+                    Object item = L.first();
+                    if( item instanceof String )
+                      {
+                        String stringItem = (String)item;
+                        char firstChar = stringItem.charAt(0);
+                        switch( firstChar )
+                          {
+                            case 'X':
+                                // Convert old-style X rules to new
+                                //i.e. X(5)8/3 becomes (X 5 8/3)
+                                
+                                L = L.rest();
+                                Polylist P = (Polylist)L.first();
+                                L = L.rest();
+                                
+                                buffer.append("(X ");
+                                buffer.append(P.first());
+                                buffer.append(" ");
+                                buffer.append(L.first());
+                                buffer.append(") ");
+                                
+                                break;
+                                
+                                
+                            default:
+                              buffer.append(stringItem);
+                              buffer.append(" ");  
+                              break;
+                          }
+                      }
+                    else
+                      {
+                        assert false;
+                      }
+                    
+                    L = L.rest();
+                  }
+                //System.out.println(", result = " + buffer.toString());
+                return buffer.toString();
+	}
+                
 	/**
 	* This method searches through the set of rules with simplified pitch information, removes
 	* all repeats, and creates a bass pattern for each set of repeats by assigning that pattern 
 	* a weight equal to the number of repeats corresponding to that pattern
 	*/
-	/*
-	public void processDuplicateRules(){
-		for(int i = 0; i < simplifiedPitchesRules.size(); i++)
-			sansDuplicatesRules.add(new String(simplifiedPitchesRules.get(i)));
-		for(int i = 0; i < sansDuplicatesRules.size(); i++){
-			if(sansDuplicatesRules.get(i).equals("Erased Duplicate")) continue;
-			int weight = 0; 
-			for(int j = 0; j < sansDuplicatesRules.size(); j++){
-				if(simplifiedPitchesRules.get(i).equals(simplifiedPitchesRules.get(j)) && i != j){
-					weight++;
-					sansDuplicatesRules.set(j, "Erased Duplicate");
-				}
-			}
-			if(weight > 0){
-				sansDuplicatesRules.set(i, "Erased Duplicate");
-				bassPatterns.add(new BassPatternObj(simplifiedPitchesRules.get(i), ++weight));
-                                duplicates.add("(" + simplifiedPitchesRules.get(i) + ") found " + weight + " times");
-			}
-		}	
-	}
-        
-        public ArrayList<String> getDuplicates(){
-            return duplicates;
-        }
-        */
+
         
         public void processDuplicateRules(){
             ArrayList<Integer> repeats = new ArrayList<Integer>();

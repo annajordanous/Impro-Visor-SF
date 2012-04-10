@@ -134,18 +134,18 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
         {
         jm.music.data.Part part = importMelody.getPart(i);
         int channel = part.getChannel();
-        //System.out.println("---------------------------------------------");
         //System.out.println("part " + i + " raw = " + part);
         int numTracks = part.getSize();
         for( int j = 0; j < numTracks; j++ )
           {
-            //System.out.println("part " + i + " track " + j + " converted = ");
+            //System.out.println("---------------------------------------------");
+            //System.out.println("part " + i + " track " + j + " conversion: ");
             MelodyPart partOut = new MelodyPart();
             importMelody.convertToImpPart(part, j, partOut);
             
             MidiImportRecord record = new MidiImportRecord(channel, j, partOut);
             records.add(record);
-            //System.out.println(partOut);
+            //System.out.println("part out = " + partOut);
             
             //notate.addChorus(partOut);
           }

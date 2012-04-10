@@ -19,8 +19,8 @@
  */
 package imp.data;
 
-import imp.util.ErrorLog;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * ImportMelody is adapted by Robert Keller from ImportBass, by Brandy McMenamy
@@ -36,22 +36,18 @@ import java.util.ArrayList;
 public class ImportMelody
 {
 
-private ArrayList<Note> originalMelodyNotes = new ArrayList<Note>();
-private jm.music.data.Score score;
-private jm.music.data.Part parts[];
-boolean debug = false;
-/**
- * The phrase of sequential, non-chordal notes for the melody line
- */
+//private ArrayList<Note> originalMelodyNotes = new ArrayList<Note>();
 
-private jm.music.data.Phrase mainPhrase;
+private jm.music.data.Part parts[];
+
+boolean debug = false;
 
 
 /**
  * The initial notes from the melody line
  */
 
-private ArrayList<jm.music.data.Note> noteArray = new ArrayList<jm.music.data.Note>();
+private ArrayList<jm.music.data.Note> origNoteArray;
 
 
 /**
@@ -59,7 +55,7 @@ private ArrayList<jm.music.data.Note> noteArray = new ArrayList<jm.music.data.No
  * in the style generation. (Contains corrected rhythm durations).
  */
 
-private ArrayList<Note> roundedNoteArray = new ArrayList<Note>();
+private ArrayList<Note> roundedNoteArray;
 
 
 /**
@@ -69,7 +65,6 @@ private ArrayList<Note> roundedNoteArray = new ArrayList<Note>();
 
 public ImportMelody(jm.music.data.Score score)
   {
-    this.score = score;
     parts = score.getPartArray();
   }
 
@@ -78,35 +73,23 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
                              int trackNumber,
                              MelodyPart partOut)
   {
-    noteArray = new ArrayList<jm.music.data.Note>();
- 
-    try
-      {
-        mainPhrase = melodyPart.getPhraseArray()[trackNumber];
-        getNoteArray();
-        //if(MIDIBeast.mergeMelodyRests) mergeRests();
+    origNoteArray = new ArrayList<jm.music.data.Note>();
 
-        // This is a key step in getting melodies to be acceptable to Impro-Visor
-        
-        roundedNoteArray = roundDurations(MIDIBeast.precision, noteArray);
-        
-        if( roundedNoteArray.isEmpty() )
-          {
-            ErrorLog.log(ErrorLog.WARNING, "note array of size zero, unable to continue");
-          }
-        else
-          {
-            originalMelodyNotes = roundedNoteArray;
-          }
-      }
-    catch( ArrayIndexOutOfBoundsException e )
-      {
-        ErrorLog.log(ErrorLog.WARNING, "An array index out of bounds exception was raised");
-      }
+    jm.music.data.Phrase phrase = melodyPart.getPhraseArray()[trackNumber];
+
+    jm.music.data.Note[] notes = phrase.getNoteArray();
+    
+    origNoteArray.addAll(Arrays.asList(notes));
+
+    //if(MIDIBeast.mergeMelodyRests) mergeRests();
+
+    // This is a key step in getting melodies to be acceptable to Impro-Visor
+
+    roundedNoteArray = roundDurations(MIDIBeast.precision, origNoteArray);
 
     // Handle the case where the phrase does not start immediately.
 
-    double startTime = mainPhrase.getStartTime();
+    double startTime = phrase.getStartTime();
 
     if( startTime > 0 )
       {
@@ -134,6 +117,7 @@ public static Note convertToImpNote(jm.music.data.Note noteIn)
       }
 
     Note note = new Note(pitch, numberOfSlots);
+    note.setVolume(noteIn.getDynamic());
     return note;
   }
 
@@ -154,30 +138,16 @@ public jm.music.data.Part getPart(int i)
   }
 
 
-/**
- * Reads the notes of the main phrase into noteArray
- */
-
-public void getNoteArray()
-  {
-    jm.music.data.Note[] notes = mainPhrase.getNoteArray();
-    for( int i = 0; i < notes.length; i++ )
-      {
-        noteArray.add(notes[i]);
-      }
-  }
-
-
 public void mergeRests()
   {
-    for( int i = 1; i < noteArray.size(); i++ )
+    for( int i = 1; i < origNoteArray.size(); i++ )
       {
-        if( !(noteArray.get(i).isRest()) )
+        if( !(origNoteArray.get(i).isRest()) )
           {
             continue;
           }
-        noteArray.get(i - 1).setRhythmValue(noteArray.get(i).getRhythmValue() + noteArray.get(i - 1).getRhythmValue());
-        noteArray.remove(i);
+        origNoteArray.get(i - 1).setRhythmValue(origNoteArray.get(i).getRhythmValue() + origNoteArray.get(i - 1).getRhythmValue());
+        origNoteArray.remove(i);
         i--;
       }
   }
@@ -196,7 +166,12 @@ public ArrayList<Note> roundDurations(int precision, ArrayList<jm.music.data.Not
 
     for( int i = 0; i < noteArray.size(); i++ )
       {
-        Note noteOut = convertToImpNote(noteArray.get(i));
+        jm.music.data.Note noteIn = noteArray.get(i);
+        Note noteOut = convertToImpNote(noteIn);
+//        if( noteIn.getPitch() >= 0 )
+//          {
+//          System.out.println(noteIn + " -> " + noteOut);
+//          }
         roundedNoteArray.add(noteOut);
       }
 
