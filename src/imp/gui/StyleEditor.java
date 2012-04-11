@@ -2997,13 +2997,6 @@ void playBassColumn(int colIndex)
       newStyle();
       newTable();
 
-      /*
-      generationProgress.setLocationRelativeTo(this);
-      generationProgress.setSize(400, 300);
-      generationProgress.setVisible(true);  // Show the "Generating style..." JDialog.
-      stylePic.setVisible(true);
-       */
-
       int minDuration = getMinDuration();
       
       // Note: The order of pattern generation (drums, bass, chords ) needs to be invariant now.
@@ -3019,7 +3012,10 @@ void playBassColumn(int colIndex)
             {
             ExtractionEditor drumExtraction = new ExtractionEditor(null,
                     false, this, cm, 1);
-            drumExtraction.setLocationRelativeTo(this);
+            WindowRegistry.registerWindow(drumExtraction);
+            drumExtraction.setLocation(
+              this.getX() + WindowRegistry.defaultXnewWindowStagger,
+              this.getY() + WindowRegistry.defaultYnewWindowStagger);
             drumExtraction.setVisible(true);
            }
           else
@@ -3044,7 +3040,10 @@ void playBassColumn(int colIndex)
             {
             ExtractionEditor bassExtraction = new ExtractionEditor(null,
                     false, this, cm, 0);
-            bassExtraction.setLocationRelativeTo(this);
+            WindowRegistry.registerWindow(bassExtraction);
+            bassExtraction.setLocation(
+              this.getX() + 2*WindowRegistry.defaultXnewWindowStagger,
+              this.getY() + 2*WindowRegistry.defaultYnewWindowStagger);
             bassExtraction.setVisible(true);
             }
           else
@@ -3069,7 +3068,10 @@ void playBassColumn(int colIndex)
             {
             ExtractionEditor chordExtraction = new ExtractionEditor(null,
                     false, this, cm, 2, minDuration);
-            chordExtraction.setLocationRelativeTo(this);
+            WindowRegistry.registerWindow(chordExtraction);
+            chordExtraction.setLocation(
+              this.getX() + 3*WindowRegistry.defaultXnewWindowStagger,
+              this.getY() + 3*WindowRegistry.defaultYnewWindowStagger);
             chordExtraction.setVisible(true);
             }
           else

@@ -21,9 +21,10 @@
 
 package imp.gui;
 
-import javax.swing.*;
-import java.util.LinkedList;
 import imp.util.Trace;
+import java.awt.Window;
+import java.util.LinkedList;
+import javax.swing.JFrame;
 
 /**
  * This is a singleton class to hold information about Notate and StyleEditor
@@ -70,7 +71,7 @@ public static int windowNumber = 1;
  * Adds the window to the vector of windows, allowing it to appear in the Window menu
  *
  */
-public static void registerWindow(JFrame w)
+public static void registerWindow(Window w)
   {
     Trace.log(2, "Notate: window registered: " + w);
 
