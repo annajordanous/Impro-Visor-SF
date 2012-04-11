@@ -26,6 +26,7 @@ import imp.com.PlayScoreCommand;
 import imp.data.*;
 import imp.util.ErrorLog;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
@@ -49,6 +50,8 @@ ArrayList<RepresentativeDrumRules.DrumPattern> selectedDrumRules;
 RepresentativeChordRules repChordRules;
 ArrayList<RepresentativeChordRules.ChordPattern> rawChordRules;
 ArrayList<RepresentativeChordRules.ChordPattern> selectedChordRules;
+
+DefaultListModel selectedRulesModel;
 /**
  * minimum duration (in slots) for a note not to be counted as a rest.
  */
@@ -357,6 +360,11 @@ private void checkForAndThrowErrors()
   }
 
 
+/**
+ * Plays a selected rule. In this case, the rules themselves are stored
+ * in the JList.
+ */
+
 public void playSelectedRule()
   {
     Polylist rule = null;
@@ -394,8 +402,6 @@ public void playSelectedRule()
             break;
       }
 
-//    playRule(rule, duration);
-    
     if( rule.isEmpty() )
       {
         ErrorLog.log(ErrorLog.WARNING, "Internal Error:" 
@@ -405,13 +411,13 @@ public void playSelectedRule()
 
     //System.out.println("rule for style = " + rule);
     Style tempStyle = Style.makeStyle(rule);
-            tempStyle.setSwing(styleEditor.getSwingValue());
-            tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
-            tempStyle.setName("extractionPattern");
-            Style.setStyle("extractionPattern", tempStyle);
-            // This is necessary so that the StyleListModel menu in notate is reset.
-            // Without it, the contents will be emptied.
-            notate.reloadStyles();
+    tempStyle.setSwing(styleEditor.getSwingValue());
+    tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
+    tempStyle.setName("extractionPattern");
+    Style.setStyle("extractionPattern", tempStyle);
+    // This is necessary so that the StyleListModel menu in notate is reset.
+    // Without it, the contents will be emptied.
+    notate.reloadStyles();
     ChordPart c = new ChordPart();
     String chord = styleEditor.getChord();
     boolean muteChord = styleEditor.isChordMuted();
@@ -420,13 +426,13 @@ public void playSelectedRule()
 
     Score s = new Score(4);
     s.setBassVolume(styleEditor.getVolume());
-    if( muteChord )
+    if( type == CHORD )
       {
-        notate.setChordVolume(0);
+        notate.setChordVolume(styleEditor.getVolume());
       }
     else
       {
-        notate.setChordVolume(styleEditor.getVolume());
+        notate.setChordVolume(0);
       }
     notate.setDrumVolume(styleEditor.getVolume());
     s.setTempo(styleEditor.getTempo());
@@ -441,6 +447,12 @@ public void playSelectedRule()
                          0,
                          notate.getTransposition()).execute();
   }
+
+
+/**
+ * Plays a raw rule. In this case, Strings are stored in the JList and
+ * rules must be created from them.
+ */
 
 public void playRawRule()
   {
@@ -452,52 +464,50 @@ public void playRawRule()
       {
         case BASS:
             //Prevent user from playing a non-rule
-            if( !(incompleteRule.trim().charAt(0) == '(') )
-              {
-                return;
-              }
+//            if( !(incompleteRule.trim().charAt(0) == '(') )
+//              {
+//                return;
+//              }
             firstParensIndex = incompleteRule.indexOf("(");
             lastParensIndex = incompleteRule.lastIndexOf(")");
-            incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
+            //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
             RepresentativeBassRules.BassPatternObj selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
             duration = selectedBassRule.getDuration();
             rule = Notate.parseListFromString(selectedBassRule.toString());
             break;
             
         case DRUM:
-            if( incompleteRule.charAt(0) == 'C' )
-              {
-                return;
-              }
+//            if( incompleteRule.charAt(0) == 'C' )
+//              {
+//                return;
+//              }
             rule = Notate.parseListFromString(incompleteRule);
             duration = MIDIBeast.slotsPerMeasure;
             break;
             
         case CHORD:
-            if( !(incompleteRule.trim().charAt(0) == '(') )
-              {
-                return;
-              }
+//            if( !(incompleteRule.trim().charAt(0) == '(') )
+//              {
+//                return;
+//              }
             firstParensIndex = incompleteRule.indexOf("(");
             lastParensIndex = incompleteRule.lastIndexOf(")");
-            incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
+            //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
             RepresentativeChordRules.ChordPattern selectedChordRule = repChordRules.makeChordPattern(incompleteRule, 1);
             duration = selectedChordRule.getDuration();
             rule = Notate.parseListFromString(selectedChordRule.toString());
             break;
       }
 
-    //playRule(rule, duration);
-    
-    //System.out.println("rule for style = " + rule);
+    System.out.println("rule for style = " + rule);
     Style tempStyle = Style.makeStyle(rule);
-            tempStyle.setSwing(styleEditor.getSwingValue());
-            tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
-            tempStyle.setName("extractionPattern");
-            Style.setStyle("extractionPattern", tempStyle);
-            // This is necessary so that the StyleListModel menu in notate is reset.
-            // Without it, the contents will be emptied.
-            notate.reloadStyles();
+    tempStyle.setSwing(styleEditor.getSwingValue());
+    tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
+    tempStyle.setName("extractionPattern");
+    Style.setStyle("extractionPattern", tempStyle);
+    // This is necessary so that the StyleListModel menu in notate is reset.
+    // Without it, the contents will be emptied.
+    notate.reloadStyles();
     ChordPart c = new ChordPart();
     String chord = styleEditor.getChord();
     boolean muteChord = styleEditor.isChordMuted();
@@ -506,13 +516,13 @@ public void playRawRule()
 
     Score s = new Score(4);
     s.setBassVolume(styleEditor.getVolume());
-    if( muteChord )
+    if( type == CHORD )
       {
-        notate.setChordVolume(0);
+        notate.setChordVolume(styleEditor.getVolume());
       }
     else
       {
-        notate.setChordVolume(styleEditor.getVolume());
+        notate.setChordVolume(0);
       }
     notate.setDrumVolume(styleEditor.getVolume());
     s.setTempo(styleEditor.getTempo());
@@ -525,98 +535,9 @@ public void playRawRule()
                          notate.getMidiSynth(),
                          ImproVisor.getCurrentWindow(),
                          0,
-                         notate.getTransposition()).execute();
-    
-//    if( rule.isEmpty() )
-//      {
-//        ErrorLog.log(ErrorLog.WARNING, "Internal Error:" 
-//                      + "Extraction Editor: Empty Rule");
-//        return;
-//      }
-//
-//    Style tempStyle = Style.makeStyle(rule);
-//    ChordPart c = new ChordPart();
-//    String chord = styleEditor.getChord();
-//    boolean muteChord = styleEditor.isChordMuted();
-//
-//    c.addChord(chord, duration);
-//    c.setStyle(tempStyle);
-//
-//    Score s = new Score(4);
-//    s.setBassVolume(styleEditor.getVolume());
-//    if( muteChord )
-//      {
-//        s.setChordVolume(0);
-//      }
-//    else
-//      {
-//        s.setChordVolume(styleEditor.getVolume());
-//      }
-//    s.setDrumVolume(styleEditor.getVolume());
-//    s.setTempo(styleEditor.getTempo());
-//    //s.setVolumes(notate.getMidiSynth());
-//    s.setChordProg(c);
-//
-//    new PlayScoreCommand(s,
-//                         0,
-//                         true,
-//                         notate.getMidiSynth(),
-//                         ImproVisor.getCurrentWindow(),
-//                         0,
-//                         notate.getTransposition()).execute();
-  }
+                         notate.getTransposition()).execute();  }
 
 
-public void playRule(Polylist rule, int duration)
-  {
-    rule = (Polylist)rule.first();
-    System.out.println("playing rule " + rule);
-    if( rule.isEmpty() )
-      {
-        ErrorLog.log(ErrorLog.WARNING, "Internal Error:" 
-                      + "Extraction Editor: Empty Rule");
-        return;
-      }
-    
-    //System.out.println("rule for style = " + rule);
-    Style tempStyle = Style.makeStyle(rule);
-            tempStyle.setSwing(styleEditor.getSwingValue());
-            tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
-            tempStyle.setName("extractionPattern");
-            Style.setStyle("extractionPattern", tempStyle);
-            // This is necessary so that the StyleListModel menu in notate is reset.
-            // Without it, the contents will be emptied.
-            notate.reloadStyles();
-    ChordPart c = new ChordPart();
-    String chord = styleEditor.getChord();
-    boolean muteChord = styleEditor.isChordMuted();
-    c.addChord(chord, new Double(duration).intValue());
-    c.setStyle(tempStyle);
-
-    Score s = new Score(4);
-    s.setBassVolume(styleEditor.getVolume());
-    if( muteChord )
-      {
-        notate.setChordVolume(0);
-      }
-    else
-      {
-        notate.setChordVolume(styleEditor.getVolume());
-      }
-    notate.setDrumVolume(styleEditor.getVolume());
-    s.setTempo(styleEditor.getTempo());
-    //s.setVolumes(notate.getMidiSynth());
-    s.setChordProg(c);
-
-    new PlayScoreCommand(s,
-                         0,
-                         true,
-                         notate.getMidiSynth(),
-                         ImproVisor.getCurrentWindow(),
-                         0,
-                         notate.getTransposition()).execute();
-
-  }
 
 /**
  * This method is called from within the constructor to initialize the form.
@@ -715,7 +636,7 @@ public void playRule(Polylist rule, int duration)
         optionPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Maimum Number of Clusters: ");
+        jLabel1.setText("Maximum Number of Clusters: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
