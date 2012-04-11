@@ -32,7 +32,10 @@ import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 
 /**
- * @author Robert Keller, with most code by Jim Herold
+ * @author Robert Keller, from original code by Jim Herold
+ * When there is time, this should be refactored into three separate
+ * derived classes. There is no point in having all three lists: bass, chord,
+ * and drums in each of three instances of this editor.
  */
 public class ExtractionEditor extends javax.swing.JDialog
 {
@@ -44,14 +47,21 @@ int type;
 RepresentativeBassRules repBassRules;
 ArrayList<RepresentativeBassRules.BassPatternObj> rawBassRules;
 ArrayList<RepresentativeBassRules.BassPatternObj> selectedBassRules;
+
 RepresentativeDrumRules repDrumRules;
 ArrayList<RepresentativeDrumRules.DrumPattern> rawDrumRules;
 ArrayList<RepresentativeDrumRules.DrumPattern> selectedDrumRules;
+
 RepresentativeChordRules repChordRules;
 ArrayList<RepresentativeChordRules.ChordPattern> rawChordRules;
 ArrayList<RepresentativeChordRules.ChordPattern> selectedChordRules;
 
+/**
+ * Models for the raw and selected JLists
+ */
+DefaultListModel rawRulesModel;
 DefaultListModel selectedRulesModel;
+
 /**
  * minimum duration (in slots) for a note not to be counted as a rest.
  */
@@ -86,6 +96,9 @@ public ExtractionEditor(java.awt.Frame parent,
     this.cm = cm;
     this.type = type;
     this.minDuration = minDuration;
+    
+    rawRulesModel      = new DefaultListModel();
+    selectedRulesModel = new DefaultListModel();
 
     initComponents();
     initComponents2();
@@ -185,8 +198,11 @@ public void addBassRawRules()
               }
           }
       }
-
-    rawRulesJList.setListData(rawRules.toArray());
+    for( String rawRule: rawRules )
+      {
+      rawRulesModel.addElement(rawRule);
+      }
+    rawRulesJList.setModel(rawRulesModel);
     rawRulesJList.setSelectedIndex(0);
   }
 
@@ -213,7 +229,12 @@ public void addDrumRawRules()
       {
         rawRules.add(duplicates.get(i) + "(weight 1))");
       }
-    rawRulesJList.setListData(rawRules.toArray());
+    
+   for( String rawRule: rawRules )
+      {
+      rawRulesModel.addElement(rawRule);
+      }
+    rawRulesJList.setModel(rawRulesModel);
     rawRulesJList.setSelectedIndex(0);
   }
 
@@ -250,30 +271,49 @@ public void addChordRawRules()
       {
         rawRules.add("No Duplicates Found");
       }
-
-    rawRulesJList.setListData(rawRules.toArray());
+    
+   for( String rawRule: rawRules )
+      {
+      rawRulesModel.addElement(rawRule);
+      }
+    rawRulesJList.setModel(rawRulesModel);
     rawRulesJList.setSelectedIndex(0);
   }
 
 public void addBassSelectedRules()
   {
-    selectedBassRules = repBassRules.getBassRules();
-    selectedRulesJList.setListData(selectedBassRules.toArray());
-    selectedRulesJList.setSelectedIndex(0);
+   selectedRulesModel.clear();
+   selectedBassRules = repBassRules.getBassRules();
+   for( RepresentativeBassRules.BassPatternObj selectedRule: selectedBassRules )
+      {
+      selectedRulesModel.addElement(selectedRule);
+      }
+    selectedRulesJList.setModel(selectedRulesModel);
+    selectedRulesJList.setSelectedIndex(selectedBassRules.size()-1);
   }
 
 public void addDrumSelectedRules()
   {
-    selectedDrumRules = repDrumRules.getRepresentativePatterns();
-    selectedRulesJList.setListData(selectedDrumRules.toArray());
-    selectedRulesJList.setSelectedIndex(0);
+   selectedRulesModel.clear();
+   selectedDrumRules = repDrumRules.getRepresentativePatterns();
+   for( RepresentativeDrumRules.DrumPattern selectedRule: selectedDrumRules )
+      {
+      selectedRulesModel.addElement(selectedRule);
+      }
+    selectedRulesJList.setModel(selectedRulesModel);
+    selectedRulesJList.setSelectedIndex(selectedDrumRules.size()-1);
   }
 
 public void addChordSelectedRules()
   {
-    selectedChordRules = repChordRules.getChordRules();
-    selectedRulesJList.setListData(selectedChordRules.toArray());
-    selectedRulesJList.setSelectedIndex(0);
+   selectedRulesModel.clear();
+   selectedChordRules = repChordRules.getChordRules();
+   for( RepresentativeChordRules.ChordPattern selectedRule: selectedChordRules )
+      {
+      selectedRulesModel.addElement(selectedRule);
+      }
+    selectedRulesJList.setModel(selectedRulesModel);
+    selectedRulesJList.setSelectedIndex(selectedChordRules.size()-1);
   }
 
 private void initComponents2()
@@ -578,11 +618,7 @@ public void playRawRule()
         rawPatternsPanel.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanel.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        rawRulesJList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        rawRulesJList.setModel(selectedRulesModel);
         rawRulesJList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rawPatternsMouseClicked(evt);
@@ -607,11 +643,7 @@ public void playRawRule()
         selectedPatternsPanel.setMinimumSize(new java.awt.Dimension(300, 200));
         selectedPatternsPanel.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        selectedRulesJList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        selectedRulesJList.setModel(selectedRulesModel);
         selectedRulesJList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 selectedPatternsMouseClicked(evt);
@@ -872,18 +904,21 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
       switch( type )
         {
           case BASS:
-              if( !(incompleteRule.trim().charAt(0) == '(') )
-                {
-                  return;
-                }
-              firstParensIndex = incompleteRule.indexOf("(");
-              lastParensIndex = incompleteRule.lastIndexOf(")");
-              incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
+//              if( !(incompleteRule.trim().charAt(0) == '(') )
+//                {
+//                  return;
+//                }
+              //firstParensIndex = incompleteRule.indexOf("(");
+              //lastParensIndex = incompleteRule.lastIndexOf(")");
+              //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
               RepresentativeBassRules.BassPatternObj selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
 
               selectedBassRules.add(selectedBassRule);
-              selectedRulesJList.setListData(selectedBassRules.toArray());
+              addBassSelectedRules();
+              rawRulesModel.removeElement(incompleteRule);
+              //selectedRulesJList.setListData(selectedBassRules.toArray());
               break;
+              
           case DRUM:
               if( incompleteRule.charAt(0) == 'C' )
                 {
@@ -910,20 +945,23 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
                   drumPattern.addRule(drumRule);
                 }
               selectedDrumRules.add(drumPattern);
-              selectedRulesJList.setListData(selectedDrumRules.toArray());
+              addDrumSelectedRules();
+              rawRulesModel.removeElement(incompleteRule);
               break;
+              
           case CHORD:
-              if( !(incompleteRule.trim().charAt(0) == '(') )
-                {
-                  return;
-                }
-              firstParensIndex = incompleteRule.indexOf("(");
-              lastParensIndex = incompleteRule.lastIndexOf(")");
-              incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
+//              if( !(incompleteRule.trim().charAt(0) == '(') )
+//                {
+//                  return;
+//                }
+              //firstParensIndex = incompleteRule.indexOf("(");
+              //lastParensIndex = incompleteRule.lastIndexOf(")");
+              //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
               RepresentativeChordRules.ChordPattern selectedChordRule = repChordRules.makeChordPattern(incompleteRule, 1);
 
               selectedChordRules.add(selectedChordRule);
-              selectedRulesJList.setListData(selectedChordRules.toArray());
+              addChordSelectedRules();
+              rawRulesModel.removeElement(incompleteRule);
               break;
         }
 
@@ -1049,4 +1087,15 @@ private void endBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GE
 private javax.swing.JButton errorButton;
 private javax.swing.JDialog errorDialog;
 private javax.swing.JLabel errorMessage;
+
+  /**
+   * Override dispose so as to unregister this window first.
+   */
+  
+  @Override
+  public void dispose()
+    {
+    WindowRegistry.unregisterWindow(this);
+    super.dispose();
+    }
 }
