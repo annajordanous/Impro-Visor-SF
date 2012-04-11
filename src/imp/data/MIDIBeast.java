@@ -389,7 +389,7 @@ public static String stringDuration(int numberOfSlots)
     System.out.print("stringDuration(" + numberOfSlots +")");
        String result = "";
         System.out.println("exception " + result);
-        new Exception("negative duration").printStackTrace();
+        new Exception("non-positive duration").printStackTrace();
         return result;
       }
      
