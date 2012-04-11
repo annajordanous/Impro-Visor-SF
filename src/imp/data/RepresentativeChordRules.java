@@ -70,19 +70,19 @@ public ArrayList<ChordPattern> getChordRules()
  * @param p - the part (instrument) that you want to be the Chord part.
  * @throws Exception
  */
-public void changePart(jm.music.data.Part p) throws Exception
-  {
-    b = new ChordPatternExtractor(minDuration);
-    c = new ChordChronotonic(b);
-    initialize();
-    simplifyRulePitches();
-    processDuplicateRules();
-    splitUpIntoSections();
-    pruneSections();
-    findTentativeRepresentatives();
-    cluster();
-    getRepresentativeRules();
-  }
+//public void changePart(jm.music.data.Part p) throws Exception
+//  {
+//    b = new ChordPatternExtractor(minDuration);
+//    c = new ChordChronotonic(b);
+//    initialize();
+//    simplifyRulePitches();
+//    processDuplicateRules();
+//    splitUpIntoSections();
+//    pruneSections();
+//    findTentativeRepresentatives();
+//    cluster();
+//    getRepresentativeRules();
+//  }
 
 /**
  * This is a shameless hack that gives the Style GUI access to makeChordPattern
