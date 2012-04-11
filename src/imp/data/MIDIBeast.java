@@ -388,7 +388,7 @@ public static String stringDuration(int numberOfSlots)
       {
     System.out.print("stringDuration(" + numberOfSlots +")");
        String result = "";
-        System.out.println("exception " + result);
+        System.out.println("exception noted, empty string returned" + result);
         new Exception("non-positive duration").printStackTrace();
         return result;
       }

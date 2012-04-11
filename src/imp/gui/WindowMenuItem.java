@@ -144,18 +144,13 @@ public class WindowMenuItem
       title = "Untitled";
       }
 
-
     if( current == window )
       {
-
       menuItem.setText(number + ": " + title + " (current window)");
-
       }
     else
       {
-
       menuItem.setText(number + ": " + title);
-
       }
 
     return menuItem;
@@ -165,5 +160,6 @@ public class WindowMenuItem
     {
     return window;
     }
+ 
 
   }
