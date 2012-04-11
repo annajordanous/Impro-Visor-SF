@@ -3010,8 +3010,8 @@ void playBassColumn(int colIndex)
           MIDIBeast.repDrumRules = d;
           if( MIDIBeast.showExtraction )
             {
-            ExtractionEditor drumExtraction = new ExtractionEditor(null,
-                    false, this, cm, 1);
+            ExtractionEditor drumExtraction = 
+                    new ExtractionEditor(null, false, this, cm, 1);
             WindowRegistry.registerWindow(drumExtraction);
             drumExtraction.setLocation(
               this.getX() + WindowRegistry.defaultXnewWindowStagger,
@@ -3038,8 +3038,8 @@ void playBassColumn(int colIndex)
           MIDIBeast.repBassRules = r;
           if( MIDIBeast.showExtraction )
             {
-            ExtractionEditor bassExtraction = new ExtractionEditor(null,
-                    false, this, cm, 0);
+            ExtractionEditor bassExtraction = 
+                    new ExtractionEditor(null, false, this, cm, 0);
             WindowRegistry.registerWindow(bassExtraction);
             bassExtraction.setLocation(
               this.getX() + 2*WindowRegistry.defaultXnewWindowStagger,
@@ -3066,8 +3066,8 @@ void playBassColumn(int colIndex)
           MIDIBeast.repChordRules = c;
           if( MIDIBeast.showExtraction )
             {
-            ExtractionEditor chordExtraction = new ExtractionEditor(null,
-                    false, this, cm, 2, minDuration);
+            ExtractionEditor chordExtraction = 
+                    new ExtractionEditor(null, false, this, cm, 2, minDuration);
             WindowRegistry.registerWindow(chordExtraction);
             chordExtraction.setLocation(
               this.getX() + 3*WindowRegistry.defaultXnewWindowStagger,
