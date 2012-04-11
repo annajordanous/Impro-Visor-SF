@@ -24,8 +24,10 @@
 
 package imp.gui;
 
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.Window;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 
 /**
  * Class for containing a single window instance
@@ -44,7 +46,7 @@ import java.awt.event.*;
 
 public class WindowMenuItem
   {
-  private JFrame window;
+  private Window window;
 
   private JMenuItem menuItem;
 
@@ -55,7 +57,7 @@ public class WindowMenuItem
    * constructs the Window menu JMenuItem for a particular Notate object
    *
    */
-  public WindowMenuItem(JFrame w)
+  public WindowMenuItem(Window w)
     {
 
     window = w;
@@ -132,9 +134,10 @@ public class WindowMenuItem
     return getMI(null);
     }
 
-  public JMenuItem getMI(JFrame current)
+  public JMenuItem getMI(Window current)
     {
-    String title = window.getTitle();
+
+    String title = window instanceof JFrame ? ((JFrame)window).getTitle() : "";
 
     if( title.equals("") )
       {
@@ -158,7 +161,7 @@ public class WindowMenuItem
     return menuItem;
     }
 
-  public JFrame getWindow()
+  public Window getWindow()
     {
     return window;
     }
