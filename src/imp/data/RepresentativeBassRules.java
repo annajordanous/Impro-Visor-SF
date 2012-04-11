@@ -104,7 +104,9 @@ public class RepresentativeBassRules{
                                 for(int i = 0; i < simplifiedPitchesRules.size(); i++)
                                         System.out.println(simplifiedPitchesRules.get(i));
                         }
-                        //FIX: Broken: if(MIDIBeast.maxBassPatternLength!=0.0) truncateBassPatterns();
+                        
+                        if(MIDIBeast.maxBassPatternLength!=0.0) truncateBassPatterns();
+                        
                         processDuplicateRules();
                         if(debug){
                                 System.out.println("\n## After processDuplicateRules() ##");
@@ -385,6 +387,180 @@ public class RepresentativeBassRules{
 			simplifiedPitchesRules.add(simplifyPitchInfo(MIDIBeast.originalBassRules.get(i)));
 	}
         
+        
+        /**
+         * Return the duration of an item in a bass pattern.
+         * The types of items are of the form Cd, where
+         * C is a letter and d is a duration string,
+         * and (X s d), where s is a scale degree string
+         * and d is a duration string.
+         * An example of a duration string is 4+16/3 etc.
+         * @param ob
+         * @return 
+         */
+        
+        int getBassItemDuration(Object ob)
+          {
+          int result = 0;
+          if( ob instanceof Polylist )
+            {
+              Polylist listOb = (Polylist)ob;
+              
+              result = Duration.getDuration(listOb.third().toString());
+            }
+          else if( ob instanceof String )
+            {
+             String stringOb = (String)ob;
+             
+             result = Duration.getDuration(stringOb.substring(1));
+            }
+          
+          //System.out.println(ob + " -> " + result);
+          return result;
+          }
+        
+        
+        /**
+         * Produce a duration string from a given duration string,
+         * by truncating the latter to a specific length in slots.
+         * @param durationString
+         * @param length
+         * @return 
+         */
+        
+        String truncateDurationString(String durationString, int length)
+          {
+             int duration = Duration.getDuration(durationString);
+             
+             duration -= length;
+             
+             if( duration <= 0 )
+               {
+                 // No truncation necessary in this case
+                 return durationString;
+               }
+             
+             return Note.getDurationString(length);           
+          }
+        
+        
+        /**
+         * Truncate a bass pattern item to a maximum duration.
+         * The types of items are of the form Cd, where
+         * C is a letter and d is a duration string,
+         * and Polylist (X s d), where s is a scale degree string
+         * and d is a duration string.
+         * An example of a duration string is 4+16/3 etc.
+         * @param ob
+         * @param length
+         * @return 
+         */
+        
+        String truncateBassItem(Object ob, int length)
+          {
+          if( ob instanceof String )
+            {
+             String stringOb = (String)ob;
+             
+             char firstChar = stringOb.charAt(0);
+              
+             return firstChar + truncateDurationString(stringOb.substring(1), length);
+            }
+          else if( ob instanceof Polylist )
+            {
+              Polylist listOb = (Polylist)ob;
+              
+              String first = (String)listOb.first();
+              
+              String degree = listOb.second().toString();
+              
+              String durationString = listOb.third().toString();
+              
+              durationString = truncateDurationString(durationString, length);
+              
+              return Polylist.list(first, degree, durationString).toString();
+            }
+            assert false;
+            return "";
+          }
+        
+        /**
+         * Truncate the individual items in a bass pattern item to a maximum 
+         * duration. The pattern comes in as a String and the new pattern is
+         * returned as a String.
+         * The types of items are of the form Cd, where
+         * C is a letter and d is a duration string,
+         * and Polylist (X s d), where s is a scale degree string
+         * and d is a duration string.
+         * An example of a duration string is 4+16/3 etc.
+         * @param ob
+         * @param length
+         * @return 
+         */
+        
+        String truncateBassRule(int maxLength, String currentRule)
+          {
+            //System.out.println("desired length " + maxLength + ", rule: " + currentRule + ", length " + getBassRuleLength(currentRule));
+            int residualLength = maxLength;
+            
+            // L is for convenience in decomposition, so don't
+            // need to use substring, etc.
+            
+            Polylist L = Polylist.PolylistFromString(currentRule);
+            
+            // buffer will accumulate the resulting string.
+            
+            StringBuilder buffer = new StringBuilder();
+            
+            while(L.nonEmpty() && residualLength > 0 )
+              {
+                Object ob = L.first();
+                
+                int obLength = getBassItemDuration(ob);
+                
+                if( obLength <= residualLength )
+                  {
+                    buffer.append(ob);
+                    buffer.append(" ");
+                    residualLength -= obLength;
+                  }
+                else
+                  {
+                    String newOb = truncateBassItem(ob, residualLength);
+                    buffer.append(newOb);
+                    buffer.append(" ");
+                    residualLength = 0;
+                  }
+                
+                L = L.rest();
+              }
+            
+            String result = buffer.toString();
+            
+            //System.out.println("result = " + result + ", length " + getBassRuleLength(result));
+            return result;
+          }
+
+      int getBassRuleLength(String currentRule)
+          {
+            // L is for convenience in decomposition, so don't
+            // need to use substring, etc.
+            
+            Polylist L = Polylist.PolylistFromString(currentRule);
+            
+            // buffer will accumulate the resulting string.
+  
+            int result = 0;
+            
+            while(L.nonEmpty() )
+              {
+                result += getBassItemDuration(L.first());
+                L = L.rest();
+              }
+            
+            return result;
+          }
+
         // If a maximum bass pattern length is specified, this method will 
         // truncate each bass pattern in excess of the desired length
         // to the specified length
@@ -395,44 +571,47 @@ public class RepresentativeBassRules{
             int maxSlotLength = (int)(maxLength*MIDIBeast.slotsPerMeasure/MIDIBeast.denominator);
             for(int i = 0; i < simplifiedPitchesRules.size();i++){
                 String currentRule = simplifiedPitchesRules.get(i);
-                if(MIDIBeast.numBeatsInRule(currentRule)>maxSlotLength){
-                    String[] split = currentRule.split(" ");
-                    String temp = "";
-                    int duration = 0;
-                    for(int j = 0; j < split.length; j++){
-                        duration += MIDIBeast.numBeatsInRule(split[j]);
-                        if(duration < maxSlotLength) temp += split[j] + " ";
-                        if(duration == maxSlotLength){
-                            tempRules.add(temp+split[j]);
-                            temp = "";
-                            duration = 0;
-                        }
-                        if(duration > maxSlotLength){
-                            String type = "";
-                            if(split[j].charAt(0) == 'X') type = split[j].substring(0,4);  // FIX: Broken Here
-                            else type = Character.toString(split[j].charAt(0));
-                            int slotLength = MIDIBeast.numBeatsInBassRule(split[j]) - (duration - maxSlotLength);
-                            int slotLength2 = MIDIBeast.numBeatsInBassRule(split[j]) - slotLength;
-                            
-                            // FIX: slotLength can be negative here!
-                            String length = MIDIBeast.stringDuration(slotLength);
-                            String length2 = MIDIBeast.stringDuration(slotLength2);
-                            temp += type+length;
-                            tempRules.add(temp);
-                            temp = type+length2+" ";
-                            duration = slotLength2;
-                            while(duration >= maxSlotLength){
-                                tempRules.add(type+MIDIBeast.stringDuration(maxSlotLength));
-                                int slotLength3 = duration - maxSlotLength;
-                                String length3 = MIDIBeast.stringDuration(slotLength3);
-                                duration = slotLength3;
-                                if(duration == 0) temp = "";
-                                else temp = type + length3 + " ";
-                            }
-                        }
-                    }
-                }
-                else tempRules.add(currentRule);
+                
+                tempRules.add(truncateBassRule(maxSlotLength, currentRule));
+                
+//                if(MIDIBeast.numBeatsInRule(currentRule)>maxSlotLength){
+//                    String[] split = currentRule.split(" ");
+//                    String temp = "";
+//                    int duration = 0;
+//                    for(int j = 0; j < split.length; j++){
+//                        duration += MIDIBeast.numBeatsInRule(split[j]);
+//                        if(duration < maxSlotLength) temp += split[j] + " ";
+//                        if(duration == maxSlotLength){
+//                            tempRules.add(temp+split[j]);
+//                            temp = "";
+//                            duration = 0;
+//                        }
+//                        if(duration > maxSlotLength){
+//                            String type = "";
+//                            if(split[j].charAt(0) == 'X') type = split[j].substring(0,4);  // FIX: Broken Here
+//                            else type = Character.toString(split[j].charAt(0));
+//                            int slotLength = MIDIBeast.numBeatsInBassRule(split[j]) - (duration - maxSlotLength);
+//                            int slotLength2 = MIDIBeast.numBeatsInBassRule(split[j]) - slotLength;
+//                            
+//                            // FIX: slotLength can be negative here!
+//                            String length = MIDIBeast.stringDuration(slotLength);
+//                            String length2 = MIDIBeast.stringDuration(slotLength2);
+//                            temp += type+length;
+//                            tempRules.add(temp);
+//                            temp = type+length2+" ";
+//                            duration = slotLength2;
+//                            while(duration >= maxSlotLength){
+//                                tempRules.add(type+MIDIBeast.stringDuration(maxSlotLength));
+//                                int slotLength3 = duration - maxSlotLength;
+//                                String length3 = MIDIBeast.stringDuration(slotLength3);
+//                                duration = slotLength3;
+//                                if(duration == 0) temp = "";
+//                                else temp = type + length3 + " ";
+//                            }
+//                        }
+//                    }
+//                }
+//                else tempRules.add(currentRule);
             }
             simplifiedPitchesRules = tempRules;
             if(debug){
@@ -481,7 +660,7 @@ public class RepresentativeBassRules{
 //	}
 	
         // New version 10 April, changes old style X rule into new
-        public String simplifyPitchInfo(String s){  // work in progress, 10 April 2012
+        public String simplifyPitchInfo(String s){
                 Polylist L = (Polylist)(Polylist.PolylistFromString(s).first()); // due to extra level of nesting
                //System.out.print("string = " + s + ", polylist = " + L);
                StringBuilder buffer = new StringBuilder();
@@ -849,7 +1028,7 @@ public class RepresentativeBassRules{
                 this.weight = weight;
                 this.index = index;
                 
-                double beats = MIDIBeast.numBeatsInRule(rule);
+                double beats = getBassRuleLength(rule);
                 slots = MIDIBeast.doubleValToSlots(beats);
             }
             
@@ -893,7 +1072,7 @@ public class RepresentativeBassRules{
 		public BassPatternObj(String r, float w){
                     rule = r.trim(); 
                     weight = w;
-                    duration = new Double(MIDIBeast.numBeatsInRule(rule)).intValue();
+                    duration = getBassRuleLength(rule);
 		}
 
             public void setDuration(int duration) {
@@ -926,7 +1105,7 @@ public class RepresentativeBassRules{
                 }
                 
                 public int getNewDuration(){
-                   return MIDIBeast.numBeatsInBassRule(rule);
+                   return getBassRuleLength(rule);
                 }
 	}
 	/*
