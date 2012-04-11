@@ -17,15 +17,18 @@
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
 package imp.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
  * Modeled after the RepresentativeBassRules class.
  *
  * July 2007 - Sayuri Soejima
+ * Reformatted by Robert Keller, 10 April 2012
  */
 public class RepresentativeChordRules
 {
@@ -85,9 +88,8 @@ public ArrayList<ChordPattern> getChordRules()
 //  }
 
 /**
- * This is a shameless hack that gives the Style GUI access to makeChordPattern
- * without generating new rules
-         *
+ * This gives the Style GUI access to makeChordPattern
+ * without generating new rules.
  */
 public RepresentativeChordRules(boolean thisIsAHack, int minDuration)
   {
@@ -227,7 +229,11 @@ public RepresentativeChordRules(int minDuration)
       }
   }
 
-public RepresentativeChordRules(double startBeat, double endBeat, int MaxNumberOfClusters, jm.music.data.Part selectedPart, int minDuration)
+public RepresentativeChordRules(double startBeat, 
+                                double endBeat, 
+                                int MaxNumberOfClusters, 
+                                jm.music.data.Part selectedPart, 
+                                int minDuration)
   {
     this.minDuration = minDuration;
     try
@@ -374,6 +380,7 @@ public RepresentativeChordRules(double startBeat, double endBeat, int MaxNumberO
  * This method simply initializes the field members of the class and sets number
  * of rules to the desired fraction of the original set of rules
  */
+
 public void initialize()
   {
     numberOfUniqueRules = (int) (percentageOfClusters * MIDIBeast.originalChordRules.size());
@@ -388,6 +395,7 @@ public void initialize()
  * pitch info contained by calling on the simplifyPitchInfo method.
  */
 public void simplifyRulePitches()
+        
   {
     for( int i = 0; i < c.getOriginalRules().size(); i++ )
       {
@@ -471,6 +479,7 @@ public ArrayList<String> getDuplicates()
     return duplicates;
   }
 
+
 /**
  * This method is called on each rule by simplifyRulePitches() and handles the
  * logic involved in simplifying the pitch info
@@ -478,6 +487,7 @@ public ArrayList<String> getDuplicates()
  * @param String - The pattern element that is to be simplified
  * @return String - The simplified string
  */
+
 public String simplifyPitchInfo(String s)
   {
     s = s.substring(1, s.length() - 1); //Remove Parens
@@ -516,12 +526,14 @@ public String simplifyPitchInfo(String s)
     return returnString;
   }
 
+
 /**
  * This method searches through the set of rules with simplified pitch
  * information, removes all repeats, and creates a chord pattern for each set of
  * repeats by assigning that pattern a weight equal to the number of repeats
  * corresponding to that pattern
  */
+
 public void processDuplicateRules()
   {
     ArrayList<Integer> repeats = new ArrayList<Integer>();
@@ -550,12 +562,14 @@ public void processDuplicateRules()
       }
   }
 
+
 /**
  * When it comes time to cluster, it would be disadvantageous to have patterns
  * of different beat durations in the same cluster (eg (B8 B8) should not be in
  * the same group as (B4 B4)). This method will assign each of the non duplicate
  * patterns to a section which contains only patterns of equal beat duration.
  */
+
 public void splitUpIntoSections()
   {
     ArrayList<Integer> usedSlotCounts = new ArrayList<Integer>();
@@ -583,13 +597,14 @@ public void splitUpIntoSections()
   }
 
 /**
- * This function is used in splitUpIntoSections() and caclulates the beat
+ * This function is used in splitUpIntoSections() and calculates the beat
  * duration of a given pattern.
  *
- * @param String - the pattern whose beat duration is to be caclulated (eg (B4
- * B8 B8))
+ * @param String - the pattern whose beat duration is to be calculated 
+ * (eg (B4 B8 B8))
  * @return Double - the duration of the given pattern (eg 2.0)
  */
+
 public Double calculateBeats(String s)
   {
     if( debug )
@@ -631,6 +646,7 @@ public Double calculateBeats(String s)
  * patterns there are, and then multiplying that fraction by how many rules are
  * requested as determined in the initialize() method
  */
+
 public void pruneSections()
   {
     for( int i = 0; i < sections.size(); i++ )
@@ -651,6 +667,7 @@ public void pruneSections()
  * deterministically, and all proceeding representatives are chosen by finding
  * the pattern with the greatest distance to all other representatives
  */
+
 public void findTentativeRepresentatives()
   {
     for( int i = 0; i < sections.size(); i++ )
@@ -694,6 +711,7 @@ public void findTentativeRepresentatives()
  * This method iterates through each rule of a section and assigns it to a
  * cluster whose representative rule is the closest.
  */
+
 public void cluster()
   {
     for( int i = 0; i < sections.size(); i++ )
@@ -726,6 +744,7 @@ public void cluster()
  * equal to the number of rules in its cluster, or the number of rules that it
  * 'represents'
  */
+
 public void getRepresentativeRules()
   {
     for( int i = 0; i < sections.size(); i++ )
@@ -769,6 +788,7 @@ public ChordPattern makeChordPattern(imp.data.ChordPattern cp)
 /**
  * ChordPattern class
  */
+
 public class ChordPattern
 {
 
@@ -793,6 +813,8 @@ public ChordPattern(String r, float w, String push)
  * Allows for the printing of the chord-pattern in the format that Impro-Visor
  * understands.
  */
+
+@Override
 public String toString()
   {
     return "(chord-pattern (rules " + rule + ")(weight " + weight + ")(push " + push + ")";
@@ -860,27 +882,21 @@ public int getIndex()
 
 public double compareTo(RawRule that)
   {
-    ArrayList<Double> rhythm1 = new ArrayList<Double>();
-    ArrayList<Double> rhythm2 = new ArrayList<Double>();
+    ArrayList<Double> rhythm1;
+    ArrayList<Double> rhythm2;
     ArrayList<String> rule1 = new ArrayList<String>();
     ArrayList<String> rule2 = new ArrayList<String>();
     String[] split = this.rule.split(" ");
-    for( int i = 0; i < split.length; i++ )
-      {
-        rule1.add(split[i]);
-      }
+    rule1.addAll(Arrays.asList(split));
     split = that.getRule().split(" ");
-    for( int i = 0; i < split.length; i++ )
-      {
-        rule2.add(split[i]);
-      }
+    rule2.addAll(Arrays.asList(split));
     rhythm1 = c.toHistoArray(rule1);
     rhythm2 = c.toHistoArray(rule2);
     return c.chronoCompare(rhythm1, rhythm2);
-    //return c.getChronoValueAt(this.index,that.getIndex());
   }
 
 //For testing purposes as of now
+@Override
 public String toString()
   {
     return "\nRaw Rule\n\t-rule " + rule
@@ -894,6 +910,7 @@ public String toString()
 /**
  * Section class
  */
+
 public class Section
 {
 
@@ -984,6 +1001,7 @@ public void addRuleToCluster(RawRule newRule, int repIndex)
 /**
  * Cluster class
  */
+
 public class Cluster
 {
 
@@ -1061,6 +1079,7 @@ public float calculateWeight()
 
   }
 
+@Override
 public String toString()
   {
     String s = "Rep Rule: ";
