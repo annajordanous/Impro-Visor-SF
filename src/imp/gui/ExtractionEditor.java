@@ -20,6 +20,7 @@
 
 package imp.gui;
 
+import imp.Constants;
 import imp.ImproVisor;
 import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
@@ -33,13 +34,17 @@ import polya.Polylist;
 
 /**
  * @author Robert Keller, from original code by Jim Herold
+ * 
  * When there is time, this should be refactored into three separate
  * derived classes. There is no point in having all three lists: bass, chord,
  * and drums in each of three instances of this editor.
+ * 
+ * Before that, however, use of public access to elements in MIDIBeast should
+ * be changed to use proper methods.
  */
-public class ExtractionEditor extends javax.swing.JDialog
-{
 
+public class ExtractionEditor extends javax.swing.JDialog implements Constants
+{
 Notate notate;
 StyleEditor styleEditor;
 CommandManager cm;
@@ -111,29 +116,29 @@ public ExtractionEditor(java.awt.Frame parent,
     switch( type )
       {
         case BASS:
-            setTitle("Bass Extraction");
+            setTitle("Bass Extraction from " + styleEditor.getTitle());
             setBassDefaults();
             doubleDrumLength.setVisible(false);
             repBassRules = MIDIBeast.repBassRules;
-            addBassSelectedRules();
-            addBassRawRules();
-            break;
-
-        case DRUM:
-            setTitle("Drum Extraction");
-            setDrumDefaults();
-            repDrumRules = MIDIBeast.repDrumRules;
-            addDrumRawRules();
-            addDrumSelectedRules();
+            setBassSelectedRules();
+            setBassRawRules();
             break;
 
         case CHORD:
-            setTitle("Chord Extraction");
+            setTitle("Chord Extraction from " + styleEditor.getTitle());
             setChordDefaults();
             doubleDrumLength.setVisible(false);
             repChordRules = MIDIBeast.repChordRules;
-            addChordRawRules();
-            addChordSelectedRules();
+            setChordRawRules();
+            setChordSelectedRules();
+            break;
+
+        case DRUM:
+            setTitle("Drum Extraction from " + styleEditor.getTitle());
+            setDrumDefaults();
+            repDrumRules = MIDIBeast.repDrumRules;
+            setDrumRawRules();
+            setDrumSelectedRules();
             break;
       }
   }
@@ -163,30 +168,28 @@ public void setBassDefaults()
     endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.bassPart.getPhrase(0).getEndTime())));
   }
 
-public void setDrumDefaults()
-  {
-    startBeatTextField.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getStartTime())));
-    endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getEndTime())));
-  }
-
 public void setChordDefaults()
   {
     startBeatTextField.setText(Double.toString(Math.round(MIDIBeast.chordPart.getPhrase(0).getStartTime())));
     endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.chordPart.getPhrase(0).getEndTime())));
   }
 
-public void addBassRawRules()
+public void setDrumDefaults()
   {
-//        System.out.println("This should happen.");
-//        for(int i = 0; i < MIDIBeast.repBassRules.getSimplifiedPitchesRules().size(); i++)
-//            System.out.println(MIDIBeast.repBassRules.getSimplifiedPitchesRules().get(i));
+    startBeatTextField.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getStartTime())));
+    endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getEndTime())));
+  }
+
+public void setBassRawRules()
+  {
+    rawRulesModel.clear();
     ArrayList<RepresentativeBassRules.Section> sections = repBassRules.getSections();
     ArrayList<String> rawRules = new ArrayList<String>();
     //Add Clustered Rules
     for( int i = 0; i < sections.size(); i++ )
       {
         RepresentativeBassRules.Section currentSection = sections.get(i);
-        rawRules.add("Patterns of length: " + currentSection.getSlotCount());
+        rawRules.add("Patterns of length: " + currentSection.getSlotCount()/BEAT + " beats:");
         ArrayList<RepresentativeBassRules.Cluster> clusters = currentSection.getClusters();
         for( int j = 0; j < clusters.size(); j++ )
           {
@@ -206,8 +209,53 @@ public void addBassRawRules()
     rawRulesJList.setSelectedIndex(0);
   }
 
-public void addDrumRawRules()
+public void setChordRawRules()
   {
+    rawRulesModel.clear();
+    ArrayList<RepresentativeChordRules.Section> sections = repChordRules.getSections();
+    ArrayList<String> rawRules = new ArrayList<String>();
+
+    for( int i = 0; i < sections.size(); i++ )
+      {
+        RepresentativeChordRules.Section currentSection = sections.get(i);
+        rawRules.add("Patterns of length: " + currentSection.getSlotCount()/BEAT + " beats:");
+        ArrayList<RepresentativeChordRules.Cluster> clusters = currentSection.getClusters();
+        for( int j = 0; j < clusters.size(); j++ )
+          {
+            RepresentativeChordRules.Cluster currentCluster = clusters.get(j);
+            rawRules.add("    Cluster(" + j + ")");
+            for( int k = 0; k < currentCluster.size(); k++ )
+              {
+                rawRules.add("        " + currentCluster.getStringRule(k));
+              }
+          }
+      }
+    
+    ArrayList<String> duplicates = repChordRules.getDuplicates();
+    if( duplicates.size() > 0 )
+      {
+        rawRules.add("Duplicates:");
+        for( int i = 0; i < duplicates.size(); i++ )
+          {
+            rawRules.add("    " + duplicates.get(i));
+          }
+      }
+    else
+      {
+        rawRules.add("No Duplicates Found");
+      }
+    
+   for( String rawRule: rawRules )
+      {
+      rawRulesModel.addElement(rawRule);
+      }
+    rawRulesJList.setModel(rawRulesModel);
+    rawRulesJList.setSelectedIndex(0);
+  }
+
+public void setDrumRawRules()
+  {
+    rawRulesModel.clear();
     ArrayList<RepresentativeDrumRules.Cluster> clusters = repDrumRules.getClusters();
     ArrayList<String> rawRules = new ArrayList<String>();
 
@@ -238,49 +286,7 @@ public void addDrumRawRules()
     rawRulesJList.setSelectedIndex(0);
   }
 
-public void addChordRawRules()
-  {
-    ArrayList<RepresentativeChordRules.Section> sections = repChordRules.getSections();
-    ArrayList<String> rawRules = new ArrayList<String>();
-
-    for( int i = 0; i < sections.size(); i++ )
-      {
-        RepresentativeChordRules.Section currentSection = sections.get(i);
-        rawRules.add("Patterns of length: " + currentSection.getSlotCount());
-        ArrayList<RepresentativeChordRules.Cluster> clusters = currentSection.getClusters();
-        for( int j = 0; j < clusters.size(); j++ )
-          {
-            RepresentativeChordRules.Cluster currentCluster = clusters.get(j);
-            rawRules.add("    Cluster(" + j + ")");
-            for( int k = 0; k < currentCluster.size(); k++ )
-              {
-                rawRules.add("        " + currentCluster.getStringRule(k));
-              }
-          }
-      }
-    ArrayList<String> duplicates = repChordRules.getDuplicates();
-    if( duplicates.size() > 0 )
-      {
-        rawRules.add("Duplicates");
-        for( int i = 0; i < duplicates.size(); i++ )
-          {
-            rawRules.add("    " + duplicates.get(i));
-          }
-      }
-    else
-      {
-        rawRules.add("No Duplicates Found");
-      }
-    
-   for( String rawRule: rawRules )
-      {
-      rawRulesModel.addElement(rawRule);
-      }
-    rawRulesJList.setModel(rawRulesModel);
-    rawRulesJList.setSelectedIndex(0);
-  }
-
-public void addBassSelectedRules()
+public void setBassSelectedRules()
   {
    selectedRulesModel.clear();
    selectedBassRules = repBassRules.getBassRules();
@@ -292,19 +298,7 @@ public void addBassSelectedRules()
     selectedRulesJList.setSelectedIndex(selectedBassRules.size()-1);
   }
 
-public void addDrumSelectedRules()
-  {
-   selectedRulesModel.clear();
-   selectedDrumRules = repDrumRules.getRepresentativePatterns();
-   for( RepresentativeDrumRules.DrumPattern selectedRule: selectedDrumRules )
-      {
-      selectedRulesModel.addElement(selectedRule);
-      }
-    selectedRulesJList.setModel(selectedRulesModel);
-    selectedRulesJList.setSelectedIndex(selectedDrumRules.size()-1);
-  }
-
-public void addChordSelectedRules()
+public void setChordSelectedRules()
   {
    selectedRulesModel.clear();
    selectedChordRules = repChordRules.getChordRules();
@@ -314,6 +308,18 @@ public void addChordSelectedRules()
       }
     selectedRulesJList.setModel(selectedRulesModel);
     selectedRulesJList.setSelectedIndex(selectedChordRules.size()-1);
+  }
+
+public void setDrumSelectedRules()
+  {
+   selectedRulesModel.clear();
+   selectedDrumRules = repDrumRules.getRepresentativePatterns();
+   for( RepresentativeDrumRules.DrumPattern selectedRule: selectedDrumRules )
+      {
+      selectedRulesModel.addElement(selectedRule);
+      }
+    selectedRulesJList.setModel(selectedRulesModel);
+    selectedRulesJList.setSelectedIndex(selectedDrumRules.size()-1);
   }
 
 private void initComponents2()
@@ -342,7 +348,6 @@ private void initComponents2()
       {
         errorButtonActionPerformed(evt);
       }
-
     });
   }
 
@@ -350,12 +355,6 @@ private void errorButtonActionPerformed(java.awt.event.ActionEvent evt)
   {//GEN-FIRST:event_errorButtonActionPerformed
     errorDialog.setVisible(false);
   }//GEN-LAST:event_errorButtonActionPerformed
-
-private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)
-  {//GEN-FIRST:event_jButton2ActionPerformed
-    this.setVisible(false);
-  }//GEN-LAST:event_jButton2ActionPerformed
-
 
 
 private void checkForAndThrowErrors()
@@ -402,7 +401,7 @@ private void checkForAndThrowErrors()
 
 /**
  * Plays a selected rule. In this case, the rules themselves are stored
- * in the JList.
+ * in the JList (in contrast to playRawRule()).
  */
 
 public void playSelectedRule()
@@ -491,7 +490,7 @@ public void playSelectedRule()
 
 /**
  * Plays a raw rule. In this case, Strings are stored in the JList and
- * rules must be created from them.
+ * rules must be created from them (in contrast to playSelectedRule()).
  */
 
 public void playRawRule()
@@ -503,43 +502,41 @@ public void playRawRule()
     switch( type )
       {
         case BASS:
-            //Prevent user from playing a non-rule
-//            if( !(incompleteRule.trim().charAt(0) == '(') )
-//              {
-//                return;
-//              }
-            firstParensIndex = incompleteRule.indexOf("(");
-            lastParensIndex = incompleteRule.lastIndexOf(")");
-            //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
-            RepresentativeBassRules.BassPatternObj selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
+              // There should be some criterion here to mask out lines that
+              // don't correspond to rules. The old way, checking for
+              // parens at the start and end, is no longer relevant.
+            
+            RepresentativeBassRules.BassPatternObj selectedBassRule 
+                    = repBassRules.makeBassPatternObj(incompleteRule, 1);
             duration = selectedBassRule.getDuration();
             rule = Notate.parseListFromString(selectedBassRule.toString());
             break;
             
-        case DRUM:
-//            if( incompleteRule.charAt(0) == 'C' )
-//              {
-//                return;
-//              }
-            rule = Notate.parseListFromString(incompleteRule);
-            duration = MIDIBeast.slotsPerMeasure;
-            break;
+         case CHORD:
+              // There should be some criterion here to mask out lines that
+              // don't correspond to rules. The old way, checking for
+              // parens at the start and end, is no longer relevant.
             
-        case CHORD:
-//            if( !(incompleteRule.trim().charAt(0) == '(') )
-//              {
-//                return;
-//              }
-            firstParensIndex = incompleteRule.indexOf("(");
-            lastParensIndex = incompleteRule.lastIndexOf(")");
-            //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
-            RepresentativeChordRules.ChordPattern selectedChordRule = repChordRules.makeChordPattern(incompleteRule, 1);
+            RepresentativeChordRules.ChordPattern selectedChordRule 
+                    = repChordRules.makeChordPattern(incompleteRule, 1);
             duration = selectedChordRule.getDuration();
             rule = Notate.parseListFromString(selectedChordRule.toString());
             break;
+             
+        case DRUM:
+              // There should be some better criterion here to mask out lines that
+              // don't correspond to rules. 
+
+            if( incompleteRule.charAt(0) == 'C' )
+              {
+                return;
+              }
+            rule = Notate.parseListFromString(incompleteRule);
+            duration = MIDIBeast.slotsPerMeasure;
+            break;
       }
 
-    System.out.println("rule for style = " + rule);
+    //System.out.println("rule for style = " + rule);
     Style tempStyle = Style.makeStyle(rule);
     tempStyle.setSwing(styleEditor.getSwingValue());
     tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
@@ -575,9 +572,8 @@ public void playRawRule()
                          notate.getMidiSynth(),
                          ImproVisor.getCurrentWindow(),
                          0,
-                         notate.getTransposition()).execute();  }
-
-
+                         notate.getTransposition()).execute();
+  }
 
 /**
  * This method is called from within the constructor to initialize the form.
@@ -878,13 +874,15 @@ private void moveSelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//G
               MIDIBeast.selectedBassRules = selectedBassRules;
               styleEditor.loadBassPatterns(MIDIBeast.repBassRules.getBassRules());
               break;
-          case DRUM:
-              MIDIBeast.selectedDrumRules = selectedDrumRules;
-              styleEditor.loadDrumPatterns(MIDIBeast.repDrumRules.getRepresentativePatterns());
-              break;
+              
           case CHORD:
               MIDIBeast.selectedChordRules = selectedChordRules;
               styleEditor.loadChordPatterns(MIDIBeast.repChordRules.getChordRules());
+              break;
+              
+          case DRUM:
+              MIDIBeast.selectedDrumRules = selectedDrumRules;
+              styleEditor.loadDrumPatterns(MIDIBeast.repDrumRules.getRepresentativePatterns());
               break;
         }
       this.setVisible(false);
@@ -904,22 +902,35 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
       switch( type )
         {
           case BASS:
-//              if( !(incompleteRule.trim().charAt(0) == '(') )
-//                {
-//                  return;
-//                }
-              //firstParensIndex = incompleteRule.indexOf("(");
-              //lastParensIndex = incompleteRule.lastIndexOf(")");
-              //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
-              RepresentativeBassRules.BassPatternObj selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
+              // There should be some criterion here to mask out lines that
+              // don't correspond to rules. The old way, checking for
+              // parens at the start and end, is no longer relevant.
+
+              RepresentativeBassRules.BassPatternObj selectedBassRule 
+                     = repBassRules.makeBassPatternObj(incompleteRule, 1);
 
               selectedBassRules.add(selectedBassRule);
-              addBassSelectedRules();
+              setBassSelectedRules();
               rawRulesModel.removeElement(incompleteRule);
-              //selectedRulesJList.setListData(selectedBassRules.toArray());
               break;
-              
+               
+          case CHORD:
+              // There should be some criterion here to mask out lines that
+              // don't correspond to rules. The old way, checking for
+              // parens at the start and end, is no longer relevant.
+
+              RepresentativeChordRules.ChordPattern selectedChordRule 
+                      = repChordRules.makeChordPattern(incompleteRule, 1);
+
+              selectedChordRules.add(selectedChordRule);
+              setChordSelectedRules();
+              rawRulesModel.removeElement(incompleteRule);
+              break;
+          
           case DRUM:
+              // There should be some better criterion here to mask out lines that
+              // don't correspond to rules. 
+
               if( incompleteRule.charAt(0) == 'C' )
                 {
                   return;
@@ -945,22 +956,7 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
                   drumPattern.addRule(drumRule);
                 }
               selectedDrumRules.add(drumPattern);
-              addDrumSelectedRules();
-              rawRulesModel.removeElement(incompleteRule);
-              break;
-              
-          case CHORD:
-//              if( !(incompleteRule.trim().charAt(0) == '(') )
-//                {
-//                  return;
-//                }
-              //firstParensIndex = incompleteRule.indexOf("(");
-              //lastParensIndex = incompleteRule.lastIndexOf(")");
-              //incompleteRule = incompleteRule.substring(firstParensIndex + 1, lastParensIndex); //Remove parens
-              RepresentativeChordRules.ChordPattern selectedChordRule = repChordRules.makeChordPattern(incompleteRule, 1);
-
-              selectedChordRules.add(selectedChordRule);
-              addChordSelectedRules();
+              setDrumSelectedRules();
               rawRulesModel.removeElement(incompleteRule);
               break;
         }
@@ -1006,13 +1002,15 @@ private void removePatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
             selectedBassRules.remove(indexOfRuleToBeRemoved);
             selectedRulesJList.setListData(selectedBassRules.toArray());
             break;
-        case DRUM:
-            selectedDrumRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJList.setListData(selectedDrumRules.toArray());
-            break;
+ 
         case CHORD:
             selectedChordRules.remove(indexOfRuleToBeRemoved);
             selectedRulesJList.setListData(selectedChordRules.toArray());
+            break;
+            
+        case DRUM:
+            selectedDrumRules.remove(indexOfRuleToBeRemoved);
+            selectedRulesJList.setListData(selectedDrumRules.toArray());
             break;
       }
     selectedRulesJList.setSelectedIndex(0);
@@ -1031,26 +1029,41 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
           case BASS:
               int selectedBassIndex = potentialInstrumentsJList.getSelectedIndex();
               jm.music.data.Part selectedBassPart = MIDIBeast.allParts.get(selectedBassIndex); //Implement part selection
-              MIDIBeast.repBassRules = new RepresentativeBassRules(startBeat, endBeat, maxNumberOfClusters, selectedBassPart);
+              MIDIBeast.repBassRules = 
+                      new RepresentativeBassRules(startBeat, 
+                                                  endBeat, 
+                                                  maxNumberOfClusters, 
+                                                  selectedBassPart);
               repBassRules = MIDIBeast.repBassRules;
-              addBassRawRules();
-              addBassSelectedRules();
+              setBassRawRules();
+              setBassSelectedRules();
               break;
-          case DRUM:
-              int selectedDrumIndex = potentialInstrumentsJList.getSelectedIndex();
-              jm.music.data.Part selectedDrumPart = MIDIBeast.allParts.get(selectedDrumIndex);
-              MIDIBeast.repDrumRules = new RepresentativeDrumRules(startBeat, endBeat, maxNumberOfClusters, selectedDrumPart);
-              repDrumRules = MIDIBeast.repDrumRules;
-              addDrumRawRules();
-              addDrumSelectedRules();
-              break;
+ 
           case CHORD:
               int selectedChordIndex = potentialInstrumentsJList.getSelectedIndex();
               jm.music.data.Part selectedChordPart = MIDIBeast.allParts.get(selectedChordIndex);
-              MIDIBeast.repChordRules = new RepresentativeChordRules(startBeat, endBeat, maxNumberOfClusters, selectedChordPart, minDuration);
+              MIDIBeast.repChordRules = 
+                      new RepresentativeChordRules(startBeat, 
+                                                   endBeat, 
+                                                   maxNumberOfClusters, 
+                                                   selectedChordPart, 
+                                                   minDuration);
               repChordRules = MIDIBeast.repChordRules;
-              addChordRawRules();
-              addChordSelectedRules();
+              setChordRawRules();
+              setChordSelectedRules();
+              break;
+              
+         case DRUM:
+              int selectedDrumIndex = potentialInstrumentsJList.getSelectedIndex();
+              jm.music.data.Part selectedDrumPart = MIDIBeast.allParts.get(selectedDrumIndex);
+              MIDIBeast.repDrumRules = 
+                      new RepresentativeDrumRules(startBeat, 
+                                                  endBeat, 
+                                                  maxNumberOfClusters, 
+                                                  selectedDrumPart);
+              repDrumRules = MIDIBeast.repDrumRules;
+              setDrumRawRules();
+              setDrumSelectedRules();
               break;
         }
   }//GEN-LAST:event_reExtractBtnActionPerformed

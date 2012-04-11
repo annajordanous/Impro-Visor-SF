@@ -79,6 +79,15 @@ public static void registerWindow(Window w)
     window.add(wmi);
   }
 
+public static void registerWindow(Window w, String title)
+  {
+    Trace.log(2, "Notate: window registered: " + w);
+
+    WindowMenuItem wmi = new WindowMenuItem(w);
+
+    window.add(wmi);
+  }
+
 /**
  *
  * A function to unregister a window (when close window is called)
