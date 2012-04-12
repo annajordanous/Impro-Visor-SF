@@ -58,6 +58,8 @@ public MidiImportFrame(Notate notate, MidiImport midiImport)
     this.midiImport = midiImport;
     setTitle("MIDI Import: " + midiImport.getFilenameDisplay());
     WindowRegistry.registerWindow(this);
+    
+    volumeSpinner.setVisible(false); // doesn't work yet
   }
 
 public void load(LinkedList<MidiImportRecord> records)
@@ -317,7 +319,7 @@ private void setJmVolume()
      {
      jmScore.setVolume(value);
    
-     System.out.println("jmVolume = " + jmScore.getVolume());
+     //System.out.println("jmVolume = " + jmScore.getVolume());
      }
   }
 
