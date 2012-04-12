@@ -83,7 +83,7 @@ public static void registerWindow(Window w, String title)
   {
     Trace.log(2, "Notate: window registered: " + w);
 
-    WindowMenuItem wmi = new WindowMenuItem(w);
+    WindowMenuItem wmi = new WindowMenuItem(w, title);
 
     window.add(wmi);
   }

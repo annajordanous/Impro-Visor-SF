@@ -423,7 +423,13 @@ private String formatRule(SlottedNote note, SlottedNote nextNote, ChordType curC
       }
     try
       {
-        String s = MIDIBeast.stringDuration(note.getNumberOfSlots()) + " ";
+        int slots = note.getNumberOfSlots();
+        if( slots <= 0 )
+          {
+            return ""; // Not sure how this arises, or what to do with it.
+          }
+        
+        String s = MIDIBeast.stringDuration(slots) + " ";
 
         if( note.getPitch().equalsIgnoreCase("r") ) //rest
           {
