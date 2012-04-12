@@ -20300,12 +20300,12 @@ private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
       };
 
     // Fix: Uncomment for the non-developer.
-//    int choice = JOptionPane.showOptionDialog(this,
-//        "Do you wish to delete the current chorus?\n\nThis can't be undone.",
-//        "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
-//        JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+    int choice = JOptionPane.showOptionDialog(this,
+        "Do you wish to delete the current chorus?\n\nThis can't be undone.",
+        "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
-    int choice = 0;
+    // int choice = 0;
     // the user selected yes
 
     if( choice == 0 && currTabIndex >= 0
