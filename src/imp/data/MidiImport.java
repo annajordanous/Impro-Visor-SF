@@ -210,4 +210,8 @@ public String getFilenameDisplay()
     return filenameDisplay;
   }
 
+public jm.music.data.Score getScore()
+  {
+    return score;
+  }
 }
