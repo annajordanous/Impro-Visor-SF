@@ -24,7 +24,6 @@ import imp.data.MelodyPart;
 import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
 import imp.data.Score;
-import imp.gui.WindowRegistry;
 import java.util.LinkedList;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;

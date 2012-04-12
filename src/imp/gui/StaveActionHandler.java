@@ -1122,7 +1122,7 @@ public void mousePressed(MouseEvent e)
         stave.repaint();
         return;
        }
-      else if( e.isShiftDown() && stave.oneSlotSelected() )
+      else if( e.isShiftDown() && stave.nothingSelected() )
        {
 
         Trace.log(2, "shift: single line selected");
