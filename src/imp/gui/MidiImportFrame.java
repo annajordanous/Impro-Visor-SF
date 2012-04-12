@@ -24,6 +24,7 @@ import imp.data.MelodyPart;
 import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
 import imp.data.Score;
+import imp.gui.WindowRegistry;
 import java.util.LinkedList;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;
@@ -45,6 +46,7 @@ DefaultListModel trackListModel;
  */
 
 MidiSynth jmSynth;
+jm.music.data.Score jmScore;
 
 /**
  * Creates new form MidiImportFrame
@@ -55,7 +57,8 @@ public MidiImportFrame(Notate notate, MidiImport midiImport)
     initComponents();
     this.notate = notate;
     this.midiImport = midiImport;
-    setTitle("MIDI Tracks in " + midiImport.getFilenameDisplay());
+    setTitle("MIDI Import: " + midiImport.getFilenameDisplay());
+    WindowRegistry.registerWindow(this);
   }
 
 public void load(LinkedList<MidiImportRecord> records)
@@ -106,6 +109,7 @@ private void reload()
         stopPlayingTrackButton = new javax.swing.JButton();
         importTrackToLeadsheet = new javax.swing.JButton();
         importResolutionComboBox = new javax.swing.JComboBox();
+        volumeSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -177,7 +181,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -190,7 +194,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         midiImportButtonPanel.add(stopPlayingTrackButton, gridBagConstraints);
 
         importTrackToLeadsheet.setText("Import Selected Track to Leadsheet (or double click)");
@@ -201,7 +205,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -219,9 +223,20 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
+
+        volumeSpinner.setModel(new javax.swing.SpinnerNumberModel(70, 0, 127, 5));
+        volumeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
+        volumeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                volumeSpinnerChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        midiImportButtonPanel.add(volumeSpinner, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -277,19 +292,35 @@ private void playMIDIfileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
   {//GEN-HEADEREND:event_playMIDIfileActionPerformed
   try
     {
-    jm.music.data.Score score = midiImport.getScore();
-    score.setVolume(90);
+    jmScore = midiImport.getScore();
+     setJmVolume();
     if( jmSynth == null )
       {
         jmSynth = new jm.midi.MidiSynth();
       }
-   jmSynth.play(score);
+   jmSynth.play(jmScore);
     }
   catch( InvalidMidiDataException e )
     {
       
     }
   }//GEN-LAST:event_playMIDIfileActionPerformed
+
+private void volumeSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_volumeSpinnerChanged
+  {//GEN-HEADEREND:event_volumeSpinnerChanged
+    setJmVolume();
+  }//GEN-LAST:event_volumeSpinnerChanged
+
+private void setJmVolume()
+  {
+   int value = (Integer)volumeSpinner.getValue();
+   if( jmScore != null )
+     {
+     jmScore.setVolume(value);
+   
+     System.out.println("jmVolume = " + jmScore.getVolume());
+     }
+  }
 
 private void reImportWithNewResolution()
   {
@@ -336,6 +367,13 @@ private void playSelectedTrack()
       }
   }
 
+@Override
+public void dispose()
+  {
+    WindowRegistry.unregisterWindow(this);
+    super.dispose();
+  }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox importResolutionComboBox;
     private javax.swing.JButton importTrackToLeadsheet;
@@ -347,5 +385,6 @@ private void playSelectedTrack()
     private javax.swing.JLabel selectTracksLabel;
     private javax.swing.JButton stopPlayingTrackButton;
     private javax.swing.JScrollPane trackSelectScrollPane;
+    private javax.swing.JSpinner volumeSpinner;
     // End of variables declaration//GEN-END:variables
 }
