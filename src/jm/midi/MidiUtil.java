@@ -21,6 +21,7 @@
  */
 package jm.midi;
 
+import imp.util.ErrorLog;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -175,7 +176,8 @@ public static double getEndEvt(short pitch, Vector evtList, int index)
                 break;
           }
       }
-    System.out.println("note: jMusic Error reading file - sorry!\nTry to continue reading anyway");
+    imp.util.ErrorLog.log(ErrorLog.WARNING, 
+                          "jMusic Error reading file - sorry!\nTry to continue reading anyway");
 
     return 0.0;
   }

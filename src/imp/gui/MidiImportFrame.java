@@ -295,10 +295,11 @@ private void playMIDIfileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
     {
     jmScore = midiImport.getScore();
      setJmVolume();
-    if( jmSynth == null )
+    if( jmSynth != null )
       {
-        jmSynth = new jm.midi.MidiSynth();
+        jmSynth.stop();
       }
+   jmSynth = new jm.midi.MidiSynth();
    jmSynth.play(jmScore);
     }
   catch( InvalidMidiDataException e )
