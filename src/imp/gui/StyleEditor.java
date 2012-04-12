@@ -176,6 +176,10 @@ public class StyleEditor
 
   private String currentCellText = null;
   
+  ExtractionEditor chordExtraction = null;
+  ExtractionEditor bassExtraction  = null;
+  ExtractionEditor drumExtraction  = null;
+  
   /**
    * Effectively this is the "clipboard" contents.
    */
@@ -1138,6 +1142,11 @@ void playBassColumn(int colIndex)
   
   public void dispose()
     {
+    // Close child windows if they exist
+    if( bassExtraction != null )  bassExtraction.dispose();
+    if( chordExtraction != null ) chordExtraction.dispose();
+    if( drumExtraction != null )  drumExtraction.dispose();
+    
     WindowRegistry.unregisterWindow(this);
     super.dispose();
     }
@@ -3010,9 +3019,9 @@ void playBassColumn(int colIndex)
           MIDIBeast.repDrumRules = d;
           if( MIDIBeast.showExtraction )
             {
-            ExtractionEditor drumExtraction = 
+            drumExtraction = 
                     new ExtractionEditor(null, false, this, cm, 1);
-            WindowRegistry.registerWindow(drumExtraction);
+            WindowRegistry.registerWindow(drumExtraction, "Drum Part from " + nameForDisplay);
             drumExtraction.setLocation(
               this.getX() + WindowRegistry.defaultXnewWindowStagger,
               this.getY() + WindowRegistry.defaultYnewWindowStagger);
@@ -3038,9 +3047,9 @@ void playBassColumn(int colIndex)
           MIDIBeast.repBassRules = r;
           if( MIDIBeast.showExtraction )
             {
-            ExtractionEditor bassExtraction = 
+            bassExtraction = 
                     new ExtractionEditor(null, false, this, cm, 0);
-            WindowRegistry.registerWindow(bassExtraction);
+            WindowRegistry.registerWindow(bassExtraction, "Bass Part from " + nameForDisplay);
             bassExtraction.setLocation(
               this.getX() + 2*WindowRegistry.defaultXnewWindowStagger,
               this.getY() + 2*WindowRegistry.defaultYnewWindowStagger);
@@ -3066,9 +3075,9 @@ void playBassColumn(int colIndex)
           MIDIBeast.repChordRules = c;
           if( MIDIBeast.showExtraction )
             {
-            ExtractionEditor chordExtraction = 
+            chordExtraction = 
                     new ExtractionEditor(null, false, this, cm, 2, minDuration);
-            WindowRegistry.registerWindow(chordExtraction);
+            WindowRegistry.registerWindow(chordExtraction, "Chord Part from " + nameForDisplay);
             chordExtraction.setLocation(
               this.getX() + 3*WindowRegistry.defaultXnewWindowStagger,
               this.getY() + 3*WindowRegistry.defaultYnewWindowStagger);
@@ -3105,7 +3114,7 @@ void playBassColumn(int colIndex)
       cm.changedSinceLastSave(true);
       refreshAll();
 
-      this.setTitle("Style Editor & Extractor - Generated style from " + nameForDisplay);
+      this.setTitle("Style Editor & Extractor: Extraction from " + nameForDisplay);
       savedStyle = null; // to prevent accidental clobering
       }
     }

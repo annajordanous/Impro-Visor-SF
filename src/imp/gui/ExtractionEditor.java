@@ -189,7 +189,9 @@ public void setBassRawRules()
     for( int i = 0; i < sections.size(); i++ )
       {
         RepresentativeBassRules.Section currentSection = sections.get(i);
-        rawRules.add("Patterns of length: " + currentSection.getSlotCount()/BEAT + " beats:");
+        // FIX: For some reason, getSlotCount() seems to return a value 
+        // doubly multiplied by BEAT.
+        rawRules.add("Patterns of length: " + (currentSection.getSlotCount()/BEAT)/BEAT + " beats:");
         ArrayList<RepresentativeBassRules.Cluster> clusters = currentSection.getClusters();
         for( int j = 0; j < clusters.size(); j++ )
           {
@@ -218,7 +220,9 @@ public void setChordRawRules()
     for( int i = 0; i < sections.size(); i++ )
       {
         RepresentativeChordRules.Section currentSection = sections.get(i);
-        rawRules.add("Patterns of length: " + currentSection.getSlotCount()/BEAT + " beats:");
+        // FIX: For some reason, getSlotCount() seems to return a value 
+        // doubly multiplied by BEAT.
+        rawRules.add("Patterns of length: " + (currentSection.getSlotCount()/BEAT)/BEAT + " beats:");
         ArrayList<RepresentativeChordRules.Cluster> clusters = currentSection.getClusters();
         for( int j = 0; j < clusters.size(); j++ )
           {
@@ -604,8 +608,8 @@ public void playRawRule()
         leftPlayPatternBtn = new javax.swing.JButton();
         removePatternBtn = new javax.swing.JButton();
         rightPlayPatternBtn = new javax.swing.JButton();
-        moveSelectionsBtn = new javax.swing.JButton();
-        dismissSelectionsBtn = new javax.swing.JButton();
+        copySelectionsBtn = new javax.swing.JButton();
+        closeWindowBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -823,10 +827,10 @@ public void playRawRule()
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(rightPlayPatternBtn, gridBagConstraints);
 
-        moveSelectionsBtn.setText("Move Selections to Style & Close");
-        moveSelectionsBtn.addActionListener(new java.awt.event.ActionListener() {
+        copySelectionsBtn.setText("Copy Selections to Style Editor");
+        copySelectionsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                moveSelectionsBtnActionPerformed(evt);
+                copySelectionsBtnActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -834,19 +838,19 @@ public void playRawRule()
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
-        getContentPane().add(moveSelectionsBtn, gridBagConstraints);
+        getContentPane().add(copySelectionsBtn, gridBagConstraints);
 
-        dismissSelectionsBtn.setText("Dismiss Selections & Close");
-        dismissSelectionsBtn.addActionListener(new java.awt.event.ActionListener() {
+        closeWindowBtn.setText("Close this Window");
+        closeWindowBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dismissSelectionsBtnActionPerformed(evt);
+                closeWindowBtnActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(dismissSelectionsBtn, gridBagConstraints);
+        getContentPane().add(closeWindowBtn, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -861,13 +865,13 @@ private void rightPlayPatternBtnActionPerformed(java.awt.event.ActionEvent evt)/
       playSelectedRule();
   }//GEN-LAST:event_rightPlayPatternBtnActionPerformed
 
-private void dismissSelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_dismissSelectionsBtnActionPerformed
-  {//GEN-HEADEREND:event_dismissSelectionsBtnActionPerformed
-      this.setVisible(false);
-  }//GEN-LAST:event_dismissSelectionsBtnActionPerformed
+private void closeWindowBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnActionPerformed
+  {//GEN-HEADEREND:event_closeWindowBtnActionPerformed
+      dispose();
+  }//GEN-LAST:event_closeWindowBtnActionPerformed
 
-private void moveSelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_moveSelectionsBtnActionPerformed
-  {//GEN-HEADEREND:event_moveSelectionsBtnActionPerformed
+private void copySelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnActionPerformed
+  {//GEN-HEADEREND:event_copySelectionsBtnActionPerformed
       switch( type )
         {
           case BASS:
@@ -885,8 +889,8 @@ private void moveSelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//G
               styleEditor.loadDrumPatterns(MIDIBeast.repDrumRules.getRepresentativePatterns());
               break;
         }
-      this.setVisible(false);
-  }//GEN-LAST:event_moveSelectionsBtnActionPerformed
+      
+  }//GEN-LAST:event_copySelectionsBtnActionPerformed
 
 private void startBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startBeatTextFieldActionPerformed
   {//GEN-HEADEREND:event_startBeatTextFieldActionPerformed
@@ -896,9 +900,14 @@ private void startBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//
 private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnActionPerformed
   {//GEN-HEADEREND:event_selectPatternBtnActionPerformed
       String incompleteRule = (String) rawRulesJList.getSelectedValue();
-      int firstParensIndex, lastParensIndex;
-   System.out.println("selected rule " + incompleteRule);
+      if( incompleteRule == null )
+        {
+          return;
+        }
+   //System.out.println("selected rule " + incompleteRule);
 
+      int index = rawRulesJList.getSelectedIndex();
+      
       switch( type )
         {
           case BASS:
@@ -911,7 +920,6 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
 
               selectedBassRules.add(selectedBassRule);
               setBassSelectedRules();
-              rawRulesModel.removeElement(incompleteRule);
               break;
                
           case CHORD:
@@ -924,7 +932,6 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
 
               selectedChordRules.add(selectedChordRule);
               setChordSelectedRules();
-              rawRulesModel.removeElement(incompleteRule);
               break;
           
           case DRUM:
@@ -957,10 +964,12 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
                 }
               selectedDrumRules.add(drumPattern);
               setDrumSelectedRules();
-              rawRulesModel.removeElement(incompleteRule);
+
               break;
         }
-
+      
+      rawRulesModel.removeElement(incompleteRule);
+      rawRulesJList.setSelectedIndex(Math.min(0, index-1));
   }//GEN-LAST:event_selectPatternBtnActionPerformed
 
 private void doubleDrumLengthActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_doubleDrumLengthActionPerformed
@@ -1024,29 +1033,30 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
       double startBeat = Double.parseDouble(startBeatTextField.getText());
 
       Integer maxNumberOfClusters = (Integer) numberOfClustersSpinner.getValue();
+      
+      int selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+      jm.music.data.Part selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
+     
       switch( type )
         {
           case BASS:
-              int selectedBassIndex = potentialInstrumentsJList.getSelectedIndex();
-              jm.music.data.Part selectedBassPart = MIDIBeast.allParts.get(selectedBassIndex); //Implement part selection
+              
               MIDIBeast.repBassRules = 
                       new RepresentativeBassRules(startBeat, 
                                                   endBeat, 
                                                   maxNumberOfClusters, 
-                                                  selectedBassPart);
+                                                  selectedPart);
               repBassRules = MIDIBeast.repBassRules;
               setBassRawRules();
               setBassSelectedRules();
               break;
  
           case CHORD:
-              int selectedChordIndex = potentialInstrumentsJList.getSelectedIndex();
-              jm.music.data.Part selectedChordPart = MIDIBeast.allParts.get(selectedChordIndex);
               MIDIBeast.repChordRules = 
                       new RepresentativeChordRules(startBeat, 
                                                    endBeat, 
                                                    maxNumberOfClusters, 
-                                                   selectedChordPart, 
+                                                   selectedPart, 
                                                    minDuration);
               repChordRules = MIDIBeast.repChordRules;
               setChordRawRules();
@@ -1054,13 +1064,11 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
               break;
               
          case DRUM:
-              int selectedDrumIndex = potentialInstrumentsJList.getSelectedIndex();
-              jm.music.data.Part selectedDrumPart = MIDIBeast.allParts.get(selectedDrumIndex);
-              MIDIBeast.repDrumRules = 
+               MIDIBeast.repDrumRules = 
                       new RepresentativeDrumRules(startBeat, 
                                                   endBeat, 
                                                   maxNumberOfClusters, 
-                                                  selectedDrumPart);
+                                                  selectedPart);
               repDrumRules = MIDIBeast.repDrumRules;
               setDrumRawRules();
               setDrumSelectedRules();
@@ -1074,14 +1082,14 @@ private void endBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GE
   }//GEN-LAST:event_endBeatTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton dismissSelectionsBtn;
+    private javax.swing.JButton closeWindowBtn;
+    private javax.swing.JButton copySelectionsBtn;
     private javax.swing.JCheckBox doubleDrumLength;
     private javax.swing.JTextField endBeatTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton leftPlayPatternBtn;
-    private javax.swing.JButton moveSelectionsBtn;
     private javax.swing.JSpinner numberOfClustersSpinner;
     private javax.swing.JPanel optionPanel;
     private javax.swing.JScrollPane partPanel;
