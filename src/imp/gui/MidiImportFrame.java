@@ -25,7 +25,9 @@ import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
 import imp.data.Score;
 import java.util.LinkedList;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;
+import jm.midi.MidiSynth;
 
 /**
  *
@@ -36,6 +38,13 @@ public class MidiImportFrame extends javax.swing.JFrame
 Notate notate;
 MidiImport midiImport;
 DefaultListModel trackListModel;
+
+/**
+ * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
+ * We also use a jMusic score, in addition to an Impro-Visor score later.
+ */
+
+MidiSynth jmSynth;
 
 /**
  * Creates new form MidiImportFrame
@@ -92,6 +101,7 @@ private void reload()
         trackSelectScrollPane = new javax.swing.JScrollPane();
         importedTrackList = new javax.swing.JList();
         midiImportButtonPanel = new javax.swing.JPanel();
+        playMIDIfile = new javax.swing.JButton();
         playMIDIimportTrack = new javax.swing.JButton();
         stopPlayingTrackButton = new javax.swing.JButton();
         importTrackToLeadsheet = new javax.swing.JButton();
@@ -149,6 +159,16 @@ private void reload()
 
         midiImportButtonPanel.setLayout(new java.awt.GridBagLayout());
 
+        playMIDIfile.setText("Play MIDI File");
+        playMIDIfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playMIDIfileActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        midiImportButtonPanel.add(playMIDIfile, gridBagConstraints);
+
         playMIDIimportTrack.setText("Play Selected Track (or triple click)");
         playMIDIimportTrack.setToolTipText("Plays the selected MIDI track. Alternatively, triple click the entry.");
         playMIDIimportTrack.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +177,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -181,7 +201,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -199,7 +219,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
 
@@ -245,8 +265,31 @@ private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-F
 
 private void stopPlayingTrackButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayingTrackButtonActionPerformed
   {//GEN-HEADEREND:event_stopPlayingTrackButtonActionPerformed
+    // Stop both possible synths, the track one and the score one.
     notate.stopPlayAscore();
+    if( jmSynth != null )
+      {
+        jmSynth.stop();
+      }
   }//GEN-LAST:event_stopPlayingTrackButtonActionPerformed
+
+private void playMIDIfileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMIDIfileActionPerformed
+  {//GEN-HEADEREND:event_playMIDIfileActionPerformed
+  try
+    {
+    jm.music.data.Score score = midiImport.getScore();
+    score.setVolume(90);
+    if( jmSynth == null )
+      {
+        jmSynth = new jm.midi.MidiSynth();
+      }
+   jmSynth.play(score);
+    }
+  catch( InvalidMidiDataException e )
+    {
+      
+    }
+  }//GEN-LAST:event_playMIDIfileActionPerformed
 
 private void reImportWithNewResolution()
   {
@@ -299,6 +342,7 @@ private void playSelectedTrack()
     private javax.swing.JList importedTrackList;
     private javax.swing.JPanel midiImportButtonPanel;
     private javax.swing.JPanel midiImportTopPanel;
+    private javax.swing.JButton playMIDIfile;
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
     private javax.swing.JButton stopPlayingTrackButton;
