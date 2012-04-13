@@ -442,6 +442,8 @@ public class MelodyPart
           return new MelodyPart(0);
         }
 
+      int newUnitCount = 0;
+      
       try
       {
       MelodyPart newPart = new MelodyPart(newSize);
@@ -462,9 +464,11 @@ public class MelodyPart
                    break;
                  }
              }
-         newPart.slots.set(0, new Rest(j - startingIndex));
-         
-         i = j+1;
+           
+           newPart.slots.set(0, new Rest(j - startingIndex));
+ 
+           unitCount = 1;
+           i = j;
          }
        
        for( ; i < size; i++ )
@@ -473,11 +477,12 @@ public class MelodyPart
           if( unit != null )
             {
             unit = unit.copy();
+            newUnitCount++;
             }
-          newPart.slots.set(i, unit);
+          newPart.slots.set(i - startingIndex, unit);
         }
 
-    newPart.unitCount = unitCount;
+    newPart.unitCount = newUnitCount;
     newPart.title = title;
     newPart.volume = volume;
     newPart.keySig = keySig;

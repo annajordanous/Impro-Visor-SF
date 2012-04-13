@@ -20,6 +20,7 @@
 
 package imp.gui;
 
+import imp.Constants;
 import imp.data.MelodyPart;
 import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
@@ -33,7 +34,7 @@ import jm.midi.MidiSynth;
  *
  * @author keller
  */
-public class MidiImportFrame extends javax.swing.JFrame
+public class MidiImportFrame extends javax.swing.JFrame implements Constants
 {
 Notate notate;
 MidiImport midiImport;
@@ -111,6 +112,7 @@ private void reload()
         importTrackToLeadsheet = new javax.swing.JButton();
         importResolutionComboBox = new javax.swing.JComboBox();
         volumeSpinner = new javax.swing.JSpinner();
+        startBeatSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -206,7 +208,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -224,7 +226,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
 
@@ -238,6 +240,14 @@ private void reload()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         midiImportButtonPanel.add(volumeSpinner, gridBagConstraints);
+
+        startBeatSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        startBeatSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Start Beat"));
+        startBeatSpinner.setMinimumSize(new java.awt.Dimension(75, 56));
+        startBeatSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        midiImportButtonPanel.add(startBeatSpinner, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -339,9 +349,13 @@ private MelodyPart getSelectedTrackMelody()
         return null;
       }
     Object ob = trackListModel.get(index);
+    
     if( ob instanceof MidiImportRecord )
       {
-      return ((MidiImportRecord)ob).getPart();
+      MelodyPart part = ((MidiImportRecord)ob).getPart();
+      
+      int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
+      return part.copy(startSlot);
       } 
     return null;
   }
@@ -385,6 +399,7 @@ public void dispose()
     private javax.swing.JButton playMIDIfile;
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
+    private javax.swing.JSpinner startBeatSpinner;
     private javax.swing.JButton stopPlayingTrackButton;
     private javax.swing.JScrollPane trackSelectScrollPane;
     private javax.swing.JSpinner volumeSpinner;
