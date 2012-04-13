@@ -24,6 +24,7 @@ import imp.Constants;
 import imp.data.MelodyPart;
 import imp.data.MidiImport;
 import imp.data.MidiImportRecord;
+import imp.data.NoteResolutionInfo;
 import imp.data.Score;
 import java.util.LinkedList;
 import javax.sound.midi.InvalidMidiDataException;
@@ -179,7 +180,7 @@ private void reload()
         gridBagConstraints.gridx = 0;
         midiImportButtonPanel.add(playMIDIfile, gridBagConstraints);
 
-        playMIDIimportTrack.setText("Play Selected Track (or triple click)");
+        playMIDIimportTrack.setText("Play Track");
         playMIDIimportTrack.setToolTipText("Plays the selected MIDI track individually, not in the leadsheet context.");
         playMIDIimportTrack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,7 +205,7 @@ private void reload()
         gridBagConstraints.gridx = 2;
         midiImportButtonPanel.add(stopPlayingTrackButton, gridBagConstraints);
 
-        importTrackToLeadsheet.setText("Import Selected Track to Leadsheet (or double click)");
+        importTrackToLeadsheet.setText("Import Track to Leadsheet (or double click)");
         importTrackToLeadsheet.setToolTipText("Imports the track selected above to the leadsheet as a new chorus. Alternatively, double click the entry. If Start Beat and End Beat are set, will import just the selected range of beats.\n");
         importTrackToLeadsheet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,12 +219,13 @@ private void reload()
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(importTrackToLeadsheet, gridBagConstraints);
 
-        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "480", "360", "240", "120", "80", "60", "40", "30", "20", "15", "10", "5", "1" }));
-        importResolutionComboBox.setSelectedIndex(8);
+        importResolutionComboBox.setMaximumRowCount(16);
+        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
+        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[9]);
         importResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution in Slots", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        importResolutionComboBox.setMinimumSize(new java.awt.Dimension(180, 50));
-        importResolutionComboBox.setPreferredSize(new java.awt.Dimension(180, 50));
+        importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        importResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        importResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
         importResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importMidiNoteResolutionChanged(evt);
@@ -351,7 +353,7 @@ private void setJmVolume()
 
 private void reImportWithNewResolution()
   {
-    int newResolution = Integer.parseInt((String)importResolutionComboBox.getSelectedItem());
+    int newResolution = ((NoteResolutionInfo)importResolutionComboBox.getSelectedItem()).getSlots();
     midiImport.setResolution(newResolution);
     reload();
   }
