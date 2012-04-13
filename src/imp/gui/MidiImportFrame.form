@@ -85,7 +85,7 @@
               <Connection code="trackListModel" type="code"/>
             </Property>
             <Property name="selectionMode" type="int" value="0"/>
-            <Property name="toolTipText" type="java.lang.String" value="Select the track to be imported"/>
+            <Property name="toolTipText" type="java.lang.String" value="These are all channels and tracks from the imported MIDI file. Select the one you wish to play or import to the leadsheet. Doube clicking imports the track, or use the button below."/>
           </Properties>
           <Events>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="importTrackSelected"/>
@@ -106,6 +106,7 @@
         <Component class="javax.swing.JButton" name="playMIDIfile">
           <Properties>
             <Property name="text" type="java.lang.String" value="Play MIDI File"/>
+            <Property name="toolTipText" type="java.lang.String" value="CAUTION: This will play the complete MIDI file at full volume. Consider reducing your computer audio volume first."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playMIDIfileActionPerformed"/>
@@ -119,7 +120,7 @@
         <Component class="javax.swing.JButton" name="playMIDIimportTrack">
           <Properties>
             <Property name="text" type="java.lang.String" value="Play Selected Track (or triple click)"/>
-            <Property name="toolTipText" type="java.lang.String" value="Plays the selected MIDI track. Alternatively, triple click the entry."/>
+            <Property name="toolTipText" type="java.lang.String" value="Plays the selected MIDI track individually, not in the leadsheet context."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playMIDIimportTrackActionPerformed"/>
@@ -133,6 +134,7 @@
         <Component class="javax.swing.JButton" name="stopPlayingTrackButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Stop"/>
+            <Property name="toolTipText" type="java.lang.String" value="Stop playback of either full MIDI file or selected track, whichever is playing."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopPlayingTrackButtonActionPerformed"/>
@@ -146,7 +148,7 @@
         <Component class="javax.swing.JButton" name="importTrackToLeadsheet">
           <Properties>
             <Property name="text" type="java.lang.String" value="Import Selected Track to Leadsheet (or double click)"/>
-            <Property name="toolTipText" type="java.lang.String" value="Imports the track selected above to the leadsheet as a new chorus. Alternatively, double click the entry."/>
+            <Property name="toolTipText" type="java.lang.String" value="Imports the track selected above to the leadsheet as a new chorus. Alternatively, double click the entry. If Start Beat and End Beat are set, will import just the selected range of beats.&#xa;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="importTrackToLeadsheetActionPerformed"/>
@@ -177,7 +179,7 @@
               </StringArray>
             </Property>
             <Property name="selectedIndex" type="int" value="8"/>
-            <Property name="toolTipText" type="java.lang.String" value="Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail."/>
+            <Property name="toolTipText" type="java.lang.String" value="Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder justification="2" title="Note Resolution in Slots">
@@ -228,6 +230,7 @@
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
               <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Sets the starting beat for playback or importing to the leadsheet."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="Start Beat"/>
@@ -251,6 +254,7 @@
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
               <SpinnerModel initial="1" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Sets the ending beat for playback or importing to the leadsheet."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="End Beat"/>

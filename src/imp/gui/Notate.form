@@ -8593,6 +8593,7 @@
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;center&gt;&#xa;Early&#xa;&lt;br&gt;&#xa;Scroll&#xa;&lt;/center&gt;&#xa;&lt;/html&gt;&#xa;"/>
+                <Property name="toolTipText" type="java.lang.String" value="Causes the staff display to scroll to the top earlier."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
@@ -8695,7 +8696,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/play.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet."/>
+                <Property name="toolTipText" type="java.lang.String" value="Play the entire leadsheet, starting with the first chorus.&#xa;To play just the current chorus, select the first beat of that chorus and press Shift-Enter."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>

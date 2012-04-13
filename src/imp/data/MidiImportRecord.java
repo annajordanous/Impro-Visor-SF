@@ -153,12 +153,11 @@ public String toString()
     {
       case 0:  rangeString = ""; break;
       case 1:  rangeString = "1 distinct pitch: " + lowPitch + ", "; break;
-      default: rangeString = distinctPitches + " distinct pitches: " + lowPitch + " to " + highPitch + ", ";
+      default: rangeString = distinctPitches + " distinct MIDI pitches: " + lowPitch + " to " + highPitch + ", ";
     }
   
   return "channel " + (channel+1) + ", track " + trackNumber 
-          + " [" + totalBeats + " beats, " 
-          + initialRestBeats + " initial rest beats, "
+          + " [" + initialRestBeats + " initial rest beats, "
           + rangeString
           + occupancyPercent + "% occupied]: " 
           + melodyPart.toString();   
