@@ -208,7 +208,7 @@ public Part(int size)
       }
     catch( OutOfMemoryError e )
       {
-        ErrorLog.log(ErrorLog.SEVERE, "Out of memory");
+        ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to create part of size " + size);
       }
   }
 

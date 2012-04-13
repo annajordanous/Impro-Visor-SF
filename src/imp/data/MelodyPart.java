@@ -435,7 +435,87 @@ public class MelodyPart
 
   public MelodyPart copy(int startingIndex)
 {
-      int newSize = size - startingIndex;
+  return copy(startingIndex, size-1);
+}
+  
+
+//      int newSize = size - startingIndex;
+//      
+//      if( newSize <= 0 )
+//        {
+//          return new MelodyPart(0);
+//        }
+//
+//      int newUnitCount = 0;
+//      
+//      try
+//      {
+//      MelodyPart newPart = new MelodyPart(newSize);
+// 
+//       int i = startingIndex;
+//       
+//       if( slots.get(startingIndex) == null )
+//         {
+//           // Find first non-null slot, and place a rest at
+//           // startingIndex.
+//           
+//           int j = startingIndex + 1;
+//           
+//           for( ; j < size; j++ )
+//             {
+//               if( slots.get(j) != null )
+//                 {
+//                   break;
+//                 }
+//             }
+//           
+//           newPart.slots.set(0, new Rest(j - startingIndex));
+// 
+//           unitCount = 1;
+//           i = j;
+//         }
+//       
+//       for( ; i < size; i++ )
+//        {
+//          Unit unit = slots.get(i);
+//          if( unit != null )
+//            {
+//            unit = unit.copy();
+//            newUnitCount++;
+//            }
+//          newPart.slots.set(i - startingIndex, unit);
+//        }
+//
+//    newPart.unitCount = newUnitCount;
+//    newPart.title = title;
+//    newPart.volume = volume;
+//    newPart.keySig = keySig;
+//    newPart.metre[0] = metre[0];
+//    newPart.metre[1] = metre[1];
+//    newPart.beatValue = beatValue;
+//    newPart.measureLength = measureLength;
+//    newPart.swing = swing;
+//    newPart.instrument = instrument;
+//    return newPart;
+//      }
+//    catch( Error e )
+//      {
+//        ErrorLog.log(ErrorLog.FATAL, 
+//                     "Not enough memory to copy part of size " + newSize + ".");
+//        return null;
+//      }
+//    }
+//
+//  
+//  
+  /**
+   * Returns an exact copy of this Part from startingIndex to endingIndex
+   * @return 
+   */
+
+public MelodyPart copy(int startingIndex, int endingIndex)
+{
+      int newSize = endingIndex + 1 - startingIndex;
       
       if( newSize <= 0 )
         {
@@ -447,7 +527,7 @@ public class MelodyPart
       try
       {
       MelodyPart newPart = new MelodyPart(newSize);
- 
+      //System.out.println("melodyPart with size " + newPart.getSize() + " start = " + startingIndex + ", end = " + endingIndex); 
        int i = startingIndex;
        
        if( slots.get(startingIndex) == null )
@@ -455,31 +535,38 @@ public class MelodyPart
            // Find first non-null slot, and place a rest at
            // startingIndex.
            
-           int j = startingIndex + 1;
+           i++;
            
-           for( ; j < size; j++ )
+           for( ; i <= endingIndex; i++ )
              {
-               if( slots.get(j) != null )
+               if( slots.get(i) != null )
                  {
                    break;
                  }
              }
            
-           newPart.slots.set(0, new Rest(j - startingIndex));
+           newPart.slots.set(0, new Rest(i - startingIndex));
  
            unitCount = 1;
-           i = j;
+
          }
        
-       for( ; i < size; i++ )
+       for( ; i <= endingIndex && i < size ; i++ )
         {
           Unit unit = slots.get(i);
+
           if( unit != null )
             {
             unit = unit.copy();
             newUnitCount++;
+            if( i + unit.getRhythmValue() - 1 > endingIndex )
+              {
+              // In case the last unit extends beyond endingIndex;
+              unit.setRhythmValue(endingIndex - i + 1);
+              }
             }
           newPart.slots.set(i - startingIndex, unit);
+
         }
 
     newPart.unitCount = newUnitCount;
@@ -501,7 +588,8 @@ public class MelodyPart
         return null;
       }
     }
-
+  
+  
       public int getPitchSounding(int index) {
         //if there is a note struck at the index, return its pitch
         Note curr = this.getNote(index);
