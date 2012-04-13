@@ -1178,14 +1178,20 @@ public int getUnitRhythmValue(int unitIndex)
             }
         }
 
-        
-        // After the Units are shifted, go through and reset each rhythm value
-        PartIterator i = iterator();
-        while(i.hasNext()) {
+        try
+          {
+          // After the Units are shifted, go through and reset each rhythm value
+          PartIterator i = iterator();
+          while(i.hasNext()) {
             int index = i.nextIndex();
             slots.get(index).setRhythmValue(getUnitRhythmValue(index));
             i.next();
-        }
+            }
+          }
+        catch( Exception e )
+          {
+            
+          }
     }
     
     /**
