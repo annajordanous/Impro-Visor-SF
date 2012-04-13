@@ -425,12 +425,49 @@ public class MelodyPart
   @Override
   public MelodyPart copy()
     {
-    Trace.log(3, "copying melody part of size " + size);
-    try
-      {
-    MelodyPart newPart = new MelodyPart(size);
+      return copy(0);
+    }
     
-       for( int i =  0; i < size; i++ )
+  /**
+   * Returns an exact copy of this Part from startingIndex
+   * @return Part   copy
+   */
+
+  public MelodyPart copy(int startingIndex)
+{
+      int newSize = size - startingIndex;
+      
+      if( newSize <= 0 )
+        {
+          return new MelodyPart(0);
+        }
+
+      try
+      {
+      MelodyPart newPart = new MelodyPart(newSize);
+ 
+       int i = startingIndex;
+       
+       if( slots.get(startingIndex) == null )
+         {
+           // Find first non-null slot, and place a rest at
+           // startingIndex.
+           
+           int j = startingIndex + 1;
+           
+           for( ; j < size; j++ )
+             {
+               if( slots.get(j) != null )
+                 {
+                   break;
+                 }
+             }
+         newPart.slots.set(0, new Rest(j - startingIndex));
+         
+         i = j+1;
+         }
+       
+       for( ; i < size; i++ )
         {
           Unit unit = slots.get(i);
           if( unit != null )
@@ -454,7 +491,8 @@ public class MelodyPart
       }
     catch( Error e )
       {
-        ErrorLog.log(ErrorLog.FATAL, "Not enough memory to copy part.");
+        ErrorLog.log(ErrorLog.FATAL, 
+                     "Not enough memory to copy part of size " + newSize + ".");
         return null;
       }
     }
