@@ -113,6 +113,7 @@ private void reload()
         importResolutionComboBox = new javax.swing.JComboBox();
         volumeSpinner = new javax.swing.JSpinner();
         startBeatSpinner = new javax.swing.JSpinner();
+        endBeatSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -208,7 +209,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -226,7 +227,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 7;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
 
@@ -248,6 +249,14 @@ private void reload()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         midiImportButtonPanel.add(startBeatSpinner, gridBagConstraints);
+
+        endBeatSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        endBeatSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("End Beat"));
+        endBeatSpinner.setMinimumSize(new java.awt.Dimension(75, 56));
+        endBeatSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        midiImportButtonPanel.add(endBeatSpinner, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -283,9 +292,9 @@ private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GE
 private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
   {//GEN-HEADEREND:event_importedTrackListMouseClicked
     switch(evt.getClickCount() )
-      {
-        case 2: importSelectedTrack(); break;
-        case 3: playSelectedTrack(); break;
+      { case 1: setEndBeat(); break;
+        case 2: setEndBeat(); importSelectedTrack(); break;
+        case 3: setEndBeat(); playSelectedTrack();   break;
       }
   }//GEN-LAST:event_importedTrackListMouseClicked
 
@@ -341,7 +350,7 @@ private void reImportWithNewResolution()
     reload();
   }
 
-private MelodyPart getSelectedTrackMelody()
+private MelodyPart getFullSelectedTrackMelody()
   {
     int index = importedTrackList.getSelectedIndex();
     if( index < 0 )
@@ -352,10 +361,23 @@ private MelodyPart getSelectedTrackMelody()
     
     if( ob instanceof MidiImportRecord )
       {
-      MelodyPart part = ((MidiImportRecord)ob).getPart();
-      
+       MelodyPart part = ((MidiImportRecord)ob).getPart();
+       return part;
+       } 
+    return null;
+  }
+
+private MelodyPart getSelectedTrackMelody()
+  {
+    MelodyPart part = getFullSelectedTrackMelody();
+    if( part != null )
+      {
+      // Note that these expression are not the same form, as the second
+      // has to add a whole beat to get to the last slot.
       int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
-      return part.copy(startSlot);
+      int endSlot = BEAT*((Integer)endBeatSpinner.getValue())-1;
+      
+      return part.copy(startSlot, endSlot);
       } 
     return null;
   }
@@ -367,9 +389,21 @@ private void importSelectedTrack()
     if( part != null )
       {
         notate.addChorus(part);
+        notate.requestFocusInWindow();
       }
   }
 
+private void setEndBeat()
+  {
+     MelodyPart part = getFullSelectedTrackMelody();
+    
+    if( part != null )
+      {
+        int slots = part.getSize();
+        
+        endBeatSpinner.setValue(1 + (slots / BEAT) );
+      }   
+  }
 private void playSelectedTrack()
   {
    MelodyPart part = getSelectedTrackMelody();
@@ -391,6 +425,7 @@ public void dispose()
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner endBeatSpinner;
     private javax.swing.JComboBox importResolutionComboBox;
     private javax.swing.JButton importTrackToLeadsheet;
     private javax.swing.JList importedTrackList;
