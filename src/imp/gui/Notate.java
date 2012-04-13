@@ -6950,7 +6950,7 @@ public class Notate
         standardToolbar.add(addTabBtn);
 
         delTabBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/deltab.gif"))); // NOI18N
-        delTabBtn.setToolTipText("Delete the current  chorus tab (can't be undone).");
+        delTabBtn.setToolTipText("Delete the current  chorus tab (can't be undone). If there is only one chorus, you can't delete it.\n");
         delTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         delTabBtn.setEnabled(false);
         delTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
@@ -12674,7 +12674,10 @@ private void openAdviceFrame()
 
       if( evt.getKeyCode() == KeyEvent.VK_ENTER )
         {
-        if( slotIsSelected() )
+        if( !slotIsSelected() )
+          {
+          getCurrentStave().setSelection(0, 0);
+          }
           {
 
           String enteredText = textEntry.getText();
@@ -12708,11 +12711,7 @@ private void openAdviceFrame()
             staveRequestFocus();
             }
           }
-        else
-          {
-          ErrorLog.log(ErrorLog.COMMENT,
-                  "Text entry has no effect unless a unique grid line is selected.");
-          }
+
         }
       else
         {
@@ -17326,7 +17325,7 @@ public ChordPart makeCountIn()
       int choice = JOptionPane.showOptionDialog(this,
               "Do you wish to quit Impro-Visor?", "Quit",
               JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-              null, options, options[1]);
+              null, options, options[0]);
 
       // the user selected yes
 
@@ -20303,7 +20302,7 @@ private void delTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     int choice = JOptionPane.showOptionDialog(this,
         "Do you wish to delete the current chorus?\n\nThis can't be undone.",
         "Delete Current Chorus?", JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
     // int choice = 0;
     // the user selected yes
