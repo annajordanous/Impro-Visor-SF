@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.Constants;
 import java.util.Iterator;
 
 /**
@@ -27,7 +28,7 @@ import java.util.Iterator;
  * the Impro-Visor MelodyPart to which the track is translated
  * @author keller
  */
-public class MidiImportRecord implements Comparable
+public class MidiImportRecord implements Comparable, Constants
 {
 int channel;
 int trackNumber;
@@ -39,6 +40,7 @@ int restSlots;
 int nonRestSlots;
 int initialRestSlots;
 double occupancy;
+int totalBeats;
 
 public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart)
 {
@@ -119,6 +121,8 @@ private void getStatistics()
             distinctPitches++;
           }
       }
+    
+    totalBeats = (int)Math.ceil(((double)(restSlots + nonRestSlots))/BEAT);
   }
 
 public MelodyPart getPart()
@@ -131,12 +135,17 @@ public int getChannel()
     return channel;
   }
 
+public int getBeats()
+  {
+    return totalBeats;
+  }
+
 @Override
 public String toString()
   {
   int occupancyPercent = (int)(100*occupancy);
-  int totalBeats = (restSlots + nonRestSlots)/imp.Constants.BEAT;
-  int initialRestBeats = initialRestSlots/imp.Constants.BEAT;
+  
+  int initialRestBeats = initialRestSlots/BEAT;
   
   String rangeString;
   

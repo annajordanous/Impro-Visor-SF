@@ -39,6 +39,7 @@ public class MidiImportFrame extends javax.swing.JFrame implements Constants
 Notate notate;
 MidiImport midiImport;
 DefaultListModel trackListModel;
+MelodyPart selectedPart = null;
 
 /**
  * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
@@ -291,10 +292,11 @@ private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GE
 
 private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
   {//GEN-HEADEREND:event_importedTrackListMouseClicked
+    getFullSelectedTrackMelody(); // This serves to set endBeatSpinner
     switch(evt.getClickCount() )
-      { case 1: setEndBeat(); break;
-        case 2: setEndBeat(); importSelectedTrack(); break;
-        case 3: setEndBeat(); playSelectedTrack();   break;
+      { case 1: break;
+        case 2: importSelectedTrack(); break;
+        case 3: playSelectedTrack();   break;
       }
   }//GEN-LAST:event_importedTrackListMouseClicked
 
@@ -350,34 +352,35 @@ private void reImportWithNewResolution()
     reload();
   }
 
-private MelodyPart getFullSelectedTrackMelody()
+private void getFullSelectedTrackMelody()
   {
     int index = importedTrackList.getSelectedIndex();
     if( index < 0 )
       {
-        return null;
+        return;
       }
     Object ob = trackListModel.get(index);
     
     if( ob instanceof MidiImportRecord )
       {
-       MelodyPart part = ((MidiImportRecord)ob).getPart();
-       return part;
+       MidiImportRecord record = (MidiImportRecord)ob;
+       selectedPart = record.getPart();
+       int numBeats = record.getBeats();
+       endBeatSpinner.setValue(numBeats);
+       ((javax.swing.SpinnerNumberModel)endBeatSpinner.getModel()).setMaximum(numBeats);
        } 
-    return null;
   }
 
 private MelodyPart getSelectedTrackMelody()
   {
-    MelodyPart part = getFullSelectedTrackMelody();
-    if( part != null )
+    if( selectedPart != null )
       {
       // Note that these expression are not the same form, as the second
       // has to add a whole beat to get to the last slot.
       int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
       int endSlot = BEAT*((Integer)endBeatSpinner.getValue())-1;
       
-      return part.copy(startSlot, endSlot);
+      return selectedPart.copy(startSlot, endSlot);
       } 
     return null;
   }
@@ -393,17 +396,7 @@ private void importSelectedTrack()
       }
   }
 
-private void setEndBeat()
-  {
-     MelodyPart part = getFullSelectedTrackMelody();
-    
-    if( part != null )
-      {
-        int slots = part.getSize();
-        
-        endBeatSpinner.setValue(1 + (slots / BEAT) );
-      }   
-  }
+
 private void playSelectedTrack()
   {
    MelodyPart part = getSelectedTrackMelody();
