@@ -1004,29 +1004,39 @@ public Unit getNextUnit(int slotIndex)
 
 public int getNextIndex(int slotIndex)
   {
-    Unit unit = slots.get(slotIndex);
-    int nextIndex = size;
-    if( unit != null )
+    for( int i = slotIndex + 1; i < size; i++ )
       {
-        nextIndex = slotIndex + unit.getRhythmValue();
-      }
-    else
-      {
-        ListIterator<Unit> i = slots.listIterator(slotIndex);
-        while( i.hasNext() )
+        Unit unit = slots.get(i);
+        if( unit != null )
           {
-            nextIndex = i.nextIndex();
-            if( i.next() != null )
-              {
-                break;
-              }
+            return i;
           }
       }
-    if( nextIndex >= size )
-      {
-        return size;     // What to do in this case?
-      }
-    return nextIndex;
+    return size;
+//    
+//    Unit unit = slots.get(slotIndex);
+//    int nextIndex = size;
+//    if( unit != null )
+//      {
+//        nextIndex = slotIndex + unit.getRhythmValue();
+//      }
+//    else
+//      {
+//        ListIterator<Unit> i = slots.listIterator(slotIndex);
+//        while( i.hasNext() )
+//          {
+//            nextIndex = i.nextIndex();
+//            if( i.next() != null )
+//              {
+//                break;
+//              }
+//          }
+//      }
+//    if( nextIndex >= size )
+//      {
+//        return size;     // What to do in this case?
+//      }
+//    return nextIndex;
   }
 
 
@@ -1041,20 +1051,45 @@ public int getNextIndex(int slotIndex)
 
 public int getUnitRhythmValue(int unitIndex)
   {
+     //System.out.print("getUnitRhythmValue " + unitIndex + " in part of length " + size);
+     if( unitIndex >= size )
+      {
+        return 0;
+      }
     // Start on the next Unit over, since we can call this on an 
     // empty slot
-    int rv = 1;
-    ListIterator<Unit> i = slots.listIterator(++unitIndex);
-    while( i.hasNext() )
+    int i = unitIndex + 1;
+    
+    while( i < size )
       {
-        if( i.next() != null )
+        if( getUnit(i) != null )
           {
-            return rv;
+            //System.out.println(" " + (i - unitIndex));
+            return i - unitIndex;
           }
-        rv++;
+        i++;
       }
-    return rv;
+    //System.out.println(" " + (size - unitIndex));
+    return size - unitIndex;
   }
+
+
+//public int getUnitRhythmValue(int unitIndex)
+//  {
+//    // Start on the next Unit over, since we can call this on an 
+//    // empty slot
+//    int rv = 1;
+//    ListIterator<Unit> i = slots.listIterator(++unitIndex);
+//    while( i.hasNext() )
+//      {
+//        if( i.next() != null )
+//          {
+//            return rv;
+//          }
+//        rv++;
+//      }
+//    return rv;
+//  }
 
     
     public Part fitPart(int freeSlots) {
@@ -1143,6 +1178,7 @@ public int getUnitRhythmValue(int unitIndex)
             }
         }
 
+        
         // After the Units are shifted, go through and reset each rhythm value
         PartIterator i = iterator();
         while(i.hasNext()) {
