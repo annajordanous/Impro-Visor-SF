@@ -7064,6 +7064,7 @@ public class Notate
         earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         earlyScrollBtn.setSelected(true);
         earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
+        earlyScrollBtn.setToolTipText("Causes the staff display to scroll to the top earlier.");
         earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         earlyScrollBtn.setFocusable(false);
         earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -7123,7 +7124,7 @@ public class Notate
         playToolBar.add(countInPanel);
 
         playBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"))); // NOI18N
-        playBtn.setToolTipText("Play the entire leadsheet.");
+        playBtn.setToolTipText("Play the entire leadsheet, starting with the first chorus.\nTo play just the current chorus, select the first beat of that chorus and press Shift-Enter.");
         playBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
