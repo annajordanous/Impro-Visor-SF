@@ -8393,7 +8393,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imp/gui/graphics/toolbar/deltab.gif"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Delete the current  chorus tab (can&apos;t be undone)."/>
+                <Property name="toolTipText" type="java.lang.String" value="Delete the current  chorus tab (can&apos;t be undone). If there is only one chorus, you can&apos;t delete it.&#xa;"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
                     <BevelBorder/>
