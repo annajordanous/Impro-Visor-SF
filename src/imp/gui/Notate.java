@@ -8057,7 +8057,7 @@ public class Notate
         editMenu.add(pasteOverMI);
         editMenu.add(jSeparator16);
 
-        enterTextMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, 0));
+        enterTextMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, 0));
         enterTextMI.setText("Enter Text");
         enterTextMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

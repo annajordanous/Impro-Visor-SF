@@ -6942,7 +6942,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="enterTextMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="PERIOD"/>
+                  <KeyStroke key="COMMA"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Enter Text"/>
               </Properties>
