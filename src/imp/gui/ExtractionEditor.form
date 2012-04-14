@@ -97,6 +97,7 @@
             <TitledBorder title="Re-Extraction Options"/>
           </Border>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Extract patterns again, possibly using different parameters."/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -142,6 +143,7 @@
         <Component class="javax.swing.JTextField" name="startBeatTextField">
           <Properties>
             <Property name="text" type="java.lang.String" value="8.0"/>
+            <Property name="toolTipText" type="java.lang.String" value="The starting beat from which patterns will be extracted"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startBeatTextFieldActionPerformed"/>
@@ -155,6 +157,7 @@
         <Component class="javax.swing.JTextField" name="endBeatTextField">
           <Properties>
             <Property name="text" type="java.lang.String" value=" "/>
+            <Property name="toolTipText" type="java.lang.String" value="The ending beat from which patterns will be extracted"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="endBeatTextFieldActionPerformed"/>
@@ -170,6 +173,7 @@
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
               <SpinnerModel initial="1" maximum="99" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="The number of clusters sought in pattern extraction"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -180,6 +184,7 @@
         <Component class="javax.swing.JButton" name="reExtractBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Re-Extract Patterns"/>
+            <Property name="toolTipText" type="java.lang.String" value="Extract the patterns for this window using new parameters."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reExtractBtnActionPerformed"/>
@@ -193,6 +198,7 @@
         <Component class="javax.swing.JCheckBox" name="doubleDrumLength">
           <Properties>
             <Property name="text" type="java.lang.String" value="Double Drum Length"/>
+            <Property name="toolTipText" type="java.lang.String" value="Change the length of extracted drum pattern to be double what it was."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="doubleDrumLengthActionPerformed"/>
@@ -203,25 +209,6 @@
             </Constraint>
           </Constraints>
         </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JScrollPane" name="partPanel">
-      <Properties>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[200, 150]"/>
-        </Property>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[200, 150]"/>
-        </Property>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="2" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="77" ipadY="77" insetsTop="5" insetsLeft="5" insetsBottom="5" insetsRight="5" anchor="18" weightX="0.2" weightY="0.6"/>
-        </Constraint>
-      </Constraints>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
         <Component class="javax.swing.JList" name="potentialInstrumentsJList">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -238,13 +225,20 @@
                 <StringItem index="4" value="Item 5"/>
               </StringArray>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Select MIDI instrument for re-estraction"/>
           </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="0" gridY="5" gridWidth="2" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.5"/>
+            </Constraint>
+          </Constraints>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JButton" name="selectPatternBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Select Pattern"/>
+        <Property name="text" type="java.lang.String" value="Include Pattern"/>
+        <Property name="toolTipText" type="java.lang.String" value="Moves the selected pattern into the right list for inclusion in the style."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectPatternBtnActionPerformed"/>
@@ -258,6 +252,7 @@
     <Component class="javax.swing.JButton" name="leftPlayPatternBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Play Pattern"/>
+        <Property name="toolTipText" type="java.lang.String" value="Play the selected pattern (also can achieve with a double-click)."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leftPlayPatternBtnActionPerformed"/>
@@ -271,6 +266,7 @@
     <Component class="javax.swing.JButton" name="removePatternBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Remove Pattern"/>
+        <Property name="toolTipText" type="java.lang.String" value="Removes the selected pattern from further consideration for the style."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removePatternBtnActionPerformed"/>
@@ -284,6 +280,7 @@
     <Component class="javax.swing.JButton" name="rightPlayPatternBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Play Pattern"/>
+        <Property name="toolTipText" type="java.lang.String" value="Play the selected pattern (also can achieve with a double-click)."/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rightPlayPatternBtnActionPerformed"/>
@@ -309,7 +306,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="closeWindowBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Close this Window"/>
+        <Property name="text" type="java.lang.String" value="Dismiss this Window"/>
+        <Property name="toolTipText" type="java.lang.String" value="Close the window. Any patterns to be included should be copied to the Style Editor before closing."/>
+        <Property name="actionCommand" type="java.lang.String" value="Dismiss this Window"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeWindowBtnActionPerformed"/>
