@@ -32,9 +32,7 @@ import imp.util.MidiPlayListener;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -60,7 +58,7 @@ import polya.PolylistBuffer;
  */
 public class Stave
         extends JPanel
-        implements Constants
+        implements Constants, FocusListener
 {
 String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
    
@@ -115,7 +113,7 @@ public static int upStemBracketCorrection = 15;
 /**
  * Action handler for the Stave.
  */
-private StaveActionHandler handleActions;
+private StaveActionHandler staveActionHandler;
 
 ArrayList<BeamNote> beamNotes = null;
 /**
@@ -624,10 +622,10 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     this.setSize(panelWidth, panelHeight);
 
     // register the listerners
-    handleActions = new StaveActionHandler(this, notate);
-    this.addMouseListener(handleActions);
-    this.addMouseMotionListener(handleActions);
-    this.addKeyListener(handleActions);
+    staveActionHandler = new StaveActionHandler(this, notate);
+    this.addMouseListener(staveActionHandler);
+    this.addMouseMotionListener(staveActionHandler);
+    this.addKeyListener(staveActionHandler);
 
     this.setLayout(null);
 
@@ -927,7 +925,7 @@ public boolean getPrinting()
  */
 public StaveActionHandler getActionHandler()
   {
-    return handleActions;
+    return staveActionHandler;
   }
 
 /**
@@ -5894,5 +5892,11 @@ public int getNumMeasures()
       }
     return sum;
   }
+    public void focusGained(FocusEvent e) {
+       //notate.setBorderColor(new java.awt.Color(50, 50, 255));
+    }
 
+    public void focusLost(FocusEvent e) {
+     //notate.setBorderColor(new java.awt.Color(255, 255, 255));   
+    }
 }

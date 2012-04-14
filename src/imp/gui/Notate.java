@@ -2222,6 +2222,7 @@ public class Notate
         pasteBothMI = new javax.swing.JMenuItem();
         pasteOverMI = new javax.swing.JCheckBoxMenuItem();
         jSeparator16 = new javax.swing.JSeparator();
+        enterTextMI = new javax.swing.JMenuItem();
         enterMelodyMI = new javax.swing.JMenuItem();
         enterChordsMI = new javax.swing.JMenuItem();
         enterBothMI = new javax.swing.JMenuItem();
@@ -7618,6 +7619,12 @@ public class Notate
         textEntry.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         textEntry.setToolTipText("Enter chords or melody in leadsheet notation.");
         textEntry.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        textEntry.setNextFocusableComponent(scoreTab);
+        textEntry.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textEntryMouseClicked(evt);
+            }
+        });
         textEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textEntryActionPerformed(evt);
@@ -7666,6 +7673,7 @@ public class Notate
         getContentPane().add(toolbarPanel, gridBagConstraints);
 
         scoreTab.setBackground(new java.awt.Color(255, 255, 255));
+        scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -8048,6 +8056,15 @@ public class Notate
         });
         editMenu.add(pasteOverMI);
         editMenu.add(jSeparator16);
+
+        enterTextMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, 0));
+        enterTextMI.setText("Enter Text");
+        enterTextMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterTextMIActionPerformed(evt);
+            }
+        });
+        editMenu.add(enterTextMI);
 
         enterMelodyMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, 0));
         enterMelodyMI.setText("Enter Melody from Text\n");
@@ -12676,42 +12693,30 @@ private void openAdviceFrame()
         {
         if( !slotIsSelected() )
           {
+          // If no slot is selected, force the first slot to be selected.
           getCurrentStave().setSelection(0, 0);
           }
-          {
+        
+        String enteredText = textEntry.getText();
 
-          String enteredText = textEntry.getText();
+        if( enteredText.length() > 0 )
+        {
+        cm.execute(
+                new SetChordsCommand(getCurrentSelectionStart(),
+                parseListFromString(enteredText),
+                chordProg,
+                partList.get(currTabIndex) ));
+        }
+        
+        textEntry.setEnabled(false);
 
-          if( enteredText.length() > 0 )
-            {
-            cm.execute(
-                    new SetChordsCommand(getCurrentSelectionStart(),
-                    parseListFromString(enteredText),
-                    chordProg,
-                    partList.get(currTabIndex) ));
-            }
-          else
-            {
-            cm.execute(
-                    new DeleteUnitsCommand(chordProg,
-                    getCurrentSelectionStart(),
-                    getCurrentSelectionEnd()));
-            }
+        staveRequestFocus();
+        
+        redoAdvice();
 
-         redoAdvice();
+        // set the menu and button states
 
-          // set the menu and button states
-
-          setItemStates();
-
-          if( evt.isShiftDown() )
-            {
-            // If shift is down when entry pressed, shift focus to stave.
-
-            staveRequestFocus();
-            }
-          }
-
+        setItemStates();
         }
       else
         {
@@ -12933,8 +12938,6 @@ private void exportToMusicXML()
   public void staveRequestFocus()
     {
     // Show that textEntry no longer has focus if it had.
-
-    Trace.log(3, "focus to stave");
 
     textEntryLabel.setForeground(Color.red);
 
@@ -21051,6 +21054,34 @@ private void insertChorusTabMIActionPerformed(java.awt.event.ActionEvent evt)//G
     addTab();
   }//GEN-LAST:event_insertChorusTabMIActionPerformed
 
+private void textEntryMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_textEntryMouseClicked
+  {//GEN-HEADEREND:event_textEntryMouseClicked
+  textRequestFocus();
+  }//GEN-LAST:event_textEntryMouseClicked
+
+private void enterTextMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_enterTextMIActionPerformed
+  {//GEN-HEADEREND:event_enterTextMIActionPerformed
+    textRequestFocus();
+  }//GEN-LAST:event_enterTextMIActionPerformed
+
+/**
+ * Focus on input from textEntry field, until return is pressed,
+ * at which point staveRequestFocus() will be called 
+ * (in textEntryActionHandler).
+ */
+
+public void textRequestFocus()
+  {
+  String text = textEntry.getText();
+  
+  textEntry.requestFocusInWindow();
+  textEntry.setEnabled(true);
+  int length = text.length();
+  //textEntry.setSelectionStart(length-1);
+  //textEntry.setSelectionEnd(length);
+ }
+
+
 public void importMidiFile()
   {
     new MidiImport(this).importMidi();
@@ -22746,6 +22777,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField enterLickTitle;
     private javax.swing.JTextField enterMeasures;
     private javax.swing.JMenuItem enterMelodyMI;
+    private javax.swing.JMenuItem enterTextMI;
     private javax.swing.JCheckBox entryMute;
     private javax.swing.JPanel entryPanel;
     private javax.swing.JSlider entryVolume;
@@ -23765,6 +23797,12 @@ public String getDefaultGrammarName()
     fileName = fileName.subSequence(0, fileName.length() - ".grammar".length()).toString();
     //System.out.println("fileName = " + fileName);
     return fileName;
+  }
+
+
+public void setBorderColor(Color color)
+  {
+    scoreTab.setBorder(new javax.swing.border.LineBorder(color, 3));
   }
 }
 

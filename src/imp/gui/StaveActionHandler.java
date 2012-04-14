@@ -471,11 +471,12 @@ StaveActionHandler(Stave stave, Notate notate)
  **/
 
 /**
- * Mouse entered
+ * Mouse entereds
  */
 
 public void mouseEntered(MouseEvent e)
  {
+   
  }
 
 
@@ -485,6 +486,7 @@ public void mouseEntered(MouseEvent e)
 
 public void mouseExited(MouseEvent e)
  {
+  
  }
 
 
@@ -2159,7 +2161,7 @@ public void undo()
  */
 public void keyPressed(KeyEvent e)
  {
-  //System.out.println("staveActionHandler keyPressed: " + e);
+  //System.out.println("staveActionHandler keyPressed: " + (char)e.getKeyCode() );
   if( e.getKeyCode() != KeyEvent.VK_ENTER )
    {
     // Don't trace the shift key alone.
