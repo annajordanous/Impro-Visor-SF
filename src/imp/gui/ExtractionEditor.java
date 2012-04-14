@@ -602,7 +602,6 @@ public void playRawRule()
         numberOfClustersSpinner = new javax.swing.JSpinner();
         reExtractBtn = new javax.swing.JButton();
         doubleDrumLength = new javax.swing.JCheckBox();
-        partPanel = new javax.swing.JScrollPane();
         potentialInstrumentsJList = new javax.swing.JList();
         selectPatternBtn = new javax.swing.JButton();
         leftPlayPatternBtn = new javax.swing.JButton();
@@ -665,6 +664,7 @@ public void playRawRule()
         getContentPane().add(selectedPatternsPanel, gridBagConstraints);
 
         optionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
+        optionPanel.setToolTipText("Extract patterns again, possibly using different parameters.");
         optionPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -692,6 +692,7 @@ public void playRawRule()
         optionPanel.add(jLabel3, gridBagConstraints);
 
         startBeatTextField.setText("8.0");
+        startBeatTextField.setToolTipText("The starting beat from which patterns will be extracted");
         startBeatTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startBeatTextFieldActionPerformed(evt);
@@ -704,6 +705,7 @@ public void playRawRule()
         optionPanel.add(startBeatTextField, gridBagConstraints);
 
         endBeatTextField.setText(" ");
+        endBeatTextField.setToolTipText("The ending beat from which patterns will be extracted");
         endBeatTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 endBeatTextFieldActionPerformed(evt);
@@ -716,6 +718,7 @@ public void playRawRule()
         optionPanel.add(endBeatTextField, gridBagConstraints);
 
         numberOfClustersSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
+        numberOfClustersSpinner.setToolTipText("The number of clusters sought in pattern extraction");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -724,6 +727,7 @@ public void playRawRule()
         optionPanel.add(numberOfClustersSpinner, gridBagConstraints);
 
         reExtractBtn.setText("Re-Extract Patterns");
+        reExtractBtn.setToolTipText("Extract the patterns for this window using new parameters.");
         reExtractBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reExtractBtnActionPerformed(evt);
@@ -737,6 +741,7 @@ public void playRawRule()
         optionPanel.add(reExtractBtn, gridBagConstraints);
 
         doubleDrumLength.setText("Double Drum Length");
+        doubleDrumLength.setToolTipText("Change the length of extracted drum pattern to be double what it was.");
         doubleDrumLength.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doubleDrumLengthActionPerformed(evt);
@@ -748,36 +753,30 @@ public void playRawRule()
         gridBagConstraints.gridwidth = 2;
         optionPanel.add(doubleDrumLength, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.2;
-        gridBagConstraints.weighty = 0.2;
-        getContentPane().add(optionPanel, gridBagConstraints);
-
-        partPanel.setMinimumSize(new java.awt.Dimension(200, 150));
-        partPanel.setPreferredSize(new java.awt.Dimension(200, 150));
-
         potentialInstrumentsJList.setBorder(javax.swing.BorderFactory.createTitledBorder("Instrument"));
         potentialInstrumentsJList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        partPanel.setViewportView(potentialInstrumentsJList);
+        potentialInstrumentsJList.setToolTipText("Select MIDI instrument for re-estraction");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.5;
+        optionPanel.add(potentialInstrumentsJList, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 77;
-        gridBagConstraints.ipady = 77;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.2;
-        gridBagConstraints.weighty = 0.6;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(partPanel, gridBagConstraints);
+        gridBagConstraints.weighty = 0.2;
+        getContentPane().add(optionPanel, gridBagConstraints);
 
-        selectPatternBtn.setText("Select Pattern");
+        selectPatternBtn.setText("Include Pattern");
+        selectPatternBtn.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
         selectPatternBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectPatternBtnActionPerformed(evt);
@@ -791,6 +790,7 @@ public void playRawRule()
         getContentPane().add(selectPatternBtn, gridBagConstraints);
 
         leftPlayPatternBtn.setText("Play Pattern");
+        leftPlayPatternBtn.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
         leftPlayPatternBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftPlayPatternBtnActionPerformed(evt);
@@ -803,6 +803,7 @@ public void playRawRule()
         getContentPane().add(leftPlayPatternBtn, gridBagConstraints);
 
         removePatternBtn.setText("Remove Pattern");
+        removePatternBtn.setToolTipText("Removes the selected pattern from further consideration for the style.");
         removePatternBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removePatternBtnActionPerformed(evt);
@@ -816,6 +817,7 @@ public void playRawRule()
         getContentPane().add(removePatternBtn, gridBagConstraints);
 
         rightPlayPatternBtn.setText("Play Pattern");
+        rightPlayPatternBtn.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
         rightPlayPatternBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightPlayPatternBtnActionPerformed(evt);
@@ -840,7 +842,9 @@ public void playRawRule()
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(copySelectionsBtn, gridBagConstraints);
 
-        closeWindowBtn.setText("Close this Window");
+        closeWindowBtn.setText("Dismiss this Window");
+        closeWindowBtn.setToolTipText("Close the window. Any patterns to be included should be copied to the Style Editor before closing.");
+        closeWindowBtn.setActionCommand("Dismiss this Window");
         closeWindowBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowBtnActionPerformed(evt);
@@ -1022,7 +1026,7 @@ private void removePatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
             selectedRulesJList.setListData(selectedDrumRules.toArray());
             break;
       }
-    selectedRulesJList.setSelectedIndex(0);
+    selectedRulesJList.setSelectedIndex(Math.min(0, indexOfRuleToBeRemoved-1));
   }//GEN-LAST:event_removePatternBtnActionPerformed
 
 private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnActionPerformed
@@ -1092,7 +1096,6 @@ private void endBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GE
     private javax.swing.JButton leftPlayPatternBtn;
     private javax.swing.JSpinner numberOfClustersSpinner;
     private javax.swing.JPanel optionPanel;
-    private javax.swing.JScrollPane partPanel;
     private javax.swing.JList potentialInstrumentsJList;
     private javax.swing.JScrollPane rawPatternsPanel;
     private javax.swing.JList rawRulesJList;

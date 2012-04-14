@@ -5232,8 +5232,7 @@ void playBassColumn(int colIndex)
         styGenerate.setText("Extract");
         styGenerate.setActionCommand("Generate");
 
-        generateMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        generateMI.setMnemonic('e');
+        generateMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         generateMI.setText("Extract Style from MIDI");
         generateMI.setActionCommand("Generate Style from MIDI");
         generateMI.addActionListener(new java.awt.event.ActionListener() {
