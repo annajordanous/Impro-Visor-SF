@@ -3153,8 +3153,8 @@ void playBassColumn(int colIndex)
         importBassCheckBox = new javax.swing.JCheckBox();
         importDrumCheckBox = new javax.swing.JCheckBox();
         importChordCheckBox = new javax.swing.JCheckBox();
-        okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         maxPatternLengthComboBox = new javax.swing.JComboBox();
@@ -3321,7 +3321,9 @@ void playBassColumn(int colIndex)
 
         generatePref.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        showExtractionCheckBox.setText(" Show Extraction");
+        showExtractionCheckBox.setSelected(true);
+        showExtractionCheckBox.setText(" Show Extraction Results");
+        showExtractionCheckBox.setToolTipText("Shows the patterns before selecting them for the style. Allows the user to edit the choices.");
         showExtractionCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 5;
@@ -3389,22 +3391,11 @@ void playBassColumn(int colIndex)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
         generatePref.getContentPane().add(jPanel1, gridBagConstraints);
-
-        okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(22, 0, 0, 0);
-        generatePref.getContentPane().add(okButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -3419,6 +3410,19 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(22, 86, 0, 0);
         generatePref.getContentPane().add(cancelButton, gridBagConstraints);
+
+        okButton.setText("OK");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(22, 0, 0, 0);
+        generatePref.getContentPane().add(okButton, gridBagConstraints);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Max Pattern Length"));
         jPanel3.setMinimumSize(new java.awt.Dimension(200, 112));
@@ -3500,15 +3504,18 @@ void playBassColumn(int colIndex)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
         generatePref.getContentPane().add(jPanel3, gridBagConstraints);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Min Note Duration"));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Minimum Note Duration (slots)"));
         jPanel4.setMinimumSize(new java.awt.Dimension(200, 50));
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        minDurationTF.setText("16");
+        minDurationTF.setText("20");
+        minDurationTF.setToolTipText("The shortest note, in slots, that will be extracted.");
         minDurationTF.setMinimumSize(new java.awt.Dimension(40, 19));
         minDurationTF.setPreferredSize(new java.awt.Dimension(40, 19));
         minDurationTF.addActionListener(new java.awt.event.ActionListener() {
@@ -3521,6 +3528,8 @@ void playBassColumn(int colIndex)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
         generatePref.getContentPane().add(jPanel4, gridBagConstraints);
 

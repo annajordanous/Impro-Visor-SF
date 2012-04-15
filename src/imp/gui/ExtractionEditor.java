@@ -467,7 +467,7 @@ public void playSelectedRule()
     c.addChord(chord, new Double(duration).intValue());
     c.setStyle(tempStyle);
 
-    Score s = new Score(4);
+    Score s = new Score(c);
     s.setBassVolume(styleEditor.getVolume());
     if( type == CHORD )
       {
@@ -480,7 +480,6 @@ public void playSelectedRule()
     notate.setDrumVolume(styleEditor.getVolume());
     s.setTempo(styleEditor.getTempo());
     //s.setVolumes(notate.getMidiSynth());
-    s.setChordProg(c);
 
     new PlayScoreCommand(s,
                          0,
@@ -555,7 +554,7 @@ public void playRawRule()
     c.addChord(chord, new Double(duration).intValue());
     c.setStyle(tempStyle);
 
-    Score s = new Score(4);
+    Score s = new Score(c);
     s.setBassVolume(styleEditor.getVolume());
     if( type == CHORD )
       {
@@ -568,7 +567,6 @@ public void playRawRule()
     notate.setDrumVolume(styleEditor.getVolume());
     s.setTempo(styleEditor.getTempo());
     //s.setVolumes(notate.getMidiSynth());
-    s.setChordProg(c);
 
     new PlayScoreCommand(s,
                          0,
@@ -957,13 +955,15 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
                   int endIndex = split[i].indexOf(')');
                   String elements = split[i].substring(startIndex, endIndex);
                   String[] split2 = elements.split(" ");
-                  for( int j = 0; j < split2.length; j++ )
+                  // Start at 1 rather than 0, to skip over the drum number
+                  for( int j = 1; j < split2.length; j++ )
                     {
                       drumRule.addElement(split2[j]);
                     }
                   String weightString = split[split.length - 1];
 
                   drumPattern.setWeight(1);
+                  //System.out.println("adding drumPattern " + drumPattern);
                   drumPattern.addRule(drumRule);
                 }
               selectedDrumRules.add(drumPattern);

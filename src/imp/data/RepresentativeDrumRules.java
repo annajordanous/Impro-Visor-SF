@@ -106,6 +106,8 @@ public RepresentativeDrumRules(boolean thisIsAHack)
     //do nothing!
   }
 
+// Couldn't this constructor simply call the other??
+
 public RepresentativeDrumRules()
   {
     try
@@ -566,7 +568,7 @@ public void turnRepresentativesIntoObjects()
           {
             DrumRule drumRule = new DrumRule();
             String[] split2 = split[j].split(" ");
-            drumRule.setInstrumentNumber(Integer.parseInt(split2[1]));
+            drumRule.setInstrumentNumber(Integer.parseInt(split2[1]));   
             for( int k = 2; k < split2.length - 1; k++ )
               {
                 drumRule.addElement(split2[k]);
