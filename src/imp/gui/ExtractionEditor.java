@@ -607,8 +607,10 @@ public void playRawRule()
         rightPlayPatternBtn = new javax.swing.JButton();
         copySelectionsBtn = new javax.swing.JButton();
         closeWindowBtn = new javax.swing.JButton();
+        tempoVolumeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 255, 102));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         rawPatternsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Patterns"));
@@ -625,7 +627,7 @@ public void playRawRule()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 77;
@@ -650,7 +652,7 @@ public void playRawRule()
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 77;
@@ -768,6 +770,8 @@ public void playRawRule()
         optionPanel.add(potentialInstrumentsJList, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 0.2;
@@ -782,7 +786,7 @@ public void playRawRule()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         getContentPane().add(selectPatternBtn, gridBagConstraints);
@@ -796,7 +800,7 @@ public void playRawRule()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(leftPlayPatternBtn, gridBagConstraints);
 
@@ -809,7 +813,7 @@ public void playRawRule()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         getContentPane().add(removePatternBtn, gridBagConstraints);
@@ -823,7 +827,7 @@ public void playRawRule()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(rightPlayPatternBtn, gridBagConstraints);
 
@@ -835,7 +839,7 @@ public void playRawRule()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         getContentPane().add(copySelectionsBtn, gridBagConstraints);
@@ -850,9 +854,21 @@ public void playRawRule()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(closeWindowBtn, gridBagConstraints);
+
+        tempoVolumeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabel.setText("Tempo and Volume are set in Style Editor.");
+        tempoVolumeLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabel.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        getContentPane().add(tempoVolumeLabel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1100,6 +1116,7 @@ private void endBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GE
     private javax.swing.JScrollPane selectedPatternsPanel;
     private javax.swing.JList selectedRulesJList;
     private javax.swing.JTextField startBeatTextField;
+    private javax.swing.JLabel tempoVolumeLabel;
     // End of variables declaration//GEN-END:variables
 
 private javax.swing.JButton errorButton;
