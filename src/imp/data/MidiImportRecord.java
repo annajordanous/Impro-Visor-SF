@@ -41,6 +41,10 @@ int nonRestSlots;
 int initialRestSlots;
 double occupancy;
 int totalBeats;
+int initialRestBeats;
+int startBeat;
+int stopBeat;
+
 
 public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart)
 {
@@ -123,6 +127,9 @@ private void getStatistics()
       }
     
     totalBeats = (int)Math.ceil(((double)(restSlots + nonRestSlots))/BEAT);
+
+  initialRestBeats = initialRestSlots/BEAT;
+  startBeat = initialRestBeats+1;  
   }
 
 public MelodyPart getPart()
@@ -140,12 +147,15 @@ public int getBeats()
     return totalBeats;
   }
 
+public int getStartBeat()
+  {
+    return startBeat;
+  }
+
 @Override
 public String toString()
   {
   int occupancyPercent = (int)(100*occupancy);
-  
-  int initialRestBeats = initialRestSlots/BEAT;
   
   String rangeString;
   
@@ -157,7 +167,7 @@ public String toString()
     }
   
   return "channel " + (channel+1) + ", track " + trackNumber 
-          + " [" + initialRestBeats + " initial rest beats, "
+          + " [beats " + startBeat + " to " + totalBeats + ", "
           + rangeString
           + occupancyPercent + "% occupied]: " 
           + melodyPart.toString();   

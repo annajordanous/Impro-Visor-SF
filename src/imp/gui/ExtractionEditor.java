@@ -990,19 +990,13 @@ private void doubleDrumLengthActionPerformed(java.awt.event.ActionEvent evt)//GE
 
 private void selectedPatternsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_selectedPatternsMouseClicked
   {//GEN-HEADEREND:event_selectedPatternsMouseClicked
-      if( evt.getClickCount() != 2 )
-        {
-          return;
-        }
+
       playSelectedRule();
   }//GEN-LAST:event_selectedPatternsMouseClicked
 
 private void rawPatternsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_rawPatternsMouseClicked
   {//GEN-HEADEREND:event_rawPatternsMouseClicked
-      if( evt.getClickCount() != 2 )
-        {
-          return;
-        }
+
       playRawRule();
   }//GEN-LAST:event_rawPatternsMouseClicked
 

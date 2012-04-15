@@ -21,11 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.data.MelodyPart;
-import imp.data.MidiImport;
-import imp.data.MidiImportRecord;
-import imp.data.NoteResolutionInfo;
-import imp.data.Score;
+import imp.data.*;
 import java.util.LinkedList;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;
@@ -278,7 +274,8 @@ private void reload()
 
 private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
   {//GEN-HEADEREND:event_importTrackSelected
- 
+  getFullSelectedTrackMelody();
+  playSelectedTrack();
   }//GEN-LAST:event_importTrackSelected
 
 private void playMIDIimportTrackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMIDIimportTrackActionPerformed
@@ -298,22 +295,17 @@ private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GE
 
 private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
   {//GEN-HEADEREND:event_importedTrackListMouseClicked
-    getFullSelectedTrackMelody(); // This serves to set endBeatSpinner
-    switch(evt.getClickCount() )
-      { case 1: break;
-        case 2: importSelectedTrack(); break;
-        case 3: playSelectedTrack();   break;
+    getFullSelectedTrackMelody();
+ 
+    if( evt.getClickCount() > 1 )
+      {
+      importSelectedTrack();
       }
   }//GEN-LAST:event_importedTrackListMouseClicked
 
 private void stopPlayingTrackButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayingTrackButtonActionPerformed
   {//GEN-HEADEREND:event_stopPlayingTrackButtonActionPerformed
-    // Stop both possible synths, the track one and the score one.
-    notate.stopPlayAscore();
-    if( jmSynth != null )
-      {
-        jmSynth.stop();
-      }
+    stopPlaying();
   }//GEN-LAST:event_stopPlayingTrackButtonActionPerformed
 
 private void playMIDIfileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMIDIfileActionPerformed
@@ -358,6 +350,10 @@ private void reImportWithNewResolution()
     reload();
   }
 
+/**
+ * This sets the start and end beat spinners, as well as getting the track
+ * as an Impro-Visor part.
+ */
 private void getFullSelectedTrackMelody()
   {
     int index = importedTrackList.getSelectedIndex();
@@ -371,6 +367,7 @@ private void getFullSelectedTrackMelody()
       {
        MidiImportRecord record = (MidiImportRecord)ob;
        selectedPart = record.getPart();
+       startBeatSpinner.setValue(record.getStartBeat());
        int numBeats = record.getBeats();
        endBeatSpinner.setValue(numBeats);
        ((javax.swing.SpinnerNumberModel)endBeatSpinner.getModel()).setMaximum(numBeats);
@@ -409,10 +406,21 @@ private void playSelectedTrack()
     
     if( part != null )
       {
+        stopPlaying();
         Score score = new Score();
         score.addPart(part);
         //System.out.println("score = " + score);
         notate.playAscore(score);
+      }
+  }
+
+private void stopPlaying()
+  {
+    // Stop both possible synths, the track one and the score one.
+    notate.stopPlayAscore();
+    if( jmSynth != null )
+      {
+        jmSynth.stop();
       }
   }
 
