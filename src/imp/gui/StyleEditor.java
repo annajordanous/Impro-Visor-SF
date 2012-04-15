@@ -1314,7 +1314,7 @@ void playBassColumn(int colIndex)
     Polylist poly = Notate.parseListFromString(s);
     Style style = Style.makeStyle(Notate.parseListFromString(s));
 
-    // want to change these...
+    // want to change these patterns ...
     ArrayList<BassPattern> bp = style.getBP();
     ArrayList<DrumPattern> dp = style.getDP();
     ArrayList<ChordPattern> cp = style.getCP();
@@ -1323,7 +1323,7 @@ void playBassColumn(int colIndex)
 
     loadAttributes(style);
 
-    // ...into these
+    // ... into this kind of patterns.
     ArrayList<RepresentativeDrumRules.DrumPattern> drumP =
             new ArrayList<RepresentativeDrumRules.DrumPattern>();
     
@@ -1382,6 +1382,7 @@ void playBassColumn(int colIndex)
       float weight = bp.get(i).getWeight();
       bassP.add(r.makeBassPatternObj(rule, weight));
       }
+    
     // Change chords
     RepresentativeChordRules c = new RepresentativeChordRules(true, minDuration);
     for( int i = 0; i < cp.size(); i++ )
@@ -1411,7 +1412,6 @@ void playBassColumn(int colIndex)
   private void loadAttributes(Style style)
     {
     String infoBH = style.getBassHigh().toString();
-    String infoBHPitch = style.getBassHigh().getPitchString();
     if( infoBH != null )
       {
       String note = String.valueOf(infoBH.charAt(0));

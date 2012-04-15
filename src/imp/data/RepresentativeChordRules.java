@@ -34,7 +34,6 @@ public class RepresentativeChordRules
 {
 
 private boolean debug = false;
-private double FRACTION_OF_RULES_DESIRED = 0.25;
 private double percentageOfClusters = 0.25;
 private int numberOfUniqueRules;
 private ChordChronotonic c;
@@ -66,26 +65,6 @@ public ArrayList<ChordPattern> getChordRules()
     return ChordPatternGenerator;
   }
 
-/**
- * Changes the parts so it allows for changing what instrument part is the chord
- * part.
- *
- * @param p - the part (instrument) that you want to be the Chord part.
- * @throws Exception
- */
-//public void changePart(jm.music.data.Part p) throws Exception
-//  {
-//    b = new ChordPatternExtractor(minDuration);
-//    c = new ChordChronotonic(b);
-//    initialize();
-//    simplifyRulePitches();
-//    processDuplicateRules();
-//    splitUpIntoSections();
-//    pruneSections();
-//    findTentativeRepresentatives();
-//    cluster();
-//    getRepresentativeRules();
-//  }
 
 /**
  * This gives the Style GUI access to makeChordPattern
@@ -164,7 +143,6 @@ public RepresentativeChordRules(int minDuration)
                           }
                       }
                   }
-
 
                 pruneSections();
 
