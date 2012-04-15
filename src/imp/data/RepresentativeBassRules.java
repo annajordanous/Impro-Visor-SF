@@ -78,8 +78,8 @@ private ArrayList<BassPatternObj> bassPatterns = new ArrayList<BassPatternObj>()
 private ArrayList<RawRule> uniqueRules = new ArrayList<RawRule>();
 
 /**
- * This is a shameless hack that gives the Style GUI access to
- * makeBassPatternObj without generating new rules
+ * This gives the Style GUI access to
+ * makeBassPatternObj without generating new rules.
  */
 
 public RepresentativeBassRules(boolean thisIsAHack)
@@ -455,20 +455,6 @@ private void adaptToNewSyntax()
     MIDIBeast.repBassRules.setSimplifiedPitchesRules(this.simplifiedPitchesRules);
   }
 
-//public void changePart(jm.music.data.Part p) throws Exception
-//  {
-//    new ImportBass(p);
-//    new BassPatternExtractor();
-//    new BassChronotonic();
-//    initialize();
-//    simplifyRulePitches();
-//    processDuplicateRules();
-//    splitUpIntoSections();
-//    pruneSections();
-//    findTenativeRepresentatives();
-//    cluster();
-//    getRepresentativeRules();
-//  }
 
 /**
  * This method simply initializes the field members of the class and sets number
@@ -819,7 +805,7 @@ public void splitUpIntoSections()
 
         // If there already exists a section corresponding to the number
         // of slots that the current rule contains, then add the current
-        // rule to that section
+        // rule to that section.
         if( usedSlotCounts.contains(currentRule.getSlots()) )
           {
             for( int j = 0; j < sections.size(); j++ )
@@ -832,7 +818,7 @@ public void splitUpIntoSections()
           }
         //If there does not exist a section corresponding to the number 
         // of slots that the current rule contains, then create such a
-        // section and add the current rule to that section
+        // section and add the current rule to that section.
         else
           {
             Section newSection = new Section(currentRule.getSlots(), uniqueRules.get(i));
@@ -844,7 +830,7 @@ public void splitUpIntoSections()
   }
 
 /**
- * This function is used in splitUpIntoSections() and caclulates the beat
+ * This function is used in splitUpIntoSections() and calculates the beat
  * duration of a given pattern.
  *
  * @param String - the pattern whose beat duration is to be caclulated (eg (B4
@@ -891,7 +877,7 @@ public Double calculateBeats(String s)
  * is to have. The number of clusters is determined by finding the number of
  * rules the section contains and setting that as a fraction to how many total
  * patterns there are, and then multiplying that fraction by how many rules are
- * requested as determined in the initialize() method
+ * requested as determined in the initialize() method.
  */
 
 public void pruneSections()

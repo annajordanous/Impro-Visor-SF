@@ -973,7 +973,7 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
         }
       
       rawRulesModel.removeElement(incompleteRule);
-      rawRulesJList.setSelectedIndex(Math.min(0, index-1));
+      rawRulesJList.setSelectedIndex(Math.max(0, index-1));
   }//GEN-LAST:event_selectPatternBtnActionPerformed
 
 private void doubleDrumLengthActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_doubleDrumLengthActionPerformed
@@ -1026,7 +1026,7 @@ private void removePatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
             selectedRulesJList.setListData(selectedDrumRules.toArray());
             break;
       }
-    selectedRulesJList.setSelectedIndex(Math.min(0, indexOfRuleToBeRemoved-1));
+    selectedRulesJList.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved-1));
   }//GEN-LAST:event_removePatternBtnActionPerformed
 
 private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnActionPerformed
