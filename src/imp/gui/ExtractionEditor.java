@@ -26,6 +26,7 @@ import imp.com.CommandManager;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
 import imp.util.ErrorLog;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.SpinnerModel;
@@ -116,6 +117,8 @@ public ExtractionEditor(java.awt.Frame parent,
     switch( type )
       {
         case BASS:
+            setBackground(Color.orange);
+            tempoVolumeLabel.setBackground(Color.orange);
             setTitle("Bass Extraction from " + styleEditor.getTitle());
             setBassDefaults();
             doubleDrumLength.setVisible(false);
@@ -125,6 +128,8 @@ public ExtractionEditor(java.awt.Frame parent,
             break;
 
         case CHORD:
+            setBackground(Color.green);
+            tempoVolumeLabel.setBackground(Color.green);
             setTitle("Chord Extraction from " + styleEditor.getTitle());
             setChordDefaults();
             doubleDrumLength.setVisible(false);
@@ -134,6 +139,8 @@ public ExtractionEditor(java.awt.Frame parent,
             break;
 
         case DRUM:
+            setBackground(Color.yellow);
+            tempoVolumeLabel.setBackground(Color.yellow);
             setTitle("Drum Extraction from " + styleEditor.getTitle());
             setDrumDefaults();
             repDrumRules = MIDIBeast.repDrumRules;
@@ -610,7 +617,6 @@ public void playRawRule()
         tempoVolumeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setBackground(new java.awt.Color(102, 255, 102));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         rawPatternsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Patterns"));
@@ -633,7 +639,7 @@ public void playRawRule()
         gridBagConstraints.ipadx = 77;
         gridBagConstraints.ipady = 77;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weightx = 0.35;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(rawPatternsPanel, gridBagConstraints);
@@ -658,7 +664,7 @@ public void playRawRule()
         gridBagConstraints.ipadx = 77;
         gridBagConstraints.ipady = 77;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weightx = 0.35;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(selectedPatternsPanel, gridBagConstraints);
@@ -672,7 +678,9 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
         optionPanel.add(jLabel1, gridBagConstraints);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -681,6 +689,7 @@ public void playRawRule()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
         optionPanel.add(jLabel2, gridBagConstraints);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -689,6 +698,7 @@ public void playRawRule()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
         optionPanel.add(jLabel3, gridBagConstraints);
 
         startBeatTextField.setText("8.0");
@@ -701,7 +711,9 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
         optionPanel.add(startBeatTextField, gridBagConstraints);
 
         endBeatTextField.setText(" ");
@@ -714,16 +726,19 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
         optionPanel.add(endBeatTextField, gridBagConstraints);
 
         numberOfClustersSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
         numberOfClustersSpinner.setToolTipText("The number of clusters sought in pattern extraction");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
         optionPanel.add(numberOfClustersSpinner, gridBagConstraints);
 
         reExtractBtn.setText("Re-Extract Patterns");
@@ -736,7 +751,7 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         optionPanel.add(reExtractBtn, gridBagConstraints);
 
@@ -750,7 +765,8 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.weightx = 1.0;
         optionPanel.add(doubleDrumLength, gridBagConstraints);
 
         potentialInstrumentsJList.setBorder(javax.swing.BorderFactory.createTitledBorder("Instrument"));
@@ -763,7 +779,7 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.5;
@@ -773,7 +789,7 @@ public void playRawRule()
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.2;
         getContentPane().add(optionPanel, gridBagConstraints);
 
