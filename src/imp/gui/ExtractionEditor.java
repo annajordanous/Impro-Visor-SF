@@ -1016,28 +1016,6 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
               RepresentativeDrumRules.DrumPattern drumPattern 
                       = (RepresentativeDrumRules.DrumPattern)repPattern;
 
-//              String[] split = incompleteRule.split("\n");
-//              RepresentativeDrumRules.DrumPattern drumPattern = repDrumRules.makeDrumPattern();
-//              for( int i = 1; i < split.length - 1; i++ )
-//                {
-//                  RepresentativeDrumRules.DrumRule drumRule = repDrumRules.makeDrumRule();
-//                  int instrumentNumber = Integer.parseInt(split[i].substring(split[i].indexOf('m') + 2, split[i].indexOf('m') + 4));
-//                  drumRule.setInstrumentNumber(instrumentNumber);
-//                  int startIndex = split[i].indexOf('m') + 2;
-//                  int endIndex = split[i].indexOf(')');
-//                  String elements = split[i].substring(startIndex, endIndex);
-//                  String[] split2 = elements.split(" ");
-//                  // Start at 1 rather than 0, to skip over the drum number
-//                  for( int j = 1; j < split2.length; j++ )
-//                    {
-//                      drumRule.addElement(split2[j]);
-//                    }
-//                  String weightString = split[split.length - 1];
-
-                  drumPattern.setWeight(1);
-                  //System.out.println("adding drumPattern " + drumPattern);
-//                  drumPattern.addRule(drumRule);
-//                }
               selectedDrumRules.add(drumPattern);
               setDrumSelectedRules();
 
