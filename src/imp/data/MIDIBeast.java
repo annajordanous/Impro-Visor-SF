@@ -91,7 +91,7 @@ public static boolean importDrums = true;
 public static boolean importBass = true;
 public static boolean importChords = true;
 public static boolean doubleDrumLength = false;
-public static ArrayList<RepresentativeBassRules.BassPatternObj> selectedBassRules;
+public static ArrayList<RepresentativeBassRules.BassPattern> selectedBassRules;
 public static ArrayList<RepresentativeDrumRules.DrumPattern> selectedDrumRules;
 public static ArrayList<RepresentativeChordRules.ChordPattern> selectedChordRules;
 public static boolean invoked = false;

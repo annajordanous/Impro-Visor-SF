@@ -73,7 +73,7 @@ private ArrayList<Section> sections = new ArrayList<Section>();
  * The final array accessed by the StyleGenerator GUI
  */
 
-private ArrayList<BassPatternObj> bassPatterns = new ArrayList<BassPatternObj>();
+private ArrayList<BassPattern> bassPatterns = new ArrayList<BassPattern>();
 
 private ArrayList<RawRule> uniqueRules = new ArrayList<RawRule>();
 
@@ -379,7 +379,7 @@ public RepresentativeBassRules(double startBeat,
       }
   }
 
-public ArrayList<BassPatternObj> getBassRules()
+public ArrayList<BassPattern> getBassRules()
   {
     adaptToNewSyntax();
     if( debug )
@@ -407,10 +407,10 @@ public void setSimplifiedPitchesRules(ArrayList<String> s)
  */
 private void adaptToNewSyntax()
   {
-    ArrayList<BassPatternObj> adapted = new ArrayList<BassPatternObj>();
+    ArrayList<BassPattern> adapted = new ArrayList<BassPattern>();
     for( int i = 0; i < bassPatterns.size(); i++ )
       {
-        BassPatternObj cur = bassPatterns.get(i);
+        BassPattern cur = bassPatterns.get(i);
         String adaptThis = cur.getRule();
         String[] split = adaptThis.split(" ");
         String newRule = "";
@@ -427,7 +427,7 @@ private void adaptToNewSyntax()
             newRule += fixedEle + " ";
           }
 
-        BassPatternObj b = new BassPatternObj(newRule, cur.getWeight(), cur.getDuration());
+        BassPattern b = new BassPattern(newRule, cur.getWeight(), cur.getDuration());
         adapted.add(b);
       }
 
@@ -467,7 +467,7 @@ public void initialize()
     simplifiedPitchesRules = new ArrayList<String>();
     sansDuplicatesRules = new ArrayList<String>();
     sections = new ArrayList<Section>();
-    bassPatterns = new ArrayList<BassPatternObj>();
+    bassPatterns = new ArrayList<BassPattern>();
   }
 
 /**
@@ -1011,7 +1011,7 @@ public void getRepresentativeRules()
             Random r = new Random();
             int randomIndex = r.nextInt(potentialRepList.size());
             RawRule selectedRule = potentialRepList.get(randomIndex);
-            bassPatterns.add(new BassPatternObj(selectedRule.getRule(), c.calculateWeight()));
+            bassPatterns.add(new BassPattern(selectedRule.getRule(), c.calculateWeight()));
             c.setBetterRep(selectedRule);
           }
       }
@@ -1022,12 +1022,12 @@ public void getRepresentativeRules()
  * and this is the method to retrieve that list of rules
  */
 
-public ArrayList<BassPatternObj> getUnfilteredRules()
+public ArrayList<BassPattern> getUnfilteredRules()
   {
-    ArrayList<BassPatternObj> temp = new ArrayList<BassPatternObj>();
+    ArrayList<BassPattern> temp = new ArrayList<BassPattern>();
     for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
       {
-        temp.add(new BassPatternObj(simplifiedPitchesRules.get(i), 1));
+        temp.add(new BassPattern(simplifiedPitchesRules.get(i), 1));
       }
     if( debug )
       {
@@ -1040,9 +1040,9 @@ public ArrayList<BassPatternObj> getUnfilteredRules()
     return temp;
   }
 
-public BassPatternObj makeBassPatternObj(String r, float w)
+public BassPattern makeBassPatternObj(String r, float w)
   {
-    return new BassPatternObj(r, w);
+    return new BassPattern(r, w);
   }
 
 public class RawRule
@@ -1110,14 +1110,14 @@ public String toString()
 
 }
 
-public class BassPatternObj
+public class BassPattern implements RepPattern
 {
 
 private String rule;
 private float weight;
 private int duration;
 
-public BassPatternObj(String r, float w)
+public BassPattern(String r, float w)
   {
     rule = r.trim();
     weight = w;
@@ -1129,7 +1129,7 @@ public void setDuration(int duration)
     this.duration = duration;
   }
 
-public BassPatternObj(String r, float w, int d)
+public BassPattern(String r, float w, int d)
   {
     rule = r.trim();
     weight = w;

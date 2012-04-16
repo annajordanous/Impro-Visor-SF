@@ -1327,8 +1327,8 @@ void playBassColumn(int colIndex)
     ArrayList<RepresentativeDrumRules.DrumPattern> drumP =
             new ArrayList<RepresentativeDrumRules.DrumPattern>();
     
-    ArrayList<RepresentativeBassRules.BassPatternObj> bassP =
-            new ArrayList<RepresentativeBassRules.BassPatternObj>();
+    ArrayList<RepresentativeBassRules.BassPattern> bassP =
+            new ArrayList<RepresentativeBassRules.BassPattern>();
     
     ArrayList<RepresentativeChordRules.ChordPattern> chordP =
             new ArrayList<RepresentativeChordRules.ChordPattern>();
@@ -1566,7 +1566,7 @@ void playBassColumn(int colIndex)
    * Creates one BassPatternDisplay object for each element of bassPatterns with its weight and pattern text.
    * Removes all previous information from the bassHolderPane and adds each of the new display objects
    */
-  public void loadBassPatterns(ArrayList<RepresentativeBassRules.BassPatternObj> bassPatterns)
+  public void loadBassPatterns(ArrayList<RepresentativeBassRules.BassPattern> bassPatterns)
     {
     bassHolderPane.removeAll();
     if( bassPatterns.size() < 1 )
