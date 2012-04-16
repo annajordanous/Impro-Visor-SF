@@ -767,7 +767,7 @@ public ChordPattern makeChordPattern(imp.data.ChordPattern cp)
  * ChordPattern class
  */
 
-public class ChordPattern
+public class ChordPattern implements RepPattern
 {
 
 String rule;

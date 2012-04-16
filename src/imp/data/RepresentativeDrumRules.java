@@ -750,7 +750,7 @@ public String toString()
 
 }
 
-public class DrumPattern
+public class DrumPattern implements RepPattern
 {
 
 private ArrayList<DrumRule> drumRules;

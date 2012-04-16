@@ -44,8 +44,8 @@ public class ExtractionEditorOld extends javax.swing.JDialog {
     CommandManager cm;
     int type;
     RepresentativeBassRules repBassRules;
-    ArrayList<RepresentativeBassRules.BassPatternObj> rawBassRules;
-    ArrayList<RepresentativeBassRules.BassPatternObj> selectedBassRules;
+    ArrayList<RepresentativeBassRules.BassPattern> rawBassRules;
+    ArrayList<RepresentativeBassRules.BassPattern> selectedBassRules;
     
     RepresentativeDrumRules repDrumRules;
     ArrayList<RepresentativeDrumRules.DrumPattern> rawDrumRules;
@@ -697,7 +697,7 @@ public class ExtractionEditorOld extends javax.swing.JDialog {
         switch(type){
             case BASS : 
                         try{
-                        RepresentativeBassRules.BassPatternObj selectedBassRule = (RepresentativeBassRules.BassPatternObj) selectedRulesJList.getSelectedValue();
+                        RepresentativeBassRules.BassPattern selectedBassRule = (RepresentativeBassRules.BassPattern) selectedRulesJList.getSelectedValue();
                         duration = selectedBassRule.getDuration();
                         rule = Notate.parseListFromString(selectedBassRule.toString());
                         break;
@@ -763,7 +763,7 @@ public class ExtractionEditorOld extends javax.swing.JDialog {
                         firstParensIndex = incompleteRule.indexOf("(");
                         lastParensIndex = incompleteRule.lastIndexOf(")");
                         incompleteRule = incompleteRule.substring(firstParensIndex+1, lastParensIndex); //Remove parens
-                        RepresentativeBassRules.BassPatternObj selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
+                        RepresentativeBassRules.BassPattern selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
                         duration = selectedBassRule.getDuration();
                         rule = Notate.parseListFromString(selectedBassRule.toString());
                         break;
@@ -842,7 +842,7 @@ public class ExtractionEditorOld extends javax.swing.JDialog {
                         firstParensIndex = incompleteRule.indexOf("(");
                         lastParensIndex = incompleteRule.lastIndexOf(")");
                         incompleteRule = incompleteRule.substring(firstParensIndex+1, lastParensIndex); //Remove parens
-                        RepresentativeBassRules.BassPatternObj selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
+                        RepresentativeBassRules.BassPattern selectedBassRule = repBassRules.makeBassPatternObj(incompleteRule, 1);
 
                         selectedBassRules.add(selectedBassRule);
                         selectedRulesJList.setListData(selectedBassRules.toArray());
