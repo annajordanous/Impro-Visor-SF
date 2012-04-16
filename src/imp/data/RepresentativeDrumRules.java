@@ -531,7 +531,7 @@ public String[] getRules()
     toReturn[0] = "Cluster";
     for( int i = 1; i < patterns.size(); i++ )
       {
-        toReturn[i] = "    (drum-pattern \n";
+        toReturn[i] = "(drum-pattern \n";
 
         UniqueDrumPattern pattern = patterns.get(i);
         //System.out.println("uniqueDrumPattern " + i + " = " + pattern);
@@ -544,7 +544,7 @@ public String[] getRules()
             int lastParensIndex = split[j].indexOf(')');
             String drumNumber = split[j].substring(firstParensIndex + 1, lastParensIndex);
             String drumString = split[j].substring(lastParensIndex + 1);
-            toReturn[i] += "        (drum " + drumNumber + " " + drumString + ")\n";
+            toReturn[i] += "(drum " + drumNumber + " " + drumString + ")\n";
           }
       }
 
@@ -789,12 +789,12 @@ public int getDuration()
 @Override
 public String toString()
   {
-    String s = "    (drum-pattern\n";
+    String s = "(drum-pattern\n";
     for( int i = 0; i < drumRules.size(); i++ )
       {
-        s += drumRules.get(i);
+        s += drumRules.get(i) + " ";
       }
-    s += "        (weight " + weight + ")\n";
+    s += " (weight " + weight + ")\n";
     return s + ")\n";
   }
 
@@ -849,7 +849,7 @@ public String getElement(int i)
 @Override
 public String toString()
   {
-    String s = "        (drum " + drumInstrumentNumber + " ";
+    String s = "(drum " + drumInstrumentNumber + " ";
     for( int i = 0; i < elements.size(); i++ )
       {
         s += elements.get(i) + " ";

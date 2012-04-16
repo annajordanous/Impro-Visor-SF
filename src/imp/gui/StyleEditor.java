@@ -3509,12 +3509,12 @@ void playBassColumn(int colIndex)
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
         generatePref.getContentPane().add(jPanel3, gridBagConstraints);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Minimum Note Duration (slots)"));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Minimum Note Duration (16th, 8th, etc.)"));
         jPanel4.setMinimumSize(new java.awt.Dimension(200, 50));
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 50));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        minDurationTF.setText("20");
+        minDurationTF.setText("16");
         minDurationTF.setToolTipText("The shortest note, in slots, that will be extracted.");
         minDurationTF.setMinimumSize(new java.awt.Dimension(40, 19));
         minDurationTF.setPreferredSize(new java.awt.Dimension(40, 19));
@@ -3998,6 +3998,7 @@ void playBassColumn(int colIndex)
 
         voicingType.setMaximumRowCount(10);
         voicingType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "any", "closed", "open", "quartal", "shout" }));
+        voicingType.setSelectedIndex(2);
         voicingType.setMinimumSize(new java.awt.Dimension(150, 22));
         voicingType.setPreferredSize(new java.awt.Dimension(150, 22));
         voicingType.addActionListener(new java.awt.event.ActionListener() {

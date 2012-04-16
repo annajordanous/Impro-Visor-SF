@@ -195,12 +195,12 @@ public void setBassRawRules()
         RepresentativeBassRules.Section currentSection = sections.get(i);
         // FIX: For some reason, getSlotCount() seems to return a value 
         // doubly multiplied by BEAT.
-        rawRules.add("Patterns of length: " + (currentSection.getSlotCount()/BEAT)/BEAT + " beats:");
+        int length = (currentSection.getSlotCount()/BEAT)/BEAT;
         ArrayList<RepresentativeBassRules.Cluster> clusters = currentSection.getClusters();
         for( int j = 0; j < clusters.size(); j++ )
           {
             RepresentativeBassRules.Cluster currentCluster = clusters.get(j);
-            rawRules.add("     Cluster (" + j + ")");
+            rawRules.add("---- Cluster " + j + " of length " + length + " patterns ----");
             for( int k = 0; k < currentCluster.size(); k++ )
               {
                 rawRules.add(repBassRules.makeBassPatternObj(currentCluster.getStringRule(k), 1));
@@ -227,12 +227,12 @@ public void setChordRawRules()
         RepresentativeChordRules.Section currentSection = sections.get(i);
         // FIX: For some reason, getSlotCount() seems to return a value 
         // doubly multiplied by BEAT.
-        rawRules.add("Patterns of length: " + (currentSection.getSlotCount()/BEAT)/BEAT + " beats:");
+        int length = (currentSection.getSlotCount()/BEAT)/BEAT;
         ArrayList<RepresentativeChordRules.Cluster> clusters = currentSection.getClusters();
         for( int j = 0; j < clusters.size(); j++ )
           {
             RepresentativeChordRules.Cluster currentCluster = clusters.get(j);
-            rawRules.add("    Cluster(" + j + ")");
+            rawRules.add("---- Cluster " + j + " of length " + length + " patterns ----");
             for( int k = 0; k < currentCluster.size(); k++ )
               {
                 rawRules.add(repChordRules.makeChordPattern(currentCluster.getStringRule(k), 1));
