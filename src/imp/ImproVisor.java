@@ -25,6 +25,7 @@ import imp.data.*;
 import imp.gui.Notate;
 import imp.gui.ToolkitImages;
 import imp.util.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 
@@ -58,6 +59,7 @@ public class ImproVisor implements Constants {
     private static MidiManager midiManager;
     private static MidiSynth midiSynth;
     
+    private static Color windowFrameColor = new Color(230, 230, 230);
      
     /**
      * Indicate whether or not to play notes that are inserted, modified, etc.
@@ -683,5 +685,10 @@ public static void setDrumChannel(int value)
   {
     drumChannel = value;
     Preferences.setPreference(Preferences.DRUM_CHANNEL, ""+(value+1));
+  }
+
+public static Color getWindowFrameColor()
+  {
+    return windowFrameColor;
   }
 }

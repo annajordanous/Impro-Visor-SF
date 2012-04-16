@@ -2958,15 +2958,15 @@ void playBassColumn(int colIndex)
   public void generateStyleFromMidi()
     {
     //Prompt user to save if generating will lose changes
-    int feedback = -1;
-    if( cm.changedSinceLastSave() )
-      {
-      feedback = unsavedStyle();
-      }
-
-    if( feedback != 0 )
-      {
-      reset();
+//    int feedback = -1;
+//    if( cm.changedSinceLastSave() )
+//      {
+//      feedback = unsavedStyle();
+//      }
+//
+//    if( feedback != 0 )
+//      {
+//      reset();
 
       //Get files from user
       String chordFile = "", midiFile = "";
@@ -3003,8 +3003,8 @@ void playBassColumn(int colIndex)
 
       MIDIBeast.initialize(midiFile, chordFile);
 
-      newStyle();
-      newTable();
+//      newStyle();
+//      newTable();
 
       int minDuration = getMinDuration();
       
@@ -3116,7 +3116,7 @@ void playBassColumn(int colIndex)
 
       this.setTitle("Style Editor & Extractor: Extraction from " + nameForDisplay);
       savedStyle = null; // to prevent accidental clobering
-      }
+//      }
     }
   
   /**
