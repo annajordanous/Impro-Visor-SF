@@ -20,11 +20,10 @@
 
 package imp.data;
 
-import polya.*;
-
 import imp.Constants;
 import imp.util.ErrorLog;
 import java.io.Serializable;
+import polya.Polylist;
 
 /**
  * A ChordSymbol is an object representing a chord in lightweight form,
@@ -101,7 +100,7 @@ public class ChordSymbol implements Constants, Serializable {
       this.root = root;
       this.bass = bass;
       this.polybase = polybase;
-      StringBuffer nameBuffer = new StringBuffer();
+      StringBuilder nameBuffer = new StringBuilder();
       nameBuffer.append(rootString);
       nameBuffer.append(type);
       if( polybase != null ) 
@@ -168,7 +167,7 @@ public class ChordSymbol implements Constants, Serializable {
 
       // (1) Start by getting the root.
 
-      StringBuffer buffer1 = new StringBuffer();
+      StringBuilder buffer1 = new StringBuilder();
 
       buffer1.append(name.charAt(0));
 
@@ -202,7 +201,7 @@ public class ChordSymbol implements Constants, Serializable {
 
       // (2)Get the type of the chord.
 
-      StringBuffer buffer2 = new StringBuffer();
+      StringBuilder buffer2 = new StringBuilder();
 
       while( index < len && name.charAt(index) != SLASH && name.charAt(index) != BACKSLASH )
 	{
@@ -221,7 +220,7 @@ public class ChordSymbol implements Constants, Serializable {
   
          if( name.charAt(index) == SLASH )
            {
-           StringBuffer buffer3 = new StringBuffer();
+           StringBuilder buffer3 = new StringBuilder();
 
     	   index++;	// skip the slash
 

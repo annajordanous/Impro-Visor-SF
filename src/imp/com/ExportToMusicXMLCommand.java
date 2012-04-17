@@ -21,30 +21,16 @@
 package imp.com;
 
 import imp.Constants;
-import imp.data.Chord;
-import imp.data.ChordPart;
-import imp.data.ChordSymbol;
-import imp.data.MelodyPart;
-import imp.data.Note;
-import imp.data.PitchClass;
-import imp.data.Score;
-import imp.data.Unit;
 import imp.data.Part.PartIterator;
+import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.data.musicXML.Degree;
 import imp.util.ErrorLog;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Vector;
-
 import polya.Polylist;
 
 /**
@@ -127,7 +113,6 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 			barPerLine = (Long) o;
 		  }
         }
-
 		int[] metre = score.getMetre();
 
 		osw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -163,10 +148,10 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		int top = metre[0];
 		int bottom = metre[1];
 		int measureLength = 0;
-		Vector<Unit> list = null;
+		ArrayList<Unit> list = null;
 		if (mp != null && cp != null) {
 			mp.makeTies();
-			list = (Vector<Unit>) mp.getUnitList().clone();
+			list = (ArrayList<Unit>) mp.getUnitList().clone();
 			measureLength = mp.getMeasureLength();
 			if (cp != null) {
 				// insert chords in melody
@@ -413,7 +398,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 
 	}
 
-	private Note getNextNote(Vector<Unit> list, int unitIndex) {
+	private Note getNextNote(ArrayList<Unit> list, int unitIndex) {
 		Note n = null;
 		for (int i = unitIndex + 1; i < list.size(); i++) {
 			Unit u = list.get(i);
@@ -495,7 +480,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		}
 	}
 
-	private static void insert(Vector<Unit> list, int current, Unit c) {
+	private static void insert(ArrayList<Unit> list, int current, Unit c) {
 
 		int count = 0;
 		int i = 0;
