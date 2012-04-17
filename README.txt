@@ -1,6 +1,6 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.13,
-from Prof. Bob Keller at Harvey Mudd College, 2 April 2012.
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.14,
+from Prof. Bob Keller at Harvey Mudd College, 16 April 2012.
 
 Release notes for this version may be found at the end.
 
@@ -42,9 +42,17 @@ that will run the program itself. The first time the program is run it
 will set up a folder in your user home for your personal version of
 various files.
 
-You may also need to adjust MIDI settings to get sound on your particular
-system. The Impro-Visor MIDI control panel is identified by a black circular
-icon on the right side of the upper icon bar.
+On Windows, you will need to adjust MIDI settings to get sound on your 
+particular system. The Impro-Visor MIDI control panel is identified by
+a black circular icon (representing a MIDI connector) on the right side 
+of the upper icon bar. Set it to one of:
+
+    Microsoft GS Wavetable SW Synth  
+
+    Microsoft MIDI Mapper
+or
+    some external synth.
+
 
 Alternatively, you may run by double-clicking the file: 
 
@@ -52,8 +60,8 @@ Alternatively, you may run by double-clicking the file:
 
 which is a Java archive.
 
-(You cannot start the application by clicking on individual leadsheet
-files. They must be opened from within.)
+You cannot start the application by clicking on individual leadsheet
+files. They must be opened from within.
  
 You can download the latest version of Java free from:
 
@@ -81,6 +89,25 @@ Harvey Mudd College
 Claremont, CA 91711
 
 keller@cs.hmc.edu
+
+===============================================================================
+
+Release notes for Impro-Visor 5.14 (pre-release)
+
+Bug fix: Fixes MusicXML export that was broken in 5.12, 5.13.
+
+Adds preliminary MIDI file import. Now a MIDI file can be loaded and played
+as such. Single tracks can be imported as Impro-Visor melodies.
+(We do not import an entire leadsheet with chord symbols, etc.)
+Sysex events in the MIDI file are ignored.
+
+Improves Style Extraction editor and repairs some long standing problems
+in that area.
+
+Replaces Generate button with Improvise toggle button. Now improvisation
+will continue until the button is toggled a second time. Playback stop is
+still through the stop button or the K key.
+
 
 ===============================================================================
 
