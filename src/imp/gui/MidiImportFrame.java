@@ -277,8 +277,8 @@ private void reload()
         startRoundingFactorComboBox.setMaximumRowCount(16);
         startRoundingFactorComboBox.setModel(new javax.swing.DefaultComboBoxModel(StartRoundingFactor.getFactors()));
         startRoundingFactorComboBox.setSelectedItem(StartRoundingFactor.getFactors()[3]);
-        startRoundingFactorComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        startRoundingFactorComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Start Rounding Factor", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        startRoundingFactorComboBox.setToolTipText("Determines how to round off any pickup notes.");
+        startRoundingFactorComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pickup Rounding Factor", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         startRoundingFactorComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
         startRoundingFactorComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
         startRoundingFactorComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -413,15 +413,15 @@ private void getFullSelectedTrackMelody()
        int initialIntegralSlots = initialIntegralBeats*BEAT;
        int startBeat = 1+initialIntegralBeats;
        int offset = initialRestSlots - initialIntegralSlots;
-  System.out.println();
-  System.out.println("# initialRestSlots = " + initialRestSlots);
-  System.out.println("# initialRestBeats = " + initialRestBeats);
-  System.out.println("# initialRestMeasures = " + initialRestMeasures);
-  System.out.println("# initialIntegralBeats = " + initialIntegralBeats);
-  System.out.println("# initialIntegralSlots = " + initialIntegralSlots);
-  System.out.println("# startSlot = " + initialIntegralSlots);
-  System.out.println("# startBeat = " + startBeat);
-  System.out.println("# offset = " + offset);
+//  System.out.println();
+//  System.out.println("# initialRestSlots = " + initialRestSlots);
+//  System.out.println("# initialRestBeats = " + initialRestBeats);
+//  System.out.println("# initialRestMeasures = " + initialRestMeasures);
+//  System.out.println("# initialIntegralBeats = " + initialIntegralBeats);
+//  System.out.println("# initialIntegralSlots = " + initialIntegralSlots);
+//  System.out.println("# startSlot = " + initialIntegralSlots);
+//  System.out.println("# startBeat = " + startBeat);
+//  System.out.println("# offset = " + offset);
    
        startBeatSpinner.setValue(startBeat);
        offsetSpinner.setValue(offset);
@@ -439,10 +439,10 @@ private MelodyPart getSelectedTrackMelody()
       // has to add a whole beat to get to the last slot.
       int offset = (Integer)offsetSpinner.getValue();
       int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
-      int endSlot = BEAT*((Integer)endBeatSpinner.getValue()-1);
-System.out.println("* offset = " + offset);
-System.out.println("* startSlot = " + startSlot);
-System.out.println("* endSlot = " + endSlot);
+      int endSlot = BEAT*((Integer)endBeatSpinner.getValue());
+//System.out.println("* offset = " + offset);
+//System.out.println("* startSlot = " + startSlot);
+//System.out.println("* endSlot = " + endSlot);
 
       return selectedPart.copy(startSlot, endSlot);
       } 

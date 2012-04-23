@@ -57,11 +57,11 @@ public String toString()
 
 private static StartRoundingFactor commonFactors[] =
   {
-      new StartRoundingFactor(  6, "1/16 note triplet (1/3 beat)"),
-      new StartRoundingFactor(  4, "1/16 note (1/4 beat)"),
-      new StartRoundingFactor(  3, "1/8 note triplet (1/3 beat)"),
-      new StartRoundingFactor(  2, "1/8 note (1/2 beat)"),
-      new StartRoundingFactor(  1, "1/4 note (1 beat)")
+      new StartRoundingFactor(  6, "1/16 note triplet (1/6 beat, 20 slots)"),
+      new StartRoundingFactor(  4, "1/16 note (1/4 beat, 30 slots)"),
+      new StartRoundingFactor(  3, "1/8 note triplet (1/3 beat, 40 slots)"),
+      new StartRoundingFactor(  2, "1/8 note (1/2 beat, 60 slots)"),
+      new StartRoundingFactor(  1, "1/4 note (1 beat, 120 slots)")
    };
 
 public static StartRoundingFactor[] getFactors()

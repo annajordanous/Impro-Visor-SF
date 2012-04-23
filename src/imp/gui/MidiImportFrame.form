@@ -295,10 +295,10 @@
             <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="StartRoundingFactor.getFactors()[3]" type="code"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail."/>
+            <Property name="toolTipText" type="java.lang.String" value="Determines how to round off any pickup notes."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder justification="2" title="Start Rounding Factor">
+                <TitledBorder justification="2" title="Pickup Rounding Factor">
                   <Font PropertyName="font" name="Lucida Grande" size="13" style="1"/>
                 </TitledBorder>
               </Border>

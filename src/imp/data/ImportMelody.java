@@ -87,11 +87,11 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     int slot = 0;
     
-    System.out.println();
-    System.out.println("precision = " + precision);
-    System.out.println("startTime = " + startTime);
-    System.out.println("startFactor = " + startFactor);
-    // 2 Works for starting on half-beats
+//    System.out.println();
+//    System.out.println("precision = " + precision);
+//    System.out.println("startTime = " + startTime);
+//    System.out.println("startFactor = " + startFactor);
+    // e.g. 2 Works for starting on half-beats
     
     startTime = Math.floor(startFactor*startTime)/startFactor;
 
@@ -101,9 +101,9 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
       {
         int restSlots = MIDIBeast.findSlots(startTime, 1);
         
-        System.out.println("restSlots = " + restSlots);
+        //System.out.println("restSlots = " + restSlots);
 
-      System.out.println("restBeats = " + restSlots/FBEAT);
+        // System.out.println("restBeats = " + restSlots/FBEAT);
 
       partOut.addRest(new Rest(restSlots));
       

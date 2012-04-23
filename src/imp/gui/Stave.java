@@ -5419,7 +5419,7 @@ public String extract(String title, ExtractMode mode, int grade,
                 if( prevNote.isRest() )
                   {
                     int duration = 0;
-                    for( int k = index; k >= prevIndex; k-- )
+                    for( int k = Math.min(index, cstrLines.length-1); k >= prevIndex; k-- )
                       {
                         if( cstrLines[k] != null )
                           {
