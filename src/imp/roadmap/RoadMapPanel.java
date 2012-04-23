@@ -85,6 +85,8 @@ public class RoadMapPanel extends JPanel {
     /** RoadMapFrame containing this panel */
     RoadMapFrame view;
     
+    String margin = " ";
+    
     Graphics g;
     
     Graphics2D g2d;
@@ -895,7 +897,7 @@ public class RoadMapPanel extends JPanel {
               {
             
             if(ind < joinList.size() && !joinList.get(ind).isEmpty()) { //JOINS
-                String joinName = joinList.get(ind);
+                String joinName =  margin + joinList.get(ind) + margin;
                 int length = settings.getBlockLength(brick.getBlock());
                 
                 FontMetrics metrics = g2d.getFontMetrics();
@@ -1058,7 +1060,7 @@ public class RoadMapPanel extends JPanel {
               g2d.setColor(settings.textColor);
               keyName = RoadMapSettings.trimString(keyName, cutoff - x, metrics);
               keyName = RoadMapSettings.trimString(keyName, settings.getLength((int)dur), metrics);
-              g2d.drawString(keyName, x+2, y+fontOffset);
+              g2d.drawString(margin + keyName, x+2, y+fontOffset);
               }
     }
         

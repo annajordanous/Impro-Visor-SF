@@ -152,6 +152,11 @@ public int getStartBeat()
     return startBeat;
   }
 
+public int getInitialRestSlots()
+  {
+    return initialRestSlots;
+  }
+
 @Override
 public String toString()
   {

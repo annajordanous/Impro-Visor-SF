@@ -58,6 +58,7 @@ private ArrayList<jm.music.data.Note> origNoteArray;
 private ArrayList<Note> roundedNoteArray;
 
 
+
 /**
  * constructor. Reads a score and adjusts the rhythm durations in the melody
  * line.
@@ -69,9 +70,12 @@ public ImportMelody(jm.music.data.Score score)
   }
 
 
+double FBEAT = 120.;
+
 public void convertToImpPart(jm.music.data.Part melodyPart,
                              int trackNumber,
-                             MelodyPart partOut)
+                             MelodyPart partOut,
+                             int precision)
   {
     origNoteArray = new ArrayList<jm.music.data.Note>();
 
@@ -85,32 +89,46 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     // This is a key step in getting melodies to be acceptable to Impro-Visor
 
-    roundedNoteArray = roundDurations(MIDIBeast.precision, origNoteArray);
+    //roundedNoteArray = roundDurations(MIDIBeast.precision, origNoteArray);
 
     // Handle the case where the phrase does not start immediately.
 
     double startTime = phrase.getStartTime();
 
+    int slot = 0;
+    System.out.println("startTime = " + startTime);
+    
+    startTime = Math.round(startTime);
+
+    System.out.println("rounded startTime = " + startTime);
+
     if( startTime > 0 )
       {
-        int restSlots = MIDIBeast.doubleValToSlots(startTime);
+        int restSlots = MIDIBeast.findSlots(startTime, precision);
 
-        partOut.addRest(new Rest(restSlots));
+      System.out.println("restBeats = " + restSlots/FBEAT);
+
+      partOut.addRest(new Rest(restSlots));
+      
+      slot += restSlots;
       }
 
     // Convert each jMusic Note to an Impro-Visor Note.
 
-    for( Note note : roundedNoteArray )
+    for( jm.music.data.Note note : origNoteArray ) // roundedNoteArray )
       {
-        partOut.addNote(note);
+        Note newNote = convertToImpNote(note, precision);
+        partOut.addNote(newNote);
+        //System.out.println("beat " + slot/FBEAT + ": " + note.getDuration() + " -> " + newNote);
+        slot += newNote.getRhythmValue();
       }
   }
 
 
-public static Note convertToImpNote(jm.music.data.Note noteIn)
+public Note convertToImpNote(jm.music.data.Note noteIn, int precision)
   {
     int pitch = noteIn.getPitch();
-    int numberOfSlots = MIDIBeast.doubleValToSlots(noteIn.getRhythmValue());
+    int numberOfSlots = MIDIBeast.findSlots(noteIn.getDuration(), precision);
     if( pitch < 0 )
       {
         return new Rest(numberOfSlots);
@@ -146,45 +164,13 @@ public void mergeRests()
           {
             continue;
           }
-        origNoteArray.get(i - 1).setRhythmValue(origNoteArray.get(i).getRhythmValue() + origNoteArray.get(i - 1).getRhythmValue());
+        origNoteArray.get(i - 1).setRhythmValue(origNoteArray.get(i).getRhythmValue() 
+                                              + origNoteArray.get(i - 1).getRhythmValue());
         origNoteArray.remove(i);
         i--;
       }
   }
 
 
-/**
- * Rounds the rhythm duration of each note to its closest musical value
- * equivalent using a 120 slots per beat format.
- *
- * @param precision
- */
-
-public ArrayList<Note> roundDurations(int precision, ArrayList<jm.music.data.Note> noteArray)
-  {
-    roundedNoteArray = new ArrayList<Note>();
-
-    for( int i = 0; i < noteArray.size(); i++ )
-      {
-        jm.music.data.Note noteIn = noteArray.get(i);
-        Note noteOut = convertToImpNote(noteIn);
-//        if( noteIn.getPitch() >= 0 )
-//          {
-//          System.out.println(noteIn + " -> " + noteOut);
-//          }
-        roundedNoteArray.add(noteOut);
-      }
-
-    if( debug )
-      {
-        System.out.println("## After roundDurations() ##");
-        int totalNoteDuration = 0;
-        for( int i = 0; i < roundedNoteArray.size(); i++ )
-          {
-            totalNoteDuration += roundedNoteArray.get(i).getRhythmValue();
-          }
-      }
-    return roundedNoteArray;
-  }
 
 }

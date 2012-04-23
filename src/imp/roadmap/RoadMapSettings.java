@@ -50,7 +50,7 @@ public class RoadMapSettings {
     public int lineHeight = 60;
     
     /** Space between lines */
-    public int lineSpacing = 20;
+    public int lineSpacing = 40;
     
     /** Pixel width of each measure */
     public int measureLength = 100;
