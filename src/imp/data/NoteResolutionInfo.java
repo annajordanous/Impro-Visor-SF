@@ -58,6 +58,7 @@ public String toString()
 private static NoteResolutionInfo commonResolutions[] =
   {
       new NoteResolutionInfo(  1, "1/120 note (1/120 beat"),
+      new NoteResolutionInfo(  2, "1/60 note (1/60 beat"),
       new NoteResolutionInfo(  5, "1/64 note triplet (1/24 beat"),
       new NoteResolutionInfo( 10, "1/32 note triplet (1/12 beat"),
       new NoteResolutionInfo( 15, "1/32 note (1/8 beat"),

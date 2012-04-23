@@ -44,7 +44,9 @@ public class MidiImport
 File file;
 Notate notate;
 private int defaultResolution = 1;
+private int defaultStartFactor = 2;
 private int resolution;
+private int startFactor;
 String filenameDisplay;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
@@ -55,6 +57,7 @@ public MidiImport(Notate notate)
   {
     this.notate = notate;
     setResolution(defaultResolution);
+    setStartFactor(defaultStartFactor);
     initFileChooser();
   }
 
@@ -69,12 +72,24 @@ public void setResolution(int newResolution)
     //System.out.println("setting resolution to " + resolution);
   }
 
+public int getStartFactor()
+  {
+    return startFactor;
+  }
+
+public void setStartFactor(int newStartFactor)
+  {
+    startFactor = newStartFactor;
+    System.out.println("setting startFactor to " + startFactor);
+  }
+
+
 public LinkedList<MidiImportRecord> importMidi()
   {
     file = getFile();
     if( file != null )
       {
-        return readMidiFile(file.getAbsolutePath(), getResolution());
+        return readMidiFile(file.getAbsolutePath(), getResolution(), getStartFactor());
       }
     return null;
   }
@@ -85,7 +100,7 @@ public LinkedList<MidiImportRecord> reImportMidi()
     if( file != null )
       {
         //System.out.println("reImporting with resolution " + getResolution());
-        return readMidiFile(file.getAbsolutePath(), getResolution());
+        return readMidiFile(file.getAbsolutePath(), getResolution(), getStartFactor());
       }
     return null;
   }
@@ -96,7 +111,7 @@ public LinkedList<MidiImportRecord> reImportMidi()
  * 
  */
 
-public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolution)
+public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolution, int startFactor)
   {
     notate.setStatus("MIDI File Imported");
     
@@ -141,7 +156,7 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolu
             //System.out.println("---------------------------------------------");
             //System.out.println("part " + i + " track " + j + " conversion: ");
             MelodyPart partOut = new MelodyPart();
-            importMelody.convertToImpPart(part, j, partOut, resolution);
+            importMelody.convertToImpPart(part, j, partOut, resolution, startFactor);
             
             MidiImportRecord record = new MidiImportRecord(channel, j, partOut);
             records.add(record);
