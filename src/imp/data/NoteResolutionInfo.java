@@ -57,20 +57,20 @@ public String toString()
 
 private static NoteResolutionInfo commonResolutions[] =
   {
-      new NoteResolutionInfo(480, "whole note (4 beats"),
-      new NoteResolutionInfo(360, "dotted 1/2 note (3 beats"),
-      new NoteResolutionInfo(240, "1/2 note (2 beats"),
-      new NoteResolutionInfo(160, "1/2 note triplet (4/3 beat"),
-      new NoteResolutionInfo(120, "1/4 note (1 beat"),
-      new NoteResolutionInfo( 80, "1/4 note triplet (2/3 beat"),
-      new NoteResolutionInfo( 60, "1/8 note (1/2 beat"),
-      new NoteResolutionInfo( 40, "1/8 note triplet (1/3 beat"),
-      new NoteResolutionInfo( 30, "1/16 note (1/4 beat"),
-      new NoteResolutionInfo( 20, "1/16 note triplet (1/6 beat"),
-      new NoteResolutionInfo( 15, "1/32 note (1/8 beat"),
-      new NoteResolutionInfo( 10, "1/32 note triplet (1/12 beat"),
+      new NoteResolutionInfo(  1, "1/120 note (1/120 beat"),
       new NoteResolutionInfo(  5, "1/64 note triplet (1/24 beat"),
-      new NoteResolutionInfo(  1, "1/120 note (1/120 beat")     
+      new NoteResolutionInfo( 10, "1/32 note triplet (1/12 beat"),
+      new NoteResolutionInfo( 15, "1/32 note (1/8 beat"),
+      new NoteResolutionInfo( 20, "1/16 note triplet (1/6 beat"),
+      new NoteResolutionInfo( 30, "1/16 note (1/4 beat"),
+      new NoteResolutionInfo( 40, "1/8 note triplet (1/3 beat"),
+      new NoteResolutionInfo( 60, "1/8 note (1/2 beat"),
+      new NoteResolutionInfo( 80, "1/4 note triplet (2/3 beat"),
+      new NoteResolutionInfo(120, "1/4 note (1 beat"),
+      new NoteResolutionInfo(160, "1/2 note triplet (4/3 beat"),
+      new NoteResolutionInfo(240, "1/2 note (2 beats"),
+      new NoteResolutionInfo(360, "dotted 1/2 note (3 beats"),
+      new NoteResolutionInfo(480, "whole note (4 beats")
   };
 
 public static NoteResolutionInfo[] getNoteResolutions()

@@ -791,6 +791,9 @@ public static String pitchOf(int pitchNumber)
  * @param duration
  * @param precision Rounds a rhythm in double form to slots with a given
  * precision.
+ * Note: precision can't be more than 10 to convert sixteenth notes correctly,
+ * since 1/16 th is duration .25 and (120*.25 / 10)*10 = 30,
+ * but (120*.25 / 20)*20 = 40, which is wrong.
  */
 
 public static int findSlots(double duration, int precision)

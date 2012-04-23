@@ -38,6 +38,8 @@ MidiImport midiImport;
 DefaultListModel trackListModel;
 MelodyPart selectedPart = null;
 
+static double FBEAT = 480.0;
+
 /**
  * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
  * We also use a jMusic score, in addition to an Impro-Visor score later.
@@ -112,6 +114,7 @@ private void reload()
         volumeSpinner = new javax.swing.JSpinner();
         startBeatSpinner = new javax.swing.JSpinner();
         endBeatSpinner = new javax.swing.JSpinner();
+        offsetSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -201,15 +204,15 @@ private void reload()
         gridBagConstraints.gridx = 2;
         midiImportButtonPanel.add(stopPlayingTrackButton, gridBagConstraints);
 
-        importTrackToLeadsheet.setText("Import Track to Leadsheet (or double click)");
-        importTrackToLeadsheet.setToolTipText("Imports the track selected above to the leadsheet as a new chorus. Alternatively, double click the entry. If Start Beat and End Beat are set, will import just the selected range of beats.\n");
+        importTrackToLeadsheet.setToolTipText("Transfers the track selected  to the leadsheet as a new chorus. Alternatively, double click the entry. If Start Beat, +/-,  and End Beat are set, will import just the selected range of beats.\n");
+        importTrackToLeadsheet.setLabel("Transfer Track (or double click)");
         importTrackToLeadsheet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importTrackToLeadsheetActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 7;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -217,7 +220,7 @@ private void reload()
 
         importResolutionComboBox.setMaximumRowCount(16);
         importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
-        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[9]);
+        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[0]);
         importResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
         importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
@@ -228,7 +231,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridx = 8;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
 
@@ -258,8 +261,17 @@ private void reload()
         endBeatSpinner.setMinimumSize(new java.awt.Dimension(75, 56));
         endBeatSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 6;
         midiImportButtonPanel.add(endBeatSpinner, gridBagConstraints);
+
+        offsetSpinner.setModel(new javax.swing.SpinnerNumberModel(0, -120, 120, 1));
+        offsetSpinner.setToolTipText("");
+        offsetSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("+/- Slots"));
+        offsetSpinner.setMinimumSize(new java.awt.Dimension(75, 56));
+        offsetSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        midiImportButtonPanel.add(offsetSpinner, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -275,7 +287,7 @@ private void reload()
 private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
   {//GEN-HEADEREND:event_importTrackSelected
   getFullSelectedTrackMelody();
-  playSelectedTrack();
+  //playSelectedTrack();
   }//GEN-LAST:event_importTrackSelected
 
 private void playMIDIimportTrackActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMIDIimportTrackActionPerformed
@@ -367,7 +379,10 @@ private void getFullSelectedTrackMelody()
       {
        MidiImportRecord record = (MidiImportRecord)ob;
        selectedPart = record.getPart();
-       startBeatSpinner.setValue(record.getStartBeat());
+       
+       int initialRestSlots = record.getInitialRestSlots();
+       int beatsPerMeasure = 4;
+       startBeatSpinner.setValue(1+beatsPerMeasure*((initialRestSlots/BEAT)/beatsPerMeasure));
        int numBeats = record.getBeats();
        endBeatSpinner.setValue(numBeats);
        ((javax.swing.SpinnerNumberModel)endBeatSpinner.getModel()).setMaximum(numBeats);
@@ -380,7 +395,8 @@ private MelodyPart getSelectedTrackMelody()
       {
       // Note that these expression are not the same form, as the second
       // has to add a whole beat to get to the last slot.
-      int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
+      int offset = (Integer)offsetSpinner.getValue();
+      int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1) + offset;
       int endSlot = BEAT*((Integer)endBeatSpinner.getValue())-1;
       
       return selectedPart.copy(startSlot, endSlot);
@@ -438,6 +454,7 @@ public void dispose()
     private javax.swing.JList importedTrackList;
     private javax.swing.JPanel midiImportButtonPanel;
     private javax.swing.JPanel midiImportTopPanel;
+    private javax.swing.JSpinner offsetSpinner;
     private javax.swing.JButton playMIDIfile;
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;

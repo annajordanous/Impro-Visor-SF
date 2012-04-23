@@ -1178,10 +1178,6 @@ ArrayList<RawRule> rules;
 int slotCount;
 int numClustersAllowed;
 
-public Section()
-  {
-  } // YAY JAVA!
-
 public Section(int slotCount, RawRule rule)
   {
     rules = new ArrayList<RawRule>();

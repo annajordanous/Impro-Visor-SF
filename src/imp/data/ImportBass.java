@@ -20,8 +20,8 @@
  */
 
 package imp.data;
-import jm.music.data.*;
-import java.util.*;
+import java.util.ArrayList;
+import jm.music.data.Phrase;
 
 /**
  * ImportBass.java

@@ -42,6 +42,8 @@ public class GraphicBrick {
     /** line that block is on in the roadmap */
     private int line = 0;
     
+    String margin = " ";
+    
     private RoadMapSettings settings;
     
     /**
@@ -446,7 +448,7 @@ public class GraphicBrick {
             String name = RoadMapSettings.trimString(chord.getName(),
                     settings.getBlockLength(chord), metrics);
             name = RoadMapSettings.trimString(name, cutoff-currentX, metrics);
-            g2d.drawString(name, currentX+2, currentY + fontOffset);
+            g2d.drawString(margin + name, currentX+2, currentY + fontOffset);
             
             currentBeats += chord.getDuration();
             ind++;
@@ -465,7 +467,7 @@ public class GraphicBrick {
             name = RoadMapSettings.trimString(name,totalLength, metrics);
             
             g2d.setColor(settings.textColor);
-            g2d.drawString(name, x+2, y+blockHeight + fontOffset);
+            g2d.drawString(margin + name, x+2, y+blockHeight + fontOffset);
         }
     }
     
@@ -504,7 +506,7 @@ public class GraphicBrick {
                 String key = RoadMapSettings.trimString(block.getKeyName()+" "+block.getMode(),
                         totalLength, metrics);
                 g2d.setColor(settings.textColor);
-                g2d.drawString(key, x+5, y+blockHeight/2+5);
+                g2d.drawString(margin + key, x+5, y+blockHeight/2+5);
               }
 
             //Name
@@ -517,7 +519,7 @@ public class GraphicBrick {
                 g2d.setColor(settings.lineColor);
                 g2d.drawRect(x, y+blockHeight, totalLength, blockHeight);
                 g2d.setColor(settings.textColor);
-                g2d.drawString(name, x+5, y+3*blockHeight/2+5);
+                g2d.drawString(margin + name, x+5, y+3*blockHeight/2+5);
               }
         }
         
@@ -537,7 +539,7 @@ public class GraphicBrick {
             
             g2d.setColor(settings.textColor);
             String chordName = chord.getName();
-            g2d.drawString(chordName, x+xOffset+5, y+5*blockHeight/2+5);
+            g2d.drawString(margin + chordName, x+xOffset+5, y+5*blockHeight/2+5);
 
             totalSlots += chord.getDuration();
         }
