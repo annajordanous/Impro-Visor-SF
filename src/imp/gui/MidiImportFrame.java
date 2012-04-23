@@ -115,6 +115,7 @@ private void reload()
         startBeatSpinner = new javax.swing.JSpinner();
         endBeatSpinner = new javax.swing.JSpinner();
         offsetSpinner = new javax.swing.JSpinner();
+        startRoundingFactorComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -273,6 +274,23 @@ private void reload()
         gridBagConstraints.gridx = 5;
         midiImportButtonPanel.add(offsetSpinner, gridBagConstraints);
 
+        startRoundingFactorComboBox.setMaximumRowCount(16);
+        startRoundingFactorComboBox.setModel(new javax.swing.DefaultComboBoxModel(StartRoundingFactor.getFactors()));
+        startRoundingFactorComboBox.setSelectedItem(StartRoundingFactor.getFactors()[3]);
+        startRoundingFactorComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        startRoundingFactorComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Start Rounding Factor", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        startRoundingFactorComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        startRoundingFactorComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
+        startRoundingFactorComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startRoundingFactorComboBoximportMidiNoteResolutionChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 9;
+        gridBagConstraints.gridy = 0;
+        midiImportButtonPanel.add(startRoundingFactorComboBox, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -344,6 +362,11 @@ private void volumeSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:
     setJmVolume();
   }//GEN-LAST:event_volumeSpinnerChanged
 
+private void startRoundingFactorComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
+  {//GEN-HEADEREND:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
+   reImportWithNewResolution();
+  }//GEN-LAST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
+
 private void setJmVolume()
   {
    int value = (Integer)volumeSpinner.getValue();
@@ -359,6 +382,8 @@ private void reImportWithNewResolution()
   {
     int newResolution = ((NoteResolutionInfo)importResolutionComboBox.getSelectedItem()).getSlots();
     midiImport.setResolution(newResolution);
+    int newRoundingFactor = ((StartRoundingFactor)startRoundingFactorComboBox.getSelectedItem()).getFactor();
+    midiImport.setStartFactor(newRoundingFactor);
     reload();
   }
 
@@ -382,7 +407,24 @@ private void getFullSelectedTrackMelody()
        
        int initialRestSlots = record.getInitialRestSlots();
        int beatsPerMeasure = 4;
-       startBeatSpinner.setValue(1+beatsPerMeasure*((initialRestSlots/BEAT)/beatsPerMeasure));
+       int initialRestBeats = initialRestSlots/BEAT;
+       int initialRestMeasures = initialRestBeats/beatsPerMeasure;
+       int initialIntegralBeats = beatsPerMeasure*initialRestMeasures;
+       int initialIntegralSlots = initialIntegralBeats*BEAT;
+       int startBeat = 1+initialIntegralBeats;
+       int offset = initialRestSlots - initialIntegralSlots;
+  System.out.println();
+  System.out.println("# initialRestSlots = " + initialRestSlots);
+  System.out.println("# initialRestBeats = " + initialRestBeats);
+  System.out.println("# initialRestMeasures = " + initialRestMeasures);
+  System.out.println("# initialIntegralBeats = " + initialIntegralBeats);
+  System.out.println("# initialIntegralSlots = " + initialIntegralSlots);
+  System.out.println("# startSlot = " + initialIntegralSlots);
+  System.out.println("# startBeat = " + startBeat);
+  System.out.println("# offset = " + offset);
+   
+       startBeatSpinner.setValue(startBeat);
+       offsetSpinner.setValue(offset);
        int numBeats = record.getBeats();
        endBeatSpinner.setValue(numBeats);
        ((javax.swing.SpinnerNumberModel)endBeatSpinner.getModel()).setMaximum(numBeats);
@@ -396,9 +438,12 @@ private MelodyPart getSelectedTrackMelody()
       // Note that these expression are not the same form, as the second
       // has to add a whole beat to get to the last slot.
       int offset = (Integer)offsetSpinner.getValue();
-      int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1) + offset;
-      int endSlot = BEAT*((Integer)endBeatSpinner.getValue())-1;
-      
+      int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
+      int endSlot = BEAT*((Integer)endBeatSpinner.getValue()-1);
+System.out.println("* offset = " + offset);
+System.out.println("* startSlot = " + startSlot);
+System.out.println("* endSlot = " + endSlot);
+
       return selectedPart.copy(startSlot, endSlot);
       } 
     return null;
@@ -459,6 +504,7 @@ public void dispose()
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
     private javax.swing.JSpinner startBeatSpinner;
+    private javax.swing.JComboBox startRoundingFactorComboBox;
     private javax.swing.JButton stopPlayingTrackButton;
     private javax.swing.JScrollPane trackSelectScrollPane;
     private javax.swing.JSpinner volumeSpinner;

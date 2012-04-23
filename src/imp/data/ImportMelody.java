@@ -51,15 +51,6 @@ private ArrayList<jm.music.data.Note> origNoteArray;
 
 
 /**
- * The final notes that are used as the "original notes" by each successive step
- * in the style generation. (Contains corrected rhythm durations).
- */
-
-private ArrayList<Note> roundedNoteArray;
-
-
-
-/**
  * constructor. Reads a score and adjusts the rhythm durations in the melody
  * line.
  */
@@ -75,7 +66,8 @@ double FBEAT = 120.;
 public void convertToImpPart(jm.music.data.Part melodyPart,
                              int trackNumber,
                              MelodyPart partOut,
-                             int precision)
+                             int precision,
+                             int startFactor)
   {
     origNoteArray = new ArrayList<jm.music.data.Note>();
 
@@ -89,22 +81,27 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     // This is a key step in getting melodies to be acceptable to Impro-Visor
 
-    //roundedNoteArray = roundDurations(MIDIBeast.precision, origNoteArray);
-
     // Handle the case where the phrase does not start immediately.
 
     double startTime = phrase.getStartTime();
 
     int slot = 0;
-    System.out.println("startTime = " + startTime);
     
-    startTime = Math.round(startTime);
+    System.out.println();
+    System.out.println("precision = " + precision);
+    System.out.println("startTime = " + startTime);
+    System.out.println("startFactor = " + startFactor);
+    // 2 Works for starting on half-beats
+    
+    startTime = Math.floor(startFactor*startTime)/startFactor;
 
     System.out.println("rounded startTime = " + startTime);
 
     if( startTime > 0 )
       {
-        int restSlots = MIDIBeast.findSlots(startTime, precision);
+        int restSlots = MIDIBeast.findSlots(startTime, 1);
+        
+        System.out.println("restSlots = " + restSlots);
 
       System.out.println("restBeats = " + restSlots/FBEAT);
 
@@ -115,7 +112,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     // Convert each jMusic Note to an Impro-Visor Note.
 
-    for( jm.music.data.Note note : origNoteArray ) // roundedNoteArray )
+    for( jm.music.data.Note note : origNoteArray ) 
       {
         Note newNote = convertToImpNote(note, precision);
         partOut.addNote(newNote);
