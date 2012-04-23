@@ -43,7 +43,7 @@ public class MidiImport
 {
 File file;
 Notate notate;
-private int defaultResolution = 20;
+private int defaultResolution = 1;
 private int resolution;
 String filenameDisplay;
 private static jm.music.data.Score score;
