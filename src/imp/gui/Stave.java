@@ -3132,6 +3132,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
               Note aNote = part.getNote(totalLength);
               if(   lastNote != null
                     && lastNote.isTied()
+                    && aNote != null
                     && aNote.isTied()
                     && !aNote.firstTied()
                     )

@@ -44,12 +44,14 @@ int totalBeats;
 int initialRestBeats;
 int startBeat;
 int stopBeat;
+String instrumentString;
 
 
-public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart)
+public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart, String instrumentString)
 {
   this.channel = channel;
   this.trackNumber = trackNumber;
+  this.instrumentString = instrumentString;
   this.melodyPart = melodyPart;
   lowPitch = 256;
   highPitch = -1;
@@ -172,6 +174,7 @@ public String toString()
     }
   
   return "channel " + (channel+1) + ", track " + trackNumber 
+          + " " + instrumentString
           + " [beats " + startBeat + " to " + totalBeats + ", "
           + rangeString
           + occupancyPercent + "% occupied]: " 
