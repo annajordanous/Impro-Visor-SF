@@ -96,6 +96,9 @@ public class Notate
   
   MidiImportFrame midiImportFrame = null;
   
+  
+  MidiImport midiImport;
+  
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -21045,17 +21048,25 @@ private void improviseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN
 
 private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiMIActionPerformed
   {//GEN-HEADEREND:event_importMidiMIActionPerformed
+  importMIDI();
+  }//GEN-LAST:event_importMidiMIActionPerformed
+
+public void importMIDI()
+  {
     setMode(Mode.IMPORTING_MIDI);
-    MidiImport midiImport = new MidiImport(this);
+    midiImport = new MidiImport(this);
     LinkedList<MidiImportRecord> records = midiImport.importMidi();
     if( records != null )
       {
-        midiImportFrame = new MidiImportFrame(this, midiImport);
+        if( midiImportFrame == null )
+          {
+          midiImportFrame = new MidiImportFrame(this, midiImport);
+          }
         midiImportFrame.load(records);
         midiImportFrame.setLocation(midiImportXoffset, midiImportYoffset);
         midiImportFrame.setVisible(true);
-      }
-  }//GEN-LAST:event_importMidiMIActionPerformed
+      }    
+  }
 
 private void insertChorusTabMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_insertChorusTabMIActionPerformed
   {//GEN-HEADEREND:event_insertChorusTabMIActionPerformed
