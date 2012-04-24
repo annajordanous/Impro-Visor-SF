@@ -2197,8 +2197,8 @@ public class Notate
         saveLeadsheetMI = new javax.swing.JMenuItem();
         saveAsLeadsheetMI = new javax.swing.JMenuItem();
         exportAllToMidi = new javax.swing.JMenuItem();
-        exportChorusToMusicXML = new javax.swing.JMenuItem();
         importMidiMI = new javax.swing.JMenuItem();
+        exportChorusToMusicXML = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         loadAdvMI = new javax.swing.JMenuItem();
         saveAdvice = new javax.swing.JMenuItem();
@@ -7842,15 +7842,6 @@ public class Notate
         });
         fileMenu.add(exportAllToMidi);
 
-        exportChorusToMusicXML.setText("Export Chorus to MusicXML");
-        exportChorusToMusicXML.setToolTipText("Create a MusicXML file for the current chorus.");
-        exportChorusToMusicXML.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportChorusToMusicXMLActionPerformed(evt);
-            }
-        });
-        fileMenu.add(exportChorusToMusicXML);
-
         importMidiMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         importMidiMI.setText("Import MIDI Tracks from File");
         importMidiMI.addActionListener(new java.awt.event.ActionListener() {
@@ -7859,6 +7850,15 @@ public class Notate
             }
         });
         fileMenu.add(importMidiMI);
+
+        exportChorusToMusicXML.setText("Export Chorus to MusicXML");
+        exportChorusToMusicXML.setToolTipText("Create a MusicXML file for the current chorus.");
+        exportChorusToMusicXML.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportChorusToMusicXMLActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exportChorusToMusicXML);
         fileMenu.add(jSeparator2);
 
         loadAdvMI.setText("Load Vocabulary");
