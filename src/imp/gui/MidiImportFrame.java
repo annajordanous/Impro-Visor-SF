@@ -48,26 +48,34 @@ jm.music.data.Score jmScore;
 
 int INITIAL_RESOLUTION_COMBO = 5;
 
+LinkedList<MidiImportRecord> records;
+
 /**
  * Creates new form MidiImportFrame
  */
-public MidiImportFrame(Notate notate, MidiImport midiImport)
+public MidiImportFrame(Notate notate)
   {
     trackListModel = new DefaultListModel();
     initComponents();
     this.notate = notate;
-    this.midiImport = midiImport;
+    this.midiImport = new MidiImport();
     setTitle("MIDI Import: " + midiImport.getFilenameDisplay());
     WindowRegistry.registerWindow(this);
     
-    volumeSpinner.setVisible(false); // doesn't work yet
+    volumeSpinner.setVisible(false); // volume setting doesn't work yet
     
     importResolutionComboBox.setSelectedIndex(INITIAL_RESOLUTION_COMBO);
   }
 
-public void load(LinkedList<MidiImportRecord> records)
+public void loadFile()
+  {
+  records = midiImport.importMidi(); 
+  }
+
+public void load()
   {
     //System.out.println("loading");
+ 
     setResolution();
     trackListModel.clear();
     
@@ -88,10 +96,10 @@ private void reload()
   {
     setResolution();
     int saveIndex = importedTrackList.getSelectedIndex();
-    LinkedList<MidiImportRecord> records = midiImport.reImportMidi();
+    records = midiImport.reImportMidi();
     if( records != null )
       {
-        load(records);
+        load();
         selectTrack(saveIndex);
       }
   }

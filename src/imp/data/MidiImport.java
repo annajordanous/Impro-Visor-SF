@@ -42,7 +42,6 @@ import javax.swing.JFileChooser;
 public class MidiImport
 {
 File file;
-Notate notate;
 private int defaultResolution = 1;
 private int defaultStartFactor = 2;
 private int resolution;
@@ -53,9 +52,8 @@ private static ArrayList<jm.music.data.Part> allParts;
 
 private JFileChooser midiFileChooser = new JFileChooser();
 
-public MidiImport(Notate notate)
+public MidiImport()
   {
-    this.notate = notate;
     setResolution(defaultResolution);
     setStartFactor(defaultStartFactor);
     initFileChooser();
@@ -113,8 +111,6 @@ public LinkedList<MidiImportRecord> reImportMidi()
 
 public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolution, int startFactor)
   {
-    notate.setStatus("MIDI File Imported");
-    
     score = new jm.music.data.Score();
     
     try
@@ -190,7 +186,7 @@ private File getFile()
     File midiFileEntire = null;
     try
       {
-        int midiChoice = midiFileChooser.showOpenDialog(notate);
+        int midiChoice = midiFileChooser.showOpenDialog(null);
         if( midiChoice == JFileChooser.CANCEL_OPTION )
           {
             return null;
