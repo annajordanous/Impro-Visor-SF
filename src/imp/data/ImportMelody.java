@@ -95,7 +95,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
     
     startTime = Math.floor(startFactor*startTime)/startFactor;
 
-    System.out.println("rounded startTime = " + startTime);
+    //System.out.println("rounded startTime = " + startTime);
 
     if( startTime > 0 )
       {

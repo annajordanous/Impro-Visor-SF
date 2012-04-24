@@ -80,7 +80,7 @@ public int getStartFactor()
 public void setStartFactor(int newStartFactor)
   {
     startFactor = newStartFactor;
-    System.out.println("setting startFactor to " + startFactor);
+    //System.out.println("setting startFactor to " + startFactor);
   }
 
 

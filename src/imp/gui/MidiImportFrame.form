@@ -166,7 +166,7 @@
               <Connection code="new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions())" type="code"/>
             </Property>
             <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="NoteResolutionInfo.getNoteResolutions()[0]" type="code"/>
+              <Connection code="NoteResolutionInfo.getNoteResolutions()[3]" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail."/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

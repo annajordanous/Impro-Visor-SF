@@ -2874,11 +2874,12 @@ private boolean drawPart(MelodyPart part, Graphics g)
                 boolean beamThis = beamed || lastNoteBeamed;
 
                 //System.out.println("beamed = " + beamed + ", i = " + i + ", inext = " + inext + ", sameBeat = " + sameBeat(i, inext));
-                if( i >= selectionStart
+                if( isNote 
+                        && i >= selectionStart
                         && i <= selectionEnd
                         && (note.firstTied() || !note.isTied())
                         && note.getPitch() != Note.REST // May seem redundant, but this is need to control boxing
-                        && isNote )
+                        )
                   {
                     //System.out.println("Case A " + beamed + " " + note);
                     drawNote(note, true, i, g, g2, noteColors[i], part, beamThis, inext, stemUp);
@@ -3126,16 +3127,19 @@ private boolean drawPart(MelodyPart part, Graphics g)
 
             int totalLength = totalMeasureCount * measureLength;
 
-            if( lastNote != null
-                    && lastNote.isTied()
-                    && totalLength < part.size()
-                    && part.getNote(totalLength).isTied()
-                    && !part.getNote(totalLength).firstTied()
-                    && isNote )
+            if( isNote && totalLength < part.size() )
               {
+              Note aNote = part.getNote(totalLength);
+              if(   lastNote != null
+                    && lastNote.isTied()
+                    && aNote.isTied()
+                    && !aNote.firstTied()
+                    )
+                {
                 drawTie(startOfTie, STAVE_WIDTH + 10, isStemUp(lastNote, type), g);
                 // set the next tie to start a little before the new line
                 startOfTie = leftMargin - 10;
+                }
               }
 
             // set the spacingMod variable and the new number of measures
