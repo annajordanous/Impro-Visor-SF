@@ -1081,6 +1081,14 @@ public static void addSaveError(String error)
     savingErrors.add(error + "\n");
   }
 
+public static String getInstrumentForPart(int index)
+  {
+    return getInstrumentForPart(allParts.get(index));
+  }
 
+public static String getInstrumentForPart(jm.music.data.Part part)
+  {
+    return getInstrumentName(part.getInstrument());
+  }
 }
 

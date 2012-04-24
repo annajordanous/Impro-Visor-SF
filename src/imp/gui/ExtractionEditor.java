@@ -158,7 +158,7 @@ public void setPotentialParts()
           }
         else
           {
-            potentialInstruments.add(MIDIBeast.getInstrumentName(MIDIBeast.allParts.get(i).getInstrument()));
+            potentialInstruments.add(MIDIBeast.getInstrumentForPart(i));
           }
       }
 
