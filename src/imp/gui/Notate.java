@@ -21054,18 +21054,14 @@ private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
 public void importMIDI()
   {
     setMode(Mode.IMPORTING_MIDI);
-    midiImport = new MidiImport(this);
-    LinkedList<MidiImportRecord> records = midiImport.importMidi();
-    if( records != null )
+    if( midiImportFrame == null )
       {
-        if( midiImportFrame == null )
-          {
-          midiImportFrame = new MidiImportFrame(this, midiImport);
-          }
-        midiImportFrame.load(records);
-        midiImportFrame.setLocation(midiImportXoffset, midiImportYoffset);
-        midiImportFrame.setVisible(true);
-      }    
+        midiImportFrame = new MidiImportFrame(this);
+      }
+    midiImportFrame.loadFile();
+    midiImportFrame.load();
+    midiImportFrame.setLocation(midiImportXoffset, midiImportYoffset);
+    midiImportFrame.setVisible(true);
   }
 
 private void insertChorusTabMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_insertChorusTabMIActionPerformed
@@ -21101,10 +21097,6 @@ public void textRequestFocus()
  }
 
 
-public void importMidiFile()
-  {
-    new MidiImport(this).importMidi();
-  }
 
 public void improviseButtonToggled()
   {
