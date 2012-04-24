@@ -93,6 +93,9 @@ public class Notate
   RoadMapFrame roadmapFrame = null;
 
   LickgenFrame lickgenFrame;
+  
+  MidiImportFrame midiImportFrame = null;
+  
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -13343,6 +13346,11 @@ public void closeWindow()
   mixerDialog.dispose();
 
   preferencesDialog.dispose();
+  
+  if( midiImportFrame != null )
+    {
+      midiImportFrame.dispose();
+    }
 
   WindowRegistry.unregisterWindow(this);
   }
@@ -21042,10 +21050,10 @@ private void importMidiMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
     LinkedList<MidiImportRecord> records = midiImport.importMidi();
     if( records != null )
       {
-        MidiImportFrame frame = new MidiImportFrame(this, midiImport);
-        frame.load(records);
-        frame.setLocation(midiImportXoffset, midiImportYoffset);
-        frame.setVisible(true);
+        midiImportFrame = new MidiImportFrame(this, midiImport);
+        midiImportFrame.load(records);
+        midiImportFrame.setLocation(midiImportXoffset, midiImportYoffset);
+        midiImportFrame.setVisible(true);
       }
   }//GEN-LAST:event_importMidiMIActionPerformed
 

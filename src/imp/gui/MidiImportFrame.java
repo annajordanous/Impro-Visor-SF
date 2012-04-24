@@ -65,7 +65,6 @@ public MidiImportFrame(Notate notate, MidiImport midiImport)
 
 public void load(LinkedList<MidiImportRecord> records)
   {
-    int saveIndex = importedTrackList.getSelectedIndex();
     //System.out.println("loading");
     trackListModel.clear();
     
@@ -79,15 +78,17 @@ public void load(LinkedList<MidiImportRecord> records)
           }
         trackListModel.addElement(record);
       }
-    importedTrackList.setSelectedIndex(saveIndex);
+    selectTrack(0);
   }
 
 private void reload()
   {
+    int saveIndex = importedTrackList.getSelectedIndex();
     LinkedList<MidiImportRecord> records = midiImport.reImportMidi();
     if( records != null )
       {
         load(records);
+        selectTrack(saveIndex);
       }
   }
 
@@ -221,7 +222,7 @@ private void reload()
 
         importResolutionComboBox.setMaximumRowCount(16);
         importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
-        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[0]);
+        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
         importResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
         importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
@@ -304,7 +305,7 @@ private void reload()
 
 private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
   {//GEN-HEADEREND:event_importTrackSelected
-  getFullSelectedTrackMelody();
+  setSelectedTrack();
   //playSelectedTrack();
   }//GEN-LAST:event_importTrackSelected
 
@@ -320,12 +321,12 @@ private void importTrackToLeadsheetActionPerformed(java.awt.event.ActionEvent ev
 
 private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiNoteResolutionChanged
   {//GEN-HEADEREND:event_importMidiNoteResolutionChanged
-    reImportWithNewResolution();
+    reImport();
   }//GEN-LAST:event_importMidiNoteResolutionChanged
 
 private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
   {//GEN-HEADEREND:event_importedTrackListMouseClicked
-    getFullSelectedTrackMelody();
+    setSelectedTrack();
  
     if( evt.getClickCount() > 1 )
       {
@@ -364,7 +365,7 @@ private void volumeSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:
 
 private void startRoundingFactorComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
   {//GEN-HEADEREND:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
-   reImportWithNewResolution();
+   reImport();
   }//GEN-LAST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
 
 private void setJmVolume()
@@ -378,30 +379,39 @@ private void setJmVolume()
      }
   }
 
-private void reImportWithNewResolution()
+private void reImport()
   {
+    int index = importedTrackList.getSelectedIndex();
+    
     int newResolution = ((NoteResolutionInfo)importResolutionComboBox.getSelectedItem()).getSlots();
     midiImport.setResolution(newResolution);
     int newRoundingFactor = ((StartRoundingFactor)startRoundingFactorComboBox.getSelectedItem()).getFactor();
     midiImport.setStartFactor(newRoundingFactor);
     reload();
+    
+    selectTrack(index);
   }
 
 /**
  * This sets the start and end beat spinners, as well as getting the track
  * as an Impro-Visor part.
  */
-private void getFullSelectedTrackMelody()
+private void setSelectedTrack()
   {
     int index = importedTrackList.getSelectedIndex();
-    if( index < 0 )
+    selectTrack(index);  
+  }
+
+private void selectTrack(int index)
+  {
+  if( index < 0 )
+    {
+      return;
+    }
+  Object ob = trackListModel.get(index);
+  if( ob instanceof MidiImportRecord )
       {
-        return;
-      }
-    Object ob = trackListModel.get(index);
-    
-    if( ob instanceof MidiImportRecord )
-      {
+       importedTrackList.setSelectedIndex(index); // establish, if not already
        MidiImportRecord record = (MidiImportRecord)ob;
        selectedPart = record.getPart();
        
@@ -448,6 +458,7 @@ private MelodyPart getSelectedTrackMelody()
       } 
     return null;
   }
+
 
 private void importSelectedTrack()
   {
