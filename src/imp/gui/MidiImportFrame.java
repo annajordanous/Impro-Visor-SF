@@ -38,8 +38,6 @@ MidiImport midiImport;
 DefaultListModel trackListModel;
 MelodyPart selectedPart = null;
 
-static double FBEAT = 480.0;
-
 /**
  * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
  * We also use a jMusic score, in addition to an Impro-Visor score later.
@@ -111,11 +109,11 @@ private void reload()
         playMIDIimportTrack = new javax.swing.JButton();
         stopPlayingTrackButton = new javax.swing.JButton();
         importTrackToLeadsheet = new javax.swing.JButton();
-        importResolutionComboBox = new javax.swing.JComboBox();
         volumeSpinner = new javax.swing.JSpinner();
         startBeatSpinner = new javax.swing.JSpinner();
         endBeatSpinner = new javax.swing.JSpinner();
         offsetSpinner = new javax.swing.JSpinner();
+        importResolutionComboBox = new javax.swing.JComboBox();
         startRoundingFactorComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -220,23 +218,6 @@ private void reload()
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(importTrackToLeadsheet, gridBagConstraints);
 
-        importResolutionComboBox.setMaximumRowCount(16);
-        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
-        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
-        importResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        importResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
-        importResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
-        importResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importMidiNoteResolutionChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 0;
-        midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
-
         volumeSpinner.setModel(new javax.swing.SpinnerNumberModel(70, 0, 127, 5));
         volumeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11))); // NOI18N
         volumeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -259,7 +240,7 @@ private void reload()
 
         endBeatSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
         endBeatSpinner.setToolTipText("Sets the ending beat for playback or importing to the leadsheet.");
-        endBeatSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("End Beat"));
+        endBeatSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "End Beat", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         endBeatSpinner.setMinimumSize(new java.awt.Dimension(75, 56));
         endBeatSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -275,6 +256,23 @@ private void reload()
         gridBagConstraints.gridx = 5;
         midiImportButtonPanel.add(offsetSpinner, gridBagConstraints);
 
+        importResolutionComboBox.setMaximumRowCount(16);
+        importResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
+        importResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[5]);
+        importResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        importResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        importResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        importResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
+        importResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importMidiNoteResolutionChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 10;
+        gridBagConstraints.gridy = 0;
+        midiImportButtonPanel.add(importResolutionComboBox, gridBagConstraints);
+
         startRoundingFactorComboBox.setMaximumRowCount(16);
         startRoundingFactorComboBox.setModel(new javax.swing.DefaultComboBoxModel(StartRoundingFactor.getFactors()));
         startRoundingFactorComboBox.setSelectedItem(StartRoundingFactor.getFactors()[3]);
@@ -288,7 +286,7 @@ private void reload()
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 9;
+        gridBagConstraints.gridx = 11;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(startRoundingFactorComboBox, gridBagConstraints);
 
