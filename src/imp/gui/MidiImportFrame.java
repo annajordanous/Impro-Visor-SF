@@ -46,6 +46,8 @@ MelodyPart selectedPart = null;
 MidiSynth jmSynth;
 jm.music.data.Score jmScore;
 
+int INITIAL_RESOLUTION_COMBO = 5;
+
 /**
  * Creates new form MidiImportFrame
  */
@@ -59,11 +61,14 @@ public MidiImportFrame(Notate notate, MidiImport midiImport)
     WindowRegistry.registerWindow(this);
     
     volumeSpinner.setVisible(false); // doesn't work yet
+    
+    importResolutionComboBox.setSelectedIndex(INITIAL_RESOLUTION_COMBO);
   }
 
 public void load(LinkedList<MidiImportRecord> records)
   {
     //System.out.println("loading");
+    setResolution();
     trackListModel.clear();
     
     int channelNumber = 0;
@@ -81,6 +86,7 @@ public void load(LinkedList<MidiImportRecord> records)
 
 private void reload()
   {
+    setResolution();
     int saveIndex = importedTrackList.getSelectedIndex();
     LinkedList<MidiImportRecord> records = midiImport.reImportMidi();
     if( records != null )
@@ -115,6 +121,9 @@ private void reload()
         offsetSpinner = new javax.swing.JSpinner();
         importResolutionComboBox = new javax.swing.JComboBox();
         startRoundingFactorComboBox = new javax.swing.JComboBox();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -298,6 +307,20 @@ private void reload()
         gridBagConstraints.weighty = 0.1;
         getContentPane().add(midiImportButtonPanel, gridBagConstraints);
 
+        jMenu1.setText("File");
+
+        jMenu2.setText("Open a Different File");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMIDIfileHandler(evt);
+            }
+        });
+        jMenu1.add(jMenu2);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -366,6 +389,11 @@ private void startRoundingFactorComboBoximportMidiNoteResolutionChanged(java.awt
    reImport();
   }//GEN-LAST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
 
+private void openMIDIfileHandler(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openMIDIfileHandler
+  {//GEN-HEADEREND:event_openMIDIfileHandler
+    notate.importMIDI();
+  }//GEN-LAST:event_openMIDIfileHandler
+
 private void setJmVolume()
   {
    int value = (Integer)volumeSpinner.getValue();
@@ -380,14 +408,18 @@ private void setJmVolume()
 private void reImport()
   {
     int index = importedTrackList.getSelectedIndex();
-    
-    int newResolution = ((NoteResolutionInfo)importResolutionComboBox.getSelectedItem()).getSlots();
-    midiImport.setResolution(newResolution);
-    int newRoundingFactor = ((StartRoundingFactor)startRoundingFactorComboBox.getSelectedItem()).getFactor();
-    midiImport.setStartFactor(newRoundingFactor);
+
     reload();
     
     selectTrack(index);
+  }
+
+private void setResolution()
+  {
+    int newResolution = ((NoteResolutionInfo)importResolutionComboBox.getSelectedItem()).getSlots();
+    midiImport.setResolution(newResolution);
+    int newRoundingFactor = ((StartRoundingFactor)startRoundingFactorComboBox.getSelectedItem()).getFactor();
+    midiImport.setStartFactor(newRoundingFactor);  
   }
 
 /**
@@ -447,10 +479,10 @@ private MelodyPart getSelectedTrackMelody()
       // has to add a whole beat to get to the last slot.
       int offset = (Integer)offsetSpinner.getValue();
       int startSlot = BEAT*(((Integer)startBeatSpinner.getValue())-1);
-      int endSlot = BEAT*((Integer)endBeatSpinner.getValue());
+      int endSlot = Math.min(selectedPart.getSize() - 1, BEAT*((Integer)endBeatSpinner.getValue()));
 //System.out.println("* offset = " + offset);
 //System.out.println("* startSlot = " + startSlot);
-//System.out.println("* endSlot = " + endSlot);
+//System.out.println("* endSlot = " + endSlot + " of " + selectedPart.getSize());
 
       return selectedPart.copy(startSlot, endSlot);
       } 
@@ -506,6 +538,9 @@ public void dispose()
     private javax.swing.JComboBox importResolutionComboBox;
     private javax.swing.JButton importTrackToLeadsheet;
     private javax.swing.JList importedTrackList;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel midiImportButtonPanel;
     private javax.swing.JPanel midiImportTopPanel;
     private javax.swing.JSpinner offsetSpinner;
