@@ -158,7 +158,9 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolu
             MelodyPart partOut = new MelodyPart();
             importMelody.convertToImpPart(part, j, partOut, resolution, startFactor);
             
-            MidiImportRecord record = new MidiImportRecord(channel, j, partOut);
+            String instrumentString = MIDIBeast.getInstrumentForPart(part);
+            
+            MidiImportRecord record = new MidiImportRecord(channel, j, partOut, instrumentString);
             records.add(record);
             //System.out.println("part out = " + partOut);
             

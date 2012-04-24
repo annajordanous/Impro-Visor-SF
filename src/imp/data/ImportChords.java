@@ -33,6 +33,8 @@ import jm.util.Read;
 
 public class ImportChords
 {
+public static final int DRUM_CHANNEL = 9;
+
 private boolean debug = false;
 
 /**
@@ -170,7 +172,7 @@ public void getchordPart()
         System.out.println("Found Instrument Numbers:");
         for( int i = 0; i < parts.length; i++ )
           {
-            if( parts[i].getChannel() == 9 )
+            if( parts[i].getChannel() == DRUM_CHANNEL )
               //Channel 9 is reserved for drums, so make sure it catches the part on channel 9 as drums.
               {
                 System.out.println("DRUM");
@@ -184,7 +186,7 @@ public void getchordPart()
     for( int i = 0; i < parts.length; i++ )
       {
         int currentInstrument = parts[i].getInstrument();
-        if( currentInstrument >= 0 && currentInstrument <= 31 && parts[i].getChannel() != 9 )
+        if( currentInstrument >= 0 && currentInstrument <= 31 && parts[i].getChannel() != DRUM_CHANNEL )
           {
             //If the instrument is a kind of keyboard or guitar, it is read as a chords part.
             MIDIBeast.chordPart = parts[i];

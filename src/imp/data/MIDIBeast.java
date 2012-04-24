@@ -27,6 +27,8 @@ import java.util.ArrayList;
  */
 public class MIDIBeast{
 
+public static final int DRUM_CHANNEL = 9;
+
 /**
  * All of these variables, except for beat, outght to be specifically set before
  * each main style generator occurs. They are initialize to defaults in order to
@@ -1088,7 +1090,14 @@ public static String getInstrumentForPart(int index)
 
 public static String getInstrumentForPart(jm.music.data.Part part)
   {
-    return getInstrumentName(part.getInstrument());
+    if( part.getChannel() == DRUM_CHANNEL )
+      {
+        return spacelessDrumNameFromNumber(part.getInstrument());
+      }
+    else
+      {
+      return getInstrumentName(part.getInstrument());
+      }
   }
 }
 

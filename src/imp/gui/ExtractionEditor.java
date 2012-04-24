@@ -46,6 +46,8 @@ import polya.Polylist;
 
 public class ExtractionEditor extends javax.swing.JDialog implements Constants
 {
+public static final int DRUM_CHANNEL = 9;
+
 Notate notate;
 StyleEditor styleEditor;
 CommandManager cm;
@@ -152,7 +154,7 @@ public void setPotentialParts()
     ArrayList<String> potentialInstruments = new ArrayList<String>();
     for( int i = 0; i < MIDIBeast.allParts.size(); i++ )
       {
-        if( MIDIBeast.allParts.get(i).getChannel() == 9 )
+        if( MIDIBeast.allParts.get(i).getChannel() == DRUM_CHANNEL )
           {
             potentialInstruments.add("DRUMS");
           }
@@ -540,7 +542,6 @@ public void playRawRule()
         RepPattern repPattern = (RepPattern)rawOb;
         Polylist rule = null;
         int duration = 0;
-        int firstParensIndex, lastParensIndex;
         switch( type )
           {
             case BASS:
