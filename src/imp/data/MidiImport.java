@@ -20,17 +20,12 @@
 
 package imp.data;
 
-import imp.ImproVisor;
-import imp.gui.Notate;
 import imp.util.ErrorLog;
-import imp.util.LeadsheetFileView;
-import imp.util.MidiFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
-import javax.swing.JFileChooser;
 
 /**
  * Midi File Importing
@@ -46,19 +41,15 @@ private int defaultResolution = 1;
 private int defaultStartFactor = 2;
 private int resolution;
 private int startFactor;
-String filenameDisplay;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
-private LinkedList<MidiImportRecord> records;
+private LinkedList<MidiImportRecord> melodies;
 
-
-private JFileChooser midiFileChooser = new JFileChooser();
 
 public MidiImport()
   {
     setResolution(defaultResolution);
     setStartFactor(defaultStartFactor);
-    initFileChooser();
   }
 
 public int getResolution()
@@ -84,12 +75,11 @@ public final void setStartFactor(int newStartFactor)
   }
 
 
-public void importMidi()
+public void importMidi(File file)
   {
-    file = getFile();
     if( file != null )
       {
-        records = readMidiFile(file.getAbsolutePath());
+        readMidiFile(file.getAbsolutePath());
       }
   }
 
@@ -99,7 +89,7 @@ public void importMidi()
  * 
  */
 
-public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
+public void readMidiFile(String midiFileName)
   {
     score = new jm.music.data.Score();
     
@@ -111,11 +101,18 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
       {
         ErrorLog.log(ErrorLog.WARNING, "reading of MIDI file " + midiFileName 
                      + " failed for some reason (jMusic exception).");
-        return null;
+        return;
       }
+    
+    scoreToMelodies();
+  }
 
+    
+public void scoreToMelodies()
+  {
     //System.out.println("score from MIDI = " + score);
-
+  if( score != null )
+    {
     MIDIBeast.setResolution(resolution);
     MIDIBeast.calculateNoteTypes(score.getDenominator());
 
@@ -127,7 +124,7 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
 
     //System.out.println("importMelody = " + importMelody);
 
-    records = new LinkedList<MidiImportRecord>();
+    melodies = new LinkedList<MidiImportRecord>();
     
     for( int i = 0; i < importMelody.size(); i++ )
       {
@@ -147,7 +144,7 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
             String instrumentString = MIDIBeast.getInstrumentForPart(part);
             
             MidiImportRecord record = new MidiImportRecord(channel, j, partOut, instrumentString);
-            records.add(record);
+            melodies.add(record);
             //System.out.println("part out = " + partOut);
             
             //notate.addChorus(partOut);
@@ -156,70 +153,30 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
       catch( java.lang.OutOfMemoryError e )
         {
         ErrorLog.log(ErrorLog.SEVERE, "There is not enough memory to continue importing this MIDI file.");
-        return null;
+        return;
         }
       }
     
-    Collections.sort(records);
+    Collections.sort(melodies);
     
-//    for( MidiImportRecord record: records )
+//    for( MidiImportRecord record: melodies )
 //      {
 //        System.out.println(record);
 //      }
     
-    return records;
+    }
   }
 
 
-public File getFile()
-  {
-    File midiFileEntire = null;
-    try
-      {
-        int midiChoice = midiFileChooser.showOpenDialog(null);
-        if( midiChoice == JFileChooser.CANCEL_OPTION )
-          {
-            return null;
-          }
-        if( midiChoice == JFileChooser.APPROVE_OPTION )
-          {
-            midiFileEntire = midiFileChooser.getSelectedFile();
-          }
-        filenameDisplay = midiFileChooser.getSelectedFile().getName();
-      }
-    catch( Exception e )
-      {
-      }
 
-    return midiFileEntire;
-  }
-
-
-private void initFileChooser()
-  {
-    LeadsheetFileView fileView = new LeadsheetFileView();
-    midiFileChooser.setCurrentDirectory(ImproVisor.getUserDirectory());
-    midiFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-    midiFileChooser.setDialogTitle("Open MIDI file");
-    midiFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    midiFileChooser.resetChoosableFileFilters();
-    midiFileChooser.addChoosableFileFilter(new MidiFilter());
-    midiFileChooser.setFileView(fileView);
-  }
-
-
-public String getFilenameDisplay()
-  {
-    return filenameDisplay;
-  }
 
 public jm.music.data.Score getScore()
   {
     return score;
   }
 
-public LinkedList<MidiImportRecord> getRecords()
+public LinkedList<MidiImportRecord> getMelodies()
   {
-    return records;
+    return melodies;
   }
 }
