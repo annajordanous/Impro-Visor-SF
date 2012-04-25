@@ -21,22 +21,38 @@
 package imp.gui;
 
 import imp.Constants;
+import imp.ImproVisor;
 import imp.data.*;
+import imp.util.LeadsheetFileView;
+import imp.util.MidiFilter;
+import java.io.File;
 import java.util.LinkedList;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import jm.midi.MidiSynth;
 
 /**
  *
  * @author keller
  */
+
+@SuppressWarnings("serial")
+
 public class MidiImportFrame extends javax.swing.JFrame implements Constants
 {
 Notate notate;
+File file;
 MidiImport midiImport;
 DefaultListModel trackListModel;
+private LinkedList<MidiImportRecord> melodies;
 MelodyPart selectedPart = null;
+
+
+String filenameDisplay;
+
+private JFileChooser midiFileChooser = new JFileChooser();
+
 
 /**
  * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
@@ -49,15 +65,17 @@ jm.music.data.Score jmScore;
 int INITIAL_RESOLUTION_COMBO = 5;
 
 /**
- * Creates new form MidiImportFrame
+ * Creates new form MidiImportFrame.
+ * Imported choruses are sent to notate once they are selected from the menu.
  */
 public MidiImportFrame(Notate notate)
   {
     trackListModel = new DefaultListModel();
     initComponents();
     this.notate = notate;
-    this.midiImport = new MidiImport();
-    setTitle("MIDI Import: " + midiImport.getFilenameDisplay());
+    midiImport = new MidiImport();
+    initFileChooser();
+
     WindowRegistry.registerWindow(this);
     
     volumeSpinner.setVisible(false); // volume setting doesn't work yet
@@ -65,22 +83,54 @@ public MidiImportFrame(Notate notate)
     importResolutionComboBox.setSelectedIndex(INITIAL_RESOLUTION_COMBO);
   }
 
-public void loadFile()
+public void loadFileAndMenu()
   {
-  midiImport.importMidi(); 
+    getFile();
+    if( file != null )
+      {
+      setTitle("MIDI Import: " + getFilenameDisplay());
+      loadFile();
+      loadMenu();
+      }
   }
 
-public void load()
+public void getFile()
   {
-    //System.out.println("loading");
-    
-  if( midiImport != null && midiImport.getRecords() != null )
+    file = null;
+    try
+      {
+        int midiChoice = midiFileChooser.showOpenDialog(notate);
+        if( midiChoice == JFileChooser.CANCEL_OPTION )
+          {
+            return;
+          }
+        if( midiChoice == JFileChooser.APPROVE_OPTION )
+          {
+            file = midiFileChooser.getSelectedFile();
+          }
+        filenameDisplay = file.getName();
+      }
+    catch( Exception e )
+      {
+      }
+  }
+
+public void loadFile()
+  {
+  midiImport.importMidi(file); 
+  }
+
+public void loadMenu()
+  {
+  melodies = midiImport.getMelodies();
+  
+  if( melodies != null )
     {
     setResolution();
     trackListModel.clear();
     
     int channelNumber = 0;
-    for( final MidiImportRecord record: midiImport.getRecords() )
+    for( final MidiImportRecord record: melodies )
       {
         if(record.getChannel() > channelNumber )
           {
@@ -93,15 +143,35 @@ public void load()
     }
   }
 
-private void reload()
+private void reloadMenu()
   {
+    //midiImport.importMidi();
     setResolution();
     int saveIndex = importedTrackList.getSelectedIndex();
-    midiImport.importMidi();
-    load();
+    midiImport.scoreToMelodies();
+    
+    loadMenu();
     selectTrack(saveIndex);
   }
 
+
+private void initFileChooser()
+  {
+    LeadsheetFileView fileView = new LeadsheetFileView();
+    midiFileChooser.setCurrentDirectory(ImproVisor.getUserDirectory());
+    midiFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+    midiFileChooser.setDialogTitle("Open MIDI file");
+    midiFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    midiFileChooser.resetChoosableFileFilters();
+    midiFileChooser.addChoosableFileFilter(new MidiFilter());
+    midiFileChooser.setFileView(fileView);
+  }
+
+
+public String getFilenameDisplay()
+  {
+    return filenameDisplay;
+  }
 /**
  * This method is called from within the constructor to initialize the form.
  * WARNING: Do NOT modify this code. The content of this method is always
@@ -349,7 +419,7 @@ private void importTrackToLeadsheetActionPerformed(java.awt.event.ActionEvent ev
 
 private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiNoteResolutionChanged
   {//GEN-HEADEREND:event_importMidiNoteResolutionChanged
-    reImport();
+    reloadMenu();
   }//GEN-LAST:event_importMidiNoteResolutionChanged
 
 private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
@@ -393,12 +463,12 @@ private void volumeSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:
 
 private void startRoundingFactorComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
   {//GEN-HEADEREND:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
-   reImport();
+   reloadMenu();
   }//GEN-LAST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
 
 private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openAnotherFileMIActionPerformed
   {//GEN-HEADEREND:event_openAnotherFileMIActionPerformed
-    midiImport.importMidi();
+    loadFileAndMenu();
   }//GEN-LAST:event_openAnotherFileMIActionPerformed
 
 private void setJmVolume()
@@ -412,14 +482,6 @@ private void setJmVolume()
      }
   }
 
-private void reImport()
-  {
-    int index = importedTrackList.getSelectedIndex();
-
-    reload();
-    
-    selectTrack(index);
-  }
 
 private void setResolution()
   {

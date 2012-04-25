@@ -17573,7 +17573,7 @@ public void openLeadsheet(boolean openCorpus)
 
         if( lsOpenPreview.getCheckbox().isSelected() )
           {
-            // load the file
+            // loadMenu the file
 
             Score newScore = new Score();
             
@@ -21058,8 +21058,7 @@ public void importMIDI()
       {
         midiImportFrame = new MidiImportFrame(this);
       }
-    midiImportFrame.loadFile();
-    midiImportFrame.load();
+    midiImportFrame.loadFileAndMenu();
     midiImportFrame.setLocation(midiImportXoffset, midiImportYoffset);
     midiImportFrame.setVisible(true);
   }
