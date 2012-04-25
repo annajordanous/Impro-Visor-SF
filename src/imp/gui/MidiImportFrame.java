@@ -48,8 +48,6 @@ jm.music.data.Score jmScore;
 
 int INITIAL_RESOLUTION_COMBO = 5;
 
-LinkedList<MidiImportRecord> records;
-
 /**
  * Creates new form MidiImportFrame
  */
@@ -69,18 +67,20 @@ public MidiImportFrame(Notate notate)
 
 public void loadFile()
   {
-  records = midiImport.importMidi(); 
+  midiImport.importMidi(); 
   }
 
 public void load()
   {
     //System.out.println("loading");
- 
+    
+  if( midiImport != null && midiImport.getRecords() != null )
+    {
     setResolution();
     trackListModel.clear();
     
     int channelNumber = 0;
-    for( final MidiImportRecord record: records)
+    for( final MidiImportRecord record: midiImport.getRecords() )
       {
         if(record.getChannel() > channelNumber )
           {
@@ -90,18 +90,16 @@ public void load()
         trackListModel.addElement(record);
       }
     selectTrack(0);
+    }
   }
 
 private void reload()
   {
     setResolution();
     int saveIndex = importedTrackList.getSelectedIndex();
-    records = midiImport.reImportMidi();
-    if( records != null )
-      {
-        load();
-        selectTrack(saveIndex);
-      }
+    midiImport.importMidi();
+    load();
+    selectTrack(saveIndex);
   }
 
 /**
@@ -130,8 +128,8 @@ private void reload()
         importResolutionComboBox = new javax.swing.JComboBox();
         startRoundingFactorComboBox = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        MIDIimportFileMenu = new javax.swing.JMenu();
+        openAnotherFileMI = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
@@ -315,17 +313,18 @@ private void reload()
         gridBagConstraints.weighty = 0.1;
         getContentPane().add(midiImportButtonPanel, gridBagConstraints);
 
-        jMenu1.setText("File");
+        MIDIimportFileMenu.setText("File");
 
-        jMenu2.setText("Open a Different File");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        openAnotherFileMI.setText("Open Another MIDI File");
+        openAnotherFileMI.setToolTipText("Opens a MIDI File, usually a different one from the current.");
+        openAnotherFileMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openMIDIfileHandler(evt);
+                openAnotherFileMIActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenu2);
+        MIDIimportFileMenu.add(openAnotherFileMI);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(MIDIimportFileMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -397,10 +396,10 @@ private void startRoundingFactorComboBoximportMidiNoteResolutionChanged(java.awt
    reImport();
   }//GEN-LAST:event_startRoundingFactorComboBoximportMidiNoteResolutionChanged
 
-private void openMIDIfileHandler(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openMIDIfileHandler
-  {//GEN-HEADEREND:event_openMIDIfileHandler
-    notate.importMIDI();
-  }//GEN-LAST:event_openMIDIfileHandler
+private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openAnotherFileMIActionPerformed
+  {//GEN-HEADEREND:event_openAnotherFileMIActionPerformed
+    midiImport.importMidi();
+  }//GEN-LAST:event_openAnotherFileMIActionPerformed
 
 private void setJmVolume()
   {
@@ -542,16 +541,16 @@ public void dispose()
   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu MIDIimportFileMenu;
     private javax.swing.JSpinner endBeatSpinner;
     private javax.swing.JComboBox importResolutionComboBox;
     private javax.swing.JButton importTrackToLeadsheet;
     private javax.swing.JList importedTrackList;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel midiImportButtonPanel;
     private javax.swing.JPanel midiImportTopPanel;
     private javax.swing.JSpinner offsetSpinner;
+    private javax.swing.JMenuItem openAnotherFileMI;
     private javax.swing.JButton playMIDIfile;
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
