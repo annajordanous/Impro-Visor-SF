@@ -1562,6 +1562,20 @@ public MelodyPart copy(int startingIndex, int endingIndex)
         return true;
     }
  
+public int getInitialBeatsRest()
+  {
+  int count = 0;
+  for( Unit note: slots )
+    {
+      if( note != null && !((Note)note).isRest() )
+        {
+          break;
+        }
+      count++;
+    }
+   return count/BEAT;
+   }
+     
  @Override
  public String toString()
   {
