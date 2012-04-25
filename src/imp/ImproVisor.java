@@ -586,6 +586,11 @@ public static File getStyleExtractDirectory()
   return new File(getUserDirectory(), Directories.styleExtractDirName);
   }
 
+public static File getMidiDirectory()
+  {
+  return new File(getUserDirectory(), Directories.midiDirName);
+  }
+
 public static File getGrammarDirectory()
   {
   return new File(getUserDirectory(), Directories.grammarDirName);

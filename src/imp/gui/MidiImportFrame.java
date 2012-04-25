@@ -99,6 +99,7 @@ public void getFile()
     file = null;
     try
       {
+        midiFileChooser.setCurrentDirectory(ImproVisor.getMidiDirectory());
         int midiChoice = midiFileChooser.showOpenDialog(notate);
         if( midiChoice == JFileChooser.CANCEL_OPTION )
           {
