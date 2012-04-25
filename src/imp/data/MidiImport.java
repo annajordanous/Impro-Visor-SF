@@ -49,6 +49,8 @@ private int startFactor;
 String filenameDisplay;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
+private LinkedList<MidiImportRecord> records;
+
 
 private JFileChooser midiFileChooser = new JFileChooser();
 
@@ -64,7 +66,7 @@ public int getResolution()
     return resolution;
   }
 
-public void setResolution(int newResolution)
+public final void setResolution(int newResolution)
   {
     resolution = newResolution;
     //System.out.println("setting resolution to " + resolution);
@@ -75,32 +77,20 @@ public int getStartFactor()
     return startFactor;
   }
 
-public void setStartFactor(int newStartFactor)
+public final void setStartFactor(int newStartFactor)
   {
     startFactor = newStartFactor;
     //System.out.println("setting startFactor to " + startFactor);
   }
 
 
-public LinkedList<MidiImportRecord> importMidi()
+public void importMidi()
   {
     file = getFile();
     if( file != null )
       {
-        return readMidiFile(file.getAbsolutePath(), getResolution(), getStartFactor());
+        records = readMidiFile(file.getAbsolutePath());
       }
-    return null;
-  }
-
-
-public LinkedList<MidiImportRecord> reImportMidi()
-  {
-    if( file != null )
-      {
-        //System.out.println("reImporting with resolution " + getResolution());
-        return readMidiFile(file.getAbsolutePath(), getResolution(), getStartFactor());
-      }
-    return null;
   }
 
 
@@ -109,7 +99,7 @@ public LinkedList<MidiImportRecord> reImportMidi()
  * 
  */
 
-public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolution, int startFactor)
+public LinkedList<MidiImportRecord> readMidiFile(String midiFileName)
   {
     score = new jm.music.data.Score();
     
@@ -137,7 +127,7 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolu
 
     //System.out.println("importMelody = " + importMelody);
 
-    LinkedList<MidiImportRecord> records = new LinkedList<MidiImportRecord>();
+    records = new LinkedList<MidiImportRecord>();
     
     for( int i = 0; i < importMelody.size(); i++ )
       {
@@ -181,7 +171,7 @@ public LinkedList<MidiImportRecord> readMidiFile(String midiFileName, int resolu
   }
 
 
-private File getFile()
+public File getFile()
   {
     File midiFileEntire = null;
     try
@@ -226,5 +216,10 @@ public String getFilenameDisplay()
 public jm.music.data.Score getScore()
   {
     return score;
+  }
+
+public LinkedList<MidiImportRecord> getRecords()
+  {
+    return records;
   }
 }
