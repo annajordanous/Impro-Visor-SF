@@ -43,7 +43,7 @@
     <Container class="javax.swing.JPanel" name="aboutDialogPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="66" green="cc" red="ff" type="rgb"/>
+          <Color blue="33" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -67,6 +67,9 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="aboutLabel">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="36" style="3"/>
             </Property>
@@ -91,7 +94,7 @@
         <Component class="javax.swing.JTextPane" name="aboutText">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="66" green="cc" red="ff" type="rgb"/>
+              <Color blue="66" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -102,7 +105,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="  Welcome to Improvisation Advisor version 5.15.&#xa;&#xa;  Tutorials are at &#xa;      http://www.cs.hmc.edu/~keller/jazz/improvisor/tutorials.html&#xa;&#xa;  This message will appear only the first time you launch this new version.&#xa;&#xa;  Windows users will need to set the MIDI Preferences output device &#xa;  to get sound. It should be set to one of:&#xa;        Microsoft GS Wavetable SW Synth  &#xa;  or&#xa;       Microsoft MIDI Mapper&#xa;  if multiple MIDI devices are installed.&#xa;&#xa;  On first launch, Impro-Visor will copy various files from its master to your&#xa;  home directory, in folder:&#xa;       impro-visor-version-5.15-files&#xa;  These include leadsheets, styles, and vocabulary. If you want to preserve files &#xa;  from previous versions, you will need to move or copy them manually. &#xa;  This is so Impro-Visor does not overwrite files that you might have modified.&#xa;  When that directory is present, it tells Impro-Visor not to copy the files on &#xa;  next launch and not to show this message again.&#xa;  &#xa;  Other information can be found in the release notes, in README.txt, which is &#xa;  also on the web at&#xa;&#xa;      https://sourceforge.net/projects/impro-visor/files/&#xa;  &#xa; "/>
+            <Property name="text" type="java.lang.String" value="  Welcome to Improvisation Advisor version 5.15.&#xa;&#xa;  Tutorials: http://www.cs.hmc.edu/~keller/jazz/improvisor/tutorials.html&#xa;&#xa;  This message will appear only the first time you launch a new version.&#xa;  It can be revisited from the Help menu.&#xa;&#xa;  To get sound, Windows users will need to set the MIDI Output Preference.&#xa;  (You can use the button below.) It should be set to one of:&#xa;&#xa;        Microsoft GS Wavetable SW Synth  &#xa;  or&#xa;       Microsoft MIDI Mapper&#xa;  &#xa;  if multiple MIDI devices are installed.&#xa;&#xa;  On first launch, Impro-Visor will copy various files from the&#xa;  installation directory to your home directory, in folder:&#xa;&#xa;       impro-visor-version-5.15-files&#xa;&#xa;  These include leadsheets, styles, and vocabulary. If you want to preserve &#xa;  files from previous versions, you will need to move or copy them manually. &#xa;  This is so Impro-Visor does not overwrite files that you might have&#xa;  modified. When that directory is present, it tells Impro-Visor not to copy&#xa;  the files on next launch and not to show this message again.&#xa;  &#xa;  Other information can be found in the release notes, in README.txt, and &#xa;  also on the web at https://sourceforge.net/projects/impro-visor/files/&#xa; "/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[400, 350]"/>
             </Property>
@@ -116,10 +119,43 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JButton" name="okAboutBtn">
+        <Component class="javax.swing.JButton" name="openMidiPrefsBtn">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="ff" red="99" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Open MIDI Preferences Now"/>
+            <Property name="toolTipText" type="java.lang.String" value="Close the About dialog."/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+                <BevelBorder/>
+              </Border>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[300, 30]"/>
+            </Property>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[300, 30]"/>
+            </Property>
+            <Property name="opaque" type="boolean" value="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[300, 30]"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openMidiPrefsBtnActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+              <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="2" insetsLeft="2" insetsBottom="2" insetsRight="2" anchor="15" weightX="1.0" weightY="0.1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JButton" name="okAboutBtn">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="fa" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Close"/>
             <Property name="toolTipText" type="java.lang.String" value="Close the About dialog."/>
@@ -145,7 +181,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="2" insetsLeft="2" insetsBottom="2" insetsRight="2" anchor="15" weightX="1.0" weightY="0.1"/>
+              <GridBagConstraints gridX="0" gridY="3" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="2" insetsLeft="2" insetsBottom="2" insetsRight="2" anchor="15" weightX="1.0" weightY="0.1"/>
             </Constraint>
           </Constraints>
         </Component>

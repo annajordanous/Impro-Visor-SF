@@ -41,6 +41,8 @@ public class ImproVisor implements Constants {
     
     public static final String version = "5.15";
     
+    private static boolean firstTime = false;
+    
     private static String lastLeadsheetFileStem = null;
     
     static private Notate currentWindow = null;
@@ -334,6 +336,10 @@ private ImproVisor(String leadsheet)
     
     notate.setNotateFrameHeight();
     
+    if( firstTime )
+      {
+        openFirstTimeDialog(notate);
+      }
     
     boolean createRoadMap = Preferences.getPreference(Preferences.CREATE_ROADMAP).equals("y");
     
@@ -494,13 +500,19 @@ public static File getUserDirectory()
     
   if( !homeDir.exists() )
     {
+      firstTime = true;
       establishUserDirectory(homeDir);
-      new FirstTimeDialog(null, true).setVisible(true);
-     }
+    }
   
   return homeDir;
   }
 
+public static void openFirstTimeDialog(Notate notate)
+  {
+      FirstTimeDialog firstTimeDialog = new FirstTimeDialog(notate, true);
+      firstTimeDialog.setSize(600, 750);
+      firstTimeDialog.setVisible(true);    
+  }
 
 /**
  * Establish Impro-Visor home directory in user's space.

@@ -2067,6 +2067,8 @@ public class Notate
         stepForwardButton = new javax.swing.JButton();
         fileStepLabel = new javax.swing.JLabel();
         currDirectoryLabel = new javax.swing.JLabel();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -2305,6 +2307,7 @@ public class Notate
         contourPrefsMI = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         helpMI = new javax.swing.JMenuItem();
+        firstTimePrefsMI = new javax.swing.JMenuItem();
         jSeparator32 = new javax.swing.JSeparator();
         helpAboutMI = new javax.swing.JMenuItem();
         statusMenu = new javax.swing.JMenu();
@@ -6627,6 +6630,10 @@ public class Notate
         gridBagConstraints.gridy = 2;
         fileStepDialog.getContentPane().add(currDirectoryLabel, gridBagConstraints);
 
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
@@ -8755,6 +8762,15 @@ public class Notate
             }
         });
         helpMenu.add(helpMI);
+
+        firstTimePrefsMI.setText("Show First-Launch Message");
+        firstTimePrefsMI.setToolTipText("Shows the message that appeared on the first launch of this version.");
+        firstTimePrefsMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                firstTimePrefsMIActionPerformed(evt);
+            }
+        });
+        helpMenu.add(firstTimePrefsMI);
         helpMenu.add(jSeparator32);
 
         helpAboutMI.setMnemonic('A');
@@ -10837,92 +10853,65 @@ public void volumeSliderChanged(JSlider volumeSlider)
     
     
     
-    /* Used to provide access to switching prefences tabs from another class file
-     
-     */
+/**
+ * Used to provide access to switching prefences tabs from another class file
+ */
     
-    public enum PrefTab { MIDI };
-    
-    void changePrefTab(PrefTab panel) {
-        
-        switch(panel) {
-            
-            case MIDI:
-                
-                changePrefTab(midiBtn, midiPreferences);
-                
-                break;
-                
-        }
-        
-    }
-    
-    
-    
-    void changePrefTab(JToggleButton button, JPanel tab) {
-        
-        button.setSelected(true);
-        
-        currentPrefButton = button;
+void changePrefTab(JToggleButton button, JPanel tab)
+  {
 
-        
-        currentPrefTab = tab;
+    button.setSelected(true);
 
-        //System.out.println("setting tab to " + tab);
-        
-        preferencesScrollPane.setViewportView(tab);
-        
-        preferencesDialog.setSize(preferencesDialogDimension);
+    currentPrefButton = button;
 
-        preferencesDialog.repaint();
-        
-    }
+
+    currentPrefTab = tab;
+
+    //System.out.println("setting tab to " + tab);
+
+    preferencesScrollPane.setViewportView(tab);
+
+    preferencesDialog.setSize(preferencesDialogDimension);
+
+    preferencesDialog.repaint();
+
+  }
     
-    void changeGenTab(JToggleButton button, JPanel tab) {
-        currentGenButton = button;
-        
-        if(currentGenTab == tab) {
-            return;
-        }
-        
-        currentGenTab = tab;
-        //generatorScrollPane.setViewportView(tab);
-        
-        lickgenFrame.pack();
-        lickgenFrame.repaint();
-        
-    }
-    
-    
-    
-    public JDialog getPreferencesDialog() {
-        
-        return preferencesDialog;
-        
-    }
-    
-    
+void changeGenTab(JToggleButton button, JPanel tab)
+  {
+    currentGenButton = button;
+
+    if( currentGenTab == tab )
+      {
+        return;
+      }
+
+    currentGenTab = tab;
+    //generatorScrollPane.setViewportView(tab);
+
+    lickgenFrame.pack();
+    lickgenFrame.repaint();
+
+  }
+
     
     private void echoMidiCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_echoMidiCheckBoxActionPerformed
         
-        midiManager.setEcho(echoMidiCheckBox.isSelected());
-        
+        midiManager.setEcho(echoMidiCheckBox.isSelected());        
     }//GEN-LAST:event_echoMidiCheckBoxActionPerformed
     
     
     
     private void midiInComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiInComboBoxActionPerformed
         
-        devicesChanged();
-        
+        devicesChanged();        
     }//GEN-LAST:event_midiInComboBoxActionPerformed
     
     
     
     private void midiOutComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiOutComboBoxActionPerformed
         
-        devicesChanged();
-        
+        devicesChanged();        
     }//GEN-LAST:event_midiOutComboBoxActionPerformed
     
     
@@ -11061,11 +11050,13 @@ public int getColumnCount()
     return columnNames.length;
   }
 
+@Override
 public String getColumnName(int col)
   {
     return columnNames[col];
   }
 
+@Override
 public Class getColumnClass(int col)
   {
     return columnClasses[col];
@@ -11097,6 +11088,8 @@ public Object getValueAt(int row, int col)
  * Dialog. The list contains references to the actual style objects, but
  * displays their names.
  */
+
+@SuppressWarnings("serial")
 
 public class StyleListModel
     extends AbstractListModel
@@ -11142,6 +11135,8 @@ public void addRecentStyle(Style style)
     recentStyleIndex = recentStyles.indexOf(style);
   }
 
+@SuppressWarnings("serial")
+
 public class RecentStyleListModel
     extends AbstractListModel
 {
@@ -11175,6 +11170,8 @@ public void adjust()
  * This is the Model for the list of Sections that appear in the Style Preferences
  * Dialog.
  */
+
+@SuppressWarnings("serial")
 
 public class SectionListModel
     extends AbstractListModel
@@ -11243,6 +11240,8 @@ public void refresh()
   }
 }
 
+@SuppressWarnings("serial")
+
 static public class StyleComboBoxModel
     extends AbstractListModel
     implements ComboBoxModel
@@ -11286,6 +11285,7 @@ public Object getSelectedItem()
  * when the dialog is shown a second time, it remembers it's last position
  *
  */
+
 private boolean initLocationPreferencesDialog = false;
 
 private void showPreferencesDialog()
@@ -11478,7 +11478,6 @@ private void updateTempoFromTextField()
     private void freezeLayoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_freezeLayoutButtonActionPerformed
         
         toggleFreezeLayout();
-        
     }//GEN-LAST:event_freezeLayoutButtonActionPerformed
     
     
@@ -14047,7 +14046,7 @@ private boolean saveGlobalPreferences()
       }
     catch( NumberFormatException e )
       {
-        ErrorLog.log(ErrorLog.SEVERE, e.getMessage());
+        ErrorLog.log(ErrorLog.SEVERE, "Saving global preferences: " + e.getMessage());
 
         close = false;
       }
@@ -21078,6 +21077,11 @@ private void enterTextMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIR
     textRequestFocus();
   }//GEN-LAST:event_enterTextMIActionPerformed
 
+private void firstTimePrefsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_firstTimePrefsMIActionPerformed
+  {//GEN-HEADEREND:event_firstTimePrefsMIActionPerformed
+    ImproVisor.openFirstTimeDialog(this);
+  }//GEN-LAST:event_firstTimePrefsMIActionPerformed
+
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called 
@@ -22803,6 +22807,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton fileStepForwardBtn;
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
+    private javax.swing.JMenuItem firstTimePrefsMI;
     private javax.swing.JToggleButton freezeLayoutButton;
     private javax.swing.JPanel generalContourTab;
     private javax.swing.JMenuItem generateLickInSelection;
@@ -22863,6 +22868,8 @@ public void showNewVoicingDialog()
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jList4;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel15;
@@ -23814,6 +23821,14 @@ public void setBorderColor(Color color)
   {
     scoreTab.setBorder(new javax.swing.border.LineBorder(color, 3));
   }
+
+public void openMidiPreferences()
+  {
+    setPrefsDialog();
+    changePrefTab(midiBtn, midiPreferences);
+    preferencesDialog.setVisible(true);
+  }
+        
 }
 
 
