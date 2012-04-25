@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-
 package imp;
 
 /**
  * This is a single file with important directory names.
  * @author keller
  */
+
 public class Directories 
 {
 /**
@@ -77,9 +77,14 @@ public static String styleDirName = "styles";
 public static String styleExtractDirName = "styleExtract";
 
 /**
- * Name of standard sub-directory for leaadsheets 
+ * Name of standard sub-directory for leadsheets 
  */
 public static String leadsheetDirName = "leadsheets";
+
+/**
+ * Name of standard sub-directory for MIDI files 
+ */
+public static String midiDirName = "midi";
 
 /**
  * Name of the error log file.

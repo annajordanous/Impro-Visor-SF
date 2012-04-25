@@ -1,6 +1,6 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.14,
-from Prof. Bob Keller at Harvey Mudd College, 16 April 2012.
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.15,
+from Prof. Bob Keller at Harvey Mudd College, 25 April 2012.
 
 Release notes for this version may be found at the end.
 
@@ -89,6 +89,12 @@ Harvey Mudd College
 Claremont, CA 91711
 
 keller@cs.hmc.edu
+
+===============================================================================
+
+Release notes for Impro-Visor 5.15 
+
+Improves handling of MIDI track importing.
 
 ===============================================================================
 

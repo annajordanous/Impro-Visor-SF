@@ -1,7 +1,7 @@
 <project name="Impro-Visor" default="compile" basedir=".">
 
 <description>
-Build-file for Impro-Visor 5.14
+Build-file for Impro-Visor 5.15
 
 Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
 
@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     
 <target name="init">
     <property name="appName"                value="Impro-Visor"              />
-    <property name="distDir"                value="improvisor514"            />
-    <property name="dist-mac"               value="improvisor514-mac"        />
-    <property name="dist-win"               value="improvisor514-win"        />
-    <property name="zipName"                value="improvisor514.zip"        />
-    <property name="zipMacName"             value="improvisor514mac.zip"     />
+    <property name="distDir"                value="improvisor515"            />
+    <property name="dist-mac"               value="improvisor515-mac"        />
+    <property name="dist-win"               value="improvisor515-win"        />
+    <property name="zipName"                value="improvisor515.zip"        />
+    <property name="zipMacName"             value="improvisor515mac.zip"     />
     <property name="miscDir"                value="improvisor"               />
     <property name="srcDir"                 value="src"                      />
     <property name="impDir"                 value="src/imp"                  />
@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     <property name="grammarDir"             value="grammars"                 />
     <property name="styleDir"               value="styles"                   />
     <property name="styleExtractDir"        value="styleExtract"             />
+    <property name="midiDir"                value="midi"                     />
     <property name="packagingDir"           value="packaging"                />
     <property name="javadocDir"             value="javadoc"                  />
 
@@ -183,7 +184,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
         <fileset dir="${styleDir}" includes="**/*.sty" />
     </copy>
     <copy todir="${distDir}/styleExtract">
-        <fileset dir="${styleExtractDir}" includes="**/*.mid **/*.ls" />
+        <fileset dir="${styleExtractDir}" includes="**/*.mid **/*.MID **/*.ls" />
+    </copy>
+    <copy todir="${distDir}/midi">
+        <fileset dir="${midiDir}" includes="**/*.mid **/*.MID" />
     </copy>
     <copy todir="${distDir}/leadsheets">
         <fileset dir="${lsDir}" includes="**/*.ls" />
@@ -300,7 +304,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 </target>
 
 <target name="zipSrc" depends="cleanSrc" description="zips up the source">
-    <zip destfile="improvisor514-src.zip" basedir="${srcDir}" />
+    <zip destfile="improvisor515-src.zip" basedir="${srcDir}" />
 </target>
 
 <target name="cleanJavadoc" depends="init" description="">
@@ -346,6 +350,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     <mkdir dir="${dist-mac}/vocab" />
     <mkdir dir="${dist-mac}/styles" />
     <mkdir dir="${dist-mac}/styleExtract" />
+    <mkdir dir="${dist-mac}/midi" />
     <mkdir dir="${dist-mac}/leadsheets" />
     
     <copy file="${packagingDir}/JavaApplicationStub"
@@ -395,7 +400,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
     </copy>
     
     <copy todir="${dist-mac}/styleExtract">
-        <fileset dir="${styleExtractDir}" includes="**/*.ls **/*.mid" />
+        <fileset dir="${styleExtractDir}" includes="**/*.ls **/*.mid **/*.MID" />
+    </copy>
+    
+     <copy todir="${dist-mac}/midi">
+        <fileset dir="${midiDir}" includes="**/*.mid **/*.MID" />
     </copy>
     
     <copy todir="${dist-mac}">

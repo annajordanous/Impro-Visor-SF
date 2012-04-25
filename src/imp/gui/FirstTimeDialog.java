@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,10 @@ package imp.gui;
  * @author  Stephen Jones, Aaron Wolin, Robert Keller
  */
 
-public class AboutDialog extends javax.swing.JDialog {
+public class FirstTimeDialog extends javax.swing.JDialog {
 
     /** Creates new form AboutDialog */
-    public AboutDialog(java.awt.Frame parent, boolean modal) {
+    public FirstTimeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -71,7 +71,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         aboutLabel.setFont(new java.awt.Font("Dialog", 3, 36)); // NOI18N
         aboutLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        aboutLabel.setText("Impro-Visor");
+        aboutLabel.setText("Impro-Visor version 5.15");
         aboutLabel.setMaximumSize(new java.awt.Dimension(400, 100));
         aboutLabel.setMinimumSize(new java.awt.Dimension(400, 15));
         aboutLabel.setPreferredSize(new java.awt.Dimension(400, 15));
@@ -89,7 +89,7 @@ public class AboutDialog extends javax.swing.JDialog {
         aboutText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         aboutText.setEditable(false);
         aboutText.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        aboutText.setText("\n  Welcome to Improvisation Advisor version 5.15.\n \n  Authors: \n\tBob Keller, Stephen Jones, Aaron Wolin, David Morrison,\n\tMartin Hunt, Steven Gomez, Jim Herold, Brandy McMenamy,\n\tSayuri Soejima, Emma Carlson, Jon Gillick, Kevin Tang,\n\tStephen Lee, Chad Waters, John Goodman, Lasconic, \n\tRyan Wieghard, Amos Byon, Zachary Merritt,\n\tXanda Schofield, August Toman-Yih\n\n  For further information and tutorial, please visit the website:\n\n\thttp://www.cs.hmc.edu/~keller/jazz/improvisor\n\n  For free leadsheets and support, please join our Yahoo! group:\t\n\n\thttp://launch.groups.yahoo.com/group/impro-visor/\n\n  For source code, please see:\t\n\n\thttps://sourceforge.net/projects/impro-visor/\n\n  Copyright (c) 2005-2012, Robert Keller and Harvey Mudd College \n\n  This program is FREE software. You can redistribute it and/or modify it\n  under the terms of the GNU General Public License as published by the\n  Free Software Foundation, either version 2 of the License, or any later\n  version. This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  merchantability or fitness for a particular purpose.  See the GNU\n  General Public License for more details, which may be found at:\n  http://www.gnu.org/licenses/\n                                                                   We hope you enjoy using it!\n");
+        aboutText.setText("  Welcome to Improvisation Advisor version 5.15.\n\n  Tutorials are at \n      http://www.cs.hmc.edu/~keller/jazz/improvisor/tutorials.html\n\n  This message will appear only the first time you launch this new version.\n\n  Windows users will need to set the MIDI Preferences output device \n  to get sound. It should be set to one of:\n        Microsoft GS Wavetable SW Synth  \n  or\n       Microsoft MIDI Mapper\n  if multiple MIDI devices are installed.\n\n  On first launch, Impro-Visor will copy various files from its master to your\n  home directory, in folder:\n       impro-visor-version-5.15-files\n  These include leadsheets, styles, and vocabulary. If you want to preserve files \n  from previous versions, you will need to move or copy them manually. \n  This is so Impro-Visor does not overwrite files that you might have modified.\n  When that directory is present, it tells Impro-Visor not to copy the files on \n  next launch and not to show this message again.\n  \n  Other information can be found in the release notes, in README.txt, which is \n  also on the web at\n\n      https://sourceforge.net/projects/impro-visor/files/\n  \n ");
         aboutText.setMinimumSize(new java.awt.Dimension(400, 350));
         aboutText.setPreferredSize(new java.awt.Dimension(400, 350));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -139,23 +139,6 @@ public class AboutDialog extends javax.swing.JDialog {
 private void okAboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okAboutBtnActionPerformed
 dispose();
 }//GEN-LAST:event_okAboutBtnActionPerformed
-
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AboutDialog dialog = new AboutDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel aboutDialogPanel;
