@@ -12829,6 +12829,7 @@ private void exportToMusicXML()
     
   private void exportToMidi(int toExport)
     {
+    midfc.setCurrentDirectory(ImproVisor.getMidiDirectory());
     if( savedMidi != null )
       {
       midfc.setSelectedFile(savedMidi);
