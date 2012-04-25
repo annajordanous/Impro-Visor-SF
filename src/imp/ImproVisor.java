@@ -22,6 +22,7 @@ package imp;
 
 import imp.com.LoadAdviceCommand;
 import imp.data.*;
+import imp.gui.FirstTimeDialog;
 import imp.gui.Notate;
 import imp.gui.ToolkitImages;
 import imp.util.*;
@@ -33,12 +34,12 @@ import java.io.IOException;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.14
+ * @version 5.15
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.14";
+    public static final String version = "5.15";
     
     private static String lastLeadsheetFileStem = null;
     
@@ -494,6 +495,7 @@ public static File getUserDirectory()
   if( !homeDir.exists() )
     {
       establishUserDirectory(homeDir);
+      new FirstTimeDialog(null, true).setVisible(true);
      }
   
   return homeDir;
@@ -516,6 +518,7 @@ public static void establishUserDirectory(File homeDir)
     copyDir(Directories.grammarDirName,      homeDir);
     copyDir(Directories.styleDirName,        homeDir);
     copyDir(Directories.styleExtractDirName, homeDir);
+    copyDir(Directories.midiDirName,         homeDir);
   }
 
 /**
