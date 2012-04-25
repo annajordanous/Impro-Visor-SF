@@ -30,12 +30,13 @@ import java.util.LinkedList;
 /**
  * Midi File Importing
  *
- * @author Robert Keller, adapted from code in MIDIBeast 
+ * @author Robert Keller, partly adapted from code in MIDIBeast 
  * by Brandy McMenamy and Jim Herold
  */
 
 public class MidiImport
 {
+public final static int DRUM_CHANNEL = 9;
 File file;
 private int defaultResolution = 1;
 private int defaultStartFactor = 2;
@@ -143,11 +144,13 @@ public void scoreToMelodies()
             
             String instrumentString = MIDIBeast.getInstrumentForPart(part);
             
+            if( channel != DRUM_CHANNEL )
+               {
+                partOut.setInstrument(part.getInstrument());
+               }
+            
             MidiImportRecord record = new MidiImportRecord(channel, j, partOut, instrumentString);
             melodies.add(record);
-            //System.out.println("part out = " + partOut);
-            
-            //notate.addChorus(partOut);
           }
         }
       catch( java.lang.OutOfMemoryError e )
