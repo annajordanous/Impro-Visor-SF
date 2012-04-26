@@ -505,7 +505,7 @@ private void setSelectedTrack()
 
 private void selectTrack(int index)
   {
-  if( index < 0 )
+  if( index < 0 || index >= trackListModel.size() )
     {
       return;
     }
