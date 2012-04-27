@@ -197,7 +197,6 @@ public String getFilenameDisplay()
         endBeatSpinner = new javax.swing.JSpinner();
         meterSpinner = new javax.swing.JSpinner();
         noteResolutionComboBox = new javax.swing.JComboBox();
-        pickupResolutionComboBox = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         MIDIimportFileMenu = new javax.swing.JMenu();
         openAnotherFileMI = new javax.swing.JMenuItem();
@@ -266,7 +265,7 @@ public String getFilenameDisplay()
         midiImportButtonPanel.add(playMIDIfile, gridBagConstraints);
 
         playMIDIimportTrack.setText("Play Track");
-        playMIDIimportTrack.setToolTipText("Plays the selected MIDI track individually, not in the leadsheet context.");
+        playMIDIimportTrack.setToolTipText("Plays the selected MIDI track individually, not in the leadsheet context. The selected resolution is used. Changing the resolution may change the result.");
         playMIDIimportTrack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playMIDIimportTrackActionPerformed(evt);
@@ -290,8 +289,8 @@ public String getFilenameDisplay()
         gridBagConstraints.gridx = 2;
         midiImportButtonPanel.add(stopPlayingTrackButton, gridBagConstraints);
 
-        importTrackToLeadsheet.setToolTipText("Transfers the track selected  to the leadsheet as a new chorus. Alternatively, double click the entry. If Start Beat, +/-,  and End Beat are set, will import just the selected range of beats.\n");
-        importTrackToLeadsheet.setLabel("Transfer Track (or double click)");
+        importTrackToLeadsheet.setText("Copy Track to Leadsheet");
+        importTrackToLeadsheet.setToolTipText("Shortcut: Double-click the track selection. Copies the track selected  to the leadsheet as a new chorus. If Start Beat and End Beat are set, will import just the selected range of beats.\n");
         importTrackToLeadsheet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importTrackToLeadsheetActionPerformed(evt);
@@ -358,24 +357,6 @@ public String getFilenameDisplay()
         gridBagConstraints.gridx = 10;
         gridBagConstraints.gridy = 0;
         midiImportButtonPanel.add(noteResolutionComboBox, gridBagConstraints);
-
-        pickupResolutionComboBox.setMaximumRowCount(16);
-        pickupResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(StartRoundingFactor.getFactors()));
-        pickupResolutionComboBox.setSelectedItem(StartRoundingFactor.getFactors()[3]);
-        pickupResolutionComboBox.setToolTipText("Determines how to round off any pickup notes.");
-        pickupResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pickup Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        pickupResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
-        pickupResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
-        pickupResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pickupResolutionComboBoximportMidiNoteResolutionChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 11;
-        gridBagConstraints.gridy = 0;
-        midiImportButtonPanel.add(pickupResolutionComboBox, gridBagConstraints);
-        pickupResolutionComboBox.getAccessibleContext().setAccessibleName("Pickup Resolution");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -463,11 +444,6 @@ private void volumeSpinnerChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:
     setJmVolume();
   }//GEN-LAST:event_volumeSpinnerChanged
 
-private void pickupResolutionComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pickupResolutionComboBoximportMidiNoteResolutionChanged
-  {//GEN-HEADEREND:event_pickupResolutionComboBoximportMidiNoteResolutionChanged
-   reloadMenu();
-  }//GEN-LAST:event_pickupResolutionComboBoximportMidiNoteResolutionChanged
-
 private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openAnotherFileMIActionPerformed
   {//GEN-HEADEREND:event_openAnotherFileMIActionPerformed
     loadFileAndMenu();
@@ -489,8 +465,6 @@ private void setResolution()
   {
     int newResolution = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
     midiImport.setResolution(newResolution);
-    int newRoundingFactor = ((StartRoundingFactor)pickupResolutionComboBox.getSelectedItem()).getFactor();
-    midiImport.setStartFactor(newRoundingFactor);  
   }
 
 /**
@@ -600,7 +574,6 @@ public void dispose()
     private javax.swing.JPanel midiImportTopPanel;
     private javax.swing.JComboBox noteResolutionComboBox;
     private javax.swing.JMenuItem openAnotherFileMI;
-    private javax.swing.JComboBox pickupResolutionComboBox;
     private javax.swing.JButton playMIDIfile;
     private javax.swing.JButton playMIDIimportTrack;
     private javax.swing.JLabel selectTracksLabel;
