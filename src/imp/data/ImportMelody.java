@@ -93,21 +93,25 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 //    System.out.println("startFactor = " + startFactor);
     // e.g. 2 Works for starting on half-beats
     
-    startTime = Math.floor(startFactor*startTime)/startFactor;
+    //System.out.println("precision = " + precision + ", startTime = " + startTime);
+    
+    //startTime = Math.floor(startFactor*startTime)/startFactor;
 
     //System.out.println("rounded startTime = " + startTime);
 
     if( startTime > 0 )
       {
-        int restSlots = (int)(precision*((120*startTime)/precision)); //MIDIBeast.findSlots(startTime, precision);
+        int restSlots = precision*(int)((120*startTime)/precision); //MIDIBeast.findSlots(startTime, precision);
         
         //System.out.println("restSlots = " + restSlots);
 
         // System.out.println("restBeats = " + restSlots/FBEAT);
-
-      partOut.addRest(new Rest(restSlots));
+      if( restSlots > 0 )
+        {
+        partOut.addRest(new Rest(restSlots));
+        }
       
-      slot += restSlots;
+      slot += restSlots; 
       }
 
     // Convert each jMusic Note to an Impro-Visor Note.
@@ -139,7 +143,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 public Note convertToImpNote(jm.music.data.Note noteIn, int precision)
   {
     int pitch = noteIn.getPitch();
-    int numberOfSlots = (int) Math.round(120 * noteIn.getRhythmValue() / precision) * precision;
+    int numberOfSlots = precision*(int) Math.round(120 * noteIn.getRhythmValue() / precision);
     if( pitch < 0 )
       {
         return new Rest(numberOfSlots);
