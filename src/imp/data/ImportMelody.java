@@ -143,7 +143,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 public Note convertToImpNote(jm.music.data.Note noteIn, int precision)
   {
     int pitch = noteIn.getPitch();
-    int numberOfSlots = precision*(int) Math.round(120 * noteIn.getRhythmValue() / precision);
+    int numberOfSlots = precision*(int)Math.round((120 * noteIn.getRhythmValue()) / precision);
     if( pitch < 0 )
       {
         return new Rest(numberOfSlots);

@@ -203,24 +203,27 @@ private ChordPart chordProg;
  * The array of construction lines
  */
 protected CstrLine cstrLines[];
+
 // the last note entered, used with drawing ties
 Note lastNote = null;
+
 // The index of lastNote
 int ilast = -1;
+
 // Whether or not lastNote was beamed
 boolean lastNoteBeamed = false;
+
 // Whether or not lastNote had stem up (used for beaming)
 boolean lastNoteStemUp = true;
+
 // Whether stems are up in a beam
 boolean beamStemUp = true;
-// Next note: use for beaming
-Note nextNote = null;
 /**
  * The metre of the Stave
  */
 private int[] metre = new int[2];
 private int beatValue = BEAT;                // default for 4/4
-private int measureLength = 4 * beatValue;        // default for 4/4
+private int measureLength = 4 * beatValue;   // default for 4/4
 
 private boolean doubleBar = false;
 
@@ -3317,7 +3320,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
 
     Note nextNote = part.getNote(inext);
 
-    if( beamingNotes )
+    if( beamingNotes && nextNote != null)
       {
         if( beamed
                 && isNote
@@ -3477,6 +3480,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
                 beamNotes = null;
               }
           }
+
       }
 
     // sets the x2 position of the tie to be the draw position this note
