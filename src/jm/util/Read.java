@@ -95,14 +95,14 @@ public class Read implements JMC{
         }
         s.empty();
         SMF smf = new SMF();
-        smf.setVerbose(true);
+        //smf.setVerbose(true);
         try{
-                System.out.println("--------------------- Reading MIDI File ---------------------");
+                //System.out.println("--------------------- Reading MIDI File ---------------------");
                 InputStream is = new FileInputStream(fileName);
                 smf.read(is);
                 jm.midi.MidiParser.SMFToScore(s,smf);
-                System.out.println("MIDI file '"+fileName+"' read into score '" +s.getTitle()+"' Tempo = " + s.getTempo());
-                System.out.println("-------------------------------------------------------------");
+                //System.out.println("MIDI file '"+fileName+"' read into score '" +s.getTitle()+"' Tempo = " + s.getTempo());
+                //System.out.println("-------------------------------------------------------------");
         }catch(IOException e){
                 System.err.println(e);
         }

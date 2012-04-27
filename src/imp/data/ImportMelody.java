@@ -99,7 +99,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     if( startTime > 0 )
       {
-        int restSlots = MIDIBeast.findSlots(startTime, 1);
+        int restSlots = MIDIBeast.findSlots(startTime, precision);
         
         //System.out.println("restSlots = " + restSlots);
 
