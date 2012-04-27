@@ -699,7 +699,7 @@ public void addUnit(Unit unit)
   {
  
     int rv = unit.getRhythmValue();
-    if( rv == 0 )
+    if( rv <= 0 )
       {
         // Not sure how a unit can have 0 as its rhythm value, but it does 
         // happen, and it causes problems.
@@ -719,7 +719,7 @@ public void addUnit(Unit unit)
       }
      //Trace.log(0, "now slots.size() = " + slots.size() + ", index = " + index);
    
-    if( rv > 0 && slots.get(index) == null )
+    if( slots.get(index) == null )
       {
         unitCount++;
       }

@@ -84,7 +84,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
     // Handle the case where the phrase does not start immediately.
 
     double startTime = phrase.getStartTime();
-
+    double time = startTime;
     int slot = 0;
     
 //    System.out.println();
@@ -99,7 +99,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     if( startTime > 0 )
       {
-        int restSlots = MIDIBeast.findSlots(startTime, precision);
+        int restSlots = (int)(precision*((120*startTime)/precision)); //MIDIBeast.findSlots(startTime, precision);
         
         //System.out.println("restSlots = " + restSlots);
 
@@ -114,10 +114,24 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 
     for( jm.music.data.Note note : origNoteArray ) 
       {
-        Note newNote = convertToImpNote(note, precision);
-        partOut.addNote(newNote);
+        double origRhythmValue = note.getRhythmValue();
+         if( note.isRest() )
+          {
+          //int rhythmValue = precision*(int)((120*origRhythmValue)/precision);
+          int rhythmValue = precision*(int)((120*(time + origRhythmValue) - slot)/precision);
+          Note newRest = Note.makeRest(rhythmValue);
+          partOut.addNote(newRest);
+          slot += rhythmValue;
+         }
+        else
+          {
+          Note newNote = convertToImpNote(note, precision);
+          partOut.addNote(newNote);
         //System.out.println("beat " + slot/FBEAT + ": " + note.getDuration() + " -> " + newNote);
-        slot += newNote.getRhythmValue();
+          int rhythmValue = newNote.getRhythmValue();
+          slot += rhythmValue;
+          }
+        time += origRhythmValue;
       }
   }
 
@@ -125,7 +139,7 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
 public Note convertToImpNote(jm.music.data.Note noteIn, int precision)
   {
     int pitch = noteIn.getPitch();
-    int numberOfSlots = MIDIBeast.findSlots(noteIn.getDuration(), precision);
+    int numberOfSlots = (int) Math.round(120 * noteIn.getRhythmValue() / precision) * precision;
     if( pitch < 0 )
       {
         return new Rest(numberOfSlots);
