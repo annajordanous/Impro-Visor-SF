@@ -3343,7 +3343,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
             int yCorrection = beamStemUp ? 0 : downStepCorrection;
             int directionalStemCorrection = beamStemUp ? upStemCorrection : downStemCorrection;
 
-            if( !beamNotes.isEmpty() )
+            if( !beamNotes.isEmpty() && ilast < cstrLines.length )
               {
                 // Reset the x position of the last beamed note, if necessary.
                 beamNotes.get(beamNotes.size()-1).setX(cstrLines[ilast].getX() + x1Correction);
