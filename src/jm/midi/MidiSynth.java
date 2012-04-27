@@ -256,7 +256,7 @@ public class MidiSynth implements JMC, MetaEventListener {
 		if (m_sequencer != null & m_sequencer.isOpen()) {
 			m_sequencer.stop();
 		}  
-		System.out.println("jMusic MidiSynth: Stopped JavaSound MIDI playback");
+		//System.out.println("jMusic MidiSynth: Stopped JavaSound MIDI playback");
     }
 
     /**

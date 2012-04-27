@@ -96,7 +96,7 @@ public class RTMidiIn implements Receiver {
 				length = MidiUtil.readVarLength(dis);
 				event = MidiUtil.createMetaEvent(type);
 			}else if(status >= 0xF0){ //System Exclusive -- Not Supported
-				System.out.println("SysEX---");
+				System.err.println("SysEX not supported");
 				length = MidiUtil.readVarLength(dis);
 			}else if(status >= 0x80){ //MIDI voice event
 				short selection = (short) (status /0x10);

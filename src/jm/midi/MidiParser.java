@@ -58,7 +58,7 @@ public final class MidiParser implements JMC{
      * @param smf
      */
 	public static void SMFToScore(Score score, SMF smf){
-		System.out.println("Convert SMF to JM");
+		//System.out.println("Convert SMF to JM");
 		Enumeration aEnum = smf.getTrackList().elements();
 		//Go through tracks
 		while(aEnum.hasMoreElements()){
@@ -227,8 +227,8 @@ public final class MidiParser implements JMC{
 		while(aEnum.hasMoreElements()){
 			Track smfTrack = new Track();
 			Part inst = (Part) aEnum.nextElement();
-			System.out.print("    Part "+ partCount + " '" + inst.getTitle() + 
-					"' to SMF Track on Ch. " + inst.getChannel() + ": ");
+			//System.out.print("    Part "+ partCount + " '" + inst.getTitle() + 
+			//		"' to SMF Track on Ch. " + inst.getChannel() + ": ");
 			partCount++;
 
 			// set up tempo difference between score and track - if any
@@ -296,7 +296,7 @@ public final class MidiParser implements JMC{
 				////////////////////////////////////////////////
 				int noteCounter = 0;
 				//System.out.println();
-				System.out.print(" Phrase " + phraseCounter++ +":");
+				//System.out.print(" Phrase " + phraseCounter++ +":");
 				// set a silly starting value to force and initial pan cc event
 				double pan = -1.0; 
 				resetTicker(); // zero the ppqn error calculator
@@ -311,7 +311,7 @@ public final class MidiParser implements JMC{
 					//check for frequency rather than MIDI notes
 					int pitch = 0;
 					if (note.getPitchType() == Note.FREQUENCY) {
-						System.err.println("jMusic warning: converting note frequency to the closest MIDI pitch for SMF.");
+						//System.err.println("jMusic warning: converting note frequency to the closest MIDI pitch for SMF.");
 						//System.exit(1);
 						pitch = Note.freqToMidiPitch(note.getFrequency());
 					} else pitch = note.getPitch();
@@ -326,7 +326,7 @@ public final class MidiParser implements JMC{
 					}
 					// move the note-on time forward by the rhythmic value
 					startTime += tickRounder(note.getRhythmValue() * phraseTempoMultiplier); //time between start times
-					System.out.print("."); // completed a note
+					//System.out.print("."); // completed a note
 				}
 			}
 			/*
@@ -397,7 +397,7 @@ public final class MidiParser implements JMC{
 			smfTrack.addEvent(new EndTrack());
 			//add this track to the SMF
 			smf.getTrackList().addElement(smfTrack);
-			System.out.println();
+			//System.out.println();
 		}
 	}
 	// Helper function 
