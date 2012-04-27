@@ -1420,6 +1420,7 @@ public class Notate
 
     setSliderVolumes(DEFAULT_SLIDER_VOLUME);
 
+    setNormalMode();
     } // end of Notate constructor
 
   
@@ -21061,6 +21062,11 @@ public void importMIDI()
     midiImportFrame.loadFileAndMenu();
     midiImportFrame.setLocation(midiImportXoffset, midiImportYoffset);
     midiImportFrame.setVisible(true);
+  }
+
+public void closeMidiImportFrame()
+  {
+    midiImportFrame = null;
   }
 
 private void insertChorusTabMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_insertChorusTabMIActionPerformed

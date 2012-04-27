@@ -43,6 +43,7 @@ public class MidiImportFrame extends javax.swing.JFrame implements Constants
 {
 Notate notate;
 File file;
+File midiDirectory;
 MidiImport midiImport;
 DefaultListModel trackListModel;
 private LinkedList<MidiImportRecord> melodies;
@@ -81,6 +82,8 @@ public MidiImportFrame(Notate notate)
     volumeSpinner.setVisible(false); // volume setting doesn't work yet
     
     noteResolutionComboBox.setSelectedIndex(INITIAL_RESOLUTION_COMBO);
+    
+    midiDirectory = ImproVisor.getMidiDirectory();
   }
 
 public void loadFileAndMenu()
@@ -99,7 +102,7 @@ public void getFile()
     file = null;
     try
       {
-        midiFileChooser.setCurrentDirectory(ImproVisor.getMidiDirectory());
+        midiFileChooser.setCurrentDirectory(midiDirectory);
         int midiChoice = midiFileChooser.showOpenDialog(notate);
         if( midiChoice == JFileChooser.CANCEL_OPTION )
           {
@@ -108,6 +111,7 @@ public void getFile()
         if( midiChoice == JFileChooser.APPROVE_OPTION )
           {
             file = midiFileChooser.getSelectedFile();
+            midiDirectory = midiFileChooser.getCurrentDirectory();
           }
         filenameDisplay = file.getName();
       }
@@ -368,6 +372,7 @@ public String getFilenameDisplay()
 
         MIDIimportFileMenu.setText("File");
 
+        openAnotherFileMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         openAnotherFileMI.setText("Open Another MIDI File");
         openAnotherFileMI.setToolTipText("Opens a MIDI File, usually a different one from the current.");
         openAnotherFileMI.addActionListener(new java.awt.event.ActionListener() {
@@ -559,6 +564,7 @@ private void stopPlaying()
 @Override
 public void dispose()
   {
+    notate.closeMidiImportFrame();
     WindowRegistry.unregisterWindow(this);
     super.dispose();
   }
