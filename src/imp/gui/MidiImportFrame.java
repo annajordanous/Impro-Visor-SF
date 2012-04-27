@@ -478,7 +478,7 @@ private void setJmVolume()
    int value = (Integer)volumeSpinner.getValue();
    if( jmScore != null )
      {
-     jmScore.setVolume(value);
+     //jmScore.setVolume(value);
    
      //System.out.println("jmVolume = " + jmScore.getVolume());
      }
