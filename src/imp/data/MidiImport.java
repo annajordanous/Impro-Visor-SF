@@ -39,9 +39,7 @@ public class MidiImport
 public final static int DRUM_CHANNEL = 9;
 File file;
 private int defaultResolution = 1;
-private int defaultStartFactor = 2;
 private int resolution;
-private int startFactor;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
 private LinkedList<MidiImportRecord> melodies;
@@ -50,8 +48,7 @@ private LinkedList<MidiImportRecord> melodies;
 public MidiImport()
   {
     setResolution(defaultResolution);
-    setStartFactor(defaultStartFactor);
-  }
+   }
 
 public int getResolution()
   {
@@ -63,18 +60,6 @@ public final void setResolution(int newResolution)
     resolution = newResolution;
     //System.out.println("setting resolution to " + resolution);
   }
-
-public int getStartFactor()
-  {
-    return startFactor;
-  }
-
-public final void setStartFactor(int newStartFactor)
-  {
-    startFactor = newStartFactor;
-    //System.out.println("setting startFactor to " + startFactor);
-  }
-
 
 public void importMidi(File file)
   {
@@ -140,7 +125,7 @@ public void scoreToMelodies()
             //System.out.println("---------------------------------------------");
             //System.out.println("part " + i + " track " + j + " conversion: ");
             MelodyPart partOut = new MelodyPart();
-            importMelody.convertToImpPart(part, j, partOut, resolution, startFactor);
+            importMelody.convertToImpPart(part, j, partOut, resolution);
             
             String instrumentString = MIDIBeast.getInstrumentForPart(part);
             
