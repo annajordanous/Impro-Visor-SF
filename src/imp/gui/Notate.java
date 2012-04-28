@@ -1420,6 +1420,8 @@ public class Notate
 
     setSliderVolumes(DEFAULT_SLIDER_VOLUME);
 
+    midiRecordSnapSpinner.setValue(Preferences.getMidiRecordSnap());
+    
     setNormalMode();
     } // end of Notate constructor
 
@@ -1798,6 +1800,7 @@ public class Notate
         midiInComboBox = new javax.swing.JComboBox();
         midiInStatus = new javax.swing.JLabel();
         echoMidiCheckBox = new javax.swing.JCheckBox();
+        midiRecordSnapSpinner = new javax.swing.JSpinner();
         sendSetBankCheckBox = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         latencyTab = new javax.swing.JPanel();
@@ -4133,6 +4136,19 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(echoMidiCheckBox, gridBagConstraints);
 
+        midiRecordSnapSpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"2", "3", "4", "6", "8", "12"}));
+        midiRecordSnapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MIDI Record Beat Sub-Divisions", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        midiRecordSnapSpinner.setMinimumSize(new java.awt.Dimension(250, 56));
+        midiRecordSnapSpinner.setPreferredSize(new java.awt.Dimension(250, 56));
+        midiRecordSnapSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                midiRecordSnapChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 5;
+        devicesTab.add(midiRecordSnapSpinner, gridBagConstraints);
+
         sendSetBankCheckBox.setSelected(Preferences.getMidiSendBankSelect());
         sendSetBankCheckBox.setLabel("Send SetBank-to-0 MIDI messages with each note.");
         sendSetBankCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -4142,7 +4158,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         devicesTab.add(sendSetBankCheckBox, gridBagConstraints);
@@ -4150,7 +4166,7 @@ public class Notate
         jLabel1.setText("MIDI channel assignments are found in the Mixer panel.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         devicesTab.add(jLabel1, gridBagConstraints);
 
@@ -21108,6 +21124,11 @@ private void recordMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     recordFromMidi();
   }//GEN-LAST:event_recordMIActionPerformed
 
+private void midiRecordSnapChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_midiRecordSnapChanged
+  {//GEN-HEADEREND:event_midiRecordSnapChanged
+    Preferences.setMidiRecordSnap(midiRecordSnapSpinner.getValue().toString());
+  }//GEN-LAST:event_midiRecordSnapChanged
+
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called 
@@ -23012,6 +23033,7 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel midiPreferences;
     private javax.swing.JButton midiPreferencesBtn;
     private javax.swing.JMenuItem midiPrefsMI;
+    private javax.swing.JSpinner midiRecordSnapSpinner;
     private javax.swing.JFrame midiStyleSpec;
     private javax.swing.JButton mixerBtn;
     private javax.swing.JDialog mixerDialog;
@@ -23856,6 +23878,10 @@ public void openMidiPreferences()
     preferencesDialog.setVisible(true);
   }
         
+public int getRecordSnapValue()
+  {
+    return Integer.parseInt(midiRecordSnapSpinner.getValue().toString());
+  }
 }
 
 

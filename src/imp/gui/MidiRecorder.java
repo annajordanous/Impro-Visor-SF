@@ -45,7 +45,7 @@ long noteOn = 0, noteOff = 0, lastEvent = 0;
 boolean notePlaying = false;
 int prevNote = 0;
 int resolution;
-static final int SNAPTO = BEAT / 4;
+int snapTo = BEAT/4;
 
 double latency = 0;
 
@@ -98,6 +98,7 @@ public long getTick()
     
 void start()
   {
+    snapTo = BEAT/notate.getRecordSnapValue();
     this.sequencer = notate.getSequencer();
     if( sequencer.getSequence() == null )
       {
@@ -220,7 +221,7 @@ void handleNoteOn(int note, int velocity, int channel)
     index = snapSlots(tickToSlots(noteOn)) - countInOffset;
 
     // add current note
-    Note noteToAdd = new Note(note, SNAPTO);
+    Note noteToAdd = new Note(note, snapTo);
 
     try
       {
@@ -308,7 +309,7 @@ int tickToSlots(long duration)
 
 int snapSlots(int slots)
   {
-    slots = snapToMultiple(slots, SNAPTO);
+    slots = snapToMultiple(slots, snapTo);
     return slots;
   }
 

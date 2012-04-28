@@ -116,6 +116,7 @@ public static int upStemBracketCorrection = 15;
 private StaveActionHandler staveActionHandler;
 
 ArrayList<BeamNote> beamNotes = null;
+
 /**
  * The panel width
  */
@@ -2865,12 +2866,12 @@ private boolean drawPart(MelodyPart part, Graphics g)
                 // These are used to determined whether a note stands alone or has a beam.
                 // A note having a beam will not also have a flag.
 
-
                 boolean beamed = beamingNotes // beaming desired
+                        && !note.isRest()
                         && sameBeat(i, inext) // in same beat interval
                         && note.getRhythmValue() < 80 // less than quarternote
                         && nextNote != null // next note exists
-                        && isaNote(nextNote.getPitch())
+                        && !nextNote.isRest()
                         && sameStemDirection(note, nextNote, type)
                         && note.getRhythmValue() == nextNote.getRhythmValue(); // compatibility
 
@@ -2878,10 +2879,10 @@ private boolean drawPart(MelodyPart part, Graphics g)
 
                 //System.out.println("beamed = " + beamed + ", i = " + i + ", inext = " + inext + ", sameBeat = " + sameBeat(i, inext));
                 if( isNote 
+                        && !note.isRest() // May seem redundant, but this is need to control boxing
                         && i >= selectionStart
                         && i <= selectionEnd
                         && (note.firstTied() || !note.isTied())
-                        && note.getPitch() != Note.REST // May seem redundant, but this is need to control boxing
                         )
                   {
                     //System.out.println("Case A " + beamed + " " + note);
@@ -2901,7 +2902,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
                   }
 
                 lastNote = note;
-                lastNoteBeamed = isaNote(note.getPitch()) && beamed; // remember for next time around
+                lastNoteBeamed = beamed; // remember for next time around
                 lastNoteStemUp = stemUp;
                 ilast = i;
 
