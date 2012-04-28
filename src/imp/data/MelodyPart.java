@@ -133,22 +133,34 @@ public class MelodyPart
       }
     }
 
-  /**
-   * Adds a Note to the end of the MelodyPart, extending its length.
-   * @param note      the Note to add
-      */
-    public void addNote(Note note) {
-        if (!note.isRest()) {
-            if (note.getPitch() < lowestPitch) {
-                lowestPitch = note.getPitch();
-            }
-            if (note.getPitch() > highestPitch) {
-                highestPitch = note.getPitch();
-            }
-        }
-        addUnit(note);
-        //System.out.println("melody part gets note " + note);
-    }
+/**
+ * Adds a Note to the end of the MelodyPart, extending its length.
+ *
+ * @param note the Note to add
+ */
+public void addNote(Note note)
+  {
+    // Ideally, if the note being added is a rest, and the last note is a rest,
+    // the new rest should be merged in with the existing one. But my attempt
+    // at this failed for some reason.
+    
+    if( note.isRest() )
+      {
+      }
+    else
+      {
+        if( note.getPitch() < lowestPitch )
+          {
+            lowestPitch = note.getPitch();
+          }
+        if( note.getPitch() > highestPitch )
+          {
+            highestPitch = note.getPitch();
+          }
+      }
+    addUnit(note);
+    //System.out.println("melody part gets note " + note);
+  }
 
   /**
    * Adds a Rest to the end of the MelodyPart, extending its length.
@@ -1517,7 +1529,10 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     return newPart;
     }
  
- //returns the last note in the melodypart that is not a rest
+ /**
+  * returns the last note in the melodypart that is not a rest
+  */
+  
  public Note getLastNote() {
      int tracker = this.getPrevIndex(size);
  
@@ -1530,6 +1545,8 @@ public MelodyPart copy(int startingIndex, int endingIndex)
      
      return n;
  }
+ 
+
   
      /**
      * The only current use is in LickgenFrame.

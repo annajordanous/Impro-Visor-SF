@@ -2281,6 +2281,7 @@ public class Notate
         playAllMI = new javax.swing.JMenuItem();
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
+        recordMI = new javax.swing.JMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
@@ -8512,6 +8513,16 @@ public class Notate
         });
         playMenu.add(pausePlayMI);
 
+        recordMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        recordMI.setText("Record");
+        recordMI.setToolTipText("Record from a MIDI instrument.");
+        recordMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recordMIActionPerformed(evt);
+            }
+        });
+        playMenu.add(recordMI);
+
         menuBar.add(playMenu);
 
         utilitiesMenu.setMnemonic('U');
@@ -10189,17 +10200,20 @@ private void setStepInput(boolean active)
    
     
     private void recordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordBtnActionPerformed
-        if( mode == Mode.RECORDING )
-          {
-            stopRecording();
-          }
-        else
-          {
-            startRecording();
-          }
+    recordFromMidi();
     }//GEN-LAST:event_recordBtnActionPerformed
     
-    
+private void recordFromMidi()
+  {
+    if( mode == Mode.RECORDING )
+      {
+        stopRecording();
+      }
+    else
+      {
+        startRecording();
+      }
+  }
     
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
 
@@ -21089,6 +21103,11 @@ private void firstTimePrefsMIActionPerformed(java.awt.event.ActionEvent evt)//GE
     ImproVisor.openFirstTimeDialog(this);
   }//GEN-LAST:event_firstTimePrefsMIActionPerformed
 
+private void recordMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_recordMIActionPerformed
+  {//GEN-HEADEREND:event_recordMIActionPerformed
+    recordFromMidi();
+  }//GEN-LAST:event_recordMIActionPerformed
+
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called 
@@ -23083,6 +23102,7 @@ public void showNewVoicingDialog()
     private javax.swing.JList recentStyleList;
     private javax.swing.JScrollPane recentStyleListScrollPane;
     private javax.swing.JButton recordBtn;
+    private javax.swing.JMenuItem recordMI;
     private javax.swing.JRadioButton redApproachBtn;
     private javax.swing.JRadioButton redChordBtn;
     private javax.swing.JRadioButton redColorBtn;
