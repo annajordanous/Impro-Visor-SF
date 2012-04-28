@@ -115,7 +115,7 @@ public RepresentativeChordRules(int minDuration)
                         System.out.println(simplifiedPitchesRules.get(i));
                       }
                   }
-                if( MIDIBeast.maxChordPatternLength != 0.0 )
+                if( MIDIBeast.getMaxChordPatternLength() != 0.0 )
                   {
                     truncateChordPatterns();
                   }
@@ -384,7 +384,7 @@ public void simplifyRulePitches()
 public void truncateChordPatterns()
   {
     ArrayList<String> tempRules = new ArrayList<String>();
-    double maxLength = MIDIBeast.maxChordPatternLength;
+    double maxLength = MIDIBeast.getMaxChordPatternLength();
     int maxSlotLength = (int) (maxLength * MIDIBeast.slotsPerMeasure / MIDIBeast.denominator);
     for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
       {

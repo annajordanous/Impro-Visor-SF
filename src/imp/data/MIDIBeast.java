@@ -66,11 +66,14 @@ public static int precision = minPrecision;
 private static int roundThreshold = 10; // Used in rounding bass patterns
 public static int slotsPerMeasure = 480;
 public static int drumMeasureSize = 480;
-// Note: The next three need to be in sync with the combo boxes 
-// in gui.StyleEditor.java
-public static double maxBassPatternLength = 4;  // default
-public static double maxChordPatternLength = 4; // default
-public static double maxDrumPatternLength = 4;  // default
+
+/**
+ * Note that these lengths are in beats.
+ */
+private static double maxBassPatternLength = 4;  // default
+private static double maxChordPatternLength = 4; // default
+private static double maxDrumPatternLength = 4;  // default
+
 public static String[] pitches =
   {
     "c", "c#", "d", "d#", "e", "f",
@@ -297,6 +300,7 @@ public static final String[] spacelessDrumName =
 public static void setResolution(int resolution)
   {
     minPrecision = resolution;
+    precision = resolution;
   }
 
 /**
@@ -389,6 +393,9 @@ public static void changeTimeSig(int num, int denom)
 
 
 /**
+ * Not sure that whole, etc. are used any longer, nor that precision should be
+ * changed in this way.
+ * 
  * Given a time signature and the number of slots specified per beat, this
  * method calulates how many slots each type of note should get. If a note type
  * is note possible it is assigned a value of -1.
@@ -995,6 +1002,36 @@ public static String getInstrumentForPart(jm.music.data.Part part)
       {
       return getInstrumentName(part.getInstrument());
       }
+  }
+
+public static void setMaxBassPatternLength(double beats)
+  {
+    maxBassPatternLength = beats;
+  }
+
+public static void setMaxChordPatternLength(double beats)
+  {
+    maxChordPatternLength = beats;
+  }
+
+public static void setMaxDrumPatternLength(double beats)
+  {
+    maxDrumPatternLength = beats;
+  }
+
+public static double getMaxBassPatternLength()
+  {
+    return maxBassPatternLength;
+  }
+
+public static double getMaxChordPatternLength()
+  {
+    return maxChordPatternLength;
+  }
+
+public static double getMaxDrumPatternLength()
+  {
+    return maxDrumPatternLength;
   }
 }
 

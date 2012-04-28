@@ -125,7 +125,7 @@ public RepresentativeBassRules()
                       }
                   }
 
-                if( MIDIBeast.maxBassPatternLength != 0.0 )
+                if( MIDIBeast.getMaxBassPatternLength() != 0.0 )
                   {
                     truncateBassPatterns();
                   }
@@ -670,7 +670,7 @@ int getBassRuleLength(String currentRule)
 private void truncateBassPatterns()
   {
     ArrayList<String> tempRules = new ArrayList<String>();
-    double maxLength = MIDIBeast.maxBassPatternLength;
+    double maxLength = MIDIBeast.getMaxBassPatternLength();
     int maxSlotLength = (int) (maxLength * MIDIBeast.slotsPerMeasure / MIDIBeast.denominator);
     for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
       {

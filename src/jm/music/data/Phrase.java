@@ -321,7 +321,10 @@ public class Phrase implements JMC, Cloneable, Serializable{
      */
     public void addNoteList(Note[] notes) {
         for (int i = 0; i < notes.length; i++) {
-            this.addNote(notes[i]);
+            if( notes[i] != null )
+              {
+                this.addNote(notes[i]);
+              }
         }
     }
 

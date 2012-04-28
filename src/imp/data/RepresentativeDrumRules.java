@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -145,8 +146,9 @@ public RepresentativeDrumRules()
       }
     catch( Exception e )
       {
-        MIDIBeast.addError("Sorry, there was an unknown internal error while generating "
-                + "the drum patterns.");
+        ErrorLog.log(ErrorLog.SEVERE, 
+                     "Sorry, there was an unknown internal error while generating "
+                   + "the drum patterns.");
         e.printStackTrace();
       }
   }

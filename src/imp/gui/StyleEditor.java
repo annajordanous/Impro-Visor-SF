@@ -3126,13 +3126,14 @@ void playBassColumn(int colIndex)
   
   private int getMinDuration()
   {
-  String minDurationString = minDurationTF.getText();
-      
-  // Note that getDuration just returns a default if the argument is ill-formed.
-  // This should be fixed eventually.
-      
-  int minDuration = Duration.getDuration(minDurationString);
+//  String minDurationString = minDurationTF.getText();
+//      
+//  // Note that getDuration just returns a default if the argument is ill-formed.
+//  // This should be fixed eventually.
+//      
+//  int minDuration = Duration.getDuration(minDurationString);
    
+  int minDuration = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
   return minDuration;
   }
 
@@ -3149,21 +3150,20 @@ void playBassColumn(int colIndex)
         showExtractionCheckBox = new javax.swing.JCheckBox();
         chordTonesCheckBox = new javax.swing.JCheckBox();
         mergeBassRestsCheckBox = new javax.swing.JCheckBox();
-        jPanel1 = new javax.swing.JPanel();
+        importInstrumentsPanel = new javax.swing.JPanel();
         importBassCheckBox = new javax.swing.JCheckBox();
         importDrumCheckBox = new javax.swing.JCheckBox();
         importChordCheckBox = new javax.swing.JCheckBox();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        maxPatternLengthPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        maxPatternLengthComboBox = new javax.swing.JComboBox();
+        maxBassPatternLengthComboBox = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         maxChordPatternLengthComboBox = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         maxDrumPatternLengthComboBox = new javax.swing.JComboBox();
-        jPanel4 = new javax.swing.JPanel();
-        minDurationTF = new javax.swing.JTextField();
+        noteResolutionComboBox = new javax.swing.JComboBox();
         generationProgress = new javax.swing.JDialog();
         stylePic = new javax.swing.JLabel();
         helpDialog = new javax.swing.JDialog();
@@ -3353,17 +3353,17 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         generatePref.getContentPane().add(mergeBassRestsCheckBox, gridBagConstraints);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Import"));
-        jPanel1.setMinimumSize(new java.awt.Dimension(200, 112));
-        jPanel1.setPreferredSize(new java.awt.Dimension(200, 121));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        importInstrumentsPanel.setMinimumSize(new java.awt.Dimension(200, 112));
+        importInstrumentsPanel.setPreferredSize(new java.awt.Dimension(200, 121));
+        importInstrumentsPanel.setLayout(new java.awt.GridBagLayout());
 
         importBassCheckBox.setSelected(true);
         importBassCheckBox.setText("Bass");
         importBassCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
-        jPanel1.add(importBassCheckBox, gridBagConstraints);
+        importInstrumentsPanel.add(importBassCheckBox, gridBagConstraints);
 
         importDrumCheckBox.setSelected(true);
         importDrumCheckBox.setText("Drums");
@@ -3377,7 +3377,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 8);
-        jPanel1.add(importDrumCheckBox, gridBagConstraints);
+        importInstrumentsPanel.add(importDrumCheckBox, gridBagConstraints);
 
         importChordCheckBox.setSelected(true);
         importChordCheckBox.setText("Chords");
@@ -3386,16 +3386,17 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 9, 5);
-        jPanel1.add(importChordCheckBox, gridBagConstraints);
+        importInstrumentsPanel.add(importChordCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
-        generatePref.getContentPane().add(jPanel1, gridBagConstraints);
+        generatePref.getContentPane().add(importInstrumentsPanel, gridBagConstraints);
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -3405,10 +3406,12 @@ void playBassColumn(int colIndex)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(22, 86, 0, 0);
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         generatePref.getContentPane().add(cancelButton, gridBagConstraints);
 
         okButton.setText("OK");
@@ -3418,47 +3421,50 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(22, 0, 0, 0);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         generatePref.getContentPane().add(okButton, gridBagConstraints);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Max Pattern Length"));
-        jPanel3.setMinimumSize(new java.awt.Dimension(200, 112));
-        jPanel3.setPreferredSize(new java.awt.Dimension(200, 200));
-        jPanel3.setLayout(new java.awt.GridBagLayout());
+        maxPatternLengthPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max Pattern Length", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        maxPatternLengthPanel.setMinimumSize(new java.awt.Dimension(200, 112));
+        maxPatternLengthPanel.setPreferredSize(new java.awt.Dimension(200, 200));
+        maxPatternLengthPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel4.setText("Bass");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel3.add(jLabel4, gridBagConstraints);
+        maxPatternLengthPanel.add(jLabel4, gridBagConstraints);
 
-        maxPatternLengthComboBox.setEditable(true);
-        maxPatternLengthComboBox.setMaximumRowCount(17);
-        maxPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
-        maxPatternLengthComboBox.setSelectedIndex(4);
-        maxPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
-        maxPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
-        maxPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
+        maxBassPatternLengthComboBox.setEditable(true);
+        maxBassPatternLengthComboBox.setMaximumRowCount(17);
+        maxBassPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
+        maxBassPatternLengthComboBox.setSelectedIndex(4);
+        maxBassPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
+        maxBassPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
+        maxBassPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxPatternLengthComboBoxActionPerformed(evt);
+                maxBassPatternLengthComboBoxActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
-        jPanel3.add(maxPatternLengthComboBox, gridBagConstraints);
+        maxPatternLengthPanel.add(maxBassPatternLengthComboBox, gridBagConstraints);
 
         jLabel5.setText("Chord");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel3.add(jLabel5, gridBagConstraints);
+        maxPatternLengthPanel.add(jLabel5, gridBagConstraints);
 
         maxChordPatternLengthComboBox.setEditable(true);
         maxChordPatternLengthComboBox.setMaximumRowCount(17);
@@ -3475,14 +3481,14 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
-        jPanel3.add(maxChordPatternLengthComboBox, gridBagConstraints);
+        maxPatternLengthPanel.add(maxChordPatternLengthComboBox, gridBagConstraints);
 
         jLabel6.setText("Drum");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel3.add(jLabel6, gridBagConstraints);
+        maxPatternLengthPanel.add(jLabel6, gridBagConstraints);
 
         maxDrumPatternLengthComboBox.setEditable(true);
         maxDrumPatternLengthComboBox.setMaximumRowCount(17);
@@ -3499,39 +3505,35 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
-        jPanel3.add(maxDrumPatternLengthComboBox, gridBagConstraints);
+        maxPatternLengthPanel.add(maxDrumPatternLengthComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
-        generatePref.getContentPane().add(jPanel3, gridBagConstraints);
+        generatePref.getContentPane().add(maxPatternLengthPanel, gridBagConstraints);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Minimum Note Duration (16th, 8th, etc.)"));
-        jPanel4.setMinimumSize(new java.awt.Dimension(200, 50));
-        jPanel4.setPreferredSize(new java.awt.Dimension(200, 50));
-        jPanel4.setLayout(new java.awt.GridBagLayout());
-
-        minDurationTF.setText("16");
-        minDurationTF.setToolTipText("The shortest note, in slots, that will be extracted.");
-        minDurationTF.setMinimumSize(new java.awt.Dimension(40, 19));
-        minDurationTF.setPreferredSize(new java.awt.Dimension(40, 19));
-        minDurationTF.addActionListener(new java.awt.event.ActionListener() {
+        noteResolutionComboBox.setMaximumRowCount(16);
+        noteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
+        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
+        noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                minDurationTFActionPerformed(evt);
+                noteResolutionComboBoximportMidiNoteResolutionChanged(evt);
             }
         });
-        jPanel4.add(minDurationTF, new java.awt.GridBagConstraints());
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
-        generatePref.getContentPane().add(jPanel4, gridBagConstraints);
+        generatePref.getContentPane().add(noteResolutionComboBox, gridBagConstraints);
 
         generationProgress.setTitle("Extracting style...");
         generationProgress.setAlwaysOnTop(true);
@@ -6313,15 +6315,9 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
         MIDIBeast.mergeBassRests = false;
         }
 
-      MIDIBeast.maxBassPatternLength =
-              maxPatternLengthComboBox.getSelectedIndex();  // FIX: Not good to use a global this way.
-      
-      MIDIBeast.maxChordPatternLength =
-              maxChordPatternLengthComboBox.getSelectedIndex();
-      
-      MIDIBeast.maxDrumPatternLength =
-              maxDrumPatternLengthComboBox.getSelectedIndex();
-
+      MIDIBeast.setMaxBassPatternLength(Double.parseDouble(maxBassPatternLengthComboBox.getSelectedItem().toString()));
+      MIDIBeast.setMaxChordPatternLength(Double.parseDouble(maxChordPatternLengthComboBox.getSelectedItem().toString()));
+      MIDIBeast.setMaxDrumPatternLength(Double.parseDouble(maxDrumPatternLengthComboBox.getSelectedItem().toString()));
       generatePref.setVisible(false);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -6515,9 +6511,9 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
       windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
 
-private void maxPatternLengthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxPatternLengthComboBoxActionPerformed
+private void maxBassPatternLengthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxBassPatternLengthComboBoxActionPerformed
 // TODO add your handling code here:
-}//GEN-LAST:event_maxPatternLengthComboBoxActionPerformed
+}//GEN-LAST:event_maxBassPatternLengthComboBoxActionPerformed
 
 private void maxChordPatternLengthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxChordPatternLengthComboBoxActionPerformed
 // TODO add your handling code here:
@@ -6526,10 +6522,6 @@ private void maxChordPatternLengthComboBoxActionPerformed(java.awt.event.ActionE
 private void maxDrumPatternLengthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxDrumPatternLengthComboBoxActionPerformed
 // TODO add your handling code here:
 }//GEN-LAST:event_maxDrumPatternLengthComboBoxActionPerformed
-
-private void minDurationTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minDurationTFActionPerformed
-// TODO add your handling code here:
-}//GEN-LAST:event_minDurationTFActionPerformed
 
 private void saveStyleBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveStyleBtn1ActionPerformed
 saveStyleBtnActionPerformed(null);
@@ -6572,6 +6564,12 @@ private void trackWithPianoRollActionPerformed(java.awt.event.ActionEvent evt)//
   {//GEN-HEADEREND:event_trackWithPianoRollActionPerformed
     
   }//GEN-LAST:event_trackWithPianoRollActionPerformed
+
+private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
+  {//GEN-HEADEREND:event_noteResolutionComboBoximportMidiNoteResolutionChanged
+    int newResolution = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
+    MIDIBeast.setResolution(newResolution);
+  }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
 
 private void usePianoRoll()
 {
@@ -6700,31 +6698,30 @@ public void unusePianoRoll()
     private javax.swing.JCheckBox importBassCheckBox;
     private javax.swing.JCheckBox importChordCheckBox;
     private javax.swing.JCheckBox importDrumCheckBox;
+    private javax.swing.JPanel importInstrumentsPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JSlider masterVolumeSlider;
+    private javax.swing.JComboBox maxBassPatternLengthComboBox;
     private javax.swing.JComboBox maxChordPatternLengthComboBox;
     private javax.swing.JComboBox maxDrumPatternLengthComboBox;
-    private javax.swing.JComboBox maxPatternLengthComboBox;
+    private javax.swing.JPanel maxPatternLengthPanel;
     private javax.swing.JPanel melodySwingPanel;
     private javax.swing.JTextArea menuList;
     private javax.swing.JTextArea menuList1;
     private javax.swing.JCheckBox mergeBassRestsCheckBox;
-    private javax.swing.JTextField minDurationTF;
     private javax.swing.JToggleButton muteChordToggle;
     private javax.swing.JButton newButton;
     private javax.swing.JButton newRowButton;
     private javax.swing.JMenuItem newStyleMI;
+    private javax.swing.JComboBox noteResolutionComboBox;
     private javax.swing.JTextField numField;
     private javax.swing.JButton okButton;
     private javax.swing.JButton openButton;
