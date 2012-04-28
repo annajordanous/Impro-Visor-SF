@@ -17,8 +17,10 @@
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
 package imp.data;
 
+import imp.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,22 +35,12 @@ import java.util.Arrays;
  * originally stored in MIDIBeast.originalBassNotes, which of course breaks
  * encapsulation.
  */
-public class ImportMelody
+public class ImportMelody implements Constants
 {
 
 //private ArrayList<Note> originalMelodyNotes = new ArrayList<Note>();
 
 private jm.music.data.Part parts[];
-
-boolean debug = false;
-
-
-/**
- * The initial notes from the melody line
- */
-
-private ArrayList<jm.music.data.Note> origNoteArray;
-
 
 /**
  * constructor. Reads a score and adjusts the rhythm durations in the melody
@@ -61,15 +53,13 @@ public ImportMelody(jm.music.data.Score score)
   }
 
 
-double FBEAT = 120.;
-
-public void convertToImpPart(jm.music.data.Part melodyPart,
+public static void convertToImpPart(jm.music.data.Part melodyPart,
                              int trackNumber,
                              MelodyPart partOut,
                              int precision,
                              int startFactor)
   {
-    origNoteArray = new ArrayList<jm.music.data.Note>();
+    ArrayList<jm.music.data.Note> origNoteArray = new ArrayList<jm.music.data.Note>();
 
     jm.music.data.Phrase phrase = melodyPart.getPhraseArray()[trackNumber];
 
@@ -86,22 +76,10 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
     double startTime = phrase.getStartTime();
     double time = startTime;
     int slot = 0;
-    
-//    System.out.println();
-//    System.out.println("precision = " + precision);
-//    System.out.println("startTime = " + startTime);
-//    System.out.println("startFactor = " + startFactor);
-    // e.g. 2 Works for starting on half-beats
-    
-    //System.out.println("precision = " + precision + ", startTime = " + startTime);
-    
-    //startTime = Math.floor(startFactor*startTime)/startFactor;
-
-    //System.out.println("rounded startTime = " + startTime);
 
     if( startTime > 0 )
       {
-        int restSlots = precision*(int)((120*startTime)/precision); //MIDIBeast.findSlots(startTime, precision);
+        int restSlots = precision*(int)((BEAT*startTime)/precision);
         
         //System.out.println("restSlots = " + restSlots);
 
@@ -121,15 +99,15 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
         double origRhythmValue = note.getRhythmValue();
          if( note.isRest() )
           {
-          //int rhythmValue = precision*(int)((120*origRhythmValue)/precision);
-          int rhythmValue = precision*(int)((120*(time + origRhythmValue) - slot)/precision);
+          int rhythmValue = precision*(int)((BEAT*(time + origRhythmValue) - slot)/precision);
           Note newRest = Note.makeRest(rhythmValue);
           partOut.addNote(newRest);
           slot += rhythmValue;
          }
         else
           {
-          Note newNote = convertToImpNote(note, precision);
+          Note newNote = new Note(note.getPitch(),
+                  precision*(int)Math.round((BEAT * note.getRhythmValue()) / precision));
           partOut.addNote(newNote);
         //System.out.println("beat " + slot/FBEAT + ": " + note.getDuration() + " -> " + newNote);
           int rhythmValue = newNote.getRhythmValue();
@@ -137,21 +115,6 @@ public void convertToImpPart(jm.music.data.Part melodyPart,
           }
         time += origRhythmValue;
       }
-  }
-
-
-public Note convertToImpNote(jm.music.data.Note noteIn, int precision)
-  {
-    int pitch = noteIn.getPitch();
-    int numberOfSlots = precision*(int)Math.round((120 * noteIn.getRhythmValue()) / precision);
-    if( pitch < 0 )
-      {
-        return new Rest(numberOfSlots);
-      }
-
-    Note note = new Note(pitch, numberOfSlots);
-    note.setVolume(noteIn.getDynamic());
-    return note;
   }
 
 
@@ -171,7 +134,7 @@ public jm.music.data.Part getPart(int i)
   }
 
 
-public void mergeRests()
+public void mergeRests(ArrayList<jm.music.data.Note> origNoteArray)
   {
     for( int i = 1; i < origNoteArray.size(); i++ )
       {
