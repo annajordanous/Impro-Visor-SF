@@ -64,7 +64,7 @@ public static int eighthquintuplet;
 public static int sixteenthquintuplet;
 public static int thirtysecondquintuplet;
 public static int minPrecision = 10;
-public static int precision = minPrecision;
+private static int precision = minPrecision;
 private static int roundThreshold = 10; // Used in rounding bass patterns
 public static int slotsPerMeasure = 480;
 public static int drumMeasureSize = 480;
@@ -303,6 +303,11 @@ public static void setResolution(int resolution)
   {
     minPrecision = resolution;
     precision = resolution;
+  }
+
+public static int getResolution()
+  {
+    return precision;
   }
 
 /**
@@ -1035,5 +1040,6 @@ public static int getMaxDrumPatternLengthInSlots()
   {
     return (int)(BEAT*maxDrumPatternLength);
   }
+
 }
 

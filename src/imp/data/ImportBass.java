@@ -76,7 +76,7 @@ public class ImportBass{
                     mainPhrase = MIDIBeast.bassPart.getPhraseArray()[0];
                     getNoteArray();
                     if(MIDIBeast.mergeBassRests) mergeRests();
-                    roundDurations(MIDIBeast.precision);
+                    roundDurations(MIDIBeast.getResolution());
                     if(roundedNoteArray.size() == 0) {
                         if(debug) System.out.println("note array of size zero, unable to continue");
                         MIDIBeast.addError("The bass part is corrupted...no notes were found.  Go to Generate-->" +
@@ -121,7 +121,7 @@ public class ImportBass{
             }
             setPhraseStartAndEnd(startBeat,0);
             getNoteArray();
-            roundDurations(MIDIBeast.precision);
+            roundDurations(MIDIBeast.getResolution());
 		
             MIDIBeast.originalBassNotes = roundedNoteArray;
         }
@@ -139,7 +139,7 @@ public class ImportBass{
             mainPhrase = MIDIBeast.bassPart.getPhraseArray()[0];
             setPhraseStartAndEnd(startBeat,0);
             getNoteArray();
-            roundDurations(MIDIBeast.precision);
+            roundDurations(MIDIBeast.getResolution());
 		
             MIDIBeast.originalBassNotes = roundedNoteArray;
         }
@@ -155,7 +155,7 @@ public class ImportBass{
             }
             setPhraseStartAndEnd(startBeat, endBeat);
             getNoteArray();
-            roundDurations(MIDIBeast.precision);
+            roundDurations(MIDIBeast.getResolution());
 		
             MIDIBeast.originalBassNotes = roundedNoteArray;
         }
@@ -171,7 +171,7 @@ public class ImportBass{
             }
             setPhraseStartAndEnd(startBeat, endBeat);
             getNoteArray();
-            roundDurations(MIDIBeast.precision);
+            roundDurations(MIDIBeast.getResolution());
 		
             MIDIBeast.originalBassNotes = roundedNoteArray;
         }
