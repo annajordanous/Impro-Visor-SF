@@ -170,7 +170,7 @@ public void setPhraseEnd(double endBeat)
           }
         jm.music.data.Note[] newNoteArray = new jm.music.data.Note[noteIndex + 1];
 
-        for( int j = 0; j <= noteIndex; j++ )
+        for( int j = 0; j < noteIndex; j++ ) // < was <=  rk: 4/28/2012
           {
             newNoteArray[j] = noteArray[j];
           }
