@@ -99,6 +99,10 @@ public long getTick()
 void start()
   {
     this.sequencer = notate.getSequencer();
+    if( sequencer.getSequence() == null )
+      {
+        return;
+      }
     resolution = sequencer.getSequence().getResolution();
 
     while( (noteOn = getTick()) < 0 )
