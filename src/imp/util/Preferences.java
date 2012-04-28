@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import javax.swing.JCheckBox;
 import polya.Polylist;
-import polya.PolylistBuffer;
 import polya.Tokenizer;
 
 /**
@@ -194,6 +193,8 @@ public class Preferences implements imp.Constants
 
   public static final String MIDI_IN_LATENCY = "midi-in-latency";
   
+ public static final String MIDI_RECORD_SNAP = "midi-record-snap";
+  
   public static final String RECENT_STYLE_FILE = "recent-style-file";
 
   public static final String DEFAULT_MIDI_IN = "RealTimeSequencer";
@@ -203,6 +204,8 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_MIDI_ECHO = YES;
 
   public static final String DEFAULT_MIDI_IN_LATENCY = "0";
+  
+  public static final String DEFAULT_MIDI_RECORD_SNAP = "3";
   
   public static final String DEFAULT_MIDI_SEND_BANK_SELECT = NO;
   
@@ -439,6 +442,16 @@ public static double getMidiInLatency()
 public static void setMidiInLatency(double value)
   {
     setPreference(MIDI_IN_LATENCY, "" + value);
+  }
+
+public static String getMidiRecordSnap()
+   {
+     return getPreference(MIDI_RECORD_SNAP);
+   }
+
+public static void setMidiRecordSnap(String value)
+  {
+    setPreference(MIDI_RECORD_SNAP, value);
   }
 
 
