@@ -106,8 +106,26 @@ public static void convertToImpPart(jm.music.data.Phrase phrase,
       slot += restSlots; 
       }
 
-    // Convert each jMusic Note to an Impro-Visor Note.
+   noteArray2ImpPart(origNoteArray, time, partOut, slot, precision);
+   // returned slot is ignored.
+  }
 
+
+/**
+ * Convert notes in jm Note array to Impro-Visor notes and add them to melody part.
+ * @param origNoteArray
+ * @param time
+ * @param partOut
+ * @param slot
+ * @param precision 
+ */
+
+public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
+                                double time,
+                                MelodyPart partOut,
+                                int slot,
+                                int precision)
+  {
     for( jm.music.data.Note note : origNoteArray ) 
       {
         double origRhythmValue = note.getRhythmValue();
@@ -128,9 +146,9 @@ public static void convertToImpPart(jm.music.data.Phrase phrase,
           slot += rhythmValue;
           }
         time += origRhythmValue;
-      }
+      }  
+    return slot;
   }
-
 
 int size()
   {
