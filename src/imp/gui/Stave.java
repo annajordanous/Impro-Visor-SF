@@ -116,7 +116,6 @@ public static int upStemBracketCorrection = 15;
 private StaveActionHandler staveActionHandler;
 
 ArrayList<BeamNote> beamNotes = null;
-
 /**
  * The panel width
  */
@@ -204,27 +203,24 @@ private ChordPart chordProg;
  * The array of construction lines
  */
 protected CstrLine cstrLines[];
-
 // the last note entered, used with drawing ties
 Note lastNote = null;
-
 // The index of lastNote
 int ilast = -1;
-
 // Whether or not lastNote was beamed
 boolean lastNoteBeamed = false;
-
 // Whether or not lastNote had stem up (used for beaming)
 boolean lastNoteStemUp = true;
-
 // Whether stems are up in a beam
 boolean beamStemUp = true;
+// Next note: use for beaming
+Note nextNote = null;
 /**
  * The metre of the Stave
  */
 private int[] metre = new int[2];
 private int beatValue = BEAT;                // default for 4/4
-private int measureLength = 4 * beatValue;   // default for 4/4
+private int measureLength = 4 * beatValue;        // default for 4/4
 
 private boolean doubleBar = false;
 
@@ -2866,12 +2862,12 @@ private boolean drawPart(MelodyPart part, Graphics g)
                 // These are used to determined whether a note stands alone or has a beam.
                 // A note having a beam will not also have a flag.
 
+
                 boolean beamed = beamingNotes // beaming desired
-                        && !note.isRest()
                         && sameBeat(i, inext) // in same beat interval
                         && note.getRhythmValue() < 80 // less than quarternote
                         && nextNote != null // next note exists
-                        && !nextNote.isRest()
+                        && isaNote(nextNote.getPitch())
                         && sameStemDirection(note, nextNote, type)
                         && note.getRhythmValue() == nextNote.getRhythmValue(); // compatibility
 
@@ -2879,10 +2875,10 @@ private boolean drawPart(MelodyPart part, Graphics g)
 
                 //System.out.println("beamed = " + beamed + ", i = " + i + ", inext = " + inext + ", sameBeat = " + sameBeat(i, inext));
                 if( isNote 
-                        && !note.isRest() // May seem redundant, but this is need to control boxing
                         && i >= selectionStart
                         && i <= selectionEnd
                         && (note.firstTied() || !note.isTied())
+                        && note.getPitch() != Note.REST // May seem redundant, but this is need to control boxing
                         )
                   {
                     //System.out.println("Case A " + beamed + " " + note);
@@ -2902,7 +2898,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
                   }
 
                 lastNote = note;
-                lastNoteBeamed = beamed; // remember for next time around
+                lastNoteBeamed = isaNote(note.getPitch()) && beamed; // remember for next time around
                 lastNoteStemUp = stemUp;
                 ilast = i;
 
@@ -3321,7 +3317,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
 
     Note nextNote = part.getNote(inext);
 
-    if( beamingNotes && nextNote != null)
+    if( beamingNotes )
       {
         if( beamed
                 && isNote
@@ -3344,7 +3340,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
             int yCorrection = beamStemUp ? 0 : downStepCorrection;
             int directionalStemCorrection = beamStemUp ? upStemCorrection : downStemCorrection;
 
-            if( !beamNotes.isEmpty() && ilast >= 0 && ilast < cstrLines.length )
+            if( !beamNotes.isEmpty() )
               {
                 // Reset the x position of the last beamed note, if necessary.
                 beamNotes.get(beamNotes.size()-1).setX(cstrLines[ilast].getX() + x1Correction);
@@ -3481,7 +3477,6 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
                 beamNotes = null;
               }
           }
-
       }
 
     // sets the x2 position of the tie to be the draw position this note
