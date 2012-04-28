@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -30,7 +31,7 @@ import java.util.Random;
  * July 2007 - Sayuri Soejima
  * Reformatted by Robert Keller, 10 April 2012
  */
-public class RepresentativeChordRules
+public class RepresentativeChordRules implements Constants
 {
 
 private boolean debug = false;
@@ -115,10 +116,11 @@ public RepresentativeChordRules(int minDuration)
                         System.out.println(simplifiedPitchesRules.get(i));
                       }
                   }
-                if( MIDIBeast.getMaxChordPatternLength() != 0.0 )
+                if( MIDIBeast.getMaxChordPatternLengthInSlots() != 0 )
                   {
                     truncateChordPatterns();
                   }
+                
                 processDuplicateRules();
                 if( debug )
                   {
@@ -384,8 +386,7 @@ public void simplifyRulePitches()
 public void truncateChordPatterns()
   {
     ArrayList<String> tempRules = new ArrayList<String>();
-    double maxLength = MIDIBeast.getMaxChordPatternLength();
-    int maxSlotLength = (int) (maxLength * MIDIBeast.slotsPerMeasure / MIDIBeast.denominator);
+    int maxSlotLength = MIDIBeast.getMaxChordPatternLengthInSlots();
     for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
       {
         String currentRule = simplifiedPitchesRules.get(i);
@@ -614,7 +615,7 @@ public Double calculateBeats(String s)
             slots += MIDIBeast.getSlotValueFor(rhythmArray[j]);
           }
       }
-    return slots / MIDIBeast.beat;
+    return slots / BEAT;
   }
 
 /**

@@ -19,13 +19,16 @@
  */
 
 package imp.data;
+
+import imp.Constants;
 import java.util.ArrayList;
 
 /**
  * Utilities for MIDI
  * @author Brandy McMenamee, Jim Herold, Robert Keller
  */
-public class MIDIBeast{
+public class MIDIBeast implements Constants
+{
 
 public static final int DRUM_CHANNEL = 9;
 
@@ -60,7 +63,6 @@ public static int quarterquintuplet;
 public static int eighthquintuplet;
 public static int sixteenthquintuplet;
 public static int thirtysecondquintuplet;
-public static int beat = 120;
 public static int minPrecision = 10;
 public static int precision = minPrecision;
 private static int roundThreshold = 10; // Used in rounding bass patterns
@@ -68,7 +70,7 @@ public static int slotsPerMeasure = 480;
 public static int drumMeasureSize = 480;
 
 /**
- * Note that these lengths are in beats.
+ * Note that these lengths are in beats, but are converted to slots by getters.
  */
 private static double maxBassPatternLength = 4;  // default
 private static double maxChordPatternLength = 4; // default
@@ -329,10 +331,10 @@ public static void initialize(String midiFile, String chordFile)
         allParts.add(temp[i]);
       }
 
-    drumMeasureSize = slotsPerMeasure = (int) (beat * numerator);
+    drumMeasureSize = slotsPerMeasure = (int) (BEAT * numerator);
     if( maxDrumPatternLength != 0.0 )
       {
-        drumMeasureSize = (int) (maxDrumPatternLength * beat);
+        drumMeasureSize = (int) (maxDrumPatternLength * BEAT);
       }
 
 
@@ -407,7 +409,7 @@ public static void changeTimeSig(int num, int denom)
 
 public static void calculateNoteTypes(int denominator)
   {
-    whole = 4*beat; // I don't think this is time signature dependent! denominator * beat;
+    whole = 4*BEAT; // I don't think this is time signature dependent! denominator * beat;
 
     if( whole % 3 == 0 )
       {
@@ -704,7 +706,7 @@ public static String pitchOf(int pitchNumber)
 
 public static int findSlots(double duration, int precision)
   {
-    int slots = (int) Math.round(beat * duration / precision) * precision;
+    int slots = (int) Math.round(BEAT * duration / precision) * precision;
  //System.out.println("duration " + duration + " -> " + slots + " slots, precision " + precision);
     return slots;
   }
@@ -1019,19 +1021,19 @@ public static void setMaxDrumPatternLength(double beats)
     maxDrumPatternLength = beats;
   }
 
-public static double getMaxBassPatternLength()
+public static int getMaxBassPatternLengthInSlots()
   {
-    return maxBassPatternLength;
+    return (int)(BEAT*maxBassPatternLength);
   }
 
-public static double getMaxChordPatternLength()
+public static int getMaxChordPatternLengthInSlots()
   {
-    return maxChordPatternLength;
+    return (int)(BEAT*maxChordPatternLength);
   }
 
-public static double getMaxDrumPatternLength()
+public static int getMaxDrumPatternLengthInSlots()
   {
-    return maxDrumPatternLength;
+    return (int)(BEAT*maxDrumPatternLength);
   }
 }
 

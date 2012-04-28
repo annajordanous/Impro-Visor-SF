@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -34,7 +35,7 @@ import polya.Polylist;
  * Robert Keller refactored and reimplemented some methods, 4/10/2012
  */
 
-public class RepresentativeBassRules
+public class RepresentativeBassRules implements Constants
 {
 
 private boolean debug = false;
@@ -125,7 +126,7 @@ public RepresentativeBassRules()
                       }
                   }
 
-                if( MIDIBeast.getMaxBassPatternLength() != 0.0 )
+                if( MIDIBeast.getMaxBassPatternLengthInSlots() != 0 )
                   {
                     truncateBassPatterns();
                   }
@@ -670,8 +671,7 @@ int getBassRuleLength(String currentRule)
 private void truncateBassPatterns()
   {
     ArrayList<String> tempRules = new ArrayList<String>();
-    double maxLength = MIDIBeast.getMaxBassPatternLength();
-    int maxSlotLength = (int) (maxLength * MIDIBeast.slotsPerMeasure / MIDIBeast.denominator);
+    int maxSlotLength = MIDIBeast.getMaxBassPatternLengthInSlots();
     for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
       {
         String currentRule = simplifiedPitchesRules.get(i);
@@ -830,6 +830,8 @@ public void splitUpIntoSections()
   }
 
 /**
+ * This should be changed to use S expression parsing.
+ * 
  * This function is used in splitUpIntoSections() and calculates the beat
  * duration of a given pattern.
  *
@@ -869,7 +871,7 @@ public Double calculateBeats(String s)
             slots += MIDIBeast.getSlotValueFor(rhythmArray[j]);
           }
       }
-    return slots / MIDIBeast.beat;
+    return slots / BEAT;
   }
 
 /**

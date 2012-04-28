@@ -19,6 +19,7 @@
  */
 package imp.data;
 
+import imp.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import jm.music.data.Phrase;
@@ -31,7 +32,7 @@ import jm.util.Read;
  * Reformatted 23 April 2011, R. Keller
  */
 
-public class ImportChords
+public class ImportChords implements Constants
 {
 public static final int DRUM_CHANNEL = 9;
 
@@ -140,14 +141,6 @@ public double getDenominator()
     return MIDIBeast.denominator;
   }
 
-/**
- * @return the number of slots in one beat (one beat = one quarter note value)
- */
-
-public int getBeat()
-  {
-    return MIDIBeast.beat;
-  }
 
 /**
  * @return the array of the notes whose slot numbers have been rounded to the
@@ -338,7 +331,7 @@ public void roundDurations(int precision)
 
 public int findSlots(double duration, int precision)
   {
-    return (int) Math.round(MIDIBeast.beat * duration / precision) * precision;
+    return (int) Math.round(BEAT * duration / precision) * precision;
   }
 
 /**

@@ -243,7 +243,7 @@ public class ChordPatternExtractor implements Constants {
           
                 int slots = note.getNumberOfSlots();
                 
- 		String s = MIDIBeast.stringDuration(note.getNumberOfSlots()) + " ";
+ 		String s = Note.getDurationString(note.getNumberOfSlots()) + " ";
                 
 		String returnString;
                 
@@ -299,7 +299,7 @@ public class ChordPatternExtractor implements Constants {
 		 * @return the duration of the chord as a number of slots.
 		 */
 		public int getDurationInSlots(){
-			return (int)(duration * MIDIBeast.beat);
+			return (int)(duration * BEAT);
 		}
 
 		/**
