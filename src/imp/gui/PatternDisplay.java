@@ -122,7 +122,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo)
   public void cannotPlay(String reason)
   {
     playable = false;
-  ErrorNonModal.log("Cannot play because " + reason);
+  //ErrorNonModal.log("Cannot play because " + reason);
   }
 
   public void canPlay()
