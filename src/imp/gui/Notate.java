@@ -17141,6 +17141,7 @@ public void playAscoreWithStyle(Score score, int loopCount)
 public void stopPlayAscore()
 {
     midiSynth3.stop("stopPlayAscore called");
+    stopPlaying();
 }
 
   /**
