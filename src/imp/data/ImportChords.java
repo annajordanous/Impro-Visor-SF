@@ -277,7 +277,7 @@ public void getNoteArray()
  * slots (there are 120 slots per quarter note beat).
  */
 
-public void roundDurations(int precision)
+public void oldRoundDurations(int precision)
   {
     for( int i = 0; i < noteArray.size(); i++ )
       {
@@ -295,6 +295,39 @@ public void roundDurations(int precision)
           }
       }
   }
+
+/**
+ * New version modeled after noteArray2ImpPart in ImportMelody.
+ * @param precision 
+ */       
+        
+public void roundDurations(int precision)
+  {
+    int BEAT = 120;
+    double time = 0;
+    int slot = 0;
+    for( jm.music.data.Note note : noteArray ) 
+      {
+        double origRhythmValue = note.getRhythmValue();
+        int rhythmValue;
+        SlottedNote toBeAdded;
+         if( note.isRest() )
+          {
+          rhythmValue = precision*(int)((BEAT*(time + origRhythmValue) - slot)/precision);
+	  toBeAdded = new SlottedNote(rhythmValue, "r");
+         }
+        else
+          {
+          String pitch = MIDIBeast.pitchOf(note.getPitch());
+          rhythmValue = precision*(int)Math.round((BEAT * origRhythmValue) / precision);
+          toBeAdded = new SlottedNote(rhythmValue, pitch);
+          }
+        roundedNoteArray.add(toBeAdded);
+        slot += rhythmValue;
+        time += origRhythmValue;
+      }  
+   }  
+   
 
 /**
  *
