@@ -270,17 +270,20 @@ public void setDrumRawRules()
     ArrayList<RepresentativeDrumRules.Cluster> clusters = repDrumRules.getClusters();
     ArrayList<Object> rawRules = new ArrayList<Object>();
 
-    for( int i = 1; i < clusters.size(); i++ )
+    if( clusters != null )
       {
-        RepresentativeDrumRules.Cluster cluster = clusters.get(i);
-        String[] clusterRules = cluster.getRules();
-        //System.out.println("clusterRules " + i + " = " + clusterRules);
-        rawRules.add(clusterRules[0]);
-        for( int j = 1; j < clusterRules.length; j++ )
-          {
-            rawRules.add(makeDrumPattern(clusterRules[j] + "(weight 1))"));
-          }
-      }
+        for( int i = 1; i < clusters.size(); i++ )
+        {
+            RepresentativeDrumRules.Cluster cluster = clusters.get(i);
+            String[] clusterRules = cluster.getRules();
+            //System.out.println("clusterRules " + i + " = " + clusterRules);
+            rawRules.add(clusterRules[0]);
+            for( int j = 1; j < clusterRules.length; j++ )
+            {
+                rawRules.add(makeDrumPattern(clusterRules[j] + "(weight 1))"));
+            }
+        }
+        }
 
     rawRules.add("Duplicates");
     ArrayList<String> duplicates = MIDIBeast.repDrumRules.getDuplicates();
