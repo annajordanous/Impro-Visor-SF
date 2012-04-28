@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.Constants;
 import imp.com.OpenLeadsheetCommand;
 import imp.util.ErrorLog;
 import java.io.File;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
  * 7/21/2007
  */
 
-public class BassPatternExtractor 
+public class BassPatternExtractor implements Constants
 {
 private boolean debug = false;
 public boolean canContinue = true;
@@ -701,7 +702,7 @@ public double getDuration()
 
 public int getDurationInSlots()
   {
-    return (int) (duration * MIDIBeast.beat);
+    return (int) (duration * BEAT);
   }
 
 public void setDuration(double d)

@@ -1024,7 +1024,7 @@ public String toLeadsheet()
 
 public static String getDurationString(int value)
 {
-  if( value == 0 )
+  if( value <= 0 )
     {
         return "";
     }
