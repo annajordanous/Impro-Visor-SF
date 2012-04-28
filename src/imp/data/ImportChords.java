@@ -70,7 +70,7 @@ public ImportChords(jm.music.data.Part specifiedPart)
 
     createMainPhrase();
     getNoteArray();
-    roundDurations(MIDIBeast.precision);
+    roundDurations(MIDIBeast.getResolution());
     MIDIBeast.originalChordNotes = roundedNoteArray;
   }
 
@@ -92,7 +92,7 @@ public ImportChords()
     getchordPart();
     createMainPhrase();
     getNoteArray();
-    roundDurations(MIDIBeast.precision);
+    roundDurations(MIDIBeast.getResolution());
     MIDIBeast.originalChordNotes = roundedNoteArray;
   }
 
@@ -109,7 +109,7 @@ public ImportChords(double startBeat, double endBeat, jm.music.data.Part selecte
       }
     setPhraseStartAndEnd(startBeat, endBeat);
     getNoteArray();
-    roundDurations(MIDIBeast.precision);
+    roundDurations(MIDIBeast.getResolution());
 
     MIDIBeast.originalChordNotes = roundedNoteArray;
   }
@@ -265,29 +265,29 @@ public void getNoteArray()
     noteArray.addAll(Arrays.asList(notes));
   }
 
-/**
- * Convert the duration (rhythm value) of each note to a specific number of
- * slots (there are 120 slots per quarter note beat).
- */
-
-public void oldRoundDurations(int precision)
-  {
-    for( int i = 0; i < noteArray.size(); i++ )
-      {
-        int numberOfSlots = findSlots(noteArray.get(i).getRhythmValue(), precision);
-        String pitch = pitchOf(noteArray.get(i).getPitch());
-        SlottedNote toBeAdded = new SlottedNote(numberOfSlots, pitch);
-        roundedNoteArray.add(toBeAdded);
-      }
-    if( debug )
-      {
-        System.out.println("## After roundDurations() ## ");
-        for( int i = 0; i < roundedNoteArray.size(); i++ )
-          {
-            System.out.println(roundedNoteArray.get(i));
-          }
-      }
-  }
+///**
+// * Convert the duration (rhythm value) of each note to a specific number of
+// * slots (there are 120 slots per quarter note beat).
+// */
+//
+//public void oldRoundDurations(int precision)
+//  {
+//    for( int i = 0; i < noteArray.size(); i++ )
+//      {
+//        int numberOfSlots = findSlots(noteArray.get(i).getRhythmValue(), precision);
+//        String pitch = pitchOf(noteArray.get(i).getPitch());
+//        SlottedNote toBeAdded = new SlottedNote(numberOfSlots, pitch);
+//        roundedNoteArray.add(toBeAdded);
+//      }
+//    if( debug )
+//      {
+//        System.out.println("## After roundDurations() ## ");
+//        for( int i = 0; i < roundedNoteArray.size(); i++ )
+//          {
+//            System.out.println(roundedNoteArray.get(i));
+//          }
+//      }
+//  }
 
 /**
  * New version modeled after noteArray2ImpPart in ImportMelody.
@@ -296,7 +296,6 @@ public void oldRoundDurations(int precision)
         
 public void roundDurations(int precision)
   {
-    int BEAT = 120;
     double time = 0;
     int slot = 0;
     for( jm.music.data.Note note : noteArray ) 
