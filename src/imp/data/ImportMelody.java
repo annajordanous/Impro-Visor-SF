@@ -53,17 +53,34 @@ public ImportMelody(jm.music.data.Score score)
   }
 
 
+/**
+ * Convert the designated track of a jm Part to an Impro-Visor part
+ * @param melodyPart
+ * @param trackNumber
+ * @param partOut
+ * @param precision 
+ */
 public static void convertToImpPart(jm.music.data.Part melodyPart,
-                             int trackNumber,
-                             MelodyPart partOut,
-                             int precision,
-                             int startFactor)
+                                    int trackNumber,
+                                    MelodyPart partOut,
+                                    int precision)
   {
-    ArrayList<jm.music.data.Note> origNoteArray = new ArrayList<jm.music.data.Note>();
+     convertToImpPart(melodyPart.getPhraseArray()[trackNumber], 
+                      partOut, 
+                      precision);
+  }
+    
 
-    jm.music.data.Phrase phrase = melodyPart.getPhraseArray()[trackNumber];
-
+/*
+ * Convert a phrase of a jm Part to an Impro-Visor part
+ */
+public static void convertToImpPart(jm.music.data.Phrase phrase,
+                                    MelodyPart partOut,
+                                    int precision)
+  {
     jm.music.data.Note[] notes = phrase.getNoteArray();
+    
+    ArrayList<jm.music.data.Note> origNoteArray = new ArrayList<jm.music.data.Note>();
     
     origNoteArray.addAll(Arrays.asList(notes));
 
@@ -79,11 +96,8 @@ public static void convertToImpPart(jm.music.data.Part melodyPart,
 
     if( startTime > 0 )
       {
-        int restSlots = precision*(int)((BEAT*startTime)/precision);
-        
-        //System.out.println("restSlots = " + restSlots);
-
-        // System.out.println("restBeats = " + restSlots/FBEAT);
+      int restSlots = precision*(int)((BEAT*startTime)/precision);
+ 
       if( restSlots > 0 )
         {
         partOut.addRest(new Rest(restSlots));
