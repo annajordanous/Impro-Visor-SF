@@ -251,6 +251,12 @@ public RepresentativeChordRules(double startBeat,
                       }
                   }
 
+               // Apparently this was omitted from the original version. rk 29 April 2012
+               if( MIDIBeast.getMaxChordPatternLengthInSlots() != 0 )
+                  {
+                    truncateChordPatterns();
+                  }
+                
                 processDuplicateRules();
 
                 if( debug )

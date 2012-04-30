@@ -276,6 +276,12 @@ public RepresentativeBassRules(double startBeat,
                       }
                   }
 
+                // This was left out of the original version. rk 29 Apri 2012
+                if( MIDIBeast.getMaxBassPatternLengthInSlots() != 0 )
+                  {
+                    truncateBassPatterns();
+                  }
+
                 processDuplicateRules();
                 if( debug )
                   {
@@ -382,15 +388,15 @@ public RepresentativeBassRules(double startBeat,
 
 public ArrayList<BassPattern> getBassRules()
   {
-    adaptToNewSyntax();
-    if( debug )
-      {
-        System.out.println("\n\n### After adaptToNewSyntax() ###");
-        for( int i = 0; i < bassPatterns.size(); i++ )
-          {
-            System.out.println(bassPatterns.get(i).getRule());
-          }
-      }
+//    adaptToNewSyntax();
+//    if( debug )
+//      {
+//        System.out.println("\n\n### After adaptToNewSyntax() ###");
+//        for( int i = 0; i < bassPatterns.size(); i++ )
+//          {
+//            System.out.println(bassPatterns.get(i).getRule());
+//          }
+//      }
     return bassPatterns;
   }
 
@@ -453,7 +459,7 @@ private void adaptToNewSyntax()
           }
         simplifiedPitchesRules.set(i, newRule);
       }
-    MIDIBeast.repBassRules.setSimplifiedPitchesRules(this.simplifiedPitchesRules);
+    MIDIBeast.getRepBassRules().setSimplifiedPitchesRules(this.simplifiedPitchesRules);
   }
 
 
@@ -510,7 +516,7 @@ public static int getPatternItemDuration(Object ob)
         result = Duration.getDuration(stringOb.substring(1));
       }
 
-    //System.out.println(ob + " -> " + result);
+    //System.out.println("Duration of " + ob + " is " + result);
     return result;
   }
 
@@ -551,15 +557,16 @@ public static String truncateDurationString(String durationString, int length)
  * @return
  */
 
-public static String truncatePatternItem(Object ob, int length)
+public static Object truncatePatternItem(Object ob, int length)
   {
+    Object result = null;
     if( ob instanceof String )
       {
         String stringOb = (String) ob;
 
         char firstChar = stringOb.charAt(0);
 
-        return firstChar + truncateDurationString(stringOb.substring(1), length);
+        result = firstChar + truncateDurationString(stringOb.substring(1), length);
       }
     else if( ob instanceof Polylist )
       {
@@ -573,10 +580,14 @@ public static String truncatePatternItem(Object ob, int length)
 
         durationString = truncateDurationString(durationString, length);
 
-        return Polylist.list(first, degree, durationString).toString();
+        result = Polylist.list(first, degree, durationString).toString();
       }
-    assert false;
-    return "";
+    else
+      {
+      assert false;
+      }
+    //System.out.println("\ntruncate item " + ob + " to " + length + " = " + result.toString());
+    return result;
   }
 
 /**
@@ -596,7 +607,7 @@ public static String truncatePatternItem(Object ob, int length)
 
 public static String truncatePattern(int maxLength, String currentRule)
   {
-    //System.out.println("desired length " + maxLength + ", rule: " + currentRule + ", length " + getBassRuleLength(currentRule));
+    //System.out.println("\nTruncate pattern, desired length " + maxLength + ", rule: " + currentRule + ", length " + getBassRuleLength(currentRule));
     int residualLength = maxLength;
 
     // L is for convenience in decomposition, so don't
@@ -622,7 +633,7 @@ public static String truncatePattern(int maxLength, String currentRule)
           }
         else
           {
-            String newOb = truncatePatternItem(ob, residualLength);
+            Object newOb = truncatePatternItem(ob, residualLength);
             buffer.append(newOb);
             buffer.append(" ");
             residualLength = 0;
@@ -642,7 +653,7 @@ public static String truncatePattern(int maxLength, String currentRule)
  * @param currentRule
  * @return 
  */
-int getBassRuleLength(String currentRule)
+static int getBassRuleLength(String currentRule)
   {
     // L is for convenience in decomposition, so don't
     // need to use substring, etc.
@@ -670,6 +681,8 @@ int getBassRuleLength(String currentRule)
 
 private void truncateBassPatterns()
   {
+    //System.out.println("\nTruncateBassPatterns");
+    
     ArrayList<String> tempRules = new ArrayList<String>();
     int maxSlotLength = MIDIBeast.getMaxBassPatternLengthInSlots();
     for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
