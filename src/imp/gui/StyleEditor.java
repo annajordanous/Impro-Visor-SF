@@ -2955,7 +2955,7 @@ void playBassColumn(int colIndex)
    * Asks user for a .mid and .ls file, then runs the generating classes for bass, drums, and chords
    * and displays the results.
    */
-  public void generateStyleFromMidi()
+  public void extractStyleFromMidi()
     {
     //Prompt user to save if generating will lose changes
 //    int feedback = -1;
@@ -3095,7 +3095,7 @@ void playBassColumn(int colIndex)
         }
 
 
-      generationProgress.dispose(); // close the JDialogue that pops up to show the progress bar, once everything has been generated and displayed.            
+      extractionProgress.dispose(); // close the JDialogue that pops up to show the progress bar, once everything has been generated and displayed.            
 
       //Display any errors that occurred during generation.
       ArrayList<String> errors = MIDIBeast.errors;
@@ -3146,7 +3146,7 @@ void playBassColumn(int colIndex)
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        generatePref = new javax.swing.JDialog();
+        extractionPreferences = new javax.swing.JDialog();
         showExtractionCheckBox = new javax.swing.JCheckBox();
         chordTonesCheckBox = new javax.swing.JCheckBox();
         mergeBassRestsCheckBox = new javax.swing.JCheckBox();
@@ -3164,7 +3164,10 @@ void playBassColumn(int colIndex)
         jLabel6 = new javax.swing.JLabel();
         maxDrumPatternLengthComboBox = new javax.swing.JComboBox();
         noteResolutionComboBox = new javax.swing.JComboBox();
-        generationProgress = new javax.swing.JDialog();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        extractionProgress = new javax.swing.JDialog();
         stylePic = new javax.swing.JLabel();
         helpDialog = new javax.swing.JDialog();
         helpTabbedPane = new javax.swing.JTabbedPane();
@@ -3310,8 +3313,8 @@ void playBassColumn(int colIndex)
         copyCellsMI = new javax.swing.JMenuItem();
         pasteCellsMI = new javax.swing.JMenuItem();
         styGenerate = new javax.swing.JMenu();
-        generateMI = new javax.swing.JMenuItem();
         generatePrefMI = new javax.swing.JMenuItem();
+        generateMI = new javax.swing.JMenuItem();
         styHelp = new javax.swing.JMenu();
         styHelpMI = new javax.swing.JMenuItem();
         windowMenu = new javax.swing.JMenu();
@@ -3319,7 +3322,7 @@ void playBassColumn(int colIndex)
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
 
-        generatePref.getContentPane().setLayout(new java.awt.GridBagLayout());
+        extractionPreferences.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         showExtractionCheckBox.setSelected(true);
         showExtractionCheckBox.setText(" Show Extraction Results");
@@ -3328,7 +3331,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        generatePref.getContentPane().add(showExtractionCheckBox, gridBagConstraints);
+        extractionPreferences.getContentPane().add(showExtractionCheckBox, gridBagConstraints);
 
         chordTonesCheckBox.setSelected(true);
         chordTonesCheckBox.setText(" Bass Chord Tones");
@@ -3343,7 +3346,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        generatePref.getContentPane().add(chordTonesCheckBox, gridBagConstraints);
+        extractionPreferences.getContentPane().add(chordTonesCheckBox, gridBagConstraints);
 
         mergeBassRestsCheckBox.setText("Merge Bass Rests");
         mergeBassRestsCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -3351,7 +3354,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        generatePref.getContentPane().add(mergeBassRestsCheckBox, gridBagConstraints);
+        extractionPreferences.getContentPane().add(mergeBassRestsCheckBox, gridBagConstraints);
 
         importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importInstrumentsPanel.setMinimumSize(new java.awt.Dimension(200, 112));
@@ -3396,7 +3399,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
-        generatePref.getContentPane().add(importInstrumentsPanel, gridBagConstraints);
+        extractionPreferences.getContentPane().add(importInstrumentsPanel, gridBagConstraints);
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -3412,7 +3415,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        generatePref.getContentPane().add(cancelButton, gridBagConstraints);
+        extractionPreferences.getContentPane().add(cancelButton, gridBagConstraints);
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -3428,7 +3431,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        generatePref.getContentPane().add(okButton, gridBagConstraints);
+        extractionPreferences.getContentPane().add(okButton, gridBagConstraints);
 
         maxPatternLengthPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max Pattern Length", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         maxPatternLengthPanel.setMinimumSize(new java.awt.Dimension(200, 112));
@@ -3514,10 +3517,10 @@ void playBassColumn(int colIndex)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
-        generatePref.getContentPane().add(maxPatternLengthPanel, gridBagConstraints);
+        extractionPreferences.getContentPane().add(maxPatternLengthPanel, gridBagConstraints);
 
         noteResolutionComboBox.setMaximumRowCount(16);
-        noteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
+        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
         noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
         noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
         noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
@@ -3533,12 +3536,28 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        generatePref.getContentPane().add(noteResolutionComboBox, gridBagConstraints);
+        extractionPreferences.getContentPane().add(noteResolutionComboBox, gridBagConstraints);
 
-        generationProgress.setTitle("Extracting style...");
-        generationProgress.setAlwaysOnTop(true);
-        generationProgress.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        generationProgress.getContentPane().setLayout(new java.awt.GridBagLayout());
+        jMenu1.setText("File");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Extract from MIDI");
+        jMenuItem1.setToolTipText("Extracts patterns from a MIDI file. Requires an accompanying leadsheet file with chord names.");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
+        extractionPreferences.setJMenuBar(jMenuBar1);
+
+        extractionProgress.setTitle("Extracting style...");
+        extractionProgress.setAlwaysOnTop(true);
+        extractionProgress.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
+        extractionProgress.getContentPane().setLayout(new java.awt.GridBagLayout());
 
         stylePic.setBackground(new java.awt.Color(255, 255, 255));
         stylePic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3552,7 +3571,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.ipadx = 352;
         gridBagConstraints.ipady = 252;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        generationProgress.getContentPane().add(stylePic, gridBagConstraints);
+        extractionProgress.getContentPane().add(stylePic, gridBagConstraints);
 
         helpDialog.setTitle("Style Editor Help");
         helpDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -5244,6 +5263,16 @@ void playBassColumn(int colIndex)
         styGenerate.setText("Extract");
         styGenerate.setActionCommand("Generate");
 
+        generatePrefMI.setMnemonic('p');
+        generatePrefMI.setText("Set Extraction Preferences");
+        generatePrefMI.setActionCommand("Generation Preferences");
+        generatePrefMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generatePrefMIActionPerformed(evt);
+            }
+        });
+        styGenerate.add(generatePrefMI);
+
         generateMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         generateMI.setText("Extract Style from MIDI");
         generateMI.setActionCommand("Generate Style from MIDI");
@@ -5253,16 +5282,6 @@ void playBassColumn(int colIndex)
             }
         });
         styGenerate.add(generateMI);
-
-        generatePrefMI.setMnemonic('p');
-        generatePrefMI.setText("Extraction Preferences");
-        generatePrefMI.setActionCommand("Generation Preferences");
-        generatePrefMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generatePrefMIActionPerformed(evt);
-            }
-        });
-        styGenerate.add(generatePrefMI);
 
         styMenuBar.add(styGenerate);
 
@@ -6256,7 +6275,7 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
     }//GEN-LAST:event_formWindowClosing
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-      generatePref.setVisible(false);
+      extractionPreferences.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
@@ -6318,7 +6337,7 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
       MIDIBeast.setMaxBassPatternLength(Double.parseDouble(maxBassPatternLengthComboBox.getSelectedItem().toString()));
       MIDIBeast.setMaxChordPatternLength(Double.parseDouble(maxChordPatternLengthComboBox.getSelectedItem().toString()));
       MIDIBeast.setMaxDrumPatternLength(Double.parseDouble(maxDrumPatternLengthComboBox.getSelectedItem().toString()));
-      generatePref.setVisible(false);
+      extractionPreferences.setVisible(false);
     }//GEN-LAST:event_okButtonActionPerformed
 
     public int getNumColumns()
@@ -6371,14 +6390,14 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
   private boolean initLocationPreviewPreferences = false;
 
     private void generatePrefMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatePrefMIActionPerformed
-      generatePref.setLocationRelativeTo(this);
-      generatePref.setSize(300, 500);
-      generatePref.setTitle("Extraction Preferences");
-      generatePref.setVisible(true);
+      extractionPreferences.setLocationRelativeTo(this);
+      extractionPreferences.setSize(300, 500);
+      extractionPreferences.setTitle("Extraction Preferences");
+      extractionPreferences.setVisible(true);
     }//GEN-LAST:event_generatePrefMIActionPerformed
 
     private void generateMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateMIActionPerformed
-      generateStyleFromMidi();
+      extractStyleFromMidi();
     }//GEN-LAST:event_generateMIActionPerformed
 
     private void pasteCellsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pasteCellsMIActionPerformed
@@ -6571,6 +6590,11 @@ private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.even
     MIDIBeast.setResolution(newResolution);
   }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
 
+private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
+  {//GEN-HEADEREND:event_jMenuItem1ActionPerformed
+    extractStyleFromMidi();
+  }//GEN-LAST:event_jMenuItem1ActionPerformed
+
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6683,15 +6707,15 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem exitStyleGenMI;
     private javax.swing.JTextArea extractionList;
     private javax.swing.JScrollPane extractionPane;
+    private javax.swing.JDialog extractionPreferences;
+    private javax.swing.JDialog extractionProgress;
     private javax.swing.JTextArea fileFormatList;
     private javax.swing.JScrollPane fileFormatPane;
     private javax.swing.JScrollPane fileMenuPane;
     private javax.swing.JPanel filePanel;
     private javax.swing.JScrollPane generalPane;
     private javax.swing.JMenuItem generateMI;
-    private javax.swing.JDialog generatePref;
     private javax.swing.JMenuItem generatePrefMI;
-    private javax.swing.JDialog generationProgress;
     private javax.swing.JPanel globalAttrPanel;
     private javax.swing.JDialog helpDialog;
     private javax.swing.JTabbedPane helpTabbedPane;
@@ -6703,6 +6727,9 @@ public void unusePianoRoll()
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

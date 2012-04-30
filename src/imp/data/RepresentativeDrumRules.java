@@ -348,10 +348,13 @@ public void findTenativeRepresentatives()
                 maxDistance = distance;
               }
           }
-        selectedRules.add(maxIndex);
-        UniqueDrumPattern nextRep = uniquePatterns.get(maxIndex);
-        Cluster nextCluster = new Cluster(nextRep);
-        clusters.add(nextCluster);
+        if( maxIndex >= 0 )
+          {
+          selectedRules.add(maxIndex);
+          UniqueDrumPattern nextRep = uniquePatterns.get(maxIndex);
+          Cluster nextCluster = new Cluster(nextRep);
+          clusters.add(nextCluster);
+          }
       }
     if( debug )
       {

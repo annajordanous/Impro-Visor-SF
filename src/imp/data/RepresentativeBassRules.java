@@ -954,8 +954,11 @@ public void findTenativeRepresentatives()
                       }
                   }
               }
-            s.addCluster(s.getRule(maxIndex));
-            usedRules.add(maxIndex);
+            if( maxIndex >= 0 )
+              {
+              s.addCluster(s.getRule(maxIndex));
+              usedRules.add(maxIndex);
+              }
           }
       }
   }

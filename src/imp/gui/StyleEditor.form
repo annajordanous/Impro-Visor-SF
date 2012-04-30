@@ -2,7 +2,7 @@
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Container class="javax.swing.JDialog" name="generatePref">
+    <Container class="javax.swing.JDialog" name="extractionPreferences">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
       <SubComponents>
@@ -334,7 +334,7 @@
           <Properties>
             <Property name="maximumRowCount" type="int" value="16"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions())" type="code"/>
+              <Connection code="NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel()" type="code"/>
             </Property>
             <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="NoteResolutionInfo.getNoteResolutions()[3]" type="code"/>
@@ -363,9 +363,32 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="jMenu1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="File"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+M"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Extract from MIDI"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Extracts patterns from a MIDI file. Requires an accompanying leadsheet file with chord names."/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JDialog" name="generationProgress">
+    <Container class="javax.swing.JDialog" name="extractionProgress">
       <Properties>
         <Property name="title" type="java.lang.String" value="Extracting style..."/>
         <Property name="alwaysOnTop" type="boolean" value="true"/>
@@ -843,6 +866,16 @@
             <Property name="actionCommand" type="java.lang.String" value="Generate"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="generatePrefMI">
+              <Properties>
+                <Property name="mnemonic" type="int" value="112"/>
+                <Property name="text" type="java.lang.String" value="Set Extraction Preferences"/>
+                <Property name="actionCommand" type="java.lang.String" value="Generation Preferences"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatePrefMIActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="generateMI">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -853,16 +886,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateMIActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="generatePrefMI">
-              <Properties>
-                <Property name="mnemonic" type="int" value="112"/>
-                <Property name="text" type="java.lang.String" value="Extraction Preferences"/>
-                <Property name="actionCommand" type="java.lang.String" value="Generation Preferences"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatePrefMIActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
