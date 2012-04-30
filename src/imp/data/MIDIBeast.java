@@ -22,6 +22,7 @@ package imp.data;
 
 import imp.Constants;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Utilities for MIDI
@@ -330,20 +331,14 @@ public static void initialize(String midiFile, String chordFile)
     denominator = score.getDenominator();
 
     jm.music.data.Part[] temp = score.getPartArray();
+    
+    allParts.addAll(Arrays.asList(temp));
 
-    for( int i = 0; i < temp.length; i++ )
-      {
-        allParts.add(temp[i]);
-      }
-
-    drumMeasureSize = slotsPerMeasure = (int) (BEAT * numerator);
+    drumMeasureSize = slotsPerMeasure = BEAT * numerator;
     if( maxDrumPatternLength != 0.0 )
       {
         drumMeasureSize = (int) (maxDrumPatternLength * BEAT);
       }
-
-
-    calculateNoteTypes(denominator);
   }
 
 
@@ -357,7 +352,6 @@ public static void invoke()
     savingErrors = new ArrayList<String>();
     score = new jm.music.data.Score();
     allParts = new ArrayList<jm.music.data.Part>();
-    calculateNoteTypes(denominator);
     invoked = true;
   }
 
@@ -370,7 +364,6 @@ public static void invoke()
 public static void changeDenomSig(int denom)
   {
     denominator = denom;
-    calculateNoteTypes(denominator);
   }
 
 
@@ -382,7 +375,6 @@ public static void changeDenomSig(int denom)
 public static void changeNumSig(int num)
   {
     numerator = num;
-    calculateNoteTypes(denominator);
   }
 
 
@@ -395,133 +387,9 @@ public static void changeTimeSig(int num, int denom)
   {
     numerator = num;
     denominator = denom;
-    calculateNoteTypes(denominator);
   }
 
 
-/**
- * Not sure that whole, etc. are used any longer, nor that precision should be
- * changed in this way.
- * 
- * Given a time signature and the number of slots specified per beat, this
- * method calulates how many slots each type of note should get. If a note type
- * is note possible it is assigned a value of -1.
- *
- * This and the next method were fouling on half note triplets and quarter note
- * triplets. I changed them on 12/1/2007. However, the whole thing should be
- * checked over carefully. RK
- */
-
-public static void calculateNoteTypes(int denominator)
-  {
-    whole = 4*BEAT; // I don't think this is time signature dependent! denominator * beat;
-
-    if( whole % 3 == 0 )
-      {
-        halftriplet = whole / 3;
-        precision = halftriplet;
-      }
-    else
-      {
-        halftriplet = -1;
-      }
-
-    half = whole / 2;
-
-    if( half % 3 == 0 )
-      {
-        quartertriplet = half / 3;
-        precision = quartertriplet;
-      }
-    else
-      {
-        quartertriplet = -1;
-      }
-
-    quarter = whole / 4;
-
-    precision = eighth = whole / 8;
-
-    if( quarter % 3 == 0 )
-      {
-        eighthtriplet = quarter / 3;
-        precision = eighthtriplet;
-      }
-    else
-      {
-        eighthtriplet = -1;
-      }
-
-    if( whole % 16 == 0 )
-      {
-        sixteenth = whole / 16;
-        precision = sixteenth;
-      }
-    else
-      {
-        sixteenth = -1;
-      }
-
-    if( eighth % 3 == 0 )
-      {
-        sixteenthtriplet = eighth / 3;
-        precision = sixteenthtriplet;
-      }
-    else
-      {
-        sixteenthtriplet = -1;
-      }
-
-    if( whole % 32 == 0 )
-      {
-        thirtysecond = whole / 32;
-        precision = thirtysecond;
-      }
-    else
-      {
-        thirtysecond = -1;
-      }
-
-    if( sixteenth % 3 == 0 )
-      {
-        thirtysecondtriplet = sixteenth / 3;
-        precision = sixteenth;
-      }
-    else
-      {
-        thirtysecondtriplet = -1;
-      }
-
-    if( whole % 64 == 0 )
-      {
-        sixtyfourth = whole / 64;
-        precision = whole;
-      }
-    else
-      {
-        sixtyfourth = -1;
-      }
-
-    if( thirtysecond % 3 == 0 )
-      {
-        sixtyfourthtriplet = thirtysecond / 3;
-        precision = sixtyfourthtriplet;
-      }
-    else
-      {
-        sixtyfourthtriplet = -1;
-      }
-    
-    if( precision < minPrecision )
-      {
-        precision = minPrecision;
-      }
-  }
-
-public static void calculateNoteTypes()
-  {
-    calculateNoteTypes(denominator);
-  }
 
 
 /**

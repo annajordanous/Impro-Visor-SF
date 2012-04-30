@@ -99,8 +99,7 @@ public void scoreToMelodies()
     //System.out.println("score from MIDI = " + score);
   if( score != null )
     {
-    MIDIBeast.setResolution(resolution);
-    MIDIBeast.calculateNoteTypes(score.getDenominator());
+    //MIDIBeast.setResolution(resolution);
 
     allParts = new ArrayList<jm.music.data.Part>();
 
