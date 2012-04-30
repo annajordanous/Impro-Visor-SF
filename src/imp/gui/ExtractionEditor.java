@@ -47,6 +47,7 @@ import polya.Polylist;
 public class ExtractionEditor extends javax.swing.JDialog implements Constants
 {
 public static final int DRUM_CHANNEL = 9;
+public static final String DRUM_NAMES = "DRUMS";
 
 Notate notate;
 StyleEditor styleEditor;
@@ -156,7 +157,7 @@ public void setPotentialParts()
       {
         if( MIDIBeast.allParts.get(i).getChannel() == DRUM_CHANNEL )
           {
-            potentialInstruments.add("DRUMS");
+            potentialInstruments.add(DRUM_NAMES);
           }
         else
           {
@@ -641,6 +642,8 @@ public void playRawRule()
         doubleDrumLength = new javax.swing.JCheckBox();
         potentialInstrumentsJList = new javax.swing.JList();
         noteResolutionComboBox = new javax.swing.JComboBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         selectPatternBtn = new javax.swing.JButton();
         leftPlayPatternBtn = new javax.swing.JButton();
         removePatternBtn = new javax.swing.JButton();
@@ -718,7 +721,7 @@ public void playRawRule()
         optionPanel.add(maximumClustersLabel, gridBagConstraints);
 
         startBeatLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        startBeatLabel.setText("Start Beat: ");
+        startBeatLabel.setText("Start after beats:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -735,7 +738,7 @@ public void playRawRule()
         gridBagConstraints.weightx = 0.5;
         optionPanel.add(endBeatLabel, gridBagConstraints);
 
-        startBeatTextField.setText("8.0");
+        startBeatTextField.setText("8");
         startBeatTextField.setToolTipText("The starting beat from which patterns will be extracted");
         startBeatTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -763,7 +766,7 @@ public void playRawRule()
         gridBagConstraints.weightx = 0.5;
         optionPanel.add(endBeatTextField, gridBagConstraints);
 
-        numberOfClustersSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
+        numberOfClustersSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 1, 99, 1));
         numberOfClustersSpinner.setToolTipText("The number of clusters sought in pattern extraction");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -774,7 +777,7 @@ public void playRawRule()
         gridBagConstraints.weightx = 0.5;
         optionPanel.add(numberOfClustersSpinner, gridBagConstraints);
 
-        reExtractBtn.setText("Re-Extract Patterns");
+        reExtractBtn.setText("Re-Extract  Patterns");
         reExtractBtn.setToolTipText("Extract the patterns for this window using new parameters.");
         reExtractBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -784,7 +787,7 @@ public void playRawRule()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         optionPanel.add(reExtractBtn, gridBagConstraints);
 
@@ -819,8 +822,9 @@ public void playRawRule()
         optionPanel.add(potentialInstrumentsJList, gridBagConstraints);
 
         noteResolutionComboBox.setMaximumRowCount(16);
-        noteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
-        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
+        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
         noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
         noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
@@ -834,7 +838,12 @@ public void playRawRule()
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         optionPanel.add(noteResolutionComboBox, gridBagConstraints);
+
+        jScrollPane1.setViewportView(jTextPane1);
+
+        optionPanel.add(jScrollPane1, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -1176,6 +1185,7 @@ private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.even
   {//GEN-HEADEREND:event_noteResolutionComboBoximportMidiNoteResolutionChanged
     int newResolution = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
     MIDIBeast.setResolution(newResolution);
+    NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
   }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
 
 
@@ -1186,6 +1196,8 @@ private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.even
     private javax.swing.JCheckBox doubleDrumLength;
     private javax.swing.JLabel endBeatLabel;
     private javax.swing.JTextField endBeatTextField;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JButton leftPlayPatternBtn;
     private javax.swing.JLabel maximumClustersLabel;
     private javax.swing.JComboBox noteResolutionComboBox;

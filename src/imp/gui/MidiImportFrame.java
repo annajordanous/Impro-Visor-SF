@@ -81,7 +81,7 @@ public MidiImportFrame(Notate notate)
     
     volumeSpinner.setVisible(false); // volume setting doesn't work yet
     
-    noteResolutionComboBox.setSelectedIndex(INITIAL_RESOLUTION_COMBO);
+    noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
     
     midiDirectory = ImproVisor.getMidiDirectory();
   }
@@ -346,15 +346,16 @@ public String getFilenameDisplay()
         midiImportButtonPanel.add(meterSpinner, gridBagConstraints);
 
         noteResolutionComboBox.setMaximumRowCount(16);
-        noteResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(NoteResolutionInfo.getNoteResolutions()));
-        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
+        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
         noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
         noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
         noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
         noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importMidiNoteResolutionChanged(evt);
+                noteResolutionComboBoxChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -405,10 +406,11 @@ private void importTrackToLeadsheetActionPerformed(java.awt.event.ActionEvent ev
     importSelectedTrack();
   }//GEN-LAST:event_importTrackToLeadsheetActionPerformed
 
-private void importMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_importMidiNoteResolutionChanged
-  {//GEN-HEADEREND:event_importMidiNoteResolutionChanged
+private void noteResolutionComboBoxChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChanged
+  {//GEN-HEADEREND:event_noteResolutionComboBoxChanged
+    NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
     reloadMenu();
-  }//GEN-LAST:event_importMidiNoteResolutionChanged
+  }//GEN-LAST:event_noteResolutionComboBoxChanged
 
 private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
   {//GEN-HEADEREND:event_importedTrackListMouseClicked
@@ -468,8 +470,9 @@ private void setJmVolume()
 
 private void setResolution()
   {
-    int newResolution = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
-    midiImport.setResolution(newResolution);
+    int index = noteResolutionComboBox.getSelectedIndex();
+    NoteResolutionComboBoxModel.setSelectedIndex(index);
+    midiImport.setResolution(NoteResolutionComboBoxModel.getResolution());
   }
 
 /**
