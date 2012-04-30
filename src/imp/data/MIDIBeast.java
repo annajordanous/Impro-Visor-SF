@@ -87,9 +87,9 @@ public static ArrayList<String> originalChordRules = new ArrayList<String>();
 public static ArrayList<String> errors;
 public static ArrayList<String> savingErrors;
 public static ArrayList<SlottedNote> originalChordNotes;
-public static RepresentativeBassRules repBassRules;
-public static RepresentativeDrumRules repDrumRules;
-public static RepresentativeChordRules repChordRules;
+private static RepresentativeBassRules repBassRules;
+private static RepresentativeDrumRules repDrumRules;
+private static RepresentativeChordRules repChordRules;
 //Generation Preferences
 public static boolean showExtraction = true;
 public static boolean chordTones = true;
@@ -1039,6 +1039,36 @@ public static int getMaxChordPatternLengthInSlots()
 public static int getMaxDrumPatternLengthInSlots()
   {
     return (int)(BEAT*maxDrumPatternLength);
+  }
+
+public static RepresentativeBassRules getRepBassRules()
+  {
+    return repBassRules;
+  }
+
+public static RepresentativeChordRules getRepChordRules()
+  {
+    return repChordRules;
+  }
+
+public static RepresentativeDrumRules getRepDrumRules()
+  {
+    return repDrumRules;
+  }
+
+public static void setRepBassRules(RepresentativeBassRules rules)
+  {
+    repBassRules = rules;
+  }
+
+public static void setRepChordRules(RepresentativeChordRules rules)
+  {
+    repChordRules = rules;
+  }
+
+public static void setRepDrumRules(RepresentativeDrumRules rules)
+  {
+    repDrumRules = rules;
   }
 
 }

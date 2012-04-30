@@ -121,7 +121,7 @@ public ExtractionEditor(java.awt.Frame parent,
             setTitle("Bass Extraction from " + styleEditor.getTitle());
             setBassDefaults();
             doubleDrumLength.setVisible(false);
-            repBassRules = MIDIBeast.repBassRules;
+            repBassRules = MIDIBeast.getRepBassRules();
             setBassSelectedRules();
             setBassRawRules();
             break;
@@ -132,7 +132,7 @@ public ExtractionEditor(java.awt.Frame parent,
             setTitle("Chord Extraction from " + styleEditor.getTitle());
             setChordDefaults();
             doubleDrumLength.setVisible(false);
-            repChordRules = MIDIBeast.repChordRules;
+            repChordRules = MIDIBeast.getRepChordRules();
             setChordRawRules();
             setChordSelectedRules();
             break;
@@ -142,7 +142,7 @@ public ExtractionEditor(java.awt.Frame parent,
             tempoVolumeLabel.setBackground(Color.yellow);
             setTitle("Drum Extraction from " + styleEditor.getTitle());
             setDrumDefaults();
-            repDrumRules = MIDIBeast.repDrumRules;
+            repDrumRules = MIDIBeast.getRepDrumRules();
             setDrumRawRules();
             setDrumSelectedRules();
             break;
@@ -286,7 +286,7 @@ public void setDrumRawRules()
         }
 
     rawRules.add("Duplicates");
-    ArrayList<String> duplicates = MIDIBeast.repDrumRules.getDuplicates();
+    ArrayList<String> duplicates = MIDIBeast.getRepDrumRules().getDuplicates();
     for( int i = 0; i < duplicates.size(); i++ )
       {
         rawRules.add(makeDrumPattern(duplicates.get(i) + "(weight 1))"));
@@ -974,17 +974,17 @@ private void copySelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//G
         {
           case BASS:
               MIDIBeast.selectedBassRules = selectedBassRules;
-              styleEditor.loadBassPatterns(MIDIBeast.repBassRules.getBassRules());
+              styleEditor.loadBassPatterns(MIDIBeast.getRepBassRules().getBassRules());
               break;
               
           case CHORD:
               MIDIBeast.selectedChordRules = selectedChordRules;
-              styleEditor.loadChordPatterns(MIDIBeast.repChordRules.getChordRules());
+              styleEditor.loadChordPatterns(MIDIBeast.getRepChordRules().getChordRules());
               break;
               
           case DRUM:
               MIDIBeast.selectedDrumRules = selectedDrumRules;
-              styleEditor.loadDrumPatterns(MIDIBeast.repDrumRules.getRepresentativePatterns());
+              styleEditor.loadDrumPatterns(MIDIBeast.getRepDrumRules().getRepresentativePatterns());
               break;
         }
       
@@ -1119,35 +1119,35 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
         {
           case BASS:
               
-              MIDIBeast.repBassRules = 
+              repBassRules = 
                       new RepresentativeBassRules(startBeat, 
                                                   endBeat, 
                                                   maxNumberOfClusters, 
                                                   selectedPart);
-              repBassRules = MIDIBeast.repBassRules;
+              MIDIBeast.setRepBassRules(repBassRules);
               setBassRawRules();
               setBassSelectedRules();
               break;
  
           case CHORD:
-              MIDIBeast.repChordRules = 
+              repChordRules = 
                       new RepresentativeChordRules(startBeat, 
                                                    endBeat, 
                                                    maxNumberOfClusters, 
                                                    selectedPart, 
                                                    minDuration);
-              repChordRules = MIDIBeast.repChordRules;
+              MIDIBeast.setRepChordRules(repChordRules);
               setChordRawRules();
               setChordSelectedRules();
               break;
               
          case DRUM:
-               MIDIBeast.repDrumRules = 
+               repDrumRules = 
                       new RepresentativeDrumRules(startBeat, 
                                                   endBeat, 
                                                   maxNumberOfClusters, 
                                                   selectedPart);
-              repDrumRules = MIDIBeast.repDrumRules;
+              MIDIBeast.setRepDrumRules(repDrumRules);
               setDrumRawRules();
               setDrumSelectedRules();
               break;

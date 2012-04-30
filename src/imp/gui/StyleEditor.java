@@ -3016,7 +3016,7 @@ void playBassColumn(int colIndex)
         try
           {
           RepresentativeDrumRules d = new RepresentativeDrumRules();
-          MIDIBeast.repDrumRules = d;
+          MIDIBeast.setRepDrumRules(d);
           if( MIDIBeast.showExtraction )
             {
             drumExtraction = 
@@ -3044,7 +3044,7 @@ void playBassColumn(int colIndex)
         try
           {
           RepresentativeBassRules r = new RepresentativeBassRules();
-          MIDIBeast.repBassRules = r;
+          MIDIBeast.setRepBassRules(r);
           if( MIDIBeast.showExtraction )
             {
             bassExtraction = 
@@ -3057,7 +3057,7 @@ void playBassColumn(int colIndex)
             }
           else
             {
-            loadBassPatterns(MIDIBeast.repBassRules.getBassRules());
+            loadBassPatterns(MIDIBeast.getRepBassRules().getBassRules());
             }
           }
         catch( Exception e )
@@ -3072,7 +3072,7 @@ void playBassColumn(int colIndex)
         try
           {
           RepresentativeChordRules c = new RepresentativeChordRules(minDuration);
-          MIDIBeast.repChordRules = c;
+          MIDIBeast.setRepChordRules(c);
           if( MIDIBeast.showExtraction )
             {
             chordExtraction = 
