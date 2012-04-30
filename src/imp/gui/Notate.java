@@ -12195,14 +12195,13 @@ private MelodyPart makeLick(Polylist rhythm)
   }
     
 
-private void putLick(MelodyPart lick)
+public void putLick(MelodyPart lick)
   {
     if( lick == null )
       {
         // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
         return;
       }
-
     // Figure out which enharmonics to use based on
     // the current chord and key signature.
     setLickEnharmonics(lick);
@@ -12232,6 +12231,7 @@ private void putLick(MelodyPart lick)
 public MelodyPart generateLick(Polylist rhythm)
   {
     MelodyPart lick = makeLick(rhythm);
+    //System.out.println("rhythm = " + rhythm + "\nlick = " + lick);
     if( lickgenFrame.useHeadSelected() )
       {
         adjustLickToHead(lick);
