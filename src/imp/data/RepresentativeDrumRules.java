@@ -177,21 +177,36 @@ public RepresentativeDrumRules(double startBeat,
                 clusters = new ArrayList<Cluster>();
                 //rulesWithoutDuplicates = new ArrayList<String>();
                 uniqueRuleIndex = new ArrayList<Integer>();
+// This was the original, which wasn't working (no patterns returned).
+// Just taking a stab at the code that follows, which is what is in the other
+// constructor.
+//                processDuplicates();
+//                if( uniqueRuleIndex.size() > 0 )
+//                  {
+//                    findTenativeRepresentatives();
+//                    cluster();
+//                    findRepresentatives();
+//                representativeRules = new ArrayList<String>();
+//                createRepresentativePatterns();
+//                  }
+//                turnRepresentativesIntoObjects();
+                
                 processDuplicates();
-                if( uniqueRuleIndex.size() > 0 )
-                  {
-                    findTenativeRepresentatives();
-                    cluster();
-                    findRepresentatives();
-                  }
+                clusters = new ArrayList<Cluster>();
+                findTenativeRepresentatives();
+                cluster();
+                findRepresentatives();
+                representativeRules = new ArrayList<String>();
+                createRepresentativePatterns();
                 turnRepresentativesIntoObjects();
               }
           }
       }
     catch( Exception e )
       {
-        MIDIBeast.addError("Sorry, there was an unknown internal error while generating "
-                + "the drum patterns.");
+        ErrorLog.log(ErrorLog.SEVERE, 
+                     "Sorry, there was an unknown internal error while generating "
+                  + "the drum patterns.");
         e.printStackTrace();
       }
   }
@@ -528,6 +543,10 @@ public String[] getRules()
     // Here is where serious problems occurred. 
     // former rulesWithoutDuplicates was always null.
     // switched to using patterns instead.
+    
+    // rk 29 April 2012: Also, invalid drum numbers are being
+    // found, as if the incoming patterns are corrupted.
+    // This seems to occur only on re-Extraction, so far.
 
     String[] toReturn = new String[patterns.size()];
     toReturn[0] = "Cluster";
@@ -536,7 +555,6 @@ public String[] getRules()
         toReturn[i] = "(drum-pattern \n";
 
         UniqueDrumPattern pattern = patterns.get(i);
-        //System.out.println("uniqueDrumPattern " + i + " = " + pattern);
 
         String[] split = pattern.toString().split("\n"); // What if
 
@@ -545,9 +563,19 @@ public String[] getRules()
             int firstParensIndex = split[j].indexOf('(');
             int lastParensIndex = split[j].indexOf(')');
             String drumNumber = split[j].substring(firstParensIndex + 1, lastParensIndex);
-            String drumString = split[j].substring(lastParensIndex + 1);
-            toReturn[i] += "(drum " + drumNumber + " " + drumString + ")\n";
+            if( MIDIBeast.drumInstrumentNumberValid(Integer.parseInt(drumNumber)) )
+              {
+              String drumString = split[j].substring(lastParensIndex + 1);
+              toReturn[i] += "(drum " + drumNumber + " " + drumString + ")\n";
+              }
+            else
+              {
+                System.err.println("Caution: non-GM percussion number " + drumNumber + " detected in pattern");
+              }
           }
+        
+       //System.out.println("uniqueDrumPattern " + i + " = " + pattern + " converts to " + toReturn[i]);
+
       }
 
     return toReturn;
@@ -560,7 +588,7 @@ public String[] getRules()
  */
 public void turnRepresentativesIntoObjects()
   {
-
+    //System.out.println("representativeRules = " + representativeRules);
     drumPatterns = new ArrayList<DrumPattern>();
     for( int i = 0; i < representativeRules.size(); i++ )
       {

@@ -129,6 +129,9 @@ public String getPattern(boolean requireChecked)
             // table column, rather than going through drumRuleHolder.
 
             int instrumentNumber = d.getInstrumentNumber();
+            
+            if( MIDIBeast.drumInstrumentNumberValid(instrumentNumber) )
+              {
 
             //System.out.println("drumrule = " + instrumentNumber + " " + d.getRule() + styleEditor.isDrumInstrumentNumberIncluded(instrumentNumber));
 
@@ -144,6 +147,11 @@ public String getPattern(boolean requireChecked)
                   {
                     ErrorLog.log(ErrorLog.WARNING, "error in drum rule: " + rep);
                   }
+              }
+              }
+            else
+              {
+                System.err.println("Ignoring non-GM percusssion # " + instrumentNumber);
               }
           }
         catch( ClassCastException ex )

@@ -96,9 +96,9 @@ public DrumRuleRep(Polylist raw)
     
      Object first = raw.first();
     
-    if( first instanceof Long )
+    if( first instanceof Number )
       {
-        drumNumber = ((Long) first).intValue();
+        drumNumber = ((Number) first).intValue();
       }
     else if( first instanceof String )
       {

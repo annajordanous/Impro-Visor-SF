@@ -533,7 +533,7 @@ public static String stringDuration(int numberOfSlots)
   {
      if( numberOfSlots <= 0 )
       {
-    System.out.print("stringDuration(" + numberOfSlots +")");
+       //System.out.print("stringDuration(" + numberOfSlots +")");
        String result = "";
         System.out.println("exception noted, empty string returned" + result);
         new Exception("non-positive duration").printStackTrace();
@@ -548,96 +548,20 @@ public static String stringDuration(int numberOfSlots)
 
     //System.out.println(" = " + result);
     return buffer.toString().substring(1);
-
-
-    /* This is the version from Brandy and Jim. It sometimes hangs.
-     * It would have been better to exploit the existing technology in
-     * Note.getDurationString.
-     * 
-    String s = "";
-    if( numberOfSlots == 0 )
-      {
-        return "";
-      }
-    while( numberOfSlots > 0 )
-      {
-        if( numberOfSlots >= whole )
-          {
-            s += "1+";
-            numberOfSlots -= whole;
-          }
-        else if( numberOfSlots >= half && half != -1 )
-          {
-            s += "2+";
-            numberOfSlots -= half;
-          }
-        else if( numberOfSlots >= halftriplet && halftriplet != -1 )
-          {
-            s += "2/3+";
-            numberOfSlots -= halftriplet;
-          }
-        else if( numberOfSlots >= quarter && quarter != -1 )
-          {
-            s += "4+";
-            numberOfSlots -= quarter;
-          }
-        else if( numberOfSlots >= quartertriplet && quartertriplet != -1 )
-          {
-            s += "4/3+";
-            numberOfSlots -= quartertriplet;
-          }
-        else if( numberOfSlots >= eighth && eighth != -1 )
-          {
-            s += "8+";
-            numberOfSlots -= eighth;
-          }
-        else if( numberOfSlots >= eighthtriplet && eighthtriplet != -1 )
-          {
-            s += "8/3+";
-            numberOfSlots -= eighthtriplet;
-          }
-        else if( numberOfSlots >= sixteenth && sixteenth != -1 )
-          {
-            s += "16+";
-            numberOfSlots -= sixteenth;
-          }
-        else if( numberOfSlots >= sixteenthtriplet && sixteenthtriplet != -1 )
-          {
-            s += "16/3+";
-            numberOfSlots -= sixteenthtriplet;
-          }
-        else if( numberOfSlots >= thirtysecond && thirtysecond != -1 )
-          {
-            s += "32+";
-            numberOfSlots -= thirtysecond;
-          }
-        else if( numberOfSlots >= thirtysecondtriplet && thirtysecondtriplet != -1 )
-          {
-            s += "32/3+";
-            numberOfSlots -= thirtysecondtriplet;
-          }
-        else if( numberOfSlots >= sixtyfourth && sixtyfourth != -1 )
-          {
-            s += "64+";
-            numberOfSlots -= sixtyfourth;
-          }
-        else if( numberOfSlots >= sixtyfourthtriplet && sixtyfourthtriplet != -1 )
-          {
-            s += "64/3+";
-            numberOfSlots -= sixtyfourthtriplet;
-          }
-      }
-    String result = s.substring(0, s.length() - 1);
-    
-    System.out.println(" = " + result);
-    return result;
-    *
-    */
-
   }
 
 
 
+public static boolean drumInstrumentNumberValid(int number)
+  {
+  int index = number-35;
+    
+  if( index < 0 || index >= spacelessDrumName.length )
+    {
+      return false;
+    }
+  return true;
+  }
 
 public static String spacelessDrumNameFromNumber(int number)
   {
@@ -645,7 +569,7 @@ public static String spacelessDrumNameFromNumber(int number)
     
     if( index < 0 || index >= spacelessDrumName.length )
       {
-        return "Percussion (" + number + ")";
+        return "#" + number + "_not_GM";
       }
     
     return spacelessDrumName[index];
