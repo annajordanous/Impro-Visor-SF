@@ -868,8 +868,12 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="generatePrefMI">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+P"/>
+                </Property>
                 <Property name="mnemonic" type="int" value="112"/>
                 <Property name="text" type="java.lang.String" value="Set Extraction Preferences"/>
+                <Property name="toolTipText" type="java.lang.String" value="Sets preferences for extracting style patterns from MIDI file."/>
                 <Property name="actionCommand" type="java.lang.String" value="Generation Preferences"/>
               </Properties>
               <Events>
@@ -882,6 +886,7 @@
                   <KeyStroke key="Ctrl+M"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Extract Style from MIDI"/>
+                <Property name="toolTipText" type="java.lang.String" value="Extracts style patterns from MIDI file, in conjunction with a leadsheet file containing the corresponding chords."/>
                 <Property name="actionCommand" type="java.lang.String" value="Generate Style from MIDI"/>
               </Properties>
               <Events>

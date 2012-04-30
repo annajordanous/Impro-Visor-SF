@@ -5263,8 +5263,10 @@ void playBassColumn(int colIndex)
         styGenerate.setText("Extract");
         styGenerate.setActionCommand("Generate");
 
+        generatePrefMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         generatePrefMI.setMnemonic('p');
         generatePrefMI.setText("Set Extraction Preferences");
+        generatePrefMI.setToolTipText("Sets preferences for extracting style patterns from MIDI file.");
         generatePrefMI.setActionCommand("Generation Preferences");
         generatePrefMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5275,6 +5277,7 @@ void playBassColumn(int colIndex)
 
         generateMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         generateMI.setText("Extract Style from MIDI");
+        generateMI.setToolTipText("Extracts style patterns from MIDI file, in conjunction with a leadsheet file containing the corresponding chords.");
         generateMI.setActionCommand("Generate Style from MIDI");
         generateMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -6587,7 +6590,7 @@ private void trackWithPianoRollActionPerformed(java.awt.event.ActionEvent evt)//
 private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
   {//GEN-HEADEREND:event_noteResolutionComboBoximportMidiNoteResolutionChanged
     int newResolution = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
-    MIDIBeast.setResolution(newResolution);
+    NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
   }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
 
 private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
