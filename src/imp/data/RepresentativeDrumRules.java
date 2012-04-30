@@ -172,11 +172,11 @@ public RepresentativeDrumRules(double startBeat,
                   {
                     System.out.println("## BEGINNING REPRESENTATIVE DRUM RULES ##");
                   }
-                this.originalRules = dpg.getPatterns();
-                representativeRules = new ArrayList<String>();
-                clusters = new ArrayList<Cluster>();
+                originalRules = dpg.getPatterns();
+                //representativeRules = new ArrayList<String>();
+                //clusters = new ArrayList<Cluster>();
                 //rulesWithoutDuplicates = new ArrayList<String>();
-                uniqueRuleIndex = new ArrayList<Integer>();
+                //uniqueRuleIndex = new ArrayList<Integer>();
 // This was the original, which wasn't working (no patterns returned).
 // Just taking a stab at the code that follows, which is what is in the other
 // constructor.
@@ -272,38 +272,38 @@ public void processDuplicates()
       }
   }
 
-/**
- * @param String the rule from the ArrayList originalRules that is to be added
- * @param int the weight of the rule This method takes the two parameters and
- * puts them in a String that exactly matches the drum rule form that improvisor
- * is expecting
- */
-
-public void addRule(String rule, float weight)
-  {
-    if( debug )
-      {
-        System.out.println("Adding: " + rule);
-      }
-
-    String s = "";
-    String[] split = rule.split("\n");
-    for( int i = 0; i < split.length; i++ )
-      {
-        if( split[i].substring(split[i].indexOf(')') + 1).equals("R1 ") )
-          {
-            continue;
-          }
-        s += split[i].substring(split[i].indexOf('(') + 1, split[i].indexOf(')')) + " ";
-        s += split[i].substring(split[i].indexOf(')') + 1, split[i].length() - 1) + "\n";
-      }
-    s += String.valueOf((weight + 1));
-    if( debug )
-      {
-        System.out.println("Now represented as: " + s);
-      }
-    representativeRules.add(s);
-  }
+///**
+// * @param String the rule from the ArrayList originalRules that is to be added
+// * @param int the weight of the rule This method takes the two parameters and
+// * puts them in a String that exactly matches the drum rule form that improvisor
+// * is expecting
+// */
+//
+//public void addRule(String rule, float weight)
+//  {
+//    if( debug )
+//      {
+//        System.out.println("Adding: " + rule);
+//      }
+//
+//    String s = "";
+//    String[] split = rule.split("\n");
+//    for( int i = 0; i < split.length; i++ )
+//      {
+//        if( split[i].substring(split[i].indexOf(')') + 1).equals("R1 ") )
+//          {
+//            continue;
+//          }
+//        s += split[i].substring(split[i].indexOf('(') + 1, split[i].indexOf(')')) + " ";
+//        s += split[i].substring(split[i].indexOf(')') + 1, split[i].length() - 1) + "\n";
+//      }
+//    s += String.valueOf((weight + 1));
+//    if( debug )
+//      {
+//        System.out.println("Now represented as: " + s);
+//      }
+//    representativeRules.add(s);
+//  }
 
 /**
  * Each cluster is determined by an initial representative. Once these
