@@ -1111,13 +1111,14 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
       double startBeat = Double.parseDouble(startBeatTextField.getText());
 
       Integer maxNumberOfClusters = (Integer) numberOfClustersSpinner.getValue();
+      int selectedIndex;
+      jm.music.data.Part selectedPart;
       
-      int selectedIndex = potentialInstrumentsJList.getSelectedIndex();
-      jm.music.data.Part selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
-     
       switch( type )
         {
           case BASS:
+              selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+              selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
               
               repBassRules = 
                       new RepresentativeBassRules(startBeat, 
@@ -1130,6 +1131,9 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
               break;
  
           case CHORD:
+              selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+              selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
+
               repChordRules = 
                       new RepresentativeChordRules(startBeat, 
                                                    endBeat, 
@@ -1142,7 +1146,11 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
               break;
               
          case DRUM:
-               repDrumRules = 
+               // Drum selection only makes sense for drum selection!!
+               potentialInstrumentsJList.setSelectedValue("DRUMS", true);
+              selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+              selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
+              repDrumRules = 
                       new RepresentativeDrumRules(startBeat, 
                                                   endBeat, 
                                                   maxNumberOfClusters, 
