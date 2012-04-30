@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import imp.util.ErrorLog;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -374,92 +375,25 @@ public RepresentativeBassRules(double startBeat,
               {
                 System.out.println(i + 1 + ": " + err.get(i));
               }
-
-
           }
       }
     catch( Exception e )
       {
+        ErrorLog.log(ErrorLog.WARNING,
+                    "Sorry, there was an unknown internal error while generating "
+                  + "the bass patterns.");
         e.printStackTrace();
-        MIDIBeast.addError("Sorry, there was an unknown internal error while generating "
-                + "the bass patterns.");
       }
   }
 
 public ArrayList<BassPattern> getBassRules()
   {
-//    adaptToNewSyntax();
-//    if( debug )
-//      {
-//        System.out.println("\n\n### After adaptToNewSyntax() ###");
-//        for( int i = 0; i < bassPatterns.size(); i++ )
-//          {
-//            System.out.println(bassPatterns.get(i).getRule());
-//          }
-//      }
     return bassPatterns;
   }
 
 public void setSimplifiedPitchesRules(ArrayList<String> s)
   {
     this.simplifiedPitchesRules = s;
-  }
-
-/**
- * At the end of the project, the syntax for an X(5)4 rule changed to (X 5 4).
- * This method changes all "X" items in bassPatterns for the viewing, editing,
- * saving stage of the process WARNING: THIS METHOD ASSUMES THAT PITCH
- * INFORMATION HAS BEEN SIMPLIFIED BY simplifyRulePitches()
- *
- */
-private void adaptToNewSyntax()
-  {
-    ArrayList<BassPattern> adapted = new ArrayList<BassPattern>();
-    for( int i = 0; i < bassPatterns.size(); i++ )
-      {
-        BassPattern cur = bassPatterns.get(i);
-        String adaptThis = cur.getRule();
-        String[] split = adaptThis.split(" ");
-        String newRule = "";
-
-        for( int j = 0; j < split.length; j++ )
-          {
-            String element = split[j];
-            String fixedEle = element;
-            if( element.charAt(0) == 'X' )
-              {
-                int indexClosed = element.indexOf(")");
-                fixedEle = "(X " + element.substring(2, indexClosed) + " " + element.substring(indexClosed + 1, element.length()) + ")";
-              }
-            newRule += fixedEle + " ";
-          }
-
-        BassPattern b = new BassPattern(newRule, cur.getWeight(), cur.getDuration());
-        adapted.add(b);
-      }
-
-    bassPatterns = adapted;
-
-    //Adapt raw clustered rules to the new syntax
-
-    for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
-      {
-        String newRule = "";
-        String[] split = simplifiedPitchesRules.get(i).split(" ");
-        for( int j = 0; j < split.length; j++ )
-          {
-            String element = split[j];
-            String fixedEle = element;
-            if( element.charAt(0) == 'X' )
-              {
-                int indexClosed = element.indexOf(")");
-                fixedEle = "(X " + element.substring(2, indexClosed) + " " + element.substring(indexClosed + 1, element.length()) + ")";
-              }
-            newRule += fixedEle + " ";
-          }
-        simplifiedPitchesRules.set(i, newRule);
-      }
-    MIDIBeast.getRepBassRules().setSimplifiedPitchesRules(this.simplifiedPitchesRules);
   }
 
 
@@ -745,7 +679,6 @@ public String simplifyPitchInfo(String s)
                     buffer.append(" ");
                     buffer.append(L.first());
                     buffer.append(") ");
-
                     break;
 
 
@@ -796,10 +729,8 @@ public void processDuplicateRules()
                 multiplicity++;
               }
           }
-
         uniqueRules.add(new RawRule(rule, multiplicity, i));
       }
-
   }
 
 /**
