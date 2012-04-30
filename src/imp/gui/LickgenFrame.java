@@ -2546,7 +2546,7 @@ public void setRhythmFieldText(String string)
               }
           }
 
-        notate.generateLick(rhythm);
+        notate.putLick(notate.generateLick(rhythm));
 }//GEN-LAST:event_fillMelodyButtonActionPerformed
 
     
