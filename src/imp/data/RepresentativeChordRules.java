@@ -211,10 +211,11 @@ public RepresentativeChordRules(int minDuration)
 
 public RepresentativeChordRules(double startBeat, 
                                 double endBeat, 
-                                int MaxNumberOfClusters, 
+                                int maxNumberOfClusters, 
                                 jm.music.data.Part selectedPart, 
                                 int minDuration)
   {
+    this.maxNumberOfClusters = maxNumberOfClusters;
     this.minDuration = minDuration;
     try
       {
@@ -451,7 +452,7 @@ public void truncateChordPatterns()
     simplifiedPitchesRules = tempRules;
     if( debug )
       {
-        System.out.println("####After Truncate Bass Rules####");
+        System.out.println("####After Truncate Chord Patterns####");
         for( int i = 0; i < simplifiedPitchesRules.size(); i++ )
           {
             System.out.println(simplifiedPitchesRules.get(i));
@@ -636,7 +637,7 @@ public void pruneSections()
   {
     for( int i = 0; i < sections.size(); i++ )
       {
-        int numClusters = (int) Math.round(numberOfUniqueRules * ((sections.get(i).size() * 1.0) / MIDIBeast.originalBassRules.size()));
+        int numClusters = (int) Math.round(numberOfUniqueRules * ((sections.get(i).size() * 1.0) / MIDIBeast.originalChordRules.size()));
         if( numClusters == 0 )
           {
             numClusters = 1;
