@@ -2216,7 +2216,7 @@ void playBassColumn(int colIndex)
     }
 
   public ChordPatternDisplay newChordPatternDisplay(int column,
-                                                       String contents)
+                                                    String contents)
     {
     ChordPatternDisplay display = new ChordPatternDisplay(notate, cm, this);
     chordHolderPane.add(display);
@@ -2244,8 +2244,9 @@ void playBassColumn(int colIndex)
     return display;
     }
 
-  public DrumRuleDisplay newDrumRuleDisplay(int row, int column,
-                                               String contents)
+  public DrumRuleDisplay newDrumRuleDisplay(int row, 
+                                            int column,
+                                            String contents)
     {
     // Get instrument from first column
 
@@ -2287,196 +2288,12 @@ void playBassColumn(int colIndex)
     allDrumPatterns.set(column, curDrum);
     return display;
     }
-
-  /**
-   * Makes a copy of the currently selected pattern (if it exists) for the
-   * tab that is visible and then removes it from the GUI.
-   */
-  private void cutPattern()
-    {
-    copyPatternMI();
-    if( bassTabPanel.isVisible() )
-      {
-      if( curSelectedBass != null )
-        {
-        bassHolderPane.remove(curSelectedBass);
-        curSelectedBass = null;
-        updateBassTitles();
-        bassHolderPane.updateUI();
-        cm.changedSinceLastSave(true);
-        }
-      }
-    else if( drumTabPanel.isVisible() )
-      {
-      if( curSelectedDrum != null )
-        {
-        drumHolderPane.remove(curSelectedDrum);
-        curSelectedDrum = null;
-        updateDrumTitles();
-        drumHolderPane.updateUI();
-        cm.changedSinceLastSave(true);
-        }
-
-      }
-    else if( chordTabPanel.isVisible() )
-      {
-      if( curSelectedChord != null )
-        {
-        chordHolderPane.remove(curSelectedChord);
-        curSelectedChord = null;
-        updateChordTitles();
-        chordHolderPane.updateUI();
-        cm.changedSinceLastSave(true);
-        }
-      }
-    }
-
-  /**
-   * Pastes the copied pattern, if it exists, for the currently visible tab
-   */
-  private void pastePattern()
-    {
-    if( bassTabPanel.isVisible() )
-      {
-      if( copiedBass != null )
-        {
-        //Remove panel displaying "no bass patterns found" if it exists.
-        try
-          {
-          Component com = bassHolderPane.getComponent(0);
-          try
-            {
-            BassPatternDisplay b = (BassPatternDisplay)com;
-            }
-          catch( ClassCastException e )
-            {
-            //WARNING: If, in future, items other than BassPatternDisplay are included, this method of removal must change.
-            //Therefore b is the JPanel that says "No bass patterns found."  We need to delete it before adding.
-            bassHolderPane.remove(com);
-            }
-          }
-        catch( ArrayIndexOutOfBoundsException e )
-          {
-          }
-
-        /*Must create a new object with the same stats or else the copied pattern is
-        just moved to the end of the list. */
-        String text = copiedBass.getDisplayText();
-        float weight = copiedBass.getWeight();
-        BassPatternDisplay b = new BassPatternDisplay(text, weight, notate, cm, this);
-        b.setTitleNumber(bassHolderPane.getComponentCount() + 1);
-        bassHolderPane.add(b);
-        bassHolderPane.updateUI();
-        }
-      }
-    else if( drumTabPanel.isVisible() )
-      {
-      if( copiedDrum != null )
-        {
-        //Remove panel displaying "no drum patterns found" if it exists.
-        try
-          {
-          Component com = drumHolderPane.getComponent(0);
-          try
-            {
-            DrumPatternDisplay d = (DrumPatternDisplay)com;
-            }
-          catch( ClassCastException e )
-            {
-            //WARNING: If, in future, items other than BassPatternDisplay are included, this method of removal must change.
-            //Therefore b is the JPanel that says "No bass patterns found."  We need to delete it before adding.
-            drumHolderPane.remove(com);
-            }
-          }
-        catch( ArrayIndexOutOfBoundsException e )
-          {
-          }
-
-        /*Must create a new object with the same stats or else the copied pattern is
-        just moved to the end of the list. */
-        int numRules = copiedDrum.getNumComponents();
-        DrumPatternDisplay d = new DrumPatternDisplay(notate, cm, this);
-        d.setWeight(copiedDrum.getWeight());
-        d.setTitleNumber(drumHolderPane.getComponentCount() + 1);
-        for( int i = 0; i < numRules; i++ )
-          {
-          Component r = copiedDrum.getComponentAt(i);
-          if( r != null )
-            {
-            try
-              {
-              DrumRuleDisplay rule = (DrumRuleDisplay)r;
-              String text = rule.getDisplayText();
-              String instrument = rule.getInstrument();
-              DrumRuleDisplay newRule =
-                      new DrumRuleDisplay(text, instrument, notate, cm, this);
-              d.addRule(newRule);
-              }
-            catch( ClassCastException e )
-              {
-              }
-            }
-          }
-        drumHolderPane.add(d);
-        drumHolderPane.updateUI();
-        }
-      }
-    else if( chordTabPanel.isVisible() )
-      {
-      if( copiedChord != null )
-        {
-        //Remove panel displaying "no bass patterns found" if it exists.
-        try
-          {
-          Component com = chordHolderPane.getComponent(0);
-          try
-            {
-            ChordPatternDisplay d = (ChordPatternDisplay)com;
-            }
-          catch( ClassCastException e )
-            {
-            //WARNING: If, in future, items other than BassPatternDisplay are included, this method of removal must change.
-            //Therefore b is the JPanel that says "No bass patterns found."  We need to delete it before adding.
-            chordHolderPane.remove(com);
-            }
-          }
-        catch( ArrayIndexOutOfBoundsException e )
-          {
-          }
-
-        /*Must create a new object with the same stats or else the copied pattern is
-        just moved to the end of the list. */
-        String text = copiedChord.getDisplayText();
-        float weight = copiedChord.getWeight();
-        String pushString = copiedChord.getPushString();
-        ChordPatternDisplay c =
-                new ChordPatternDisplay(text, weight, pushString, notate, cm, this);
-        c.setTitleNumber(chordHolderPane.getComponentCount() + 1);
-        chordHolderPane.add(c);
-        chordHolderPane.updateUI();
-        }
-      }
-    cm.changedSinceLastSave(true);
-    }
-
-  /**
-   * Add an empty drum rule to the currently selected drum pattern.
-   */
-  private void addDrumRule()
-    {
-    if( drumTabPanel.isVisible() )
-      {
-      if( curSelectedDrum != null )
-        {
-        curSelectedDrum.addRule(new DrumRuleDisplay(notate, cm, this));
-        curSelectedDrum.updateUI();
-        }
-      }
-    }
+  
 
   /**
    * Copy DrumRuleDisplay copyMe
    */
+  
   public void copyDrumRule(DrumRuleDisplay copyMe)
     {
     if( drumTabPanel.isVisible() )
@@ -2485,52 +2302,12 @@ void playBassColumn(int colIndex)
       }
     }
 
-  /**
-   * Copy the currently selected drum rule for the currently selected drum pattern.
-   */
-  private void copyDrumRule()
-    {
-    if( drumTabPanel.isVisible() )
-      {
-      if( curSelectedDrum != null )
-        {
-        copiedInstrument = curSelectedDrum.getSelectedRule();
-        }
-      }
-    }
-
-  /**
-   * Cut the currently selected drum rule
-   */
-  private void cutDrumRule()
-    {
-    if( drumTabPanel.isVisible() )
-      {
-      if( curSelectedDrum != null )
-        {
-        curSelectedDrum.cutSelectedRule();
-        }
-      }
-    }
-
-  /**
-   * Paste the copiedInstrument rule into the currently selected drum panel
-   */
-  private void pasteDrumRule()
-    {
-    if( drumTabPanel.isVisible() )
-      {
-      if( curSelectedDrum != null && copiedInstrument != null )
-        {
-        curSelectedDrum.pasteRule(copiedInstrument);
-        }
-      }
-    }
-
+  
   /**
    * Build selected array of cells as Polylist, column by column.
    * Store the result in copiedCells.
    */
+  
   public void copyCurrentCells()
     {
     int rows[] = styleTable.getSelectedRows();
@@ -2692,7 +2469,7 @@ void playBassColumn(int colIndex)
         }
       catch( Exception e )
         {
-        value = new Boolean(false);
+        value = false;
         }
       styleTable.setValueAt(value, row, column);
       return value;
@@ -2810,94 +2587,6 @@ void playBassColumn(int colIndex)
     styleTable.setValueAt(beingSet, row, column);
     updateMirror(row, column, beingSet); // styleTable.getValueAt(row, column));
     return beingSet;
-    }
-
-  /**
-   * Adds an empty bass/drum/chord PatternDisplay objecct to the currently visible tab
-   */
-  public void addPattern()
-    {
-    //Remove panel displaying "no bass patterns found" if it exists.
-    if( bassTabPanel.isVisible() )
-      {
-      try
-        {
-        Component com = bassHolderPane.getComponent(0);
-        try
-          {
-          BassPatternDisplay b = (BassPatternDisplay)com;
-          }
-        catch( ClassCastException e )
-          {
-          //WARNING: If, in future, items other than BassPatternDisplay are included, this method of removal must change.
-          //Therefore b is the JPanel that says "No bass patterns found."  We need to delete it before adding.
-          bassHolderPane.remove(com);
-          }
-        }
-      catch( ArrayIndexOutOfBoundsException e )
-        {
-        }
-
-      BassPatternDisplay b = new BassPatternDisplay(notate, cm, this);
-      b.setTitleNumber(bassHolderPane.getComponentCount() + 1);
-      b.setDisplayText("B4");
-      bassHolderPane.add(b);
-      b.checkStatus();
-      bassHolderPane.updateUI();
-      }
-    else if( drumTabPanel.isVisible() )
-      {
-      try
-        {
-        Component com = drumHolderPane.getComponent(0);
-        try
-          {
-          DrumPatternDisplay d = (DrumPatternDisplay)com;
-          }
-        catch( ClassCastException e )
-          {
-          //WARNING: If, in future, items other than BassPatternDisplay are included, this method of removal must change.
-          //Therefore b is the JPanel that says "No bass patterns found."  We need to delete it before adding.
-          drumHolderPane.remove(com);
-          }
-        }
-      catch( ArrayIndexOutOfBoundsException e )
-        {
-        }
-      DrumPatternDisplay d = new DrumPatternDisplay(notate, cm, this);
-      // not desired, I think d.fill();
-      d.setTitleNumber(drumHolderPane.getComponentCount() + 1);
-      drumHolderPane.add(d);
-      d.checkStatus();
-      drumHolderPane.updateUI();
-      }
-    else if( chordTabPanel.isVisible() )
-      {
-      try
-        {
-        Component com = chordHolderPane.getComponent(0);
-        try
-          {
-          ChordPatternDisplay c = (ChordPatternDisplay)com;
-          }
-        catch( ClassCastException e )
-          {
-          //WARNING: If, in future, items other than BassPatternDisplay are included, this method of removal must change.
-          //Therefore b is the JPanel that says "No bass patterns found."  We need to delete it before adding.
-          chordHolderPane.remove(com);
-          }
-        }
-      catch( ArrayIndexOutOfBoundsException e )
-        {
-        }
-
-      ChordPatternDisplay c = new ChordPatternDisplay(notate, cm, this);
-      c.setTitleNumber(chordHolderPane.getComponentCount() + 1);
-      c.setDisplayText("X4");
-      chordHolderPane.add(c);
-      c.checkStatus();
-      chordHolderPane.updateUI();
-      }
     }
 
   public Long getInstrumentNumberByRow(int row)
@@ -5263,7 +4952,7 @@ void playBassColumn(int colIndex)
         styGenerate.setText("Extract");
         styGenerate.setActionCommand("Generate");
 
-        generatePrefMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        generatePrefMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
         generatePrefMI.setMnemonic('p');
         generatePrefMI.setText("Set Extraction Preferences");
         generatePrefMI.setToolTipText("Sets preferences for extracting style patterns from MIDI file.");
