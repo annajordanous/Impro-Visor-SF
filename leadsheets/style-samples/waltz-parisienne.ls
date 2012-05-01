@@ -16,14 +16,14 @@
 (breakpoint 54)
 (layout 4)
 (roadmap-layout 8)
-(style waltz
-    (swing 0.67)
-    (comp-swing 0.67)
-    (bass-high g-)
-    (bass-low c---)
-    (bass-base c--)
+(style waltz-parisienne
+    (swing 0.55)
+    (comp-swing 0.55)
+    (bass-high c-)
+    (bass-low c--)
+    (bass-base g--)
     (chord-high a)
-    (chord-low c-)
+    (chord-low d-)
     (chord-base c- e- g-)
 )
 (part
@@ -36,7 +36,7 @@
 )
 
 
-(section (style waltz)) 
+(section (style waltz-parisienne)) 
 
 Dm7 | G7 | CM7 | FM7 | 
 Bm7b5 | E7 | Am7 | Eb7 | 

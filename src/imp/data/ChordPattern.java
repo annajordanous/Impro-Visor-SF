@@ -129,6 +129,8 @@ public static ChordPattern makeChordPattern(Polylist L)
         {
         while( item.nonEmpty() )
           {
+          if( item.first() instanceof String )
+            {
           String s = (String)item.first();
 
           String rule = s.substring(0, 1);
@@ -151,6 +153,13 @@ public static ChordPattern makeChordPattern(Polylist L)
             }
           
           item = item.rest();
+          }
+          else
+            {
+                  cp.setError("Unrecognized " + item.first()
+                            + " in chord pattern " + original);
+                  return cp;              
+            }
           }
         break;
         }

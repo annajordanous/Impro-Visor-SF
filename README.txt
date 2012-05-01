@@ -96,6 +96,8 @@ Release notes for Impro-Visor 5.15
 
 Improves handling of MIDI track importing.
 
+Improves style extraction from MIDI capabilities.
+
 ===============================================================================
 
 Release notes for Impro-Visor 5.14 (pre-release)
