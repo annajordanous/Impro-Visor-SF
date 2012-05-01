@@ -1143,10 +1143,8 @@ void playBassColumn(int colIndex)
   
   public void dispose()
     {
-    // Close child windows if they exist
-    if( bassExtraction != null )  bassExtraction.dispose();
-    if( chordExtraction != null ) chordExtraction.dispose();
-    if( drumExtraction != null )  drumExtraction.dispose();
+    // Close child windows if it exists
+    if( allExtraction != null )  allExtraction.dispose();
     
     WindowRegistry.unregisterWindow(this);
     super.dispose();
@@ -6128,6 +6126,7 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
       m.setLocationRelativeTo(this);
       m.setLocation(m.getX() + WindowRegistry.defaultXnewWindowStagger, 
                     m.getY() + WindowRegistry.defaultYnewWindowStagger);
+      WindowRegistry.registerWindow(m, "New Style");
       m.setVisible(true);
 
     }//GEN-LAST:event_newStyleMIActionPerformed

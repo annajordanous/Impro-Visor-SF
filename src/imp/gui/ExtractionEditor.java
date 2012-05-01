@@ -154,11 +154,18 @@ public void setDrums()
 public void setPotentialParts()
   {
     ArrayList<String> potentialInstruments = new ArrayList<String>();
+
     for( int i = 0; i < MIDIBeast.allParts.size(); i++ )
       {
-      potentialInstruments.add(MIDIBeast.getInstrumentForPart(i));
+        if( MIDIBeast.allParts.get(i).getChannel() == DRUM_CHANNEL )
+          {
+            potentialInstruments.add(DRUM_NAMES);
+          }
+        else
+          {
+            potentialInstruments.add(MIDIBeast.getInstrumentForPart(i));
+          }
       }
-
     potentialInstrumentsJListBass.setListData(potentialInstruments.toArray());
     potentialInstrumentsJListBass.setSelectedIndex(0);
     potentialInstrumentsJListChord.setListData(potentialInstruments.toArray());
@@ -548,7 +555,7 @@ public void playRawRule(int type)
             case BASS:
                 {
                 rawOb = rawRulesJListBass.getSelectedValue();
-                if( rawOb instanceof RepPattern )
+                if( rawOb instanceof RepresentativeBassRules.BassPattern )
                 {
                 repPattern = (RepPattern)rawOb;
 
@@ -567,7 +574,7 @@ public void playRawRule(int type)
                 // parens at the start and end, is no longer relevant.
 
                 rawOb = rawRulesJListChord.getSelectedValue();
-                if( rawOb instanceof RepPattern )
+                if( rawOb instanceof RepresentativeChordRules.ChordPattern )
                 {
                 repPattern = (RepPattern)rawOb;
   
@@ -581,7 +588,7 @@ public void playRawRule(int type)
                 
             case DRUM:
                 rawOb = rawRulesJListDrum.getSelectedValue();
-                if( rawOb instanceof RepPattern )
+                if( rawOb instanceof RepresentativeDrumRules.DrumPattern )
                 {
                 repPattern = (RepPattern)rawOb;
                   
@@ -655,7 +662,6 @@ public void playRawRule(int type)
         endBeatLabelBass = new javax.swing.JLabel();
         endBeatTextFieldBass = new javax.swing.JTextField();
         numberOfClustersSpinnerBass = new javax.swing.JSpinner();
-        reExtractBtnBass = new javax.swing.JButton();
         noteResolutionComboBoxBass = new javax.swing.JComboBox();
         potentialInstrumentsScrollPaneBass = new javax.swing.JScrollPane();
         potentialInstrumentsJListBass = new javax.swing.JList();
@@ -667,6 +673,7 @@ public void playRawRule(int type)
         closeWindowBtnBass = new javax.swing.JButton();
         tempoVolumeLabelBass = new javax.swing.JLabel();
         widePatternTextFieldBass = new javax.swing.JTextField();
+        reExtractBtnBass = new javax.swing.JButton();
         chordPanel = new javax.swing.JPanel();
         rawPatternsPanelChord = new javax.swing.JScrollPane();
         rawRulesJListChord = new javax.swing.JList();
@@ -679,7 +686,6 @@ public void playRawRule(int type)
         endBeatLabelChord = new javax.swing.JLabel();
         endBeatTextFieldChord = new javax.swing.JTextField();
         numberOfClustersSpinnerChord = new javax.swing.JSpinner();
-        reExtractBtnChord = new javax.swing.JButton();
         noteResolutionComboBoxChord = new javax.swing.JComboBox();
         potentialInstrumentsScrollPaneChord = new javax.swing.JScrollPane();
         potentialInstrumentsJListChord = new javax.swing.JList();
@@ -691,6 +697,7 @@ public void playRawRule(int type)
         closeWindowBtnChord = new javax.swing.JButton();
         tempoVolumeLabelChord = new javax.swing.JLabel();
         widePatternTextFieldChord = new javax.swing.JTextField();
+        reExtractBtnChord = new javax.swing.JButton();
         drumPanel = new javax.swing.JPanel();
         rawPatternsPanelDrum = new javax.swing.JScrollPane();
         rawRulesJListDrum = new javax.swing.JList();
@@ -703,7 +710,6 @@ public void playRawRule(int type)
         endBeatLabelDrum = new javax.swing.JLabel();
         endBeatTextFieldDrum = new javax.swing.JTextField();
         numberOfClustersSpinnerDrum = new javax.swing.JSpinner();
-        reExtractBtnDrum = new javax.swing.JButton();
         doubleDrumLengthDrum = new javax.swing.JCheckBox();
         noteResolutionComboBoxDrum = new javax.swing.JComboBox();
         selectPatternBtnDrum = new javax.swing.JButton();
@@ -714,6 +720,7 @@ public void playRawRule(int type)
         closeWindowBtnDrum = new javax.swing.JButton();
         tempoVolumeLabelDrum = new javax.swing.JLabel();
         widePatternTextFieldDrum = new javax.swing.JTextField();
+        reExtractBtnDrum = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -845,20 +852,6 @@ public void playRawRule(int type)
         gridBagConstraints.weightx = 0.5;
         optionPanelBass.add(numberOfClustersSpinnerBass, gridBagConstraints);
 
-        reExtractBtnBass.setText("Re-Extract  Patterns");
-        reExtractBtnBass.setToolTipText("Extract the patterns for this window using new parameters.");
-        reExtractBtnBass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reExtractBtnBassActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        optionPanelBass.add(reExtractBtnBass, gridBagConstraints);
-
         noteResolutionComboBoxBass.setMaximumRowCount(16);
         noteResolutionComboBoxBass.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
         noteResolutionComboBoxBass.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
@@ -906,7 +899,7 @@ public void playRawRule(int type)
         gridBagConstraints.weighty = 0.2;
         bassPanel.add(optionPanelBass, gridBagConstraints);
 
-        selectPatternBtnBass.setText("Include Pattern");
+        selectPatternBtnBass.setText("Include Pattern in Selections");
         selectPatternBtnBass.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
         selectPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -915,7 +908,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         bassPanel.add(selectPatternBtnBass, gridBagConstraints);
@@ -929,11 +922,11 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         bassPanel.add(leftPlayPatternBtnBass, gridBagConstraints);
 
-        removePatternBtnBass.setText("Remove Pattern");
+        removePatternBtnBass.setText("Discard Pattern");
         removePatternBtnBass.setToolTipText("Removes the selected pattern from further consideration for the style.");
         removePatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -942,7 +935,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         bassPanel.add(removePatternBtnBass, gridBagConstraints);
@@ -956,7 +949,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         bassPanel.add(rightPlayPatternBtnBass, gridBagConstraints);
 
@@ -967,8 +960,8 @@ public void playRawRule(int type)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         bassPanel.add(copySelectionsBtnBass, gridBagConstraints);
@@ -982,7 +975,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         bassPanel.add(closeWindowBtnBass, gridBagConstraints);
 
@@ -1012,6 +1005,19 @@ public void playRawRule(int type)
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         bassPanel.add(widePatternTextFieldBass, gridBagConstraints);
+
+        reExtractBtnBass.setText("Re-Extract  Patterns");
+        reExtractBtnBass.setToolTipText("Extract the patterns for this window using new parameters.");
+        reExtractBtnBass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reExtractBtnBassActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        bassPanel.add(reExtractBtnBass, gridBagConstraints);
 
         extractionTabbedPane.addTab("Bass Patterns", bassPanel);
 
@@ -1139,20 +1145,6 @@ public void playRawRule(int type)
         gridBagConstraints.weightx = 0.5;
         optionPanelChord.add(numberOfClustersSpinnerChord, gridBagConstraints);
 
-        reExtractBtnChord.setText("Re-Extract  Patterns");
-        reExtractBtnChord.setToolTipText("Extract the patterns for this window using new parameters.");
-        reExtractBtnChord.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reExtractBtnChordActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        optionPanelChord.add(reExtractBtnChord, gridBagConstraints);
-
         noteResolutionComboBoxChord.setMaximumRowCount(16);
         noteResolutionComboBoxChord.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
         noteResolutionComboBoxChord.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
@@ -1200,8 +1192,8 @@ public void playRawRule(int type)
         gridBagConstraints.weighty = 0.2;
         chordPanel.add(optionPanelChord, gridBagConstraints);
 
-        selectPatternBtnChord.setText("Include Pattern");
-        selectPatternBtnChord.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
+        selectPatternBtnChord.setText("Include Pattern in Selections");
+        selectPatternBtnChord.setToolTipText("Include Pattern in Selections");
         selectPatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectPatternBtnChordActionPerformed(evt);
@@ -1209,10 +1201,11 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         chordPanel.add(selectPatternBtnChord, gridBagConstraints);
+        selectPatternBtnChord.getAccessibleContext().setAccessibleName("Include Pattern in Selections");
 
         leftPlayPatternBtnChord.setText("Play Pattern");
         leftPlayPatternBtnChord.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
@@ -1223,11 +1216,11 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         chordPanel.add(leftPlayPatternBtnChord, gridBagConstraints);
 
-        removePatternBtnChord.setText("Remove Pattern");
+        removePatternBtnChord.setText("Discard Pattern");
         removePatternBtnChord.setToolTipText("Removes the selected pattern from further consideration for the style.");
         removePatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1236,7 +1229,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         chordPanel.add(removePatternBtnChord, gridBagConstraints);
@@ -1250,7 +1243,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         chordPanel.add(rightPlayPatternBtnChord, gridBagConstraints);
 
@@ -1261,8 +1254,8 @@ public void playRawRule(int type)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         chordPanel.add(copySelectionsBtnChord, gridBagConstraints);
@@ -1276,7 +1269,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         chordPanel.add(closeWindowBtnChord, gridBagConstraints);
 
@@ -1306,6 +1299,19 @@ public void playRawRule(int type)
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         chordPanel.add(widePatternTextFieldChord, gridBagConstraints);
+
+        reExtractBtnChord.setText("Re-Extract  Patterns");
+        reExtractBtnChord.setToolTipText("Extract the patterns for this window using new parameters.");
+        reExtractBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reExtractBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        chordPanel.add(reExtractBtnChord, gridBagConstraints);
 
         extractionTabbedPane.addTab("Chord Patterns", chordPanel);
 
@@ -1433,20 +1439,6 @@ public void playRawRule(int type)
         gridBagConstraints.weightx = 0.5;
         optionPanelDrum.add(numberOfClustersSpinnerDrum, gridBagConstraints);
 
-        reExtractBtnDrum.setText("Re-Extract  Patterns");
-        reExtractBtnDrum.setToolTipText("Extract the patterns for this window using new parameters.");
-        reExtractBtnDrum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reExtractBtnDrumActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        optionPanelDrum.add(reExtractBtnDrum, gridBagConstraints);
-
         doubleDrumLengthDrum.setText("Double Drum Length");
         doubleDrumLengthDrum.setToolTipText("Change the length of extracted drum pattern to be double what it was.");
         doubleDrumLengthDrum.addActionListener(new java.awt.event.ActionListener() {
@@ -1489,7 +1481,7 @@ public void playRawRule(int type)
         gridBagConstraints.weighty = 0.2;
         drumPanel.add(optionPanelDrum, gridBagConstraints);
 
-        selectPatternBtnDrum.setText("Include Pattern");
+        selectPatternBtnDrum.setText("Include Pattern in Selections");
         selectPatternBtnDrum.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
         selectPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1498,7 +1490,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         drumPanel.add(selectPatternBtnDrum, gridBagConstraints);
@@ -1512,11 +1504,11 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         drumPanel.add(leftPlayPatternBtnDrum, gridBagConstraints);
 
-        removePatternBtnDrum.setText("Remove Pattern");
+        removePatternBtnDrum.setText("Discard Pattern");
         removePatternBtnDrum.setToolTipText("Removes the selected pattern from further consideration for the style.");
         removePatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1525,7 +1517,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         drumPanel.add(removePatternBtnDrum, gridBagConstraints);
@@ -1539,7 +1531,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         drumPanel.add(rightPlayPatternBtnDrum, gridBagConstraints);
 
@@ -1550,8 +1542,8 @@ public void playRawRule(int type)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
         drumPanel.add(copySelectionsBtnDrum, gridBagConstraints);
@@ -1565,7 +1557,7 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         drumPanel.add(closeWindowBtnDrum, gridBagConstraints);
 
@@ -1595,6 +1587,19 @@ public void playRawRule(int type)
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         drumPanel.add(widePatternTextFieldDrum, gridBagConstraints);
+
+        reExtractBtnDrum.setText("Re-Extract  Patterns");
+        reExtractBtnDrum.setToolTipText("Extract the patterns for this window using new parameters.");
+        reExtractBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reExtractBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        drumPanel.add(reExtractBtnDrum, gridBagConstraints);
 
         extractionTabbedPane.addTab("Drum Patterns", drumPanel);
 
@@ -1840,7 +1845,7 @@ private void copySelectionsBtnChordActionPerformed(java.awt.event.ActionEvent ev
 
 private void closeWindowBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnChordActionPerformed
   {//GEN-HEADEREND:event_closeWindowBtnChordActionPerformed
-    // TODO add your handling code here:
+    dispose();
   }//GEN-LAST:event_closeWindowBtnChordActionPerformed
 
 private void widePatternTextFieldChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_widePatternTextFieldChordActionPerformed
@@ -1850,7 +1855,7 @@ private void widePatternTextFieldChordActionPerformed(java.awt.event.ActionEvent
 
 private void rawPatternsMouseClickedDrum(java.awt.event.MouseEvent evt)//GEN-FIRST:event_rawPatternsMouseClickedDrum
   {//GEN-HEADEREND:event_rawPatternsMouseClickedDrum
-      Object selectedOb = rawRulesJListBass.getSelectedValue();
+      Object selectedOb = rawRulesJListDrum.getSelectedValue();
       if( selectedOb instanceof RepPattern )
         {
         widePatternTextFieldDrum.setText(selectedOb.toString());
@@ -1961,7 +1966,7 @@ private void copySelectionsBtnDrumActionPerformed(java.awt.event.ActionEvent evt
 
 private void closeWindowBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnDrumActionPerformed
   {//GEN-HEADEREND:event_closeWindowBtnDrumActionPerformed
-    // TODO add your handling code here:
+    dispose();
   }//GEN-LAST:event_closeWindowBtnDrumActionPerformed
 
 private void widePatternTextFieldDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_widePatternTextFieldDrumActionPerformed
