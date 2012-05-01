@@ -5,7 +5,7 @@
 (comments )
 (meter 3 4)
 (key 0)
-(tempo 160.0)
+(tempo 204.0)
 (volume 80)
 (playback-transpose 0)
 (chord-font-size 16)
@@ -16,13 +16,13 @@
 (breakpoint 54)
 (layout 4)
 (roadmap-layout 8)
-(style waltz
-    (swing 0.67)
-    (comp-swing 0.67)
-    (bass-high g-)
-    (bass-low c---)
-    (bass-base c--)
-    (chord-high a)
+(style waltz-chopin
+    (swing 0.5)
+    (comp-swing 0.5)
+    (bass-high c-)
+    (bass-low c--)
+    (bass-base g--)
+    (chord-high c)
     (chord-low c-)
     (chord-base c- e- g-)
 )
@@ -36,7 +36,7 @@
 )
 
 
-(section (style waltz)) 
+(section (style _waltz-chopin)) 
 
 Dm7 | G7 | CM7 | FM7 | 
 Bm7b5 | E7 | Am7 | Eb7 | 
