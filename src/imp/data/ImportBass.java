@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -35,7 +34,8 @@ import jm.music.data.Phrase;
  * 
  * Brandy McMenamy and James Thomas Herold
  * 7/18/2007
- *
+ * 
+ * This should be reworked to avoid using public members of MIDIBeast.
  */
 
 public class ImportBass{
@@ -228,8 +228,10 @@ public class ImportBass{
 			}
 		}
 		MIDIBeast.bassPart = null;
-                MIDIBeast.addError("Could not find a bass part.  Go to Generate-->" +
-                        "Preferences for Generation to choose a bass part from available instruments.");
+                MIDIBeast.addError("Could not find a bass part.");
+                // Doesn't exist? Need to be able to handle an empty bass part
+                //Go to Generate-->" +
+                //        "Preferences for Generation to choose a bass part from available instruments.");
 		canContinue = false;	
                 if(debug)System.out.println("Unable to find a bass part");
 	}
