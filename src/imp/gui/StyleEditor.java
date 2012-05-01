@@ -102,6 +102,7 @@ public class StyleEditor
 
   static public final boolean SILENT = false;
 
+  boolean changedSinceLastSave = false;
 
    /**
    * Standard sub-directory for styles
@@ -177,9 +178,6 @@ public class StyleEditor
   private String currentCellText = null;
   
   ExtractionEditor allExtraction = null;
-  ExtractionEditor chordExtraction = null;
-  ExtractionEditor bassExtraction  = null;
-  ExtractionEditor drumExtraction  = null;
   
   /**
    * Effectively this is the "clipboard" contents.
@@ -247,7 +245,7 @@ public class StyleEditor
     setAttributes();
 
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    cm.changedSinceLastSave(false);
+    changedSinceLastSave = false;
     newStyle();
 
     newTable();
@@ -983,10 +981,7 @@ void playBassColumn(int colIndex)
 
       setStatus("Style saved.");
       this.setTitle("Style Editor: " + name + styleExt);
-      if( cm != null )
-        {
-        cm.changedSinceLastSave(false);
-        }
+      changedSinceLastSave = false;
       ImproVisor.setRecentStyleFile(file);
       notate.reCaptureCurrentStyle(); // In case this style is being used currently
       }
@@ -1104,16 +1099,17 @@ void playBassColumn(int colIndex)
     }
 
   /**
-   * Controls the closing operations of the StyleGenerator
+   * Controls the closing operations of the StyleExtractor
    * Prompts the user to save changes if information will be lost if the program closes
    * @return -1 if the program should ultimately close.  Return 1 otherwise.
    */
   private int closeWindow()
     {
     notate.setNormalMode();
-    if( cm.changedSinceLastSave() )
+    if( changedSinceLastSave )
       {
       int userInput = unsavedStyle();
+      
       if( userInput == 1 )
         {
         int inputTwo = saveStyle();
@@ -1275,11 +1271,8 @@ void playBassColumn(int colIndex)
       // Load the file.
       loadFromFile(savedStyle);
       
-      //clear undo/redo history
-      cm.clearHistory();
-      
-      //mark style as saved in its current state (no unsaved changes)
-      cm.changedSinceLastSave(false);
+       //mark style as saved in its current state (no unsaved changes)
+      changedSinceLastSave = false;
       }
     //refreshAll();
     }
@@ -1946,42 +1939,10 @@ void playBassColumn(int colIndex)
    */
   private void newStyle()
     {
-    /*
-    int feedback = -1;
-    if( cm.changedSinceLastSave() )
-    {
-    feedback = unsavedStyle();
-    }
-    if( feedback == 1 )
-    {
-    saveStyle();
-    }
-    else if( feedback != 0 )
-    {
-     */
     reset();
-
-    /* For illustration of how to add patterns only:
-    //Add one PatternDisplay objects for each type of pattern to the GUI
-    for(int i = 0; i < 1; i++) {
-    BassPatternDisplay b = new BassPatternDisplay(notate, cm, this);
-    b.setTitleNumber(i+1);
-    b.setDisplayText("B4");
-    DrumPatternDisplay d = new DrumPatternDisplay(notate, cm, this);
-    d.fill();
-    d.setTitleNumber(i+1);
-    ChordPatternDisplay c = new ChordPatternDisplay(notate, cm, this);
-    c.setTitleNumber(i+1);
-    c.setDisplayText("X4");
-    bassHolderPane.add(b);                
-    drumHolderPane.add(d);
-    chordHolderPane.add(c);
-    }
-     */
-
     refreshAll();
     this.setTitle("Style Editor: New Style");
-    cm.changedSinceLastSave(false);
+    changedSinceLastSave = false;
     //  }
     }
 
@@ -2640,24 +2601,14 @@ void playBassColumn(int colIndex)
  
 
   /**
-   * Asks user for a .mid and .ls file, then runs the generating classes for bass, drums, and chords
-   * and displays the results.
+   * Asks user for a .mid and .ls file, then runs the generating classes 
+   * for bass, drums, and chords and optionally displays the results.
    */
   public void extractStyleFromMidi()
     {
-    //Prompt user to save if generating will lose changes
-//    int feedback = -1;
-//    if( cm.changedSinceLastSave() )
-//      {
-//      feedback = unsavedStyle();
-//      }
-//
-//    if( feedback != 0 )
-//      {
-//      reset();
-
       //Get files from user
-      String chordFile = "", midiFile = "";
+      String chordFile = "";
+      String midiFile = "";
       String nameForDisplay;
       File midiFileEntire = null;
       int midiChoice = midiFileChooser.showOpenDialog(this);
@@ -2691,18 +2642,14 @@ void playBassColumn(int colIndex)
 
       MIDIBeast.initialize(midiFile, chordFile);
 
-//      newStyle();
-//      newTable();
-
       int minDuration = getMinDuration();
-      
+ 
       // Note: The order of pattern generation (drums, bass, chords ) needs to be invariant now.
 
-      allExtraction = new ExtractionEditor(null, false, this, cm, 1);
+      allExtraction = new ExtractionEditor(this, false, this, 1);
       WindowRegistry.registerWindow(allExtraction, "Extracted Patterns from " + nameForDisplay);
-      allExtraction.setVisible(true);
       
-      //Generate drum patterns
+       //Generate drum patterns
       if( MIDIBeast.importDrums )
         {
         try
@@ -2712,18 +2659,12 @@ void playBassColumn(int colIndex)
           if( MIDIBeast.showExtraction )
             {
               allExtraction.setDrums();
-              
-//            drumExtraction = 
-//                    new ExtractionEditor(null, false, this, cm, 1);
-//            WindowRegistry.registerWindow(drumExtraction, "Drum Part from " + nameForDisplay);
-//            drumExtraction.setLocation(
-//              this.getX() + WindowRegistry.defaultXnewWindowStagger,
-//              this.getY() + WindowRegistry.defaultYnewWindowStagger);
-//            drumExtraction.setVisible(true);
+              allExtraction.setVisible(true);
            }
           else
             {
-            loadDrumPatterns(d.getRepresentativePatterns());
+              loadDrumPatterns(d.getRepresentativePatterns());
+              changedSinceLastSave = true;
             }
           }
         catch( Exception e )
@@ -2742,17 +2683,11 @@ void playBassColumn(int colIndex)
           if( MIDIBeast.showExtraction )
             {
             allExtraction.setBass();
-//            bassExtraction = 
-//                    new ExtractionEditor(null, false, this, cm, 0);
-//            WindowRegistry.registerWindow(bassExtraction, "Bass Part from " + nameForDisplay);
-//            bassExtraction.setLocation(
-//              this.getX() + 2*WindowRegistry.defaultXnewWindowStagger,
-//              this.getY() + 2*WindowRegistry.defaultYnewWindowStagger);
-//            bassExtraction.setVisible(true);
             }
           else
             {
-            loadBassPatterns(MIDIBeast.getRepBassRules().getBassRules());
+              loadBassPatterns(MIDIBeast.getRepBassRules().getBassRules());
+              changedSinceLastSave = true;
             }
           }
         catch( Exception e )
@@ -2771,17 +2706,11 @@ void playBassColumn(int colIndex)
           if( MIDIBeast.showExtraction )
             {
             allExtraction.setChords();
-//            chordExtraction = 
-//                    new ExtractionEditor(null, false, this, cm, 2, minDuration);
-//            WindowRegistry.registerWindow(chordExtraction, "Chord Part from " + nameForDisplay);
-//            chordExtraction.setLocation(
-//              this.getX() + 3*WindowRegistry.defaultXnewWindowStagger,
-//              this.getY() + 3*WindowRegistry.defaultYnewWindowStagger);
-//            chordExtraction.setVisible(true);
             }
           else
             {
             loadChordPatterns(c.getChordPattern());
+            changedSinceLastSave = true;
             }
           }
         catch( Exception e )
@@ -2789,9 +2718,6 @@ void playBassColumn(int colIndex)
           //messages are already recorded by the other chord classes
           }
         }
-
-
-      extractionProgress.dispose(); // close the JDialogue that pops up to show the progress bar, once everything has been generated and displayed.            
 
       //Display any errors that occurred during generation.
       ArrayList<String> errors = MIDIBeast.errors;
@@ -2802,17 +2728,14 @@ void playBassColumn(int colIndex)
           {
           allErrors += "\n" + errors.get(i);
           }
-        ErrorLog.setDialogTitle("Generation Errors");
+        ErrorLog.setDialogTitle("Extraction Errors");
         ErrorLog.log(ErrorLog.WARNING, allErrors);
         ErrorLog.setDialogTitle(null);
         }
 
-      cm.changedSinceLastSave(true);
       refreshAll();
 
-      this.setTitle("Style Editor & Extractor: Extraction from " + nameForDisplay);
-      savedStyle = null; // to prevent accidental clobering
-//      }
+//    }
     }
   
   /**
@@ -2863,8 +2786,6 @@ void playBassColumn(int colIndex)
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        extractionProgress = new javax.swing.JDialog();
-        stylePic = new javax.swing.JLabel();
         helpDialog = new javax.swing.JDialog();
         helpTabbedPane = new javax.swing.JTabbedPane();
         generalPane = new javax.swing.JScrollPane();
@@ -3249,25 +3170,6 @@ void playBassColumn(int colIndex)
         jMenuBar1.add(jMenu1);
 
         extractionPreferences.setJMenuBar(jMenuBar1);
-
-        extractionProgress.setTitle("Extracting style...");
-        extractionProgress.setAlwaysOnTop(true);
-        extractionProgress.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        extractionProgress.getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        stylePic.setBackground(new java.awt.Color(255, 255, 255));
-        stylePic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        stylePic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/style.png"))); // NOI18N
-        stylePic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        stylePic.setOpaque(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 352;
-        gridBagConstraints.ipady = 252;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        extractionProgress.getContentPane().add(stylePic, gridBagConstraints);
 
         helpDialog.setTitle("Style Editor Help");
         helpDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -5314,51 +5216,51 @@ void playBassColumn(int colIndex)
 }//GEN-LAST:event_cutCellsButtonActionPerformed
 
     private void commentAreaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_commentAreaPropertyChange
-      // Causes false indication. cm.changedSinceLastSave(true);
+      // Causes false indication. changedSinceLastSave = true;
     }//GEN-LAST:event_commentAreaPropertyChange
 
     private void bassBaseOctaveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bassBaseOctaveStateChanged
-      cm.changedSinceLastSave(true);
+                    changedSinceLastSave = true;
     }//GEN-LAST:event_bassBaseOctaveStateChanged
 
     private void bassLowOctaveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bassLowOctaveStateChanged
-      cm.changedSinceLastSave(true);
+                    changedSinceLastSave = true;
     }//GEN-LAST:event_bassLowOctaveStateChanged
 
     private void bassHighOctaveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bassHighOctaveStateChanged
-      cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_bassHighOctaveStateChanged
 
     private void bassHighNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassHighNoteActionPerformed
-      cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_bassHighNoteActionPerformed
 
     private void bassLowNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassLowNoteActionPerformed
-        cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_bassLowNoteActionPerformed
 
     private void bassBaseNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassBaseNoteActionPerformed
-      cm.changedSinceLastSave(true);
+                    changedSinceLastSave = true;
     }//GEN-LAST:event_bassBaseNoteActionPerformed
 
     private void chordHighNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordHighNoteActionPerformed
-      cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_chordHighNoteActionPerformed
 
     private void chordLowNoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordLowNoteActionPerformed
-      cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_chordLowNoteActionPerformed
 
     private void voicingTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingTypeActionPerformed
-      cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_voicingTypeActionPerformed
 
     private void chordHighOctaveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chordHighOctaveStateChanged
-      cm.changedSinceLastSave(true);
+                   changedSinceLastSave = true;
     }//GEN-LAST:event_chordHighOctaveStateChanged
 
     private void chordLowOctaveStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chordLowOctaveStateChanged
-      cm.changedSinceLastSave(true);
+                    changedSinceLastSave = true;
     }//GEN-LAST:event_chordLowOctaveStateChanged
 
     private void copyColumnButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyColumnButtonActionPerformed
@@ -6408,7 +6310,6 @@ public void unusePianoRoll()
     private javax.swing.JTextArea extractionList;
     private javax.swing.JScrollPane extractionPane;
     private javax.swing.JDialog extractionPreferences;
-    private javax.swing.JDialog extractionProgress;
     private javax.swing.JTextArea fileFormatList;
     private javax.swing.JScrollPane fileFormatPane;
     private javax.swing.JScrollPane fileMenuPane;
@@ -6490,7 +6391,6 @@ public void unusePianoRoll()
     private javax.swing.JMenuBar styMenuBar;
     private javax.swing.JTextField styleEditorStatusTF;
     private javax.swing.JPanel stylePanel;
-    private javax.swing.JLabel stylePic;
     private javax.swing.JScrollPane styleScrollpane;
     private javax.swing.JPanel styleSpecificationPanel;
     private javax.swing.JTable styleTable;
