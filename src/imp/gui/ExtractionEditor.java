@@ -773,6 +773,7 @@ public void playRawRule(int type)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         bassPanel.add(selectedPatternsPanelBass, gridBagConstraints);
 
+        optionPanelBass.setBackground(java.awt.Color.orange);
         optionPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
         optionPanelBass.setToolTipText("Extract patterns again, possibly using different parameters.");
         optionPanelBass.setLayout(new java.awt.GridBagLayout());
@@ -985,6 +986,7 @@ public void playRawRule(int type)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         bassPanel.add(closeWindowBtnBass, gridBagConstraints);
 
+        tempoVolumeLabelBass.setBackground(java.awt.Color.orange);
         tempoVolumeLabelBass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tempoVolumeLabelBass.setText("Tempo and Volume are set in Style Editor.");
         tempoVolumeLabelBass.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -998,7 +1000,7 @@ public void playRawRule(int type)
         bassPanel.add(tempoVolumeLabelBass, gridBagConstraints);
 
         widePatternTextFieldBass.setEditable(false);
-        widePatternTextFieldBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
+        widePatternTextFieldBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Bass Pattern"));
         widePatternTextFieldBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 widePatternTextFieldBassActionPerformed(evt);
@@ -1065,6 +1067,7 @@ public void playRawRule(int type)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         chordPanel.add(selectedPatternsPanelChord, gridBagConstraints);
 
+        optionPanelChord.setBackground(java.awt.Color.green);
         optionPanelChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
         optionPanelChord.setToolTipText("Extract patterns again, possibly using different parameters.");
         optionPanelChord.setLayout(new java.awt.GridBagLayout());
@@ -1277,6 +1280,7 @@ public void playRawRule(int type)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         chordPanel.add(closeWindowBtnChord, gridBagConstraints);
 
+        tempoVolumeLabelChord.setBackground(java.awt.Color.green);
         tempoVolumeLabelChord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tempoVolumeLabelChord.setText("Tempo and Volume are set in Style Editor.");
         tempoVolumeLabelChord.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1290,7 +1294,7 @@ public void playRawRule(int type)
         chordPanel.add(tempoVolumeLabelChord, gridBagConstraints);
 
         widePatternTextFieldChord.setEditable(false);
-        widePatternTextFieldChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
+        widePatternTextFieldChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Chord Pattern"));
         widePatternTextFieldChord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 widePatternTextFieldChordActionPerformed(evt);
@@ -1357,6 +1361,7 @@ public void playRawRule(int type)
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         drumPanel.add(selectedPatternsPanelDrum, gridBagConstraints);
 
+        optionPanelDrum.setBackground(java.awt.Color.yellow);
         optionPanelDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
         optionPanelDrum.setToolTipText("Extract patterns again, possibly using different parameters.");
         optionPanelDrum.setLayout(new java.awt.GridBagLayout());
@@ -1564,6 +1569,7 @@ public void playRawRule(int type)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         drumPanel.add(closeWindowBtnDrum, gridBagConstraints);
 
+        tempoVolumeLabelDrum.setBackground(java.awt.Color.yellow);
         tempoVolumeLabelDrum.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tempoVolumeLabelDrum.setText("Tempo and Volume are set in Style Editor.");
         tempoVolumeLabelDrum.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1577,7 +1583,7 @@ public void playRawRule(int type)
         drumPanel.add(tempoVolumeLabelDrum, gridBagConstraints);
 
         widePatternTextFieldDrum.setEditable(false);
-        widePatternTextFieldDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
+        widePatternTextFieldDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Drum Pattern"));
         widePatternTextFieldDrum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 widePatternTextFieldDrumActionPerformed(evt);
@@ -1620,24 +1626,8 @@ private void closeWindowBtnBassActionPerformed(java.awt.event.ActionEvent evt)//
 
 private void copySelectionsBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnBassActionPerformed
   {//GEN-HEADEREND:event_copySelectionsBtnBassActionPerformed
-      switch( type )
-        {
-          case BASS:
-              MIDIBeast.selectedBassRules = selectedBassRules;
-              styleEditor.loadBassPatterns(MIDIBeast.getRepBassRules().getBassRules());
-              break;
-              
-          case CHORD:
-              MIDIBeast.selectedChordRules = selectedChordRules;
-              styleEditor.loadChordPatterns(MIDIBeast.getRepChordRules().getChordRules());
-              break;
-              
-          case DRUM:
-              MIDIBeast.selectedDrumRules = selectedDrumRules;
-              styleEditor.loadDrumPatterns(MIDIBeast.getRepDrumRules().getRepresentativePatterns());
-              break;
-        }
-      
+      MIDIBeast.selectedBassRules = selectedBassRules;
+      styleEditor.loadBassPatterns(MIDIBeast.getRepBassRules().getBassRules());
   }//GEN-LAST:event_copySelectionsBtnBassActionPerformed
 
 private void startBeatTextFieldBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startBeatTextFieldBassActionPerformed
@@ -1651,50 +1641,23 @@ private void selectPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt)
       //System.out.println("ob = " + ob + " class = " + ob.getClass());
       if( ob instanceof RepPattern )
         {
-   //System.out.println("selected rule " + incompleteRule);
-          
-      RepPattern repPattern = (RepPattern)ob;
+          //System.out.println("selected rule " + incompleteRule);
 
-      int index = rawRulesJListBass.getSelectedIndex();
-      
-      switch( type )
-        {
-          case BASS:
-              // There should be some criterion here to mask out lines that
-              // don't correspond to rules. The old way, checking for
-              // parens at the start and end, is no longer relevant.
+          RepPattern repPattern = (RepPattern) ob;
 
-              RepresentativeBassRules.BassPattern selectedBassRule 
-                     = (RepresentativeBassRules.BassPattern)repPattern;
+          int index = rawRulesJListBass.getSelectedIndex();
 
-              selectedBassRules.add(selectedBassRule);
-              setBassSelectedRules();
-              break;
-               
-          case CHORD:
-              // There should be some criterion here to mask out lines that
-              // don't correspond to rules. The old way, checking for
-              // parens at the start and end, is no longer relevant.
+          // There should be some criterion here to mask out lines that
+          // don't correspond to rules. The old way, checking for
+          // parens at the start and end, is no longer relevant.
 
-              RepresentativeChordRules.ChordPattern selectedChordRule 
-                      = (RepresentativeChordRules.ChordPattern)repPattern;
+          RepresentativeBassRules.BassPattern selectedBassRule = (RepresentativeBassRules.BassPattern) repPattern;
 
-              selectedChordRules.add(selectedChordRule);
-              setChordSelectedRules();
-              break;
-          
-          case DRUM:
-              RepresentativeDrumRules.DrumPattern drumPattern 
-                      = (RepresentativeDrumRules.DrumPattern)repPattern;
+          selectedBassRules.add(selectedBassRule);
+          setBassSelectedRules();
 
-              selectedDrumRules.add(drumPattern);
-              setDrumSelectedRules();
-
-              break;
-        }
-      
-      rawRulesModelBass.removeElement(ob);
-      rawRulesJListBass.setSelectedIndex(Math.max(0, index-1));
+          rawRulesModelBass.removeElement(ob);
+          rawRulesJListBass.setSelectedIndex(Math.max(0, index - 1));
         }
   }//GEN-LAST:event_selectPatternBtnBassActionPerformed
 
@@ -1720,25 +1683,10 @@ private void rawPatternsMouseClickedBass(java.awt.event.MouseEvent evt)//GEN-FIR
 
 private void removePatternBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnBassActionPerformed
   {//GEN-HEADEREND:event_removePatternBtnBassActionPerformed
-    int indexOfRuleToBeRemoved = selectedRulesJListBass.getSelectedIndex();
-    switch( type )
-      {
-        case BASS:
-            selectedBassRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJListBass.setListData(selectedBassRules.toArray());
-            break;
- 
-        case CHORD:
-            selectedChordRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJListBass.setListData(selectedChordRules.toArray());
-            break;
-            
-        case DRUM:
-            selectedDrumRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJListBass.setListData(selectedDrumRules.toArray());
-            break;
-      }
-    selectedRulesJListBass.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved-1));
+      int indexOfRuleToBeRemoved = selectedRulesJListBass.getSelectedIndex();
+      selectedBassRules.remove(indexOfRuleToBeRemoved);
+      selectedRulesJListBass.setListData(selectedBassRules.toArray());
+      selectedRulesJListBass.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved - 1));
   }//GEN-LAST:event_removePatternBtnBassActionPerformed
 
 private void reExtractBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnBassActionPerformed
@@ -1751,53 +1699,17 @@ private void reExtractBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GE
       Integer maxNumberOfClusters = (Integer) numberOfClustersSpinnerBass.getValue();
       int selectedIndex;
       jm.music.data.Part selectedPart;
-      
-      switch( type )
-        {
-          case BASS:
-              selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
-              selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
-              
-              repBassRules = 
-                      new RepresentativeBassRules(startBeat, 
-                                                  endBeat, 
-                                                  maxNumberOfClusters, 
-                                                  selectedPart);
-              MIDIBeast.setRepBassRules(repBassRules);
-              setBassRawRules();
-              setBassSelectedRules();
-              break;
- 
-          case CHORD:
-              selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
-              selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
 
-              repChordRules = 
-                      new RepresentativeChordRules(startBeat, 
-                                                   endBeat, 
-                                                   maxNumberOfClusters, 
-                                                   selectedPart, 
-                                                   minDuration);
-              MIDIBeast.setRepChordRules(repChordRules);
-              setChordRawRules();
-              setChordSelectedRules();
-              break;
-              
-         case DRUM:
-               // Drum selection only makes sense for drum selection!!
-               potentialInstrumentsJListBass.setSelectedValue("DRUMS", true);
-              selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
-              selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
-              repDrumRules = 
-                      new RepresentativeDrumRules(startBeat, 
-                                                  endBeat, 
-                                                  maxNumberOfClusters, 
-                                                  selectedPart);
-              MIDIBeast.setRepDrumRules(repDrumRules);
-              setDrumRawRules();
-              setDrumSelectedRules();
-              break;
-        }
+      selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
+      selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
+
+      repBassRules = new RepresentativeBassRules(startBeat,
+                                                 endBeat,
+                                                 maxNumberOfClusters,
+                                                 selectedPart);
+      MIDIBeast.setRepBassRules(repBassRules);
+      setBassRawRules();
+      setBassSelectedRules();
   }//GEN-LAST:event_reExtractBtnBassActionPerformed
 
 private void endBeatTextFieldBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_endBeatTextFieldBassActionPerformed
@@ -1849,7 +1761,27 @@ private void endBeatTextFieldChordActionPerformed(java.awt.event.ActionEvent evt
 
 private void reExtractBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnChordActionPerformed
   {//GEN-HEADEREND:event_reExtractBtnChordActionPerformed
-    // TODO add your handling code here:
+      checkForAndThrowErrors();
+
+      double endBeat = Double.parseDouble(endBeatTextFieldBass.getText());
+      double startBeat = Double.parseDouble(startBeatTextFieldBass.getText());
+
+      Integer maxNumberOfClusters = (Integer) numberOfClustersSpinnerBass.getValue();
+      int selectedIndex;
+      jm.music.data.Part selectedPart;
+
+      selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
+      selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
+
+      repChordRules =
+              new RepresentativeChordRules(startBeat,
+                                           endBeat,
+                                           maxNumberOfClusters,
+                                           selectedPart,
+                                           minDuration);
+      MIDIBeast.setRepChordRules(repChordRules);
+      setChordRawRules();
+      setChordSelectedRules();
   }//GEN-LAST:event_reExtractBtnChordActionPerformed
 
 private void noteResolutionComboBoxChordimportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChordimportMidiNoteResolutionChanged
@@ -1859,7 +1791,27 @@ private void noteResolutionComboBoxChordimportMidiNoteResolutionChanged(java.awt
 
 private void selectPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnChordActionPerformed
   {//GEN-HEADEREND:event_selectPatternBtnChordActionPerformed
-    // TODO add your handling code here:
+      Object ob = rawRulesJListChord.getSelectedValue();
+      //System.out.println("ob = " + ob + " class = " + ob.getClass());
+      if( ob instanceof RepPattern )
+        {
+          //System.out.println("selected rule " + incompleteRule);
+
+          RepPattern repPattern = (RepPattern) ob;
+
+          int index = rawRulesJListChord.getSelectedIndex();
+          // There should be some criterion here to mask out lines that
+          // don't correspond to rules. The old way, checking for
+          // parens at the start and end, is no longer relevant.
+
+          RepresentativeChordRules.ChordPattern selectedChordRule = (RepresentativeChordRules.ChordPattern) repPattern;
+
+          selectedChordRules.add(selectedChordRule);
+          setChordSelectedRules();
+
+          rawRulesModelChord.removeElement(ob);
+          rawRulesJListChord.setSelectedIndex(Math.max(0, index - 1));
+        }
   }//GEN-LAST:event_selectPatternBtnChordActionPerformed
 
 private void leftPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leftPlayPatternBtnChordActionPerformed
@@ -1869,7 +1821,10 @@ private void leftPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent e
 
 private void removePatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnChordActionPerformed
   {//GEN-HEADEREND:event_removePatternBtnChordActionPerformed
-    // TODO add your handling code here:
+    int indexOfRuleToBeRemoved = selectedRulesJListBass.getSelectedIndex();
+      selectedChordRules.remove(indexOfRuleToBeRemoved);
+      selectedRulesJListChord.setListData(selectedChordRules.toArray());
+      selectedRulesJListChord.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved - 1));
   }//GEN-LAST:event_removePatternBtnChordActionPerformed
 
 private void rightPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnChordActionPerformed
@@ -1879,7 +1834,8 @@ private void rightPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent 
 
 private void copySelectionsBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnChordActionPerformed
   {//GEN-HEADEREND:event_copySelectionsBtnChordActionPerformed
-    // TODO add your handling code here:
+      MIDIBeast.selectedChordRules = selectedChordRules;
+      styleEditor.loadChordPatterns(MIDIBeast.getRepChordRules().getChordRules());
   }//GEN-LAST:event_copySelectionsBtnChordActionPerformed
 
 private void closeWindowBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnChordActionPerformed
@@ -1924,7 +1880,26 @@ private void endBeatTextFieldDrumActionPerformed(java.awt.event.ActionEvent evt)
 
 private void reExtractBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnDrumActionPerformed
   {//GEN-HEADEREND:event_reExtractBtnDrumActionPerformed
-    // TODO add your handling code here:
+      checkForAndThrowErrors();
+
+      double endBeat = Double.parseDouble(endBeatTextFieldBass.getText());
+      double startBeat = Double.parseDouble(startBeatTextFieldBass.getText());
+
+      Integer maxNumberOfClusters = (Integer) numberOfClustersSpinnerBass.getValue();
+      int selectedIndex;
+      jm.music.data.Part selectedPart;
+
+      potentialInstrumentsJListBass.setSelectedValue("DRUMS", true);
+      selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
+      selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
+      repDrumRules =
+              new RepresentativeDrumRules(startBeat,
+                                          endBeat,
+                                          maxNumberOfClusters,
+                                          selectedPart);
+      MIDIBeast.setRepDrumRules(repDrumRules);
+      setDrumRawRules();
+      setDrumSelectedRules();
   }//GEN-LAST:event_reExtractBtnDrumActionPerformed
 
 private void doubleDrumLengthDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_doubleDrumLengthDrumActionPerformed
@@ -1939,7 +1914,24 @@ private void noteResolutionComboBoxDrumimportMidiNoteResolutionChanged(java.awt.
 
 private void selectPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnDrumActionPerformed
   {//GEN-HEADEREND:event_selectPatternBtnDrumActionPerformed
-    // TODO add your handling code here:
+      Object ob = rawRulesJListDrum.getSelectedValue();
+      //System.out.println("ob = " + ob + " class = " + ob.getClass());
+      if( ob instanceof RepPattern )
+        {
+          //System.out.println("selected rule " + incompleteRule);
+
+          RepPattern repPattern = (RepPattern) ob;
+
+          int index = rawRulesJListDrum.getSelectedIndex();
+
+          RepresentativeDrumRules.DrumPattern drumPattern = (RepresentativeDrumRules.DrumPattern) repPattern;
+
+          selectedDrumRules.add(drumPattern);
+          setDrumSelectedRules();
+
+          rawRulesModelDrum.removeElement(ob);
+          rawRulesJListDrum.setSelectedIndex(Math.max(0, index-1));
+        }
   }//GEN-LAST:event_selectPatternBtnDrumActionPerformed
 
 private void leftPlayPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leftPlayPatternBtnDrumActionPerformed
@@ -1949,7 +1941,11 @@ private void leftPlayPatternBtnDrumActionPerformed(java.awt.event.ActionEvent ev
 
 private void removePatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnDrumActionPerformed
   {//GEN-HEADEREND:event_removePatternBtnDrumActionPerformed
-    // TODO add your handling code here:
+      int indexOfRuleToBeRemoved = selectedRulesJListDrum.getSelectedIndex();
+
+      selectedDrumRules.remove(indexOfRuleToBeRemoved);
+      selectedRulesJListDrum.setListData(selectedDrumRules.toArray());
+      selectedRulesJListDrum.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved - 1));
   }//GEN-LAST:event_removePatternBtnDrumActionPerformed
 
 private void rightPlayPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnDrumActionPerformed
@@ -1959,7 +1955,8 @@ private void rightPlayPatternBtnDrumActionPerformed(java.awt.event.ActionEvent e
 
 private void copySelectionsBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnDrumActionPerformed
   {//GEN-HEADEREND:event_copySelectionsBtnDrumActionPerformed
-    // TODO add your handling code here:
+      MIDIBeast.selectedDrumRules = selectedDrumRules;
+      styleEditor.loadDrumPatterns(MIDIBeast.getRepDrumRules().getRepresentativePatterns());
   }//GEN-LAST:event_copySelectionsBtnDrumActionPerformed
 
 private void closeWindowBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnDrumActionPerformed
