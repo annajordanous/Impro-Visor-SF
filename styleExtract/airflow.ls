@@ -16,7 +16,7 @@
 (breakpoint 54)
 (layout)
 (roadmap-layout 8)
-(style _amouri
+(style no-style
     (swing 0.5)
     (comp-swing 0.5)
     (bass-high c-)
@@ -36,7 +36,7 @@
 )
 
 
-(section (style _amouri)) 
+(section (style no-style)) 
 
 CM7 | Dm7 G7 | CM7 | Dm7 G7 | 
 CM7 | Dm7 G7 | CM7 | Dm7 G7 | 
