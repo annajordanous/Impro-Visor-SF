@@ -65,8 +65,12 @@ ArrayList<RepresentativeChordRules.ChordPattern> selectedChordRules;
 /**
  * Models for the raw and selected JLists
  */
-DefaultListModel rawRulesModel;
-DefaultListModel selectedRulesModel;
+DefaultListModel rawRulesModelBass;
+DefaultListModel selectedRulesModelBass;
+DefaultListModel rawRulesModelChord;
+DefaultListModel selectedRulesModelChord;
+DefaultListModel rawRulesModelDrum;
+DefaultListModel selectedRulesModelDrum;
 
 /**
  * minimum duration (in slots) for a note not to be counted as a rest.
@@ -103,51 +107,48 @@ public ExtractionEditor(java.awt.Frame parent,
     this.type = type;
     this.minDuration = minDuration;
     
-    rawRulesModel      = new DefaultListModel();
-    selectedRulesModel = new DefaultListModel();
+    rawRulesModelBass       = new DefaultListModel();
+    selectedRulesModelBass  = new DefaultListModel();
+    rawRulesModelChord      = new DefaultListModel();
+    selectedRulesModelChord = new DefaultListModel();
+    rawRulesModelDrum       = new DefaultListModel();
+    selectedRulesModelDrum  = new DefaultListModel();
 
     initComponents();
     initComponents2();
     setSize(900, 425);
 
     SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
-    numberOfClustersSpinner.setModel(model);
+    numberOfClustersSpinnerBass.setModel(model);
 
     setPotentialParts();
-    switch( type )
-      {
-        case BASS:
-            setBackground(Color.orange);
-            tempoVolumeLabel.setBackground(Color.orange);
-            setTitle("Bass Extraction from " + styleEditor.getTitle());
-            setBassDefaults();
-            doubleDrumLength.setVisible(false);
-            repBassRules = MIDIBeast.getRepBassRules();
-            setBassSelectedRules();
-            setBassRawRules();
-            break;
+  }
 
-        case CHORD:
-            setBackground(Color.green);
-            tempoVolumeLabel.setBackground(Color.green);
-            setTitle("Chord Extraction from " + styleEditor.getTitle());
-            setChordDefaults();
-            doubleDrumLength.setVisible(false);
-            repChordRules = MIDIBeast.getRepChordRules();
-            setChordRawRules();
-            setChordSelectedRules();
-            break;
+public void setBass()
+  {
+    bassPanel.setBackground(Color.orange);
+    setBassDefaults();
+    repBassRules = MIDIBeast.getRepBassRules();
+    setBassSelectedRules();
+    setBassRawRules();
+  }
 
-        case DRUM:
-            setBackground(Color.yellow);
-            tempoVolumeLabel.setBackground(Color.yellow);
-            setTitle("Drum Extraction from " + styleEditor.getTitle());
-            setDrumDefaults();
-            repDrumRules = MIDIBeast.getRepDrumRules();
-            setDrumRawRules();
-            setDrumSelectedRules();
-            break;
-      }
+public void setChords()
+  {
+    chordPanel.setBackground(Color.green);
+    setChordDefaults();
+    repChordRules = MIDIBeast.getRepChordRules();
+    setChordRawRules();
+    setChordSelectedRules();
+  }
+
+public void setDrums()
+  {
+    drumPanel.setBackground(Color.yellow);
+    setDrumDefaults();
+    repDrumRules = MIDIBeast.getRepDrumRules();
+    setDrumRawRules();
+    setDrumSelectedRules();
   }
 
 public void setPotentialParts()
@@ -155,41 +156,37 @@ public void setPotentialParts()
     ArrayList<String> potentialInstruments = new ArrayList<String>();
     for( int i = 0; i < MIDIBeast.allParts.size(); i++ )
       {
-        if( MIDIBeast.allParts.get(i).getChannel() == DRUM_CHANNEL )
-          {
-            potentialInstruments.add(DRUM_NAMES);
-          }
-        else
-          {
-            potentialInstruments.add(MIDIBeast.getInstrumentForPart(i));
-          }
+      potentialInstruments.add(MIDIBeast.getInstrumentForPart(i));
       }
 
-    potentialInstrumentsJList.setListData(potentialInstruments.toArray());
-    potentialInstrumentsJList.setSelectedIndex(0);
+    potentialInstrumentsJListBass.setListData(potentialInstruments.toArray());
+    potentialInstrumentsJListBass.setSelectedIndex(0);
+    potentialInstrumentsJListChord.setListData(potentialInstruments.toArray());
+    potentialInstrumentsJListChord.setSelectedIndex(0);
+
   }
 
 public void setBassDefaults()
   {
-    startBeatTextField.setText(Double.toString(Math.round(MIDIBeast.bassPart.getPhrase(0).getStartTime())));
-    endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.bassPart.getPhrase(0).getEndTime())));
+    startBeatTextFieldBass.setText(Double.toString(Math.round(MIDIBeast.bassPart.getPhrase(0).getStartTime())));
+    endBeatTextFieldBass.setText(Double.toString(Math.round(MIDIBeast.bassPart.getPhrase(0).getEndTime())));
   }
 
 public void setChordDefaults()
   {
-    startBeatTextField.setText(Double.toString(Math.round(MIDIBeast.chordPart.getPhrase(0).getStartTime())));
-    endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.chordPart.getPhrase(0).getEndTime())));
+    startBeatTextFieldBass.setText(Double.toString(Math.round(MIDIBeast.chordPart.getPhrase(0).getStartTime())));
+    endBeatTextFieldBass.setText(Double.toString(Math.round(MIDIBeast.chordPart.getPhrase(0).getEndTime())));
   }
 
 public void setDrumDefaults()
   {
-    startBeatTextField.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getStartTime())));
-    endBeatTextField.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getEndTime())));
+    startBeatTextFieldBass.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getStartTime())));
+    endBeatTextFieldBass.setText(Double.toString(Math.round(MIDIBeast.drumPart.getPhrase(0).getEndTime())));
   }
 
 public void setBassRawRules()
   {
-    rawRulesModel.clear();
+    rawRulesModelBass.clear();
     ArrayList<RepresentativeBassRules.Section> sections = repBassRules.getSections();
     ArrayList<Object> rawRules = new ArrayList<Object>();
     //Add Clustered Rules
@@ -213,15 +210,15 @@ public void setBassRawRules()
     // Copy the rules to the model
     for( Object rawRule: rawRules )
       {
-      rawRulesModel.addElement(rawRule);
+      rawRulesModelBass.addElement(rawRule);
       }
-    rawRulesJList.setModel(rawRulesModel);
-    rawRulesJList.setSelectedIndex(0);
+    rawRulesJListBass.setModel(rawRulesModelBass);
+    rawRulesJListBass.setSelectedIndex(0);
   }
 
 public void setChordRawRules()
   {
-    rawRulesModel.clear();
+    rawRulesModelChord.clear();
     ArrayList<RepresentativeChordRules.Section> sections = repChordRules.getSections();
     ArrayList<Object> rawRules = new ArrayList<Object>();
 
@@ -259,15 +256,15 @@ public void setChordRawRules()
     
    for( Object rawRule: rawRules )
       {
-      rawRulesModel.addElement(rawRule);
+      rawRulesModelChord.addElement(rawRule);
       }
-    rawRulesJList.setModel(rawRulesModel);
-    rawRulesJList.setSelectedIndex(0);
+    rawRulesJListChord.setModel(rawRulesModelChord);
+    rawRulesJListChord.setSelectedIndex(0);
   }
 
 public void setDrumRawRules()
   {
-    rawRulesModel.clear();
+    rawRulesModelDrum.clear();
     ArrayList<RepresentativeDrumRules.Cluster> clusters = repDrumRules.getClusters();
     ArrayList<Object> rawRules = new ArrayList<Object>();
 
@@ -295,10 +292,10 @@ public void setDrumRawRules()
     
    for( Object rawRule: rawRules )
       {
-      rawRulesModel.addElement(rawRule);
+      rawRulesModelDrum.addElement(rawRule);
       }
-    rawRulesJList.setModel(rawRulesModel);
-    rawRulesJList.setSelectedIndex(0);
+    rawRulesJListBass.setModel(rawRulesModelDrum);
+    rawRulesJListBass.setSelectedIndex(0);
   }
 
 private RepresentativeDrumRules.DrumPattern makeDrumPattern(String string)
@@ -331,38 +328,38 @@ private RepresentativeDrumRules.DrumPattern makeDrumPattern(String string)
 
 public void setBassSelectedRules()
   {
-   selectedRulesModel.clear();
+   selectedRulesModelBass.clear();
    selectedBassRules = repBassRules.getBassRules();
    for( RepresentativeBassRules.BassPattern selectedRule: selectedBassRules )
       {
-      selectedRulesModel.addElement(selectedRule);
+      selectedRulesModelBass.addElement(selectedRule);
       }
-    selectedRulesJList.setModel(selectedRulesModel);
-    selectedRulesJList.setSelectedIndex(selectedBassRules.size()-1);
+    selectedRulesJListBass.setModel(selectedRulesModelBass);
+    selectedRulesJListBass.setSelectedIndex(selectedBassRules.size()-1);
   }
 
 public void setChordSelectedRules()
   {
-   selectedRulesModel.clear();
+   selectedRulesModelChord.clear();
    selectedChordRules = repChordRules.getChordRules();
    for( RepresentativeChordRules.ChordPattern selectedRule: selectedChordRules )
       {
-      selectedRulesModel.addElement(selectedRule);
+      selectedRulesModelChord.addElement(selectedRule);
       }
-    selectedRulesJList.setModel(selectedRulesModel);
-    selectedRulesJList.setSelectedIndex(selectedChordRules.size()-1);
+    selectedRulesJListChord.setModel(selectedRulesModelChord);
+    selectedRulesJListChord.setSelectedIndex(selectedChordRules.size()-1);
   }
 
 public void setDrumSelectedRules()
   {
-   selectedRulesModel.clear();
+   selectedRulesModelDrum.clear();
    selectedDrumRules = repDrumRules.getRepresentativePatterns();
    for( RepresentativeDrumRules.DrumPattern selectedRule: selectedDrumRules )
       {
-      selectedRulesModel.addElement(selectedRule);
+      selectedRulesModelDrum.addElement(selectedRule);
       }
-    selectedRulesJList.setModel(selectedRulesModel);
-    selectedRulesJList.setSelectedIndex(selectedDrumRules.size()-1);
+    selectedRulesJListDrum.setModel(selectedRulesModelDrum);
+    selectedRulesJListDrum.setSelectedIndex(selectedDrumRules.size()-1);
   }
 
 private void initComponents2()
@@ -406,8 +403,8 @@ private void checkForAndThrowErrors()
     double startBeat;
     try
       {
-        endBeat = Double.parseDouble(endBeatTextField.getText());
-        startBeat = Double.parseDouble(startBeatTextField.getText());
+        endBeat = Double.parseDouble(endBeatTextFieldBass.getText());
+        startBeat = Double.parseDouble(startBeatTextFieldBass.getText());
       }
     catch( Exception e )
       {
@@ -447,18 +444,17 @@ private void checkForAndThrowErrors()
  * in the JList (in contrast to playRawRule()).
  */
 
-public void playSelectedRule()
+public void playSelectedRule(int type)
   {
     Polylist rule = null;
     int duration = 0;
-    Object selected = selectedRulesJList.getSelectedValue();
-    if( selected instanceof RepPattern )
-      {
+    Object selected;
         switch( type )
           {
             case BASS:
                 try
                   {
+                    selected = selectedRulesJListBass.getSelectedValue();
                     RepresentativeBassRules.BassPattern selectedBassRule 
                             = (RepresentativeBassRules.BassPattern) selected;
                     duration = selectedBassRule.getDuration();
@@ -471,18 +467,20 @@ public void playSelectedRule()
                   }
                 break;
 
-            case DRUM:
-                RepresentativeDrumRules.DrumPattern selectedDrumPattern 
-                        = (RepresentativeDrumRules.DrumPattern) selected;
-                duration = selectedDrumPattern.getDuration();
-                rule = Notate.parseListFromString(selectedDrumPattern.toString());
-                break;
-
             case CHORD:
+                selected = selectedRulesJListChord.getSelectedValue();
                 RepresentativeChordRules.ChordPattern selectedChordRule 
                         = (RepresentativeChordRules.ChordPattern) selected;
                 duration = selectedChordRule.getDuration();
                 rule = Notate.parseListFromString(selectedChordRule.toString());
+                break;
+            
+            case DRUM:
+                selected = selectedRulesJListDrum.getSelectedValue();
+                RepresentativeDrumRules.DrumPattern selectedDrumPattern 
+                        = (RepresentativeDrumRules.DrumPattern) selected;
+                duration = selectedDrumPattern.getDuration();
+                rule = Notate.parseListFromString(selectedDrumPattern.toString());
                 break;
           }
 
@@ -529,8 +527,9 @@ public void playSelectedRule()
                              ImproVisor.getCurrentWindow(),
                              0,
                              notate.getTransposition()).execute();
-      }
+      
   }
+
 
 
 /**
@@ -538,44 +537,60 @@ public void playSelectedRule()
  * rules must be created from them (in contrast to playSelectedRule()).
  */
 
-public void playRawRule()
+public void playRawRule(int type)
   {
-    Object rawOb = rawRulesJList.getSelectedValue();
-    if( rawOb instanceof RepPattern )
-      {
-        RepPattern repPattern = (RepPattern)rawOb;
-        Polylist rule = null;
-        int duration = 0;
+    Object rawOb;
+    RepPattern repPattern;
+    Polylist rule = null;
+    int duration = 0;
         switch( type )
           {
             case BASS:
-                // There should be some criterion here to mask out lines that
-                // don't correspond to rules. The old way, checking for
-                // parens at the start and end, is no longer relevant.
+                {
+                rawOb = rawRulesJListBass.getSelectedValue();
+                if( rawOb instanceof RepPattern )
+                {
+                repPattern = (RepPattern)rawOb;
 
                 RepresentativeBassRules.BassPattern selectedBassRule 
                         = (RepresentativeBassRules.BassPattern) repPattern;
                 duration = selectedBassRule.getDuration();
                 rule = Notate.parseListFromString(selectedBassRule.toString());
                 break;
+                }
+                }
 
             case CHORD:
+                {
                 // There should be some criterion here to mask out lines that
                 // don't correspond to rules. The old way, checking for
                 // parens at the start and end, is no longer relevant.
 
+                rawOb = rawRulesJListChord.getSelectedValue();
+                if( rawOb instanceof RepPattern )
+                {
+                repPattern = (RepPattern)rawOb;
+  
                 RepresentativeChordRules.ChordPattern selectedChordRule 
                         = (RepresentativeChordRules.ChordPattern) repPattern;
                 duration = selectedChordRule.getDuration();
                 rule = Notate.parseListFromString(selectedChordRule.toString());
                 break;
+                }
+                }
                 
             case DRUM:
+                rawOb = rawRulesJListDrum.getSelectedValue();
+                if( rawOb instanceof RepPattern )
+                {
+                repPattern = (RepPattern)rawOb;
+                  
                 RepresentativeDrumRules.DrumPattern selectedDrumPattern 
                         = (RepresentativeDrumRules.DrumPattern) repPattern;
                 duration = selectedDrumPattern.getDuration();
                 rule = Notate.parseListFromString(selectedDrumPattern.toString());
                 break;
+                }
           }
 
         //System.out.println("rule for style = " + rule);
@@ -614,7 +629,7 @@ public void playRawRule()
                              ImproVisor.getCurrentWindow(),
                              0,
                              notate.getTransposition()).execute();
-      }
+      
   }
 
 /**
@@ -627,45 +642,98 @@ public void playRawRule()
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        rawPatternsPanel = new javax.swing.JScrollPane();
-        rawRulesJList = new javax.swing.JList();
-        selectedPatternsPanel = new javax.swing.JScrollPane();
-        selectedRulesJList = new javax.swing.JList();
-        optionPanel = new javax.swing.JPanel();
-        maximumClustersLabel = new javax.swing.JLabel();
-        startBeatLabel = new javax.swing.JLabel();
-        startBeatTextField = new javax.swing.JTextField();
-        endBeatLabel = new javax.swing.JLabel();
-        endBeatTextField = new javax.swing.JTextField();
-        numberOfClustersSpinner = new javax.swing.JSpinner();
-        reExtractBtn = new javax.swing.JButton();
-        doubleDrumLength = new javax.swing.JCheckBox();
-        noteResolutionComboBox = new javax.swing.JComboBox();
-        potentialInstrumentsScrollPane = new javax.swing.JScrollPane();
-        potentialInstrumentsJList = new javax.swing.JList();
-        selectPatternBtn = new javax.swing.JButton();
-        leftPlayPatternBtn = new javax.swing.JButton();
-        removePatternBtn = new javax.swing.JButton();
-        rightPlayPatternBtn = new javax.swing.JButton();
-        copySelectionsBtn = new javax.swing.JButton();
-        closeWindowBtn = new javax.swing.JButton();
-        tempoVolumeLabel = new javax.swing.JLabel();
-        widePatternTextField = new javax.swing.JTextField();
+        extractionTabbedPane = new javax.swing.JTabbedPane();
+        bassPanel = new javax.swing.JPanel();
+        rawPatternsPanelBass = new javax.swing.JScrollPane();
+        rawRulesJListBass = new javax.swing.JList();
+        selectedPatternsPanelBass = new javax.swing.JScrollPane();
+        selectedRulesJListBass = new javax.swing.JList();
+        optionPanelBass = new javax.swing.JPanel();
+        maximumClustersLabelBass = new javax.swing.JLabel();
+        startBeatLabelBass = new javax.swing.JLabel();
+        startBeatTextFieldBass = new javax.swing.JTextField();
+        endBeatLabelBass = new javax.swing.JLabel();
+        endBeatTextFieldBass = new javax.swing.JTextField();
+        numberOfClustersSpinnerBass = new javax.swing.JSpinner();
+        reExtractBtnBass = new javax.swing.JButton();
+        noteResolutionComboBoxBass = new javax.swing.JComboBox();
+        potentialInstrumentsScrollPaneBass = new javax.swing.JScrollPane();
+        potentialInstrumentsJListBass = new javax.swing.JList();
+        selectPatternBtnBass = new javax.swing.JButton();
+        leftPlayPatternBtnBass = new javax.swing.JButton();
+        removePatternBtnBass = new javax.swing.JButton();
+        rightPlayPatternBtnBass = new javax.swing.JButton();
+        copySelectionsBtnBass = new javax.swing.JButton();
+        closeWindowBtnBass = new javax.swing.JButton();
+        tempoVolumeLabelBass = new javax.swing.JLabel();
+        widePatternTextFieldBass = new javax.swing.JTextField();
+        chordPanel = new javax.swing.JPanel();
+        rawPatternsPanelChord = new javax.swing.JScrollPane();
+        rawRulesJListChord = new javax.swing.JList();
+        selectedPatternsPanelChord = new javax.swing.JScrollPane();
+        selectedRulesJListChord = new javax.swing.JList();
+        optionPanelChord = new javax.swing.JPanel();
+        maximumClustersLabelChord = new javax.swing.JLabel();
+        startBeatLabelChord = new javax.swing.JLabel();
+        startBeatTextFieldChord = new javax.swing.JTextField();
+        endBeatLabelChord = new javax.swing.JLabel();
+        endBeatTextFieldChord = new javax.swing.JTextField();
+        numberOfClustersSpinnerChord = new javax.swing.JSpinner();
+        reExtractBtnChord = new javax.swing.JButton();
+        noteResolutionComboBoxChord = new javax.swing.JComboBox();
+        potentialInstrumentsScrollPaneChord = new javax.swing.JScrollPane();
+        potentialInstrumentsJListChord = new javax.swing.JList();
+        selectPatternBtnChord = new javax.swing.JButton();
+        leftPlayPatternBtnChord = new javax.swing.JButton();
+        removePatternBtnChord = new javax.swing.JButton();
+        rightPlayPatternBtnChord = new javax.swing.JButton();
+        copySelectionsBtnChord = new javax.swing.JButton();
+        closeWindowBtnChord = new javax.swing.JButton();
+        tempoVolumeLabelChord = new javax.swing.JLabel();
+        widePatternTextFieldChord = new javax.swing.JTextField();
+        drumPanel = new javax.swing.JPanel();
+        rawPatternsPanelDrum = new javax.swing.JScrollPane();
+        rawRulesJListDrum = new javax.swing.JList();
+        selectedPatternsPanelDrum = new javax.swing.JScrollPane();
+        selectedRulesJListDrum = new javax.swing.JList();
+        optionPanelDrum = new javax.swing.JPanel();
+        maximumClustersLabelDrum = new javax.swing.JLabel();
+        startBeatLabelDrum = new javax.swing.JLabel();
+        startBeatTextFieldDrum = new javax.swing.JTextField();
+        endBeatLabelDrum = new javax.swing.JLabel();
+        endBeatTextFieldDrum = new javax.swing.JTextField();
+        numberOfClustersSpinnerDrum = new javax.swing.JSpinner();
+        reExtractBtnDrum = new javax.swing.JButton();
+        doubleDrumLengthDrum = new javax.swing.JCheckBox();
+        noteResolutionComboBoxDrum = new javax.swing.JComboBox();
+        selectPatternBtnDrum = new javax.swing.JButton();
+        leftPlayPatternBtnDrum = new javax.swing.JButton();
+        removePatternBtnDrum = new javax.swing.JButton();
+        rightPlayPatternBtnDrum = new javax.swing.JButton();
+        copySelectionsBtnDrum = new javax.swing.JButton();
+        closeWindowBtnDrum = new javax.swing.JButton();
+        tempoVolumeLabelDrum = new javax.swing.JLabel();
+        widePatternTextFieldDrum = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        rawPatternsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Patterns"));
-        rawPatternsPanel.setMinimumSize(new java.awt.Dimension(300, 200));
-        rawPatternsPanel.setPreferredSize(new java.awt.Dimension(300, 200));
+        extractionTabbedPane.setMinimumSize(new java.awt.Dimension(1200, 600));
+        extractionTabbedPane.setPreferredSize(new java.awt.Dimension(1200, 600));
 
-        rawRulesJList.setModel(selectedRulesModel);
-        rawRulesJList.addMouseListener(new java.awt.event.MouseAdapter() {
+        bassPanel.setLayout(new java.awt.GridBagLayout());
+
+        rawPatternsPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Patterns"));
+        rawPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
+        rawPatternsPanelBass.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        rawRulesJListBass.setModel(rawRulesModelBass);
+        rawRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rawPatternsMouseClicked(evt);
+                rawPatternsMouseClickedBass(evt);
             }
         });
-        rawPatternsPanel.setViewportView(rawRulesJList);
+        rawPatternsPanelBass.setViewportView(rawRulesJListBass);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -678,19 +746,19 @@ public void playRawRule()
         gridBagConstraints.weightx = 0.35;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(rawPatternsPanel, gridBagConstraints);
+        bassPanel.add(rawPatternsPanelBass, gridBagConstraints);
 
-        selectedPatternsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected Patterns"));
-        selectedPatternsPanel.setMinimumSize(new java.awt.Dimension(300, 200));
-        selectedPatternsPanel.setPreferredSize(new java.awt.Dimension(300, 200));
+        selectedPatternsPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected Patterns"));
+        selectedPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
+        selectedPatternsPanelBass.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        selectedRulesJList.setModel(selectedRulesModel);
-        selectedRulesJList.addMouseListener(new java.awt.event.MouseAdapter() {
+        selectedRulesJListBass.setModel(selectedRulesModelBass);
+        selectedRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                selectedPatternsMouseClicked(evt);
+                selectedPatternsMouseClickedBass(evt);
             }
         });
-        selectedPatternsPanel.setViewportView(selectedRulesJList);
+        selectedPatternsPanelBass.setViewportView(selectedRulesJListBass);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -703,36 +771,36 @@ public void playRawRule()
         gridBagConstraints.weightx = 0.35;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(selectedPatternsPanel, gridBagConstraints);
+        bassPanel.add(selectedPatternsPanelBass, gridBagConstraints);
 
-        optionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
-        optionPanel.setToolTipText("Extract patterns again, possibly using different parameters.");
-        optionPanel.setLayout(new java.awt.GridBagLayout());
+        optionPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
+        optionPanelBass.setToolTipText("Extract patterns again, possibly using different parameters.");
+        optionPanelBass.setLayout(new java.awt.GridBagLayout());
 
-        maximumClustersLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        maximumClustersLabel.setText("Maximum Number of Clusters: ");
+        maximumClustersLabelBass.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        maximumClustersLabelBass.setText("Maximum Number of Clusters: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
-        optionPanel.add(maximumClustersLabel, gridBagConstraints);
+        optionPanelBass.add(maximumClustersLabelBass, gridBagConstraints);
 
-        startBeatLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        startBeatLabel.setText("Start after beats:");
+        startBeatLabelBass.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        startBeatLabelBass.setText("Start after beats:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
-        optionPanel.add(startBeatLabel, gridBagConstraints);
+        optionPanelBass.add(startBeatLabelBass, gridBagConstraints);
 
-        startBeatTextField.setText("8");
-        startBeatTextField.setToolTipText("The starting beat from which patterns will be extracted");
-        startBeatTextField.addActionListener(new java.awt.event.ActionListener() {
+        startBeatTextFieldBass.setText("8");
+        startBeatTextFieldBass.setToolTipText("The starting beat from which patterns will be extracted");
+        startBeatTextFieldBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startBeatTextFieldActionPerformed(evt);
+                startBeatTextFieldBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -740,22 +808,22 @@ public void playRawRule()
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
-        optionPanel.add(startBeatTextField, gridBagConstraints);
+        optionPanelBass.add(startBeatTextFieldBass, gridBagConstraints);
 
-        endBeatLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        endBeatLabel.setText("End Beat: ");
+        endBeatLabelBass.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        endBeatLabelBass.setText("End Beat: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 0.5;
-        optionPanel.add(endBeatLabel, gridBagConstraints);
+        optionPanelBass.add(endBeatLabelBass, gridBagConstraints);
 
-        endBeatTextField.setText(" ");
-        endBeatTextField.setToolTipText("The ending beat from which patterns will be extracted");
-        endBeatTextField.addActionListener(new java.awt.event.ActionListener() {
+        endBeatTextFieldBass.setText(" ");
+        endBeatTextFieldBass.setToolTipText("The ending beat from which patterns will be extracted");
+        endBeatTextFieldBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                endBeatTextFieldActionPerformed(evt);
+                endBeatTextFieldBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -763,10 +831,10 @@ public void playRawRule()
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
-        optionPanel.add(endBeatTextField, gridBagConstraints);
+        optionPanelBass.add(endBeatTextFieldBass, gridBagConstraints);
 
-        numberOfClustersSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 1, 99, 1));
-        numberOfClustersSpinner.setToolTipText("The number of clusters sought in pattern extraction");
+        numberOfClustersSpinnerBass.setModel(new javax.swing.SpinnerNumberModel(4, 1, 99, 1));
+        numberOfClustersSpinnerBass.setToolTipText("The number of clusters sought in pattern extraction");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -774,13 +842,13 @@ public void playRawRule()
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
-        optionPanel.add(numberOfClustersSpinner, gridBagConstraints);
+        optionPanelBass.add(numberOfClustersSpinnerBass, gridBagConstraints);
 
-        reExtractBtn.setText("Re-Extract  Patterns");
-        reExtractBtn.setToolTipText("Extract the patterns for this window using new parameters.");
-        reExtractBtn.addActionListener(new java.awt.event.ActionListener() {
+        reExtractBtnBass.setText("Re-Extract  Patterns");
+        reExtractBtnBass.setToolTipText("Extract the patterns for this window using new parameters.");
+        reExtractBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reExtractBtnActionPerformed(evt);
+                reExtractBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -788,33 +856,19 @@ public void playRawRule()
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        optionPanel.add(reExtractBtn, gridBagConstraints);
+        optionPanelBass.add(reExtractBtnBass, gridBagConstraints);
 
-        doubleDrumLength.setText("Double Drum Length");
-        doubleDrumLength.setToolTipText("Change the length of extracted drum pattern to be double what it was.");
-        doubleDrumLength.addActionListener(new java.awt.event.ActionListener() {
+        noteResolutionComboBoxBass.setMaximumRowCount(16);
+        noteResolutionComboBoxBass.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBoxBass.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        noteResolutionComboBoxBass.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
+        noteResolutionComboBoxBass.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        noteResolutionComboBoxBass.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBoxBass.setMinimumSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBoxBass.setPreferredSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBoxBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doubleDrumLengthActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.weightx = 1.0;
-        optionPanel.add(doubleDrumLength, gridBagConstraints);
-
-        noteResolutionComboBox.setMaximumRowCount(16);
-        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
-        noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
-        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
-        noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
-        noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
-        noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteResolutionComboBoximportMidiNoteResolutionChanged(evt);
+                noteResolutionComboBoxBassimportMidiNoteResolutionChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -822,17 +876,17 @@ public void playRawRule()
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        optionPanel.add(noteResolutionComboBox, gridBagConstraints);
+        optionPanelBass.add(noteResolutionComboBoxBass, gridBagConstraints);
 
-        potentialInstrumentsScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Instrument to Extract", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        potentialInstrumentsScrollPaneBass.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Instrument to Extract", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        potentialInstrumentsJList.setModel(new javax.swing.AbstractListModel() {
+        potentialInstrumentsJListBass.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        potentialInstrumentsJList.setToolTipText("Select MIDI instrument for re-estraction");
-        potentialInstrumentsScrollPane.setViewportView(potentialInstrumentsJList);
+        potentialInstrumentsJListBass.setToolTipText("Select MIDI instrument for re-estraction");
+        potentialInstrumentsScrollPaneBass.setViewportView(potentialInstrumentsJListBass);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -841,7 +895,7 @@ public void playRawRule()
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.4;
-        optionPanel.add(potentialInstrumentsScrollPane, gridBagConstraints);
+        optionPanelBass.add(potentialInstrumentsScrollPaneBass, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -849,13 +903,13 @@ public void playRawRule()
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.3;
         gridBagConstraints.weighty = 0.2;
-        getContentPane().add(optionPanel, gridBagConstraints);
+        bassPanel.add(optionPanelBass, gridBagConstraints);
 
-        selectPatternBtn.setText("Include Pattern");
-        selectPatternBtn.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
-        selectPatternBtn.addActionListener(new java.awt.event.ActionListener() {
+        selectPatternBtnBass.setText("Include Pattern");
+        selectPatternBtnBass.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
+        selectPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectPatternBtnActionPerformed(evt);
+                selectPatternBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -863,26 +917,26 @@ public void playRawRule()
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
-        getContentPane().add(selectPatternBtn, gridBagConstraints);
+        bassPanel.add(selectPatternBtnBass, gridBagConstraints);
 
-        leftPlayPatternBtn.setText("Play Pattern");
-        leftPlayPatternBtn.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
-        leftPlayPatternBtn.addActionListener(new java.awt.event.ActionListener() {
+        leftPlayPatternBtnBass.setText("Play Pattern");
+        leftPlayPatternBtnBass.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        leftPlayPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leftPlayPatternBtnActionPerformed(evt);
+                leftPlayPatternBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(leftPlayPatternBtn, gridBagConstraints);
+        bassPanel.add(leftPlayPatternBtnBass, gridBagConstraints);
 
-        removePatternBtn.setText("Remove Pattern");
-        removePatternBtn.setToolTipText("Removes the selected pattern from further consideration for the style.");
-        removePatternBtn.addActionListener(new java.awt.event.ActionListener() {
+        removePatternBtnBass.setText("Remove Pattern");
+        removePatternBtnBass.setToolTipText("Removes the selected pattern from further consideration for the style.");
+        removePatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removePatternBtnActionPerformed(evt);
+                removePatternBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -890,25 +944,25 @@ public void playRawRule()
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
-        getContentPane().add(removePatternBtn, gridBagConstraints);
+        bassPanel.add(removePatternBtnBass, gridBagConstraints);
 
-        rightPlayPatternBtn.setText("Play Pattern");
-        rightPlayPatternBtn.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
-        rightPlayPatternBtn.addActionListener(new java.awt.event.ActionListener() {
+        rightPlayPatternBtnBass.setText("Play Pattern");
+        rightPlayPatternBtnBass.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        rightPlayPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rightPlayPatternBtnActionPerformed(evt);
+                rightPlayPatternBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(rightPlayPatternBtn, gridBagConstraints);
+        bassPanel.add(rightPlayPatternBtnBass, gridBagConstraints);
 
-        copySelectionsBtn.setText("Copy Selections to Style Editor");
-        copySelectionsBtn.addActionListener(new java.awt.event.ActionListener() {
+        copySelectionsBtnBass.setText("Copy Selections to Style Editor");
+        copySelectionsBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copySelectionsBtnActionPerformed(evt);
+                copySelectionsBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -916,38 +970,38 @@ public void playRawRule()
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.2;
-        getContentPane().add(copySelectionsBtn, gridBagConstraints);
+        bassPanel.add(copySelectionsBtnBass, gridBagConstraints);
 
-        closeWindowBtn.setText("Dismiss this Window");
-        closeWindowBtn.setToolTipText("Close the window. Any patterns to be included should be copied to the Style Editor before closing.");
-        closeWindowBtn.addActionListener(new java.awt.event.ActionListener() {
+        closeWindowBtnBass.setText("Dismiss this Window");
+        closeWindowBtnBass.setToolTipText("Close the window. Any patterns to be included should be copied to the Style Editor before closing.");
+        closeWindowBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeWindowBtnActionPerformed(evt);
+                closeWindowBtnBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(closeWindowBtn, gridBagConstraints);
+        bassPanel.add(closeWindowBtnBass, gridBagConstraints);
 
-        tempoVolumeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tempoVolumeLabel.setText("Tempo and Volume are set in Style Editor.");
-        tempoVolumeLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        tempoVolumeLabel.setOpaque(true);
+        tempoVolumeLabelBass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabelBass.setText("Tempo and Volume are set in Style Editor.");
+        tempoVolumeLabelBass.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabelBass.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        getContentPane().add(tempoVolumeLabel, gridBagConstraints);
+        bassPanel.add(tempoVolumeLabelBass, gridBagConstraints);
 
-        widePatternTextField.setEditable(false);
-        widePatternTextField.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
-        widePatternTextField.addActionListener(new java.awt.event.ActionListener() {
+        widePatternTextFieldBass.setEditable(false);
+        widePatternTextFieldBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
+        widePatternTextFieldBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                widePatternTextFieldActionPerformed(evt);
+                widePatternTextFieldBassActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -955,28 +1009,617 @@ public void playRawRule()
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        getContentPane().add(widePatternTextField, gridBagConstraints);
+        bassPanel.add(widePatternTextFieldBass, gridBagConstraints);
+
+        extractionTabbedPane.addTab("Bass Patterns", bassPanel);
+
+        chordPanel.setLayout(new java.awt.GridBagLayout());
+
+        rawPatternsPanelChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Patterns"));
+        rawPatternsPanelChord.setMinimumSize(new java.awt.Dimension(300, 200));
+        rawPatternsPanelChord.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        rawRulesJListChord.setModel(rawRulesModelChord);
+        rawRulesJListChord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rawRulesJListMouseClickedChord(evt);
+            }
+        });
+        rawPatternsPanelChord.setViewportView(rawRulesJListChord);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 77;
+        gridBagConstraints.ipady = 77;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.35;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chordPanel.add(rawPatternsPanelChord, gridBagConstraints);
+
+        selectedPatternsPanelChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected Patterns"));
+        selectedPatternsPanelChord.setMinimumSize(new java.awt.Dimension(300, 200));
+        selectedPatternsPanelChord.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        selectedRulesJListChord.setModel(selectedRulesModelChord);
+        selectedRulesJListChord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectedRulesJListChordMouseClickedChord(evt);
+            }
+        });
+        selectedPatternsPanelChord.setViewportView(selectedRulesJListChord);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 77;
+        gridBagConstraints.ipady = 77;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.35;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chordPanel.add(selectedPatternsPanelChord, gridBagConstraints);
+
+        optionPanelChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
+        optionPanelChord.setToolTipText("Extract patterns again, possibly using different parameters.");
+        optionPanelChord.setLayout(new java.awt.GridBagLayout());
+
+        maximumClustersLabelChord.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        maximumClustersLabelChord.setText("Maximum Number of Clusters: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelChord.add(maximumClustersLabelChord, gridBagConstraints);
+
+        startBeatLabelChord.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        startBeatLabelChord.setText("Start after beats:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelChord.add(startBeatLabelChord, gridBagConstraints);
+
+        startBeatTextFieldChord.setText("8");
+        startBeatTextFieldChord.setToolTipText("The starting beat from which patterns will be extracted");
+        startBeatTextFieldChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startBeatTextFieldChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelChord.add(startBeatTextFieldChord, gridBagConstraints);
+
+        endBeatLabelChord.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        endBeatLabelChord.setText("End Beat: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelChord.add(endBeatLabelChord, gridBagConstraints);
+
+        endBeatTextFieldChord.setText(" ");
+        endBeatTextFieldChord.setToolTipText("The ending beat from which patterns will be extracted");
+        endBeatTextFieldChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endBeatTextFieldChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelChord.add(endBeatTextFieldChord, gridBagConstraints);
+
+        numberOfClustersSpinnerChord.setModel(new javax.swing.SpinnerNumberModel(4, 1, 99, 1));
+        numberOfClustersSpinnerChord.setToolTipText("The number of clusters sought in pattern extraction");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelChord.add(numberOfClustersSpinnerChord, gridBagConstraints);
+
+        reExtractBtnChord.setText("Re-Extract  Patterns");
+        reExtractBtnChord.setToolTipText("Extract the patterns for this window using new parameters.");
+        reExtractBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reExtractBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        optionPanelChord.add(reExtractBtnChord, gridBagConstraints);
+
+        noteResolutionComboBoxChord.setMaximumRowCount(16);
+        noteResolutionComboBoxChord.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBoxChord.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        noteResolutionComboBoxChord.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
+        noteResolutionComboBoxChord.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        noteResolutionComboBoxChord.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBoxChord.setMinimumSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBoxChord.setPreferredSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBoxChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteResolutionComboBoxChordimportMidiNoteResolutionChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        optionPanelChord.add(noteResolutionComboBoxChord, gridBagConstraints);
+
+        potentialInstrumentsScrollPaneChord.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Instrument to Extract", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        potentialInstrumentsJListChord.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        potentialInstrumentsJListChord.setToolTipText("Select MIDI instrument for re-estraction");
+        potentialInstrumentsScrollPaneChord.setViewportView(potentialInstrumentsJListChord);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.4;
+        optionPanelChord.add(potentialInstrumentsScrollPaneChord, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.2;
+        chordPanel.add(optionPanelChord, gridBagConstraints);
+
+        selectPatternBtnChord.setText("Include Pattern");
+        selectPatternBtnChord.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
+        selectPatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPatternBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.4;
+        chordPanel.add(selectPatternBtnChord, gridBagConstraints);
+
+        leftPlayPatternBtnChord.setText("Play Pattern");
+        leftPlayPatternBtnChord.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        leftPlayPatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftPlayPatternBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        chordPanel.add(leftPlayPatternBtnChord, gridBagConstraints);
+
+        removePatternBtnChord.setText("Remove Pattern");
+        removePatternBtnChord.setToolTipText("Removes the selected pattern from further consideration for the style.");
+        removePatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removePatternBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.4;
+        chordPanel.add(removePatternBtnChord, gridBagConstraints);
+
+        rightPlayPatternBtnChord.setText("Play Pattern");
+        rightPlayPatternBtnChord.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        rightPlayPatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightPlayPatternBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        chordPanel.add(rightPlayPatternBtnChord, gridBagConstraints);
+
+        copySelectionsBtnChord.setText("Copy Selections to Style Editor");
+        copySelectionsBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copySelectionsBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        chordPanel.add(copySelectionsBtnChord, gridBagConstraints);
+
+        closeWindowBtnChord.setText("Dismiss this Window");
+        closeWindowBtnChord.setToolTipText("Close the window. Any patterns to be included should be copied to the Style Editor before closing.");
+        closeWindowBtnChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowBtnChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        chordPanel.add(closeWindowBtnChord, gridBagConstraints);
+
+        tempoVolumeLabelChord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabelChord.setText("Tempo and Volume are set in Style Editor.");
+        tempoVolumeLabelChord.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabelChord.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        chordPanel.add(tempoVolumeLabelChord, gridBagConstraints);
+
+        widePatternTextFieldChord.setEditable(false);
+        widePatternTextFieldChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
+        widePatternTextFieldChord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                widePatternTextFieldChordActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        chordPanel.add(widePatternTextFieldChord, gridBagConstraints);
+
+        extractionTabbedPane.addTab("Chord Patterns", chordPanel);
+
+        drumPanel.setLayout(new java.awt.GridBagLayout());
+
+        rawPatternsPanelDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Patterns"));
+        rawPatternsPanelDrum.setMinimumSize(new java.awt.Dimension(300, 200));
+        rawPatternsPanelDrum.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        rawRulesJListDrum.setModel(rawRulesModelDrum);
+        rawRulesJListDrum.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rawPatternsMouseClickedDrum(evt);
+            }
+        });
+        rawPatternsPanelDrum.setViewportView(rawRulesJListDrum);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 77;
+        gridBagConstraints.ipady = 77;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.35;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        drumPanel.add(rawPatternsPanelDrum, gridBagConstraints);
+
+        selectedPatternsPanelDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected Patterns"));
+        selectedPatternsPanelDrum.setMinimumSize(new java.awt.Dimension(300, 200));
+        selectedPatternsPanelDrum.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        selectedRulesJListDrum.setModel(selectedRulesModelDrum);
+        selectedRulesJListDrum.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectedPatternsMouseClickedDrum(evt);
+            }
+        });
+        selectedPatternsPanelDrum.setViewportView(selectedRulesJListDrum);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 77;
+        gridBagConstraints.ipady = 77;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.35;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        drumPanel.add(selectedPatternsPanelDrum, gridBagConstraints);
+
+        optionPanelDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Re-Extraction Options"));
+        optionPanelDrum.setToolTipText("Extract patterns again, possibly using different parameters.");
+        optionPanelDrum.setLayout(new java.awt.GridBagLayout());
+
+        maximumClustersLabelDrum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        maximumClustersLabelDrum.setText("Maximum Number of Clusters: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelDrum.add(maximumClustersLabelDrum, gridBagConstraints);
+
+        startBeatLabelDrum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        startBeatLabelDrum.setText("Start after beats:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelDrum.add(startBeatLabelDrum, gridBagConstraints);
+
+        startBeatTextFieldDrum.setText("8");
+        startBeatTextFieldDrum.setToolTipText("The starting beat from which patterns will be extracted");
+        startBeatTextFieldDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startBeatTextFieldDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelDrum.add(startBeatTextFieldDrum, gridBagConstraints);
+
+        endBeatLabelDrum.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        endBeatLabelDrum.setText("End Beat: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelDrum.add(endBeatLabelDrum, gridBagConstraints);
+
+        endBeatTextFieldDrum.setText(" ");
+        endBeatTextFieldDrum.setToolTipText("The ending beat from which patterns will be extracted");
+        endBeatTextFieldDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endBeatTextFieldDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelDrum.add(endBeatTextFieldDrum, gridBagConstraints);
+
+        numberOfClustersSpinnerDrum.setModel(new javax.swing.SpinnerNumberModel(4, 1, 99, 1));
+        numberOfClustersSpinnerDrum.setToolTipText("The number of clusters sought in pattern extraction");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.5;
+        optionPanelDrum.add(numberOfClustersSpinnerDrum, gridBagConstraints);
+
+        reExtractBtnDrum.setText("Re-Extract  Patterns");
+        reExtractBtnDrum.setToolTipText("Extract the patterns for this window using new parameters.");
+        reExtractBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reExtractBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        optionPanelDrum.add(reExtractBtnDrum, gridBagConstraints);
+
+        doubleDrumLengthDrum.setText("Double Drum Length");
+        doubleDrumLengthDrum.setToolTipText("Change the length of extracted drum pattern to be double what it was.");
+        doubleDrumLengthDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doubleDrumLengthDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.weightx = 1.0;
+        optionPanelDrum.add(doubleDrumLengthDrum, gridBagConstraints);
+
+        noteResolutionComboBoxDrum.setMaximumRowCount(16);
+        noteResolutionComboBoxDrum.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBoxDrum.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        noteResolutionComboBoxDrum.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
+        noteResolutionComboBoxDrum.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        noteResolutionComboBoxDrum.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBoxDrum.setMinimumSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBoxDrum.setPreferredSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBoxDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteResolutionComboBoxDrumimportMidiNoteResolutionChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        optionPanelDrum.add(noteResolutionComboBoxDrum, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weighty = 0.2;
+        drumPanel.add(optionPanelDrum, gridBagConstraints);
+
+        selectPatternBtnDrum.setText("Include Pattern");
+        selectPatternBtnDrum.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
+        selectPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPatternBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.4;
+        drumPanel.add(selectPatternBtnDrum, gridBagConstraints);
+
+        leftPlayPatternBtnDrum.setText("Play Pattern");
+        leftPlayPatternBtnDrum.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        leftPlayPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftPlayPatternBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        drumPanel.add(leftPlayPatternBtnDrum, gridBagConstraints);
+
+        removePatternBtnDrum.setText("Remove Pattern");
+        removePatternBtnDrum.setToolTipText("Removes the selected pattern from further consideration for the style.");
+        removePatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removePatternBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.4;
+        drumPanel.add(removePatternBtnDrum, gridBagConstraints);
+
+        rightPlayPatternBtnDrum.setText("Play Pattern");
+        rightPlayPatternBtnDrum.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        rightPlayPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightPlayPatternBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        drumPanel.add(rightPlayPatternBtnDrum, gridBagConstraints);
+
+        copySelectionsBtnDrum.setText("Copy Selections to Style Editor");
+        copySelectionsBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copySelectionsBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        drumPanel.add(copySelectionsBtnDrum, gridBagConstraints);
+
+        closeWindowBtnDrum.setText("Dismiss this Window");
+        closeWindowBtnDrum.setToolTipText("Close the window. Any patterns to be included should be copied to the Style Editor before closing.");
+        closeWindowBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowBtnDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        drumPanel.add(closeWindowBtnDrum, gridBagConstraints);
+
+        tempoVolumeLabelDrum.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabelDrum.setText("Tempo and Volume are set in Style Editor.");
+        tempoVolumeLabelDrum.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tempoVolumeLabelDrum.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        drumPanel.add(tempoVolumeLabelDrum, gridBagConstraints);
+
+        widePatternTextFieldDrum.setEditable(false);
+        widePatternTextFieldDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Most Recent Pattern"));
+        widePatternTextFieldDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                widePatternTextFieldDrumActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        drumPanel.add(widePatternTextFieldDrum, gridBagConstraints);
+
+        extractionTabbedPane.addTab("Drum Patterns", drumPanel);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(extractionTabbedPane, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void leftPlayPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leftPlayPatternBtnActionPerformed
-  {//GEN-HEADEREND:event_leftPlayPatternBtnActionPerformed
-      playRawRule();
-  }//GEN-LAST:event_leftPlayPatternBtnActionPerformed
+private void leftPlayPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leftPlayPatternBtnBassActionPerformed
+  {//GEN-HEADEREND:event_leftPlayPatternBtnBassActionPerformed
+      playRawRule(BASS);
+  }//GEN-LAST:event_leftPlayPatternBtnBassActionPerformed
 
-private void rightPlayPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnActionPerformed
-  {//GEN-HEADEREND:event_rightPlayPatternBtnActionPerformed
-      playSelectedRule();
-  }//GEN-LAST:event_rightPlayPatternBtnActionPerformed
+private void rightPlayPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnBassActionPerformed
+  {//GEN-HEADEREND:event_rightPlayPatternBtnBassActionPerformed
+      playSelectedRule(BASS);
+  }//GEN-LAST:event_rightPlayPatternBtnBassActionPerformed
 
-private void closeWindowBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnActionPerformed
-  {//GEN-HEADEREND:event_closeWindowBtnActionPerformed
+private void closeWindowBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnBassActionPerformed
+  {//GEN-HEADEREND:event_closeWindowBtnBassActionPerformed
       dispose();
-  }//GEN-LAST:event_closeWindowBtnActionPerformed
+  }//GEN-LAST:event_closeWindowBtnBassActionPerformed
 
-private void copySelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnActionPerformed
-  {//GEN-HEADEREND:event_copySelectionsBtnActionPerformed
+private void copySelectionsBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnBassActionPerformed
+  {//GEN-HEADEREND:event_copySelectionsBtnBassActionPerformed
       switch( type )
         {
           case BASS:
@@ -995,16 +1638,16 @@ private void copySelectionsBtnActionPerformed(java.awt.event.ActionEvent evt)//G
               break;
         }
       
-  }//GEN-LAST:event_copySelectionsBtnActionPerformed
+  }//GEN-LAST:event_copySelectionsBtnBassActionPerformed
 
-private void startBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startBeatTextFieldActionPerformed
-  {//GEN-HEADEREND:event_startBeatTextFieldActionPerformed
+private void startBeatTextFieldBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startBeatTextFieldBassActionPerformed
+  {//GEN-HEADEREND:event_startBeatTextFieldBassActionPerformed
       // TODO add your handling code here:
-  }//GEN-LAST:event_startBeatTextFieldActionPerformed
+  }//GEN-LAST:event_startBeatTextFieldBassActionPerformed
 
-private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnActionPerformed
-  {//GEN-HEADEREND:event_selectPatternBtnActionPerformed
-      Object ob = rawRulesJList.getSelectedValue();
+private void selectPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnBassActionPerformed
+  {//GEN-HEADEREND:event_selectPatternBtnBassActionPerformed
+      Object ob = rawRulesJListBass.getSelectedValue();
       //System.out.println("ob = " + ob + " class = " + ob.getClass());
       if( ob instanceof RepPattern )
         {
@@ -1012,7 +1655,7 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
           
       RepPattern repPattern = (RepPattern)ob;
 
-      int index = rawRulesJList.getSelectedIndex();
+      int index = rawRulesJListBass.getSelectedIndex();
       
       switch( type )
         {
@@ -1050,81 +1693,69 @@ private void selectPatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GE
               break;
         }
       
-      rawRulesModel.removeElement(ob);
-      rawRulesJList.setSelectedIndex(Math.max(0, index-1));
+      rawRulesModelBass.removeElement(ob);
+      rawRulesJListBass.setSelectedIndex(Math.max(0, index-1));
         }
-  }//GEN-LAST:event_selectPatternBtnActionPerformed
+  }//GEN-LAST:event_selectPatternBtnBassActionPerformed
 
-private void doubleDrumLengthActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_doubleDrumLengthActionPerformed
-  {//GEN-HEADEREND:event_doubleDrumLengthActionPerformed
-      if( doubleDrumLength.isSelected() )
-        {
-          MIDIBeast.drumMeasureSize *= 2;
-        }
-      else
-        {
-          MIDIBeast.drumMeasureSize = MIDIBeast.slotsPerMeasure;
-        }
-  }//GEN-LAST:event_doubleDrumLengthActionPerformed
-
-private void selectedPatternsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_selectedPatternsMouseClicked
-  {//GEN-HEADEREND:event_selectedPatternsMouseClicked
-      Object selectedOb = selectedRulesJList.getSelectedValue();
+private void selectedPatternsMouseClickedBass(java.awt.event.MouseEvent evt)//GEN-FIRST:event_selectedPatternsMouseClickedBass
+  {//GEN-HEADEREND:event_selectedPatternsMouseClickedBass
+      Object selectedOb = selectedRulesJListBass.getSelectedValue();
       if( selectedOb instanceof RepPattern )
         {
-        widePatternTextField.setText(selectedOb.toString());
-        playSelectedRule();
+        widePatternTextFieldBass.setText(selectedOb.toString());
+        playSelectedRule(BASS);
         }
-  }//GEN-LAST:event_selectedPatternsMouseClicked
+  }//GEN-LAST:event_selectedPatternsMouseClickedBass
 
-private void rawPatternsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_rawPatternsMouseClicked
-  {//GEN-HEADEREND:event_rawPatternsMouseClicked
-      Object selectedOb = rawRulesJList.getSelectedValue();
+private void rawPatternsMouseClickedBass(java.awt.event.MouseEvent evt)//GEN-FIRST:event_rawPatternsMouseClickedBass
+  {//GEN-HEADEREND:event_rawPatternsMouseClickedBass
+      Object selectedOb = rawRulesJListBass.getSelectedValue();
       if( selectedOb instanceof RepPattern )
         {
-        widePatternTextField.setText(selectedOb.toString());
-        playRawRule();
+        widePatternTextFieldBass.setText(selectedOb.toString());
+        playRawRule(BASS);
         }
-  }//GEN-LAST:event_rawPatternsMouseClicked
+  }//GEN-LAST:event_rawPatternsMouseClickedBass
 
-private void removePatternBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnActionPerformed
-  {//GEN-HEADEREND:event_removePatternBtnActionPerformed
-    int indexOfRuleToBeRemoved = selectedRulesJList.getSelectedIndex();
+private void removePatternBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnBassActionPerformed
+  {//GEN-HEADEREND:event_removePatternBtnBassActionPerformed
+    int indexOfRuleToBeRemoved = selectedRulesJListBass.getSelectedIndex();
     switch( type )
       {
         case BASS:
             selectedBassRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJList.setListData(selectedBassRules.toArray());
+            selectedRulesJListBass.setListData(selectedBassRules.toArray());
             break;
  
         case CHORD:
             selectedChordRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJList.setListData(selectedChordRules.toArray());
+            selectedRulesJListBass.setListData(selectedChordRules.toArray());
             break;
             
         case DRUM:
             selectedDrumRules.remove(indexOfRuleToBeRemoved);
-            selectedRulesJList.setListData(selectedDrumRules.toArray());
+            selectedRulesJListBass.setListData(selectedDrumRules.toArray());
             break;
       }
-    selectedRulesJList.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved-1));
-  }//GEN-LAST:event_removePatternBtnActionPerformed
+    selectedRulesJListBass.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved-1));
+  }//GEN-LAST:event_removePatternBtnBassActionPerformed
 
-private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnActionPerformed
-  {//GEN-HEADEREND:event_reExtractBtnActionPerformed
+private void reExtractBtnBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnBassActionPerformed
+  {//GEN-HEADEREND:event_reExtractBtnBassActionPerformed
       checkForAndThrowErrors();
 
-      double endBeat = Double.parseDouble(endBeatTextField.getText());
-      double startBeat = Double.parseDouble(startBeatTextField.getText());
+      double endBeat = Double.parseDouble(endBeatTextFieldBass.getText());
+      double startBeat = Double.parseDouble(startBeatTextFieldBass.getText());
 
-      Integer maxNumberOfClusters = (Integer) numberOfClustersSpinner.getValue();
+      Integer maxNumberOfClusters = (Integer) numberOfClustersSpinnerBass.getValue();
       int selectedIndex;
       jm.music.data.Part selectedPart;
       
       switch( type )
         {
           case BASS:
-              selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+              selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
               selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
               
               repBassRules = 
@@ -1138,7 +1769,7 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
               break;
  
           case CHORD:
-              selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+              selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
               selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
 
               repChordRules = 
@@ -1154,8 +1785,8 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
               
          case DRUM:
                // Drum selection only makes sense for drum selection!!
-               potentialInstrumentsJList.setSelectedValue("DRUMS", true);
-              selectedIndex = potentialInstrumentsJList.getSelectedIndex();
+               potentialInstrumentsJListBass.setSelectedValue("DRUMS", true);
+              selectedIndex = potentialInstrumentsJListBass.getSelectedIndex();
               selectedPart = MIDIBeast.allParts.get(selectedIndex); //Implement part selection
               repDrumRules = 
                       new RepresentativeDrumRules(startBeat, 
@@ -1167,52 +1798,255 @@ private void reExtractBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FI
               setDrumSelectedRules();
               break;
         }
-  }//GEN-LAST:event_reExtractBtnActionPerformed
+  }//GEN-LAST:event_reExtractBtnBassActionPerformed
 
-private void endBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_endBeatTextFieldActionPerformed
-  {//GEN-HEADEREND:event_endBeatTextFieldActionPerformed
+private void endBeatTextFieldBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_endBeatTextFieldBassActionPerformed
+  {//GEN-HEADEREND:event_endBeatTextFieldBassActionPerformed
     // TODO add your handling code here:
-  }//GEN-LAST:event_endBeatTextFieldActionPerformed
+  }//GEN-LAST:event_endBeatTextFieldBassActionPerformed
 
-private void widePatternTextFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_widePatternTextFieldActionPerformed
-  {//GEN-HEADEREND:event_widePatternTextFieldActionPerformed
+private void widePatternTextFieldBassActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_widePatternTextFieldBassActionPerformed
+  {//GEN-HEADEREND:event_widePatternTextFieldBassActionPerformed
     // TODO add your handling code here:
-  }//GEN-LAST:event_widePatternTextFieldActionPerformed
+  }//GEN-LAST:event_widePatternTextFieldBassActionPerformed
 
-private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
-  {//GEN-HEADEREND:event_noteResolutionComboBoximportMidiNoteResolutionChanged
-    int newResolution = ((NoteResolutionInfo)noteResolutionComboBox.getSelectedItem()).getSlots();
+private void noteResolutionComboBoxBassimportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxBassimportMidiNoteResolutionChanged
+  {//GEN-HEADEREND:event_noteResolutionComboBoxBassimportMidiNoteResolutionChanged
+    int newResolution = ((NoteResolutionInfo)noteResolutionComboBoxBass.getSelectedItem()).getSlots();
     MIDIBeast.setResolution(newResolution);
-    NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
-  }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
+    NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBoxBass.getSelectedIndex());
+  }//GEN-LAST:event_noteResolutionComboBoxBassimportMidiNoteResolutionChanged
+
+private void rawRulesJListMouseClickedChord(java.awt.event.MouseEvent evt)//GEN-FIRST:event_rawRulesJListMouseClickedChord
+  {//GEN-HEADEREND:event_rawRulesJListMouseClickedChord
+     Object selectedOb = rawRulesJListChord.getSelectedValue();
+      if( selectedOb instanceof RepPattern )
+        {
+        widePatternTextFieldChord.setText(selectedOb.toString());
+        playRawRule(CHORD);
+        }
+  }//GEN-LAST:event_rawRulesJListMouseClickedChord
+
+private void selectedRulesJListChordMouseClickedChord(java.awt.event.MouseEvent evt)//GEN-FIRST:event_selectedRulesJListChordMouseClickedChord
+  {//GEN-HEADEREND:event_selectedRulesJListChordMouseClickedChord
+      Object selectedOb = selectedRulesJListChord.getSelectedValue();
+      if( selectedOb instanceof RepPattern )
+        {
+        widePatternTextFieldChord.setText(selectedOb.toString());
+        playSelectedRule(CHORD);
+        }
+  }//GEN-LAST:event_selectedRulesJListChordMouseClickedChord
+
+private void startBeatTextFieldChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startBeatTextFieldChordActionPerformed
+  {//GEN-HEADEREND:event_startBeatTextFieldChordActionPerformed
+
+  }//GEN-LAST:event_startBeatTextFieldChordActionPerformed
+
+private void endBeatTextFieldChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_endBeatTextFieldChordActionPerformed
+  {//GEN-HEADEREND:event_endBeatTextFieldChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_endBeatTextFieldChordActionPerformed
+
+private void reExtractBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnChordActionPerformed
+  {//GEN-HEADEREND:event_reExtractBtnChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_reExtractBtnChordActionPerformed
+
+private void noteResolutionComboBoxChordimportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChordimportMidiNoteResolutionChanged
+  {//GEN-HEADEREND:event_noteResolutionComboBoxChordimportMidiNoteResolutionChanged
+    // TODO add your handling code here:
+  }//GEN-LAST:event_noteResolutionComboBoxChordimportMidiNoteResolutionChanged
+
+private void selectPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnChordActionPerformed
+  {//GEN-HEADEREND:event_selectPatternBtnChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_selectPatternBtnChordActionPerformed
+
+private void leftPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leftPlayPatternBtnChordActionPerformed
+  {//GEN-HEADEREND:event_leftPlayPatternBtnChordActionPerformed
+    playRawRule(CHORD);
+  }//GEN-LAST:event_leftPlayPatternBtnChordActionPerformed
+
+private void removePatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnChordActionPerformed
+  {//GEN-HEADEREND:event_removePatternBtnChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_removePatternBtnChordActionPerformed
+
+private void rightPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnChordActionPerformed
+  {//GEN-HEADEREND:event_rightPlayPatternBtnChordActionPerformed
+    playSelectedRule(CHORD);
+  }//GEN-LAST:event_rightPlayPatternBtnChordActionPerformed
+
+private void copySelectionsBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnChordActionPerformed
+  {//GEN-HEADEREND:event_copySelectionsBtnChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_copySelectionsBtnChordActionPerformed
+
+private void closeWindowBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnChordActionPerformed
+  {//GEN-HEADEREND:event_closeWindowBtnChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_closeWindowBtnChordActionPerformed
+
+private void widePatternTextFieldChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_widePatternTextFieldChordActionPerformed
+  {//GEN-HEADEREND:event_widePatternTextFieldChordActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_widePatternTextFieldChordActionPerformed
+
+private void rawPatternsMouseClickedDrum(java.awt.event.MouseEvent evt)//GEN-FIRST:event_rawPatternsMouseClickedDrum
+  {//GEN-HEADEREND:event_rawPatternsMouseClickedDrum
+      Object selectedOb = rawRulesJListBass.getSelectedValue();
+      if( selectedOb instanceof RepPattern )
+        {
+        widePatternTextFieldDrum.setText(selectedOb.toString());
+        playRawRule(DRUM);
+        }
+  }//GEN-LAST:event_rawPatternsMouseClickedDrum
+
+private void selectedPatternsMouseClickedDrum(java.awt.event.MouseEvent evt)//GEN-FIRST:event_selectedPatternsMouseClickedDrum
+  {//GEN-HEADEREND:event_selectedPatternsMouseClickedDrum
+      Object selectedOb = selectedRulesJListDrum.getSelectedValue();
+      if( selectedOb instanceof RepPattern )
+        {
+        widePatternTextFieldDrum.setText(selectedOb.toString());
+        playSelectedRule(DRUM);
+        }
+  }//GEN-LAST:event_selectedPatternsMouseClickedDrum
+
+private void startBeatTextFieldDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_startBeatTextFieldDrumActionPerformed
+  {//GEN-HEADEREND:event_startBeatTextFieldDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_startBeatTextFieldDrumActionPerformed
+
+private void endBeatTextFieldDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_endBeatTextFieldDrumActionPerformed
+  {//GEN-HEADEREND:event_endBeatTextFieldDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_endBeatTextFieldDrumActionPerformed
+
+private void reExtractBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reExtractBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_reExtractBtnDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_reExtractBtnDrumActionPerformed
+
+private void doubleDrumLengthDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_doubleDrumLengthDrumActionPerformed
+  {//GEN-HEADEREND:event_doubleDrumLengthDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_doubleDrumLengthDrumActionPerformed
+
+private void noteResolutionComboBoxDrumimportMidiNoteResolutionChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxDrumimportMidiNoteResolutionChanged
+  {//GEN-HEADEREND:event_noteResolutionComboBoxDrumimportMidiNoteResolutionChanged
+    // TODO add your handling code here:
+  }//GEN-LAST:event_noteResolutionComboBoxDrumimportMidiNoteResolutionChanged
+
+private void selectPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_selectPatternBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_selectPatternBtnDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_selectPatternBtnDrumActionPerformed
+
+private void leftPlayPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leftPlayPatternBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_leftPlayPatternBtnDrumActionPerformed
+    playRawRule(DRUM);
+  }//GEN-LAST:event_leftPlayPatternBtnDrumActionPerformed
+
+private void removePatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_removePatternBtnDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_removePatternBtnDrumActionPerformed
+
+private void rightPlayPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_rightPlayPatternBtnDrumActionPerformed
+    playSelectedRule(DRUM);
+  }//GEN-LAST:event_rightPlayPatternBtnDrumActionPerformed
+
+private void copySelectionsBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copySelectionsBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_copySelectionsBtnDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_copySelectionsBtnDrumActionPerformed
+
+private void closeWindowBtnDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowBtnDrumActionPerformed
+  {//GEN-HEADEREND:event_closeWindowBtnDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_closeWindowBtnDrumActionPerformed
+
+private void widePatternTextFieldDrumActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_widePatternTextFieldDrumActionPerformed
+  {//GEN-HEADEREND:event_widePatternTextFieldDrumActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_widePatternTextFieldDrumActionPerformed
 
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeWindowBtn;
-    private javax.swing.JButton copySelectionsBtn;
-    private javax.swing.JCheckBox doubleDrumLength;
-    private javax.swing.JLabel endBeatLabel;
-    private javax.swing.JTextField endBeatTextField;
-    private javax.swing.JButton leftPlayPatternBtn;
-    private javax.swing.JLabel maximumClustersLabel;
-    private javax.swing.JComboBox noteResolutionComboBox;
-    private javax.swing.JSpinner numberOfClustersSpinner;
-    private javax.swing.JPanel optionPanel;
-    private javax.swing.JList potentialInstrumentsJList;
-    private javax.swing.JScrollPane potentialInstrumentsScrollPane;
-    private javax.swing.JScrollPane rawPatternsPanel;
-    private javax.swing.JList rawRulesJList;
-    private javax.swing.JButton reExtractBtn;
-    private javax.swing.JButton removePatternBtn;
-    private javax.swing.JButton rightPlayPatternBtn;
-    private javax.swing.JButton selectPatternBtn;
-    private javax.swing.JScrollPane selectedPatternsPanel;
-    private javax.swing.JList selectedRulesJList;
-    private javax.swing.JLabel startBeatLabel;
-    private javax.swing.JTextField startBeatTextField;
-    private javax.swing.JLabel tempoVolumeLabel;
-    private javax.swing.JTextField widePatternTextField;
+    private javax.swing.JPanel bassPanel;
+    private javax.swing.JPanel chordPanel;
+    private javax.swing.JButton closeWindowBtnBass;
+    private javax.swing.JButton closeWindowBtnChord;
+    private javax.swing.JButton closeWindowBtnDrum;
+    private javax.swing.JButton copySelectionsBtnBass;
+    private javax.swing.JButton copySelectionsBtnChord;
+    private javax.swing.JButton copySelectionsBtnDrum;
+    private javax.swing.JCheckBox doubleDrumLengthDrum;
+    private javax.swing.JPanel drumPanel;
+    private javax.swing.JLabel endBeatLabelBass;
+    private javax.swing.JLabel endBeatLabelChord;
+    private javax.swing.JLabel endBeatLabelDrum;
+    private javax.swing.JTextField endBeatTextFieldBass;
+    private javax.swing.JTextField endBeatTextFieldChord;
+    private javax.swing.JTextField endBeatTextFieldDrum;
+    private javax.swing.JTabbedPane extractionTabbedPane;
+    private javax.swing.JButton leftPlayPatternBtnBass;
+    private javax.swing.JButton leftPlayPatternBtnChord;
+    private javax.swing.JButton leftPlayPatternBtnDrum;
+    private javax.swing.JLabel maximumClustersLabelBass;
+    private javax.swing.JLabel maximumClustersLabelChord;
+    private javax.swing.JLabel maximumClustersLabelDrum;
+    private javax.swing.JComboBox noteResolutionComboBoxBass;
+    private javax.swing.JComboBox noteResolutionComboBoxChord;
+    private javax.swing.JComboBox noteResolutionComboBoxDrum;
+    private javax.swing.JSpinner numberOfClustersSpinnerBass;
+    private javax.swing.JSpinner numberOfClustersSpinnerChord;
+    private javax.swing.JSpinner numberOfClustersSpinnerDrum;
+    private javax.swing.JPanel optionPanelBass;
+    private javax.swing.JPanel optionPanelChord;
+    private javax.swing.JPanel optionPanelDrum;
+    private javax.swing.JList potentialInstrumentsJListBass;
+    private javax.swing.JList potentialInstrumentsJListChord;
+    private javax.swing.JScrollPane potentialInstrumentsScrollPaneBass;
+    private javax.swing.JScrollPane potentialInstrumentsScrollPaneChord;
+    private javax.swing.JScrollPane rawPatternsPanelBass;
+    private javax.swing.JScrollPane rawPatternsPanelChord;
+    private javax.swing.JScrollPane rawPatternsPanelDrum;
+    private javax.swing.JList rawRulesJListBass;
+    private javax.swing.JList rawRulesJListChord;
+    private javax.swing.JList rawRulesJListDrum;
+    private javax.swing.JButton reExtractBtnBass;
+    private javax.swing.JButton reExtractBtnChord;
+    private javax.swing.JButton reExtractBtnDrum;
+    private javax.swing.JButton removePatternBtnBass;
+    private javax.swing.JButton removePatternBtnChord;
+    private javax.swing.JButton removePatternBtnDrum;
+    private javax.swing.JButton rightPlayPatternBtnBass;
+    private javax.swing.JButton rightPlayPatternBtnChord;
+    private javax.swing.JButton rightPlayPatternBtnDrum;
+    private javax.swing.JButton selectPatternBtnBass;
+    private javax.swing.JButton selectPatternBtnChord;
+    private javax.swing.JButton selectPatternBtnDrum;
+    private javax.swing.JScrollPane selectedPatternsPanelBass;
+    private javax.swing.JScrollPane selectedPatternsPanelChord;
+    private javax.swing.JScrollPane selectedPatternsPanelDrum;
+    private javax.swing.JList selectedRulesJListBass;
+    private javax.swing.JList selectedRulesJListChord;
+    private javax.swing.JList selectedRulesJListDrum;
+    private javax.swing.JLabel startBeatLabelBass;
+    private javax.swing.JLabel startBeatLabelChord;
+    private javax.swing.JLabel startBeatLabelDrum;
+    private javax.swing.JTextField startBeatTextFieldBass;
+    private javax.swing.JTextField startBeatTextFieldChord;
+    private javax.swing.JTextField startBeatTextFieldDrum;
+    private javax.swing.JLabel tempoVolumeLabelBass;
+    private javax.swing.JLabel tempoVolumeLabelChord;
+    private javax.swing.JLabel tempoVolumeLabelDrum;
+    private javax.swing.JTextField widePatternTextFieldBass;
+    private javax.swing.JTextField widePatternTextFieldChord;
+    private javax.swing.JTextField widePatternTextFieldDrum;
     // End of variables declaration//GEN-END:variables
 
 private javax.swing.JButton errorButton;

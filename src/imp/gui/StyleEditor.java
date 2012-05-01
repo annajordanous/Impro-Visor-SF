@@ -176,6 +176,7 @@ public class StyleEditor
 
   private String currentCellText = null;
   
+  ExtractionEditor allExtraction = null;
   ExtractionEditor chordExtraction = null;
   ExtractionEditor bassExtraction  = null;
   ExtractionEditor drumExtraction  = null;
@@ -2699,6 +2700,10 @@ void playBassColumn(int colIndex)
       
       // Note: The order of pattern generation (drums, bass, chords ) needs to be invariant now.
 
+      allExtraction = new ExtractionEditor(null, false, this, cm, 1);
+      WindowRegistry.registerWindow(allExtraction, "Extracted Patterns from " + nameForDisplay);
+      allExtraction.setVisible(true);
+      
       //Generate drum patterns
       if( MIDIBeast.importDrums )
         {
@@ -2708,13 +2713,15 @@ void playBassColumn(int colIndex)
           MIDIBeast.setRepDrumRules(d);
           if( MIDIBeast.showExtraction )
             {
-            drumExtraction = 
-                    new ExtractionEditor(null, false, this, cm, 1);
-            WindowRegistry.registerWindow(drumExtraction, "Drum Part from " + nameForDisplay);
-            drumExtraction.setLocation(
-              this.getX() + WindowRegistry.defaultXnewWindowStagger,
-              this.getY() + WindowRegistry.defaultYnewWindowStagger);
-            drumExtraction.setVisible(true);
+              allExtraction.setDrums();
+              
+//            drumExtraction = 
+//                    new ExtractionEditor(null, false, this, cm, 1);
+//            WindowRegistry.registerWindow(drumExtraction, "Drum Part from " + nameForDisplay);
+//            drumExtraction.setLocation(
+//              this.getX() + WindowRegistry.defaultXnewWindowStagger,
+//              this.getY() + WindowRegistry.defaultYnewWindowStagger);
+//            drumExtraction.setVisible(true);
            }
           else
             {
@@ -2736,13 +2743,14 @@ void playBassColumn(int colIndex)
           MIDIBeast.setRepBassRules(r);
           if( MIDIBeast.showExtraction )
             {
-            bassExtraction = 
-                    new ExtractionEditor(null, false, this, cm, 0);
-            WindowRegistry.registerWindow(bassExtraction, "Bass Part from " + nameForDisplay);
-            bassExtraction.setLocation(
-              this.getX() + 2*WindowRegistry.defaultXnewWindowStagger,
-              this.getY() + 2*WindowRegistry.defaultYnewWindowStagger);
-            bassExtraction.setVisible(true);
+            allExtraction.setBass();
+//            bassExtraction = 
+//                    new ExtractionEditor(null, false, this, cm, 0);
+//            WindowRegistry.registerWindow(bassExtraction, "Bass Part from " + nameForDisplay);
+//            bassExtraction.setLocation(
+//              this.getX() + 2*WindowRegistry.defaultXnewWindowStagger,
+//              this.getY() + 2*WindowRegistry.defaultYnewWindowStagger);
+//            bassExtraction.setVisible(true);
             }
           else
             {
@@ -2764,13 +2772,14 @@ void playBassColumn(int colIndex)
           MIDIBeast.setRepChordRules(c);
           if( MIDIBeast.showExtraction )
             {
-            chordExtraction = 
-                    new ExtractionEditor(null, false, this, cm, 2, minDuration);
-            WindowRegistry.registerWindow(chordExtraction, "Chord Part from " + nameForDisplay);
-            chordExtraction.setLocation(
-              this.getX() + 3*WindowRegistry.defaultXnewWindowStagger,
-              this.getY() + 3*WindowRegistry.defaultYnewWindowStagger);
-            chordExtraction.setVisible(true);
+            allExtraction.setChords();
+//            chordExtraction = 
+//                    new ExtractionEditor(null, false, this, cm, 2, minDuration);
+//            WindowRegistry.registerWindow(chordExtraction, "Chord Part from " + nameForDisplay);
+//            chordExtraction.setLocation(
+//              this.getX() + 3*WindowRegistry.defaultXnewWindowStagger,
+//              this.getY() + 3*WindowRegistry.defaultYnewWindowStagger);
+//            chordExtraction.setVisible(true);
             }
           else
             {
