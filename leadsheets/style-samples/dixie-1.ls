@@ -36,7 +36,7 @@
 )
 
 
-(section (style _dixie-1)) 
+(section (style dixie-1)) 
 
 Eb6 | Ab7#11 | Bb6 | Dm7 G7 | 
 C7 | F7 | Bb6 | Bb7 | 

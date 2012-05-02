@@ -1,6 +1,6 @@
 
 Welcome to Impro-Visor (Improvisation Advisor) Version 5.15,
-from Prof. Bob Keller at Harvey Mudd College, 1 May 2012.
+from Prof. Bob Keller at Harvey Mudd College, 2 May 2012.
 
 Release notes for this version may be found at the end.
 

@@ -36,7 +36,7 @@
 )
 
 
-(section (style _always)) 
+(section (style always)) 
 
 Bb6 F7+ | Bb6 F7+ | Bb6 F7+ | Bb7 | 
 EbM7 Eo7 | Dm7/F G7 | Cm7 F7 | Bb6 F7+ | 
