@@ -36,7 +36,7 @@
 )
 
 
-(section (style _bigbeat)) 
+(section (style bigbeat)) 
 
 EbM7 | G7#5 | Cm9 | F9 | 
 Bb7 Fm7/C | Dbm6 Bb7/D | Eb69 / Cm7 B7 | Bbm7 Eb7 | 

@@ -36,7 +36,7 @@
 )
 
 
-(section (style _waltz-chopin)) 
+(section (style waltz-chopin)) 
 
 Dm7 | G7 | CM7 | FM7 | 
 Bm7b5 | E7 | Am7 | Eb7 | 
