@@ -2766,23 +2766,12 @@ void playBassColumn(int colIndex)
         java.awt.GridBagConstraints gridBagConstraints;
 
         extractionPreferences = new javax.swing.JDialog();
-        showExtractionCheckBox = new javax.swing.JCheckBox();
-        chordTonesCheckBox = new javax.swing.JCheckBox();
-        mergeBassRestsCheckBox = new javax.swing.JCheckBox();
-        importInstrumentsPanel = new javax.swing.JPanel();
-        importBassCheckBox = new javax.swing.JCheckBox();
-        importDrumCheckBox = new javax.swing.JCheckBox();
-        importChordCheckBox = new javax.swing.JCheckBox();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
         maxPatternLengthPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        maxBassPatternLengthComboBox = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
-        maxChordPatternLengthComboBox = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
-        maxDrumPatternLengthComboBox = new javax.swing.JComboBox();
-        noteResolutionComboBox = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -2807,6 +2796,18 @@ void playBassColumn(int colIndex)
         commentsPanel = new javax.swing.JPanel();
         commentScrollPane = new javax.swing.JScrollPane();
         commentArea = new javax.swing.JTextArea();
+        importInstrumentsPanel = new javax.swing.JPanel();
+        noteResolutionComboBox = new javax.swing.JComboBox();
+        mergeBassRestsCheckBox = new javax.swing.JCheckBox();
+        maxPatternLengthLabel = new javax.swing.JLabel();
+        importBassCheckBox = new javax.swing.JCheckBox();
+        maxBassPatternLengthComboBox = new javax.swing.JComboBox();
+        importChordCheckBox = new javax.swing.JCheckBox();
+        maxChordPatternLengthComboBox = new javax.swing.JComboBox();
+        importDrumCheckBox = new javax.swing.JCheckBox();
+        maxDrumPatternLengthComboBox = new javax.swing.JComboBox();
+        showExtractionCheckBox = new javax.swing.JCheckBox();
+        chordTonesCheckBox = new javax.swing.JCheckBox();
         globalAttrPanel = new javax.swing.JPanel();
         bassAttrPanel = new javax.swing.JPanel();
         bassHighLabel = new javax.swing.JLabel();
@@ -2941,83 +2942,6 @@ void playBassColumn(int colIndex)
 
         extractionPreferences.getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        showExtractionCheckBox.setSelected(true);
-        showExtractionCheckBox.setText(" Show Extraction Results");
-        showExtractionCheckBox.setToolTipText("Shows the patterns before selecting them for the style. Allows the user to edit the choices.");
-        showExtractionCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        extractionPreferences.getContentPane().add(showExtractionCheckBox, gridBagConstraints);
-
-        chordTonesCheckBox.setSelected(true);
-        chordTonesCheckBox.setText(" Bass Chord Tones");
-        chordTonesCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        chordTonesCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordTonesCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        extractionPreferences.getContentPane().add(chordTonesCheckBox, gridBagConstraints);
-
-        mergeBassRestsCheckBox.setText("Merge Bass Rests");
-        mergeBassRestsCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        extractionPreferences.getContentPane().add(mergeBassRestsCheckBox, gridBagConstraints);
-
-        importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        importInstrumentsPanel.setMinimumSize(new java.awt.Dimension(200, 112));
-        importInstrumentsPanel.setPreferredSize(new java.awt.Dimension(200, 121));
-        importInstrumentsPanel.setLayout(new java.awt.GridBagLayout());
-
-        importBassCheckBox.setSelected(true);
-        importBassCheckBox.setText("Bass");
-        importBassCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
-        importInstrumentsPanel.add(importBassCheckBox, gridBagConstraints);
-
-        importDrumCheckBox.setSelected(true);
-        importDrumCheckBox.setText("Drums");
-        importDrumCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        importDrumCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                importDrumCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 8);
-        importInstrumentsPanel.add(importDrumCheckBox, gridBagConstraints);
-
-        importChordCheckBox.setSelected(true);
-        importChordCheckBox.setText("Chords");
-        importChordCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 9, 5);
-        importInstrumentsPanel.add(importChordCheckBox, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
-        extractionPreferences.getContentPane().add(importInstrumentsPanel, gridBagConstraints);
-
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3062,23 +2986,6 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         maxPatternLengthPanel.add(jLabel4, gridBagConstraints);
 
-        maxBassPatternLengthComboBox.setEditable(true);
-        maxBassPatternLengthComboBox.setMaximumRowCount(17);
-        maxBassPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
-        maxBassPatternLengthComboBox.setSelectedIndex(4);
-        maxBassPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
-        maxBassPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
-        maxBassPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxBassPatternLengthComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
-        maxPatternLengthPanel.add(maxBassPatternLengthComboBox, gridBagConstraints);
-
         jLabel5.setText("Chord");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3086,46 +2993,12 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         maxPatternLengthPanel.add(jLabel5, gridBagConstraints);
 
-        maxChordPatternLengthComboBox.setEditable(true);
-        maxChordPatternLengthComboBox.setMaximumRowCount(17);
-        maxChordPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
-        maxChordPatternLengthComboBox.setSelectedIndex(4);
-        maxChordPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
-        maxChordPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
-        maxChordPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxChordPatternLengthComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
-        maxPatternLengthPanel.add(maxChordPatternLengthComboBox, gridBagConstraints);
-
         jLabel6.setText("Drum");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         maxPatternLengthPanel.add(jLabel6, gridBagConstraints);
-
-        maxDrumPatternLengthComboBox.setEditable(true);
-        maxDrumPatternLengthComboBox.setMaximumRowCount(17);
-        maxDrumPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
-        maxDrumPatternLengthComboBox.setSelectedIndex(4);
-        maxDrumPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
-        maxDrumPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
-        maxDrumPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                maxDrumPatternLengthComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
-        maxPatternLengthPanel.add(maxDrumPatternLengthComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -3135,25 +3008,6 @@ void playBassColumn(int colIndex)
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
         extractionPreferences.getContentPane().add(maxPatternLengthPanel, gridBagConstraints);
-
-        noteResolutionComboBox.setMaximumRowCount(16);
-        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
-        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
-        noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
-        noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
-        noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteResolutionComboBoximportMidiNoteResolutionChanged(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        extractionPreferences.getContentPane().add(noteResolutionComboBox, gridBagConstraints);
 
         jMenu1.setText("File");
 
@@ -3310,9 +3164,12 @@ void playBassColumn(int colIndex)
         commentScrollPane.setViewportView(commentArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weighty = 0.1;
         commentsPanel.add(commentScrollPane, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3324,6 +3181,178 @@ void playBassColumn(int colIndex)
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(commentsPanel, gridBagConstraints);
 
+        importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import Patterns from MIDI", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        importInstrumentsPanel.setMinimumSize(new java.awt.Dimension(350, 225));
+        importInstrumentsPanel.setPreferredSize(new java.awt.Dimension(350, 225));
+        importInstrumentsPanel.setLayout(new java.awt.GridBagLayout());
+
+        noteResolutionComboBox.setMaximumRowCount(16);
+        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
+        noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(275, 50));
+        noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(275, 50));
+        noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteResolutionComboBoximportMidiNoteResolutionChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        importInstrumentsPanel.add(noteResolutionComboBox, gridBagConstraints);
+
+        mergeBassRestsCheckBox.setText("Merge Bass Rests");
+        mergeBassRestsCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        mergeBassRestsCheckBox.setMinimumSize(new java.awt.Dimension(110, 22));
+        mergeBassRestsCheckBox.setPreferredSize(new java.awt.Dimension(110, 22));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        importInstrumentsPanel.add(mergeBassRestsCheckBox, gridBagConstraints);
+
+        maxPatternLengthLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        maxPatternLengthLabel.setText("Max Pattern Beats");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        importInstrumentsPanel.add(maxPatternLengthLabel, gridBagConstraints);
+
+        importBassCheckBox.setSelected(true);
+        importBassCheckBox.setText("Extract Bass");
+        importBassCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        importBassCheckBox.setMargin(new java.awt.Insets(0, 35, 5, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        importInstrumentsPanel.add(importBassCheckBox, gridBagConstraints);
+
+        maxBassPatternLengthComboBox.setEditable(true);
+        maxBassPatternLengthComboBox.setMaximumRowCount(17);
+        maxBassPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
+        maxBassPatternLengthComboBox.setSelectedIndex(4);
+        maxBassPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(50, 22));
+        maxBassPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(50, 22));
+        maxBassPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maxBassPatternLengthComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
+        importInstrumentsPanel.add(maxBassPatternLengthComboBox, gridBagConstraints);
+
+        importChordCheckBox.setSelected(true);
+        importChordCheckBox.setText("Extract Chords");
+        importChordCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        importChordCheckBox.setMargin(new java.awt.Insets(0, 35, 5, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        importInstrumentsPanel.add(importChordCheckBox, gridBagConstraints);
+
+        maxChordPatternLengthComboBox.setEditable(true);
+        maxChordPatternLengthComboBox.setMaximumRowCount(17);
+        maxChordPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
+        maxChordPatternLengthComboBox.setSelectedIndex(4);
+        maxChordPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
+        maxChordPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
+        maxChordPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maxChordPatternLengthComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
+        importInstrumentsPanel.add(maxChordPatternLengthComboBox, gridBagConstraints);
+
+        importDrumCheckBox.setSelected(true);
+        importDrumCheckBox.setText("Extract Drums");
+        importDrumCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        importDrumCheckBox.setMargin(new java.awt.Insets(0, 35, 5, 0));
+        importDrumCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importDrumCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        importInstrumentsPanel.add(importDrumCheckBox, gridBagConstraints);
+
+        maxDrumPatternLengthComboBox.setEditable(true);
+        maxDrumPatternLengthComboBox.setMaximumRowCount(17);
+        maxDrumPatternLengthComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
+        maxDrumPatternLengthComboBox.setSelectedIndex(4);
+        maxDrumPatternLengthComboBox.setMinimumSize(new java.awt.Dimension(70, 22));
+        maxDrumPatternLengthComboBox.setPreferredSize(new java.awt.Dimension(70, 22));
+        maxDrumPatternLengthComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maxDrumPatternLengthComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
+        importInstrumentsPanel.add(maxDrumPatternLengthComboBox, gridBagConstraints);
+
+        showExtractionCheckBox.setSelected(true);
+        showExtractionCheckBox.setToolTipText("Shows the patterns before selecting them for the style. Allows the user to edit the choices.");
+        showExtractionCheckBox.setLabel(" Show Details");
+        showExtractionCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        importInstrumentsPanel.add(showExtractionCheckBox, gridBagConstraints);
+
+        chordTonesCheckBox.setSelected(true);
+        chordTonesCheckBox.setText(" Bass Chord Tones");
+        chordTonesCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        chordTonesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordTonesCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        importInstrumentsPanel.add(chordTonesCheckBox, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.3;
+        getContentPane().add(importInstrumentsPanel, gridBagConstraints);
+
         globalAttrPanel.setFocusable(false);
         globalAttrPanel.setMinimumSize(new java.awt.Dimension(525, 130));
         globalAttrPanel.setPreferredSize(new java.awt.Dimension(525, 130));
@@ -3334,7 +3363,7 @@ void playBassColumn(int colIndex)
         bassAttrPanel.setPreferredSize(new java.awt.Dimension(250, 115));
         bassAttrPanel.setLayout(new java.awt.GridBagLayout());
 
-        bassHighLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        bassHighLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
         bassHighLabel.setText("High:");
         bassHighLabel.setToolTipText("The upper range for the bass part.");
         bassHighLabel.setMaximumSize(new java.awt.Dimension(64, 14));
@@ -3345,10 +3374,10 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         bassAttrPanel.add(bassHighLabel, gridBagConstraints);
 
-        bassLowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        bassLowLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
         bassLowLabel.setText("Low:");
         bassLowLabel.setToolTipText("The lower range for the base part.");
         bassLowLabel.setMaximumSize(new java.awt.Dimension(61, 14));
@@ -3358,10 +3387,10 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 3, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         bassAttrPanel.add(bassLowLabel, gridBagConstraints);
 
-        bassBaseLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        bassBaseLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
         bassBaseLabel.setText("Nominal:");
         bassBaseLabel.setToolTipText("The base bass note from which to start a bass line.");
         bassBaseLabel.setMaximumSize(new java.awt.Dimension(66, 14));
@@ -3372,7 +3401,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 3, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(9, 10, 0, 0);
         bassAttrPanel.add(bassBaseLabel, gridBagConstraints);
         bassBaseLabel.getAccessibleContext().setAccessibleName("Bass Nominal:");
 
@@ -3431,8 +3460,8 @@ void playBassColumn(int colIndex)
         bassAttrPanel.add(bassBaseNote, gridBagConstraints);
 
         bassHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        bassHighOctave.setMinimumSize(new java.awt.Dimension(100, 18));
-        bassHighOctave.setPreferredSize(new java.awt.Dimension(100, 18));
+        bassHighOctave.setMinimumSize(new java.awt.Dimension(80, 18));
+        bassHighOctave.setPreferredSize(new java.awt.Dimension(80, 18));
         bassHighOctave.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 bassHighOctaveStateChanged(evt);
@@ -3447,8 +3476,8 @@ void playBassColumn(int colIndex)
         bassAttrPanel.add(bassHighOctave, gridBagConstraints);
 
         bassLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        bassLowOctave.setMinimumSize(new java.awt.Dimension(100, 18));
-        bassLowOctave.setPreferredSize(new java.awt.Dimension(100, 18));
+        bassLowOctave.setMinimumSize(new java.awt.Dimension(80, 18));
+        bassLowOctave.setPreferredSize(new java.awt.Dimension(80, 18));
         bassLowOctave.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 bassLowOctaveStateChanged(evt);
@@ -3463,8 +3492,8 @@ void playBassColumn(int colIndex)
         bassAttrPanel.add(bassLowOctave, gridBagConstraints);
 
         bassBaseOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        bassBaseOctave.setMinimumSize(new java.awt.Dimension(100, 18));
-        bassBaseOctave.setPreferredSize(new java.awt.Dimension(100, 18));
+        bassBaseOctave.setMinimumSize(new java.awt.Dimension(80, 18));
+        bassBaseOctave.setPreferredSize(new java.awt.Dimension(80, 18));
         bassBaseOctave.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 bassBaseOctaveStateChanged(evt);
@@ -3478,7 +3507,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.insets = new java.awt.Insets(3, 2, 0, 0);
         bassAttrPanel.add(bassBaseOctave, gridBagConstraints);
 
-        bassOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
+        bassOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         bassOctaveLabel.setText("Octave:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -3501,7 +3530,8 @@ void playBassColumn(int colIndex)
         chordAttrPanel.setPreferredSize(new java.awt.Dimension(250, 115));
         chordAttrPanel.setLayout(new java.awt.GridBagLayout());
 
-        chordHighLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        chordHighLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
+        chordHighLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         chordHighLabel.setText("High:");
         chordHighLabel.setToolTipText("The upper range for the chord part.");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3511,7 +3541,8 @@ void playBassColumn(int colIndex)
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         chordAttrPanel.add(chordHighLabel, gridBagConstraints);
 
-        chordLowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        chordLowLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
+        chordLowLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         chordLowLabel.setText("Low:");
         chordLowLabel.setToolTipText("The lower range for the chord part.");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -3563,54 +3594,55 @@ void playBassColumn(int colIndex)
         chordAttrPanel.add(chordLowNote, gridBagConstraints);
 
         chordHighOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        chordHighOctave.setMinimumSize(new java.awt.Dimension(100, 18));
-        chordHighOctave.setPreferredSize(new java.awt.Dimension(100, 18));
+        chordHighOctave.setMinimumSize(new java.awt.Dimension(80, 18));
+        chordHighOctave.setPreferredSize(new java.awt.Dimension(80, 18));
         chordHighOctave.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chordHighOctaveStateChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 0);
         chordAttrPanel.add(chordHighOctave, gridBagConstraints);
 
         chordLowOctave.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        chordLowOctave.setMinimumSize(new java.awt.Dimension(100, 18));
-        chordLowOctave.setPreferredSize(new java.awt.Dimension(100, 18));
+        chordLowOctave.setMinimumSize(new java.awt.Dimension(80, 18));
+        chordLowOctave.setPreferredSize(new java.awt.Dimension(80, 18));
         chordLowOctave.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chordLowOctaveStateChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(3, 2, 0, 0);
         chordAttrPanel.add(chordLowOctave, gridBagConstraints);
 
-        chordOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
+        chordOctaveLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chordOctaveLabel.setText("Octave:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 4, 0);
         chordAttrPanel.add(chordOctaveLabel, gridBagConstraints);
 
-        voicingLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        voicingLabel.setFont(new java.awt.Font("Lucida Grande", 1, 11)); // NOI18N
+        voicingLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         voicingLabel.setText("Voicing Type:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         chordAttrPanel.add(voicingLabel, gridBagConstraints);
@@ -3630,7 +3662,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(3, 7, 0, 0);
         chordAttrPanel.add(voicingType, gridBagConstraints);
@@ -3826,11 +3858,12 @@ void playBassColumn(int colIndex)
         globalAttrPanel.add(playPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 12;
+        gridBagConstraints.gridwidth = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.7;
         getContentPane().add(globalAttrPanel, gridBagConstraints);
 
         toolbarPanel.setPreferredSize(new java.awt.Dimension(1050, 64));
@@ -4250,10 +4283,10 @@ void playBassColumn(int colIndex)
         toolbarPanel.add(statusPanel, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 12;
-        gridBagConstraints.ipadx = 1;
+        gridBagConstraints.gridwidth = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         getContentPane().add(toolbarPanel, gridBagConstraints);
 
@@ -4271,16 +4304,17 @@ void playBassColumn(int colIndex)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 3, 3);
         clipboardPanel.add(clipboardTextField, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 12;
+        gridBagConstraints.gridwidth = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(clipboardPanel, gridBagConstraints);
@@ -4583,7 +4617,7 @@ void playBassColumn(int colIndex)
         stylePanel.add(styleScrollpane, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 11;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -6340,6 +6374,7 @@ public void unusePianoRoll()
     private javax.swing.JComboBox maxBassPatternLengthComboBox;
     private javax.swing.JComboBox maxChordPatternLengthComboBox;
     private javax.swing.JComboBox maxDrumPatternLengthComboBox;
+    private javax.swing.JLabel maxPatternLengthLabel;
     private javax.swing.JPanel maxPatternLengthPanel;
     private javax.swing.JPanel melodySwingPanel;
     private javax.swing.JTextArea menuList;
