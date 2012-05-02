@@ -2473,6 +2473,7 @@ void playBassColumn(int colIndex)
     Float weight;
     // FIX: This replicates stuff in StyleCellEditor.java. The latter should be changed to use this code.
     // Also, some of the branches below can be collapsed into one.
+    
     if( isChordCell(row, column) )
       {
       ChordPatternDisplay contents = newChordPatternDisplay(column, text);
@@ -2480,6 +2481,8 @@ void playBassColumn(int colIndex)
       Object weightCell =
               styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
               column);
+      try
+        {
       weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
 
       contents.setWeight(weight.floatValue());
@@ -2491,6 +2494,10 @@ void playBassColumn(int colIndex)
         {
           maybePlay(contents);
         }
+        }
+      catch( Exception e )
+        {
+        }
 
       }
     else if( isBassCell(row, column) )
@@ -2500,6 +2507,8 @@ void playBassColumn(int colIndex)
       Object weightCell =
               styleTable.getValueAt(StyleTableModel.BASS_PATTERN_WEIGHT_ROW,
               column);
+     try
+        {
       weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
       contents.setWeight(weight.floatValue());
       double beats = contents.getBeats();
@@ -2510,7 +2519,10 @@ void playBassColumn(int colIndex)
         {
           maybePlay(contents);
         }
-
+        }
+      catch( Exception e )
+        {
+        }
       }
     else if( isDrumCell(row, column) )
       {

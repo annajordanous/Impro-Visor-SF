@@ -1849,9 +1849,16 @@ private void leftPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent e
 private void removePatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removePatternBtnChordActionPerformed
   {//GEN-HEADEREND:event_removePatternBtnChordActionPerformed
     int indexOfRuleToBeRemoved = selectedRulesJListBass.getSelectedIndex();
+    try
+      {
       selectedChordRules.remove(indexOfRuleToBeRemoved);
       selectedRulesJListChord.setListData(selectedChordRules.toArray());
       selectedRulesJListChord.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved - 1));
+      }
+    catch( Exception e )
+      {
+        // Should not happen, but has.
+      }
   }//GEN-LAST:event_removePatternBtnChordActionPerformed
 
 private void rightPlayPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rightPlayPatternBtnChordActionPerformed
