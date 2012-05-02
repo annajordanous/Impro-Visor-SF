@@ -71,6 +71,8 @@ DefaultListModel selectedRulesModelDrum;
  * minimum duration (in slots) for a note not to be counted as a rest.
  */
 private int minDuration = 0;
+
+
 public static final int BASS = 0;
 public static final int DRUM = 1;
 public static final int CHORD = 2;
@@ -709,6 +711,11 @@ public void playRawRule(int type)
         widePatternScrollPaneDrum = new javax.swing.JScrollPane();
         widePatternTextFieldDrum = new javax.swing.JTextField();
         reExtractBtnDrum = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        windowMenu = new javax.swing.JMenu();
+        closeWindowMI = new javax.swing.JMenuItem();
+        cascadeMI = new javax.swing.JMenuItem();
+        windowMenuSeparator = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -1624,6 +1631,42 @@ public void playRawRule(int type)
         gridBagConstraints.weighty = 0.7;
         getContentPane().add(extractionTabbedPane, gridBagConstraints);
 
+        windowMenu.setMnemonic('W');
+        windowMenu.setText("Window");
+        windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        closeWindowMI.setMnemonic('C');
+        closeWindowMI.setText("Close Window");
+        closeWindowMI.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        closeWindowMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(closeWindowMI);
+
+        cascadeMI.setMnemonic('A');
+        cascadeMI.setText("Cascade Windows");
+        cascadeMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cascadeMIActionPerformed(evt);
+            }
+        });
+        windowMenu.add(cascadeMI);
+        windowMenu.add(windowMenuSeparator);
+
+        jMenuBar1.add(windowMenu);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1987,12 +2030,42 @@ private void widePatternTextFieldDrumActionPerformed(java.awt.event.ActionEvent 
     // TODO add your handling code here:
   }//GEN-LAST:event_widePatternTextFieldDrumActionPerformed
 
+private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_closeWindowMIActionPerformed
+  {//GEN-HEADEREND:event_closeWindowMIActionPerformed
+    dispose();
+  }//GEN-LAST:event_closeWindowMIActionPerformed
+
+private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cascadeMIActionPerformed
+  {//GEN-HEADEREND:event_cascadeMIActionPerformed
+    WindowRegistry.cascadeWindows(this);
+  }//GEN-LAST:event_cascadeMIActionPerformed
+
+private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:event_windowMenuMenuSelected
+  {//GEN-HEADEREND:event_windowMenuMenuSelected
+    windowMenu.removeAll();
+
+    windowMenu.add(closeWindowMI);
+
+    windowMenu.add(cascadeMI);
+
+    windowMenu.add(windowMenuSeparator);
+
+    for( WindowMenuItem w : WindowRegistry.getWindows() )
+      {
+        windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+      }
+
+    windowMenu.repaint();
+  }//GEN-LAST:event_windowMenuMenuSelected
+
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bassPanel;
+    private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JPanel chordPanel;
     private javax.swing.JButton closeWindowBtn;
+    private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JButton copySelectionsBtnBass;
     private javax.swing.JButton copySelectionsBtnChord;
     private javax.swing.JButton copySelectionsBtnDrum;
@@ -2005,6 +2078,7 @@ private void widePatternTextFieldDrumActionPerformed(java.awt.event.ActionEvent 
     private javax.swing.JTextField endBeatTextFieldChord;
     private javax.swing.JTextField endBeatTextFieldDrum;
     private javax.swing.JTabbedPane extractionTabbedPane;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton leftPlayPatternBtnBass;
     private javax.swing.JButton leftPlayPatternBtnChord;
     private javax.swing.JButton leftPlayPatternBtnDrum;
@@ -2065,6 +2139,8 @@ private void widePatternTextFieldDrumActionPerformed(java.awt.event.ActionEvent 
     private javax.swing.JTextField widePatternTextFieldBass;
     private javax.swing.JTextField widePatternTextFieldChord;
     private javax.swing.JTextField widePatternTextFieldDrum;
+    private javax.swing.JMenu windowMenu;
+    private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
 private javax.swing.JButton errorButton;

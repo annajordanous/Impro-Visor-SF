@@ -132,7 +132,7 @@ public static void unregisterWindow(Window w)
  *
  */
 
-public static void cascadeWindows(JFrame w)
+public static void cascadeWindows(Window w)
   {
     int x = 0, y = 0;
 
