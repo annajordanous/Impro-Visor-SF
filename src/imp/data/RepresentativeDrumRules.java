@@ -552,7 +552,7 @@ public String[] getRules()
     // This seems to occur only on re-Extraction, so far.
 
     String[] toReturn = new String[patterns.size()];
-    toReturn[0] = "Cluster";
+    toReturn[0] = "";
     for( int i = 1; i < patterns.size(); i++ )
       {
         toReturn[i] = "(drum-pattern \n";
