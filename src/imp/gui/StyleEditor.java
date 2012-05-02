@@ -51,6 +51,8 @@ import polya.Tokenizer;
  * @author Robert Keller, Jim Herold, Brandy McMenamy, Sayuri Soejima  
  */
 
+@SuppressWarnings("serial")
+
 public class StyleEditor
         extends javax.swing.JFrame
         implements ActionListener
@@ -95,8 +97,6 @@ public class StyleEditor
   TableColumnModel columnModel;
   
   String styleName = "New Style";
-
-  private int selectedColumn = 0;
 
   static public final boolean PLAY = true;
 
@@ -2798,6 +2798,7 @@ void playBassColumn(int colIndex)
         maxDrumPatternLengthComboBox = new javax.swing.JComboBox();
         showExtractionCheckBox = new javax.swing.JCheckBox();
         chordTonesCheckBox = new javax.swing.JCheckBox();
+        extractButton = new javax.swing.JButton();
         globalAttrPanel = new javax.swing.JPanel();
         bassAttrPanel = new javax.swing.JPanel();
         bassHighLabel = new javax.swing.JLabel();
@@ -3040,6 +3041,9 @@ void playBassColumn(int colIndex)
         helpDialog.getContentPane().add(helpTabbedPane, gridBagConstraints);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1250, 600));
+        setPreferredSize(new java.awt.Dimension(1275, 819));
+        setSize(new java.awt.Dimension(1275, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -3085,7 +3089,7 @@ void playBassColumn(int colIndex)
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(commentsPanel, gridBagConstraints);
 
-        importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import Patterns from MIDI", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        importInstrumentsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Extract Patterns from MIDI File", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         importInstrumentsPanel.setMinimumSize(new java.awt.Dimension(350, 225));
         importInstrumentsPanel.setPreferredSize(new java.awt.Dimension(350, 225));
         importInstrumentsPanel.setLayout(new java.awt.GridBagLayout());
@@ -3094,7 +3098,7 @@ void playBassColumn(int colIndex)
         noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
         noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[3]);
         noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(275, 50));
         noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(275, 50));
         noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -3223,6 +3227,11 @@ void playBassColumn(int colIndex)
         showExtractionCheckBox.setToolTipText("Shows the patterns before selecting them for the style. Allows the user to edit the choices.");
         showExtractionCheckBox.setLabel(" Show Details");
         showExtractionCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        showExtractionCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showExtractionCheckBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -3246,6 +3255,20 @@ void playBassColumn(int colIndex)
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         importInstrumentsPanel.add(chordTonesCheckBox, gridBagConstraints);
+
+        extractButton.setText("Extract Patterns");
+        extractButton.setToolTipText("Extracts patterns from specified MIDI file.");
+        extractButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                extractButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        importInstrumentsPanel.add(extractButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -6045,6 +6068,16 @@ private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.even
     NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
   }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
 
+private void extractButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_extractButtonActionPerformed
+  {//GEN-HEADEREND:event_extractButtonActionPerformed
+    extractStyleFromMidi();
+  }//GEN-LAST:event_extractButtonActionPerformed
+
+private void showExtractionCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showExtractionCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_showExtractionCheckBoxActionPerformed
+    MIDIBeast.showExtraction = showExtractionCheckBox.isSelected();
+  }//GEN-LAST:event_showExtractionCheckBoxActionPerformed
+
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6154,6 +6187,7 @@ public void unusePianoRoll()
     private javax.swing.JPanel editInstructionsPanel;
     private javax.swing.JScrollPane editingPane;
     private javax.swing.JMenuItem exitStyleGenMI;
+    private javax.swing.JButton extractButton;
     private javax.swing.JTextArea extractionList;
     private javax.swing.JScrollPane extractionPane;
     private javax.swing.JTextArea fileFormatList;
