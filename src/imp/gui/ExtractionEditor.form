@@ -54,7 +54,7 @@
       <Point value="[100, 100]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1300, 600]"/>
+      <Dimension value="[800, 600]"/>
     </Property>
     <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1300, 800]"/>
@@ -762,9 +762,6 @@
                 <Property name="text" type="java.lang.String" value="Include Pattern in Selections"/>
                 <Property name="toolTipText" type="java.lang.String" value="Include Pattern in Selections"/>
               </Properties>
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Include Pattern in Selections"/>
-              </AccessibilityProperties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectPatternBtnChordActionPerformed"/>
               </Events>

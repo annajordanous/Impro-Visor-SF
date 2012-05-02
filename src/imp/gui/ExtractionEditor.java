@@ -717,7 +717,7 @@ public void playRawRule(int type)
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Style Pattern Extraction");
         setLocation(new java.awt.Point(100, 100));
-        setMinimumSize(new java.awt.Dimension(1300, 600));
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setSize(new java.awt.Dimension(1300, 800));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -1221,7 +1221,6 @@ public void playRawRule(int type)
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.4;
         chordPanel.add(selectPatternBtnChord, gridBagConstraints);
-        selectPatternBtnChord.getAccessibleContext().setAccessibleName("Include Pattern in Selections");
 
         leftPlayPatternBtnChord.setText("Play Pattern");
         leftPlayPatternBtnChord.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
