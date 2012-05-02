@@ -6655,7 +6655,9 @@ public class Notate
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setName("notateFrame"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(3002, 800));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
