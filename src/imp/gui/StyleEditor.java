@@ -2765,16 +2765,6 @@ void playBassColumn(int colIndex)
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        extractionPreferences = new javax.swing.JDialog();
-        cancelButton = new javax.swing.JButton();
-        okButton = new javax.swing.JButton();
-        maxPatternLengthPanel = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         helpDialog = new javax.swing.JDialog();
         helpTabbedPane = new javax.swing.JTabbedPane();
         generalPane = new javax.swing.JScrollPane();
@@ -2931,7 +2921,6 @@ void playBassColumn(int colIndex)
         copyCellsMI = new javax.swing.JMenuItem();
         pasteCellsMI = new javax.swing.JMenuItem();
         styGenerate = new javax.swing.JMenu();
-        generatePrefMI = new javax.swing.JMenuItem();
         generateMI = new javax.swing.JMenuItem();
         styHelp = new javax.swing.JMenu();
         styHelpMI = new javax.swing.JMenuItem();
@@ -2939,91 +2928,6 @@ void playBassColumn(int colIndex)
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
-
-        extractionPreferences.getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        extractionPreferences.getContentPane().add(cancelButton, gridBagConstraints);
-
-        okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        extractionPreferences.getContentPane().add(okButton, gridBagConstraints);
-
-        maxPatternLengthPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max Pattern Length", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        maxPatternLengthPanel.setMinimumSize(new java.awt.Dimension(200, 112));
-        maxPatternLengthPanel.setPreferredSize(new java.awt.Dimension(200, 200));
-        maxPatternLengthPanel.setLayout(new java.awt.GridBagLayout());
-
-        jLabel4.setText("Bass");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        maxPatternLengthPanel.add(jLabel4, gridBagConstraints);
-
-        jLabel5.setText("Chord");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        maxPatternLengthPanel.add(jLabel5, gridBagConstraints);
-
-        jLabel6.setText("Drum");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        maxPatternLengthPanel.add(jLabel6, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(9, 0, 0, 0);
-        extractionPreferences.getContentPane().add(maxPatternLengthPanel, gridBagConstraints);
-
-        jMenu1.setText("File");
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Extract from MIDI");
-        jMenuItem1.setToolTipText("Extracts patterns from a MIDI file. Requires an accompanying leadsheet file with chord names.");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        extractionPreferences.setJMenuBar(jMenuBar1);
 
         helpDialog.setTitle("Style Editor Help");
         helpDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -4895,18 +4799,6 @@ void playBassColumn(int colIndex)
         styGenerate.setText("Extract");
         styGenerate.setActionCommand("Generate");
 
-        generatePrefMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
-        generatePrefMI.setMnemonic('p');
-        generatePrefMI.setText("Set Extraction Preferences");
-        generatePrefMI.setToolTipText("Sets preferences for extracting style patterns from MIDI file.");
-        generatePrefMI.setActionCommand("Generation Preferences");
-        generatePrefMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generatePrefMIActionPerformed(evt);
-            }
-        });
-        styGenerate.add(generatePrefMI);
-
         generateMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         generateMI.setText("Extract Style from MIDI");
         generateMI.setToolTipText("Extracts style patterns from MIDI file, in conjunction with a leadsheet file containing the corresponding chords.");
@@ -5909,72 +5801,6 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
         }
     }//GEN-LAST:event_formWindowClosing
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-      extractionPreferences.setVisible(false);
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-
-      if( importBassCheckBox.isSelected() )
-        {
-        MIDIBeast.importBass = true;
-        }
-      else
-        {
-        MIDIBeast.importBass = false;
-        }
-
-      if( importChordCheckBox.isSelected() )
-        {
-        MIDIBeast.importChords = true;
-        }
-      else
-        {
-        MIDIBeast.importChords = false;
-        }
-
-      if( importDrumCheckBox.isSelected() )
-        {
-        MIDIBeast.importDrums = true;
-        }
-      else
-        {
-        MIDIBeast.importDrums = false;
-        }
-
-      if( showExtractionCheckBox.isSelected() )
-        {
-        MIDIBeast.showExtraction = true;
-        }
-      else
-        {
-        MIDIBeast.showExtraction = false;
-        }
-
-      if( chordTonesCheckBox.isSelected() )
-        {
-        MIDIBeast.chordTones = true;
-        }
-      else
-        {
-        MIDIBeast.chordTones = false;
-        }
-
-      if( mergeBassRestsCheckBox.isSelected() )
-        {
-        MIDIBeast.mergeBassRests = true;
-        }
-      else
-        {
-        MIDIBeast.mergeBassRests = false;
-        }
-
-      MIDIBeast.setMaxBassPatternLength(Double.parseDouble(maxBassPatternLengthComboBox.getSelectedItem().toString()));
-      MIDIBeast.setMaxChordPatternLength(Double.parseDouble(maxChordPatternLengthComboBox.getSelectedItem().toString()));
-      MIDIBeast.setMaxDrumPatternLength(Double.parseDouble(maxDrumPatternLengthComboBox.getSelectedItem().toString()));
-      extractionPreferences.setVisible(false);
-    }//GEN-LAST:event_okButtonActionPerformed
-
     public int getNumColumns()
     {
         return getTableModel().getNumColumns();
@@ -6023,13 +5849,6 @@ public Playable getPlayablePercussionFromPianoRoll(PianoRoll pianoRoll,
     }//GEN-LAST:event_styHelpMIActionPerformed
 
   private boolean initLocationPreviewPreferences = false;
-
-    private void generatePrefMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatePrefMIActionPerformed
-      extractionPreferences.setLocationRelativeTo(this);
-      extractionPreferences.setSize(300, 500);
-      extractionPreferences.setTitle("Extraction Preferences");
-      extractionPreferences.setVisible(true);
-    }//GEN-LAST:event_generatePrefMIActionPerformed
 
     private void generateMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateMIActionPerformed
       extractStyleFromMidi();
@@ -6226,11 +6045,6 @@ private void noteResolutionComboBoximportMidiNoteResolutionChanged(java.awt.even
     NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
   }//GEN-LAST:event_noteResolutionComboBoximportMidiNoteResolutionChanged
 
-private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
-  {//GEN-HEADEREND:event_jMenuItem1ActionPerformed
-    extractStyleFromMidi();
-  }//GEN-LAST:event_jMenuItem1ActionPerformed
-
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6291,7 +6105,6 @@ public void unusePianoRoll()
     private javax.swing.JTextField beatsField2;
     private javax.swing.JLabel beatsLabel;
     private javax.swing.JLabel bpmLabel;
-    private javax.swing.JButton cancelButton;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JPanel cellsPanel;
     private javax.swing.JPanel chordAttrPanel;
@@ -6343,14 +6156,12 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem exitStyleGenMI;
     private javax.swing.JTextArea extractionList;
     private javax.swing.JScrollPane extractionPane;
-    private javax.swing.JDialog extractionPreferences;
     private javax.swing.JTextArea fileFormatList;
     private javax.swing.JScrollPane fileFormatPane;
     private javax.swing.JScrollPane fileMenuPane;
     private javax.swing.JPanel filePanel;
     private javax.swing.JScrollPane generalPane;
     private javax.swing.JMenuItem generateMI;
-    private javax.swing.JMenuItem generatePrefMI;
     private javax.swing.JPanel globalAttrPanel;
     private javax.swing.JDialog helpDialog;
     private javax.swing.JTabbedPane helpTabbedPane;
@@ -6359,12 +6170,6 @@ public void unusePianoRoll()
     private javax.swing.JCheckBox importDrumCheckBox;
     private javax.swing.JPanel importInstrumentsPanel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -6375,7 +6180,6 @@ public void unusePianoRoll()
     private javax.swing.JComboBox maxChordPatternLengthComboBox;
     private javax.swing.JComboBox maxDrumPatternLengthComboBox;
     private javax.swing.JLabel maxPatternLengthLabel;
-    private javax.swing.JPanel maxPatternLengthPanel;
     private javax.swing.JPanel melodySwingPanel;
     private javax.swing.JTextArea menuList;
     private javax.swing.JTextArea menuList1;
@@ -6386,7 +6190,6 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem newStyleMI;
     private javax.swing.JComboBox noteResolutionComboBox;
     private javax.swing.JTextField numField;
-    private javax.swing.JButton okButton;
     private javax.swing.JButton openButton;
     private javax.swing.JMenuItem openStyleMI;
     private javax.swing.JPanel panelInStyleScrollpane;
