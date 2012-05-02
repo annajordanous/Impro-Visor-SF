@@ -890,6 +890,8 @@ void playBassColumn(int colIndex)
 
     attributes += "\t(comments " + commentArea.getText() + ")\n";
 
+    changedSinceLastSave = false;
+    
     return attributes;
     }
 
@@ -1270,11 +1272,8 @@ void playBassColumn(int colIndex)
       
       // Load the file.
       loadFromFile(savedStyle);
-      
-       //mark style as saved in its current state (no unsaved changes)
-      changedSinceLastSave = false;
       }
-    //refreshAll();
+
     }
 
   /**
@@ -1395,6 +1394,8 @@ void playBassColumn(int colIndex)
     loadAttributes(style);
     
     styleName = file.getName();
+    
+    changedSinceLastSave = false;
     }
 
   /**
@@ -2416,6 +2417,8 @@ void playBassColumn(int colIndex)
    */
   public Object setCell(String text, int row, int column, boolean play)
     {
+    changedSinceLastSave = true;
+    
     Object oldContents = styleTable.getValueAt(row, column);
 
     // The actual value set in the cell depends on the indices of the cell
