@@ -21,7 +21,6 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.com.SetNoteAndLengthRealTimeCommand;
 import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.Rest;
@@ -38,6 +37,10 @@ import javax.sound.midi.Sequencer;
 public class MidiRecorder implements Constants, Receiver
 {
 Notate notate;
+
+MelodyPart melodyPart;
+
+
 Score score;
 Sequencer sequencer = null;
 int countInOffset;
@@ -53,6 +56,7 @@ public MidiRecorder(Notate notate, Score score)
   {
     this.notate = notate;
     this.score = score;
+    this.melodyPart = notate.getCurrentOrigPart();
   }
 
 public double getLatency()
@@ -82,7 +86,7 @@ public long getTick()
   {
     if( sequencer != null && sequencer.isRunning() )
       {
-        int res = sequencer.getSequence().getResolution();                  // ticks per beat
+        int res = sequencer.getSequence().getResolution();             // ticks per beat
         double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
         long latencyTicks = Math.round(bpms * res * latency);
 
@@ -180,9 +184,6 @@ public void send(MidiMessage message, long timeStamp)
 void handleNoteOn(int note, int velocity, int channel)
   {
     //System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
-
-    MelodyPart melodyPart = notate.getCurrentOrigPart();
-
     // new note played, so finish up previous notes or insert rests up to the current note
     int index;
     if( notePlaying )
@@ -203,7 +204,7 @@ void handleNoteOn(int note, int velocity, int channel)
             if( duration > 0 && index >= 0 )
               {
                 Note noteToAdd = new Rest(duration);
-                new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
+                setNote(index, noteToAdd);
               }
 
             if( index >= 0 )
@@ -226,7 +227,7 @@ void handleNoteOn(int note, int velocity, int channel)
     try
       {
         noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-        new SetNoteAndLengthRealTimeCommand(index, noteToAdd, melodyPart, notate).execute();
+        setNote(index, noteToAdd);
       }
     catch( Exception e )
       {
@@ -238,7 +239,15 @@ void handleNoteOn(int note, int velocity, int channel)
     prevNote = note;
     notePlaying = true;
   }
-    
+ 
+private void setNote(int index, Note noteToAdd)
+  {
+       int[] metre = melodyPart.getMetre();
+        int beatValue = (WHOLE/metre[1]);
+        int measureLength = metre[0] * beatValue;
+        
+        melodyPart.setNoteAndLength(index, noteToAdd, notate);
+  }
 
  void handleNoteOff(int note, int velocity, int channel)
   {
@@ -269,7 +278,7 @@ void handleNoteOn(int note, int velocity, int channel)
       {
         Note noteToAdd = new Note(note, duration);
         noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-        new SetNoteAndLengthRealTimeCommand(index, noteToAdd, notate.getCurrentOrigPart(), notate).execute();
+        setNote(index, noteToAdd);
       }
     
     index += duration;

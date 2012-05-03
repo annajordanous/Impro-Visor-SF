@@ -1017,8 +1017,6 @@ public class Notate
 
     midiSynth3 = new MidiSynth(midiManager);
 
-    midiRecorder = new MidiRecorder(this, score);
-
     midiStepInput = new MidiStepEntryActionHandler(this);
 
     setStepInput(false);
@@ -10136,14 +10134,17 @@ public void stopRecording()
     recordBtn.setIcon(recordImageIcon);
 
     recordBtn.setBackground(null);
-
-    midiSynth.unregisterReceiver(midiRecorder);
-
+    
+    if( midiRecorder != null )
+      {
+      midiSynth.unregisterReceiver(midiRecorder);
+      }
+    
     if( stepInputActive )
       {
         // if step input was active, reenable it since it is disabled during recording
 
-        midiSynth.registerReceiver(midiStepInput);
+      midiSynth.registerReceiver(midiStepInput);
       }
 
     stopPlaying();
@@ -10172,6 +10173,11 @@ private void startRecording()
     recordBtn.setIcon(recordActiveImageIcon);
 
     recordBtn.setBackground(Color.RED);
+    
+    if( midiRecorder == null )
+      {
+        midiRecorder = new MidiRecorder(this, score);
+      }
 
     midiSynth.registerReceiver(midiRecorder);
 
@@ -13701,7 +13707,10 @@ private void savePrefs()
 private boolean saveMidiLatency()
   {
     double latency = doubleFromTextField(midiLatencyTF, 0, Double.POSITIVE_INFINITY, 0);
-    midiRecorder.setLatency(latency);
+    if( midiRecorder != null )
+      {
+      midiRecorder.setLatency(latency);
+      }
     Preferences.setMidiInLatency(latency);
     return true;
   }
@@ -18141,8 +18150,6 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     scoreTab.setSelectedIndex(currTabIndex);
     
     setTransposition(score.getTransposition());
-    
-    midiRecorder = new MidiRecorder(this, score);
     }
 
   public boolean adviceIsShowing()
