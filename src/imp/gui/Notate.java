@@ -40,7 +40,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedList;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
 import javax.swing.*;
@@ -85,6 +84,7 @@ public class Notate
   
   public static final int HELP_DIALOG_WIDTH = 980;
   public static final int HELP_DIALOG_HEIGHT = 600;
+    private static final long serialVersionUID = 1L;
   
   private int DEFAULT_SLIDER_VOLUME = 80;
   
@@ -96,9 +96,7 @@ public class Notate
   
   MidiImportFrame midiImportFrame = null;
   
-  
   MidiImport midiImport;
-  
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -116,9 +114,11 @@ public class Notate
    * trackerDelay delays the tracker by offsetting a specified number of seconds.
    * This is for compatibility with midi delays introduced by different operating
    * systems. If trackerDelay is positive, the playback will have to have gone by
-   * the corresponding number of slots before the tracker starts moving. If it is negative, 
-   * the tracker will start with the corresponding number of slots from the time playback is triggered.
+   * the corresponding number of slots before the tracker starts moving. If it 
+   * is negative, the tracker will start with the corresponding number of slots 
+   * from the time playback is triggered.
    */
+  
   double trackerDelay = 0;
 
   public static final int defaultBarsPerPart = 72;
@@ -325,13 +325,6 @@ public class Notate
 
   /**
    *
-   * Default starting score length (in measures)
-   *
-   */
-  private int scoreLength = defaultBarsPerPart;
-
-  /**
-   *
    * The Score to be displayed
    *
    */
@@ -534,26 +527,6 @@ public class Notate
    */
   public static final int NOTATE_WIDTH = 1100;
 
-  /**
-   *
-   * The height of the main frame
-   *
-   */
-  private int fHeight = 700;
-
-  /**
-   *
-   * The width of the Score's internal frame
-   *
-   */
-  private int sWidth = 800;
-
-  /**
-   *
-   * The height of the Score's internal frame
-   *
-   */
-  private int sHeight = 500;
 
   /**
    *
@@ -582,15 +555,6 @@ public class Notate
    *
    */
   private boolean alwaysPasteOver = true;
-
-  /**
-   *
-   * Two intermediate points for many-point line drawing; they'll leap-frog one
-   *
-   * another as we draw the contour 'curve'
-   *
-   */
-  private Point curvePta,  curvePtb;
 
   /**
    *
@@ -704,10 +668,10 @@ public class Notate
    *
    */
   private ImageIcon recordImageIcon =
-          new ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"));
+    new ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"));
 
   private ImageIcon recordActiveImageIcon =
-          new ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/recordActive.gif"));
+    new ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/recordActive.gif"));
 
   private StyleComboBoxModel defStyleComboBoxModel = new StyleComboBoxModel();
 
@@ -940,7 +904,8 @@ public class Notate
     
     setTransposition(score.getTransposition());
     
-    // all windows should be registered when created so that the window menu can construct a list of windows
+    // all windows should be registered when created 
+    // so that the window menu can construct a list of windows
 
     WindowRegistry.registerWindow(this);
 
