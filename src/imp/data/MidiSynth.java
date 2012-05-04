@@ -260,22 +260,21 @@ public void setFraction(double fraction)
 
 
 public double getFraction()
-{
+  {
     if( sequencer == null )
-    {
+      {
         return 0;
-    }
+      }
 
     int totalSlots = getTotalSlots();
 
     if( totalSlots == 0 )
-    {
+      {
         return 0;
-    }
+      }
 
-
-    return (double)getSlot()/totalSlots;
-}
+    return (double) getSlot() / totalSlots;
+  }
 
 
 public void setSlot(long slot)
@@ -290,7 +289,7 @@ public void setSlot(long slot)
       {
         slot = 0;
       }
-    long value = (long) (slot * m_ppqn / BEAT);
+    long value = slot * m_ppqn / BEAT;
 
     sequencer.setTickPosition(value);
   }
@@ -305,14 +304,14 @@ public int getSlot()
     if( playing )
       {
         int slot = (int) Math.floor(
-            BEAT * sequencer.getTickPosition() / (double) m_ppqn);
+                BEAT * sequencer.getTickPosition() / (double) m_ppqn);
 
         slot -= getCountInOffset();
 
         if( slot < 0 )
-        {
+          {
             slot = 0;
-        }
+          }
 
         return slot;
       }
@@ -410,11 +409,11 @@ public void play(Score score,
                  int countInOffset)
     throws InvalidMidiDataException
   {
-   Trace.log(2,
-              (++playCounter) + ": Starting MIDI sequencer, startTime = " 
-              + startIndex + " loopCount = " + loopCount + " endIndex = "
-              + endLimitIndex);
-    
+//   Trace.log(2,
+//              (++playCounter) + ": Starting MIDI sequencer, startTime = " 
+//              + startIndex + " loopCount = " + loopCount + " endIndex = "
+//              + endLimitIndex);
+//    
     if( sequencer == null )
       {
         setSequencer();
@@ -460,8 +459,8 @@ public void play(Score score,
 
         if( loopCount != 0 )
         {
-                // set end time first, otherwise there might be an exception because
-                // the start time is too large.
+         // set end time first, otherwise there might be an exception because
+         // the start time is too large.
 
         if( endLimitIndex == ENDSCORE )
           {
@@ -985,7 +984,6 @@ System.out.println("    microsecond/tick = "     + sequencer.getMicrosecondLengt
 }
 
 /*
-
 protected void printSeqInfo(Sequence seq) {
 //System.out.println("Score Title: " + scoreTitle);
 //System.out.println("Score TempoEvent: " + tempo + " BPM");
