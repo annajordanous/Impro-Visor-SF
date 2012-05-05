@@ -23,7 +23,6 @@ package imp.gui;
 import imp.Constants;
 import imp.data.MelodyPart;
 import imp.data.Note;
-import imp.data.Rest;
 import imp.data.Score;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
@@ -40,6 +39,7 @@ Notate notate;
 
 MelodyPart melodyPart;
 
+int[] metre;
 
 Score score;
 Sequencer sequencer = null;
@@ -49,6 +49,8 @@ boolean notePlaying = false;
 int prevNote = 0;
 int resolution;
 int snapTo = BEAT/4;
+int beatValue;
+int measureLength;
 
 double latency = 0;
 
@@ -57,6 +59,9 @@ public MidiRecorder(Notate notate, Score score)
     this.notate = notate;
     this.score = score;
     this.melodyPart = notate.getCurrentOrigPart();
+    metre = melodyPart.getMetre();
+    beatValue = (WHOLE/metre[1]);
+    measureLength = metre[0] * beatValue;
   }
 
 public double getLatency()
@@ -185,11 +190,10 @@ void handleNoteOn(int note, int velocity, int channel)
   {
     //System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
     // new note played, so finish up previous notes or insert rests up to the current note
-    int index;
+    int noteOffIndex;
     if( notePlaying )
       {
         handleNoteOff(prevNote, velocity, channel);
-
       }
     else
       {
@@ -198,18 +202,18 @@ void handleNoteOn(int note, int velocity, int channel)
         // this try is here because a function a few steps up in the call hierarchy tends to capture error messages
         try
           {
-            index = snapSlots(tickToSlots(noteOff)) - countInOffset;
+            noteOffIndex = snapSlots(tickToSlots(noteOff)) - countInOffset;
 
             // add rests since nothing was played between now and the previous note
-            if( duration > 0 && index >= 0 )
+            if( duration > 0 && noteOffIndex >= 0 )
               {
-                Note noteToAdd = new Rest(duration);
-                setNote(index, noteToAdd);
+                // Note noteToAdd = new Rest(duration);
+                // setNote(noteOnIndex, noteToAdd);
               }
 
-            if( index >= 0 )
+            if( noteOffIndex >= 0 )
               {
-                notate.setCurrentSelectionStartAndEnd(index);
+                notate.setCurrentSelectionStartAndEnd(noteOffIndex);
               }
           }
         catch( Exception e )
@@ -219,36 +223,27 @@ void handleNoteOn(int note, int velocity, int channel)
       }
 
     noteOn = lastEvent;
-    index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+    noteOffIndex = snapSlots(tickToSlots(noteOn)) - countInOffset;
 
     // add current note
     Note noteToAdd = new Note(note, snapTo);
 
     try
       {
-        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-        setNote(index, noteToAdd);
+        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(noteOffIndex));
+        setNote(noteOffIndex, noteToAdd);
       }
     catch( Exception e )
       {
         //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
       }
 
-    notate.repaint();
+    //notate.repaint();
 
     prevNote = note;
     notePlaying = true;
   }
  
-private void setNote(int index, Note noteToAdd)
-  {
-       int[] metre = melodyPart.getMetre();
-        int beatValue = (WHOLE/metre[1]);
-        int measureLength = metre[0] * beatValue;
-        
-        melodyPart.setNoteAndLength(index, noteToAdd, notate);
-  }
-
  void handleNoteOff(int note, int velocity, int channel)
   {
     //System.out.println("noteOff: " + noteOff + "; event: " + lastEvent);
@@ -260,11 +255,12 @@ private void setNote(int index, Note noteToAdd)
 
     // use the one in constructor: Notate notate = imp.ImproVisor.getCurrentWindow();
     noteOff = lastEvent;
+    
     notePlaying = false;
 
-    int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
+    int noteOnIndex = snapSlots(tickToSlots(noteOn)) - countInOffset;
 
-    if( index < 0 )
+    if( noteOnIndex < 0 )
       {
         return;
       }
@@ -277,18 +273,24 @@ private void setNote(int index, Note noteToAdd)
     else
       {
         Note noteToAdd = new Note(note, duration);
-        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
-        setNote(index, noteToAdd);
+        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(noteOnIndex));
+        setNote(noteOnIndex, noteToAdd);
       }
     
-    index += duration;
+    noteOnIndex += duration;
 
-    notate.setCurrentSelectionStartAndEnd(index);
+    notate.setCurrentSelectionStartAndEnd(noteOnIndex);
 
     // System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
 
-    notate.repaint();
+    //notate.repaint();
   }
+ 
+ private void setNote(int index, Note noteToAdd)
+  {
+  melodyPart.setNoteAndLength(index, noteToAdd, notate); // more than needed
+  //melodyPart.setNote(noteOnIndex, noteToAdd);
+ }
    
 int snapToMultiple(int input, int base)
   {

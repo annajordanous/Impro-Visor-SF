@@ -10160,6 +10160,47 @@ private void startRecording()
   }
 
 
+/**
+ * This is like startRecording() without the playback.
+ */
+private void enableRecording()
+  {
+    turnStepInputOff();
+    
+    if( midiManager.getInDevice() == null )
+      {
+        ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
+
+        return;
+      }
+
+    playBtn.setEnabled(false);
+
+    recordBtn.setIcon(recordActiveImageIcon);
+
+    recordBtn.setBackground(Color.RED);
+    
+    if( midiRecorder == null )
+      {
+        midiRecorder = new MidiRecorder(this, score);
+      }
+
+    midiSynth.registerReceiver(midiRecorder);
+
+    staveRequestFocus();
+
+    //playScore();
+
+    setMode(Mode.RECORDING);
+
+    midiSynth.unregisterReceiver(midiStepInput);  // disable step input during recording
+
+    midiSynth.registerReceiver(midiRecorder);
+
+    midiRecorder.start();   // set time to 0
+  }
+
+
 void stopPlaying()
   {
     midiSynth.stop("stop in Notate");
@@ -20180,6 +20221,8 @@ public void generate(LickGen lickgen)
       }
 
     setMode(Mode.GENERATED);
+    
+    enableRecording(); // TRIAL
   }
 
 
