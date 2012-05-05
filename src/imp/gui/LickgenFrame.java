@@ -3959,10 +3959,12 @@ private void triageAndGenerate(int number)
 
                             for( int i = 0; i < probs.size(); ++i )
                               {
-                                for( int j = 0; j < 12; ++j )
+                                double[] pArray = probs.get(i);
+                                JTextField[] tfArray = lickPrefs.get(i);
+                                for( int j = 0; j < Math.max(pArray.length, tfArray.length); ++j )
                                   {
-                                    String p = ((Double) probs.get(i)[j]).toString();
-                                    JTextField field = lickPrefs.get(i)[j];
+                                    String p = ((Double) pArray[j]).toString();
+                                    JTextField field = tfArray[j];
                                     field.setText(p);   //.substring(0, Math.min(p.length(), 5)));
                                     field.setCaretPosition(0);
                                   }

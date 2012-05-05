@@ -44,6 +44,8 @@ import javax.sound.midi.Track;
  * @see         Part
  * @author      Stephen Jones
  */
+@SuppressWarnings("serial")
+
 public class MelodyPart
         extends Part
   {
@@ -1621,4 +1623,14 @@ public int getInitialBeatsRest()
     }
   return buffer.toString ();
   }
+ 
+ //Unfinished
+//public void insertPartAt(int start, int finish, MelodyPart insert)
+//  {
+//    int j = 0;
+//    for( int i = start; i <= finish; i++, j++ )
+//      {
+//        slots.set(i, insert.getUnit(j));
+//      }
+//  }
 }
