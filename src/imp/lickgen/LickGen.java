@@ -13,7 +13,6 @@
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
  *
-
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -48,15 +47,15 @@ public class LickGen implements Constants
     // Some notes are initialized to these pitch values; use really big numbers to
     // stay out of the way of midi numbers.
 
-    public static final int NOTE = 1000;
-    public static final int CHORD = 1001;
-    public static final int SCALE = 1002;
-    public static final int COLOR = 1003;
+    public static final int NOTE     = 1000;
+    public static final int CHORD    = 1001;
+    public static final int SCALE    = 1002;
+    public static final int COLOR    = 1003;
     public static final int APPROACH = 1004;
-    public static final int RANDOM = 1005;
-    public static final int BASS = 1006;
-    public static final int GOAL = 1007;
-    public static final int OUTSIDE = 1008;
+    public static final int RANDOM   = 1005;
+    public static final int BASS     = 1006;
+    public static final int GOAL     = 1007;
+    public static final int OUTSIDE  = 1008;
     
     // Parameter strings
     // Strings used as labels in the grammar file
@@ -228,52 +227,64 @@ public class LickGen implements Constants
         }
     }
     
-    //adds all notes in curr to the end of melpart
-    private void addMelody(MelodyPart melpart, MelodyPart curr, boolean startTied, boolean endTied) {
-        //System.out.println("Melody: " + curr + "length: " + curr.getSize());
-        
-        
-        if(curr.getSize() > slotsPerMeasure) {
-            System.out.println("MEASURE TOO BIG");
-            curr = curr.extract(0, slotsPerMeasure);
-        }
-        
-        if(curr.getSize() < slotsPerMeasure) {
-            System.out.println("MEASURE TOO SMALL");
-            int s = curr.getSize();
-            Rest r = new Rest(slotsPerMeasure-s);
-            curr.addRest(r);
-        }
-        
-        ArrayList<Unit> units = curr.getUnitList();
-            //if prev measure and current measure were both tied originally, tie them together
-            
-            if(startTied && lastWasTied) {
-                System.out.println("Should be tying.");
-                //System.out.println(position/480);
-                //System.out.println("Pitch 1: " + ((Note)units.get(0)).getPitch() +
-                //        "Pitch 2: " + melpart.getLastNote().getPitch());
-                if(((Note)units.get(0)).getPitch() != -1 && melpart.getLastNote().getPitch() != -1 ) {
-                    System.out.println("Tying");
-                    System.out.println(position/480);
-                System.out.println("Pitch 1: " + ((Note)units.get(0)).getPitch() +
-                        "Pitch 2: " + melpart.getLastNote().getPitch());
-                Note last = melpart.getLastNote();
-                System.out.println("First time: " + last.getRhythmValue());
-                last.setRhythmValue(last.getRhythmValue() + ((Note)units.get(0)).getRhythmValue());
-                melpart.setSize(melpart.getSize() + ((Note)units.get(0)).getRhythmValue());
-                last = melpart.getLastNote();
-                System.out.println("Second time: " + last.getRhythmValue());
-                units.remove(0);
-                }
-            }
-            
-            for(int i = 0; i < units.size(); i++) {
-                melpart.addNote((Note) units.get(i));
-            }
-            //if the point we just added is tied at the end, set the flag
-            lastWasTied = endTied;
-    }
+    
+/**
+ * adds all notes in curr to the end of melpart
+ */
+    
+private void addMelody(MelodyPart melpart,
+                       MelodyPart curr,
+                       boolean startTied,
+                       boolean endTied)
+  {
+    //System.out.println("Melody: " + curr + "length: " + curr.getSize());
+
+    if( curr.getSize() > slotsPerMeasure )
+      {
+        System.out.println("MEASURE TOO BIG");
+        curr = curr.extract(0, slotsPerMeasure);
+      }
+
+    if( curr.getSize() < slotsPerMeasure )
+      {
+        System.out.println("MEASURE TOO SMALL");
+        int s = curr.getSize();
+        Rest r = new Rest(slotsPerMeasure - s);
+        curr.addRest(r);
+      }
+
+    ArrayList<Unit> units = curr.getUnitList();
+    //if prev measure and current measure were both tied originally, tie them together
+
+    if( startTied && lastWasTied )
+      {
+        System.out.println("Should be tying.");
+        //System.out.println(position/480);
+        //System.out.println("Pitch 1: " + ((Note)units.get(0)).getPitch() +
+        //        "Pitch 2: " + melpart.getLastNote().getPitch());
+        if( ((Note) units.get(0)).getPitch() != -1 && melpart.getLastNote().getPitch() != -1 )
+          {
+            System.out.println("Tying");
+            System.out.println(position / 480);
+            System.out.println("Pitch 1: " + ((Note) units.get(0)).getPitch()
+                    + "Pitch 2: " + melpart.getLastNote().getPitch());
+            Note last = melpart.getLastNote();
+            System.out.println("First time: " + last.getRhythmValue());
+            last.setRhythmValue(last.getRhythmValue() + ((Note) units.get(0)).getRhythmValue());
+            melpart.setSize(melpart.getSize() + ((Note) units.get(0)).getRhythmValue());
+            last = melpart.getLastNote();
+            System.out.println("Second time: " + last.getRhythmValue());
+            units.remove(0);
+          }
+      }
+
+    for( int i = 0; i < units.size(); i++ )
+      {
+        melpart.addNote((Note) units.get(i));
+      }
+    //if the point we just added is tied at the end, set the flag
+    lastWasTied = endTied;
+  }
     
     //return the NGramWithTransitions object for the desired cluster
     private NGramWithTransitions getTransitionObject(int clusterNumber) {
@@ -442,293 +453,317 @@ public class LickGen implements Constants
         }
     }
     
-    //takes an outline, builds an abstract melody and fills it
-    private MelodyPart buildSolo(Vector<ClusterSet> outline) {
-        
-        //int repeats = 0;
-        //for(int i = 0; i < outline.size(); i++) {
-        //    for(int j = i + 1; j < outline.size(); j++) {
-        //        if ( outline.get(i).getOriginal().getName().equals (outline.get(j).getOriginal().getName() ) )
-        //        repeats++;
-        //    }
-        //}
-        //System.out.println("Num repeats: " + repeats);
-        
-        
-        
-        /*This hashtable will keep track of the clusters and
-         *abstract melodies that have been used. The keys are the cluster numbers
-         *and the values are the abstract melodies
-         */
-         Hashtable usedMelodies = new Hashtable();
-        
-        //build a string of abstract melodies from datapoints in each step of the outline
-        //filling each one in turn
-        String rhythmString = "";
-        MelodyPart melpart;
-        
-        ClusterSet start = outline.get(0);
-        Vector<Cluster> starters = start.getStarterClusters();
-        Cluster first = null;
-        //look for a starting cluster that contains a starting measure, otherwise pick randomly
-        if(!starters.isEmpty()) {
-            first = pickRandomCluster(starters);
-        }
-        else {
-            first = start.getRandomPoint().getCluster();
-        }
-        
-        //System.out.println(first.getName() + ": " + first.getNumDataPoints());
-        
-        //add first abstract melody
-        String currentAbstractMelody;
-        Polylist currentSection;
-        
-        int startIndex = mStart;
-        
-        //start creating the MelodyPart
-        DataPoint point1;
-        do {
-            oldPitch = 0;
-            point1 = first.getRandomDataPoint();
-            currentAbstractMelody = point1.getAbstractMelody();
-            currentSection = Polylist.PolylistFromString(currentAbstractMelody);
-            melpart = fillMelody(mMinPitch, mMaxPitch, mMinInterval, mMaxInterval, mBeatValue,
-                mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
-        } while(goesOutOfBounds(melpart));
-        
-        usedMelodies.put(point1.getCluster().getNumber(), currentAbstractMelody);
-        
-        //add the abstract melody to the rhythm string
-        rhythmString = rhythmString.concat(currentAbstractMelody);
-        
-        //increment the starting index
-        int sectionSize = dataPoints.get(0).getSegLength() * mBeatValue;
-        startIndex += sectionSize;
-        
-        Cluster current = first;
-        MelodyPart curr;
-        DataPoint p;
-        
-        
-        //loop through the rest of the outline, picking clusters and points from them,
-        //and calling fillMelody on each measure
-        //if a datapoint makes the lick go out of bounds, pick another point
-        for(int i = 1; i < outline.size(); i++) {
-            
-            //System.out.println("i="+i);
-            current = getNextCluster(current, outline.get(i));
-            //System.out.println(current.getName() + ": " + current.getNumDataPoints());
-            int counter = 0;
-            //need to reset oldPitch each time we retry
-            int previousPitch = 0;
-            do {
-                if(counter == 0) {
-                    previousPitch = oldPitch;
-                }
-                else {
-                    oldPitch = previousPitch;
-                }
-            
-                
-                
+/**
+ * Takes an outline, builds an abstract melody and fills it
+ */
+
+private MelodyPart buildSolo(Vector<ClusterSet> outline)
+  {
+
+    /*
+     * This hashtable will keep track of the clusters and abstract melodies that
+     * have been used. The keys are the cluster numbers and the values are the
+     * abstract melodies
+     */
+    Hashtable usedMelodies = new Hashtable();
+
+    //build a string of abstract melodies from datapoints in each step of the outline
+    //filling each one in turn
+    String rhythmString = "";
+    MelodyPart melpart;
+
+    ClusterSet start = outline.get(0);
+    Vector<Cluster> starters = start.getStarterClusters();
+    Cluster first = null;
+    //look for a starting cluster that contains a starting measure, otherwise pick randomly
+    if( !starters.isEmpty() )
+      {
+        first = pickRandomCluster(starters);
+      }
+    else
+      {
+        first = start.getRandomPoint().getCluster();
+      }
+
+    //System.out.println(first.getName() + ": " + first.getNumDataPoints());
+
+    //add first abstract melody
+    String currentAbstractMelody;
+    Polylist currentSection;
+
+    int startIndex = mStart;
+
+    //start creating the MelodyPart
+    DataPoint point1;
+    do
+      {
+        oldPitch = 0;
+        point1 = first.getRandomDataPoint();
+        currentAbstractMelody = point1.getAbstractMelody();
+        currentSection = Polylist.PolylistFromString(currentAbstractMelody);
+        melpart = fillMelody(mMinPitch, mMaxPitch, mMinInterval, mMaxInterval, mBeatValue,
+                             mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
+      }
+    while( goesOutOfBounds(melpart) );
+
+    usedMelodies.put(point1.getCluster().getNumber(), currentAbstractMelody);
+
+    //add the abstract melody to the rhythm string
+    rhythmString = rhythmString.concat(currentAbstractMelody);
+
+    //increment the starting index
+    int sectionSize = dataPoints.get(0).getSegLength() * mBeatValue;
+    startIndex += sectionSize;
+
+    Cluster current = first;
+    MelodyPart curr;
+    DataPoint p;
+
+
+    //loop through the rest of the outline, picking clusters and points from them,
+    //and calling fillMelody on each measure
+    //if a datapoint makes the lick go out of bounds, pick another point
+    for( int i = 1; i < outline.size(); i++ )
+      {
+        //System.out.println("i="+i);
+        current = getNextCluster(current, outline.get(i));
+        //System.out.println(current.getName() + ": " + current.getNumDataPoints());
+        int counter = 0;
+        //need to reset oldPitch each time we retry
+        int previousPitch = 0;
+        do
+          {
+            if( counter == 0 )
+              {
+                previousPitch = oldPitch;
+              }
+            else
+              {
+                oldPitch = previousPitch;
+              }
+
             int segLength = dataPoints.get(0).getSegLength();
             int measureLength = segLength * 120;
             ChordPart chords = mChordProg.extract(startIndex, startIndex + measureLength);
             current.getRandomDataPointWithMatchingChords(chords);
-            
+
             p = current.getRandomDataPoint();
             currentAbstractMelody = p.getAbstractMelody();
             //starters have slope 0 0 for the first note, so change that here
-            if(p.isStarter()) {
+            if( p.isStarter() )
+              {
                 //System.out.println("fixing starter");
-                if(currentAbstractMelody.contains("slope 0 0")) {
-                    if(bernoulli(.5)) {
+                if( currentAbstractMelody.contains("slope 0 0") )
+                  {
+                    if( bernoulli(.5) )
+                      {
                         currentAbstractMelody = currentAbstractMelody.replace("0 0", "1 3");
-                    }
-                    else {
+                      }
+                    else
+                      {
                         currentAbstractMelody = currentAbstractMelody.replace("0 0", "-1 -3");
-                    }
-                }
-            }
+                      }
+                  }
+              }
             currentSection = Polylist.PolylistFromString(currentAbstractMelody);
             //System.out.println("Abstract melody: " + currentAbstractMelody);
             //System.out.println("Abstract mel: " + currentAbstractMelody);
             curr = fillMelody(mMinPitch, mMaxPitch, mMinInterval, mMaxInterval, mBeatValue,
-                mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
+                              mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
             counter++;
-            } while(goesOutOfBounds(curr) && counter < MELODY_GEN_LIMIT); 
-            
-            //System.out.println("counter: " + counter);            
-            if(counter >= MELODY_GEN_LIMIT) {
-                //System.out.println("STARTING OVER STARTING OVER STARTING OVER");
-                oldPitch = 0;
-                lastWasTied = false;
-                usedMelodies = new Hashtable();
-                return buildSolo(outline);
-            }
-            
-            addMelody(melpart, curr, p.isTiedAtStart(), p.isTiedAtEnd());
-            //increment the index for the next time we call fillmelody
-            startIndex += sectionSize;
-            rhythmString = rhythmString.concat(currentAbstractMelody);
-            
-            counter = 0;
-        }
-        
-        rhythmGeneratedFromOutline = rhythmString;
-        
-        useOutlines = false;
-        doNotSwitchOctave = false;
-        oldPitch = 0;
-        
-        return melpart;
-    }
+          }
+        while( goesOutOfBounds(curr) && counter < MELODY_GEN_LIMIT );
+
+        //System.out.println("counter: " + counter);            
+        if( counter >= MELODY_GEN_LIMIT )
+          {
+            //System.out.println("STARTING OVER STARTING OVER STARTING OVER");
+            oldPitch = 0;
+            lastWasTied = false;
+            usedMelodies = new Hashtable();
+            return buildSolo(outline);
+          }
+
+        addMelody(melpart, curr, p.isTiedAtStart(), p.isTiedAtEnd());
+        //increment the index for the next time we call fillmelody
+        startIndex += sectionSize;
+        rhythmString = rhythmString.concat(currentAbstractMelody);
+
+        counter = 0;
+      }
+
+    rhythmGeneratedFromOutline = rhythmString;
+
+    useOutlines = false;
+    doNotSwitchOctave = false;
+    oldPitch = 0;
+
+    return melpart;
+  }
     
-    private Cluster getNextCluster(Cluster current, ClusterSet nextSet) {
-        NGramWithTransitions t = getTransitionObject(current.getNumber());
-        
-        //put the numbers of the clusters in the next set in an array
-        int[] nextClusters = new int[nextSet.getNumRelatives() + 1];
-        Vector<Cluster> relatives = nextSet.getSimilarClusters();
-        for(int i = 0; i < relatives.size(); i++) {
-            nextClusters[i] = relatives.get(i).getNumber();
-        }
-        nextClusters[nextClusters.length - 1] = nextSet.getOriginal().getNumber();
-        
-        int next = t.getNextState(nextClusters);
-        //if the ngram probabilities don't point to any of the possibilities for the 
-        //next cluster, choose a random cluster from nextSet
-        if(next == -1) 
-            return nextSet.getRandomCluster();
-        //otherwise pick a cluster probabalistically from the next set
-        else 
-            return clusters[next];       
-    }
-        
-    private Cluster pickRandomCluster(Vector<Cluster> clusterList) {
-        Random rand = new Random();
-        int p = rand.nextInt(clusterList.size());
-        return clusterList.get(p);
-    }
+
+private Cluster getNextCluster(Cluster current, ClusterSet nextSet)
+  {
+    NGramWithTransitions t = getTransitionObject(current.getNumber());
+
+    //put the numbers of the clusters in the next set in an array
+    int[] nextClusters = new int[nextSet.getNumRelatives() + 1];
+    Vector<Cluster> relatives = nextSet.getSimilarClusters();
+    for( int i = 0; i < relatives.size(); i++ )
+      {
+        nextClusters[i] = relatives.get(i).getNumber();
+      }
+    nextClusters[nextClusters.length - 1] = nextSet.getOriginal().getNumber();
+
+    int next = t.getNextState(nextClusters);
+    //if the ngram probabilities don't point to any of the possibilities for the 
+    //next cluster, choose a random cluster from nextSet
+    if( next == -1 )
+      {
+        return nextSet.getRandomCluster();
+      }
+    //otherwise pick a cluster probabalistically from the next set
+    else
+      {
+        return clusters[next];
+      }
+  }
+     
+
+private Cluster pickRandomCluster(Vector<Cluster> clusterList)
+  {
+    Random rand = new Random();
+    int p = rand.nextInt(clusterList.size());
+    return clusterList.get(p);
+  }
     
-    /**
-     * Load in rules from the specified file
-    @param grammarFile
-     */
-    public void loadGrammar(String grammarFile) {
-        //System.out.println("LickGen loadGrammar: " + grammarFile);
-        grammar.clear();
-        grammar.loadGrammar(grammarFile);
 
-        notate.setLickGenStatus("Grammar loaded: " + grammarFile);
+/**
+ * Load in rules from the specified file
+ *
+ * @param grammarFile
+ */
 
-        String soloistFileName = grammarFile.replace(".grammar", ".soloist");
+public void loadGrammar(String grammarFile)
+  {
+    //System.out.println("LickGen loadGrammar: " + grammarFile);
+    grammar.clear();
+    grammar.loadGrammar(grammarFile);
 
-        File soloistFile = new File(soloistFileName);
-        if(soloistFile.exists()) {
-            soloistLoaded = true;
-            notate.setLickGenStatus("Grammar loaded with companion soloist file: " + soloistFileName);
-            loadSoloist(soloistFileName);
-        }
-        else 
-        {
+    notate.setLickGenStatus("Grammar loaded: " + grammarFile);
+
+    String soloistFileName = grammarFile.replace(".grammar", ".soloist");
+
+    File soloistFile = new File(soloistFileName);
+    if( soloistFile.exists() )
+      {
+        soloistLoaded = true;
+        notate.setLickGenStatus("Grammar loaded with companion soloist file: " + soloistFileName);
+        loadSoloist(soloistFileName);
+      }
+    else
+      {
         soloistLoaded = false;
         //System.out.println("in loadGrammar, no soloist file named:" + soloistFileName);
-        }
-        //notate.resetTriageParameters(false); Now done in notate
-    }
+      }
+  }
 
-    public void saveGrammar(String grammarFile) {
-        notate.setLickGenStatus("Saving grammar to file: " + grammarFile);
-        grammar.saveGrammar(grammarFile);
-        if(soloistLoaded)
-        {
-            saveSoloist(grammarFile);
-        notate.setLickGenStatus("Saving soloist file: " + grammarFile);
-        }
-        else
-        {
-        //System.out.println("in saveGrammar, not saving soloist:" + grammarFile);
-        }
-    }
-
-    public void saveSoloist(String grammarFile) {
-            String soloistFileName = grammarFile.replace(".grammar", ".soloist"); 
-             File soloistFile = new File(soloistFileName);
-             notate.setLickGenStatus("Saving soloist file: " + soloistFileName);
-             CreateGrammar.createSoloistFile(dataPoints, clusters, clusterSets,
-                    transitions, reverseTransitions, outlines, soloistFile);
-    }
-    
-    public void clearParams() {
-        grammar.clearParams();
-    }
-
-
-    /**
-     * Get the normalized values in our probability array.
-     */
-
-    public ArrayList<double[]> getProbs() {
-        return probs;
-    }
-
-    public void showProbs(String msg)
+public void saveGrammar(String grammarFile)
   {
-        System.out.println(msg);
-        for( int i = 0; i < probs.size(); i++ )
+    notate.setLickGenStatus("Saving grammar to file: " + grammarFile);
+    grammar.saveGrammar(grammarFile);
+    if( soloistLoaded )
+      {
+        saveSoloist(grammarFile);
+        notate.setLickGenStatus("Saving soloist file: " + grammarFile);
+      }
+    else
+      {
+        //System.out.println("in saveGrammar, not saving soloist:" + grammarFile);
+      }
+  }
+
+public void saveSoloist(String grammarFile)
+  {
+    String soloistFileName = grammarFile.replace(".grammar", ".soloist");
+    File soloistFile = new File(soloistFileName);
+    notate.setLickGenStatus("Saving soloist file: " + soloistFileName);
+    CreateGrammar.createSoloistFile(dataPoints, clusters, clusterSets,
+                                    transitions, reverseTransitions, outlines, soloistFile);
+  }
+
+public void clearParams()
+  {
+    grammar.clearParams();
+  }
+
+/**
+ * Get the normalized values in our probability array.
+ */
+
+public ArrayList<double[]> getProbs()
+  {
+    return probs;
+  }
+
+public void showProbs(String msg)
+  {
+    System.out.println(msg);
+    for( int i = 0; i < probs.size(); i++ )
+      {
+        double[] row = probs.get(i);
+        System.out.print("row " + i + ": " + row.length + " elements: ");
+        for( int j = 0; j < row.length; j++ )
           {
-            double[] row = probs.get(i);
-            System.out.print("row " + i + ": " + row.length + " elements: ");
-            for( int j = 0; j < row.length; j++ )
-              {
-                System.out.print(" " + row[j]);
-              }
-
+            System.out.print(" " + row[j]);
+          }
         System.out.println();
-        }
-    }
+      }
+  }
 
+/**
+ * Set note probabilites according to the values specified in the input array.
+ */
+public void setProbs(ArrayList<double[]> p)
+  {
+    // Clear out all the old probabilities
+    probs.clear();
 
-    /**
-     * Set note probabilites according to the values specified in the input array.
-     */
+    // For each set of probabilities, normalize them and add them to our array.
+    for( int i = 0; i < p.size(); ++i )
+      {
+        double total = 0;
+        double[] pArray = new double[12];
+        for( int j = 0; j < 12; ++j )
+          {
+            pArray[j] = p.get(i)[j];
+            total += pArray[j];
+          }
 
-    public void setProbs(ArrayList<double[]> p) {
-        // Clear out all the old probabilities
-        probs.clear();
+        if( total != 0 )
+          {
+            for( int j = 0; j < 12; ++j )
+              {
+                pArray[j] /= total;
+              }
+          }
+        probs.add(pArray);
+      }
+    //showProbs("setProbs");
+  }
 
-        // For each set of probabilities, normalize them and add them to our array.
-        for (int i = 0; i < p.size(); ++i) {
-            double total = 0;
-            double[] pArray = new double[12];
-            for (int j = 0; j < 12; ++j) {
-                pArray[j] = p.get(i)[j];
-                total += pArray[j];
-            }
-
-            if (total != 0) {
-                for (int j = 0; j < 12; ++j) {
-                    pArray[j] /= total;
-                }
-            }
-            probs.add(pArray);
-        }
-      //showProbs("setProbs");
-    }
-
-    /**
-     * Calculate the probabilities based on the current chord progression.
-    @param chordProg
-    @param chordToneProb
-    @param scaleToneProb
-    @param colorToneProb
-    @param chordToneDecayRate
-    @param selStart
-    @param length
-    @return
-     */
+/**
+ * Calculate the probabilities based on the current chord progression.
+ *
+ * @param chordProg
+ * @param chordToneProb
+ * @param scaleToneProb
+ * @param colorToneProb
+ * @param chordToneDecayRate
+ * @param selStart
+ * @param length
+ * @return
+ */
 public ArrayList<double[]> fillProbs(ChordPart chordProg, 
                                   double chordToneProb,
                                   double scaleToneProb, 
@@ -827,7 +862,6 @@ public ArrayList<double[]> fillProbs(ChordPart chordProg,
       // of changes made to ChordPart in release 5.12
         
       nextIndex = chordProg.getNextUniqueChordIndex(nextIndex);
-
       }
 
     return probs;
@@ -843,6 +877,7 @@ public ArrayList<double[]> fillProbs(ChordPart chordProg,
      @param prob
      @param p
      */
+
 private void accumulateProbs(Polylist tones, double categoryProb, double p[])
   {
   if( tones != null )
@@ -860,212 +895,290 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
       }
   }
 
-// Use the loaded grammar file to generate a rhythm
-// TODO: it might be nice to be able to specify a minDuration and a maxDuration here.
-    public Polylist generateRhythmFromGrammar(int slots) {
-        return grammar.run(slots, notate);
-        
-    }
+/**
+ * Use the loaded grammar file to generate a rhythm
+ * TODO: it might be nice to be able to specify a minDuration and a maxDuration here.
+ */
 
-// Randomly generate a rhythm based on a minimum and maximum allowed duration.
-    public Polylist generateRandomRhythm(int slots, int minDuration, int maxDuration,
-            double restProb) {
-        Polylist rhythmString = new Polylist();
-        // compute the number of distinct durations: 1, 2, 4, 8, 16, 32
-        // note that regarding durations, min is larger than max.
+public Polylist generateRhythmFromGrammar(int slots)
+  {
+    return grammar.run(slots, notate);
 
-        if (!isPowerOf2(minDuration) || !isPowerOf2(maxDuration)) {
-            ErrorLog.log(ErrorLog.SEVERE,
-                    "Note durations must be powers of two; please fix and try again.");
-            return null;
-        }
+  }
 
-        int distinctDurations = 0;
-        ArrayList<Integer> noteDurations = new ArrayList<Integer>();
-        for (int i = minDuration; i >= maxDuration; i /= 2) {
-            noteDurations.add(i);
-            distinctDurations++;
-        }
+/**
+ * Randomly generate a rhythm based on a minimum and maximum allowed duration.
+ */
 
-        int pos = 0;
-        while (pos < slots) {
-            int duration = noteDurations.get(randomIndex(distinctDurations));
-            String toCons;
-            if (bernoulli(restProb)) {
-                toCons = REST_SYMBOL + duration;
-            } else {
-                toCons = NOTE_SYMBOL + duration;
-            }
-            rhythmString = rhythmString.cons(toCons);
-            pos += (4 * BEAT) / duration; // Only works for 4-meter?? FIX
-        }
-        rhythmString = rhythmString.reverse();
-        return rhythmString;
-    }
+public Polylist generateRandomRhythm(int slots, 
+                                     int minDuration, 
+                                     int maxDuration,
+                                     double restProb)
+  {
+    Polylist rhythmString = new Polylist();
+    // compute the number of distinct durations: 1, 2, 4, 8, 16, 32
+    // note that regarding durations, min is larger than max.
 
-    /* Takes a polylist containing a series of grammar terminals
-     * and returns the number of slots in the list
-    */
-    public int getNumSlots(Polylist rhythmString) {
-        int slots = 0;
-        for (Polylist L = rhythmString; L.nonEmpty(); L = L.rest()) {
-            Polylist first = (Polylist)L.first();
-            if(first.toString().length() < 7) {  //doesn't contain a slope
-                slots += Duration.getDuration(first.first().toString().substring(1));
-            }
-            else {
-                //get rid of the slopes
-                Polylist rest = first.rest().rest().rest();
-                //loop through the rest of the notes
-                for(Polylist R = rest; R.nonEmpty(); R = R.rest()) {
-                    slots += Duration.getDuration(R.first().toString().substring(1)); 
-                }
-               
-            }
-            
-        }
-        return slots;
-    }
-    
-    public boolean goesOutOfBounds(MelodyPart lick) {
-        int l = lick.getLowestPitch();
-        int h = lick.getHighestPitch();
-        if(l < mMinPitch || h > mMaxPitch) {
+    if( !isPowerOf2(minDuration) || !isPowerOf2(maxDuration) )
+      {
+        ErrorLog.log(ErrorLog.SEVERE,
+                     "Note durations must be powers of two; please fix and try again.");
+        return null;
+      }
+
+    int distinctDurations = 0;
+    ArrayList<Integer> noteDurations = new ArrayList<Integer>();
+    for( int i = minDuration; i >= maxDuration; i /= 2 )
+      {
+        noteDurations.add(i);
+        distinctDurations++;
+      }
+
+    int pos = 0;
+    while( pos < slots )
+      {
+        int duration = noteDurations.get(randomIndex(distinctDurations));
+        String toCons;
+        if( bernoulli(restProb) )
+          {
+            toCons = REST_SYMBOL + duration;
+          }
+        else
+          {
+            toCons = NOTE_SYMBOL + duration;
+          }
+        rhythmString = rhythmString.cons(toCons);
+        pos += (4 * BEAT) / duration; // Only works for 4-meter?? FIX
+      }
+    rhythmString = rhythmString.reverse();
+    return rhythmString;
+  }
+
+
+/**
+ * Takes a polylist containing a series of grammar terminals and returns the
+ * number of slots in the list
+ */
+
+public int getNumSlots(Polylist rhythmString)
+  {
+    int slots = 0;
+    for( Polylist L = rhythmString; L.nonEmpty(); L = L.rest() )
+      {
+        Polylist first = (Polylist) L.first();
+        if( first.toString().length() < 7 )
+          {  //doesn't contain a slope
+            slots += Duration.getDuration(first.first().toString().substring(1));
+          }
+        else
+          {
+            //get rid of the slopes
+            Polylist rest = first.rest().rest().rest();
+            //loop through the rest of the notes
+            for( Polylist R = rest; R.nonEmpty(); R = R.rest() )
+              {
+                slots += Duration.getDuration(R.first().toString().substring(1));
+              }
+
+          }
+
+      }
+    return slots;
+  }
+
+public boolean goesOutOfBounds(MelodyPart lick)
+  {
+    int l = lick.getLowestPitch();
+    int h = lick.getHighestPitch();
+    if( l < mMinPitch || h > mMaxPitch )
+      {
         //System.out.println("Out of bounds. Choosing new datapoint.");
-            return true;
-        }
-        else return false;
-    }
+        return true;
+      }
+    else
+      {
+        return false;
+      }
+  }
 
  
-public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
+public MelodyPart fillMelody(int minPitch, 
+                             int maxPitch, 
+                             int minInterval,
                              int maxInterval,
-                             int beatValue, double leapProb,
-                             Polylist rhythmString, ChordPart chordProg,
-                             int start, boolean avoidRepeats)
+                             int beatValue, 
+                             double leapProb,
+                             Polylist rhythmString, 
+                             ChordPart chordProg,
+                             int start, 
+                             boolean avoidRepeats)
   {
+    //if we are using outlines, we call this method multiple times, so we want
+    //to keep oldPitch
 
-        //if we are using outlines, we call this method multiple times, so we want
-        //to keep oldPitch
-        
-        //System.out.println("Oldpitch:" + oldPitch);
-        
-        if(!useOutlines)
-            oldPitch = 0; 
-        
-        MelodyPart melPart = new MelodyPart();
+    //System.out.println("Oldpitch:" + oldPitch);
 
-        Polylist newRhythmString = new Polylist();
-        Polylist section = new Polylist();
-        for (Polylist L = rhythmString; L.nonEmpty(); L = L.rest()) {
-            Polylist first;
-            if (L.first() instanceof Polylist) {
-                first = (Polylist) L.first();
+    if( !useOutlines )
+      {
+        oldPitch = 0;
+      }
+
+    MelodyPart melPart = new MelodyPart();
+
+    Polylist newRhythmString = new Polylist();
+    Polylist section = new Polylist();
+    for( Polylist L = rhythmString; L.nonEmpty(); L = L.rest() )
+      {
+        Polylist first;
+        if( L.first() instanceof Polylist )
+          {
+            first = (Polylist) L.first();
             //System.out.println("1 first: " + first);
-            } else {
-                first = Polylist.list(L.first());
+          }
+        else
+          {
+            first = Polylist.list(L.first());
             //System.out.println("2 first: " + first);
-            }
-            if (L.length() == 1) {
-                if (first.toString().startsWith("(slope")) {
+          }
+        if( L.length() == 1 )
+          {
+            if( first.toString().startsWith("(slope") )
+              {
+                section = section.addToEnd(first);
+              }
+            else
+              {
+                section = section.append(first);
+              }
+            newRhythmString = newRhythmString.addToEnd(section);
+          }
+        else
+          {
+            if( false && first.toString().startsWith("(slope 0 0") )
+              {
+                //System.out.println("3 first: " + first);
+                if( !section.isEmpty() )
+                  {
+                    newRhythmString = newRhythmString.addToEnd(section);
+                    section = new Polylist();
                     section = section.addToEnd(first);
-                } else {
+                  }
+                else
+                  {
+                    section = section.addToEnd(first);
+                  }
+              }
+            else
+              {
+                if( first.toString().startsWith("(slope") )
+                  {
+                    section = section.addToEnd(first);
+                  }
+                else
+                  {
                     section = section.append(first);
-                }
-                newRhythmString = newRhythmString.addToEnd(section);
-            } else {
-                if (false && first.toString().startsWith("(slope 0 0")) {
-                    //System.out.println("3 first: " + first);
-                    if (!section.isEmpty()) {
-                        newRhythmString = newRhythmString.addToEnd(section);
-                        section = new Polylist();
-                        section = section.addToEnd(first);
-                    } else {
-                        section = section.addToEnd(first);
-                    }
-                } else {
-                    if (first.toString().startsWith("(slope")) {
-                        section = section.addToEnd(first);
-                    } else {
-                        section = section.append(first);
-                    }
-                }
+                  }
+              }
+          }
+      }
 
-            }
-        }
-
-        try  // I have seen this fail once, hence the try/catch. RK
-             // However, someone needs to follow up on what happens if this
-             // return null.
-        {
-        for(Polylist L = (Polylist) newRhythmString; L.nonEmpty(); L = L.rest()) {
+    try  // I have seen this fail once, hence the try/catch. RK
+      // However, someone needs to follow up on what happens if this
+      // return null.
+      {
+        for( Polylist L = newRhythmString; L.nonEmpty(); L = L.rest() )
+          {
             Polylist first = (Polylist) L.first();
             //System.out.println("Abstract Melody: " + L);
-            MelodyPart p = fillPartOfMelody(minPitch, maxPitch, minInterval,
-                    maxInterval,
-                    beatValue, leapProb, 
-                    first, chordProg,
-                    start, avoidRepeats);
+            MelodyPart p = fillPartOfMelody(minPitch, 
+                                            maxPitch, 
+                                            minInterval,
+                                            maxInterval,
+                                            beatValue, 
+                                            leapProb,
+                                            first, 
+                                            chordProg,
+                                            start, 
+                                            avoidRepeats);
             ArrayList<Unit> units = p.getUnitList();
-            for(int i = 0; i < units.size(); i++) {
+            for( int i = 0; i < units.size(); i++ )
+              {
                 melPart.addNote((Note) units.get(i));
-            }
+              }
             start = position;
-        }
-        }
-        catch( NullPointerException e)
-        {
-            notate.setLickGenStatus("Fill melody failed");
-        }
-        
-        return melPart;
-    }
+          }
+      }
+    catch( NullPointerException e )
+      {
+        notate.setLickGenStatus("Fill melody failed");
+      }
+
+    return melPart;
+  }
     
     
     
-    public MelodyPart fillPartOfMelody(int minPitch, int maxPitch, int minInterval,
-            int maxInterval,
-            int beatValue, double leapProb,
-            Polylist rhythmString, ChordPart chordProg,
-            int start, boolean avoidRepeats) {
+public MelodyPart fillPartOfMelody(int minPitch, 
+                                   int maxPitch, 
+                                   int minInterval,
+                                   int maxInterval,
+                                   int beatValue, 
+                                   double leapProb,
+                                   Polylist rhythmString, 
+                                   ChordPart chordProg,
+                                   int start, 
+                                   boolean avoidRepeats)
+  {
+    MelodyPart lick = null;
 
-        MelodyPart lick = null;
+    //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
+
+    int previousPitch = oldPitch;
+
+    for( int i = 0; i < MELODY_GEN_LIMIT; i++ )
+      {
+        //System.out.println("Try: " + i);
+        lick = new MelodyPart();
+        if( start == -1 )
+          {
+            return null;
+          }
+        position = start;
+
+        //when trying multiple times, we need to preserve the value of oldPitch
+        oldPitch = previousPitch;
+
+        fillMelody(lick, 
+                   minPitch, 
+                   maxPitch, 
+                   minInterval, 
+                   maxInterval,
+                   beatValue, 
+                   leapProb, 
+                   rhythmString, 
+                   chordProg,
+                   avoidRepeats, 
+                   i);
         
-        //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
+        //System.out.println("Lick size: " + lick.size() + " Position: " + position + " Start: " + start);
+        lick.setSize(position - start);
+        //System.out.println("New Lick Size: " + lick.size());
 
-        int previousPitch = oldPitch;
-        
-        for (int i = 0; i < MELODY_GEN_LIMIT; i++) {
-            //System.out.println("Try: " + i);
-            lick = new MelodyPart();
-            if (start == -1) {
-                return null;
-            }
-            position = start;
-            
-            //when trying multiple times, we need to preserve the value of oldPitch
-            oldPitch = previousPitch;
-            
-            fillMelody(lick, minPitch, maxPitch, minInterval, maxInterval,
-                    beatValue, leapProb, rhythmString, chordProg,
-                    avoidRepeats, i);
-            //System.out.println("Lick size: " + lick.size() + " Position: " + position + " Start: " + start);
-            lick.setSize(position - start);
-            //System.out.println("New Lick Size: " + lick.size());
+        //System.out.println("Lowest pitch:  " + lick.getLowestPitch() + " Highest pitch: " + lick.getHighestPitch());
 
-            //System.out.println("Lowest pitch:  " + lick.getLowestPitch() + " Highest pitch: " + lick.getHighestPitch());
+        if( (lick.getLowestPitch() >= minPitch - 1 && lick.getHighestPitch() <= maxPitch + 1) )
+          {
+            return lick;
+          }
+        //System.out.println("lowest pitch: " + lick.getLowestPitch() + " highest pitch: " + lick.getHighestPitch());
+        //return lick;
+      }
 
-            if ((lick.getLowestPitch() >= minPitch-1 && lick.getHighestPitch() <= maxPitch+1)) {                
-                return lick;
-            }
-            //System.out.println("lowest pitch: " + lick.getLowestPitch() + " highest pitch: " + lick.getHighestPitch());
-            //return lick;
-        }
+    // Returns the last attempt
+    //System.out.println("Note: Melody generation limit exceeded in lick generator.");
+    return lick;
+  }
 
-        // Returns the last attempt
-        //System.out.println("Note: Melody generation limit exceeded in lick generator.");
-        return lick;
-    }
     boolean traceLickGen = false;
     /**
      * Track previous note for purposes of rest merging.
@@ -1073,512 +1186,595 @@ public MelodyPart fillMelody(int minPitch, int maxPitch, int minInterval,
      */
     Note prevNote = null;
 
-    /**
-     * A single method for note insertion into a lick.
-     * Can be traced by setting traceLickGen true or false.
-    @param note
-    @param part
-    @param rhythmString
-     */
-    private void addNote(Note note, MelodyPart part, Polylist rhythmString,
-            boolean avoidRepeats, String reason, Object item) {
-        int slotsInserted = note.getRhythmValue();
-        position += slotsInserted;
-        if (note.isRest()) {
-            // Deal with rests
-            if (prevNote != null && prevNote.isRest()) {
-                // Merge this rest with previous, without adding a new note.
-
-                int prevRhythmValue = prevNote.getRhythmValue();
-
-                prevNote.setRhythmValue(prevRhythmValue + slotsInserted);
-
-                // Since no new note is being added, must take into account by lengthening part.
-
-                part.setSize(part.size() + slotsInserted);
-
-                if (traceLickGen) {
-                    System.out.println(
-                            "rests merged: " + prevRhythmValue + " + " + slotsInserted + " = " + prevNote.getRhythmValue());
-                }
-            } else {
-                // Rest not following another rest.
-                part.addNote(note);
-                prevNote = note;
-            }
-        } else {
-            // Deal with non-rests
-            if (note.isBlack()) {
-                note.setAccidental(Accidental.SHARP);
-            }
-
-            /* begin new rk 5/15/08 */
-            /* hack to avoid repeated pitches by merging them into one. */
-
-            if (avoidRepeats && prevNote != null && !prevNote.isRest() && prevNote.getPitch() == note.getPitch()) {
-                // repeated pitch
-
-                int prevRhythmValue = prevNote.getRhythmValue();
-
-                // Make previous note longer
-
-                prevNote.setRhythmValue(prevNote.getRhythmValue() + slotsInserted);
-
-                // Since no new note is being added, must take into account by lengthening part.
-
-                part.setSize(part.size() + slotsInserted);
-
-                if (traceLickGen) {
-                    System.out.println(
-                            "notes merged: " + prevRhythmValue + " + " + slotsInserted + " = " + prevNote.getRhythmValue());
-                }
-            } else {
-                // non-repeated pitch
-
-                setPitchUsed(note.getPitch(), REPEAT_PROB);
-                oldPitch = note.getPitch();
-                part.addNote(note);
-                prevNote = note;
-            }
-        }
-
-        if (traceLickGen) {
-            System.out.println(
-                    note.toLeadsheet() + " from " + item + " by " + reason + ", net " + part + rhythmString);
-        }
-
-    }
-
-// Fill in a given rhythm with notes.
-    public boolean fillMelody(MelodyPart lick, int minPitch, int maxPitch,
-            int minInterval, int maxInterval,
-            int beatValue, double leapProb, Polylist rhythmString,
-            ChordPart chordProg,
-            boolean avoidRepeats, int attempt) {
-        if (traceLickGen) {
-            System.out.println("\nlick: " + rhythmString);
-        }
-        int section = 0;
-        int index = 0;
-        chordUsed.clear();
-        chordUsedSection.clear();
-
-        //System.out.println("Oldpitch: " + oldPitch);
-        
-        int pitch = oldPitch;
-        
-        // If this is the first note in the lick, generate a random starting pitch
-        if (oldPitch == 0) {
-            //System.out.println("Random starting pitch");
-            pitch = getRandomNote((maxPitch + minPitch) / 2, minInterval, maxInterval,
-                    minPitch, maxPitch, section);
-        }
-        
-
-        oldPitch = pitch;
-
-        // Set all pitchUsed values to 1.
-        initPitchArray();
-
-        if (rhythmString == null || rhythmString.isEmpty()) {
-            ErrorLog.log(ErrorLog.SEVERE, "Rules did not parse.  Aborting!");
-            return false;
-        }
-
-        
-        chordUsed.add(chordProg.getCurrentChord(position).getName());
-        chordUsedSection.add(section);
-        index = chordProg.getNextUniqueChordIndex(position);
-
-        // Loop through the string and assign pitch values to each rhythm.
-        while (rhythmString.nonEmpty()) {
-            // The item we're processing now:
-
-            Object item = rhythmString.first();
-
-            // Set up for APPROACH or subsequent iterations
-
-            rhythmString = rhythmString.rest();
-
-            // Find out what section we're in.
-            section = calcSection(chordProg, position, index, section);
-
-            // Recalculate probabilities to reuse a given pitch
-            recalcPitchArray();
-
-            // New code 10 June 2008:
-
-            if (item instanceof Polylist) {
-                // Handle inner-structure by calling fillMelody recursively
-                // Example of inner is (slope 1 3 S16 S16 S16 S16)
-                // Meaning a render of four sixteenth notes with a minimum rise
-                // of 1 between and a maximum rise of 3.
-
-                Polylist inner = (Polylist) item;
-                if (inner.nonEmpty()) {
-                    Object first = inner.first();
-                    if (first.equals("slope")) {
-                        // Process "slope" specification, a phrase of a specified slope
-                        // (slope Min Max ... notes ...)
-                        // Min is the minimum gap to the next note, Max is the maxium
-                        // If downward slope is desired, the lower negative value should come first.
-                        // Examples:
-                        //     (slope 1 4 S8 S8 S8 S8)  
-                        //     means 4 eigth-notes, upward, with interval between 1 and 4 semitones
-                        //
-                        //     (slope -4 -1 S8 S8 S8 S8)  
-                        //     means 4 eigth-notes, downward, with interval between 1 and 4 semitones
-
-                        // Get rid of "slope" keyword for further processing
-
-                        inner = inner.rest();
-
-                        // Check for Min and Max as numbers
-
-                        if (inner.length() >= 2 && inner.first() instanceof Long && inner.second() instanceof Long) {
-                            int lowerLimit = ((Long) inner.first()).intValue();
-                            int upperLimit = ((Long) inner.second()).intValue();
-                            // Replace inner with just the notes part
-                            inner = inner.rest().rest();
-
-
-                            while (inner.nonEmpty()) {
-                                Object innerItem = inner.first();
-
-                                if (innerItem instanceof String) {
-                                    String innerString = (String) innerItem;
-
-                                    Note note = parseNote(innerString, beatValue);
-
-                                    int type = note.getPitch();
-
-                                    switch (type) {
-                                        case REST:
-                                             {
-                                                addNote(note, lick, rhythmString, avoidRepeats, "slope/rest", innerItem);
-                                            }
-                                            break;
-
-                                        case APPROACH:
-                                             {
-                                                // Assuming we have more notes to process, get the next note, and figure
-                                                // out its rhythm value.
-                                                if (inner.rest().nonEmpty()) {
-                                                    inner = inner.rest();
-                                                    //get next note
-
-                                                    Note nextNote = parseNote((String) inner.first(), beatValue);
-                                                    int nextType = nextNote.getPitch();
-
-                                                    // Set the next note....
-
-                                                    int nextPitch = chooseNote(position + note.getRhythmValue(),
-                                                            oldPitch + lowerLimit, oldPitch + upperLimit,
-                                                            chordProg, nextType, oldPitch, minPitch, maxPitch, attempt);
-
-                                                    nextNote.setPitch(nextPitch);
-
-                                                    // We have a 50% probability to approach from above, and a 
-                                                    // 50% probability to approach from below.
-                                                    // TODO: eventually this should be determined from a user setting or
-                                                    // possibly the grammar.
-                                                    // Don't choose same note
-
-                                                    if (nextPitch + 1 == oldPitch) 
-                                                        note.setPitch(nextPitch - 1);
-                                                    else if (nextPitch - 1 == oldPitch) 
-                                                        note.setPitch(nextPitch + 1);
-                                                    else {
-                                                        if(lowerLimit == 0 || upperLimit == 0) {
-                                                            if(upperLimit > 0) 
-                                                                note.setPitch(nextNote.getPitch() - 1);
-                                                            if(lowerLimit < 0)
-                                                                note.setPitch(nextNote.getPitch() + 1);
-                                                        }
-                                                        else if (lowerLimit > 0) {                                     
-                                                            note.setPitch(nextNote.getPitch() - 1);
-                                                        }
-                                                        else if(upperLimit < 0) {
-                                                            note.setPitch(nextNote.getPitch() + 1);
-                                                        } else {
-                                                            note.setPitch(nextNote.getPitch() - 1);
-                                                        }
-                                                    }
-
-                                                    addNote(note, lick, rhythmString, avoidRepeats, "slope/approach", innerItem);
-                                                    addNote(nextNote, lick, rhythmString, avoidRepeats, "slope/approach target", innerItem);
-                                                    pitch = nextPitch;
-                                                } // If there's nothing left in the string, we'll just pick a 
-                                                // random note.
-                                                else {
-                                                    pitch = chooseNote(position, oldPitch + lowerLimit,
-                                                            oldPitch + upperLimit, chordProg, SCALE, oldPitch,
-                                                            minPitch, maxPitch, attempt);
-                                                    note.setPitch(pitch);
-                                                    addNote(note, lick, rhythmString, avoidRepeats, "slope/approach random", innerItem);
-                                                }
-                                            }
-                                            break;
-
-                                        default: {
-                                            // If it's not a rest or approach tone, treat it normally.
-                                            pitch = chooseNote(position, oldPitch + lowerLimit,
-                                                    oldPitch + upperLimit, chordProg, type, oldPitch,
-                                                    minPitch, maxPitch, attempt);
-                                            note.setPitch(pitch);
-                                            addNote(note, lick, rhythmString, avoidRepeats, "slope/default", innerItem);
-                                        }
-                                    }
-                                    // Remember old pitch in case it is needed.
-                                    oldPitch = pitch;
-
-                                    // Move on to next note in inner, if any.
-                                    inner = inner.rest();
-                                }
-                            }
-                        }
-                    } // end of slope processing
-                } // end of non-empty inner processing
-
-            } // end of Polylist processing
-            else if (item instanceof String) {
-                String rhythmVal = (String) item;
-
-                // Get the note corresponding to the string.
-                Note note = parseNote(rhythmVal, beatValue);
-                int type = note.getPitch();
-
-                if (note == null) {
-                    ErrorLog.log(ErrorLog.WARNING,
-                            "Invalid note string: " + rhythmVal + "; no melody will be generated.");
-                    return false;
-                }
-
-                switch (type) {
-                    case REST:
-                         {
-                            addNote(note, lick, rhythmString, avoidRepeats, "rest", item);
-                        }
-                        break;
-
-                    case BASS:
-                         {
-                            makeBassNote(note, position, chordProg);
-                            addNote(note, lick, rhythmString, avoidRepeats, "bass", item);
-                        }
-                        break;
-
-                    case APPROACH:
-                         {
-                            // Assuming we have more notes to process, get the next note, and figure
-                            // out its rhythm value.
-                            if (rhythmString.nonEmpty() && !(rhythmString.first() instanceof Polylist)) {
-                                Note nextNote = parseNote((String) rhythmString.first(), beatValue);
-
-                                // Force the next type to be a chord tone for now -- can change this later.
-                                int nextType = CHORD;
-                                int nextPitch = pitch;
-                                boolean validNote = false;
-
-                                // Figure out what section the next note is in.
-                                section = calcSection(chordProg, position, index, section);
-
-                                // Get a note value for the next note.
-                                for (int i = 0; i < NOTE_GEN_LIMIT; ++i) {
-                                    validNote = false;
-                                    nextPitch = getRandomNote(oldPitch, minInterval, maxInterval,
-                                            minPitch, maxPitch, section);
-                                    String pitchString =
-                                            PitchClass.getPitchClassFromMidi(nextPitch).toString();
-                                    validNote =
-                                            checkNote(position, nextPitch, pitchString, chordProg,
-                                            nextType);
-                                    if ((!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote) {
-                                        break;
-                                    }
-                                }
-
-                                // Set the next note....
-                                nextNote.setPitch(nextPitch);
-                                setPitchUsed(nextPitch, REPEAT_PROB);
-
-                                // We have a 50% probability to approach from above, and a 
-                                // 50% probability to approach from below.
-                                // TODO: eventually this should be determined from a user setting or
-                                // possibly the grammar.
-                                // Don't choose same note
-                                if (nextPitch + 1 == oldPitch) {
-                                    note.setPitch(nextPitch - 1);
-                                } else if (nextPitch - 1 == oldPitch) {
-                                    note.setPitch(nextPitch + 1);
-                                } else {
-                                    if (bernoulli(.5)) {
-                                        note.setPitch(nextNote.getPitch() + 1);
-                                    } else {
-                                        note.setPitch(nextNote.getPitch() - 1);
-                                    }
-                                }
-
-                                oldPitch = nextPitch;
-
-                                addNote(note, lick, rhythmString, avoidRepeats, "approach", item);
-                                rhythmString = rhythmString.rest(); // ONLY for the APPROACH case
-                                addNote(nextNote, lick, rhythmString, avoidRepeats, "approach target", item);
-                            } else {
-                                pitch = getRandomNote(oldPitch, minInterval, maxInterval,
-                                        minPitch, maxPitch, section);
-                                note.setPitch(pitch);
-                                oldPitch = pitch;
-                                addNote(note, lick, rhythmString, avoidRepeats, "approach->random", item);
-                            }
-
-                        } // approach
-                        break;
-
-                    case RANDOM:
-                        // If we just want to put down a random note, we're going to ignore
-                        // all probabilities; however, pay attention to the min/max pitch values
-                        // and the min/max interval values
-                         {
-                            int low = Math.max(minPitch, oldPitch - maxInterval);
-                            int high = Math.min(maxPitch, oldPitch + maxInterval);
-                            while (true) {
-                                pitch = randomNote(low, high);
-                                if (!(pitch > oldPitch - minInterval && pitch < oldPitch + minInterval)) {
-                                    break;
-                                }
-                            }
-                            note.setPitch(pitch);
-                            oldPitch = pitch;
-                            addNote(note, lick, rhythmString, avoidRepeats, "random", item);
-                        }
-                        break;
-                        /*
-                    case OUTSIDE:
-                        // Right now this does the exact same thing random does.
-                         {
-                            int low = Math.max(minPitch, oldPitch - maxInterval);
-                            int high = Math.min(maxPitch, oldPitch + maxInterval);
-                            System.out.println("you have reached Case OutSide in fill melody");
-                            while (true) {
-                                pitch = randomNote(low, high);
-                                if (!(pitch > oldPitch - minInterval && pitch < oldPitch + minInterval)) {
-                                    break;
-                                }
-                            }
-                            note.setPitch(pitch);
-                            oldPitch = pitch;
-                            addNote(note, lick, rhythmString, avoidRepeats, "random", item);
-                        }
-                        break;
-
-                         */
-                      
-                    case OUTSIDE:
-                        // Transposes a semitone from the default
-                         {
-                            if (bernoulli(leapProb)) {
-                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) {
-                                    oldPitch = Math.min(oldPitch + 12, maxPitch);
-                                } else {
-                                    oldPitch = Math.max(oldPitch - 12, minPitch);
-                                }
-                            }
-                            boolean validNote = false;
-
-                            for (int i = 0; i < NOTE_GEN_LIMIT; ++i) {
-                                validNote = false;
-                                pitch = getRandomNote(oldPitch, minInterval, maxInterval,
-                                        minPitch, maxPitch, section);
-                                String pitchString =
-                                        PitchClass.getPitchClassFromMidi(pitch).toString();
-                                validNote = checkNote(position, pitch, pitchString, chordProg, type);
-                                if ((!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote) {
-                                    break;
-                                }
-                            }
-                            //System.out.println("Color Chord Pitch: "+ pitch);
-                            pitch = pitch + 1; //adds one to what the default returns
-                            //System.out.println("Color Chord Pitch Plus one: " + pitch);
-                            note.setPitch(pitch);
-                            addNote(note, lick, rhythmString, avoidRepeats, "default", item);
-                        }
-                        break;
-                        
-                             /*
-                    case OUTSIDE:
-                        // Transposes a minor third from default
-                         {
-                            if (bernoulli(leapProb)) {
-                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) {
-                                    oldPitch = Math.min(oldPitch + 12, maxPitch);
-                                } else {
-                                    oldPitch = Math.max(oldPitch - 12, minPitch);
-                                }
-                            }
-                            boolean validNote = false;
-
-                            for (int i = 0; i < NOTE_GEN_LIMIT; ++i) {
-                                validNote = false;
-                                pitch = getRandomNote(oldPitch, minInterval, maxInterval,
-                                        minPitch, maxPitch, section);
-                                String pitchString =
-                                        PitchClass.getPitchClassFromMidi(pitch).toString();
-                                validNote = checkNote(position, pitch, pitchString, chordProg, type);
-                                if ((!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote) {
-                                    break;
-                                }
-                            }
-                            //System.out.println("Color Chord Pitch: "+ pitch);
-                            pitch = pitch + 1; //adds one to what the default returns
-                            //System.out.println("Color Chord Pitch Plus one: " + pitch);
-                            note.setPitch(pitch);
-                            addNote(note, lick, rhythmString, avoidRepeats, "default", item);
-                        }
-                        break;
-                        */
-    
-
-
-                    default:
-                        // If it's not a rest or approach tone, treat it normally.
-                        // What is "normally"??
-                         {
-                            if (bernoulli(leapProb)) {
-                                if (Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch)) { //drop an octave
-                                    oldPitch = Math.min(oldPitch + 12, maxPitch);
-                                } else {
-                                    oldPitch = Math.max(oldPitch - 12, minPitch);
-                                }
-                            }
-                            boolean validNote = false;
-
-                            for (int i = 0; i < NOTE_GEN_LIMIT; ++i) {
-                                validNote = false;
-                                pitch = getRandomNote(oldPitch, minInterval, maxInterval,
-                                        minPitch, maxPitch, section);
-                                String pitchString =
-                                        PitchClass.getPitchClassFromMidi(pitch).toString();
-                                validNote = checkNote(position, pitch, pitchString, chordProg, type);
-                                if ((!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote) {
-                                    break;
-                                }                                
-                            }
-                            note.setPitch(pitch);
-                            addNote(note, lick, rhythmString, avoidRepeats, "default", item);
-                        }
-                        break;
-                } // switch
-
-            } // end of String case
-            else {
-                // unknown item in rhythmString
-                notate.setLickGenStatus("Error: unknown item in abstract melody: " + item);
-            }
-        } // while
-
+/**
+ * A single method for note insertion into a lick. Can be traced by setting
+ * traceLickGen true or false.
+ *
+ * @param note
+ * @param part
+ * @param rhythmString
+ */
+private void addNote(Note note, MelodyPart part, Polylist rhythmString,
+                     boolean avoidRepeats, String reason, Object item)
+  {
+    int slotsInserted = note.getRhythmValue();
+    position += slotsInserted;
+    if( note.isRest() )
+      {
+        // Deal with rests
+        if( prevNote != null && prevNote.isRest() )
+          {
+            // Merge this rest with previous, without adding a new note.
+
+            int prevRhythmValue = prevNote.getRhythmValue();
+
+            prevNote.setRhythmValue(prevRhythmValue + slotsInserted);
+
+            // Since no new note is being added, must take into account by lengthening part.
+
+            part.setSize(part.size() + slotsInserted);
+
+            if( traceLickGen )
+              {
+                System.out.println(
+                        "rests merged: " + prevRhythmValue + " + " + slotsInserted + " = " + prevNote.getRhythmValue());
+              }
+          }
+        else
+          {
+            // Rest not following another rest.
+            part.addNote(note);
+            prevNote = note;
+          }
+      }
+    else
+      {
+        // Deal with non-rests
+        if( note.isBlack() )
+          {
+            note.setAccidental(Accidental.SHARP);
+          }
+
+        /*
+         * begin new rk 5/15/08
+         */
+        /*
+         * hack to avoid repeated pitches by merging them into one.
+         */
+
+        if( avoidRepeats && prevNote != null && !prevNote.isRest() && prevNote.getPitch() == note.getPitch() )
+          {
+            // repeated pitch
+
+            int prevRhythmValue = prevNote.getRhythmValue();
+
+            // Make previous note longer
+
+            prevNote.setRhythmValue(prevNote.getRhythmValue() + slotsInserted);
+
+            // Since no new note is being added, must take into account by lengthening part.
+
+            part.setSize(part.size() + slotsInserted);
+
+            if( traceLickGen )
+              {
+                System.out.println(
+                        "notes merged: " + prevRhythmValue + " + " + slotsInserted + " = " + prevNote.getRhythmValue());
+              }
+          }
+        else
+          {
+            // non-repeated pitch
+
+            setPitchUsed(note.getPitch(), REPEAT_PROB);
+            oldPitch = note.getPitch();
+            part.addNote(note);
+            prevNote = note;
+          }
+      }
+
+    if( traceLickGen )
+      {
+        System.out.println(
+                note.toLeadsheet() + " from " + item + " by " + reason + ", net " + part + rhythmString);
+      }
+
+  }
+
+/**
+ * Fill in a given rhythm with notes.
+ */
+
+public boolean fillMelody(MelodyPart lick, 
+                          int minPitch, 
+                          int maxPitch,
+                          int minInterval, 
+                          int maxInterval,
+                          int beatValue, 
+                          double leapProb, 
+                          Polylist rhythmString,
+                          ChordPart chordProg,
+                          boolean avoidRepeats, 
+                          int attempt)
+  {
+    if( traceLickGen )
+      {
+        System.out.println("\nlick: " + rhythmString);
+      }
+    int section = 0;
+    int index = 0;
+    chordUsed.clear();
+    chordUsedSection.clear();
+
+    //System.out.println("Oldpitch: " + oldPitch);
+
+    int pitch = oldPitch;
+
+    // If this is the first note in the lick, generate a random starting pitch
+    if( oldPitch == 0 )
+      {
+        //System.out.println("Random starting pitch");
+        pitch = getRandomNote((maxPitch + minPitch) / 2, minInterval, maxInterval,
+                              minPitch, maxPitch, section);
+      }
+
+    oldPitch = pitch;
+
+    // Set all pitchUsed values to 1.
+    initPitchArray();
+
+    if( rhythmString == null || rhythmString.isEmpty() )
+      {
+        ErrorLog.log(ErrorLog.SEVERE, "Rules did not parse.  Aborting!");
         return false;
-    }
+      }
+
+    chordUsed.add(chordProg.getCurrentChord(position).getName());
+    chordUsedSection.add(section);
+    index = chordProg.getNextUniqueChordIndex(position);
+
+    // Loop through the string and assign pitch values to each rhythm.
+    while( rhythmString.nonEmpty() )
+      {
+        // The item we're processing now:
+
+        Object item = rhythmString.first();
+
+        // Set up for APPROACH or subsequent iterations
+
+        rhythmString = rhythmString.rest();
+
+        // Find out what section we're in.
+        section = calcSection(chordProg, position, index, section);
+
+        // Recalculate probabilities to reuse a given pitch
+        recalcPitchArray();
+
+        // New code 10 June 2008:
+
+        if( item instanceof Polylist )
+          {
+            // Handle inner-structure by calling fillMelody recursively
+            // Example of inner is (slope 1 3 S16 S16 S16 S16)
+            // Meaning a render of four sixteenth notes with a minimum rise
+            // of 1 between and a maximum rise of 3.
+
+            Polylist inner = (Polylist) item;
+            if( inner.nonEmpty() )
+              {
+                Object first = inner.first();
+                if( first.equals("slope") )
+                  {
+                    // Process "slope" specification, a phrase of a specified slope
+                    // (slope Min Max ... notes ...)
+                    // Min is the minimum gap to the next note, Max is the maxium
+                    // If downward slope is desired, the lower negative value should come first.
+                    // Examples:
+                    //     (slope 1 4 S8 S8 S8 S8)  
+                    //     means 4 eigth-notes, upward, with interval between 1 and 4 semitones
+                    //
+                    //     (slope -4 -1 S8 S8 S8 S8)  
+                    //     means 4 eigth-notes, downward, with interval between 1 and 4 semitones
+
+                    // Get rid of "slope" keyword for further processing
+
+                    inner = inner.rest();
+
+                    // Check for Min and Max as numbers
+
+                    if( inner.length() >= 2 && inner.first() instanceof Long && inner.second() instanceof Long )
+                      {
+                        int lowerLimit = ((Long) inner.first()).intValue();
+                        int upperLimit = ((Long) inner.second()).intValue();
+                        // Replace inner with just the notes part
+                        inner = inner.rest().rest();
+
+
+                        while( inner.nonEmpty() )
+                          {
+                            Object innerItem = inner.first();
+
+                            if( innerItem instanceof String )
+                              {
+                                String innerString = (String) innerItem;
+
+                                Note note = parseNote(innerString, beatValue);
+
+                                int type = note.getPitch();
+
+                                switch( type )
+                                  {
+                                    case REST:
+                                      {
+                                        addNote(note, lick, rhythmString, avoidRepeats, "slope/rest", innerItem);
+                                      }
+                                    break;
+
+                                    case APPROACH:
+                                      {
+                                        // Assuming we have more notes to process, get the next note, and figure
+                                        // out its rhythm value.
+                                        if( inner.rest().nonEmpty() )
+                                          {
+                                            inner = inner.rest();
+                                            //get next note
+
+                                            Note nextNote = parseNote((String) inner.first(), beatValue);
+                                            int nextType = nextNote.getPitch();
+
+                                            // Set the next note....
+
+                                            int nextPitch = chooseNote(position + note.getRhythmValue(),
+                                                                       oldPitch + lowerLimit, 
+                                                                       oldPitch + upperLimit,
+                                                                       chordProg, 
+                                                                       nextType, 
+                                                                       oldPitch, 
+                                                                       minPitch, 
+                                                                       maxPitch, 
+                                                                       attempt);
+
+                                            nextNote.setPitch(nextPitch);
+
+                                            // We have a 50% probability to approach from above, and a 
+                                            // 50% probability to approach from below.
+                                            // TODO: eventually this should be determined from a user setting or
+                                            // possibly the grammar.
+                                            // Don't choose same note
+
+                                            if( nextPitch + 1 == oldPitch )
+                                              {
+                                                note.setPitch(nextPitch - 1);
+                                              }
+                                            else if( nextPitch - 1 == oldPitch )
+                                              {
+                                                note.setPitch(nextPitch + 1);
+                                              }
+                                            else
+                                              {
+                                                if( lowerLimit == 0 || upperLimit == 0 )
+                                                  {
+                                                    if( upperLimit > 0 )
+                                                      {
+                                                        note.setPitch(nextNote.getPitch() - 1);
+                                                      }
+                                                    if( lowerLimit < 0 )
+                                                      {
+                                                        note.setPitch(nextNote.getPitch() + 1);
+                                                      }
+                                                  }
+                                                else if( lowerLimit > 0 )
+                                                  {
+                                                    note.setPitch(nextNote.getPitch() - 1);
+                                                  }
+                                                else if( upperLimit < 0 )
+                                                  {
+                                                    note.setPitch(nextNote.getPitch() + 1);
+                                                  }
+                                                else
+                                                  {
+                                                    note.setPitch(nextNote.getPitch() - 1);
+                                                  }
+                                              }
+
+                                            addNote(note, 
+                                                    lick, 
+                                                    rhythmString, 
+                                                    avoidRepeats, 
+                                                    "slope/approach", 
+                                                    innerItem);
+                                            
+                                            addNote(nextNote, 
+                                                    lick, 
+                                                    rhythmString, 
+                                                    avoidRepeats, 
+                                                    "slope/approach target", 
+                                                    innerItem);
+                                            
+                                            pitch = nextPitch;
+                                          } // If there's nothing left in the string, we'll just pick a 
+                                        // random note.
+                                        else
+                                          {
+                                            pitch = chooseNote(position, 
+                                                               oldPitch + lowerLimit,
+                                                               oldPitch + upperLimit, 
+                                                               chordProg, 
+                                                               SCALE, 
+                                                               oldPitch,
+                                                               minPitch, 
+                                                               maxPitch, 
+                                                               attempt);
+                                             note.setPitch(pitch);
+                                            addNote(note, 
+                                                    lick, 
+                                                    rhythmString, 
+                                                    avoidRepeats, 
+                                                    "slope/approach random", 
+                                                    innerItem);
+                                          }
+                                      }
+                                    break;
+
+                                    default:
+                                      {
+                                        // If it's not a rest or approach tone, treat it normally.
+                                        pitch = chooseNote(position, 
+                                                           oldPitch + lowerLimit,
+                                                           oldPitch + upperLimit, 
+                                                           chordProg, 
+                                                           type, 
+                                                           oldPitch,
+                                                           minPitch, 
+                                                           maxPitch, 
+                                                           attempt);
+                                        note.setPitch(pitch);
+                                        addNote(note, 
+                                                lick, 
+                                                rhythmString, 
+                                                avoidRepeats, 
+                                                "slope/default", 
+                                                innerItem);
+                                      }
+                                  }
+                                // Remember old pitch in case it is needed.
+                                oldPitch = pitch;
+
+                                // Move on to next note in inner, if any.
+                                inner = inner.rest();
+                              }
+                          }
+                      }
+                  } // end of slope processing
+              } // end of non-empty inner processing
+
+          } // end of Polylist processing
+        else if( item instanceof String )
+          {
+            String rhythmVal = (String) item;
+
+            // Get the note corresponding to the string.
+            Note note = parseNote(rhythmVal, beatValue);
+            int type = note.getPitch();
+
+            if( note == null )
+              {
+                ErrorLog.log(ErrorLog.WARNING,
+                             "Invalid note string: " + rhythmVal + "; no melody will be generated.");
+                return false;
+              }
+
+            switch( type )
+              {
+                case REST:
+                  {
+                    addNote(note, lick, rhythmString, avoidRepeats, "rest", item);
+                  }
+                break;
+
+                case BASS:
+                  {
+                    makeBassNote(note, position, chordProg);
+                    addNote(note, lick, rhythmString, avoidRepeats, "bass", item);
+                  }
+                break;
+
+                case APPROACH:
+                  {
+                    // Assuming we have more notes to process, get the next note, and figure
+                    // out its rhythm value.
+                    if( rhythmString.nonEmpty() && !(rhythmString.first() instanceof Polylist) )
+                      {
+                        Note nextNote = parseNote((String) rhythmString.first(), beatValue);
+
+                        // Force the next type to be a chord tone for now -- can change this later.
+                        int nextType = CHORD;
+                        int nextPitch = pitch;
+                        boolean validNote = false;
+
+                        // Figure out what section the next note is in.
+                        section = calcSection(chordProg, position, index, section);
+
+                        // Get a note value for the next note.
+                        for( int i = 0; i < NOTE_GEN_LIMIT; ++i )
+                          {
+                            validNote = false;
+                            nextPitch = getRandomNote(oldPitch, minInterval, maxInterval,
+                                                      minPitch, maxPitch, section);
+                            String pitchString =
+                                    PitchClass.getPitchClassFromMidi(nextPitch).toString();
+                            validNote =
+                                    checkNote(position, nextPitch, pitchString, chordProg,
+                                              nextType);
+                            if( (!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote )
+                              {
+                                break;
+                              }
+                          }
+
+                        // Set the next note....
+                        nextNote.setPitch(nextPitch);
+                        setPitchUsed(nextPitch, REPEAT_PROB);
+
+                        // We have a 50% probability to approach from above, and a 
+                        // 50% probability to approach from below.
+                        // TODO: eventually this should be determined from a user setting or
+                        // possibly the grammar.
+                        // Don't choose same note
+                        if( nextPitch + 1 == oldPitch )
+                          {
+                            note.setPitch(nextPitch - 1);
+                          }
+                        else if( nextPitch - 1 == oldPitch )
+                          {
+                            note.setPitch(nextPitch + 1);
+                          }
+                        else
+                          {
+                            if( bernoulli(.5) )
+                              {
+                                note.setPitch(nextNote.getPitch() + 1);
+                              }
+                            else
+                              {
+                                note.setPitch(nextNote.getPitch() - 1);
+                              }
+                          }
+
+                        oldPitch = nextPitch;
+
+                        addNote(note, lick, rhythmString, avoidRepeats, "approach", item);
+                        rhythmString = rhythmString.rest(); // ONLY for the APPROACH case
+                        addNote(nextNote, lick, rhythmString, avoidRepeats, "approach target", item);
+                      }
+                    else
+                      {
+                        pitch = getRandomNote(oldPitch, minInterval, maxInterval,
+                                              minPitch, maxPitch, section);
+                        note.setPitch(pitch);
+                        oldPitch = pitch;
+                        addNote(note, lick, rhythmString, avoidRepeats, "approach->random", item);
+                      }
+
+                  } // approach
+                break;
+
+                case RANDOM:
+                  // If we just want to put down a random note, we're going to ignore
+                  // all probabilities; however, pay attention to the min/max pitch values
+                  // and the min/max interval values
+                  {
+                    int low = Math.max(minPitch, oldPitch - maxInterval);
+                    int high = Math.min(maxPitch, oldPitch + maxInterval);
+                    while( true )
+                      {
+                        pitch = randomNote(low, high);
+                        if( !(pitch > oldPitch - minInterval && pitch < oldPitch + minInterval) )
+                          {
+                            break;
+                          }
+                      }
+                    note.setPitch(pitch);
+                    oldPitch = pitch;
+                    addNote(note, lick, rhythmString, avoidRepeats, "random", item);
+                  }
+                break;
+                /*
+                 * case OUTSIDE: // Right now this does the exact same thing
+                 * random does. { int low = Math.max(minPitch, oldPitch -
+                 * maxInterval); int high = Math.min(maxPitch, oldPitch +
+                 * maxInterval); System.out.println("you have reached Case
+                 * OutSide in fill melody"); while (true) { pitch =
+                 * randomNote(low, high); if (!(pitch > oldPitch - minInterval
+                 * && pitch < oldPitch + minInterval)) { break; } }
+                 * note.setPitch(pitch); oldPitch = pitch; addNote(note, lick,
+                 * rhythmString, avoidRepeats, "random", item); } break;
+                 *
+                 */
+
+                case OUTSIDE:
+                  // Transposes a semitone from the default
+                  {
+                    if( bernoulli(leapProb) )
+                      {
+                        if( Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch) )
+                          {
+                            oldPitch = Math.min(oldPitch + 12, maxPitch);
+                          }
+                        else
+                          {
+                            oldPitch = Math.max(oldPitch - 12, minPitch);
+                          }
+                      }
+                    boolean validNote = false;
+
+                    for( int i = 0; i < NOTE_GEN_LIMIT; ++i )
+                      {
+                        validNote = false;
+                        pitch = getRandomNote(oldPitch, minInterval, maxInterval,
+                                              minPitch, maxPitch, section);
+                        String pitchString =
+                                PitchClass.getPitchClassFromMidi(pitch).toString();
+                        validNote = checkNote(position, pitch, pitchString, chordProg, type);
+                        if( (!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote )
+                          {
+                            break;
+                          }
+                      }
+                    //System.out.println("Color Chord Pitch: "+ pitch);
+                    pitch = pitch + 1; //adds one to what the default returns
+                    //System.out.println("Color Chord Pitch Plus one: " + pitch);
+                    note.setPitch(pitch);
+                    addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                  }
+                break;
+
+                default:
+                  // If it's not a rest or approach tone, treat it normally.
+                  // What is "normally"??
+                  {
+                    if( bernoulli(leapProb) )
+                      {
+                        if( Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch) )
+                          { //drop an octave
+                            oldPitch = Math.min(oldPitch + 12, maxPitch);
+                          }
+                        else
+                          {
+                            oldPitch = Math.max(oldPitch - 12, minPitch);
+                          }
+                      }
+                    boolean validNote = false;
+
+                    for( int i = 0; i < NOTE_GEN_LIMIT; ++i )
+                      {
+                        validNote = false;
+                        pitch = getRandomNote(oldPitch, minInterval, maxInterval,
+                                              minPitch, maxPitch, section);
+                        String pitchString =
+                                PitchClass.getPitchClassFromMidi(pitch).toString();
+                        validNote = checkNote(position, pitch, pitchString, chordProg, type);
+                        if( (!avoidRepeats || bernoulli(pitchWasUsed(pitch))) && validNote )
+                          {
+                            break;
+                          }
+                      }
+                    note.setPitch(pitch);
+                    addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                  }
+                break;
+              } // switch
+
+          } // end of String case
+        else
+          {
+            // unknown item in rhythmString
+            notate.setLickGenStatus("Error: unknown item in abstract melody: " + item);
+          }
+      } // while
+
+    return false;
+  }
 
 
 
@@ -2069,70 +2265,94 @@ private boolean checkNote(int pos, int pitch, String pitchString,
         return note;
     }
 
-// Get a note within a certain range of the given pitch that is
-// selected based on the given note probabilities.
-    private int getRandomNote(int pitch, int minStep, int maxStep,
-            int minPitch, int maxPitch, int section) {
-        ArrayList<Integer> availPitches = new ArrayList<Integer>();
-        ArrayList<Double> availProbs = new ArrayList<Double>();
-        double probSum = 0.0;
+/**
+ * Get a note within a certain range of the given pitch that is
+ * selected based on the given note probabilities.
+ */
+    
+private int getRandomNote(int pitch,
+                          int minStep,
+                          int maxStep,
+                          int minPitch,
+                          int maxPitch,
+                          int section)
+  {
+    ArrayList<Integer> availPitches = new ArrayList<Integer>();
+    ArrayList<Double> availProbs = new ArrayList<Double>();
+    double probSum = 0.0;
 
-        try {
-            // Loop through all the probabilities and add in any notes that have
-            // probability greater than 0.
-            for (int i = 0; i < 12; ++i) {
-                // Temporary HACK ALERT; Preventing index out of range. 
-                // Moving to rev. 790
-                // May have something to do with transition from Vector to ArrayList
-                if( section >= probs.size() )
+    try
+      {
+        // Loop through all the probabilities and add in any notes that have
+        // probability greater than 0.
+        for( int i = 0; i < 12; ++i )
+          {
+            // Temporary HACK ALERT; Preventing index out of range. 
+            // Moving to rev. 790
+            // May have something to do with transition from Vector to ArrayList
+            if( section >= probs.size() )
+              {
+                section = probs.size() - 1;
+              }
+
+            if( probs.get(section)[i] != 0 )
+              {
+                // We only need to look at pitches that are greater than the minimum
+                // pitch value we want.
+                int pitchToAdd = ((minPitch / 12) * 12) + i;
+
+                // While we haven't exceeded the maximum range specified...
+                while( pitchToAdd <= maxPitch )
                   {
-                  section = probs.size()-1;
+                    // If the pitch we're considering is within a specified range of the last
+                    // pitch, add it to the array of possibilities.
+                    if( pitchToAdd >= minPitch 
+                     && ((   pitchToAdd >= pitch - maxStep
+                          && pitchToAdd <= pitch - minStep) 
+                            
+                         || (pitchToAdd >= pitch + minStep
+                          && pitchToAdd <= pitch + maxStep)) )
+                      {
+                        availPitches.add(pitchToAdd);
+                        availProbs.add(probs.get(section)[i]);
+                        probSum += probs.get(section)[i];
+                      }
+                    pitchToAdd += 12;
                   }
-                
-                if (probs.get(section)[i] != 0) {
-                    // We only need to look at pitches that are greater than the minimum
-                    // pitch value we want.
-                    int pitchToAdd = ((minPitch / 12) * 12) + i;
+              }
+          }
+      }
+    catch( IndexOutOfBoundsException e )
+      {
+        // shouldn't happen, but has.
+        // Not sure what to do.
+      }
 
-                    // While we haven't exceeded the maximum range specified...
-                    while (pitchToAdd <= maxPitch) {
-                        // If the pitch we're considering is within a specified range of the last
-                        // pitch, add it to the array of possibilities.
-                        if (pitchToAdd >= minPitch && ((pitchToAdd >= pitch - maxStep &&
-                                pitchToAdd <= pitch - minStep) || (pitchToAdd >= pitch + minStep &&
-                                pitchToAdd <= pitch + maxStep))) {
-                            availPitches.add(pitchToAdd);
-                            availProbs.add(probs.get(section)[i]);
-                            probSum += probs.get(section)[i];
-                        }
-                        pitchToAdd += 12;
-                    }
-                }
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            // shouldn't happen, but has.
-            // Not sure what to do.
-        }
-
-        // Adjust the probabilities based on how many pitches just got added.
-        for (int i = 0; i < availProbs.size(); ++i) {
-            availProbs.set(i, availProbs.get(i) / probSum);    // Now loop through all the possibilities, and select a random one
+    // Adjust the probabilities based on how many pitches just got added.
+    for( int i = 0; i < availProbs.size(); ++i )
+      {
+        availProbs.set(i, availProbs.get(i) / probSum);    // Now loop through all the possibilities, and select a random one
         // based on the calculated probability values.
-        }
-        double rand = Math.random();
-        double offset = 0;
+      }
+    double rand = Math.random();
+    double offset = 0;
 
-        for (int i = 0; i < availProbs.size(); ++i) {
-            if (rand >= offset && rand < offset + availProbs.get(i)) {
-                return availPitches.get(i);
-            }
-            offset += availProbs.get(i);
-        }
+    for( int i = 0; i < availProbs.size(); ++i )
+      {
+        if( rand >= offset && rand < offset + availProbs.get(i) )
+          {
+            return availPitches.get(i);
+          }
+        offset += availProbs.get(i);
+      }
 
-        return pitch;
-    }
+    return pitch;
+  }
 
-// Choose a random index less than num.
+
+/**
+ * Choose a random index less than num.
+ */
     private int randomIndex(int num) {
         int value = (int) (num * Math.random());
         return value < num

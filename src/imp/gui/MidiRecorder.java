@@ -53,6 +53,7 @@ int beatValue;
 int measureLength;
 
 double latency = 0;
+long latencyTicks;
 
 public MidiRecorder(Notate notate, Score score)
   {
@@ -74,32 +75,16 @@ public void setLatency(double latency)
     this.latency = latency;
   }
 
-public long getTime()
+
+private long getTick()
   {
     if( sequencer != null && sequencer.isRunning() )
       {
-        return sequencer.getMicrosecondPosition();
-      }
-    else
-      {
-        notate.stopRecording();
-        return -1;
-      }
-  }
-
-public long getTick()
-  {
-    if( sequencer != null && sequencer.isRunning() )
-      {
-        int res = sequencer.getSequence().getResolution();             // ticks per beat
-        double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
-        long latencyTicks = Math.round(bpms * res * latency);
-
         return sequencer.getTickPosition() - latencyTicks;
       }
     else
       {
-        notate.stopRecording();
+        //notate.stopRecording();
         return -1;
       }
   }
@@ -113,8 +98,13 @@ void start()
       {
         return;
       }
-    resolution = sequencer.getSequence().getResolution();
-
+    if( sequencer.isRunning() )
+      {
+        resolution = sequencer.getSequence().getResolution(); // ticks per beat
+        double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
+        latencyTicks = Math.round(bpms * resolution * latency);
+      }
+    
     while( (noteOn = getTick()) < 0 )
       {
       }
@@ -132,7 +122,7 @@ void start()
  * processing.
  */
     
-public void send(MidiMessage message, long timeStamp)
+synchronized public void send(MidiMessage message, long timeStamp)
   {
     //System.out.println("received " + MidiFormatting.midiMessage2polylist(message));
 
@@ -159,7 +149,7 @@ public void send(MidiMessage message, long timeStamp)
                 // 'running status': 
                 // http://www.borg.com/~jglatt/tech/midispec/run.htm
                 
-                handleNoteOff(note, velocity, channel);
+                handleNoteOff(note, channel);
               }
             else
               {
@@ -179,21 +169,21 @@ public void send(MidiMessage message, long timeStamp)
             note = m[1];
             velocity = m[2];
             
-            handleNoteOff(note, velocity, channel);
+            handleNoteOff(note, channel);
             break;
       }
     //System.out.println("done with " + MidiFormatting.midiMessage2polylist(message));
   }
     
     
-void handleNoteOn(int note, int velocity, int channel)
+private void handleNoteOn(int note, int velocity, int channel)
   {
     //System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
     // new note played, so finish up previous notes or insert rests up to the current note
     int noteOffIndex;
     if( notePlaying )
       {
-        handleNoteOff(prevNote, velocity, channel);
+        handleNoteOff(prevNote, channel);
       }
     else
       {
@@ -244,7 +234,7 @@ void handleNoteOn(int note, int velocity, int channel)
     notePlaying = true;
   }
  
- void handleNoteOff(int note, int velocity, int channel)
+ private void handleNoteOff(int note, int channel)
   {
     //System.out.println("noteOff: " + noteOff + "; event: " + lastEvent);
 
@@ -286,10 +276,10 @@ void handleNoteOn(int note, int velocity, int channel)
     //notate.repaint();
   }
  
- private void setNote(int index, Note noteToAdd)
+private void setNote(int index, Note noteToAdd)
   {
-  melodyPart.setNoteAndLength(index, noteToAdd, notate); // more than needed
-  //melodyPart.setNote(noteOnIndex, noteToAdd);
+  //melodyPart.setNoteAndLength(index, noteToAdd, notate); // more than needed
+  melodyPart.setNote(index, noteToAdd);
  }
    
 int snapToMultiple(int input, int base)

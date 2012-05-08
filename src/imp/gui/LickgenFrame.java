@@ -3957,7 +3957,7 @@ private void triageAndGenerate(int number)
                                     notate.getCurrentSelectionStart(),
                                     notate.getTotalSlots());
 
-                            for( int i = 0; i < probs.size(); ++i )
+                            for( int i = 0; i < Math.min(probs.size(), lickPrefs.size()); ++i )
                               {
                                 double[] pArray = probs.get(i);
                                 JTextField[] tfArray = lickPrefs.get(i);

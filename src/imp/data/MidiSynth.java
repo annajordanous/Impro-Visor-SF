@@ -552,7 +552,8 @@ public void meta(MetaMessage metaEvent)
     Trace.log(3, playCounter + ": MidiSynth metaEvent: " + metaEvent);
     if( metaEvent.getType() == StopType )
       {
-        stop("meta");
+        System.out.println("meta event of type " + metaEvent.getType() + " encountered, data: " + metaEvent.getData());
+        //stop("meta");
       }
   }
 
@@ -592,15 +593,13 @@ public void setPlayListener(MidiPlayListener listener)
  */
 public void stop(String reason)
   {
-    /*
+    
     System.out.println("Stopping sequencer for reason: " + reason);
     
     if( sequencer != null )
       {
       showSequencerStatus();
       }
-
-    */
     
     playing = false;
     paused = false;
