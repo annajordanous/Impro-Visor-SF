@@ -5023,7 +5023,7 @@ void transposeMelodyHarmonically()
     Trace.log(2, "applying smart transpose");
     rectifySelection(getSelectionStart(),
                  getSelectionEnd(), false, false);
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose harmonically");
   }
 
 void transposeMelodyUpHarmonically()
@@ -5031,7 +5031,7 @@ void transposeMelodyUpHarmonically()
     Trace.log(2, "applying harmonic transpose up");
     rectifySelection(getSelectionStart(), getSelectionEndNote(), true, true);
     notate.noCountIn();
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose up harmonically");
   }
 
 void transposeMelodyDownHarmonically()
@@ -5040,7 +5040,7 @@ void transposeMelodyDownHarmonically()
     rectifySelection(getSelectionStart(),
                  getSelectionEndNote(), true, false);
     notate.noCountIn();
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose down harmonically");
   }
 
 void transposeMelodyUpSemitone()
@@ -5051,7 +5051,7 @@ void transposeMelodyUpSemitone()
                true, // up
                false); // not octave
     notate.noCountIn();
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose up semitone");
   }
 
 void transposeMelodyDownSemitone()
@@ -5062,7 +5062,7 @@ void transposeMelodyDownSemitone()
                false, // down
                false); // not octave
     notate.noCountIn();
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose down semitone");
   }
 
 void transposeMelodyUpOctave()
@@ -5073,7 +5073,7 @@ void transposeMelodyUpOctave()
                true, // up
                true); // octave
     notate.noCountIn();
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose up octave");
   }
 
 void transposeMelodyDownOctave()
@@ -5084,7 +5084,7 @@ void transposeMelodyDownOctave()
                false, // down
                true); // octave
     notate.noCountIn();
-    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS);
+    playSelection(false, notate.getLoopCount(), PlayScoreCommand.NODRUMS, "transpose down octave");
   }
 
 void transposeChordsUpSemitone()
@@ -5175,40 +5175,46 @@ public void rectifySelection(int startIndex, int endIndex, boolean directional, 
     repaint();
   }
 
+//public void play(int startAt)
+//  {
+//    playingSlot = startAt;
+//    notate.chordVolumeChanged();
+//    notate.setPlaybackStop(notate.score.getTotalLength() - 1, "in Stave: play/1");
+//
+//    notate.setShowPlayLine(true);
+//    notate.setKeyboardPlayback(true);
+//    // playSelection(true);
+//
+//
+//    new PlayScoreCommand(notate.score, 
+//                         startAt, 
+//                         true,
+//                         notate.getMidiSynth(), 
+//                         notate, 
+//                         notate.getLoopCount(), 
+//                         notate.getTransposition()).execute();
+//  }
+
 public void play(int startAt)
   {
-    playingSlot = startAt;
-    notate.chordVolumeChanged();
-    notate.setPlaybackStop(notate.score.getTotalLength() - 1);
-
-    notate.setShowPlayLine(true);
-    notate.setKeyboardPlayback(true);
-    // playSelection(true);
-
-
-    new PlayScoreCommand(notate.score, 
-                         startAt, 
-                         true,
-                         notate.getMidiSynth(), 
-                         notate, 
-                         notate.getLoopCount(), 
-                         notate.getTransposition()).execute();
+    playSelection(startAt, notate.score.getTotalLength()-1, notate.getLoopCount(), true, "from Stave play/1");
   }
 
-public void playSelection()
-  {
-    playSelection(false);
-  }
 
-public void playSelection(boolean playToEndOfChorus)
-  {
-    playSelection(playToEndOfChorus, 0, PlayScoreCommand.USEDRUMS);
-  }
+//public void playSelection()
+//  {
+//    playSelection(false);
+//  }
 
-public void playSelection(boolean playToEndOfChorus, int loopCount)
-  {
-    playSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
-  }
+//public void playSelection(boolean playToEndOfChorus)
+//  {
+//    playSelection(playToEndOfChorus, 0, PlayScoreCommand.USEDRUMS);
+//  }
+
+//public void playSelection(boolean playToEndOfChorus, int loopCount)
+//  {
+//    playSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
+//  }
 
 /**
  * Plays the current selection
@@ -5216,7 +5222,7 @@ public void playSelection(boolean playToEndOfChorus, int loopCount)
  * @param startIndex       starting index of the selection of notes
  * @param endIndex         ending index of the selection of notes
  */
-public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums)
+public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums, String message)
   {
 
     //System.out.println("\nStave: playSelection, playToEndOfChorus = " + playToEndOfChorus);
@@ -5225,7 +5231,7 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
       {
         return;
       }
-    //System.out.println("playSelection, toEND = " + playToEndOfChorus + " loopCount = " + loopCount + ", useDrums = " + useDrums);
+    System.out.println("\nplaySelection, toEND = " + playToEndOfChorus + " loopCount = " + loopCount + ", useDrums = " + useDrums + " " + message);
     int partSize = getChordProg().getSize();
 
     int startIndex = getSelectionStart();
@@ -5239,10 +5245,10 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
         stopIndex = BEAT*(1 + stopIndex/BEAT);
       }
 
-    playSelection(startIndex, stopIndex, loopCount, useDrums);
+    playSelection(startIndex, stopIndex, loopCount, useDrums, "from Stave playSelection/4");
   }
 
-public void playSelection(int startIndex, int stopIndex, int loopCount, boolean useDrums)
+public void playSelection(int startIndex, int stopIndex, int loopCount, boolean useDrums, String message)
   {
     if( startIndex != 0 )
       {
@@ -5251,7 +5257,7 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
 
     notate.chordVolumeChanged();
 
-    //System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex);
+    System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex + ", loopCount = " + loopCount + " " + message);
 
     int partSize = getChordProg().getSize();
 
@@ -5263,20 +5269,25 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
 
     notate.initCurrentPlaybackTab(startIndex);
 
-    notate.setPlaybackStop(stopIndex);
+    notate.setPlaybackStop(stopIndex, "in Stave: playSelection");
 
     notate.setShowPlayLine(true);
     notate.setKeyboardPlayback(true);
+    
+    Score score = notate.getScore();
 
-    new PlayScoreCommand(notate.score, 
+    new PlayScoreCommand(score, 
                          startIndex, 
                          true,
                          notate.getMidiSynth(), 
-                         notate, loopCount, 
+                         notate, 
+                         loopCount, 
                          notate.getTransposition(), 
                          useDrums, 
                          stopIndex).execute();
 
+    //System.out.println("score = " + score);
+    
     repaint();
   }
 
@@ -5312,7 +5323,7 @@ public void playSelectionNote(Note note, int selectedIndex)
           }
       }
 
-    playSelection(selectedIndex, i - 1, 0, false);
+    playSelection(selectedIndex, i - 1, 0, false, "from Stave playSelectionNote/2");
 
   }
 

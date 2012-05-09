@@ -2194,13 +2194,14 @@ public ArrayList<double[]> readProbs()
 
     for( int i = 0; i < lickPrefs.size(); ++i )
       {
-
         double[] p = new double[12];
+        
+        JTextField tf[] = lickPrefs.get(i);
 
-        for( int j = 0; j < 12; ++j )
+        for( int j = 0; j < tf.length; ++j )
           {
-            p[j] = Notate.quietDoubleFromTextField(lickPrefs.get(i)[j], 0.0,
-                                                   Double.POSITIVE_INFINITY, 0.0);
+            p[j] = Notate.quietDoubleFromTextField(tf[j], 0.0,
+                                                Double.POSITIVE_INFINITY, 0.0);
           }
         probs.add(p);
       }
@@ -2218,9 +2219,10 @@ public void verifyProbs()
 
     for( int i = 0; i < lickPrefs.size(); ++i )
       {
-        for( int j = 0; j < 12; ++j )
+        JTextField tf[] = lickPrefs.get(i);
+        for( int j = 0; j < tf.length; ++j )
           {
-            Notate.doubleFromTextField(lickPrefs.get(i)[j], 0.0,
+            Notate.doubleFromTextField(tf[j], 0.0,
                                        Double.POSITIVE_INFINITY, 1.0);
           }
       }
@@ -2546,7 +2548,7 @@ public void setRhythmFieldText(String string)
               }
           }
 
-        notate.putLick(notate.generateLick(rhythm));
+        notate.generateAndPutLick(rhythm);
 }//GEN-LAST:event_fillMelodyButtonActionPerformed
 
     
@@ -3406,7 +3408,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
  private void playSelection()
     {
-    notate.getCurrentStave().playSelection(false, notate.getLoopCount());
+    notate.getCurrentStave().playSelection(false, notate.getLoopCount(), PlayScoreCommand.USEDRUMS, "LickGenFrame");
     }
     private void stopLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopLickButtonActionPerformed
 

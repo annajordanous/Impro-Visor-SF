@@ -21,6 +21,7 @@
 
 package imp.gui;
 
+import imp.com.PlayScoreCommand;
 import imp.data.NoteSymbol;
 import imp.data.PianoKey;
 
@@ -1991,14 +1992,14 @@ private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 private void startSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSelPlayMIActionPerformed
 
     playback = true;
-    notate.getCurrentStave().playSelection(false, 0);
+    notate.getCurrentStave().playSelection(false, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
 
 }//GEN-LAST:event_startSelPlayMIActionPerformed
 
 private void stopSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSelPlayMIActionPerformed
 
     playback = false;
-    notate.getCurrentStave().playSelection(true, 0);
+    notate.getCurrentStave().playSelection(true, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
     
 }//GEN-LAST:event_stopSelPlayMIActionPerformed
 

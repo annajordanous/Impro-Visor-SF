@@ -888,7 +888,7 @@ public class Score implements Constants, Serializable {
           {
             endLimitIndex += len;
           }
-        
+
         time = countInProg.render(seq,  
                                   time, 
                                   seq.getChordTrack(), 
@@ -924,7 +924,7 @@ public class Score implements Constants, Serializable {
 
         // Find the longest track, and put a Stop event at the end of it
         MidiSynth.endSequence(seq.getSequence());
-        Trace.log(3, "done rendering, tickLength = " + seq.getSequence().getTickLength());
+        //Trace.log(0, "done rendering, tickLength = " + seq.getSequence().getTickLength());
 
         //System.out.println("countIn size = " + getCountInOffset());
         return seq.getSequence();
