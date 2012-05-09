@@ -187,7 +187,7 @@ public class ImproVisor implements Constants {
 
     public static void playCurrentSelection(boolean toEnd, int loop, boolean useDrums)
       {
-      getCurrentWindow().getCurrentStave().playSelection(toEnd, loop, useDrums);
+      getCurrentWindow().getCurrentStave().playSelection(toEnd, loop, useDrums, "ImproVisor");
       }
     
     /**

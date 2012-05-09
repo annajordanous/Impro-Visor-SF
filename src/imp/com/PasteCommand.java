@@ -155,11 +155,15 @@ public class PasteCommand implements Command, Constants {
 	      if(note.nonRest()) {
 		  // stopIndex = (lastIndex/(metre*BEAT)+2)*metre*BEAT;
 		  Unit lastSourceUnit = source.getPrevUnit(source.size());
-		  stopIndex = lastIndex + lastSourceUnit.getRhythmValue();
-		  if(stopIndex < dest.size() &&
-		     dest.getNextIndex(lastIndex) > stopIndex) {
+                  if( lastSourceUnit != null )
+                    {
+		    stopIndex = lastIndex + lastSourceUnit.getRhythmValue();
+		    if(stopIndex < dest.size() &&
+		       dest.getNextIndex(lastIndex) > stopIndex) 
+                      {
 		      dest.setUnit(stopIndex, new Rest());
 		      restInserted = true;
+                      }
 		  }  
 	      }
           }        

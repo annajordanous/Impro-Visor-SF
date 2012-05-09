@@ -467,9 +467,10 @@ public class Notate
   private RoadMapFrame createdByRoadmap = null;
   
 
-  public void setPlaybackStop(int slot)
+  synchronized public void setPlaybackStop(int slot, String message)
   {
    stopPlaybackAtSlot = slot;
+   //System.out.println("setPlaybackStop to " + slot + " " + message);
   }
 
   /**
@@ -1154,7 +1155,9 @@ public class Notate
             {
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
-                generate(lickgen);
+                
+                slotInPlayback = 0; // TRIAL
+                generateChorus(lickgen, slotInPlayback); // TRIAL
             }
 
         // if( midiSynth.finishedPlaying() ) original
@@ -8880,7 +8883,7 @@ public class Notate
   private void loopSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopSetActionPerformed
   {//GEN-HEADEREND:event_loopSetActionPerformed
      staveRequestFocus();
-     playCurrentSelection(false, getLoopCount());
+     playCurrentSelection(false, getLoopCount(), PlayScoreCommand.USEDRUMS, "loopSetAction");
   }//GEN-LAST:event_loopSetActionPerformed
 
   private void loopButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loopButtonActionPerformed
@@ -8895,25 +8898,25 @@ public class Notate
       }
   }//GEN-LAST:event_loopButtonActionPerformed
 
-public void playCurrentSelection()
-  {
-    playCurrentSelection(false);
-  }
+//public void playCurrentSelection()
+//  {
+//    playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
+//  }
   
-public void playCurrentSelection(boolean playToEndOfChorus)
-  {
-    playCurrentSelection(playToEndOfChorus, 0);
-  }
+//public void playCurrentSelection(boolean playToEndOfChorus)
+//  {
+//    playCurrentSelection(playToEndOfChorus, 0, PlayScoreCommand.USEDRUMS);
+//  }
   
-public void playCurrentSelection(boolean playToEndOfChorus, int loopCount)
-  {
-    playCurrentSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
-  }
+//public void playCurrentSelection(boolean playToEndOfChorus, int loopCount)
+//  {
+//    playCurrentSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
+//  }
   
-public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums)
+public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums, String message)
   {
     setMode(Mode.PLAYING);
-    getCurrentStave().playSelection(playToEndOfChorus, loopCount);
+    getCurrentStave().playSelection(playToEndOfChorus, loopCount, useDrums, "Notate playCurrentSelection: " + message);
 
   }
 
@@ -12200,7 +12203,9 @@ private MelodyPart makeLick(Polylist rhythm)
     int diff = len + getCurrentSelectionStart() - scoreLen;
     if( diff > 0 )
       {
-        ErrorLog.log(ErrorLog.WARNING, "Lick is " + diff + " slots longer than available space of " + scoreLen + " slots.  Aborting.");
+//        ErrorLog.log(ErrorLog.WARNING, "Lick is " + diff + 
+//                     " slots longer than available space of " + scoreLen 
+//                   + " slots.  Aborting.");
 
         return null;
       }
@@ -12214,12 +12219,12 @@ private MelodyPart makeLick(Polylist rhythm)
   }
     
 
-public void putLick(MelodyPart lick)
+public boolean putLick(MelodyPart lick)
   {
     if( lick == null )
       {
         // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
-        return;
+        return true;
       }
     // Figure out which enharmonics to use based on
     // the current chord and key signature.
@@ -12234,16 +12239,31 @@ public void putLick(MelodyPart lick)
     // Ideally, would wait here
     
     pasteMelody(lick);
+    
+    int start = getCurrentSelectionStart();
+    
+    int stop = getCurrentSelectionEnd();
+    
+    // FIX:
+    // stop <= start does happen. It seems to be due to some kind of data race.
+    // Without the return, improvisation will grind to a halt.
+    
+    if( stop <= start )
+      {
+        System.out.println("putlick aborted " + start + " - " + stop);
+        return false;
+      }
 
     if( lickgenFrame.rectifySelected() )
       {
-        rectifySelection(getCurrentStave(), getCurrentSelectionStart(), getCurrentSelectionEnd());
+        rectifySelection(getCurrentStave(), start, stop);
       }
 
     // Wait for playing to stop
 
-    playCurrentSelection();
+    playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
+    return true;
   }
     
 
@@ -12259,6 +12279,11 @@ public MelodyPart generateLick(Polylist rhythm)
     return lick;
   }
     
+
+public void generateAndPutLick(Polylist rhythm)
+  {
+    putLick(generateLick(rhythm));
+  }
 
 private void adjustLickToHead(MelodyPart lick)
   {
@@ -13095,11 +13120,11 @@ private void exportToMusicXML()
     
   /**
    *
-   * Set the current Selection end.
+   * Set the current Selection start and end.
    *
    */
   
-  void setCurrentSelectionStartAndEnd(int index)
+  synchronized void setCurrentSelectionStartAndEnd(int index)
     {
     Stave stave = getCurrentStave();
     stave.setSelectionStart(index);
@@ -15630,7 +15655,7 @@ public void setAdviceUsed()
           {
             case KeyEvent.VK_ENTER:
 
-                playCurrentSelection();
+                playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "adviceTreeKeyPressed");
                 break;
 
             case KeyEvent.VK_UP:
@@ -16032,7 +16057,7 @@ public void setAdviceUsed()
       {
       if( e.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER)
           {
-            playCurrentSelection();
+            playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "adviceKeyPressed");
           }
       else if( e.isControlDown() )
         {
@@ -17054,7 +17079,8 @@ public void playScoreBody(int startAt)
       initCurrentPlaybackTab(0, 0);
 
       loopsRemaining = getLoopCount();
-      getCurrentStave().play(startAt);
+      getStaveAtTab(0).playSelection(startAt, score.getTotalLength()-1, getLoopCount(), true, "playScoreBody");
+      //getCurrentStave().play(startAt);
       }
     setMode(Mode.PLAYING);
     }
@@ -18567,7 +18593,7 @@ public void rectifySelection()
   {
     Stave stave = getCurrentStave();
     rectifySelection(stave, getCurrentSelectionStart(), getCurrentSelectionEnd());
-    stave.playSelection(false, getLoopCount(), PlayScoreCommand.NODRUMS);
+    stave.playSelection(false, getLoopCount(), PlayScoreCommand.NODRUMS, "Notate rectifySelection");
   }
 
     private void defaultTempoTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defaultTempoTFActionPerformed
@@ -20117,8 +20143,8 @@ public void refreshGrammarEditor()
     grammarEditor.performEditorToSourceButton(null);
 }
 
-public void generate(LickGen lickgen)
-{
+public void generateChorus(LickGen lickgen, int selectionStart)
+  {
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
@@ -20126,18 +20152,10 @@ public void generate(LickGen lickgen)
     setMode(Mode.GENERATING);
 
     Stave stave = getCurrentStave();
-    boolean nothingWasSelected = !stave.somethingSelected();
-    boolean oneSlotWasSelected = stave.oneSlotSelected();
-    int selectionStart = stave.getSelectionStart();
 
-    if( nothingWasSelected )
-      {
-        selectAll();
-      }
-    else if( oneSlotWasSelected )
-      {
-        stave.setSelectionToEnd();
-      }
+    selectAll();
+
+    System.out.println("\ngenerateChorus totalSlots = " + totalSlots + " at " + selectionStart);
 
     verifyTriageFields();
 
@@ -20191,28 +20209,110 @@ public void generate(LickGen lickgen)
         
         MelodyPart lick = generateLick(rhythm);
         
-        //System.out.println("lick generated");
+        System.out.println("actual lick is " + (lick == null ? "null" : (lick.size() + " slots")));
         
- // Looping does not help, as play line doesn't get updated while doing it.
-
-//        while( midiSynth.isRunning() )
-//          {
-//            try
-//              {
-//                Thread.sleep(25);
-//              }
-//            catch(Exception e)
-//              {
-//                
-//              }
-//          }
-// If we could start playing before installing the lick on the stave,
-// That might help
-
-
-          // Critical point for recurrent generation
-        
+        // Critical point for recurrent generation
+        if( lick != null )
+          {
           putLick(lick);
+          }
+      }
+
+    if( rhythm != null )
+      {
+        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
+      }
+
+    setMode(Mode.GENERATED);
+    
+    enableRecording(); // TRIAL
+   
+  }
+
+public void generate(LickGen lickgen)
+{
+    saveConstructionLineState = showConstructionLinesMI.isSelected();
+    // Don't construction show lines while generating
+    setShowConstructionLinesAndBoxes(false);
+    
+    setMode(Mode.GENERATING);
+
+    Stave stave = getCurrentStave();
+    boolean nothingWasSelected = !stave.somethingSelected();
+    boolean oneSlotWasSelected = stave.oneSlotSelected();
+    
+    if( nothingWasSelected )
+      {
+        selectAll();
+      }
+    else if( oneSlotWasSelected )
+      {
+        stave.setSelectionToEnd();
+      }
+
+    int selectionStart = stave.getSelectionStart(); // Most recently moved from above 'if'
+
+    System.out.println("\ngenerating totalSlots = " + totalSlots + " at " + selectionStart);
+
+    verifyTriageFields();
+
+    Polylist rhythm = null;
+
+    boolean useOutlines = lickgenFrame.useSoloistSelected();
+
+    if( useOutlines )
+      {
+        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+        // was commented out:
+        lickgen.getFillMelodyParameters(minPitch, 
+                                        maxPitch, 
+                                        minInterval,
+                                        maxInterval, 
+                                        BEAT, 
+                                        leapProb, 
+                                        chordProg,
+                                        0, 
+                                        avoidRepeats);
+
+        MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
+        if( solo != null )
+          {
+            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
+            if( lickgenFrame.useHeadSelected() )
+              {
+                adjustLickToHead(solo);
+              }
+            putLick(solo);
+          }
+      }
+
+    // If the outline is unable to generate a solo, which might
+    // happen if there are no outlines of the correct length or the soloist
+    // file was not correctly loaded, use the grammar.
+
+    if( rhythm == null || !useOutlines )
+      {
+
+        if( lickgenFrame.getUseGrammar() )
+          {
+            rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
+          }
+        else
+          {
+            rhythm = lickgen.generateRandomRhythm(totalSlots, minDuration,
+                                                  maxDuration,
+                                                  restProb);
+          }
+        
+        MelodyPart lick = generateLick(rhythm);
+        
+        System.out.println("actual lick is " + (lick == null ? "null" : (lick.size() + " slots")));
+        
+        // Critical point for recurrent generation
+        if( lick != null )
+          {
+          putLick(lick);
+          }
       }
 
     if( rhythm != null )
@@ -20974,13 +21074,13 @@ private void swingTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
   {//GEN-HEADEREND:event_playSelectionMIActionPerformed
     noCountIn();
-    playCurrentSelection(false, getLoopCount());
+    playCurrentSelection(false, getLoopCount(), PlayScoreCommand.USEDRUMS, "playSelectionMI");
   }//GEN-LAST:event_playSelectionMIActionPerformed
 
 private void playSelectionToEndMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionToEndMIActionPerformed
   {//GEN-HEADEREND:event_playSelectionToEndMIActionPerformed
     noCountIn();
-    playCurrentSelection(true, getLoopCount());
+    playCurrentSelection(true, getLoopCount(), PlayScoreCommand.USEDRUMS, "playSelectionToEndMI");
   }//GEN-LAST:event_playSelectionToEndMIActionPerformed
 
 private void phrasemarksMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_phrasemarksMIActionPerformed

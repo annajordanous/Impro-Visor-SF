@@ -409,11 +409,11 @@ public void play(Score score,
                  int countInOffset)
     throws InvalidMidiDataException
   {
-//   Trace.log(2,
+//   Trace.log(0,
 //              (++playCounter) + ": Starting MIDI sequencer, startTime = " 
 //              + startIndex + " loopCount = " + loopCount + " endIndex = "
 //              + endLimitIndex);
-//    
+    
     if( sequencer == null )
       {
         setSequencer();
@@ -441,7 +441,7 @@ public void play(Score score,
             return;
           }
         sequencer.setSequence(seq);
-        sequencer.addMetaEventListener(this);
+        // needed? sequencer.addMetaEventListener(this);
 
         setTempo(tempo);
 
@@ -462,15 +462,16 @@ public void play(Score score,
          // set end time first, otherwise there might be an exception because
          // the start time is too large.
 
-        if( endLimitIndex == ENDSCORE )
-          {
-          setLoopEndPoint(ENDSCORE);
-          }
-        else
-          {
-          setLoopEndPoint((endLimitIndex + countInOffset) * magicFactor);
-          }
-
+// For some reason, this code breaks the combination of countIn with looping.
+// Omitting it doesn't seem to matter so far. RK 9 May 2012.
+//        if( endLimitIndex == ENDSCORE )
+//          {
+//          setLoopEndPoint(ENDSCORE);
+//          }
+//        else
+//          {
+//          setLoopEndPoint((endLimitIndex + countInOffset) * magicFactor);
+//          }
 
         if( countInOffset > 0 )
         {
@@ -550,7 +551,7 @@ public void setLoopCount(int count)
 public void meta(MetaMessage metaEvent)
   {
     Trace.log(3, playCounter + ": MidiSynth metaEvent: " + metaEvent);
-    if( metaEvent.getType() == StopType )
+    //if( metaEvent.getType() == StopType )
       {
         System.out.print("meta event of type " + metaEvent.getType() 
                        + " encountered, data: ");

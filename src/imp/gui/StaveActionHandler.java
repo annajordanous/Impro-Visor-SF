@@ -735,7 +735,7 @@ private int addNote(int x, int y, boolean play)
 
   if( play )
    {
-    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
+    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false, "from StaveActionHandler addNote/3");
    }
 
   return note.getPitch();
@@ -933,7 +933,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
 
   if( play )
    {
-    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false);
+    stave.playSelection(selectedIndex, selectedIndex + duration, 0, false, "from StaveActionHandler addNote/5");
    }
 
   return pitch;
