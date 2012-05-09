@@ -343,7 +343,7 @@ public int getTotalSlots()
 
 public boolean finishedPlaying()
   {
-    return sequencer == null || sequencer.getTickPosition() >= sequencer.getTickLength();
+    return sequencer == null || sequencer.getTickPosition() >= sequencer.getTickLength()-1;
   }
 
 
@@ -552,7 +552,15 @@ public void meta(MetaMessage metaEvent)
     Trace.log(3, playCounter + ": MidiSynth metaEvent: " + metaEvent);
     if( metaEvent.getType() == StopType )
       {
-        System.out.println("meta event of type " + metaEvent.getType() + " encountered, data: " + metaEvent.getData());
+        System.out.print("meta event of type " + metaEvent.getType() 
+                       + " encountered, data: ");
+         
+        for( byte x: metaEvent.getData() )
+          {
+            System.out.print(x);
+            System.out.print(" ");
+          }
+        System.out.println();
         //stop("meta");
       }
   }
@@ -594,11 +602,11 @@ public void setPlayListener(MidiPlayListener listener)
 public void stop(String reason)
   {
     
-    System.out.println("Stopping sequencer for reason: " + reason);
+    System.out.println("Stopping sequencer because: " + reason);
     
     if( sequencer != null )
       {
-      showSequencerStatus();
+      //showSequencerStatus();
       }
     
     playing = false;
@@ -786,7 +794,7 @@ public Sequencer getSequencer()
 
 private void setSequencer()
   {
-    Trace.log(2, "Getting MIDI sequencer");
+    //Trace.log(2, "Getting MIDI sequencer");
     sequencer = null;
     try
       {
@@ -804,7 +812,7 @@ private void setSequencer()
       }
     catch( MidiUnavailableException e )
       {
-        Trace.log(2, "Couldn't get sequencer:" + e.getMessage());
+        ErrorLog.log(ErrorLog.WARNING, "Couldn't get sequencer:" + e.getMessage());
       }
   }
 

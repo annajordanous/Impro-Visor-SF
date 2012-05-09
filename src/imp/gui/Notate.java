@@ -1164,7 +1164,7 @@ public class Notate
 
         if( midiSynth.finishedPlaying() )
           {
-          stopPlaying();
+          stopPlaying("midiSynth finished playing");
           return;
           }
 
@@ -1174,7 +1174,7 @@ public class Notate
           {
 //        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
           
-          stopPlaying();
+          stopPlaying("slotInPlayback > stopPlaybackAtSlot " + slotInPlayback + " > " + stopPlaybackAtSlot);
           return;
           }
         
@@ -8927,7 +8927,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
   private void setToNotLoop()
   {
       toLoop = false;
-      stopPlaying();
+      stopPlaying("set not to Loop");
       loopButton.setText("<html><center>Loop</center></html>");
       loopButton.setBackground(Color.GREEN);
   }
@@ -10112,7 +10112,7 @@ public void stopRecording()
       midiSynth.registerReceiver(midiStepInput);
       }
 
-    stopPlaying();
+    stopPlaying("stop Recording");
   }
 
 
@@ -10203,7 +10203,12 @@ private void enableRecording()
 
 void stopPlaying()
   {
-    midiSynth.stop("stop in Notate");
+    stopPlaying(" unlabeled");
+  }
+    
+void stopPlaying(String reason)
+  {
+    midiSynth.stop("stop in Notate: " + reason);
     improvisationOff();
     if( mode == Mode.RECORDING )
       {
@@ -11363,7 +11368,7 @@ private void showFileStepDialog()
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
 
-        stopPlaying();
+        stopPlaying("stop Btn action");
 
         if( keyboard != null && keyboard.isVisible() )
           {
@@ -16882,7 +16887,7 @@ void timeWarpMelody(int num, int denom)
     
     public void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayMIActionPerformed
 
-      stopPlaying();
+      stopPlaying("stop Play MI");
         
     }//GEN-LAST:event_stopPlayMIActionPerformed
 
@@ -17158,7 +17163,7 @@ public void playAscoreWithStyle(Score score, int loopCount)
 public void stopPlayAscore()
 {
     midiSynth3.stop("stopPlayAscore called");
-    stopPlaying();
+    stopPlaying("stopPlayAscore called");
 }
 
   /**
@@ -17394,7 +17399,7 @@ public ChordPart makeCountIn()
 
       if( choice == 0 )
         {
-        midiSynth.stop("quit");
+        midiSynth.stop("quit Impro-Visor");
 
         adv.showMarkedItems();
         System.exit(0);
@@ -21225,7 +21230,7 @@ public boolean showPhrasemarks()
 
 public void fileStepForward()
 {
-    stopPlaying();
+    stopPlaying("file step forward");
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
     File file;
@@ -21307,7 +21312,7 @@ public void fileStepForward()
 
 public void fileStepBackward()
 {
-    stopPlaying();
+    stopPlaying("file step backward");
     RecentFiles recFiles = new RecentFiles();
     String first = recFiles.getFirstPathName();
     File file;
