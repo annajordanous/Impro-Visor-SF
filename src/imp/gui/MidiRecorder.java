@@ -273,7 +273,7 @@ private void handleNoteOn(int note, int velocity, int channel)
 
     // System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
 
-    //notate.repaint();
+    notate.repaint();
   }
  
 private void setNote(int index, Note noteToAdd)
