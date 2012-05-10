@@ -1156,8 +1156,11 @@ public class Notate
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
                 
-                slotInPlayback = 0; // TRIAL
+                //slotInPlayback = 0; // TRIAL
+                
                 generateChorus(lickgen, slotInPlayback); // TRIAL
+                
+                //generate(lickgen); // Hangs at the end of chorus with this.
             }
 
         // if( midiSynth.finishedPlaying() ) original

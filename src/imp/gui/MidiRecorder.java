@@ -111,7 +111,7 @@ void start()
 
     noteOff = noteOn = getTick();
     notePlaying = false;
-    notate.setCurrentSelectionStartAndEnd(0);
+    //notate.setCurrentSelectionStartAndEnd(0);
 
     countInOffset = score.getCountInOffset();
   }
