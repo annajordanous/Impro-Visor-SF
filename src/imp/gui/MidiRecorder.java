@@ -23,6 +23,7 @@ package imp.gui;
 import imp.Constants;
 import imp.data.MelodyPart;
 import imp.data.Note;
+import imp.data.Rest;
 import imp.data.Score;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
@@ -49,7 +50,6 @@ boolean notePlaying = false;
 int prevNote = 0;
 int resolution;
 int snapTo = BEAT/4;
-int beatValue;
 int measureLength;
 
 double latency = 0;
@@ -61,8 +61,7 @@ public MidiRecorder(Notate notate, Score score)
     this.score = score;
     this.melodyPart = notate.getCurrentOrigPart();
     metre = melodyPart.getMetre();
-    beatValue = (WHOLE/metre[1]);
-    measureLength = metre[0] * beatValue;
+    measureLength = metre[0] * BEAT;
   }
 
 public double getLatency()
@@ -180,7 +179,7 @@ private void handleNoteOn(int note, int velocity, int channel)
   {
     //System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
     // new note played, so finish up previous notes or insert rests up to the current note
-    int noteOffIndex;
+    int index;
     if( notePlaying )
       {
         handleNoteOff(prevNote, channel);
@@ -192,18 +191,18 @@ private void handleNoteOn(int note, int velocity, int channel)
         // this try is here because a function a few steps up in the call hierarchy tends to capture error messages
         try
           {
-            noteOffIndex = snapSlots(tickToSlots(noteOff)) - countInOffset;
+            index = snapSlots(tickToSlots(noteOff)) - countInOffset;
 
             // add rests since nothing was played between now and the previous note
-            if( duration > 0 && noteOffIndex >= 0 )
+            if( duration > 0 && index >= 0 )
               {
-                // Note noteToAdd = new Rest(duration);
-                // setNote(noteOnIndex, noteToAdd);
+                Note noteToAdd = new Rest(duration);
+                setNote(index, noteToAdd);
               }
 
-            if( noteOffIndex >= 0 )
+            if( index >= 0 )
               {
-                notate.setCurrentSelectionStartAndEnd(noteOffIndex);
+                notate.setCurrentSelectionStartAndEnd(index);
               }
           }
         catch( Exception e )
@@ -213,22 +212,22 @@ private void handleNoteOn(int note, int velocity, int channel)
       }
 
     noteOn = lastEvent;
-    noteOffIndex = snapSlots(tickToSlots(noteOn)) - countInOffset;
+    index = snapSlots(tickToSlots(noteOn)) - countInOffset;
 
     // add current note
     Note noteToAdd = new Note(note, snapTo);
 
     try
       {
-        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(noteOffIndex));
-        setNote(noteOffIndex, noteToAdd);
+        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
+        setNote(index, noteToAdd);
       }
     catch( Exception e )
       {
         //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
       }
 
-    //notate.repaint();
+    //notate.repaint(); Doesn't matter?
 
     prevNote = note;
     notePlaying = true;
@@ -248,9 +247,9 @@ private void handleNoteOn(int note, int velocity, int channel)
     
     notePlaying = false;
 
-    int noteOnIndex = snapSlots(tickToSlots(noteOn)) - countInOffset;
+    int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
 
-    if( noteOnIndex < 0 )
+    if( index < 0 )
       {
         return;
       }
@@ -263,17 +262,18 @@ private void handleNoteOn(int note, int velocity, int channel)
     else
       {
         Note noteToAdd = new Note(note, duration);
-        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(noteOnIndex));
-        setNote(noteOnIndex, noteToAdd);
+        noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
+        setNote(index, noteToAdd);
       }
     
-    noteOnIndex += duration;
+    index += duration;
 
-    notate.setCurrentSelectionStartAndEnd(noteOnIndex);
+    // May cause problems with lick generation!
+    //notate.setCurrentSelectionStartAndEnd(index);
 
     // System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
 
-    //notate.repaint();
+    //notate.repaint(); Doesn't matter?
   }
  
 private void setNote(int index, Note noteToAdd)
