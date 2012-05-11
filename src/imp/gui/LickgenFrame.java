@@ -161,7 +161,7 @@ public LickgenFrame(Notate notate, LickGen lickgen, CommandManager cm)
     this.lickgen = lickgen;
     this.cm = cm;
 
-    //beatsPerBar = notate.getCurrentOrigPart().getMetre()[0]; //get the top number in the time sig
+    //beatsPerBar = notate.getMelodyPart().getMetre()[0]; //get the top number in the time sig
     beatsPerBar = 4; //default for now, since it appears there's no way to get the actual time sig at init time
     attrTotal = 288; //max size of a selection (one chorus)
     attrGranularity = 1; //default
@@ -2855,7 +2855,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
     int slotsPerSection = BEAT * measureWindow;
     //boolean isSongStart = (selStart == 0);
     int selEnd = selStart + slotsPerSection;
-    MelodyPart part = notate.getCurrentOrigPart().copy();
+    MelodyPart part = notate.getCurrentMelodyPart().copy();
 
     if( part.melodyIsEmpty(selStart, slotsPerSection) )
       {
@@ -3370,7 +3370,7 @@ public String addMeasureToAbstractMelody(int selStart, int measureWindow,
 
         int selEnd = notate.getCurrentSelectionEnd();
 
-        MelodyPart part = notate.getCurrentOrigPart();
+        MelodyPart part = notate.getCurrentMelodyPart();
 
         int current = selStart;
 

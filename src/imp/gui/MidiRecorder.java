@@ -239,7 +239,7 @@ void handleNoteOn(int note, int velocity, int channel)
  
 private void setNote(int index, Note noteToAdd)
   {
-    this.melodyPart = notate.getCurrentOrigPart();
+    this.melodyPart = notate.getCurrentMelodyPart();
     
       //melodyPart.setNoteAndLength(index, noteToAdd, notate);
     
