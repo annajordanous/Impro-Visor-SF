@@ -5257,7 +5257,7 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
 
     notate.chordVolumeChanged();
 
-    System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex + ", loopCount = " + loopCount + " " + message);
+    //System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex + ", loopCount = " + loopCount + " " + message);
 
     int partSize = getChordProg().getSize();
 
