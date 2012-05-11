@@ -40,7 +40,6 @@ Notate notate;
 
 MelodyPart melodyPart;
 
-int[] metre;
 
 Score score;
 Sequencer sequencer = null;
@@ -50,18 +49,12 @@ boolean notePlaying = false;
 int prevNote = 0;
 int resolution;
 int snapTo = BEAT/4;
-int measureLength;
-
 double latency = 0;
-long latencyTicks;
 
 public MidiRecorder(Notate notate, Score score)
   {
     this.notate = notate;
     this.score = score;
-    this.melodyPart = notate.getCurrentOrigPart();
-    metre = melodyPart.getMetre();
-    measureLength = metre[0] * BEAT;
   }
 
 public double getLatency()
@@ -74,11 +67,26 @@ public void setLatency(double latency)
     this.latency = latency;
   }
 
-
-private long getTick()
+public long getTime()
   {
     if( sequencer != null && sequencer.isRunning() )
       {
+        return sequencer.getMicrosecondPosition();
+      }
+    else
+      {
+        //notate.stopRecording();
+        return -1;
+      }
+  }
+
+public long getTick()
+  {
+    if( sequencer != null && sequencer.isRunning() )
+      {
+        double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
+        long latencyTicks = Math.round(bpms * resolution * latency);
+
         return sequencer.getTickPosition() - latencyTicks;
       }
     else
@@ -97,20 +105,15 @@ void start()
       {
         return;
       }
-    if( sequencer.isRunning() )
-      {
-        resolution = sequencer.getSequence().getResolution(); // ticks per beat
-        double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
-        latencyTicks = Math.round(bpms * resolution * latency);
-      }
-    
+    resolution = sequencer.getSequence().getResolution();
+
     while( (noteOn = getTick()) < 0 )
       {
       }
 
     noteOff = noteOn = getTick();
     notePlaying = false;
-    //notate.setCurrentSelectionStartAndEnd(0);
+    notate.setCurrentSelectionStartAndEnd(0);
 
     countInOffset = score.getCountInOffset();
   }
@@ -121,7 +124,7 @@ void start()
  * processing.
  */
     
-synchronized public void send(MidiMessage message, long timeStamp)
+public void send(MidiMessage message, long timeStamp)
   {
     //System.out.println("received " + MidiFormatting.midiMessage2polylist(message));
 
@@ -148,7 +151,7 @@ synchronized public void send(MidiMessage message, long timeStamp)
                 // 'running status': 
                 // http://www.borg.com/~jglatt/tech/midispec/run.htm
                 
-                handleNoteOff(note, channel);
+                handleNoteOff(note, velocity, channel);
               }
             else
               {
@@ -168,21 +171,22 @@ synchronized public void send(MidiMessage message, long timeStamp)
             note = m[1];
             velocity = m[2];
             
-            handleNoteOff(note, channel);
+            handleNoteOff(note, velocity, channel);
             break;
       }
     //System.out.println("done with " + MidiFormatting.midiMessage2polylist(message));
   }
     
     
-private void handleNoteOn(int note, int velocity, int channel)
+void handleNoteOn(int note, int velocity, int channel)
   {
     //System.out.println("noteOn: " + noteOn + "; noteOff: " + noteOff + "; event: " + lastEvent);
     // new note played, so finish up previous notes or insert rests up to the current note
     int index;
     if( notePlaying )
       {
-        handleNoteOff(prevNote, channel);
+        handleNoteOff(prevNote, velocity, channel);
+
       }
     else
       {
@@ -227,13 +231,28 @@ private void handleNoteOn(int note, int velocity, int channel)
         //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
       }
 
-    //notate.repaint(); Doesn't matter?
+    notate.repaint();
 
     prevNote = note;
     notePlaying = true;
   }
  
- private void handleNoteOff(int note, int channel)
+private void setNote(int index, Note noteToAdd)
+  {
+    this.melodyPart = notate.getCurrentOrigPart();
+    
+      //melodyPart.setNoteAndLength(index, noteToAdd, notate);
+    
+      // Avoid using notate, if possible.
+      // However the version above does not shorten notes on release,
+      // but rather only when a next note is pressed. We'd need to mark
+      // the first place after the generator has played notes.
+      // FIX: Revisit this issue after more refactoring.
+      
+      melodyPart.setNote(index, noteToAdd);
+   }
+
+ void handleNoteOff(int note, int velocity, int channel)
   {
     //System.out.println("noteOff: " + noteOff + "; event: " + lastEvent);
 
@@ -244,7 +263,6 @@ private void handleNoteOn(int note, int velocity, int channel)
 
     // use the one in constructor: Notate notate = imp.ImproVisor.getCurrentWindow();
     noteOff = lastEvent;
-    
     notePlaying = false;
 
     int index = snapSlots(tickToSlots(noteOn)) - countInOffset;
@@ -268,19 +286,14 @@ private void handleNoteOn(int note, int velocity, int channel)
     
     index += duration;
 
-    // May cause problems with lick generation!
+    //Does this mess up improvisation?
+    
     //notate.setCurrentSelectionStartAndEnd(index);
 
     // System.out.println("duration: " + duration + "; corrected: " + ((double) slots) / BEAT);
 
-    //notate.repaint(); Doesn't matter?
+    notate.repaint();
   }
- 
-private void setNote(int index, Note noteToAdd)
-  {
-  //melodyPart.setNoteAndLength(index, noteToAdd, notate); // more than needed
-  melodyPart.setNote(index, noteToAdd);
- }
    
 int snapToMultiple(int input, int base)
   {
