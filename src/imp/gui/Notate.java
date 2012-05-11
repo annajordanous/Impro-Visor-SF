@@ -1156,11 +1156,9 @@ public class Notate
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
                 
-                //slotInPlayback = 0; // TRIAL
+                generateChorus(lickgen); // TRIAL
                 
-                generateChorus(lickgen, slotInPlayback); // TRIAL
-                
-                //generate(lickgen); // Hangs at the end of chorus with this.
+                slotInPlayback = 0; // TRIAL
             }
 
         // if( midiSynth.finishedPlaying() ) original
@@ -1318,7 +1316,7 @@ public class Notate
 
     impro.setShowAdvice(adviceInitiallyOpen);
 
-    getCurrentOrigPart().setInstrument(
+    getCurrentMelodyPart().setInstrument(
             Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
 
     score.setChordInstrument(
@@ -11582,7 +11580,7 @@ private void updateTempoFromTextField()
         
         int measureStart = (getCurrentSelectionStart() / measureLength) * measureLength;
         
-        cm.execute(new InsertPartCommand(this, getCurrentOrigPart(), measureStart, singleMeasure));
+        cm.execute(new InsertPartCommand(this, getCurrentMelodyPart(), measureStart, singleMeasure));
         
     }//GEN-LAST:event_insertRestMeasureActionPerformed
     
@@ -12986,41 +12984,38 @@ private void exportToMusicXML()
         //calcToolBarSize();
         
     }//GEN-LAST:event_playToolBarComponentMoved
-    
-    
-  /**
-   *
-   * Sets the part volume
-   *
-   */
-  static private void invalidInteger(String text)
-    {
+ 
+/**
+ *
+ * Sets the part volume
+ *
+ */
+static private void invalidInteger(String text)
+  {
 
     text = text.trim();
 
     if( !text.equals("") )
       {
-      ErrorLog.log(ErrorLog.COMMENT,
-              "Invalid integer entered: '" + text + "'.");
+        ErrorLog.log(ErrorLog.COMMENT,
+                     "Invalid integer entered: '" + text + "'.");
       }
-    }
-    
-    /**
-     * Get the current Stave.
-     */
+  }
 
-    public Stave getCurrentStave()
-    {
-      //System.out.println("staveScrollPane = " + staveScrollPane + ", currTabIndex = " + currTabIndex);
+/**
+ * Get the current Stave.
+ */
+public Stave getCurrentStave()
+  {
+    //System.out.println("staveScrollPane = " + staveScrollPane + ", currTabIndex = " + currTabIndex);
     return staveScrollPane[currTabIndex].getStave();
-    }
+  }
 
-  /**
-   * Give focus to the current Stave.
-   */
-    
-  public void staveRequestFocus()
-    {
+/**
+ * Give focus to the current Stave.
+ */
+public void staveRequestFocus()
+  {
     // Show that textEntry no longer has focus if it had.
 
     textEntryLabel.setForeground(Color.red);
@@ -13028,171 +13023,139 @@ private void exportToMusicXML()
     getCurrentStave().requestFocusInWindow();
 
     setItemStates();
-    }
+  }
 
+/**
+ * This override is intended to fix requestFocusInWindow, which was only worked
+ * some of the time, for reasons I don't understand.
+ *
+ * @return
+ */
+@Override
+public boolean requestFocusInWindow()
+  {
+    requestFocus();
 
-     /**
-      *This override is intended to fix requestFocusInWindow, which was
-      * only worked some of the time, for reasons I don't understand.
-      @return
-      */
+    boolean value = true; // super.requestFocusInWindow();
+    return value;
+  }
 
-    @Override
-    public boolean requestFocusInWindow()
-    {
-        requestFocus();
-
-        boolean value = true; // super.requestFocusInWindow();
-        return value;
-    }
-    
-    /**
-     * Get the ActionHandler for the current Stave.
-     */
-    
-  StaveActionHandler getCurrentStaveActionHandler()
-    {
+/**
+ * Get the ActionHandler for the current Stave.
+ */
+StaveActionHandler getCurrentStaveActionHandler()
+  {
     return getCurrentStave().getActionHandler();
-    }
+  }
 
-  
-  /**
-   * Get the current Selection start.
-   */
-  
-  int getCurrentSelectionStart(Stave stave)
-    {
+/**
+ * Get the current Selection start.
+ */
+int getCurrentSelectionStart(Stave stave)
+  {
     return stave.getSelectionStart();
-    }
+  }
 
-  
-  /**
-   * Get the current Selection start.
-   */
-  
-  int getCurrentSelectionStart()
-    {
+/**
+ * Get the current Selection start.
+ */
+int getCurrentSelectionStart()
+  {
     return getCurrentStave().getSelectionStart();
-    }
+  }
 
-  
-  /**
-   * Get the current Selection end.
-   */
-  
-  int getCurrentSelectionEnd(Stave stave)
-    {
+/**
+ * Get the current Selection end.
+ */
+int getCurrentSelectionEnd(Stave stave)
+  {
     return stave.getSelectionEnd();
-    }
+  }
 
-  
-  /**
-   * Get the current Selection end.
-   */
-  
-  int getCurrentSelectionEnd()
-    {
+/**
+ * Get the current Selection end.
+ */
+int getCurrentSelectionEnd()
+  {
     return getCurrentStave().getSelectionEnd();
-    }
-    
-  
-  /**
-   * Set the current Selection start.
-   */
-  
-  void setCurrentSelectionStart(int index)
-    {
+  }
+
+/**
+ * Set the current Selection start.
+ */
+void setCurrentSelectionStart(int index)
+  {
     getCurrentStave().setSelectionStart(index);
 
     getCurrentStaveActionHandler().redoAdvice(index);  // unnecessary?
-    }
-    
-    
-    
-  /**
-   *
-   * Set the current Selection end.
-   *
-   */
-  
-  void setCurrentSelectionEnd(int index)
-    {
+  }
+
+/**
+ *
+ * Set the current Selection end.
+ *
+ */
+void setCurrentSelectionEnd(int index)
+  {
     getCurrentStave().setSelectionEnd(index);
-    }
-    
-    
-  /**
-   *
-   * Set the current Selection start and end.
-   *
-   */
-  
-  synchronized void setCurrentSelectionStartAndEnd(int index)
-    {
+  }
+
+/**
+ *
+ * Set the current Selection start and end.
+ *
+ */
+synchronized void setCurrentSelectionStartAndEnd(int index)
+  {
     Stave stave = getCurrentStave();
     stave.setSelectionStart(index);
     stave.setSelectionEnd(index);
-    }
-    
-    
-    
- /**
-   *
-   * Indicate whether a slot is current selected or not.
-   *
-   */
-  
-  private boolean slotIsSelected()
-    {
+  }
+
+/**
+ *
+ * Indicate whether a slot is current selected or not.
+ *
+ */
+private boolean slotIsSelected()
+  {
     Stave stave = getCurrentStave();
     return stave != null && stave.somethingSelected();
-    }
+  }
 
- 
-  
-    
-  /**
-   *
-   * Indicate whether a unique slot is current selected or not.
-   *
-   */
-  
-  private boolean oneSlotSelected()
-    {
+/**
+ *
+ * Indicate whether a unique slot is current selected or not.
+ *
+ */
+private boolean oneSlotSelected()
+  {
     return getCurrentStave().oneSlotSelected();
-    }
-    
-    
-    
-  /**
-   *
-   * Get the current Selection end.
-   *
-   */
-  
-  public MelodyPart getCurrentOrigPart(Stave stave)
-    {
-    return stave.getOrigPart();
-    }
-    
-    
-    
-  /**
-   *
-   * Get the current Selection end.
-   *
-   */
-  
-  public MelodyPart getCurrentOrigPart()
-    {
-    return getCurrentStave().getOrigPart();
-    }
+  }
 
-    
-    
+/**
+ * Get the melody part of a specific stave.
+ *
+ */
+
+public MelodyPart getMelodyPart(Stave stave)
+  {
+    return stave.getMelodyPart();
+  }
+
+/**
+ * Get the melody part of the current stave.
+ *
+ */
+
+public MelodyPart getCurrentMelodyPart()
+  {
+    return getCurrentStave().getMelodyPart();
+  }
+
+
   /**
-   *
-   * Selects all construction lines on the current Stave
+   * Select all construction lines on the current Stave.
    *
    */
   
@@ -13207,7 +13170,7 @@ private void exportToMusicXML()
 
     Stave stave = getCurrentStave();
 
-    stave.setSelection(0, stave.getOrigPart().size() - 1);
+    stave.setSelection(0, stave.getMelodyPart().size() - 1);
 
     redoAdvice();
 
@@ -13221,7 +13184,7 @@ private void exportToMusicXML()
     {
     Stave stave = getCurrentStave();
 
-    stave.setSelection(0, stave.getOrigPart().size() - 1);
+    stave.setSelection(0, stave.getMelodyPart().size() - 1);
     }
   
   /**
@@ -14608,7 +14571,7 @@ private boolean saveGlobalPreferences()
 
     // display the part composer
 
-    partComposerTF.setText(getCurrentOrigPart().getComposer());
+    partComposerTF.setText(getCurrentMelodyPart().getComposer());
 
     String inst;
 
@@ -14616,14 +14579,14 @@ private boolean saveGlobalPreferences()
       {
       inst = Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT);
       int instNumber = midiInstFromText(inst, 1);
-      getCurrentOrigPart().setInstrument(instNumber);
+      getCurrentMelodyPart().setInstrument(instNumber);
 
       melodyInst.setText(inst);
       //System.out.println("assigning melody instrument from default: " + inst);
       }
     else
       {
-      melodyInst.setText("" + (getCurrentOrigPart().getInstrument() + 1));
+      melodyInst.setText("" + (getCurrentMelodyPart().getInstrument() + 1));
       //System.out.println("assigning melody instrument from score: " + inst);
       }
 
@@ -14639,11 +14602,11 @@ private boolean saveGlobalPreferences()
 
     tempoTF.setText("" + score.getTempo());
 
-    keySignatureTF.setText("" + getCurrentOrigPart().getKeySignature());
+    keySignatureTF.setText("" + getCurrentMelodyPart().getKeySignature());
 
-    timeSignatureTopTF.setText("" + getCurrentOrigPart().getMetre()[0]);
+    timeSignatureTopTF.setText("" + getCurrentMelodyPart().getMetre()[0]);
 
-    timeSignatureBottomTF.setText("" + getCurrentOrigPart().getMetre()[1]);
+    timeSignatureBottomTF.setText("" + getCurrentMelodyPart().getMetre()[1]);
 
     Style style = score.getChordProg().getStyle();
 
@@ -14709,7 +14672,7 @@ private boolean saveGlobalPreferences()
       }
     else
       {
-      tempStaveType = getCurrentOrigPart().getStaveType();
+      tempStaveType = getCurrentMelodyPart().getStaveType();
       }
     setCurrentStaveType(tempStaveType);
     if(numStavesPP == 0)
@@ -14833,7 +14796,7 @@ private boolean saveGlobalPreferences()
 
     refreshCurrentTabTitle();
 
-    getCurrentOrigPart().setComposer(partComposerTF.getText());
+    getCurrentMelodyPart().setComposer(partComposerTF.getText());
 
     // set the part composer
 
@@ -14855,7 +14818,7 @@ private boolean saveGlobalPreferences()
       {
       instSetting = midiInstFromText(melodyInst.getText(), 1);
       }
-    getCurrentOrigPart().setInstrument(instSetting);
+    getCurrentMelodyPart().setInstrument(instSetting);
     
     
     // set the chord instrument number
@@ -16099,7 +16062,7 @@ public void setAdviceUsed()
     
     public void toggleMelodyEnharmonics() {
         cm.execute(new ToggleEnharmonicCommand(
-                getCurrentOrigPart(),
+                getCurrentMelodyPart(),
                 getCurrentSelectionStart(),
                 getCurrentSelectionEnd()));
     }
@@ -16121,7 +16084,7 @@ public void setAdviceUsed()
 
     // then reinit the length of the score
 
-    int[] metre = getCurrentOrigPart().getMetre();
+    int[] metre = getCurrentMelodyPart().getMetre();
 
     initMetreAndLength(metre[0], metre[1], false);
 
@@ -16144,7 +16107,7 @@ public void setAdviceUsed()
       {
 
       cm.execute(new SetRestCommand(getCurrentSelectionStart(),
-                                    getCurrentOrigPart()));
+                                    getCurrentMelodyPart()));
       redoAdvice();
       getCurrentStave().repaint();
       }
@@ -16442,7 +16405,7 @@ void enterMelody()
         if( oneSlotSelected() )
           {
             int slot = getCurrentSelectionStart();
-            displayAdviceTree(slot, 0, getCurrentStave().getOrigPart().getNote(slot));
+            displayAdviceTree(slot, 0, getCurrentStave().getMelodyPart().getNote(slot));
           }
     }//GEN-LAST:event_adviceMIActionPerformed
 
@@ -16484,7 +16447,7 @@ private void pasteMelody(Part part, Stave stave)
           }
 
         cm.execute(new SafePasteCommand(part,
-                                        getCurrentOrigPart(stave),
+                                        getMelodyPart(stave),
                                         getCurrentSelectionStart(stave),
                                         !alwaysPasteOver, true, this));
         justPasted = true;
@@ -16560,7 +16523,7 @@ void copyMelody()
 
     if( slotIsSelected() )
       {
-        cm.execute(new CopyCommand(getCurrentOrigPart(),
+        cm.execute(new CopyCommand(getCurrentMelodyPart(),
                                    impro.getMelodyClipboard(),
                                    getCurrentSelectionStart(),
                                    getCurrentSelectionEnd()));
@@ -16596,7 +16559,7 @@ void copyMelody()
 
     if( slotIsSelected() )
       {
-        cm.execute(new CutCommand(getCurrentOrigPart(),
+        cm.execute(new CutCommand(getCurrentMelodyPart(),
                                   impro.getMelodyClipboard(),
                                   getCurrentSelectionStart(),
                                   getCurrentSelectionEnd()));
@@ -16628,7 +16591,7 @@ void reverseMelody()
 
         noCountIn();
 
-        cm.execute(new ReverseCommand(getCurrentOrigPart(),
+        cm.execute(new ReverseCommand(getCurrentMelodyPart(),
                                       getCurrentSelectionStart(),
                                       getCurrentSelectionEnd(), true));
 
@@ -16658,7 +16621,7 @@ void invertMelody()
           }
 
         noCountIn();
-        cm.execute(new InvertCommand(getCurrentOrigPart(),
+        cm.execute(new InvertCommand(getCurrentMelodyPart(),
                                      getCurrentSelectionStart(),
                                      getCurrentSelectionEnd(), true));
 
@@ -16688,7 +16651,7 @@ void timeWarpMelody(int num, int denom)
             return;  // all rests
           }
 
-        cm.execute(new TimeWarpCommand(getCurrentOrigPart(),
+        cm.execute(new TimeWarpCommand(getCurrentMelodyPart(),
                                        getCurrentSelectionStart(),
                                        getCurrentSelectionEnd(), true, num, denom));
 
@@ -16939,7 +16902,7 @@ void timeWarpMelody(int num, int denom)
         stave.changeType(StaveType.AUTO);
         }
 
-      getCurrentOrigPart().setStaveType(StaveType.AUTO);
+      getCurrentMelodyPart().setStaveType(StaveType.AUTO);
 
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_autoStaveMIActionPerformed
@@ -16976,7 +16939,7 @@ private void setCurrentStaveType(StaveType t)
       }
 
     stave.changeType(t);
-    getCurrentOrigPart().setStaveType(t);
+    getCurrentMelodyPart().setStaveType(t);
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
   }
   
@@ -20146,19 +20109,21 @@ public void refreshGrammarEditor()
     grammarEditor.performEditorToSourceButton(null);
 }
 
-public void generateChorus(LickGen lickgen, int selectionStart)
+public void generateChorus(LickGen lickgen)
   {
+    int selectionStart = 0;
+
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
-    
+
     setMode(Mode.GENERATING);
 
     Stave stave = getCurrentStave();
 
     selectAll();
 
-    System.out.println("\ngenerateChorus totalSlots = " + totalSlots + " at " + selectionStart);
+    //System.out.println("\ngenerateChorus totalSlots = " + totalSlots + " at " + selectionStart);
 
     verifyTriageFields();
 
@@ -20170,14 +20135,14 @@ public void generateChorus(LickGen lickgen, int selectionStart)
       {
         // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
         // was commented out:
-        lickgen.getFillMelodyParameters(minPitch, 
-                                        maxPitch, 
+        lickgen.getFillMelodyParameters(minPitch,
+                                        maxPitch,
                                         minInterval,
-                                        maxInterval, 
-                                        BEAT, 
-                                        leapProb, 
+                                        maxInterval,
+                                        BEAT,
+                                        leapProb,
                                         chordProg,
-                                        0, 
+                                        0,
                                         avoidRepeats);
 
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
@@ -20209,15 +20174,20 @@ public void generateChorus(LickGen lickgen, int selectionStart)
                                                   maxDuration,
                                                   restProb);
           }
-        
+
         MelodyPart lick = generateLick(rhythm);
-        
+
         System.out.println("actual lick is " + (lick == null ? "null" : (lick.size() + " slots")));
-        
+
         // Critical point for recurrent generation
         if( lick != null )
           {
-          putLick(lick);
+            putLick(lick);
+          }
+        else
+          {
+            System.out.println("panic: null lick");
+            return;
           }
       }
 
@@ -20227,9 +20197,8 @@ public void generateChorus(LickGen lickgen, int selectionStart)
       }
 
     setMode(Mode.GENERATED);
-    
-    enableRecording(); // TRIAL
-   
+
+    // needed? enableRecording(); // TRIAL
   }
 
 public void generate(LickGen lickgen)
