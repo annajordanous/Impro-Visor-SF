@@ -737,6 +737,7 @@ public class Notate
     STEP_INPUT,
     GENERATING,
     GENERATED,
+    GENERATION_FAILED,
     ROADMAP,
     ADVICE,
     LEADSHEET_SAVED,
@@ -1153,12 +1154,12 @@ public class Notate
         if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
              && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
             {
+        System.out.println("Continue improvising: " + improviseStartSlot + " to " + improviseEndSlot);
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
                 
-                generateChorus(lickgen); // TRIAL
-                
-                slotInPlayback = 0; // TRIAL
+                 generateChorus(lickgen); // TRIAL
+                 slotInPlayback = improviseStartSlot; // TRIAL
             }
 
         // if( midiSynth.finishedPlaying() ) original
@@ -20109,9 +20110,30 @@ public void refreshGrammarEditor()
     grammarEditor.performEditorToSourceButton(null);
 }
 
+private void adjustSelection()
+  {
+    Stave stave = getCurrentStave();
+    boolean nothingWasSelected = !stave.somethingSelected();
+    boolean oneSlotWasSelected = stave.oneSlotSelected();
+    
+    if( nothingWasSelected )
+      {
+        selectAll();
+      }
+    else if( oneSlotWasSelected )
+      {
+        stave.setSelectionToEnd();
+      }    
+    else if( (stave.getSelectionEnd() - 1) % BEAT != 0 )
+      {
+        stave.setSelectionEnd(BEAT*(1 + stave.getSelectionEnd()/BEAT));
+      }
+  }
+
+
 public void generateChorus(LickGen lickgen)
   {
-    int selectionStart = 0;
+    int selectionStart = improviseStartSlot;
 
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
@@ -20121,8 +20143,10 @@ public void generateChorus(LickGen lickgen)
 
     Stave stave = getCurrentStave();
 
-    selectAll();
-
+    stave.setSelection(improviseStartSlot, improviseEndSlot);
+    
+    int totalSlots = improviseEndSlot - improviseStartSlot;
+    
     //System.out.println("\ngenerateChorus totalSlots = " + totalSlots + " at " + selectionStart);
 
     verifyTriageFields();
@@ -20146,6 +20170,7 @@ public void generateChorus(LickGen lickgen)
                                         avoidRepeats);
 
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
+
         if( solo != null )
           {
             rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
@@ -20170,7 +20195,8 @@ public void generateChorus(LickGen lickgen)
           }
         else
           {
-            rhythm = lickgen.generateRandomRhythm(totalSlots, minDuration,
+            rhythm = lickgen.generateRandomRhythm(totalSlots, 
+                                                  minDuration,
                                                   maxDuration,
                                                   restProb);
           }
@@ -20187,6 +20213,7 @@ public void generateChorus(LickGen lickgen)
         else
           {
             System.out.println("panic: null lick");
+            setMode(Mode.GENERATION_FAILED);
             return;
           }
       }
@@ -20201,6 +20228,7 @@ public void generateChorus(LickGen lickgen)
     // needed? enableRecording(); // TRIAL
   }
 
+
 public void generate(LickGen lickgen)
 {
     saveConstructionLineState = showConstructionLinesMI.isSelected();
@@ -20208,23 +20236,16 @@ public void generate(LickGen lickgen)
     setShowConstructionLinesAndBoxes(false);
     
     setMode(Mode.GENERATING);
+//
+//    adjustSelection();
+//
+//    Stave stave = getCurrentStave();
 
-    Stave stave = getCurrentStave();
-    boolean nothingWasSelected = !stave.somethingSelected();
-    boolean oneSlotWasSelected = stave.oneSlotSelected();
-    
-    if( nothingWasSelected )
-      {
-        selectAll();
-      }
-    else if( oneSlotWasSelected )
-      {
-        stave.setSelectionToEnd();
-      }
+    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
 
-    int selectionStart = stave.getSelectionStart(); // Most recently moved from above 'if'
+    int totalSlots = improviseEndSlot - improviseStartSlot;
 
-    System.out.println("\ngenerating totalSlots = " + totalSlots + " at " + selectionStart);
+//    System.out.println("\ngenerating totalSlots = " + totalSlots + " at " + selectionStart);
 
     verifyTriageFields();
 
@@ -20271,7 +20292,8 @@ public void generate(LickGen lickgen)
           }
         else
           {
-            rhythm = lickgen.generateRandomRhythm(totalSlots, minDuration,
+            rhythm = lickgen.generateRandomRhythm(totalSlots, 
+                                                  minDuration,
                                                   maxDuration,
                                                   restProb);
           }
@@ -20283,19 +20305,25 @@ public void generate(LickGen lickgen)
         // Critical point for recurrent generation
         if( lick != null )
           {
-          putLick(lick);
+            putLick(lick);
           }
-      }
+        else
+          {
+            System.out.println("panic: null lick");
+            setMode(Mode.GENERATION_FAILED);
+            return;
+          }
+     }
 
     if( rhythm != null )
       {
         lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
       }
-
-    if( oneSlotWasSelected )
-      {
-        stave.setSelection(selectionStart);
-      }
+//
+//    if( oneSlotWasSelected )
+//      {
+//        stave.setSelection(selectionStart);
+//      }
 
     setMode(Mode.GENERATED);
     
@@ -21241,7 +21269,7 @@ public void textRequestFocus()
   //textEntry.setSelectionEnd(length);
  }
 
-
+int improviseStartSlot, improviseEndSlot;
 
 public void improviseButtonToggled()
   {
@@ -21250,6 +21278,10 @@ public void improviseButtonToggled()
 
     if( improvisationOn )
       {
+        adjustSelection();
+        improviseStartSlot = getCurrentStave().getSelectionStart();
+        improviseEndSlot = getCurrentStave().getSelectionEnd();
+System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
         generate(lickgen);
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Quit</center></html>");

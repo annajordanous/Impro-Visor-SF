@@ -1847,15 +1847,21 @@ public boolean fillMelody(MelodyPart lick,
             // If we've already seen the chord, then get the index of that occurence, and
             // use that as the current section; otherwise, we mark the current chord as seen,
             // and increment the section.
-            if (chordUsed.indexOf(chordProg.getCurrentChord(pos).getName()) != -1) {
-                section = chordUsedSection.get(chordUsed.indexOf(
-                        chordProg.getCurrentChord(pos).getName()));
-            } else {
+            
+            // An out-of-range problem arose here May 11, 2012. RK tried to clean it up.
+            
+            String name = chordProg.getCurrentChord(pos).getName();
+            int nameIndex = chordUsed.indexOf(name);
+            if( nameIndex != -1 && nameIndex < chordUsedSection.size() )
+              {
+                section = chordUsedSection.get(nameIndex);
+              }
+            else
+              {
                 section = chordUsedSection.size();
-                chordUsed.add(chordProg.getCurrentChord(pos).getName());
+                chordUsed.add(name);
                 chordUsedSection.add(section);
-            }
-            index = chordProg.getNextUniqueChordIndex(pos);
+              }
         }
 //System.out.println("calcSection, index = " + index + " oldSection = " + oldSection + " section = " + section);
         return section;
