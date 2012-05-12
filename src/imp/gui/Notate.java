@@ -11999,131 +11999,103 @@ private void updateTempoFromTextField()
     
     
     
-    // Return an array of labels that have appropriate enharmonics
-    
-    // for the black notes.
-    
-    public String[] getNoteLabels(int location)
-    
-    {
-        
-        String[] notes = new String[12];
-        
-        Polylist preferredScale = lickgen.getPreferredScale();
-        
-        Polylist scaleTones = new Polylist();
-        
-        Polylist scales = chordProg.getCurrentChord(location).getScales();
-        
-        
-        
-        if (scales == null || scales.isEmpty() || preferredScale.isEmpty() ||
-                
-                ((String)preferredScale.second()).equals(NONE))
-            
-            scaleTones = Polylist.nil;
-        
-        else if (((String)preferredScale.second()).equals(FIRST_SCALE))
-            
-            scaleTones = chordProg.getCurrentChord(location).getFirstScale();
-        
-        else
-            
-            scaleTones = Advisor.getScale((String)preferredScale.first(), (String)preferredScale.second());
-        
-        
-        
-        boolean[] enh = score.getCurrentEnharmonics(location, scaleTones.append(chordProg.getCurrentChord(location).getPriority()));
-        
-        
-        
-        notes[0] = "C";
-        
-        notes[2] = "D";
-        
-        notes[4] = "E";
-        
-        notes[5] = "F";
-        
-        notes[7] = "G";
-        
-        notes[9] = "A";
-        
-        notes[11] = "B";
-        
-        
-        
-        if (enh[CSHARP] == true)
-            
-            notes[1] = "C#";
-        
-        else
-            
-            notes[1] = "Db";
-        
-        
-        
-        if (enh[DSHARP] == true)
-            
-            notes[3] = "D#";
-        
-        else
-            
-            notes[3] = "Eb";
-        
-        
-        
-        if (enh[FSHARP] == true)
-            
-            notes[6] = "F#";
-        
-        else
-            
-            notes[6] = "Gb";
-        
-        
-        
-        if (enh[GSHARP] == true)
-            
-            notes[8] = "G#";
-        
-        else
-            
-            notes[8] = "Ab";
-        
-        
-        
-        if (enh[ASHARP] == true)
-            
-            notes[10] = "A#";
-        
-        else
-            
-            notes[10] = "Bb";
-        
-        
-        
-        return notes;
-        
-    }
-    
-    
- /*
-    // Make sure that the values in the probability fields are between 0.0 and 1.0
-    
-    public void verifyProbs()
-    
-    {
-        
-        for (int i = 0; i < lickPrefs.size(); ++i)
-            
-            for (int j = 0; j < 12; ++j)
-                
-                doubleFromTextField(lickPrefs.get(i)[j], 0.0, Double.POSITIVE_INFINITY, 1.0);
-        
-    }
+/**
+ * Return an array of labels that have appropriate enharmonics
+ * for the black notes.
  */
     
+public String[] getNoteLabels(int location)
+  {
+    String[] notes = new String[12];
+
+    Polylist preferredScale = lickgen.getPreferredScale();
+
+    Polylist scaleTones;
+
+    Polylist scales = chordProg.getCurrentChord(location).getScales();
+
+    if( scales == null 
+     || scales.isEmpty()
+     || preferredScale.isEmpty()
+     || ((String) preferredScale.second()).equals(NONE) )
+      {
+        scaleTones = Polylist.nil;
+      }
+    else if( ((String) preferredScale.second()).equals(FIRST_SCALE) )
+      {
+        scaleTones = chordProg.getCurrentChord(location).getFirstScale();
+      }
+    else
+      {
+        scaleTones = Advisor.getScale((String) preferredScale.first(), (String) preferredScale.second());
+      }
+
+    boolean[] enh = score.getCurrentEnharmonics(location,
+                                                scaleTones.append(chordProg.getCurrentChord(location).getPriority()));
+
+    notes[0] = "C";
+
+    notes[2] = "D";
+
+    notes[4] = "E";
+
+    notes[5] = "F";
+
+    notes[7] = "G";
+
+    notes[9] = "A";
+
+    notes[11] = "B";
+
+    if( enh[CSHARP] == true )
+      {
+        notes[1] = "C#";
+      }
+    else
+      {
+        notes[1] = "Db";
+      }
+
+    if( enh[DSHARP] == true )
+      {
+        notes[3] = "D#";
+      }
+    else
+      {
+        notes[3] = "Eb";
+      }
+
+    if( enh[FSHARP] == true )
+      {
+        notes[6] = "F#";
+      }
+    else
+      {
+        notes[6] = "Gb";
+      }
+
+    if( enh[GSHARP] == true )
+      {
+        notes[8] = "G#";
+      }
+    else
+      {
+        notes[8] = "Ab";
+      }
+
+    if( enh[ASHARP] == true )
+      {
+        notes[10] = "A#";
+      }
+    else
+      {
+        notes[10] = "Bb";
+      }
+
+    return notes;
+  }
+    
+
 /**
   * Make sure the user has entered acceptable values for each of the other fields   
   * in the triage frame.
@@ -12136,6 +12108,11 @@ private void verifyTriageFields()
     getCurrentStave().repaint();
   }
 
+
+/**
+ * Save the lick in the vocabulary.
+ * @param saveSelection 
+ */
 private void saveLick(String saveSelection)
   {
     saveLickFrame.setVisible(false);
@@ -12190,26 +12167,24 @@ private MelodyPart makeLick(Polylist rhythm)
       }
 
     lickgen.setProbs(lickgenFrame.readProbs());
-    MelodyPart lick;
-
-    int len = lickgen.parseLength(rhythm);
-    int scoreLen = score.getLength();
-    int diff = len + getCurrentSelectionStart() - scoreLen;
-    if( diff > 0 )
-      {
-//        ErrorLog.log(ErrorLog.WARNING, "Lick is " + diff + 
-//                     " slots longer than available space of " + scoreLen 
-//                   + " slots.  Aborting.");
-
-        return null;
-      }
 
     // Fill in a melody according to the provided rhythm.
     // FIX - Currently, the lick generator doesn't support half beats; thus,
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
+    
+    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
+    
+    int actualSize = lick.size();
+    int desiredSize = score.getLength() - getCurrentSelectionStart() + 1;
+    
+    if( actualSize > desiredSize )
+      {
+        System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
+        lick = lick.extract(0, desiredSize-1);
+      }
 
-    return lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
+    return lick;
   }
     
 
