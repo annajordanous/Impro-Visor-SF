@@ -17,17 +17,17 @@
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package imp.com;
 
 import imp.data.MelodyPart;
 import imp.data.Part;
+import imp.gui.Stave;
 import imp.util.Trace;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  * A Command that pastes a Part over a section of a destination Part.
+ * This is intended for "dynamic" use, i.e. while improvising.
+ * It is adapted from SafePasteCommand
  * If it will overwrite existing notes, then it asks the user what to do.
  * @see         Command
  * @see         CommandManager
@@ -35,7 +35,7 @@ import javax.swing.JOptionPane;
  * @see         PasteCommand
  * @author      Stephen Jones
  */
-public class SafePasteCommand implements Command {
+public class DynamicPasteCommand implements Command {
 
     /**
      * the Part to paste from
@@ -89,7 +89,7 @@ public class SafePasteCommand implements Command {
      * @param dest      the Part to paste onto
      * @param startSlot the slot to paste at
      */
-    public SafePasteCommand(Part source, Part dest, int startSlot) {
+    public DynamicPasteCommand(Part source, Part dest, int startSlot) {
         this.source = source;
         this.dest = dest;
         this.startSlot = startSlot;
@@ -104,7 +104,7 @@ public class SafePasteCommand implements Command {
      * @param dialog    true if a dialog should be popped up
      * @param overwrite true if the command should overwrite by default
      */
-    public SafePasteCommand(Part source, Part dest, int startSlot, 
+    public DynamicPasteCommand(Part source, Part dest, int startSlot, 
                         boolean dialog, boolean overwrite) {
         this(source, dest, startSlot);
         this.overwrite = overwrite;
@@ -120,7 +120,7 @@ public class SafePasteCommand implements Command {
      * @param overwrite a boolean true if the command should default overwrite
      * @param frame     the JFrame to pop the dialog out of
      */
-    public SafePasteCommand(Part source, Part dest, int startSlot, 
+    public DynamicPasteCommand(Part source, Part dest, int startSlot, 
                         boolean dialog, boolean overwrite, 
                         imp.gui.Notate notate) {
         this(source, dest, startSlot, dialog, overwrite);
@@ -141,70 +141,11 @@ public class SafePasteCommand implements Command {
         int freeSlots = ((MelodyPart)dest).getFreeSlots(startSlot);
         Part fitPart = source.fitPart(freeSlots);
 
-        if(dialog) {
-            if(freeSlots < source.size()) {
-                int OVERWRITE = 0;
-                int COMPRESS = 1;
-                int CANCEL = 2;
-
-                Object[] options;
-                String text;
-                Object defaultOption;
-
-                // If we can't compress don't give them the option
-                if(fitPart == null) {
-                    options = new Object[2];
-                    text = "WARNING - Insertion will overwrite " +
-                        "exisiting notes.  There is not enough " +
-                        "room to compress insertion.  Do you want " +
-                        "to overwrite?";
-                    CANCEL = 1;
-                }
-
-                // If we can compress, let them know
-                else {
-                    options = new Object[3];
-                    text = "WARNING - Insertion will overwrite " +
-                        "existing notes.  Do you want to overwrite or " +
-                        "compress insertion?";
-                }
-
-                options[OVERWRITE] = "Overwrite";
-                options[COMPRESS] = "Compress";
-                options[CANCEL] = "Cancel";
-                defaultOption = options[CANCEL];
-
-                int n = JOptionPane.showOptionDialog((JFrame)notate,
-                        text, "Insert",
-                        JOptionPane.YES_NO_CANCEL_OPTION, 
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        defaultOption);
-
-                // handle the user input
-                if(n == OVERWRITE) {
-                    overwrite();
-                    return;
-                }
-                else if(n == CANCEL) {
-                    cancel();
-                    return;
-                }
-                else if(n == COMPRESS) {
-                    compress(fitPart);
-                    return;
-                }
-            }
-            overwrite();
-            return;
-        }
-
-        // if they didn't pop up the dialog, and we can't compress, cancel
-        if(fitPart == null) {
-            cancel();
-            return;
-        }
+//        // if they didn't pop up the dialog, and we can't compress, cancel
+//        if(fitPart == null) {
+//            cancel();
+//            return;
+//        }
 
         compress(fitPart);
     }
@@ -216,12 +157,10 @@ public class SafePasteCommand implements Command {
         undoable = true;
         pasteCommand = new PasteCommand(source, dest, startSlot, play);
         
+        Stave stave = notate.getStaveAtTab(notate.getCurrTabIndex());
         // selects the notes & rests just inserted
-        if (notate.getStaveAtTab(notate.getCurrTabIndex()) != null) {
-            notate.getStaveAtTab(notate.getCurrTabIndex()).setSelectionStart(
-                    startSlot);
-            notate.getStaveAtTab(notate.getCurrTabIndex()).setSelectionEnd(
-                    startSlot + source.size() - 1);
+        if ( stave != null) {
+            stave.setSelection(startSlot, startSlot + source.size() - 1);
 
         pasteCommand.execute();
         }

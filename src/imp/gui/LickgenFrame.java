@@ -2382,7 +2382,7 @@ public void redrawTriage()
 
             prefs[j].setHorizontalAlignment(javax.swing.JTextField.TRAILING);
 
-            if( oldProbs.size() > i )
+            if( oldProbs == null || oldProbs.size() > i )
               {
                 prefs[j].setText(oldProbs.get(i)[j].getText());
               }

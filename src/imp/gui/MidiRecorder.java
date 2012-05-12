@@ -37,10 +37,7 @@ import javax.sound.midi.Sequencer;
 public class MidiRecorder implements Constants, Receiver
 {
 Notate notate;
-
 MelodyPart melodyPart;
-
-
 Score score;
 Sequencer sequencer = null;
 int countInOffset;
@@ -113,7 +110,7 @@ void start()
 
     noteOff = noteOn = getTick();
     notePlaying = false;
-    notate.setCurrentSelectionStartAndEnd(0);
+    //notate.setCurrentSelectionStartAndEnd(0);  // Might not be starting at 0
 
     countInOffset = score.getCountInOffset();
   }
@@ -126,7 +123,7 @@ void start()
     
 public void send(MidiMessage message, long timeStamp)
   {
-    //System.out.println("received " + MidiFormatting.midiMessage2polylist(message));
+    //System.out.println("midiRecorder received " + MidiFormatting.midiMessage2polylist(message));
 
     byte[] m = message.getMessage();
     int note, channel, velocity;
@@ -228,7 +225,7 @@ void handleNoteOn(int note, int velocity, int channel)
       }
     catch( Exception e )
       {
-        //ErrorLog.log(ErrorLog.SEVERE, "Internal exception in MidiRecorder: " + e);
+        System.out.println("Internal exception in MidiRecorder: " + e);
       }
 
     notate.repaint();

@@ -1146,12 +1146,12 @@ public class Notate
         if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
              && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
             {
-        System.out.println("Continue improvising: " + improviseStartSlot + " to " + improviseEndSlot);
+        System.out.println("Continue improvising: " + improviseStartSlot + " to " + improviseEndSlot + " chorus # " + recurrentIteration);
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
                 
-                 generate(lickgen); // TRIAL
-                 slotInPlayback = improviseStartSlot; // TRIAL
+                generate(lickgen); // TRIAL
+                slotInPlayback = improviseStartSlot; // TRIAL
             }
 
         // if( midiSynth.finishedPlaying() ) original
@@ -12230,13 +12230,19 @@ public boolean putLick(MelodyPart lick)
     // it plays the selection.
     ImproVisor.setPlayEntrySounds(false);
     
-    // Ideally, would wait here
-    
-    pasteMelody(lick);
     
     int start = getCurrentSelectionStart();
     
     int stop = getCurrentSelectionEnd();
+    
+    int chorusSize = getChordProg().getSize();
+    
+    if( start >= chorusSize || stop >= chorusSize )
+      {
+        System.out.println("chorus size " + chorusSize + " exceeded, start = " + start + ", stop = " + stop + ", resetting");
+        start %= chorusSize;
+        stop %= chorusSize;
+      }
     
     // FIX:
     // stop <= start does happen. It seems to be due to some kind of data race.
@@ -12244,13 +12250,25 @@ public boolean putLick(MelodyPart lick)
     
     if( stop <= start )
       {
-        System.out.println("putlick aborted " + start + " - " + stop);
-        return false;
+        System.out.println("stop, start inverted: start = " + start + ", stop = " + stop + ", resetting");
+        start = 0;
+        stop = chorusSize - 1;
       }
+    
+    Stave stave = getCurrentStave();
 
+    // Ideally, would wait here
+
+    // Formerly used SafePasteCommand
+    
+    cm.execute(new DynamicPasteCommand(lick,
+                                       getMelodyPart(stave),
+                                       getCurrentSelectionStart(stave),
+                                       !alwaysPasteOver, true, this));
+    
     if( lickgenFrame.rectifySelected() )
       {
-        rectifySelection(getCurrentStave(), start, stop);
+        rectifySelection(stave, start, stop);
       }
 
     // Wait for playing to stop
