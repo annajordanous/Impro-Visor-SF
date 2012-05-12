@@ -5231,7 +5231,9 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
       {
         return;
       }
-    System.out.println("\nplaySelection, toEND = " + playToEndOfChorus + " loopCount = " + loopCount + ", useDrums = " + useDrums + " " + message);
+    //System.out.println("\nplaySelection, toEND = " + playToEndOfChorus + " loopCount = " + loopCount + ", useDrums = " + useDrums + " " + message);
+    System.out.println("playing " + message);
+    
     int partSize = getChordProg().getSize();
 
     int startIndex = getSelectionStart();
