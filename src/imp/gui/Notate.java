@@ -12264,7 +12264,7 @@ public boolean putLick(MelodyPart lick)
     cm.execute(new DynamicPasteCommand(lick,
                                        getMelodyPart(stave),
                                        getCurrentSelectionStart(stave),
-                                       !alwaysPasteOver, true, this));
+                                       stave));
     
     if( lickgenFrame.rectifySelected() )
       {
