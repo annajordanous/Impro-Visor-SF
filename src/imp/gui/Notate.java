@@ -1150,7 +1150,7 @@ public class Notate
                 recurrentIteration++;
                 setStatus("Chorus " + recurrentIteration);
                 
-                 generateChorus(lickgen); // TRIAL
+                 generate(lickgen); // TRIAL
                  slotInPlayback = improviseStartSlot; // TRIAL
             }
 
@@ -20118,107 +20118,107 @@ private void adjustSelection()
       }    
     else if( (stave.getSelectionEnd() - 1) % BEAT != 0 )
       {
-        stave.setSelectionEnd(BEAT*(1 + stave.getSelectionEnd()/BEAT));
+        stave.setSelectionEnd(BEAT*(1 + stave.getSelectionEnd()/BEAT) - 1);
       }
   }
 
 
-public void generateChorus(LickGen lickgen)
-  {
-    int selectionStart = improviseStartSlot;
-
-    saveConstructionLineState = showConstructionLinesMI.isSelected();
-    // Don't construction show lines while generating
-    setShowConstructionLinesAndBoxes(false);
-
-    setMode(Mode.GENERATING);
-
-    Stave stave = getCurrentStave();
-
-    stave.setSelection(improviseStartSlot, improviseEndSlot);
-    
-    totalSlots = improviseEndSlot - improviseStartSlot + 1;
-    
-    System.out.println("\ngenerateChorus: " + improviseStartSlot + " to " + improviseEndSlot + ", total = " + totalSlots/BEAT + " beats");
-
-    verifyTriageFields();
-
-    Polylist rhythm = null;
-
-    boolean useOutlines = lickgenFrame.useSoloistSelected();
-
-    if( useOutlines )
-      {
-        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-        // was commented out:
-        lickgen.getFillMelodyParameters(minPitch,
-                                        maxPitch,
-                                        minInterval,
-                                        maxInterval,
-                                        BEAT,
-                                        leapProb,
-                                        chordProg,
-                                        0,
-                                        avoidRepeats);
-
-        MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
-
-        if( solo != null )
-          {
-            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
-            if( lickgenFrame.useHeadSelected() )
-              {
-                adjustLickToHead(solo);
-              }
-            putLick(solo);
-          }
-      }
-
-    // If the outline is unable to generate a solo, which might
-    // happen if there are no outlines of the correct length or the soloist
-    // file was not correctly loaded, use the grammar.
-
-    if( rhythm == null || !useOutlines )
-      {
-
-        if( lickgenFrame.getUseGrammar() )
-          {
-            rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
-          }
-        else
-          {
-            rhythm = lickgen.generateRandomRhythm(totalSlots, 
-                                                  minDuration,
-                                                  maxDuration,
-                                                  restProb);
-          }
-
-        MelodyPart lick = generateLick(rhythm);
-
-        System.out.println("generated " + (lick == null ? "null" : (lick.size()/BEAT + " beats")));
-
-        // Critical point for recurrent generation
-        if( lick != null )
-          {
-            putLick(lick);
-          }
-        else
-          {
-            System.out.println("panic: null lick");
-            setMode(Mode.GENERATION_FAILED);
-            return;
-          }
-      }
-
-    if( rhythm != null )
-      {
-        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
-      }
-
-    setMode(Mode.GENERATED);
-
-    // needed? enableRecording(); // TRIAL
-  }
+//public void generateChorus(LickGen lickgen)
+//  {
+//    int selectionStart = improviseStartSlot;
+//
+//    saveConstructionLineState = showConstructionLinesMI.isSelected();
+//    // Don't construction show lines while generating
+//    setShowConstructionLinesAndBoxes(false);
+//
+//    setMode(Mode.GENERATING);
+//
+//    Stave stave = getCurrentStave();
+//
+//    stave.setSelection(improviseStartSlot, improviseEndSlot);
+//    
+//    totalSlots = improviseEndSlot - improviseStartSlot + 1;
+//    
+//    System.out.println("\ngenerateChorus: " + improviseStartSlot + " to " + improviseEndSlot + ", total = " + totalSlots/BEAT + " beats");
+//
+//    verifyTriageFields();
+//
+//    Polylist rhythm = null;
+//
+//    boolean useOutlines = lickgenFrame.useSoloistSelected();
+//
+//    if( useOutlines )
+//      {
+//        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+//        // was commented out:
+//        lickgen.getFillMelodyParameters(minPitch,
+//                                        maxPitch,
+//                                        minInterval,
+//                                        maxInterval,
+//                                        BEAT,
+//                                        leapProb,
+//                                        chordProg,
+//                                        0,
+//                                        avoidRepeats);
+//
+//        MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
+//
+//        if( solo != null )
+//          {
+//            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
+//            if( lickgenFrame.useHeadSelected() )
+//              {
+//                adjustLickToHead(solo);
+//              }
+//            putLick(solo);
+//          }
+//      }
+//
+//    // If the outline is unable to generate a solo, which might
+//    // happen if there are no outlines of the correct length or the soloist
+//    // file was not correctly loaded, use the grammar.
+//
+//    if( rhythm == null || !useOutlines )
+//      {
+//
+//        if( lickgenFrame.getUseGrammar() )
+//          {
+//            rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
+//          }
+//        else
+//          {
+//            rhythm = lickgen.generateRandomRhythm(totalSlots, 
+//                                                  minDuration,
+//                                                  maxDuration,
+//                                                  restProb);
+//          }
+//
+//        MelodyPart lick = generateLick(rhythm);
+//
+//        System.out.println("generated " + (lick == null ? "null" : (lick.size()/BEAT + " beats")));
+//
+//        // Critical point for recurrent generation
+//        if( lick != null )
+//          {
+//            putLick(lick);
+//          }
+//        else
+//          {
+//            System.out.println("panic: null lick");
+//            setMode(Mode.GENERATION_FAILED);
+//            return;
+//          }
+//      }
+//
+//    if( rhythm != null )
+//      {
+//        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
+//      }
+//
+//    setMode(Mode.GENERATED);
+//
+//    // needed? enableRecording(); // TRIAL
+//  }
 
 
 public void generate(LickGen lickgen)
