@@ -416,19 +416,11 @@ public class Notate
 
   private double totalBeats = 8;
 
-  private int totalSlots = (int)(BEAT*totalBeats);
+  private int totalSlots;
 
   private double restProb = 0.1;
 
   private double leapProb = 0.2;
-
-  private double chordToneWeight = 0.7;
-
-  private double scaleToneWeight = 0.1;
-
-  private double colorToneWeight = 0.05;
-
-  private double chordToneDecayRate = 0.1;
 
   private boolean avoidRepeats = true;
 
@@ -20145,9 +20137,9 @@ public void generateChorus(LickGen lickgen)
 
     stave.setSelection(improviseStartSlot, improviseEndSlot);
     
-    int totalSlots = improviseEndSlot - improviseStartSlot;
+    totalSlots = improviseEndSlot - improviseStartSlot + 1;
     
-    //System.out.println("\ngenerateChorus totalSlots = " + totalSlots + " at " + selectionStart);
+    System.out.println("\ngenerateChorus: " + improviseStartSlot + " to " + improviseEndSlot + ", total = " + totalSlots/BEAT + " beats");
 
     verifyTriageFields();
 
@@ -20203,7 +20195,7 @@ public void generateChorus(LickGen lickgen)
 
         MelodyPart lick = generateLick(rhythm);
 
-        System.out.println("actual lick is " + (lick == null ? "null" : (lick.size() + " slots")));
+        System.out.println("generated " + (lick == null ? "null" : (lick.size()/BEAT + " beats")));
 
         // Critical point for recurrent generation
         if( lick != null )
@@ -20243,9 +20235,9 @@ public void generate(LickGen lickgen)
 
     getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
 
-    int totalSlots = improviseEndSlot - improviseStartSlot;
+    totalSlots = improviseEndSlot - improviseStartSlot + 1;
 
-//    System.out.println("\ngenerating totalSlots = " + totalSlots + " at " + selectionStart);
+    System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", total = " + totalSlots/BEAT + " beats");
 
     verifyTriageFields();
 
@@ -20300,7 +20292,7 @@ public void generate(LickGen lickgen)
         
         MelodyPart lick = generateLick(rhythm);
         
-        System.out.println("actual lick is " + (lick == null ? "null" : (lick.size() + " slots")));
+        System.out.println("generated " + (lick == null ? "null" : (lick.size()/BEAT + " beats")));
         
         // Critical point for recurrent generation
         if( lick != null )
