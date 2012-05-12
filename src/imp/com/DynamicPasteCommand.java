@@ -19,15 +19,13 @@
  */
 package imp.com;
 
-import imp.data.MelodyPart;
 import imp.data.Part;
 import imp.gui.Stave;
-import imp.util.Trace;
 
 /**
  * A Command that pastes a Part over a section of a destination Part.
  * This is intended for "dynamic" use, i.e. while improvising.
- * It is adapted from SafePasteCommand
+ * It is adapted from SafePasteCommand.
  * If it will overwrite existing notes, then it asks the user what to do.
  * @see         Command
  * @see         CommandManager
@@ -57,16 +55,8 @@ public class DynamicPasteCommand implements Command {
      */
     private PasteCommand pasteCommand;
 
-    /**
-     * the JFrame to pop up the safe paste dialog from
-     */
-    private imp.gui.Notate notate = null;
     
-    /**
-     * if dialog is set to false, then this will tell whether we should
-     * overwrite by default or not
-     */
-    private boolean overwrite = true;
+    private Stave stave;
 
     /**
      * if the paste will overwrite existing notes, pop up a dialog if this is
@@ -81,36 +71,7 @@ public class DynamicPasteCommand implements Command {
     private boolean undoable = true;
 
     private boolean play = true;
-
-    /**
-     * Creates a new SafePasteCommand with default options for overwrite and
-     * dialog.
-     * @param source    the Part to paste from
-     * @param dest      the Part to paste onto
-     * @param startSlot the slot to paste at
-     */
-    public DynamicPasteCommand(Part source, Part dest, int startSlot) {
-        this.source = source;
-        this.dest = dest;
-        this.startSlot = startSlot;
-    }
-
-    /**
-     * Creates a new SafePasteCommand, specifying values for dialog and
-     * overwrite.
-     * @param source    the Part to paste from
-     * @param dest      the Part to paste onto
-     * @param startSlot the slot to paste at
-     * @param dialog    true if a dialog should be popped up
-     * @param overwrite true if the command should overwrite by default
-     */
-    public DynamicPasteCommand(Part source, Part dest, int startSlot, 
-                        boolean dialog, boolean overwrite) {
-        this(source, dest, startSlot);
-        this.overwrite = overwrite;
-        this.dialog = dialog;
-    }
-    
+  
     /**
      * Creates a new SafePasteCommand.
      * @param source    the Part to paste from
@@ -120,34 +81,22 @@ public class DynamicPasteCommand implements Command {
      * @param overwrite a boolean true if the command should default overwrite
      * @param frame     the JFrame to pop the dialog out of
      */
-    public DynamicPasteCommand(Part source, Part dest, int startSlot, 
-                        boolean dialog, boolean overwrite, 
-                        imp.gui.Notate notate) {
-        this(source, dest, startSlot, dialog, overwrite);
-        this.notate = notate;
+    public DynamicPasteCommand(Part source, 
+                               Part dest, 
+                               int startSlot, 
+                               Stave stave) {
+        this.source = source;
+        this.dest = dest;
+        this.startSlot = startSlot;
+        this.stave = stave;
     }
 
     /**
      * Executes the safe paste.
      */
     public void execute() {
-        Trace.log(2, "Executing SaftePasteCommand");
-        if(!dialog && overwrite) {
+
             overwrite();
-            return;
-        }
-
-        // Keep a copy of the compressed source, just in case we need it.
-        int freeSlots = ((MelodyPart)dest).getFreeSlots(startSlot);
-        Part fitPart = source.fitPart(freeSlots);
-
-//        // if they didn't pop up the dialog, and we can't compress, cancel
-//        if(fitPart == null) {
-//            cancel();
-//            return;
-//        }
-
-        compress(fitPart);
     }
 
     /**
@@ -157,7 +106,6 @@ public class DynamicPasteCommand implements Command {
         undoable = true;
         pasteCommand = new PasteCommand(source, dest, startSlot, play);
         
-        Stave stave = notate.getStaveAtTab(notate.getCurrTabIndex());
         // selects the notes & rests just inserted
         if ( stave != null) {
             stave.setSelection(startSlot, startSlot + source.size() - 1);
@@ -166,20 +114,6 @@ public class DynamicPasteCommand implements Command {
         }
     }
 
-    /**
-     * Takes a compressed part, sets it as the source, then pastes.
-     */
-    private void compress(Part fitPart) {
-        source = fitPart;
-        overwrite();
-    }
-
-    /**
-     * Cancels the paste, and makes the Command undoable.
-     */
-    private void cancel() {
-        undoable = false;
-    }
 
     /**
      * Undoes the paste.
