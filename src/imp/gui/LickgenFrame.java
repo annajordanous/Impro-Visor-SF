@@ -2259,7 +2259,7 @@ public void redrawTriage()
         return;
       }
 
-    int end = start + notate.getTotalSlots();
+    int end = notate.getCurrentSelectionEnd(); // start + notate.getTotalSlots();
 
 
     // Add the locations of every chord change in the section that we're
