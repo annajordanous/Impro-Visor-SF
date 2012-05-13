@@ -17081,7 +17081,6 @@ public void playScoreBody(int startAt)
 
       initCurrentPlaybackTab(0, 0);
 
-      loopsRemaining = getLoopCount();
       getStaveAtTab(0).playSelection(startAt, score.getTotalLength()-1, getLoopCount(), true, "playScoreBody");
       //getCurrentStave().play(startAt);
       }
@@ -21331,6 +21330,7 @@ public void improviseButtonToggled()
         adjustSelection();
         improviseStartSlot = getCurrentStave().getSelectionStart();
         improviseEndSlot = getCurrentStave().getSelectionEnd();
+        recurrentIteration = 1;
         //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
         generate(lickgen, improviseStartSlot, improviseEndSlot);
         improviseButton.setBackground(new Color(255, 0, 0));
@@ -23648,23 +23648,27 @@ public void showNewVoicingDialog()
 
   public int getLoopCount()
     {
+    int result;
     if( toLoop )
       {
       updateLoopFromTextField();
 
       if( loopCount <= 0 )
         {
-        return -1; // <= 0 means forever
+        result = -1; // <= 0 means forever
         }
       else
         {
-        return loopCount - 1; // let 1 mean only once, not twice, etc.
+        result = loopCount - 1; // let 1 mean only once, not twice, etc.
         }
       }
     else
       {
-      return 0; // don't loop
+      result = 0; // don't loop
       }
+    System.out.println("getLoopCount() returns " + result);
+    
+    return result;
     }
 
   public boolean getToLoop()
