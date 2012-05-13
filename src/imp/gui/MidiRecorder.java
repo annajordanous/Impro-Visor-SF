@@ -201,10 +201,11 @@ void handleNoteOn(int note, int velocity, int channel)
                 setNote(index, noteToAdd);
               }
 
-            if( index >= 0 )
-              {
-                //notate.setCurrentSelectionStartAndEnd(index);
-              }
+//This is disastrous for improvisation because it messes up the selection.
+//            if( index >= 0 )
+//              {
+//                //notate.setCurrentSelectionStartAndEnd(index);
+//              }
           }
         catch( Exception e )
           {

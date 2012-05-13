@@ -603,7 +603,7 @@ public void setPlayListener(MidiPlayListener listener)
 public void stop(String reason)
   {
     
-    System.out.println("Stopping sequencer because: " + reason);
+    //debug System.out.println("Stopping sequencer because: " + reason);
     
     if( sequencer != null )
       {

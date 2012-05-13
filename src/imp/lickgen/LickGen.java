@@ -706,20 +706,20 @@ public ArrayList<double[]> getProbs()
     return probs;
   }
 
-public void showProbs(String msg)
-  {
-    System.out.println(msg);
-    for( int i = 0; i < probs.size(); i++ )
-      {
-        double[] row = probs.get(i);
-        System.out.print("row " + i + ": " + row.length + " elements: ");
-        for( int j = 0; j < row.length; j++ )
-          {
-            System.out.print(" " + row[j]);
-          }
-        System.out.println();
-      }
-  }
+//public void showProbs(String msg)
+//  {
+//    System.out.println(msg);
+//    for( int i = 0; i < probs.size(); i++ )
+//      {
+//        double[] row = probs.get(i);
+//        System.out.print("row " + i + ": " + row.length + " elements: ");
+//        for( int j = 0; j < row.length; j++ )
+//          {
+//            System.out.print(" " + row[j]);
+//          }
+//        System.out.println();
+//      }
+//  }
 
 /**
  * Set note probabilites according to the values specified in the input array.
@@ -1302,7 +1302,7 @@ public boolean fillMelody(MelodyPart lick,
         System.out.println("\nlick: " + rhythmString);
       }
     
-    System.out.println("lickgen: fillMelody");
+    //debug System.out.println("lickgen: fillMelody");
     
     int section = 0;
     int index;

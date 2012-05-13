@@ -2557,7 +2557,7 @@ public MelodyPart fillMelody(int beatValue,
                              ChordPart chordProg,
                              int start)
   {
-System.out.println("LickgenFrame: fillMelody");
+   //debug System.out.println("LickgenFrame: fillMelody");
 
     MelodyPart result = lickgen.fillMelody(minPitch, 
                                            maxPitch, 
@@ -2570,7 +2570,7 @@ System.out.println("LickgenFrame: fillMelody");
                                            start, 
                                            avoidRepeats);
     
-System.out.println("fillMelody returns");
+    //debug System.out.println("fillMelody returns");
     return result;
   }
 
