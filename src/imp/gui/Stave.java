@@ -1367,6 +1367,7 @@ public Dimension getPreferredSize()
  */
 public void setSelectionStart(int index)
   {
+System.out.println("setSelectStart " + index);
     this.selectionStart = index;
 
     if( lockSelectionSize != -1 )
@@ -1382,7 +1383,8 @@ public void setSelectionStart(int index)
  */
 public void setSelectionEnd(int index)
   {
-    if( lockSelectionSize != -1 )
+System.out.println("setSelectEnd " + index);
+  if( lockSelectionSize != -1 )
       {
         this.selectionEnd = selectionStart + lockSelectionSize - 1;
       }
@@ -1400,6 +1402,7 @@ public void setSelectionEnd(int index)
  */
 public void setSelection(int start, int end)
   {
+System.out.println("setSelection " + start + " to " + end);
     selectionStart = start;
 
     if( lockSelectionSize != -1 )
