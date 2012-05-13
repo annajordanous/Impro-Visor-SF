@@ -203,7 +203,7 @@ void handleNoteOn(int note, int velocity, int channel)
 
             if( index >= 0 )
               {
-                notate.setCurrentSelectionStartAndEnd(index);
+                //notate.setCurrentSelectionStartAndEnd(index);
               }
           }
         catch( Exception e )

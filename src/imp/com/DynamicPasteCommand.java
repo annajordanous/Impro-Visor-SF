@@ -106,12 +106,12 @@ public class DynamicPasteCommand implements Command {
         undoable = true;
         pasteCommand = new PasteCommand(source, dest, startSlot, play);
         
-        // selects the notes & rests just inserted
-        if ( stave != null) {
-            stave.setSelection(startSlot, startSlot + source.size() - 1);
+//        // selects the notes & rests just inserted
+//        if ( stave != null) {
+//            stave.setSelection(startSlot, startSlot + source.size() - 1);
 
         pasteCommand.execute();
-        }
+//        }
     }
 
 

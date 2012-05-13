@@ -1301,8 +1301,11 @@ public boolean fillMelody(MelodyPart lick,
       {
         System.out.println("\nlick: " + rhythmString);
       }
+    
+    System.out.println("lickgen: fillMelody");
+    
     int section = 0;
-    int index = 0;
+    int index;
     chordUsed.clear();
     chordUsedSection.clear();
 
@@ -1590,7 +1593,7 @@ public boolean fillMelody(MelodyPart lick,
                         // Force the next type to be a chord tone for now -- can change this later.
                         int nextType = CHORD;
                         int nextPitch = pitch;
-                        boolean validNote = false;
+                        boolean validNote;
 
                         // Figure out what section the next note is in.
                         section = calcSection(chordProg, position, index, section);
@@ -1598,7 +1601,6 @@ public boolean fillMelody(MelodyPart lick,
                         // Get a note value for the next note.
                         for( int i = 0; i < NOTE_GEN_LIMIT; ++i )
                           {
-                            validNote = false;
                             nextPitch = getRandomNote(oldPitch, minInterval, maxInterval,
                                                       minPitch, maxPitch, section);
                             String pitchString =
@@ -1706,11 +1708,10 @@ public boolean fillMelody(MelodyPart lick,
                             oldPitch = Math.max(oldPitch - 12, minPitch);
                           }
                       }
-                    boolean validNote = false;
+                    boolean validNote;
 
                     for( int i = 0; i < NOTE_GEN_LIMIT; ++i )
                       {
-                        validNote = false;
                         pitch = getRandomNote(oldPitch, minInterval, maxInterval,
                                               minPitch, maxPitch, section);
                         String pitchString =
@@ -1744,11 +1745,10 @@ public boolean fillMelody(MelodyPart lick,
                             oldPitch = Math.max(oldPitch - 12, minPitch);
                           }
                       }
-                    boolean validNote = false;
+                    boolean validNote;
 
                     for( int i = 0; i < NOTE_GEN_LIMIT; ++i )
                       {
-                        validNote = false;
                         pitch = getRandomNote(oldPitch, minInterval, maxInterval,
                                               minPitch, maxPitch, section);
                         String pitchString =

@@ -2482,7 +2482,7 @@ public void redrawTriage()
 
 
     private void generateLickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLickButtonActionPerformed
-        notate.generate(lickgen);
+        notate.generateFromButton();
 }//GEN-LAST:event_generateLickButtonActionPerformed
 
 
@@ -2553,13 +2553,25 @@ public void setRhythmFieldText(String string)
 
     
 public MelodyPart fillMelody(int beatValue,
-                             Polylist rhythmString, ChordPart chordProg,
+                             Polylist rhythmString, 
+                             ChordPart chordProg,
                              int start)
   {
+System.out.println("LickgenFrame: fillMelody");
 
-    return lickgen.fillMelody(minPitch, maxPitch, minInterval, maxInterval,
-                              beatValue, leapProb, rhythmString, chordProg,
-                              start, avoidRepeats);
+    MelodyPart result = lickgen.fillMelody(minPitch, 
+                                           maxPitch, 
+                                           minInterval, 
+                                           maxInterval,
+                                           beatValue, 
+                                           leapProb, 
+                                           rhythmString, 
+                                           chordProg,
+                                           start, 
+                                           avoidRepeats);
+    
+System.out.println("fillMelody returns");
+    return result;
   }
 
     private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getAbstractMelodyButtonActionPerformed
@@ -4008,7 +4020,7 @@ private void triageAndGenerate(int number)
 }//GEN-LAST:event_toGrammarBtnActionPerformed
 
                         private void testGenerationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testGenerationActionPerformed
-                            notate.generate(lickgen);
+                            notate.generateFromButton();
 }//GEN-LAST:event_testGenerationActionPerformed
 
                         private void generateSoloButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateSoloButtonActionPerformed
