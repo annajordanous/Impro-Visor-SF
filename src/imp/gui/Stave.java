@@ -1367,7 +1367,7 @@ public Dimension getPreferredSize()
  */
 public void setSelectionStart(int index)
   {
-System.out.println("setSelectStart " + index);
+    //debug System.out.println("setSelectStart " + index);
     this.selectionStart = index;
 
     if( lockSelectionSize != -1 )
@@ -1383,7 +1383,7 @@ System.out.println("setSelectStart " + index);
  */
 public void setSelectionEnd(int index)
   {
-System.out.println("setSelectEnd " + index);
+  //debug System.out.println("setSelectEnd " + index);
   if( lockSelectionSize != -1 )
       {
         this.selectionEnd = selectionStart + lockSelectionSize - 1;
@@ -1402,7 +1402,7 @@ System.out.println("setSelectEnd " + index);
  */
 public void setSelection(int start, int end)
   {
-System.out.println("setSelection " + start + " to " + end);
+    //debug System.out.println("setSelection " + start + " to " + end);
     selectionStart = start;
 
     if( lockSelectionSize != -1 )
@@ -5235,7 +5235,7 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
         return;
       }
     //System.out.println("\nplaySelection, toEND = " + playToEndOfChorus + " loopCount = " + loopCount + ", useDrums = " + useDrums + " " + message);
-    System.out.println("playing " + message);
+    //debug System.out.println("playing " + message);
     
     int partSize = getChordProg().getSize();
 

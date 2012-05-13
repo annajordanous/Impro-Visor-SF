@@ -1146,8 +1146,11 @@ public class Notate
         if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
              && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
             {
-        System.out.println("Continue improvising: " + improviseStartSlot + " to " + improviseEndSlot + " chorus # " + recurrentIteration);
-                recurrentIteration++;
+            recurrentIteration++;
+          
+//     debug    System.out.println("Continue improvising: " + improviseStartSlot 
+//                             + " to " + improviseEndSlot 
+//                             + " chorus # " + recurrentIteration);
                 setStatus("Chorus " + recurrentIteration);
                 
                 generate(lickgen, improviseStartSlot, improviseEndSlot); // TRIAL
@@ -10162,7 +10165,7 @@ private void startRecording()
  */
 private void enableRecording()
   {
-System.out.println("enableRecording()");
+    //debug System.out.println("enableRecording()");
     turnStepInputOff();
     
     if( midiManager.getInDevice() == null )
@@ -10193,7 +10196,7 @@ System.out.println("enableRecording()");
 
     midiSynth.unregisterReceiver(midiStepInput);  // disable step input during recording
 
-    midiSynth.registerReceiver(midiRecorder);
+    // redundant midiSynth.registerReceiver(midiRecorder);
 
     midiRecorder.start();   // set time to 0
   }
@@ -12289,7 +12292,6 @@ public boolean putLick(MelodyPart lick)
 public MelodyPart generateLick(Polylist rhythm)
   {
     MelodyPart lick = makeLick(rhythm);
- System.out.println("generateLick: rhythm = " + rhythm + "\nlick = " + lick);
     if( lickgenFrame.useHeadSelected() )
       {
         adjustLickToHead(lick);
@@ -12301,7 +12303,7 @@ public MelodyPart generateLick(Polylist rhythm)
 public MelodyPart generateLick(Polylist rhythm, int start, int end)
   {
     MelodyPart lick = makeLick(rhythm, start, end);
-System.out.println("generateLick");
+    //debug System.out.println("generateLick");
     if( lickgenFrame.useHeadSelected() )
       {
         adjustLickToHead(lick);
@@ -20284,8 +20286,10 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
 //    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
 
     totalSlots = improviseEndSlot - improviseStartSlot + 1;
+    
+    int beatsRequested = totalSlots/BEAT;
 
-    System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + totalSlots/BEAT + " beats");
+    //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
 
     verifyTriageFields();
 
@@ -20343,7 +20347,13 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
         // Critical point for recurrent generation
         if( lick != null )
           {
-            System.out.println("generated " + (lick.size()/BEAT + " beats"));
+            int beatsGenerated = lick.size()/BEAT;
+            
+            if( beatsGenerated != beatsRequested )
+              {
+              System.out.println("generated " + beatsGenerated 
+                             + " beats, but " + beatsRequested + " requested");
+              }
         
             putLick(lick);
           }
@@ -21321,7 +21331,7 @@ public void improviseButtonToggled()
         adjustSelection();
         improviseStartSlot = getCurrentStave().getSelectionStart();
         improviseEndSlot = getCurrentStave().getSelectionEnd();
-System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
+        //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
         generate(lickgen, improviseStartSlot, improviseEndSlot);
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Quit</center></html>");
