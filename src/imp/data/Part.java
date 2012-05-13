@@ -1293,7 +1293,7 @@ public int getUnitRhythmValue(int unitIndex)
                 
         Part newPart = new Part(last-first+1);
 
-        for(int i = first; i <= last; i++)
+        for(int i = first; i < last; i++) // was <=, changed May 13 2012
             newPart.slots.set(i - first, slots.get(i));
 
         

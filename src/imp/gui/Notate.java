@@ -12255,10 +12255,10 @@ public boolean putLick(MelodyPart lick)
       }
     
     // FIX:
-    // stop <= start does happen. It seems to be due to some kind of data race.
+    // stop < start does happen. It seems to be due to some kind of data race.
     // Without the return, improvisation will grind to a halt.
     
-    if( stop <= start )
+    if( stop < start )
       {
         System.out.println("stop, start inverted: start = " + start + ", stop = " + stop + ", resetting");
         start = 0;
