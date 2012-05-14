@@ -10156,7 +10156,7 @@ private void startRecording()
 
     midiSynth.registerReceiver(midiRecorder);
 
-    midiRecorder.start();   // set time to 0
+    midiRecorder.start(score.getCountInOffset());   // set time to 0
   }
 
 
@@ -10198,7 +10198,7 @@ private void enableRecording()
 
     // redundant midiSynth.registerReceiver(midiRecorder);
 
-    midiRecorder.start();   // set time to 0
+    midiRecorder.start(0);   // set time to 0
   }
 
 
@@ -21327,17 +21327,18 @@ public void improviseButtonToggled()
 
     if( improvisationOn )
       {
+        // Count-in not currently compatible with improvising,
+        // so it is forced off.
+        countInCheckBox.setSelected(false);
+
+        // Looping is also automatically implied with improvisation.
+        loopButton.setSelected(false);
+
         adjustSelection();
         improviseStartSlot = getCurrentStave().getSelectionStart();
         improviseEndSlot = getCurrentStave().getSelectionEnd();
         
-        // Count-in not currently compatible with improvising,
-        // so it is forced off.
-        countInCheckBox.setSelected(false);
         
-        // Looping is also automatically implied with improvisation.
-        loopButton.setSelected(false);
-
         recurrentIteration = 1;
         //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
         generate(lickgen, improviseStartSlot, improviseEndSlot);

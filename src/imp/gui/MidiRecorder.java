@@ -94,7 +94,7 @@ public long getTick()
   }
 
     
-void start()
+void start(int countInOffset)
   {
     snapTo = BEAT/notate.getRecordSnapValue();
     this.sequencer = notate.getSequencer();
@@ -115,7 +115,7 @@ void start()
     // of countin.
     //notate.setCurrentSelectionStartAndEnd(0);
 
-    countInOffset = score.getCountInOffset();
+    this.countInOffset = countInOffset;
   }
 
 
