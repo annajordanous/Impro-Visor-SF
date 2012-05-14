@@ -7422,11 +7422,11 @@ public class Notate
 
         playToolBar.add(masterVolumePanel);
 
-        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (Beats per Minute)\n", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        tempoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tempo (Beats/Minute) ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         tempoPanel.setMaximumSize(new java.awt.Dimension(160, 50));
-        tempoPanel.setMinimumSize(new java.awt.Dimension(160, 50));
+        tempoPanel.setMinimumSize(new java.awt.Dimension(120, 50));
         tempoPanel.setOpaque(false);
-        tempoPanel.setPreferredSize(new java.awt.Dimension(160, 50));
+        tempoPanel.setPreferredSize(new java.awt.Dimension(130, 50));
         tempoPanel.setLayout(new java.awt.GridBagLayout());
 
         tempoSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -7434,8 +7434,8 @@ public class Notate
         tempoSet.setToolTipText("Set the tempo for the sheet in beats per minute.");
         tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
-        tempoSet.setMinimumSize(new java.awt.Dimension(35, 20));
-        tempoSet.setPreferredSize(new java.awt.Dimension(35, 20));
+        tempoSet.setMinimumSize(new java.awt.Dimension(30, 20));
+        tempoSet.setPreferredSize(new java.awt.Dimension(30, 20));
         tempoSet.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tempoSetMousePressed(evt);
@@ -7467,7 +7467,7 @@ public class Notate
         tempoSlider.setMinorTickSpacing(4);
         tempoSlider.setValue(160);
         tempoSlider.setMaximumSize(new java.awt.Dimension(120, 30));
-        tempoSlider.setMinimumSize(new java.awt.Dimension(40, 20));
+        tempoSlider.setMinimumSize(new java.awt.Dimension(80, 20));
         tempoSlider.setPreferredSize(new java.awt.Dimension(100, 20));
         tempoSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -7478,7 +7478,7 @@ public class Notate
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 60;
+        gridBagConstraints.ipadx = 30;
         gridBagConstraints.weightx = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 6, 5);
         tempoPanel.add(tempoSlider, gridBagConstraints);
@@ -7501,9 +7501,9 @@ public class Notate
         partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
         partBarsPanel.setMaximumSize(new java.awt.Dimension(50, 50));
-        partBarsPanel.setMinimumSize(new java.awt.Dimension(50, 50));
+        partBarsPanel.setMinimumSize(new java.awt.Dimension(40, 50));
         partBarsPanel.setOpaque(false);
-        partBarsPanel.setPreferredSize(new java.awt.Dimension(50, 50));
+        partBarsPanel.setPreferredSize(new java.awt.Dimension(45, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
         partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -7511,8 +7511,8 @@ public class Notate
         partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
         partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         partBarsTF1.setMaximumSize(new java.awt.Dimension(45, 15));
-        partBarsTF1.setMinimumSize(new java.awt.Dimension(45, 15));
-        partBarsTF1.setPreferredSize(new java.awt.Dimension(45, 15));
+        partBarsTF1.setMinimumSize(new java.awt.Dimension(30, 15));
+        partBarsTF1.setPreferredSize(new java.awt.Dimension(35, 15));
         partBarsTF1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 partBarsTF1MousePressed(evt);
@@ -7547,10 +7547,11 @@ public class Notate
         playToolBar.add(partBarsPanel);
 
         trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        trackerDelayPanel.setMaximumSize(new java.awt.Dimension(50, 63));
-        trackerDelayPanel.setMinimumSize(new java.awt.Dimension(50, 63));
+        trackerDelayPanel.setMaximumSize(new java.awt.Dimension(50, 50));
+        trackerDelayPanel.setMinimumSize(new java.awt.Dimension(40, 50));
         trackerDelayPanel.setOpaque(false);
-        trackerDelayPanel.setPreferredSize(new java.awt.Dimension(50, 45));
+        trackerDelayPanel.setPreferredSize(new java.awt.Dimension(40, 50));
+        trackerDelayPanel.setRequestFocusEnabled(false);
         trackerDelayPanel.setLayout(new java.awt.BorderLayout());
 
         trackerDelayTextField2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -7558,8 +7559,8 @@ public class Notate
         trackerDelayTextField2.setToolTipText("Set the delay between the tracker and playback.");
         trackerDelayTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         trackerDelayTextField2.setMaximumSize(new java.awt.Dimension(40, 20));
-        trackerDelayTextField2.setMinimumSize(new java.awt.Dimension(40, 20));
-        trackerDelayTextField2.setPreferredSize(new java.awt.Dimension(40, 20));
+        trackerDelayTextField2.setMinimumSize(new java.awt.Dimension(30, 20));
+        trackerDelayTextField2.setPreferredSize(new java.awt.Dimension(30, 20));
         trackerDelayTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trackerDelayTextField2ActionPerformed(evt);

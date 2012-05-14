@@ -3687,6 +3687,8 @@ public void verifyTriageFields()
 
 public void resetTriageParameters(boolean menu)
   {
+  try
+    {
     minPitchField.setText(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
 
     minPitch = Integer.parseInt(lickgen.getParameter(LickGen.MIN_PITCH_STRING));
@@ -3771,7 +3773,11 @@ public void resetTriageParameters(boolean menu)
         lickgen.setPreferredScale(lickgen.getParameter(LickGen.SCALE_ROOT),
                                   lickgen.getParameter(LickGen.SCALE_TYPE));
       }
-
+    }
+  catch( Exception e )
+    {
+      
+    }
   }
 
 
