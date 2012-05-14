@@ -1,6 +1,6 @@
 
-Welcome to Impro-Visor (Improvisation Advisor) Version 5.15,
-from Prof. Bob Keller at Harvey Mudd College, 2 May 2012.
+Welcome to Impro-Visor (Improvisation Advisor) Version 5.16,
+from Prof. Bob Keller at Harvey Mudd College, 14 May 2012.
 
 Release notes for this version may be found at the end.
 
@@ -89,6 +89,24 @@ Harvey Mudd College
 Claremont, CA 91711
 
 keller@cs.hmc.edu
+
+===============================================================================
+
+Release notes for Impro-Visor 5.16 
+
+Improves MIDI recording, allowing resolution to be set. 
+
+MIDI recording can now be done in conjunction with improvisation.
+
+Memory leakage during recording is greatly reduced.
+
+Re-organizes grammars for trading, in the form trade-4-A-chord, etc.
+Here 4 is the number of bars traded, A means the computer goes first,
+B means the user goes first. 'chord' means that tones are constrainted to
+chord tones and approach tones. 'color' means that color tones and
+scale tones are also used.
+
+The layout of the main window is changed slightly for better ergonomics.
 
 ===============================================================================
 
