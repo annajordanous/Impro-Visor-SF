@@ -21330,12 +21330,21 @@ public void improviseButtonToggled()
         adjustSelection();
         improviseStartSlot = getCurrentStave().getSelectionStart();
         improviseEndSlot = getCurrentStave().getSelectionEnd();
+        
+        // Count-in not currently compatible with improvising,
+        // so it is forced off.
+        countInCheckBox.setSelected(false);
+        
+        // Looping is also automatically implied with improvisation.
+        loopButton.setSelected(false);
+
         recurrentIteration = 1;
         //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
         generate(lickgen, improviseStartSlot, improviseEndSlot);
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Quit</center></html>");
-       }
+        
+        }
     else
       {
         improviseButton.setBackground(new Color(0, 255, 0));
