@@ -2112,7 +2112,6 @@ public class Notate
         sectionPreferencesBtn = new javax.swing.JButton();
         midiPreferencesBtn = new javax.swing.JButton();
         contourPreferencesBtn = new javax.swing.JButton();
-        earlyScrollBtn = new javax.swing.JToggleButton();
         playToolBar = new javax.swing.JToolBar();
         loopPanel = new javax.swing.JPanel();
         loopButton = new javax.swing.JToggleButton();
@@ -2143,6 +2142,7 @@ public class Notate
         trackerDelayPanel = new javax.swing.JPanel();
         trackerDelayTextField2 = new javax.swing.JTextField();
         parallaxSpinner = new javax.swing.JSpinner();
+        earlyScrollBtn = new javax.swing.JToggleButton();
         textEntryToolBar = new javax.swing.JToolBar();
         textEntryLabel = new javax.swing.JLabel();
         textEntry = new javax.swing.JTextField();
@@ -7075,25 +7075,6 @@ public class Notate
         });
         standardToolbar.add(contourPreferencesBtn);
 
-        earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
-        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        earlyScrollBtn.setSelected(true);
-        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
-        earlyScrollBtn.setToolTipText("Causes the staff display to scroll to the top earlier.");
-        earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        earlyScrollBtn.setFocusable(false);
-        earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.setOpaque(true);
-        earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
-        earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                earlyScrollBtnActionPerformed(evt);
-            }
-        });
-        standardToolbar.add(earlyScrollBtn);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -7618,6 +7599,25 @@ public class Notate
         parallaxSpinner.setMinimumSize(new java.awt.Dimension(55, 45));
         parallaxSpinner.setPreferredSize(new java.awt.Dimension(55, 45));
         playToolBar.add(parallaxSpinner);
+
+        earlyScrollBtn.setBackground(new java.awt.Color(51, 255, 255));
+        earlyScrollBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        earlyScrollBtn.setSelected(true);
+        earlyScrollBtn.setText("<html>\n<center>\nEarly\n<br>\nScroll\n</center>\n</html>\n");
+        earlyScrollBtn.setToolTipText("Causes the staff display to scroll to the top earlier.");
+        earlyScrollBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        earlyScrollBtn.setFocusable(false);
+        earlyScrollBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        earlyScrollBtn.setMaximumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setMinimumSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.setOpaque(true);
+        earlyScrollBtn.setPreferredSize(new java.awt.Dimension(40, 35));
+        earlyScrollBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                earlyScrollBtnActionPerformed(evt);
+            }
+        });
+        playToolBar.add(earlyScrollBtn);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
