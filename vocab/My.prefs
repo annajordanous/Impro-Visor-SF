@@ -25,7 +25,7 @@
 (contour-drawing-tones 1xx)
 (always-use-buttons nnnn)
 (create-roadmap n)
-(midi-in KEYBOARD)
+(midi-in RealTimeSequencer)
 (midi-out JavaSoundSynthesizer)
 (midi-echo y)
 (midi-in-latency 0.0)

@@ -34,12 +34,12 @@ import java.io.IOException;
  * Impro-Visor main class
  *
  * @author Stephen Jones, Aaron Wolin, Robert Keller
- * @version 5.15
+ * @version 5.16
  */
 
 public class ImproVisor implements Constants {
     
-    public static final String version = "5.15";
+    public static final String version = "5.16";
     
     private static boolean firstTime = false;
     
