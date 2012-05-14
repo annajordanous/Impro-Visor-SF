@@ -12249,7 +12249,7 @@ public boolean putLick(MelodyPart lick)
     
     if( start >= chorusSize || stop >= chorusSize )
       {
-        System.out.println("chorus size " + chorusSize + " exceeded, start = " + start + ", stop = " + stop + ", resetting");
+        //debug System.out.println("chorus size " + chorusSize + " exceeded, start = " + start + ", stop = " + stop + ", resetting");
         start %= chorusSize;
         stop %= chorusSize;
       }
@@ -20350,15 +20350,15 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
             
             if( beatsGenerated != beatsRequested )
               {
-              System.out.println("generated " + beatsGenerated 
-                             + " beats, but " + beatsRequested + " requested");
+              //debug System.out.println("generated " + beatsGenerated 
+              //              + " beats, but " + beatsRequested + " requested");
               }
         
             putLick(lick);
           }
         else
           {
-            System.out.println("panic: generated null lick");
+            //debug System.out.println("panic: generated null lick");
             setMode(Mode.GENERATION_FAILED);
             return;
           }
@@ -23666,7 +23666,7 @@ public void showNewVoicingDialog()
       {
       result = 0; // don't loop
       }
-    System.out.println("getLoopCount() returns " + result);
+    //System.out.println("getLoopCount() returns " + result);
     
     return result;
     }

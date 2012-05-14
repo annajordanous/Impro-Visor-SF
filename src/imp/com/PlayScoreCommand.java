@@ -153,10 +153,11 @@ public PlayScoreCommand(Score score,
  */
 public void execute()
   {
-    Trace.log(2,
-              "executing PlayScoreCommand, startTime = " + startTime 
-              + ", endLimitIndex = " + endLimitIndex
-              + " useDrums = " + useDrums);
+//    Trace.log(3,
+//              "executing PlayScoreCommand, startTime = " + startTime 
+//              + ", endLimitIndex = " + endLimitIndex
+//              + ", loopCount = " + loopCount
+//              + " useDrums = " + useDrums);
     score = score.copy();
 
     // Use plain style for note entry

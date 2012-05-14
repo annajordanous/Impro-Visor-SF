@@ -462,16 +462,16 @@ public void play(Score score,
          // set end time first, otherwise there might be an exception because
          // the start time is too large.
 
-// For some reason, this code breaks the combination of countIn with looping.
-// Omitting it doesn't seem to matter so far. RK 9 May 2012.
-//        if( endLimitIndex == ENDSCORE )
-//          {
-//          setLoopEndPoint(ENDSCORE);
-//          }
-//        else
-//          {
-//          setLoopEndPoint((endLimitIndex + countInOffset) * magicFactor);
-//          }
+// CAUTION: Changing this code may break the combination of countIn with looping.
+ 
+        if( endLimitIndex == ENDSCORE )
+          {
+          setLoopEndPoint(ENDSCORE);
+          }
+        else
+          {
+          setLoopEndPoint((endLimitIndex /*+ countInOffset*/) * magicFactor);
+          }
 
         if( countInOffset > 0 )
         {
@@ -539,6 +539,7 @@ public void setLoopEndPoint(long point)
 public void setLoopCount(int count)
 {
     sequencer.setLoopCount(count);
+    //System.out.println("sequencer.setLoopCount " + count);
 }
 
 
