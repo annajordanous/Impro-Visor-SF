@@ -110,7 +110,10 @@ void start()
 
     noteOff = noteOn = getTick();
     notePlaying = false;
-    //notate.setCurrentSelectionStartAndEnd(0);  // Might not be starting at 0
+    
+    // Without the next statement, entered notes are offset by the amount
+    // of countin.
+    //notate.setCurrentSelectionStartAndEnd(0);
 
     countInOffset = score.getCountInOffset();
   }
