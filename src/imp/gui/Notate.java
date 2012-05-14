@@ -2114,6 +2114,9 @@ public class Notate
         contourPreferencesBtn = new javax.swing.JButton();
         earlyScrollBtn = new javax.swing.JToggleButton();
         playToolBar = new javax.swing.JToolBar();
+        loopPanel = new javax.swing.JPanel();
+        loopButton = new javax.swing.JToggleButton();
+        loopSet = new javax.swing.JTextField();
         countInPanel = new javax.swing.JPanel();
         countInCheckBox = new javax.swing.JCheckBox();
         playBtn = new javax.swing.JButton();
@@ -2121,19 +2124,16 @@ public class Notate
         stopBtn = new javax.swing.JButton();
         recordBtn = new javax.swing.JButton();
         stepInputBtn = new javax.swing.JToggleButton();
-        mixerBtn = new javax.swing.JButton();
         chordStepBackButton = new javax.swing.JButton();
         chordStepForwardButton = new javax.swing.JButton();
         playbackPanel = new javax.swing.JPanel();
         playbackTime = new javax.swing.JLabel();
         playbackTotalTime = new javax.swing.JLabel();
         playbackSlider = new javax.swing.JSlider();
-        loopPanel = new javax.swing.JPanel();
-        loopButton = new javax.swing.JToggleButton();
-        loopSet = new javax.swing.JTextField();
         masterVolumePanel = new javax.swing.JPanel();
         allMuteToolBarBtn = new javax.swing.JToggleButton();
         allVolumeToolBarSlider = new javax.swing.JSlider();
+        mixerBtn = new javax.swing.JButton();
         tempoPanel = new javax.swing.JPanel();
         tempoSet = new javax.swing.JTextField();
         tempoSlider = new javax.swing.JSlider();
@@ -7118,6 +7118,85 @@ public class Notate
             }
         });
 
+        loopPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Looping", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
+        loopPanel.setMaximumSize(new java.awt.Dimension(90, 50));
+        loopPanel.setMinimumSize(new java.awt.Dimension(90, 50));
+        loopPanel.setOpaque(false);
+        loopPanel.setPreferredSize(new java.awt.Dimension(90, 50));
+        loopPanel.setLayout(new java.awt.GridBagLayout());
+
+        loopButton.setBackground(new java.awt.Color(0, 255, 0));
+        loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        loopButton.setText("<html><center>Loop</center></html>");
+        loopButton.setToolTipText("Toggle playback looping.");
+        loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
+        loopButton.setMinimumSize(new java.awt.Dimension(30, 20));
+        loopButton.setOpaque(true);
+        loopButton.setPreferredSize(new java.awt.Dimension(30, 20));
+        loopButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loopButtonActionPerformed(evt);
+            }
+        });
+        loopButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                loopButtonKeyPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 5);
+        loopPanel.add(loopButton, gridBagConstraints);
+
+        loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        loopSet.setText("0");
+        loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
+        loopSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        loopSet.setMaximumSize(new java.awt.Dimension(30, 20));
+        loopSet.setMinimumSize(new java.awt.Dimension(24, 20));
+        loopSet.setPreferredSize(new java.awt.Dimension(24, 20));
+        loopSet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loopSetActionPerformed(evt);
+            }
+        });
+        loopSet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                loopSetFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                loopSetFocusLost(evt);
+            }
+        });
+        loopSet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                loopSetKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                loopSetKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                loopSetKeyReleased(evt);
+            }
+        });
+        loopSet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                loopSetMousePressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
+        loopPanel.add(loopSet, gridBagConstraints);
+
+        playToolBar.add(loopPanel);
+
         countInPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Count", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.ABOVE_TOP, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         countInPanel.setToolTipText("Check to count in two measures before tune is played.");
         countInPanel.setMaximumSize(new java.awt.Dimension(40, 42));
@@ -7209,19 +7288,6 @@ public class Notate
         });
         playToolBar.add(stepInputBtn);
 
-        mixerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/mixer.gif"))); // NOI18N
-        mixerBtn.setToolTipText("Open Volume Mixer");
-        mixerBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        mixerBtn.setMaximumSize(new java.awt.Dimension(30, 30));
-        mixerBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        mixerBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        mixerBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mixerBtnActionPerformed(evt);
-            }
-        });
-        playToolBar.add(mixerBtn);
-
         chordStepBackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playReversedGreen.gif"))); // NOI18N
         chordStepBackButton.setToolTipText("Move back to the previous chord (without playing).\n");
         chordStepBackButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -7310,85 +7376,6 @@ public class Notate
 
         playToolBar.add(playbackPanel);
 
-        loopPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Looping", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
-        loopPanel.setMaximumSize(new java.awt.Dimension(90, 50));
-        loopPanel.setMinimumSize(new java.awt.Dimension(90, 50));
-        loopPanel.setOpaque(false);
-        loopPanel.setPreferredSize(new java.awt.Dimension(90, 50));
-        loopPanel.setLayout(new java.awt.GridBagLayout());
-
-        loopButton.setBackground(new java.awt.Color(0, 255, 0));
-        loopButton.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        loopButton.setText("<html><center>Loop</center></html>");
-        loopButton.setToolTipText("Toggle playback looping.");
-        loopButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        loopButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        loopButton.setMaximumSize(new java.awt.Dimension(30, 20));
-        loopButton.setMinimumSize(new java.awt.Dimension(30, 20));
-        loopButton.setOpaque(true);
-        loopButton.setPreferredSize(new java.awt.Dimension(30, 20));
-        loopButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loopButtonActionPerformed(evt);
-            }
-        });
-        loopButton.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                loopButtonKeyPressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 10;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 5);
-        loopPanel.add(loopButton, gridBagConstraints);
-
-        loopSet.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        loopSet.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        loopSet.setText("0");
-        loopSet.setToolTipText("Loop  on playback specified number of times (0 means loop forever; press k or stop button to stop).");
-        loopSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        loopSet.setMaximumSize(new java.awt.Dimension(30, 20));
-        loopSet.setMinimumSize(new java.awt.Dimension(24, 20));
-        loopSet.setPreferredSize(new java.awt.Dimension(24, 20));
-        loopSet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loopSetActionPerformed(evt);
-            }
-        });
-        loopSet.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                loopSetFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                loopSetFocusLost(evt);
-            }
-        });
-        loopSet.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                loopSetKeyTyped(evt);
-            }
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                loopSetKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                loopSetKeyReleased(evt);
-            }
-        });
-        loopSet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                loopSetMousePressed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
-        loopPanel.add(loopSet, gridBagConstraints);
-
-        playToolBar.add(loopPanel);
-
         masterVolumePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Volume", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         masterVolumePanel.setMaximumSize(new java.awt.Dimension(130, 50));
         masterVolumePanel.setMinimumSize(new java.awt.Dimension(100, 50));
@@ -7397,15 +7384,15 @@ public class Notate
         masterVolumePanel.setLayout(new java.awt.GridBagLayout());
 
         allMuteToolBarBtn.setBackground(new java.awt.Color(0, 255, 0));
-        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        allMuteToolBarBtn.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         allMuteToolBarBtn.setText("<html><center>Mute</center></html>");
         allMuteToolBarBtn.setToolTipText("Play or not play notes as they are inserted?");
         allMuteToolBarBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         allMuteToolBarBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(30, 20));
-        allMuteToolBarBtn.setMinimumSize(new java.awt.Dimension(30, 20));
+        allMuteToolBarBtn.setMaximumSize(new java.awt.Dimension(40, 20));
+        allMuteToolBarBtn.setMinimumSize(new java.awt.Dimension(32, 20));
         allMuteToolBarBtn.setOpaque(true);
-        allMuteToolBarBtn.setPreferredSize(new java.awt.Dimension(30, 20));
+        allMuteToolBarBtn.setPreferredSize(new java.awt.Dimension(32, 20));
         allMuteToolBarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 allMuteToolBarBtnActionPerformed(evt);
@@ -7413,7 +7400,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weightx = 0.2;
         masterVolumePanel.add(allMuteToolBarBtn, gridBagConstraints);
 
         allVolumeToolBarSlider.setMajorTickSpacing(5);
@@ -7422,7 +7409,7 @@ public class Notate
         allVolumeToolBarSlider.setValue(80);
         allVolumeToolBarSlider.setMaximumSize(new java.awt.Dimension(120, 20));
         allVolumeToolBarSlider.setMinimumSize(new java.awt.Dimension(80, 20));
-        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(90, 20));
+        allVolumeToolBarSlider.setPreferredSize(new java.awt.Dimension(100, 20));
         allVolumeToolBarSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 allVolumeToolBarSliderStateChanged(evt);
@@ -7430,9 +7417,27 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weightx = 0.6;
         masterVolumePanel.add(allVolumeToolBarSlider, gridBagConstraints);
+
+        mixerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/mixer.gif"))); // NOI18N
+        mixerBtn.setToolTipText("Open Volume Mixer");
+        mixerBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        mixerBtn.setFocusable(false);
+        mixerBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        mixerBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        mixerBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        mixerBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        mixerBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        mixerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mixerBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
+        masterVolumePanel.add(mixerBtn, gridBagConstraints);
 
         playToolBar.add(masterVolumePanel);
 
@@ -7448,8 +7453,8 @@ public class Notate
         tempoSet.setToolTipText("Set the tempo for the sheet in beats per minute.");
         tempoSet.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tempoSet.setMaximumSize(new java.awt.Dimension(40, 20));
-        tempoSet.setMinimumSize(new java.awt.Dimension(40, 20));
-        tempoSet.setPreferredSize(new java.awt.Dimension(40, 20));
+        tempoSet.setMinimumSize(new java.awt.Dimension(35, 20));
+        tempoSet.setPreferredSize(new java.awt.Dimension(35, 20));
         tempoSet.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tempoSetMousePressed(evt);
@@ -7472,7 +7477,7 @@ public class Notate
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 0.4;
         gridBagConstraints.insets = new java.awt.Insets(3, 5, 5, 0);
         tempoPanel.add(tempoSet, gridBagConstraints);
 
@@ -7481,7 +7486,7 @@ public class Notate
         tempoSlider.setMinorTickSpacing(4);
         tempoSlider.setValue(160);
         tempoSlider.setMaximumSize(new java.awt.Dimension(120, 30));
-        tempoSlider.setMinimumSize(new java.awt.Dimension(36, 20));
+        tempoSlider.setMinimumSize(new java.awt.Dimension(40, 20));
         tempoSlider.setPreferredSize(new java.awt.Dimension(100, 20));
         tempoSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -7493,7 +7498,7 @@ public class Notate
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 60;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 6, 5);
         tempoPanel.add(tempoSlider, gridBagConstraints);
 
