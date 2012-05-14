@@ -1990,7 +1990,7 @@
     (key db)
     (family half-diminished)
     (spell c8 eb8 gb8 bb8)
-    (color d8 f8 ab8)
+    (color db8 d8 f8 ab8 a8)
     (priority gb8 eb8 bb8 c8)
     (approach (c8 b8 c#8 d8) (eb8 d8 e8 f8) (gb8 f8 g8) (bb8 a8 b8))
     (voicings
@@ -2039,7 +2039,7 @@
     (key db)
     (family half-diminished)
     (spell c8 eb8 bb8 gb8 d8)
-    (color f8 ab8)
+    (color f8 ab8 a8)
     (priority eb8 bb8 gb8 d8 c8)
     (approach (c8 b8 c#8) (eb8 d8 e8 f8) (gb8 f8 g8) (bb8 a8 b8) (d8 c#8))
     (voicings
@@ -3053,7 +3053,7 @@
     (key f)
     (family sus4)
     (spell c8 f8 g8 bb8)
-    (color a8 d8 db8)
+    (color e8 a8 d8 db8)
     (priority f8 bb8 g8 c8)
     (approach (c8 b8 c#8 d8) (f8 f#8) (g8 f#8 g#8) (bb8 a8 b8))
     (voicings
@@ -3084,7 +3084,7 @@
     (key f)
     (family sus4)
     (spell c8 f8 g8 bb8 d8)
-    (color a8)
+    (color e8 a8)
     (priority f8 bb8 d8 g8 c8)
     (approach (c8 b8 c#8) (f8 f#8) (g8 f#8 g#8) (bb8 a8 b8) (d8 c#8))
     (voicings
@@ -3367,7 +3367,7 @@
     (key f)
     (family dominant)
     (spell c8 e8 g#8 bb8 d#8)
-    (color db8 gb8)
+    (color db8 gb8 g8)
     (priority d#8 g#8 bb8 e8 c8)
     (approach (c8 b8) (e8 f8) (g#8 g8 a8) (bb8 a8 b8) (d#8 d8))
     (voicings
