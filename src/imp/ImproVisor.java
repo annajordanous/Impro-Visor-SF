@@ -176,11 +176,6 @@ public class ImproVisor implements Constants {
       return playInsertions;
       }
     
-    public static void playCurrentSelection(boolean toEnd, int loop)
-      {
-      playCurrentSelection(toEnd, loop, true);
-      }
-
     /**
      * Play the current selection
      */
