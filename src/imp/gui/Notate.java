@@ -18629,7 +18629,7 @@ public void rectifySelection()
   {
     Stave stave = getCurrentStave();
     rectifySelection(stave, getCurrentSelectionStart(), getCurrentSelectionEnd());
-    stave.playSelection(false, getLoopCount(), PlayScoreCommand.NODRUMS, "Notate rectifySelection");
+    stave.playSelection(false, 0, PlayScoreCommand.NODRUMS, "Notate rectifySelection");
   }
 
     private void defaultTempoTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defaultTempoTFActionPerformed
