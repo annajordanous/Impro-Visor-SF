@@ -44,6 +44,11 @@ import polya.Polylist;
 public class StaveActionHandler
   implements Constants, MouseListener, MouseMotionListener, KeyListener
 {
+/**
+ * Whether to use cursor shaped like a note for entering notes.
+ */
+
+boolean useNoteCursor = false;
 
 /**
  * bias estimate for parallax
@@ -462,7 +467,7 @@ StaveActionHandler(Stave stave, Notate notate)
 
   penCursor = makeCursor("graphics/toolbar/pencilCursor.png", "Pencil", true);
   
-  noteCursor = defaultCursor; // makeCursor("graphics/noteCursor.png", "Note", false);
+  noteCursor = useNoteCursor? makeCursor("graphics/noteCursor.png", "Note", true) : defaultCursor;
  }
 
 
