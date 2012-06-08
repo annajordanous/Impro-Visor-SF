@@ -25,6 +25,7 @@ import imp.Constants;
 import imp.util.ErrorLog;
 import imp.util.Trace;
 import java.io.Serializable;
+import java.util.ArrayList;
 import polya.Polylist;
 import polya.PolylistBuffer;
 import polya.PolylistEnum;
@@ -723,6 +724,16 @@ public Polylist getSpell(String root, Key key)
 public boolean[] getSpellVector(String root, Key key)
   {
     return NoteSymbol.noteSymbolListToBitVector(getSpell(root, key));
+  }
+
+public ArrayList<Integer> getSpellMIDIarray(String root)
+  {
+    return NoteSymbol.noteSymbolListToMIDIarray(getSpell(root, Key.Ckey));
+  }
+
+public ArrayList<Integer> getColorMIDIarray(String root)
+  {
+    return NoteSymbol.noteSymbolListToMIDIarray(getColor(root, Key.Ckey));
   }
 
 public Polylist getPriority(String root)

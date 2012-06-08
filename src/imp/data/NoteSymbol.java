@@ -22,6 +22,7 @@ package imp.data;
 
 import imp.Constants;
 import java.io.Serializable;
+import java.util.ArrayList;
 import polya.Polylist;
 
 /**
@@ -813,6 +814,29 @@ static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList, int rise)
     noteSymbolList = noteSymbolList.rest();
     }
   return result;
+  }
+
+static ArrayList<Integer> noteSymbolListToMIDIarray(Polylist noteSymbolList, int rise)
+  {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+    while( noteSymbolList.nonEmpty() )
+    {
+    NoteSymbol noteSymbol = (NoteSymbol)noteSymbolList.first();
+    
+    if( noteSymbol.getPitchClass() != null )
+      {
+      NoteSymbol transposed = noteSymbol.transpose(rise);
+      result.add(transposed.getMIDI());
+      }
+    noteSymbolList = noteSymbolList.rest();
+    }
+    
+  return result;
+  }
+
+static ArrayList<Integer> noteSymbolListToMIDIarray(Polylist noteSymbolList)
+  {
+  return noteSymbolListToMIDIarray(noteSymbolList, 0);
   }
 
 /**

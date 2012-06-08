@@ -1313,12 +1313,17 @@ public Polylist getChordTree(ChordSymbol chordSymbol,
 
   Polylist rootPosition = chordForm.getSpell(chordRoot, key);
   
-  // Kevin: For illustration: The next two statements should be commented out later.
+  // Kevin and Audrey: For illustration: The next two statements should be commented out later.
   
   boolean vector[] = chordForm.getSpellVector(chordRoot, key);
   
-  System.out.println("bit vector for " + chordSymbol + " is " + NoteSymbol.showContents(vector));
-
+  ArrayList<Integer> chordMIDI = chordForm.getSpellMIDIarray(chordRoot);
+  ArrayList<Integer> colorMIDI = chordForm.getColorMIDIarray(chordRoot);
+ 
+  System.out.println("ChordSymbol: " + chordSymbol + " bit vector: " + NoteSymbol.showContents(vector) 
+                     + ", chord MIDI: " + chordMIDI
+                     + ", color MIDI: " + colorMIDI);
+  
   int rise = PitchClass.findRise(chordRoot);
 
   assert (rootPosition != null);
