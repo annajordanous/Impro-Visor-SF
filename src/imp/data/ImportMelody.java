@@ -126,24 +126,37 @@ public static int noteArray2ImpPart(ArrayList<jm.music.data.Note> origNoteArray,
                                 int slot,
                                 int precision)
   {
+    int accumulatedSpace = 0;
+    
     for( jm.music.data.Note note : origNoteArray ) 
       {
+        //System.out.println("time = " + time + ", time*120 = " + time*120 + ", slot = " + slot);
+        int diff = precision*(int)((slot - 120*time)/precision);
+        if( diff > 0 )
+          {
+            accumulatedSpace += diff;
+            slot += diff;
+          }
         double origRhythmValue = note.getRhythmValue();
-         if( note.isRest() )
+        if( note.isRest() )
           {
           int rhythmValue = precision*(int)((BEAT*(time + origRhythmValue) - slot)/precision);
-          Note newRest = Note.makeRest(rhythmValue);
+          Note newRest = new Rest(rhythmValue + accumulatedSpace);
           partOut.addNote(newRest);
+          accumulatedSpace = 0;
           slot += rhythmValue;
          }
         else
           {
-          Note newNote = new Note(note.getPitch(),
-                  precision*(int)Math.round((BEAT * note.getRhythmValue()) / precision));
-          partOut.addNote(newNote);
-        //System.out.println("beat " + slot/FBEAT + ": " + note.getDuration() + " -> " + newNote);
-          int rhythmValue = newNote.getRhythmValue();
-          slot += rhythmValue;
+          int rhythmValue = precision*(int)Math.round((BEAT * note.getRhythmValue()) / precision);
+          if( rhythmValue > 0 )
+            {
+            Note newNote = new Note(note.getPitch(), rhythmValue);
+                   
+            partOut.addNote(newNote);
+            //System.out.println("beat " + slot/FBEAT + ": " + note.getDuration() + " -> " + newNote);
+            slot += rhythmValue;
+            }
           }
         time += origRhythmValue;
       }  
