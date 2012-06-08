@@ -634,6 +634,15 @@ public class NoteSymbol extends MelodySymbol
      {
      return pitchClass;
      }
+   
+    /**
+     * Return the PitchClass for this NoteSymbol
+     */
+
+   public int getPitchClassIndex()
+     {
+     return pitchClass.getSemitones();
+     }
 
     /**
      * Return the PitchClass name for this NoteSymbol
@@ -712,8 +721,8 @@ public static Polylist makeNoteSymbolList(Polylist stringList)
 
 public static Polylist makeNoteSymbolList(Polylist stringList, int rise)
   {
-//System.out.print("makeNoteSymbolList " + stringList);
-    Polylist R = Polylist.nil;
+  //System.out.print("makeNoteSymbolList " + stringList);
+  Polylist R = Polylist.nil;
     while( stringList.nonEmpty() )
       {
         Object ob = stringList.first();
@@ -741,6 +750,7 @@ public static Polylist makeNoteSymbolList(Polylist stringList, int rise)
           }
         stringList = stringList.rest();
       }
+//System.out.println(", rise = " + rise + ", bits = " + showContents(noteSymbolListToBitVector(R)));
 //System.out.println(", rise = " + rise + " to " + R.reverse());
     return R.reverse();
   }
@@ -774,6 +784,67 @@ static Polylist noteSymbolListToStringList(Polylist noteSymbolList, int rise)
   return R.reverse();
   }
 
+
+/**
+ * Convert a list of NoteSymbols, transposed by a specified distance, to a
+ * bitVector, i.e. an array of booleans
+ * @param noteSymbolList
+ * @param rise
+ * @return an array of booleans representing the notes in the argument list
+ *         after transposition by rise
+ */
+
+static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList, int rise)
+  {
+  boolean result[] = new boolean[OCTAVE];
+  for( int i = 0; i < OCTAVE; i++ )
+    {
+      result[i] = false;
+    }
+  
+  while( noteSymbolList.nonEmpty() )
+    {
+    NoteSymbol noteSymbol = (NoteSymbol)noteSymbolList.first();
+    if( noteSymbol.getPitchClass() != null )
+      {
+      NoteSymbol transposed = noteSymbol.transpose(rise);
+      result[transposed.getPitchClassIndex()%OCTAVE] = true;
+      }
+    noteSymbolList = noteSymbolList.rest();
+    }
+  return result;
+  }
+
+/**
+ * Show the contents of an array of booleans;
+ * @param array
+ * @return 
+ */
+static String showContents(boolean[] array)
+  {
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("[");
+    for( boolean x: array)
+      {
+        buffer.append(x ? "1 " : "0 ");
+      }
+    buffer.append("]");
+    return buffer.toString();
+  }
+
+
+/**
+ * Convert a list of NoteSymbols to a bitVector, i.e. an array of booleans
+ * @param noteSymbolList
+ * @return an array of booleans representing the notes in the argument list
+  */
+
+static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList)
+  {
+    return noteSymbolListToBitVector(noteSymbolList, 0);
+  }
+
+  
   /**
    * Determines if a string is a valid note in leadsheet notation.
    */
