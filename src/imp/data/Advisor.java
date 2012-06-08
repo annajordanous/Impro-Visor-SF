@@ -1312,6 +1312,12 @@ public Polylist getChordTree(ChordSymbol chordSymbol,
   NoteSymbol rootSymbol = NoteSymbol.makeNoteSymbol(chordRoot);
 
   Polylist rootPosition = chordForm.getSpell(chordRoot, key);
+  
+  // Kevin: For illustration: The next two statements should be commented out later.
+  
+  boolean vector[] = chordForm.getSpellVector(chordRoot, key);
+  
+  System.out.println("bit vector for " + chordSymbol + " is " + NoteSymbol.showContents(vector));
 
   int rise = PitchClass.findRise(chordRoot);
 

@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,13 @@
 
 package imp.data;
 
-import polya.*;
-import imp.*;
-import imp.util.*;
+import imp.Constants;
+import imp.util.ErrorLog;
+import imp.util.Trace;
 import java.io.Serializable;
+import polya.Polylist;
+import polya.PolylistBuffer;
+import polya.PolylistEnum;
 
 /**
  * A ChordForm houses the form information for a chord.
@@ -695,6 +698,7 @@ public Polylist toPolylist()
   return buffer.toPolylist();
   }
 
+@Override
 public String toString()
 {
   return toPolylist().toString();
@@ -716,6 +720,10 @@ public Polylist getSpell(String root, Key key)
   return newSpell;
   }
 
+public boolean[] getSpellVector(String root, Key key)
+  {
+    return NoteSymbol.noteSymbolListToBitVector(getSpell(root, key));
+  }
 
 public Polylist getPriority(String root)
   {
