@@ -563,6 +563,8 @@ public void paint(Graphics g)
         exportToColumnTF = new javax.swing.JTextField();
         importFromColumnComboBox = new javax.swing.JComboBox();
         exportToColumnComboBox = new javax.swing.JComboBox();
+        fileStepBackBtn = new javax.swing.JButton();
+        fileStepForwardBtn = new javax.swing.JButton();
         playPanel = new javax.swing.JPanel();
         playBassButton = new javax.swing.JButton();
         playChordButton = new javax.swing.JButton();
@@ -694,7 +696,6 @@ public void paint(Graphics g)
         barEditorFrame.getContentPane().add(editLabel, gridBagConstraints);
 
         okEditBtn.setText("Set");
-        okEditBtn.setOpaque(true);
         okEditBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okEditBtnActionPerformed(evt);
@@ -709,7 +710,6 @@ public void paint(Graphics g)
         barEditorFrame.getContentPane().add(okEditBtn, gridBagConstraints);
 
         cancelEditButton.setText("Close");
-        cancelEditButton.setOpaque(true);
         cancelEditButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelEditButtonActionPerformed(evt);
@@ -1344,7 +1344,7 @@ public void paint(Graphics g)
         importExportPanel.add(importFromColumnComboBox, gridBagConstraints);
 
         exportToColumnComboBox.setMaximumRowCount(30);
-        exportToColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", " " }));
+        exportToColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", " " }));
         exportToColumnComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportToColumnComboBoxActionPerformed(evt);
@@ -1353,6 +1353,31 @@ public void paint(Graphics g)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         importExportPanel.add(exportToColumnComboBox, gridBagConstraints);
+
+        fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
+        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)\n");
+        fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        fileStepBackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileStepBackBtnActionPerformed(evt);
+            }
+        });
+        importExportPanel.add(fileStepBackBtn, new java.awt.GridBagConstraints());
+
+        fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
+        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)\n\n");
+        fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        fileStepForwardBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pianoRollButtonStepForwardBtnActionPerformed(evt);
+            }
+        });
+        importExportPanel.add(fileStepForwardBtn, new java.awt.GridBagConstraints());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1373,7 +1398,6 @@ public void paint(Graphics g)
         playBassButton.setText("Bass\n");
         playBassButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playBassButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        playBassButton.setOpaque(true);
         playBassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBassButtonActionPerformed(evt);
@@ -1388,7 +1412,6 @@ public void paint(Graphics g)
         playChordButton.setText("Chord\n");
         playChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playChordButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        playChordButton.setOpaque(true);
         playChordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playChordButtonActionPerformed(evt);
@@ -1405,7 +1428,6 @@ public void paint(Graphics g)
         playPercussionButton.setText("Percussion");
         playPercussionButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playPercussionButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        playPercussionButton.setOpaque(true);
         playPercussionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playPercussionButtonActionPerformed(evt);
@@ -1470,12 +1492,12 @@ public void paint(Graphics g)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -2193,6 +2215,39 @@ private void barVolumeImpliedCheckBoxActionPerformed(java.awt.event.ActionEvent 
     barVolumeTF.setEnabled(!volumeImplied);
   }//GEN-LAST:event_barVolumeImpliedCheckBoxActionPerformed
 
+    private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
+        columnStepBackward();
+    }//GEN-LAST:event_fileStepBackBtnActionPerformed
+
+    private void pianoRollButtonStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoRollButtonStepForwardBtnActionPerformed
+        columnStepForward();
+    }//GEN-LAST:event_pianoRollButtonStepForwardBtnActionPerformed
+
+private void columnStepForward()
+{
+    Object selectedItem = importFromColumnComboBox.getSelectedItem();
+    int selectedIndex = importFromColumnComboBox.getSelectedIndex();
+    int columnNumber = Integer.parseInt(((String)selectedItem));
+    if (selectedIndex == styleEditor.getColumns().getColumnCount()-2 ) 
+    { 
+       return;
+    }
+    importFromColumnComboBox.setSelectedIndex(selectedIndex+1);
+    importButtonActionPerformed(null);
+}
+
+private void columnStepBackward()
+{
+    Object selectedItem = importFromColumnComboBox.getSelectedItem();
+    int selectedIndex = importFromColumnComboBox.getSelectedIndex();
+    int columnNumber = Integer.parseInt(((String)selectedItem));
+    if (selectedIndex == 0) 
+    { 
+       return;
+    }
+    importFromColumnComboBox.setSelectedIndex(selectedIndex-1);
+    importButtonActionPerformed(null);
+}
 private void setBarVolume(int value)
   {
     if( selectedBar != null && !selectedBar.getVolumeImplied() )
@@ -2267,6 +2322,8 @@ PianoRollPanel getPanel()
     private javax.swing.JButton exportButton;
     private javax.swing.JComboBox exportToColumnComboBox;
     private javax.swing.JTextField exportToColumnTF;
+    private javax.swing.JButton fileStepBackBtn;
+    private javax.swing.JButton fileStepForwardBtn;
     private javax.swing.JRadioButton flatAccidental;
     private javax.swing.JButton importButton;
     private javax.swing.JPanel importExportPanel;
