@@ -55,7 +55,7 @@ public class MidiStepEntryActionHandler implements Constants, Receiver {
                 if(velocity == 0) { // this is actually a note-off event, done to allow 'running status': http://www.borg.com/~jglatt/tech/midispec/run.htm
                     handleNoteOff(note, velocity, channel);
                 } else {
-                    handleNoteOn(note, velocity, channel);
+                    handleNoteOn(note);
                 }
                 break;
             case 8: // note off
@@ -67,20 +67,23 @@ public class MidiStepEntryActionHandler implements Constants, Receiver {
         }
     }
     
-    void handleNoteOn(int note, int velocity, int channel) {
+    void handleNoteOn(int note) {
         int index = notate.getCurrentSelectionStart();
         Note newNote = new Note(note);
         newNote.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
         notate.cm.execute(new SetNoteCommand(index, newNote, notate.getCurrentMelodyPart()));
         int next = notate.getCurrentStave().getNextCstrLine(index);
-        if(next < 0) {
+        if(next < 0)
+        {
             
-        } else {
+        }
+        else {
             notate.setCurrentSelectionStart(next);
             notate.setCurrentSelectionEnd(next);
         }
         
         notate.getCurrentStave().repaint();
+        notate.getCurrentKeyboard().colorKeyboard(note);
     }
     
     void handleNoteOff(int note, int velocity, int channel) {

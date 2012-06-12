@@ -173,7 +173,7 @@ private Note storedNote = null;
 
 
 /**
- * Indicades whether button1 has been clicked
+ * Indicates whether button1 has been clicked
  */
 private boolean button1Down = false;
 
@@ -794,7 +794,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
   drawChordTones = stave.notate.getChordTonesSelected();
   //drawColorTones = stave.notate.getColorTonesSelected();
 
-  /* Don't add any note is there's nothing to pick from. */
+  /* Don't add any note if there's nothing to pick from. */
   if( !(drawScaleTones || drawChordTones || drawColorTones) )
    {
     return OUT_OF_BOUNDS;

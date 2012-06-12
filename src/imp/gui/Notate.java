@@ -682,7 +682,8 @@ public class Notate
   
   private imp.gui.VoicingKeyboard keyboard = null;
  
- 
+  private imp.gui.StepEntryKeyboard stepKeyboard = null;
+  
   private static DefaultTableCellRenderer voicingRenderer = new DefaultTableCellRenderer()
     {
     @Override
@@ -1136,6 +1137,8 @@ public class Notate
 
         Chord currentChord = chordProg.getCurrentChord(slotInChorus);
         
+        currentChord.getChordForm();
+        
         if (keyboard != null && keyboard.isVisible() && keyboard.isPlaying())
         {
             keyboardPlayback(currentChord, tab, slotInChorus, slot, totalSlots);
@@ -1563,6 +1566,12 @@ public class Notate
       return null;
       }
     }
+  
+  
+  public boolean stepInputSelected()
+  {
+      return stepInputBtn.isSelected();
+  }
 
   /**
    *
@@ -2255,6 +2264,7 @@ public class Notate
         pianoKeyboardMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
+        stepKeyboardMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         emptyRoadMapMI = new javax.swing.JMenuItem();
         roadMapThisMI = new javax.swing.JMenuItem();
@@ -8583,6 +8593,14 @@ public class Notate
             }
         });
         utilitiesMenu.add(voicingTestMI);
+
+        stepKeyboardMI.setText("Step Keyboard");
+        stepKeyboardMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepKeyboardMIActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(stepKeyboardMI);
 
         menuBar.add(utilitiesMenu);
 
@@ -19091,7 +19109,7 @@ public void populateChordSelMenu()
 
 
 /**
- * Removes duplicats from a Polylist (for making future chords list in keyboard
+ * Removes duplicates from a Polylist (for making future chords list in keyboard
  * playback)
  * 
  * @param L
@@ -19256,8 +19274,8 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
 }
 
 /**
- * Finds the row number of the first occurrance of currentChord in the voicing
- * table.
+ * Finds the row number of the first occurrence of currentChord in the voicing
+ * table
  * 
  * @param currentChord
  * @return
@@ -19427,7 +19445,6 @@ public void setBassAndRootTFs(String bass, String root)
  */    
 private void pianoKeyboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoKeyboardButtonActionPerformed
 //GEN-LAST:event_pianoKeyboardButtonActionPerformed
-    
     String v = voicingEntryTF.getText();
     if ( playingStopped() )
     {
@@ -19450,6 +19467,7 @@ public void openKeyboard()
     {
         keyboard = new VoicingKeyboard(this, getNewXlocation(), getNewYlocation());
     }
+    
     String current = keyboard.getPresentChordDisplayText();
     if (current.equals(""))
     {
@@ -19461,6 +19479,22 @@ public void openKeyboard()
     
 }
 
+public void openStepKeyboard()
+{
+    if (stepKeyboard == null)
+    {
+        stepKeyboard = new StepEntryKeyboard(this, getNewXlocation(), getNewYlocation());
+    }
+    
+    stepKeyboard.setVisible(true);
+}
+
+
+public StepEntryKeyboard getCurrentKeyboard()
+{
+    return stepKeyboard;
+}
+        
 /**
  * Sets the keyboard to its original state
  */
@@ -19470,6 +19504,14 @@ public void clearKeyboard()
   if( keyboard != null )
     {
     keyboard.clearKeyboard();
+    }
+}
+
+public void clearStepKeyboard()
+{
+  if( stepKeyboard != null )
+    {
+        stepKeyboard.clearKeyboard();
     }
 }
 
@@ -21333,6 +21375,10 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
   {//GEN-HEADEREND:event_stopBtn1ActionPerformed
     stopButtonPressed();
   }//GEN-LAST:event_stopBtn1ActionPerformed
+
+    private void stepKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepKeyboardMIActionPerformed
+      openStepKeyboard();
+    }//GEN-LAST:event_stepKeyboardMIActionPerformed
 
 /**
  * Focus on input from textEntry field, until return is pressed,
@@ -23411,6 +23457,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton stepBackButton;
     private javax.swing.JButton stepForwardButton;
     private javax.swing.JToggleButton stepInputBtn;
+    private javax.swing.JMenuItem stepKeyboardMI;
     private javax.swing.JButton stopBtn;
     private javax.swing.JButton stopBtn1;
     private javax.swing.JMenuItem stopPlayMI;
