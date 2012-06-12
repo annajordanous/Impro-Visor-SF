@@ -1154,6 +1154,8 @@ public void paint(Graphics g)
         getContentPane().add(barVolumePanel, gridBagConstraints);
 
         pianoRollResolutionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Grid Resolutions", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        pianoRollResolutionsPanel.setMinimumSize(new java.awt.Dimension(350, 109));
+        pianoRollResolutionsPanel.setPreferredSize(new java.awt.Dimension(400, 109));
         pianoRollResolutionsPanel.setLayout(new java.awt.GridBagLayout());
 
         bpmLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -1161,7 +1163,7 @@ public void paint(Graphics g)
         bpmLabel.setToolTipText("Tempo in Beats Per Minute");
         bpmLabel.setRequestFocusEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         pianoRollResolutionsPanel.add(bpmLabel, gridBagConstraints);
@@ -1262,17 +1264,17 @@ public void paint(Graphics g)
         pianoRollResolutionsPanel.add(ticksPerBeatComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weightx = 0.2;
         getContentPane().add(pianoRollResolutionsPanel, gridBagConstraints);
 
         importExportPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Import/Export From/To Style Editor  ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        importExportPanel.setMinimumSize(new java.awt.Dimension(333, 82));
+        importExportPanel.setMinimumSize(new java.awt.Dimension(400, 82));
         importExportPanel.setPreferredSize(new java.awt.Dimension(333, 82));
         importExportPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -1287,6 +1289,7 @@ public void paint(Graphics g)
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         importExportPanel.add(importButton, gridBagConstraints);
 
@@ -1316,6 +1319,7 @@ public void paint(Graphics g)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.1;
         importExportPanel.add(importFromColumnTF, gridBagConstraints);
 
         exportToColumnTF.setText("1");
@@ -1341,6 +1345,7 @@ public void paint(Graphics g)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 0.2;
         importExportPanel.add(importFromColumnComboBox, gridBagConstraints);
 
         exportToColumnComboBox.setMaximumRowCount(30);
@@ -1355,7 +1360,7 @@ public void paint(Graphics g)
         importExportPanel.add(exportToColumnComboBox, gridBagConstraints);
 
         fileStepBackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperBack.png"))); // NOI18N
-        fileStepBackBtn.setToolTipText("Browse previous leadsheet file in the current folder. (Does nothing if this is the first leadsheet in the folder.)\n");
+        fileStepBackBtn.setToolTipText("Import the previous column of the Style Editor.");
         fileStepBackBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepBackBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepBackBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -1364,10 +1369,13 @@ public void paint(Graphics g)
                 fileStepBackBtnActionPerformed(evt);
             }
         });
-        importExportPanel.add(fileStepBackBtn, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.1;
+        importExportPanel.add(fileStepBackBtn, gridBagConstraints);
 
         fileStepForwardBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/fileStepperFront.png"))); // NOI18N
-        fileStepForwardBtn.setToolTipText("Browse next leadsheet file in the current folder. (Does nothing if this is the last leadsheet in the folder.)\n\n");
+        fileStepForwardBtn.setToolTipText("Import the next column of the Style Editor.");
         fileStepForwardBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         fileStepForwardBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         fileStepForwardBtn.setMinimumSize(new java.awt.Dimension(30, 30));
@@ -1377,7 +1385,10 @@ public void paint(Graphics g)
                 pianoRollButtonStepForwardBtnActionPerformed(evt);
             }
         });
-        importExportPanel.add(fileStepForwardBtn, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.1;
+        importExportPanel.add(fileStepForwardBtn, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -1385,7 +1396,7 @@ public void paint(Graphics g)
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.weightx = 0.6;
         getContentPane().add(importExportPanel, gridBagConstraints);
 
         playPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Play Pattern as Saved", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
@@ -1398,6 +1409,7 @@ public void paint(Graphics g)
         playBassButton.setText("Bass\n");
         playBassButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playBassButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        playBassButton.setOpaque(true);
         playBassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBassButtonActionPerformed(evt);
@@ -1412,6 +1424,7 @@ public void paint(Graphics g)
         playChordButton.setText("Chord\n");
         playChordButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playChordButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        playChordButton.setOpaque(true);
         playChordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playChordButtonActionPerformed(evt);
@@ -1428,6 +1441,7 @@ public void paint(Graphics g)
         playPercussionButton.setText("Percussion");
         playPercussionButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         playPercussionButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        playPercussionButton.setOpaque(true);
         playPercussionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playPercussionButtonActionPerformed(evt);
@@ -1492,12 +1506,12 @@ public void paint(Graphics g)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -1791,12 +1805,20 @@ private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
       }
 }//GEN-LAST:event_exportButtonActionPerformed
 
+
+
+private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+  importFromStyleEditorColumn();
+}//GEN-LAST:event_importButtonActionPerformed
+
+
 /**
  * Call to move a column From the Style Editor to the Piano Roll
  * @param evt
  */
 
-private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+private void importFromStyleEditorColumn()
+  {
     int minColumn = 1; // FIX
     int maxColumn = styleEditor.getNumColumns();
 
@@ -1809,8 +1831,8 @@ private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         importFromColumnComboBox.setSelectedIndex(col - 1);
         styleEditor.styleEditorColumnToPianoRoll(col, this);
         updatePlayablePercussion();
-      }
-}//GEN-LAST:event_importButtonActionPerformed
+      }    
+  }
 
 private void playPercussionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPercussionButtonActionPerformed
 styleEditor.playPercussionColumn(styleEditorColumn);
@@ -1954,6 +1976,7 @@ openBarEditor();
 
 private void importFromColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnComboBoxActionPerformed
     importFromColumnTF.setText(importFromColumnComboBox.getSelectedItem().toString());
+    importFromStyleEditorColumn();
 }//GEN-LAST:event_importFromColumnComboBoxActionPerformed
 
 private void exportToColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnComboBoxActionPerformed
@@ -2229,11 +2252,12 @@ private void columnStepForward()
     int selectedIndex = importFromColumnComboBox.getSelectedIndex();
     int columnNumber = Integer.parseInt(((String)selectedItem));
     if (selectedIndex == styleEditor.getColumns().getColumnCount()-2 ) 
-    { 
+      { 
+       // Already at last column
        return;
-    }
+      }
     importFromColumnComboBox.setSelectedIndex(selectedIndex+1);
-    importButtonActionPerformed(null);
+    importFromStyleEditorColumn();
 }
 
 private void columnStepBackward()
@@ -2243,10 +2267,11 @@ private void columnStepBackward()
     int columnNumber = Integer.parseInt(((String)selectedItem));
     if (selectedIndex == 0) 
     { 
+      // Already at first column
        return;
     }
     importFromColumnComboBox.setSelectedIndex(selectedIndex-1);
-    importButtonActionPerformed(null);
+    importFromStyleEditorColumn();
 }
 private void setBarVolume(int value)
   {
