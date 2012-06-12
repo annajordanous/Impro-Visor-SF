@@ -99,7 +99,7 @@ static int beatBracketHeight = 10;
 /** Constants for beaming
  * Some of these are necessary due to the original uses of images with note
  * stems. The stems were edited off the images to achieve note heads, but
- * the position of the head in the image was note changed.
+ * the position of the head in the image was not changed.
  */
 public static int beamThickness = 3;
 public static int beamUpXoffset = 4;
