@@ -480,7 +480,7 @@ public void removeVoicing(String id)
   }
 
 /**
- * Remove first voicing with the given id
+ * Remove the voicing in the given position
  @param voicing
  */
 
