@@ -188,12 +188,16 @@ public class NoteSymbol extends MelodySymbol
      if( index < len )
        {
        char second = string.charAt(1);
-       if( second == SHARP || second == FLAT )
+       if( second == SHARP || second == FLAT || second == 's')
 	 {
 	 index++;
-	 noteBase.append(second);
+	 if(second == SHARP || second == FLAT) {
+             noteBase.append(second);
+         } else {
+             noteBase.append(SHARP);
+         }
 	 natural = false;
-	 sharp = (second == SHARP);
+	 sharp = (second == SHARP || second == 's');
 	 }
        }
 
@@ -222,6 +226,11 @@ public class NoteSymbol extends MelodySymbol
 	     noteSymbol.octave--;
 	     index++;
 	     break;
+             
+         case 'u':
+             noteSymbol.octave++;
+             index++;
+             break;
 
 	 default:
 	     more = false;

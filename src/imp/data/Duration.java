@@ -76,6 +76,10 @@ public static int default_numerator = 8;	// eighth note default
         case MINUS:
           index++;
           break;
+            
+        case 'u':
+            index++;
+            break;
 
         default:
           more = false;
@@ -141,7 +145,7 @@ public static int default_numerator = 8;	// eighth note default
     // eighth note triplet, and 32nd note.
     // Note that there is no + to start with.
 
-    while( index < len && ((item.charAt(index) == PLUS) || firsttime) )
+    while( index < len && ((item.charAt(index) == PLUS) || firsttime || (item.charAt(index) == 'u')) )
       {
       int numerator;
       int denominator = 1;
