@@ -1414,6 +1414,7 @@ public void setSelection(int start, int end)
         selectionEnd = end;
       }
     notate.updateSelection();
+    
   }
 
 /**

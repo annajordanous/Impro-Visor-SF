@@ -630,7 +630,7 @@ public class Notate
    * Midi Preferences reference to the midiManager and JComboBox models
    *
    */
-  private MidiSynth midiSynth = null; // one midiSynth is created for each Notote instance for volume control and MIDI sequencing
+  private MidiSynth midiSynth = null; // one midiSynth is created for each Notate instance for volume control and MIDI sequencing
   
   private MidiSynth midiSynth2 = null;
   
