@@ -1534,7 +1534,6 @@ public MelodyPart copy(int startingIndex, int endingIndex)
  /**
   * returns the last note in the melodypart that is not a rest
   */
-  
  public Note getLastNote() {
      int tracker = this.getPrevIndex(size);
  

@@ -23,6 +23,7 @@ package imp.gui;
 
 import imp.com.PlayScoreCommand;
 import imp.com.SetNoteCommand;
+import imp.com.SetRestCommand;
 import imp.data.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -188,17 +189,18 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         keyGsharp7 = new javax.swing.JLabel();
         keyBb7 = new javax.swing.JLabel();
         pointerC4 = new javax.swing.JLabel();
-        chordRootNoteLabel = new javax.swing.JLabel();
-        ctrlClicktoChangeRootLabel = new javax.swing.JLabel();
-        futureChordDisplay = new javax.swing.JLabel();
-        pastChordDisplay = new javax.swing.JLabel();
-        presentChordDisplay = new javax.swing.JLabel();
-        ctrlShiftClickExtLabel = new javax.swing.JLabel();
+        inputRestBtn = new javax.swing.JButton();
+        chordNameDisplay = new javax.swing.JLabel();
+        suggestionNumSpinner = new javax.swing.JSpinner();
+        refreshSuggestionsBtn = new javax.swing.JButton();
+        suggestionSpinnerLabel = new javax.swing.JLabel();
+        SkipBtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         optionsMenu = new javax.swing.JMenu();
         clearKeyboardMI = new javax.swing.JMenuItem();
         playChordMI = new javax.swing.JMenuItem();
         useSuggestionsMI = new javax.swing.JMenuItem();
+        useBlueSuggestionsMI = new javax.swing.JMenuItem();
         playbackMenu = new javax.swing.JMenu();
         startPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
@@ -220,7 +222,6 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         keyboardLP.setMinimumSize(new java.awt.Dimension(1045, 150));
-        keyboardLP.setRequestFocusEnabled(false);
         keyboardLP.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 keyboardLPMouseClicked(evt);
@@ -597,70 +598,67 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jPanel1, gridBagConstraints);
 
-        chordRootNoteLabel.setText("Bass note indicated in blue.");
-        chordRootNoteLabel.setMaximumSize(new java.awt.Dimension(400, 14));
-        chordRootNoteLabel.setMinimumSize(new java.awt.Dimension(400, 14));
-        chordRootNoteLabel.setPreferredSize(new java.awt.Dimension(400, 14));
+        inputRestBtn.setText("Rest");
+        inputRestBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputRestBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        getContentPane().add(chordRootNoteLabel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 850, 0, 0);
+        getContentPane().add(inputRestBtn, gridBagConstraints);
 
-        ctrlClicktoChangeRootLabel.setText("Ctrl-click to change bass note, Shift-click to change bass range.");
-        ctrlClicktoChangeRootLabel.setMaximumSize(new java.awt.Dimension(450, 14));
-        ctrlClicktoChangeRootLabel.setMinimumSize(new java.awt.Dimension(450, 14));
-        ctrlClicktoChangeRootLabel.setPreferredSize(new java.awt.Dimension(450, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        getContentPane().add(ctrlClicktoChangeRootLabel, gridBagConstraints);
-
-        futureChordDisplay.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        futureChordDisplay.setForeground(new java.awt.Color(51, 153, 255));
-        futureChordDisplay.setMaximumSize(new java.awt.Dimension(485, 20));
-        futureChordDisplay.setMinimumSize(new java.awt.Dimension(485, 20));
-        futureChordDisplay.setPreferredSize(new java.awt.Dimension(485, 20));
+        chordNameDisplay.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        chordNameDisplay.setText("                             ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        getContentPane().add(futureChordDisplay, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
+        getContentPane().add(chordNameDisplay, gridBagConstraints);
 
-        pastChordDisplay.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        pastChordDisplay.setForeground(new java.awt.Color(153, 153, 153));
-        pastChordDisplay.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        pastChordDisplay.setMaximumSize(new java.awt.Dimension(375, 20));
-        pastChordDisplay.setMinimumSize(new java.awt.Dimension(375, 20));
-        pastChordDisplay.setPreferredSize(new java.awt.Dimension(375, 20));
+        suggestionNumSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                suggestionNumSpinnerStateChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        getContentPane().add(pastChordDisplay, gridBagConstraints);
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 10;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 640);
+        getContentPane().add(suggestionNumSpinner, gridBagConstraints);
 
-        presentChordDisplay.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        presentChordDisplay.setForeground(new java.awt.Color(0, 153, 0));
-        presentChordDisplay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        presentChordDisplay.setMaximumSize(new java.awt.Dimension(175, 20));
-        presentChordDisplay.setMinimumSize(new java.awt.Dimension(175, 20));
-        presentChordDisplay.setPreferredSize(new java.awt.Dimension(175, 20));
+        refreshSuggestionsBtn.setText("Refresh Suggestions");
+        refreshSuggestionsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshSuggestionsBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 110);
-        getContentPane().add(presentChordDisplay, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 800);
+        getContentPane().add(refreshSuggestionsBtn, gridBagConstraints);
 
-        ctrlShiftClickExtLabel.setText("Ctrl-shift-click to add an extension.");
-        ctrlShiftClickExtLabel.setMaximumSize(new java.awt.Dimension(400, 14));
-        ctrlShiftClickExtLabel.setMinimumSize(new java.awt.Dimension(400, 14));
-        ctrlShiftClickExtLabel.setPreferredSize(new java.awt.Dimension(400, 14));
+        suggestionSpinnerLabel.setText("Suggestion Window:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        getContentPane().add(ctrlShiftClickExtLabel, gridBagConstraints);
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 830);
+        getContentPane().add(suggestionSpinnerLabel, gridBagConstraints);
+
+        SkipBtn.setText("Skip");
+        SkipBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SkipBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(10, 600, 0, 0);
+        getContentPane().add(SkipBtn, gridBagConstraints);
 
         optionsMenu.setText("Options");
 
@@ -689,6 +687,14 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             }
         });
         optionsMenu.add(useSuggestionsMI);
+
+        useBlueSuggestionsMI.setText("Use Blue Note Awareness");
+        useBlueSuggestionsMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                useBlueSuggestionsMIActionPerformed(evt);
+            }
+        });
+        optionsMenu.add(useBlueSuggestionsMI);
 
         jMenuBar1.add(optionsMenu);
 
@@ -843,7 +849,21 @@ public final int A = 21;            // MIDI value of 1st key on keyboard
 
 public final int C_EIGHTH = 108;    // MIDI value of last key on keyboard
 
+public final int MIDDLE_C = 60;
+
 public final int LOW_BASS = 24;
+
+private int noNote = 0;
+
+private int lastNotePlayed = noNote;
+
+private int suggestionNumMin = 0;
+ 
+private int suggestionNumMax = 88;
+
+private int suggestionNumInit = P_OCTAVE;
+
+private int suggestionNum = suggestionNumInit;
 
 public final String CTRLCLICK = "Ctrl+Button1";
 
@@ -867,7 +887,7 @@ public final String UP = "up";
 
 public final String DOWN = "down";
 
-public boolean useBlueSuggestions = true;
+public boolean useBlueSuggestions = false;
 
 public boolean useSuggestions = false;
 
@@ -1004,8 +1024,9 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         
         if (notate.stepInputSelected())
         {
-            colorKeyboard(midiValue);
-            inputToStave(midiValue);
+            lastNotePlayed = midiValue;
+            colorKeyboard(midiValue, true);
+            inputNotesToStave(midiValue);
         }
         
 
@@ -1017,41 +1038,47 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
  * it also colors suggested notes and the bass note.
  * @param midiValue 
  */
-public void colorKeyboard(int midiValue)
+public void colorKeyboard(int midiValue, boolean displayNote)
 {
   //System.out.println("Key Pressed!");
   //System.out.println(midiValue);
   clearKeyboard();
   
+    if (midiValue == 0)
+    {
+        displayNote = false;
+    }
+  
     if (useSuggestions)
     {
         Stave currentStave = notate.getCurrentStave();
 
-        int selectedSlot = currentStave.getSelectionStart() + 1;
+        int selectedSlot = currentStave.getSelectionStart();
         ChordPart chordProg = currentStave.getChordProg();
 
 
-        Chord currentChord = chordProg.getCurrentChord(selectedSlot);
+        Chord currentChord = chordProg.getCurrentChord(currentStave.getNextCstrLine(selectedSlot));
+        
+        String chordName = currentChord.getName();
+        
+        chordNameDisplay.setText("<html><center>"+chordName+"</center></html>");
 
         ChordForm curChordForm = currentChord.getChordForm();
         String root = currentChord.getRoot();
 
         ArrayList<Integer> chordMIDIs = // the midi values for the notes in the chord
-                transposeNotes(curChordForm.getSpellMIDIarray(root), midiValue);
+                chordToSuggestions(curChordForm.getSpellMIDIarray(root), midiValue);
         ArrayList<Integer> colorMIDIs = // the midi values for the color notes
-                transposeNotes(curChordForm.getColorMIDIarray(root), midiValue);
+                chordToSuggestions(curChordForm.getColorMIDIarray(root), midiValue);
 
         Integer bassMidi = findBass(root);
 
         //System.out.println(chordMIDIs);
         //System.out.println(colorMIDIs);
 
-
         StepPianoKey bass = pianoKeys()[bassMidi - A];
 
-
-
-        if (isBlue(midiValue, chordMIDIs, colorMIDIs))
+        if (isBlue(midiValue, chordMIDIs, colorMIDIs) && useBlueSuggestions)
         {
             colorBlueSuggestions(midiValue, chordMIDIs, colorMIDIs);
         }
@@ -1063,11 +1090,24 @@ public void colorKeyboard(int midiValue)
         bass.setPressed(true);
         pressKey(bass, "bass");
     }
-    
-  StepPianoKey key = pianoKeys()[midiValue - A];
-  key.setPressed(true);
-  pressKey(key, "pressed");
+  
+    if (displayNote)
+    {
+        StepPianoKey key = pianoKeys()[midiValue - A];
+        key.setPressed(true);
+        pressKey(key, "pressed");
+    }
 }
+
+/**
+ * Colors the keyboard based on middle C. If useSuggestions is on,
+ * it also colors suggested notes and the bass note.
+ */
+public void colorKeyboardNoNote(int midiValue)
+{
+  colorKeyboard(midiValue, false);
+}
+
 
 /**
  * Colors the notes in chordMIDIs and colorMIDIs
@@ -1117,17 +1157,10 @@ private void checkBlueNotes(int midiValue, ArrayList<Integer> midiList, String t
 
 private boolean isBlue(int midiValue, ArrayList<Integer> chordMIDIs, ArrayList<Integer> colorMIDIs)
 {
-   if (chordMIDIs.contains(midiValue) || colorMIDIs.contains(midiValue))
-   {
-       return false;
-   }
-   else
-   {
-       return true;
-   }
+   return !(chordMIDIs.contains(midiValue) || colorMIDIs.contains(midiValue));
 }
 
-private void inputToStave(int midiValue)
+private void inputNotesToStave(int midiValue)
 {
     Stave stave = notate.getCurrentStave();
     int index = notate.getCurrentSelectionStart();
@@ -1141,8 +1174,36 @@ private void inputToStave(int midiValue)
         notate.setCurrentSelectionEnd(next);
     }
 
-        stave.playSelectionNote(newNote, index);
+    stave.repaint();
+    stave.playSelectionNote(newNote, index);
         // StepPianoKey.playNote(midiValue);
+}
+
+private void inputRestToStave()
+{
+    Stave stave = notate.getCurrentStave();
+    int index = notate.getCurrentSelectionStart();
+    notate.cm.execute(new SetRestCommand(index, notate.getCurrentMelodyPart()));
+    int next = stave.getNextCstrLine(index);
+    if(next >= 0)
+    {
+        notate.setCurrentSelectionStart(next);
+        notate.setCurrentSelectionEnd(next);
+    }
+    
+    stave.repaint();
+}
+
+private void nextStaveSlot()
+{
+    Stave stave = notate.getCurrentStave();
+    int index = notate.getCurrentSelectionStart(); 
+    int next = stave.getNextCstrLine(index);
+    if(next >= 0)
+    {
+        notate.setCurrentSelectionStart(next);
+        notate.setCurrentSelectionEnd(next);
+    }
 }
 
 private void pressPianoKeys(ArrayList<Integer> midiValues, String type)
@@ -1157,48 +1218,53 @@ private void pressPianoKeys(ArrayList<Integer> midiValues, String type)
     }
 }
 
-/**
- * Takes in a set of midi values and transposes them to be within 3.5 steps
- * of the reference note.
- * @return 
- */
-private ArrayList<Integer> transposeNotes(ArrayList<Integer> MIDIarray, int reference)
+private ArrayList<Integer> chordToSuggestions(ArrayList<Integer> MIDIarray, int reference)
 {
-    int halfOctave = 6;
-    int octave = 12;
-    int arraySize = MIDIarray.size();
-    ArrayList<Integer> newMIDIs = new ArrayList(arraySize);
+    ArrayList<Integer> newMIDIs = new ArrayList();
+    int minNote = reference - (int)Math.floor(suggestionNum/2.0);
+    int maxNote = reference + (int)Math.ceil(suggestionNum/2.0);
     
-    for(int i=0 ; i < arraySize; i++)
+    if (suggestionNum >= suggestionNumMax)
+    {
+        minNote = A;
+        maxNote = C_EIGHTH;
+    }
+    
+    
+    for(int i = 0; i < MIDIarray.size(); i++)
     {
         int note = MIDIarray.get(i);
-        while (true)
+        
+        while(note >= minNote)
         {
-            // if we are at the edge of the keyboard, we should shift our octave
-            // of  suggestions so it all fits on the keyboard
-            if (note > (C_EIGHTH - octave) || note < (A + octave))
-            {
-                newMIDIs.add(note);
-                break;
-            }
-            
-            if (reference - note >= halfOctave)
-            {
-                note += octave;
-                continue;
-            }
-
-            if (note - reference > halfOctave)
-            {
-                note -= octave;
-                continue;
-            }
-
-            newMIDIs.add(note);
-            break;
+            note -= P_OCTAVE;
         }
+        
+        note += P_OCTAVE;
+        while(note <= maxNote && note <= C_EIGHTH && note >= A)
+        {
+            newMIDIs.add(note);
+            note += P_OCTAVE;
+        }    
     }
+    
     return newMIDIs;
+}
+
+private void setSuggestions(boolean on)
+{
+    useSuggestions = on;
+    
+    if (useSuggestions)
+    {
+        useSuggestionsMI.setText("<html><left>Don't Show Suggestions</left></html>");
+        suggestionNumSpinner.setValue(suggestionNumInit);
+    }
+    else
+    {
+        useSuggestionsMI.setText("<html><left>Show Suggestions</left></html>");
+        suggestionNumSpinner.setValue(suggestionNumMin);
+    }
 }
 
 /**
@@ -1232,69 +1298,6 @@ public boolean isPlaying()
 public void setPlayback(boolean on)
 {
     playback = on;
-}
-
-/**
- * Sets the text in the future chord display label.
- * 
- * @param text
- */
-public void setFutureChordDisplayText(String text)
-{
-    futureChordDisplay.setText(text);
-}
-
-/**
- * Gets the text displayed in the future chord display
- * 
- * @return a String - the chords displayed above the keyboard.
- */
-
-public String getFutureChordDisplayText()
-{
-    return futureChordDisplay.getText();
-}
-
-/**
- * Sets the text in the past chord display label.
- * 
- * @param text
- */
-
-public void setPastChordDisplayText(String text)
-{
- pastChordDisplay.setText(text);
-}
-
-/**
- * Gets the text displayed in the past chord display
- * 
- * @return a String - the chords displayed above the keyboard.
- */
-
-public String getPastChordDisplayText()
-{
-    return pastChordDisplay.getText();
-}
-
-/**
- * Sets the text in the present chord display label.
- * 
- * @param text
- */
-public void setPresentChordDisplayText(String text)
-{
-    presentChordDisplay.setText(text);
-}
-
-/**
- * Gets the text displayed in the present chord display
- * 
- * @return a String - the chords displayed above the keyboard.
- */
-public String getPresentChordDisplayText()
-{
-    return presentChordDisplay.getText();
 }
 
 private void startPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPlayMIActionPerformed
@@ -1366,32 +1369,68 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_windowMenuMenuSelected
 
     private void playChordMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordMIActionPerformed
-       
-    
         }//GEN-LAST:event_playChordMIActionPerformed
 
     private void clearKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearKeyboardMIActionPerformed
-        
+
         clearKeyboard();
-//    notate.clearVoicingEntryTF();
-    
         }//GEN-LAST:event_clearKeyboardMIActionPerformed
 
     private void useSuggestionsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useSuggestionsMIActionPerformed
-        useSuggestions = !useSuggestions;
-        if (useSuggestions)
-        {
-            useSuggestionsMI.setText("<html><left>Don't Show Suggestions</left></html>");
-        }
-        else
-        {
-            useSuggestionsMI.setText("<html><left>Show Suggestions</left></html>");
-        }
+        setSuggestions(!useSuggestions);
+        colorKeyboard(lastNotePlayed, true);
     }//GEN-LAST:event_useSuggestionsMIActionPerformed
 
-private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {                                         
-}                                  
+    private void useBlueSuggestionsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useBlueSuggestionsMIActionPerformed
+        useBlueSuggestions = !useBlueSuggestions;
 
+        if (useBlueSuggestions) {
+            useBlueSuggestionsMI.setText("<html><left>Don't Use Blue Note Awareness</left></html>");
+        } else {
+            useBlueSuggestionsMI.setText("<html><left>Use Blue Note Awareness</left></html>");
+        }
+    }//GEN-LAST:event_useBlueSuggestionsMIActionPerformed
+
+    private void inputRestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRestBtnActionPerformed
+        if (notate.stepInputSelected()) {
+            colorKeyboard(lastNotePlayed, false);
+            inputRestToStave();
+        }
+    }//GEN-LAST:event_inputRestBtnActionPerformed
+
+    private void suggestionNumSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_suggestionNumSpinnerStateChanged
+        try {
+            String newValueStr = suggestionNumSpinner.getValue().toString();
+            int newValue = new Integer(newValueStr);
+
+            if (newValue <= suggestionNumMin) setSuggestions(false);
+            
+            else if (newValue > suggestionNumMax) setSuggestions(true);
+
+            else 
+            {
+                suggestionNum = newValue;
+                setSuggestions(true);
+            }
+            
+        } catch (NumberFormatException e) {
+            // do nothing
+        }
+    }//GEN-LAST:event_suggestionNumSpinnerStateChanged
+
+    private void refreshSuggestionsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshSuggestionsBtnActionPerformed
+        
+        //Stave stave = notate.getCurrentStave();
+        //stave.getNextCstrLine(stave.getSelectionStart());
+        //stave.getMelodyPart();
+        if (lastNotePlayed != 0) colorKeyboard(lastNotePlayed, false);
+        else colorKeyboard(lastNotePlayed, true);
+    }//GEN-LAST:event_refreshSuggestionsBtnActionPerformed
+
+    private void SkipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkipBtnActionPerformed
+        nextStaveSlot();
+    }//GEN-LAST:event_SkipBtnActionPerformed
+                                  
 /**
  * Transforms a String of form key name (ex. c#++) into a String including
  * only the note name itself (ex. C#)
@@ -1585,13 +1624,12 @@ private void forcePaint()
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton SkipBtn;
     private javax.swing.JMenuItem cascadeMI;
-    private javax.swing.JLabel chordRootNoteLabel;
+    private javax.swing.JLabel chordNameDisplay;
     private javax.swing.JMenuItem clearKeyboardMI;
     private javax.swing.JMenuItem closeWindowMI;
-    private javax.swing.JLabel ctrlClicktoChangeRootLabel;
-    private javax.swing.JLabel ctrlShiftClickExtLabel;
-    private javax.swing.JLabel futureChordDisplay;
+    private javax.swing.JButton inputRestBtn;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel keyA0;
@@ -1684,16 +1722,18 @@ private void forcePaint()
     private javax.swing.JLabel keyGsharp7;
     private javax.swing.JLayeredPane keyboardLP;
     public javax.swing.JMenu optionsMenu;
-    private javax.swing.JLabel pastChordDisplay;
     private javax.swing.JMenuItem pausePlayMI;
     private javax.swing.JMenuItem playChordMI;
     private javax.swing.JMenu playbackMenu;
     private javax.swing.JLabel pointerC4;
-    private javax.swing.JLabel presentChordDisplay;
+    private javax.swing.JButton refreshSuggestionsBtn;
     private javax.swing.JMenuItem startPlayMI;
     private javax.swing.JMenuItem startSelPlayMI;
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JMenuItem stopSelPlayMI;
+    private javax.swing.JSpinner suggestionNumSpinner;
+    private javax.swing.JLabel suggestionSpinnerLabel;
+    private javax.swing.JMenuItem useBlueSuggestionsMI;
     private javax.swing.JMenuItem useSuggestionsMI;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
