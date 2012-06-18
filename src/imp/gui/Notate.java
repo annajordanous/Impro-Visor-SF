@@ -9102,10 +9102,9 @@ private void setSectionParameters()
         }
     }
     
-    
-    private void stepInputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepInputBtnActionPerformed
-      boolean selected = stepInputBtn.isSelected();
-      if( selected )
+private void setStepInputBtn(boolean selected)
+{
+    if( selected )
       {
       stepInputBtn.setText("<html><center>Stop</center></html>");
 
@@ -9119,15 +9118,20 @@ private void setSectionParameters()
 
       stepInputBtn.setBackground(Color.GREEN);
       setNormalStatus();
-      }    
+      }
+    
     setStepInput(selected);
     staveRequestFocus();
+}
+     
+    private void stepInputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepInputBtnActionPerformed
+
+    setStepInputBtn(stepInputBtn.isSelected());
     }//GEN-LAST:event_stepInputBtnActionPerformed
 
  /**
    * This if for use by other features that need to turn step input off.
    */
-    
   private void turnStepInputOff()
     {
       stepInputBtn.setText("<html><center>Step<br>Input</center></html>");
@@ -10274,8 +10278,6 @@ private void setStepInput(boolean active)
         midiSynth.unregisterReceiver(midiStepInput);
       }
   }
-
-   
     
     private void recordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordBtnActionPerformed
     recordFromMidi();
@@ -19487,6 +19489,12 @@ public void openStepKeyboard()
     }
     
     stepKeyboard.setVisible(true);
+    if (stepInputActive == false)
+    {
+        boolean selected = !stepInputBtn.isSelected();
+        stepInputBtn.setSelected(selected);
+        setStepInputBtn(selected);
+    }
 }
 
 

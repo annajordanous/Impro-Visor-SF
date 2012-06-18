@@ -88,7 +88,7 @@ public class MelodyPart
   /**
    * Volume to be explicitly given for one-time melodies, for
    * use with entered melodies.  "Playback" melodies will instead
-   * rely on the volume slider in the toolhar.
+   * rely on the volume slider in the toolbar.
    */
   public int getSpecifiedVolume()
     {
@@ -384,7 +384,8 @@ public void addNote(Note note)
     if( restSlots != getSize() )
       {
       Trace.log(0,
-              "Possible error calculating number of rests from the end of the piece in Part.getRestSlotsFromEnd");
+              "Possible error calculating number of rests from "
+              + "the end of the piece in Part.getRestSlotsFromEnd");
       }
     return restSlots;
     }
@@ -521,7 +522,8 @@ public void addNote(Note note)
 //    }
 //
 //  
-//  
+//
+  
   /**
    * Returns an exact copy of this Part from startingIndex to endingIndex
    * @return 

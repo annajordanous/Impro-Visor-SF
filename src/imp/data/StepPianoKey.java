@@ -53,10 +53,6 @@ public class StepPianoKey {
     public javax.swing.ImageIcon bassKey = 
         new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.JPG"));
     
-    public javax.swing.ImageIcon bassKeyPressed = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkeypressed.jpg"));
-    
-    
     /**
      *  Data members: MIDI value of the note, its name, and whether it has been pressed.
      */
@@ -64,8 +60,6 @@ public class StepPianoKey {
     private int midiValue;
     
     private boolean pressed;
-    
-    private boolean extension;
     
     private String name;
     
@@ -81,11 +75,6 @@ public class StepPianoKey {
     
     private Icon bassIcon;
     
-    private Icon bassIconOn;
-    
-    private boolean bass;
-    
-    
     private int defaultMIDI = 60;
     
     private JLabel defaultLabel = new JLabel(offIcon);
@@ -100,8 +89,6 @@ public class StepPianoKey {
     
     private Icon defaultBassIcon = bassKey;
     
-    private Icon defaultBassOnIcon = bassKeyPressed;
-    
     
     
     /**
@@ -110,20 +97,16 @@ public class StepPianoKey {
      * @param midiValue, onIcon, offIcon, label
      */
     
-    public StepPianoKey(int midiValue, Icon chordIcon, Icon colorIcon, Icon pressedIcon, Icon offIcon, Icon bassIcon, Icon bassIconOn, JLabel label)
+    public StepPianoKey(int midiValue, Icon chordIcon, Icon colorIcon, Icon pressedIcon, Icon offIcon, Icon bassIcon, JLabel label)
     {
         this.midiValue = midiValue;
         this.label = label;
         this.chordIcon = chordIcon;
         this.colorIcon = colorIcon;
         this.pressedIcon = pressedIcon;
-        this.offIcon = offIcon;
         this.bassIcon = bassIcon;
-        this.bassIconOn = bassIconOn;
+        this.offIcon = offIcon;
         this.pressed = false;
-        this.extension = false;
-        this.bass = false;
-        
         
         // get the String representation of the NoteSymbol & remove the number at the end
         Note n = new Note(midiValue);
@@ -137,7 +120,7 @@ public class StepPianoKey {
     public StepPianoKey()
     {
         new StepPianoKey(
-                defaultMIDI, defaultChordIcon, defaultColorIcon, defaultPressedIcon, defaultOffIcon, defaultBassIcon, defaultBassOnIcon, defaultLabel);
+                defaultMIDI, defaultChordIcon, defaultColorIcon, defaultPressedIcon, defaultOffIcon, defaultBassIcon, defaultLabel);
     }
     
     /**
@@ -148,16 +131,6 @@ public class StepPianoKey {
     public boolean isPressed()
     {
         return this.pressed;
-    }
-    
-    public boolean isBass()
-    {
-        return this.bass;
-    }
-    
-    public boolean isExtension()
-    {
-        return this.extension;
     }
     
     /**
@@ -192,7 +165,7 @@ public class StepPianoKey {
     }
     
     /**
-     * getOnIcon() gives the "pressed" icon of the key
+     * getChordIcon() gives the "pressed" icon of the key
      * 
      * @return an icon, whiteKeyPressed or blackKeyPressed
      */
@@ -226,31 +199,15 @@ public class StepPianoKey {
         return this.bassIcon;
     }
     
-    public Icon getBassOnIcon()
-    {
-        return this.bassIconOn;
-    }
-    
     /**
      * setPressed sets a note as being pressed or not
-     * 
-     * @param pk
-     * @return pk
+     * @param on
+     * @return on
      */
     public boolean setPressed(boolean on)
     {
         this.pressed = on;
         return on;
-    }
-    
-    public void setIsBass(boolean on)
-    {
-        this.bass = on;
-    }
-    
-    public void setAsExtension(boolean on)
-    {
-        this.extension = on;
     }
     
     /**

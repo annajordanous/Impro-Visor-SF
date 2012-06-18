@@ -88,7 +88,7 @@ public class Chord implements Constants, Unit, Serializable {
     /**
      * Use this in case name can be ill-formed.
      */
-
+    
     public static Chord makeChord(String name)
       {
       return makeChord(name, DEFAULT_RHYTHM_VALUE);

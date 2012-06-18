@@ -99,7 +99,7 @@ public class NoteSymbol extends MelodySymbol
 
 
    /** constructor */
-
+  
    public NoteSymbol(PitchClass pitchClass)
      {
      this(pitchClass, 0, BEAT/2);
@@ -107,7 +107,7 @@ public class NoteSymbol extends MelodySymbol
 
 
    /** constructor */
-
+   
    public NoteSymbol(NoteSymbol that)
      {
      this(that.getPitchClass(), that.octave, that.duration, that.volume);
@@ -115,7 +115,7 @@ public class NoteSymbol extends MelodySymbol
 
 
    /** constructor */
-
+   
    public NoteSymbol(PitchClass pitchClass, int octave, int duration)
     {
     this(pitchClass, octave, duration, defaultVolume);
@@ -135,7 +135,6 @@ public class NoteSymbol extends MelodySymbol
      * Because the String could be ill-formed, we use a factory rather than a constructor
      * and keep the actual constructor private.
      */
-
    public static NoteSymbol makeNoteSymbol(String string)
      {
      return makeNoteSymbol(string, 0);
@@ -250,12 +249,10 @@ public class NoteSymbol extends MelodySymbol
         return volume;
       }
     
-    
     /**
      * Set the probability of this note symbol in its context.
-     @param probability
+     * @param probability
      */
-    
     public void setProbability(double probability)
     {
          this.probability = probability;
@@ -348,12 +345,10 @@ public class NoteSymbol extends MelodySymbol
     return distance;
     }
 
-
 /**
  * Check to see whether the list argument contains a member that
  * is enharmonically equivalent to this member.
- */
-
+ */ 
   public boolean enhMember(Polylist noteSymbols)
     {
     while( noteSymbols.nonEmpty() )
@@ -416,7 +411,6 @@ public class NoteSymbol extends MelodySymbol
  /**
   * Create a closed voicing ascending from the first note in the list.
   */
-
   public static Polylist closedVoicing(Polylist noteSymbols)
     {
     if( noteSymbols.isEmpty() )
@@ -567,7 +561,6 @@ public class NoteSymbol extends MelodySymbol
    /** 
     * Return an indication of whether or not this is a rest
     */
-
    public boolean isRest()
      {
      return pitchClass == null;
@@ -577,7 +570,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the number of semitones of the pitch class of this note
      */
-
    public int getSemitones()
      {
      if( isRest() )
@@ -590,7 +582,6 @@ public class NoteSymbol extends MelodySymbol
      /**
      * Indicate whether or not this note is higher than the argument note
      */
-
    public boolean higher(NoteSymbol that)
      {
      return this.getMIDI() > that.getMIDI();
@@ -599,7 +590,6 @@ public class NoteSymbol extends MelodySymbol
    /**
      * Return the midi pitch number for this NoteSymbol
      */
-
    public int getMIDI()
      {
      if( isRest() )
@@ -612,7 +602,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the octave component.
      */
-
    public int getOctave()
      {
      return octave;
@@ -621,7 +610,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the midi pitch number for this NoteSymbol
      */
-
    public int getMIDIoctave()
      {
      return CMIDI + 12*octave;
@@ -630,7 +618,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the duration in slots for this NoteSymbol
      */
-
    public int getDuration()
      {
      return duration;
@@ -639,7 +626,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the PitchClass for this NoteSymbol
      */
-
    public PitchClass getPitchClass()
      {
      return pitchClass;
@@ -648,7 +634,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the PitchClass for this NoteSymbol
      */
-
    public int getPitchClassIndex()
      {
      return pitchClass.getSemitones();
@@ -657,7 +642,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the PitchClass name for this NoteSymbol
      */
-
    public String getPitchString()
      {
      return pitchClass.toString();
@@ -666,7 +650,6 @@ public class NoteSymbol extends MelodySymbol
     /**
      * Return the leadsheet notation string for this NoteSymbol.
      */
-
    public String toString()
      {
      return stringRep;
@@ -728,7 +711,6 @@ public static Polylist makeNoteSymbolList(Polylist stringList)
  @param rise
  @return
  */
-
 public static Polylist makeNoteSymbolList(Polylist stringList, int rise)
   {
   //System.out.print("makeNoteSymbolList " + stringList);
@@ -803,7 +785,6 @@ static Polylist noteSymbolListToStringList(Polylist noteSymbolList, int rise)
  * @return an array of booleans representing the notes in the argument list
  *         after transposition by rise
  */
-
 static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList, int rise)
   {
   boolean result[] = new boolean[OCTAVE];
@@ -871,7 +852,6 @@ static String showContents(boolean[] array)
  * @param noteSymbolList
  * @return an array of booleans representing the notes in the argument list
   */
-
 static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList)
   {
     return noteSymbolListToBitVector(noteSymbolList, 0);
