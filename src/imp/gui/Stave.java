@@ -1002,6 +1002,22 @@ public int getNextCstrLine(int index)
     return index;
   }
 
+public int getPreviousCstrLine(int index)
+{
+    do
+    {
+        index--;
+    }
+    while( index > 0 && cstrLines[index] == null);
+    
+    if( index < 0)
+    {
+        index = 0;
+    }
+            
+    return index;
+}
+
 /**
  * Returns the original Part of this Stave instance
  * @return Part         the original Part in the Stave
@@ -2505,11 +2521,11 @@ public void repaintLineFromCstrLine(int i)
 
 /**
  * Cycles through the slots in a given MelodyPart, part, and draws the
- * entire stave consisiting of the construction lines, notes, accidentals,
+ * entire stave consisting of the construction lines, notes, accidentals,
  * chords, and various brackets. It can only draw a unit (note, rest, or
  * chord), if there is a construction line on the unit's slot. If there is
  * not a construction line there, drawPart will call calcSubDivs(int) on
- * the slot's beat to reset the subdivisions to encorporate the unit.
+ * the slot's beat to reset the subdivisions to incorporate the unit.
  * <p>
  * Assumes that the part has already been made with makeAccidentals() and
  * makeTies();
@@ -2520,7 +2536,6 @@ public void repaintLineFromCstrLine(int i)
  * @see #drawNote(Note, boolean, Graphics)
  * @see #findSpacing(int, MelodyPart)
  */
-
 private boolean drawPart(MelodyPart part, Graphics g)
   {
     Graphics2D g2 = (Graphics2D) g;
