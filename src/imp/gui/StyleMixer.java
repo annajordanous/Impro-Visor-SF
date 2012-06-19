@@ -636,18 +636,18 @@ public void playRawRule(int type)
         selectedPatternsPanelBass = new javax.swing.JScrollPane();
         selectedRulesJListBass = new javax.swing.JList();
         styleMixerPanel = new javax.swing.JPanel();
-        rawPatternsPanelChord = new javax.swing.JScrollPane();
-        rawRulesJListChord = new javax.swing.JList();
-        selectPatternBtnChord = new javax.swing.JButton();
-        playPatternBtnChord = new javax.swing.JButton();
-        selectPatternBtnDrum = new javax.swing.JButton();
-        playPatternBtnDrum = new javax.swing.JButton();
-        rawPatternsPanelDrum = new javax.swing.JScrollPane();
-        rawRulesJListDrum = new javax.swing.JList();
         rawPatternsPanelBass = new javax.swing.JScrollPane();
         rawRulesJListBass = new javax.swing.JList();
         playPatternBtnBass = new javax.swing.JButton();
         selectPatternBtnBass = new javax.swing.JButton();
+        rawPatternsPanelChord = new javax.swing.JScrollPane();
+        rawRulesJListChord = new javax.swing.JList();
+        selectPatternBtnChord = new javax.swing.JButton();
+        playPatternBtnChord = new javax.swing.JButton();
+        rawPatternsPanelDrum = new javax.swing.JScrollPane();
+        rawRulesJListDrum = new javax.swing.JList();
+        selectPatternBtnDrum = new javax.swing.JButton();
+        playPatternBtnDrum = new javax.swing.JButton();
         extractionEditorMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -673,6 +673,49 @@ public void playRawRule(int type)
 
         styleMixerPanel.setLayout(new java.awt.GridBagLayout());
 
+        rawPatternsPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Bass Patterns"));
+        rawPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
+        rawPatternsPanelBass.setPreferredSize(new java.awt.Dimension(300, 200));
+
+        rawRulesJListBass.setModel(rawRulesModelChord);
+        rawRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rawRulesJListBassrawRulesJListMouseClickedChord(evt);
+            }
+        });
+        rawPatternsPanelBass.setViewportView(rawRulesJListBass);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.9;
+        styleMixerPanel.add(rawPatternsPanelBass, gridBagConstraints);
+
+        playPatternBtnBass.setText("Play Pattern");
+        playPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
+        playPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playPatternBtnBassActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.weighty = 0.1;
+        styleMixerPanel.add(playPatternBtnBass, gridBagConstraints);
+
+        selectPatternBtnBass.setText("Copy to Style Editor");
+        selectPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.1;
+        styleMixerPanel.add(selectPatternBtnBass, gridBagConstraints);
+
         rawPatternsPanelChord.setBorder(javax.swing.BorderFactory.createTitledBorder("Chord Patterns"));
         rawPatternsPanelChord.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelChord.setPreferredSize(new java.awt.Dimension(300, 200));
@@ -686,11 +729,10 @@ public void playRawRule(int type)
         rawPatternsPanelChord.setViewportView(rawRulesJListChord);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 0.9;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 7, 0);
         styleMixerPanel.add(rawPatternsPanelChord, gridBagConstraints);
 
         selectPatternBtnChord.setText("Copy to Style Editor");
@@ -701,7 +743,7 @@ public void playRawRule(int type)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weighty = 0.1;
@@ -715,39 +757,12 @@ public void playRawRule(int type)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(playPatternBtnChord, gridBagConstraints);
-
-        selectPatternBtnDrum.setText("Copy to Style Editor");
-        selectPatternBtnDrum.setToolTipText("Removes the selected pattern from further consideration for the style.");
-        selectPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectPatternBtnDrumActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weighty = 0.1;
-        styleMixerPanel.add(selectPatternBtnDrum, gridBagConstraints);
-
-        playPatternBtnDrum.setText("Play Pattern");
-        playPatternBtnDrum.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
-        playPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playPatternBtnDrumActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weighty = 0.1;
-        styleMixerPanel.add(playPatternBtnDrum, gridBagConstraints);
 
         rawPatternsPanelDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Drum Patterns"));
         rawPatternsPanelDrum.setMinimumSize(new java.awt.Dimension(300, 200));
@@ -762,67 +777,59 @@ public void playRawRule(int type)
         rawPatternsPanelDrum.setViewportView(rawRulesJListDrum);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.9;
         styleMixerPanel.add(rawPatternsPanelDrum, gridBagConstraints);
 
-        rawPatternsPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Bass Patterns"));
-        rawPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
-        rawPatternsPanelBass.setPreferredSize(new java.awt.Dimension(300, 200));
-
-        rawRulesJListBass.setModel(rawRulesModelChord);
-        rawRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rawRulesJListBassrawRulesJListMouseClickedChord(evt);
+        selectPatternBtnDrum.setText("Copy to Style Editor");
+        selectPatternBtnDrum.setToolTipText("Removes the selected pattern from further consideration for the style.");
+        selectPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectPatternBtnDrumActionPerformed(evt);
             }
         });
-        rawPatternsPanelBass.setViewportView(rawRulesJListBass);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 0.9;
-        styleMixerPanel.add(rawPatternsPanelBass, gridBagConstraints);
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.1;
+        styleMixerPanel.add(selectPatternBtnDrum, gridBagConstraints);
 
-        playPatternBtnBass.setText("Play Pattern");
-        playPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
-        playPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
+        playPatternBtnDrum.setText("Play Pattern");
+        playPatternBtnDrum.setToolTipText("Play the selected pattern (also can achieve with a double-click).");
+        playPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playPatternBtnBassActionPerformed(evt);
+                playPatternBtnDrumActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.33;
         gridBagConstraints.weighty = 0.1;
-        styleMixerPanel.add(playPatternBtnBass, gridBagConstraints);
-
-        selectPatternBtnBass.setText("Copy to Style Editor");
-        selectPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weighty = 0.1;
-        styleMixerPanel.add(selectPatternBtnBass, gridBagConstraints);
+        styleMixerPanel.add(playPatternBtnDrum, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         getContentPane().add(styleMixerPanel, gridBagConstraints);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
