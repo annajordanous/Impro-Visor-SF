@@ -1141,6 +1141,7 @@ void playBassColumn(int colIndex)
    * Override dispose so as to unregister this window first.
    */
   
+  @Override
   public void dispose()
     {
     // Close child windows if it exists
@@ -4880,12 +4881,12 @@ void playBassColumn(int colIndex)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -4914,12 +4915,12 @@ void playBassColumn(int colIndex)
         windowMenu1.setMnemonic('W');
         windowMenu1.setText("Style Mixer");
         windowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenu1MenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenu1MenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -6405,5 +6406,25 @@ private void setExporting(boolean value)
       }
   }
 
+public StyleTableModel getModel()
+  {
+    return (StyleTableModel)styleTable.getModel();
+  }
+public int getLastSelectedColumn()
+  {
+    int selectedColumns[] = styleTable.getSelectedColumns();
+    if( selectedColumns.length > 0 )
+      {
+        return selectedColumns[selectedColumns.length - 1];
+      }
+    
+    return getModel().FIRST_PATTERN_COLUMN;
+  }
+
+public void setNextBassPattern(String patternString)
+  {
+  System.out.println("Setting bass pattern " + patternString);
+    setCell(patternString, getModel().BASS_PATTERN_ROW, getLastSelectedColumn(), SILENT);
+  }
 }
 

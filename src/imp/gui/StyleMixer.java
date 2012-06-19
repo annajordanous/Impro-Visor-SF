@@ -33,7 +33,7 @@ import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 
 /**
- * @author Robert Keller, from original code by Jim Herold
+ * @author Robert Keller, Caitlin Chen
  * 
  * Use of public access to elements in MIDIBeast should
  * be changed to use proper methods.
@@ -104,6 +104,8 @@ public StyleMixer(java.awt.Frame parent,
     //numberOfClustersSpinnerBass.setModel(model);
 
     //setPotentialParts();
+    
+    rawRulesModelBass.addElement("B1");
   }
 
 public void setBass()
@@ -635,6 +637,7 @@ public void playRawRule(int type)
 
         selectedPatternsPanelBass = new javax.swing.JScrollPane();
         selectedRulesJListBass = new javax.swing.JList();
+        popupMenu1 = new java.awt.PopupMenu();
         styleMixerPanel = new javax.swing.JPanel();
         rawPatternsPanelBass = new javax.swing.JScrollPane();
         rawRulesJListBass = new javax.swing.JList();
@@ -666,6 +669,8 @@ public void playRawRule(int type)
         });
         selectedPatternsPanelBass.setViewportView(selectedRulesJListBass);
 
+        popupMenu1.setLabel("popupMenu1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Style Mixer");
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -677,7 +682,7 @@ public void playRawRule(int type)
         rawPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelBass.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        rawRulesJListBass.setModel(rawRulesModelChord);
+        rawRulesJListBass.setModel(rawRulesModelBass);
         rawRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rawRulesJListBassrawRulesJListMouseClickedChord(evt);
@@ -709,6 +714,11 @@ public void playRawRule(int type)
 
         selectPatternBtnBass.setText("Copy to Style Editor");
         selectPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
+        selectPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyBassPatternToStyleEditor(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -720,7 +730,7 @@ public void playRawRule(int type)
         rawPatternsPanelChord.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelChord.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        rawRulesJListChord.setModel(selectedRulesModelBass);
+        rawRulesJListChord.setModel(selectedRulesModelChord);
         rawRulesJListChord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rawRulesJListChordselectedPatternsMouseClickedBass(evt);
@@ -768,7 +778,7 @@ public void playRawRule(int type)
         rawPatternsPanelDrum.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelDrum.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        rawRulesJListDrum.setModel(rawRulesModelBass);
+        rawRulesJListDrum.setModel(rawRulesModelDrum);
         rawRulesJListDrum.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rawRulesJListDrumrawPatternsMouseClickedBass(evt);
@@ -959,6 +969,17 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
         playRawRule(BASS);
     }//GEN-LAST:event_playPatternBtnBassActionPerformed
 
+private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyBassPatternToStyleEditor
+  {//GEN-HEADEREND:event_copyBassPatternToStyleEditor
+    Object selectedOb = rawRulesJListBass.getSelectedValue();
+  System.out.println("selected " + selectedOb);
+        if (selectedOb instanceof String) 
+          {
+            //widePatternTextField.setText(selectedOb.toString());
+            styleEditor.setNextBassPattern((String)selectedOb);
+          }
+  }//GEN-LAST:event_copyBassPatternToStyleEditor
+
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -968,6 +989,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     private javax.swing.JButton playPatternBtnBass;
     private javax.swing.JButton playPatternBtnChord;
     private javax.swing.JButton playPatternBtnDrum;
+    private java.awt.PopupMenu popupMenu1;
     private javax.swing.JScrollPane rawPatternsPanelBass;
     private javax.swing.JScrollPane rawPatternsPanelChord;
     private javax.swing.JScrollPane rawPatternsPanelDrum;
