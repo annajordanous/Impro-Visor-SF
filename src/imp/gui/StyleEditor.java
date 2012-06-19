@@ -206,6 +206,8 @@ public class StyleEditor
   private RowHeaderRenderer rowHeaderRenderer;
 
   protected int selectedRowIndex = -1;
+  
+  StyleMixer styleMixer = null;
 
   
   public StyleEditor(Notate notate, File styleFile)
@@ -2944,6 +2946,9 @@ void playBassColumn(int colIndex)
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
+        windowMenu1 = new javax.swing.JMenu();
+        closeWindowMI1 = new javax.swing.JMenuItem();
+        windowMenuSeparator1 = new javax.swing.JSeparator();
 
         helpDialog.setTitle("Style Editor Help");
         helpDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -4866,12 +4871,12 @@ void playBassColumn(int colIndex)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -4896,6 +4901,31 @@ void playBassColumn(int colIndex)
         windowMenu.add(windowMenuSeparator);
 
         styMenuBar.add(windowMenu);
+
+        windowMenu1.setMnemonic('W');
+        windowMenu1.setText("Style Mixer");
+        windowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenu1MenuSelected(evt);
+            }
+        });
+
+        closeWindowMI1.setMnemonic('C');
+        closeWindowMI1.setText("Open");
+        closeWindowMI1.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        closeWindowMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeWindowMI1ActionPerformed(evt);
+            }
+        });
+        windowMenu1.add(closeWindowMI1);
+        windowMenu1.add(windowMenuSeparator1);
+
+        styMenuBar.add(windowMenu1);
 
         setJMenuBar(styMenuBar);
 
@@ -6092,6 +6122,18 @@ private void showExtractionCheckBoxActionPerformed(java.awt.event.ActionEvent ev
     MIDIBeast.showExtraction = showExtractionCheckBox.isSelected();
   }//GEN-LAST:event_showExtractionCheckBoxActionPerformed
 
+    private void windowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenu1MenuSelected
+        // TODO add your handling code here:
+    }//GEN-LAST:event_windowMenu1MenuSelected
+
+    private void closeWindowMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI1ActionPerformed
+        if( styleMixer == null )
+        {
+            styleMixer = new StyleMixer(this, false, this);
+        }
+        styleMixer.setVisible(true);
+    }//GEN-LAST:event_closeWindowMI1ActionPerformed
+
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6176,6 +6218,7 @@ public void unusePianoRoll()
     private javax.swing.JButton closeBtn;
     private javax.swing.JPanel closeButtonPanel;
     private javax.swing.JMenuItem closeWindowMI;
+    private javax.swing.JMenuItem closeWindowMI1;
     private javax.swing.JTextField columnField0;
     private javax.swing.JTextField columnField1;
     private javax.swing.JTextField columnField2;
@@ -6292,7 +6335,9 @@ public void unusePianoRoll()
     private javax.swing.JComboBox voicingType;
     private javax.swing.JLabel volLabel;
     private javax.swing.JMenu windowMenu;
+    private javax.swing.JMenu windowMenu1;
     private javax.swing.JSeparator windowMenuSeparator;
+    private javax.swing.JSeparator windowMenuSeparator1;
     // End of variables declaration//GEN-END:variables
   
     
