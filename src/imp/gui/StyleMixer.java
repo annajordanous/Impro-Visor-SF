@@ -83,13 +83,11 @@ public static final int CHORD = 2;
 
 public StyleMixer(java.awt.Frame parent, 
                         boolean modal, 
-                        StyleEditor p,  
-                        int minDuration)
+                        StyleEditor p)
   {
     super(parent, modal);
     this.styleEditor = p;
     this.notate = p.getNotate();
-    this.minDuration = minDuration;
     
     rawRulesModelBass       = new DefaultListModel();
     selectedRulesModelBass  = new DefaultListModel();
@@ -655,7 +653,6 @@ public void playRawRule(int type)
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
-        menuServingAsLabel = new javax.swing.JMenu();
 
         selectedPatternsPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Raw Chord Patterns"));
         selectedPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
@@ -691,6 +688,9 @@ public void playRawRule(int type)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.9;
+        gridBagConstraints.insets = new java.awt.Insets(4, 0, 7, 0);
         styleMixerPanel.add(rawPatternsPanelChord, gridBagConstraints);
 
         selectPatternBtnChord.setText("Copy to Style Editor");
@@ -702,9 +702,9 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(selectPatternBtnChord, gridBagConstraints);
 
         playPatternBtnChord.setText("Play Pattern");
@@ -716,8 +716,9 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(playPatternBtnChord, gridBagConstraints);
 
         selectPatternBtnDrum.setText("Copy to Style Editor");
@@ -729,9 +730,9 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(selectPatternBtnDrum, gridBagConstraints);
 
         playPatternBtnDrum.setText("Play Pattern");
@@ -743,8 +744,9 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(playPatternBtnDrum, gridBagConstraints);
 
         rawPatternsPanelDrum.setBorder(javax.swing.BorderFactory.createTitledBorder("Drum Patterns"));
@@ -758,12 +760,10 @@ public void playRawRule(int type)
             }
         });
         rawPatternsPanelDrum.setViewportView(rawRulesJListDrum);
-        rawRulesJListDrum.getAccessibleContext().setAccessibleName("null");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.9;
         styleMixerPanel.add(rawPatternsPanelDrum, gridBagConstraints);
 
         rawPatternsPanelBass.setBorder(javax.swing.BorderFactory.createTitledBorder("Bass Patterns"));
@@ -778,11 +778,14 @@ public void playRawRule(int type)
         });
         rawPatternsPanelBass.setViewportView(rawRulesJListBass);
 
-        styleMixerPanel.add(rawPatternsPanelBass, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.9;
+        styleMixerPanel.add(rawPatternsPanelBass, gridBagConstraints);
 
         playPatternBtnBass.setText("Play Pattern");
-        playPatternBtnBass.setMaximumSize(new java.awt.Dimension(91, 23));
-        playPatternBtnBass.setMinimumSize(new java.awt.Dimension(91, 23));
         playPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
         playPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -791,17 +794,25 @@ public void playRawRule(int type)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(playPatternBtnBass, gridBagConstraints);
 
         selectPatternBtnBass.setText("Copy to Style Editor");
         selectPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(selectPatternBtnBass, gridBagConstraints);
 
-        getContentPane().add(styleMixerPanel, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 3;
+        getContentPane().add(styleMixerPanel, gridBagConstraints);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -836,9 +847,6 @@ public void playRawRule(int type)
         windowMenu.add(windowMenuSeparator);
 
         extractionEditorMenuBar.add(windowMenu);
-
-        menuServingAsLabel.setText("(Tempo and Volume are set in the Style Editor)");
-        extractionEditorMenuBar.add(menuServingAsLabel);
 
         setJMenuBar(extractionEditorMenuBar);
 
@@ -950,7 +958,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuBar extractionEditorMenuBar;
-    private javax.swing.JMenu menuServingAsLabel;
     private javax.swing.JButton playPatternBtnBass;
     private javax.swing.JButton playPatternBtnChord;
     private javax.swing.JButton playPatternBtnDrum;
