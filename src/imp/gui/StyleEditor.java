@@ -2912,6 +2912,7 @@ void playBassColumn(int colIndex)
         stopPlaying = new javax.swing.JButton();
         closeBtn = new javax.swing.JButton();
         saveStyleBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         styleSpecificationPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         bassTabPanel = new javax.swing.JPanel();
@@ -4606,6 +4607,14 @@ void playBassColumn(int colIndex)
         });
         closeButtonPanel.add(saveStyleBtn, new java.awt.GridBagConstraints());
 
+        jButton1.setText("Save to Style Mixer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        closeButtonPanel.add(jButton1, new java.awt.GridBagConstraints());
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 11;
         gridBagConstraints.gridy = 5;
@@ -6134,6 +6143,10 @@ private void showExtractionCheckBoxActionPerformed(java.awt.event.ActionEvent ev
         styleMixer.setVisible(true);
     }//GEN-LAST:event_closeWindowMI1ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6260,6 +6273,7 @@ public void unusePianoRoll()
     private javax.swing.JCheckBox importChordCheckBox;
     private javax.swing.JCheckBox importDrumCheckBox;
     private javax.swing.JPanel importInstrumentsPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
