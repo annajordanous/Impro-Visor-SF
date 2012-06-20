@@ -106,6 +106,8 @@ public StyleMixer(java.awt.Frame parent,
     //setPotentialParts();
     
     rawRulesModelBass.addElement("B1");
+    rawRulesModelChord.addElement("X1");
+    rawRulesModelDrum.addElement("X1");
   }
 
 public void setBass()
@@ -541,7 +543,7 @@ public void playRawRule(int type)
           {
             case BASS:
                 {
-                rawOb = rawRulesJListDrum.getSelectedValue();
+                rawOb = rawRulesJListBass.getSelectedValue();
                 if( rawOb instanceof RepresentativeBassRules.BassPattern )
                 {
                 repPattern = (RepPattern)rawOb;
@@ -560,7 +562,7 @@ public void playRawRule(int type)
                 // don't correspond to rules. The old way, checking for
                 // parens at the start and end, is no longer relevant.
 
-                rawOb = rawRulesJListBass.getSelectedValue();
+                rawOb = rawRulesJListChord.getSelectedValue();
                 if( rawOb instanceof RepresentativeChordRules.ChordPattern )
                 {
                 repPattern = (RepPattern)rawOb;
@@ -730,7 +732,7 @@ public void playRawRule(int type)
         rawPatternsPanelChord.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelChord.setPreferredSize(new java.awt.Dimension(300, 200));
 
-        rawRulesJListChord.setModel(selectedRulesModelChord);
+        rawRulesJListChord.setModel(rawRulesModelChord);
         rawRulesJListChord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rawRulesJListChordselectedPatternsMouseClickedBass(evt);
@@ -749,7 +751,7 @@ public void playRawRule(int type)
         selectPatternBtnChord.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
         selectPatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectPatternBtnChordActionPerformed(evt);
+                copyChordPatternToStyleEditor(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -797,7 +799,7 @@ public void playRawRule(int type)
         selectPatternBtnDrum.setToolTipText("Removes the selected pattern from further consideration for the style.");
         selectPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectPatternBtnDrumActionPerformed(evt);
+                copyDrumPatternToStyleEditor(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -834,12 +836,12 @@ public void playRawRule(int type)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -902,40 +904,29 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
         playSelectedRule(DRUM);
     }//GEN-LAST:event_playPatternBtnDrumActionPerformed
 
-    private void selectPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPatternBtnDrumActionPerformed
-        int indexOfRuleToBeRemoved = selectedRulesJListBass.getSelectedIndex();
-        selectedBassRules.remove(indexOfRuleToBeRemoved);
-        selectedRulesJListBass.setListData(selectedBassRules.toArray());
-        selectedRulesJListBass.setSelectedIndex(Math.max(0, indexOfRuleToBeRemoved - 1));
-    }//GEN-LAST:event_selectPatternBtnDrumActionPerformed
+    private void copyDrumPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyDrumPatternToStyleEditor
+Object selectedOb = rawRulesJListDrum.getSelectedValue();
+  System.out.println("selected " + selectedOb);
+        if (selectedOb instanceof String) 
+          {
+            //widePatternTextField.setText(selectedOb.toString());
+            //styleEditor.setNextDrumPattern((String)selectedOb);
+          }
+    }//GEN-LAST:event_copyDrumPatternToStyleEditor
 
     private void playPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnChordActionPerformed
         playRawRule(CHORD);
     }//GEN-LAST:event_playPatternBtnChordActionPerformed
 
-    private void selectPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPatternBtnChordActionPerformed
-        Object ob = rawRulesJListDrum.getSelectedValue();
-        //System.out.println("ob = " + ob + " class = " + ob.getClass());
-        if (ob instanceof RepPattern) {
-            //System.out.println("selected rule " + incompleteRule);
-
-            RepPattern repPattern = (RepPattern) ob;
-
-            int index = rawRulesJListDrum.getSelectedIndex();
-
-            // There should be some criterion here to mask out lines that
-            // don't correspond to rules. The old way, checking for
-            // parens at the start and end, is no longer relevant.
-
-            RepresentativeBassRules.BassPattern selectedBassRule = (RepresentativeBassRules.BassPattern) repPattern;
-
-            selectedBassRules.add(selectedBassRule);
-            setBassSelectedRules();
-
-            rawRulesModelBass.removeElement(ob);
-            rawRulesJListDrum.setSelectedIndex(Math.max(0, index - 1));
-        }
-    }//GEN-LAST:event_selectPatternBtnChordActionPerformed
+    private void copyChordPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordPatternToStyleEditor
+     Object selectedOb = rawRulesJListChord.getSelectedValue();
+  System.out.println("selected " + selectedOb);
+        if (selectedOb instanceof String) 
+          {
+            //widePatternTextField.setText(selectedOb.toString());
+            styleEditor.setNextChordPattern((String)selectedOb);
+          }
+    }//GEN-LAST:event_copyChordPatternToStyleEditor
 
     private void selectedRulesJListBassselectedPatternsMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectedRulesJListBassselectedPatternsMouseClickedBass
         Object selectedOb = selectedRulesJListBass.getSelectedValue();
