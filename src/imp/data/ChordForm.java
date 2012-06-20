@@ -731,6 +731,11 @@ public ArrayList<Integer> getSpellMIDIarray(String root)
     return NoteSymbol.noteSymbolListToMIDIarray(getSpell(root, Key.Ckey));
   }
 
+public ArrayList<Integer> getScaleMIDIarray(String root)
+  {
+    return NoteSymbol.noteSymbolListToMIDIarray(getFirstScaleTones(root));
+  }
+
 public ArrayList<Integer> getColorMIDIarray(String root)
   {
     return NoteSymbol.noteSymbolListToMIDIarray(getColor(root, Key.Ckey));
