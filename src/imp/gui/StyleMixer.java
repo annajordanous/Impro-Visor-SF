@@ -1022,4 +1022,55 @@ private javax.swing.JLabel errorMessage;
     WindowRegistry.unregisterWindow(this);
     super.dispose();
     }
+  
+  public void copyCellsToBass(Polylist cells)
+  {
+      while( cells.nonEmpty())
+      {
+          Polylist item = (Polylist)cells.first();
+          item = (Polylist)item.first();
+          rawRulesModelBass.addElement(item.toString());
+          cells = cells.rest();
+      }
+  }
+  public void copyCellsToChord(Polylist cells)
+  {
+      while( cells.nonEmpty())
+      {
+          Polylist item = (Polylist)cells.first();
+          item = (Polylist)item.first();
+          rawRulesModelChord.addElement(item.toString());
+          cells = cells.rest();
+      }
+  }
+  
+   public void copyCells(Polylist cells, int rowNumber)
+  {
+      while( cells.nonEmpty())
+      {
+          Polylist item = (Polylist)cells.first();
+          switch(rowNumber)
+          {
+              case StyleTableModel.BASS_PATTERN_ROW:
+                 item = (Polylist)item.first();
+                 rawRulesModelBass.addElement(item.toString());
+                 break;
+                  
+              case StyleTableModel.CHORD_PATTERN_ROW:
+                 item = (Polylist)item.first();
+                 rawRulesModelChord.addElement(item.toString());
+                 break;
+                  
+              default:
+                      if( rowNumber >= StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW)
+                      {
+                          
+                      }
+                 
+          }
+          
+          cells = cells.rest();
+          rowNumber++;
+      }
+  }
 }
