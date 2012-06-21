@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +24,14 @@ import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
 import polya.Polylist;
 import polya.PolylistEnum;
 import polya.Tokenizer;
 
 /*
- * @author David Morrison
+ * @author David Morrison, modifications by Robert Keller, 21 June 2012
  */
 
 public class Grammar
@@ -58,7 +58,7 @@ public static final String TIMES = "*";
 
 public static final String DIVIDE = "/";
 
-Vector<String> terminals = new Vector<String>();
+ArrayList<String> terminals = new ArrayList<String>();
 
 Polylist rules = new Polylist();
 
@@ -266,10 +266,10 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
       // All applicable rules (and their corresponding weights)
       // get loaded into these arrays, to be selected from at random.
-      Vector<Polylist> ruleArray = new Vector<Polylist>(5);
-      Vector<Polylist> baseArray = new Vector<Polylist>(5);
-      Vector<Double> ruleWeights = new Vector<Double>(5);
-      Vector<Double> baseWeights = new Vector<Double>(5);
+      ArrayList<Polylist> ruleArray = new ArrayList<Polylist>(5);
+      ArrayList<Polylist> baseArray = new ArrayList<Polylist>(5);
+      ArrayList<Double> ruleWeights = new ArrayList<Double>(5);
+      ArrayList<Double> baseWeights = new ArrayList<Double>(5);
 
       // Now search through and find all rules that apply to the given start symbol.
       // Note that a start symbol can be a polylist.
@@ -385,19 +385,19 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       // Randomly choose a rule to follow.
       double total = 0.0;
 
-      Vector<Polylist> rulesList;
-      Vector<Double> weightArray;
+      ArrayList<Polylist> rulesList;
+      ArrayList<Double> weightArray;
 
       // If any base cases exist, we ignore all rules.
       if( !baseWeights.isEmpty() )
         {
-        rulesList = new Vector(baseArray);
-        weightArray = new Vector(baseWeights);
+        rulesList = new ArrayList(baseArray);
+        weightArray = new ArrayList(baseWeights);
         }
       else
         {
-        rulesList = new Vector(ruleArray);
-        weightArray = new Vector(ruleWeights);
+        rulesList = new ArrayList(ruleArray);
+        weightArray = new ArrayList(ruleWeights);
         }
 
       // System.out.println("rules = " + rules);
@@ -455,13 +455,13 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
     }
   }
 
-// Load in any terminal values specified in the user file.  Returns a vector containing
+// Load in any terminal values specified in the user file.  Returns a ArrayList containing
 // all terminal values.
 
-public Vector<Object> getAllOfType(String t)
+public ArrayList<Object> getAllOfType(String t)
   {
   Polylist search = rules;
-  Vector<Object> elements = new Vector<Object>();
+  ArrayList<Object> elements = new ArrayList<Object>();
   while( search.nonEmpty() )
     {
     try
@@ -489,14 +489,14 @@ public Vector<Object> getAllOfType(String t)
   }
 
 
-public Vector<String> getTerms()
+public ArrayList<String> getTerms()
   {
   Collection terms = (Collection)getAllOfType(TERMINAL);
   if( terminals == null )
     {
-    return new Vector<String>(); // empty
+    return new ArrayList<String>(); // empty
     }
-  return new Vector<String>(terms);
+  return new ArrayList<String>(terms);
   }
 
 
@@ -518,9 +518,9 @@ public void clearParams()
   }
 
 
-public Vector<Polylist> getParams()
+public ArrayList<Polylist> getParams()
   {
-  return new Vector<Polylist>((Collection)getAllOfType(PARAM));
+  return new ArrayList<Polylist>((Collection)getAllOfType(PARAM));
   }
 
 
@@ -685,7 +685,8 @@ private Object evaluate(Object toParse)
 
 private Polylist replace(String varName, Long value, Polylist toReplace)
   {
-  Polylist toReturn = new Polylist();
+  Polylist toReturn = Polylist.nil;
+  
   for( int i = 0; i < toReplace.length(); ++i )
     {
     if( toReplace.nth(i) instanceof Polylist )
@@ -704,7 +705,6 @@ private Polylist replace(String varName, Long value, Polylist toReplace)
     }
 
   toReturn = toReturn.reverse();
-  ;
   return toReturn;
   }
 
