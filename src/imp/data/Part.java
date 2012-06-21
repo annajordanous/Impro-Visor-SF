@@ -1295,6 +1295,7 @@ public int getUnitRhythmValue(int unitIndex)
 
         for(int i = first; i < last; i++) // was <=, changed May 13 2012
             newPart.slots.set(i - first, slots.get(i));
+        // I'm getting an ArrayIndexOutOfBoundsException -1 here, 21 June 2012
 
         
         return newPart;

@@ -26,6 +26,7 @@ import imp.util.ErrorLogWithResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import polya.Arith;
 import polya.Polylist;
 import polya.PolylistEnum;
 import polya.Tokenizer;
@@ -49,6 +50,8 @@ public static final String PARAM = "parameter";
 
 public static final String COMMENT = "comment";
 
+public static final String BUILTIN = "builtin";
+
 // Operators:
 public static final String PLUS = "+";
 
@@ -57,6 +60,11 @@ public static final String MINUS = "-";
 public static final String TIMES = "*";
 
 public static final String DIVIDE = "/";
+
+// Builtin variables:
+
+public static final String EXPECTANCY = "expectancy";
+
 
 ArrayList<String> terminals = new ArrayList<String>();
 
@@ -91,7 +99,6 @@ public Polylist run(Object data, Notate notate)
     boolean failure = true;
     int savedRetryCount = retryCount;
     int maxRetries = 20;
-
 
     while( failure && (retryCount - savedRetryCount) <= maxRetries )
       {
@@ -304,7 +311,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           if( pop.equals(symbol) )
             {
             baseArray.add(derivation);
-            Number weight = (Number)next.fourth();
+            Number weight = (Number)evaluate(next.fourth());
             baseWeights.add(weight.doubleValue());
             }
           }
@@ -363,7 +370,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               if( valid )
               {
               ruleArray.add(derivation);
-              Number weight = (Number)next.fourth();
+              Number weight = (Number)evaluate(next.fourth());
               ruleWeights.add(weight.doubleValue());
               }
               }
@@ -373,7 +380,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             // This RHS element is not a string. Just carry it and hope for the best!
             // It is probably an S-expression such as (slope M N ...)
             ruleArray.add(derivation);
-            Number weight = (Number)next.fourth();
+            Number weight = (Number)evaluate(next.fourth());
             ruleWeights.add(weight.doubleValue());
 
             }
@@ -628,6 +635,13 @@ private Polylist setVars(Polylist getValsFrom, Polylist getVarsFrom,
 // Expressions should be given in prefix form:
 // (+ 3 4) evaluates to 7
 // (+ (/ 4 2) (* 7 3)) evaluates to 23
+//
+// As of 21 June 2012, evaluate can accept builtins, of the form
+// (builtin <some identifier>)
+// Right now, the only identifier is "expectancy". Evaluation of this identifier
+// is stubbed to return 1. Any other identifier will return 0.
+// Eventually, the value of the builtin identifier may change depending on the
+// then-current slot.
 
 private Object evaluate(Object toParse)
   {
@@ -642,28 +656,35 @@ private Object evaluate(Object toParse)
       {
       // Recursively evaluate until we get down to two numbers we can add.
       Polylist parsing = (Polylist)toParse;
-      if( PLUS.equals(parsing.first()) )
+      
+      if( BUILTIN.equals(parsing.first()) )
         {
-        return (Long)evaluate(parsing.second()) + (Long)evaluate(parsing.third());
+        return evaluateBuiltin(parsing.second());
+        }
+      else if( PLUS.equals(parsing.first()) )
+        {
+        return Arith.add(evaluate(parsing.second()), evaluate(parsing.third()));
         }
       else if( MINUS.equals(parsing.first()) )
         {
-        return (Long)evaluate(parsing.second()) - (Long)evaluate(parsing.third());
+        return Arith.subtract(evaluate(parsing.second()), evaluate(parsing.third()));
         }
       else if( TIMES.equals(parsing.first()) )
         {
-        return (Long)evaluate(parsing.second()) * (Long)evaluate(parsing.third());
+        return Arith.multiply(evaluate(parsing.second()), evaluate(parsing.third()));
         }
       else if( DIVIDE.equals(parsing.first()) )
         {
-        return (Long)evaluate(parsing.second()) / (Long)evaluate(parsing.third());
+        return Arith.divide(evaluate(parsing.second()), evaluate(parsing.third()));
         }
       else
         {
-        Polylist p = new Polylist();
-        for( int i = 0; i < parsing.length(); ++i )
+        Polylist p = Polylist.nil;
+        Polylist L = parsing;
+        while( L.nonEmpty() )
           {
-          p = Polylist.cons(evaluate(parsing.nth(i)), p);
+            p = Polylist.cons(evaluate(L.first()), p);
+            L = L.rest();
           }
         p = p.reverse();
         return p;
@@ -671,7 +692,7 @@ private Object evaluate(Object toParse)
       }
     catch( ClassCastException e )
       {
-      ErrorLog.log(ErrorLog.SEVERE, "Bad cast operation in evaluate.");
+      ErrorLog.log(ErrorLog.SEVERE, "Bad cast operation in evaluation of " + toParse);
       return null;
       }
     }
@@ -681,31 +702,46 @@ private Object evaluate(Object toParse)
     }
   }
 
+// For testing purposes only:
+
+int expectancyValue = 0;
+
+private Object evaluateBuiltin(Object arg)
+  {
+    if( EXPECTANCY.equals(arg) )
+      {
+        expectancyValue = 1 - expectancyValue;
+        return new Double(expectancyValue);
+      }
+     return new Double(0);
+  }
+
 // Recursively replace all instances of varName with value in toReplace
 
 private Polylist replace(String varName, Long value, Polylist toReplace)
   {
   Polylist toReturn = Polylist.nil;
   
-  for( int i = 0; i < toReplace.length(); ++i )
+  Polylist L = toReplace;
+  
+  while( L.nonEmpty() )
     {
-    if( toReplace.nth(i) instanceof Polylist )
+    if( L.first() instanceof Polylist )
       {
-      toReturn = toReturn.cons(replace(varName, value,
-              (Polylist)toReplace.nth(i)));
+      toReturn = toReturn.cons(replace(varName, value, (Polylist)L.first()));
       }
-    else if( varName.equals(toReplace.nth(i)) )
+    else if( varName.equals(L.first()) )
       {
       toReturn = toReturn.cons(value);
       }
     else
       {
-      toReturn = toReturn.cons(toReplace.nth(i));
+      toReturn = toReturn.cons(L.first());
       }
+    L = L.rest();
     }
 
-  toReturn = toReturn.reverse();
-  return toReturn;
+  return toReturn.reverse();
   }
 
 }
