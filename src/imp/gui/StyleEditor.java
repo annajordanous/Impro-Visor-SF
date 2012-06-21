@@ -27,7 +27,6 @@ import imp.com.OpenLeadsheetCommand;
 import imp.data.*;
 import imp.util.*;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.*;
 import java.io.BufferedWriter;
@@ -1151,71 +1150,6 @@ void playBassColumn(int colIndex)
     super.dispose();
     }
   
-  /**
-   * Reorders the numbers on the bass titles to the order currently displayed on screen
-   * (Originally intended to update titles after various user-requested sorting operations.
-   * These operations were removed from the GUI because they seemed slow and not too useful.)
-   * Currently used when cutting a pattern.
-   */
-  private void updateBassTitles()
-    {
-    Component[] allItems = bassHolderPane.getComponents();
-    for( int i = 0; i < allItems.length; i++ )
-      {
-      try
-        {
-        BassPatternDisplay b = (BassPatternDisplay)allItems[i];
-        b.setTitleNumber(i + 1);
-        }
-      catch( ClassCastException e )
-        {
-        }
-      }
-    }
-
-  /**
-   * Reorders the numbers on the drum titles to the order currently displayed on screen
-   * (Originally intended to update titles after various user-requested sorting operations.
-   * These operations were removed from the GUI because they seemed slow and not too useful.)
-   *  Currently used when cutting a pattern.
-   */
-  private void updateDrumTitles()
-    {
-    Component[] allItems = drumHolderPane.getComponents();
-    for( int i = 0; i < allItems.length; i++ )
-      {
-      try
-        {
-        DrumPatternDisplay d = (DrumPatternDisplay)allItems[i];
-        d.setTitleNumber(i + 1);
-        }
-      catch( ClassCastException e )
-        {
-        }
-      }
-    }
-
-  /**
-   * Reorders the numbers on the chord titles to the order currently displayed on screen
-   * (Originally intended to update titles after various user-requested sorting operations.
-   * These operations were removed from the GUI because they seemed slow and not too useful.)
-   * Currently used when cutting a pattern.
-   */
-  private void updateChordTitles()
-    {
-    Component[] allItems = chordHolderPane.getComponents();
-    for( int i = 0; i < allItems.length; i++ )
-      {
-      try
-        {
-        ChordPatternDisplay c = (ChordPatternDisplay)allItems[i];
-        c.setTitleNumber(i + 1);
-        }
-      catch( ClassCastException e )
-        {
-        }
-      }
-    }
 
   /**
    * Sets up the file browsers and their attributes used by this GUI
@@ -1399,6 +1333,84 @@ void playBassColumn(int colIndex)
     styleName = file.getName();
     
     changedSinceLastSave = false;
+    }
+  
+  /**
+   * Loads a drum pattern from a single string, which should be a list of
+   * S expressions, such as
+   * "(drum Ride_Cymbal_1 X4 X4 X8 X8 X4) (drum Closed_Hi-Hat R4 X4 R4 X4)(drum Acoustic_Snare R2+4 V50 X8 R8)"
+   * This was introduced so that drum patterns could be transferred from the StyleMixer
+   * @param patternString 
+   */
+  public void loadDrumPatternFromString(String patternString)
+    {
+      loadDrumPatternFromPolylist(Notate.parseListFromString(patternString));
+    }
+  
+  /**
+   * Loads a drum pattern from a single Polylist such as
+   * ((drum Ride_Cymbal_1 X4 X4 X8 X8 X4) (drum Closed_Hi-Hat R4 X4 R4 X4)(drum Acoustic_Snare R2+4 V50 X8 R8))
+   * This was introduced so that drum patterns could be transferred from the StyleMixer.
+   * 
+   * Eventually this code should be refactored to make better use of the DrumRule constructor.
+   * @param patternString 
+   */
+  
+  public void loadDrumPatternFromPolylist(Polylist item)
+    {
+    ArrayList<DrumRuleRep> drArray = new ArrayList<DrumRuleRep>();
+    
+    //System.out.println("item = " + item);
+    
+    RepresentativeDrumRules d = new RepresentativeDrumRules(true);
+    
+    ArrayList<RepresentativeDrumRules.DrumPattern> drumP =
+            new ArrayList<RepresentativeDrumRules.DrumPattern>();
+ 
+    RepresentativeDrumRules.DrumPattern aDrumPattern = d.makeDrumPattern();
+      
+    while( item.nonEmpty() )
+      {
+        // The first symbol in item.first() is assumed to be "drum",
+        // so only the rest is passed to the DrumRuleRep constructor.
+        
+        DrumRuleRep drumPat = new DrumRuleRep(((Polylist)item.first()).rest());
+        
+        //System.out.println("drumPat = " + drumPat);
+    
+        RepresentativeDrumRules.DrumRule aDrumRule = d.makeDrumRule();
+        
+        aDrumRule.setInstrumentNumber(drumPat.getInstrument());
+        
+        // This syntax checking should be done in the DrumRule constructor.
+        
+        for( DrumRuleRep.Element element: drumPat.getElements() )
+          {
+          String ele = "";
+          String suffix = element.getSuffix();
+          switch( element.getType() )
+            {
+              case 'X': ele = HIT_STRING    + suffix; break;
+              case 'R': ele = REST_STRING   + suffix; break;
+              case 'V': ele = VOLUME_STRING + suffix; break;
+              default: assert false;
+            }
+  
+          aDrumRule.addElement(ele);
+          }
+
+        aDrumPattern.addRule(aDrumRule);
+        
+        item = item.rest();
+        }
+   
+      aDrumPattern.setWeight(10);
+      
+     //System.out.println("aDrumPattern = " + aDrumPattern);
+
+     drumP.add(aDrumPattern);
+
+     loadDrumPatterns(drumP);
     }
 
   /**
@@ -1632,17 +1644,19 @@ void playBassColumn(int colIndex)
     }
 
   /*
-   * Creates one DrumPatternDisplay object for each element of bassPatterns with its weight and pattern text.
-   * Removes all previous information from the bassHolderPane and adds each of the new display objects
+   * Creates one DrumPatternDisplay object for each element of drumPatterns with its weight and pattern text.
    */
   public void loadDrumPatterns(ArrayList<RepresentativeDrumRules.DrumPattern> drumPatterns)
     {
-    drumHolderPane.removeAll();
-    if( drumPatterns.size() < 1 )
-      {
-      JPanel emptyPat = createEmptyPatternPanel("drum");
-      drumHolderPane.add(emptyPat);
-      }
+      
+      //System.out.println("loadDrumPatterns " + drumPatterns);
+      
+//    drumHolderPane.removeAll();
+//    if( drumPatterns.size() < 1 )
+//      {
+//      JPanel emptyPat = createEmptyPatternPanel("drum");
+//      drumHolderPane.add(emptyPat);
+//      }
 
     instrumentIdByRow = new ArrayList<String>();
 
@@ -1703,12 +1717,12 @@ void playBassColumn(int colIndex)
         //System.out.println("loaded percussion pattern at row " + instrumentRow + ", column " + patternIndex);
         }
       newPat.setTitleNumber((i + 1));
-      drumHolderPane.add(newPat);
+      //drumHolderPane.add(newPat);
       allDrumPatterns.set(patternIndex, newPat);
       double beats = newPat.getBeats();
       model.setDrumPatternBeats(beats, patternIndex);
       }
-    drumHolderPane.revalidate();
+    //drumHolderPane.revalidate();
     }
 
     public int findInstrumentRow(String instrumentName) {
@@ -1909,9 +1923,9 @@ void playBassColumn(int colIndex)
     {
 
     newTable();
-    bassHolderPane.removeAll();
-    drumHolderPane.removeAll();
-    chordHolderPane.removeAll();
+//    bassHolderPane.removeAll();
+//    drumHolderPane.removeAll();
+//    chordHolderPane.removeAll();
     setAttributes();
 
     curSelectedBass = null;
@@ -1931,9 +1945,9 @@ void playBassColumn(int colIndex)
    */
   private void refreshAll()
     {
-    bassHolderPane.updateUI();
-    drumHolderPane.updateUI();
-    chordHolderPane.updateUI();
+//    bassHolderPane.updateUI();
+//    drumHolderPane.updateUI();
+//    chordHolderPane.updateUI();
     }
 
   /**
@@ -2203,8 +2217,8 @@ void playBassColumn(int colIndex)
   public DrumPatternDisplay newDrumPatternDisplay()
     {
     DrumPatternDisplay display = new DrumPatternDisplay(notate, cm, this);
-    drumHolderPane.add(display);
-    drumHolderPane.updateUI();
+//    drumHolderPane.add(display);
+//    drumHolderPane.updateUI();
     return display;
     }
 
@@ -2948,9 +2962,8 @@ void playBassColumn(int colIndex)
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
-        windowMenu1 = new javax.swing.JMenu();
-        closeWindowMI1 = new javax.swing.JMenuItem();
-        windowMenuSeparator1 = new javax.swing.JSeparator();
+        styleMixerMenu = new javax.swing.JMenu();
+        openStyleMixerMI = new javax.swing.JMenuItem();
 
         helpDialog.setTitle("Style Editor Help");
         helpDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -4881,12 +4894,12 @@ void playBassColumn(int colIndex)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -4912,30 +4925,29 @@ void playBassColumn(int colIndex)
 
         styMenuBar.add(windowMenu);
 
-        windowMenu1.setMnemonic('W');
-        windowMenu1.setText("Style Mixer");
-        windowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+        styleMixerMenu.setMnemonic('W');
+        styleMixerMenu.setText("Style Mixer");
+        styleMixerMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                styleMixerMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenu1MenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
-        closeWindowMI1.setMnemonic('C');
-        closeWindowMI1.setText("Open");
-        closeWindowMI1.setToolTipText("Closes the current window (exits program if there are no other windows)");
-        closeWindowMI1.addActionListener(new java.awt.event.ActionListener() {
+        openStyleMixerMI.setMnemonic('C');
+        openStyleMixerMI.setText("Open");
+        openStyleMixerMI.setToolTipText("Closes the current window (exits program if there are no other windows)");
+        openStyleMixerMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeWindowMI1ActionPerformed(evt);
+                openStyleMixerMIActionPerformed(evt);
             }
         });
-        windowMenu1.add(closeWindowMI1);
-        windowMenu1.add(windowMenuSeparator1);
+        styleMixerMenu.add(openStyleMixerMI);
 
-        styMenuBar.add(windowMenu1);
+        styMenuBar.add(styleMixerMenu);
 
         setJMenuBar(styMenuBar);
 
@@ -6132,17 +6144,17 @@ private void showExtractionCheckBoxActionPerformed(java.awt.event.ActionEvent ev
     MIDIBeast.showExtraction = showExtractionCheckBox.isSelected();
   }//GEN-LAST:event_showExtractionCheckBoxActionPerformed
 
-    private void windowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenu1MenuSelected
+    private void styleMixerMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_styleMixerMenuMenuSelected
         // TODO add your handling code here:
-    }//GEN-LAST:event_windowMenu1MenuSelected
+    }//GEN-LAST:event_styleMixerMenuMenuSelected
 
-    private void closeWindowMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI1ActionPerformed
+    private void openStyleMixerMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openStyleMixerMIActionPerformed
         if( styleMixer == null )
         {
             styleMixer = new StyleMixer(this, false, this);
         }
         styleMixer.setVisible(true);
-    }//GEN-LAST:event_closeWindowMI1ActionPerformed
+    }//GEN-LAST:event_openStyleMixerMIActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -6232,7 +6244,6 @@ public void unusePianoRoll()
     private javax.swing.JButton closeBtn;
     private javax.swing.JPanel closeButtonPanel;
     private javax.swing.JMenuItem closeWindowMI;
-    private javax.swing.JMenuItem closeWindowMI1;
     private javax.swing.JTextField columnField0;
     private javax.swing.JTextField columnField1;
     private javax.swing.JTextField columnField2;
@@ -6298,6 +6309,7 @@ public void unusePianoRoll()
     private javax.swing.JTextField numField;
     private javax.swing.JButton openButton;
     private javax.swing.JMenuItem openStyleMI;
+    private javax.swing.JMenuItem openStyleMixerMI;
     private javax.swing.JPanel panelInStyleScrollpane;
     private javax.swing.JButton pasteCellsButton;
     private javax.swing.JMenuItem pasteCellsMI;
@@ -6334,6 +6346,7 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem styHelpMI;
     private javax.swing.JMenuBar styMenuBar;
     private javax.swing.JTextField styleEditorStatusTF;
+    private javax.swing.JMenu styleMixerMenu;
     private javax.swing.JPanel stylePanel;
     private javax.swing.JScrollPane styleScrollpane;
     private javax.swing.JPanel styleSpecificationPanel;
@@ -6350,9 +6363,7 @@ public void unusePianoRoll()
     private javax.swing.JComboBox voicingType;
     private javax.swing.JLabel volLabel;
     private javax.swing.JMenu windowMenu;
-    private javax.swing.JMenu windowMenu1;
     private javax.swing.JSeparator windowMenuSeparator;
-    private javax.swing.JSeparator windowMenuSeparator1;
     // End of variables declaration//GEN-END:variables
   
     
@@ -6410,6 +6421,7 @@ public StyleTableModel getModel()
   {
     return (StyleTableModel)styleTable.getModel();
   }
+
 public int getLastSelectedColumn()
   {
     int selectedColumns[] = styleTable.getSelectedColumns();
@@ -6421,16 +6433,47 @@ public int getLastSelectedColumn()
     return getModel().FIRST_PATTERN_COLUMN;
   }
 
+public void advanceSelectedColumn()
+  {
+    int selectedColumn = getLastSelectedColumn();
+    setSelectedColumn(selectedColumn+1);
+  }
+
+public void setSelectedColumn(int column)
+  {
+    styleTable.addColumnSelectionInterval(column, column);
+  }
+
+
+int selectedBassColumn = 0;
+int selectedChordColumn = 0;
+        
 public void setNextBassPattern(String patternString)
   {
-  System.out.println("Setting bass pattern " + patternString);
-    setCell(patternString, getModel().BASS_PATTERN_ROW, getLastSelectedColumn(), SILENT);
+  //System.out.println("Setting bass pattern " + patternString);
+    if( selectedBassColumn < 1 )
+      {
+        selectedBassColumn = getLastSelectedColumn();
+      }
+    setCell(patternString, getModel().BASS_PATTERN_ROW, selectedBassColumn, SILENT);
+    selectedBassColumn++;
   }
 
 public void setNextChordPattern(String patternString)
   {
-  System.out.println("Setting chord pattern " + patternString);
-    setCell(patternString, getModel().CHORD_PATTERN_ROW, getLastSelectedColumn(), SILENT);
+  //System.out.println("Setting chord pattern " + patternString);
+    if( selectedChordColumn < 1 )
+      {
+        selectedBassColumn = getLastSelectedColumn();
+      }
+    setCell(patternString, getModel().CHORD_PATTERN_ROW, selectedChordColumn, SILENT);
+    selectedChordColumn++;
+  }
+
+public void setNextDrumPattern(String patternString)
+  {
+  //System.out.println("Setting drum pattern " + patternString);
+        loadDrumPatternFromString(patternString);
   }
 }
 

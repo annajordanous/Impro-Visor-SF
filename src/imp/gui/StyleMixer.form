@@ -127,7 +127,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.9"/>
+              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.2" weightY="0.9"/>
             </Constraint>
           </Constraints>
 
@@ -135,6 +135,9 @@
           <SubComponents>
             <Component class="javax.swing.JList" name="rawRulesJListBass">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="c8" id="orange" palette="1" red="ff" type="palette"/>
+                </Property>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="rawRulesModelBass" type="code"/>
                 </Property>
@@ -163,7 +166,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="selectPatternBtnBass">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Copy to Style Editor"/>
+            <Property name="text" type="java.lang.String" value="Copy Bass Pattern to Style Editor"/>
+            <Property name="toolTipText" type="java.lang.String" value="Move the selected Bass Pattern to the next column of the Style Editor."/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[300, 23]"/>
             </Property>
@@ -193,7 +197,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.9"/>
+              <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.2" weightY="0.9"/>
             </Constraint>
           </Constraints>
 
@@ -201,6 +205,9 @@
           <SubComponents>
             <Component class="javax.swing.JList" name="rawRulesJListChord">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" id="green" palette="1" red="0" type="palette"/>
+                </Property>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="rawRulesModelChord" type="code"/>
                 </Property>
@@ -213,8 +220,8 @@
         </Container>
         <Component class="javax.swing.JButton" name="selectPatternBtnChord">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Copy to Style Editor"/>
-            <Property name="toolTipText" type="java.lang.String" value="Moves the selected pattern into the right list for inclusion in the style."/>
+            <Property name="text" type="java.lang.String" value="Copy Chord Pattern to Style Editor"/>
+            <Property name="toolTipText" type="java.lang.String" value="Move the selected Chord Pattern to the next column of the Style Editor."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyChordPatternToStyleEditor"/>
@@ -255,7 +262,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="2" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.9" weightY="0.0"/>
+              <GridBagConstraints gridX="2" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.6" weightY="0.9"/>
             </Constraint>
           </Constraints>
 
@@ -263,6 +270,9 @@
           <SubComponents>
             <Component class="javax.swing.JList" name="rawRulesJListDrum">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" id="yellow" palette="1" red="ff" type="palette"/>
+                </Property>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="rawRulesModelDrum" type="code"/>
                 </Property>
@@ -275,8 +285,8 @@
         </Container>
         <Component class="javax.swing.JButton" name="selectPatternBtnDrum">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Copy to Style Editor"/>
-            <Property name="toolTipText" type="java.lang.String" value="Removes the selected pattern from further consideration for the style."/>
+            <Property name="text" type="java.lang.String" value="Copy Drum Pattern to Style Editor"/>
+            <Property name="toolTipText" type="java.lang.String" value="Move the selected Drum Pattern to the next column of the Style Editor."/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="copyDrumPatternToStyleEditor"/>
