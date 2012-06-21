@@ -2312,6 +2312,14 @@ void playBassColumn(int colIndex)
     }
 
   /**
+   * get polylist of copied cells
+   */
+  public Polylist getCopiedCells()
+  {
+      return copiedCells;
+  }
+  
+  /**
    * Convert cell contents for a copy operation.
   @param contents
   @return
@@ -4624,7 +4632,7 @@ void playBassColumn(int colIndex)
         jButton1.setText("Save to Style Mixer");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                saveToStyleMixer(evt);
             }
         });
         closeButtonPanel.add(jButton1, new java.awt.GridBagConstraints());
@@ -4894,12 +4902,12 @@ void playBassColumn(int colIndex)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -4928,12 +4936,12 @@ void playBassColumn(int colIndex)
         styleMixerMenu.setMnemonic('W');
         styleMixerMenu.setText("Style Mixer");
         styleMixerMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                styleMixerMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                styleMixerMenuMenuSelected(evt);
             }
         });
 
@@ -6156,9 +6164,10 @@ private void showExtractionCheckBoxActionPerformed(java.awt.event.ActionEvent ev
         styleMixer.setVisible(true);
     }//GEN-LAST:event_openStyleMixerMIActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void saveToStyleMixer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToStyleMixer
+     styleMixer.copyCells(getCopiedCells(), selectedRowIndex);
+     
+    }//GEN-LAST:event_saveToStyleMixer
 
 private void usePianoRoll()
 {
