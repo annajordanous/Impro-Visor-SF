@@ -29,6 +29,7 @@ import imp.util.*;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import polya.Polylist;
 
 /**
  * Impro-Visor main class
@@ -167,6 +168,11 @@ public class ImproVisor implements Constants {
       return advisor;
       }
 
+    public static Polylist getChordNames()
+      {
+        return getAdvisor().getChordNames();
+      }
+    
     /**
      * Get the indication of whether to play insertions.
      */
@@ -375,6 +381,8 @@ private ImproVisor(String leadsheet)
       {
         advisor.listChords(System.out);	// option to list all chord types
       }
+    
+    //System.out.println(getChordNames());
   }
        
     

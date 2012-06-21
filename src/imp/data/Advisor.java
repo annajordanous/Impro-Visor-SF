@@ -371,6 +371,19 @@ public void listChordNames(PrintStream out)
     }
   }
 
+public Polylist getChordNames()
+  {
+  Polylist L = chords;
+  Polylist R = Polylist.nil;
+
+  while( L.nonEmpty() )
+    {
+    Polylist entry = (Polylist)L.first();
+    R = R.cons(entry.first());
+    L = L.rest();
+    }   
+  return R;
+  }
 
 /**
  * Reads a Polylist of rules and saves the rules as various other
@@ -467,7 +480,8 @@ public void addRules()
       System.out.println(invertedExtensionsTable[i]);
       }
     }
-  // listChordNames(System.out);
+  //listChordNames(System.out);
+  //System.out.println(getChordNames());
   }
 
 
