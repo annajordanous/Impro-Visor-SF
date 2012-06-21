@@ -1825,7 +1825,7 @@ public boolean fillMelody(MelodyPart lick,
     }
 
     public String getParameter(String paramName) {
-        Vector<Polylist> params = grammar.getParams();
+        ArrayList<Polylist> params = grammar.getParams();
         for (int i = 0; i < params.size(); ++i) {
             Polylist p = params.get(i);
             if (((String) p.first()).equals(paramName) && p.length() >= 2) {
