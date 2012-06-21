@@ -107,7 +107,7 @@ public StyleMixer(java.awt.Frame parent,
     
     rawRulesModelBass.addElement("B1");
     rawRulesModelChord.addElement("X1");
-    rawRulesModelDrum.addElement("X1");
+    rawRulesModelDrum.addElement("(drum Ride_Cymbal_1 X4 X4 X8 X8 X4) (drum Closed_Hi-Hat R4 X4 R4 X4)(drum Acoustic_Snare R2+4 V50 X8 R8)");
   }
 
 public void setBass()
@@ -535,6 +535,9 @@ public void playSelectedRule(int type)
 
 public void playRawRule(int type)
   {
+    // Needs to be reworked for the Strings in StyleMixer.
+    // This was copied from StyleExtractor.
+/*    
     Object rawOb;
     RepPattern repPattern;
     Polylist rule = null;
@@ -625,6 +628,7 @@ public void playRawRule(int type)
                              ImproVisor.getCurrentWindow(),
                              0,
                              notate.getTransposition()).execute();      
+  */
   }
 
 /**
@@ -684,6 +688,7 @@ public void playRawRule(int type)
         rawPatternsPanelBass.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelBass.setPreferredSize(new java.awt.Dimension(300, 200));
 
+        rawRulesJListBass.setBackground(java.awt.Color.orange);
         rawRulesJListBass.setModel(rawRulesModelBass);
         rawRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -696,6 +701,7 @@ public void playRawRule(int type)
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 0.9;
         styleMixerPanel.add(rawPatternsPanelBass, gridBagConstraints);
 
@@ -714,7 +720,8 @@ public void playRawRule(int type)
         gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(playPatternBtnBass, gridBagConstraints);
 
-        selectPatternBtnBass.setText("Copy to Style Editor");
+        selectPatternBtnBass.setText("Copy Bass Pattern to Style Editor");
+        selectPatternBtnBass.setToolTipText("Move the selected Bass Pattern to the next column of the Style Editor.");
         selectPatternBtnBass.setPreferredSize(new java.awt.Dimension(300, 23));
         selectPatternBtnBass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -732,6 +739,7 @@ public void playRawRule(int type)
         rawPatternsPanelChord.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelChord.setPreferredSize(new java.awt.Dimension(300, 200));
 
+        rawRulesJListChord.setBackground(java.awt.Color.green);
         rawRulesJListChord.setModel(rawRulesModelChord);
         rawRulesJListChord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -744,11 +752,12 @@ public void playRawRule(int type)
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.2;
         gridBagConstraints.weighty = 0.9;
         styleMixerPanel.add(rawPatternsPanelChord, gridBagConstraints);
 
-        selectPatternBtnChord.setText("Copy to Style Editor");
-        selectPatternBtnChord.setToolTipText("Moves the selected pattern into the right list for inclusion in the style.");
+        selectPatternBtnChord.setText("Copy Chord Pattern to Style Editor");
+        selectPatternBtnChord.setToolTipText("Move the selected Chord Pattern to the next column of the Style Editor.");
         selectPatternBtnChord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyChordPatternToStyleEditor(evt);
@@ -780,6 +789,7 @@ public void playRawRule(int type)
         rawPatternsPanelDrum.setMinimumSize(new java.awt.Dimension(300, 200));
         rawPatternsPanelDrum.setPreferredSize(new java.awt.Dimension(300, 200));
 
+        rawRulesJListDrum.setBackground(java.awt.Color.yellow);
         rawRulesJListDrum.setModel(rawRulesModelDrum);
         rawRulesJListDrum.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -792,11 +802,12 @@ public void playRawRule(int type)
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.9;
+        gridBagConstraints.weightx = 0.6;
+        gridBagConstraints.weighty = 0.9;
         styleMixerPanel.add(rawPatternsPanelDrum, gridBagConstraints);
 
-        selectPatternBtnDrum.setText("Copy to Style Editor");
-        selectPatternBtnDrum.setToolTipText("Removes the selected pattern from further consideration for the style.");
+        selectPatternBtnDrum.setText("Copy Drum Pattern to Style Editor");
+        selectPatternBtnDrum.setToolTipText("Move the selected Drum Pattern to the next column of the Style Editor.");
         selectPatternBtnDrum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyDrumPatternToStyleEditor(evt);
@@ -836,12 +847,12 @@ public void playRawRule(int type)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -905,12 +916,12 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_playPatternBtnDrumActionPerformed
 
     private void copyDrumPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyDrumPatternToStyleEditor
-Object selectedOb = rawRulesJListDrum.getSelectedValue();
-  System.out.println("selected " + selectedOb);
+        Object selectedOb = rawRulesJListDrum.getSelectedValue();
+  //System.out.println("selected " + selectedOb);
         if (selectedOb instanceof String) 
           {
             //widePatternTextField.setText(selectedOb.toString());
-            //styleEditor.setNextDrumPattern((String)selectedOb);
+            styleEditor.setNextDrumPattern((String)selectedOb);
           }
     }//GEN-LAST:event_copyDrumPatternToStyleEditor
 
@@ -919,8 +930,8 @@ Object selectedOb = rawRulesJListDrum.getSelectedValue();
     }//GEN-LAST:event_playPatternBtnChordActionPerformed
 
     private void copyChordPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordPatternToStyleEditor
-     Object selectedOb = rawRulesJListChord.getSelectedValue();
-  System.out.println("selected " + selectedOb);
+        Object selectedOb = rawRulesJListChord.getSelectedValue();
+  //System.out.println("selected " + selectedOb);
         if (selectedOb instanceof String) 
           {
             //widePatternTextField.setText(selectedOb.toString());
@@ -962,8 +973,8 @@ Object selectedOb = rawRulesJListDrum.getSelectedValue();
 
 private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyBassPatternToStyleEditor
   {//GEN-HEADEREND:event_copyBassPatternToStyleEditor
-    Object selectedOb = rawRulesJListBass.getSelectedValue();
-  System.out.println("selected " + selectedOb);
+        Object selectedOb = rawRulesJListBass.getSelectedValue();
+  //System.out.println("selected " + selectedOb);
         if (selectedOb instanceof String) 
           {
             //widePatternTextField.setText(selectedOb.toString());
