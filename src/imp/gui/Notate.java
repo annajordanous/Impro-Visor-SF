@@ -16759,20 +16759,9 @@ void timeWarpMelody(int num, int denom)
    *
    */
     public void redoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoMIActionPerformed
-
-      Trace.log(2, "redo command");
-
-      cm.redo();
-
-      redoAdvice();
-
-      // set the menu and button states
-
-      setItemStates();
+      redoCommand();
     }//GEN-LAST:event_redoMIActionPerformed
-    
-    
-    
+ 
     
   /**
    *
@@ -16780,7 +16769,11 @@ void timeWarpMelody(int num, int denom)
    *
    */
     public void undoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMIActionPerformed
+      undoCommand();
+    }//GEN-LAST:event_undoMIActionPerformed
 
+  public void undoCommand()
+    {
       Trace.log(2, "undo command in Notate");
 
       cm.undo();
@@ -16790,9 +16783,22 @@ void timeWarpMelody(int num, int denom)
       // set the menu and button states
 
       setItemStates();
-        
-    }//GEN-LAST:event_undoMIActionPerformed
+    }
+  
+  public void redoCommand()
+    {
+      Trace.log(2, "redo command");
 
+      cm.redo();
+
+      redoAdvice();
+
+      // set the menu and button states
+
+      setItemStates();      
+    }
+  
+  
   /**
    *
    * Shows the construction lines when the user's mouse is over a measure
