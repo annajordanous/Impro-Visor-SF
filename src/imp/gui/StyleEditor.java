@@ -6157,15 +6157,33 @@ private void showExtractionCheckBoxActionPerformed(java.awt.event.ActionEvent ev
     }//GEN-LAST:event_styleMixerMenuMenuSelected
 
     private void openStyleMixerMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openStyleMixerMIActionPerformed
-        if( styleMixer == null )
-        {
-            styleMixer = new StyleMixer(this, false, this);
-        }
-        styleMixer.setVisible(true);
+      openStyleMixer();
     }//GEN-LAST:event_openStyleMixerMIActionPerformed
 
+private void openStyleMixer()
+  {
+    if( styleMixer == null )
+        {
+            styleMixer = new StyleMixer(this, false, this);
+            WindowRegistry.registerWindow(styleMixer, "Style Mixer");
+        }
+    styleMixer.setVisible(true);    
+  }
+
     private void saveToStyleMixer(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToStyleMixer
-     styleMixer.copyCells(getCopiedCells(), selectedRowIndex);
+        copyCurrentCells();
+        
+        openStyleMixer();
+        
+        int rows[] = styleTable.getSelectedRows();
+        int firstRow = rows[0];
+        String instrumentName[] = new String[rows.length];
+        // Establish percussion instrument names for transfer to Mixer
+        for( int i = 0, row = firstRow; i < rows.length; i++, row++ )
+          {
+            instrumentName[i] = getRowHeaders().get(row);
+          }
+        styleMixer.copyCellsForStyleMixer(getCopiedCells(), firstRow, instrumentName);
      
     }//GEN-LAST:event_saveToStyleMixer
 
@@ -6464,7 +6482,7 @@ public void setNextBassPattern(String patternString)
       {
         selectedBassColumn = getLastSelectedColumn();
       }
-    setCell(patternString, getModel().BASS_PATTERN_ROW, selectedBassColumn, SILENT);
+    setCell(stripOuterParens(patternString), getModel().BASS_PATTERN_ROW, selectedBassColumn, SILENT);
     selectedBassColumn++;
   }
 
@@ -6475,14 +6493,19 @@ public void setNextChordPattern(String patternString)
       {
         selectedBassColumn = getLastSelectedColumn();
       }
-    setCell(patternString, getModel().CHORD_PATTERN_ROW, selectedChordColumn, SILENT);
+    setCell(stripOuterParens(patternString), getModel().CHORD_PATTERN_ROW, selectedChordColumn, SILENT);
     selectedChordColumn++;
   }
 
 public void setNextDrumPattern(String patternString)
   {
   //System.out.println("Setting drum pattern " + patternString);
-        loadDrumPatternFromString(patternString);
+        loadDrumPatternFromString(stripOuterParens(patternString));
+  }
+
+public static String stripOuterParens(String arg)
+  {
+    return arg.substring(1, arg.length()-1);
   }
 }
 
