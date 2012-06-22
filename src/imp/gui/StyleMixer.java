@@ -31,6 +31,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
+import polya.PolylistBuffer;
 
 /**
  * @author Robert Keller, Caitlin Chen
@@ -43,8 +44,10 @@ import polya.Polylist;
 
 public class StyleMixer extends javax.swing.JDialog implements Constants
 {
-public static final int DRUM_CHANNEL = 9;
-public static final String DRUM_NAMES = "DRUMS";
+/**
+ * name used in drum rules
+ */
+public static final String DRUM_SYMBOL = "drum";
 
 Notate notate;
 StyleEditor styleEditor;
@@ -104,10 +107,6 @@ public StyleMixer(java.awt.Frame parent,
     //numberOfClustersSpinnerBass.setModel(model);
 
     //setPotentialParts();
-    
-    rawRulesModelBass.addElement("B1");
-    rawRulesModelChord.addElement("X1");
-    rawRulesModelDrum.addElement("(drum Ride_Cymbal_1 X4 X4 X8 X8 X4) (drum Closed_Hi-Hat R4 X4 R4 X4)(drum Acoustic_Snare R2+4 V50 X8 R8)");
   }
 
 public void setBass()
@@ -205,8 +204,8 @@ public void setBassRawRules()
       {
         rawRulesModelBass.addElement(rawRule);
       }
-    rawRulesJListDrum.setModel(rawRulesModelBass);
-    rawRulesJListDrum.setSelectedIndex(0);
+    rawRulesJListBass.setModel(rawRulesModelBass);
+    rawRulesJListBass.setSelectedIndex(0);
   }
 
 public void setChordRawRules()
@@ -247,8 +246,8 @@ public void setChordRawRules()
       {
         rawRulesModelChord.addElement(rawRule);
       }
-    rawRulesJListBass.setModel(rawRulesModelChord);
-    rawRulesJListBass.setSelectedIndex(0);
+    rawRulesJListChord.setModel(rawRulesModelChord);
+    rawRulesJListChord.setSelectedIndex(0);
   }
 
 public void setDrumRawRules()
@@ -393,48 +392,6 @@ private void errorButtonActionPerformed(java.awt.event.ActionEvent evt)
   {//GEN-FIRST:event_errorButtonActionPerformed
     errorDialog.setVisible(false);
   }//GEN-LAST:event_errorButtonActionPerformed
-
-
-//private void checkForAndThrowErrors()
-//  {
-//    double endBeat;
-//    double startBeat;
-//    try
-//      {
-//        endBeat = Double.parseDouble(endBeatTextFieldBass.getText());
-//        startBeat = Double.parseDouble(startBeatTextFieldBass.getText());
-//      }
-//    catch( Exception e )
-//      {
-//        errorMessage.setText("ERROR: Malformed Start/End Beat.");
-//        errorDialog.setSize(250, 200);
-//        errorDialog.setLocationRelativeTo(this);
-//        errorDialog.setVisible(true);
-//        return;
-//      }
-//
-//    if( endBeat < 0 || startBeat < 0 )
-//      {
-//        errorMessage.setText("ERROR: Start/End Beats must be positive.");
-//        errorDialog.setSize(250, 200);
-//        errorDialog.setLocationRelativeTo(this);
-//        errorDialog.setVisible(true);
-//      }
-//    else if( startBeat > endBeat )
-//      {
-//        errorMessage.setText("ERROR: Start beat must be less than end beat.");
-//        errorDialog.setSize(250, 200);
-//        errorDialog.setLocationRelativeTo(this);
-//        errorDialog.setVisible(true);
-//      }
-//    else if( endBeat < startBeat )
-//      {
-//        errorMessage.setText("ERROR: End beat must be greater than start beat.");
-//        errorDialog.setSize(250, 200);
-//        errorDialog.setLocationRelativeTo(this);
-//        errorDialog.setVisible(true);
-//      }
-//  }
 
 
 /**
@@ -677,7 +634,6 @@ public void playRawRule(int type)
 
         popupMenu1.setLabel("popupMenu1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Style Mixer");
         setMinimumSize(new java.awt.Dimension(800, 600));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -917,7 +873,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
     private void copyDrumPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyDrumPatternToStyleEditor
         Object selectedOb = rawRulesJListDrum.getSelectedValue();
-  //System.out.println("selected " + selectedOb);
         if (selectedOb instanceof String) 
           {
             //widePatternTextField.setText(selectedOb.toString());
@@ -931,7 +886,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
     private void copyChordPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordPatternToStyleEditor
         Object selectedOb = rawRulesJListChord.getSelectedValue();
-  //System.out.println("selected " + selectedOb);
         if (selectedOb instanceof String) 
           {
             //widePatternTextField.setText(selectedOb.toString());
@@ -1023,54 +977,80 @@ private javax.swing.JLabel errorMessage;
     super.dispose();
     }
   
-  public void copyCellsToBass(Polylist cells)
+/**
+ * Copy a rectangle of cells for copying to the Style Mixer
+ * @param cells
+ * @param rowNumber
+ * @param instrumentName 
+ */
+public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrumentName[])
   {
-      while( cells.nonEmpty())
+    // cells are organized by column, so put each column into an array 
+    // element.
+    
+    Polylist column[] = new Polylist[cells.length()];
+    
+    int j = 0;
+    while( cells.nonEmpty() )
       {
-          Polylist item = (Polylist)cells.first();
-          item = (Polylist)item.first();
-          rawRulesModelBass.addElement(item.toString());
-          cells = cells.rest();
+        column[j++] = (Polylist)cells.first();
+        cells = cells.rest();
       }
-  }
-  public void copyCellsToChord(Polylist cells)
-  {
-      while( cells.nonEmpty())
+    
+    int numColumns = j;
+    
+    int numRows = numColumns > 0 ? column[0].length() : 0;
+    
+    //System.out.println(numRows + " rows, " + numColumns + " columns");
+    
+    // Buffers for concatenating any drum rules by column
+    PolylistBuffer buffer[] = new PolylistBuffer[numColumns];
+    
+    for( j = 0; j < numColumns; j++ )
       {
-          Polylist item = (Polylist)cells.first();
-          item = (Polylist)item.first();
-          rawRulesModelChord.addElement(item.toString());
-          cells = cells.rest();
-      }
-  }
-  
-   public void copyCells(Polylist cells, int rowNumber)
-  {
-      while( cells.nonEmpty())
+         buffer[j] = new PolylistBuffer();
+       }
+
+    for( int i = 0; i < numRows; i++ )
       {
-          Polylist item = (Polylist)cells.first();
-          switch(rowNumber)
+        for( j = 0; j < numColumns; j++ )
           {
-              case StyleTableModel.BASS_PATTERN_ROW:
-                 item = (Polylist)item.first();
+            int trueRow = rowNumber + i;
+            Polylist item = (Polylist)column[j].first();
+            
+            if( item.nonEmpty() && !item.toString().equals("()") )
+              {
+              //System.out.println("row " + trueRow + ", column " + j + ": " + item);
+              switch(trueRow)
+                {
+                case StyleTableModel.BASS_PATTERN_ROW:
                  rawRulesModelBass.addElement(item.toString());
                  break;
                   
-              case StyleTableModel.CHORD_PATTERN_ROW:
-                 item = (Polylist)item.first();
+                case StyleTableModel.CHORD_PATTERN_ROW:
                  rawRulesModelChord.addElement(item.toString());
                  break;
                   
-              default:
-                      if( rowNumber >= StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW)
+                default:
+                 if( trueRow >= StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW)
                       {
-                          
+                      buffer[j].append(item.cons(instrumentName[i]).cons(DRUM));    
                       }
-                 
+                }
+              }
+            
+            column[j] = column[j].rest();
           }
-          
-          cells = cells.rest();
-          rowNumber++;
+      }
+    
+    for( j = 0; j < numColumns; j++ )
+      {
+        Polylist L = buffer[j].toPolylist();
+        String S = L.toString();
+        if( L.nonEmpty() && !S.equals("()") )
+          {
+          rawRulesModelDrum.addElement(S);
+          }
       }
   }
 }
