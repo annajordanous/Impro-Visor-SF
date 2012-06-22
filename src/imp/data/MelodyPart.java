@@ -88,7 +88,7 @@ public class MelodyPart
   /**
    * Volume to be explicitly given for one-time melodies, for
    * use with entered melodies.  "Playback" melodies will instead
-   * rely on the volume slider in the toolbar.
+   * rely on the volume slider in the toolhar.
    */
   public int getSpecifiedVolume()
     {
@@ -384,8 +384,7 @@ public void addNote(Note note)
     if( restSlots != getSize() )
       {
       Trace.log(0,
-              "Possible error calculating number of rests from "
-              + "the end of the piece in Part.getRestSlotsFromEnd");
+              "Possible error calculating number of rests from the end of the piece in Part.getRestSlotsFromEnd");
       }
     return restSlots;
     }
@@ -522,8 +521,7 @@ public void addNote(Note note)
 //    }
 //
 //  
-//
-  
+//  
   /**
    * Returns an exact copy of this Part from startingIndex to endingIndex
    * @return 
@@ -1549,8 +1547,31 @@ public MelodyPart copy(int startingIndex, int endingIndex)
      return n;
  }
  
+ /**
+  * Currently only used in ChordExtract. Normalizes the MelodyPart such that it
+  *     contains Units for each resolution slot. eg With a quarter note resolution,
+  *     a whole note will be normalized into 4 quarter notes.
+  * @param resolution   
+  * 
+  */
+ public void normalize(int resolution)
+ {
+     for (int i = 0; i < this.size; i = i + resolution)
+     {
+         Note note = this.getNote(i);
+         if (note==null && i==0)
+         {
+             return;
+         }
+         if (note==null)
+         {
+             Note prevNote = this.getNote(i-resolution);
+             prevNote.setRhythmValue(resolution);
+             this.setNote(i, prevNote);
+         }
+     }
+ }
 
-  
      /**
      * The only current use is in LickgenFrame.
      * @param selectionStart

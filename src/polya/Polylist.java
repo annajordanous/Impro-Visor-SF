@@ -1083,6 +1083,20 @@ public Object[] array()
   return result;
   }
 
+/**
+ * toStringArray() returns an Object[] containing a String[] of elements in list
+ */
+public Object[] toStringArray()
+  {
+  Object[] result = new String[length()];
+  int i = 0;
+  for( Enumeration e = elements(); e.hasMoreElements();)
+    {
+    result[i++] = e.nextElement();
+    }
+  return result;
+  }
+
 
 /**
  * PolylistFromArray makes a list out of an array of objects
