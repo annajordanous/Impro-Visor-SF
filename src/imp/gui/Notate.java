@@ -12315,12 +12315,10 @@ public boolean putLick(MelodyPart lick)
 
     // Ideally, would wait here
 
-    // Formerly used SafePasteCommand
+    // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
+    // carry unnecessary baggage.
     
-    cm.execute(new DynamicPasteCommand(lick,
-                                       getMelodyPart(stave),
-                                       getCurrentSelectionStart(stave),
-                                       stave));
+    getMelodyPart(stave).pasteOver(lick, getCurrentSelectionStart(stave));
     
     if( lickgenFrame.rectifySelected() )
       {
