@@ -2381,13 +2381,21 @@ void setSubDivs(int subDivs)
  */
 void setSubDivs(int subDivs, int start, int end)
  {
+  int beat = getBeatValue();
   for( int i = start; i <= end;
-    i += getBeatValue() )
+    i += beat )
    {
-    stave.setSubDivs(i / getBeatValue(), subDivs);
+    stave.setSubDivs(i / beat, subDivs);
    }
 
   stave.repaint();
+  
+  StepEntryKeyboard stepKeyboard = notate.getCurrentStepKeyboard();
+  
+  if (stepKeyboard != null)
+  {
+      stepKeyboard.setSubDivComboBox();
+  }
   return;
  }
 
