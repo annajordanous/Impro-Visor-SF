@@ -83,7 +83,7 @@ public class MidiStepEntryActionHandler implements Constants, Receiver {
         }
         
         notate.getCurrentStave().repaint();
-        notate.getCurrentKeyboard().resetSuggestions();
+        notate.getCurrentStepKeyboard().resetAdvice();
     }
     
     void handleNoteOff(int note, int velocity, int channel) {

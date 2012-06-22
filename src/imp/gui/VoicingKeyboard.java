@@ -85,7 +85,6 @@ public class VoicingKeyboard extends javax.swing.JFrame {
               public Object getValue(String y) {return null;}
               }
         );
-      
     }
 
     /** This method is called from within the constructor to

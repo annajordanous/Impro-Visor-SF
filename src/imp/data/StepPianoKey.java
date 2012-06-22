@@ -65,6 +65,8 @@ public class StepPianoKey {
     
     private JLabel label;
     
+    private JLabel numLabel;
+    
     private Icon chordIcon;
     
     private Icon colorIcon;
@@ -75,9 +77,13 @@ public class StepPianoKey {
     
     private Icon bassIcon;
     
+    private Icon adviceIcon;
+    
     private int defaultMIDI = 60;
     
     private JLabel defaultLabel = new JLabel(offIcon);
+    
+    private JLabel defaultNumLabel = new JLabel("");
     
     private Icon defaultChordIcon = whiteKeyChord;
     
@@ -97,10 +103,12 @@ public class StepPianoKey {
      * @param midiValue, onIcon, offIcon, label
      */
     
-    public StepPianoKey(int midiValue, Icon chordIcon, Icon colorIcon, Icon pressedIcon, Icon offIcon, Icon bassIcon, JLabel label)
+    public StepPianoKey(int midiValue, Icon chordIcon, Icon colorIcon, Icon pressedIcon,
+                        Icon offIcon, Icon bassIcon, JLabel label, JLabel numLabel)
     {
         this.midiValue = midiValue;
         this.label = label;
+        this.numLabel = numLabel;
         this.chordIcon = chordIcon;
         this.colorIcon = colorIcon;
         this.pressedIcon = pressedIcon;
@@ -120,7 +128,8 @@ public class StepPianoKey {
     public StepPianoKey()
     {
         new StepPianoKey(
-                defaultMIDI, defaultChordIcon, defaultColorIcon, defaultPressedIcon, defaultOffIcon, defaultBassIcon, defaultLabel);
+                defaultMIDI, defaultChordIcon, defaultColorIcon, defaultPressedIcon,
+                defaultOffIcon, defaultBassIcon, defaultLabel, defaultNumLabel);
     }
     
     /**
@@ -162,6 +171,11 @@ public class StepPianoKey {
     public JLabel getLabel()
     {
         return this.label;
+    }
+    
+    public JLabel getNumLabel()
+    {
+        return this.numLabel;
     }
     
     /**

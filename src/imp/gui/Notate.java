@@ -13107,7 +13107,7 @@ public void staveRequestFocus()
   }
 
 /**
- * This override is intended to fix requestFocusInWindow, which was only worked
+ * This override is intended to fix requestFocusInWindow, which only worked
  * some of the time, for reasons I don't understand.
  *
  * @return
@@ -16206,6 +16206,8 @@ public void setAdviceUsed()
     {
     getCurrentStaveActionHandler().moveSelectionRight(getCurrentSelectionStart() + 1);
     redoAdvice();
+    if (stepKeyboard != null)
+        stepKeyboard.resetAdvice();
     }
     
     
@@ -16222,8 +16224,9 @@ public void setAdviceUsed()
     {
 
     getCurrentStaveActionHandler().moveSelectionLeft(getCurrentSelectionStart() - 1);
-
     redoAdvice();
+    if (stepKeyboard != null)
+        stepKeyboard.resetAdvice();
     }
 
     
@@ -16557,7 +16560,6 @@ public void pasteMelody(Part part)
     public void pasteChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteChordsMIActionPerformed
         
         pasteChords();
-        
     }//GEN-LAST:event_pasteChordsMIActionPerformed
     
     
@@ -16594,7 +16596,6 @@ public void pasteMelody(Part part)
     public void copyMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMelodyMIActionPerformed
         
         copyMelody();
-        
     }//GEN-LAST:event_copyMelodyMIActionPerformed
   
     
@@ -16631,7 +16632,6 @@ void copyMelody()
     public void cutMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMelodyMIActionPerformed
         
         cutMelody();
-        
     }//GEN-LAST:event_cutMelodyMIActionPerformed
     
   void cutMelody()
@@ -16757,7 +16757,8 @@ void timeWarpMelody(int num, int denom)
    *
    */
     public void redoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoMIActionPerformed
-      redoCommand();
+      
+        redoCommand();
     }//GEN-LAST:event_redoMIActionPerformed
  
     
@@ -16767,7 +16768,8 @@ void timeWarpMelody(int num, int denom)
    *
    */
     public void undoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMIActionPerformed
-      undoCommand();
+      
+        undoCommand();
     }//GEN-LAST:event_undoMIActionPerformed
 
   public void undoCommand()
@@ -19470,9 +19472,7 @@ private void pianoKeyboardButtonActionPerformed(java.awt.event.ActionEvent evt) 
 public void openKeyboard()
 {
     if( keyboard == null ) 
-    {
         keyboard = new VoicingKeyboard(this, getNewXlocation(), getNewYlocation());
-    }
     
     String current = keyboard.getPresentChordDisplayText();
     if (current.equals(""))
@@ -19488,9 +19488,7 @@ public void openKeyboard()
 public void openStepKeyboard()
 {
     if (stepKeyboard == null)
-    {
         stepKeyboard = new StepEntryKeyboard(this, getNewXlocation(), getNewYlocation());
-    }
     
     stepKeyboard.setVisible(true);
     if (stepInputActive == false)
@@ -19499,10 +19497,11 @@ public void openStepKeyboard()
         stepInputBtn.setSelected(selected);
         setStepInputBtn(selected);
     }
+    stepKeyboard.resetAdvice();
 }
 
 
-public StepEntryKeyboard getCurrentKeyboard()
+public StepEntryKeyboard getCurrentStepKeyboard()
 {
     return stepKeyboard;
 }
@@ -19512,19 +19511,14 @@ public StepEntryKeyboard getCurrentKeyboard()
  */
 public void clearKeyboard() 
 {
-  
   if( keyboard != null )
-    {
     keyboard.clearKeyboard();
-    }
 }
 
 public void clearStepKeyboard()
 {
   if( stepKeyboard != null )
-    {
         stepKeyboard.clearKeyboard();
-    }
 }
 
 /**
@@ -19535,9 +19529,7 @@ public void clearStepKeyboard()
 public Polylist voicingToList(String v)
 {
     if (v.equals(""))
-    {
         return Polylist.nil;
-    }
     
     StringReader voicingReader = new StringReader(v);
     Tokenizer in = new Tokenizer(voicingReader);
@@ -21750,7 +21742,7 @@ private void setChordFontSizeSpinner(int newSize)
 public void keyPressed(java.awt.event.KeyEvent evt)
 {
 //System.out.println("notate key pressed " + evt);
-     requestFocusInWindow();
+    requestFocusInWindow();
     getCurrentStaveActionHandler().keyPressed(evt);
 }
 
