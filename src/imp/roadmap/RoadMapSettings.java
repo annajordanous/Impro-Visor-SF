@@ -327,7 +327,7 @@ public class RoadMapSettings {
         
         if((string.length() * length)/stringLength <= 1)
             return "...";
-        return string.substring(0, (string.length() * length)/stringLength - 2).concat("É");
+        return string.substring(0, (string.length() * length)/stringLength - 2).concat("...");
     }
   
     /**
