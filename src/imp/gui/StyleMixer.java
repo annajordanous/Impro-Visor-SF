@@ -614,6 +614,9 @@ public void playRawRule(int type)
         rawRulesJListDrum = new javax.swing.JList();
         selectPatternBtnDrum = new javax.swing.JButton();
         playPatternBtnDrum = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         extractionEditorMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -791,6 +794,44 @@ public void playRawRule(int type)
         gridBagConstraints.weighty = 0.1;
         styleMixerPanel.add(playPatternBtnDrum, gridBagConstraints);
 
+        jButton1.setText("Delete Drum Pattern");
+        jButton1.setToolTipText("Delete Drum Pattern");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteDrumPattern(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        styleMixerPanel.add(jButton1, gridBagConstraints);
+
+        jButton2.setText("Delete Bass Pattern");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBassPattern(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        styleMixerPanel.add(jButton2, gridBagConstraints);
+
+        jButton3.setText("Delete Chord Pattern");
+        jButton3.setToolTipText("Delete Chord Pattern");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteChordPattern(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        styleMixerPanel.add(jButton3, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -803,12 +844,12 @@ public void playRawRule(int type)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -936,12 +977,29 @@ private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-F
           }
   }//GEN-LAST:event_copyBassPatternToStyleEditor
 
+    private void deleteBassPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBassPattern
+    
+  rawRulesModelBass.removeElement(rawRulesJListBass.getSelectedValue());
+    
+    }//GEN-LAST:event_deleteBassPattern
+
+    private void deleteChordPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteChordPattern
+       rawRulesModelChord.removeElement(rawRulesJListChord.getSelectedValue());
+    }//GEN-LAST:event_deleteChordPattern
+
+    private void deleteDrumPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDrumPattern
+        rawRulesModelDrum.removeElement(rawRulesJListDrum.getSelectedValue());
+    }//GEN-LAST:event_deleteDrumPattern
+
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuBar extractionEditorMenuBar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton playPatternBtnBass;
     private javax.swing.JButton playPatternBtnChord;
     private javax.swing.JButton playPatternBtnDrum;
@@ -1024,11 +1082,19 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
               switch(trueRow)
                 {
                 case StyleTableModel.BASS_PATTERN_ROW:
-                 rawRulesModelBass.addElement(item.toString());
+                    String bassPattern = item.toString();
+                    if( rawRulesModelBass.indexOf(bassPattern) == -1 )
+                    {
+                    rawRulesModelBass.addElement(bassPattern);
+                    }
                  break;
                   
                 case StyleTableModel.CHORD_PATTERN_ROW:
-                 rawRulesModelChord.addElement(item.toString());
+                    String chordPattern = item.toString();
+                    if( rawRulesModelChord.indexOf(chordPattern) == -1 )
+                    {
+                    rawRulesModelChord.addElement(item.toString());
+                    }
                  break;
                   
                 default:
@@ -1049,7 +1115,10 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
         String S = L.toString();
         if( L.nonEmpty() && !S.equals("()") )
           {
-          rawRulesModelDrum.addElement(S);
+            if ( rawRulesModelDrum.indexOf(S) == -1 )
+            {
+             rawRulesModelDrum.addElement(S);
+            }
           }
       }
   }
