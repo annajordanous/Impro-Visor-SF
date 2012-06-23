@@ -1655,4 +1655,28 @@ public int getInitialBeatsRest()
 //        slots.set(i, insert.getUnit(j));
 //      }
 //  }
+ 
+ 
+/**
+ * getSyncVector gets an array of 1's and 0's from a MelodyPart
+ * representing note onsets, for the purpose of a synchronization
+ * algorithm being implemented by David Halpern. Currently every slotSpacing-th
+ * slot is polled to see whether there is a note onset there. If so,
+ * a 1 is returned in that position. Otherwise a 0 is returned.
+ * For this purpose, rests are not considered to be notes.
+ * For example, slotSpacing might be 15.
+ * @return 
+ */
+ 
+public int[] getSyncVector(int slotSpacing)
+  {
+    int n = size();
+    int[] result = new int[(int)Math.ceil(n/slotSpacing)];
+    for( int i = 0, j = 0; i < n; i+= slotSpacing, j++ )
+      {
+        Note note = (Note)slots.get(i);
+        result[j] = note != null && note.nonRest() ? 1 : 0;
+      }
+    return result; 
+  }
 }
