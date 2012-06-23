@@ -811,6 +811,15 @@ public class Leadsheet
     //System.out.println("chord symbols: " + chords.getChordSymbols()); 
     //System.out.println("chord durations: " + chords.getChordDurations()); 
  
+//    // Test code for getSyncVector
+//    System.out.print("syncVector for leadsheet's melody: ");
+//    int[] syncVector = melody.getSyncVector(15);
+//    for( int i = 0; i < syncVector.length; i++ )
+//      {
+//        System.out.print(syncVector[i] + " ");
+//      }
+//    System.out.println();
+    
     return true;
     } // readLeadsheet
 
