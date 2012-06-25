@@ -46,6 +46,7 @@ public class ChordExtract implements Constants{
 
         //initialize a chordlist of all the chord names
         Polylist chordnames = ImproVisor.getChordNames();
+        chordnames.reverse();
         chordList = (String[]) chordnames.toStringArray();
         
         lengthOfChordList = chordList.length;
@@ -54,11 +55,20 @@ public class ChordExtract implements Constants{
         bitChordList = new boolean[lengthOfChordList][12];
         for (int i = 0; i < lengthOfChordList; i++) {
             String chordName = chordList[i];
+            System.out.println(chordName);
             ChordSymbol chordsymbol = ChordSymbol.makeChordSymbol(chordName);
             ChordForm chordform = chordsymbol.getChordForm();
             Key key = chordform.getKey();
             boolean[] chordbit = chordform.getSpellVector(CROOT, key);
             bitChordList[i] = chordbit;
+            
+            if ("_".equals(chordName.substring(chordName.length()-1)))
+            {
+                //System.out.println(chordName);
+                //System.out.println(chordName.substring(chordName.length()-1));
+                //System.out.println(chordName.substring(0,chordName.length()-1));
+                chordList[i]=chordName.substring(0,chordName.length()-1);
+            }
             //System.out.println(NoteSymbol.showContents(chordbit));
             //System.out.println();
         }
@@ -370,7 +380,7 @@ public class ChordExtract implements Constants{
                 }
             }
         }
+        chordpart.fixDuplicateChords(chordpart, chordResolution);
         return chordpart;
     }
 }
-

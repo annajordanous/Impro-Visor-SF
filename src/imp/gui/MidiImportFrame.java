@@ -590,7 +590,7 @@ private void selectTrack(int index)
        int numBeats = record.getBeats();
        endBeatSpinner.setValue(numBeats);
        ((javax.swing.SpinnerNumberModel)endBeatSpinner.getModel()).setMaximum(numBeats);
-       } 
+       }
   }
 
 private MelodyPart getSelectedTrackMelody()
@@ -602,8 +602,13 @@ private MelodyPart getSelectedTrackMelody()
       int endSlot = Math.min(selectedPart.getSize() - 1, 
                              BEAT*((Integer)endBeatSpinner.getValue()));
 
+      while (endSlot - startSlot < 4)
+                    {
+                        endSlot++;
+                    }
+      
       return selectedPart.copy(startSlot, endSlot);
-      } 
+      }
     return null;
   }
 
@@ -646,9 +651,11 @@ private void stopPlaying()
 
 private void extractChords()
 {
+    int startSlot = (Integer)startBeatSpinner.getValue();
     //sets the note resolution to 1/8
     noteResolutionComboBox.setSelectedIndex(8);
     reloadMenu();
+    startBeatSpinner.setValue(startSlot);
     
     //get size of the channel list
     int size = trackListModel.size();
@@ -658,17 +665,39 @@ private void extractChords()
     List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();
     
     //extract the corresponding bass and chord channels
+    int copyStartSlot = BEAT*(startSlot - 1);
+    int endSlot;
+    int copyEndSlot;
     for (int i = 0; i < size; i++) {
             Object ob = trackListModel.get(i);
             if (ob instanceof MidiImportRecord) {
                 MidiImportRecord record = (MidiImportRecord) ob;
                 MelodyPart currentMelodyPart = record.getPart();
+                endSlot = (Integer)endBeatSpinner.getValue();
                 if (record.getChannel()==bassChannel && currentMelodyPart != null)
                 {
+                    while (endSlot - startSlot < 4)
+                    {
+                        endSlot=endSlot+1;
+                    }
+                    endBeatSpinner.setValue(endSlot);
+                    
+                    copyEndSlot = Math.min(currentMelodyPart.getSize() - 1,
+                            BEAT*(endSlot));
+                    currentMelodyPart = currentMelodyPart.copy(copyStartSlot, copyEndSlot);
                     bassMelodyParts.add(currentMelodyPart);
                 }
                 if (record.getChannel()==chordChannel && currentMelodyPart != null)
                 {
+                    while (endSlot - startSlot < 4)
+                    {
+                        endSlot=endSlot+1;
+                    }
+                    endBeatSpinner.setValue(endSlot);
+                    
+                    copyEndSlot = Math.min(currentMelodyPart.getSize() - 1,
+                            BEAT*(endSlot));
+                    currentMelodyPart = currentMelodyPart.copy(copyStartSlot, copyEndSlot);
                     chordMelodyParts.add(currentMelodyPart);
                 }
             }
@@ -700,7 +729,9 @@ private void extractChords()
         //extract the chords
         ChordExtract chordExtract = new ChordExtract();
         ChordPart chords = chordExtract.arrayMelodyPartsToChordPart(arrayMelodyParts, chordResolution, noteResolution);
-        notate.setChordProg(chords);
+        if (chords != null) {
+            notate.setChordProg(chords);
+        }
     }
 }
 
