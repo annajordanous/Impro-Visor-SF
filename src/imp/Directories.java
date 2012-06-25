@@ -71,6 +71,12 @@ public static String accumulatedProductions = "accumulatedProductions.cache";
 public static String styleDirName = "styles";
 
 /**
+ * Name of file for the StyleMixer.
+ * 
+ */
+public static String styleMixerName = "styleMixer.txt";
+
+/**
  * Name of standard sub-directory for importing styles 
  * from combination of midi and leadsheet
  */
