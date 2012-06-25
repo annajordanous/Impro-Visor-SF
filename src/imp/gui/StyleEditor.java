@@ -6184,7 +6184,7 @@ private void openStyleMixer()
             instrumentName[i] = getRowHeaders().get(row);
           }
         styleMixer.copyCellsForStyleMixer(getCopiedCells(), firstRow, instrumentName);
-    
+     
     }//GEN-LAST:event_saveToStyleMixer
 
 private void usePianoRoll()
