@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import polya.Polylist;
+import imp.audio.*;
 
 /**
  * Impro-Visor main class
@@ -482,7 +483,9 @@ public static void main(String[] args)
     // create ImproVisor instance... this seems to violate some principle
     // of instances, we set instance directly instead of call getInstance()
     // but it does allow us to pass in a leadsheet parameter...
+    
     instance = new ImproVisor(leadsheet);
+    //new PitchExtraction().setVisible(true);
   }
 
 
@@ -498,7 +501,7 @@ public static File getUserDirectory()
   String userHome = System.getProperty("user.home");
   //System.out.println("User Home Path: "+ userHome);
 
-  
+
   File homeDir = new File(userHome, Directories.improHome);
     
   if( !homeDir.exists() )
