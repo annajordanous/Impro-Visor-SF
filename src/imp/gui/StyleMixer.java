@@ -26,7 +26,11 @@ import imp.com.PlayScoreCommand;
 import imp.data.*;
 import imp.util.ErrorLog;
 import java.awt.Color;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -980,15 +984,17 @@ private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-F
     private void deleteBassPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBassPattern
     
   rawRulesModelBass.removeElement(rawRulesJListBass.getSelectedValue());
-    
+   saveStylePatterns();  
     }//GEN-LAST:event_deleteBassPattern
 
     private void deleteChordPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteChordPattern
        rawRulesModelChord.removeElement(rawRulesJListChord.getSelectedValue());
+        saveStylePatterns();
     }//GEN-LAST:event_deleteChordPattern
 
     private void deleteDrumPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDrumPattern
         rawRulesModelDrum.removeElement(rawRulesJListDrum.getSelectedValue());
+         saveStylePatterns();
     }//GEN-LAST:event_deleteDrumPattern
 
 
@@ -1121,5 +1127,47 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
             }
           }
       }
+    saveStylePatterns();
   }
+
+  public void saveStylePatterns()
+    {
+     File file = new File("mixerPatterns.txt");
+     try
+      {
+      BufferedWriter out = new BufferedWriter(new FileWriter(file));
+
+      StringBuilder buffer = new StringBuilder();
+        
+      for( Enumeration e = rawRulesModelBass.elements(); e.hasMoreElements(); )
+      {
+          buffer.append("(bass-pattern ");
+          buffer.append((String)e.nextElement());
+          buffer.append(")\n");
+      }
+      
+      for( Enumeration e = rawRulesModelChord.elements(); e.hasMoreElements(); )
+      {
+          buffer.append("(chord-pattern ");
+          buffer.append((String)e.nextElement());
+          buffer.append(")\n");
+      }
+            
+      for( Enumeration e = rawRulesModelDrum.elements(); e.hasMoreElements(); )
+      {
+          buffer.append("(drum-pattern ");
+          buffer.append((String)e.nextElement());
+          buffer.append(")\n");
+      }            
+      
+      String styleResult = buffer.toString();
+      
+      out.write(styleResult);
+      out.close();
+
+       }
+    catch( Exception e )
+      {
+      }
+    }
 }
