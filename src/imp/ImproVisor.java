@@ -143,6 +143,11 @@ public class ImproVisor implements Constants {
         Preferences.setPreference(Preferences.RECENT_STYLE_FILE, file.getName());
       }
     
+    public static File getStyleMixerFile()
+      {
+          return new File(getStyleDirectory(), Directories.styleMixerName);
+      }
+
     public static MidiManager getMidiManager() {
         return midiManager;
     }
