@@ -520,4 +520,22 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
       }
   }
 
+    public void fixDuplicateChords(ChordPart chordpart, int resolution) {
+        Chord prevChord = null;
+        String prevChordName;
+        Chord thisChord;
+        String thisChordName;
+        for (int i = 0; i < chordpart.size; i = i + resolution) {
+            thisChord = chordpart.getChord(i);
+            if (prevChord != null && thisChord != null) {
+                prevChordName = prevChord.getName();
+                thisChordName = thisChord.getName();
+                if (prevChordName.equals(thisChordName)) {
+                    chordpart.delUnit(i);
+                }
+            }
+            prevChord = chordpart.getCurrentChord(i);
+        }
+    }
+
 }
