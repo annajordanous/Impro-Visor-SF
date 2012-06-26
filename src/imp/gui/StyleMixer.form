@@ -108,7 +108,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rawRulesJListBassrawRulesJListMouseClickedChord"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rawRulesJListBassMouseClickedChord"/>
               </Events>
             </Component>
           </SubComponents>
@@ -270,7 +270,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rawRulesJListDrumrawPatternsMouseClickedBass"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rawRulesJListDrumMouseClickedBass"/>
               </Events>
             </Component>
           </SubComponents>

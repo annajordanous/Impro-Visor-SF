@@ -247,7 +247,7 @@ private void errorButtonActionPerformed(java.awt.event.ActionEvent evt)
         rawRulesJListBass.setModel(rawRulesModelBass);
         rawRulesJListBass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rawRulesJListBassrawRulesJListMouseClickedChord(evt);
+                rawRulesJListBassMouseClickedChord(evt);
             }
         });
         rawPatternsPanelBass.setViewportView(rawRulesJListBass);
@@ -375,7 +375,7 @@ private void errorButtonActionPerformed(java.awt.event.ActionEvent evt)
         rawRulesJListDrum.setModel(rawRulesModelDrum);
         rawRulesJListDrum.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rawRulesJListDrumrawPatternsMouseClickedBass(evt);
+                rawRulesJListDrumMouseClickedBass(evt);
             }
         });
         rawPatternsPanelDrum.setViewportView(rawRulesJListDrum);
@@ -535,18 +535,17 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
         styleEditor.setNextChordPattern(selectedOb.toString());
     }//GEN-LAST:event_copyChordPatternToStyleEditor
 
-    private void rawRulesJListDrumrawPatternsMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListDrumrawPatternsMouseClickedBass
-        Object selectedOb = rawRulesJListDrum.getSelectedValue();
-
-    }//GEN-LAST:event_rawRulesJListDrumrawPatternsMouseClickedBass
+    private void rawRulesJListDrumMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListDrumMouseClickedBass
+        playPatternBtnDrumActionPerformed(null);
+    }//GEN-LAST:event_rawRulesJListDrumMouseClickedBass
 
     private void rawRulesJListChordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListChordsMouseClicked
         playPatternBtnChordActionPerformed(null);
     }//GEN-LAST:event_rawRulesJListChordsMouseClicked
 
-    private void rawRulesJListBassrawRulesJListMouseClickedChord(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListBassrawRulesJListMouseClickedChord
+    private void rawRulesJListBassMouseClickedChord(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListBassMouseClickedChord
         playPatternBtnBassActionPerformed(null);
-    }//GEN-LAST:event_rawRulesJListBassrawRulesJListMouseClickedChord
+    }//GEN-LAST:event_rawRulesJListBassMouseClickedChord
 
     private void playPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnBassActionPerformed
         Polylist polylist = (Polylist)rawRulesJListBass.getSelectedValue();
@@ -554,7 +553,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
           {
             return;
           }
-          playPattern(BASS, polylist);
+        playPattern(BASS, polylist);
     }//GEN-LAST:event_playPatternBtnBassActionPerformed
 
 private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyBassPatternToStyleEditor
@@ -744,7 +743,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       
       String styleResult = buffer.toString();
       
-      System.out.println("Saving mixer patterns to file: " + eol + styleResult);
+      //System.out.println("Saving mixer patterns to file: " + eol + styleResult);
       
       out.write(styleResult);
       out.close();
@@ -811,8 +810,18 @@ private void playPattern(int type, Polylist polylist)
            
            
        case DRUM:
-           display = new DrumPatternDisplay(styleEditor.getNotate(), null, styleEditor);
-           
+           DrumPatternDisplay dpd = new DrumPatternDisplay(styleEditor.getNotate(), null, styleEditor);
+           while( polylist.nonEmpty() )
+             {
+               Polylist subpattern = (Polylist)polylist.first();
+               // First element of subpattern should be "drum", which is ignored
+               String instrumentString = (String)subpattern.second();
+               Polylist patternProper = subpattern.rest().rest();
+               DrumRuleDisplay rule = new DrumRuleDisplay(patternProper.toStringSansParens(), instrumentString, styleEditor.getNotate(), null, styleEditor);
+               dpd.addRule(rule);
+               polylist = polylist.rest();
+             }
+           dpd.playMe();
            break;
      }
   }
