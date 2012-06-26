@@ -28,6 +28,7 @@ import imp.util.ErrorLog;
 import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -36,6 +37,8 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
 import polya.PolylistBuffer;
+import polya.Tokenizer;
+
 
 /**
  * @author Robert Keller, Caitlin Chen
@@ -108,9 +111,7 @@ public StyleMixer(java.awt.Frame parent,
     setSize(900, 425);
 
     SpinnerModel model = new SpinnerNumberModel(1, 1, 100, 1);
-    //numberOfClustersSpinnerBass.setModel(model);
-
-    //setPotentialParts();
+    loadStyleMixerPatterns();
   }
 
 public void setBass()
@@ -1132,8 +1133,8 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
 
   public void saveStylePatterns()
     {
-     File file = new File("mixerPatterns.txt");
-     try
+    File file = ImproVisor.getStyleMixerFile();
+      try
       {
       BufferedWriter out = new BufferedWriter(new FileWriter(file));
 
@@ -1156,8 +1157,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       for( Enumeration e = rawRulesModelDrum.elements(); e.hasMoreElements(); )
       {
           buffer.append("(drum-pattern ");
-          buffer.append((String)e.nextElement());
-          buffer.append(")\n");
+          buffer.append(((String)e.nextElement()).substring(1));
       }            
       
       String styleResult = buffer.toString();
@@ -1170,4 +1170,40 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       {
       }
     }
+  
+  private void loadStyleMixerPatterns()
+  {
+  String eol = System.getProperty( "line.separator" );
+  
+  File mixerFile = ImproVisor.getStyleMixerFile();
+  try
+    {
+    FileInputStream fis = new FileInputStream(mixerFile);
+    Tokenizer in = new Tokenizer(fis);
+    Object token;
+         
+    // Read in S expressions until end of file is reached
+    while ((token = in.nextSexp()) != Tokenizer.eof)
+     {
+         System.out.println("token = " + token);
+      Polylist tokenP = (Polylist)token;
+      if(tokenP.first().equals("bass-pattern"))
+        {
+          rawRulesModelBass.addElement(tokenP.rest());
+        }
+      else if(tokenP.first().equals("chord-pattern"))
+        {
+          rawRulesModelChord.addElement(tokenP.rest());
+        }
+      else if(tokenP.first().equals("drum-pattern"))
+        {
+          rawRulesModelDrum.addElement(tokenP.rest());
+        }   
+    }
+  }
+  catch( java.io.FileNotFoundException e )
+        { 
+            System.out.println("StyleMixer file not found");
+        }
+  }
 }
