@@ -85,6 +85,9 @@ public class RoadMapPanel extends JPanel {
     /** RoadMapFrame containing this panel */
     RoadMapFrame view;
     
+    /** Playline in RoadMapPanel */
+    Rectangle playline;
+    
     String margin = " ";
     
     Graphics g;
@@ -665,8 +668,8 @@ public class RoadMapPanel extends JPanel {
     protected void setPlayLine(int slot)
     {
         int[] wrap = findLineAndSlot(slot + playLineOffset);
-        playLineSlot = wrap[0];
-        playLineLine = wrap[1];
+        playLineSlot = wrap[0]; //position in stave
+        playLineLine = wrap[1]; //stave number
     }
     
     private int getSlotFromIndex(int ind)
@@ -788,8 +791,17 @@ public class RoadMapPanel extends JPanel {
         int x = settings.getLength(slotOffset) + settings.xOffset;
         int y = line * settings.getLineOffset() + settings.yOffset;
         
-        g2d.drawLine(x,y-5,x,y+settings.lineHeight+5);
+        playline = new Rectangle(x,y-5,1,settings.lineHeight+10);      
+        g2d.drawLine((int)playline.getX(),(int)playline.getY(),
+                (int)playline.getX(),(int)playline.getY()+(int)(playline.getHeight()));
+        
     }
+    
+    public Rectangle getPlayline()
+    {
+        return playline;
+    }
+    
     
     /** Draw the lines for the play section */
     private void drawPlaySection()

@@ -2723,11 +2723,89 @@ public void setVolumeSlider(int volume)
                     public void actionPerformed(ActionEvent evt)
                     {
                         if(notate.getMidiSynthRM().finishedPlaying())
+                        {
                             setPlaying(false);
+                            roadMapPanel.draw();
+                            return;
+                        }
+                        
+                        ///*
+                        Rectangle playline = getRoadMapPanel().getPlayline();
+
+                        if( playline != null && playline.height == 0 )
+                        {
+                            roadMapPanel.draw();
+                            //System.out.println("checkpoint 11111");
+                            return;
+                        }
+
+                        Rectangle viewport = getRoadMapScrollPane().getViewport().getViewRect();
+                        //System.out.println("checkpoint 22222");
+                        
+                        Boolean temp = viewport.contains(playline);
+                        //System.out.println(temp + "");
+                        
+                        //System.out.println("viewport " + viewport.toString());
+                        //System.out.println("playline " + playline.toString());
+
+                        if( !viewport.contains(playline) )
+                        {
+                            // If out of view, try adjusting x-coordinate first
+                            //System.out.println("checkpoint <---->");
+                            int adjust = 20 + 10; //240 is approx. left indent
+
+                            if( viewport.width < adjust )
+                            {
+                                adjust = 0;
+                            }
+
+                            viewport.x = playline.x - adjust;
+                            
+                            if( viewport.x < 0 )
+                            {
+                                //System.out.println("checkpoint <----> ++");
+                                viewport.x = 0;
+                            }
+                        }
+
+                        // If still out of view, try adjusting the y-coordinate
+
+                        if( !viewport.contains(playline) )
+                        {
+                            viewport.y = playline.y;
+                            //System.out.println("checkpoint ^^^^^^");
+                            if( playline.y < 0 )
+                            {
+                                playline.y = 0;
+                                //System.out.println("checkpoint ^^^^^^ ++");
+                            }
+                        }
+
+                        if( viewport.contains(playline) )
+                        {
+                            setCurrentScrollPosition(viewport);
+                            //System.out.println("checkpoint finale");
+                        }
+                        //*/
                         roadMapPanel.draw();
                     }
                 }
                 );
+    }
+    
+    public void setCurrentScrollPosition(Rectangle r) {
+   //System.out.println("setCurrentScrollPosition(" + r + ")");
+        getRoadMapScrollPane().getViewport().setViewPosition(r.getLocation());
+    }
+    
+    public RoadMapPanel getRoadMapPanel()
+    {
+        return roadMapPanel;
+    }
+    
+    public JScrollPane getRoadMapScrollPane()
+    {
+        return roadMapScrollPane;
     }
     
     /** Initializes the buffers for the roadmap and preview panel. */
