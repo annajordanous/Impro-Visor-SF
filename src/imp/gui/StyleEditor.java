@@ -4905,12 +4905,12 @@ void playBassColumn(int colIndex)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -4939,12 +4939,12 @@ void playBassColumn(int colIndex)
         styleMixerMenu.setMnemonic('W');
         styleMixerMenu.setText("Style Mixer");
         styleMixerMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                styleMixerMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                styleMixerMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -6498,7 +6498,7 @@ public void setNextChordPattern(String patternString)
   //System.out.println("Setting chord pattern " + patternString);
     if( selectedChordColumn < 1 )
       {
-        selectedBassColumn = getLastSelectedColumn();
+        selectedChordColumn = getLastSelectedColumn();
       }
     setCell(stripOuterParens(patternString), getModel().CHORD_PATTERN_ROW, selectedChordColumn, SILENT);
     selectedChordColumn++;

@@ -535,11 +535,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
     private void copyChordPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordPatternToStyleEditor
         Object selectedOb = rawRulesJListChord.getSelectedValue();
-        if (selectedOb instanceof String) 
-          {
-            //widePatternTextField.setText(selectedOb.toString());
-            styleEditor.setNextChordPattern((String)selectedOb);
-          }
+        styleEditor.setNextChordPattern(selectedOb.toString());
     }//GEN-LAST:event_copyChordPatternToStyleEditor
 
     private void rawRulesJListDrumrawPatternsMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListDrumrawPatternsMouseClickedBass
@@ -552,7 +548,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_rawRulesJListChordsMouseClicked
 
     private void rawRulesJListBassrawRulesJListMouseClickedChord(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListBassrawRulesJListMouseClickedChord
-         playPatternBtnBassActionPerformed(null);
+        playPatternBtnBassActionPerformed(null);
     }//GEN-LAST:event_rawRulesJListBassrawRulesJListMouseClickedChord
 
     private void playPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnBassActionPerformed
@@ -570,29 +566,23 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
 private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyBassPatternToStyleEditor
   {//GEN-HEADEREND:event_copyBassPatternToStyleEditor
-        Object selectedOb = rawRulesJListBass.getSelectedValue();
-  //System.out.println("selected " + selectedOb);
-        if (selectedOb instanceof String) 
-          {
-            //widePatternTextField.setText(selectedOb.toString());
-            styleEditor.setNextBassPattern((String)selectedOb);
-          }
+     Object selectedOb = rawRulesJListBass.getSelectedValue();
+     styleEditor.setNextBassPattern(selectedOb.toString());
   }//GEN-LAST:event_copyBassPatternToStyleEditor
 
     private void deleteBassPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBassPattern
-    
-  rawRulesModelBass.removeElement(rawRulesJListBass.getSelectedValue());
-   saveStylePatterns();  
+       rawRulesModelBass.removeElement(rawRulesJListBass.getSelectedValue());
+       saveStylePatterns();  
     }//GEN-LAST:event_deleteBassPattern
 
     private void deleteChordPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteChordPattern
        rawRulesModelChord.removeElement(rawRulesJListChord.getSelectedValue());
-        saveStylePatterns();
+       saveStylePatterns();
     }//GEN-LAST:event_deleteChordPattern
 
     private void deleteDrumPattern(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDrumPattern
-        rawRulesModelDrum.removeElement(rawRulesJListDrum.getSelectedValue());
-         saveStylePatterns();
+       rawRulesModelDrum.removeElement(rawRulesJListDrum.getSelectedValue());
+       saveStylePatterns();
     }//GEN-LAST:event_deleteDrumPattern
 
 
