@@ -786,6 +786,12 @@ public class Notate
   
   int recurrentIteration = 1;
 
+  /**
+   * Use to decide whether to trigger scrolling early.
+   * Declare final, as it is accessed from inner class
+   */
+  
+  final int earlyScrollMargin = 160;
 
 
   /**
@@ -1089,175 +1095,8 @@ public class Notate
 
     defBassInst = new InstrumentChooser();
 
-    // Use to decide whether to trigger scrolling early.
-    // Declare final, as it is accessed from inner class
-
-    final int earlyScrollMargin = 160;
     
-    repainter = new ActionListener()
-    {
-      public void actionPerformed(ActionEvent evt)
-        {
-            if( playingStopped() )
-            {
-                if (keyboard != null && keyboard.isVisible())
-                {
-                    keyboard.setPlayback(false);
-                }
-                //return;
-            }
-
-        int slotDelay = 
-                (int)(midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
-        
-        int slotInPlayback = midiSynth.getSlot() - slotDelay;
-        int slot = slotInPlayback;
-        int totalSlots = midiSynth.getTotalSlots();
-        
-        //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
-        //System.out.println("Slot in playback: " + slotInPlayback);
-                
-        // Exploratory set up for recurrent generation of choruses:
-        
-        // Gap between the start of next generation and end of previous playback.
-        
-        int gap = lickgenFrame.getGap();
-        
-        //slotInPlayback += playbackOffset;
-
-        int chorusSize = getScore().getLength();
-
-        int tab = currentPlaybackTab;
-        
-        currentPlaybackTab = slotInPlayback / chorusSize;
-        
-        //slotInPlayback %= chorusSize;
-        
-        int slotInChorus = slotInPlayback % chorusSize;
-
-        Chord currentChord = chordProg.getCurrentChord(slotInChorus);
-        
-        currentChord.getChordForm();
-        
-        if (keyboard != null && keyboard.isVisible() && keyboard.isPlaying())
-        {
-            keyboardPlayback(currentChord, tab, slotInChorus, slot, totalSlots);
-        }
-
-        // Recurrent generation option
-
-        if ( lickgenFrame.getRecurrent()  // recurrentCheckbox.isSelected()
-             && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
-            {
-            recurrentIteration++;
-          
-//     debug    System.out.println("Continue improvising: " + improviseStartSlot 
-//                             + " to " + improviseEndSlot 
-//                             + " chorus # " + recurrentIteration);
-                setStatus("Chorus " + recurrentIteration);
-                
-                generate(lickgen, improviseStartSlot, improviseEndSlot); // TRIAL
-                slotInPlayback = improviseStartSlot; // TRIAL
-            }
-
-        // if( midiSynth.finishedPlaying() ) original
-
-        // The following variant was originally added to stop playback at the end of a selection
-        // However, it also truncates the drum patterns etc. so that needs to be fixed.
-
-        if( midiSynth.finishedPlaying() )
-          {
-          stopPlaying("midiSynth finished playing");
-          return;
-          }
-
-        // Stop playback when a specified slot is reached.
-        
-        if( slotInPlayback > stopPlaybackAtSlot )
-          {
-//        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
-          
-          stopPlaying("slotInPlayback > stopPlaybackAtSlot " + slotInPlayback + " > " + stopPlaybackAtSlot);
-          return;
-          }
-        
-        if( autoScrollOnPlayback && currentPlaybackTab != currTabIndex && showPlayLine() )
-          {
-          playbackGoToTab(currentPlaybackTab);
-          }
-
-        Stave stave = getCurrentStave();
-
-        // only draw the playback indicator if it is on the current tab
-
-        if( currentPlaybackTab == currTabIndex )
-          {
-          stave.repaintDuringPlayback(slotInChorus);
-
-          if( autoScrollOnPlayback && showPlayLine() )
-            {
-
-            Rectangle playline = stave.getPlayLine();
-
-            if( playline.height == 0 )
-              {
-              return;
-              }
-            
-            Rectangle viewport = getCurrentScrollPosition();
-
-            // It should be noted that the early scroll button has an invverted sense.
-
-            boolean earlyScroll = !earlyScrollBtn.isSelected();
-
-            Rectangle adjustedPlayline = (Rectangle)playline.clone();
-
-            if( earlyScroll
-             && viewport.getY() + viewport.getHeight() + earlyScrollMargin < stave.getHeight() )
-              {
-              adjustedPlayline.y += earlyScrollMargin;
-              }
-
-            if( !viewport.contains(playline) )
-              {
-              // If out of view, try adjusting x-coordinate first
-
-              int adjust = stave.leftMargin + 10;
-
-              if( viewport.width < adjust )
-                {
-                adjust = 0;
-                }
-
-              viewport.x = playline.x - adjust;
-
-              if( viewport.x < 0 )
-                {
-                viewport.x = 0;
-                }
-              }
-
-              // If still out of view, try adjusting the y-coordinate
-
-              if( !viewport.contains(adjustedPlayline) )
-                {
-                viewport.y = playline.y;
-
-                if( playline.y < 0 )
-                  {
-                  playline.y = 0;
-                  }
-                }
-
-              if( viewport.contains(playline) )
-                {
-                setCurrentScrollPosition(viewport);
-                }
-              
-            }
-          }
-        }
-      };
+    repainter = new PlayActionListener();
 
 
     lickgen = new LickGen(ImproVisor.getGrammarFile().getAbsolutePath(), this); //orig
@@ -12326,12 +12165,33 @@ public boolean putLick(MelodyPart lick)
       }
 
     // Wait for playing to stop
+    
+    System.out.println("slotInPlayback = " + getSlotInPlayback() + ", stopPlaybackAtSlot = " + stopPlaybackAtSlot);
+    while( !midiSynth.finishedPlaying() )
+      {
+        try
+          {
+        Thread.sleep(1);
+          }
+        catch(Exception e)
+          {
+            
+          }
+      }
+    System.out.println("Stopped spinning\n");
 
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
     return true;
   }
     
+public int getSlotInPlayback()
+  {
+   int slotDelay = 0;
+       //(int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
+
+    return midiSynth.getSlot() - slotDelay;
+  }
 
 public MelodyPart generateLick(Polylist rhythm)
   {
@@ -24160,6 +24020,175 @@ public void openMidiPreferences()
 public int getRecordSnapValue()
   {
     return Integer.parseInt(midiRecordSnapSpinner.getValue().toString());
+  }
+
+/*
+ * This was formerly embedded inside executable code.
+ */
+
+class PlayActionListener implements ActionListener
+{
+public void actionPerformed(ActionEvent evt)
+  {
+    if( playingStopped() )
+      {
+        if( keyboard != null && keyboard.isVisible() )
+          {
+            keyboard.setPlayback(false);
+          }
+        //return;
+      }
+
+    int slotDelay =
+            (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
+
+    int slotInPlayback = midiSynth.getSlot() - slotDelay;
+    int slot = slotInPlayback;
+    int totalSlots = midiSynth.getTotalSlots();
+
+    //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
+    //System.out.println("Slot in playback: " + slotInPlayback);
+
+    // Exploratory set up for recurrent generation of choruses:
+
+    // Gap between the start of next generation and end of previous playback.
+
+    int gap = lickgenFrame.getGap();
+
+    //slotInPlayback += playbackOffset;
+
+    int chorusSize = getScore().getLength();
+
+    int tab = currentPlaybackTab;
+
+    currentPlaybackTab = slotInPlayback / chorusSize;
+
+    //slotInPlayback %= chorusSize;
+
+    int slotInChorus = slotInPlayback % chorusSize;
+
+    Chord currentChord = chordProg.getCurrentChord(slotInChorus);
+
+    currentChord.getChordForm();
+
+    if( keyboard != null && keyboard.isVisible() && keyboard.isPlaying() )
+      {
+        keyboardPlayback(currentChord, tab, slotInChorus, slot, totalSlots);
+      }
+
+    // Recurrent generation option
+
+    if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
+            && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
+      {
+        recurrentIteration++;
+
+//     debug    System.out.println("Continue improvising: " + improviseStartSlot 
+//                             + " to " + improviseEndSlot 
+//                             + " chorus # " + recurrentIteration);
+        setStatus("Chorus " + recurrentIteration);
+
+        generate(lickgen, improviseStartSlot, improviseEndSlot); // TRIAL
+        slotInPlayback = improviseStartSlot; // TRIAL
+      }
+
+    // if( midiSynth.finishedPlaying() ) original
+
+    // The following variant was originally added to stop playback at the end of a selection
+    // However, it also truncates the drum patterns etc. so that needs to be fixed.
+
+    if( midiSynth.finishedPlaying() )
+      {
+        stopPlaying("midiSynth finished playing");
+        return;
+      }
+
+    // Stop playback when a specified slot is reached.
+
+    if( slotInPlayback > stopPlaybackAtSlot )
+      {
+//        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
+
+        stopPlaying("slotInPlayback > stopPlaybackAtSlot " + slotInPlayback + " > " + stopPlaybackAtSlot);
+        return;
+      }
+
+    if( autoScrollOnPlayback && currentPlaybackTab != currTabIndex && showPlayLine() )
+      {
+        playbackGoToTab(currentPlaybackTab);
+      }
+
+    Stave stave = getCurrentStave();
+
+    // only draw the playback indicator if it is on the current tab
+
+    if( currentPlaybackTab == currTabIndex )
+      {
+        stave.repaintDuringPlayback(slotInChorus);
+
+        if( autoScrollOnPlayback && showPlayLine() )
+          {
+
+            Rectangle playline = stave.getPlayLine();
+
+            if( playline.height == 0 )
+              {
+                return;
+              }
+
+            Rectangle viewport = getCurrentScrollPosition();
+
+            // It should be noted that the early scroll button has an invverted sense.
+
+            boolean earlyScroll = !earlyScrollBtn.isSelected();
+
+            Rectangle adjustedPlayline = (Rectangle) playline.clone();
+
+            if( earlyScroll
+                    && viewport.getY() + viewport.getHeight() + earlyScrollMargin < stave.getHeight() )
+              {
+                adjustedPlayline.y += earlyScrollMargin;
+              }
+
+            if( !viewport.contains(playline) )
+              {
+                // If out of view, try adjusting x-coordinate first
+
+                int adjust = stave.leftMargin + 10;
+
+                if( viewport.width < adjust )
+                  {
+                    adjust = 0;
+                  }
+
+                viewport.x = playline.x - adjust;
+
+                if( viewport.x < 0 )
+                  {
+                    viewport.x = 0;
+                  }
+              }
+
+            // If still out of view, try adjusting the y-coordinate
+
+            if( !viewport.contains(adjustedPlayline) )
+              {
+                viewport.y = playline.y;
+
+                if( playline.y < 0 )
+                  {
+                    playline.y = 0;
+                  }
+              }
+
+            if( viewport.contains(playline) )
+              {
+                setCurrentScrollPosition(viewport);
+              }
+
+          }
+      }
+  }
   }
 }
 

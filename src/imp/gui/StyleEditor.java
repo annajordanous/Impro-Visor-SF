@@ -2292,7 +2292,10 @@ void playBassColumn(int colIndex)
     int cols[] = styleTable.getSelectedColumns();
 
     // build array column by column, back to front
-
+    if( cols.length == 0 || rows.length == 0 )
+      {
+        return;
+      }
     Polylist patternArray = Polylist.nil;
     for( int col = cols[cols.length - 1]; col >= cols[0]; col-- )
       {
@@ -6176,14 +6179,18 @@ private void openStyleMixer()
         openStyleMixer();
         
         int rows[] = styleTable.getSelectedRows();
-        int firstRow = rows[0];
-        String instrumentName[] = new String[rows.length];
-        // Establish percussion instrument names for transfer to Mixer
-        for( int i = 0, row = firstRow; i < rows.length; i++, row++ )
+        
+        if( rows.length > 0 )
           {
+          int firstRow = rows[0];
+          String instrumentName[] = new String[rows.length];
+          // Establish percussion instrument names for transfer to Mixer
+          for( int i = 0, row = firstRow; i < rows.length; i++, row++ )
+            {
             instrumentName[i] = getRowHeaders().get(row);
+            }
+          styleMixer.copyCellsForStyleMixer(getCopiedCells(), firstRow, instrumentName);
           }
-        styleMixer.copyCellsForStyleMixer(getCopiedCells(), firstRow, instrumentName);
      
     }//GEN-LAST:event_saveToStyleMixer
 

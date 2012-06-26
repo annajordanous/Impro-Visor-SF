@@ -707,7 +707,7 @@ public void playRawRule(int type)
         rawRulesJListChord.setModel(rawRulesModelChord);
         rawRulesJListChord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                rawRulesJListChordselectedPatternsMouseClickedBass(evt);
+                rawRulesJListChordsMouseClicked(evt);
             }
         });
         rawPatternsPanelChord.setViewportView(rawRulesJListChord);
@@ -849,12 +849,12 @@ public void playRawRule(int type)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -927,7 +927,16 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_copyDrumPatternToStyleEditor
 
     private void playPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnChordActionPerformed
-        playRawRule(CHORD);
+        Polylist polylist = (Polylist)rawRulesJListChord.getSelectedValue();
+        if( polylist == null )
+          {
+            return;
+          }
+        String pattern = polylist.toStringSansParens();
+        if( pattern != null )
+          {
+          playPattern(CHORD, pattern);
+          }          
     }//GEN-LAST:event_playPatternBtnChordActionPerformed
 
     private void copyChordPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordPatternToStyleEditor
@@ -940,11 +949,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_copyChordPatternToStyleEditor
 
     private void selectedRulesJListBassselectedPatternsMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectedRulesJListBassselectedPatternsMouseClickedBass
-        Object selectedOb = selectedRulesJListBass.getSelectedValue();
-        if (selectedOb instanceof RepPattern) {
-            //widePatternTextField.setText(selectedOb.toString());
-            playSelectedRule(BASS);
-        }
+
     }//GEN-LAST:event_selectedRulesJListBassselectedPatternsMouseClickedBass
 
     private void rawRulesJListDrumrawPatternsMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListDrumrawPatternsMouseClickedBass
@@ -955,20 +960,25 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
         }
     }//GEN-LAST:event_rawRulesJListDrumrawPatternsMouseClickedBass
 
-    private void rawRulesJListChordselectedPatternsMouseClickedBass(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListChordselectedPatternsMouseClickedBass
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rawRulesJListChordselectedPatternsMouseClickedBass
+    private void rawRulesJListChordsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListChordsMouseClicked
+        playPatternBtnChordActionPerformed(null);
+    }//GEN-LAST:event_rawRulesJListChordsMouseClicked
 
     private void rawRulesJListBassrawRulesJListMouseClickedChord(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rawRulesJListBassrawRulesJListMouseClickedChord
-        Object selectedOb = rawRulesJListBass.getSelectedValue();
-        if (selectedOb instanceof RepPattern) {
-            //widePatternTextFieldChord.setText(selectedOb.toString());
-            playRawRule(CHORD);
-        }
+         playPatternBtnBassActionPerformed(null);
     }//GEN-LAST:event_rawRulesJListBassrawRulesJListMouseClickedChord
 
     private void playPatternBtnBassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnBassActionPerformed
-        playRawRule(BASS);
+        Polylist polylist = (Polylist)rawRulesJListBass.getSelectedValue();
+        if( polylist == null )
+          {
+            return;
+          }
+        String pattern = polylist.toStringSansParens();
+        if( pattern != null )
+          {
+          playPattern(BASS, pattern);
+          }
     }//GEN-LAST:event_playPatternBtnBassActionPerformed
 
 private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyBassPatternToStyleEditor
@@ -1089,23 +1099,21 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
               switch(trueRow)
                 {
                 case StyleTableModel.BASS_PATTERN_ROW:
-                    String bassPattern = item.toString();
-                    if( rawRulesModelBass.indexOf(bassPattern) == -1 )
+                    if( !containsAsString(rawRulesModelBass, item) )
                     {
-                    rawRulesModelBass.addElement(bassPattern);
+                    rawRulesModelBass.addElement(item);
                     }
                  break;
                   
                 case StyleTableModel.CHORD_PATTERN_ROW:
-                    String chordPattern = item.toString();
-                    if( rawRulesModelChord.indexOf(chordPattern) == -1 )
+                    if( !containsAsString(rawRulesModelChord, item) )
                     {
-                    rawRulesModelChord.addElement(item.toString());
+                    rawRulesModelChord.addElement(item);
                     }
                  break;
                   
                 default:
-                 // Buffer drum rules as belonging to a pattern in a given
+                 // Buffer drum rules as belonging to a paJttern in a given
                  // column. At the end of transfer, create drum patterns out
                  // of rules stored in a specific buffer.
                  if( trueRow >= StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW)
@@ -1122,12 +1130,11 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
     for( j = 0; j < numColumns; j++ )
       {
         Polylist L = buffer[j].toPolylist();
-        String S = L.toString();
-        if( L.nonEmpty() && !S.equals("()") )
+        if( L.nonEmpty() )
           {
-            if ( rawRulesModelDrum.indexOf(S) == -1 )
+            if ( !containsAsString(rawRulesModelDrum, L) )
             {
-             rawRulesModelDrum.addElement(S);
+             rawRulesModelDrum.addElement(L);
             }
           }
       }
@@ -1139,7 +1146,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
     String eol = System.getProperty( "line.separator" );
   
     File file = ImproVisor.getStyleMixerFile();
-      try
+    try
       {
       BufferedWriter out = new BufferedWriter(new FileWriter(file));
 
@@ -1148,7 +1155,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       for( Enumeration e = rawRulesModelBass.elements(); e.hasMoreElements(); )
       {
           buffer.append("(bass-pattern ");
-          buffer.append((String)e.nextElement());
+          buffer.append(e.nextElement().toString());
           buffer.append(")");
           buffer.append(eol);
       }
@@ -1156,7 +1163,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       for( Enumeration e = rawRulesModelChord.elements(); e.hasMoreElements(); )
       {
           buffer.append("(chord-pattern ");
-          buffer.append((String)e.nextElement());
+          buffer.append(e.nextElement().toString());
           buffer.append(")");
           buffer.append(eol);
       }
@@ -1164,11 +1171,13 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       for( Enumeration e = rawRulesModelDrum.elements(); e.hasMoreElements(); )
       {
           buffer.append("(drum-pattern ");
-          buffer.append(((String)e.nextElement()).substring(1));
+          buffer.append((e.nextElement()).toString().substring(1));
           buffer.append(eol);
       }            
       
       String styleResult = buffer.toString();
+      
+      System.out.println("Saving mixer patterns to file: " + eol + styleResult);
       
       out.write(styleResult);
       out.close();
@@ -1191,7 +1200,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
     // Read in S expressions until end of file is reached
     while ((token = in.nextSexp()) != Tokenizer.eof)
      {
-         System.out.println("token = " + token);
+      //System.out.println("token = " + token);
       Polylist tokenP = (Polylist)token;
       if(tokenP.first().equals("bass-pattern"))
         {
@@ -1211,5 +1220,47 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
         { 
             ErrorLog.log(ErrorLog.WARNING, "StyleMixer file not found");
         }
+  }
+  
+private void playPattern(int type, String string)
+  {
+   PatternDisplay display;
+   switch( type )
+     {
+       case BASS:
+           display = new BassPatternDisplay(string, 1.0f, styleEditor.getNotate(), null, styleEditor);
+           //System.out.println("display = " + display);
+           display.playMe();
+           break;
+           
+        case CHORD:
+           display = new ChordPatternDisplay(string, 1.0f, "", styleEditor.getNotate(), null, styleEditor);
+           //System.out.println("display = " + display);
+           display.playMe();
+           break;
+           
+           
+       case DRUM:
+     }
+  }
+
+/**
+ * Checks to see if model contains p, using String equivalence as a basis
+ * of comparison.
+ * @param model
+ * @param p
+ * @return 
+ */
+boolean containsAsString(DefaultListModel model, Polylist p)
+  {
+    String s = p.toString();
+    for( Enumeration e = model.elements(); e.hasMoreElements(); )
+      {
+        if( s.equals(e.nextElement().toString() ))
+          {
+            return true;
+          }
+      }
+    return false;
   }
 }

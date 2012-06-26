@@ -625,6 +625,101 @@ public void playRawRule(int type)
                              notate.getTransposition()).execute();      
   }
 
+public void playRawRule(int type, String raw)
+
+  {
+    Object rawOb;
+    RepPattern repPattern;
+    Polylist rule = null;
+    int duration = 0;
+        switch( type )
+          {
+            case BASS:
+                {
+                rawOb = rawRulesJListBass.getSelectedValue();
+                if( rawOb instanceof RepresentativeBassRules.BassPattern )
+                {
+                repPattern = (RepPattern)rawOb;
+
+                RepresentativeBassRules.BassPattern selectedBassRule 
+                        = (RepresentativeBassRules.BassPattern) repPattern;
+                duration = selectedBassRule.getDuration();
+                rule = Notate.parseListFromString(selectedBassRule.toString());
+                break;
+                }
+                }
+
+            case CHORD:
+                {
+                // There should be some criterion here to mask out lines that
+                // don't correspond to rules. The old way, checking for
+                // parens at the start and end, is no longer relevant.
+
+                rawOb = rawRulesJListChord.getSelectedValue();
+                if( rawOb instanceof RepresentativeChordRules.ChordPattern )
+                {
+                repPattern = (RepPattern)rawOb;
+  
+                RepresentativeChordRules.ChordPattern selectedChordRule 
+                        = (RepresentativeChordRules.ChordPattern) repPattern;
+                duration = selectedChordRule.getDuration();
+                rule = Notate.parseListFromString(selectedChordRule.toString());
+                break;
+                }
+                }
+                
+            case DRUM:
+                rawOb = rawRulesJListDrum.getSelectedValue();
+                if( rawOb instanceof RepresentativeDrumRules.DrumPattern )
+                {
+                repPattern = (RepPattern)rawOb;
+                  
+                RepresentativeDrumRules.DrumPattern selectedDrumPattern 
+                        = (RepresentativeDrumRules.DrumPattern) repPattern;
+                duration = selectedDrumPattern.getDuration();
+                rule = Notate.parseListFromString(selectedDrumPattern.toString());
+                break;
+                }
+          }
+
+        //System.out.println("rule for style = " + rule);
+        Style tempStyle = Style.makeStyle(rule);
+        tempStyle.setSwing(styleEditor.getSwingValue());
+        tempStyle.setAccompanimentSwing(styleEditor.getAccompanimentSwingValue());
+        tempStyle.setName("extractionPattern");
+        Style.setStyle("extractionPattern", tempStyle);
+        // This is necessary so that the StyleListModel menu in notate is reset.
+        // Without it, the contents will be emptied.
+        notate.reloadStyles();
+        ChordPart c = new ChordPart();
+        String chord = styleEditor.getChord();
+        boolean muteChord = styleEditor.isChordMuted();
+        c.addChord(chord, new Double(duration).intValue());
+        c.setStyle(tempStyle);
+
+        Score s = new Score(c);
+        s.setBassVolume(styleEditor.getVolume());
+        if( type == CHORD )
+          {
+            notate.setChordVolume(styleEditor.getVolume());
+          }
+        else
+          {
+            notate.setChordVolume(0);
+          }
+        notate.setDrumVolume(styleEditor.getVolume());
+        s.setTempo(styleEditor.getTempo());
+        //s.setVolumes(notate.getMidiSynth());
+
+        new PlayScoreCommand(s,
+                             0,
+                             true,
+                             notate.getMidiSynth(),
+                             ImproVisor.getCurrentWindow(),
+                             0,
+                             notate.getTransposition()).execute();          
+  }
+
 /**
  * This method is called from within the constructor to initialize the form.
  * WARNING: Do NOT modify this code. The content of this method is always

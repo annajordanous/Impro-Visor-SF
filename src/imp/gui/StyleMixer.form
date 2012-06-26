@@ -212,7 +212,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rawRulesJListChordselectedPatternsMouseClickedBass"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rawRulesJListChordsMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
