@@ -508,16 +508,17 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
   }//GEN-LAST:event_windowMenuMenuSelected
 
     private void playPatternBtnDrumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnDrumActionPerformed
-        
+        Polylist polylist = (Polylist)rawRulesJListDrum.getSelectedValue();
+        if( polylist == null )
+          {
+            return;
+          }
+        playPattern(DRUM, polylist);         
     }//GEN-LAST:event_playPatternBtnDrumActionPerformed
 
     private void copyDrumPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyDrumPatternToStyleEditor
         Object selectedOb = rawRulesJListDrum.getSelectedValue();
-        if (selectedOb instanceof String) 
-          {
-            //widePatternTextField.setText(selectedOb.toString());
-            styleEditor.setNextDrumPattern((String)selectedOb);
-          }
+        styleEditor.setNextDrumPattern(selectedOb.toString());
     }//GEN-LAST:event_copyDrumPatternToStyleEditor
 
     private void playPatternBtnChordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPatternBtnChordActionPerformed
@@ -526,11 +527,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
           {
             return;
           }
-        String pattern = polylist.toStringSansParens();
-        if( pattern != null )
-          {
-          playPattern(CHORD, pattern);
-          }          
+         playPattern(CHORD, polylist);         
     }//GEN-LAST:event_playPatternBtnChordActionPerformed
 
     private void copyChordPatternToStyleEditor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordPatternToStyleEditor
@@ -557,11 +554,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
           {
             return;
           }
-        String pattern = polylist.toStringSansParens();
-        if( pattern != null )
-          {
-          playPattern(BASS, pattern);
-          }
+          playPattern(BASS, polylist);
     }//GEN-LAST:event_playPatternBtnBassActionPerformed
 
 private void copyBassPatternToStyleEditor(java.awt.event.ActionEvent evt)//GEN-FIRST:event_copyBassPatternToStyleEditor
@@ -796,18 +789,21 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
         }
   }
   
-private void playPattern(int type, String string)
+private void playPattern(int type, Polylist polylist)
   {
+   String string;
    PatternDisplay display;
    switch( type )
      {
        case BASS:
+           string = polylist.toStringSansParens();
            display = new BassPatternDisplay(string, 1.0f, styleEditor.getNotate(), null, styleEditor);
            //System.out.println("display = " + display);
            display.playMe();
            break;
            
         case CHORD:
+           string = polylist.toStringSansParens();
            display = new ChordPatternDisplay(string, 1.0f, "", styleEditor.getNotate(), null, styleEditor);
            //System.out.println("display = " + display);
            display.playMe();
@@ -815,6 +811,9 @@ private void playPattern(int type, String string)
            
            
        case DRUM:
+           display = new DrumPatternDisplay(styleEditor.getNotate(), null, styleEditor);
+           
+           break;
      }
   }
 
