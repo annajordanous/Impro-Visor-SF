@@ -1,7 +1,7 @@
 package imp.audio;
 
-import imp.data.MelodyPart;
-import imp.data.Note;
+import imp.data.*;
+import jm.music.data.Note;
 import java.awt.FlowLayout;
 import java.awt.Label;
 import java.awt.TextField;
@@ -16,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import java.util.ArrayList;
+import java.util.List;
 //import org.apache.commons.math3.complex.Complex;
 
 /**
@@ -33,9 +35,9 @@ public class PitchExtraction extends JFrame {
     private SourceDataLine source;
     private TargetDataLine target;
     private byte[] capturedAudioData;
-    public static final float SAMPLE_RATE = 44100.0F;
-    public static final int SAMPLE_SIZE = 16;
-    public static final int FRAME_SIZE = 2048; //# of bytes examined per poll
+    public static final float SAMPLE_RATE = 44100.0F; //in Hertz
+    public static final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
+    public static final int FRAME_SIZE = 2048; //# of BYTES examined per poll
     public static final float POLL_RATE = 20; //in milliseconds
     public static int RESOLUTION = 8;
     public static boolean TRIPLETS = false;
@@ -43,7 +45,7 @@ public class PitchExtraction extends JFrame {
     public static double CONFIDENCE = 0;
     //DoubleFFT_1D fft;
     //sets threshold for detecting peaks in normalized data
-    public static final double K_CONSTANT = 0.925;
+    public static final double K_CONSTANT = 0.95;
     public final TextField tempoField;
     
     MelodyPart melody;
@@ -267,18 +269,16 @@ public class PitchExtraction extends JFrame {
         double interval = ((POLL_RATE / 1000.0) * SAMPLE_RATE) * 2.0;
         int size = FRAME_SIZE / 2;
         //convert tempo to ms per measure
-        float tempo = (float) (4 * 60000.0 / getTempo());
+        float tempo = (float) (4.0 * 60000.0 / getTempo());
         int slotSize = RESOLUTION; //smallest subdivision allowed
-        if (TRIPLETS) { //subdivide minimum slot size if triplets are allowed
+        if (TRIPLETS) { //adjust minimum slot size if triplets are allowed
             slotSize *= (3.0 / 2.0);
         }
         int lastSlotNumber = 1;
-        int currentSlotNumber = 0;
+        int currentSlotNumber;
         int lastPitch = 0; //initialize most recent pitch to a rest
-        int slotsFilled = 0;
-        int readings = 0; //number of polls per slot
-        int[] oneSlot = new int[20];
-        boolean first = true;
+        int slotsFilled = 0; //# of slots filled before pitch change is detected
+        List<Integer> oneSlot = new ArrayList<Integer>();
         melody = new MelodyPart();
         while (index + FRAME_SIZE < streamInput.length) {
             byte[] oneFrame = new byte[FRAME_SIZE];
@@ -301,8 +301,8 @@ public class PitchExtraction extends JFrame {
                 double[] computedData = new double[size];
                 computedData = computeNSD(preCorrelatedData, correlatedData);
                 fundamentalFrequency = pickPeakWithoutFFT(computedData);
-            } else //otherwise, assign fundamental to zero
-            {
+            } 
+            else { //otherwise, assign fundamental to zero 
                 fundamentalFrequency = 0;
             }
             currentSlotNumber = resolveSlot(index / interval * POLL_RATE,
@@ -310,50 +310,49 @@ public class PitchExtraction extends JFrame {
             int slotPitch = 0;
             //check to see if pitch is valid
             if (fundamentalFrequency > 34.0) {
-                slotPitch = getMidiPitch(fundamentalFrequency);
+                slotPitch = //calculate equivalent MIDI pitch value for freq.
+                       jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
             }
-            //keep track of all pitch results for this slot
             //check to see if this window is part of the current slot
-            if (currentSlotNumber == lastSlotNumber
-                    && index + FRAME_SIZE + interval < streamInput.length) {
-                oneSlot[readings] = slotPitch;
-                readings++;
-            } else { //otherwise, determine pitch for the whole slot.
-                //first, increment the number of slots filled by this pitch.
+            if (currentSlotNumber == lastSlotNumber) {
+                oneSlot.add(slotPitch); //if so, continue collecting data
+            } //end if
+            //if all windows for this slot have been examined, determine pitch
+            else if(currentSlotNumber != lastSlotNumber || index + FRAME_SIZE 
+                    + interval >= streamInput.length) {
                 int pitch = calculatePitch(oneSlot);
-                if ((!first && pitch != lastPitch)
-                        || index + FRAME_SIZE + interval > streamInput.length) {
-                    int duration = 120 / slotsFilled;
+                //check to see whether or not pitch has changed from that 
+                //which fills the previous slot
+                if (pitch != lastPitch) {
+                    int duration = slotsFilled * 120 / RESOLUTION;
                     if (pitch < 25) //count as a rest if pitch is out of range
                     {
-                        Note newRest = Note.makeRest(duration);
+                        imp.data.Note newRest 
+                                = imp.data.Note.makeRest(duration);
                         melody.addNote(newRest);
                         System.out.println("rest, duration = "
                                 + duration + " slots.");
                     } else {
-                        Note newNote = new Note(pitch, duration);
+                        imp.data.Note newNote 
+                                = new imp.data.Note(pitch, duration);
                         melody.addNote(newNote);
-                        System.out.println(", duration = "
+                        System.out.println(newNote.getPitch() + ", duration = "
                                 + duration + " slots.");
                     }
                     slotsFilled = 1; //reset slotsFilled when pitch changes
                 } //if this pitch is the same as that of the last slot,
                 //continue building duration until pitch changes
-                else {
-                    if (first) {
-                        first = false;
-                    }
+                else { //if pitch hasn't changed, increment # of slots filled
                     slotsFilled++;
                 }
                 lastPitch = pitch;
                 lastSlotNumber = currentSlotNumber % slotSize;
-                for (int s = 0; s < oneSlot.length; s++) //zero previous slot's 
-                {
-                    oneSlot[s] = 0;   //readings before adding new pitch
-                }
-                oneSlot[0] = slotPitch;
-                readings = 0;
-            }
+                oneSlot.clear(); //get rid of old list
+                oneSlot.add(slotPitch);
+            } //end else if
+            else {
+                //Do something to handle final sample window
+            } //end else
             //increase the index by the designated interval
             index += (int) interval;
         } //end while
@@ -383,7 +382,10 @@ public class PitchExtraction extends JFrame {
      *
      * @param pitches The array of pitches detected for this slot
      */
-    private int calculatePitch(int[] pitches) {
+    private int calculatePitch(List<Integer> pitchArray) {
+        int[] pitches = new int[pitchArray.size()];
+        for(int a = 0; a < pitchArray.size(); a++)
+            pitches[a] = pitchArray.get(a);
         //Check for discrepancies in this slot
         int testPitch = 0;
         boolean allZero = true;
@@ -392,71 +394,68 @@ public class PitchExtraction extends JFrame {
         while (!d && i < pitches.length) { //search for discrepancies in data
             if (pitches[i] != 0) {
                 if (pitches[i] != testPitch && testPitch != 0) {
-                    d = true; //multiple nonzero pitches have been found
+                    d = true; //more than one nonzero pitch has been found
                 } else {
                     testPitch = pitches[i];
                 }
                 allZero = false;
             }
             i++;
-        }
+        } //end while
         int[] occurrences = new int[pitches.length];
         int maxLoc = 0;
+        int maxO = 0;
+        int secondPlaceLoc = -1;
+        int secondPlaceO = -1;
         if (!d || allZero) //if there are no discrepancies, return the pitch
-        {
             return testPitch;
-        } else { //otherwise, find most frequently detected pitch
+        else { //otherwise, find most frequently detected pitch
             testPitch = 0;
             for (i = 0; i < pitches.length; i++) {
                 if (pitches[i] != 0 && pitches[i] != testPitch) {
+                    occurrences[i] = 1;
                     testPitch = pitches[i]; //don't check same pitch twice...
                     for (int j = i + 1; j < pitches.length; j++) {
-                        if (pitches[i] == pitches[j]) {
+                        if (pitches[i] == pitches[j])
                             occurrences[i] += 1;
-                        }
                     } //end for (j)
                 } //end if
             } //end for (i)
-            int maxO = 0;
-            maxLoc = 0;
             for (i = 0; i < occurrences.length; i++) {
                 if (occurrences[i] > maxO) {
+                    if(maxO > 0) {
+                        secondPlaceLoc = maxLoc;
+                        secondPlaceO = occurrences[secondPlaceLoc];
+                    }
                     maxO = occurrences[i];
                     maxLoc = i;
                 } //end if
             } //end for
         } //end else
-        return pitches[maxLoc];
+        //check for false readings in lower octaves
+        if(maxO == secondPlaceO && Math.abs(pitches[maxLoc]
+                - pitches[secondPlaceLoc]) > 11) {
+            if (pitches[maxLoc] - pitches[secondPlaceLoc] > 0)
+                return pitches[maxLoc];
+            else return pitches[secondPlaceLoc];
+        } //end if
+        else return pitches[maxLoc];
     }
 
     /**
-     * Resolves the current window into a slot.
+     * Determines which slot the current window falls into.
      *
-     * @param timeElapsed The amount of time that has elapsed since examination
-     * first began (in milliseconds).
+     * @param timeElapsed The amount of time in milliseconds that has elapsed 
+     * since sampling began.
      * @param msPerSlot The number of milliseconds in each slot based on the
      * current minimum slot size (resolution).
-     * @param slotSize The number of slots in each measure (resolution).
+     * @param slotSize The number of slots in each measure (also resolution).
      * @return The slot in which this window falls.
      */
     private int resolveSlot(double timeElapsed,
             double msPerSlot, int slotSize) {
         int slot = (int) Math.round(timeElapsed / msPerSlot);
         return slot % slotSize;
-    }
-    
-    /**
-     * Gives the MIDI pitch for the provided frequency based on the equal
-     * tempered scale.
-     * 
-     * @param freq the fundamental frequency of the musical tone.
-     * @return the MIDI number corresponding to the given fundamental frequency.
-     */
-    private int getMidiPitch(double freq) {
-        if(freq < 30.0 || freq > 12000.0)
-            return 0;
-        else return (int)(69.0 + 12.0 * (Math.log(freq/440.0)
-                                                    / Math.log(2.0)));
     }
 
     /**
@@ -479,7 +478,8 @@ public class PitchExtraction extends JFrame {
 //        double[] postCorrelated = new double[correlated.length * 2];
 //        for (int i = 0; i < initialSize; i++) { //multiply each complex number
 //            //by its conjugate
-//            Complex com = new Complex(correlated[i * 2], correlated[i * 2 + 1]);
+//            Complex com = new Complex(correlated[i * 2], 
+//                                        correlated[i * 2 + 1]);
 //            Complex conj = com.conjugate();
 //            com = com.multiply(conj);
 //            postCorrelated[i * 2] = com.getReal();
@@ -489,6 +489,7 @@ public class PitchExtraction extends JFrame {
 //            correlated[i] = postCorrelated[i*2];
 //        return correlated;
 //    }
+    
     /**
      * Computes the autocorrelation function for the given input as a function
      * of lag (tau).
@@ -542,6 +543,8 @@ public class PitchExtraction extends JFrame {
 
     /**
      * Attempts to identify the fundamental frequency of the normalized data.
+     * Implements the peak picking described in "A Smarter Way to Find Pitch," 
+     * by Philip McLeod and Geoff Wyvill.
      *
      * @param input The array of normalized data derived from original
      * time-domain sample data.
@@ -634,7 +637,7 @@ public class PitchExtraction extends JFrame {
 
     /**
      * Uses cubic interpolation to refine the location of the lag value that
-     * corresponds to the fundamental frequency. Adapted from C++ code
+     * corresponds to the fundamental frequency. Adapted from code
      * originally written by Dominic Mazzoni.
      *
      * @param y0 The index of the sample taken just before the one that
