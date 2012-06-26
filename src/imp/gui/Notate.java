@@ -853,7 +853,7 @@ public class Notate
    *
    * @param score     the score to be displayed in the scoreFrame
    *
-   * @param x         x-coordiante of the top left corner of the frame
+   * @param x         x-coordinate of the top left corner of the frame
    *
    * @param y         y-coordinate of the top left corner of the frame
    *
@@ -879,7 +879,7 @@ public class Notate
    *
    * @param impro     the main Impro-Visor program
    *
-   * @param x         x-coordiante of the top left corner of the frame
+   * @param x         x-coordinate of the top left corner of the frame
    *
    * @param y         y-coordinate of the top left corner of the frame
    *
@@ -12640,7 +12640,7 @@ private void openAdviceFrame()
 
     
   private void redoAdvice()
-    {
+    {   
     Trace.log(2, "redo advice");
 
     getCurrentStaveActionHandler().redoAdvice(getCurrentSelectionStart());
@@ -12699,6 +12699,8 @@ private void openAdviceFrame()
 
       lickgenFrame.setTotalBeats(totalBeats);
       }
+    if (stepKeyboard != null)
+        stepKeyboard.resetAdvice();
     }
     
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
@@ -19497,6 +19499,7 @@ public void openStepKeyboard()
         stepInputBtn.setSelected(selected);
         setStepInputBtn(selected);
     }
+    
     stepKeyboard.resetAdvice();
 }
 
