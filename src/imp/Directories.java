@@ -74,7 +74,7 @@ public static String styleDirName = "styles";
  * Name of file for the StyleMixer.
  * 
  */
-public static String styleMixerName = "styleMixer.txt";
+public static String styleMixerName = "_styleMixer.txt";
 
 /**
  * Name of standard sub-directory for importing styles 
