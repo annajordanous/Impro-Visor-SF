@@ -1450,7 +1450,6 @@ public void setSelection(int index)
       {
         selectionEnd = index;
       }
-
     notate.updateSelection();
   }
 

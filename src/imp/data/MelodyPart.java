@@ -88,7 +88,7 @@ public class MelodyPart
   /**
    * Volume to be explicitly given for one-time melodies, for
    * use with entered melodies.  "Playback" melodies will instead
-   * rely on the volume slider in the toolhar.
+   * rely on the volume slider in the toolbar.
    */
   public int getSpecifiedVolume()
     {

@@ -2302,7 +2302,7 @@ public void keyPressed(KeyEvent e)
 
 
 /**
- * Handle grid-line spacing short chuts.
+ * Handle grid-line spacing short cuts.
  */
 public void handleGridLineSpacing(KeyEvent e)
  {
