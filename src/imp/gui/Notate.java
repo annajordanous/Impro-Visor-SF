@@ -12166,19 +12166,19 @@ public boolean putLick(MelodyPart lick)
 
     // Wait for playing to stop
     
-    System.out.println("slotInPlayback = " + getSlotInPlayback() + ", stopPlaybackAtSlot = " + stopPlaybackAtSlot);
-    while( !midiSynth.finishedPlaying() )
-      {
-        try
-          {
-        Thread.sleep(1);
-          }
-        catch(Exception e)
-          {
-            
-          }
-      }
-    System.out.println("Stopped spinning\n");
+//    System.out.println("slotInPlayback = " + getSlotInPlayback() + ", stopPlaybackAtSlot = " + stopPlaybackAtSlot);
+//    while( !midiSynth.finishedPlaying() )
+//      {
+//        try
+//          {
+//        Thread.sleep(1);
+//          }
+//        catch(Exception e)
+//          {
+//            
+//          }
+//      }
+//    System.out.println("Stopped spinning\n");
 
     playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + start + " - " + stop);
     ImproVisor.setPlayEntrySounds(true);
