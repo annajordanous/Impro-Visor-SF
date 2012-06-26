@@ -72,13 +72,24 @@ public DrumPatternDisplay(Notate parent, CommandManager cm, StyleEditor stylePar
   }
 
 /**
- * Constructs a new BassPatternDisplay JPanel with weight and rule parameters.
+ * Constructs a new DrumPatternDisplay JPanel with weight and rule parameters.
      *
  */
 public DrumPatternDisplay(float weight, Notate parent, CommandManager cm, StyleEditor styleParent)
   {
     super(parent, cm, styleParent);
     initialize(weight);
+  }
+
+/**
+ * Constructs a new DrumPatternDisplay JPanel with weight and rule parameters.
+     *
+ */
+public DrumPatternDisplay(Polylist rules, float weight, Notate parent, CommandManager cm, StyleEditor styleParent)
+  {
+    super(parent, cm, styleParent);
+    initialize(weight);
+    // Unfinished
   }
 
 /**
