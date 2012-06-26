@@ -1105,9 +1105,12 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
                  break;
                   
                 default:
+                 // Buffer drum rules as belonging to a pattern in a given
+                 // column. At the end of transfer, create drum patterns out
+                 // of rules stored in a specific buffer.
                  if( trueRow >= StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW)
                       {
-                      buffer[j].append(item.cons(instrumentName[i]).cons(DRUM));    
+                      buffer[j].append(item.cons(instrumentName[i]).cons(DRUM_SYMBOL));    
                       }
                 }
               }
@@ -1133,6 +1136,8 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
 
   public void saveStylePatterns()
     {
+    String eol = System.getProperty( "line.separator" );
+  
     File file = ImproVisor.getStyleMixerFile();
       try
       {
@@ -1144,20 +1149,23 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       {
           buffer.append("(bass-pattern ");
           buffer.append((String)e.nextElement());
-          buffer.append(")\n");
+          buffer.append(")");
+          buffer.append(eol);
       }
       
       for( Enumeration e = rawRulesModelChord.elements(); e.hasMoreElements(); )
       {
           buffer.append("(chord-pattern ");
           buffer.append((String)e.nextElement());
-          buffer.append(")\n");
+          buffer.append(")");
+          buffer.append(eol);
       }
             
       for( Enumeration e = rawRulesModelDrum.elements(); e.hasMoreElements(); )
       {
           buffer.append("(drum-pattern ");
           buffer.append(((String)e.nextElement()).substring(1));
+          buffer.append(eol);
       }            
       
       String styleResult = buffer.toString();
@@ -1173,8 +1181,6 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
   
   private void loadStyleMixerPatterns()
   {
-  String eol = System.getProperty( "line.separator" );
-  
   File mixerFile = ImproVisor.getStyleMixerFile();
   try
     {
@@ -1189,11 +1195,11 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
       Polylist tokenP = (Polylist)token;
       if(tokenP.first().equals("bass-pattern"))
         {
-          rawRulesModelBass.addElement(tokenP.rest());
+          rawRulesModelBass.addElement(tokenP.second());
         }
       else if(tokenP.first().equals("chord-pattern"))
         {
-          rawRulesModelChord.addElement(tokenP.rest());
+          rawRulesModelChord.addElement(tokenP.second());
         }
       else if(tokenP.first().equals("drum-pattern"))
         {
@@ -1203,7 +1209,7 @@ public void copyCellsForStyleMixer(Polylist cells, int rowNumber, String instrum
   }
   catch( java.io.FileNotFoundException e )
         { 
-            System.out.println("StyleMixer file not found");
+            ErrorLog.log(ErrorLog.WARNING, "StyleMixer file not found");
         }
   }
 }
