@@ -16056,8 +16056,6 @@ public void setAdviceUsed()
       }
     }
     
-    
-    
   /**
    *
    * Move current selection to the right.
@@ -16066,15 +16064,9 @@ public void setAdviceUsed()
   
   public void moveRight()
     {
-    getCurrentStaveActionHandler().moveSelectionRight(getCurrentSelectionStart() + 1);
-    redoAdvice();
-    if (stepKeyboard != null)
-        stepKeyboard.resetAdvice();
+        getCurrentStaveActionHandler().moveSelectionRight(getCurrentSelectionStart() + 1);
+        redoAdvice();
     }
-    
-    
-    
-    
     
   /**
    *
@@ -16084,14 +16076,9 @@ public void setAdviceUsed()
   
   public void moveLeft()
     {
-
-    getCurrentStaveActionHandler().moveSelectionLeft(getCurrentSelectionStart() - 1);
-    redoAdvice();
-    if (stepKeyboard != null)
-        stepKeyboard.resetAdvice();
+        getCurrentStaveActionHandler().moveSelectionLeft(getCurrentSelectionStart() - 1);
+        redoAdvice();
     }
-
-    
     
   /**
    *

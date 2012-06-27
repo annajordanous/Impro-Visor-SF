@@ -1467,6 +1467,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     public final int LOW_BASS = 24;
     public final int HALF_STEP = 1;
     public final int SLOTS_PER_BEAT = 120;
+    
     private int noNote = -1; // DON'T CHANGE THIS VALUE. This is the same as the value
                              // that MelodyPart.getPitch() returns if the previous note
                              // was a rest, which is important.
@@ -1474,16 +1475,18 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     private int adviceNumMax = 88;
     private int adviceNumInit = P_OCTAVE;
     private int adviceNum = adviceNumInit;
-    public boolean useBlueAdvice = true;
-    public boolean useAdvice = false;
-    public boolean useExpectancies = true;
+    private boolean useBlueAdvice = true;
+    private boolean useAdvice = false;
+    private boolean useExpectancies = true;
+    
+    private enum NoteType { COLOR, CHORD }
 
 private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
 
     playback = false;
 
     // Getting the position of the mouse click
-    int y = evt.getY();
+    int y = evt.getY(); 
     int x = evt.getX();
 
     if (y < WKHEIGHT && !playback) {
@@ -1610,9 +1613,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         switch(e.getKeyCode())
         {
             case KeyEvent.VK_Z:
-            {
                 notate.undoCommand();
-            }
             case KeyEvent.VK_Y:
                 notate.redoCommand();
                 
@@ -1660,7 +1661,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         
         // If we STILL don't have a note, give up and use middle C.
         if (midiValue == noNote) midiValue = MIDDLE_C;
-
+        
         if (useAdvice)
         {   
             if (useExpectancies)
@@ -1670,7 +1671,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             Chord currentChord = chordProg.getCurrentChord(selectedSlot);
             
             String chordName = currentChord.getName();
-            chordNameDisplay.setText("<html><center>" + chordName + "</center></html>");
+            chordNameDisplay.setText(chordName);
 
             ChordForm curChordForm = currentChord.getChordForm();
             String root = currentChord.getRoot();
@@ -1686,24 +1687,24 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
             if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, currentStave))
             {
-                findAndPressBlueNotes(midiValue, chordMIDIs, "chord");
-                findAndPressBlueNotes(midiValue, colorMIDIs, "color");
+                findAndPressBlueNotes(midiValue, chordMIDIs, NoteType.CHORD);
+                findAndPressBlueNotes(midiValue, colorMIDIs, NoteType.COLOR);
             }
             else
             {
-                pressPianoKeys(chordMIDIs, "chord");
-                pressPianoKeys(colorMIDIs, "color");
+                pressPianoKeys(chordMIDIs, NoteType.CHORD);
+                pressPianoKeys(colorMIDIs, NoteType.COLOR);
             }
 
             bass.setPressed(true);
-            pressKey(bass, "bass");
+            pressKey(bass, bass.getBassIcon());
         }
 
         if (displayNote)
         {
             StepPianoKey key = pianoKeys()[midiValue - A];
             key.setPressed(true);
-            pressKey(key, "pressed");
+            pressKey(key, key.getPressedIcon());
         }
     }
 
@@ -1763,16 +1764,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         int prevPrevPitch = secondToLastRealNote(stave, melody, selectedSlot);
          
         Chord chord = stave.getChordProg().getCurrentChord(prevSlot);
-        
-        ArrayList<Double> expectancies = new ArrayList<Double>();
-        
-        for (StepPianoKey pk : pianoKeys())
-        {
-            int possiblePitch = pk.getMIDI();
-            double expectancy = Expectancy.getExpectancy(possiblePitch,prevPitch,prevPrevPitch,chord);
-            expectancies.add(expectancy);
-        }
-        
+
         if (prevPitch == noNote || prevPrevPitch == noNote)
             return;
             
@@ -1800,18 +1792,18 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             maxNote = C_EIGHTH;
         
         midiArray.add(minNote);
-        sortedExpectancies.add(expectancies.get(minNote-A));
+        sortedExpectancies.add(Expectancy.getExpectancy(minNote, prevPitch, prevPrevPitch, chord));
         
         
         // Sort the midi values of the notes in the advice range
         // by their expectancies
         for (int midi = minNote + 1; midi <= maxNote; midi++ )
         {
-            double expect = expectancies.get(midi-A);
+            double expect = Expectancy.getExpectancy(midi, prevPitch,prevPrevPitch,chord);
             
             for (int j = 0; j < midiArray.size(); j++)
             {
-                if (expect > expectancies.get(midiArray.get(j)-A))
+                if (expect > sortedExpectancies.get(j))
                 {
                     midiArray.add(j, midi);
                     sortedExpectancies.add(j, expect);
@@ -1828,42 +1820,55 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         System.out.println(midiArray);
         System.out.println(sortedExpectancies);
 
-        drawExpectancies(midiArray);
+        drawExpectancies(midiArray, sortedExpectancies);
     }
     
-    private void drawExpectancies(ArrayList<Integer> midiValues)
+    private void drawExpectancies(ArrayList<Integer> midiValues, ArrayList<Double> expectancies)
     {
+        double maxExpect = expectancies.get(0);
+        
         for(int i = 0; i < midiValues.size(); i++)
         {
             int midi = midiValues.get(i);
             StepPianoKey pk = pianoKeys()[midi - A];
             JLabel label = pk.getNumLabel();
-            String str = Integer.toString(i+1);
-            label.setText(str);
+            int value = (int)Math.floor(10*expectancies.get(i)/maxExpect);
+            
+            if (value > 5)
+            {
+                String str = Integer.toString(value);
+                label.setText(str);
+            }
         }
     }
     
     /**
      * Colors the notes in the midiList that are a half-step away from the
-     * midiValue based on the given type.
+     * midiValue based on the given NoteType.
      * @param midiValue
      * @param midiList
-     * @param type 
+     * @param NoteType
      */
-    private void findAndPressBlueNotes(int midiValue, ArrayList<Integer> midiList, String type)
+    private void findAndPressBlueNotes(int midiValue, ArrayList<Integer> midiList, NoteType type)
     {
         if (midiList.contains(midiValue - HALF_STEP))
         {
             StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
             nextDown.setPressed(true);
-            pressKey(nextDown, type);
+            if (type.equals(NoteType.COLOR))
+                pressKey(nextDown, nextDown.getColorIcon());
+            if (type.equals(NoteType.CHORD))
+                pressKey(nextDown, nextDown.getChordIcon());
         }
 
         if (midiList.contains(midiValue + HALF_STEP))
         {
             StepPianoKey nextUp = pianoKeys()[midiValue + HALF_STEP - A];
             nextUp.setPressed(true);
-            pressKey(nextUp, type);
+            if (type.equals(NoteType.COLOR))
+                pressKey(nextUp, nextUp.getColorIcon());
+            if (type.equals(NoteType.CHORD))
+                pressKey(nextUp, nextUp.getChordIcon());
         }
     }
     
@@ -1926,11 +1931,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         notate.cm.execute(new SetRestCommand(index, notate.getCurrentMelodyPart()));
         int next = stave.getNextCstrLine(index);
         if (next >= 0)
-        
-        {
-            notate.setCurrentSelectionStart(next);
-            notate.setCurrentSelectionEnd(next);
-        }
+            stave.setSelection(next, next);
 
         stave.repaint();
     }
@@ -1944,10 +1945,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         int index = notate.getCurrentSelectionStart();
         int next = stave.getNextCstrLine(index);
         if (next >= 0)
-        {
-            notate.setCurrentSelectionStart(next);
-            notate.setCurrentSelectionEnd(next);
-        }
+            stave.setSelection(next, next);
         stave.repaint();
     }
 
@@ -1959,26 +1957,30 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         Stave stave = notate.getCurrentStave();
         int index = notate.getCurrentSelectionStart();
         int previous = stave.getPreviousCstrLine(index);
-        notate.setCurrentSelectionStart(previous);
-        notate.setCurrentSelectionEnd(previous);
+        stave.setSelection(previous, previous);
 
         stave.repaint();
     }
 
     /**
      * Sets the piano keys corresponding to the values in the array to pressed
-     * and colors them according to the given type.
+     * and colors them according to the given NoteType.
      *
      * @param midiValues
-     * @param type
+     * @param NoteType
      */
-    private void pressPianoKeys(ArrayList<Integer> midiValues, String type)
+    private void pressPianoKeys(ArrayList<Integer> midiValues, NoteType type)
     {
         for (int i = 0; i < midiValues.size(); i++)
         {
             StepPianoKey currentKey = pianoKeys()[(midiValues.get(i)) - A];
             currentKey.setPressed(true);
-            pressKey(currentKey, type);
+            JLabel label = currentKey.getLabel();
+            if (type.equals(NoteType.COLOR))
+                label.setIcon(currentKey.getColorIcon());
+            if (type.equals(NoteType.CHORD))
+                label.setIcon(currentKey.getChordIcon());
+            forcePaint();
         }
     }
 
@@ -2046,12 +2048,12 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             useAdvice = on;
             if (useAdvice)
             {
-                useAdviceMI.setText("<html><left>Don't Show Advice</left></html>");
+                useAdviceMI.setText("Don't Show Advice");
                 adviceNumSpinner.setValue(adviceNum);
                 adviceNum = adviceNumInit;
             }
             else
-                useAdviceMI.setText("<html><left>Show Advice</left></html>");
+                useAdviceMI.setText("Show Advice");
         }
     }
 
@@ -2066,9 +2068,9 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         useBlueAdvice = on;
 
         if (useBlueAdvice) 
-            useBlueAdviceMI.setText("<html><left>Don't Use Blue Note Awareness</left></html>");
+            useBlueAdviceMI.setText("Don't Use Blue Note Awareness");
         else
-            useBlueAdviceMI.setText("<html><left>Use Blue Note Awareness</left></html>");
+            useBlueAdviceMI.setText("Use Blue Note Awareness");
     }
     
     public void setUseExpectancies(boolean on)
@@ -2076,9 +2078,9 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         useExpectancies = on;
         
         if (useExpectancies) 
-            useExpectanciesMI.setText("<html><left>Don't Show Expected Notes</left></html>");
+            useExpectanciesMI.setText("Don't Show Expected Notes");
         else
-            useExpectanciesMI.setText("<html><left>Show Expected Notes</left></html>");
+            useExpectanciesMI.setText("Show Expected Notes");
     }
 
     /**
@@ -2092,7 +2094,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             if (pk.isPressed())
             {
                 pk.setPressed(false);
-                pressKey(pk, "none");
+                pressKey(pk, pk.getOffIcon());
             }
         }
     }
@@ -2140,26 +2142,10 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
      *
      * @param keyPlayed
      */
-    public void pressKey(StepPianoKey keyPlayed, String type)
+    public void pressKey(StepPianoKey keyPlayed, Icon icon)
     {
         JLabel label = keyPlayed.getLabel();
-
-        Icon chordIcon = keyPlayed.getChordIcon();
-        Icon colorIcon = keyPlayed.getColorIcon();
-        Icon pressedIcon = keyPlayed.getPressedIcon();
-        Icon offIcon = keyPlayed.getOffIcon();
-        Icon rootIcon = keyPlayed.getBassIcon();
-
-        if (keyPlayed.isPressed() && type.equals("color"))
-            label.setIcon(colorIcon);
-        else if (keyPlayed.isPressed() && type.equals("chord"))
-            label.setIcon(chordIcon);
-        else if (keyPlayed.isPressed() && type.equals("pressed"))
-            label.setIcon(pressedIcon);
-        else if (keyPlayed.isPressed() && type.equals("bass"))
-            label.setIcon(rootIcon);
-        else 
-            label.setIcon(offIcon);
+        label.setIcon(icon);
 
         forcePaint();
     }
@@ -2260,7 +2246,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private void inputRestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRestBtnActionPerformed
         
         inputRestToStave();
-        resetAdvice();
         keyboardLP.requestFocus();
     }//GEN-LAST:event_inputRestBtnActionPerformed
 
@@ -2293,13 +2278,11 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private void SkipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkipBtnActionPerformed
         
         nextStaveSlot();
-        resetAdvice();
         keyboardLP.requestFocus();
     }//GEN-LAST:event_SkipBtnActionPerformed
 
     private void BackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBtnActionPerformed
         previousStaveSlot();
-        resetAdvice();
         keyboardLP.requestFocus();
     }//GEN-LAST:event_BackBtnActionPerformed
 
@@ -2319,16 +2302,17 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
             String newValueStr = subDivComboBox.getSelectedItem().toString();
             int newValue = new Integer(newValueStr);
             Stave stave = notate.getCurrentStave();
-
-            if (stave.getSubDivs(stave.getSelectionStart()) != newValue)
-                    stave.setSubDivs(stave.getSelectionStart()/SLOTS_PER_BEAT,newValue);  
+            
+            int slot = stave.getSelectionStart()/SLOTS_PER_BEAT;
+            stave.setSubDivs(slot,newValue);
+            stave.repaint();
+            keyboardLP.requestFocus();  
         }
         catch (NumberFormatException e)
         {
             // do nothing
         }
         
-        keyboardLP.requestFocus();
     }//GEN-LAST:event_subDivComboBoxActionPerformed
 
     private void defaultSetingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultSetingsBtnActionPerformed
