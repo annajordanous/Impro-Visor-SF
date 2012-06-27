@@ -46,7 +46,7 @@ public class ChordExtract implements Constants{
 
         //initialize a chordlist of all the chord names
         Polylist chordnames = ImproVisor.getChordNames();
-        chordnames.reverse();
+        chordnames = chordnames.reverse();
         chordList = (String[]) chordnames.toStringArray();
         
         lengthOfChordList = chordList.length;
@@ -55,7 +55,7 @@ public class ChordExtract implements Constants{
         bitChordList = new boolean[lengthOfChordList][12];
         for (int i = 0; i < lengthOfChordList; i++) {
             String chordName = chordList[i];
-            System.out.println(chordName);
+            //System.out.println(chordName);
             ChordSymbol chordsymbol = ChordSymbol.makeChordSymbol(chordName);
             ChordForm chordform = chordsymbol.getChordForm();
             Key key = chordform.getKey();
@@ -69,8 +69,36 @@ public class ChordExtract implements Constants{
                 //System.out.println(chordName.substring(0,chordName.length()-1));
                 chordList[i]=chordName.substring(0,chordName.length()-1);
             }
+            if (chordName.matches("(?i).*Major*."))
+            {
+                chordList[i] = chordName.replace("Major", "M");
+            }
+            if (chordName.matches("(?i).*minor*."))
+            {
+                chordList[i] = chordName.replace("minor", "m");
+            }
+            if (chordName.matches("(?i).*Dominant*."))
+            {
+                chordList[i] = chordName.replace("Dominant", "7");
+            }
+            if (chordName.matches("(?i).*augmented*."))
+            {
+                chordList[i] = chordName.replace("augmented", "+");
+            }
+            if (chordName.matches("(?i).*diminished*."))
+            {
+                chordList[i] = chordName.replace("diminished", "o");
+            }
+            if (chordName.matches("(?i).*half-diminished*."))
+            {
+                chordList[i] = chordName.replace("half-diminished", "m7b5");
+            }
+            
             //System.out.println(NoteSymbol.showContents(chordbit));
-            //System.out.println();
+            //System.out.println(chordList[i]);
+            //System.out.println(chordName);
+            //System.out.println(chordform);
+            //System.out.println(chordsymbol);
         }
     }
     
@@ -247,16 +275,19 @@ public class ChordExtract implements Constants{
                 if(beat+quarter<length && !checkEmpty(bitChords[beat+quarter]))
                 {
                     bitChords[beat] = bitChords[beat+quarter];
+                    bitChords[beat+quarter] = null;
                 }
                 //check eighth note after beat
                 else if(beat+eighth<length && !checkEmpty(bitChords[beat+eighth]))
                 {
                     bitChords[beat] = bitChords[beat+eighth];
+                    bitChords[beat+eighth]= null;
                 }
                 //check eighth note before beat
                 else if(beat!=0 && !checkEmpty(bitChords[beat-eighth]))
                 {
                     bitChords[beat] = bitChords[beat-eighth];
+                    bitChords[beat-eighth]= null;
                 }
             }
         }
