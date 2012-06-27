@@ -1834,7 +1834,8 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             JLabel label = pk.getNumLabel();
             int value = (int)Math.floor(10*expectancies.get(i)/maxExpect);
             
-            if (value > 5)
+            if (value >
+                    0)
             {
                 String str = Integer.toString(value);
                 label.setText(str);
