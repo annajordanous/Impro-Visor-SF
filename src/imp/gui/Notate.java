@@ -1972,6 +1972,7 @@ public class Notate
         recordBtn = new javax.swing.JButton();
         stepInputBtn = new javax.swing.JToggleButton();
         chordStepBackButton = new javax.swing.JButton();
+        chordReplayButton = new javax.swing.JButton();
         chordStepForwardButton = new javax.swing.JButton();
         playbackPanel = new javax.swing.JPanel();
         playbackTime = new javax.swing.JLabel();
@@ -2262,7 +2263,6 @@ public class Notate
         okcancelPanel.add(resetBtn);
 
         savePrefsBtn.setText("Save Preferences");
-        savePrefsBtn.setOpaque(true);
         savePrefsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 savePrefsBtnActionPerformed(evt);
@@ -4381,7 +4381,6 @@ public class Notate
         cancelLickTitle.setText("Cancel");
         cancelLickTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelLickTitle.setDefaultCapable(false);
-        cancelLickTitle.setOpaque(true);
         cancelLickTitle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelLickTitleActionPerformed(evt);
@@ -4400,7 +4399,6 @@ public class Notate
         okSaveButton.setText("Save This");
         okSaveButton.setToolTipText("Saves the item in the vocabulary file.");
         okSaveButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        okSaveButton.setOpaque(true);
         okSaveButton.setSelected(true);
         okSaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4482,7 +4480,6 @@ public class Notate
         gridBagConstraints.weighty = 1.0;
         saveLickFrame.getContentPane().add(quoteRadioButton, gridBagConstraints);
 
-        duplicateLickDialog.setTitle("");
         duplicateLickDialog.setAlwaysOnTop(true);
         duplicateLickDialog.setModal(true);
         duplicateLickDialog.setName("duplicateLickDialog"); // NOI18N
@@ -4503,7 +4500,6 @@ public class Notate
         ignoreDuplicate.setText("Ignore This One");
         ignoreDuplicate.setToolTipText("Do not save the duplicate in the vocabulary.");
         ignoreDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        ignoreDuplicate.setOpaque(true);
         ignoreDuplicate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ignoreDuplicateActionPerformed(evt);
@@ -4526,7 +4522,6 @@ public class Notate
         saveDuplicate.setToolTipText("Saves the lick in the vocabulary");
         saveDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveDuplicate.setDefaultCapable(false);
-        saveDuplicate.setOpaque(true);
         saveDuplicate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveDuplicateActionPerformed(evt);
@@ -4582,7 +4577,6 @@ public class Notate
         overwriteLickButton.setText("Overwrite Lick");
         overwriteLickButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         overwriteLickButton.setDefaultCapable(false);
-        overwriteLickButton.setOpaque(true);
         overwriteLickButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 overwriteLickButtonActionPerformed(evt);
@@ -4980,7 +4974,6 @@ public class Notate
         overrideFrame.getContentPane().add(lineLabel, gridBagConstraints);
 
         okMeasBtn.setText("OK");
-        okMeasBtn.setOpaque(true);
         okMeasBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okMeasBtnActionPerformed(evt);
@@ -5620,7 +5613,6 @@ public class Notate
         newVoicingSaveButton.setText("Save Voicing");
         newVoicingSaveButton.setMaximumSize(new java.awt.Dimension(110, 25));
         newVoicingSaveButton.setMinimumSize(new java.awt.Dimension(110, 25));
-        newVoicingSaveButton.setOpaque(true);
         newVoicingSaveButton.setPreferredSize(new java.awt.Dimension(110, 25));
         newVoicingSaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -5673,7 +5665,6 @@ public class Notate
         deleteVoicingOKButton.setText("OK");
         deleteVoicingOKButton.setMaximumSize(new java.awt.Dimension(75, 25));
         deleteVoicingOKButton.setMinimumSize(new java.awt.Dimension(75, 25));
-        deleteVoicingOKButton.setOpaque(true);
         deleteVoicingOKButton.setPreferredSize(new java.awt.Dimension(75, 25));
         deleteVoicingOKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -6337,7 +6328,6 @@ public class Notate
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         midiStyleSpec.getContentPane().add(jPanel10, gridBagConstraints);
 
-        truncatePartDialog.setTitle("");
         truncatePartDialog.setAlwaysOnTop(true);
         truncatePartDialog.setModal(true);
         truncatePartDialog.setName("duplicateLickDialog"); // NOI18N
@@ -6358,7 +6348,6 @@ public class Notate
         cancelTruncate.setText("Cancel truncation");
         cancelTruncate.setToolTipText("Do not truncate the part.");
         cancelTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        cancelTruncate.setOpaque(true);
         cancelTruncate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelTruncateActionPerformed(evt);
@@ -6381,7 +6370,6 @@ public class Notate
         acceptTruncate.setToolTipText("Truncates the part as specified.");
         acceptTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         acceptTruncate.setDefaultCapable(false);
-        acceptTruncate.setOpaque(true);
         acceptTruncate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 acceptTruncateActionPerformed(evt);
@@ -6722,7 +6710,6 @@ public class Notate
         openGeneratorButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         openGeneratorButton.setMaximumSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.setMinimumSize(new java.awt.Dimension(30, 30));
-        openGeneratorButton.setOpaque(true);
         openGeneratorButton.setPreferredSize(new java.awt.Dimension(30, 30));
         openGeneratorButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -6804,7 +6791,6 @@ public class Notate
         addTabBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         addTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         addTabBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        addTabBtn.setOpaque(true);
         addTabBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         addTabBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -6819,7 +6805,6 @@ public class Notate
         delTabBtn.setEnabled(false);
         delTabBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         delTabBtn.setMinimumSize(new java.awt.Dimension(30, 30));
-        delTabBtn.setOpaque(true);
         delTabBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         delTabBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7133,6 +7118,21 @@ public class Notate
             }
         });
         playToolBar.add(chordStepBackButton);
+
+        chordReplayButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/replayGreen.gif"))); // NOI18N
+        chordReplayButton.setToolTipText("Replays chord.");
+        chordReplayButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chordReplayButton.setFocusable(false);
+        chordReplayButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chordReplayButton.setMaximumSize(new java.awt.Dimension(30, 30));
+        chordReplayButton.setMinimumSize(new java.awt.Dimension(30, 30));
+        chordReplayButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chordReplayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordReplayButtonActionPerformed(evt);
+            }
+        });
+        playToolBar.add(chordReplayButton);
 
         chordStepForwardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/icons/playGreen.gif"))); // NOI18N
         chordStepForwardButton.setToolTipText("Move to, and play, the next chord.");
@@ -7520,7 +7520,6 @@ public class Notate
         clearButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         clearButton.setMaximumSize(new java.awt.Dimension(46, 38));
         clearButton.setMinimumSize(new java.awt.Dimension(46, 38));
-        clearButton.setOpaque(true);
         clearButton.setPreferredSize(new java.awt.Dimension(46, 38));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -7545,11 +7544,11 @@ public class Notate
         scoreTab.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         scoreTab.setOpaque(true);
         scoreTab.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                scoreTabMousePressedHandler(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 mouseEnteredTabPanel(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                scoreTabMousePressedHandler(evt);
             }
         });
         scoreTab.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -7611,12 +7610,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7632,12 +7631,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8489,12 +8488,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8527,12 +8526,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -20748,7 +20747,14 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
                   });
       }
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
-private boolean skippedBack = false;
+private boolean skippedBack = false; //markermarkermarker
+
+    public void playAndCaptureChordAtIndex(int index)
+    {
+        indexOfLastChordPlayed = index;
+        playChordAtIndex(index);
+    }
+    
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
         int currIndex = 0;
         int nextChordIndex =0;
@@ -20758,22 +20764,19 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
         autoScrollOnPlayback = true;
         if(skippedBack)
         {
+            // will play current chord iff back button was pressed; will not move forward
             currIndex = midiSynth.getSlot();
             if(currIndex > chordProg.getSize())
             {
                 modedIndex = currIndex % chordProg.getSize();
-                midiSynth.setSlot(currIndex);
-                playChordAtIndex(modedIndex);
             }
-            else
-            {
-                midiSynth.setSlot(currIndex);
-                playChordAtIndex(modedIndex);
-            }
+            midiSynth.setSlot(currIndex);
+            playAndCaptureChordAtIndex(modedIndex);
             skippedBack = false;
         }
         else
         {
+            //will move to and play next chord
             switch(playingStatus)
             {
                 case PLAYING:
@@ -20808,7 +20811,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                         else
                         {
                             midiSynth.setSlot((long)0);
-                            playChordAtIndex(0);
+                            playAndCaptureChordAtIndex(0);
                         }
                     }
                     break;
@@ -20835,6 +20838,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                     }
                     else
                     {
+                     
                         if(nextChordIndex >= 0)
                         {
                             midiSynth.setSlot((long)nextChordIndex);
@@ -20843,7 +20847,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                         else
                         {
                             midiSynth.setSlot((long)0);
-                            playChordAtIndex(0);
+                            playAndCaptureChordAtIndex(0);
                         }
                     }
                     break;
@@ -20899,7 +20903,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
             }
             if(nextChordIndex != -1)
             {
-                playChordAtIndex(indexOfChordToPlay);
+                playAndCaptureChordAtIndex(indexOfChordToPlay);
             }
             else
             {
@@ -20946,6 +20950,7 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
             }
             midiSynth.setSlot((long)prevChordIndex);
             currChordIndex = prevChordIndex;
+            indexOfLastChordPlayed = prevChordIndex;
         }
         else
         {
@@ -20963,7 +20968,6 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
             }
         }
 }//GEN-LAST:event_chordStepBackButtonActionPerformed
-
 
 private void EmptyRoadMapAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmptyRoadMapAction
     openEmptyRoadmap();
@@ -21233,6 +21237,16 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     private void stepKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepKeyboardMIActionPerformed
       openStepKeyboard();
     }//GEN-LAST:event_stepKeyboardMIActionPerformed
+
+    private int indexOfLastChordPlayed = 0; //markermarkermarker
+    
+    private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
+        
+        midiSynth.setSlot(indexOfLastChordPlayed);
+        playAndCaptureChordAtIndex(indexOfLastChordPlayed);
+        
+        
+    }//GEN-LAST:event_chordReplayButtonActionPerformed
 
 /**
  * Focus on input from textEntry field, until return is pressed,
@@ -22845,6 +22859,7 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel chordInstPanel;
     private javax.swing.JCheckBox chordMute;
     private javax.swing.JPanel chordPanel;
+    private javax.swing.JButton chordReplayButton;
     private javax.swing.JLabel chordRootLabel;
     private javax.swing.JTextField chordRootTF;
     private javax.swing.JLabel chordSearchLabel;
