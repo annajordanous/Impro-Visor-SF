@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
-//import javax.sound.midi.MidiUnavailableException;
 /**
  *
  * @author Audrey Musselman-Brown, 2012 Modified from the VoicingKeyboard class
@@ -1320,7 +1319,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         });
         optionsMenu.add(useAdviceMI);
 
-        useExpectanciesMI.setText("Don't Show Expected Notes");
+        useExpectanciesMI.setText("Show Expected Notes");
         useExpectanciesMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useExpectanciesMIActionPerformed(evt);
@@ -1469,7 +1468,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     public final int SLOTS_PER_BEAT = 120;
     
     private int noNote = -1; // DON'T CHANGE THIS VALUE. This is the same as the value
-                             // that MelodyPart.getPitch() returns if the previous note
+                             // that MelodyPart.getPitch() returns if the previous lastNote
                              // was a rest, which is important.
     private int adviceNumMin = 0;
     private int adviceNumMax = 88;
@@ -1477,9 +1476,10 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     private int adviceNum = adviceNumInit;
     private boolean useBlueAdvice = true;
     private boolean useAdvice = false;
-    private boolean useExpectancies = true;
+    private boolean useExpectancies = false;
     
-    private enum NoteType { COLOR, CHORD }
+    // This is used to determine how to color keys that are pressed
+    private enum NoteType { COLOR, CHORD, BASS, PRESS, OFF }
 
 private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
 
@@ -1512,7 +1512,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
                 blackPianoKey = true;
                 note -= 1;
 
-                // not on a black key if note number is 1 or 4
+                // not on a black key if lastNote number is 1 or 4
                 if (note % OCTKEYS == 1 || note % OCTKEYS == 4) {
                     blackPianoKey = false;
                 }
@@ -1521,14 +1521,14 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
                 blackPianoKey = true;
                 note = keyNum;
 
-                // not on a black key if note number is 1 or 4
+                // not on a black key if lastNote number is 1 or 4
                 if (note % OCTKEYS == 1 || note % OCTKEYS == 4) {
                     blackPianoKey = false;
                 }
             }
         }
 
-        // determine the MIDI value of the note clicked
+        // determine the MIDI value of the lastNote clicked
         int baseMidi = 0;
 
         int oct = note - OCTKEYS * (octave - 1);
@@ -1537,7 +1537,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             oct = note - OCTKEYS * octave;
         }
 
-        // if the note is a black key
+        // if the lastNote is a black key
         if (blackPianoKey) {
             switch (oct) {
                 case 0:
@@ -1559,7 +1559,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
                     baseMidi = A + 13;    //Bb
                     break;
             }
-        } // if the note is not a black key
+        } // if the lastNote is not a black key
         else {
             switch (oct) {
                 case 0:
@@ -1608,14 +1608,24 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     }
 }//GEN-LAST:event_keyboardLPMouseClicked
 
+    /**
+     * This method mostly passes keyEvents to the stave action handler for
+     * processing.
+     * @param e 
+     */
     public void keyPressed(KeyEvent e)
     {
+        Stave stave = notate.getCurrentStave();
         switch(e.getKeyCode())
         {
             case KeyEvent.VK_Z:
                 notate.undoCommand();
+                stave.setSelection(stave.getPreviousCstrLine(stave.getSelectionStart()));
+                break;
             case KeyEvent.VK_Y:
                 notate.redoCommand();
+                stave.setSelection(stave.getNextCstrLine(stave.getSelectionStart()));
+                break;
                 
             default:
                 notate.getCurrentStaveActionHandler().keyPressed(e);           
@@ -1624,49 +1634,58 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
     /**
      * Colors the keyboard based on the current midiValue. If useAdvice is
-     * on, it also colors suggested notes and the bass note.
+     * on, it also colors suggested notes and the bass lastNote.
      *
      * @param midiValue
      */
     public void resetAdvice()
     {
-        clearKeyboard();
-
+        // Don't bother if the keyboard isn't open
         if (!notate.getCurrentStepKeyboard().isVisible())
             return;
         
+        // housekeeping
+        clearKeyboard();
+        setSubDivComboBox();
+        
+        // Get some data we need
         Stave currentStave = notate.getCurrentStave();
         int selectedSlot = currentStave.getSelectionStart();
         MelodyPart melodyPart = currentStave.getMelodyPart();
-        Note note = melodyPart.getPrevNote(selectedSlot);
+        Note lastNote = melodyPart.getPrevNote(selectedSlot);
 
-        setSubDivComboBox();
         
+        // Set the midi to no lastNote initially. That way we can tell whether
+        // we get a pitch from the lastNote played
         int midiValue = noNote;
-        boolean displayNote = false; // Decides whether this particular note
+        boolean displayNote = false; // Decides whether the last note played
                                      // appears along with the suggested notes 
-        // If the note exists, let's use it.
-        if (note != null)
+        
+        // If the lastNote exists, let's use it.
+        if (lastNote != null)
         {
-            midiValue = note.getPitch();
+            midiValue = lastNote.getPitch();
             displayNote = true;
+            
             // If it turns out we still don't have a note, find the closest note
-            // behind us on the staff
+            // behind us on the staff. In this case, we won't display the note,
+            // since the note we are using for reference isn't next to our
+            // current slot.
             if (midiValue == noNote)
             {
-                midiValue = lastRealNote(currentStave, melodyPart, selectedSlot);
+                midiValue = lastRealNote(selectedSlot);
                 displayNote = false;
             }
         }
         
-        // If we STILL don't have a note, give up and use middle C.
+        // If we STILL don't have a reference note, give up and use middle C.
         if (midiValue == noNote) midiValue = MIDDLE_C;
         
+        if (useExpectancies)
+            findAndDisplayExpectancies(selectedSlot);
+        
         if (useAdvice)
-        {   
-            if (useExpectancies)
-                printExpectancyArray(selectedSlot, melodyPart);
-            
+        {              
             ChordPart chordProg = currentStave.getChordProg();
             Chord currentChord = chordProg.getCurrentChord(selectedSlot);
             
@@ -1676,6 +1695,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             ChordForm curChordForm = currentChord.getChordForm();
             String root = currentChord.getRoot();
             
+            // Get lists of the actual midi values we want to color
             ArrayList<Integer> chordMIDIs = // the midi values for the notes in the chord
                     chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
             ArrayList<Integer> colorMIDIs = // the midi values for the color notes
@@ -1685,6 +1705,10 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             Integer bassMidi = findBass(root);
             StepPianoKey bass = pianoKeys()[bassMidi - A];
 
+            // We only want to use blue advice if (a) blue advice is turned on
+            // (b) the reference note we're using is actually adjacent to the
+            // current selected slot and (c) the reference note is outside of 
+            // the chord.
             if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, currentStave))
             {
                 findAndPressBlueNotes(midiValue, chordMIDIs, NoteType.CHORD);
@@ -1709,15 +1733,18 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     }
 
     /**
-     * Finds the first note preceding the given slot that has a nonnegative midi
-     * value. If there are none, it returns noNote.
+     * Finds the midi value of the first note preceding the given slot that has 
+     * a nonnegative midi value. If there are none, it returns noNote.
      *
      * @param stave the current stave
      * @param melody the MelodyPart for the current stave
      * @param selectedSlot the
      */
-    private int lastRealNote(Stave stave, MelodyPart melody, int selectedSlot)
+    private int lastRealNote(int selectedSlot)
     {
+        Stave stave = notate.getCurrentStave();
+        MelodyPart melody = stave.getMelodyPart();
+        
         int midi = noNote;
         while (midi == noNote)
         {
@@ -1731,8 +1758,21 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         return midi;
     }
     
-    private int secondToLastRealNote(Stave stave, MelodyPart melody, int selectedSlot)
+    /**
+     * Finds the second note preceding the given slot that has a nonnegative
+     * midi value. This is the note immediately before the one returned by 
+     * lastRealNote.
+     * 
+     * @param stave
+     * @param melody
+     * @param selectedSlot
+     * @return 
+     */
+    private int secondToLastRealNote(int selectedSlot)
     {
+        Stave stave = notate.getCurrentStave();
+        MelodyPart melody = stave.getMelodyPart();
+        
         int midi = noNote;
         boolean seenOneNote = false;
         while (midi == noNote)
@@ -1753,89 +1793,79 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         return midi;
     }
     
-    private void printExpectancyArray(int selectedSlot, MelodyPart melody)
+    /**
+     * Given a selected slot and the current melody, determines how expected each
+     * lastNote within the advice window is, normalizes it, and displays the positive
+     * numbers on the keyboard.
+     * 
+     * @param selectedSlot
+     * @param melody 
+     */
+    private void findAndDisplayExpectancies(int selectedSlot)
     {
         Stave stave = notate.getCurrentStave();
-        stave.getMelodyPart();
-        
         int prevSlot = stave.getPreviousCstrLine(selectedSlot);
         
-        int prevPitch = lastRealNote(stave, melody, selectedSlot);
-        int prevPrevPitch = secondToLastRealNote(stave, melody, selectedSlot);
+        int prevPitch = lastRealNote(selectedSlot);
+        int prevPrevPitch = secondToLastRealNote(selectedSlot);
          
         Chord chord = stave.getChordProg().getCurrentChord(prevSlot);
 
-        if (prevPitch == noNote || prevPrevPitch == noNote)
-            return;
-            
+        // if we don't have two real notes to base our 
+        // expectancies on, we won't bother.
+        if (prevPitch == noNote || prevPrevPitch == noNote) return;
+        
+        // Find the bounds of the advice window such that they conform to the
+        // number of suggestions the user wants.
         int minNote = prevPitch - (int) Math.floor(adviceNum / 2.0);
         int maxNote = prevPitch + (int) Math.ceil(adviceNum / 2.0);
         
         ArrayList<Integer> midiArray = new ArrayList<Integer>(adviceNum + 1);
-        ArrayList<Double> sortedExpectancies = new ArrayList<Double>(adviceNum + 1);
+        ArrayList<Double> expectancies = new ArrayList<Double>(adviceNum + 1);
         
+        // The following three if-statements ensure that the suggestions don't
+        // extend off either end of the keyboard while preserving the size of
+        // the suggestion window as best we can.
         if (maxNote > C_EIGHTH)
         {
             int diff = maxNote - C_EIGHTH;
             maxNote = C_EIGHTH;
             minNote -= diff;
         }
-        
         if (minNote < A)
         {
             int diff = A - minNote;
             minNote = A;
             maxNote += diff;    
         }
-        
         if (maxNote > C_EIGHTH)
             maxNote = C_EIGHTH;
         
-        midiArray.add(minNote);
-        sortedExpectancies.add(Expectancy.getExpectancy(minNote, prevPitch, prevPrevPitch, chord));
-        
+        // Expectancies will never be less than zero, so this
+        // is a fair initial value
+        double maxExpect = 0;
         
         // Sort the midi values of the notes in the advice range
         // by their expectancies
-        for (int midi = minNote + 1; midi <= maxNote; midi++ )
+        for (int midi = minNote ; midi <= maxNote; midi++ )
         {
             double expect = Expectancy.getExpectancy(midi, prevPitch,prevPrevPitch,chord);
+
+            midiArray.add(midi);
+            expectancies.add(expect);
             
-            for (int j = 0; j < midiArray.size(); j++)
-            {
-                if (expect > sortedExpectancies.get(j))
-                {
-                    midiArray.add(j, midi);
-                    sortedExpectancies.add(j, expect);
-                    break;
-                }
-            }
-            if (!midiArray.contains(midi))
-            {
-                midiArray.add(midi);
-                sortedExpectancies.add(expect);
-            }
+            if (expect > maxExpect) maxExpect = expect;
         }
         
-        System.out.println(midiArray);
-        System.out.println(sortedExpectancies);
-
-        drawExpectancies(midiArray, sortedExpectancies);
-    }
-    
-    private void drawExpectancies(ArrayList<Integer> midiValues, ArrayList<Double> expectancies)
-    {
-        double maxExpect = expectancies.get(0);
-        
-        for(int i = 0; i < midiValues.size(); i++)
+        // Displays expectancies on the keyboard
+        for(int i = 0; i < midiArray.size(); i++)
         {
-            int midi = midiValues.get(i);
+            int midi = midiArray.get(i);
             StepPianoKey pk = pianoKeys()[midi - A];
             JLabel label = pk.getNumLabel();
             int value = (int)Math.floor(10*expectancies.get(i)/maxExpect);
             
-            if (value >
-                    0)
+            if (value > 0)
             {
                 String str = Integer.toString(value);
                 label.setText(str);
@@ -1885,6 +1915,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     private boolean isBlue(int midiValue, int selectedSlot, Stave stave)
     {
         ChordPart chords = stave.getChordProg();
+        // Get the chord that was current when the last note was played
         Chord currentChord = chords.getCurrentChord(stave.getPreviousCstrLine(selectedSlot));
 
         ChordForm curChordForm = currentChord.getChordForm();
@@ -1909,8 +1940,10 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         Stave stave = notate.getCurrentStave();
         int index = notate.getCurrentSelectionStart();
         Note newNote = new Note(midiValue);
+        
         newNote.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
         notate.cm.execute(new SetNoteCommand(index, newNote, notate.getCurrentMelodyPart()));
+        
         int next = stave.getNextCstrLine(index);
         
         if (next >= 0)
@@ -1918,19 +1951,21 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
         stave.repaint();
         stave.playSelectionNote(newNote, index);
-        // StepPianoKey.playNote(midiValue);
     }
 
     /**
      * Puts a rest in the selected slot to the stave and advances the selected
-     * slot
+     * slot.
      */
     private void inputRestToStave()
     {
         Stave stave = notate.getCurrentStave();
         int index = notate.getCurrentSelectionStart();
+        
         notate.cm.execute(new SetRestCommand(index, notate.getCurrentMelodyPart()));
+        
         int next = stave.getNextCstrLine(index);
+        
         if (next >= 0)
             stave.setSelection(next, next);
 
@@ -1951,7 +1986,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     }
 
     /**
-     * Moves the selected slot back one space without placing a note.
+     * Moves the selected slot back one space without placing a lastNote.
      */
     private void previousStaveSlot() 
     {
@@ -1977,17 +2012,19 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             StepPianoKey currentKey = pianoKeys()[(midiValues.get(i)) - A];
             currentKey.setPressed(true);
             JLabel label = currentKey.getLabel();
+            
             if (type.equals(NoteType.COLOR))
                 label.setIcon(currentKey.getColorIcon());
             if (type.equals(NoteType.CHORD))
                 label.setIcon(currentKey.getChordIcon());
+            
             forcePaint();
         }
     }
 
     /**
      * Takes in an array and a reference pitch and returns an array containing
-     * those same notes in every octave within an appropriate distance of
+     * those same notes in every octave within an appropriate distance of the
      * reference such that the suggestion range is small enough.
      *
      * @param MIDIarray
@@ -2000,23 +2037,26 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         int minNote = reference - (int) Math.floor(adviceNum / 2.0);
         int maxNote = reference + (int) Math.ceil(adviceNum / 2.0);
 
+        // The following three if-statements ensure that the suggestions don't
+        // extend off either end of the keyboard while preserving the size of
+        // the suggestion window as best we can
         if (maxNote > C_EIGHTH)
         {
             int diff = maxNote - C_EIGHTH;
             maxNote = C_EIGHTH;
             minNote -= diff;
         }
-        
         if (minNote < A)
         {
             int diff = A - minNote;
             minNote = A;
             maxNote += diff;    
         }
-        
         if (maxNote > C_EIGHTH)
             maxNote = C_EIGHTH;
         
+        // Find all the octaves in which each note falls in correct range.
+        // Make a list.
         for (int i = 0; i < MIDIarray.size(); i++)
         {
             int note = MIDIarray.get(i);
@@ -2047,11 +2087,14 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         if (useAdvice != on) 
         {
             useAdvice = on;
+            
+            // If we just turned advice on, set the number of suggestions to
+            // the default initial number
             if (useAdvice)
             {
                 useAdviceMI.setText("Don't Show Advice");
-                adviceNumSpinner.setValue(adviceNum);
                 adviceNum = adviceNumInit;
+                adviceNumSpinner.setValue(adviceNum);
             }
             else
                 useAdviceMI.setText("Show Advice");
@@ -2060,7 +2103,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
     /**
      * Sets the useBlueAdvice variable and updates the GUI to reflect the
-     * change
+     * change.
      *
      * @param on
      */
@@ -2074,6 +2117,12 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             useBlueAdviceMI.setText("Use Blue Note Awareness");
     }
     
+    /**
+     * Sets the useExpectancies variable and updates the GUI to reflect the
+     * change.
+     * 
+     * @param on 
+     */
     public void setUseExpectancies(boolean on)
     {
         useExpectancies = on;
@@ -2151,12 +2200,20 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         forcePaint();
     }
     
+    /**
+     * Sets the combo box governing beat subdivisions to the given value.
+     * @param value 
+     */
     public void setSubDivComboBox(int value)
     {
         String boxValueStr = Integer.toString(value);
         subDivComboBox.setSelectedItem(boxValueStr);
     }
     
+    /**
+     * Sets the combo box governing beat subdivisions to the value in the
+     * currently selected stave slot.
+     */
     public void setSubDivComboBox()
     {
         Stave stave = notate.getCurrentStave();
