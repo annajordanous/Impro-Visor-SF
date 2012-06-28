@@ -43,10 +43,56 @@ import javax.sound.midi.Track;
 public class SectionInfo implements Constants, Serializable {
     private ChordPart chords;
     
+    private int[] metre = new int[2];
+    
+    /**
+     * Sets the metre of the SectionInfo
+     * metre is now represented in most places as a 2-elt array, where
+     * the first element is the top of the time signature, and the second
+     * element is the bottom.
+     */
+    public void setMetre(int top, int bottom) {
+        metre[0] = top;
+        metre[1] = bottom;
+//        chordProg.setMetre(top, bottom);
+//        ListIterator<MelodyPart> i = partList.listIterator();
+//	
+//        while(i.hasNext())
+//            {
+//            i.next().setMetre(top, bottom);
+//            }
+    }
+    
+    public void setMetre(int metre[])
+      {
+        setMetre(metre[0],metre[1]);
+      }
+    
+    /**
+     * Copy this SectionInfo's metre setting into the argument array of dimension 2.
+     * @param metre 
+     */
+    
+    public void getMetre(int metre[])
+      {
+        metre[0] = this.metre[0];
+        metre[1] = this.metre[1];
+      }
+    
+    /**
+     * Returns the SectionInfo's metre
+     * @return int              the metre of the Score
+     */
+    public int[] getMetre() {
+        return metre;
+    }
+    
     private ArrayList<SectionRecord> records = new ArrayList<SectionRecord>();
 
     public SectionInfo(ChordPart chords) {
         this.chords = chords;
+        this.metre[0] = DEFAULT_METRE[0];
+        this.metre[1] = DEFAULT_METRE[1];
 
         // RK 1/4/2010 The following was causing problems with countin resetting
         // the chord instrument, as reported by a user. It is not clear
