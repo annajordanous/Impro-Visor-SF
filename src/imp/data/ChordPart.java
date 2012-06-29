@@ -264,6 +264,15 @@ public int getNextUniqueChordIndex(int slotIndex)
         return (Chord)getPrevUnit(slotIndex);
     }
     
+    public void getMetre(int metre[]){
+    //    System.out.println("SectionInfo = " + sectionInfo);
+        sectionInfo.getMetre(metre);
+    }
+    
+    public void setMetre(int metre[]){
+        sectionInfo.setMetre(metre);
+    }
+    
 /**
  * Returns an exact copy of this Part
  *
