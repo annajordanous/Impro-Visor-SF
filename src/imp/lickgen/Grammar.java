@@ -20,6 +20,11 @@
 
 package imp.lickgen;
 
+import imp.data.Chord;
+import imp.data.ChordPart;
+import imp.data.MelodyPart;
+import imp.data.Part.PartIterator;
+import imp.gui.Expectancy;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
@@ -65,6 +70,8 @@ public static final String DIVIDE = "/";
 
 public static final String EXPECTANCY = "expectancy";
 
+public static final String SYNCOPATION = "syncopation";
+
 
 ArrayList<String> terminals = new ArrayList<String>();
 
@@ -75,6 +82,10 @@ Polylist terminalString;
 String startSymbol = null; // to be set
 
 private int retryCount = 0;
+
+private Notate notate;
+
+private int currentSlot = 4 * 480;
 
 
 public Grammar(String file)
@@ -94,12 +105,13 @@ public Grammar(String file)
 // grammar. We have tried to arrange this failure to take the form of an exception,
 // and will then simply try again, until a terminal string is generated.
 
-public Polylist run(Object data, Notate notate)
+public Polylist run(Object data, Notate myNotate)
   {
     boolean failure = true;
     int savedRetryCount = retryCount;
     int maxRetries = 20;
-
+    notate = myNotate;
+    
     while( failure && (retryCount - savedRetryCount) <= maxRetries )
       {
         try
@@ -705,16 +717,54 @@ private Object evaluate(Object toParse)
 // For testing purposes only:
 
 int expectancyValue = 0;
+int syncopationValue = 0;
+
+private static int LENGTH_OF_TRADE = 4*480;
+private static int SLOTS_PER_MEASURE = 480;
 
 private Object evaluateBuiltin(Object arg)
-  {
+{
+    
+    MelodyPart melody = notate.getCurrentMelodyPart();
+    MelodyPart currMelody = melody.extract(currentSlot, currentSlot + LENGTH_OF_TRADE);
+    ChordPart chords = notate.getChordProg();
     if( EXPECTANCY.equals(arg) )
-      {
-        expectancyValue = 1 - expectancyValue;
-        return new Double(expectancyValue);
-      }
-     return new Double(0);
-  }
+    {
+        int firstIndex = currMelody.getNextIndex(0);
+        int secondIndex = currMelody.getNextIndex(firstIndex);
+        if(currMelody.getNote(firstIndex) == null || currMelody.getNote(secondIndex) == null)
+        {
+            return new Double(1);
+        }
+        PartIterator pi = currMelody.iterator(secondIndex);
+        int numPitches = 2;
+        double totalExpectancy = 0;
+        while(pi.hasNext())
+        {
+            Chord c = chords.getChord(pi.nextIndex());
+            int first = currMelody.getNote(firstIndex).getPitch();
+            int second = currMelody.getNote(secondIndex).getPitch();
+            int curr = currMelody.getNote(pi.nextIndex()).getPitch();
+            double expectancy = Expectancy.getExpectancy(curr, second, first, c);
+            totalExpectancy += expectancy;
+            numPitches ++;
+            firstIndex = secondIndex;
+            secondIndex = pi.nextIndex();
+            pi.next();
+        }
+        return new Double (totalExpectancy/numPitches);
+    }
+    if(SYNCOPATION.equals(arg))
+    {
+        int[] syncVector = currMelody.getSyncVector(15);
+        int synco = Tension.getSyncopation(syncVector, LENGTH_OF_TRADE/SLOTS_PER_MEASURE);
+        if(synco > 20)
+        {
+            return new Double(syncopationValue);
+        }
+    }
+    return new Double(0);
+}
 
 // Recursively replace all instances of varName with value in toReplace
 
