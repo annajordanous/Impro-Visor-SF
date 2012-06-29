@@ -20,6 +20,7 @@
  */
 package imp.gui;
 
+import imp.Constants;
 import imp.data.Chord;
 import imp.data.ChordForm;
 import imp.data.ChordPart;
@@ -40,43 +41,44 @@ public class Expectancy
     /**
      * Setting some useful constants.
      */  
-    public static final int P_OCTAVE = 12;     // 12 notes per octave
-    public static final int A = 21;            // MIDI value of 1st key on keyboard
-    public static final int C_EIGHTH = 108;    // MIDI value of last key on keyboard
-    public static final int MIDDLE_C = 60;
-    public static final int LOW_BASS = 24;
-    public static final int ROOT_STABILITY = 6;   // Stability of a root note
-    public static final int CHORD_STABILITY = 5;  // Stability of a chord tone
-    public static final int SCALE_STABILITY = 4;  // Stability of a scale tone
-    public static final int COLOR_STABILITY = 3;  // Stability of a color tone
-    public static final int OUTSIDE_STABILITY = 2;// Stability of an outside note
-    public static final double PROXIMITY_0 = 38;     // Proximity rating for a distance of 0
-    public static final double PROXIMITY_1 = 36;     // Proximity rating for a distance of 1
-    public static final double PROXIMITY_2 = 32;     // Proximity rating for a distance of 2
-    public static final double PROXIMITY_3 = 25;     // Proximity rating for a distance of 3
-    public static final double PROXIMITY_4 = 20;     // Proximity rating for a distance of 4
-    public static final double PROXIMITY_5 = 16;     // Proximity rating for a distance of 5
-    public static final double PROXIMITY_6 = 12;     // Proximity rating for a distance of 6
-    public static final double PROXIMITY_7 = 9;      // Proximity rating for a distance of 7
-    public static final double PROXIMITY_8 = 6;      // Proximity rating for a distance of 8
-    public static final double PROXIMITY_9 = 4;      // Proximity rating for a distance of 9
-    public static final double PROXIMITY_10 = 2;     // Proximity rating for a distance of 10
-    public static final double PROXIMITY_11 = 1;     // Proximity rating for a distance of 11
-    public static final double PROXIMITY_12 = 0.25;  // Proximity rating for a distance of 12
-    public static final double PROXIMITY_13 = 0.02;  // Proximity rating for a distance of 13
-    public static final double PROXIMITY_14 = 0.01;  // Proximity rating for a distance of 14
-    public static final int DIRECTION_0 = 6;         // Direction rating for a distance of 0
-    public static final int DIRECTION_1 = 20;        // Direction rating for a distance of 1
-    public static final int DIRECTION_2 = 12;        // Direction rating for a distance of 2
-    public static final int DIRECTION_3 = 6;         // Direction rating for a distance of 3
-    public static final int DIRECTION_4 = 0;         // Direction rating for a distance of 4
-    public static final int DIRECTION_5 = 6;         // Direction rating for a distance of 5
-    public static final int DIRECTION_6 = 12;        // Direction rating for a distance of 6
-    public static final int DIRECTION_7 = 25;        // Direction rating for a distance of 7
-    public static final int DIRECTION_8 = 36;        // Direction rating for a distance of 8
-    public static final int DIRECTION_9 = 52;        // Direction rating for a distance of 9
-    public static final int DIRECTION_10 = 75;       // Direction rating for a distance of 75
-    public static final double REPETITION = .67;     // Mobility rating for a repeated note   
+    private static final int P_OCTAVE = 12;     // 12 notes per octave
+    private static final int A = 21;            // MIDI value of 1st key on keyboard
+    private static final int C_EIGHTH = 108;    // MIDI value of last key on keyboard
+    private static final int MIDDLE_C = 60;
+    private static final int LOW_BASS = 24;
+    private static final int ROOT_STABILITY = 6;   // Stability of a root note
+    private static final int CHORD_STABILITY = 5;  // Stability of a chord tone
+    private static final int SCALE_STABILITY = 4;  // Stability of a scale tone
+    private static final int COLOR_STABILITY = 3;  // Stability of a color tone
+    private static final int OUTSIDE_STABILITY = 2;// Stability of an outside note
+    private static final int NOCHORD_STABILITY = 1;// Stability of an outside note
+    private static final double PROXIMITY_0 = 38;     // Proximity rating for a distance of 0
+    private static final double PROXIMITY_1 = 36;     // Proximity rating for a distance of 1
+    private static final double PROXIMITY_2 = 32;     // Proximity rating for a distance of 2
+    private static final double PROXIMITY_3 = 25;     // Proximity rating for a distance of 3
+    private static final double PROXIMITY_4 = 20;     // Proximity rating for a distance of 4
+    private static final double PROXIMITY_5 = 16;     // Proximity rating for a distance of 5
+    private static final double PROXIMITY_6 = 12;     // Proximity rating for a distance of 6
+    private static final double PROXIMITY_7 = 9;      // Proximity rating for a distance of 7
+    private static final double PROXIMITY_8 = 6;      // Proximity rating for a distance of 8
+    private static final double PROXIMITY_9 = 4;      // Proximity rating for a distance of 9
+    private static final double PROXIMITY_10 = 2;     // Proximity rating for a distance of 10
+    private static final double PROXIMITY_11 = 1;     // Proximity rating for a distance of 11
+    private static final double PROXIMITY_12 = 0.25;  // Proximity rating for a distance of 12
+    private static final double PROXIMITY_13 = 0.02;  // Proximity rating for a distance of 13
+    private static final double PROXIMITY_14 = 0.01;  // Proximity rating for a distance of 14
+    private static final int DIRECTION_0 = 6;         // Direction rating for a distance of 0
+    private static final int DIRECTION_1 = 20;        // Direction rating for a distance of 1
+    private static final int DIRECTION_2 = 12;        // Direction rating for a distance of 2
+    private static final int DIRECTION_3 = 6;         // Direction rating for a distance of 3
+    private static final int DIRECTION_4 = 0;         // Direction rating for a distance of 4
+    private static final int DIRECTION_5 = 6;         // Direction rating for a distance of 5
+    private static final int DIRECTION_6 = 12;        // Direction rating for a distance of 6
+    private static final int DIRECTION_7 = 25;        // Direction rating for a distance of 7
+    private static final int DIRECTION_8 = 36;        // Direction rating for a distance of 8
+    private static final int DIRECTION_9 = 52;        // Direction rating for a distance of 9
+    private static final int DIRECTION_10 = 75;       // Direction rating for a distance of 75
+    private static final double REPETITION = .67;     // Mobility rating for a repeated note   
     private static int noNote = -1; // DON'T CHANGE THIS VALUE. This is the same as the value
                              // that MelodyPart.getPitch() returns if the previous note
                              // was a rest, which is important.
@@ -84,6 +86,11 @@ public class Expectancy
     private static int suggestionNumMax = 88;
     private static int suggestionNumInit = P_OCTAVE;
     private static int suggestionNum = suggestionNumInit;
+    
+//    public static double getAverageExpectancy(int[] pitches)
+//    {
+//        
+//    }
     
     public static double getExpectancy(int pitch, int prevPitch, int prevPrevPitch, Chord currentChord)
     {
@@ -104,7 +111,9 @@ public class Expectancy
      */
     public static int stability (int pitch, Chord currentChord)
     {
-        if(isRoot(pitch, currentChord))
+        if(currentChord.getName().equals(Constants.NOCHORD))
+            return NOCHORD_STABILITY;
+        else if(isRoot(pitch, currentChord))
             return ROOT_STABILITY;
         else if(isChordTone(pitch, currentChord))
             return CHORD_STABILITY;
