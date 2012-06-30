@@ -105,8 +105,9 @@ public Grammar(String file)
 // grammar. We have tried to arrange this failure to take the form of an exception,
 // and will then simply try again, until a terminal string is generated.
 
-public Polylist run(Object data, Notate myNotate)
+public Polylist run(int startSlot, int numSlots, Notate myNotate)
   {
+    currentSlot = startSlot;
     boolean failure = true;
     int savedRetryCount = retryCount;
     int maxRetries = 20;
@@ -117,7 +118,7 @@ public Polylist run(Object data, Notate myNotate)
         try
           {
             terminalString = new Polylist();
-            Polylist gen = addStart(data);
+            Polylist gen = addStart(numSlots);
 
             while( gen.nonEmpty() )
               {
@@ -149,17 +150,12 @@ public Polylist run(Object data, Notate myNotate)
   }
 
 
-public Polylist addStart()
-  {
-  return addStart(null);
-  }
-
 // Search through the rules and find the start symbol.  Note that it will
 // take the first start symbol it finds.  Returns null if there is an error.
 
-public Polylist addStart(Object data)
+public Polylist addStart(int numSlots)
   {
-  Polylist gen = new Polylist();
+  Polylist gen = Polylist.nil;
   Polylist search = rules;
 
   // While the list of rules isn't empty...
@@ -178,12 +174,7 @@ public Polylist addStart(Object data)
           {
           startSymbol = (String)next.second();
           
-          Polylist s = new Polylist();
-          if( data != null )
-            {
-            s = s.cons(data);
-            }
-          s = s.cons(startSymbol);
+          Polylist s = Polylist.list(startSymbol, numSlots);
           gen = gen.cons(s);
           return gen;
           }
@@ -657,6 +648,7 @@ private Polylist setVars(Polylist getValsFrom, Polylist getVarsFrom,
 
 private Object evaluate(Object toParse)
   {
+  //System.out.println("currentSlot = " + currentSlot);
   // Base case:
   if( toParse instanceof Number || toParse instanceof String )
     {

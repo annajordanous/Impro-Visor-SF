@@ -2505,7 +2505,7 @@ public void setRhythmFieldText(String string)
         if( useGrammar )
           {
             setRhythmFieldText(
-                lickgen.generateRhythmFromGrammar(notate.getTotalSlots()).toString());
+                lickgen.generateRhythmFromGrammar(0, notate.getTotalSlots()).toString());
           }
         else
           {
@@ -4457,7 +4457,7 @@ public int getMarkovFieldLength()
 
 public MelodyPart generateTheme() {
         themeLength = BEAT*Notate.intFromTextField(themeLengthField, 0, notate.getScoreLength() / BEAT, themeLength);
-        Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
+        Polylist rhythm = lickgen.generateRhythmFromGrammar(0, themeLength);
 
         verifyTriageFields();
         MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
@@ -4526,7 +4526,7 @@ public MelodyPart generateTheme() {
                 solo.setSize(solo.getSize() + length);
                 solo.pasteSlots(adjustedTheme, i);
             } else {
-                Polylist rhythm = lickgen.generateRhythmFromGrammar(themeLength);
+                Polylist rhythm = lickgen.generateRhythmFromGrammar(0, themeLength);
 
                 MelodyPart lick = fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
 
@@ -4545,7 +4545,7 @@ public MelodyPart generateTheme() {
             }
         }
         if (notate.getScore().getLength() - solo.getSize() != 0) {
-            Polylist rhythm = lickgen.generateRhythmFromGrammar(notate.getScore().getLength() - solo.getSize());
+            Polylist rhythm = lickgen.generateRhythmFromGrammar(0, notate.getScore().getLength() - solo.getSize());
 
             MelodyPart lick =  fillMelody(BEAT, rhythm, notate.getChordProg(), 0);
 

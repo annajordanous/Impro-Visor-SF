@@ -9983,7 +9983,7 @@ public void stopRecording()
     if( mode == Mode.RECORDING )
       {
         setMode(previousMode);
-        extractor.stopCapture();
+//        extractor.stopCapture();
       }
 
     playBtn.setEnabled(true);
@@ -20265,7 +20265,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
 
         if( lickgenFrame.getUseGrammar() )
           {
-            rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
+            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
           }
         else
           {
@@ -24110,7 +24110,11 @@ public void actionPerformed(ActionEvent evt)
 //                             + " chorus # " + recurrentIteration);
         setStatus("Chorus " + recurrentIteration);
 
-        generate(lickgen, improviseStartSlot, improviseEndSlot); // TRIAL
+        generate(lickgen, improviseStartSlot, improviseEndSlot);
+        
+        
+        //generate(lickgen, improviseStartSlot+1920, improviseStartSlot+3839); //TEST
+        
         slotInPlayback = improviseStartSlot; // TRIAL
       }
 

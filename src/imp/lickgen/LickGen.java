@@ -205,8 +205,8 @@ public class LickGen implements Constants
     
     //load soloist file
     public void loadSoloist(String soloistFile) {
-        FileInputStream fis = null;
-        ObjectInputStream in = null;
+        FileInputStream fis;
+        ObjectInputStream in;
 
         try {
             fis = new FileInputStream(soloistFile);
@@ -474,7 +474,7 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
 
     ClusterSet start = outline.get(0);
     Vector<Cluster> starters = start.getStarterClusters();
-    Cluster first = null;
+    Cluster first;
     //look for a starting cluster that contains a starting measure, otherwise pick randomly
     if( !starters.isEmpty() )
       {
@@ -588,8 +588,6 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
         //increment the index for the next time we call fillmelody
         startIndex += sectionSize;
         rhythmString = rhythmString.concat(currentAbstractMelody);
-
-        counter = 0;
       }
 
     rhythmGeneratedFromOutline = rhythmString;
@@ -900,9 +898,9 @@ private void accumulateProbs(Polylist tones, double categoryProb, double p[])
  * TODO: it might be nice to be able to specify a minDuration and a maxDuration here.
  */
 
-public Polylist generateRhythmFromGrammar(int slots)
+public Polylist generateRhythmFromGrammar(int startSlot, int slots)
   {
-    return grammar.run(slots, notate);
+    return grammar.run(startSlot, slots, notate);
 
   }
 
