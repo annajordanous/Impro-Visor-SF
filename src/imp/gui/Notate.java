@@ -24060,13 +24060,13 @@ public void actionPerformed(ActionEvent evt)
     int totalSlots = midiSynth.getTotalSlots();
   
     //Poll for audio input every x slots
-    if( slot % 239 == 0) {
-        extractor.stopCapture();
-        notFirstMeasure = true;
-    }
-    else if(notFirstMeasure && slot % 240 == 0) {
-        extractor.captureAudio();
-    }
+//    if( slot % 239 == 0) {
+//        extractor.stopCapture();
+//        notFirstMeasure = true;
+//    }
+//    else if(notFirstMeasure && slot % 240 == 0) {
+//        extractor.captureAudio();
+//    }
 
     //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
     //System.out.println("Slot in playback: " + slotInPlayback);
