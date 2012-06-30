@@ -1,260 +1,96 @@
 package imp.audio;
 
-import imp.data.*;
-import jm.music.data.Note;
-import java.awt.FlowLayout;
-import java.awt.Label;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
+import imp.data.MelodyPart;
+import imp.data.Rest;
+import imp.data.Score;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
-import javax.sound.sampled.*;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JRadioButton;
-import javax.swing.JToggleButton;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import javax.sound.sampled.*;
 //import org.apache.commons.math3.complex.Complex;
 
 /**
- * Class to test audio input.
+ * Class to capture and interpret audio input. The McLeod Pitch Method is
+ * implemented as a means of pitch detection.
  *
  * @author Brian Howell
  * @version 22 June, 2012
  */
-public class PitchExtraction extends JFrame {
+public class PitchExtraction {
 
     boolean stopCapture = false;
-    private AudioInputStream inputStream;
-    private ByteArrayOutputStream outputStream;
-    private AudioFormat format;
-    private SourceDataLine source;
-    private TargetDataLine target;
+    boolean stopAnalysis;
+    AudioInputStream inputStream;
+    ByteArrayOutputStream outputStream;
+    AudioFormat format;
+    SourceDataLine source;
+    TargetDataLine target;
     private byte[] capturedAudioData;
-    public static final float SAMPLE_RATE = 44100.0F; //in Hertz
-    public static final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
-    public static final int FRAME_SIZE = 2048; //# of BYTES examined per poll
-    public static final float POLL_RATE = 20; //in milliseconds
-    public static int RESOLUTION = 8;
-    public static boolean TRIPLETS = false;
-    public static double RMS_THRESHOLD = 5.5;
-    public static double CONFIDENCE = 0;
-    //DoubleFFT_1D fft;
+    private static final float SAMPLE_RATE = 44100.0F; //in Hertz
+    private static final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
+    private static final int FRAME_SIZE = 2048; //# of BYTES examined per poll
+    private static final float POLL_RATE = 20; //in milliseconds
+    private static int RESOLUTION = 8;
+    private static boolean TRIPLETS = false;
+    private static double RMS_THRESHOLD = 5.5;
+    private static double CONFIDENCE = 0;
+    //DoubleFFT_1D fft; 
+    private static boolean noteOff; //flag indicating terminal note
     //sets threshold for detecting peaks in normalized data
-    public static final double K_CONSTANT = 0.95;
-    public final TextField tempoField;
-    
+    private static final double K_CONSTANT = 0.95;
+    //private final TextField tempoField;
+    private Queue<byte[]> processingQueue;
     MelodyPart melody;
-
+    
+//    Thread analyzeThread;
+//    Thread captureThread;    
+ 
     public static void main(String args[]) {
-        new PitchExtraction();
+        //new PitchExtraction();
     }//end main
 
-    public PitchExtraction() {
-        final JButton captureBtn = new JButton("Capture");
-        final JButton stopBtn = new JButton("Stop");
-        final JButton playBtn = new JButton("Play");
-        final JButton transformBtn = new JButton("Transform");
-
-        final JToggleButton tripletBtn = new JToggleButton("Triplets?");
-        final JRadioButton quarterBtn = new JRadioButton("Quarter Notes");
-        final JRadioButton eighthBtn = new JRadioButton("8th Notes", true);
-        final JRadioButton sixteenthBtn = new JRadioButton("16th Notes");
-        final JRadioButton thirtySecondBtn = new JRadioButton("32nd Notes");
-
-        final Label tempoLabel = new Label("Tempo:");
-        tempoField = new TextField("120.0");
-
-        captureBtn.setEnabled(true);
-        stopBtn.setEnabled(false);
-        playBtn.setEnabled(false);
-        transformBtn.setEnabled(false);
-
+    public PitchExtraction(Score score) {
+        
         format = getAudioFormat();
-
-        //Register anonymous listeners
-        captureBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                captureBtn.setEnabled(false);
-                stopBtn.setEnabled(true);
-                playBtn.setEnabled(false);
-                //Capture input data from the
-                // microphone until the Stop button is clicked.
-                captureAudio(format);
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(captureBtn);
-
-        stopBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                captureBtn.setEnabled(true);
-                stopBtn.setEnabled(false);
-                playBtn.setEnabled(true);
-                transformBtn.setEnabled(true);
-                //Terminate the capturing of
-                // input data from the microphone.
-                stopCapture = true;
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(stopBtn);
-
-        playBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                //Play back all of the data that was saved during capture.
-                playAudio();
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(playBtn);
-
-        transformBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                //Play back all of the data that was saved during capture.                                                
-                parseNotes(capturedAudioData);
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(transformBtn);
-
-        getContentPane().add(tempoLabel);
-
-        getContentPane().add(tempoField);
-
-        quarterBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                RESOLUTION = 4;
-                eighthBtn.setSelected(false);
-                sixteenthBtn.setSelected(false);
-                thirtySecondBtn.setSelected(false);
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(quarterBtn);
-
-        eighthBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                RESOLUTION = 8;
-                quarterBtn.setSelected(false);
-                sixteenthBtn.setSelected(false);
-                thirtySecondBtn.setSelected(false);
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(eighthBtn);
-
-        sixteenthBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                RESOLUTION = 16;
-                quarterBtn.setSelected(false);
-                eighthBtn.setSelected(false);
-                thirtySecondBtn.setSelected(false);
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(sixteenthBtn);
-
-        thirtySecondBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                RESOLUTION = 32;
-                quarterBtn.setSelected(false);
-                eighthBtn.setSelected(false);
-                sixteenthBtn.setSelected(false);
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()   
-        getContentPane().add(thirtySecondBtn);
-
-        tripletBtn.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                TRIPLETS = !TRIPLETS;
-            }//end actionPerformed
-        }//end ActionListener
-                );//end addActionListener()
-        getContentPane().add(tripletBtn);
-
-        getContentPane().setLayout(new FlowLayout());
-        setTitle("Audio Capture Test");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(340, 134);
-
-        setVisible(true);
-
-        // fft = new DoubleFFT_1D(FRAME_SIZE / 2);
-    }//end constructor
-
-    private void captureAudio(AudioFormat audioFormat) {
+        processingQueue = new ConcurrentLinkedQueue<byte[]>();
         try {
             //Get everything set up for capture
             DataLine.Info dataLineInfo =
-                    new DataLine.Info(TargetDataLine.class, audioFormat);
+                    new DataLine.Info(TargetDataLine.class, format);
             target = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
-            target.open(audioFormat);
+            target.open(format);
             target.start();
-            //Create a thread to capture the microphone data and start it
-            // running. It will run until the Stop button is clicked.
-            Thread captureThread =
-                    new Thread(new CaptureThread());
-            captureThread.start();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//end constructor
+
+    public void captureAudio() {
+        try {
+            stopAnalysis = false;
+//            if(!captureThread.isAlive()) {
+                
+ //           }
+//            else {
+//                captureThread.run();
+//                analyzeThread.run();
+//            }
+            Thread captureThread = new Thread(new CaptureThread());
+        captureThread.start();
+
+        Thread analyzeThread = new Thread(new AnalyzeThread());
+        analyzeThread.start();
         } catch (Exception e) {
             System.out.println(e);
             System.exit(0);
         }//end catch
     }//end captureAudio method
 
-    private void playAudio() {
-        try {
-            //Get everything set up for playback.
-            //Get the previously-saved data into a byte array object.
-            byte audioData[] = outputStream.toByteArray();
-            //Get an input stream on the
-            // byte array containing the data
-            InputStream byteInputStream = new ByteArrayInputStream(audioData);
-            //format = getAudioFormat();
-            inputStream = new AudioInputStream(byteInputStream, format,
-                    audioData.length / format.getFrameSize());
-            DataLine.Info dataLineInfo =
-                    new DataLine.Info(SourceDataLine.class, format);
-            source = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-            source.open(format);
-            source.start();
-
-            //Create a thread to play back the data and start it
-            // running.  It will run until all the data has been played back.
-            Thread playThread = new Thread(new PlayThread());
-            playThread.start();
-        } catch (Exception e) {
-            System.out.println(e);
-            System.exit(0);
-        }//end catch
-    }//end playAudio
-
     private double getTempo() {
-        double tempo = 0;
-        try {
-            tempo = Double.valueOf(tempoField.getText());
-        } catch (Exception e) {
-            System.out.println("Invalid tempo value.");
-        }
-        if (tempo < 60.0 || tempo > 300.0) {
-            System.out.println("Tempo must be between 60 and 300 bpm. "
-                    + "Tempo has defaulted to 120 bpm.");
-        }
-        return tempo;
+        return 120;
     }
 
     /**
@@ -301,8 +137,7 @@ public class PitchExtraction extends JFrame {
                 double[] computedData = new double[size];
                 computedData = computeNSD(preCorrelatedData, correlatedData);
                 fundamentalFrequency = pickPeakWithoutFFT(computedData);
-            } 
-            else { //otherwise, assign fundamental to zero 
+            } else { //otherwise, assign fundamental to zero 
                 fundamentalFrequency = 0;
             }
             currentSlotNumber = resolveSlot(index / interval * POLL_RATE,
@@ -311,30 +146,28 @@ public class PitchExtraction extends JFrame {
             //check to see if pitch is valid
             if (fundamentalFrequency > 34.0) {
                 slotPitch = //calculate equivalent MIDI pitch value for freq.
-                       jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
+                        jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
             }
             //check to see if this window is part of the current slot
             if (currentSlotNumber == lastSlotNumber) {
                 oneSlot.add(slotPitch); //if so, continue collecting data
             } //end if
             //if all windows for this slot have been examined, determine pitch
-            else if(currentSlotNumber != lastSlotNumber || index + FRAME_SIZE 
+            else if (currentSlotNumber != lastSlotNumber || index + FRAME_SIZE
                     + interval >= streamInput.length) {
                 int pitch = calculatePitch(oneSlot);
                 //check to see whether or not pitch has changed from that 
                 //which fills the previous slot
-                if (pitch != lastPitch) {
-                    int duration = slotsFilled * 120 / RESOLUTION;
+                if (pitch != lastPitch || noteOff) {
+                    int duration = slotsFilled * 480 / RESOLUTION;
                     if (pitch < 25) //count as a rest if pitch is out of range
                     {
-                        imp.data.Note newRest 
-                                = imp.data.Note.makeRest(duration);
+                        imp.data.Note newRest = new Rest(duration);
                         melody.addNote(newRest);
                         System.out.println("rest, duration = "
                                 + duration + " slots.");
                     } else {
-                        imp.data.Note newNote 
-                                = new imp.data.Note(pitch, duration);
+                        imp.data.Note newNote = new imp.data.Note(pitch, duration);
                         melody.addNote(newNote);
                         System.out.println(newNote.getPitch() + ", duration = "
                                 + duration + " slots.");
@@ -382,10 +215,12 @@ public class PitchExtraction extends JFrame {
      *
      * @param pitches The array of pitches detected for this slot
      */
-    private int calculatePitch(List<Integer> pitchArray) {
-        int[] pitches = new int[pitchArray.size()];
-        for(int a = 0; a < pitchArray.size(); a++)
-            pitches[a] = pitchArray.get(a);
+    private int calculatePitch(List<Integer> pitchList) {
+        noteOff = false;
+        int[] pitches = new int[pitchList.size()];
+        for (int a = 0; a < pitchList.size(); a++) {
+            pitches[a] = pitchList.get(a);
+        }
         //Check for discrepancies in this slot
         int testPitch = 0;
         boolean allZero = true;
@@ -408,22 +243,24 @@ public class PitchExtraction extends JFrame {
         int secondPlaceLoc = -1;
         int secondPlaceO = -1;
         if (!d || allZero) //if there are no discrepancies, return the pitch
+        {
             return testPitch;
-        else { //otherwise, find most frequently detected pitch
+        } else { //otherwise, find most frequently detected pitch
             testPitch = 0;
             for (i = 0; i < pitches.length; i++) {
                 if (pitches[i] != 0 && pitches[i] != testPitch) {
                     occurrences[i] = 1;
                     testPitch = pitches[i]; //don't check same pitch twice...
                     for (int j = i + 1; j < pitches.length; j++) {
-                        if (pitches[i] == pitches[j])
+                        if (pitches[i] == pitches[j]) {
                             occurrences[i] += 1;
+                        }
                     } //end for (j)
                 } //end if
             } //end for (i)
             for (i = 0; i < occurrences.length; i++) {
                 if (occurrences[i] > maxO) {
-                    if(maxO > 0) {
+                    if (maxO > 0) {
                         secondPlaceLoc = maxLoc;
                         secondPlaceO = occurrences[secondPlaceLoc];
                     }
@@ -432,20 +269,28 @@ public class PitchExtraction extends JFrame {
                 } //end if
             } //end for
         } //end else
+        //check to see whether or not this tone terminates
+        if (pitches[pitches.length - 1] == 0) {
+            noteOff = true;
+        }
         //check for false readings in lower octaves
-        if(maxO == secondPlaceO && Math.abs(pitches[maxLoc]
+        if (maxO == secondPlaceO && Math.abs(pitches[maxLoc]
                 - pitches[secondPlaceLoc]) > 11) {
-            if (pitches[maxLoc] - pitches[secondPlaceLoc] > 0)
+            if (pitches[maxLoc] - pitches[secondPlaceLoc] > 0) {
                 return pitches[maxLoc];
-            else return pitches[secondPlaceLoc];
+            } else {
+                return pitches[secondPlaceLoc];
+            }
         } //end if
-        else return pitches[maxLoc];
+        else {
+            return pitches[maxLoc];
+        }
     }
 
     /**
      * Determines which slot the current window falls into.
      *
-     * @param timeElapsed The amount of time in milliseconds that has elapsed 
+     * @param timeElapsed The amount of time in milliseconds that has elapsed
      * since sampling began.
      * @param msPerSlot The number of milliseconds in each slot based on the
      * current minimum slot size (resolution).
@@ -458,38 +303,6 @@ public class PitchExtraction extends JFrame {
         return slot % slotSize;
     }
 
-    /**
-     * Computes autocorrelation for the given input.
-     *
-     * @param input the array of audio samples (in double format).
-     * @return the correlated data.
-     */
-//    private double[] computeAutocorrelation(double[] input) {
-//        int initialSize = input.length;
-//        double[] correlated = new double[initialSize * 2];
-//        for (int i = 0; i < initialSize; i++) {
-//            correlated[i * 2] = input[i]; //expand array to accommodate 
-//            correlated[i * 2 + 1] = 0; //imaginary parts and pad w/ zeros
-//        }
-//        fft.complexForward(correlated);
-//        //after FFT, data is in the following form:
-//        //a[2*k] = real[k] 
-//        //a[2*k+1] = imaginary[k], 0<=k<n
-//        double[] postCorrelated = new double[correlated.length * 2];
-//        for (int i = 0; i < initialSize; i++) { //multiply each complex number
-//            //by its conjugate
-//            Complex com = new Complex(correlated[i * 2], 
-//                                        correlated[i * 2 + 1]);
-//            Complex conj = com.conjugate();
-//            com = com.multiply(conj);
-//            postCorrelated[i * 2] = com.getReal();
-//        }
-//        fft.complexInverse(postCorrelated, true);
-//        for(int i = 0; i < correlated.length; i++)
-//            correlated[i] = postCorrelated[i*2];
-//        return correlated;
-//    }
-    
     /**
      * Computes the autocorrelation function for the given input as a function
      * of lag (tau).
@@ -543,8 +356,9 @@ public class PitchExtraction extends JFrame {
 
     /**
      * Attempts to identify the fundamental frequency of the normalized data.
-     * Implements the peak picking described in "A Smarter Way to Find Pitch," 
-     * by Philip McLeod and Geoff Wyvill.
+     * Implements the peak picking described in "A Smarter Way to Find Pitch,"
+     * by Philip McLeod and Geoff Wyvill:
+     * http://miracle.otago.ac.nz/tartini/papers/A_Smarter_Way_to_Find_Pitch.pdf
      *
      * @param input The array of normalized data derived from original
      * time-domain sample data.
@@ -637,8 +451,8 @@ public class PitchExtraction extends JFrame {
 
     /**
      * Uses cubic interpolation to refine the location of the lag value that
-     * corresponds to the fundamental frequency. Adapted from code
-     * originally written by Dominic Mazzoni.
+     * corresponds to the fundamental frequency. Adapted from code originally
+     * written by Dominic Mazzoni.
      *
      * @param y0 The index of the sample taken just before the one that
      * corresponds to the fundamental frequency.
@@ -685,14 +499,6 @@ public class PitchExtraction extends JFrame {
         }
     }
 
-    /**
-     * Determines the slot for this window.
-     *
-     * @param timeElapsed the amount of time elapsed thus far in milliseconds.
-     * @param msPerSlot the number of slots in each measure.
-     *
-     * @return the slot for this window.
-     */
     private AudioFormat getAudioFormat() {
         float sampleRate = (float) SAMPLE_RATE;
         int sampleSizeInBits = SAMPLE_SIZE;
@@ -703,16 +509,26 @@ public class PitchExtraction extends JFrame {
                 channels, signed, bigEndian);
     }
 
+    public void startAnalysis() {
+        stopAnalysis = false;
+    }
+
+    public void stopAnalysis() {
+        stopAnalysis = true;
+    }
+
+    public void stopCapture() {
+        stopCapture = true;
+    }
+    
     class CaptureThread extends Thread {
         //An arbitrary-size temporary holding buffer
-
         byte tempBuffer[] = new byte[FRAME_SIZE];
 
         public void run() {
             outputStream = new ByteArrayOutputStream();
             stopCapture = false;
-            try {//Loop until stopCapture is set by 
-                //another thread that services the Stop button.
+            try {//Loop until stopCapture is set.
                 while (!stopCapture) {
                     //Read data from the internal buffer of the data line.
                     //cnt = # of bytes read
@@ -723,38 +539,37 @@ public class PitchExtraction extends JFrame {
                     }//end if
                 }//end while
                 capturedAudioData = outputStream.toByteArray();
+                //parseNotes(capturedAudioData);
+                processingQueue.add(capturedAudioData);
                 outputStream.close();
             } catch (Exception e) {
                 System.out.println(e);
                 System.exit(0);
             }//end catch
         }//end run
-    }//end inner class CaptureThread  
+    }//end inner class CaptureThread
 
-    class PlayThread extends Thread {
-
-        byte tempBuffer[] = new byte[FRAME_SIZE];
+    /**
+     * Analyzes data from the processing queue.
+     */
+    class AnalyzeThread extends Thread {
 
         public void run() {
-            try {
-                int cnt;
-                //Keep looping until the input read method 
-                //returns -1 for empty stream.
-                while ((cnt = inputStream.read(tempBuffer, 0,
-                        tempBuffer.length)) != -1) {
-                    if (cnt > 0) {
-                        //Write data to the internal buffer of the data line
-                        // where it will be delivered to the speaker.
-                        source.write(tempBuffer, 0, cnt);
-                    }//end if
-                }//end while
-                //Block and wait for internal buffer of the data line to empty.
-                source.drain();
-                source.close();
-            } catch (Exception e) {
-                System.out.println(e);
-                System.exit(0);
-            }//end catch
+            while(!stopAnalysis || !processingQueue.isEmpty()) {
+                while (processingQueue.isEmpty()) {
+                    try {
+                        Thread.sleep(10); }
+                    catch (Exception e) {
+                        //System.out.println(e);
+                    }
+                } //end while
+            
+                try {
+                    parseNotes(processingQueue.poll());
+                } catch (Exception e) {
+                    System.out.println("queue error");
+                }//end catch
+            }
+        }
         }//end run
-    }//end inner class PlayThread
 }

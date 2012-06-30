@@ -27,6 +27,7 @@ import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
+import imp.audio.PitchExtraction;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
 import imp.data.*;
@@ -42,6 +43,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
+import javax.sound.sampled.AudioFormat;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -97,6 +99,11 @@ public class Notate
   MidiImportFrame midiImportFrame = null;
   
   MidiImport midiImport;
+  
+  PitchExtraction extractor;  
+  static float SAMPLE_RATE = 44100.0F; //in Hertz
+  static int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
+  boolean notFirstMeasure;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -9976,6 +9983,7 @@ public void stopRecording()
     if( mode == Mode.RECORDING )
       {
         setMode(previousMode);
+        extractor.stopCapture();
       }
 
     playBtn.setEnabled(true);
@@ -10041,8 +10049,11 @@ private void startRecording()
     midiSynth.registerReceiver(midiRecorder);
 
     midiRecorder.start(score.getCountInOffset());   // set time to 0
+    
+    extractor = new PitchExtraction(score);
+    notFirstMeasure = false;
+    extractor.captureAudio();
   }
-
 
 /**
  * This is like startRecording() without the playback.
@@ -10084,6 +10095,8 @@ private void enableRecording()
 
     midiRecorder.start(0);   // set time to 0
   }
+
+
 
 
 void stopPlaying()
@@ -10787,7 +10800,7 @@ public void volumeSliderChanged(JSlider volumeSlider)
     
     
 /**
- * Used to provide access to switching prefences tabs from another class file
+ * Used to provide access to switching preferences tabs from another class file
  */
     
 void changePrefTab(JToggleButton button, JPanel tab)
@@ -17271,9 +17284,7 @@ public ChordPart makeCountIn()
 
         if( mode == Mode.RECORDING )
           {
-
           stopRecording();
-
           }
 
         setPlaybackManagerTime();
@@ -24047,6 +24058,15 @@ public void actionPerformed(ActionEvent evt)
     int slotInPlayback = midiSynth.getSlot() - slotDelay;
     int slot = slotInPlayback;
     int totalSlots = midiSynth.getTotalSlots();
+  
+    //Poll for audio input every x slots
+    if( slot % 239 == 0) {
+        extractor.stopCapture();
+        notFirstMeasure = true;
+    }
+    else if(notFirstMeasure && slot % 240 == 0) {
+        extractor.captureAudio();
+    }
 
     //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
     //System.out.println("Slot in playback: " + slotInPlayback);
@@ -24193,5 +24213,3 @@ public void actionPerformed(ActionEvent evt)
   }
   }
 }
-
-
