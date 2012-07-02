@@ -43,7 +43,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
-import javax.sound.sampled.AudioFormat;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -20204,8 +20203,10 @@ private void adjustSelection()
 //  }
 
 
-public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
+public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
+    MelodyPart lick = null;
+    
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
@@ -20244,15 +20245,15 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
                                         0, 
                                         avoidRepeats);
 
-        MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
-        if( solo != null )
+        lick = lickgen.generateSoloFromOutline(totalSlots);
+        if( lick != null )
           {
             rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
             if( lickgenFrame.useHeadSelected() )
               {
-                adjustLickToHead(solo);
+                adjustLickToHead(lick);
               }
-            putLick(solo);
+            putLick(lick);
           }
       }
 
@@ -20277,7 +20278,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
         
         System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
         
-        MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+        lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
         System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
         getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
         repaint();
@@ -20299,7 +20300,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
           {
             //debug System.out.println("panic: generated null lick");
             setMode(Mode.GENERATION_FAILED);
-            return;
+            return lick;
           }
      }
 
@@ -20316,6 +20317,8 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
     setMode(Mode.GENERATED);
     
     enableRecording(); // TRIAL
+    
+    return lick;
   }
 
 
@@ -24128,7 +24131,7 @@ public void actionPerformed(ActionEvent evt)
         
         int generationLeadSlots = 240;
         
-        int playLeadSlots = 60;
+        int playLeadSlots = 75;
         
         int slotAhead = slotInPlayback + generationLeadSlots;
         int lastSlotAhead = slotAhead + halfInterval-1;
@@ -24138,7 +24141,7 @@ public void actionPerformed(ActionEvent evt)
             //System.out.println("generating at " + slotInPlayback);
             // Impro-Visor goes second
             
-            generate(lickgen, slotAhead, lastSlotAhead);
+            MelodyPart lick = generate(lickgen, slotAhead, lastSlotAhead);
             
            // Impro-Visor goes first
            //generate(lickgen, slotInPlayback + improvInterval/2, slotInPlayback + improvInterval-1);
@@ -24147,12 +24150,12 @@ public void actionPerformed(ActionEvent evt)
             //currentMelodyPart.truncateEndings(true);
  
             Score improScore = new Score();
-            MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
-            extracted.setInstrument(11); // vibraphone
-            extracted.setSwing(currentMelodyPart.getSwing());
+            //MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
+            lick.setInstrument(11); // vibraphone
+            lick.setSwing(currentMelodyPart.getSwing());
             
-            System.out.println("extracted = " + extracted + " at slot " + slotInPlayback);
-            improScore.addPart(extracted);
+            System.out.println("lick = " + lick + " at slot " + slotInPlayback);
+            improScore.addPart(lick);
             improScore.setTempo(score.getTempo());
             
             // Create command now, for execution on a subsequent slot
