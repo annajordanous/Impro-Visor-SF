@@ -77,6 +77,8 @@ private int loopCount = 0;
 
 private int transposition = 0;
 
+private int offset;
+
 /**
  * The duration of the accompanying chord for single-note entry
  */
@@ -145,13 +147,15 @@ public PlayScoreCommand(Score score,
     this.transposition = transposition;
     this.useDrums = useDrums;
     this.endLimitIndex = endLimitIndex;
+    preExecute();
   }
+
 
 
 /**
  * Plays the Score
  */
-public void execute()
+public void preExecute()
   {
 //    Trace.log(3,
 //              "executing PlayScoreCommand, startTime = " + startTime 
@@ -159,12 +163,13 @@ public void execute()
 //              + ", loopCount = " + loopCount
 //              + " useDrums = " + useDrums);
     score = score.copy();
+    
+    ChordPart chords = score.getChordProg();
 
     // Use plain style for note entry
 
-    if( !useDrums )
+    if( !useDrums && chords.size() != 0)
       {
-        ChordPart chords = score.getChordProg();
 
         // If there is no chord on the slot starting the selection,
         // we try to find the previous chord and use it.
@@ -202,7 +207,7 @@ public void execute()
     // Note that the value of loopCount is 1 less than the number of loops
     // desired. That is, a value of 0 loops once, 1 loops twice, etc.
 
-    int offset = score.getCountInOffset();
+    offset = score.getCountInOffset();
 
     startTime = startTime == 0 ? 0 : startTime + offset;
 
@@ -210,7 +215,20 @@ public void execute()
 
     //System.out.println("command play from " + startTime + " to " + endLimitIndex);
 
-    try
+//    try
+//      {
+//        ms.play(score, startTime, loopCount, transposition, useDrums,
+//                endLimitIndex, offset);
+//      }
+//    catch( Exception e )
+//      {
+//        //e.printStackTrace();
+//      }
+  }
+
+public void execute()
+  {
+     try
       {
         ms.play(score, startTime, loopCount, transposition, useDrums,
                 endLimitIndex, offset);
@@ -218,7 +236,7 @@ public void execute()
     catch( Exception e )
       {
         //e.printStackTrace();
-      }
+      }   
   }
 
 /**
