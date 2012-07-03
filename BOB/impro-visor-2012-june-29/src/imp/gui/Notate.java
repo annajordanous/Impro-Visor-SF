@@ -24126,7 +24126,7 @@ public void actionPerformed(ActionEvent evt)
         
         // Maybe use midiRecorder technique
         
-        int improInterval = 1920;
+        int improInterval = 3840;
         int halfInterval = improInterval/2;
         
         int generationLeadSlots = 240;
@@ -24134,43 +24134,48 @@ public void actionPerformed(ActionEvent evt)
         int playLeadSlots = 75;
         
         int slotAhead = slotInPlayback + generationLeadSlots;
-        int lastSlotAhead = slotAhead + halfInterval-1;
+        
+        MelodyPart lick;
         
         if( slotAhead % improInterval == 0 )
           {
             //System.out.println("generating at " + slotInPlayback);
             // Impro-Visor goes second
             
-            MelodyPart lick = generate(lickgen, slotAhead, lastSlotAhead);
+           lick = generate(lickgen, slotAhead, slotAhead + halfInterval-1);
             
            // Impro-Visor goes first
-           //generate(lickgen, slotInPlayback + improvInterval/2, slotInPlayback + improvInterval-1);
+           //lick = generate(lickgen, slotAhead + halfInterval, slotAhead + halfInterval-1);
 
             MelodyPart currentMelodyPart = getCurrentMelodyPart();
             //currentMelodyPart.truncateEndings(true);
  
             Score improScore = new Score();
-            //MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
-            lick.setInstrument(11); // vibraphone
-            lick.setSwing(currentMelodyPart.getSwing());
-            
-            System.out.println("lick = " + lick + " at slot " + slotInPlayback);
-            improScore.addPart(lick);
             improScore.setTempo(score.getTempo());
             
-            // Create command now, for execution on a subsequent slot
-            
-            improCommand =
-            new PlayScoreCommand(improScore, 
-                        0,            // startTime
-                        true,         // swing
-                        midiSynth2,
-                        null,          // play listener
-                        0,             // loopCount,
-                        0,             // transposition
-                        false,         // use drums
-                        -1);           // transposition
-           }
+            if( lick != null )
+              {
+                //MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
+                lick.setInstrument(11); // vibraphone
+                lick.setSwing(currentMelodyPart.getSwing());
+
+                System.out.println("lick = " + lick + " at slot " + slotInPlayback);
+                improScore.addPart(lick);
+
+                // Create command now, for execution on a subsequent slot
+
+                improCommand =
+                new PlayScoreCommand(improScore, 
+                            0,            // startTime
+                            true,         // swing
+                            midiSynth2,
+                            null,          // play listener
+                            0,             // loopCount,
+                            0,             // transposition
+                            false,         // use drums
+                            -1);           // transposition
+               }
+            }
         
         if( (slotInPlayback + playLeadSlots) % improInterval == 0 && improCommand != null )
               {
