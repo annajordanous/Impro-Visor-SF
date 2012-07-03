@@ -52,6 +52,7 @@ public class SectionInfo implements Constants, Serializable {
      * element is the bottom.
      */
     public void setMetre(int top, int bottom) {
+//        System.out.println("__set");
         metre[0] = top;
         metre[1] = bottom;
 //        chordProg.setMetre(top, bottom);
@@ -77,6 +78,7 @@ public class SectionInfo implements Constants, Serializable {
       {
         metre[0] = this.metre[0];
         metre[1] = this.metre[1];
+//        System.out.println("get__[]");
       }
     
     /**
@@ -84,6 +86,7 @@ public class SectionInfo implements Constants, Serializable {
      * @return int              the metre of the Score
      */
     public int[] getMetre() {
+//        System.out.println("get__");
         return metre;
     }
     
@@ -108,6 +111,8 @@ public class SectionInfo implements Constants, Serializable {
     public SectionInfo copy() {
         SectionInfo si = new SectionInfo(chords);
         si.records = new ArrayList<SectionRecord>();
+        si.metre[0] = metre[0];
+        si.metre[1] = metre[1];
         
         for(SectionRecord record: records )
           {

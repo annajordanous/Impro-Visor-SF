@@ -264,12 +264,20 @@ public int getNextUniqueChordIndex(int slotIndex)
         return (Chord)getPrevUnit(slotIndex);
     }
     
-    public void getMetre(int metre[]){
+    public void getChordMetre(int metre[]){
     //    System.out.println("SectionInfo = " + sectionInfo);
         sectionInfo.getMetre(metre);
     }
     
-    public void setMetre(int metre[]){
+    public int[] getChordMetre(){
+        return sectionInfo.getMetre();
+    }
+    
+    public void setChordMetre(int top, int bottom){
+        sectionInfo.setMetre(top, bottom);
+    }
+    
+    public void setChordMetre(int metre[]){
         sectionInfo.setMetre(metre);
     }
     
