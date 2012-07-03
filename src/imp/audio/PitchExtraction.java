@@ -21,43 +21,44 @@ import javax.sound.sampled.*;
  */
 public class PitchExtraction {
 
-    boolean stopCapture = false;
+    public boolean stopCapture = true;
     boolean stopAnalysis;
+    boolean firstParse = true;
+    int lastPitch;
     AudioInputStream inputStream;
-    ByteArrayOutputStream outputStream;
+    
     AudioFormat format;
     SourceDataLine source;
     TargetDataLine target;
-    private byte[] capturedAudioData;
     private static final float SAMPLE_RATE = 44100.0F; //in Hertz
     private static final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
     private static final int FRAME_SIZE = 2048; //# of BYTES examined per poll
     private static final float POLL_RATE = 20; //in milliseconds
     private static int RESOLUTION = 8;
     private static boolean TRIPLETS = false;
-    private static double RMS_THRESHOLD = 5.5;
+    private static double RMS_THRESHOLD = 4.5;
     private static double CONFIDENCE = 0;
     //DoubleFFT_1D fft; 
     private static boolean noteOff; //flag indicating terminal note
     //sets threshold for detecting peaks in normalized data
-    private static final double K_CONSTANT = 0.95;
+    private static final double K_CONSTANT = 0.85;
     //private final TextField tempoField;
     private Queue<byte[]> processingQueue;
     MelodyPart melody;
-    
+
 //    Thread analyzeThread;
 //    Thread captureThread;    
- 
     public static void main(String args[]) {
         //new PitchExtraction();
     }//end main
 
     public PitchExtraction(Score score) {
-        
         format = getAudioFormat();
         processingQueue = new ConcurrentLinkedQueue<byte[]>();
+    } //end constructor
+
+    public void openTargetLine() {
         try {
-            //Get everything set up for capture
             DataLine.Info dataLineInfo =
                     new DataLine.Info(TargetDataLine.class, format);
             target = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
@@ -66,23 +67,29 @@ public class PitchExtraction {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }//end constructor
+    }
+
+    public void closeTargetLine() {
+        target.close();
+    }
+
+    public void setFirstParse(boolean isIt) {
+        firstParse = isIt;
+    }
 
     public void captureAudio() {
+        stopCapture = false;
+        stopAnalysis = false;
         try {
-            stopAnalysis = false;
-//            if(!captureThread.isAlive()) {
-                
- //           }
-//            else {
-//                captureThread.run();
-//                analyzeThread.run();
-//            }
-            Thread captureThread = new Thread(new CaptureThread());
-        captureThread.start();
-
-        Thread analyzeThread = new Thread(new AnalyzeThread());
-        analyzeThread.start();
+            //Thread captureThread = new Thread(new CaptureThread());
+            CaptureThread captureThread = new CaptureThread();
+            //captureThread.setPriority(Thread.MIN_PRIORITY);
+            captureThread.start();
+            if (firstParse) {
+                AnalyzeThread analyzeThread = new AnalyzeThread();
+                analyzeThread.setPriority(Thread.MAX_PRIORITY);
+                analyzeThread.start();
+            }
         } catch (Exception e) {
             System.out.println(e);
             System.exit(0);
@@ -112,8 +119,8 @@ public class PitchExtraction {
         }
         int lastSlotNumber = 1;
         int currentSlotNumber;
-        int lastPitch = 0; //initialize most recent pitch to a rest
-        int slotsFilled = 0; //# of slots filled before pitch change is detected
+        lastPitch = 0; //initialize most recent pitch to a rest
+        int slotsFilled = 1; //# of slots filled before pitch change is detected
         List<Integer> oneSlot = new ArrayList<Integer>();
         melody = new MelodyPart();
         while (index + FRAME_SIZE < streamInput.length) {
@@ -126,8 +133,7 @@ public class PitchExtraction {
             //new array to store double values
             double[] preCorrelatedData = new double[size];
             for (int i = 0; i < size; i++) { //populate array
-                short s = bBuf.getShort(); //change to short (16bit signed)
-                preCorrelatedData[i] = (double) s; //cast as double          
+                preCorrelatedData[i] = (double) bBuf.getShort();
             }
             double fundamentalFrequency;
             //only attempt to determine pitch if RMS is above threshold
@@ -140,8 +146,11 @@ public class PitchExtraction {
             } else { //otherwise, assign fundamental to zero 
                 fundamentalFrequency = 0;
             }
-            currentSlotNumber = resolveSlot(index / interval * POLL_RATE,
+            double time = index / interval * POLL_RATE;
+            currentSlotNumber = resolveSlot(time,
                     tempo / slotSize, slotSize) + 1;
+            System.out.println("At time " + time + 
+                    ", Slot = " + currentSlotNumber);
             int slotPitch = 0;
             //check to see if pitch is valid
             if (fundamentalFrequency > 34.0) {
@@ -184,12 +193,17 @@ public class PitchExtraction {
                 oneSlot.add(slotPitch);
             } //end else if
             else {
-                //Do something to handle final sample window
+                //Do something to handle final sample window?
             } //end else
             //increase the index by the designated interval
             index += (int) interval;
         } //end while
+//        if(firstParse)
+//            firstParse = false;
         System.out.println("checked all.");
+//        if (processingQueue.isEmpty()) {
+//            stopAnalysis = true;
+//        }
     }
 
     /**
@@ -224,6 +238,7 @@ public class PitchExtraction {
         //Check for discrepancies in this slot
         int testPitch = 0;
         boolean allZero = true;
+        boolean tie = false;
         boolean d = false; //discrepancy test boolean
         int i = 0;
         while (!d && i < pitches.length) { //search for discrepancies in data
@@ -267,14 +282,22 @@ public class PitchExtraction {
                     maxO = occurrences[i];
                     maxLoc = i;
                 } //end if
+                else if (occurrences[i] == maxO && maxLoc != i) {
+                    tie = true;
+                    secondPlaceLoc = i;
+                }
             } //end for
         } //end else
-        //check to see whether or not this tone terminates
-        if (pitches[pitches.length - 1] == 0) {
+        //check to see whether or not this tone is terminal
+        if (pitches[pitches.length - 2] == 0 
+                && pitches[pitches.length - 1] == 0) {
             noteOff = true;
         }
+        if(maxO - secondPlaceLoc > 1) {
+            return pitches[maxLoc];
+        }
         //check for false readings in lower octaves
-        if (maxO == secondPlaceO && Math.abs(pitches[maxLoc]
+        else if (maxO == secondPlaceO && Math.abs(pitches[maxLoc]
                 - pitches[secondPlaceLoc]) > 11) {
             if (pitches[maxLoc] - pitches[secondPlaceLoc] > 0) {
                 return pitches[maxLoc];
@@ -282,6 +305,13 @@ public class PitchExtraction {
                 return pitches[secondPlaceLoc];
             }
         } //end if
+        else if (tie) {
+            //algorithm is more prone to sub-fundamental errors
+            if(secondPlaceLoc >= pitches.length/2 && Math.abs(pitches[maxLoc]
+                - pitches[secondPlaceLoc]) < 12)
+                return pitches[secondPlaceLoc];
+            else return Math.max(pitches[maxLoc], pitches[secondPlaceLoc]);
+        }
         else {
             return pitches[maxLoc];
         }
@@ -509,42 +539,38 @@ public class PitchExtraction {
                 channels, signed, bigEndian);
     }
 
-    public void startAnalysis() {
-        stopAnalysis = false;
-    }
-
-    public void stopAnalysis() {
-        stopAnalysis = true;
-    }
-
     public void stopCapture() {
         stopCapture = true;
     }
-    
+
     class CaptureThread extends Thread {
         //An arbitrary-size temporary holding buffer
-        byte tempBuffer[] = new byte[FRAME_SIZE];
-
         public void run() {
-            outputStream = new ByteArrayOutputStream();
-            stopCapture = false;
+            System.out.println("Audio capture initialized");
+            //outputStream = new ByteArrayOutputStream();
             try {//Loop until stopCapture is set.
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
                 while (!stopCapture) {
                     //Read data from the internal buffer of the data line.
                     //cnt = # of bytes read
+                    byte tempBuffer[] = new byte[FRAME_SIZE];
                     int cnt = target.read(tempBuffer, 0, tempBuffer.length);
                     if (cnt > 0) {
                         //Save data in output stream object.
                         outputStream.write(tempBuffer, 0, cnt);
                     }//end if
                 }//end while
-                capturedAudioData = outputStream.toByteArray();
-                //parseNotes(capturedAudioData);
+                
+                //outputStream.close();
+                byte[] capturedAudioData = outputStream.toByteArray();
                 processingQueue.add(capturedAudioData);
-                outputStream.close();
+                System.out.println("processing queue has " + 
+                        processingQueue.size() + " elements");
+                firstParse = false;
             } catch (Exception e) {
                 System.out.println(e);
-                System.exit(0);
+                //System.exit(0);
             }//end catch
         }//end run
     }//end inner class CaptureThread
@@ -555,21 +581,28 @@ public class PitchExtraction {
     class AnalyzeThread extends Thread {
 
         public void run() {
-            while(!stopAnalysis || !processingQueue.isEmpty()) {
+            while (!stopAnalysis) {
                 while (processingQueue.isEmpty()) {
                     try {
-                        Thread.sleep(10); }
-                    catch (Exception e) {
-                        //System.out.println(e);
+                        AnalyzeThread.sleep(20);
+                    } catch (Exception e) {
+                        System.out.println(e);
                     }
-                } //end while
-            
+                }
                 try {
-                    parseNotes(processingQueue.poll());
+                    byte result[] = processingQueue.poll();
+                    if( result != null )
+                    {
+                     parseNotes(result);                       
+                    }
+                    else
+                    {
+                    System.out.println("Empty result");
+                    }
                 } catch (Exception e) {
-                    System.out.println("queue error");
-                }//end catch
+                    System.out.println(e);
+                }
             }
-        }
-        }//end run
+        } //end run
+    }
 }
