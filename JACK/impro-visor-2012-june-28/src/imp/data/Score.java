@@ -218,6 +218,8 @@ public class Score implements Constants, Serializable {
         this.composer = DEFAULT_COMPOSER;
         this.metre[0] = DEFAULT_METRE[0];
         this.metre[1] = DEFAULT_METRE[1];
+//        this.chordProg = new ChordPart();
+//        this.setMetre(DEFAULT_METRE[0], DEFAULT_METRE[1]);
         this.keySig = DEFAULT_KEYSIG;
         
         this.partList = new PartList(1);
@@ -475,9 +477,11 @@ public class Score implements Constants, Serializable {
      * element is the bottom.
      */
     public void setMetre(int top, int bottom) {
-        metre[0] = top;
-        metre[1] = bottom;
+//        System.out.println("score.setMetre called");
+//        metre[0] = top;
+//        metre[1] = bottom;
         chordProg.setMetre(top, bottom);
+        chordProg.setChordMetre(top, bottom);
         ListIterator<MelodyPart> i = partList.listIterator();
 	
         while(i.hasNext())
@@ -498,8 +502,10 @@ public class Score implements Constants, Serializable {
     
     public void getMetre(int metre[])
       {
-        metre[0] = this.metre[0];
-        metre[1] = this.metre[1];
+        metre[0] = chordProg.getChordMetre()[0];
+        metre[1] = chordProg.getChordMetre()[1];
+//        metre[0] = this.metre[0];
+//        metre[1] = this.metre[1];
       }
     
     /**
@@ -507,7 +513,9 @@ public class Score implements Constants, Serializable {
      * @return int              the metre of the Score
      */
     public int[] getMetre() {
-        return metre;
+//        System.out.println("score.getMetre called");
+//        return metre;
+        return chordProg.getChordMetre();
     }
     
     /**

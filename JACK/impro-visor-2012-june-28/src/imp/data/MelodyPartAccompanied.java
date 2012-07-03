@@ -39,22 +39,20 @@ public class MelodyPartAccompanied extends MelodyPart {
     }
     
     
-    @Override
-    public int[] getMetre() {
-        return chordProg.getMetre();
+    public int[] getChordMetre() {
+        return chordProg.getChordMetre();
     }
     
-    public void getMetre(int metre[]) {
-        chordProg.getMetre(metre);
+    public void getChordMetre(int metre[]) {
+        chordProg.getChordMetre(metre);
     }
     
-    @Override
-    public void setMetre(int top, int bottom){
-        chordProg.setMetre(top, bottom);
+    public void setChordMetre(int top, int bottom){
+        chordProg.setChordMetre(top, bottom);
     }
     
-    public void setMetre(int metre[]) {
-        chordProg.setMetre(metre);
+    public void setChordMetre(int metre[]) {
+        chordProg.setChordMetre(metre);
     }
     
 }
