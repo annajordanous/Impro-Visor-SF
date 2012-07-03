@@ -15,14 +15,16 @@ public class Tension
 {
     private static int[] WEIGHTS = {0, -5, -4, -5, -3, -5, -4, -5, -2, -5, -4, -5, -3, -5, -4, -5, -1, -5, -4, -5, -3, -5, -4, -5, -2, -5, -4, -5, -3, -5, -4, -5};
     private static int[] WEIGHTS_4 = {0, -2, -1, -2};
-    private static double[] C1SAME_C2SAME = {0, 0};
+    private static double[] C1SAME_C2SAME = {0.00001, 0};
     private static double[] C1NOT_C2SAME = {1, 0};
-    private static double[] C1SAME_C2NOT = {0, 1};
+    private static double[] C1SAME_C2NOT = {0.00001, 1};
     private static double[] C1UP_C2DOWN = {0.83, 0.17};
     private static double[] C1DOWN_C2UP = {0.71, 0.29};
     private static double[] C1UP_C2UP = {0.33, 0.67};
     private static double[] C1DOWN_C2DOWN = {0.67, 0.33};
     private static int SLOTS_PER_MEASURE = 32;
+    private static int SLOTS_PER_MEASURE2 = 120;
+    private static int SECONDS_PER_MINUTE = 60;
     
     public Tension()
     {
@@ -62,12 +64,110 @@ public class Tension
     }
     
     /**
+     * Computes the melodic accent of a group of notes according to Thomassen(1982)
+     * @param notes
+     * @return 
+     */
+    public static double[] getMelodicAccent(int[] notes)
+    {
+        double[][] mel2 = new double[notes.length - 3][2];
+        for(int i = 0; i < notes.length - 3; i++)
+        {            
+            int motion1 = notes[i+1] - notes[i];
+            int motion2 = notes[i+2] - notes[i+1];
+            if(motion1 == 0 && motion2 == 0)
+            {
+                mel2[i] = C1SAME_C2SAME;
+            }
+            else if(motion1 != 0 && motion2 == 0)
+            {
+                mel2[i] = C1NOT_C2SAME;
+            }
+            else if(motion1 == 0 && motion2 != 0)
+            {
+                mel2[i] = C1SAME_C2NOT;
+            }
+            else if(motion1 > 0 && motion2 < 0)
+            {
+                mel2[i] = C1UP_C2DOWN;
+            }
+            else if(motion1 < 0 && motion2 > 0)
+            {
+                mel2[i] = C1DOWN_C2UP;
+            }
+            else if(motion1 < 0 && motion2 < 0)
+            {
+                mel2[i] = C1UP_C2UP;
+            }
+            else if(motion1 < 0 && motion2 < 0)
+            {
+                mel2[i] = C1DOWN_C2DOWN;
+            }
+        }
+        double[] p2 = new double[notes.length];
+        p2[0] = 1;
+        p2[1] = mel2[0][0];
+        for(int k = 2; k < notes.length - 2; k ++)
+        {
+            double first = mel2[k-2][2];
+            double second = mel2[k-1][1];
+            if(first == 0)
+            {
+                p2[k] = second;
+            }
+            else if(second == 0)
+            {
+                p2[k] = first;
+            }
+            else
+            {
+                p2[k] = first * second;
+            }
+        }
+        p2[notes.length - 1] = mel2[mel2.length - 1][1];
+        return p2;
+    }
+    
+//    public static double[] getDurationalAccent(int[] onsets, int tempo)
+//    {
+//        
+//    }
+    
+    private double[] getNoteDurationsInSecs(int[] onsets, int tempo)
+    {
+        double bps = tempo/SECONDS_PER_MINUTE;
+        int noteLength = 0;
+        boolean note = false;
+        double[] durations = new double[onsets.length];
+        int dIndex = 0;
+        for(int i = 0; i < onsets.length; i ++)
+        {
+            if(onsets[i] == 1)
+            {
+                if(note == true)
+                {
+                    double beats = noteLength/SLOTS_PER_MEASURE2;
+                    durations[dIndex] = beats/bps;
+                    dIndex ++;
+                }
+                note = true;
+                noteLength = 1;
+            }
+            else if(note == true)
+            {
+                noteLength ++;
+            }
+        }
+        return durations;
+    }
+    
+    /**
      * Returns the syncopation value for every set of bars of size windowSize
      * @param onsets
      * @param measures
      * @param windowSize
      * @return 
-     */
+     */        
     public static int[] getWindowedSyncopation(int[] onsets, int measures, int windowSize)
     {
         int slotsPerWindow = SLOTS_PER_MEASURE * windowSize;
@@ -132,13 +232,4 @@ public class Tension
         }
         return weightArray;
     }
-    
-//    public static int[] getMelodicAccent(int[] notes)
-//    {
-//        int[][] values = new int[2][notes.length];
-//        for(int i = 0; i < (notes.length - 3); i++)
-//        {
-//            
-//        }
-//    }
 }

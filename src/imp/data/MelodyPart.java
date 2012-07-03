@@ -1668,9 +1668,9 @@ public int getInitialBeatsRest()
  * @return 
  */
  
-public int[] getSyncVector(int slotSpacing)
+public int[] getSyncVector(int slotSpacing, int maxSize)
   {
-    int n = size();
+    int n = Math.min(size(), maxSize);
     int[] result = new int[(int)Math.ceil(n/slotSpacing)];
     for( int i = 0, j = 0; i < n; i+= slotSpacing, j++ )
       {

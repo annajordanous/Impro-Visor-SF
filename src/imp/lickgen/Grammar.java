@@ -30,6 +30,7 @@ import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import polya.Arith;
 import polya.Polylist;
@@ -85,7 +86,7 @@ private int retryCount = 0;
 
 private Notate notate;
 
-private int currentSlot = 4 * 480;
+private int currentSlot;
 
 
 public Grammar(String file)
@@ -709,7 +710,7 @@ private Object evaluate(Object toParse)
 // For testing purposes only:
 
 int expectancyValue = 0;
-int syncopationValue = 0;
+int syncopationValue = 1;
 
 private static int LENGTH_OF_TRADE = 4*480;
 private static int SLOTS_PER_MEASURE = 480;
@@ -717,7 +718,7 @@ private static int SLOTS_PER_MEASURE = 480;
 private Object evaluateBuiltin(Object arg)
 {
     
-    MelodyPart melody = notate.getCurrentMelodyPart();
+    MelodyPart melody = notate.getCurrentMelodyPart();    
     MelodyPart currMelody = melody.extract(currentSlot, currentSlot + LENGTH_OF_TRADE);
     ChordPart chords = notate.getChordProg();
     if( EXPECTANCY.equals(arg) )
@@ -748,12 +749,14 @@ private Object evaluateBuiltin(Object arg)
     }
     if(SYNCOPATION.equals(arg))
     {
-        int[] syncVector = currMelody.getSyncVector(15);
-        int synco = Tension.getSyncopation(syncVector, LENGTH_OF_TRADE/SLOTS_PER_MEASURE);
-        if(synco > 20)
+        int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
+        int synco = Tension.getSyncopation(syncVector, (LENGTH_OF_TRADE/SLOTS_PER_MEASURE));
+        System.out.println(synco);
+        if(synco > 0)
         {
             return new Double(syncopationValue);
         }
+        return new Double(0);
     }
     return new Double(0);
 }

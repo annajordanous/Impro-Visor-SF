@@ -22,12 +22,14 @@ package imp.data;
 
 import imp.Constants;
 import imp.Constants.StaveType;
+import imp.lickgen.Tension;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import imp.util.Preferences;
 import imp.util.Trace;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import polya.Polylist;
 import polya.Tokenizer;
 
@@ -811,15 +813,10 @@ public class Leadsheet
     //System.out.println("chord symbols: " + chords.getChordSymbols()); 
     //System.out.println("chord durations: " + chords.getChordDurations()); 
  
-//    // Test code for getSyncVector
-//    System.out.print("syncVector for leadsheet's melody: ");
+    // Test code for getSyncVector
 //    int[] syncVector = melody.getSyncVector(15);
-//    for( int i = 0; i < syncVector.length; i++ )
-//      {
-//        System.out.print(syncVector[i] + " ");
-//      }
-//    System.out.println();
-    
+//    int[] synco = Tension.getWindowedSyncopation(syncVector, melody.size()/480, 2);
+//    System.out.println(Arrays.toString(synco)); 
     return true;
     } // readLeadsheet
 
