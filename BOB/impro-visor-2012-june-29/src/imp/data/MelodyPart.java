@@ -20,6 +20,7 @@
 
 package imp.data;
 
+import imp.Constants;
 import imp.ImproVisor;
 import imp.com.InsertPartCommand;
 import imp.gui.Notate;
@@ -654,7 +655,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
   public void dump(PrintStream out)
     {
-    PartIterator i = iterator();
+    Part.PartIterator i = iterator();
     try
       {
       while( i.hasNext() )
@@ -680,7 +681,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    */
   public void makeTies()
     {
-    PartIterator i = iterator();
+    Part.PartIterator i = iterator();
     while( i.hasNext() )
       {
       int j = i.nextIndex();
@@ -941,7 +942,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     // Create the new note as a copy of the first with the residual duration.
     Note newNote = note.copy();
     newNote.setFirstTie(false);
-    newNote.setAccidental(Accidental.NOTHING);
+    newNote.setAccidental(Constants.Accidental.NOTHING);
     newNote.setRhythmValue(secondNoteRV);
 
 
@@ -961,7 +962,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    */
   public void makeAccidentals()
     {
-    ArrayList<Accidental> accidentalVector = getKeySigVector();
+    ArrayList<Constants.Accidental> accidentalVector = getKeySigVector();
 
     // Go through each slot so that we can reset the accidentalVector
     // at the start of each measure
@@ -988,11 +989,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
       // The easiest way to do this is to adjust the pitch so that
       // it is on the letter, independent of accidental
-      if( note.getAccidental() == Accidental.SHARP )
+      if( note.getAccidental() == Constants.Accidental.SHARP )
         {
         note.setDrawnPitch(pitch - 1);
         }
-      else if( note.getAccidental() == Accidental.FLAT )
+      else if( note.getAccidental() == Constants.Accidental.FLAT )
         {
         note.setDrawnPitch(pitch + 1);
         }
@@ -1006,7 +1007,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       // by the key signature, draw nothing
       if( note.getAccidental() == accidentalVector.get(note.getDrawnPitch()) )
         {
-        note.setAccidental(Accidental.NOTHING);
+        note.setAccidental(Constants.Accidental.NOTHING);
         }
 
       // If the note's accidental needs to be drawn, leave
@@ -1038,7 +1039,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     // to trace sequencing:
     //System.out.println("Sequencing MelodyPart on track " + track + " time = " + time + " endLimitIndex = " + endLimitIndex);
       
-    PartIterator i = iterator();
+    Part.PartIterator i = iterator();
 
     // Note that you can't have two instruments playing on the same
     // channel at the same time.  So we can never have more than 16
@@ -1082,13 +1083,13 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    * stored for playback and elements of this Vector.
    * @return ArrayList<Accidental>       the accidental vector
    */
-  public ArrayList<Accidental> getKeySigVector()
+  public ArrayList<Constants.Accidental> getKeySigVector()
     {
-    ArrayList<Accidental> keySigVector = new ArrayList<Accidental>(TOTALPITCHES); 
+    ArrayList<Constants.Accidental> keySigVector = new ArrayList<Constants.Accidental>(TOTALPITCHES); 
     
      for( int i = 0; i < TOTALPITCHES; i++ )
       {
-        keySigVector.add(Accidental.NOTHING);
+        keySigVector.add(Constants.Accidental.NOTHING);
       }    
      
     switch( keySig )
@@ -1101,11 +1102,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODA || i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1118,11 +1119,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODA || i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1134,11 +1135,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODA || i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1150,11 +1151,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODA || i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1165,11 +1166,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           if( i % SEMITONES == MODA || i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1180,11 +1181,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           if( i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1194,11 +1195,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           {
           if( i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.FLAT);
+            keySigVector.set(i, Constants.Accidental.FLAT);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1206,7 +1207,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       case CMAJOR:
         for( int i = 0; i < TOTALPITCHES; i++ )
           {
-          keySigVector.set(i, Accidental.NATURAL);
+          keySigVector.set(i, Constants.Accidental.NATURAL);
           }
         break;
 
@@ -1215,11 +1216,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           {
           if( i % SEMITONES == MODF )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1229,11 +1230,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           {
           if( i % SEMITONES == MODC || i % SEMITONES == MODF )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1244,11 +1245,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
               i % SEMITONES == MODG )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1259,11 +1260,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           if( i % SEMITONES == MODC || i % SEMITONES == MODF ||
               i % SEMITONES == MODG || i % SEMITONES == MODD )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1275,11 +1276,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODG || i % SEMITONES == MODD ||
               i % SEMITONES == MODA )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1291,11 +1292,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODG || i % SEMITONES == MODD ||
               i % SEMITONES == MODA || i % SEMITONES == MODE )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1308,11 +1309,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
               i % SEMITONES == MODA || i % SEMITONES == MODE ||
               i % SEMITONES == MODB )
             {
-            keySigVector.set(i, Accidental.SHARP);
+            keySigVector.set(i, Constants.Accidental.SHARP);
             }
           else
             {
-            keySigVector.set(i, Accidental.NATURAL);
+            keySigVector.set(i, Constants.Accidental.NATURAL);
             }
           }
         break;
@@ -1668,9 +1669,9 @@ public int getInitialBeatsRest()
  * @return 
  */
  
-public int[] getSyncVector(int slotSpacing)
+public int[] getSyncVector(int slotSpacing, int maxSize)
   {
-    int n = size();
+    int n = Math.min(size(), maxSize);
     int[] result = new int[(int)Math.ceil(n/slotSpacing)];
     for( int i = 0, j = 0; i < n; i+= slotSpacing, j++ )
       {
