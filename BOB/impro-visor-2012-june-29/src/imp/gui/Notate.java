@@ -400,7 +400,7 @@ public class Notate
 
   /**
    *
-   * Default values pertinent to lick generation
+   * Default values pertinent to improLick generation
    *
    */
   
@@ -1189,6 +1189,10 @@ public class Notate
     setBars(score.getBarsPerChorus());
 
     updateSelection();
+    
+    
+    //((PlayActionListener)repainter).init();
+    
 
     Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener()
       {
@@ -12010,7 +12014,7 @@ private void verifyTriageFields()
 
 
 /**
- * Save the lick in the vocabulary.
+ * Save the improLick in the vocabulary.
  * @param saveSelection 
  */
 private void saveLick(String saveSelection)
@@ -12062,19 +12066,19 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
 
     if( rhythm == null || rhythm.isEmpty() )
       {
-        // redundant? ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No lick will be generated.");
+        // redundant? ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No improLick will be generated.");
         return null;
       }
 
     lickgen.setProbs(lickgenFrame.readProbs());
 
     // Fill in a melody according to the provided rhythm.
-    // FIX - Currently, the lick generator doesn't support half beats; thus,
+    // FIX - Currently, the improLick generator doesn't support half beats; thus,
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
     
     MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, start);
-    System.out.println("makeLick creates " + lick);
+    //System.out.println("makeLick creates " + lick);
     int actualSize = lick.size();
     int desiredSize = stop - start + 1;
     
@@ -12093,14 +12097,14 @@ private MelodyPart makeLick(Polylist rhythm)
 
     if( rhythm == null || rhythm.isEmpty() )
       {
-        // redundant? ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No lick will be generated.");
+        // redundant? ErrorLog.log(ErrorLog.SEVERE, "Null rhythm argument.  No improLick will be generated.");
         return null;
       }
 
     lickgen.setProbs(lickgenFrame.readProbs());
 
     // Fill in a melody according to the provided rhythm.
-    // FIX - Currently, the lick generator doesn't support half beats; thus,
+    // FIX - Currently, the improLick generator doesn't support half beats; thus,
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
     
@@ -12123,7 +12127,7 @@ public boolean putLick(MelodyPart lick)
   {
     if( lick == null )
       {
-        // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
+        // redundant ErrorLog.log(ErrorLog.WARNING, "No improLick was generated.");
         return true;
       }
     // Figure out which enharmonics to use based on
@@ -12252,7 +12256,7 @@ private void adjustLickToHead(MelodyPart lick)
           }
       }
 
-    //if we don't have the head, leave the lick as it is
+    //if we don't have the head, leave the improLick as it is
 
     if( head == null )
       {
@@ -12264,9 +12268,9 @@ private void adjustLickToHead(MelodyPart lick)
     int start = getCurrentSelectionStart();
     int end = getCurrentSelectionEnd();
 
-    //note in lick
+    //note in improLick
     Note n;
-    //tracks position in lick
+    //tracks position in improLick
     int position = 0;
     int oldpitch = 0;
 
@@ -12312,7 +12316,7 @@ private void adjustLickToHead(MelodyPart lick)
 
 
 /**
- * Calculate the current lick enharmonics based on the chord progression
+ * Calculate the current improLick enharmonics based on the chord progression
  * and they key signature.
  */
 
@@ -20175,18 +20179,18 @@ private void adjustSelection()
 //                                                  restProb);
 //          }
 //
-//        MelodyPart lick = generateLick(rhythm);
+//        MelodyPart improLick = generateLick(rhythm);
 //
-//        System.out.println("generated " + (lick == null ? "null" : (lick.size()/BEAT + " beats")));
+//        System.out.println("generated " + (improLick == null ? "null" : (improLick.size()/BEAT + " beats")));
 //
 //        // Critical point for recurrent generation
-//        if( lick != null )
+//        if( improLick != null )
 //          {
-//            putLick(lick);
+//            putLick(improLick);
 //          }
 //        else
 //          {
-//            System.out.println("panic: null lick");
+//            System.out.println("panic: null improLick");
 //            setMode(Mode.GENERATION_FAILED);
 //            return;
 //          }
@@ -20276,29 +20280,30 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
                                                   restProb);
           }
         
-        System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
+        //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
         
         lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
-        System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
-        getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
-        repaint();
+        //System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
         //playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + improviseStartSlot + " - " + improviseEndSlot);
        
         // Critical point for recurrent generation
         if( lick != null )
           {
-            int beatsGenerated = lick.size()/BEAT;
+          getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
+          repaint();
+
+          int beatsGenerated = lick.size()/BEAT;
             
-            if( beatsGenerated != beatsRequested )
+          if( beatsGenerated != beatsRequested )
               {
               //debug System.out.println("generated " + beatsGenerated 
               //              + " beats, but " + beatsRequested + " requested");
               }
-            //putLick(lick);
+            //putLick(improLick);
           }
         else
           {
-            //debug System.out.println("panic: generated null lick");
+            //debug System.out.println("panic: generated null improLick");
             setMode(Mode.GENERATION_FAILED);
             return lick;
           }
@@ -24052,6 +24057,60 @@ Command improCommand = null;
 
 class PlayActionListener implements ActionListener
 {
+
+/**
+ * Parameters for trading
+ */
+
+/**
+ * The number of slots in one full cycle of trading.
+ */
+
+int improInterval = 3840;
+
+
+/**
+ * Half the number of slots in one full cycle of trading.
+ */
+
+int halfInterval = improInterval/2;
+
+
+/**
+ * The number of slots by which generation will lead use
+ * 
+ * Ultimately this should be made to depend on tempo, etc.
+ */
+
+int generationLeadSlots = 240;
+
+
+/**
+ * The number of slots by which the midiSynth should be
+ * started before playing is required
+ * 
+ * Ultimately this should be made to depend on tempo, etc.
+ */
+
+int playLeadSlots = 90;
+
+
+/**
+ * The improvised lick.
+ */
+
+MelodyPart improLick;
+        
+
+///**
+// * init idea doesn't work yet.
+// */
+//
+//public void init()
+//  {
+//    improLick = generate(lickgen, 0, 0 + halfInterval-1);
+//  }
+
 public void actionPerformed(ActionEvent evt)
   {
     if( playingStopped() )
@@ -24122,45 +24181,47 @@ public void actionPerformed(ActionEvent evt)
 //                             + " chorus # " + recurrentIteration);
         setStatus("Chorus " + recurrentIteration);
 
-        // Open lickgen control panel before using
-        
         // Maybe use midiRecorder technique
         
-        int improInterval = 3840;
-        int halfInterval = improInterval/2;
         
-        int generationLeadSlots = 240;
         
-        int playLeadSlots = 75;
+        // Recurrent lick generation
+        // Caution: LickGenerator control should be opened first. 
+         
+        MelodyPart currentMelodyPart = getCurrentMelodyPart();
+       
+        int slotAhead = (slotInPlayback + generationLeadSlots) % currentMelodyPart.size();
         
-        int slotAhead = slotInPlayback + generationLeadSlots;
-        
-        MelodyPart lick;
+        // See if it's time to generate a lick.
         
         if( slotAhead % improInterval == 0 )
           {
             //System.out.println("generating at " + slotInPlayback);
             // Impro-Visor goes second
             
-           lick = generate(lickgen, slotAhead, slotAhead + halfInterval-1);
+           improLick = generate(lickgen, slotAhead, slotAhead + halfInterval-1);
             
            // Impro-Visor goes first
            //lick = generate(lickgen, slotAhead + halfInterval, slotAhead + halfInterval-1);
 
-            MelodyPart currentMelodyPart = getCurrentMelodyPart();
-            //currentMelodyPart.truncateEndings(true);
  
-            Score improScore = new Score();
-            improScore.setTempo(score.getTempo());
-            
-            if( lick != null )
+            // If a lick was generated, copy it into the melodyPart for notation
+            // and set up a command that will play
+           
+            improCommand = null;
+           
+            if( improLick != null )
               {
+                Score improScore = new Score();
+                improScore.setTempo(score.getTempo());
+            
+                //currentMelodyPart.truncateEndings(true);
                 //MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
-                lick.setInstrument(11); // vibraphone
-                lick.setSwing(currentMelodyPart.getSwing());
+                improLick.setInstrument(11); // vibraphone
+                improLick.setSwing(currentMelodyPart.getSwing());
 
-                System.out.println("lick = " + lick + " at slot " + slotInPlayback);
-                improScore.addPart(lick);
+                System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
+                improScore.addPart(improLick);
 
                 // Create command now, for execution on a subsequent slot
 
@@ -24177,9 +24238,12 @@ public void actionPerformed(ActionEvent evt)
                }
             }
         
+        
+        // Play the lick previously generated
+        
         if( (slotInPlayback + playLeadSlots) % improInterval == 0 && improCommand != null )
               {
-              System.out.println("playing at slot " + slotInPlayback);
+              System.out.println("at slot " + slotInPlayback + " playing");
               improCommand.execute();
               }
       
