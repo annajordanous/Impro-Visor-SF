@@ -31,6 +31,8 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
+//import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 import polya.Polylist;
@@ -136,6 +138,16 @@ public class Score implements Constants, Serializable {
      * The chord Progression
      */
     private ChordPart chordProg;
+    
+    /*
+     * The ChordPart ArrayList
+     */
+    private ConcurrentHashMap<String,ChordPart> chordPartList = new ConcurrentHashMap<String,ChordPart>();
+    
+//    /*
+//     * The ArrayList controlling the order of the ChordParts
+//     */
+//    private ArrayList chordPartOrder = new ArrayList();
 
     /**
      * The count-in Progression
@@ -224,6 +236,7 @@ public class Score implements Constants, Serializable {
         
         this.partList = new PartList(1);
         this.chordProg = new ChordPart();
+        chordPartList.put("initial_progression",chordProg);
         setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     }
 
@@ -232,6 +245,7 @@ public class Score implements Constants, Serializable {
         this.length = length;
         addPart();
         chordProg = new ChordPart(length);
+        chordPartList.put("initial_progression",chordProg);
     }
 
     public Score(ChordPart chordPart) {
@@ -239,6 +253,7 @@ public class Score implements Constants, Serializable {
         addPart();
         setLength(chordPart.size());
         chordProg = chordPart;
+        chordPartList.put("initial_progression",chordProg);
     }
 
     public void setCountIn(ChordPart countInProg)
@@ -469,6 +484,10 @@ public class Score implements Constants, Serializable {
         if (index >= 0 && index < partList.size())
             partList.remove(index);
     }
+    
+    /*
+     * Adds a new 
+     */
 
     /**
      * Sets the metre of the Score
@@ -482,12 +501,20 @@ public class Score implements Constants, Serializable {
 //        metre[1] = bottom;
         chordProg.setMetre(top, bottom);
         chordProg.setChordMetre(top, bottom);
+        chordPartList.get("initial_progression").setMetre(top, bottom);
+        chordPartList.get("initial_progression").setChordMetre(top, bottom);
         ListIterator<MelodyPart> i = partList.listIterator();
 	
         while(i.hasNext())
             {
             i.next().setMetre(top, bottom);
             }
+        
+        if(chordProg == chordPartList.get("initial_progression")){
+            System.out.println("they_are_eqeqE. conGAS");
+        } else {
+            System.out.println("not_equal.edu");
+        }
     }
     
     public void setMetre(int metre[])
@@ -526,6 +553,7 @@ public class Score implements Constants, Serializable {
         Trace.log(2, "setting key signature of score to " + keySig);
         this.keySig = keySig;
         chordProg.setKeySignature(keySig);
+        chordPartList.get("initial_progression").setKeySignature(keySig);
         ListIterator<MelodyPart> i = partList.listIterator();
         while(i.hasNext())
             {
@@ -552,6 +580,10 @@ public class Score implements Constants, Serializable {
         if( chordProg != null )
             {
             chordProg.setSize(length);
+            }
+        if ( chordPartList.get("initial_progression") != null)
+            {
+            chordPartList.get("initial_progression").setSize(length);
             }
         Iterator<MelodyPart> i = partList.listIterator();
         while( i.hasNext() )
@@ -680,6 +712,7 @@ public class Score implements Constants, Serializable {
 
         newScore.partList = newPartList;
         newScore.chordProg = chordProg.copy();
+        newScore.chordPartList = chordPartList;
 
         newScore.setChordInstrument(getChordInstrument());
         newScore.setBassInstrument(getBassInstrument());
