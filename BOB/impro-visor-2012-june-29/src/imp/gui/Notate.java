@@ -1894,6 +1894,7 @@ public class Notate
         currDirectoryLabel = new javax.swing.JLabel();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -2121,6 +2122,15 @@ public class Notate
         roadMapThisAnalyze = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         createRoadMapCheckBox = new javax.swing.JCheckBoxMenuItem();
+        improvMenu = new javax.swing.JMenu();
+        noImprovCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade16IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade12IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade8IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade4IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade2IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade1IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        trade4IVsecondCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
@@ -6463,6 +6473,9 @@ public class Notate
 
         jMenuItem2.setText("jMenuItem2");
 
+        jCheckBoxMenuItem2.setSelected(true);
+        jCheckBoxMenuItem2.setText("jCheckBoxMenuItem2");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
@@ -8494,6 +8507,85 @@ public class Notate
         roadmapMenu.add(createRoadMapCheckBox);
 
         menuBar.add(roadmapMenu);
+
+        improvMenu.setText("Improv");
+        improvMenu.setToolTipText("Set the type of auto-improvisation, if any");
+        improvMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                improvMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+
+        noImprovCheckBoxMI.setSelected(true);
+        noImprovCheckBoxMI.setText("No Improvisation");
+        noImprovCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noImprovCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(noImprovCheckBoxMI);
+
+        trade16IVfirstCheckBoxMI.setText("Trade 16's, Impro-Visor first");
+        trade16IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade16IVfirstCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade16IVfirstCheckBoxMI);
+
+        trade12IVfirstCheckBoxMI.setText("Trade 12's, Impro-Visor first");
+        trade12IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade12IVfirstCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade12IVfirstCheckBoxMI);
+
+        trade8IVfirstCheckBoxMI.setText("Trade 8's, Impro-Visor first");
+        trade8IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade8IVfirstCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade8IVfirstCheckBoxMI);
+
+        trade4IVfirstCheckBoxMI.setText("Trade 4's, Impro-Visor first");
+        trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade4IVfirstCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade4IVfirstCheckBoxMI);
+
+        trade2IVfirstCheckBoxMI.setText("Trade 2's, Impro-Visor first");
+        trade2IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade2IVfirstCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade2IVfirstCheckBoxMI);
+
+        trade1IVfirstCheckBoxMI.setText("Trade 1's, Impro-Visor first");
+        trade1IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade1IVfirstCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade1IVfirstCheckBoxMI);
+
+        trade4IVsecondCheckBoxMI.setText("Trade 4's, Impro-Visor second");
+        trade4IVsecondCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trade4IVsecondCheckBoxMIActionPerformed(evt);
+            }
+        });
+        improvMenu.add(trade4IVsecondCheckBoxMI);
+
+        menuBar.add(improvMenu);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -21267,11 +21359,104 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
         
         midiSynth.setSlot(indexOfLastChordPlayed);
-        playAndCaptureChordAtIndex(indexOfLastChordPlayed);
-        
-        
+        playAndCaptureChordAtIndex(indexOfLastChordPlayed);        
     }//GEN-LAST:event_chordReplayButtonActionPerformed
 
+private void improvMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:event_improvMenuMenuSelected
+  {//GEN-HEADEREND:event_improvMenuMenuSelected
+    // TODO add your handling code here:
+  }//GEN-LAST:event_improvMenuMenuSelected
+
+private void noImprovCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noImprovCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_noImprovCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    noImprovCheckBoxMI.setSelected(true);
+  }//GEN-LAST:event_noImprovCheckBoxMIActionPerformed
+
+private void trade4IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade4IVfirstCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade4IVfirstCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade4IVfirstCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 3840;
+    generationLeadSlots = 240;
+    ivFirst = true;
+  }//GEN-LAST:event_trade4IVfirstCheckBoxMIActionPerformed
+
+private void trade8IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade8IVfirstCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade8IVfirstCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade8IVfirstCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 7680;
+    generationLeadSlots = 480;
+    ivFirst = true;
+  }//GEN-LAST:event_trade8IVfirstCheckBoxMIActionPerformed
+
+private void trade2IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade2IVfirstCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade2IVfirstCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade2IVfirstCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 1920;   
+    generationLeadSlots = 120;
+    ivFirst = true;
+  }//GEN-LAST:event_trade2IVfirstCheckBoxMIActionPerformed
+
+private void trade1IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade1IVfirstCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade1IVfirstCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade1IVfirstCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 960;   
+    generationLeadSlots = 120;
+    ivFirst = true;
+  }//GEN-LAST:event_trade1IVfirstCheckBoxMIActionPerformed
+
+private void trade16IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade16IVfirstCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade16IVfirstCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade16IVfirstCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 15360;
+    generationLeadSlots = 960;
+    ivFirst = true;
+  }//GEN-LAST:event_trade16IVfirstCheckBoxMIActionPerformed
+
+private void trade12IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade12IVfirstCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade12IVfirstCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade12IVfirstCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 11520;
+    generationLeadSlots = 720;
+    ivFirst = true;
+  }//GEN-LAST:event_trade12IVfirstCheckBoxMIActionPerformed
+
+private void trade4IVsecondCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade4IVsecondCheckBoxMIActionPerformed
+  {//GEN-HEADEREND:event_trade4IVsecondCheckBoxMIActionPerformed
+    resetImprovCheckBoxes();
+    trade4IVsecondCheckBoxMI.setSelected(true);
+    autoImprovisation = true;
+    improInterval = 3840;
+    generationLeadSlots = 240;
+    ivFirst = false;
+  }//GEN-LAST:event_trade4IVsecondCheckBoxMIActionPerformed
+
+private void resetImprovCheckBoxes()
+  {
+    noImprovCheckBoxMI.setSelected(false);
+    trade16IVfirstCheckBoxMI.setSelected(false);
+    trade8IVfirstCheckBoxMI.setSelected(false);
+    trade4IVfirstCheckBoxMI.setSelected(false);
+    trade2IVfirstCheckBoxMI.setSelected(false);
+    trade1IVfirstCheckBoxMI.setSelected(false);
+    autoImprovisation = false;
+  }
+
+private boolean autoImprovisation = false;
+private boolean ivFirst = true;
+        
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called 
@@ -21290,6 +21475,7 @@ public void textRequestFocus()
  }
 
 int improviseStartSlot, improviseEndSlot;
+
 
 public void improviseButtonToggled()
   {
@@ -23041,6 +23227,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBox idioms;
     private javax.swing.JButton ignoreDuplicate;
     private javax.swing.JMenuItem importMidiMI;
+    private javax.swing.JMenu improvMenu;
     private javax.swing.JToggleButton improviseButton;
     private javax.swing.JMenuItem insertChorusTabMI;
     private javax.swing.JMenuItem insertRestMeasure;
@@ -23052,6 +23239,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -23211,6 +23399,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton newVoicingSaveButton;
     private javax.swing.JComboBox newVoicingTypeCB;
     private javax.swing.JLabel newVoicingTypeLabel;
+    private javax.swing.JCheckBoxMenuItem noImprovCheckBoxMI;
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
     private javax.swing.JTextField numStavesPerPage;
@@ -23382,6 +23571,13 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel trackerDelayPanel;
     private javax.swing.JTextField trackerDelayTextField;
     private javax.swing.JTextField trackerDelayTextField2;
+    private javax.swing.JCheckBoxMenuItem trade12IVfirstCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem trade16IVfirstCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem trade1IVfirstCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem trade2IVfirstCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem trade4IVfirstCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem trade4IVsecondCheckBoxMI;
+    private javax.swing.JCheckBoxMenuItem trade8IVfirstCheckBoxMI;
     private javax.swing.JMenuItem transposeBothDownSemitone;
     private javax.swing.JMenuItem transposeBothUpSemitone;
     private javax.swing.JMenuItem transposeChordsDownSemitone;
@@ -24051,13 +24247,6 @@ public int getRecordSnapValue()
 
 Command improCommand = null;
 
-/*
- * This was formerly embedded inside executable code.
- */
-
-class PlayActionListener implements ActionListener
-{
-
 /**
  * Parameters for trading
  */
@@ -24067,13 +24256,6 @@ class PlayActionListener implements ActionListener
  */
 
 int improInterval = 3840;
-
-
-/**
- * Half the number of slots in one full cycle of trading.
- */
-
-int halfInterval = improInterval/2;
 
 
 /**
@@ -24093,6 +24275,15 @@ int generationLeadSlots = 240;
  */
 
 int playLeadSlots = 90;
+
+/*
+ * This was formerly embedded inside executable code.
+ */
+
+class PlayActionListener implements ActionListener
+{
+
+
 
 
 /**
@@ -24184,69 +24375,76 @@ public void actionPerformed(ActionEvent evt)
         // Maybe use midiRecorder technique
         
         
-        
-        // Recurrent lick generation
-        // Caution: LickGenerator control should be opened first. 
+// Recurrent lick generation
+// Caution: LickGenerator control should be opened first. 
          
-        MelodyPart currentMelodyPart = getCurrentMelodyPart();
-       
-        int slotAhead = (slotInPlayback + generationLeadSlots) % currentMelodyPart.size();
-        
-        // See if it's time to generate a lick.
-        
-        if( slotAhead % improInterval == 0 )
-          {
-            //System.out.println("generating at " + slotInPlayback);
-            // Impro-Visor goes second
-            
-           improLick = generate(lickgen, slotAhead, slotAhead + halfInterval-1);
-            
-           // Impro-Visor goes first
-           //lick = generate(lickgen, slotAhead + halfInterval, slotAhead + halfInterval-1);
+      if( autoImprovisation )
+        {
+          int halfInterval = improInterval / 2;
 
- 
-            // If a lick was generated, copy it into the melodyPart for notation
-            // and set up a command that will play
-           
-            improCommand = null;
-           
-            if( improLick != null )
-              {
-                Score improScore = new Score();
-                improScore.setTempo(score.getTempo());
-            
-                //currentMelodyPart.truncateEndings(true);
-                //MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
-                improLick.setInstrument(11); // vibraphone
-                improLick.setSwing(currentMelodyPart.getSwing());
+          MelodyPart currentMelodyPart = getCurrentMelodyPart();
+          
+          int size = currentMelodyPart.size();
 
-                System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
-                improScore.addPart(improLick);
+          int slotAhead = ((slotInPlayback + generationLeadSlots) % size)
+                        + (ivFirst ? 0 : halfInterval);
 
-                // Create command now, for execution on a subsequent slot
+          int playSlot = slotInPlayback + playLeadSlots
+                       - (ivFirst ? 0 : halfInterval);
 
-                improCommand =
-                new PlayScoreCommand(improScore, 
-                            0,            // startTime
-                            true,         // swing
-                            midiSynth2,
-                            null,          // play listener
-                            0,             // loopCount,
-                            0,             // transposition
-                            false,         // use drums
-                            -1);           // transposition
-               }
+          // See if it's time to generate a lick.
+
+          if( slotAhead % improInterval == 0 )
+            {
+              //System.out.println("generating at " + slotInPlayback);
+              // Impro-Visor goes second
+
+              improLick = generate(lickgen, slotAhead, slotAhead + halfInterval - 1);
+
+              // Impro-Visor goes first
+              //lick = generate(lickgen, slotAhead + halfInterval, slotAhead + halfInterval-1);
+
+
+              // If a lick was generated, copy it into the melodyPart for notation
+              // and set up a command that will play
+              if( improLick != null )
+                {
+                  Score improScore = new Score();
+                  improScore.setTempo(score.getTempo());
+
+                  //currentMelodyPart.truncateEndings(true);
+                  //MelodyPart extracted = currentMelodyPart.extract(slotAhead, lastSlotAhead);
+                  improLick.setInstrument(11); // vibraphone
+                  improLick.setSwing(currentMelodyPart.getSwing());
+
+                  System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
+                  improScore.addPart(improLick);
+
+                  // Create command now, for execution on a subsequent slot
+
+                  improCommand =
+                          new PlayScoreCommand(improScore,
+                                               0,          // startTime
+                                               true,       // swing
+                                               midiSynth2,
+                                               null,       // play listener
+                                               0,          // loopCount,
+                                               0,          // transposition
+                                               false,      // use drums
+                                               -1);        // transposition
+                }
             }
-        
-        
-        // Play the lick previously generated
-        
-        if( (slotInPlayback + playLeadSlots) % improInterval == 0 && improCommand != null )
-              {
+
+
+          // Play the lick previously generated
+
+          if( playSlot % improInterval == 0 && improCommand != null )
+            {
               System.out.println("at slot " + slotInPlayback + " playing");
               improCommand.execute();
-              }
-      
+              improCommand = null; // Don't play twice
+            }
+        }
 
     // The following variant was originally added to stop playback at the end of a selection
     // However, it also truncates the drum patterns etc. so that needs to be fixed.
