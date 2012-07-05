@@ -716,9 +716,9 @@ private static int SLOTS_PER_MEASURE = 480;
 
 private Object evaluateBuiltin(Object arg)
 {
-  System.out.println("currentSlot = " + currentSlot + " in evaluateBuiltin " + arg);
     MelodyPart melody = notate.getCurrentMelodyPart();    
-    MelodyPart currMelody = melody.extract(currentSlot, currentSlot + LENGTH_OF_TRADE);
+    MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+    System.out.println("currentSlot = " + currentSlot + " in evaluateBuiltin " + arg + " Current Melody is " + currMelody.toString());
     ChordPart chords = notate.getChordProg();
     if( EXPECTANCY.equals(arg) )
     {
@@ -751,7 +751,7 @@ private Object evaluateBuiltin(Object arg)
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int synco = Tension.getSyncopation(syncVector, (LENGTH_OF_TRADE/SLOTS_PER_MEASURE));
         System.out.println(synco);
-        if(synco > 0)
+        if(synco > 3)
         {
             return new Double(syncopationValue);
         }
