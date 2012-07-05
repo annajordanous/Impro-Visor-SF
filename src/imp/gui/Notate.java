@@ -83,56 +83,54 @@ public class Notate
   {
   public static int midiImportXoffset = 200;
   public static int midiImportYoffset = 200;
-  
+
   public static final int HELP_DIALOG_WIDTH = 980;
   public static final int HELP_DIALOG_HEIGHT = 600;
     private static final long serialVersionUID = 1L;
-  
+
   private int DEFAULT_SLIDER_VOLUME = 80;
-  
+
   private static boolean firstTime = true;
-  
+
   RoadMapFrame roadmapFrame = null;
 
   LickgenFrame lickgenFrame;
-  
+
   MidiImportFrame midiImportFrame = null;
-  
+
   MidiImport midiImport;
-  
-  PitchExtraction extractor;  
-  static float SAMPLE_RATE = 44100.0F; //in Hertz
-  static int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
-  boolean notFirstMeasure;
+
+  PitchExtraction extractor;
+  static int captureInterval = 480;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
   static int GRAMMAR_EDITOR_ROWS = 10000;
-  
+
   AboutDialog aboutDialog = new AboutDialog(this, false);
 
   ErrorDialog errorDialog = ErrorLog.getDialog();
-  
+
   HelpDialog helpDialog = new HelpDialog(this, false);
-  
+
   int ADVICE_SCROLL_LIST_ITEMS_VISIBLE = 10;
 
   /**
    * trackerDelay delays the tracker by offsetting a specified number of seconds.
    * This is for compatibility with midi delays introduced by different operating
    * systems. If trackerDelay is positive, the playback will have to have gone by
-   * the corresponding number of slots before the tracker starts moving. If it 
-   * is negative, the tracker will start with the corresponding number of slots 
+   * the corresponding number of slots before the tracker starts moving. If it
+   * is negative, the tracker will start with the corresponding number of slots
    * from the time playback is triggered.
    */
-  
+
   double trackerDelay = 0;
 
   public static final int defaultBarsPerPart = 72;
 
   public static final Dimension leadsheetEditorDimension =
           new Dimension(500, 600);
-  
+
   public static final Dimension lickGenFrameDimension =
           new Dimension(1100, 750);
   public static final int defaultMeasPerLine = 4;
@@ -152,12 +150,12 @@ public class Notate
   public static final char TRUE_CHECK_BOX = 'y';
 
   public static final char FALSE_CHECK_BOX = 'n';
-  
+
   private static final int ALWAYS_USE_BASS_INDEX = 0;
   private static final int ALWAYS_USE_CHORD_INDEX = 1;
   private static final int ALWAYS_USE_MELODY_INDEX = 2;
   private static final int ALWAYS_USE_STAVE_INDEX = 3;
-  
+
   public static final int MIN_TEMPO = 30;
   public static final int MAX_TEMPO = 300;
 
@@ -184,7 +182,7 @@ public class Notate
 
   public static String windowTitlePrefixSeparator = ": ";
 
-  
+
   /**
    *
    * Used as a prefix on leadsheet titles
@@ -192,7 +190,7 @@ public class Notate
    */
   public static String leadsheetTitlePrefix = "Leadsheet: ";
 
- 
+
   /**
    *
    * Standard file for vocabulary
@@ -200,7 +198,7 @@ public class Notate
    */
   public String vocFile = "My.voc";
 
-  
+
  /**
   *
   * file for musicXML chord description
@@ -208,7 +206,7 @@ public class Notate
   */
   public String musicxmlFile = "chord_musicxml.xml";
 
- 
+
   /**
    *
    * Standard file for leadsheet
@@ -387,12 +385,12 @@ public class Notate
    *
    */
   private LickGen lickgen;
-  
+
   private ArrayList<String> melodyData = new ArrayList<String>();
 
 
   private static LogDialog logDialog = new LogDialog(false);
-  
+
   /**
    * this will be set to true during extraction of all measures in a corpus
    */
@@ -404,11 +402,11 @@ public class Notate
    * Default values pertinent to lick generation
    *
    */
-  
+
   private double roundTo = BEAT;
-  
+
   private int paddingSlots = BEAT/2;
- 
+
   private int minPitch = 60;
 
   private int maxPitch = 82;
@@ -452,19 +450,19 @@ public class Notate
   private boolean toLoop = false;
 
   private int loopCount = 1;
-  
+
   private int stopPlaybackAtSlot = 16*BEAT; // in case StyleEditor used first
-  
+
   private int numStavesPP = 0;
 
   private static int QUANTUM = BEAT/2;
-  
+
   /**
    * Set this value if a roadmap created this frame.
    */
-  
+
   private RoadMapFrame createdByRoadmap = null;
-  
+
 
   synchronized public void setPlaybackStop(int slot, String message)
   {
@@ -484,7 +482,7 @@ public class Notate
   private FileDialog saveAWT;
 
   private JFileChooser revertLSFC;
-  
+
   private JFileChooser personalizeFC;
 
   private LeadsheetPreview lsOpenPreview;
@@ -587,12 +585,12 @@ public class Notate
    * possible exception is if one changeEvent listener fires another
    *
    * changeEvent listener, but this probably won't happen anyway.
-   * 
+   *
    * But it does happen with the addition of sliders in other windows, 9/24/11
    */
-  
+
   private boolean jSliderIgnoreStateChangedEvt = false;
-  
+
   private boolean toolbarVolumeSliderIgnoreStateChangedEvt = false;
 
   private boolean mixerSliderIgnoreStateChangedEvt = false;
@@ -627,7 +625,7 @@ public class Notate
   private File savedMidi;
 
   private File savedMusicXML;
-  
+
   private String grammarFilename = null;
 
   private String lickTitle = "unnamed";
@@ -638,9 +636,9 @@ public class Notate
    *
    */
   private MidiSynth midiSynth = null; // one midiSynth is created for each Notate instance for volume control and MIDI sequencing
-  
+
   private MidiSynth midiSynth2 = null;
-  
+
   private MidiSynth midiSynth3 = null;
 
   private MidiManager midiManager = null; // reference to global midiManager contained in ImproVisor
@@ -684,13 +682,13 @@ public class Notate
   private SectionInfo sectionInfo;
 
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
-  
+
   private DefaultListModel voicingSequenceListModel = new DefaultListModel();
-  
+
   private imp.gui.VoicingKeyboard keyboard = null;
- 
+
   private imp.gui.StepEntryKeyboard stepKeyboard = null;
-  
+
   private static DefaultTableCellRenderer voicingRenderer = new DefaultTableCellRenderer()
     {
     @Override
@@ -790,14 +788,14 @@ public class Notate
   PlaybackSliderManager playbackManager;
 
   ActionListener repainter;
-  
+
   int recurrentIteration = 1;
 
   /**
    * Use to decide whether to trigger scrolling early.
    * Declare final, as it is accessed from inner class
    */
-  
+
   final int earlyScrollMargin = 160;
 
 
@@ -909,10 +907,10 @@ public class Notate
     super();
 
     setTitle(score.getTitle());
-    
+
     setTransposition(score.getTransposition());
-    
-    // all windows should be registered when created 
+
+    // all windows should be registered when created
     // so that the window menu can construct a list of windows
 
     WindowRegistry.registerWindow(this);
@@ -950,7 +948,7 @@ public class Notate
     musicxmlfc = new JFileChooser();
 
     grammarfc = new JFileChooser();
-    
+
     setGrammarFilename(ImproVisor.getGrammarFile().getAbsolutePath());
 
     midiLatencyMeasurement = new MidiLatencyMeasurementTool(this);
@@ -985,7 +983,7 @@ public class Notate
 
 
     midiSynth = new MidiSynth(midiManager);
-    
+
     midiSynth2 = new MidiSynth(midiManager);
 
     midiSynth3 = new MidiSynth(midiManager);
@@ -995,7 +993,7 @@ public class Notate
     setStepInput(false);
 
     criticDialog = new CriticDialog(lickgenFrame);
- 
+
 
     // setup the file choosers' initial paths
 
@@ -1102,7 +1100,7 @@ public class Notate
 
     defBassInst = new InstrumentChooser();
 
-    
+
     repainter = new PlayActionListener();
 
 
@@ -1110,7 +1108,7 @@ public class Notate
 
     ChordDescription.load(ImproVisor.getVocabDirectory() + File.separator + musicxmlFile);
 
-    
+
     initComponents();
 
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
@@ -1118,11 +1116,11 @@ public class Notate
     populateNotateGrammarMenu();
 
     postInitComponents();
-    
+
     globalBtn.setFocusPainted(false);
-    
+
     errorDialog.setLocationRelativeTo(this);
-    
+
     // sets the title of the frames to the score title
 
     setTitle(score.getTitle());
@@ -1145,12 +1143,12 @@ public class Notate
 
     /* Why is this here? I don't know. It resets the section info of the score,
      * which seems dumb. I commented it out so that scores can retain their sections
-     * 
+     *
      * Answer: Without this, new leadsheets open with Style: unknown, which is not good.
-     * 
+     *
      * See Score.setStyle() for an attempted fix.
      */
-    
+
     //score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
      sectionInfo = score.getChordProg().getSectionInfo().copy();
@@ -1213,8 +1211,8 @@ public class Notate
             }
           }
         }
-      }, 
-                                                    
+      },
+
       AWTEvent.KEY_EVENT_MASK);
 
     setVolumeDefaults();
@@ -1233,19 +1231,19 @@ public class Notate
     setSliderVolumes(DEFAULT_SLIDER_VOLUME);
 
     midiRecordSnapSpinner.setValue(Preferences.getMidiRecordSnap());
-    
+
     setNormalMode();
     } // end of Notate constructor
 
-  
+
   boolean showConstructionLinesAndBoxes = true;
   boolean saveConstructionLineState;
-  
+
   public boolean getShowConstructionLinesAndBoxes()
     {
-     return !isPlaying() && showConstructionLinesAndBoxes; 
+     return !isPlaying() && showConstructionLinesAndBoxes;
     }
-  
+
   public static void setDefaultButton(JDialog dialog, JButton button)
     {
     dialog.getRootPane().setDefaultButton(button);
@@ -1259,7 +1257,7 @@ public class Notate
   public void postInitComponents()
     {
     notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
-    
+
     voicingTestFrame.pack();
 
     voicingTestFrame.setSize(875, 525);
@@ -1277,7 +1275,7 @@ public class Notate
     defChordInst.setDialog(preferencesDialog);
 
     defBassInst.setDialog(preferencesDialog);
-    
+
     // The following determines how the preferences dialog will open
     // in terms of which tab is presented initially.
 
@@ -1288,7 +1286,7 @@ public class Notate
     preferencesDialog.setLocationRelativeTo(this);
 
     lickgenFrame.pack();
-    
+
     lickgenFrame.resetTriageParameters(false);
 
     // NOTE: This is tricky, because the IDE doesn't do it for you.
@@ -1304,10 +1302,10 @@ public class Notate
      * configure the playback manager with the components that it should manage
      */
 
-    playbackManager = new PlaybackSliderManager(midiSynth, 
+    playbackManager = new PlaybackSliderManager(midiSynth,
                                                 playbackTime,
-                                                playbackTotalTime, 
-                                                playbackSlider, 
+                                                playbackTotalTime,
+                                                playbackSlider,
                                                 repainter);
     }
 
@@ -1412,8 +1410,8 @@ public class Notate
       return null;
       }
     }
-  
-  
+
+
   public boolean stepInputSelected()
   {
       return stepInputBtn.isSelected();
@@ -1423,7 +1421,7 @@ public class Notate
    *
    * This method is called from within the constructor to
    *
-   * initialize the form. 
+   * initialize the form.
    *
    * WARNING: Do NOT modify this code. The content of this method is
    *
@@ -8786,17 +8784,17 @@ public class Notate
 //  {
 //    playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
 //  }
-  
+
 //public void playCurrentSelection(boolean playToEndOfChorus)
 //  {
 //    playCurrentSelection(playToEndOfChorus, 0, PlayScoreCommand.USEDRUMS);
 //  }
-  
+
 //public void playCurrentSelection(boolean playToEndOfChorus, int loopCount)
 //  {
 //    playCurrentSelection(playToEndOfChorus, loopCount, PlayScoreCommand.USEDRUMS);
 //  }
-  
+
 public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boolean useDrums, String message)
   {
     setMode(Mode.PLAYING);
@@ -8841,47 +8839,47 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     }
 
     private void helpAboutMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutMIActionPerformed
-      showAboutDialog();       
+      showAboutDialog();
     }//GEN-LAST:event_helpAboutMIActionPerformed
 
     private void helpMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMIActionPerformed
 
       openHelpDialog();
-        
+
     }//GEN-LAST:event_helpMIActionPerformed
 
     private void contourPrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contourPrefsMIActionPerformed
 
       changePrefTab(contourBtn, contourPreferences);
       showPreferencesDialog();
-        
+
     }//GEN-LAST:event_contourPrefsMIActionPerformed
 
     private void midiPrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiPrefsMIActionPerformed
 
       changePrefTab(midiBtn, midiPreferences);
       showPreferencesDialog();
-        
+
     }//GEN-LAST:event_midiPrefsMIActionPerformed
 
     private void stylePrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stylePrefsMIActionPerformed
       changePrefTab(styleBtn, stylePreferences);
       showPreferencesDialog();
-        
+
     }//GEN-LAST:event_stylePrefsMIActionPerformed
 
     private void leadsheetPrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leadsheetPrefsMIActionPerformed
 
       changePrefTab(leadsheetBtn, leadsheetPreferences);
       showPreferencesDialog();
-        
+
     }//GEN-LAST:event_leadsheetPrefsMIActionPerformed
 
     private void globalPrefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_globalPrefsMIActionPerformed
 
       changePrefTab(globalBtn, globalPreferences);
       showPreferencesDialog();
-        
+
     }//GEN-LAST:event_globalPrefsMIActionPerformed
 
   private String tempoSetOldTempo;
@@ -8889,15 +8887,15 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     private void tempoSetFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tempoSetFocusGained
 
       tempoSetOldTempo = tempoSet.getText();
-        
+
     }//GEN-LAST:event_tempoSetFocusGained
 
-    
+
 private void setSectionParameters()
   {
   setSectionPrefs();
 
-  sectionListModel.refresh(); 
+  sectionListModel.refresh();
   }
 
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
@@ -8919,18 +8917,18 @@ private void setSectionParameters()
         }
 
       sectionListModel.refresh();
-        
+
     }//GEN-LAST:event_delSectionButtonActionPerformed
 
 /**
  * Called when the Section List state changes
- * @param evt 
+ * @param evt
  */
-    
+
     private void sectionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_sectionListValueChanged
 
       sectionListModel.refresh();
-        
+
     }//GEN-LAST:event_sectionListValueChanged
 
     public void toCritic()
@@ -8946,7 +8944,7 @@ private void setSectionParameters()
         getCurrentStave().unlockSelectionWidth();
         }
     }
-    
+
 private void setStepInputBtn(boolean selected)
 {
     if( selected )
@@ -8964,11 +8962,11 @@ private void setStepInputBtn(boolean selected)
       stepInputBtn.setBackground(Color.GREEN);
       setNormalStatus();
       }
-    
+
     setStepInput(selected);
     staveRequestFocus();
 }
-     
+
     private void stepInputBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepInputBtnActionPerformed
 
     setStepInputBtn(stepInputBtn.isSelected());
@@ -8984,11 +8982,11 @@ private void setStepInputBtn(boolean selected)
       setStepInput(false);
       stepInputBtn.setSelected(false);
     }
-  
+
     private void addRestMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRestMIActionPerformed
 
       addRest();
-        
+
     }//GEN-LAST:event_addRestMIActionPerformed
 
     private void styleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_styleListValueChanged
@@ -9001,7 +8999,7 @@ private void setStepInputBtn(boolean selected)
     private void defDrumVolSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_defDrumVolSliderStateChanged
 
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_defDrumVolSliderStateChanged
 
     private void showEmptyTitlesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showEmptyTitlesMIActionPerformed
@@ -9014,13 +9012,13 @@ private void setStepInputBtn(boolean selected)
         stave.setShowEmptyTitles(showEmptyTitlesMI.isSelected());
 
         stave.repaint();
-        }        
+        }
     }//GEN-LAST:event_showEmptyTitlesMIActionPerformed
 
     private void preferencesDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_preferencesDialogWindowClosing
 
       hideFakeModalDialog(preferencesDialog);
-        
+
     }//GEN-LAST:event_preferencesDialogWindowClosing
 
     private void overwriteLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_overwriteLickButtonActionPerformed
@@ -9030,11 +9028,11 @@ private void setStepInputBtn(boolean selected)
       ignoreDuplicateLick = OVERWRITE;
 
       duplicateLickDialog.setVisible(false);
-        
+
     }//GEN-LAST:event_overwriteLickButtonActionPerformed
 
     private void insertVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertVoicingButtonActionPerformed
-     
+
       Style currentStyle =
               ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
 
@@ -9128,9 +9126,9 @@ private void setStepInputBtn(boolean selected)
         ChordSymbol c =
                 ChordSymbol.makeChordSymbol(
                 voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString());
-        
+
         //ChordSymbol c = ChordSymbol.makeChordSymbol(v);
-        
+
         c.setVoicing(voicing);
 
         c.setExtension(extension);
@@ -9161,13 +9159,13 @@ private void setStepInputBtn(boolean selected)
      * Not exactly clear what this means when a score has multiple sections,
      * each with its own style.
      */
-    
+
     public Style getCurrentStyle()
       {
       return ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
       }
-    
-    
+
+
     /**
      * Plays a string of pitches as a chord over a given symbol.
      *
@@ -9208,7 +9206,7 @@ private void setStepInputBtn(boolean selected)
         voicing = NoteSymbol.makeNoteSymbolList(voicing);
 
         ChordSymbol c = ChordSymbol.makeChordSymbol(symbol);
-        
+
         if (voicing == null || c == null)
         {
             return;
@@ -9223,10 +9221,10 @@ private void setStepInputBtn(boolean selected)
         ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
         }
      }
-    
+
     /**
      * Plays the chord at the given index, if any
-     * @param index 
+     * @param index
      */
     public void playChordAtIndex(int index)
     {
@@ -9251,7 +9249,7 @@ private void setStepInputBtn(boolean selected)
         }
         chordToPlay.setRhythmValue(temp);
     }
-    
+
     private void playVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playVoicingButtonActionPerformed
       String c = getChordRootTFText();
       String v = voicingEntryTFText();
@@ -9260,7 +9258,7 @@ private void setStepInputBtn(boolean selected)
 
 public void playCurrentVoicing()
 {
-  
+
       String v = voicingEntryTF.getText();
 
       String e = extEntryTF.getText();
@@ -9351,9 +9349,9 @@ public void playCurrentVoicing()
 
         ChordSymbol c =
                 ChordSymbol.makeChordSymbol(voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString());
-        
+
         String s = voicingTableModel.getValueAt(row, VoicingTableChordColumn).toString();
-                
+
         c.setVoicing(voicing);
 
         c.setExtension(extension);
@@ -9363,7 +9361,7 @@ public void playCurrentVoicing()
       else
         {
         ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
-        }       
+        }
 }
 
 
@@ -9445,7 +9443,7 @@ private String getChordRedirectName(int row)
       grammarEditor.setVisible(true);
       grammarEditor.toFront();
     }
-    
+
     public void loadGrammar()
     {
       lickgen.loadGrammar(grammarFilename);
@@ -9468,7 +9466,7 @@ private String getChordRedirectName(int row)
       if( grammarfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
         {
         String filename = grammarfc.getSelectedFile().getAbsolutePath();
-        
+
         setGrammarFilename(filename);
 
         lickgen.loadGrammar(filename);
@@ -9483,7 +9481,7 @@ private String getChordRedirectName(int row)
     private static int VoicingTableTypeColumn      = 2;
     private static int VoicingTableVoicingColumn   = 3;
     private static int VoicingTableExtensionColumn = 4;
-    
+
     private void voicingTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voicingTableMouseClicked
 
       keyboard.setPlayback(false);
@@ -9524,9 +9522,9 @@ private String getChordRedirectName(int row)
 
             if( ChordPattern.goodVoicing(c, s) )
               {
-              Polylist L = 
+              Polylist L =
                   ChordPattern.findFirstVoicingAndExtension(c, s.getChordBase(), s, false);
-              
+
               c.setVoicing((Polylist)L.first());
 
               c.setExtension((Polylist)L.second());
@@ -9534,7 +9532,7 @@ private String getChordRedirectName(int row)
               v = NoteSymbol.makePitchStringList((Polylist)L.first()).toString();
 
               e = NoteSymbol.makePitchStringList((Polylist)L.second()).toString();
-              
+
               }
             else
               {
@@ -9559,16 +9557,16 @@ private String getChordRedirectName(int row)
                 v = NoteSymbol.makePitchStringList((Polylist)L.first()).toString();
 
                 e = NoteSymbol.makePitchStringList((Polylist)L.second()).toString();
-                
+
                 }
               }
-            
+
             if( keyboard != null )
               {
               clearKeyboard();
               clearVoicingEntryTF();
               }
-            
+
             if( e.equals("()" ) )
               {
               extEntryTF.setText("");
@@ -9577,15 +9575,15 @@ private String getChordRedirectName(int row)
               {
               extEntryTF.setText(e);
               }
-            
+
             keyboard.setPresentChordDisplayText(c.toString());
             voicingEntryTF.setText(v);
             keyboard.showVoicingOnKeyboard(v);
             chordSearchTF.setText(c.toString());
-            
+
             String root = chordRootTF.getText();
             String bass = bassNoteTF.getText();
-            
+
             int midi = keyboard.findBass();
             String note = keyboard.findBassName(midi);
             if (!note.equals(bass))
@@ -9593,13 +9591,13 @@ private String getChordRedirectName(int row)
                 bassNoteTF.setText(bass);
             }
             keyboard.setBass(bass, midi);
-            
+
             playVoicing(c);
             }
 /*
           // Column 5 is not used, so what is this for?
 
-          if( o instanceof ChordSymbol 
+          if( o instanceof ChordSymbol
                && (Boolean)voicingTableModel.getValueAt(selectedRow,5) )
             {
             int index = ImproVisor.getCurrentWindow().getCurrentSelectionStart();
@@ -9645,10 +9643,10 @@ private String getChordRedirectName(int row)
     Style s = score.getChordProg().getStyle().copy();
 
     s.setNoStyle(true);
-    
+
     // I hope these are overridden subsequently:
 
-    s.setChordLow(NoteSymbol.makeNoteSymbol("c-----")); 
+    s.setChordLow(NoteSymbol.makeNoteSymbol("c-----"));
 
     s.setChordHigh(NoteSymbol.makeNoteSymbol("g+++++"));
 
@@ -9667,92 +9665,92 @@ private String getChordRedirectName(int row)
 
     cScore.setStyle(s);
 
-    new PlayScoreCommand(cScore, 
-                         0, 
-                         false, 
-                         midiSynth, 
-                         this, 
-                         0, 
-                         getTransposition(), 
-                         false, 
+    new PlayScoreCommand(cScore,
+                         0,
+                         false,
+                         midiSynth,
+                         this,
+                         0,
+                         getTransposition(),
+                         false,
                          4*BEAT).execute();
     }
-  
-  
+
+
  public void setTransposition(int transposition)
     {
      if( transposeSpinner != null )
      {
        transposeSpinner.setValue(transposition);
      }
-   
+
     if( score != null )
       {
       score.setTransposition(transposition);
       }
     }
- 
+
     private void buildVoicingTable()
     {
         String root = chordRootTF.getText();
         String bass = bassNoteTF.getText();
         String low = lowRangeTF.getText();
         String high = highRangeTF.getText();
-        
+
         PitchClass rootClass = PitchClass.getPitchClass(root);
-        
+
         if(root.equals("")) {
             ErrorLog.log(ErrorLog.WARNING, "No chord root entered.");
             return;
         }
-        
+
         else if(rootClass == null) {
             ErrorLog.log(ErrorLog.WARNING, "Invalid chord root: " + root);
             return;
         }
-        
+
         PitchClass bassClass = PitchClass.getPitchClass(bass);
-        
+
         if(!bass.equals("") && bassClass == null) {
             ErrorLog.log(ErrorLog.WARNING, "Invalid bass note: " + bass);
             return;
         }
-        
+
         NoteSymbol lowNote = NoteSymbol.makeNoteSymbol(low);
-        
+
         if(low.equals("")) {
             ErrorLog.log(ErrorLog.WARNING, "No lower range entered.");
             return;
         }
-        
+
         else if(lowNote == null) {
             ErrorLog.log(ErrorLog.WARNING, "Invalid lower range: " + low);
             return;
         }
-        
+
         NoteSymbol highNote = NoteSymbol.makeNoteSymbol(high);
-        
+
         if(high.equals("")) {
             ErrorLog.log(ErrorLog.WARNING, "No higher range entered.");
             return;
         }
-        
+
         else if(highNote == null) {
             ErrorLog.log(ErrorLog.WARNING, "Invalid higher range: " + high);
             return;
         }
-        
+
         voicingTableModel.setChordRoot(root,bass,lowNote,highNote);
     }
- 
-    
+
+
     private void buildTableButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buildTableButtonActionPerformed
     {
         buildVoicingTable();
     }//GEN-LAST:event_buildTableButtonActionPerformed
-    
-    
-    
+
+
+
     /**
      *
      * flag to reset position of dialog the first time it is displayed only
@@ -9762,9 +9760,9 @@ private String getChordRedirectName(int row)
      * when the dialog is shown a second time, it remembers it's last position
      *
      */
-    
+
     private boolean initLocationVoicingFrame = false;
-    
+
     private void voicingTestMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingTestMIActionPerformed
 
         if( !initLocationVoicingFrame )
@@ -9784,11 +9782,11 @@ private String getChordRedirectName(int row)
             keyboard.showBass();
           }
     }//GEN-LAST:event_voicingTestMIActionPerformed
-    
-    
-        
-    
-    
+
+
+
+
+
     private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
       if( mode == Mode.PLAYING_PAUSED )
         {
@@ -9810,9 +9808,9 @@ private String getChordRedirectName(int row)
           }
         }
     }//GEN-LAST:event_pauseBtnActionPerformed
-    
-    
-    
+
+
+
 public void pauseScore()
   {
     if( !playingStopped() )
@@ -9820,9 +9818,9 @@ public void pauseScore()
         midiSynth.pause();
       }
   }
-    
-    
-    
+
+
+
     private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tempoSliderStateChanged
 
         if( jSliderIgnoreStateChangedEvt )
@@ -9843,7 +9841,7 @@ public void pauseScore()
             staveRequestFocus();
           }
     }//GEN-LAST:event_tempoSliderStateChanged
-    
+
 
 private void setPlaybackManagerTime()
     {
@@ -9853,31 +9851,31 @@ private void setPlaybackManagerTime()
 
 
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
-        
+
         closeWindow();
-        
+
     }//GEN-LAST:event_closeWindowMIActionPerformed
-    
-    
-    
+
+
+
     private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
-        
+
         WindowRegistry.cascadeWindows(this);
-        
+
     }//GEN-LAST:event_cascadeMIActionPerformed
-    
-    
+
+
 /**
  *
  * Set the status message of the Program Status field
  *
  */
-    
+
 public void setStatus(String text)
-  {  
+  {
     statusMenu.setOpaque(true);
     statusMenu.setBackground(Color.green);
-    statusMenu.setText(text); 
+    statusMenu.setText(text);
     statusMenu.repaint();
   }
 
@@ -9906,7 +9904,7 @@ public void setMode(Mode mode)
       }
 
    this.mode = mode;
-   
+
    switch( mode )
       {
         case NORMAL:
@@ -9923,13 +9921,13 @@ public void setMode(Mode mode)
             break;
         case GENERATING:
             setStatus("Generating melody");
-            break;      
+            break;
         case GENERATED:
             setStatus("Melody generated");
-            break;         
+            break;
         case ROADMAP:
             setStatus("Creating Roadmap");
-            break;      
+            break;
         case ADVICE:
             setStatus("Select Advice.");
             break;
@@ -9947,7 +9945,7 @@ public void setMode(Mode mode)
             break;
         case PLAYING_PAUSED:
             setStatus("Playing Paused");
-            break; 
+            break;
         case IMPORTING_MIDI:
             setStatus("Importing MIDI");
             break;      }
@@ -9959,7 +9957,7 @@ public void setNormalMode()
   {
     setMode(Mode.NORMAL);
   }
-        
+
 /**
  *
  * Tells other classes what mode the Notate object is in
@@ -9974,7 +9972,7 @@ public Mode getMode()
 
 /**
  *
- * Stops recording: unregisteres the midiRecorder and changes the mode
+ * Stops recording: unregisters the midiRecorder and changes the mode
  *
  */
 
@@ -9984,6 +9982,7 @@ public void stopRecording()
       {
         setMode(previousMode);
 //        extractor.stopCapture();
+//        extractor.closeTargetLine();
       }
 
     playBtn.setEnabled(true);
@@ -9991,12 +9990,12 @@ public void stopRecording()
     recordBtn.setIcon(recordImageIcon);
 
     recordBtn.setBackground(null);
-    
+
     if( midiRecorder != null )
       {
       midiSynth.unregisterReceiver(midiRecorder);
       }
-    
+
     if( stepInputActive )
       {
         // if step input was active, reenable it since it is disabled during recording
@@ -10017,7 +10016,7 @@ public void stopRecording()
 private void startRecording()
   {
     turnStepInputOff();
-    
+
     if( midiManager.getInDevice() == null )
       {
         ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
@@ -10025,12 +10024,21 @@ private void startRecording()
         return;
       }
 
+//    extractor = new PitchExtraction(this, score, captureInterval);
+//    extractor.openTargetLine();
+//    extractor.setThisMeasure(true);
+//    extractor.captureAudio();
+//    synchronized (extractor.thisMeasure)
+//    {
+//        extractor.thisMeasure.notify();
+//    }
+
     playBtn.setEnabled(false);
 
     recordBtn.setIcon(recordActiveImageIcon);
 
     recordBtn.setBackground(Color.RED);
-    
+
     if( midiRecorder == null )
       {
         midiRecorder = new MidiRecorder(this, score);
@@ -10049,10 +10057,6 @@ private void startRecording()
     midiSynth.registerReceiver(midiRecorder);
 
     midiRecorder.start(score.getCountInOffset());   // set time to 0
-    
-    extractor = new PitchExtraction(score);
-    notFirstMeasure = false;
-    extractor.captureAudio();
   }
 
 /**
@@ -10062,7 +10066,7 @@ private void enableRecording()
   {
     //debug System.out.println("enableRecording()");
     turnStepInputOff();
-    
+
     if( midiManager.getInDevice() == null )
       {
         ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
@@ -10075,7 +10079,7 @@ private void enableRecording()
     recordBtn.setIcon(recordActiveImageIcon);
 
     recordBtn.setBackground(Color.RED);
-    
+
     if( midiRecorder == null )
       {
         midiRecorder = new MidiRecorder(this, score);
@@ -10103,7 +10107,7 @@ void stopPlaying()
   {
     stopPlaying(" unlabeled");
   }
-    
+
 void stopPlaying(String reason)
   {
     midiSynth.stop("stop in Notate: " + reason);
@@ -10129,11 +10133,11 @@ private void setStepInput(boolean active)
         midiSynth.unregisterReceiver(midiStepInput);
       }
   }
-    
+
     private void recordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordBtnActionPerformed
     recordFromMidi();
     }//GEN-LAST:event_recordBtnActionPerformed
-    
+
 private void recordFromMidi()
   {
     if( mode == Mode.RECORDING )
@@ -10145,7 +10149,7 @@ private void recordFromMidi()
         startRecording();
       }
   }
-    
+
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
 
         if( keyboard != null && keyboard.isVisible() )
@@ -10154,9 +10158,9 @@ private void recordFromMidi()
           }
         playScore();
     }//GEN-LAST:event_playBtnActionPerformed
-    
-    
-    
+
+
+
     private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
 
         windowMenu.removeAll();
@@ -10176,29 +10180,29 @@ private void recordFromMidi()
 
         windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
-    
 
-private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)   
+
+private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
     {
         verifyTriageFields();
-        
+
         if (autoFill)
-            
+
             FillProbsButtonActionPerformed(null);
-        
+
     }
 
     void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)
     {
 
     }
-    
+
     private void openGeneratorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGeneratorButtonActionPerformed
 
     {//GEN-HEADEREND:event_openGeneratorButtonActionPerformed
-        
+
         lickGeneratorMIActionPerformed(evt);
-        
+
     }//GEN-LAST:event_openGeneratorButtonActionPerformed
 
 
@@ -10211,50 +10215,50 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
     }
 
     private void contourBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contourBtnActionPerformed
-        
+
         changePrefTab(contourBtn, contourPreferences);
-        
+
     }//GEN-LAST:event_contourBtnActionPerformed
-    
-    
-    
+
+
+
     private void overrideFrameadviceWindowClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_overrideFrameadviceWindowClosing
 
     {//GEN-HEADEREND:event_overrideFrameadviceWindowClosing
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_overrideFrameadviceWindowClosing
-    
-    
-    
+
+
+
     private void overrideFrameadviceFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_overrideFrameadviceFocusGained
 
     {//GEN-HEADEREND:event_overrideFrameadviceFocusGained
-                
+
     }//GEN-LAST:event_overrideFrameadviceFocusGained
-    
-    
-    
+
+
+
     private void overrideFrameComponentHidden(java.awt.event.ComponentEvent evt)//GEN-FIRST:event_overrideFrameComponentHidden
 
     {//GEN-HEADEREND:event_overrideFrameComponentHidden
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_overrideFrameComponentHidden
-    
-    
-    
+
+
+
     private void formFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_formFocusGained
 
     {//GEN-HEADEREND:event_formFocusGained
-        
-        
+
+
     }//GEN-LAST:event_formFocusGained
-    
-    
-    
+
+
+
 public void focus()
   {
     setVisible(true);
@@ -10266,43 +10270,43 @@ public void focus()
     staveRequestFocus();
   }
 
-    
-    
+
+
     private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
-        
+
         setPrefsDialog();
         numStavesPerPage.setText(Preferences.DEFAULT_STAVES_PER_PAGE);
-        
+
     }//GEN-LAST:event_resetBtnActionPerformed
-    
+
     public void setVolumes(MidiSynth midiSynth) {
         midiSynth.setChannelVolume(getBassChannel(),   bassVolume.getValue());
         midiSynth.setChannelVolume(getDrumChannel(),   drumVolume.getValue());
         midiSynth.setChannelVolume(getChordChannel(),  chordVolume.getValue());
         midiSynth.setChannelVolume(getMelodyChannel(), melodyVolume.getValue());
     }
-    
-    
+
+
 public int getMelodyChannel()
   {
     return ((Integer)melodyChannelSpinner.getValue()).intValue() - 1;
   }
-    
+
 public int getChordChannel()
   {
     return ((Integer)chordChannelSpinner.getValue()).intValue() - 1;
   }
-    
+
 public int getBassChannel()
   {
     return ((Integer)bassChannelSpinner.getValue()).intValue() - 1;
   }
-    
+
 public int getDrumChannel()
   {
     return ((Integer)drumChannelSpinner.getValue()).intValue() - 1;
   }
- 
+
 public void setMelodyChannel(int value)
   {
     melodyChannelSpinner.setValue(value+1);
@@ -10317,7 +10321,7 @@ public void setBassChannel(int value)
   {
     bassChannelSpinner.setValue(value+1);
   }
-   
+
 public void setDrumChannel(int value)
   {
     drumChannelSpinner.setValue(value+1);
@@ -10340,11 +10344,11 @@ private void setChannelVolumes(int channel, int volume)
   }
 
     private void drumMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drumMuteActionPerformed
-        
+
         drumVolumeChanged();
-        
+
     }//GEN-LAST:event_drumMuteActionPerformed
-    
+
 
 private void drumVolumeChanged()
   {
@@ -10417,9 +10421,9 @@ private void melodyVolumeChanged()
         setMelodyVolume(v);
       }
   }
-   
-    
-    
+
+
+
 public void chordVolumeChanged()
   {
     cm.changedSinceLastSave(true);
@@ -10446,27 +10450,27 @@ public void chordVolumeChanged()
           }
       }
   }
-    
+
 public void setMelodyVolume(int v)
   {
     setChannelVolumes(getMelodyChannel(), v);
   }
-    
+
 public void setChordVolume(int v)
   {
     setChannelVolumes(getChordChannel(), v);
   }
-    
+
 public void setBassVolume(int v)
   {
     setChannelVolumes(getBassChannel(), v);
   }
-    
+
 public void setDrumVolume(int v)
   {
     setChannelVolumes(getDrumChannel(), v);
   }
-    
+
 private void setMuteAll(boolean muted)
   {
     score.setMasterVolumeMuted(muted);
@@ -10494,33 +10498,33 @@ private void setMuteAll(boolean muted)
 
     mixerMasterVolumeChanged();
   }
-    
+
 
 /**
  * Set the volume of all sliders and the score.
- * @param value 
+ * @param value
  */
 
 public void setSliderVolumes(int value)
   {
     allVolumeMixerSlider.setValue(value);
     allVolumeToolBarSlider.setValue(value);
-    
+
     if( roadmapFrame != null )
       {
         roadmapFrame.setVolumeSlider(value);
       }
-    
+
     if( score != null )
       {
         score.setMasterVolume(value);
       }
   }
-    
+
 private void mixerMasterVolumeChanged()
   {
     int v = allVolumeMixerSlider.getValue();
-    
+
     setSliderVolumes(v);
 
     if( score.getMasterVolumeMuted() )
@@ -10540,7 +10544,7 @@ private void mixerMasterVolumeChanged()
         setMasterVolumes(v);
       }
   }
-   
+
 
 public void setMasterVolumes(int v)
   {
@@ -10560,7 +10564,7 @@ public void setMasterVolumes(int v)
       }
   }
 
-    
+
 private void setVolumeDefaults()
   {
     setSliderVolumes(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ALL)));
@@ -10575,25 +10579,25 @@ private void setVolumeDefaults()
 
     entryVolume.setValue(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MIXER_ENTRY)));
   }
-    
-    
-    
+
+
+
     private void allMuteMixerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allMuteMixerBtnActionPerformed
-        
+
         setMuteAll(allMuteMixerBtn.isSelected());
-        
+
     }//GEN-LAST:event_allMuteMixerBtnActionPerformed
-    
-    
-    
+
+
+
     private void drumVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_drumVolumeStateChanged
-        
+
         drumVolumeChanged();
-        
+
     }//GEN-LAST:event_drumVolumeStateChanged
-    
-    
-    
+
+
+
     private void allVolumeMixerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_allVolumeMixerSliderStateChanged
 
         if( mixerSliderIgnoreStateChangedEvt )
@@ -10607,17 +10611,17 @@ private void setVolumeDefaults()
 
         mixerSliderIgnoreStateChangedEvt = false;
     }//GEN-LAST:event_allVolumeMixerSliderStateChanged
-    
-    
-    
+
+
+
     private void preferencesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuActionPerformed
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_preferencesMenuActionPerformed
-    
-    
-    
+
+
+
 private void showMixer()
   {
     mixerDialog.pack();
@@ -10625,30 +10629,30 @@ private void showMixer()
     mixerDialog.setVisible(true);
   }
 
-    
-    
+
+
     private void mixerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mixerBtnActionPerformed
-        
+
         showMixer();
-        
+
     }//GEN-LAST:event_mixerBtnActionPerformed
-    
-    
-    
+
+
+
     private void allMuteToolBarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allMuteToolBarBtnActionPerformed
-        
+
         setMuteAll(allMuteToolBarBtn.isSelected());
-        
-        staveRequestFocus();      
+
+        staveRequestFocus();
     }//GEN-LAST:event_allMuteToolBarBtnActionPerformed
-    
-    
-    
+
+
+
     private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
-        
+
       volumeSliderChanged(allVolumeToolBarSlider);
     }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
-    
+
 public void volumeSliderChanged(JSlider volumeSlider)
   {
       if( toolbarVolumeSliderIgnoreStateChangedEvt )
@@ -10657,152 +10661,152 @@ public void volumeSliderChanged(JSlider volumeSlider)
         }
 
       toolbarVolumeSliderIgnoreStateChangedEvt = true;
-      
+
       int value = volumeSlider.getValue();
 
       setSliderVolumes(value);
 
       toolbarVolumeSliderIgnoreStateChangedEvt = false;
-      
+
       if( !allVolumeToolBarSlider.getValueIsAdjusting() )
         {
           staveRequestFocus();
         }
   }
-    
+
     private void entryMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entryMuteActionPerformed
-        
+
         entryVolume.setEnabled(!entryMute.isSelected());
-        
+
         impro.setPlayEntrySounds(!entryMute.isSelected());
     }//GEN-LAST:event_entryMuteActionPerformed
-    
-    
-    
+
+
+
     private void entryVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_entryVolumeStateChanged
-        
+
         ImproVisor.setEntryVolume(entryVolume.getValue());
-        
+
     }//GEN-LAST:event_entryVolumeStateChanged
-    
-    
-    
+
+
+
     private void chordMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordMuteActionPerformed
-        
+
         chordVolumeChanged();
-        
+
     }//GEN-LAST:event_chordMuteActionPerformed
-    
-    
-    
+
+
+
     private void chordVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chordVolumeStateChanged
-        
+
         chordVolumeChanged();
-        
+
     }//GEN-LAST:event_chordVolumeStateChanged
-    
-    
-    
+
+
+
     private void melodyMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_melodyMuteActionPerformed
-        
+
         melodyVolumeChanged();
-        
+
     }//GEN-LAST:event_melodyMuteActionPerformed
-    
-    
-    
+
+
+
     private void melodyVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_melodyVolumeStateChanged
-        
+
         melodyVolumeChanged();
-        
+
     }//GEN-LAST:event_melodyVolumeStateChanged
-    
-    
-    
+
+
+
     private void bassVolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bassVolumeStateChanged
-        
+
         bassVolumeChanged();
-        
+
     }//GEN-LAST:event_bassVolumeStateChanged
-    
-    
-    
+
+
+
     private void bassMuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassMuteActionPerformed
-        
-        
-        
+
+
+
         bassVolumeChanged();
-        
+
     }//GEN-LAST:event_bassMuteActionPerformed
-    
-    
-    
+
+
+
     private void midiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiBtnActionPerformed
-        
+
         changePrefTab(midiBtn, midiPreferences);
-        
+
     }//GEN-LAST:event_midiBtnActionPerformed
-    
-    
-    
+
+
+
     private void styleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_styleBtnActionPerformed
-        
+
         changePrefTab(styleBtn, stylePreferences);
-       
+
     }//GEN-LAST:event_styleBtnActionPerformed
-    
-    
-    
+
+
+
     private void leadsheetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leadsheetBtnActionPerformed
-        
+
         changePrefTab(leadsheetBtn, leadsheetPreferences);
-        
+
     }//GEN-LAST:event_leadsheetBtnActionPerformed
-    
-    
-    
+
+
+
     private void globalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_globalBtnActionPerformed
-        
+
         changePrefTab(globalBtn, globalPreferences);
-        
+
     }//GEN-LAST:event_globalBtnActionPerformed
-    
-    
-    
+
+
+
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        
+
         resetDrawingPrefs();
-        
+
         preferencesDialog.setVisible(false);
 
         requestFocusInWindow();
     }//GEN-LAST:event_cancelBtnActionPerformed
-    
-    
-    
+
+
+
     private void savePrefsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePrefsBtnActionPerformed
 
-        savePrefs(); 
-        
+        savePrefs();
+
     }//GEN-LAST:event_savePrefsBtnActionPerformed
-    
-    
-        
-    
-    
+
+
+
+
+
     private Component currentPrefTab = null;
-    
+
     private JToggleButton currentPrefButton = null;
-    
+
     private Component currentGenTab = null;
     private JToggleButton currentGenButton = null;
-    
-    
-    
+
+
+
 /**
  * Used to provide access to switching preferences tabs from another class file
  */
-    
+
 void changePrefTab(JToggleButton button, JPanel tab)
   {
 
@@ -10822,7 +10826,7 @@ void changePrefTab(JToggleButton button, JPanel tab)
     preferencesDialog.repaint();
 
   }
-    
+
 void changeGenTab(JToggleButton button, JPanel tab)
   {
     currentGenButton = button;
@@ -10840,30 +10844,30 @@ void changeGenTab(JToggleButton button, JPanel tab)
 
   }
 
-    
+
     private void echoMidiCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_echoMidiCheckBoxActionPerformed
-        
-        midiManager.setEcho(echoMidiCheckBox.isSelected());        
+
+        midiManager.setEcho(echoMidiCheckBox.isSelected());
     }//GEN-LAST:event_echoMidiCheckBoxActionPerformed
-    
-    
-    
+
+
+
     private void midiInComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiInComboBoxActionPerformed
-        
-        devicesChanged();        
+
+        devicesChanged();
     }//GEN-LAST:event_midiInComboBoxActionPerformed
-    
-    
-    
+
+
+
     private void midiOutComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_midiOutComboBoxActionPerformed
-        
-        devicesChanged();        
+
+        devicesChanged();
     }//GEN-LAST:event_midiOutComboBoxActionPerformed
-    
-    
-        
-    
-    
+
+
+
+
+
 private void devicesChanged()
   {
     midiManager.setInDevice((MidiDevice.Info) midiInComboBox.getSelectedItem());
@@ -10873,20 +10877,20 @@ private void devicesChanged()
   }
 
     String okMsg = "<html>Status: <em><font color='green'>Device ready</font></em></html>";
-    
+
     String noDevSelectedMsg = "<html>Status: <em><font color='red'>No Device Selected</font></em></html>";
-    
+
     String noDev = "<html>No devices found.</html>";
-    
+
     String failMsgStart = "<html>Status: <em><font color='red'>";
-    
+
     String failMsgEnd = "</font></em></html>";
-    
+
 public void refreshMidiStatus()
   {
 
     // get midi latency
-    
+
     saveMidiLatency();
 
     //midiLatencyTF.setText(String.valueOf(midiRecorder.getLatency()));
@@ -10939,9 +10943,9 @@ public void refreshMidiStatus()
                 : failMsgStart + midiManager.getInDeviceError() + failMsgEnd);
       }
   }
-    
-    
-    
+
+
+
 public class VoicingTableModel
     extends AbstractTableModel
 {
@@ -10985,7 +10989,7 @@ public void setChordRoot(String root, String bass, NoteSymbol low,
 
     fireTableDataChanged();
   }
-        
+
  public String getChordRoot()
   {
     return chordRoot;
@@ -11027,7 +11031,7 @@ public Object getValueAt(int row, int col)
       }
   }
 }
-    
+
 
 /**
  * This is the Model for the list of Styles that appear in the Style Preferences
@@ -11161,11 +11165,11 @@ public void refresh()
         SectionRecord record = sectionInfo.getSectionRecordByIndex(index);
 
         //System.out.println("index = " + index + ", selected record = " + record);
-        
+
         measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
-        
+
         phraseCheckBox.setSelected(record.getIsPhrase());
-        
+
         if( record.getUsePreviousStyle() )
           {
           usePreviousStyleCheckBox.setSelected(true);
@@ -11174,9 +11178,9 @@ public void refresh()
         else
           {
           usePreviousStyleCheckBox.setSelected(false);
-          styleList.setSelectedValue(record.getStyle(), true); 
+          styleList.setSelectedValue(record.getStyle(), true);
           }
-        
+
       addRecentStyle(record.getStyle());
       }
 
@@ -11221,7 +11225,7 @@ public Object getSelectedItem()
 }
 
 
- 
+
 /**
  *
  * flag to reset position of dialog the first time it is displayed only
@@ -11274,9 +11278,9 @@ private void showFileStepDialog()
           {
             keyboard.setPlayback(false);
             clearVoicingEntryTF();
-          }      
+          }
     }
-    
+
   private void setTempo(double value)
     {
     if( value >= MIN_TEMPO && value <= MAX_TEMPO )
@@ -11295,21 +11299,21 @@ private void showFileStepDialog()
     else
       {
       ErrorLog.log(ErrorLog.COMMENT,
-              "The tempo must be in the range " + MIN_TEMPO + " to " + MAX_TEMPO 
+              "The tempo must be in the range " + MIN_TEMPO + " to " + MAX_TEMPO
             + ",\nusing default: " + getDefaultTempo() + ".");
       }
     }
 
-    
+
     private void tempoSetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tempoSetFocusLost
-        
+
         updateTempoFromTextField();
-        
+
         staveRequestFocus();
-        
+
     }//GEN-LAST:event_tempoSetFocusLost
-    
-    
+
+
 private void updateTempoFromTextField()
   {
     try
@@ -11331,13 +11335,13 @@ private void updateTempoFromTextField()
 
     tempoSet.setForeground(Color.BLACK);
   }
-    
-    
-    
+
+
+
     private void tempoSetMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tempoSetMousePressed
 
       tempoSet.requestFocusInWindow();
-        
+
     }//GEN-LAST:event_tempoSetMousePressed
 
   private void updateLoopFromTextField()
@@ -11358,16 +11362,16 @@ private void updateTempoFromTextField()
     }
 
     private void standardToolbarComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_standardToolbarComponentMoved
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_standardToolbarComponentMoved
-    
+
   /**
    * Sets the number of bars in a chorus, per given text string.
    @param text
    */
-    
+
   public void setPartBars(String text)
     {
     int scoreBarLength = Integer.parseInt(text);
@@ -11406,36 +11410,36 @@ private void updateTempoFromTextField()
       }
     repaintAndStaveRequestFocus();
     }
-        
-    
+
+
  private void repaintAndStaveRequestFocus()
  {
    repaint();
    staveRequestFocus();
  }
-    
-    
+
+
     private void addTabBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabBtnActionPerformed
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_addTabBtnActionPerformed
-    
-    
-    
+
+
+
     private void freezeLayoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_freezeLayoutButtonActionPerformed
-        
+
         toggleFreezeLayout();
     }//GEN-LAST:event_freezeLayoutButtonActionPerformed
-    
-    
-    
+
+
+
     private Color adviceBtnColorOpen = Color.green;
-    
+
     private Color adviceBtnColorClosed = new Color(238, 212, 212);
-    
+
     private void showAdviceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAdviceButtonActionPerformed
- 
+
         boolean value = showAdviceButton.isSelected();
 
         Trace.log(2, "AdviceButton selected = " + value);
@@ -11454,32 +11458,32 @@ private void updateTempoFromTextField()
           }
 
     }//GEN-LAST:event_showAdviceButtonActionPerformed
-    
-    
-    
+
+
+
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        
+
         //System.out.println("notate focus gained");
         imp.ImproVisor.windowHasFocus(this);
-        
+
         checkFakeModalDialog();
-        
+
     }//GEN-LAST:event_formWindowGainedFocus
-    
-    
-    
+
+
+
     private void insertRestMeasureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertRestMeasureActionPerformed
-        
+
         Part singleMeasure = new Part(measureLength);
-        
+
         int measureStart = (getCurrentSelectionStart() / measureLength) * measureLength;
-        
+
         cm.execute(new InsertPartCommand(this, getCurrentMelodyPart(), measureStart, singleMeasure));
-        
+
     }//GEN-LAST:event_insertRestMeasureActionPerformed
-    
-    
-    
+
+
+
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
 
         Stave stave = getCurrentStave();
@@ -11511,52 +11515,52 @@ private void updateTempoFromTextField()
 
         stave.getActionHandler().setCursor();
 
-        stave.repaint();        
+        stave.repaint();
     }//GEN-LAST:event_drawButtonActionPerformed
-    
-    
+
+
     private void advicePMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advicePMIActionPerformed
-        
+
         adviceMIActionPerformed(null);
 
     }//GEN-LAST:event_advicePMIActionPerformed
-        
-    
+
+
     private void playMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playMenuActionPerformed
-    
+
     }//GEN-LAST:event_playMenuActionPerformed
-    
-    
-    
+
+
+
     private void newBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBtnActionPerformed
-   
+
     }//GEN-LAST:event_newBtnActionPerformed
-        
-        
-    
-        
-    
-    
+
+
+
+
+
+
     private void adviceWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_adviceWindowClosing
-        
+
         showAdviceButton.setSelected(false);
-        
+
         showAdviceButtonActionPerformed(null);
-        
+
     }//GEN-LAST:event_adviceWindowClosing
-    
-    
+
+
     private void adviceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_adviceFocusGained
 
         setMode(Mode.ADVICE);
-        
+
     }//GEN-LAST:event_adviceFocusGained
-    
-        
-    
-        
-    
-    
+
+
+
+
+
+
     private void exportAllToMidiActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_exportAllToMidiActionPerformed
 
     {//GEN-HEADEREND:event_exportAllToMidiActionPerformed
@@ -11564,121 +11568,121 @@ private void updateTempoFromTextField()
 
         exportToMidi(ALL);
     }//GEN-LAST:event_exportAllToMidiActionPerformed
-    
-    
-    
+
+
+
     private void fileMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fileMenuActionPerformed
 
     {//GEN-HEADEREND:event_fileMenuActionPerformed
-          
+
     }//GEN-LAST:event_fileMenuActionPerformed
-    
-    
-    
+
+
+
     private void enterMeasuresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterMeasuresActionPerformed
-    
+
     }//GEN-LAST:event_enterMeasuresActionPerformed
-    
-    
-    
+
+
+
     private void helpMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuActionPerformed
-        
+
                     }//GEN-LAST:event_helpMenuActionPerformed
-    
-    
-    
+
+
+
     private void enterLickTitleAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterLickTitleAction
-        
+
         okSaveButtonActionPerformed(evt);
-        
+
     }//GEN-LAST:event_enterLickTitleAction
-    
-    
-    
+
+
+
     private void cellRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellRadioButtonActionPerformed
-        
+
         saveSelectionMode = ExtractMode.CELL;
-        
+
     }//GEN-LAST:event_cellRadioButtonActionPerformed
-    
-    
-    
+
+
+
     private void idiomRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idiomRadioButtonActionPerformed
-        
+
         saveSelectionMode = ExtractMode.IDIOM;
-        
+
     }//GEN-LAST:event_idiomRadioButtonActionPerformed
-    
-    
-    
+
+
+
     private void quoteRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quoteRadioButtonActionPerformed
-        
+
         saveSelectionMode = ExtractMode.QUOTE;
-        
+
     }//GEN-LAST:event_quoteRadioButtonActionPerformed
-    
-    
-    
+
+
+
     private void lickRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lickRadioButtonActionPerformed
-        
+
         saveSelectionMode = ExtractMode.LICK;
-        
+
     }//GEN-LAST:event_lickRadioButtonActionPerformed
-    
-    
-    
+
+
+
     private void saveDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveDuplicateActionPerformed
-        
+
         ignoreDuplicateLick = SAVE;
-        
+
         duplicateLickDialog.setVisible(false);
-        
+
     }//GEN-LAST:event_saveDuplicateActionPerformed
-    
-    
-    
+
+
+
     private void duplicateLickDialogKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_duplicateLickDialogKeyPressed
-   
+
     }//GEN-LAST:event_duplicateLickDialogKeyPressed
-    
-    
-    
+
+
+
     private void duplicateLickDialogComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_duplicateLickDialogComponentShown
 
     }//GEN-LAST:event_duplicateLickDialogComponentShown
-    
-    
-    
+
+
+
     private void ignoreDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ignoreDuplicateActionPerformed
-        
+
         ignoreDuplicateLick = IGNORE;
-        
+
         duplicateLickDialog.setVisible(false);
-        
+
     }//GEN-LAST:event_ignoreDuplicateActionPerformed
-    
-    
-    
+
+
+
     private void colorTonesActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_colorTonesActionPerformed
 
     {//GEN-HEADEREND:event_colorTonesActionPerformed
-     
+
     }//GEN-LAST:event_colorTonesActionPerformed
-    
-    
-    
+
+
+
     private void purgeCacheActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_purgeCacheActionPerformed
 
     {//GEN-HEADEREND:event_purgeCacheActionPerformed
-        
+
         Advisor.purgeCache();
-        
+
     }//GEN-LAST:event_purgeCacheActionPerformed
-    
-    
-    
+
+
+
     private void enterMeasuresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterMeasuresKeyPressed
-        
+
         if( evt.getKeyCode() == KeyEvent.VK_ENTER )
           {
 
@@ -11687,19 +11691,19 @@ private void updateTempoFromTextField()
             enterMeasuresCore();
           }
     }//GEN-LAST:event_enterMeasuresKeyPressed
-    
-    
-    
+
+
+
     private void okMeasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okMeasBtnActionPerformed
-        
+
         Trace.log(2, "enter measures Ok pressed");
-        
+
         enterMeasuresCore();
-        
+
     }//GEN-LAST:event_okMeasBtnActionPerformed
-    
-    
-    
+
+
+
     /**
      *
      * flag to reset position of dialog the first time it is displayed only
@@ -11709,9 +11713,9 @@ private void updateTempoFromTextField()
      * when the dialog is shown a second time, it remembers it's last position
      *
      */
-    
+
     private boolean initLocationLickGenerator = false;
-    
+
     private void lickGeneratorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_lickGeneratorMIActionPerformed
 
     {//GEN-HEADEREND:event_lickGeneratorMIActionPerformed
@@ -11743,9 +11747,9 @@ private void updateTempoFromTextField()
 
       entryMuteActionPerformed(null);
     }//GEN-LAST:event_lickGeneratorMIActionPerformed
-    
-    
-    
+
+
+
     /**
      *
      * flag to reset position of dialog the first time it is displayed only
@@ -11755,156 +11759,156 @@ private void updateTempoFromTextField()
      * when the dialog is shown a second time, it remembers its last position
      *
      */
-    
+
     private boolean initLocationLeadsheetEditor = false;
-    
+
     private void openLeadsheetEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openLeadsheetEditorMIActionPerformed
 
     {//GEN-HEADEREND:event_openLeadsheetEditorMIActionPerformed
         setMode(Mode.EDIT_LEADSHEET);
-         
+
       // center dialog only the first time it is shown
-        
+
         if(!initLocationLeadsheetEditor) {
-            
+
             leadsheetEditor.setLocationRelativeTo(this);
-            
-            initLocationLeadsheetEditor = true;          
+
+            initLocationLeadsheetEditor = true;
         }
-        
+
         leadsheetEditor.setSize(leadsheetEditorDimension);
         leadsheetEditor.fillEditor();
         leadsheetEditor.setVisible(true);
     }//GEN-LAST:event_openLeadsheetEditorMIActionPerformed
-    
-    
-    
+
+
+
     private void revertLeadsheetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLeadsheetActionPerformed
-        
+
         revertLeadsheet(evt);
-        
+
     }//GEN-LAST:event_revertLeadsheetActionPerformed
-    
-    
-    
+
+
+
     private void contractMelodyBy3ActionPerformed11(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contractMelodyBy3ActionPerformed11
-        
+
         timeWarpMelody(1, 3);
-        
+
     }//GEN-LAST:event_contractMelodyBy3ActionPerformed11
-    
-    
-    
+
+
+
     private void expandMelodyBy3ActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandMelodyBy3ActionPerformed1
-        
+
         timeWarpMelody(3, 1);
-        
+
     }//GEN-LAST:event_expandMelodyBy3ActionPerformed1
-    
-    
-    
+
+
+
     private void contractMelodyBy2ActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contractMelodyBy2ActionPerformed1
-        
+
         timeWarpMelody(1, 2);
-        
+
     }//GEN-LAST:event_contractMelodyBy2ActionPerformed1
-    
-    
-    
+
+
+
     private void expandMelodyBy2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expandMelodyBy2ActionPerformed
-        
+
         timeWarpMelody(2, 1);
-        
+
     }//GEN-LAST:event_expandMelodyBy2ActionPerformed
-    
-    
-    
+
+
+
     private void invertMelodyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invertMelodyActionPerformed
-        
+
         invertMelody();
-        
+
     }//GEN-LAST:event_invertMelodyActionPerformed
-    
-    
-    
+
+
+
     private void reverseMelodyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reverseMelodyActionPerformed
-        
+
         reverseMelody();
-        
+
     }//GEN-LAST:event_reverseMelodyActionPerformed
-    
-    
-    
+
+
+
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_saveBtnActionPerformed
-    
-    
+
+
     private void copyChordSelectionToTextWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordSelectionToTextWindowActionPerformed
-        
+
         String saveSelection = getCurrentStave().getSaveSelection(lickTitle, Stave.ExtractMode.CHORDS);
-        
+
         textEntry.setText(saveSelection.trim());
-        
-        staveRequestFocus();        
+
+        staveRequestFocus();
     }//GEN-LAST:event_copyChordSelectionToTextWindowActionPerformed
-    
-    
-    
+
+
+
     private void copyMelodySelectionToTextWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMelodySelectionToTextWindowActionPerformed
-        
+
         String saveSelection = getCurrentStave().getSaveSelection(lickTitle, Stave.ExtractMode.MELODY);
-        
+
         textEntry.setText(saveSelection.trim());
-        
-        staveRequestFocus();        
+
+        staveRequestFocus();
     }//GEN-LAST:event_copyMelodySelectionToTextWindowActionPerformed
-    
-    
-    
+
+
+
     private void copyBothSelectionToTextWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBothSelectionToTextWindowActionPerformed
-        
+
         String saveSelection = getCurrentStave().getSaveSelection(lickTitle, Stave.ExtractMode.BOTH);
-        
+
         textEntry.setText(saveSelection.trim());
-        
-        staveRequestFocus();        
+
+        staveRequestFocus();
     }//GEN-LAST:event_copyBothSelectionToTextWindowActionPerformed
-    
-    
-    
+
+
+
     private void saveSelectionAsLickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSelectionAsLickActionPerformed
-        
-        openSaveLickFrame();        
+
+        openSaveLickFrame();
     }//GEN-LAST:event_saveSelectionAsLickActionPerformed
-    
-    
-    
+
+
+
     private void enterLickTitleGetsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_enterLickTitleGetsFocus
-        
-        disableAccelerators();        // to prevent keys from triggering        
+
+        disableAccelerators();        // to prevent keys from triggering
     }//GEN-LAST:event_enterLickTitleGetsFocus
-    
-    
-    
+
+
+
     private void okSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okSaveButtonActionPerformed
-        
+
         lickTitle = enterLickTitle.getText();
-        
+
         String saveSelection = getCurrentStave().getSaveSelection(lickTitle, saveSelectionMode, 0);
-        
-        saveLick(saveSelection);        
+
+        saveLick(saveSelection);
     }//GEN-LAST:event_okSaveButtonActionPerformed
-    
-    
-    
+
+
+
 /**
  * Return an array of labels that have appropriate enharmonics
  * for the black notes.
  */
-    
+
 public String[] getNoteLabels(int location)
   {
     String[] notes = new String[12];
@@ -11915,7 +11919,7 @@ public String[] getNoteLabels(int location)
 
     Polylist scales = chordProg.getCurrentChord(location).getScales();
 
-    if( scales == null 
+    if( scales == null
      || scales.isEmpty()
      || preferredScale.isEmpty()
      || ((String) preferredScale.second()).equals(NONE) )
@@ -11995,13 +11999,13 @@ public String[] getNoteLabels(int location)
 
     return notes;
   }
-    
+
 
 /**
-  * Make sure the user has entered acceptable values for each of the other fields   
+  * Make sure the user has entered acceptable values for each of the other fields
   * in the triage frame.
   */
-    
+
 private void verifyTriageFields()
   {
     lickgenFrame.verifyTriageFields();
@@ -12012,7 +12016,7 @@ private void verifyTriageFields()
 
 /**
  * Save the lick in the vocabulary.
- * @param saveSelection 
+ * @param saveSelection
  */
 private void saveLick(String saveSelection)
   {
@@ -12048,15 +12052,15 @@ public void triageLick(String lickName, int grade)
         saveLick(saveSelection);
       }
   }
-    
-    
+
+
 boolean isPowerOf2(int x)
   {
     // trust me, it works!
     return ((x > 0) && ((x & (x - 1)) == 0));
   }
 
-    
+
 private MelodyPart makeLick(Polylist rhythm, int start, int stop)
   {
     verifyTriageFields();
@@ -12073,12 +12077,12 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
     // FIX - Currently, the lick generator doesn't support half beats; thus,
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
-    
+
     MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, start);
-    
+
     int actualSize = lick.size();
     int desiredSize = stop - start + 1;
-    
+
     if( actualSize > desiredSize )
       {
         System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
@@ -12104,12 +12108,12 @@ private MelodyPart makeLick(Polylist rhythm)
     // FIX - Currently, the lick generator doesn't support half beats; thus,
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
-    
+
     MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
-    
+
     int actualSize = lick.size();
     int desiredSize = score.getLength() - getCurrentSelectionStart() + 1;
-    
+
     if( actualSize > desiredSize )
       {
         System.out.println("makeLick: reducing size from " + actualSize + " to desired " + desiredSize);
@@ -12118,7 +12122,7 @@ private MelodyPart makeLick(Polylist rhythm)
 
     return lick;
   }
-    
+
 
 public boolean putLick(MelodyPart lick)
   {
@@ -12136,48 +12140,48 @@ public boolean putLick(MelodyPart lick)
     // as ImproVisor plays the inserted note at the same time
     // it plays the selection.
     ImproVisor.setPlayEntrySounds(false);
-    
-    
+
+
     int start = getCurrentSelectionStart();
-    
+
     int stop = getCurrentSelectionEnd();
-    
+
     int chorusSize = getChordProg().getSize();
-    
+
     if( start >= chorusSize || stop >= chorusSize )
       {
         //debug System.out.println("chorus size " + chorusSize + " exceeded, start = " + start + ", stop = " + stop + ", resetting");
         start %= chorusSize;
         stop %= chorusSize;
       }
-    
+
     // FIX:
     // stop < start does happen. It seems to be due to some kind of data race.
     // Without the return, improvisation will grind to a halt.
-    
+
     if( stop < start )
       {
         System.out.println("stop, start inverted: start = " + start + ", stop = " + stop + ", resetting");
         start = 0;
         stop = chorusSize - 1;
       }
-    
+
     Stave stave = getCurrentStave();
 
     // Ideally, would wait here
 
     // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
     // carry unnecessary baggage.
-    
+
     getMelodyPart(stave).pasteOver(lick, getCurrentSelectionStart(stave));
-    
+
     if( lickgenFrame.rectifySelected() )
       {
         rectifySelection(stave, start, stop);
       }
 
     // Wait for playing to stop
-    
+
 //    System.out.println("slotInPlayback = " + getSlotInPlayback() + ", stopPlaybackAtSlot = " + stopPlaybackAtSlot);
 //    while( !midiSynth.finishedPlaying() )
 //      {
@@ -12187,7 +12191,7 @@ public boolean putLick(MelodyPart lick)
 //          }
 //        catch(Exception e)
 //          {
-//            
+//
 //          }
 //      }
 //    System.out.println("Stopped spinning\n");
@@ -12196,7 +12200,7 @@ public boolean putLick(MelodyPart lick)
     ImproVisor.setPlayEntrySounds(true);
     return true;
   }
-    
+
 public int getSlotInPlayback()
   {
    int slotDelay = 0;
@@ -12212,10 +12216,10 @@ public MelodyPart generateLick(Polylist rhythm)
       {
         adjustLickToHead(lick);
       }
-    
+
     return lick;
   }
-    
+
 public MelodyPart generateLick(Polylist rhythm, int start, int end)
   {
     MelodyPart lick = makeLick(rhythm, start, end);
@@ -12224,14 +12228,14 @@ public MelodyPart generateLick(Polylist rhythm, int start, int end)
       {
         adjustLickToHead(lick);
       }
-    
+
     return lick;
   }
 
 
 /**
  * Only called from LickgenFrame
- * @param rhythm 
+ * @param rhythm
  */
 
 public void generateAndPutLick(Polylist rhythm)
@@ -12335,19 +12339,19 @@ private void setLickEnharmonics(MelodyPart lick)
           }
       }
   }
-  
-    
-    
+
+
+
     private void cancelLickTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLickTitleActionPerformed
-        
+
         saveLickFrame.setVisible(false);
-        
+
         staveRequestFocus();
-        
+
     }//GEN-LAST:event_cancelLickTitleActionPerformed
-    
-    
-    
+
+
+
 public void openSaveLickFrame()
   {
     Trace.log(2, "Opening save lick selection frame");
@@ -12370,25 +12374,25 @@ public void openSaveLickFrame()
 
     enterLickTitle.requestFocusInWindow();
   }
-    
-    
-    
+
+
+
 public String getLickTitle()
   {
     Trace.log(2, "Saved selection title is: " + lickTitle);
 
     return lickTitle;
   }
-    
-    
-    
+
+
+
     private void saveAsAdviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsAdviceActionPerformed
 
         if( vocfc == null )
           {
             return;
           }
-        
+
         vocfc.setDialogTitle("Save Vocabluary As");
         vocfc.setCurrentDirectory(ImproVisor.getVocabDirectory());
 
@@ -12421,9 +12425,9 @@ public String getLickTitle()
               }
           }
     }//GEN-LAST:event_saveAsAdviceActionPerformed
-    
-    
-    
+
+
+
     private void saveAdviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAdviceActionPerformed
 
         if( savedVocab != null )
@@ -12435,33 +12439,33 @@ public String getLickTitle()
             saveAsAdviceActionPerformed(evt);
           }
     }//GEN-LAST:event_saveAdviceActionPerformed
-    
-     
+
+
     private void textEntryLosesFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryLosesFocus
-        
-        textEntryLabel.setForeground(Color.red);   
+
+        textEntryLabel.setForeground(Color.red);
     }//GEN-LAST:event_textEntryLosesFocus
-    
-    
+
+
     private void textEntryGainsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryGainsFocus
-        
+
        textEntryLabel.setForeground(Color.black);
-        
-       setNormalStatus();     
+
+       setNormalStatus();
     }//GEN-LAST:event_textEntryGainsFocus
-    
+
     private void setNormalStatus()
       {
 
         setMode(Mode.NORMAL);
       }
-    
-    
+
+
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        
-        textEntry.setText("");        
+
+        textEntry.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
-   
+
   private void setPlayTransposed()
     {
     setTransposition(getTransposition());
@@ -12471,32 +12475,32 @@ public String getLickTitle()
     {
         return Integer.parseInt(transposeSpinner.getValue().toString());
     }
-    
+
     private void tempoSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempoSetActionPerformed
 
       setTempo(doubleFromTextField(tempoSet, MIN_TEMPO, MAX_TEMPO, getDefaultTempo()));
-      
+
                     }//GEN-LAST:event_tempoSetActionPerformed
-    
+
     public double getDefaultTempo()
     {
     return Double.parseDouble(Preferences.getPreference(Preferences.DEFAULT_TEMPO));
     }
-    
-     
-    public void closeAdviceFrame()  
+
+
+    public void closeAdviceFrame()
     {
         showAdviceButton.setSelected(false);
-        
+
         showAdviceButton.setBackground(adviceBtnColorClosed);
-        
+
         adviceFrame.setVisible(false);
         setNormalMode();
         staveRequestFocus();
     }
-    
-    
-    
+
+
+
 private void openAdviceFrame()
   {
     showAdviceButton.setSelected(true);
@@ -12510,9 +12514,9 @@ private void openAdviceFrame()
     setMode(Mode.ADVICE);
   }
 
-    
+
   private void redoAdvice()
-    {   
+    {
     Trace.log(2, "redo advice");
 
     getCurrentStaveActionHandler().redoAdvice(getCurrentSelectionStart());
@@ -12521,7 +12525,7 @@ private void openAdviceFrame()
 
     redrawTriage();
     }
-  
+
   public boolean adviceVisible()
     {
       return adviceFrame.isVisible();
@@ -12550,8 +12554,8 @@ private void openAdviceFrame()
       }
     }
  */
-    
-    
+
+
   public void updateSelection()
     {
     if( getCurrentStave() == null )
@@ -12560,11 +12564,11 @@ private void openAdviceFrame()
       }
      totalSlots =
            paddingSlots + getCurrentSelectionEnd() - getCurrentSelectionStart();
-    
+
     totalBeats = Math.round(totalSlots/roundTo);
-    
+
     totalSlots = (int)(totalBeats * BEAT);
-    
+
     if( lickgenFrame != null )
       {
       lickgenFrame.redrawTriage();
@@ -12574,153 +12578,153 @@ private void openAdviceFrame()
     if (stepKeyboard != null)
         stepKeyboard.resetAdvice();
     }
-    
+
     private void staveTypeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staveTypeMenuActionPerformed
-        
+
 // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_staveTypeMenuActionPerformed
-    
-    
-    
+
+
+
     public void transposeMelodyUpOctaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyUpOctaveActionPerformed
-        
+
         getCurrentStave().transposeMelodyUpOctave();
-        
+
     }//GEN-LAST:event_transposeMelodyUpOctaveActionPerformed
-    
-    
-    
+
+
+
     private void textEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textEntryActionPerformed
-        
+
         staveRequestFocus();
-        
+
     }//GEN-LAST:event_textEntryActionPerformed
-    
-    
-    
+
+
+
     private void openBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBtnActionPerformed
-        
+
         openLeadsheet(false);
 
     }//GEN-LAST:event_openBtnActionPerformed
-    
-    
-    
-    public void enterChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterChordsMIActionPerformed
-        
-        enterChords();
-        
-    }//GEN-LAST:event_enterChordsMIActionPerformed
-    
-    
-    
-    public void transposeBothDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeBothDownSemitoneActionPerformed
-        
-        getCurrentStave().transposeChordsDownSemitone();
-        
-        getCurrentStave().transposeMelodyDownSemitone();
-        
-    }//GEN-LAST:event_transposeBothDownSemitoneActionPerformed
-    
 
-    
-    public void transposeChordsDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsDownSemitoneActionPerformed
-        
+
+
+    public void enterChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterChordsMIActionPerformed
+
+        enterChords();
+
+    }//GEN-LAST:event_enterChordsMIActionPerformed
+
+
+
+    public void transposeBothDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeBothDownSemitoneActionPerformed
+
         getCurrentStave().transposeChordsDownSemitone();
-        
-    }//GEN-LAST:event_transposeChordsDownSemitoneActionPerformed
-    
-    
-    
-    public void transposeChordsUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsUpSemitoneActionPerformed
-        
-        getCurrentStave().transposeChordsUpSemitone();
-        
-    }//GEN-LAST:event_transposeChordsUpSemitoneActionPerformed
-    
-    
-    
-    public void transposeBothUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeBothUpSemitoneActionPerformed
-        
-        getCurrentStave().transposeChordsUpSemitone();
-        
-        getCurrentStave().transposeMelodyUpSemitone();
-        
-    }//GEN-LAST:event_transposeBothUpSemitoneActionPerformed
-    
-    
-    
-    public void transposeMelodyDownOctaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyDownOctaveActionPerformed
-        
-        getCurrentStave().transposeMelodyDownOctave();
-        
-    }//GEN-LAST:event_transposeMelodyDownOctaveActionPerformed
-    
-    
-    
-    public void transposeMelodyDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyDownSemitoneActionPerformed
-        
+
         getCurrentStave().transposeMelodyDownSemitone();
-        
-    }//GEN-LAST:event_transposeMelodyDownSemitoneActionPerformed
-    
-    
-    
-    public void transposeMelodyUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyUpSemitoneActionPerformed
-        
+
+    }//GEN-LAST:event_transposeBothDownSemitoneActionPerformed
+
+
+
+    public void transposeChordsDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsDownSemitoneActionPerformed
+
+        getCurrentStave().transposeChordsDownSemitone();
+
+    }//GEN-LAST:event_transposeChordsDownSemitoneActionPerformed
+
+
+
+    public void transposeChordsUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeChordsUpSemitoneActionPerformed
+
+        getCurrentStave().transposeChordsUpSemitone();
+
+    }//GEN-LAST:event_transposeChordsUpSemitoneActionPerformed
+
+
+
+    public void transposeBothUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeBothUpSemitoneActionPerformed
+
+        getCurrentStave().transposeChordsUpSemitone();
+
         getCurrentStave().transposeMelodyUpSemitone();
-        
+
+    }//GEN-LAST:event_transposeBothUpSemitoneActionPerformed
+
+
+
+    public void transposeMelodyDownOctaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyDownOctaveActionPerformed
+
+        getCurrentStave().transposeMelodyDownOctave();
+
+    }//GEN-LAST:event_transposeMelodyDownOctaveActionPerformed
+
+
+
+    public void transposeMelodyDownSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyDownSemitoneActionPerformed
+
+        getCurrentStave().transposeMelodyDownSemitone();
+
+    }//GEN-LAST:event_transposeMelodyDownSemitoneActionPerformed
+
+
+
+    public void transposeMelodyUpSemitoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeMelodyUpSemitoneActionPerformed
+
+        getCurrentStave().transposeMelodyUpSemitone();
+
     }//GEN-LAST:event_transposeMelodyUpSemitoneActionPerformed
-    
-    
-    
+
+
+
     public void pasteBothMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteBothMIActionPerformed
-        
+
         pasteMelody();
-        
+
         pasteChords();
-        
+
     }//GEN-LAST:event_pasteBothMIActionPerformed
-    
-    
-    
+
+
+
     public void copyBothMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBothMIActionPerformed
-        
+
         copyMelody();
-        
+
         copyChords();
-        
+
     }//GEN-LAST:event_copyBothMIActionPerformed
-    
-    
-    
+
+
+
     public void cutBothMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutBothMIActionPerformed
-        
+
         cutChords();
-        
+
         cutMelody();
-        
+
     }//GEN-LAST:event_cutBothMIActionPerformed
-    
-    
-    
+
+
+
     public void enterMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterMelodyMIActionPerformed
-        
+
         enterMelody();
-        
+
     }//GEN-LAST:event_enterMelodyMIActionPerformed
-    
-    
-    
+
+
+
     public void enterBothMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterBothMIActionPerformed
-        
+
         enterBoth();
-        
+
     }//GEN-LAST:event_enterBothMIActionPerformed
-    
-    
-    
+
+
+
     private void textEntryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textEntryKeyPressed
 
       textEntryLabel.setForeground(Color.black);
@@ -12732,7 +12736,7 @@ private void openAdviceFrame()
           // If no slot is selected, force the first slot to be selected.
           getCurrentStave().setSelection(0, 0);
           }
-        
+
         String enteredText = textEntry.getText();
 
         if( enteredText.length() > 0 )
@@ -12743,11 +12747,11 @@ private void openAdviceFrame()
                 chordProg,
                 partList.get(currTabIndex) ));
         }
-        
+
         textEntry.setEnabled(false);
 
         staveRequestFocus();
-        
+
         redoAdvice();
 
         // set the menu and button states
@@ -12757,23 +12761,23 @@ private void openAdviceFrame()
       else
         {
         disableAccelerators();        // to prevent keys from triggering
-        }        
+        }
     }//GEN-LAST:event_textEntryKeyPressed
-    
-    
+
+
     public void saveLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveLeadsheetMIActionPerformed
-        
-        saveLeadsheet();        
+
+        saveLeadsheet();
     }//GEN-LAST:event_saveLeadsheetMIActionPerformed
-    
-    
-    
+
+
+
 /**
  *
  * Common point within notate for invoking saveLeadsheet command
  *
  */
-    
+
 public boolean saveLeadsheet()
   {
     if( savedLeadsheet != null )
@@ -12785,8 +12789,8 @@ public boolean saveLeadsheet()
         return saveAsLeadsheet();
       }
   }
-   
-    
+
+
 private boolean saveLeadsheet(File file, Score score)
   {
     SaveLeadsheetCommand s = new SaveLeadsheetCommand(file, score, cm);
@@ -12799,7 +12803,7 @@ private boolean saveLeadsheet(File file, Score score)
 
         return false;
       }
-    
+
     setMode(Mode.LEADSHEET_SAVED);
     return true;
   }
@@ -12857,7 +12861,7 @@ private void exportToMusicXML()
       }
   }
 
-    
+
   private void exportToMidi(int toExport)
     {
     midfc.setCurrentDirectory(ImproVisor.getMidiDirectory());
@@ -12912,34 +12916,34 @@ private void exportToMusicXML()
       savedMidi = file;
       }
     }
-    
-    
-    
+
+
+
     /**
      *
      * Toggles if pasting should always overwrite notes
      *
      */
-    
+
     private void pasteOverMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteOverMIActionPerformed
-        
+
         alwaysPasteOver = !alwaysPasteOver;
-        
+
     }//GEN-LAST:event_pasteOverMIActionPerformed
-    
-    
+
+
     /**
      *
      * Resizes the toolBarPanel so that all toolbars can be shown
      *
      */
-    
+
     private void playToolBarComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_playToolBarComponentMoved
-        
+
         //calcToolBarSize();
-        
+
     }//GEN-LAST:event_playToolBarComponentMoved
- 
+
 /**
  *
  * Sets the part volume
@@ -13113,10 +13117,10 @@ public MelodyPart getCurrentMelodyPart()
    * Select all construction lines on the current Stave.
    *
    */
-  
+
     public void selectAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllMIActionPerformed
 
-      selectAll(); 
+      selectAll();
     }//GEN-LAST:event_selectAllMIActionPerformed
 
   public void selectAll()
@@ -13141,20 +13145,20 @@ public MelodyPart getCurrentMelodyPart()
 
     stave.setSelection(0, stave.getMelodyPart().size() - 1);
     }
-  
+
   /**
    *
    * Copies the selection of chords from the Stave to the clipboard
    *
    */
-  
+
     public void copyChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyChordsMIActionPerformed
 
       copyChords();
-        
+
     }//GEN-LAST:event_copyChordsMIActionPerformed
 
-    
+
   void copyChords()
     {
     Trace.log(2, "copy chords");
@@ -13177,22 +13181,22 @@ public MelodyPart getCurrentMelodyPart()
       setItemStates();
       }
     }
-  
-    
+
+
     /**
      *
      * Cuts the selection of chords from the Stave to the clipboard
      *
      */
-    
+
     public void cutChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutChordsMIActionPerformed
-        
+
         cutChords();
-        
+
     }//GEN-LAST:event_cutChordsMIActionPerformed
-    
-    
-    
+
+
+
   void cutChords()
     {
     Trace.log(2, "cut chords");
@@ -13216,7 +13220,7 @@ public MelodyPart getCurrentMelodyPart()
       }
     }
 
-    
+
     /**
      *
      * Executes as the form is closing to make sure every component is properly
@@ -13224,24 +13228,24 @@ public MelodyPart getCurrentMelodyPart()
      * disposed
      *
      */
-    
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        
+
         closeWindow();
-        
+
     }//GEN-LAST:event_formWindowClosing
-    
-    
-    
+
+
+
     public boolean unsavedChanges() {
-        
+
         if(cm.changedSinceLastSave()) {
             if( !savedLeadsheetExists() )
                 return true;
-            
+
             // create string representing score
             StringWriter strWriter = new StringWriter();
-            
+
             try {
                 BufferedWriter out = new BufferedWriter(strWriter);
                 Leadsheet.saveLeadSheet(out, score);
@@ -13249,7 +13253,7 @@ public MelodyPart getCurrentMelodyPart()
             } catch(IOException e) {
                 return true;
             }
-            
+
             // read in file
             FileInputStream file;
             try {
@@ -13257,7 +13261,7 @@ public MelodyPart getCurrentMelodyPart()
             } catch(FileNotFoundException e) {
                 return true;
             }
-            
+
             byte[] b;
             try {
                 b = new byte[file.available()];
@@ -13265,26 +13269,26 @@ public MelodyPart getCurrentMelodyPart()
             } catch(IOException e) {
                 return true;
             }
-            
+
             String result = new String(b);
-            
+
             /**
              * This comparison is a literal comparison, so
              * extra white space or formatting will cause it
              * to fail.
              */
-            
+
             // file is identical to current score
             if(result.trim().equals(strWriter.toString().trim()))
                 return false;
-            
+
             return true;
         }
-        
+
         return false;
     }
-    
-    
+
+
 public void closeWindow()
   {
 
@@ -13345,7 +13349,7 @@ public void closeWindow()
   mixerDialog.dispose();
 
   preferencesDialog.dispose();
-  
+
   if( midiImportFrame != null )
     {
       midiImportFrame.dispose();
@@ -13353,8 +13357,8 @@ public void closeWindow()
 
   WindowRegistry.unregisterWindow(this);
   }
-    
-    
+
+
 /**
  *
  * Opens the help dialog.
@@ -13376,20 +13380,20 @@ public void openHelpDialog()
       {
         width = getWidth();
       }
-    
+
     helpDialog.setSize(width, height);
 
     helpDialog.setLocationRelativeTo(this);
 
     helpDialog.setVisible(true);
   }
-    
+
 
     private void aboutMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMIActionPerformed
-        showAboutDialog();    
+        showAboutDialog();
     }//GEN-LAST:event_aboutMIActionPerformed
-    
-    
+
+
 /**
  *
  * Opens the About dialog.
@@ -13406,7 +13410,7 @@ public void showAboutDialog()
 
 /**
  * * Set the MIDI latency.
- * @param latency 
+ * @param latency
  */
 
 public void setMidiLatency(double latency)
@@ -13421,7 +13425,7 @@ public void setMidiLatency(double latency)
  * Get integer value from string.
  *
  */
-    
+
 public static int intFromString(String string) throws NumberFormatException
   {
     return Integer.decode(string).intValue();
@@ -13459,8 +13463,8 @@ static int intFromStringInRange(String string, int low, int high, int error)
       }
   }
 
-  
-    
+
+
 /**
  *
  * Get integer value from TextField, with range check.
@@ -13468,7 +13472,7 @@ static int intFromStringInRange(String string, int low, int high, int error)
  * Updates text field with value actually used.
  *
  */
-    
+
 public static int intFromTextField(javax.swing.JTextField field, int low, int high, int error)
   {
     int value = intFromStringInRange(field.getText(), low, high, error);
@@ -13500,8 +13504,8 @@ static double doubleFromString(String string) throws NumberFormatException
    *
    */
 
-  static double doubleFromStringInRange(String string, 
-                                        double low, 
+  static double doubleFromStringInRange(String string,
+                                        double low,
                                         double high,
                                         double error)
     {
@@ -13516,7 +13520,7 @@ static double doubleFromString(String string) throws NumberFormatException
 
       ErrorLog.log(ErrorLog.COMMENT,
               "The number you have entered: " + value + " is out of range: must be between " + low + " and " + high
-              
+
               + ",\nusing instead the default: " + error);
 
       return error; // range error indicator
@@ -13531,16 +13535,16 @@ static double doubleFromString(String string) throws NumberFormatException
       return error; // format error indicator
       }
     }
-  
+
 
 /**
  *
  * Get double value from string, with range check, but no warning dialog
  *
  */
-  
-public static double quietDoubleFromStringInRange(String string, 
-                                                  double low, 
+
+public static double quietDoubleFromStringInRange(String string,
+                                                  double low,
                                                   double high,
                                                   double error)
   {
@@ -13571,9 +13575,9 @@ public static double quietDoubleFromStringInRange(String string,
  *
  */
 
-public static double doubleFromTextField(javax.swing.JTextField field, 
-                                         double low, 
-                                         double high, 
+public static double doubleFromTextField(javax.swing.JTextField field,
+                                         double low,
+                                         double high,
                                          double error)
   {
     String text = field.getText().trim();
@@ -13593,9 +13597,9 @@ public static double doubleFromTextField(javax.swing.JTextField field,
  * No warning is given if input is in error and error value is used.
  */
 
-public static double quietDoubleFromTextField(javax.swing.JTextField field, 
-                                              double low, 
-                                              double high, 
+public static double quietDoubleFromTextField(javax.swing.JTextField field,
+                                              double low,
+                                              double high,
                                               double error)
   {
     String text = field.getText().trim();
@@ -13607,8 +13611,8 @@ public static double quietDoubleFromTextField(javax.swing.JTextField field,
     return quietDoubleFromStringInRange(text, low, high, error);
   }
 
-   
-    
+
+
 /**
  *
  * Accepts the preferences the user has inputted through the "Preferences"
@@ -13658,9 +13662,9 @@ private void savePrefs()
         requestFocusInWindow();
       }
   }
-    
-    
-    
+
+
+
 private boolean saveMidiLatency()
   {
     double latency = doubleFromTextField(midiLatencyTF, 0, Double.POSITIVE_INFINITY, 0);
@@ -13671,8 +13675,8 @@ private boolean saveMidiLatency()
     Preferences.setMidiInLatency(latency);
     return true;
   }
-    
-    
+
+
 private boolean saveSectionInfo()
   {
     score.getChordProg().setSectionInfo(sectionInfo.copy());
@@ -13691,7 +13695,7 @@ private boolean setSectionPrefs()
         int currentMeasure = sectionInfo.getSectionMeasure(index);
 
         boolean isPhrase = phraseCheckBox.isSelected();
-        
+
         boolean usePreviousStyleChecked = !(currentMeasure==1) && usePreviousStyleCheckBox.isSelected();
 
         if( measure > 0 && measure <= sectionInfo.measures() )
@@ -13757,16 +13761,16 @@ private boolean saveStylePrefs()
 
 /**
  * Called when the StyleList is changed
- */    
-    
+ */
+
 public void updateStyleList(Style style)
   {
     usePreviousStyleCheckBox.setSelected(false);
-    
+
     if( style != null )
       {
       swingTF.setText("" + style.getSwing());
- 
+
       sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
       }
    }
@@ -13774,12 +13778,12 @@ public void updateStyleList(Style style)
 public int getTimeSigTop() {
     return Integer.parseInt(timeSignatureTopTF.getText());
 }
-/** 
+/**
  * Set up the metre and length of the leadsheet.  This needs to be separated out
  * because we handle things differently depending on whether we're opening a new leadsheet
  * or just changing the current leadsheet.
  */
-    
+
 private boolean saveMetre()
   {
     try
@@ -13825,9 +13829,9 @@ private boolean saveMetre()
 
     return true;
   }
-    
-    
-    
+
+
+
 private boolean saveGlobalPreferences()
   {
     boolean close = true;
@@ -14214,12 +14218,12 @@ private boolean saveGlobalPreferences()
 
     return close;
   }
-    
+
 
     /**
      * Set the value of the preference for Stave
      */
-    
+
   private void setStavePreferenceFromButtons()
     {
     if( autoStave.isSelected() )
@@ -14242,21 +14246,21 @@ private boolean saveGlobalPreferences()
       Preferences.setPreference(Preferences.DEFAULT_LOAD_STAVE, String.valueOf(
               StaveType.GRAND.ordinal()));
       }
-  
+
     if( Preferences.getAlwaysUseStave() )
       {
       setCurrentStaveType(Preferences.getStaveTypeFromPreferences());
       }
     }
-    
-  
+
+
   public void setTrackerDelay(String text)
     {
      trackerDelay = doubleFromStringInRange(text, -Double.MAX_VALUE, +Double.MAX_VALUE, 0);
      trackerDelayTextField.setText(text);
      trackerDelayTextField2.setText(text);
     }
-    
+
   public static final int DEFAULT_CHORD_FONT_SIZE_VALUE = 16;
 
 
@@ -14280,17 +14284,17 @@ private boolean saveGlobalPreferences()
 
     defaultChordFontSizeSpinner.setValue(chordFontSizeValue);
     }
-    
- 
-  
+
+
+
   /**
    * Set up the preferences dialog box.
    */
-  
+
   private void setPrefsDialog()
     {
     // System.out.println("setPrefsDialog");
-    
+
     // ===== update Midi panel
 
     refreshMidiStatus();
@@ -14306,7 +14310,7 @@ private boolean saveGlobalPreferences()
     voicing.setText(Preferences.getPreference(Preferences.MAX_NOTES_IN_VOICING));
 
     chordDist.setText(Preferences.getPreference(Preferences.CHORD_DIST_ABOVE_ROOT));
-    
+
     // nuisance: ensureChordFontSize();
 
     setTrackerDelay(Preferences.getPreference(Preferences.TRACKER_DELAY));
@@ -14333,10 +14337,10 @@ private boolean saveGlobalPreferences()
     defChordVolSlider.setValue(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_MIXER_CHORDS)));
 
     defMelodyVolSlider.setValue(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_MIXER_MELODY)));
-    
+
 
     // ===== set stave buttons
-    
+
     alwaysUseStave.setSelected(Preferences.getAlwaysUseStave());
 
     int stave =
@@ -14494,7 +14498,7 @@ private boolean saveGlobalPreferences()
     drawScaleTonesCheckBox.setSelected(drawTones.charAt(0) == '1');
     drawChordTonesCheckBox.setSelected(drawTones.charAt(1) == '1');
     drawColorTonesCheckBox.setSelected(drawTones.charAt(2) == '1');
-    
+
     // ===== update Style panel
 
     sectionList.setSelectedIndex(0);
@@ -14618,9 +14622,9 @@ private boolean saveGlobalPreferences()
     // set the stave type buttons
 
     StaveType tempStaveType;
-    
+
      // If "always use this" is selected, over-ride with default stave preference
-    
+
    if( alwaysUseStave.isSelected() )
       {
       tempStaveType = Preferences.getStaveTypeFromPreferences();
@@ -14639,13 +14643,13 @@ private boolean saveGlobalPreferences()
         numStavesPerPage.setText(Integer.toString(numStavesPP));
     }
     }
-    
+
   public void setRoadMapCheckBox(boolean value)
   {
     //System.out.println("setRoadMapCheckBox " + roadMap);
       createRoadMapCheckBox.setSelected(value);
   }
-  
+
   public int getBreakpoint()
     {
     return score.getBreakpoint();
@@ -14674,11 +14678,11 @@ private boolean saveGlobalPreferences()
       }
 
     newSectionButton.setEnabled((m2 - m1) > 0);
-    
+
     }
-    
-    
-    
+
+
+
   private void setFreezeLayout(Boolean frozen)
     {
     if( frozen )
@@ -14697,12 +14701,12 @@ private boolean saveGlobalPreferences()
       }
     }
 
-    
-    
+
+
   private void toggleFreezeLayout()
     {
     String current = getLayoutTF();
-    
+
     current = current.trim();
 
     if( current.equals("") )
@@ -14740,9 +14744,9 @@ private boolean saveGlobalPreferences()
       }
     scoreTab.setTitleAt(i, title);
     }
-    
-    
-    
+
+
+
   private void saveLeadsheetPreferences()
     {
     // set the part title
@@ -14761,8 +14765,8 @@ private boolean saveGlobalPreferences()
     // set instrument numbers
 
     int instSetting;
- 
-    
+
+
     // set the melody instrument number
 
     if( alwaysUseMelody.isSelected() )
@@ -14774,8 +14778,8 @@ private boolean saveGlobalPreferences()
       instSetting = midiInstFromText(melodyInst.getText(), 1);
       }
     getCurrentMelodyPart().setInstrument(instSetting);
-    
-    
+
+
     // set the chord instrument number
 
     if( alwaysUseChord.isSelected() )
@@ -14812,7 +14816,7 @@ private boolean saveGlobalPreferences()
     // set the key
 
     score.setKeySignature(keyNumberFromText(keySignatureTF.getText(), 0));
-    
+
 
     // set the new breakpoint
 
@@ -14842,9 +14846,9 @@ private boolean saveGlobalPreferences()
       }
 
     setTempo(doubleFromTextField(tempoTF, MIN_TEMPO, MAX_TEMPO, getDefaultTempo()));
-    
+
     commentsTF.setText(score.getComments());
-    
+
     if( autoStaveBtn.isSelected() )
       {
       autoStaveMIActionPerformed(null);
@@ -14866,32 +14870,32 @@ private boolean saveGlobalPreferences()
       ErrorLog.log(ErrorLog.WARNING,
               "Currently, having no stave is not an option");
       }
-    
+
     // adjust the layout if a layout is specified
 
     Polylist layout = parseListFromString(getLayoutTF());
-    
+
     if( layout.nonEmpty() )
       {
       adjustLayout(layout);
 
-      setFreezeLayout(true);        
+      setFreezeLayout(true);
       }
 
     // set the menu and button states
 
     setItemStates();
-    
+
     repaint();
-    
+
     // For illustration purposes:
-    
+
     // ChordPart chordPart = score.getChordProg();
-            
-    // System.out.println("chord symbols: " + chordPart.getChordSymbols()); 
-    // System.out.println("chord durations: " + chordPart.getChordDurations());       
+
+    // System.out.println("chord symbols: " + chordPart.getChordSymbols());
+    // System.out.println("chord durations: " + chordPart.getChordDurations());
  }
-    
+
   /**
    *
    * Get an external midi instrument number 1=128 from text
@@ -14930,7 +14934,7 @@ private boolean saveGlobalPreferences()
 
      }
     }
-    
+
 
  /**
    *
@@ -14964,7 +14968,7 @@ private boolean saveGlobalPreferences()
         {
 
         ErrorLog.log(ErrorLog.COMMENT,
-                "The key number " + value + " is out of range: must be between " 
+                "The key number " + value + " is out of range: must be between "
                 + MIN_KEY + " and " + MAX_KEY);
 
         return defaultKey;
@@ -14978,51 +14982,51 @@ private boolean saveGlobalPreferences()
 
      }
    }
-    
- 
-  
-/** 
+
+
+
+/**
   * Set up the metre and length of the leadsheet:
   * top and bottom are the numerator and denominator of the time signature,
   * and opened is a flag that tells whether we're setting the metre from a file
   * or from the preferences dialogue box.
   */
-    
+
     public void initMetreAndLength(int top, int bottom, boolean opened) {
-        
+
         beatValue = ((BEAT*4)/bottom);
-        
+
         measureLength = beatValue * top;
-        
+
         // If we set this from a file, we basically want to ignore everything in
-        
+
         // the preferences box, and set those up from the file.
-        
+
         if (opened) {
-            
+
             int scoreBarLength = score.getLength() / measureLength;
-            
+
             setBars(scoreBarLength);
-            
+
             setTotalMeasures(scoreBarLength);
         }
-        
+
         // However, if we change things from the preferences box, we want to update
         // the score length so it matches.
-        
+
         else {
-            
+
             int scoreBarLength = Integer.parseInt(prefMeasTF.getText());
-            
+
             score.setMetre(top, bottom);
- 
+
             setBars(scoreBarLength);
             }
-        
+
         setupArrays();
         }
-    
-    
+
+
 public void setBars(int bars)
   {
     partBarsTF1.setText("" + bars);
@@ -15066,7 +15070,7 @@ private void adjustLayout(Polylist layout)
     // Determine how many measures there are currently
 
     int currentMeasures = staveScrollPane[0].getStave().getNumMeasures();
-    
+
     //int measureArray[] = staveScrollPane[0].getStave().getLineMeasures();
     /*
     int measureArray[] = lockedMeasures;
@@ -15076,7 +15080,7 @@ private void adjustLayout(Polylist layout)
 
         currentMeasures += measureArray[k];
       }
-     
+
      */
 
     // Now determine the size of the new array.
@@ -15094,7 +15098,7 @@ private void adjustLayout(Polylist layout)
     int arrayElements;
 
     Polylist T = layout;
-    
+
     //System.out.println("setting layout using " + layout + " measuresLeft = " + measuresLeft);
 
     int lastLineLength = 0;
@@ -15115,7 +15119,7 @@ private void adjustLayout(Polylist layout)
               }
 
             lastLineLength = ((Long) T.first()).intValue();
-            
+
             if( lastLineLength <= 0 )
               {
                 ErrorLog.log(ErrorLog.WARNING,
@@ -15130,7 +15134,7 @@ private void adjustLayout(Polylist layout)
 
         measuresLeft -= thisLineLength;
       }
-    
+
     //System.out.println("arrayElements = " + arrayElements);
 
     int newLockedMeasures[] = new int[arrayElements];
@@ -15183,7 +15187,7 @@ private void paintCurrentStaveImmediately(String id)
       }
   }
 
-    
+
 public void setLockedMeasures(int[] _lockedMeasures, String msg)
   {
     lockedMeasures = _lockedMeasures;
@@ -15210,7 +15214,7 @@ public boolean hasLockedMeasures()
  * Not sure if this logic is correct. Locked measures
  * sometimes ends up being longer than necessary.
  * This should be checked, although it seems harmless at the moment.
- * @param measures 
+ * @param measures
  */
 
 private void setTotalMeasures(int measures)
@@ -15236,12 +15240,12 @@ private void setTotalMeasures(int measures)
       }
     setLockedMeasures(tempLockedMeasures, "setTotalMeasures");
   }
-    
+
 
 
 /**
  * Clear the layout preferences for the leadsheet.
- * @param layout 
+ * @param layout
  */
 
 private void clearLayoutPreference()
@@ -15252,13 +15256,13 @@ private void clearLayoutPreference()
 
 /**
  * Set the layout preferences for the leadsheet.
- * @param layout 
+ * @param layout
  */
 
 private void setLayoutPreference(Polylist layout)
   {
     //System.out.println("setLayoutPreference " + layout);
-    
+
     if( layout != null )
       {
         StringBuilder buffer = new StringBuilder();
@@ -15275,13 +15279,13 @@ private void setLayoutPreference(Polylist layout)
       }
   }
 
-    
+
     /**
      *
      * Loads the advice rules for the current score
      *
      */
-    
+
     private void loadAdvMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAdvMIActionPerformed
 
         vocfc.setDialogTitle("Load Vocabulary File");
@@ -15298,13 +15302,13 @@ private void setLayoutPreference(Polylist layout)
 
         savedVocab = vocfc.getSelectedFile();
     }//GEN-LAST:event_loadAdvMIActionPerformed
-    
-       
+
+
     /*
      * Checks to see if the tabs in scoreTab have changed states, and sets the
      * current tabbed index if so.
      */
-    
+
     private void scoreTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scoreTabStateChanged
 
       if( scoreTab.getSelectedIndex() != OUT_OF_BOUNDS )
@@ -15339,7 +15343,7 @@ private void setLayoutPreference(Polylist layout)
         {
           getCurrentStave().changeType(Preferences.getStaveTypeFromPreferences());
         }
- 
+
         // reset the viewport
 
         staveScrollPane[currTabIndex].resetViewportView();
@@ -15349,9 +15353,9 @@ private void setLayoutPreference(Polylist layout)
 
 
         // set the volume sliders
-        
+
         int value = midiSynth.getMasterVolume();
-        
+
         setSliderVolumes(value);
 
         melodyVolume.setValue(getScore().getMelodyVolume());
@@ -15370,54 +15374,54 @@ private void setLayoutPreference(Polylist layout)
         }
 
     }//GEN-LAST:event_scoreTabStateChanged
-    
-    
-    
+
+
+
     public Rectangle getCurrentScrollPosition() {
-        
+
         return staveScrollPane[currTabIndex].getViewport().getViewRect();
-        
+
     }
-    
-    
-    
+
+
+
     public void setCurrentScrollPosition(Rectangle r) {
    //System.out.println("setCurrentScrollPosition(" + r + ")");
         int maxwidth = staveScrollPane[currTabIndex].getStave().getPanelWidth();
-        
+
         int curwidth = (int) staveScrollPane[currTabIndex].getViewport().getExtentSize().getWidth();
-        
+
         if(r.x + curwidth >= maxwidth) {
-            
+
             r.x = maxwidth - curwidth;
         }
-        
+
         if(r.x < 0)
-            
+
             r.x = 0;
-        
+
         staveScrollPane[currTabIndex].getViewport().setViewPosition(r.getLocation());
     }
-    
+
 
     /**
      *
      * Adds a new, blank tabbed part to the score.
      *
      */
-    
+
     private void addTabMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTabMIActionPerformed
-    addTab(); 
+    addTab();
     }//GEN-LAST:event_addTabMIActionPerformed
-    
+
 public void addTab()
   {
     int length = score.getLength();
     MelodyPart mp = new MelodyPart(length);
     mp.setInstrument(score.getPart(0).getInstrument());
-    addChorus(mp);      
+    addChorus(mp);
   }
- 
+
  public void addChorus(MelodyPart mp)
    {
       int keySig = getCurrentStave().getKeySignature();
@@ -15442,28 +15446,28 @@ public void addTab()
 
       getCurrentStave().setKeySignature(keySig);
 
-      getCurrentStave().repaint();    
+      getCurrentStave().repaint();
    }
- 
+
     /**
      *
      * Open up the "Preferences" dialog.
      *
      */
-    
+
     private void prefsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefsMIActionPerformed
-        
+
         showPreferencesDialog();
-        
+
     }//GEN-LAST:event_prefsMIActionPerformed
-    
+
 
     /**
      *
      * Acknowledges the information, then closes the window.
      *
      */
-    
+
   private void enterMeasuresCore()
     {
     try
@@ -15500,22 +15504,22 @@ public void addTab()
       measErrorLabel.setText("Invalid number!");
       }
     }
-    
-    
+
+
     /**
      *
      * Resets the focus if the advice frame is "closed".
      *
      */
-    
+
     private void adviceFrameComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_adviceFrameComponentHidden
-        
+
         staveRequestFocus();
-        
+
     }//GEN-LAST:event_adviceFrameComponentHidden
-    
-    
-    
+
+
+
     /**
      *
      * This variable is used to control undoing within a single instance
@@ -15523,41 +15527,41 @@ public void addTab()
      * of an advice menu.
      *
      */
-    
+
     private boolean adviceUsed = false;
-    
-    
-    
+
+
+
     /**
      *
      * Reset the advice undo memory.
      *
      */
-    
+
     public void resetAdviceUsed() {
-        
+
         if( adviceUsed ) {
-            
+
             Trace.log(2, "adviceUsed set to false");
-            
+
             adviceUsed = false;
         }
     }
-    
-    
+
+
     /**
      *
      * Set the advice undo memory.
      *
      */
-    
+
 public void setAdviceUsed()
   {
     Trace.log(2, "adviceUsed set to true");
 
     adviceUsed = true;
   }
-    
+
     /**
      *
      * Now advice is entered by clicking only.
@@ -15565,7 +15569,7 @@ public void setAdviceUsed()
      * Keystrokes should behave the same as if pressed in the stave window.
      *
      */
-    
+
     private void adviceTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_adviceTreeKeyPressed
 
         //System.out.println("keycode = " + evt.getKeyCode() + ", evt = " + evt);
@@ -15586,13 +15590,13 @@ public void setAdviceUsed()
                 {
                 DefaultMutableTreeNode node =
                     (DefaultMutableTreeNode) adviceTree.getSelectionPath().getLastPathComponent();
-                
+
                  TreeNode parent = node.getParent();
-                 
+
                  Enumeration<DefaultMutableTreeNode>e = parent.children();
-                 
+
                  DefaultMutableTreeNode prev = null;
-                 
+
                  DefaultMutableTreeNode next = null;
 
                  // This hack is necessary because the only path component available
@@ -15604,11 +15608,11 @@ public void setAdviceUsed()
 
                  // Note that if weWERE at a non-leaf node and arrive at a leaf, nothing
                  // will be selected below. This can be FIXed later when there is time.
-                 
+
                  while( e.hasMoreElements() && !node.equals(next) )
                  {
                      prev = next;
-                     
+
                      next = e.nextElement();
                  }
 
@@ -15616,7 +15620,7 @@ public void setAdviceUsed()
                  // and prev is the one before it, if any.
 
                  // Moving up
-                 
+
                  if( up && prev != null )
                  {
                      adviceSelected(prev.getUserObject());
@@ -15687,7 +15691,7 @@ public void setAdviceUsed()
    * on other platforms.
    *
    */
-    
+
   public void controlDownBehavior(KeyEvent e)
     {
     Trace.log(2, "controlDownBehavior " + e);
@@ -15770,13 +15774,13 @@ public void setAdviceUsed()
     staveRequestFocus();
     }
 
-  
+
   /**
    *
    * Behavior when shift key is held down.
    *
    */
-    
+
   public void shiftDownBehavior(KeyEvent e)
   {
     switch( e.getKeyCode() )
@@ -15844,13 +15848,13 @@ public void setAdviceUsed()
     staveRequestFocus();
   }
 
- 
+
   /**
    * Behavior on key stroke when neither shift nor control key is held down.
-   * Currently called only from within 
+   * Currently called only from within
    * adviceKeyPressed(KeyEvent e)
    */
-    
+
   public void nothingDownBehavior(KeyEvent e)
   {
     switch( e.getKeyCode() )
@@ -15886,11 +15890,11 @@ public void setAdviceUsed()
       case KeyEvent.VK_I:
         playAllMIActionPerformed(null);
         break;
-          
+
       case KeyEvent.VK_K:
         stopPlayMIActionPerformed(null);
         break;
-          
+
       case KeyEvent.VK_R:
         addRest();
         break;
@@ -15898,7 +15902,7 @@ public void setAdviceUsed()
       case KeyEvent.VK_S:
         getCurrentStave().transposeMelodyDownHarmonically();
         break;
-          
+
       case KeyEvent.VK_T:
         transposeMelodyUpOctaveActionPerformed(null);
         break;
@@ -15914,7 +15918,7 @@ public void setAdviceUsed()
       case KeyEvent.VK_W:
         getCurrentStave().transposeMelodyUpHarmonically();
         break;
-                    
+
       case KeyEvent.VK_DELETE:
       case KeyEvent.VK_BACK_SPACE:
       case KeyEvent.VK_X:
@@ -15955,8 +15959,8 @@ public void setAdviceUsed()
       }
     staveRequestFocus();
    }
-  
-  
+
+
   /**
    *
    * Key pressed in advice menu.  Note that this replicates some functions
@@ -15992,38 +15996,38 @@ public void setAdviceUsed()
         {
         nothingDownBehavior(e);
         }
-      
+
       getCurrentStaveActionHandler().handleGridLineSpacing(e);
       }
     }
-    
-    
+
+
     public void toggleBothEnharmonics() {
         toggleChordEnharmonics();
         toggleMelodyEnharmonics();
         getCurrentStave().repaint();
     }
-    
+
     public void toggleChordEnharmonics() {
         cm.execute(new ToggleEnharmonicCommand(
                 getCurrentStave().getChordProg(),
                 getCurrentSelectionStart(),
                 getCurrentSelectionEnd()));
     }
-    
+
     /**
      * Toggle enharmonics of a group of notes
      */
-    
+
     public void toggleMelodyEnharmonics() {
         cm.execute(new ToggleEnharmonicCommand(
                 getCurrentMelodyPart(),
                 getCurrentSelectionStart(),
                 getCurrentSelectionEnd()));
     }
-    
-    
-    
+
+
+
   public void addMeasures(int numNewMeasures)
     {
     // increase score length by getting/setting text field in preferences
@@ -16046,14 +16050,14 @@ public void setAdviceUsed()
     setCurrentScrollPosition(r);
     }
 
-    
-    
+
+
   /**
    *
    * Add a rest at the current selection start.
    *
    */
-    
+
   public void addRest()
     {
     //Trace.log(2, "add rest");
@@ -16067,37 +16071,37 @@ public void setAdviceUsed()
       getCurrentStave().repaint();
       }
     }
-    
+
   /**
    *
    * Move current selection to the right.
    *
    */
-  
+
   public void moveRight()
     {
         getCurrentStaveActionHandler().moveSelectionRight(getCurrentSelectionStart() + 1);
         redoAdvice();
     }
-    
+
   /**
    *
    * Move current selection to the left.
    *
    */
-  
+
   public void moveLeft()
     {
         getCurrentStaveActionHandler().moveSelectionLeft(getCurrentSelectionStart() - 1);
         redoAdvice();
     }
-    
+
   /**
    *
    * Inserts advice if the user clicks on an appropriate node.
    *
    */
-  
+
     private void adviceTreeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adviceTreeMousePressed
 
       Trace.log(2, "mouse pressed in advice tree: evt = " + evt);
@@ -16160,9 +16164,9 @@ public void setAdviceUsed()
       getCurrentStave().repaint();
       }
     }
-    
-    
-    
+
+
+
 /**
  *
  * Displays an internal frame that allows the user to override the number
@@ -16174,14 +16178,14 @@ public void setAdviceUsed()
 
         displayOverrideMeasures();
     }//GEN-LAST:event_overrideMeasPMIActionPerformed
-    
-    
+
+
     /**
      *
      * Continuously auto-adjusts every Stave in the Score.
      *
      */
-    
+
     private void autoAdjustMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoAdjustMIActionPerformed
 
         autoAdjustStaves = !autoAdjustStaves;
@@ -16200,11 +16204,11 @@ public void setAdviceUsed()
 
         setItemStates();
     }//GEN-LAST:event_autoAdjustMIActionPerformed
-    
-    
-    
-    
-    
+
+
+
+
+
     /**
      *
      * A one-time auto adjust of the current stave that is carried throughout
@@ -16212,30 +16216,30 @@ public void setAdviceUsed()
      * the parts.
      *
      */
-    
+
     private void oneAutoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneAutoMIActionPerformed
-        
+
         autoAdjustStaves = true;
-        
+
         paintCurrentStaveImmediately("oneAuto");
-                
+
         // reset the locked measures to the newly calculated ones
-        
+
         setLockedMeasures(getCurrentStave().getLineMeasures(), "oneAutoMIAction");
-                
-        autoAdjustStaves = autoAdjustMI.isSelected();        
+
+        autoAdjustStaves = autoAdjustMI.isSelected();
     }//GEN-LAST:event_oneAutoMIActionPerformed
-    
-    
-    
-    
-    
+
+
+
+
+
     public static Polylist parseListFromString(String input) {
-        
+
         Tokenizer in = new Tokenizer(new StringReader(input));
-        
+
         Object ob;
-        
+
         Polylist result = Polylist.nil;
 
         while( (ob = in.nextSexp()) != Tokenizer.eof ) {
@@ -16243,19 +16247,19 @@ public void setAdviceUsed()
         }
 
         return result.reverse();
-        
+
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 /**
  *
  * Enter chords and melody from text field
  *
  */
-    
+
 private void enterBoth()
   {
     if( slotIsSelected() )
@@ -16271,7 +16275,7 @@ private void enterBoth()
                     parseListFromString(chordText),
                     chordProg,
                     partList.get(currTabIndex)));
-            
+
             redoAdvice();
           }
       }
@@ -16338,8 +16342,8 @@ void enterMelody()
       }
   }
 
-   
-    
+
+
 /**
  *
  * Shows the advice frame or removes it.
@@ -16354,19 +16358,19 @@ void enterMelody()
           }
     }//GEN-LAST:event_adviceMIActionPerformed
 
-    
+
 /**
  *
  * Pastes the selection to the Stave to the clipboard
  *
  */
-    
+
     public void pasteMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMelodyMIActionPerformed
 
         pasteMelody();
 
     }//GEN-LAST:event_pasteMelodyMIActionPerformed
-    
+
  void pasteMelody()
   {
     Trace.log(2, "paste melody");
@@ -16378,7 +16382,7 @@ void enterMelody()
         pasteMelody(impro.getMelodyClipboard());
       }
   }
- 
+
 
 private void pasteMelody(Part part, Stave stave)
   {
@@ -16411,19 +16415,19 @@ public void pasteMelody(Part part)
     pasteMelody(part, getCurrentStave());
   }
 
-    
+
     /**
      *
      * Pastes chord selection to the Stave to the clipboard
      *
      */
-    
+
     public void pasteChordsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteChordsMIActionPerformed
-        
+
         pasteChords();
     }//GEN-LAST:event_pasteChordsMIActionPerformed
-    
-    
+
+
  void pasteChords()
   {
     Trace.log(2, "paste chords");
@@ -16446,20 +16450,20 @@ public void pasteMelody(Part part)
         setItemStates();
       }
   }
-   
-    
+
+
 /**
  *
  * Copy the selection of notes from the Stave to the clipboard
  *
  */
-    
+
     public void copyMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMelodyMIActionPerformed
-        
+
         copyMelody();
     }//GEN-LAST:event_copyMelodyMIActionPerformed
-  
-    
+
+
 void copyMelody()
   {
     Trace.log(2, "copy melody");
@@ -16482,19 +16486,19 @@ void copyMelody()
         setItemStates();
       }
   }
-    
-    
+
+
 /**
  *
  * Cuts the selection of notes from the Stave to the clipboard
  *
  */
-    
+
     public void cutMelodyMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMelodyMIActionPerformed
-        
+
         cutMelody();
     }//GEN-LAST:event_cutMelodyMIActionPerformed
-    
+
   void cutMelody()
   {
     Trace.log(2, "cut melody");
@@ -16611,25 +16615,25 @@ void timeWarpMelody(int num, int denom)
       }
   }
 
-    
+
   /**
    *
    * Redo the previous command
    *
    */
     public void redoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoMIActionPerformed
-      
+
         redoCommand();
     }//GEN-LAST:event_redoMIActionPerformed
- 
-    
+
+
   /**
    *
    * Undo the previous command
    *
    */
     public void undoMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMIActionPerformed
-      
+
         undoCommand();
     }//GEN-LAST:event_undoMIActionPerformed
 
@@ -16645,7 +16649,7 @@ void timeWarpMelody(int num, int denom)
 
       setItemStates();
     }
-  
+
   public void redoCommand()
     {
       Trace.log(2, "redo command");
@@ -16656,10 +16660,10 @@ void timeWarpMelody(int num, int denom)
 
       // set the menu and button states
 
-      setItemStates();      
+      setItemStates();
     }
-  
-  
+
+
   /**
    *
    * Shows the construction lines when the user's mouse is over a measure
@@ -16673,7 +16677,7 @@ void timeWarpMelody(int num, int denom)
         stave.setShowMeasureCL(!stave.getShowMeasureCL());
 
         stave.repaint();
-        }        
+        }
     }//GEN-LAST:event_showBracketsCurrentMeasureMIActionPerformed
 
   /**
@@ -16706,13 +16710,13 @@ void timeWarpMelody(int num, int denom)
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 
-      PrintUtilities.printComponent(getCurrentStave(), 
-                                    staveScrollPane[currTabIndex].getNumLines(), 
-                                    numStavesPP, 
+      PrintUtilities.printComponent(getCurrentStave(),
+                                    staveScrollPane[currTabIndex].getNumLines(),
+                                    numStavesPP,
                                     grandStaveBtn.isSelected());
 
       // printAllStaves();
-      
+
       getCurrentStave().setShowAllCL(tempShowAllCL);
 
       getCurrentStave().setShowMeasureCL(tempShowMeasureCL);
@@ -16721,18 +16725,18 @@ void timeWarpMelody(int num, int denom)
 
       getCurrentStave().setPrinting(false);
 
-      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));      
+      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_printMIActionPerformed
 
-    
+
  /**
    * Print all staves, rather than just the current one.
    */
-    
+
  private void printAllStaves()
    {
    // Make array of staves, then print each one.
-     
+
    Stave component[] = new Stave[staveScrollPane.length];
    for( int i = 0; i < staveScrollPane.length; i++ )
      {
@@ -16743,15 +16747,15 @@ void timeWarpMelody(int num, int denom)
        setUpStavesToPrint(component[i]);
    }
    try{
-        PrintUtilities.printMultipleComponents(component,  
-                                               staveScrollPane[currTabIndex].getNumLines(), 
-                                               numStavesPP, 
+        PrintUtilities.printMultipleComponents(component,
+                                               staveScrollPane[currTabIndex].getNumLines(),
+                                               numStavesPP,
                                                grandStaveBtn.isSelected());
    } catch (OutOfMemoryError e) {
        ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to print this many choruses, try printing each chorus individually");
    }
    }
- 
+
  private void setUpStavesToPrint(Stave stv)
  {
         stv.setShowAllCL(false);
@@ -16762,14 +16766,14 @@ void timeWarpMelody(int num, int denom)
 
         stv.setPrinting(true);
  }
- 
- 
+
+
   /**
    *
    * Display the construction lines on the score if checked in the menu
    *
    */
- 
+
     private void showBracketsAllMeasuresMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBracketsAllMeasuresMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
@@ -16787,7 +16791,7 @@ void timeWarpMelody(int num, int denom)
    * Display the bar numbers on the score if checked in the menu
    *
    */
-    
+
     private void barNumsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barNumsMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
@@ -16805,7 +16809,7 @@ void timeWarpMelody(int num, int denom)
    * Display the title of the score if checked in the menu
    *
    */
-    
+
     private void showTitlesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTitlesMIActionPerformed
 
       for( int i = 0; i < staveScrollPane.length; i++ )
@@ -16825,11 +16829,11 @@ void timeWarpMelody(int num, int denom)
    * Stop the playback of the score if selected
    *
    */
-    
+
     public void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayMIActionPerformed
 
       stopPlaying("stop Play MI");
-        
+
     }//GEN-LAST:event_stopPlayMIActionPerformed
 
   /**
@@ -16839,7 +16843,7 @@ void timeWarpMelody(int num, int denom)
    * bass-- depending on the variety of pitches in the score
    *
    */
-    
+
     private void autoStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoStaveMIActionPerformed
 
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -16857,7 +16861,7 @@ void timeWarpMelody(int num, int denom)
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_autoStaveMIActionPerformed
 
-    
+
 private void setCurrentStaveType(StaveType t)
   {
     //System.out.println("setCurrentStaveType(" + t + ")");
@@ -16892,8 +16896,8 @@ private void setCurrentStaveType(StaveType t)
     getCurrentMelodyPart().setStaveType(t);
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
   }
-  
-  
+
+
   /**
    *
    * Display the score as a grand stave
@@ -16909,7 +16913,7 @@ private void setCurrentStaveType(StaveType t)
    * Display the score in bass clef format
    *
    */
-    
+
     private void bassStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassStaveMIActionPerformed
       setCurrentStaveType(StaveType.BASS);
     }//GEN-LAST:event_bassStaveMIActionPerformed
@@ -16919,7 +16923,7 @@ private void setCurrentStaveType(StaveType t)
    * Display the score in treble clef format
    *
    */
-    
+
     private void trebleStaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trebleStaveMIActionPerformed
       setCurrentStaveType(StaveType.TREBLE);
     }//GEN-LAST:event_trebleStaveMIActionPerformed
@@ -16954,14 +16958,14 @@ private void setCurrentStaveType(StaveType t)
      playScoreBody(0);
   }
 
- 
+
  public void playScore(int startAt)
     {
      noCountIn();
      playScoreBody(startAt);
     }
 
- 
+
 public void playScoreBody(int startAt)
     {
       if( playingPaused() )
@@ -17010,7 +17014,7 @@ public void playAscore(Score score)
 {
 playAscore(score, 0);
 }
-    
+
 /**
  * Play a score, not necessarily the one in this Notate window.
  * Use the "no-style" style.
@@ -17039,39 +17043,39 @@ public void playAscoreInCurrentStyle(Score score, int loopCount)
 public void playAscore(Score score, String style, int loopCount)
 {
   score.setStyle(style);
-  
+
   int volume = allVolumeToolBarSlider.getValue();
-   
+
   int startTime = 0;
   boolean swing = true;
   int transposition = 0;
   boolean useDrums = true;
   int endLimitIndex = -1; // score.getLength()-1;
   //System.out.println("playing score of length " + score.getLength());
-  
+
   if( midiSynth3 == null )
     {
       //midiSynth3 = midiSynth;
     midiSynth3 = new MidiSynth(midiManager);
     }
-  
+
   midiSynth3.setMasterVolume(volume);
-  
-  new PlayScoreCommand(score, 
-                       startTime, 
-                       swing, 
-                       midiSynth3, 
-                       this, 
-                       loopCount, 
-                       transposition, 
+
+  new PlayScoreCommand(score,
+                       startTime,
+                       swing,
+                       midiSynth3,
+                       this,
+                       loopCount,
+                       transposition,
                        useDrums,
-                       endLimitIndex).execute();     
+                       endLimitIndex).execute();
 }
 
 /**
  * Plays a score using the style and tempo of the score
  * @param score
- * @param loopCount 
+ * @param loopCount
  */
 public void playAscoreWithStyle(Score score, int loopCount)
 {
@@ -17082,23 +17086,23 @@ public void playAscoreWithStyle(Score score, int loopCount)
   boolean useDrums = true;
   int endLimitIndex = -1; // score.getLength()-1;
   //System.out.println("playing score of length " + score.getLength());
-  
+
   if( midiSynth3 == null )
     {
     midiSynth3 = new MidiSynth(midiManager);
     }
-  
+
   midiSynth3.setMasterVolume(volume);
 
-  new PlayScoreCommand(score, 
-                       startTime, 
-                       swing, 
-                       midiSynth3, 
-                       this, 
-                       loopCount, 
-                       transposition, 
+  new PlayScoreCommand(score,
+                       startTime,
+                       swing,
+                       midiSynth3,
+                       this,
+                       loopCount,
+                       transposition,
                        useDrums,
-                       endLimitIndex).execute();     
+                       endLimitIndex).execute();
 }
 
 public void stopPlayAscore()
@@ -17199,7 +17203,7 @@ public ChordPart makeCountIn()
   }
 
 
- 
+
   public void initCurrentPlaybackTab(int offset)
     {
 
@@ -17230,7 +17234,7 @@ public ChordPart makeCountIn()
     Trace.log(2, "Notate: Play Status Changed to " + playing);
 
     // update the playbackManager
-     
+
     playbackManager.setPlaying(playing, transposition);
 
 
@@ -17249,7 +17253,7 @@ public ChordPart makeCountIn()
         pauseBtn.setSelected(false);
 
         recordBtn.setEnabled(false);
-        
+
         setMode(Mode.PLAYING);
 
         break;
@@ -17290,7 +17294,7 @@ public ChordPart makeCountIn()
         setPlaybackManagerTime();
 
         setNormalMode();
-        
+
         getCurrentStave().repaint();
 
         break;
@@ -17304,17 +17308,17 @@ public ChordPart makeCountIn()
     {
     return playingStatus;
     }
-  
+
   public boolean isPlaying()
     {
       return playingStatus == MidiPlayListener.Status.PLAYING;
     }
-  
+
   public boolean playingStopped()
     {
       return playingStatus == MidiPlayListener.Status.STOPPED;
     }
-  
+
   public boolean playingPaused()
     {
       return playingStatus == MidiPlayListener.Status.PAUSED;
@@ -17352,8 +17356,8 @@ public ChordPart makeCountIn()
     {
     return midiSynth;
     }
-  
-  
+
+
   public Sequencer getSequencer()
     {
     return midiSynth.getSequencer();
@@ -17370,7 +17374,7 @@ public ChordPart makeCountIn()
     public void saveAsLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsLeadsheetMIActionPerformed
 
       saveAsLeadsheet();
-        
+
     }//GEN-LAST:event_saveAsLeadsheetMIActionPerformed
 
   /** Saves the current leadsheet.
@@ -17394,27 +17398,27 @@ public ChordPart makeCountIn()
    */
   public boolean saveAsLeadsheetAWT()
     {
-      
+
     //System.out.println("using AWT: " + lastLeadsheetFileStem);
     if( saveAWT.getDirectory().equals("/") )
       {
       saveAWT.setDirectory(ImproVisor.getLeadsheetDirectory().getAbsolutePath());
       }
     String lastLeadsheetFileStem = ImproVisor.getLastLeadsheetFileStem();
-    
+
     if( lastLeadsheetFileStem != null )
       {
       saveAWT.setFile(lastLeadsheetFileStem);
       }
-    
+
     saveAWT.setVisible(true);
-    
+
     String selected = saveAWT.getFile();
-    
+
     ImproVisor.setLastLeadsheetFileStem(saveAWT.getFile());
-    
+
     String dir = saveAWT.getDirectory();
-    
+
     if( selected != null )
       {
       boolean noErrors;
@@ -17426,10 +17430,10 @@ public ChordPart makeCountIn()
         }
 
       File newFile = new File(dir + selected);
-      
+
       noErrors = saveLeadsheet(newFile, score);
       setTitle(score.getTitle());
-      
+
       setSavedLeadsheet(newFile);
 
       if( !savedLeadsheet.exists() )
@@ -17450,25 +17454,25 @@ public ChordPart makeCountIn()
    */
 public boolean saveAsLeadsheetSwing()
   {
- //System.out.println("using Swing :" + lastLeadsheetFileStem);   
+ //System.out.println("using Swing :" + lastLeadsheetFileStem);
     if( saveLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
       {
         saveLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
       }
-    
+
      String lastLeadsheetFileStem = ImproVisor.getLastLeadsheetFileStem();
 
      if( lastLeadsheetFileStem != null )
       {
       saveLSFC.setSelectedFile(new File(lastLeadsheetFileStem));
       }
-    
-        
+
+
     if( saveLSFC.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
       {
 
         boolean noErrors;
-        
+
         File selectedFile = saveLSFC.getSelectedFile();
 
         if( selectedFile.getName().endsWith(leadsheetExt) )
@@ -17484,7 +17488,7 @@ public boolean saveAsLeadsheetSwing()
             String file = selectedFile.getAbsolutePath();
 
             file += leadsheetExt;
-            
+
             File newFile = new File(file);
 
             noErrors = saveLeadsheet(newFile, score);
@@ -17493,7 +17497,7 @@ public boolean saveAsLeadsheetSwing()
 
             setSavedLeadsheet(newFile);
           }
-        
+
         ImproVisor.setLastLeadsheetFileStem(selectedFile.getName());
 
 
@@ -17513,7 +17517,7 @@ public boolean saveAsLeadsheetSwing()
 
 /**
  * Get X location for new frame cascaded from original.
- * @return 
+ * @return
  */
 
 public int getNewXlocation()
@@ -17524,7 +17528,7 @@ public int getNewXlocation()
 
 /**
  * Get Y location for new frame cascaded from original.
- * @return 
+ * @return
  */
 
 public int getNewYlocation()
@@ -17541,7 +17545,7 @@ public int getNewYlocation()
    *
    */
     public void openLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLeadsheetMIActionPerformed
-      openLeadsheet(false);        
+      openLeadsheet(false);
     }//GEN-LAST:event_openLeadsheetMIActionPerformed
 
 
@@ -17552,7 +17556,7 @@ public int getNewYlocation()
    * it through the dialog
    *
    */
-    
+
 public void openLeadsheet(boolean openCorpus)
   {
     if( openLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
@@ -17571,11 +17575,11 @@ public void openLeadsheet(boolean openCorpus)
             // loadMenu the file
 
             Score newScore = new Score();
-            
+
             File file = openLSFC.getSelectedFile();
-            
+
             ImproVisor.setLastLeadsheetFileStem(file.getName());
-            
+
             new OpenLeadsheetCommand(file, newScore).execute();
 
             // create a new window and show the score
@@ -17660,13 +17664,13 @@ public void openLeadsheet(boolean openCorpus)
             else
               {
                 // open the file
-                
+
                 File file = openLSFC.getSelectedFile();
-                
-                setupLeadsheet(file, false);               
-                            
+
+                setupLeadsheet(file, false);
+
                 ImproVisor.setLastLeadsheetFileStem(file.getName());
-            
+
                 if( createRoadMapCheckBox.isSelected() )
                   {
                   roadMapThisAnalyze();
@@ -17682,8 +17686,8 @@ public void openLeadsheet(boolean openCorpus)
     setNormalStatus();
     staveRequestFocus();
     }
-    
-  
+
+
 
 /**
  * Reset the command manager
@@ -17692,15 +17696,15 @@ public void openLeadsheet(boolean openCorpus)
 public void cmReset()
   {
     // clear undo/redo history
-    
+
     cm.clearHistory();
-    
+
     // mark sheet as saved in its current state (no unsaved changes).
-    
+
     cm.changedSinceLastSave(false);
   }
 
-    
+
   /**
    *
    * Reverts the leadsheet file to the previous saved version.
@@ -17726,7 +17730,7 @@ public void cmReset()
 
       cmReset();
       }
-    
+
     staveRequestFocus();
     }
 
@@ -17736,7 +17740,7 @@ public void cmReset()
  * Do stuff that is common to open and revert file.
  *
  */
-  
+
 public boolean setupLeadsheet(File file, boolean openCorpus)
   {
     Score newScore = new Score();
@@ -17744,12 +17748,12 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
     //cm.execute(new OpenLeadsheetCommand(file, newScore));
 
     // System.out.println("reading file " + file);
-    
+
     if( !readLeadsheetFile(file, newScore))
       {
         return false;
       }
-    
+
     setSavedLeadsheet(file);
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
     setupScore(newScore);
@@ -17763,7 +17767,7 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
     staveRequestFocus();
     return true;
   }
-    
+
 
     /**
      * Reads the File into the Score.
@@ -17771,7 +17775,7 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
     public boolean readLeadsheetFile(File file, Score score)
       {
         FileInputStream leadStream;
-        
+
         try {
             leadStream = new FileInputStream(file);
             RecentFiles recFile = new RecentFiles(file.getAbsolutePath());
@@ -17788,7 +17792,7 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
 
 /**
  * I think this is only used in grammar learning.
- * @param s 
+ * @param s
  */
 
 public void getAllMeasures(Score s)
@@ -17796,22 +17800,22 @@ public void getAllMeasures(Score s)
     allMeasures = true;
 
     int HEAD = 0;
-    
+
     melodyData = new ArrayList<String>();
 
     for( int i = 0; i < staveScrollPane.length; i++ )
       {
         //System.out.println("Chorus " + i+1 + ":");
-        
+
         scoreTab.setSelectedComponent(staveScrollPane[i]);
         melodyData = getMelodyData(s, i);
-        
+
         //get the abstract melodies of all except the head
         //if(i != 0) {
-        
+
         selectAll2();
         lickgenFrame.getAbstractMelody();
-        
+
         //}
         //get the exact melodies
         //if (i == HEAD) {
@@ -17826,14 +17830,14 @@ public void getAllMeasures(Score s)
 
 /**
  * I think this is only used in grammar learning.
- * @param s 
+ * @param s
  */
 
 public ArrayList<String> getMelodyData(int chorusNumber)
   {
     return getMelodyData(score, chorusNumber);
   }
-    
+
     /*Returns an ArrayList of Strings representing a section of the melody of a
      *chorus and containing the notes in the section     */
     public ArrayList<String> getMelodyData(Score s, int chorusNumber) {
@@ -17891,8 +17895,8 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         return sections;
     }
 
-    
-    
+
+
     public void getAllContours (File leadsheet) {
         File directory = leadsheet.getParentFile();
         //System.out.println(leadsheet.getParentFile());
@@ -17904,7 +17908,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
             }
         }
     }
-    
+
     public void writeHeadData() {
         setLickGenStatus("Writing head data");
         //get the list of files
@@ -17948,7 +17952,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         }
 
     }
-    
+
 
     /* Takes index and finds last index with note in it
      */
@@ -17958,18 +17962,18 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         }
         return slot;
     }
-        
+
     /* Takes indices of two slots which define a segment
      * Gets all intervals in the segment
      * returns an array with the min interval in index 0 and max in index 1
      */
     public int[] getIntervals(int startSlot, int endSlot, MelodyPart melpart) {
         int interval = 0;
-        int minInt = 0; 
+        int minInt = 0;
         int maxInt = 0;
         boolean firstTimeThrough = true;
-        
-        
+
+
         int[] intervals = new int[2];
         while (startSlot < endSlot) {
             Note firstNote = melpart.getNote(startSlot);
@@ -17990,14 +17994,14 @@ public ArrayList<String> getMelodyData(int chorusNumber)
             }
 
         }
-         
+
         intervals[0] = minInt;
         intervals[1] = maxInt;
         return intervals;
     }
-    
+
     /*
-     * Takes a melody part and an index 
+     * Takes a melody part and an index
      * Returns the next note after the index that is not a rest
      */
 
@@ -18058,7 +18062,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         }
         return startSpot;
     }
-  
+
   /**
    * Set up a new score.
    *
@@ -18072,13 +18076,13 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     this.score = score;
 
     setTitle(score.getTitle());
-    
+
     // reset the current scoreFrame
 
     setupArrays();
-    
+
     setTempo(score.getTempo());
-        
+
     clearLayoutPreference();
 
     closeAdviceFrame();
@@ -18100,7 +18104,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     currTabIndex = 0;
 
     scoreTab.setSelectedIndex(currTabIndex);
-    
+
     setTransposition(score.getTransposition());
     }
 
@@ -18121,26 +18125,26 @@ public ArrayList<String> getMelodyData(int chorusNumber)
   public void newNotate()
     {
     Score newScore = new Score("");
-    
+
     ensureChordFontSize();
 
     int chordFontSize = Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue();
 
     newScore.setChordFontSize(chordFontSize);
-    
+
     newScore.setTempo(getDefaultTempo());
 
     newScore.setChordProg(new ChordPart());
 
     newScore.addPart(new MelodyPart(defaultBarsPerPart * measureLength));
-    
+
     newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
     // open a new window
 
     Notate newNotate =
             new Notate(newScore,
-                       this.adv, 
+                       this.adv,
                        this.impro,
                        getNewXlocation(),
                        getNewYlocation());
@@ -18159,7 +18163,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
    * it is at the bottom, for some reason vertical staggering does not happen.
    @param notate
    */
-  
+
   public void setNotateFrameHeight()
   {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -18168,7 +18172,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     setSize(NOTATE_WIDTH, dm.getHeight() - (isVisible()? getY() : 0));
   }
-  
+
     public void forceNotateFrameHeight()
   {
     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -18177,7 +18181,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     setSize(NOTATE_WIDTH, dm.getHeight() - getY());
   }
-  
+
   public void setSavedLeadsheet(File f)
   {
       savedLeadsheet = f;
@@ -18186,12 +18190,12 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         ImproVisor.setLastLeadsheetFileStem(f.getName());
         }
   }
-  
+
   public boolean savedLeadsheetExists()
     {
       return savedLeadsheet != null && savedLeadsheet.exists();
     }
-  
+
   public boolean countInCheckboxIsSelected()
   {
       return countInCheckBox.isSelected();
@@ -18313,7 +18317,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
         colorationButton.setBackground(new Color(153, 204, 255));
         colorationButton.setText("<html><center>Black&<br>White</center></html>");
         }
-      
+
 }//GEN-LAST:event_colorationButtonActionPerformed
 
     private void smartEntryButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_smartEntryButtonActionPerformed
@@ -18386,12 +18390,12 @@ public ArrayList<String> getMelodyData(int chorusNumber)
           // Delegate to main window
           adviceKeyPressed(evt);
           break;
-        }             
+        }
 }//GEN-LAST:event_adviceScrollListCellsKeyReleased
 
     private void adviceScrollListIdiomsKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListIdiomsKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListIdiomsKeyPressed
-    
+
 }//GEN-LAST:event_adviceScrollListIdiomsKeyPressed
 
     private void adviceScrollListIdiomsKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListIdiomsKeyReleased
@@ -18417,7 +18421,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListLicksKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListLicksKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListLicksKeyPressed
-          
+
 }//GEN-LAST:event_adviceScrollListLicksKeyPressed
 
     private void adviceScrollListLicksKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListLicksKeyReleased
@@ -18443,7 +18447,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     private void adviceScrollListQuotesKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListQuotesKeyPressed
     {//GEN-HEADEREND:event_adviceScrollListQuotesKeyPressed
-    
+
 }//GEN-LAST:event_adviceScrollListQuotesKeyPressed
 
     private void adviceScrollListQuotesKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListQuotesKeyReleased
@@ -18472,7 +18476,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
 }//GEN-LAST:event_adviceScrollListScalesKeyPressed
 
-    
+
     private void adviceScrollListScalesKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_adviceScrollListScalesKeyReleased
     {//GEN-HEADEREND:event_adviceScrollListScalesKeyReleased
       switch( evt.getKeyCode() )
@@ -18507,7 +18511,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 public void generateFromButton()
       {
       Stave stave = getCurrentStave();
-      generate(lickgen, stave.getSelectionStart(), stave.getSelectionEnd());  
+      generate(lickgen, stave.getSelectionStart(), stave.getSelectionEnd());
       }
 
 public void rectifySelection()
@@ -18524,7 +18528,7 @@ public void rectifySelection()
       preferencesDialog.setVisible(false);
     }//GEN-LAST:event_defaultTempoTFActionPerformed
 
-    
+
     private void defVocabFileActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_defVocabFileActionPerformed
     {//GEN-HEADEREND:event_defVocabFileActionPerformed
       // TODO add your handling code here:
@@ -18554,17 +18558,17 @@ newVoicingDialog.setVisible(false);
 private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingSaveButtonActionPerformed
 
     // To save a new voicing to the vocabulary
-    
+
     String name = newVoicingNameTF.getText();
     String chord = newVoicingChordTF.getText();
     String voice = voicingEntryTF.getText();
     String ext = extEntryTF.getText();
     String type = (String)newVoicingTypeCB.getSelectedItem();
-    
+
     if (name.equals("") || chord.equals("")){
         //ErrorLog.log(ErrorLog.WARNING, "Empty field.");
         return;
-          
+
     }
     // making the voicing and extensions Polylists and checking possible errors
     StringReader voicingReader = new StringReader(voice);
@@ -18613,125 +18617,125 @@ private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt)
             return;
         }
     }
-    
+
     // transposing to a root of c
-        
+
     String fromRoot = chordRootTF.getText();
-    
+
     String toRoot = "c";
-        
+
     int rise = PitchClass.findRise(fromRoot,toRoot);
-        
+
     v = NoteSymbol.makeNoteSymbolList(v,rise);
-    
+
     extension = NoteSymbol.makeNoteSymbolList(extension,rise);
-   
-    
+
+
     adv.addVoicing(chord,name,type,v,extension);
-    
+
     saveAdviceActionPerformed(null);
-          
+
     newVoicingDialog.setVisible(false);
-    
+
     newVoicingNameTF.setText("");
-    
+
     newVoicingChordTF.setText("");
-    
+
     newVoicingTypeCB.setSelectedItem("open");
-    
-    
+
+
     // to reset the table
-    
+
     String root = chordRootTF.getText();
-        
+
     String bass = bassNoteTF.getText();
-        
+
     String low = lowRangeTF.getText();
-        
+
     String high = highRangeTF.getText();
-        
-        
-        
+
+
+
     PitchClass rootClass = PitchClass.getPitchClass(root);
-        
+
     if(root.equals("")) {
-        
+
         ErrorLog.log(ErrorLog.WARNING, "No chord root entered.");
-            
+
         return;
-            
+
     }
-        
+
     else if(rootClass == null) {
-            
+
     ErrorLog.log(ErrorLog.WARNING, "Invalid chord root: " + root);
-            
+
         return;
-            
+
     }
-        
+
     PitchClass bassClass = PitchClass.getPitchClass(bass);
-        
+
     if(!bass.equals("") && bassClass == null) {
-            
+
         ErrorLog.log(ErrorLog.WARNING, "Invalid bass note: " + bass);
-            
+
         return;
-            
+
     }
-        
+
     NoteSymbol lowNote = NoteSymbol.makeNoteSymbol(low);
-        
+
     if(low.equals("")) {
-            
+
         ErrorLog.log(ErrorLog.WARNING, "No lower range entered.");
-            
+
         return;
-            
+
     }
-        
+
     else if(lowNote == null) {
-            
+
         ErrorLog.log(ErrorLog.WARNING, "Invalid lower range: " + low);
-            
+
         return;
-            
+
     }
-        
+
     NoteSymbol highNote = NoteSymbol.makeNoteSymbol(high);
-        
+
     if(high.equals("")) {
-            
+
        ErrorLog.log(ErrorLog.WARNING, "No higher range entered.");
-            
+
         return;
-            
+
     }
-        
+
     else if(highNote == null) {
-            
+
         ErrorLog.log(ErrorLog.WARNING, "Invalid higher range: " + high);
-            
+
         return;
-            
+
     }
-       
+
     voicingTableModel.setChordRoot(root,bass,lowNote,highNote);
-    
-        
+
+
 }//GEN-LAST:event_newVoicingSaveButtonActionPerformed
 
 private void newVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingButtonActionPerformed
 
     String v = voicingEntryTF.getText();
-    
+
     if( v.equals("") )
         {
             return;
         }
-    
+
     showNewVoicingDialog();
-    
+
 }//GEN-LAST:event_newVoicingButtonActionPerformed
 
 private void newVoicingTypeCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingTypeCBActionPerformed
@@ -18742,14 +18746,14 @@ private void newVoicingTypeCBActionPerformed(java.awt.event.ActionEvent evt) {//
 private void voicingDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingDeleteButtonActionPerformed
 
     String v = voicingEntryTF.getText();
-    
+
     if (v.equals(""))
     {
         return;
     }
-    
+
     showDeleteVoicingDialog();
-    
+
 }//GEN-LAST:event_voicingDeleteButtonActionPerformed
 
 private void deleteVoicingOKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoicingOKButtonActionPerformed
@@ -18784,19 +18788,19 @@ private void deleteVoicingOKButtonActionPerformed(java.awt.event.ActionEvent evt
     saveAdviceActionPerformed(null);
     buildVoicingTable();
     deleteVoicingDialog.setVisible(false);
-    
+
 }//GEN-LAST:event_deleteVoicingOKButtonActionPerformed
 
 private void deleteVoicingCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoicingCancelButtonActionPerformed
 
     deleteVoicingDialog.setVisible(false);
-    
+
 }//GEN-LAST:event_deleteVoicingCancelButtonActionPerformed
 
 public void pauseToKeyboard()
 {
     pauseScore();
-        
+
     String v = keyboard.voicingFromKeyboard();
     String currentChord = keyboard.getPresentChordDisplayText();
 
@@ -18861,7 +18865,7 @@ public void clearVoicingEntryTF()
 {
   voicingEntryTF.setText("");
   extEntryTF.setText("");
-  
+
 }
 
 JPopupMenu chordSelectionMenu = null;
@@ -18875,25 +18879,25 @@ public void populateChordSelMenu()
     int semitones = PitchClass.findRise(root);
 
     JMenuItem chordMI = new JMenuItem("Possible chords on root " + root);
-    
+
     chordSelectionMenu.add(chordMI);
-    
+
     HashMap map = new HashMap<String, JPopupMenu>();
 
     Polylist chords = Advisor.getAllChords();
     //System.out.println("Chords: " + chords);
-    
+
     for (Polylist L = chords; L.nonEmpty(); L = L.rest())
       {
         Polylist piece = (Polylist)L.first();
         ChordForm form = (ChordForm)piece.second();
-        
+
         String cName = form.getName();
         String family = form.getFamily();
-        
+
         // Get the subMenu for this family, or create one if non-existent
         // If a new menu is created, add it as a sub-menu.
-        
+
         JMenu subMenu = (JMenu)map.get(family);
         if( subMenu == null )
         {
@@ -18901,9 +18905,9 @@ public void populateChordSelMenu()
           chordSelectionMenu.add(subMenu);
           map.put(family, subMenu);
         }
-        
+
         //System.out.println("form = " + form + ", family = " + family + ", subMenu = " + subMenu);
-       
+
         ChordSymbol cs = ChordSymbol.makeChordSymbol(cName);
         cs = cs.transpose(semitones);
         String chord = cs.toString();
@@ -18915,8 +18919,8 @@ public void populateChordSelMenu()
           public void actionPerformed(java.awt.event.ActionEvent evt) {
             chordToInsert = evt.getActionCommand();
                //System.out.println("You selected " + chordToInsert);
-            
-            // Insert the voicing into the leadsheet   
+
+            // Insert the voicing into the leadsheet
             Style currentStyle =
                 ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
             String v = voicingEntryTF.getText();
@@ -18933,7 +18937,7 @@ public void populateChordSelMenu()
                       voicing = NoteSymbol.makeNoteSymbolList(voicing);
                       Polylist extension = new Polylist();
                       if( e.equals("") ) { extension = Polylist.nil; }
-                      
+
                       else {
                           StringReader extReader = new StringReader(e);
                           in = new Tokenizer(extReader);
@@ -18967,7 +18971,7 @@ public void populateChordSelMenu()
             {
                 ErrorLog.log(ErrorLog.WARNING, "Malformed voicing: " + v);
                 return;
-            }   
+            }
           }
         });
       }
@@ -18978,7 +18982,7 @@ public void populateChordSelMenu()
 /**
  * Removes duplicates from a Polylist (for making future chords list in keyboard
  * playback)
- * 
+ *
  * @param L
  * @return a Polylist with no duplicates
  */
@@ -19012,7 +19016,7 @@ public Polylist makeFutureChordsList(int startingSlot)
     Polylist result = getCurrentStave().extractChordNamePolylist(startingSlot % chorusLength, chorusLength-1);
     result = removeDuplicates(result);
     return result;
-        
+
   }
 
 public void setKeyboardPlayback(boolean on)
@@ -19032,10 +19036,10 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
 {
     String currentChordName = currentChord == null ? "NC" : currentChord.getName();
     Polylist v;
-    
+
     // Code for keyboard playback.
     if (currentChord != null && (v = currentChord.getVoicing()) != null)
-    {        
+    {
         String EMPTY = "";
 
         String v1 = v.toString();
@@ -19057,7 +19061,7 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
             bass = keyboard.nameToBass(bass);
             rootEqualBassCheckbox.setSelected(false);
         }
-        
+
         // If the playback is just beginning and the keyboard is blank
         if (v2.equals(EMPTY) )
         {
@@ -19070,7 +19074,7 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
             {
                 futureChords = futureChords.rest();
             }
-            
+
             String future = futureChords.toStringSansParens();
             future = future.replaceAll(" ", "   ");
 
@@ -19091,13 +19095,13 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
             if (futureChords.nonEmpty() && !currentChordName.equals(presentChord))
             {
                 futureChords = makeFutureChordsList(slotInPlayback);
-                if (futureChords.nonEmpty() && 
+                if (futureChords.nonEmpty() &&
                         currentChordName.equals(futureChords.first()))
                 {
                     futureChords = futureChords.rest();
                 }
             }
-            
+
             String future = futureChords.toStringSansParens();
             future = future.replaceAll(" ", "   ");
             String past = pastChords.toStringSansParens();
@@ -19120,14 +19124,14 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
             futureChords = makeFutureChordsList();
 
             futureChords = futureChords.rest();
-            
+
             String future = futureChords.toStringSansParens();
             future = future.replaceAll(" ", "   ");
 
             setPresentChordDisplay(currentChordName);
             setFutureChordDisplay(future);
         }
-        
+
         // the current slot number never seems to EXACTLY equal the total
         // slot number, but is usually (experimentally determined) within 20
 //        if (totalSlots - slot < 20 )
@@ -19135,7 +19139,7 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
 //            keyboard.setPlayback(false);
 //            buildVoicingTable();
 //        }
-        
+
     }
     // End code for keyboard playback.
 }
@@ -19143,7 +19147,7 @@ public void keyboardPlayback(Chord currentChord, int tab, int slotInPlayback, in
 /**
  * Finds the row number of the first occurrence of currentChord in the voicing
  * table
- * 
+ *
  * @param currentChord
  * @return
  */
@@ -19154,10 +19158,10 @@ public int findChordinTable(String currentChord)
     {
         Object o = voicingTableModel.getValueAt(i, VoicingTableChordColumn);
         String chord = o.toString();
-        
+
         Object p = voicingTableModel.getValueAt(i, VoicingTableVoicingColumn);
         String v = p.toString();
-        
+
         if (chord.equals(currentChord))
         {
             selectedRow = i;
@@ -19165,13 +19169,13 @@ public int findChordinTable(String currentChord)
         }
 
     }
-    
+
     return selectedRow;
 }
 
 /**
  * Finds the row number of a certain voicing in the voicing table.
- * 
+ *
  * @param chordRow
  * @param voicing
  * @param currentChord
@@ -19180,20 +19184,20 @@ public int findChordinTable(String currentChord)
 public int findVoicinginTable(int chordRow, String voicing, String currentChord)
 {
     int selectedRow = chordRow;
-    
+
     for (int i=chordRow; i<voicingTable.getRowCount(); i++)
     {
         Object o = voicingTableModel.getValueAt(i, VoicingTableChordColumn);
         String chord = o.toString();
-        
+
         Object p = voicingTableModel.getValueAt(i, VoicingTableVoicingColumn);
         String cell = p.toString();
-        
+
         if (chord.equals(currentChord))
         {
             Polylist v1 = voicingToList(voicing);
             Polylist v2 = voicingToList(cell);
-            
+
             PitchClass v1Pitch = PitchClass.getPitchClass(v1.first().toString());
             PitchClass v2Pitch = PitchClass.getPitchClass(v2.first().toString());
 
@@ -19201,10 +19205,10 @@ public int findVoicinginTable(int chordRow, String voicing, String currentChord)
             pitch1 = keyboard.nameToBass(pitch1);
             String pitch2 = v2Pitch.toString();
             pitch2 = keyboard.nameToBass(pitch2);
-            
+
             String uCell = cell;
             String dCell = cell;
-            
+
             if (keyboard.voicingsAreEqual(voicing,cell))
             {
                 selectedRow = i;
@@ -19219,13 +19223,13 @@ public int findVoicinginTable(int chordRow, String voicing, String currentChord)
                     String d = dCell;
                     uCell = keyboard.transposeVoicing(uCell,"up");
                     dCell = keyboard.transposeVoicing(dCell,"down");
-                     
+
                     if (d.equals(dCell) || u.equals(uCell))
                     {
                         break;
                     }
                 }
-                if (keyboard.voicingsAreEqual(voicing, dCell) || 
+                if (keyboard.voicingsAreEqual(voicing, dCell) ||
                         keyboard.voicingsAreEqual(voicing, uCell))
                 {
                     selectedRow = i;
@@ -19237,27 +19241,27 @@ public int findVoicinginTable(int chordRow, String voicing, String currentChord)
     ErrorLog.log(ErrorLog.WARNING, "Voicing not found in table!");
     selectedRow = chordRow;
     return selectedRow;
-    
+
 }
 
 
 /**
  * Selects a given row number in the voicing table.
- * 
+ *
  * @param v
  * @param currentChord
  */
 public void selectVoicing(String v, String currentChord)
 {
     buildVoicingTable();
-            
+
     String bassNote = keyboard.getPresentChordDisplayText();
 
     int selectedRow = findChordinTable(bassNote);
-    
+
     Object o = voicingTableModel.getValueAt(selectedRow, VoicingTableVoicingColumn);
     String n = o.toString();
-    
+
     if (n.equals(""))
     {
         Object p = voicingTableModel.getValueAt(selectedRow, VoicingTableNameColumn);
@@ -19276,13 +19280,13 @@ public void selectVoicing(String v, String currentChord)
             }
         }
     }
-        
+
     if (selectedRow == -1)
     {
         ErrorLog.log(ErrorLog.WARNING, "Chord not found in table!");
         return;
     }
-    
+
     selectedRow = findVoicinginTable(selectedRow, v, currentChord);
 
     voicingTable.setColumnSelectionAllowed(false);
@@ -19307,9 +19311,9 @@ public void setBassAndRootTFs(String bass, String root)
 
 /**
  * Determines what to do when a user clicks the keyboard.
- * 
+ *
  * @param evt
- */    
+ */
 private void pianoKeyboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoKeyboardButtonActionPerformed
 //GEN-LAST:event_pianoKeyboardButtonActionPerformed
     String v = voicingEntryTF.getText();
@@ -19318,7 +19322,7 @@ private void pianoKeyboardButtonActionPerformed(java.awt.event.ActionEvent evt) 
         openKeyboard();
         keyboard.showBass();
     }
-    
+
     if (!v.equals(""))
     {
         keyboard.showVoicingOnKeyboard(v);
@@ -19330,25 +19334,25 @@ private void pianoKeyboardButtonActionPerformed(java.awt.event.ActionEvent evt) 
  */
 public void openKeyboard()
 {
-    if( keyboard == null ) 
+    if( keyboard == null )
         keyboard = new VoicingKeyboard(this, getNewXlocation(), getNewYlocation());
-    
+
     String current = keyboard.getPresentChordDisplayText();
     if (current.equals(""))
     {
         clearKeyboard();
         clearVoicingEntryTF();
     }
-    
+
     keyboard.setVisible(true);
-    
+
 }
 
 public void openStepKeyboard()
 {
     if (stepKeyboard == null)
         stepKeyboard = new StepEntryKeyboard(this, getNewXlocation(), getNewYlocation());
-    
+
     stepKeyboard.setVisible(true);
     if (stepInputActive == false)
     {
@@ -19356,7 +19360,7 @@ public void openStepKeyboard()
         stepInputBtn.setSelected(selected);
         setStepInputBtn(selected);
     }
-    
+
     stepKeyboard.resetAdvice();
 }
 
@@ -19365,11 +19369,11 @@ public StepEntryKeyboard getCurrentStepKeyboard()
 {
     return stepKeyboard;
 }
-        
+
 /**
  * Sets the keyboard to its original state
  */
-public void clearKeyboard() 
+public void clearKeyboard()
 {
   if( keyboard != null )
     keyboard.clearKeyboard();
@@ -19383,14 +19387,14 @@ public void clearStepKeyboard()
 
 /**
  * Turns the current voicing into a polylist.
- * 
+ *
  * @return polylist representing the current voicing and extension
  */
 public Polylist voicingToList(String v)
 {
     if (v.equals(""))
         return Polylist.nil;
-    
+
     StringReader voicingReader = new StringReader(v);
     Tokenizer in = new Tokenizer(voicingReader);
     Object o = in.nextSexp();
@@ -19399,21 +19403,21 @@ public Polylist voicingToList(String v)
     selVoicing = NoteSymbol.makeNoteSymbolList(selVoicing);
 
     Polylist L = selVoicing;
-    
+
     return L;
-    
+
 }
 
 /**
  * Turns the current extension into a polylist.
- * 
+ *
  * @return polylist representing the current extension
  */
 public Polylist extensionToList(String e)
 {
     Polylist extension = Polylist.nil;
 
-    if (!e.equals("")) 
+    if (!e.equals(""))
     {
         StringReader extReader = new StringReader(e);
         Tokenizer in = new Tokenizer(extReader);
@@ -19425,7 +19429,7 @@ public Polylist extensionToList(String e)
     extension = NoteSymbol.makeNoteSymbolList(extension);
 
     Polylist L = extension;
-    
+
     return L;
 }
 
@@ -19436,31 +19440,31 @@ public void addVoicingToSeq(String v)
     ListSelectionModel rowSM = voicingTable.getSelectionModel();
 
     if (!rowSM.isSelectionEmpty()){
-    
+
         int selectedRow = rowSM.getMinSelectionIndex();
         Object o = voicingTableModel.getValueAt(selectedRow, VoicingTableVoicingColumn);
         Object p = voicingTableModel.getValueAt(selectedRow,VoicingTableExtensionColumn);
-        
+
         if (v.equals("")){
             return;
         }
-        
+
         String e = p.toString();
         String c = chordRootTF.getText();
-        
+
         v = v.substring(1,v.length());
         v = "(" + c + " " + v;
 
         int index = voicingSequenceList.getSelectedIndex();
 
         index++;
-        
+
         String s = v + e;
 
         voicingSequenceListModel.add(index, s);
         voicingSequenceList.setSelectedIndex(index);
     }
-    
+
     else {
         String e = extEntryTF.getText();
         String c = "{" + chordRootTF.getText() + "}";
@@ -19483,12 +19487,12 @@ public void addToVoicingSequence()
 private void voicingSequenceAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingSequenceAddButtonActionPerformed
 
     addToVoicingSequence();
-    
+
 }//GEN-LAST:event_voicingSequenceAddButtonActionPerformed
 
 /**
  * Removes the selected voicing from the voicing render list.
- * 
+ *
  * @param evt
  */
 private void voicingSequenceRemoveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingSequenceRemoveButtonActionPerformed
@@ -19498,55 +19502,55 @@ private void voicingSequenceRemoveButtonActionPerformed(java.awt.event.ActionEve
     {
         return;
     }
-    
+
     else if (index == 0)
     {
         voicingSequenceList.clearSelection();
         voicingSequenceListModel.remove(index);
     }
-    
+
     else
     {
         int newindex = index - 1;
         voicingSequenceList.setSelectedIndex(newindex);
         voicingSequenceListModel.remove(index);
     }
-    
-    
+
+
 }//GEN-LAST:event_voicingSequenceRemoveButtonActionPerformed
 
 /**
  * Swaps the selected voicing with the one above it in the voicing render.
- * 
+ *
  * @param evt
  */
 private void voicingSequenceUpArrowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voicingSequenceUpArrowMouseClicked
 
     int index = voicingSequenceList.getSelectedIndex();//GEN-LAST:event_voicingSequenceUpArrowMouseClicked
-    
+
     if (index == -1 || index == 0)
     {
         return;
     }
-    
+
     int newindex = index - 1;
-    
+
     Object i = voicingSequenceListModel.getElementAt(index);
     Object j = voicingSequenceListModel.getElementAt(newindex);
-    
+
     voicingSequenceListModel.remove(index);
     voicingSequenceListModel.remove(newindex);
-    
+
     voicingSequenceListModel.add(newindex, i);
     voicingSequenceListModel.add(index, j);
-    
+
     voicingSequenceList.setSelectedIndex(newindex);
 
 }
 
 /**
  * Swaps the selected voicing with the one below it in the voicing render.
- * 
+ *
  * @param evt
  */
 private void voicingSequenceDownArrowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voicingSequenceDownArrowMouseClicked
@@ -19556,25 +19560,25 @@ private void voicingSequenceDownArrowMouseClicked(java.awt.event.MouseEvent evt)
     {
         return;
     }
-    
+
     int newindex = index + 1;
-    
+
     Object i = voicingSequenceListModel.getElementAt(index);
     Object j = voicingSequenceListModel.getElementAt(newindex);
-    
+
     voicingSequenceListModel.remove(newindex);
     voicingSequenceListModel.remove(index);
-    
+
     voicingSequenceListModel.add(index, j);
     voicingSequenceListModel.add(newindex, i);
-    
+
     voicingSequenceList.setSelectedIndex(newindex);
-    
+
 }//GEN-LAST:event_voicingSequenceDownArrowMouseClicked
 
 /**
  * Finds the chord root given in the Chord Root Text Field.
- * 
+ *
  * @return a string, the chord root
  */
 public String getChordRootTFText()
@@ -19590,7 +19594,7 @@ public void setChordRootTFText(String root)
 /**
  * Uses the range text fields on the voicing window to find the MIDI value
  * of the lowest note in the range.
- * 
+ *
  * @return an integer, MIDI value
  */
 public int getLowerBound()
@@ -19604,7 +19608,7 @@ public int getLowerBound()
 /**
  * Uses the range text fields on the voicing window to find the MIDI value
  * of the highest note in the range.
- * 
+ *
  * @return an integer, MIDI value
  */
 public int getUpperBound()
@@ -19617,10 +19621,10 @@ public int getUpperBound()
 
 /**
  * Plays the current render of voicings and displays them on the keyboard.
- * 
+ *
  * @param evt
  */
-private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                          
+private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent evt) {
 
     for (int i=0; i<voicingSequenceListModel.size(); i++)
     {
@@ -19629,15 +19633,15 @@ private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent
         String s = getChordRootTFText();
         Object o = voicingSequenceListModel.getElementAt(i);
         String v = o.toString();
-        
+
         int j = v.indexOf(")(") + 1;
-        
+
         if (j == 0)
         {
             v = v.substring(3);
             v = "(" + v;
         }
-        
+
         else
         {
             v = v.substring(3,j);
@@ -19647,14 +19651,14 @@ private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent
         voicingEntryTF.setText(v);
         keyboard.showVoicingOnKeyboard(v);
 
-        try 
-        { 
+        try
+        {
             constructAndPlayChord(s,v);
             Thread.sleep(1000);
         }
-        catch(InterruptedException e)   
-        {      
-            System.out.println("Sleep interrupted:" + e);      
+        catch(InterruptedException e)
+        {
+            System.out.println("Sleep interrupted:" + e);
         }
     }
 }
@@ -19665,7 +19669,7 @@ private void voicingSequencePlayButtonActionPerformed(java.awt.event.ActionEvent
 private void displayVoicingfromList()
 {
     int index = voicingSequenceList.getSelectedIndex();
-        
+
     if (index == -1)
     {
         clearVoicingEntryTF();
@@ -19709,13 +19713,13 @@ private void displayVoicingfromList()
 /**
  * If the selection index of the voicing render list changes, the new voicing
  * is displayed in the voicing entry text field and on the keyboard.
- * 
+ *
  * @param evt
  */
 private void voicingSequenceListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_voicingSequenceListValueChanged
 
     displayVoicingfromList();
-    
+
 }//GEN-LAST:event_voicingSequenceListValueChanged
 
 public void setFutureChordDisplay(String chords)
@@ -19764,7 +19768,7 @@ public void voicingFrameKeyPressed(KeyEvent e)
 {
     String v = voicingEntryTF.getText();
     String c = chordRootTF.getText();
-    
+
     switch( e.getKeyCode())
     {
         case KeyEvent.VK_A:
@@ -19777,7 +19781,7 @@ public void voicingFrameKeyPressed(KeyEvent e)
         case KeyEvent.VK_P:
             constructAndPlayChord(c,v);
             break;
-        
+
         case KeyEvent.VK_E:
             keyboard.transposeUpHalfStep(v);
             break;
@@ -19790,7 +19794,7 @@ public void voicingFrameKeyPressed(KeyEvent e)
         case KeyEvent.VK_G:
             keyboard.transposeDownOctave(v);
             break;
-        
+
         case KeyEvent.VK_1:
             keyboard.setSingleNoteMode(true);
             break;
@@ -19802,12 +19806,12 @@ public void voicingFrameKeyPressed(KeyEvent e)
 
 
 
-    
+
 private void chordRootTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordRootTFActionPerformed
 
     String chordRoot = chordRootTF.getText();
     PitchClass rootClass = PitchClass.getPitchClass(chordRoot);
-    if(rootClass == null) 
+    if(rootClass == null)
     {
         ErrorLog.log(ErrorLog.WARNING, "Invalid chord root: " + chordRoot);
         return;
@@ -19824,13 +19828,13 @@ private void chordRootTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
     keyboard.setBass(note,bass);
     buildVoicingTable();
-    
+
 }//GEN-LAST:event_chordRootTFActionPerformed
 
 private void voicingEntryTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingEntryTFActionPerformed
 
     keyboard.showVoicingOnKeyboard(voicingEntryTF.getText());
-    
+
 }//GEN-LAST:event_voicingEntryTFActionPerformed
 
 private void buildTableButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buildTableButtonKeyPressed
@@ -19844,7 +19848,7 @@ private void buildTableButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
             voicingFrameKeyPressed(evt);
             break;
     }
-    
+
 }//GEN-LAST:event_buildTableButtonKeyPressed
 
 private void pianoKeyboardButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pianoKeyboardButtonKeyPressed
@@ -19858,7 +19862,7 @@ private void pianoKeyboardButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-F
             voicingFrameKeyPressed(evt);
             break;
     }
-    
+
 }//GEN-LAST:event_pianoKeyboardButtonKeyPressed
 
 private void playVoicingButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_playVoicingButtonKeyPressed
@@ -19914,7 +19918,7 @@ private void voicingDeleteButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-F
             voicingFrameKeyPressed(evt);
             break;
     }
-    
+
 }
 
 private void voicingSequenceAddButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voicingSequenceAddButtonKeyPressed
@@ -19978,7 +19982,7 @@ private void voicingTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
             voicingFrameKeyPressed(evt);
             break;
     }
-    
+
 }//GEN-LAST:event_voicingTableKeyPressed
 
 private void bassNoteTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassNoteTFActionPerformed
@@ -19986,8 +19990,8 @@ private void bassNoteTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     String bassNote = bassNoteTF.getText();
     String chordRoot = chordRootTF.getText();
     PitchClass bassClass = PitchClass.getPitchClass(bassNote);
-        
-    if(bassClass == null) 
+
+    if(bassClass == null)
     {
         ErrorLog.log(ErrorLog.WARNING, "Invalid bass note: " + bassNote);
         return;
@@ -20002,15 +20006,15 @@ private void bassNoteTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
     int bass = keyboard.findBass();
     String note = keyboard.findBassName(bass);
-    
+
     if (keyboard.enharmonic(note, bassNote))
     {
         note = bassNote;
     }
-    
+
     keyboard.setBass(note, bass);
     buildVoicingTable();
-    
+
 }//GEN-LAST:event_bassNoteTFActionPerformed
 
 private void rootEqualBassCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rootEqualBassCheckboxActionPerformed
@@ -20021,7 +20025,7 @@ private void rootEqualBassCheckboxActionPerformed(java.awt.event.ActionEvent evt
         chordRootTF.setText(bass);
         buildVoicingTable();
     }
-    
+
 }//GEN-LAST:event_rootEqualBassCheckboxActionPerformed
 
 private void rootEqualBassCheckboxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rootEqualBassCheckboxKeyPressed
@@ -20031,15 +20035,15 @@ private void rootEqualBassCheckboxKeyPressed(java.awt.event.KeyEvent evt) {//GEN
         default:
             voicingFrameKeyPressed(evt);
             break;
-    }   
-    
+    }
+
 }//GEN-LAST:event_rootEqualBassCheckboxKeyPressed
 
 private void pianoKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pianoKeyboardMIActionPerformed
 
     if (playingStopped())
     {
-        openKeyboard();                                               
+        openKeyboard();
     }
 }//GEN-LAST:event_pianoKeyboardMIActionPerformed
 
@@ -20090,7 +20094,7 @@ private void adjustSelection()
     Stave stave = getCurrentStave();
     boolean nothingWasSelected = !stave.somethingSelected();
     boolean oneSlotWasSelected = stave.oneSlotSelected();
-    
+
     if( nothingWasSelected )
       {
         selectAll();
@@ -20098,7 +20102,7 @@ private void adjustSelection()
     else if( oneSlotWasSelected )
       {
         stave.setSelectionToEnd();
-      }    
+      }
     else if( (stave.getSelectionEnd() - 1) % BEAT != 0 )
       {
         stave.setSelectionEnd(BEAT*(1 + stave.getSelectionEnd()/BEAT) - 1);
@@ -20119,9 +20123,9 @@ private void adjustSelection()
 //    Stave stave = getCurrentStave();
 //
 //    stave.setSelection(improviseStartSlot, improviseEndSlot);
-//    
+//
 //    totalSlots = improviseEndSlot - improviseStartSlot + 1;
-//    
+//
 //    System.out.println("\ngenerateChorus: " + improviseStartSlot + " to " + improviseEndSlot + ", total = " + totalSlots/BEAT + " beats");
 //
 //    verifyTriageFields();
@@ -20170,7 +20174,7 @@ private void adjustSelection()
 //          }
 //        else
 //          {
-//            rhythm = lickgen.generateRandomRhythm(totalSlots, 
+//            rhythm = lickgen.generateRandomRhythm(totalSlots,
 //                                                  minDuration,
 //                                                  maxDuration,
 //                                                  restProb);
@@ -20209,7 +20213,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
-    
+
     setMode(Mode.GENERATING);
 //
 //    adjustSelection();
@@ -20219,7 +20223,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
 //    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
 
     totalSlots = improviseEndSlot - improviseStartSlot + 1;
-    
+
     int beatsRequested = totalSlots/BEAT;
 
     //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
@@ -20234,14 +20238,14 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
       {
         // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
         // was commented out:
-        lickgen.getFillMelodyParameters(minPitch, 
-                                        maxPitch, 
+        lickgen.getFillMelodyParameters(minPitch,
+                                        maxPitch,
                                         minInterval,
-                                        maxInterval, 
-                                        BEAT, 
-                                        leapProb, 
+                                        maxInterval,
+                                        BEAT,
+                                        leapProb,
                                         chordProg,
-                                        0, 
+                                        0,
                                         avoidRepeats);
 
         MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
@@ -20269,25 +20273,25 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
           }
         else
           {
-            rhythm = lickgen.generateRandomRhythm(totalSlots, 
+            rhythm = lickgen.generateRandomRhythm(totalSlots,
                                                   minDuration,
                                                   maxDuration,
                                                   restProb);
           }
-        
+
         MelodyPart lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
-        
+
         // Critical point for recurrent generation
         if( lick != null )
           {
             int beatsGenerated = lick.size()/BEAT;
-            
+
             if( beatsGenerated != beatsRequested )
               {
-              //debug System.out.println("generated " + beatsGenerated 
+              //debug System.out.println("generated " + beatsGenerated
               //              + " beats, but " + beatsRequested + " requested");
               }
-        
+
             putLick(lick);
           }
         else
@@ -20309,7 +20313,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
 //      }
 
     setMode(Mode.GENERATED);
-    
+
     enableRecording(); // TRIAL
   }
 
@@ -20325,7 +20329,7 @@ private void rectifySelection(Stave stave, int selectionStart, int selectionEnd)
 {
     ///System.out.println("rectifying from  " + selectionStart + " to " + selectionEnd);
     stave.rectifySelection(selectionStart, selectionEnd, false, false);
-    
+
 }
 
 private void lowRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lowRangeTF2ActionPerformed
@@ -20333,11 +20337,11 @@ private void lowRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     String lowNote = lowRangeTF2.getText();//GEN-LAST:event_lowRangeTF2ActionPerformed
     NoteSymbol n = NoteSymbol.makeNoteSymbol(lowNote);
     int midiValue = n.getMIDI();
-    
+
     String highNote = highRangeTF2.getText();
     NoteSymbol h = NoteSymbol.makeNoteSymbol(highNote);
     int midiValueHigh = h.getMIDI();
-    
+
     if (highNote.equals(""))
     {
         PianoKey high = keyboard.pianoKeys()[midiValue - 10];
@@ -20348,12 +20352,12 @@ private void lowRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         lowRangeTF2.setText(highNote);
         highRangeTF2.setText(lowNote);
     }
-    
+
     int root = keyboard.findBass();
     String name = keyboard.findBassName(root);
     keyboard.setBass(name, root);
     buildVoicingTable();
-    
+
 
 }
 
@@ -20362,30 +20366,30 @@ private void highRangeTF2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     String highNote = highRangeTF2.getText();
     NoteSymbol n = NoteSymbol.makeNoteSymbol(highNote);
     int midiValue = n.getMIDI();
-    
+
     String lowNote = lowRangeTF2.getText();
     NoteSymbol l = NoteSymbol.makeNoteSymbol(lowNote);
-    int midiValueLow = l.getMIDI();    
-    
+    int midiValueLow = l.getMIDI();
+
     if (lowNote.equals(""))
     {
         PianoKey low = keyboard.pianoKeys()[midiValue - 32];
         lowRangeTF2.setText(low.getName());
     }
-    
+
     else if (midiValue < midiValueLow)
     {
         lowRangeTF2.setText(highNote);
         highRangeTF2.setText(lowNote);
     }
-    
+
     int root = keyboard.findBass();
     String name = keyboard.findBassName(root);
     keyboard.setBass(name, root);
     buildVoicingTable();
 
 }//GEN-LAST:event_highRangeTF2ActionPerformed
-    
+
 private void chordSearchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordSearchTFActionPerformed
 
     String chord = chordSearchTF.getText();
@@ -20394,7 +20398,7 @@ private void chordSearchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     chordRootTF.setText(root);
     bassNoteTF.setText(bass);
     rootEqualBassCheckbox.setSelected(true);
-    
+
     if (chord.contains("/"))
     {
         int slash = chord.indexOf("/") + 1;
@@ -20402,7 +20406,7 @@ private void chordSearchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         bassNoteTF.setText(bass);
         rootEqualBassCheckbox.setSelected(false);
     }
-    
+
     int midi = keyboard.findBass();
     String note = keyboard.findBassName(midi);
     if (!note.equals(bass))
@@ -20410,26 +20414,26 @@ private void chordSearchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         bassNoteTF.setText(bass);
     }
     keyboard.setBass(bass, midi);
-    
+
     buildVoicingTable();
 
     int selectedRow = findChordinTable(chord);
-    
+
     if (selectedRow == -1)
     {
         ErrorLog.log(ErrorLog.WARNING, "Chord not found in table!");
         return;
     }
-    
+
     voicingTable.setColumnSelectionAllowed(false);
     voicingTable.setRowSelectionAllowed(true);
     voicingTable.setRowSelectionInterval(selectedRow, selectedRow);
     voicingTable.changeSelection(selectedRow,selectedRow,true,true);
-    
+
     // Determine whether the chord name is a synonym.
     // If so, set the search field to the target chord name for the
     // user's convenience.
-    
+
     String redirectName = getChordRedirectName(selectedRow);
     if( redirectName != null )
       {
@@ -20477,7 +20481,7 @@ pauseBtnActionPerformed(null);
 
 
 private void notateGrammarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notateGrammarMenuActionPerformed
- 
+
 }//GEN-LAST:event_notateGrammarMenuActionPerformed
 
 private void notateGrammarMenuStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_notateGrammarMenuStateChanged
@@ -20588,14 +20592,14 @@ private void earlyScrollBtnActionPerformed(java.awt.event.ActionEvent evt) {//GE
 
 
 private void mostRecentLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostRecentLeadsheetMIActionPerformed
- 
+
 
 }//GEN-LAST:event_mostRecentLeadsheetMIActionPerformed
 
 /**
  * Populate the menu of recent files by reading from a saved text file
  * containing pathnames to those files.
- * @param evt 
+ * @param evt
  */
 private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_populateRecentFileMenu
 
@@ -20623,7 +20627,7 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         openRecentLeadsheetMenu.removeAll();
 
         // Add each filename to the menu.
-        
+
         for( String name : filenames )
           {
             final JMenuItem item = new JMenuItem(name);
@@ -20649,7 +20653,7 @@ private void populateRecentFileMenu(javax.swing.event.MenuEvent evt) {//GEN-FIRS
 
                     } // end of ActionListener embedded
                  );
-            
+
             openRecentLeadsheetMenu.add(item);
           }
 
@@ -20698,7 +20702,7 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
 
 
             openRecentLeadsheetNewWindowMenu.add(item);
-        } 
+        }
       }
       else
       {
@@ -20765,7 +20769,7 @@ private boolean skippedBack = false; //markermarkermarker
         indexOfLastChordPlayed = index;
         playChordAtIndex(index);
     }
-    
+
 private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordStepForwardButtonActionPerformed
         int currIndex = 0;
         int nextChordIndex =0;
@@ -20849,7 +20853,7 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                     }
                     else
                     {
-                     
+
                         if(nextChordIndex >= 0)
                         {
                             midiSynth.setSlot((long)nextChordIndex);
@@ -20993,7 +20997,7 @@ private void roadMapThisAnalyzeAction(java.awt.event.ActionEvent evt) {//GEN-FIR
 }//GEN-LAST:event_roadMapThisAnalyzeAction
 
 private void printAllMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printAllMIActionPerformed
-      printAllStaves();     
+      printAllStaves();
 }//GEN-LAST:event_printAllMIActionPerformed
 
 private void grandStaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grandStaveBtnActionPerformed
@@ -21048,7 +21052,7 @@ public boolean getCreateRoadMapState()
   }
 
 private void layoutTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutTFActionPerformed
-    savePrefs(); 
+    savePrefs();
 }//GEN-LAST:event_layoutTFActionPerformed
 
 private void phraseCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phraseCheckBoxActionPerformed
@@ -21088,7 +21092,7 @@ private void usePreviousStyleCheckBoxActionPerformed(java.awt.event.ActionEvent 
 
 private void useBeamsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useBeamsMIActionPerformed
   {//GEN-HEADEREND:event_useBeamsMIActionPerformed
-      getCurrentStave().setBeaming(useBeamsMI.isSelected());  
+      getCurrentStave().setBeaming(useBeamsMI.isSelected());
   }//GEN-LAST:event_useBeamsMIActionPerformed
 
 private void recentStyleListValueChanged(javax.swing.event.ListSelectionEvent evt)//GEN-FIRST:event_recentStyleListValueChanged
@@ -21250,25 +21254,25 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_stepKeyboardMIActionPerformed
 
     private int indexOfLastChordPlayed = 0; //markermarkermarker
-    
+
     private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
-        
+
         midiSynth.setSlot(indexOfLastChordPlayed);
         playAndCaptureChordAtIndex(indexOfLastChordPlayed);
-        
-        
+
+
     }//GEN-LAST:event_chordReplayButtonActionPerformed
 
 /**
  * Focus on input from textEntry field, until return is pressed,
- * at which point staveRequestFocus() will be called 
+ * at which point staveRequestFocus() will be called
  * (in textEntryActionHandler).
  */
 
 public void textRequestFocus()
   {
   String text = textEntry.getText();
-  
+
   textEntry.requestFocusInWindow();
   textEntry.setEnabled(true);
   int length = text.length();
@@ -21295,14 +21299,14 @@ public void improviseButtonToggled()
         adjustSelection();
         improviseStartSlot = getCurrentStave().getSelectionStart();
         improviseEndSlot = getCurrentStave().getSelectionEnd();
-        
-        
+
+
         recurrentIteration = 1;
         //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
         generate(lickgen, improviseStartSlot, improviseEndSlot);
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Quit</center></html>");
-        
+
         }
     else
       {
@@ -21336,7 +21340,7 @@ boolean recurrentImprovisation = false;
 
 /**
  * * This is for calling from lickgen frame
- * @return 
+ * @return
  */
 
 public void setRecurrent(boolean value)
@@ -21588,11 +21592,11 @@ public void openInNewWindow(File selectedFile)
 public Notate newNotateWithScore(Score newScore, int x, int y)
 {
     //create a new window and show the score
-    
+
     Notate newNotate = new Notate(newScore,
                                   this.adv,
                                   this.impro,
-                                  x, 
+                                  x,
                                   y);
 
     newNotate.setupScore(newScore);
@@ -21725,43 +21729,43 @@ public String getBassNoteTFText()
 {
     return bassNoteTF.getText();
 }
-  
+
 public void showDeleteVoicingDialog()
 {
     deleteVoicingDialog.setSize(325,200);
-    
+
     deleteVoicingDialog.setLocationRelativeTo(this);
-    
+
     deleteVoicingDialog.setVisible(true);
 }
 
 public void showNewVoicingDialog()
     {
         newVoicingDialog.setSize(350, 200);
-        
+
         newVoicingDialog.setLocationRelativeTo(this);
-        
+
         newVoicingDialog.setVisible(true);
-        
+
         ListSelectionModel rowSM = voicingTable.getSelectionModel();
 
         if( !rowSM.isSelectionEmpty() ) {
-        
+
             int rowIndex = voicingTable.getSelectedRow();
-        
+
             int colIndex = 0;
-        
+
             Object o = voicingTable.getValueAt(rowIndex, colIndex);
-        
+
             String chord = o.toString();
-        
+
             newVoicingChordTF.setText(chord);
         }
-        
+
         else {
             newVoicingChordTF.setText("");
         }
- 
+
     }
 
 
@@ -21781,7 +21785,7 @@ public void showNewVoicingDialog()
             new String(boxStates));
     }
 
-  
+
   /**
    * Set up arrays for Part and Stave classes, which will be displayed in
    *
@@ -21792,7 +21796,7 @@ public void showNewVoicingDialog()
    * @see Stave#Stave(String, Notate)
    *
    */
-  
+
   public void setupArrays()
     {
     int size = score.size();
@@ -21806,7 +21810,7 @@ public void showNewVoicingDialog()
     // setup the arrays
 
     partList = new PartList(size);
-    
+
 
     // set the chord progression for the score
 
@@ -21909,7 +21913,7 @@ public void showNewVoicingDialog()
     updateAllStaves();
     }
 
-  
+
   /**
    *
    * Updates the JPanel with all of the staves and redraws it
@@ -21917,7 +21921,7 @@ public void showNewVoicingDialog()
    * @see Stave#paint(Graphics)
    *
    */
-  
+
   public void updateAllStaves()
     {
 
@@ -21940,7 +21944,7 @@ public void showNewVoicingDialog()
       }
     }
 
-  
+
     /**
      * Change the chord font size in each Stave.
      */
@@ -21953,7 +21957,7 @@ public void showNewVoicingDialog()
       }
     }
 
-    
+
   /**
    *
    * Convert a polylist to the form required by the advice tree
@@ -21963,7 +21967,7 @@ public void showNewVoicingDialog()
    * @return DefaultMutableTreeNode       the root of a tree
    *
    */
-    
+
   public DefaultMutableTreeNode polylistToTree(Polylist item)
     {
 
@@ -21989,7 +21993,7 @@ public void showNewVoicingDialog()
     return tree;
     }
 
-  
+
   public void polylistToMenus(Polylist item)
     {
     // ignore for now: DefaultMutableTreeNode root = new DefaultMutableTreeNode(item.first());
@@ -22034,10 +22038,10 @@ public void showNewVoicingDialog()
 
       }
 
-    
+
     final Object[] menuContentsScales = adviceMenuItemsScales.toArray();
-    
-    
+
+
     adviceScrollListScales.setModel(new javax.swing.AbstractListModel()
       {
       public int getSize()
@@ -22135,7 +22139,7 @@ public void showNewVoicingDialog()
    * @param focus             if the advice frame should receive focus or not
    *
    */
-  
+
   public void displayAdviceTree(int selectedIndex, int row, Note note)
     {
     setMode(Mode.ADVICE);
@@ -22232,7 +22236,7 @@ public void showNewVoicingDialog()
     return true;
     }
 
-  
+
   /**
    *
    * Display the window allowing overriding of measures
@@ -22262,7 +22266,7 @@ public void showNewVoicingDialog()
     Trace.log(2, "override measures frame has focus");
     }
 
-  
+
   /**
    * Override the number of measures within lockedMeasures. The behavior now
    *
@@ -22392,7 +22396,7 @@ public void showNewVoicingDialog()
       }
     }
 
-  
+
   /**
    *
    * Sets all of the menu and button states
@@ -22652,7 +22656,7 @@ public void showNewVoicingDialog()
        delTabBtn.setEnabled(true);
       }
 
- 
+
     // checks if "Override Measures" should be allowed
 
     if( autoAdjustMI.isSelected() )
@@ -22665,12 +22669,12 @@ public void showNewVoicingDialog()
       }
     }
 
-  
+
   /**
    *
    * Disable accelerators.  We do this for a work-around: When letters are typed into the
    *
-   * chord/melody text entry window 
+   * chord/melody text entry window
    *
    * if any of those letters correspond to accelerators, the corresponding method will
    *
@@ -22681,7 +22685,7 @@ public void showNewVoicingDialog()
    * re-enable the accelerators upon hitting return in the text entry field.
    *
    */
-  
+
   protected void disableAccelerators()
     {
     addRestMI.setEnabled(false);
@@ -22756,20 +22760,20 @@ public void showNewVoicingDialog()
     reverseMelody.setEnabled(false);
 
     invertMelody.setEnabled(false);
-    
+
     resolvePitches.setEnabled(false);
 
 
     saveSelectionAsLick.setEnabled(false);
-    
+
     // REVISIT generateLickButton.setEnabled(false);
     }
 
-  
+
   /**
    * Set the preferences for contour drawing.
    */
-  
+
   private void resetDrawingPrefs()
     {
     drawScaleTonesCheckBox.setSelected(
@@ -22782,14 +22786,14 @@ public void showNewVoicingDialog()
             Preferences.getPreference(Preferences.DRAWING_TONES).charAt(2) == '1');
      }
 
-  
+
   private ImageIcon playButton =
           new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/play.gif"));
 
   private ImageIcon pauseButton =
           new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/pause.gif"));
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMI;
     private javax.swing.JButton acceptTruncate;
@@ -23415,7 +23419,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
-  
+
   public int getIgnoreDuplicateLick()
     {
 
@@ -23467,7 +23471,7 @@ public void showNewVoicingDialog()
     {
       grammarFilename = name;
     }
-  
+
   public void reloadGrammar()
     {
     lickgen.loadGrammar(grammarFilename);
@@ -23638,7 +23642,7 @@ public void showNewVoicingDialog()
       result = 0; // don't loop
       }
     //System.out.println("getLoopCount() returns " + result);
-    
+
     return result;
     }
 
@@ -23666,7 +23670,7 @@ public void showNewVoicingDialog()
     {
     return smartEntry;
     }
-  
+
   private int getRecurrentIteration()
     {
     return recurrentIteration;
@@ -23677,9 +23681,9 @@ public void showNewVoicingDialog()
       if( styleEditor == null )
       {
         File styleFile = ImproVisor.getRecentStyleFile();
-        
+
         //System.out.println("styleFile = " + styleFile);
-        
+
         if( styleFile == null )
           {
           styleEditor = new StyleEditor(this);
@@ -23766,7 +23770,7 @@ public void toGrammar()
 
 /**
  * Open a new RoadMapFrame and transfer all chords in the chorus to it.
- * @param roadmap 
+ * @param roadmap
  */
 
 public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
@@ -23778,7 +23782,7 @@ public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
 
 /**
  * Add selected bars from roadmap to the current Score displayed.
- * @param roadmap 
+ * @param roadmap
  */
 
 public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
@@ -23833,20 +23837,20 @@ public void makeVisible()
 public void makeVisible(boolean createRoadMap)
   {
     setNotateFrameHeight(); // Needed
-    setVisible(true);  
-    
+    setVisible(true);
+
     staveRequestFocus();
     if( createRoadMap )
       {
       roadMapThisAnalyze();
-      }   
+      }
   }
 
 
 /**
  * Set the selection value on the CheckBox that will automatically
  * create a roadmap when this Notate is opened.
- * @param value 
+ * @param value
  */
 
 public void setAutoCreateRoadMap(boolean value)
@@ -23857,7 +23861,7 @@ public void setAutoCreateRoadMap(boolean value)
 
 /**
  * Indicate whether or not this Notate frame has the create roadmap box checked.
- * @return 
+ * @return
  */
 
 public boolean getAutoCreateRoadMap()
@@ -23909,8 +23913,8 @@ public void openEmptyRoadmap()
   }
 
 
-/** 
- * If a roadmapFrame exists, clear it out. 
+/**
+ * If a roadmapFrame exists, clear it out.
  * Otherwise create a roadmapFrame.
  */
 
@@ -23930,7 +23934,7 @@ public void establishRoadMapFrame()
   }
 
 
-/** 
+/**
  * Call if roadMapFrame is no longer to be remembered.
  */
 
@@ -23942,7 +23946,7 @@ public void disestablishRoadMapFrame()
 
 /**
  * Copy this Notate's Score's metre setting into the argument array of dimension 2.
- * @param metre 
+ * @param metre
  */
 public void getMetre(int metre[])
   {
@@ -23992,7 +23996,7 @@ public String getLayoutTF()
 public Polylist getLayoutTFasPolylist()
   {
     String text = getLayoutTF().trim();
-    
+
     if( text.equals("") )
       {
         return Polylist.nil;
@@ -24003,11 +24007,11 @@ public Polylist getLayoutTFasPolylist()
 public void setLayoutTF(String text)
   {
     //System.out.println("setLayoutTF gets " + text);
-    
+
     layoutTF.setText(text);
   }
 
-               
+
 
 public String getDefaultGrammarName()
   {
@@ -24029,7 +24033,7 @@ public void openMidiPreferences()
     changePrefTab(midiBtn, midiPreferences);
     preferencesDialog.setVisible(true);
   }
-        
+
 public int getRecordSnapValue()
   {
     return Integer.parseInt(midiRecordSnapSpinner.getValue().toString());
@@ -24058,14 +24062,15 @@ public void actionPerformed(ActionEvent evt)
     int slotInPlayback = midiSynth.getSlot() - slotDelay;
     int slot = slotInPlayback;
     int totalSlots = midiSynth.getTotalSlots();
-  
-    //Poll for audio input every x slots
-//    if( slot % 239 == 0) {
-//        extractor.stopCapture();
-//        notFirstMeasure = true;
-//    }
-//    else if(notFirstMeasure && slot % 240 == 0) {
-//        extractor.captureAudio();
+
+    //Poll for audio input every (captureInterval) slots
+//    if( mode == Mode.RECORDING) {
+//        if(slot % captureInterval == 0) {
+//            System.out.println("audio capture initialized at measure " + slot);
+//            synchronized (extractor.thisMeasure) {
+//                extractor.thisMeasure.notify();
+//            }
+//        }
 //    }
 
     //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
@@ -24105,16 +24110,16 @@ public void actionPerformed(ActionEvent evt)
       {
         recurrentIteration++;
 
-//     debug    System.out.println("Continue improvising: " + improviseStartSlot 
-//                             + " to " + improviseEndSlot 
+//     debug    System.out.println("Continue improvising: " + improviseStartSlot
+//                             + " to " + improviseEndSlot
 //                             + " chorus # " + recurrentIteration);
         setStatus("Chorus " + recurrentIteration);
 
         generate(lickgen, improviseStartSlot, improviseEndSlot);
-        
-        
+
+
         //generate(lickgen, improviseStartSlot+1920, improviseStartSlot+3839); //TEST
-        
+
         slotInPlayback = improviseStartSlot; // TRIAL
       }
 
