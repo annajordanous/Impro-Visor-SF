@@ -23,8 +23,29 @@ public class Tension
     private static double[] C1UP_C2UP = {0.33, 0.67};
     private static double[] C1DOWN_C2DOWN = {0.67, 0.33};
     private static int SLOTS_PER_MEASURE = 32;
-    private static int SLOTS_PER_MEASURE2 = 120;
+    private static int SLOTS_PER_MEASURE2 = 480;
     private static int SECONDS_PER_MINUTE = 60;
+    private static double TAU = 0.5;
+    private static double ACCENT_INDEX = 2;
+    private static int WHOLE_NOTE = 480;
+    private static int WHOLE_NOTE_VALUE = 0;
+    private static int HALF_NOTE = 240;
+    private static int HALF_NOTE_VALUE = -1;
+    private static int QUARTER_NOTE = 120;
+    private static int QUARTER_NOTE_VALUE = -2;
+    private static int EIGHTH_NOTE = 60;
+    private static int EIGHTH_NOTE_VALUE = -3;
+    private static int EIGHTH_NOTE_TRIPLET = 40;
+    private static int EIGHTH_NOTE_TRIPLET_VALUE = -4;
+    private static int SIXTEENTH_NOTE = 30;
+    private static int SIXTEENTH_NOTE_VALUE = -4;
+    private static int SIXTEENTH_NOTE_TRIPLET = 20;
+    private static int SIXTEENTH_NOTE_TRIPLET_VALUE = -5;
+    private static int THIRTY_SECOND_NOTE = 15;
+    private static int THIRTY_SECOND_NOTE_VALUE = -5;
+    private static int THIRTY_SECOND_NOTE_TRIPLET = 10;
+    private static int THIRTY_SECOND_NOTE_TRIPLET_VALUE = -6;
+    private static int OFFSET = 6;
     
     public Tension()
     {
@@ -61,6 +82,78 @@ public class Tension
             averageNote += i;
         }
         return averageNote/notes.length;
+    }
+    
+    public double getMeterAccent(int[] onsets, int[] notes, int tempo)
+    {
+        int[] mh = getMetricalHierarchyList(onsets);
+        double[] ma = getMelodicAccent(notes);
+        double[] du = getDurationalAccent(onsets, tempo);
+        int sum = 0;
+        for(int i = 0; i < mh.length; i ++)
+        {
+            sum += (mh[i] * ma[i] * du[i]);
+        }
+        return sum/mh.length;
+    }
+    
+    public static int[] getMetricalHierarchyList(int[] onsets)
+    {
+        int[] metricalHierarchyList = new int[onsets.length];
+        int listIndex = 0;
+        for(int i = 0; i < onsets.length; i ++)
+        {
+            if(onsets[i] == 1)
+            {
+                metricalHierarchyList[listIndex] = getMetricalHierarchy(i) + OFFSET;
+                listIndex ++;
+            }
+        }
+        return metricalHierarchyList;
+    }
+    
+    public static int getMetricalHierarchy(int index)
+    {
+        if(index % WHOLE_NOTE == 0)
+        {
+            return WHOLE_NOTE_VALUE;
+        }
+        else if(index % HALF_NOTE == 0)
+        {
+            return HALF_NOTE_VALUE;
+        }
+        else if(index % QUARTER_NOTE == 0)
+        {
+            return QUARTER_NOTE_VALUE;
+        }
+        else if(index % EIGHTH_NOTE == 0)
+        {
+            return EIGHTH_NOTE_VALUE;
+        }
+        else if(index % EIGHTH_NOTE_TRIPLET == 0)
+        {
+            return EIGHTH_NOTE_TRIPLET_VALUE;
+        }
+        else if(index % SIXTEENTH_NOTE == 0)
+        {
+            return SIXTEENTH_NOTE_VALUE;
+        }
+        else if(index % SIXTEENTH_NOTE_TRIPLET == 0)
+        {
+            return SIXTEENTH_NOTE_TRIPLET_VALUE;
+        }
+        else if(index % THIRTY_SECOND_NOTE == 0)
+        {
+            return THIRTY_SECOND_NOTE_VALUE;
+        }
+        else if(index % THIRTY_SECOND_NOTE_TRIPLET == 0)
+        {
+            return THIRTY_SECOND_NOTE_TRIPLET_VALUE;
+        }
+        else
+        {
+            return THIRTY_SECOND_NOTE_TRIPLET_VALUE;
+        }
     }
     
     /**
@@ -128,12 +221,31 @@ public class Tension
         return p2;
     }
     
-//    public static double[] getDurationalAccent(int[] onsets, int tempo)
-//    {
-//        
-//    }
+    /**
+     * Calculates durational accent according to Parncutt(1994)
+     * @param onsets
+     * @param tempo
+     * @return 
+     */
+    public static double[] getDurationalAccent(int[] onsets, int tempo)
+    {
+        double[] durations = getNoteDurationsInSecs(onsets, tempo);
+        double[] dAccents = new double[durations.length];
+        for(int i = 0; i < durations.length; i ++)
+        {
+            double exp = Math.exp((durations[i] * -1)/TAU);
+            dAccents[i] = Math.pow((1 - exp), ACCENT_INDEX);
+        }
+        return dAccents;
+    }
     
-    private double[] getNoteDurationsInSecs(int[] onsets, int tempo)
+    /**
+     * Calculates the duration of each note in seconds given an array of slots
+     * @param onsets
+     * @param tempo
+     * @return 
+     */
+    private static double[] getNoteDurationsInSecs(int[] onsets, int tempo)
     {
         double bps = tempo/SECONDS_PER_MINUTE;
         int noteLength = 0;
@@ -146,7 +258,7 @@ public class Tension
             {
                 if(note == true)
                 {
-                    double beats = noteLength/SLOTS_PER_MEASURE2;
+                    double beats = noteLength/SLOTS_PER_MEASURE2/4;
                     durations[dIndex] = beats/bps;
                     dIndex ++;
                 }
@@ -213,6 +325,46 @@ public class Tension
             }
         }
         return synco;
+    }
+    
+    public static int getSyncopation2(int[] onsets)
+    {
+        int synco = 0;
+        for(int i = 0; i < onsets.length; i ++)
+        {
+            if(onsets[i] == 0)
+            {
+                int nPos = i;
+                while(onsets[nPos] == 0 && nPos > 0)
+                {
+                    nPos = nPos - 1;
+                }
+                if(!(onsets[nPos] == 0))
+                {
+                    int syncoValue = getMetricalHierarchy(i) - getMetricalHierarchy(nPos);
+                    if(syncoValue > 0)
+                    {
+                        synco = synco + syncoValue;
+                    }
+                }
+            }
+        }
+        return synco;
+    }
+    
+     public static int[] getWindowedSyncopation2(int[] onsets, int measures, int windowSize)
+    {
+        int slotsPerWindow = SLOTS_PER_MEASURE2 * windowSize;
+        int outputIndex = 0;
+        int[] output = new int[measures/windowSize];
+        for(int onsetIndex = 0; onsetIndex < onsets.length - 1; onsetIndex += slotsPerWindow)
+        {
+            int[] syncoArray = new int[slotsPerWindow];
+            System.arraycopy(onsets, onsetIndex, syncoArray, 0, slotsPerWindow);
+            output[outputIndex] = getSyncopation2(syncoArray);
+            outputIndex ++;
+        }
+        return output;
     }
     
     /**

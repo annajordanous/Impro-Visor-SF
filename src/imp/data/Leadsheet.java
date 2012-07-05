@@ -814,8 +814,8 @@ public class Leadsheet
     //System.out.println("chord durations: " + chords.getChordDurations()); 
  
     // Test code for getSyncVector
-//    int[] syncVector = melody.getSyncVector(15);
-//    int[] synco = Tension.getWindowedSyncopation(syncVector, melody.size()/480, 2);
+//    int[] syncVector = melody.getSyncVector(1, 1000000000);
+//    int[] synco = Tension.getWindowedSyncopation2(syncVector, melody.size()/480, 2);
 //    System.out.println(Arrays.toString(synco)); 
     return true;
     } // readLeadsheet
