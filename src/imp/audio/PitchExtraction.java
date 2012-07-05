@@ -111,13 +111,11 @@ public class PitchExtraction
      */
     private void parseNotes(byte[] streamInput)
     {
-        //ignore first 5ms of input data; begin polling thereafter
-        //int index = (int)((5.0 / 1000.0) * SAMPLE_RATE * 2.0);
-
         MelodyPart melodyPart = notate.getCurrentMelodyPart();
         //where the first note is to be inserted in the melody
         int startingPosition = analysesCompleted * captureInterval;
-        int index = 0;
+        //ignore first 10ms of input data; begin polling thereafter
+        int index = (int) ((10.0 / 1000.0) * SAMPLE_RATE * 2.0);
         double interval = ((POLL_RATE / 1000.0) * SAMPLE_RATE) * 2.0;
         int size = FRAME_SIZE / 2;
         //convert tempo to ms per measure
@@ -163,8 +161,6 @@ public class PitchExtraction
             double timeElapsed = index / interval * POLL_RATE;
             currentSlotNumber = resolveSlot(timeElapsed,
                     tempo / slotSize, slotSize) + 1;
-            System.out.println("At time " + timeElapsed
-                    + ", Slot = " + currentSlotNumber);
             int slotPitch = 0;
             //check to see if pitch is valid
             if (fundamentalFrequency > 34.0)
@@ -181,6 +177,8 @@ public class PitchExtraction
             else if (currentSlotNumber != lastSlotNumber || index + FRAME_SIZE
                     + interval >= streamInput.length)
             {
+                System.out.println("At time " + timeElapsed
+                        + ", Slot = " + currentSlotNumber);
                 int pitch = calculatePitch(oneSlot);
                 //check to see whether or not pitch has changed from that
                 //which fills the previous slot
@@ -635,8 +633,8 @@ public class PitchExtraction
         {
             System.out.println("Audio capture initialized");
             //number of samples in each measure given the tempo & metre
-            double samplesToCapture = SAMPLE_RATE /
-                            (score.getTempo() / score.getMetre()[0] / 60.0);
+            double samplesToCapture = SAMPLE_RATE
+                    / (score.getTempo() / score.getMetre()[0] / 60.0);
             try
             {//Loop until stopCapture is set.
                 while (!stopCapture)
@@ -700,17 +698,6 @@ public class PitchExtraction
         {
             while (!stopAnalysis)
             {
-//                while (processingQueue.isEmpty())
-//                {
-//                    try
-//                    {
-//                        AnalyzeThread.sleep(20);
-//                        //processingQueue.wait();
-//                    } catch (Exception e)
-//                    {
-//                        System.out.println(e);
-//                    }
-//                }
                 synchronized (processingQueue)
                 {
                     try
