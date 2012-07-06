@@ -510,11 +510,11 @@ public class Score implements Constants, Serializable {
             i.next().setMetre(top, bottom);
             }
         
-        if(chordProg == chordPartList.get("initial_progression")){
-            System.out.println("they_are_eqeqE. conGAS");
-        } else {
-            System.out.println("not_equal.edu");
-        }
+//        if(chordProg == chordPartList.get("initial_progression")){
+//            System.out.println("Equal");
+//        } else {
+//            System.out.println("Unequal");
+//        }
     }
     
     public void setMetre(int metre[])

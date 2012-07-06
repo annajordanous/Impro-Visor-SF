@@ -34,6 +34,30 @@ public class MelodyPartAccompanied extends MelodyPart {
         this.chordProg = chordProg;
     }
     
+    /**
+     * CAUTION: This constructor does not copy the actual melody. It only
+     * gives a melody of size identical to the original.
+     * @param melodyPartAccompanied 
+     */
+    public MelodyPartAccompanied(MelodyPartAccompanied melodyPartAccompanied){
+        super(melodyPartAccompanied.size());
+        this.chordProg = melodyPartAccompanied.getChordProg().copy();
+    }
+    
+    @Override
+    public MelodyPartAccompanied copy(int startingIndex, int endingIndex)
+{
+       int newSize = endingIndex + 1 - startingIndex;
+      
+      if( newSize <= 0 )
+        {
+          return new MelodyPartAccompanied(0, chordProg);
+        }
+
+      MelodyPartAccompanied result = new MelodyPartAccompanied(newSize, chordProg);
+      copy(startingIndex, endingIndex, result);
+      return result;
+}
     public ChordPart getChordProg() {
         return chordProg;
     }
@@ -54,5 +78,5 @@ public class MelodyPartAccompanied extends MelodyPart {
     public void setChordMetre(int metre[]) {
         chordProg.setChordMetre(metre);
     }
-    
+
 }
