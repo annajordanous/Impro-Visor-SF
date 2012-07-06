@@ -175,10 +175,19 @@ private void makeHalfStepArray()
  */
 private void createChordInfo()
   {
-    File chordFile = new File(MIDIBeast.chordFileName);
-    Score s = new Score();
-    (new OpenLeadsheetCommand(chordFile, s)).execute();
-    ChordPart c = s.getChordProg();
+      //modified for using chord extraction instead of leadsheet:
+      String fileName = MIDIBeast.chordFileName;
+      //use the extracted chords from MIDI, unless leadsheet is provided
+      ChordPart c = MIDIBeast.extractedChordPart;
+      //if leadsheet is provided, use it instead
+      if (!fileName.isEmpty()) {
+          File chordFile = new File(MIDIBeast.chordFileName);
+          Score s = new Score();
+          (new OpenLeadsheetCommand(chordFile, s)).execute();
+          c = s.getChordProg();
+      }
+      //end
+      
     int slotCount = 0;
     Chord chord = c.getChord(slotCount);
     while( chord != null )
@@ -189,7 +198,6 @@ private void createChordInfo()
         slotCount += chord.getRhythmValue();
         chord = c.getChord(slotCount);
       }
-
     if( startBeat != -1 )
       {
         int startIndex = 0, endIndex = chords.size();

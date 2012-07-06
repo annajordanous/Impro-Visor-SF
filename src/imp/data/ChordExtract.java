@@ -213,6 +213,10 @@ public class ChordExtract implements Constants{
      */
     private boolean checkEmpty(boolean[] bitChord)
     {
+        if (bitChord==null)
+        {
+            return true;
+        }
         for(int i=0; i<bitChord.length; i++)
         {
             if(bitChord[i]==true)
@@ -247,6 +251,7 @@ public class ChordExtract implements Constants{
      * @param bitChords
      * @param bass
      */
+    /*
     private void normalizeComp (boolean[][] bitChords, int[] bass)
     {
         //normalizeComp deals with any offbeat comping, in this order:
@@ -292,7 +297,119 @@ public class ChordExtract implements Constants{
             }
         }
     }
+    * 
+    */
+        private void normalizeComp (boolean[][] bitChords, int[] bass)
+    {
+        //normalizeComp deals with any offbeat comping, in this order:
+        // quarter note after beat, eighth note after beat, eighth note before beat
+        
+        //!!currently set for an eigth note resolution
+        int eighth = 1;
+        int quarter = 2;
+        int half = 4;
+        
+        int length = bitChords.length;
+        
+        int beat;
+        //iterate through every downbeat (1 & 3)
+        for(int i = 0; i < length; i = i + quarter)
+        {
+            beat = i;
+            //add conditions if needed:
+            // bass and comp are empty?
+            // bass is empty?
+            
+            //comp is empty, but bass is not
+            if(checkEmpty(bitChords[beat]) && bass[beat]!=-1 && i%half==0)
+            {
+                //check quarter note after beat
+                if(beat+quarter<length && !checkEmpty(bitChords[beat+quarter]))
+                {
+                    bitChords[beat] = bitChords[beat+quarter];
+                    bitChords[beat+quarter] = null;
+                }
+                //check eighth note after beat
+                else if(beat+eighth<length && !checkEmpty(bitChords[beat+eighth]))
+                {
+                    bitChords[beat] = bitChords[beat+eighth];
+                    bitChords[beat+eighth]= null;
+                }
+                //check eighth note before beat
+                else if(beat!=0 && !checkEmpty(bitChords[beat-eighth]))
+                {
+                    bitChords[beat] = bitChords[beat-eighth];
+                    bitChords[beat-eighth]= null;
+                }
+            }
+            else if(checkEmpty(bitChords[beat]) && bass[beat]!=-1)
+            {
+                //check eighth note after beat
+                if(beat+eighth<length && !checkEmpty(bitChords[beat+eighth]))
+                {
+                    bitChords[beat] = bitChords[beat+eighth];
+                    bitChords[beat+eighth]= null;
+                }
+                //check eighth note before beat
+                else if(beat!=0 && !checkEmpty(bitChords[beat-eighth]))
+                {
+                    bitChords[beat] = bitChords[beat-eighth];
+                    bitChords[beat-eighth]= null;
+                }
+            }
+        }
+    }
     
+ 
+    public ChordPart importChords(MelodyPart[] bassMelodyParts, MelodyPart[] chordMelodyParts)
+    {
+        ChordPart chords = null;
+        if(bassMelodyParts.equals(null)||chordMelodyParts.equals(null))
+        {
+            return chords;
+        }
+        //combine basslines
+        getBassline(bassMelodyParts);
+        MelodyPart[] arrayMelodyParts = new MelodyPart[chordMelodyParts.length+bassMelodyParts.length];
+        for(int i = 0; i < bassMelodyParts.length; i++)
+        {
+            arrayMelodyParts[i] = bassMelodyParts[i];
+        }
+        for (int i = bassMelodyParts.length; i < arrayMelodyParts.length; i++)
+        {
+            arrayMelodyParts[i] = chordMelodyParts[i-bassMelodyParts.length];
+        }
+        //normalize each melody part
+        for(int j = 0; j < arrayMelodyParts.length; j++)
+        {
+            arrayMelodyParts[j].normalize(EIGHTH);
+        }
+        chords = arrayMelodyPartsToChordPart(arrayMelodyParts, QUARTER, EIGHTH);
+        return chords;
+    }
+    
+    private void getBassline(MelodyPart[] bassMelodyParts) {
+        Note bassnote;
+        Note currentnote;
+        MelodyPart bassline = bassMelodyParts[0];
+        MelodyPart currentBassTrack;
+        if (bassMelodyParts.length > 1) {
+            for (int i = 0; i < bassline.size; i = i + EIGHTH) {
+                for (int j = 1; j < bassMelodyParts.length; j++) {
+                    bassnote = bassline.getNote(i);
+                    currentBassTrack = bassMelodyParts[j];
+                    currentnote = currentBassTrack.getNote(i);
+                    if (bassnote!=null && currentnote!=null
+                            && bassnote.nonRest() && currentnote.nonRest()
+                            && currentnote.getPitch() < bassnote.getPitch()) {
+                        bassMelodyParts[0].setNote(i, currentnote);
+                        bassMelodyParts[j].setNote(i, bassnote);
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Converts an array of MelodyParts to a ChordPart
      * @param arrayMelodyParts
@@ -300,7 +417,7 @@ public class ChordExtract implements Constants{
      * @param noteResolution
      * @return 
      */
-    public ChordPart arrayMelodyPartsToChordPart(MelodyPart[] arrayMelodyParts, int chordResolution, int noteResolution) {
+    private ChordPart arrayMelodyPartsToChordPart(MelodyPart[] arrayMelodyParts, int chordResolution, int noteResolution) {
 
 
         //find max length of arrayMelodyParts to avoid out of bounds error
@@ -346,6 +463,7 @@ public class ChordExtract implements Constants{
         //fix any offbeat comping
         normalizeComp(bitChords, bass);
 
+        /*
         //adds chords to chordpart
         ChordPart chordpart = new ChordPart(max);
         for (int i = 0; i < max; i = i + chordResolution) {
@@ -409,6 +527,45 @@ public class ChordExtract implements Constants{
                     //System.out.println(chord.toString());
                     //System.out.println(NoteSymbol.showContents(bitChords[i/resolution]));
                 }
+            }
+        }
+        * 
+        */
+                //adds chords to chordpart
+        ChordPart chordpart = new ChordPart(max);
+        
+        int chordCount;
+        boolean prevBitChord[] = new boolean[12];
+        boolean bitChord[];
+        boolean shiftedBitChord[];
+        int prevRoot = -1;
+        int root;
+        for (int i = 0; i < max; i = i + chordResolution) {
+            //!!optimized for eighth note resolution... fix later?
+            chordCount = 2 * (i / chordResolution);
+            
+            root = bass[chordCount];
+            bitChord = bitChords[chordCount];
+            if (root != -1
+                    && !checkEmpty(prevBitChord)
+                    && Arrays.equals(bitChord, prevBitChord))
+            {
+                bitChord[prevRoot] = true;
+                shiftedBitChord = shiftBitsLeft(bitChord, prevRoot);
+                Chord chord = matchBitChordToChord(shiftedBitChord, prevRoot);
+                chordpart.setChord(i, chord);
+            }
+            //check if bass is on the beat
+            else if (root != -1) {
+                for (int j = 0; j < 12; j++ )
+                {
+                    prevBitChord[j] = bitChord[j];
+                }
+                prevRoot = root;
+                bitChord[root] = true;
+                shiftedBitChord = shiftBitsLeft(bitChord, root);
+                Chord chord = matchBitChordToChord(shiftedBitChord, root);
+                chordpart.setChord(i, chord);
             }
         }
         chordpart.fixDuplicateChords(chordpart, chordResolution);

@@ -130,11 +130,20 @@ public ChordPatternExtractor(double startBeat, double endBeat, int minDuration) 
 
 public void init() throws Exception
   {
-    File chordFile = new File(MIDIBeast.chordFileName);
-    Score s = new Score();
-    (new OpenLeadsheetCommand(chordFile, s)).execute();
-    ChordPart c = s.getChordProg();
-    int slotCount = 0;
+      //modified for using chord extraction instead of leadsheet:
+      String fileName = MIDIBeast.chordFileName;
+      //use the extracted chords from MIDI, unless leadsheet is provided
+      ChordPart c = MIDIBeast.extractedChordPart;
+      //if leadsheet is provided, use it instead
+      if (!fileName.isEmpty()) {
+          File chordFile = new File(MIDIBeast.chordFileName);
+          Score s = new Score();
+          (new OpenLeadsheetCommand(chordFile, s)).execute();
+          c = s.getChordProg();
+      }
+      //end
+      
+      int slotCount = 0;
     Chord chord = c.getChord(slotCount);
     while( chord != null )
       {

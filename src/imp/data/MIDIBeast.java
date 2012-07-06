@@ -23,6 +23,10 @@ package imp.data;
 import imp.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
+import imp.data.MidiImport;
+import imp.data.ChordExtract;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Utilities for MIDI
@@ -103,6 +107,12 @@ public static ArrayList<RepresentativeBassRules.BassPattern> selectedBassRules;
 public static ArrayList<RepresentativeDrumRules.DrumPattern> selectedDrumRules;
 public static ArrayList<RepresentativeChordRules.ChordPattern> selectedChordRules;
 public static boolean invoked = false;
+
+//used for chord extraction
+public static boolean useLeadsheet = false;
+public static ChordPart extractedChordPart = null;
+private static LinkedList<MidiImportRecord> melodies;
+//end
 
 public static final String[] GMinstrumentNames = 
   {
@@ -319,7 +329,7 @@ public static int getResolution()
  * found in the song.
  */
 
-public static void initialize(String midiFile, String chordFile)
+public static void initialize(String midiFile, String chordFile, int bassChannel, int chordChannel)
   {
     invoke();
     midiFileName = midiFile;
@@ -331,6 +341,39 @@ public static void initialize(String midiFile, String chordFile)
     denominator = score.getDenominator();
 
     jm.music.data.Part[] temp = score.getPartArray();
+    
+    //use chord extraction, check if leadsheet is available
+    if (chordFileName.isEmpty()){
+        //use midi import to extract melody parts from midi file
+        MidiImport midiImport = new MidiImport();
+        midiImport.setResolution(EIGHTH);
+        midiImport.readMidiFile(midiFileName);
+        melodies = midiImport.getMelodies();
+        List<MelodyPart> bassMelodyParts = new ArrayList<MelodyPart>();
+        List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();
+        MelodyPart currentMelodyPart;
+        for(final MidiImportRecord record: melodies)
+        {
+            currentMelodyPart = record.getPart();
+            if (record.getChannel() == bassChannel && currentMelodyPart != null) {
+                bassMelodyParts.add(currentMelodyPart);
+            }
+            if (record.getChannel() == chordChannel && currentMelodyPart != null) {
+                chordMelodyParts.add(currentMelodyPart);
+            }
+        }
+        
+        //get 2 arrays of melody parts, bass and chords
+        if (!bassMelodyParts.isEmpty() || !chordMelodyParts.isEmpty()) {
+            MelodyPart[] arrayBassMelodyParts = bassMelodyParts.toArray(new MelodyPart[bassMelodyParts.size()]);
+            MelodyPart[] arrayChordMelodyParts = chordMelodyParts.toArray(new MelodyPart[chordMelodyParts.size()]);
+
+            //extract the chords using the import chords method
+            ChordExtract chordExtract = new ChordExtract();
+            extractedChordPart = chordExtract.importChords(arrayBassMelodyParts, arrayChordMelodyParts);
+        }
+    }
+    //end
     
     allParts.addAll(Arrays.asList(temp));
 
