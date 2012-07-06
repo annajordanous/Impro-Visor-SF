@@ -374,6 +374,9 @@ private ImproVisor(String leadsheet)
       }
     
      notate.makeVisible(createRoadMap);
+     
+     notate.openLickGenerator(); // temporarily
+     notate.setVisible(true);    // bring to front
 
      currentWindow = notate;
 
