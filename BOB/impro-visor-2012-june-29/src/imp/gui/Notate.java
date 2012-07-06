@@ -2131,11 +2131,11 @@ public class Notate
         trade2IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         trade1IVfirstCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         trade4IVsecondCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
+        notateGrammarMenu = new javax.swing.JMenu();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
         cascadeMI = new javax.swing.JMenuItem();
         windowMenuSeparator = new javax.swing.JSeparator();
-        notateGrammarMenu = new javax.swing.JMenu();
         preferencesMenu = new javax.swing.JMenu();
         preferencesAcceleratorMI = new javax.swing.JMenuItem();
         globalPrefsMI = new javax.swing.JMenuItem();
@@ -8520,7 +8520,6 @@ public class Notate
             }
         });
 
-        noImprovCheckBoxMI.setSelected(true);
         noImprovCheckBoxMI.setText("No Improvisation");
         noImprovCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8553,6 +8552,7 @@ public class Notate
         });
         improvMenu.add(trade8IVfirstCheckBoxMI);
 
+        trade4IVfirstCheckBoxMI.setSelected(true);
         trade4IVfirstCheckBoxMI.setText("Trade 4's, Impro-Visor first");
         trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8587,6 +8587,28 @@ public class Notate
 
         menuBar.add(improvMenu);
 
+        notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
+        notateGrammarMenu.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                notateGrammarMenuStateChanged(evt);
+            }
+        });
+        notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+        });
+        notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notateGrammarMenuActionPerformed(evt);
+            }
+        });
+        menuBar.add(notateGrammarMenu);
+
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
@@ -8620,28 +8642,6 @@ public class Notate
         windowMenu.add(windowMenuSeparator);
 
         menuBar.add(windowMenu);
-
-        notateGrammarMenu.setText(getDefaultGrammarName() + " grammar");
-        notateGrammarMenu.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                notateGrammarMenuStateChanged(evt);
-            }
-        });
-        notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-        });
-        notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                notateGrammarMenuActionPerformed(evt);
-            }
-        });
-        menuBar.add(notateGrammarMenu);
 
         preferencesMenu.setMnemonic('R');
         preferencesMenu.setText("Preferences");
@@ -10291,11 +10291,40 @@ private void chordToneWeightFieldFocusLost(java.awt.event.FocusEvent evt)
     private void openGeneratorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openGeneratorButtonActionPerformed
 
     {//GEN-HEADEREND:event_openGeneratorButtonActionPerformed
-        
-        lickGeneratorMIActionPerformed(evt);
-        
+    openLickGenerator();
     }//GEN-LAST:event_openGeneratorButtonActionPerformed
 
+
+public void openLickGenerator()
+  {
+    redrawTriage();
+
+    lickgenFrame.redoScales();
+
+    lickgenFrame.resetTriageParameters(true);
+
+    lickgenFrame.pack();
+
+    // center dialog only the first time it is shown
+
+    if( !initLocationLickGenerator )
+      {
+        lickgenFrame.setLocationRelativeTo(this);
+
+        initLocationLickGenerator = true;
+
+        WindowRegistry.registerWindow(lickgenFrame);
+
+        lickgenFrame.setLocation(
+                (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
+                (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
+      }
+
+    lickgenFrame.setSize(lickGenFrameDimension);
+    lickgenFrame.setVisible(true);
+
+    entryMuteActionPerformed(null);
+  }
 
     public void setLickGenStatus(String string)
     {
@@ -11810,33 +11839,7 @@ private void updateTempoFromTextField()
     private void lickGeneratorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_lickGeneratorMIActionPerformed
 
     {//GEN-HEADEREND:event_lickGeneratorMIActionPerformed
-      redrawTriage();
-
-      lickgenFrame.redoScales();
-
-      lickgenFrame.resetTriageParameters(true);
-
-      lickgenFrame.pack();
-
-      // center dialog only the first time it is shown
-
-      if( !initLocationLickGenerator )
-        {
-        lickgenFrame.setLocationRelativeTo(this);
-
-        initLocationLickGenerator = true;
-
-        WindowRegistry.registerWindow(lickgenFrame);
-
-        lickgenFrame.setLocation(
-            (int) this.getLocation().getX() + WindowRegistry.defaultXnewWindowStagger,
-            (int) this.getLocation().getY() + WindowRegistry.defaultYnewWindowStagger);
-        }
-
-      lickgenFrame.setSize(lickGenFrameDimension);
-      lickgenFrame.setVisible(true);
-
-      entryMuteActionPerformed(null);
+      openLickGenerator();
     }//GEN-LAST:event_lickGeneratorMIActionPerformed
     
     
@@ -21454,7 +21457,7 @@ private void resetImprovCheckBoxes()
     autoImprovisation = false;
   }
 
-private boolean autoImprovisation = false;
+private boolean autoImprovisation = true;
 private boolean ivFirst = true;
         
 /**

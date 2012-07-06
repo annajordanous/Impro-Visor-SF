@@ -7652,7 +7652,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="noImprovCheckBoxMI">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="No Improvisation"/>
               </Properties>
               <Events>
@@ -7685,6 +7684,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVfirstCheckBoxMI">
               <Properties>
+                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Trade 4&apos;s, Impro-Visor first"/>
               </Properties>
               <Events>
@@ -7717,6 +7717,18 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="notateGrammarMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="getDefaultGrammarName() + &quot; grammar&quot;" type="code"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="notateGrammarMenuStateChanged"/>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="notateGrammarMenuMenuSelected"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notateGrammarMenuActionPerformed"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="windowMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="87"/>
@@ -7748,18 +7760,6 @@
             <MenuItem class="javax.swing.JSeparator" name="windowMenuSeparator">
             </MenuItem>
           </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="notateGrammarMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="getDefaultGrammarName() + &quot; grammar&quot;" type="code"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="notateGrammarMenuStateChanged"/>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="notateGrammarMenuMenuSelected"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notateGrammarMenuActionPerformed"/>
-          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="preferencesMenu">
           <Properties>
