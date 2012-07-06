@@ -522,25 +522,39 @@ public void addNote(Note note)
 //
 //  
 //  
-  /**
+    /**
    * Returns an exact copy of this Part from startingIndex to endingIndex
    * @return 
    */
 
 public MelodyPart copy(int startingIndex, int endingIndex)
 {
-      int newSize = endingIndex + 1 - startingIndex;
+       int newSize = endingIndex + 1 - startingIndex;
       
       if( newSize <= 0 )
         {
           return new MelodyPart(0);
         }
 
+      MelodyPart result = new MelodyPart(newSize);
+      copy(startingIndex, endingIndex, result);
+      return result;
+}
+
+  /**
+   * Returns an exact copy of this Part from startingIndex to endingIndex
+   * @return 
+   */
+
+public void copy(int startingIndex, int endingIndex, MelodyPart newPart)
+{
+      int newSize = endingIndex + 1 - startingIndex;
+
       int newUnitCount = 0;
       
       try
       {
-      MelodyPart newPart = new MelodyPart(newSize);
+      //MelodyPart newPart = new MelodyPart(newSize);
       //System.out.println("melodyPart with size " + newPart.getSize() + " start = " + startingIndex + ", end = " + endingIndex); 
        int i = startingIndex;
        
@@ -593,13 +607,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
     newPart.measureLength = measureLength;
     newPart.swing = swing;
     newPart.instrument = instrument;
-    return newPart;
       }
     catch( Error e )
       {
         ErrorLog.log(ErrorLog.FATAL, 
                      "Not enough memory to copy part of size " + newSize + ".");
-        return null;
       }
     }
   
