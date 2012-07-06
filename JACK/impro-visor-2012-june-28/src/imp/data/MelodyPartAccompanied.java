@@ -29,8 +29,17 @@ public class MelodyPartAccompanied extends MelodyPart {
     
     private ChordPart chordProg;
     
+    public MelodyPartAccompanied(){
+        super();
+    }
+    
     public MelodyPartAccompanied(int size, ChordPart chordProg){
         super(size);
+        this.chordProg = chordProg;
+    }
+    
+    public MelodyPartAccompanied(ChordPart chordProg){
+        super();
         this.chordProg = chordProg;
     }
     
@@ -42,6 +51,18 @@ public class MelodyPartAccompanied extends MelodyPart {
     public MelodyPartAccompanied(MelodyPartAccompanied melodyPartAccompanied){
         super(melodyPartAccompanied.size());
         this.chordProg = melodyPartAccompanied.getChordProg().copy();
+    }
+    
+    @Override
+    public MelodyPartAccompanied copy()
+    {
+      return copy(0);
+    }
+    
+    @Override
+    public MelodyPartAccompanied copy(int startingIndex)
+    {
+        return copy(startingIndex, size-1);
     }
     
     @Override
@@ -78,5 +99,12 @@ public class MelodyPartAccompanied extends MelodyPart {
     public void setChordMetre(int metre[]) {
         chordProg.setChordMetre(metre);
     }
+    
+    @Override
+    public MelodyPartAccompanied extractTimeWarped(int first, int last, int num, int denom){
+      MelodyPartAccompanied newPart = new MelodyPartAccompanied();
+      extractTimeWarped(newPart, first, last, num, denom);
+      return newPart;
+  }
 
 }

@@ -256,7 +256,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
                 return;
             Polylist dataRow = dataModel.getRow(row);
             ChordPart chords = new ChordPart(BEAT*8);
-            MelodyPart melody = new MelodyPart(BEAT*8);
+            MelodyPartAccompanied melody = new MelodyPartAccompanied(BEAT*8, chords);
 
             Polylist combined = ((Polylist) (dataRow.nth(TCol.CHORDS.ordinal()))).append(
                                 (Polylist) (dataRow.nth(TCol.NOTES.ordinal()))
