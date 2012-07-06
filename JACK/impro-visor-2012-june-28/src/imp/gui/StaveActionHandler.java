@@ -720,7 +720,7 @@ private int addNote(int x, int y, boolean play)
   notate.cm.execute(
     new SetNoteCommand(selectedIndex,
                        note,
-                       stave.getMelodyPart()));
+                       stave.getMelodyPartAccompanied()));
 
   Trace.log(2,
             "adding new note: " + note.toLeadsheet() + " at " + selectedIndex);
@@ -810,7 +810,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
    */
   if( selectedIndex == lastIndexDrawn && selectedIndex == lastIndexApproached )
    {
-    return stave.getMelodyPart().getNote(selectedIndex).getPitch();
+    return stave.getMelodyPartAccompanied().getNote(selectedIndex).getPitch();
    }
 
   /* Is this index the one right before a chord change?  If it is, and
@@ -818,7 +818,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
    * approach tone.
    */
   apprch =
-    ((selectedIndex + stave.getMelodyPart().getUnitRhythmValue(selectedIndex)
+    ((selectedIndex + stave.getMelodyPartAccompanied().getUnitRhythmValue(selectedIndex)
     == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
 
 
@@ -920,7 +920,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
   notate.cm.execute(
     new SetNoteCommand(selectedIndex,
                        note,
-                       stave.getMelodyPart()));
+                       stave.getMelodyPartAccompanied()));
 
   Trace.log(2,
             "adding new note over chord: " + note.toLeadsheet()
@@ -1411,7 +1411,7 @@ public void mouseDragged(MouseEvent e)
        * They are both necessary, and ensure that we only add notes
        * when we cross new slots, or when we vertically move within a
        * slot to change its pitch in-place. */
-      Note lastDrawnNote = stave.getMelodyPart().getNote(lastIndexDrawn);
+      Note lastDrawnNote = stave.getMelodyPartAccompanied().getNote(lastIndexDrawn);
 
       if( (selectedIndex != lastIndexDrawn || (lastDrawnNote != null && lastDrawnNote.getPitch() != newPitch)) && selectedIndex != OUT_OF_BOUNDS )
        {
@@ -1427,7 +1427,7 @@ public void mouseDragged(MouseEvent e)
         if( e.isControlDown() )
          {
           notate.cm.execute(new SetRestCommand(selectedIndex,
-                                               stave.getMelodyPart()));
+                                               stave.getMelodyPartAccompanied()));
          }
         else
          {
@@ -1455,7 +1455,7 @@ public void mouseDragged(MouseEvent e)
           && selectedIndex >= 1 && !aPressed )
          {
 
-          notate.cm.execute(new DeleteUnitsCommand(stave.getMelodyPart(),
+          notate.cm.execute(new DeleteUnitsCommand(stave.getMelodyPartAccompanied(),
                                                    selectedIndex, selectedIndex));
          }
 
@@ -1617,7 +1617,7 @@ public void mouseDragged(MouseEvent e)
     return;
    }
   else if( selectedIndex != OUT_OF_BOUNDS // && stave.getSelectionStart() == selectedIndex //   && stave.getSelectionStart() == stave.getSelectionEnd()
-    && stave.getMelodyPart().getNote(stave.getSelectionStart()) != null && draggingPitch && !drawing )
+    && stave.getMelodyPartAccompanied().getNote(stave.getSelectionStart()) != null && draggingPitch && !drawing )
    {
     // dragging the selections's pitch
 
@@ -1649,7 +1649,7 @@ public void mouseDragged(MouseEvent e)
 
     Trace.log(2, "point D");
 
-    MelodyPart part = stave.getMelodyPart();
+    MelodyPart part = stave.getMelodyPartAccompanied();
 
     int index = stave.getSelectionStart();
     Note note = part.getNote(index);
@@ -1685,7 +1685,7 @@ public void mouseDragged(MouseEvent e)
         notate.cm.undo();
        }
 
-      notate.cm.execute(new DragNoteCommand(stave.getMelodyPart(),
+      notate.cm.execute(new DragNoteCommand(stave.getMelodyPartAccompanied(),
                                             startingIndex, nearestLine, true));
 
       Trace.log(2, "point K");
@@ -1708,7 +1708,7 @@ public void mouseDragged(MouseEvent e)
      }
 
     // move the group of notes to the new section and select it
-    if( pasteIndex < stave.getMelodyPart().size() )
+    if( pasteIndex < stave.getMelodyPartAccompanied().size() )
      {
 
       if( firstDrag == false )
@@ -1721,7 +1721,7 @@ public void mouseDragged(MouseEvent e)
         notate.cm.undo();
        }
 
-      notate.cm.execute(new DragSetCommand(stave.getMelodyPart(),
+      notate.cm.execute(new DragSetCommand(stave.getMelodyPartAccompanied(),
                                            draggingGroupOrigSelectionStart,
                                            draggingGroupOrigSelectionEnd,
                                            pasteIndex));
@@ -1875,7 +1875,7 @@ void redoAdvice(int selectedIndex)
       stave.getChordProg().getNextUniqueChord(selectedIndex);
 
     Note currentNote =
-      stave.getMelodyPart().getNote(selectedIndex);
+      stave.getMelodyPartAccompanied().getNote(selectedIndex);
     /*
     Trace.log(2, "redoing Advice, note = " + currentNote + ", chord = " + currentChord);
     
@@ -2073,7 +2073,7 @@ private void fitUnfiredNotes()
   else
    {
 
-    MelodyPart part = stave.getMelodyPart();
+    MelodyPart part = stave.getMelodyPartAccompanied();
 
     /*
      * March through all the 'fired' indices of the drawing.  At each
@@ -2125,7 +2125,7 @@ private void fitUnfiredNotes()
           // Delete the unit in the expected slot.
           try
            {
-            notate.cm.execute(new DeleteUnitsCommand(stave.getMelodyPart(),
+            notate.cm.execute(new DeleteUnitsCommand(stave.getMelodyPartAccompanied(),
                                                      expectedSlot,
                                                      expectedSlot));
            }
@@ -2258,7 +2258,7 @@ public void keyPressed(KeyEvent e)
           return;
         case KeyEvent.VK_R:
           notate.cm.execute(new SetRestCommand(stave.getSelectionStart(),
-                                               stave.getMelodyPart()));
+                                               stave.getMelodyPartAccompanied()));
           stave.repaint();
 
           return;
@@ -2797,12 +2797,12 @@ private int yPosToAnyPitch(int yPos, int currentLine)
  */
 public void moveSelectionRight(int index)
  {
-  while( index < stave.getMelodyPart().size() && stave.cstrLines[index] == null )
+  while( index < stave.getMelodyPartAccompanied().size() && stave.cstrLines[index] == null )
    {
     index++;
    }
 
-  if( index < stave.getMelodyPart().size() && stave.cstrLines[index] != null )
+  if( index < stave.getMelodyPartAccompanied().size() && stave.cstrLines[index] != null )
    {
     stave.setSelection(index);
     stave.repaint();

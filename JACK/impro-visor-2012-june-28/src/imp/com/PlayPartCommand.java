@@ -23,10 +23,10 @@ import imp.data.*;
 import imp.util.Trace;
 
 public class PlayPartCommand implements Command {
-    private MelodyPart part;
+    private MelodyPartAccompanied part;
     private boolean undoable = false;
 
-    public PlayPartCommand(MelodyPart part) {
+    public PlayPartCommand(MelodyPartAccompanied part) {
         this.part = part;
     }
 

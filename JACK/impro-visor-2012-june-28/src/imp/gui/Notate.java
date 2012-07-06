@@ -7617,10 +7617,10 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
@@ -7638,10 +7638,10 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
@@ -8495,10 +8495,10 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
@@ -8533,10 +8533,10 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
@@ -12169,7 +12169,7 @@ public boolean putLick(MelodyPart lick)
     // Formerly used SafePasteCommand, then DynamicPasteCommand, both of which
     // carry unnecessary baggage.
     
-    getMelodyPart(stave).pasteOver(lick, getCurrentSelectionStart(stave));
+    getMelodyPartAccompanied(stave).pasteOver(lick, getCurrentSelectionStart(stave));
     
     if( lickgenFrame.rectifySelected() )
       {
@@ -13093,9 +13093,9 @@ private boolean oneSlotSelected()
  *
  */
 
-public MelodyPart getMelodyPart(Stave stave)
+public MelodyPartAccompanied getMelodyPartAccompanied(Stave stave)
   {
-    return stave.getMelodyPart();
+    return stave.getMelodyPartAccompanied();
   }
 
 /**
@@ -13103,9 +13103,9 @@ public MelodyPart getMelodyPart(Stave stave)
  *
  */
 
-public MelodyPart getCurrentMelodyPart()
+public MelodyPartAccompanied getCurrentMelodyPart()
   {
-    return getCurrentStave().getMelodyPart();
+    return getCurrentStave().getMelodyPartAccompanied();
   }
 
 
@@ -13125,7 +13125,7 @@ public MelodyPart getCurrentMelodyPart()
 
     Stave stave = getCurrentStave();
 
-    stave.setSelection(0, stave.getMelodyPart().size() - 1);
+    stave.setSelection(0, stave.getMelodyPartAccompanied().size() - 1);
 
     redoAdvice();
 
@@ -13139,7 +13139,7 @@ public MelodyPart getCurrentMelodyPart()
     {
     Stave stave = getCurrentStave();
 
-    stave.setSelection(0, stave.getMelodyPart().size() - 1);
+    stave.setSelection(0, stave.getMelodyPartAccompanied().size() - 1);
     }
   
   /**
@@ -15413,12 +15413,12 @@ private void setLayoutPreference(Polylist layout)
 public void addTab()
   {
     int length = score.getLength();
-    MelodyPart mp = new MelodyPart(length);
+    MelodyPartAccompanied mp = new MelodyPartAccompanied(length, chordProg);
     mp.setInstrument(score.getPart(0).getInstrument());
     addChorus(mp);      
   }
  
- public void addChorus(MelodyPart mp)
+ public void addChorus(MelodyPartAccompanied mp)
    {
       int keySig = getCurrentStave().getKeySignature();
 
@@ -16350,7 +16350,7 @@ void enterMelody()
         if( oneSlotSelected() )
           {
             int slot = getCurrentSelectionStart();
-            displayAdviceTree(slot, 0, getCurrentStave().getMelodyPart().getNote(slot));
+            displayAdviceTree(slot, 0, getCurrentStave().getMelodyPartAccompanied().getNote(slot));
           }
     }//GEN-LAST:event_adviceMIActionPerformed
 
@@ -16392,7 +16392,7 @@ private void pasteMelody(Part part, Stave stave)
           }
 
         cm.execute(new SafePasteCommand(part,
-                                        getMelodyPart(stave),
+                                        getMelodyPartAccompanied(stave),
                                         getCurrentSelectionStart(stave),
                                         !alwaysPasteOver, true, this));
         justPasted = true;
@@ -18132,7 +18132,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
     newScore.setChordProg(new ChordPart());
 
-    newScore.addPart(new MelodyPart(defaultBarsPerPart * measureLength));
+    newScore.addPart(new MelodyPartAccompanied(defaultBarsPerPart * measureLength, chordProg));
     
     newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 

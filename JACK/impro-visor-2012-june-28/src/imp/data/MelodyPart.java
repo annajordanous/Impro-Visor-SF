@@ -1427,9 +1427,9 @@ public void copy(int startingIndex, int endingIndex, MelodyPart newPart)
    * @param last      the last slot in the range
    * @return MelodyPart     the MelodyPart that contains the extracted chunk
    */
-  public MelodyPart extractTimeWarped(int first, int last, int num, int denom)
+  public void extractTimeWarped(MelodyPart newPart, int first, int last, int num, int denom)
     {
-    MelodyPart newPart = new MelodyPart();
+//    MelodyPart newPart = new MelodyPart();
     Trace.log(2,
             "extractTimeWarped from " + first + " to " + last + " by " + num + "/" + denom);
     for( int i = first; i < last; i++ )
@@ -1442,8 +1442,14 @@ public void copy(int startingIndex, int endingIndex, MelodyPart newPart)
         }
       }
     newPart.addUnit(new Rest(15));
-    return newPart;
+//    return newPart;
     }
+  
+  public MelodyPart extractTimeWarped(int first, int last, int num, int denom){
+      MelodyPart newPart = new MelodyPart();
+      extractTimeWarped(newPart, first, last, num, denom);
+      return newPart;
+  }
 
   /**
    * Returns a MelodyPart that contains the Units within the slot range specified,

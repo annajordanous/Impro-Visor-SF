@@ -1651,7 +1651,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         // Get some data we need
         Stave currentStave = notate.getCurrentStave();
         int selectedSlot = currentStave.getSelectionStart();
-        MelodyPart melodyPart = currentStave.getMelodyPart();
+        MelodyPartAccompanied melodyPart = currentStave.getMelodyPartAccompanied();
         Note lastNote = melodyPart.getPrevNote(selectedSlot);
 
         
@@ -1743,7 +1743,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     private int lastRealNote(int selectedSlot)
     {
         Stave stave = notate.getCurrentStave();
-        MelodyPart melody = stave.getMelodyPart();
+        MelodyPartAccompanied melody = stave.getMelodyPartAccompanied();
         
         int midi = noNote;
         while (midi == noNote)
@@ -1771,7 +1771,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
     private int secondToLastRealNote(int selectedSlot)
     {
         Stave stave = notate.getCurrentStave();
-        MelodyPart melody = stave.getMelodyPart();
+        MelodyPartAccompanied melody = stave.getMelodyPartAccompanied();
         
         int midi = noNote;
         boolean seenOneNote = false;

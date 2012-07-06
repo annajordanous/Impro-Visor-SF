@@ -123,7 +123,7 @@ public void scoreToMelodies()
           {
             //System.out.println("---------------------------------------------");
             //System.out.println("part " + i + " track " + j + " conversion: ");
-            MelodyPart partOut = new MelodyPart();
+            MelodyPartAccompanied partOut = new MelodyPartAccompanied();
             importMelody.convertToImpPart(part, j, partOut, resolution);
             
             String instrumentString = MIDIBeast.getInstrumentForPart(part);

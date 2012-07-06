@@ -14,14 +14,14 @@ import java.util.ListIterator;
  */
 public class PartList
 {
-private ArrayList<MelodyPart> theList;
+private ArrayList<MelodyPartAccompanied> theList;
 
 public PartList(int size)
   {
-  theList = new ArrayList<MelodyPart>(size);
+  theList = new ArrayList<MelodyPartAccompanied>(size);
   }
 
-public ListIterator<MelodyPart> listIterator()
+public ListIterator<MelodyPartAccompanied> listIterator()
   {
     return theList.listIterator();
   }
@@ -31,7 +31,7 @@ public int size()
     return theList.size();
   }
 
-public MelodyPart get(int i)
+public MelodyPartAccompanied get(int i)
   {
     return theList.get(i);
   }
@@ -43,7 +43,7 @@ public MelodyPart get(int i)
  @param i
  @param part
  */
-public void set(int i, MelodyPart part)
+public void set(int i, MelodyPartAccompanied part)
   {
     theList.ensureCapacity(i);
     for( int j = theList.size(); j <= i; j++ )
@@ -62,7 +62,7 @@ public void setSize(int size)
       }
   }
 
-public void add(MelodyPart part)
+public void add(MelodyPartAccompanied part)
   {
     theList.add(part);
   }

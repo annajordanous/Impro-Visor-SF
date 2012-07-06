@@ -32,7 +32,7 @@ public class MidiImportRecord implements Comparable, Constants
 {
 int channel;
 int trackNumber;
-MelodyPart melodyPart;
+MelodyPartAccompanied melodyPart;
 int distinctPitches;
 int lowPitch;
 int highPitch;
@@ -47,7 +47,7 @@ int stopBeat;
 String instrumentString;
 
 
-public MidiImportRecord(int channel, int trackNumber, MelodyPart melodyPart, String instrumentString)
+public MidiImportRecord(int channel, int trackNumber, MelodyPartAccompanied melodyPart, String instrumentString)
 {
   this.channel = channel;
   this.trackNumber = trackNumber;
@@ -134,7 +134,7 @@ private void getStatistics()
   startBeat = initialRestBeats+1;  
   }
 
-public MelodyPart getPart()
+public MelodyPartAccompanied getPart()
   {
     return melodyPart;
   }

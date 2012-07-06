@@ -49,7 +49,7 @@ File midiDirectory;
 MidiImport midiImport;
 DefaultListModel trackListModel;
 private LinkedList<MidiImportRecord> melodies;
-MelodyPart selectedPart = null;
+MelodyPartAccompanied selectedPart = null;
 // used in chord extract:
 private int bassChannel = 0;
 private int chordChannel = 0;
@@ -593,7 +593,7 @@ private void selectTrack(int index)
        }
   }
 
-private MelodyPart getSelectedTrackMelody()
+private MelodyPartAccompanied getSelectedTrackMelody()
   {
     if( selectedPart != null )
       {
@@ -615,7 +615,7 @@ private MelodyPart getSelectedTrackMelody()
 
 private void importSelectedTrack()
   {
-    MelodyPart part = getSelectedTrackMelody();
+    MelodyPartAccompanied part = getSelectedTrackMelody();
     
     if( part != null )
       {
@@ -627,7 +627,7 @@ private void importSelectedTrack()
 
 private void playSelectedTrack()
   {
-   MelodyPart part = getSelectedTrackMelody();
+   MelodyPartAccompanied part = getSelectedTrackMelody();
     
     if( part != null )
       {

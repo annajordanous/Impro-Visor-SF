@@ -244,7 +244,7 @@ public class Leadsheet
     score.setTempo(160);			// default
 
     ChordPart chords = new ChordPart();	// in case these parts are not explicit
-    MelodyPart melody = new MelodyPart();
+    MelodyPartAccompanied melody = new MelodyPartAccompanied(chords);
 
     melody.setKeySignature(0);		// default
 
@@ -522,7 +522,7 @@ public class Leadsheet
                                                 melody, rise, beatValue, key);
                                         melodyInputReversed = Polylist.nil;
 
-                                        melody = new MelodyPart();
+                                        melody = new MelodyPartAccompanied();
                                         score.addPart(melody);
                                         }
                                       handled = true;

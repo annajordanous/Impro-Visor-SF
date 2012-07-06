@@ -38,12 +38,12 @@ public class TimeWarpCommand implements Command, Constants {
     /**
      * the Part to paste over
      */
-    protected MelodyPart source;
+    protected MelodyPartAccompanied source;
 
     /**
      * the Part to paste onto
      */
-    protected MelodyPart dest;
+    protected MelodyPartAccompanied dest;
 
     /**
      * the section of the destination overwritten when the paste occurs
@@ -105,7 +105,7 @@ public class TimeWarpCommand implements Command, Constants {
      * @param startSlot         the slot to start pasting over in the dest
      * @param stopSlot          the slot to end pasting over in the dest
      */
-    public TimeWarpCommand(MelodyPart source, int startSlot, int stopSlot, boolean play, int num, int denom) {
+    public TimeWarpCommand(MelodyPartAccompanied source, int startSlot, int stopSlot, boolean play, int num, int denom) {
         this.source = source;
         this.dest = source;
         this.startSlot = startSlot;
@@ -123,7 +123,7 @@ public class TimeWarpCommand implements Command, Constants {
      * @param startSlot         the slot to start pasting over in the dest
      * @param undoable          the boolean to see if the action is undoable
      */
-    public TimeWarpCommand(MelodyPart source, int startSlot, int stopSlot,
+    public TimeWarpCommand(MelodyPartAccompanied source, int startSlot, int stopSlot,
                                      boolean undoable, boolean play, int num, int denom) {
         this(source, startSlot, stopSlot, play, num, denom);
         this.undoable = undoable;
@@ -151,7 +151,7 @@ public class TimeWarpCommand implements Command, Constants {
 
         dest.altPasteOver(source, startSlot);	// note alt!
         
-	if( play && source instanceof MelodyPart && ImproVisor.getPlay() )
+	if( play && source instanceof MelodyPartAccompanied && ImproVisor.getPlay() )
 	  {
 	  new PlayPartCommand(source).execute();
 	  }

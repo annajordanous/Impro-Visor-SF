@@ -190,11 +190,11 @@ protected Notate notate;
 /**
  * The original Part passed to the Stave
  */
-private MelodyPart origPart;
+private MelodyPartAccompanied origPart;
 /**
  * The Part to be displayed on the Stave
  */
-private MelodyPart displayPart;
+private MelodyPartAccompanied displayPart;
 /**
  * The chord progression to be displayed on the Stave
  */
@@ -567,7 +567,7 @@ public Component getFirstComponent(Container focusCycleRoot)
  */
 public Stave(Notate notate)
   {
-    this(new MelodyPart(), notate, "");
+    this(new MelodyPartAccompanied(), notate, "");
   }
 
 /**
@@ -580,7 +580,7 @@ public Stave(Notate notate)
  */
 public Stave(StaveType type, Notate notate, String staveTitle)
   {
-    this(new MelodyPart(), type, notate, staveTitle);
+    this(new MelodyPartAccompanied(), type, notate, staveTitle);
   }
 
 /**
@@ -591,7 +591,7 @@ public Stave(StaveType type, Notate notate, String staveTitle)
  * @param part          Part to be displayed in stave
  * @param notate        the notation window for the Stave
  */
-public Stave(MelodyPart part, Notate notate, String staveTitle)
+public Stave(MelodyPartAccompanied part, Notate notate, String staveTitle)
   {
     this(part, StaveType.GRAND, notate, staveTitle);
   }
@@ -604,7 +604,7 @@ public Stave(MelodyPart part, Notate notate, String staveTitle)
  * @param type          an enum representing the type of Stave
  * @param notate        the notation window for the Stave
  */
-public Stave(MelodyPart part, StaveType type, Notate notate,
+public Stave(MelodyPartAccompanied part, StaveType type, Notate notate,
              String staveTitle)
   {
     super();
@@ -959,7 +959,7 @@ public ChordPart getChordProg()
  * Sets the current Part for this Stave instance.
  * @param part          the Part to be set in the Stave
  */
-public void setPart(MelodyPart part)
+public void setPart(MelodyPartAccompanied part)
   {
     setPartTitle(part.getTitle());
     setComposer(part.getComposer());
@@ -1022,7 +1022,7 @@ public int getPreviousCstrLine(int index)
  * Returns the original Part of this Stave instance
  * @return Part         the original Part in the Stave
  */
-public MelodyPart getMelodyPart()
+public MelodyPartAccompanied getMelodyPartAccompanied()
   {
     return this.origPart;
   }
@@ -1031,7 +1031,7 @@ public MelodyPart getMelodyPart()
  * Returns the display Part of this Stave instance
  * @return Part         the displayed Part in the Stave
  */
-public MelodyPart getDisplayPart()
+public MelodyPartAccompanied getDisplayPart()
   {
     return this.displayPart;
   }
@@ -1619,7 +1619,7 @@ public int getSelectionEndNote(int selectionEnd)
   {
 
     // System.out.println("selectionEnd = " + ((float)selectionEnd)/BEAT);
-    MelodyPart melody = getMelodyPart();
+    MelodyPartAccompanied melody = getMelodyPartAccompanied();
 
     ChordPart chords = getChordProg();
 
@@ -3615,7 +3615,7 @@ public int[] collectNoteColors(MelodyPart part, Graphics g)
         Note curNote = part.getNote(i);
         if( curNote != null )
           {
-            Note origNote = this.getMelodyPart().getNote(i);
+            Note origNote = this.getMelodyPartAccompanied().getNote(i);
 
             color[i] = determineColor(curNote, origNote,
                                       i, g, false, color);
@@ -3662,8 +3662,8 @@ public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
         noteType = APPROACH_TONE;
       }
 
-    int prevIndex = this.getMelodyPart().getPrevIndex(i);
-    Note prevNote = this.getMelodyPart().getNote(prevIndex);
+    int prevIndex = this.getMelodyPartAccompanied().getPrevIndex(i);
+    Note prevNote = this.getMelodyPartAccompanied().getNote(prevIndex);
 
     boolean approachable = (noteType == CHORD_TONE || noteType == COLOR_TONE);
 
@@ -3682,7 +3682,7 @@ public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
           {
 
             colorArray[prevIndex] = determineColor(prevNote,
-                                                   getMelodyPart().getNote(prevIndex),
+                                                   getMelodyPartAccompanied().getNote(prevIndex),
                                                    prevIndex, g, true, colorArray);
 
           }
@@ -5160,7 +5160,7 @@ public void shiftPitch(int startIndex, int endIndex, boolean up,
 
     notate.cm.execute(
             new ShiftPitchesCommand(shift,
-                                    getMelodyPart(),
+                                    getMelodyPartAccompanied(),
                                     startIndex,
                                     endIndex,
                                     getMinPitch(),
@@ -5178,7 +5178,7 @@ public void shiftPitch(int startIndex, int endIndex, boolean up,
 public void rectifySelection(int startIndex, int endIndex, boolean directional, boolean direction)
   {
     notate.cm.execute(
-            new RectifyPitchesCommand(getMelodyPart(),
+            new RectifyPitchesCommand(getMelodyPartAccompanied(),
                                       startIndex,
                                       endIndex,
                                       getChordProg(),
@@ -5296,7 +5296,7 @@ public void playSelectionNote(Note note, int selectedIndex)
     int stopper = selectedIndex + StaveActionHandler.getEntryDuration(note);
 
     ChordPart chords = getChordProg();
-    MelodyPart part = getMelodyPart();
+    MelodyPart part = getMelodyPartAccompanied();
 
     for( ; i < stopper; i++ )
       {
@@ -5342,7 +5342,7 @@ public String extract(String title, ExtractMode mode, int grade,
         return null;
       }
 
-    MelodyPart melody = getMelodyPart();
+    MelodyPartAccompanied melody = getMelodyPartAccompanied();
 
     ChordPart chords = getChordProg();
 

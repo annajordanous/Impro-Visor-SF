@@ -172,7 +172,7 @@ public class MidiLatencyMeasurementTool
     measurementTable.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 
     testScore = new Score();
-    MelodyPart part = new MelodyPart();
+    MelodyPartAccompanied part = new MelodyPartAccompanied();
     part.setInstrument(1);
     part.addNote(new Note(60, BEAT));
     part.addRest(new Rest(BEAT * 2));

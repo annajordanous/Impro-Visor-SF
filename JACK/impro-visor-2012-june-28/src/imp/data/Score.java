@@ -294,7 +294,7 @@ public class Score implements Constants, Serializable {
    public int getActiveBarsInChorus()
     {
       int activeBars = chordProg.getActiveBars();
-      ListIterator<MelodyPart> i = partList.listIterator();
+      ListIterator<MelodyPartAccompanied> i = partList.listIterator();
 	
         while(i.hasNext())
         {
@@ -454,7 +454,7 @@ public class Score implements Constants, Serializable {
     public void addParts(int parts) {
         Trace.log(2, "adding " + parts + " new parts to score");
         for(int i = 0; i < parts; i++) {
-            MelodyPart mp = new MelodyPart(length);
+            MelodyPartAccompanied mp = new MelodyPartAccompanied(length, chordProg);
             if(partList.size() > 0)
                 {
                 mp.setInstrument(partList.get(0).getInstrument());
@@ -467,7 +467,7 @@ public class Score implements Constants, Serializable {
      * Adds the specified Part to the Score.
      * @param part      Part to add
      */
-    public void addPart(MelodyPart part) {
+    public void addPart(MelodyPartAccompanied part) {
         Trace.log(2, "adding existing melody part to score");
         if( length < part.size() )
           {
@@ -503,7 +503,7 @@ public class Score implements Constants, Serializable {
         chordProg.setChordMetre(top, bottom);
         chordPartList.get("initial_progression").setMetre(top, bottom);
         chordPartList.get("initial_progression").setChordMetre(top, bottom);
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
 	
         while(i.hasNext())
             {
@@ -554,7 +554,7 @@ public class Score implements Constants, Serializable {
         this.keySig = keySig;
         chordProg.setKeySignature(keySig);
         chordPartList.get("initial_progression").setKeySignature(keySig);
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext())
             {
             i.next().setKeySignature(keySig);
@@ -585,7 +585,7 @@ public class Score implements Constants, Serializable {
             {
             chordPartList.get("initial_progression").setSize(length);
             }
-        Iterator<MelodyPart> i = partList.listIterator();
+        Iterator<MelodyPartAccompanied> i = partList.listIterator();
         while( i.hasNext() )
             {
             i.next().setSize(length);
@@ -671,7 +671,7 @@ public class Score implements Constants, Serializable {
      * @param index     the index of the Part to get
      * @return Part     the Part at the specified index
      */
-    public MelodyPart getPart(int index) {
+    public MelodyPartAccompanied getPart(int index) {
         return partList.get(index);
     }
 
@@ -705,7 +705,7 @@ public class Score implements Constants, Serializable {
         Score newScore = new Score(title, tempo);
 	    newScore.setMetre(metre[0], metre[1]);
         PartList newPartList = new PartList(partList.size());
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
 
         while(i.hasNext())
             newPartList.add(i.next().copy());
@@ -743,7 +743,7 @@ public class Score implements Constants, Serializable {
         
         scoreData += "ChordProg: " + '\n' + chordProg.toString() + '\n';
 
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext())
             {
             scoreData += "Part " + i.nextIndex() + ":" + '\n' +
@@ -868,9 +868,9 @@ public class Score implements Constants, Serializable {
         if(chordProg.size() > maxLength)
             maxLength = chordProg.size();
 
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext()) {
-            MelodyPart part = i.next();
+            MelodyPartAccompanied part = i.next();
             if(part.size() > maxLength)
                 maxLength = part.size();
         }
@@ -940,7 +940,7 @@ public class Score implements Constants, Serializable {
 
         //System.out.println("time = " + time);
 
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext() && Style.limitNotReached(time, endLimitIndex) )
         {
             // render the chord progression in parallel with each melody chorus
@@ -991,9 +991,9 @@ public class Score implements Constants, Serializable {
     	chordProg.saveLeadsheet(out, "chords");
         out.newLine();
 
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext()) {
-            ((MelodyPart)i.next()).saveLeadsheet(out, "melody");
+            ((MelodyPartAccompanied)i.next()).saveLeadsheet(out, "melody");
             out.newLine();
         }
     }
@@ -1005,7 +1005,7 @@ public class Score implements Constants, Serializable {
 
       public void dumpMelody(PrintStream out)
         {
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext()) 
           {
             i.next().dump(out);
@@ -1142,9 +1142,9 @@ public class Score implements Constants, Serializable {
      * Calls makeSwing on each individual Part.
      */
     public void makeSwing() {
-        ListIterator<MelodyPart> i = partList.listIterator();
+        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext()) {
-            MelodyPart m = i.next();
+            MelodyPartAccompanied m = i.next();
             Style style = chordProg.getStyle();
             if( style != null )
               {
