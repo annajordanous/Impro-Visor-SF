@@ -821,7 +821,8 @@ public class Style
           shortestPattern = temp;
           }
         }
-      return null;
+      return patterns.get(0);
+//      return null;
       }
 
     // sum the weights of the patterns we are choosing from
