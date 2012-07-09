@@ -1110,7 +1110,7 @@ public MelodyPart fillMelody(int minPitch,
       {
         notate.setLickGenStatus("Fill melody failed");
       }
-System.out.println("lickGen.fillMelody returns " + melPart);
+//System.out.println("lickGen.fillMelody returns " + melPart);
     return melPart;
   }
     
