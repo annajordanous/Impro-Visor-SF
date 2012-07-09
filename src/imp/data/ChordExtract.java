@@ -557,9 +557,10 @@ public class ChordExtract implements Constants{
             }
             //check if bass is on the beat
             else if (root != -1) {
-                for (int j = 0; j < 12; j++ )
-                {
-                    prevBitChord[j] = bitChord[j];
+                if (!checkEmpty(prevBitChord) && !checkEmpty(bitChord)) {
+                    for (int j = 0; j < 12; j++) {
+                        prevBitChord[j] = bitChord[j];
+                    }
                 }
                 prevRoot = root;
                 bitChord[root] = true;
