@@ -641,6 +641,8 @@ public class Notate
   private MidiSynth midiSynth2 = null;
   
   private MidiSynth midiSynth3 = null;
+  
+  private AutoImprovisation autoImprovisation = null;
 
   private MidiManager midiManager = null; // reference to global midiManager contained in ImproVisor
 
@@ -988,6 +990,8 @@ public class Notate
     midiSynth2 = new MidiSynth(midiManager);
 
     midiSynth3 = new MidiSynth(midiManager);
+    
+    autoImprovisation = new AutoImprovisation();
 
     midiStepInput = new MidiStepEntryActionHandler(this);
 
@@ -8552,7 +8556,6 @@ public class Notate
         });
         improvMenu.add(trade8IVfirstCheckBoxMI);
 
-        trade4IVfirstCheckBoxMI.setSelected(true);
         trade4IVfirstCheckBoxMI.setText("Trade 4's, Impro-Visor first");
         trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8577,6 +8580,7 @@ public class Notate
         });
         improvMenu.add(trade1IVfirstCheckBoxMI);
 
+        trade4IVsecondCheckBoxMI.setSelected(true);
         trade4IVsecondCheckBoxMI.setText("Trade 4's, Impro-Visor second");
         trade4IVsecondCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -17048,9 +17052,19 @@ private void setCurrentStaveType(StaveType t)
 
  public void playScore()
   {
+    autoImprovisation.reset();
+    if( autoImprovisation.improviseAtStart() )
+      {
+       autoImprovisation.create(getCurrentMelodyPart());
+      }
+   if( autoImprovisation.improviseAtStart() )
+      {
+       autoImprovisation.playCreatedMelody(getCurrentMelodyPart());
+      }
+   
      establishCountIn();
      playScoreBody(0);
-  }
+   }
 
  
  public void playScore(int startAt)
@@ -21374,76 +21388,77 @@ private void noImprovCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//
   {//GEN-HEADEREND:event_noImprovCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     noImprovCheckBoxMI.setSelected(true);
+    autoImprovisation.setSelected(false);
   }//GEN-LAST:event_noImprovCheckBoxMIActionPerformed
 
 private void trade4IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade4IVfirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade4IVfirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade4IVfirstCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 3840;
-    generationLeadSlots = 240;
-    ivFirst = 0;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(3840);
+    autoImprovisation.setGenerationLeadSlots(240);
+    autoImprovisation.setIVfirst(true);
   }//GEN-LAST:event_trade4IVfirstCheckBoxMIActionPerformed
 
 private void trade8IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade8IVfirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade8IVfirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade8IVfirstCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 7680;
-    generationLeadSlots = 480;
-    ivFirst = 0;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(7680);
+    autoImprovisation.setGenerationLeadSlots(480);
+    autoImprovisation.setIVfirst(true);
   }//GEN-LAST:event_trade8IVfirstCheckBoxMIActionPerformed
 
 private void trade2IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade2IVfirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade2IVfirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade2IVfirstCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 1920;   
-    generationLeadSlots = 120;
-    ivFirst = 0;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(1920);
+    autoImprovisation.setGenerationLeadSlots(120);
+    autoImprovisation.setIVfirst(true);
   }//GEN-LAST:event_trade2IVfirstCheckBoxMIActionPerformed
 
 private void trade1IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade1IVfirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade1IVfirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade1IVfirstCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 960;   
-    generationLeadSlots = 120;
-    ivFirst = 0;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(960);
+    autoImprovisation.setGenerationLeadSlots(120);
+    autoImprovisation.setIVfirst(true);
   }//GEN-LAST:event_trade1IVfirstCheckBoxMIActionPerformed
 
 private void trade16IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade16IVfirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade16IVfirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade16IVfirstCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 15360;
-    generationLeadSlots = 960;
-    ivFirst = 0;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(15360);
+    autoImprovisation.setGenerationLeadSlots(960);
+    autoImprovisation.setIVfirst(true);
   }//GEN-LAST:event_trade16IVfirstCheckBoxMIActionPerformed
 
 private void trade12IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade12IVfirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade12IVfirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade12IVfirstCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 11520;
-    generationLeadSlots = 720;
-    ivFirst = 0;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(11520);
+    autoImprovisation.setGenerationLeadSlots(720);
+    autoImprovisation.setIVfirst(true);
   }//GEN-LAST:event_trade12IVfirstCheckBoxMIActionPerformed
 
 private void trade4IVsecondCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade4IVsecondCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade4IVsecondCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
     trade4IVsecondCheckBoxMI.setSelected(true);
-    autoImprovisation = true;
-    improInterval = 3840;
-    generationLeadSlots = 240;
-    ivFirst = 1;
+    autoImprovisation.setSelected(true);
+    autoImprovisation.setImproInterval(3840);
+    autoImprovisation.setGenerationLeadSlots(240);
+    autoImprovisation.setIVfirst(false);
   }//GEN-LAST:event_trade4IVsecondCheckBoxMIActionPerformed
 
 private void resetImprovCheckBoxes()
@@ -21454,12 +21469,9 @@ private void resetImprovCheckBoxes()
     trade4IVfirstCheckBoxMI.setSelected(false);
     trade2IVfirstCheckBoxMI.setSelected(false);
     trade1IVfirstCheckBoxMI.setSelected(false);
-    autoImprovisation = false;
+    trade4IVsecondCheckBoxMI.setSelected(false);
   }
 
-private boolean autoImprovisation = true;
-private int ivFirst = 0;
-        
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called 
@@ -24248,6 +24260,17 @@ public int getRecordSnapValue()
   }
 
 
+
+class AutoImprovisation
+{
+boolean selected = true;  // current default
+
+/**
+ * ivFirst is 0 if Impro-Visor is to go first, 1 if not
+ */
+
+int ivFirst = 1;
+
 Command improCommand = null;
 
 /**
@@ -24259,6 +24282,7 @@ Command improCommand = null;
  */
 
 int improInterval = 3840;
+int halfInterval = 1920;
 
 
 /**
@@ -24279,32 +24303,155 @@ int generationLeadSlots = 240;
 
 int playLeadSlots = 90;
 
+
+int generateAtSlot = 0;
+
+int playAtSlot = 0;
+
+MelodyPart improLick = null;
+
+
+public void reset()
+  {
+    generateAtSlot = 0;
+    playAtSlot = 0;
+    improLick = null;
+    improCommand = null;
+  }
+
+public boolean improviseNow(int slotInPlayback, int size)
+  {
+  generateAtSlot = (slotInPlayback + generationLeadSlots) % size;
+  return generateAtSlot % improInterval == ivFirst*halfInterval;
+  }
+
+public boolean playNow(int slotInPlayback, int size)
+  {
+    playAtSlot = (slotInPlayback + playLeadSlots) % size;
+    return playAtSlot % improInterval == ivFirst*halfInterval;
+  }
+
+public void create(MelodyPart currentMelodyPart)
+  {
+    improLick = generate(lickgen, generateAtSlot, generateAtSlot + halfInterval - 1);
+
+    // If a lick was generated, copy it into the melodyPart for notation
+    // and set up a command that will play
+    if( improLick != null )
+      {
+        Score improScore = new Score();
+        improScore.setTempo(score.getTempo());
+
+        //currentMelodyPart.truncateEndings(true);
+        //MelodyPart extracted = currentMelodyPart.extract(generateAtSlot, lastSlotAhead);
+        improLick.setInstrument(11); // vibraphone
+        improLick.setSwing(currentMelodyPart.getSwing());
+
+        //System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
+        improScore.addPart(improLick);
+
+        // Create command now, for execution on a subsequent slot
+
+        setImproCommand(
+                new PlayScoreCommand(improScore,
+                                     0, // startTime
+                                     true, // swing
+                                     midiSynth2,
+                                     null, // play listener
+                                     0, // loopCount,
+                                     0, // transposition
+                                     false, // use drums
+                                     -1));       // transposition
+      }
+  }
+
+public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart)
+  {
+      if( improCommand != null )
+        {
+          currentMelodyPart.pasteOver(improLick, playAtSlot);
+          improCommand.execute();
+          autoImprovisation.setImproCommand(null); // Don't play twice
+          return improLick;
+        }
+      return null;
+  }
+
+public int getGenerationLeadSlots()
+  {
+    return generationLeadSlots;
+  }
+
+public void setGenerationLeadSlots(int generationLeadSlots)
+  {
+    this.generationLeadSlots = generationLeadSlots;
+  }
+
+public Command getImproCommand()
+  {
+    return improCommand;
+  }
+
+public void setImproCommand(Command improCommand)
+  {
+    this.improCommand = improCommand;
+  }
+
+public int getImproInterval()
+  {
+    return improInterval;
+  }
+
+public void setImproInterval(int improInterval)
+  {
+    this.improInterval = improInterval;
+    halfInterval = improInterval/2;
+  }
+
+public int getPlayLeadSlots()
+  {
+    return playLeadSlots;
+  }
+
+public void setPlayLeadSlots(int playLeadSlots)
+  {
+    this.playLeadSlots = playLeadSlots;
+  }
+
+public void setSelected(boolean selected)
+  {
+    this.selected = selected;
+  }
+
+public boolean isSelected()
+  {
+    return selected;
+  }
+
+public void setIVfirst(boolean value)
+  {
+    ivFirst = value? 0 : 1;
+  }
+
+public int getIVFirst()
+  {
+    return ivFirst;
+  }
+
+public boolean improviseAtStart()
+  {
+    return selected && ivFirst == 0; 
+  }
+
+ }
+
+
 /*
  * This was formerly embedded inside executable code.
  */
 
 class PlayActionListener implements ActionListener
 {
-
-
-
-
-/**
- * The improvised lick.
- */
-
-MelodyPart improLick;
-        
-
-///**
-// * init idea doesn't work yet.
-// */
-//
-//public void init()
-//  {
-//    improLick = generate(lickgen, 0, 0 + halfInterval-1);
-//  }
-
 public void actionPerformed(ActionEvent evt)
   {
     if( playingStopped() )
@@ -24365,89 +24512,43 @@ public void actionPerformed(ActionEvent evt)
 // Recurrent lick generation
 // Caution: LickGenerator control should be opened first. 
     
-      int halfInterval = improInterval / 2;
-         
-      if( autoImprovisation )
+      int interval = autoImprovisation.getImproInterval();
+      
+       if( autoImprovisation.isSelected() )
         {
           MelodyPart currentMelodyPart = getCurrentMelodyPart();
           
           int size = currentMelodyPart.size();
           
-          int generateAtSlot = (slotInPlayback + generationLeadSlots ) % size;
+          // Create a lick if it is now time
 
-          int playAtSlot = (slotInPlayback + playLeadSlots) % size;
-
-          // See if it's time to generate a lick.
-
-          if( generateAtSlot % improInterval == ivFirst*halfInterval )
+          if( autoImprovisation.improviseNow(slotInPlayback, size) )
             {
-              //System.out.println("generating at " + slotInPlayback);
-              // Impro-Visor goes second
-
-              improLick = generate(lickgen, generateAtSlot, generateAtSlot + halfInterval - 1);
-
-              // Impro-Visor goes first
-              //lick = generate(lickgen, generateAtSlot + halfInterval, generateAtSlot + halfInterval-1);
-
-
-              // If a lick was generated, copy it into the melodyPart for notation
-              // and set up a command that will play
-              if( improLick != null )
-                {
-                  Score improScore = new Score();
-                  improScore.setTempo(score.getTempo());
-
-                  //currentMelodyPart.truncateEndings(true);
-                  //MelodyPart extracted = currentMelodyPart.extract(generateAtSlot, lastSlotAhead);
-                  improLick.setInstrument(11); // vibraphone
-                  improLick.setSwing(currentMelodyPart.getSwing());
-
-                  System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
-                  improScore.addPart(improLick);
-
-                  // Create command now, for execution on a subsequent slot
-
-                  improCommand =
-                          new PlayScoreCommand(improScore,
-                                               0,          // startTime
-                                               true,       // swing
-                                               midiSynth2,
-                                               null,       // play listener
-                                               0,          // loopCount,
-                                               0,          // transposition
-                                               false,      // use drums
-                                               -1);        // transposition
-                }
+              autoImprovisation.create(currentMelodyPart);
             }
 
+          // Play the lick previously generated, and paste into the 
+          // current melody part.
 
-          // Play the lick previously generated
-
-          if( improCommand != null && (playAtSlot % improInterval) == ivFirst*halfInterval )
+          if( autoImprovisation.playNow(slotInPlayback, size) )
             {
-              currentMelodyPart.pasteOver(improLick, playAtSlot);
-
-              System.out.println("at slot " + slotInPlayback + " playing");
-              improCommand.execute();
-              improCommand = null; // Don't play twice
+              autoImprovisation.playCreatedMelody(currentMelodyPart);
             }
         }
 
-    // The following variant was originally added to stop playback at the end of a selection
-    // However, it also truncates the drum patterns etc. so that needs to be fixed.
-
-    if( midiSynth.finishedPlaying() )
-      {
-        stopPlaying("midiSynth finished playing");
-        return;
-      }
+//    // The following variant was originally added to stop playback at the end of a selection
+//    // However, it also truncates the drum patterns etc. so that needs to be fixed.
+//
+//    if( midiSynth.finishedPlaying() )
+//      {
+//        stopPlaying("midiSynth finished playing");
+//        return;
+//      }
 
     // Stop playback when a specified slot is reached.
 
     if( slotInPlayback > stopPlaybackAtSlot )
       {
-//        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
-
         stopPlaying("slotInPlayback > stopPlaybackAtSlot " + slotInPlayback + " > " + stopPlaybackAtSlot);
         return;
       }
@@ -24524,7 +24625,6 @@ public void actionPerformed(ActionEvent evt)
               {
                 setCurrentScrollPosition(viewport);
               }
-
           }
       }
   }
