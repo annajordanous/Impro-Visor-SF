@@ -454,7 +454,7 @@ public class Score implements Constants, Serializable {
     public void addParts(int parts) {
         Trace.log(2, "adding " + parts + " new parts to score");
         for(int i = 0; i < parts; i++) {
-            MelodyPartAccompanied mp = new MelodyPartAccompanied(length, chordProg);
+            MelodyPartAccompanied mp = new MelodyPartAccompanied(length, chordProg.copy());
             if(partList.size() > 0)
                 {
                 mp.setInstrument(partList.get(0).getInstrument());
