@@ -83,6 +83,10 @@ public class MelodyPartAccompanied extends MelodyPart {
         return chordProg;
     }
     
+    public void setChordProg(ChordPart chordProg){
+        this.chordProg = chordProg;
+    }
+    
     
     public int[] getChordMetre() {
         return chordProg.getChordMetre();
