@@ -55,7 +55,13 @@ public static final String PARAM = "parameter";
 
 public static final String COMMENT = "comment";
 
+// Special forms:
 public static final String BUILTIN = "builtin";
+
+public static final String SPLICE = "splice";
+
+public static final String LITERAL = "literal";
+
 
 // Operators:
 public static final String PLUS = "+";
@@ -687,8 +693,24 @@ private Object evaluate(Object toParse)
         Polylist L = parsing;
         while( L.nonEmpty() )
           {
-            p = Polylist.cons(evaluate(L.first()), p);
-            L = L.rest();
+            Object item = L.first();
+            // If an argument has the form (splice <operator> <arg> ...)
+            // then the result of evaluating (<operator <arg> ...),
+            // which must be guaranteed to be a list,
+            // is spliced into the resulting list, rather than being treated
+            // as a single string
+            if( item instanceof Polylist 
+                    && ((Polylist)item).nonEmpty() 
+                    && SPLICE.equals(((Polylist)item).first()) )
+              {
+                p = p.append(evaluateSplice(((Polylist)item).rest()).reverse());
+                L = L.rest();
+              }
+            else
+              {
+              p = p.cons(evaluate(item));
+              L = L.rest();
+              }
           }
         p = p.reverse();
         return p;
@@ -705,6 +727,42 @@ private Object evaluate(Object toParse)
     return null;
     }
   }
+
+/**
+ * Evaluate the rest of a special form (splice <operator> <arg> ...)
+ * (<operator> <arg> ...) must return a list.
+ * Currently the only operator available is literal, e.g.
+ * a rule RHS of the form
+ * (C4 (splice literal C8 C8) (splice literal C16 C16 C16 C16) R4)
+ * returns (C4 C8 C8 C16 C16 C16 C16 R4)
+ * 
+ * It is expected that additional splice-oriented operators will be added,
+ * and not all will just use literal arguments.
+ * 
+ * @param form
+ * @return 
+ */
+
+Polylist evaluateSplice(Polylist form)
+  {
+    if( form.isEmpty() )
+      {
+        return Polylist.nil;
+      }
+    
+    Object operator = form.first();
+    Polylist args = form.rest();
+    
+    if( LITERAL.equals(operator) )
+      {
+        return args;
+      }
+    
+    // default
+    
+    return Polylist.nil;
+  }
+
 
 // For testing purposes only:
 
