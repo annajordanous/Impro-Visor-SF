@@ -945,19 +945,22 @@ public class Score implements Constants, Serializable {
         {
             // render the chord progression in parallel with each melody chorus
             
-            long melTime = i.next().render(seq, 
+            MelodyPartAccompanied melodyPart = i.next();
+            
+            long melTime = melodyPart.render(seq, 
                                            ImproVisor.getMelodyChannel(),
                                            time, 
                                            seq.getMelodyTrack(), 
                                            transposition, 
                                            endLimitIndex);
             
-            long chTime = chordProg.render(seq, 
+            long chTime = melodyPart.getChordProg().render(seq, 
                                            time, 
                                            seq.getChordTrack(), 
                                            transposition, 
                                            useDrums, 
                                            endLimitIndex);
+            
             time = Math.max(melTime, chTime);
        }
         

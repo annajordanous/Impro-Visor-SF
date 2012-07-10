@@ -306,7 +306,7 @@ public ChordPart copy()
           }
       }
 
-    newPart.sectionInfo = sectionInfo.copy();
+    newPart.sectionInfo = sectionInfo.chordlessCopy();
     newPart.unitCount = unitCount;
     newPart.title = title;
     newPart.composer = composer;
@@ -315,6 +315,8 @@ public ChordPart copy()
     newPart.keySig = keySig;
     newPart.setMetre(metre[0], metre[1]);
     newPart.swing = swing;
+    
+    newPart.sectionInfo.setChordPart(newPart);
 
     return newPart;
   }
