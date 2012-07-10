@@ -15414,7 +15414,7 @@ private void setLayoutPreference(Polylist layout)
 public void addTab()
   {
     int length = score.getLength();
-    MelodyPartAccompanied mp = new MelodyPartAccompanied(length, chordProg);
+    MelodyPartAccompanied mp = new MelodyPartAccompanied(length, getCurrentMelodyPart().getChordProg());
     mp.setInstrument(score.getPart(0).getInstrument());
     addChorus(mp);      
   }

@@ -522,7 +522,7 @@ public class Leadsheet
                                                 melody, rise, beatValue, key);
                                         melodyInputReversed = Polylist.nil;
 
-                                        melody = new MelodyPartAccompanied();
+                                        melody = new MelodyPartAccompanied(chords);
                                         score.addPart(melody);
                                         }
                                       handled = true;
