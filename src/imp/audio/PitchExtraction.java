@@ -34,6 +34,7 @@ public class PitchExtraction
     TargetDataLine target;
     Score score;
     Notate notate;
+    double swingVal;
     int captureInterval;
     int analysesCompleted = 0;
     private static final float SAMPLE_RATE = 44100.0F; //in Hertz
@@ -42,12 +43,12 @@ public class PitchExtraction
     private static final float POLL_RATE = 20; //in milliseconds
     private static int RESOLUTION = 8;
     private static boolean TRIPLETS = false;
-    private static double RMS_THRESHOLD = 4.5;
+    private static double RMS_THRESHOLD = 4.75;
     private static double CONFIDENCE = 0;
     //DoubleFFT_1D fft;
     private static boolean noteOff; //flag indicating terminal note
-    //sets threshold for detecting peaks in normalized data
-    private static final double K_CONSTANT = 0.8;
+    //sets threshold for detecting peaks in normalized SDF
+    private static final double K_CONSTANT = 0.9;
     //private final TextField tempoField;
     private Queue<byte[]> processingQueue;
 
@@ -60,6 +61,7 @@ public class PitchExtraction
     {
         this.notate = notate;
         this.score = score;
+        swingVal = score.getChordProg().getStyle().getSwing();
         this.captureInterval = captureInterval;
         format = getAudioFormat();
         processingQueue = new ConcurrentLinkedQueue<byte[]>();
@@ -82,7 +84,13 @@ public class PitchExtraction
 
     public void closeTargetLine()
     {
-        target.close();
+        try
+        {
+            target.close();
+        } catch (Exception e)
+        {
+            System.out.println("TargetLine error.");
+        }
     }
 
     public void captureAudio()
@@ -119,11 +127,11 @@ public class PitchExtraction
         double interval = ((POLL_RATE / 1000.0) * SAMPLE_RATE) * 2.0;
         int size = FRAME_SIZE / 2;
         //convert tempo to ms per measure
-        float tempo = (float) (4.0 * 60000.0 / score.getTempo());
+        float tempo = (float) (score.getMetre()[0] * 60000.0 / score.getTempo());
         int slotSize = RESOLUTION; //smallest subdivision allowed
         if (TRIPLETS)
         { //adjust minimum slot size if triplets are allowed
-            slotSize *= (3.0 / 2.0);
+            slotSize *= 3;
         }
         int lastSlotNumber = 1;
         int currentSlotNumber;
@@ -163,7 +171,7 @@ public class PitchExtraction
                     tempo / slotSize, slotSize) + 1;
             int slotPitch = 0;
             //check to see if pitch is valid
-            if (fundamentalFrequency > 34.0)
+            if (fundamentalFrequency > 40.0)
             {
                 slotPitch = //calculate equivalent MIDI pitch value for freq.
                         jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
@@ -180,6 +188,9 @@ public class PitchExtraction
                 System.out.println("At time " + timeElapsed
                         + ", Slot = " + currentSlotNumber);
                 int pitch = calculatePitch(oneSlot);
+                int altPitch = calculateDumbPitch(oneSlot);
+                System.out.println("Pitch = " + pitch
+                        + ", Alt. Pitch = " + altPitch);
                 //check to see whether or not pitch has changed from that
                 //which fills the previous slot
                 if (pitch != lastPitch || noteOff)
@@ -189,14 +200,18 @@ public class PitchExtraction
                     {
                         imp.data.Note newRest = new Rest(duration);
                         melodyPart.setNote(startingPosition, newRest);
-                        System.out.println("rest, duration = "
-                                + duration + " slots.");
+                        System.out.println("______________________________\n"
+                                + " rest, duration = " + duration + " slots.\n"
+                                + "______________________________");
                     } else
                     {
                         imp.data.Note newNote = new imp.data.Note(pitch, duration);
                         melodyPart.setNote(startingPosition, newNote);
-                        System.out.println(newNote.getPitch() + ", duration = "
-                                + duration + " slots.");
+                        System.out.println("______________________________\n"
+                                + newNote.getPitchClassName()
+                                + (newNote.getPitch() / 12 - 1) + "(" + newNote.getPitch() + ")"
+                                + ", duration = " + duration + " slots.\n "
+                                + "______________________________");
                     }
                     startingPosition += duration;
                     slotsFilled = 1; //reset slotsFilled when pitch changes
@@ -205,6 +220,7 @@ public class PitchExtraction
                 else
                 { //if pitch hasn't changed, increment # of slots filled
                     slotsFilled++;
+                    System.out.println("Duration for " + pitch + " extended.");
                 }
                 lastPitch = pitch;
                 if (currentSlotNumber % slotSize == 0)
@@ -245,6 +261,7 @@ public class PitchExtraction
             sum += (data[i] * data[i]);
         }
         double rms = Math.log(Math.sqrt(sum / data.length));
+        //System.out.println("RMS = " + rms);
         return rms > RMS_THRESHOLD;
     }
 
@@ -256,6 +273,128 @@ public class PitchExtraction
     private int calculatePitch(List<Integer> pitchList)
     {
         noteOff = false;
+        int[] pitches = new int[pitchList.size()];
+        for (int a = 0; a < pitchList.size(); a++)
+        {
+            pitches[a] = pitchList.get(a);
+        }
+        //Check for discrepancies in this slot
+        int testPitch = 0;
+        int numZeros = 0;
+        boolean allZero = true;
+        boolean tie = false;
+        boolean d = false; //discrepancy test boolean
+        int i = 0;
+        while (!d && i < pitches.length)
+        { //search for discrepancies in data
+            if (pitches[i] == 0)
+            {
+                numZeros++;
+            }
+            else {
+                if (pitches[i] != testPitch && testPitch != 0)
+                {
+                    d = true; //more than one nonzero pitch has been found
+                } else
+                {
+                    testPitch = pitches[i];
+                }
+                allZero = false;
+            }
+            i++;
+        } //end while
+        int[] occurrences = new int[pitches.length];
+        int maxLoc = 0;
+        int maxO = 0;
+        int secondPlaceLoc = -1;
+        int secondPlaceO = -1;
+        if (!d || allZero) //if there are no discrepancies, return the pitch
+        {
+            return testPitch;
+        } else
+        { //otherwise, find most frequently detected pitch
+            testPitch = 0;
+            for (i = 0; i < pitches.length; i++)
+            {
+                if (pitches[i] != 0 && pitches[i] != testPitch)
+                {
+                    occurrences[i] = 1;
+                    testPitch = pitches[i]; //don't check same pitch twice...
+                    for (int j = i + 1; j < pitches.length; j++)
+                    {
+                        if (pitches[i] == pitches[j])
+                        {
+                            occurrences[i] += 1;
+                        }
+                    } //end for (j)
+                } //end if
+            } //end for (i)
+            for (i = 0; i < occurrences.length; i++)
+            {
+                if (occurrences[i] > maxO)
+                {
+                    if (maxO > 0)
+                    {
+                        secondPlaceLoc = maxLoc;
+                        secondPlaceO = occurrences[secondPlaceLoc];
+                    }
+                    maxO = occurrences[i];
+                    maxLoc = i;
+                } //end if
+                else if (occurrences[i] != 0
+                        && occurrences[i] == maxO && maxLoc != i)
+                {
+                    tie = true;
+                    secondPlaceLoc = i;
+                    secondPlaceO = occurrences[i];
+                }
+            } //end for
+        } //end else
+        //check to see whether or not this tone is terminal
+        if ((pitches.length > 2 && pitches[pitches.length - 2] == 0
+                && pitches[pitches.length - 1] == 0)
+                || (pitches.length < 3 && pitches[pitches.length - 1] == 0))
+        {
+            noteOff = true;
+        }
+        //if the pitch has at least 5 windows and no pitch
+        if (pitches.length > 4 && maxO < 3 && numZeros >= pitches.length * 0.75) {
+            return 0;
+        }
+        else if (secondPlaceO > 0)
+        {
+            int absDifference = Math.abs(pitches[maxLoc] - pitches[secondPlaceLoc]);
+            if (!tie && maxO - secondPlaceO > 1 && absDifference < 11)
+            {
+                return pitches[maxLoc];
+            } //check for false readings in lower octaves
+            else if (!tie && absDifference > 11)
+            {
+                return Math.max(pitches[maxLoc], pitches[secondPlaceLoc]);
+            } //end if
+            else if (tie)
+            {
+                //algorithm is more prone to sub-fundamental errors
+                if (secondPlaceLoc >= pitches.length / 2 && absDifference < 12)
+                {
+                    return pitches[secondPlaceLoc];
+                } else
+                {
+                    return Math.max(pitches[maxLoc], pitches[secondPlaceLoc]);
+                }
+            }
+        }
+        return pitches[maxLoc];
+    }
+
+    /**
+     * Examines the pitches detected for the current slot and determines pitch
+     *
+     * @param pitches The array of pitches detected for this slot
+     */
+    private int calculateDumbPitch(List<Integer> pitchList)
+    {
+        //noteOff = false;
         int[] pitches = new int[pitchList.size()];
         for (int a = 0; a < pitchList.size(); a++)
         {
@@ -320,45 +459,34 @@ public class PitchExtraction
                     maxO = occurrences[i];
                     maxLoc = i;
                 } //end if
-                else if (occurrences[i] == maxO && maxLoc != i)
+                else if (occurrences[i] != 0
+                        && occurrences[i] == maxO && maxLoc != i)
                 {
                     tie = true;
                     secondPlaceLoc = i;
+                    secondPlaceO = occurrences[i];
                 }
             } //end for
         } //end else
         //check to see whether or not this tone is terminal
-        if (pitches[pitches.length - 2] == 0
-                && pitches[pitches.length - 1] == 0)
+//        if ((pitches.length > 2 && pitches[pitches.length - 2] == 0
+//                && pitches[pitches.length - 1] == 0)
+//                || (pitches.length < 3 && pitches[pitches.length - 1] == 0))
+//        {
+//            noteOff = true;
+//        }
+        if (secondPlaceLoc > 0
+                && Math.abs(pitches[maxLoc] - pitches[secondPlaceLoc]) > 11)
         {
-            noteOff = true;
-        }
-        if (maxO - secondPlaceLoc > 1)
-        {
-            return pitches[maxLoc];
-        } //check for false readings in lower octaves
-        else if (maxO == secondPlaceO && Math.abs(pitches[maxLoc]
-                - pitches[secondPlaceLoc]) > 11)
-        {
-            if (pitches[maxLoc] - pitches[secondPlaceLoc] > 0)
+            int max = 0;
+            for (int n = 0; n < pitches.length; n++)
             {
-                return pitches[maxLoc];
-            } else
-            {
-                return pitches[secondPlaceLoc];
+                if (pitches[n] > max)
+                {
+                    max = pitches[n];
+                }
             }
-        } //end if
-        else if (tie)
-        {
-            //algorithm is more prone to sub-fundamental errors
-            if (secondPlaceLoc >= pitches.length / 2 && Math.abs(pitches[maxLoc]
-                    - pitches[secondPlaceLoc]) < 12)
-            {
-                return pitches[secondPlaceLoc];
-            } else
-            {
-                return Math.max(pitches[maxLoc], pitches[secondPlaceLoc]);
-            }
+            return max;
         } else
         {
             return pitches[maxLoc];
@@ -378,8 +506,21 @@ public class PitchExtraction
     private int resolveSlot(double timeElapsed,
                             double msPerSlot, int slotSize)
     {
-        int slot = (int) Math.floor(timeElapsed / msPerSlot);
-        return slot % slotSize;
+        int slot = (int) (Math.floor(timeElapsed / msPerSlot)) % slotSize;
+        if (TRIPLETS && (slot % (RESOLUTION / 2) == RESOLUTION / 2 - 1
+                || slot % (RESOLUTION / 2) == 1))
+        {
+            return slot - 1;
+        }
+//        if(swingVal > 0.5 && RESOLUTION >= 8)
+//        {
+//            if(slot % (2 ^ (RESOLUTION / 8)) == (2 ^ (RESOLUTION / 8 - 1)) + 1) {
+//                if(timeElapsed / msPerSlot < (slot + 1) * swingVal / 2) {
+//                    return slot - 1;
+//                }
+//            }
+//        }
+        return slot;
     }
 
     /**
@@ -453,9 +594,11 @@ public class PitchExtraction
     private double pickPeakWithoutFFT(double[] input)
     {
         boolean negativeZeroCrossing = false;   //<<--checks for negatively
-        double[] localMaxima = new double[1000];        //sloped zero crossings
+        //double[] localMaxima = new double[1000];        //sloped zero crossings
+        List<Double> localMaxima = new ArrayList<Double>();
         //indices holds locations of positively sloped zero crossings
-        int[] indices = new int[localMaxima.length];
+        //int[] indices = new int[localMaxima.size()];
+        List<Integer> indices = new ArrayList<Integer>();
         int numberOfMaxima = 0; //# of local maxima discovered thus far
         //look for positively sloped zero crossings in input data
         for (int i = 1; i < input.length; i++)
@@ -463,7 +606,7 @@ public class PitchExtraction
             //if a pos. sloped zero crossing is found, mark its location
             if (input[i] > 0 && input[i - 1] <= 0)
             {
-                indices[numberOfMaxima] = i;
+                indices.add(i);
                 numberOfMaxima++;
                 negativeZeroCrossing = !negativeZeroCrossing;
             } else if (input[i] <= 0 && input[i - 1] > 0)
@@ -475,11 +618,11 @@ public class PitchExtraction
         int index = 0;
         double localMax;
         int localMaxIndex;
-        while (index < numberOfMaxima - 1 && indices[index] != 0)
+        while (index < numberOfMaxima - 1 && indices.get(index) != null)
         {
             localMax = 0;
             localMaxIndex = 0;
-            for (int i = indices[index]; i < indices[index + 1]; i++)
+            for (int i = indices.get(index); i < indices.get(index + 1); i++)
             {
                 if (input[i] > localMax)
                 {
@@ -487,8 +630,9 @@ public class PitchExtraction
                     localMaxIndex = i;
                 } //end if
             } //end for
-            localMaxima[index] = localMax;
-            indices[index] = localMaxIndex;
+            localMaxima.add(index, localMax);
+            indices.remove(index);
+            indices.add(index, localMaxIndex);
             index++;
         } //end while
         //if the last local max was followed by a negatively sloped
@@ -497,7 +641,7 @@ public class PitchExtraction
         {
             localMax = 0;
             localMaxIndex = 0;
-            for (int i = indices[index]; i < input.length; i++)
+            for (int i = indices.get(index); i < input.length; i++)
             {
                 if (input[i] > localMax)
                 {
@@ -505,8 +649,9 @@ public class PitchExtraction
                     localMaxIndex = i;
                 } //end if
             } //end for
-            localMaxima[index] = localMax;
-            indices[index] = localMaxIndex;
+            localMaxima.add(index, localMax);
+            indices.remove(index);
+            indices.add(index, localMaxIndex);
             index++;
         } //end while
         else
@@ -514,34 +659,36 @@ public class PitchExtraction
             numberOfMaxima--;  //otherwise, decrement # of maxima
         }
         //find highest local maximum
-        double highestMax = localMaxima[0];
+        double highestMax = localMaxima.get(0);
         int j = 1;
-        while (localMaxima[j] != 0 && j < localMaxima.length)
+        while (j < localMaxima.size())
         {
-            if (localMaxima[j] > highestMax)
+            double toCheck = localMaxima.get(j);
+            if (toCheck > highestMax)
             {
-                highestMax = localMaxima[j];
+                highestMax = toCheck;
                 CONFIDENCE = highestMax;
             }
             j++;
         }
-        double threshold = highestMax * K_CONSTANT;
-        j = 0;
-        double testPitch = localMaxima[0];
-        while (testPitch < threshold)
-        { //find first local maximum
-            j++;                        //above threshold
-            testPitch = localMaxima[j];
-        }
+        //System.out.println("Confidence = " + CONFIDENCE);
         if (highestMax < 0.325)
         { //clarity/confidence check
             return 0; //ignore frequency if confidence is below above value
         }
+        double threshold = highestMax * K_CONSTANT;
+        j = 0;
+        double testPitch = localMaxima.get(0);
+        while (testPitch < threshold)
+        { //find first local maximum
+            j++;                        //above threshold
+            testPitch = localMaxima.get(j);
+        }
         //perform cubic interpolation to refine index of pitch period
         double refinedIndex = SAMPLE_RATE;
-        if (0 < indices[j] - 1 && indices[j] + 2 < input.length)
+        if (0 < indices.get(j) - 1 && indices.get(j) + 2 < input.length)
         {
-            int currentMaxLocation = indices[j];
+            int currentMaxLocation = indices.get(j);
             double newMaxLocation = (currentMaxLocation - 1)
                     + refineMax(input[currentMaxLocation - 1],
                     input[currentMaxLocation], input[currentMaxLocation + 1],
@@ -631,7 +778,6 @@ public class PitchExtraction
 
         public void run()
         {
-            System.out.println("Audio capture initialized");
             //number of samples in each measure given the tempo & metre
             double samplesToCapture = SAMPLE_RATE
                     / (score.getTempo() / score.getMetre()[0] / 60.0);
@@ -646,7 +792,7 @@ public class PitchExtraction
                     }
                     ByteArrayOutputStream outputStream =
                             new ByteArrayOutputStream();
-                    //collect 1 measure's worth of data
+                    //collect 1 measure's worth of data (or 1 frame less?)
                     for (int n = 0; n < samplesToCapture / (FRAME_SIZE / 2) - 1; n++)
                     {
                         //An arbitrary-size temporary holding buffer
@@ -667,8 +813,6 @@ public class PitchExtraction
                             {
                                 processingQueue.add(capturedAudioData);
                                 processingQueue.notify();
-                                System.out.println("processing queue has "
-                                        + processingQueue.size() + " element(s)");
                             } catch (Exception e)
                             {
                                 System.out.println(e);
@@ -676,11 +820,9 @@ public class PitchExtraction
                         }
                     } else
                     {
-                        System.out.println("between measures...");
                         CaptureThread.sleep(0, 10);
                     }
                 }//end while
-                System.out.println("CaptureThread exited while loop.");
             } catch (Exception e)
             {
                 System.out.println(e);
@@ -713,7 +855,7 @@ public class PitchExtraction
                     byte result[] = processingQueue.poll();
                     if (result != null)
                     {
-                        System.out.println("passing byte[] to parseNotes()...");
+                        System.out.println("_________New Measure__________");
                         parseNotes(result);
                     } else
                     {
@@ -724,7 +866,6 @@ public class PitchExtraction
                     System.out.println(e);
                 }
             }
-            System.out.println("AnalyzeThread thinks it has finished.");
         } //end run
     }//end AnalyzeThread
 }
