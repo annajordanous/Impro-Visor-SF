@@ -110,6 +110,7 @@ public class SectionInfo implements Constants, Serializable {
 
     public SectionInfo copy() {
         SectionInfo si = new SectionInfo(chords);
+        
         si.records = new ArrayList<SectionRecord>();
         si.metre[0] = metre[0];
         si.metre[1] = metre[1];
@@ -122,7 +123,26 @@ public class SectionInfo implements Constants, Serializable {
         return si;
     }
     
+    public SectionInfo chordlessCopy() {
+        SectionInfo si = new SectionInfo(null);
+        
+        si.records = new ArrayList<SectionRecord>();
+        si.metre[0] = metre[0];
+        si.metre[1] = metre[1];
+        
+        for(SectionRecord record: records )
+          {
+            si.records.add(new SectionRecord(record));
+          }
+
+        return si;
+    }
     
+    public void setChordPart(ChordPart chordPart)
+    {
+        chords = chordPart;
+    }
+   
     public void addSection(String styleName, int n, boolean isPhrase) {
         ListIterator<SectionRecord> k = records.listIterator();
         
