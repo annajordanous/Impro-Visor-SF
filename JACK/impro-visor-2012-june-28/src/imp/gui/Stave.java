@@ -611,6 +611,7 @@ public Stave(MelodyPartAccompanied part, StaveType type, Notate notate,
     this.origPart = part;
     this.partTitle = part.getTitle();
     this.sheetTitle = staveTitle;
+    this.chordProg = origPart.getChordProg();
 
     // set the notate frame
     this.notate = notate;
@@ -1913,7 +1914,8 @@ public int calcSubDivs(int beat)
 
     index = beatValue * beat;
     int chordGcd = beatValue;
-    while( index < beatValue * (beat + 1) && index < chordProg.size() )
+if(chordProg != null){
+     while( index < beatValue * (beat + 1) && index < chordProg.size() )
       {
         Unit chord = chordProg.getUnit(index);
 
@@ -1932,7 +1934,8 @@ public int calcSubDivs(int beat)
             index++;
           }
       }
-
+    
+}
     //System.out.println(beat + " - n: " + noteGcd + ", c: " + chordGcd);
     int gcd = gcd(noteGcd, chordGcd);
 

@@ -34,9 +34,12 @@ public class MelodyPartAccompanied extends MelodyPart {
     }
     
     public MelodyPartAccompanied(int size, ChordPart chordProg){
+//        System.out.println("chordProg = " + chordProg);
         super(size);
+        if(chordProg != null){
         this.chordProg = chordProg.copy();
-    }
+        }
+        }
     
     public MelodyPartAccompanied(ChordPart chordProg){
         super();
