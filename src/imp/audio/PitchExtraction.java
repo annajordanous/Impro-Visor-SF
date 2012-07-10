@@ -26,8 +26,6 @@ public class PitchExtraction
     public volatile Boolean stopCapture = true;
     boolean stopAnalysis;
     public volatile Boolean thisMeasure = false;
-    //boolean firstParse = true;
-    int lastPitch;
     AudioInputStream inputStream;
     AudioFormat format;
     SourceDataLine source;
@@ -37,18 +35,19 @@ public class PitchExtraction
     double swingVal;
     int captureInterval;
     int analysesCompleted = 0;
-    private static final float SAMPLE_RATE = 44100.0F; //in Hertz
-    private static final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
-    private static final int FRAME_SIZE = 2048; //# of BYTES examined per poll
-    private static final float POLL_RATE = 20; //in milliseconds
-    private static int RESOLUTION = 8;
-    private static boolean TRIPLETS = false;
-    private static double RMS_THRESHOLD = 4.75;
-    private static double CONFIDENCE = 0;
+    private final float SAMPLE_RATE = 44100.0F; //in Hertz
+    private final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
+    private final int FRAME_SIZE = 2048; //# of BYTES examined per poll
+    private final float POLL_RATE = 20; //in milliseconds
+    private int RESOLUTION = 8; //smallest subdivision allowed
+    private boolean TRIPLETS = false;
+    //only windows with a RMS above this threshold will be examined
+    private double RMS_THRESHOLD = 4.75;
+    private double CONFIDENCE = 0;
     //DoubleFFT_1D fft;
-    private static boolean noteOff; //flag indicating terminal note
+    private boolean noteOff; //flag indicating terminal note
     //sets threshold for detecting peaks in normalized SDF
-    private static final double K_CONSTANT = 0.9;
+    private final double K_CONSTANT = 0.875;
     //private final TextField tempoField;
     private Queue<byte[]> processingQueue;
 
@@ -61,7 +60,7 @@ public class PitchExtraction
     {
         this.notate = notate;
         this.score = score;
-        swingVal = score.getChordProg().getStyle().getSwing();
+        //swingVal = score.getChordProg().getStyle().getSwing();
         this.captureInterval = captureInterval;
         format = getAudioFormat();
         processingQueue = new ConcurrentLinkedQueue<byte[]>();
@@ -135,9 +134,10 @@ public class PitchExtraction
         }
         int lastSlotNumber = 1;
         int currentSlotNumber;
-        lastPitch = 0; //initialize most recent pitch to a rest
+        int lastPitch = 0; //initialize most recent pitch to a rest
         int slotsFilled = 1; //# of slots filled before pitch change is detected
         List<Integer> oneSlot = new ArrayList<Integer>();
+        int duration = 0;
         while (index + FRAME_SIZE < streamInput.length)
         {
             byte[] oneFrame = new byte[FRAME_SIZE];
@@ -177,25 +177,25 @@ public class PitchExtraction
                         jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
             }
             //check to see if this window is part of the current slot
-            if (currentSlotNumber == lastSlotNumber)
-            {
-                oneSlot.add(slotPitch); //if so, continue collecting data
-            } //end if
+
             //if all windows for this slot have been examined, determine pitch
-            else if (currentSlotNumber != lastSlotNumber || index + FRAME_SIZE
+            if (currentSlotNumber != lastSlotNumber || index + FRAME_SIZE
                     + interval >= streamInput.length)
             {
                 System.out.println("At time " + timeElapsed
                         + ", Slot = " + currentSlotNumber);
                 int pitch = calculatePitch(oneSlot);
                 int altPitch = calculateDumbPitch(oneSlot);
-                System.out.println("Pitch = " + pitch
-                        + ", Alt. Pitch = " + altPitch);
+                if (pitch != altPitch)
+                    {
+                    System.out.println("Pitch = " + pitch
+                            + ", Alt. Pitch = " + altPitch);
+                    }
                 //check to see whether or not pitch has changed from that
                 //which fills the previous slot
                 if (pitch != lastPitch || noteOff)
                 {
-                    int duration = slotsFilled * 480 / RESOLUTION;
+                    duration = slotsFilled * 480 / RESOLUTION;
                     if (pitch < 25) //count as a rest if pitch is out of range
                     {
                         imp.data.Note newRest = new Rest(duration);
@@ -215,7 +215,8 @@ public class PitchExtraction
                     }
                     startingPosition += duration;
                     slotsFilled = 1; //reset slotsFilled when pitch changes
-                } //if this pitch is the same as that of the last slot,
+                }
+                //if this pitch is the same as that of the last slot,
                 //continue building duration until pitch changes
                 else
                 { //if pitch hasn't changed, increment # of slots filled
@@ -232,8 +233,10 @@ public class PitchExtraction
                 }
                 oneSlot.clear(); //get rid of old list
                 oneSlot.add(slotPitch);
-            } //end else if
-            else
+            } else if (currentSlotNumber == lastSlotNumber)
+            {
+                oneSlot.add(slotPitch); //if so, continue collecting data
+            } else
             {
                 //Do something to handle final sample window?
             } //end else
@@ -241,7 +244,8 @@ public class PitchExtraction
             index += (int) interval;
         } //end while
         analysesCompleted++;
-        System.out.println("checked all.");
+        System.out.println("Checked all. Starting position for next measure = "
+                + (startingPosition + duration));
     }
 
     /**
@@ -272,6 +276,7 @@ public class PitchExtraction
      */
     private int calculatePitch(List<Integer> pitchList)
     {
+        System.out.println("New pitch calculated...");
         noteOff = false;
         int[] pitches = new int[pitchList.size()];
         for (int a = 0; a < pitchList.size(); a++)
@@ -290,8 +295,8 @@ public class PitchExtraction
             if (pitches[i] == 0)
             {
                 numZeros++;
-            }
-            else {
+            } else
+            {
                 if (pitches[i] != testPitch && testPitch != 0)
                 {
                     d = true; //more than one nonzero pitch has been found
@@ -358,10 +363,10 @@ public class PitchExtraction
             noteOff = true;
         }
         //if the pitch has at least 5 windows and no pitch
-        if (pitches.length > 4 && maxO < 3 && numZeros >= pitches.length * 0.75) {
+        if (pitches.length > 4 && maxO < 3 && numZeros >= pitches.length * 0.75)
+        {
             return 0;
-        }
-        else if (secondPlaceO > 0)
+        } else if (secondPlaceO > 0)
         {
             int absDifference = Math.abs(pitches[maxLoc] - pitches[secondPlaceLoc]);
             if (!tie && maxO - secondPlaceO > 1 && absDifference < 11)
@@ -778,9 +783,10 @@ public class PitchExtraction
 
         public void run()
         {
-            //number of samples in each measure given the tempo & metre
-            double samplesToCapture = SAMPLE_RATE
-                    / (score.getTempo() / score.getMetre()[0] / 60.0);
+            //number of samples to capture before putting data in the queue
+            double samplesToCapture = (SAMPLE_RATE
+                    / (score.getTempo() / score.getMetre()[0] / 60.0))
+                    * captureInterval / 480;
             try
             {//Loop until stopCapture is set.
                 while (!stopCapture)
@@ -855,7 +861,7 @@ public class PitchExtraction
                     byte result[] = processingQueue.poll();
                     if (result != null)
                     {
-                        System.out.println("_________New Measure__________");
+                        System.out.println("__________New Capture___________");
                         parseNotes(result);
                     } else
                     {
