@@ -21,6 +21,7 @@
 package imp.gui;
 
 
+import imp.Constants;
 import imp.com.PlayScoreCommand;
 import imp.com.SetNoteCommand;
 import imp.com.SetRestCommand;
@@ -260,9 +261,10 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         optionsMenu = new javax.swing.JMenu();
         clearKeyboardMI = new javax.swing.JMenuItem();
         defaultSetingsBtn = new javax.swing.JMenuItem();
-        useAdviceMI = new javax.swing.JMenuItem();
-        useExpectanciesMI = new javax.swing.JMenuItem();
-        useBlueAdviceMI = new javax.swing.JMenuItem();
+        useAdviceCBMI = new javax.swing.JCheckBoxMenuItem();
+        useExpectanciesCBMI = new javax.swing.JCheckBoxMenuItem();
+        useBlueAdviceCBMI = new javax.swing.JCheckBoxMenuItem();
+        fixNotesCBMI = new javax.swing.JCheckBoxMenuItem();
         playbackMenu = new javax.swing.JMenu();
         startPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
@@ -1311,29 +1313,41 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         });
         optionsMenu.add(defaultSetingsBtn);
 
-        useAdviceMI.setText("Use Advice");
-        useAdviceMI.addActionListener(new java.awt.event.ActionListener() {
+        useAdviceCBMI.setSelected(useAdvice);
+        useAdviceCBMI.setText("Use Advice");
+        useAdviceCBMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useAdviceMIActionPerformed(evt);
+                useAdviceCBMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(useAdviceMI);
+        optionsMenu.add(useAdviceCBMI);
 
-        useExpectanciesMI.setText("Show Expected Notes");
-        useExpectanciesMI.addActionListener(new java.awt.event.ActionListener() {
+        useExpectanciesCBMI.setSelected(useExpectancies);
+        useExpectanciesCBMI.setText("Show Expected Notes");
+        useExpectanciesCBMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useExpectanciesMIActionPerformed(evt);
+                useExpectanciesCBMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(useExpectanciesMI);
+        optionsMenu.add(useExpectanciesCBMI);
 
-        useBlueAdviceMI.setText("Don't Use Blue Note Awareness");
-        useBlueAdviceMI.addActionListener(new java.awt.event.ActionListener() {
+        useBlueAdviceCBMI.setSelected(useBlueAdvice);
+        useBlueAdviceCBMI.setText("Use Blue Note Awareness");
+        useBlueAdviceCBMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useBlueAdviceMIActionPerformed(evt);
+                useBlueAdviceCBMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(useBlueAdviceMI);
+        optionsMenu.add(useBlueAdviceCBMI);
+
+        fixNotesCBMI.setSelected(fixNotes);
+        fixNotesCBMI.setText("Correct Notes");
+        fixNotesCBMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fixNotesCBMIActionPerformed(evt);
+            }
+        });
+        optionsMenu.add(fixNotesCBMI);
 
         jMenuBar1.add(optionsMenu);
 
@@ -1474,9 +1488,16 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     private int adviceNumMax = 88;
     private int adviceNumInit = P_OCTAVE;
     private int adviceNum = adviceNumInit;
-    private boolean useBlueAdvice = true;
-    private boolean useAdvice = false;
-    private boolean useExpectancies = false;
+
+    private boolean useBlueAdviceInit = true;
+    private boolean useAdviceInit = false;
+    private boolean useExpectanciesInit = false;
+    private boolean fixNotesInit = false;
+    
+    private boolean useBlueAdvice = useBlueAdviceInit;
+    private boolean useAdvice = useAdviceInit;
+    private boolean useExpectancies = useExpectanciesInit;
+    private boolean fixNotes = fixNotesInit;
     
     // This is used to determine how to color keys that are pressed
     private enum NoteType { COLOR, CHORD, BASS, PRESS, OFF }
@@ -1603,7 +1624,15 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         String mod = MouseEvent.getMouseModifiersText(m);
 
         if (notate.stepInputSelected()) {
-            inputNotesToStave(midiValue);
+            inputNoteToStave(midiValue);
+        }
+          
+        Stave stave = notate.getCurrentStave();
+
+        this.requestFocus();
+        if (this.hasFocus() || true)
+        {
+
         }
     }
 }//GEN-LAST:event_keyboardLPMouseClicked
@@ -1620,11 +1649,9 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         {
             case KeyEvent.VK_Z:
                 notate.undoCommand();
-                stave.setSelection(stave.getPreviousCstrLine(stave.getSelectionStart()));
                 break;
             case KeyEvent.VK_Y:
                 notate.redoCommand();
-                stave.setSelection(stave.getNextCstrLine(stave.getSelectionStart()));
                 break;
                 
             default:
@@ -1692,36 +1719,42 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             String chordName = currentChord.getName();
             chordNameDisplay.setText(chordName);
 
-            ChordForm curChordForm = currentChord.getChordForm();
-            String root = currentChord.getRoot();
+            ArrayList<Integer> chordMIDIs;
+            ArrayList<Integer> colorMIDIs;
             
-            // Get lists of the actual midi values we want to color
-            ArrayList<Integer> chordMIDIs = // the midi values for the notes in the chord
-                    chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
-            ArrayList<Integer> colorMIDIs = // the midi values for the color notes
-                    chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
-            
-            // Get a midi value for the bass note
-            Integer bassMidi = findBass(root);
-            StepPianoKey bass = pianoKeys()[bassMidi - A];
-
-            // We only want to use blue advice if (a) blue advice is turned on
-            // (b) the reference note we're using is actually adjacent to the
-            // current selected slot and (c) the reference note is outside of 
-            // the chord.
-            if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, currentStave))
+            if (!chordName.equals(Constants.NOCHORD))
             {
-                findAndPressBlueNotes(midiValue, chordMIDIs, NoteType.CHORD);
-                findAndPressBlueNotes(midiValue, colorMIDIs, NoteType.COLOR);
-            }
-            else
-            {
-                pressPianoKeys(chordMIDIs, NoteType.CHORD);
-                pressPianoKeys(colorMIDIs, NoteType.COLOR);
-            }
+                ChordForm curChordForm = currentChord.getChordForm();
+                String root = currentChord.getRoot();
 
-            bass.setPressed(true);
-            pressKey(bass, bass.getBassIcon());
+                // Get lists of the actual midi values we want to color
+                chordMIDIs = // the midi values for the notes in the chord
+                        chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
+                colorMIDIs = // the midi values for the color notes
+                        chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
+
+                // Get a midi value for the bass note
+                Integer bassMidi = findBass(root);
+                StepPianoKey bass = pianoKeys()[bassMidi - A];
+                
+                // We only want to use blue advice if (a) blue advice is turned on
+                // (b) the reference note we're using is actually adjacent to the
+                // current selected slot and (c) the reference note is outside of 
+                // the chord.
+                if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, currentStave))
+                {
+                    findAndPressBlueNotes(midiValue, chordMIDIs, NoteType.CHORD);
+                    findAndPressBlueNotes(midiValue, colorMIDIs, NoteType.COLOR);
+                }
+                else
+                {
+                    pressPianoKeys(chordMIDIs, NoteType.CHORD);
+                    pressPianoKeys(colorMIDIs, NoteType.COLOR);
+                }
+
+                bass.setPressed(true);
+                pressKey(bass, bass.getBassIcon());
+            }
         }
 
         if (displayNote)
@@ -1731,7 +1764,70 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             pressKey(key, key.getPressedIcon());
         }
     }
+    
+    /*
+    public void updateCstrLines()
+    {
+        StepEntryKeyboard adviceKeyboard = notate.getCurrentStepKeyboard();
+        Stave stave = notate.getCurrentStave();
+        if (adviceKeyboard != null && adviceKeyboard.isShowing())
+        {
+            System.out.println(stave.getActionHandler().getLastMeasureSelected());
+            System.out.println(stave.getSelectionStart()/stave.getMeasureLength());
+            stave.repaintLineFromCstrLine(
+                stave.getActionHandler().getLastMeasureSelected() * stave.getMeasureLength());
+            stave.getActionHandler().setLastMeasureSelected(stave.getSelectionStart()/stave.getMeasureLength());
+            stave.repaintLineFromCstrLine(
+                stave.getActionHandler().getLastMeasureSelected() * stave.getMeasureLength());
+            stave.repaint();
+        return;
+        }
+    } 
+    */
+    
+    private int fixNote(int midi)
+    {
+        Stave currentStave = notate.getCurrentStave();
+        ChordPart chordProg = currentStave.getChordProg();
+        Chord currentChord = chordProg.getCurrentChord(currentStave.getSelectionStart());
 
+        String chordName = currentChord.getName();
+        chordNameDisplay.setText(chordName);
+
+        if (!chordName.equals(Constants.NOCHORD))
+        {
+            ChordForm curChordForm = currentChord.getChordForm();
+            String root = currentChord.getRoot();
+
+            // Get lists of the actual midi values we want to color
+            ArrayList<Integer> chordMIDIs = // the midi values for the notes in the chord
+                    chordToAdvice(curChordForm.getSpellMIDIarray(root), midi);
+            ArrayList<Integer> colorMIDIs = // the midi values for the color notes
+                    chordToAdvice(curChordForm.getColorMIDIarray(root), midi);
+
+            // Get a midi value for the bass note
+            Integer bassMidi = findBass(root);
+            StepPianoKey bass = pianoKeys()[bassMidi - A];
+
+            int down = midi;
+            int up = midi;
+
+            while(true)
+            {
+                if (chordMIDIs.contains(down) || colorMIDIs.contains(down))
+                    return down;
+
+                if (chordMIDIs.contains(up) || colorMIDIs.contains(up))
+                    return up;
+
+                down--;
+                up++;
+            }
+        }
+        
+        else return midi;
+    }
+    
     /**
      * Finds the midi value of the first note preceding the given slot that has 
      * a nonnegative midi value. If there are none, it returns noNote.
@@ -1917,7 +2013,9 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         ChordPart chords = stave.getChordProg();
         // Get the chord that was current when the last note was played
         Chord currentChord = chords.getCurrentChord(stave.getPreviousCstrLine(selectedSlot));
-
+        
+        if (currentChord.getName().equals(Constants.NOCHORD)) return false;
+        
         ChordForm curChordForm = currentChord.getChordForm();
         String root = currentChord.getRoot();
 
@@ -1935,10 +2033,13 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
      *
      * @param midiValue
      */
-    private void inputNotesToStave(int midiValue)
+    private void inputNoteToStave(int midiValue)
     {
         Stave stave = notate.getCurrentStave();
         int index = notate.getCurrentSelectionStart();
+        
+        if (fixNotes) midiValue = fixNote(midiValue);
+        
         Note newNote = new Note(midiValue);
         
         newNote.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
@@ -2074,63 +2175,6 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         }
         
         return newMIDIs;
-    }
-
-    /**
-     * Sets the useAdvice variable and updates the GUI to reflect the
-     * change
-     *
-     * @param on
-     */
-    public void setUseAdvice(boolean on)
-    {
-        if (useAdvice != on) 
-        {
-            useAdvice = on;
-            
-            // If we just turned advice on, set the number of suggestions to
-            // the default initial number
-            if (useAdvice)
-            {
-                useAdviceMI.setText("Don't Show Advice");
-                adviceNum = adviceNumInit;
-                adviceNumSpinner.setValue(adviceNum);
-            }
-            else
-                useAdviceMI.setText("Show Advice");
-        }
-    }
-
-    /**
-     * Sets the useBlueAdvice variable and updates the GUI to reflect the
-     * change.
-     *
-     * @param on
-     */
-    public void setBlueAdvice(boolean on)
-    {
-        useBlueAdvice = on;
-
-        if (useBlueAdvice) 
-            useBlueAdviceMI.setText("Don't Use Blue Note Awareness");
-        else
-            useBlueAdviceMI.setText("Use Blue Note Awareness");
-    }
-    
-    /**
-     * Sets the useExpectancies variable and updates the GUI to reflect the
-     * change.
-     * 
-     * @param on 
-     */
-    public void setUseExpectancies(boolean on)
-    {
-        useExpectancies = on;
-        
-        if (useExpectancies) 
-            useExpectanciesMI.setText("Don't Show Expected Notes");
-        else
-            useExpectanciesMI.setText("Show Expected Notes");
     }
 
     /**
@@ -2289,18 +2333,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         clearKeyboard();
         }//GEN-LAST:event_clearKeyboardMIActionPerformed
 
-    private void useAdviceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAdviceMIActionPerformed
-        
-        setUseAdvice(!useAdvice);
-        resetAdvice();
-    }//GEN-LAST:event_useAdviceMIActionPerformed
-
-    private void useBlueAdviceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useBlueAdviceMIActionPerformed
-        
-        setBlueAdvice(!useBlueAdvice);
-        resetAdvice();
-    }//GEN-LAST:event_useBlueAdviceMIActionPerformed
-
     private void inputRestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRestBtnActionPerformed
         
         inputRestToStave();
@@ -2313,17 +2345,22 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
             int newValue = new Integer(newValueStr);
 
             if (newValue <= adviceNumMin)
-                setUseAdvice(false);
+            {
+                useAdvice = false;
+                useAdviceCBMI.setSelected(false);
+            }
             else if (newValue > adviceNumMax)
             {
-                setUseAdvice(true);
+                useAdvice = true;
+                useAdviceCBMI.setSelected(true);
                 adviceNum = adviceNumMax;
                 adviceNumSpinner.setValue(adviceNum);        
             }            
             else
             {
                 adviceNum = newValue;
-                setUseAdvice(true);
+                useAdvice = true;
+                useAdviceCBMI.setSelected(true);
             }
         }
         catch (NumberFormatException e)
@@ -2375,12 +2412,50 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
 
     private void defaultSetingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultSetingsBtnActionPerformed
         
+        useAdvice = useAdviceInit;
+        useAdviceCBMI.setSelected(useAdviceInit);
+        
+        useBlueAdvice = useBlueAdviceInit;
+        useBlueAdviceCBMI.setSelected(useBlueAdviceInit);
+        
+        useExpectancies = useExpectanciesInit;
+        useExpectanciesCBMI.setSelected(useExpectanciesInit);
+        
+        fixNotes = fixNotesInit;
+        fixNotesCBMI.setSelected(fixNotesInit);
+        
+        resetAdvice();
     }//GEN-LAST:event_defaultSetingsBtnActionPerformed
 
-    private void useExpectanciesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useExpectanciesMIActionPerformed
-        setUseExpectancies(!useExpectancies);
+    private void fixNotesCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixNotesCBMIActionPerformed
+        
+        if (fixNotesCBMI.isSelected()) fixNotes = true;
+        else fixNotes = false;
+    }//GEN-LAST:event_fixNotesCBMIActionPerformed
+
+    private void useBlueAdviceCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useBlueAdviceCBMIActionPerformed
+        
+        if (useBlueAdviceCBMI.isSelected()) useBlueAdvice = true;
+        else useBlueAdvice = false;
+        
         resetAdvice();
-    }//GEN-LAST:event_useExpectanciesMIActionPerformed
+    }//GEN-LAST:event_useBlueAdviceCBMIActionPerformed
+
+    private void useAdviceCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAdviceCBMIActionPerformed
+        
+        if (useAdviceCBMI.isSelected()) useAdvice = true;
+        else useAdvice = false;
+        
+        resetAdvice();
+    }//GEN-LAST:event_useAdviceCBMIActionPerformed
+
+    private void useExpectanciesCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useExpectanciesCBMIActionPerformed
+        
+        if (useExpectanciesCBMI.isSelected()) useExpectancies = true;
+        else useExpectancies = false;
+                
+        resetAdvice();
+    }//GEN-LAST:event_useExpectanciesCBMIActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel A0Label;
@@ -2480,6 +2555,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem clearKeyboardMI;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuItem defaultSetingsBtn;
+    private javax.swing.JCheckBoxMenuItem fixNotesCBMI;
     private javax.swing.JButton inputRestBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -2573,7 +2649,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JLabel keyGsharp6;
     private javax.swing.JLabel keyGsharp7;
     private javax.swing.JLayeredPane keyboardLP;
-    public javax.swing.JMenu optionsMenu;
+    private javax.swing.JMenu optionsMenu;
     private javax.swing.JMenuItem pausePlayMI;
     private javax.swing.JMenu playbackMenu;
     private javax.swing.JLabel pointerC4;
@@ -2583,9 +2659,9 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem stopPlayMI;
     private javax.swing.JMenuItem stopSelPlayMI;
     private javax.swing.JComboBox subDivComboBox;
-    private javax.swing.JMenuItem useAdviceMI;
-    private javax.swing.JMenuItem useBlueAdviceMI;
-    private javax.swing.JMenuItem useExpectanciesMI;
+    private javax.swing.JCheckBoxMenuItem useAdviceCBMI;
+    private javax.swing.JCheckBoxMenuItem useBlueAdviceCBMI;
+    private javax.swing.JCheckBoxMenuItem useExpectanciesCBMI;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
