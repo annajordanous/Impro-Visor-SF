@@ -77,8 +77,6 @@ public class StepPianoKey {
     
     private Icon bassIcon;
     
-    private Icon adviceIcon;
-    
     private int defaultMIDI = 60;
     
     private JLabel defaultLabel = new JLabel(offIcon);
@@ -120,9 +118,9 @@ public class StepPianoKey {
         Note n = new Note(midiValue);
         NoteSymbol ns = NoteSymbol.makeNoteSymbol(n);
         String s = ns.toString();
-        int l = s.length() - 1;
+        int len = s.length() - 1;
         
-        this.name = s.substring(0,l);
+        this.name = s.substring(0,len);
     }
     
     public StepPianoKey()

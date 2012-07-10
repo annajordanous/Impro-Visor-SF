@@ -2107,9 +2107,9 @@ public class Notate
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
+        stepKeyboardMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
-        stepKeyboardMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
         emptyRoadMapMI = new javax.swing.JMenuItem();
         roadMapThisMI = new javax.swing.JMenuItem();
@@ -7615,12 +7615,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7636,12 +7636,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8417,6 +8417,14 @@ public class Notate
         });
         utilitiesMenu.add(pianoKeyboardMI);
 
+        stepKeyboardMI.setText("Advice Keyboard");
+        stepKeyboardMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepKeyboardMIActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(stepKeyboardMI);
+
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
         styleGenerator1.setText("Style Editor & Extractor");
@@ -8436,14 +8444,6 @@ public class Notate
             }
         });
         utilitiesMenu.add(voicingTestMI);
-
-        stepKeyboardMI.setText("Step Keyboard");
-        stepKeyboardMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stepKeyboardMIActionPerformed(evt);
-            }
-        });
-        utilitiesMenu.add(stepKeyboardMI);
 
         menuBar.add(utilitiesMenu);
 
@@ -8493,12 +8493,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8531,12 +8531,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {

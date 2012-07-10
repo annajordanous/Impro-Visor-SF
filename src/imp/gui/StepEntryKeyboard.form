@@ -8,9 +8,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Options"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-          </AuxValues>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="clearKeyboardMI">
               <Properties>
@@ -31,28 +28,48 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="defaultSetingsBtnActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="useAdviceMI">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useAdviceCBMI">
               <Properties>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="useAdvice" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Use Advice"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useAdviceMIActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useAdviceCBMIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="useExpectanciesMI">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useExpectanciesCBMI">
               <Properties>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="useExpectancies" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Show Expected Notes"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useExpectanciesMIActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useExpectanciesCBMIActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="useBlueAdviceMI">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="useBlueAdviceCBMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Don&apos;t Use Blue Note Awareness"/>
+                <Property name="text" type="java.lang.String" value="Use Blue Note Awareness"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useBlueAdviceMIActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useBlueAdviceCBMIActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="useBlueAdviceCBMI.setSelected(useBlueAdvice);"/>
+              </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="fixNotesCBMI">
+              <Properties>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="fixNotes" type="code"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Correct Notes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fixNotesCBMIActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

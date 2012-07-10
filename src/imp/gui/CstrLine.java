@@ -121,7 +121,7 @@ public class CstrLine {
         
     
     /**
-     * Sets the x-axix position of the CstrLine
+     * Sets the x-axis position of the CstrLine
      * @param x             x-axis position for the construction line
      */
     public void setX(int x) {

@@ -25,10 +25,7 @@ import imp.com.*;
 import imp.data.*;
 import imp.util.ErrorLog;
 import imp.util.Trace;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -308,7 +305,7 @@ private int lastIndexDrawn = OUT_OF_BOUNDS;
 
 
 /**
- * First index drawn with contour rool
+ * First index drawn with contour tool
  **/
 private int firstIndexDrawn = OUT_OF_BOUNDS;
 
@@ -522,7 +519,7 @@ public void maybeSetCursor(MouseEvent e)
  */
 
 public void mouseMoved(MouseEvent e)
- {
+ {            
   Trace.log(2, "mouse moved " + e);
 
   cursorLocation = e.getPoint();
@@ -532,13 +529,10 @@ public void mouseMoved(MouseEvent e)
   boolean withinNoteArea = inNoteArea(e);
   
   if( withinNoteArea )
-    {
     setCursor(noteCursor);
-    }
+
   else
-    {
     maybeSetCursor(e);   
-    }
 
   // draws construction lines for the current measure if the flag for
   // drawing them is active
@@ -547,14 +541,14 @@ public void mouseMoved(MouseEvent e)
     stave.mouseOverMeasure = findMeasure(e);
     Trace.log(4,
               "mouse over measure " + stave.mouseOverMeasure + " last measure selected was " + lastMeasureSelected);
-
+    
     if( stave.mouseOverMeasure != lastMeasureSelected )
-     {
+     {  
       stave.repaintLineFromCstrLine(
           lastMeasureSelected * stave.getMeasureLength());
-      
+          
       lastMeasureSelected = stave.mouseOverMeasure;
-      
+
       stave.repaintLineFromCstrLine(
           lastMeasureSelected * stave.getMeasureLength());
      }
@@ -2875,5 +2869,15 @@ public int getMeasureLength()
  {
   return getBeatValue() * stave.getMetre()[0];
  }
+
+public int getLastMeasureSelected()
+{
+    return lastMeasureSelected;
+}
+
+public void setLastMeasureSelected(int value)
+{
+    lastMeasureSelected = value;
+}
 
 }
