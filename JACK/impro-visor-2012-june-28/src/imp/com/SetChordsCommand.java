@@ -43,10 +43,6 @@ import polya.*;
 
 public class SetChordsCommand extends PasteCommand
     {
-    /**
-     * the ChordPart in which to place the Chord
-     */
-    private ChordPart chordProg;
 
     /**
      * the list of Chords to place in the ChordPart
@@ -91,7 +87,6 @@ public class SetChordsCommand extends PasteCommand
         int[] metre = chordPart == null ? DEFAULT_METRE : chordPart.getMetre();
         int beatValue = (WHOLE/metre[1]);
         int measureLength = beatValue * metre[0];
-
         if( chordPart != null )
           {
 
@@ -109,6 +104,7 @@ public class SetChordsCommand extends PasteCommand
           chordSource = new ChordPart();
 
           Leadsheet.populatePartWithChords((ChordPart)chordSource, chords, slotsAvailable, measureLength);
+//System.out.println("chordPart = " + chordPart + ", chordSource = " + chordSource);
           }
 
         if( melody != null )

@@ -9230,11 +9230,12 @@ private void setStepInputBtn(boolean selected)
      */
     public void playChordAtIndex(int index)
     {
-        Chord chordToPlay = chordProg.getChord(index);
+        Chord chordToPlay = getCurrentMelodyPart().getChordProg().getChord(index);
         if( chordToPlay == null )
           {
             return;
           }
+//        System.out.println("playChord");
         Style currStyle = ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
         Score tempScore = new Score();
         tempScore.addPart();
@@ -12739,9 +12740,9 @@ private void openAdviceFrame()
         {
         cm.execute(
                 new SetChordsCommand(getCurrentSelectionStart(),
-                parseListFromString(enteredText),
-                chordProg,
-                partList.get(currTabIndex) ));
+                                     parseListFromString(enteredText),
+                                     getCurrentMelodyPart().getChordProg(),
+                                     partList.get(currTabIndex) ));
         }
         
         textEntry.setEnabled(false);
@@ -21873,7 +21874,7 @@ public void showNewVoicingDialog()
 
       pane.setStave(stave);
 
-      stave.setChordProg(chordProg);
+      stave.setChordProg(partList.get(i).getChordProg());
 
       stave.setPart(partList.get(i));
 
