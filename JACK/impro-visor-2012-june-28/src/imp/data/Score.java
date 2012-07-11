@@ -31,7 +31,6 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
-//import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
@@ -82,6 +81,12 @@ public class Score implements Constants, Serializable {
      * The default key signature
      */
     public static final int DEFAULT_KEYSIG = 0;
+    
+    /**
+     * Name of the default chord progression
+     */
+    
+    public static final String DEFAULT_PROGRESSION = "Untitled Part";
     
     /**
      * The title of the Score
@@ -140,9 +145,10 @@ public class Score implements Constants, Serializable {
     private ChordPart chordProg;
     
     /*
-     * The ChordPart ArrayList
+     * Mapping from name to ChordPart
      */
-    private ConcurrentHashMap<String,ChordPart> chordPartList = new ConcurrentHashMap<String,ChordPart>();
+    private ConcurrentHashMap<String, ChordPart> chordPartList 
+            = new ConcurrentHashMap<String,ChordPart>();
     
 //    /*
 //     * The ArrayList controlling the order of the ChordParts
@@ -236,7 +242,7 @@ public class Score implements Constants, Serializable {
         
         this.partList = new PartList(1);
         this.chordProg = new ChordPart();
-        chordPartList.put("initial_progression",chordProg);
+        addDefaultChordPart(chordProg);
         setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     }
 
@@ -245,7 +251,7 @@ public class Score implements Constants, Serializable {
         this.length = length;
         addPart();
         chordProg = new ChordPart(length);
-        chordPartList.put("initial_progression",chordProg);
+        addDefaultChordPart(chordProg);
     }
 
     public Score(ChordPart chordPart) {
@@ -253,7 +259,7 @@ public class Score implements Constants, Serializable {
         addPart();
         setLength(chordPart.size());
         chordProg = chordPart;
-        chordPartList.put("initial_progression",chordProg);
+        addDefaultChordPart(chordProg);
     }
 
     public void setCountIn(ChordPart countInProg)
@@ -501,8 +507,8 @@ public class Score implements Constants, Serializable {
 //        metre[1] = bottom;
         chordProg.setMetre(top, bottom);
         chordProg.setChordMetre(top, bottom);
-        chordPartList.get("initial_progression").setMetre(top, bottom);
-        chordPartList.get("initial_progression").setChordMetre(top, bottom);
+        chordPartList.get(DEFAULT_PROGRESSION).setMetre(top, bottom);
+        chordPartList.get(DEFAULT_PROGRESSION).setChordMetre(top, bottom);
         ListIterator<MelodyPartAccompanied> i = partList.listIterator();
 	
         while(i.hasNext())
@@ -510,7 +516,7 @@ public class Score implements Constants, Serializable {
             i.next().setMetre(top, bottom);
             }
         
-//        if(chordProg == chordPartList.get("initial_progression")){
+//        if(chordProg == chordPartList.get(DEFAULT_PROGRESSION)){
 //            System.out.println("Equal");
 //        } else {
 //            System.out.println("Unequal");
@@ -553,7 +559,7 @@ public class Score implements Constants, Serializable {
         Trace.log(2, "setting key signature of score to " + keySig);
         this.keySig = keySig;
         chordProg.setKeySignature(keySig);
-        chordPartList.get("initial_progression").setKeySignature(keySig);
+        chordPartList.get(DEFAULT_PROGRESSION).setKeySignature(keySig);
         ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext())
             {
@@ -581,9 +587,9 @@ public class Score implements Constants, Serializable {
             {
             chordProg.setSize(length);
             }
-        if ( chordPartList.get("initial_progression") != null)
+        if ( chordPartList.get(DEFAULT_PROGRESSION) != null)
             {
-            chordPartList.get("initial_progression").setSize(length);
+            chordPartList.get(DEFAULT_PROGRESSION).setSize(length);
             }
         Iterator<MelodyPartAccompanied> i = partList.listIterator();
         while( i.hasNext() )
@@ -712,7 +718,7 @@ public class Score implements Constants, Serializable {
 
         newScore.partList = newPartList;
         newScore.chordProg = chordProg.copy();
-        newScore.chordPartList = chordPartList;
+        newScore.chordPartList = chordPartList; // FIX! want to copy, not share
 
         newScore.setChordInstrument(getChordInstrument());
         newScore.setBassInstrument(getBassInstrument());
@@ -991,12 +997,21 @@ public class Score implements Constants, Serializable {
      */
     public void saveLeadsheet(BufferedWriter out) throws IOException {
         Chord.initSaveToLeadsheet();
-    	chordProg.saveLeadsheet(out, "chords");
-        out.newLine();
+        
+        for( Iterator<String> it = chordPartList.keySet().iterator(); it.hasNext(); )
+          {
+            String key = it.next();
+            ChordPart part = chordPartList.get(key);
+            part.saveLeadsheet(out, "chords");
+            out.newLine();
+          }
+        
+    	//chordProg.saveLeadsheet(out, "chords");
+        //out.newLine();
 
         ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext()) {
-            ((MelodyPartAccompanied)i.next()).saveLeadsheet(out, "melody");
+            i.next().saveLeadsheet(out, "melody");
             out.newLine();
         }
     }
@@ -1220,5 +1235,22 @@ public Style getStyle()
 public void addChord(Chord chord)
   {
     chordProg.addChord(chord);
+  }
+
+public void addChordPart(String name, ChordPart part)
+  {
+//System.out.println("adding chord part " + name + " to " + title + ": " + part);
+    chordPartList.put(name, part);
+  }
+
+public void addDefaultChordPart(ChordPart part)
+  {
+    part.setTitle(DEFAULT_PROGRESSION);
+    addChordPart(DEFAULT_PROGRESSION, part);
+  }
+
+public ChordPart getChordPart(String name)
+  {
+    return chordPartList.get(name);
   }
 }

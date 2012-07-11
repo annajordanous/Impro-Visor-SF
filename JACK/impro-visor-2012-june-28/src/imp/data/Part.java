@@ -1447,6 +1447,12 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
     out.write("    (key " + keySig + ")");
     out.newLine();
 
+    if( this instanceof MelodyPartAccompanied )
+      {
+        out.write("    (use-chords " + ((MelodyPartAccompanied)this).getChordProg().getTitle() + ")");
+        out.newLine();
+      }
+
     if( this instanceof MelodyPart )
       {
         out.write("    (stave " + staveType.toString().toLowerCase() + ")");
