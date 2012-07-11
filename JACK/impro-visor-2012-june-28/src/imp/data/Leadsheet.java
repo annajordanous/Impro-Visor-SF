@@ -41,7 +41,7 @@ public class Leadsheet
            "stave", "treble", "bass", "grand", "auto", "none", "layout",
            "bass-volume", "drum-volume", "chord-volume", "style", "section",
            "bass-instrument", "playback-transpose", "show", "year",
-           "chord-font-size", "phrase", "roadmap-layout"
+           "chord-font-size", "phrase", "roadmap-layout", "use-chords"
   };
 
   static final int TITLE = 0;
@@ -113,6 +113,8 @@ public class Leadsheet
   static final int PHRASE = 33;
 
   static final int ROADMAP_LAYOUT = 34;
+  
+  static final int USE_CHORDS = 35;
 
   static final int UNKNOWN = -1;
 
@@ -244,6 +246,7 @@ public class Leadsheet
     score.setTempo(160);			// default
 
     ChordPart chords = new ChordPart();	// in case these parts are not explicit
+    
     MelodyPartAccompanied melody = new MelodyPartAccompanied(chords);
 
     melody.setKeySignature(0);		// default
@@ -266,6 +269,8 @@ public class Leadsheet
     Polylist chordInputReversed = Polylist.nil;
 
     Polylist melodyInputReversed = Polylist.nil;
+    
+    boolean isChordPart = false;
 
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
@@ -290,84 +295,84 @@ public class Leadsheet
             {
             switch( lookup((String)dispatcher, keyword) )
               {
-              case TITLE:
+              case TITLE: // for LEADSHEET
                   {
                   titleString = concatElements(item);
                   score.setTitle(titleString);
                   }
                 break;
 
-              case COMPOSER:
+              case COMPOSER: // for LEADSHEET
                   {
                   composerString = concatElements(item);
                   score.setComposer(composerString);
                   }
                 break;
 
-              case SHOW_TITLE:
+              case SHOW_TITLE: // for LEADSHEET
                   {
                   showTitleString = concatElements(item);
                   score.setShowTitle(showTitleString);
                   }
                 break;
 
-              case YEAR:
+              case YEAR: // for LEADSHEET
                   {
                   year = concatElements(item);
                   score.setYear(year);
                   }
                 break;
 
-              case COMMENTS:
+              case COMMENTS: // for LEADSHEET
                   {
                   String commentsString = concatElements(item);
                   score.setComments(commentsString);
                   }
                 break;
 
-               case PLAYBACK_TRANSPOSE:
+               case PLAYBACK_TRANSPOSE: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setTransposition(((Long)item.first()).intValue());
                   }
                 break;
 
-               case CHORD_FONT_SIZE:
+               case CHORD_FONT_SIZE: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setChordFontSize(((Long)item.first()).intValue());
                   }
                 break;
 
-             case BASS_INSTRUMENT:
+             case BASS_INSTRUMENT: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setBassInstrument(((Long)item.first()).intValue());
                   }
                 break;
 
-              case BASS_VOLUME:
+              case BASS_VOLUME: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setBassVolume(((Long)item.first()).intValue());
                   }
                 break;
 
-              case DRUM_VOLUME:
+              case DRUM_VOLUME: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setDrumVolume(((Long)item.first()).intValue());
                   }
                 break;
 
-              case CHORD_VOLUME:
+              case CHORD_VOLUME: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setChordVolume(((Long)item.first()).intValue());
                   }
                 break;
 
-              case STYLE:
+              case STYLE: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof String )
                   {
                   chordInputReversed =
@@ -395,7 +400,7 @@ public class Leadsheet
                   }
                 break;
 
-              case PHRASE:
+              case PHRASE: // for LEADSHEET
               case SECTION:
                 //if( item.nonEmpty() )
                   {
@@ -404,7 +409,7 @@ public class Leadsheet
                   }
                 break;
 
-              case KEY:
+              case KEY: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   int sharps = ((Long)item.first()).intValue();
@@ -417,7 +422,7 @@ public class Leadsheet
               // that didn't recognize different time signatures, we look at the first
               // value, and if there isn't a second value, we just assume that it's a
               // four.
-              case METER:
+              case METER: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   beatsPerBar = ((Long)item.first()).intValue();
@@ -453,35 +458,35 @@ public class Leadsheet
 
                 break;
 
-              case TEMPO:
+              case TEMPO: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Double )
                   {
                   score.setTempo(((Double)item.first()).doubleValue());
                   }
                 break;
 
-              case BREAKPOINT:
+              case BREAKPOINT: // for LEADSHEET
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   score.setBreakpoint(((Long)item.first()).intValue());
                   }
                 break;
 
-              case LAYOUT:
+              case LAYOUT: // for LEADSHEET
                 // FIX: check syntax
                 score.setLayoutList(item);
                 break;
 
-              case ROADMAP_LAYOUT:
+              case ROADMAP_LAYOUT: // for LEADSHEET
                 // FIX: check syntax
                 score.setRoadmapLayout(((Long)item.first()).intValue());
                 break;
                
-              case BARS:
+              case BARS: // for LEADSHEET
                 // No longer used
                 break;
 
-              case PART:
+              case PART: // for LEADSHEET
                   {
                   while( item.nonEmpty() )
                     {
@@ -497,7 +502,7 @@ public class Leadsheet
                           {
                           switch( lookup((String)subkey, keyword) )
                             {
-                            case TYPE:
+                            case TYPE: // for a PART
                                 {
                                 if( subitem.rest().nonEmpty() )
                                   {
@@ -506,14 +511,15 @@ public class Leadsheet
                                     String type = (String)subitem.rest().first();
                                     if( type.equals(keyword[CHORDS]) )
                                       {
-                                      //chords = new ChordPart();	// FIX
+                                      isChordPart = true;
+                                      chords = new ChordPart();	// FIX
                                       handled = true;
                                       partReferenced = chords;
                                       }
                                     else if( type.equals(keyword[MELODY]) )
                                       {
                                       // Start a new melody part iff head not already started
-
+                                      isChordPart = false;
                                       if( headStarted && melodyInputReversed.nonEmpty() )
                                         {
                                         // process accumulated melody
@@ -537,7 +543,7 @@ public class Leadsheet
                                 }
                               break; // case TYPE
 
-                            case INSTRUMENT:
+                            case INSTRUMENT: // for a PART
                                 {
                                 if( subitem.rest().nonEmpty() )
                                   {
@@ -551,7 +557,7 @@ public class Leadsheet
                                 }
                               break; // case INSTRUMENT
 
-                            case VOLUME:
+                            case VOLUME: // for a PART
                                 {
                                 if( subitem.rest().nonEmpty() )
                                   {
@@ -565,7 +571,7 @@ public class Leadsheet
                                 }
                               break; // case VOLUME
 
-                            case KEY:
+                            case KEY: // for a PART
                                 {
                                 if( subitem.rest().nonEmpty() )
                                   {
@@ -583,7 +589,7 @@ public class Leadsheet
                                 }
                               break; // case KEY
 
-                            case METER:
+                            case METER: // for a PART
                               handled = true;
                               /* Ignoring meter in parts right now
                               if( subitem.rest().nonEmpty() )
@@ -620,15 +626,19 @@ public class Leadsheet
                             }
                             break; */
 
-                            case TITLE:
+                            case TITLE: // for a PART
                                 {
                                 String title = concatElements(subitem.rest());
                                 partReferenced.setTitle(title);
+                                if( isChordPart )
+                                  {
+                                  score.addChordPart(title, chords);
+                                  }
                                 handled = true;
                                 }
                               break; // case TITLE
 
-                            case COMPOSER:
+                            case COMPOSER: // for a PART
                                 {
                                 String partComposerString =
                                         concatElements(subitem.rest());
@@ -637,7 +647,7 @@ public class Leadsheet
                                 }
                               break; // case COMPOSER
 
-                            case STAVE:
+                            case STAVE: // for a PART
                               {
                               if( !overrideStaveType )
                                 {
@@ -667,7 +677,25 @@ public class Leadsheet
                               handled = true;
                               }
                               break; // case STAVE
+                                
+                            case USE_CHORDS: // for a PART
+                              {
+                              String chordsTitleString = concatElements(subitem.rest());
+                              ChordPart chordPart = score.getChordPart(chordsTitleString);
+                              if( chordPart != null )
+                                {
+                                melody.setChordProg(chordPart);
+                                }
+                              else
+                                {
+                                  ErrorLog.log(ErrorLog.SEVERE, 
+                                              "Unknown chord part for melody"
+                                              + chordsTitleString);
+                                }
 
+                              handled = true;
+                              }
+                              break; // case USE_CHORDS
                             }
                           } // end switch
                         }
@@ -682,7 +710,7 @@ public class Leadsheet
                   }
                 break;
 
-              case TRANSPOSE:
+              case TRANSPOSE: // for a PART
                 if( item.nonEmpty() && item.first() instanceof Long )
                   {
                   rise = ((Long)item.first()).intValue();
@@ -715,7 +743,9 @@ public class Leadsheet
           {
           headStarted = true;
           score.addPart(melody);
-          score.setChordProg(chords);
+          //score.setChordProg(chords);
+          //score.addChordPart(Score.DEFAULT_PROGRESSION, chords);
+          melody.setChordProg(chords);
           }
 
         if( firstChar == BAR || firstChar == COMMA )
@@ -1074,8 +1104,11 @@ static public boolean populatePartWithChords(ChordPart chordProg,
   }
 
 
-static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
-                           int rise, int slotsPerBar, Key key)
+static void addToChordPart(Polylist chordInputReversed, 
+                           ChordPart chords,
+                           int rise, 
+                           int slotsPerBar, 
+                           Key key)
   {
 
     Style previousStyle = null;

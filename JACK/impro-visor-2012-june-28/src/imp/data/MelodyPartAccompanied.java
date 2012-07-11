@@ -25,9 +25,12 @@ package imp.data;
  * Initially implemented to help with the implementation of mixed meters.
  * @author Jack Davison
  */
+@SuppressWarnings("serial")
 public class MelodyPartAccompanied extends MelodyPart {
     
     private ChordPart chordProg;
+    
+    private String chordProgName;
     
     public MelodyPartAccompanied(){
         super();
@@ -88,8 +91,13 @@ public class MelodyPartAccompanied extends MelodyPart {
     
     public void setChordProg(ChordPart chordProg){
         this.chordProg = chordProg;
+        chordProgName = chordProg.getTitle();
     }
     
+     public String getChordProgName()
+      {
+        return chordProg.getTitle();
+      }
     
     public int[] getChordMetre() {
         return chordProg.getChordMetre();
