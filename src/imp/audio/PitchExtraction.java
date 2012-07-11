@@ -24,6 +24,7 @@ public class PitchExtraction
 {
 
     public volatile Boolean stopCapture = true;
+    public volatile boolean isCapturing;
     boolean stopAnalysis;
     public volatile Boolean thisMeasure = false;
     AudioInputStream inputStream;
@@ -132,6 +133,7 @@ public class PitchExtraction
         { //adjust minimum slot size if triplets are allowed
             slotSize *= 3;
         }
+        boolean firstSlot = true;
         int lastSlotNumber = 1;
         int currentSlotNumber;
         int lastPitch = 0; //initialize most recent pitch to a rest
@@ -176,52 +178,37 @@ public class PitchExtraction
                 slotPitch = //calculate equivalent MIDI pitch value for freq.
                         jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
             }
-            //check to see if this window is part of the current slot
-
             //if all windows for this slot have been examined, determine pitch
-            if (currentSlotNumber != lastSlotNumber || index + FRAME_SIZE
-                    + interval >= streamInput.length)
+            if (currentSlotNumber != lastSlotNumber)
             {
-                System.out.println("At time " + timeElapsed
-                        + ", Slot = " + currentSlotNumber);
+                System.out.println("Slot = " + lastSlotNumber);
                 int pitch = calculatePitch(oneSlot);
                 int altPitch = calculateDumbPitch(oneSlot);
                 if (pitch != altPitch)
-                    {
+                {
                     System.out.println("Pitch = " + pitch
                             + ", Alt. Pitch = " + altPitch);
-                    }
+                }
                 //check to see whether or not pitch has changed from that
                 //which fills the previous slot
-                if (pitch != lastPitch || noteOff)
+                if (!firstSlot)
                 {
-                    duration = slotsFilled * 480 / RESOLUTION;
-                    if (pitch < 25) //count as a rest if pitch is out of range
+                    if (pitch != lastPitch || noteOff)
                     {
-                        imp.data.Note newRest = new Rest(duration);
-                        melodyPart.setNote(startingPosition, newRest);
-                        System.out.println("______________________________\n"
-                                + " rest, duration = " + duration + " slots.\n"
-                                + "______________________________");
-                    } else
-                    {
-                        imp.data.Note newNote = new imp.data.Note(pitch, duration);
-                        melodyPart.setNote(startingPosition, newNote);
-                        System.out.println("______________________________\n"
-                                + newNote.getPitchClassName()
-                                + (newNote.getPitch() / 12 - 1) + "(" + newNote.getPitch() + ")"
-                                + ", duration = " + duration + " slots.\n "
-                                + "______________________________");
+                        duration = slotsFilled * 480 / RESOLUTION;
+                        setNote(lastPitch, startingPosition, duration, melodyPart);
+                        startingPosition += duration;
+                        slotsFilled = 1; //reset slotsFilled when pitch changes
+                    } //if this pitch is the same as that of the last slot,
+                    //continue building duration until pitch changes
+                    else
+                    { //if pitch hasn't changed, increment # of slots filled
+                        slotsFilled++;
+                        System.out.println("Duration for " + pitch + " extended.");
                     }
-                    startingPosition += duration;
-                    slotsFilled = 1; //reset slotsFilled when pitch changes
-                }
-                //if this pitch is the same as that of the last slot,
-                //continue building duration until pitch changes
-                else
-                { //if pitch hasn't changed, increment # of slots filled
-                    slotsFilled++;
-                    System.out.println("Duration for " + pitch + " extended.");
+                } else
+                {
+                    firstSlot = false;
                 }
                 lastPitch = pitch;
                 if (currentSlotNumber % slotSize == 0)
@@ -233,6 +220,30 @@ public class PitchExtraction
                 }
                 oneSlot.clear(); //get rid of old list
                 oneSlot.add(slotPitch);
+                //check to see if this window is part of the current slot
+            } else if (index + FRAME_SIZE + interval >= streamInput.length)
+            {
+                oneSlot.add(slotPitch);
+                System.out.println("Slot = " + currentSlotNumber);
+                int pitch = calculatePitch(oneSlot);
+                int altPitch = calculateDumbPitch(oneSlot);
+                if (pitch != altPitch)
+                {
+                    System.out.println("Pitch = " + pitch
+                            + ", Alt. Pitch = " + altPitch);
+                }
+                if (pitch == lastPitch)
+                {
+                    slotsFilled++;
+                    duration = slotsFilled * 480 / RESOLUTION;
+                    setNote(pitch, startingPosition, duration, melodyPart);
+                } else
+                {
+                    duration = slotsFilled * 480 / RESOLUTION;
+                    setNote(lastPitch, startingPosition, duration, melodyPart);
+                    duration = 480 / RESOLUTION;
+                    setNote(pitch, startingPosition + duration, duration, melodyPart);
+                }
             } else if (currentSlotNumber == lastSlotNumber)
             {
                 oneSlot.add(slotPitch); //if so, continue collecting data
@@ -244,8 +255,28 @@ public class PitchExtraction
             index += (int) interval;
         } //end while
         analysesCompleted++;
-        System.out.println("Checked all. Starting position for next measure = "
-                + (startingPosition + duration));
+        System.out.println("Checked all.");
+    }
+
+    private void setNote(int pitch, int startingPosition, int duration, MelodyPart melodyPart)
+    {
+        if (pitch < 25) //count as a rest if pitch is out of range
+        {
+            imp.data.Note newRest = new Rest(duration);
+            melodyPart.setNote(startingPosition, newRest);
+            System.out.println("______________________________\n"
+                    + " rest, duration = " + duration + " slots.\n"
+                    + "______________________________");
+        } else
+        {
+            imp.data.Note newNote = new imp.data.Note(pitch, duration);
+            melodyPart.setNote(startingPosition, newNote);
+            System.out.println("______________________________\n"
+                    + newNote.getPitchClassName()
+                    + (newNote.getPitch() / 12 - 1) + "(" + newNote.getPitch() + ")"
+                    + ", duration = " + duration + " slots.\n"
+                    + "______________________________");
+        }
     }
 
     /**
@@ -276,7 +307,7 @@ public class PitchExtraction
      */
     private int calculatePitch(List<Integer> pitchList)
     {
-        System.out.println("New pitch calculated...");
+        //System.out.println("New pitch calculated...");
         noteOff = false;
         int[] pitches = new int[pitchList.size()];
         for (int a = 0; a < pitchList.size(); a++)
@@ -818,6 +849,7 @@ public class PitchExtraction
                             try
                             {
                                 processingQueue.add(capturedAudioData);
+                                isCapturing = false;
                                 processingQueue.notify();
                             } catch (Exception e)
                             {
