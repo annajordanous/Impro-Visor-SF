@@ -1341,7 +1341,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         optionsMenu.add(useBlueAdviceCBMI);
 
         fixNotesCBMI.setSelected(fixNotes);
-        fixNotesCBMI.setText("Correct Notes");
+        fixNotesCBMI.setText("Adjust Notes");
         fixNotesCBMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fixNotesCBMIActionPerformed(evt);
@@ -1498,6 +1498,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     private boolean useAdvice = useAdviceInit;
     private boolean useExpectancies = useExpectanciesInit;
     private boolean fixNotes = fixNotesInit;
+    
+    private String lastChord = null;
     
     // This is used to determine how to color keys that are pressed
     private enum NoteType { COLOR, CHORD, BASS, PRESS, OFF }
@@ -1672,7 +1674,6 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             return;
         
         // housekeeping
-        clearKeyboard();
         setSubDivComboBox();
         
         // Get some data we need
@@ -1741,21 +1742,27 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
                 // (b) the reference note we're using is actually adjacent to the
                 // current selected slot and (c) the reference note is outside of 
                 // the chord.
+                 
                 if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, currentStave))
                 {
+                    clearKeyboard();
                     findAndPressBlueNotes(midiValue, chordMIDIs, NoteType.CHORD);
                     findAndPressBlueNotes(midiValue, colorMIDIs, NoteType.COLOR);
                 }
                 else
                 {
-                    pressPianoKeys(chordMIDIs, NoteType.CHORD);
-                    pressPianoKeys(colorMIDIs, NoteType.COLOR);
+                    pressPianoKeys(chordMIDIs, colorMIDIs, chordName, midiValue);
                 }
 
                 bass.setPressed(true);
                 pressKey(bass, bass.getBassIcon());
             }
+            
+         
+            lastChord = chordName;
         }
+        
+        else clearKeyboard();
 
         if (displayNote)
         {
@@ -2106,23 +2113,39 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
      * @param midiValues
      * @param NoteType
      */
-    private void pressPianoKeys(ArrayList<Integer> midiValues, NoteType type)
-    {
-        for (int i = 0; i < midiValues.size(); i++)
+    private void pressPianoKeys(ArrayList<Integer> chordMIDIs, ArrayList<Integer> colorMIDIs, String chordName, int pressedMidi)
+    {   
+        for (StepPianoKey currentKey : pianoKeys())
         {
-            StepPianoKey currentKey = pianoKeys()[(midiValues.get(i)) - A];
-            currentKey.setPressed(true);
+            int midi = currentKey.getMIDI();
             JLabel label = currentKey.getLabel();
+            Icon offIcon = currentKey.getOffIcon();
+            Icon colorIcon = currentKey.getColorIcon();
+            Icon chordIcon = currentKey.getChordIcon();
             
-            if (type.equals(NoteType.COLOR))
-                label.setIcon(currentKey.getColorIcon());
-            if (type.equals(NoteType.CHORD))
-                label.setIcon(currentKey.getChordIcon());
+            if (colorMIDIs.contains(midi))
+            {
+                currentKey.setPressed(true);
+                label.setIcon(colorIcon);
+            }
             
-            forcePaint();
+            else if (chordMIDIs.contains(midi))
+            {
+                currentKey.setPressed(true);
+                label.setIcon(chordIcon);
+            }
+            
+            else if (label.getIcon() == currentKey.getPressedIcon() || 
+                    Math.abs(midi - pressedMidi) > (3*adviceNum)/4 || 
+                    !chordName.equals(lastChord))
+            {
+                currentKey.setPressed(false);
+                label.setIcon(offIcon);
+            }
         }
     }
 
+    
     /**
      * Takes in an array and a reference pitch and returns an array containing
      * those same notes in every octave within an appropriate distance of the
