@@ -5,6 +5,7 @@
 package imp.lickgen;
 
 import java.util.Arrays;
+import polya.Polylist;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.util.Arrays;
 public class Generator 
 {
     private static int[] WEIGHTS = {0, -5, -4, -5, -3, -5, -4, -5, -2, -5, -4, -5, -3, -5, -4, -5, -1, -5, -4, -5, -3, -5, -4, -5, -2, -5, -4, -5, -3, -5, -4, -5};
-    private static int NUM_SLOTS = 32;
+    private static int NUM_SLOTS = WEIGHTS.length;
     private static int MOD = 8;
     private static int NUM_QUARTERS = 4;
     private static int NUM_SLOTS2 = 120;
@@ -46,7 +47,7 @@ public class Generator
      * @param rhythm
      * @return 
      */
-    public static String generateString(int[] rhythm)
+    public static String[] generateString(int[] rhythm)
     {
         String rhythms = "";
         int prev = -1;
@@ -76,8 +77,8 @@ public class Generator
             int diff = rhythm.length - prev;
             rhythms += getString(diff, false);
         }
-        rhythms = rhythms.replaceAll("\\s+", " ");
-        return rhythms;
+        String[] rhythmsArray = rhythms.split("\\s+");
+        return rhythmsArray;
     }
     
     /**
@@ -161,8 +162,7 @@ public class Generator
     public static int[] generateSyncopation(int measures, int mySynco)
     {
         int[] rhythm = generateRhythm(measures);
-        int totalSynco = Tension.getSyncopation(rhythm, measures);
-        int synco = totalSynco/measures;
+        int synco = Tension.getSyncopation(rhythm, measures);
         while(synco > mySynco)
         {
             int i = (int)(Math.random() * MOD * measures);
@@ -171,27 +171,29 @@ public class Generator
             {
                 rhythm[index] = 1;
             }
-            totalSynco = Tension.getSyncopation(rhythm, measures);
-            synco = totalSynco/measures;
+            synco = Tension.getSyncopation(rhythm, measures);
         }
         while(synco < mySynco)
         {
             int i = (int)(Math.random() * NUM_SLOTS * measures);
             if(i < NUM_SLOTS * measures - 1)
             {
-                if(((WEIGHTS[i % NUM_SLOTS]) * -1) < 4);
-                {
-                    int index = i;
-                    while((WEIGHTS[i % NUM_SLOTS] * -1) != ((WEIGHTS[index % NUM_SLOTS] * -1) - 1))
+                int index = i;
+                int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
+                if(0 <= desiredWeight && desiredWeight < 4)
+                {   
+                    while((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight)
                     {
                         i ++;
                     }
-                    rhythm[index] = 0;
-                    rhythm[i] = 1;
+                    if(i < rhythm.length)
+                    {
+                        rhythm[index] = 0;
+                        rhythm[i] = 1;
+                    }
                 }
             }
-            totalSynco = Tension.getSyncopation(rhythm, measures);
-            synco = totalSynco/measures;
+            synco = Tension.getSyncopation(rhythm, measures);
         }
         return rhythm;
     }
@@ -208,7 +210,7 @@ public class Generator
         {
             int invMetHier = (WEIGHTS[i % NUM_SLOTS] * -1) + 1;
             double weight = 0;
-            if(invMetHier != 5)
+            if(invMetHier != 6)
             {
                 weight = (double)1/invMetHier;
             }

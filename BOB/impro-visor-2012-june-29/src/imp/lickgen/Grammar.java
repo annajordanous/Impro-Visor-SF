@@ -30,6 +30,7 @@ import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import polya.Arith;
 import polya.Polylist;
@@ -78,6 +79,11 @@ public static final String EXPECTANCY = "expectancy";
 
 public static final String SYNCOPATION = "syncopation";
 
+public static final String HIGH = "high";
+
+public static final String MEDIUM = "medium";
+
+public static final String LOW = "low";
 
 ArrayList<String> terminals = new ArrayList<String>();
 
@@ -669,7 +675,7 @@ private Object evaluate(Object toParse)
       
       if( BUILTIN.equals(parsing.first()) )
         {
-        return evaluateBuiltin(parsing.second());
+        return evaluateBuiltin(parsing.second(), parsing.third());
         }
       else if( PLUS.equals(parsing.first()) )
         {
@@ -757,6 +763,14 @@ Polylist evaluateSplice(Polylist form)
       {
         return args;
       }
+    if(SYNCOPATION.equals(operator))
+    {
+        int synco = ((Long)args.first()).intValue();
+        int[] rhythm = Generator.generateSyncopation(4, synco);
+        String[] rhythmArray = Generator.generateString(rhythm);
+        Polylist rhythmList = Polylist.PolylistFromArray(rhythmArray);
+        return rhythmList;
+    }
     
     // default
     
@@ -772,13 +786,12 @@ int syncopationValue = 1;
 private static int LENGTH_OF_TRADE = 4*480;
 private static int SLOTS_PER_MEASURE = 480;
 
-private Object evaluateBuiltin(Object arg)
+private Object evaluateBuiltin(Object arg1, Object arg2)
 {
     MelodyPart melody = notate.getCurrentMelodyPart();    
     MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
-    System.out.println("currentSlot = " + currentSlot + " in evaluateBuiltin " + arg + " Current Melody is " + currMelody.toString());
     ChordPart chords = notate.getChordProg();
-    if( EXPECTANCY.equals(arg) )
+    if( EXPECTANCY.equals(arg1) )
     {
         int firstIndex = currMelody.getNextIndex(0);
         int secondIndex = currMelody.getNextIndex(firstIndex);
@@ -804,14 +817,48 @@ private Object evaluateBuiltin(Object arg)
         }
         return new Double (totalExpectancy/numPitches);
     }
-    if(SYNCOPATION.equals(arg))
+    if(SYNCOPATION.equals(arg1))
     {
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int synco = Tension.getSyncopation(syncVector, (LENGTH_OF_TRADE/SLOTS_PER_MEASURE));
         System.out.println(synco);
-        if(synco > 3)
+        double syncoPerMeasure = synco/(LENGTH_OF_TRADE/SLOTS_PER_MEASURE);
+        System.out.println("Syncopation per measure " + syncoPerMeasure);
+        if(arg2.equals(HIGH))
         {
-            return new Double(syncopationValue);
+            if(syncoPerMeasure >= 8)
+            {
+                System.out.println("High");
+                return new Double(0.8);
+            }
+            else
+            {
+                return new Double(0.1);
+            }
+        }
+        if(arg2.equals(MEDIUM))
+        {
+            if(syncoPerMeasure < 8 && syncoPerMeasure >= 4)
+            {
+                System.out.println("Medium");
+                return new Double(0.8);
+            }
+            else
+            {
+                return new Double(0.1);
+            }
+        }
+        if(arg2.equals(LOW))
+        {
+            if(syncoPerMeasure < 4)
+            {
+                System.out.println("Low");
+                return new Double(0.8);
+            }
+            else
+            {
+                return new Double(0.1);
+            }
         }
         return new Double(0);
     }
