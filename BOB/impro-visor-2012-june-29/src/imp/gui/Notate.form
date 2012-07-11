@@ -7684,6 +7684,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVfirstCheckBoxMI">
               <Properties>
+                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Trade 4&apos;s, Impro-Visor first"/>
               </Properties>
               <Events>
@@ -7708,7 +7709,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVsecondCheckBoxMI">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Trade 4&apos;s, Impro-Visor second"/>
               </Properties>
               <Events>

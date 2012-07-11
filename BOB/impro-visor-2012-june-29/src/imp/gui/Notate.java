@@ -8556,6 +8556,7 @@ public class Notate
         });
         improvMenu.add(trade8IVfirstCheckBoxMI);
 
+        trade4IVfirstCheckBoxMI.setSelected(true);
         trade4IVfirstCheckBoxMI.setText("Trade 4's, Impro-Visor first");
         trade4IVfirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8580,7 +8581,6 @@ public class Notate
         });
         improvMenu.add(trade1IVfirstCheckBoxMI);
 
-        trade4IVsecondCheckBoxMI.setSelected(true);
         trade4IVsecondCheckBoxMI.setText("Trade 4's, Impro-Visor second");
         trade4IVsecondCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -12389,7 +12389,7 @@ private void adjustLickToHead(MelodyPart lick)
             nextPitch = lick.getNote(nextIndex).getPitch();
           }
 
-        //don't create repeated notes
+        //don't createMelody repeated notes
         if( headPitch != pitch && headPitch != oldpitch && headPitch != nextPitch )
           {
             if( Math.abs(headPitch - pitch) < 7 && Math.random() < 0.1 && duration >= 60
@@ -13341,7 +13341,7 @@ public MelodyPart getCurrentMelodyPart()
             if( !savedLeadsheetExists() )
                 return true;
             
-            // create string representing score
+            // createMelody string representing score
             StringWriter strWriter = new StringWriter();
             
             try {
@@ -14364,7 +14364,7 @@ private boolean saveGlobalPreferences()
 
   /**
    * Ensure that there is a chord-font-size preference.
-   * Iif there wasn't one, create one.
+   * Iif there wasn't one, createMelody one.
    */
 
   private void ensureChordFontSize()
@@ -17053,17 +17053,18 @@ private void setCurrentStaveType(StaveType t)
  public void playScore()
   {
     autoImprovisation.reset();
+    
+    MelodyPart currentMelodyPart = getCurrentMelodyPart();
     if( autoImprovisation.improviseAtStart() )
       {
-       autoImprovisation.create(getCurrentMelodyPart());
-      }
-   if( autoImprovisation.improviseAtStart() )
-      {
-       autoImprovisation.playCreatedMelody(getCurrentMelodyPart());
+       autoImprovisation.createInitialMelody(currentMelodyPart);
+       //autoImprovisation.playCreatedMelody(currentMelodyPart, false);
       }
    
-     establishCountIn();
-     playScoreBody(0);
+    establishCountIn();
+     
+    playScoreBody(0);
+
    }
 
  
@@ -17084,7 +17085,6 @@ public void playScoreBody(int startAt)
       }
     else
       {
-
       Trace.log(2, "Notate: playScore() - starting or restarting playback");
 
       // makes playback indicator always visible
@@ -17690,7 +17690,7 @@ public void openLeadsheet(boolean openCorpus)
             
             new OpenLeadsheetCommand(file, newScore).execute();
 
-            // create a new window and show the score
+            // createMelody a new window and show the score
 
             Notate newNotate =
                 new Notate(newScore,
@@ -19003,7 +19003,7 @@ public void populateChordSelMenu()
         String cName = form.getName();
         String family = form.getFamily();
         
-        // Get the subMenu for this family, or create one if non-existent
+        // Get the subMenu for this family, or createMelody one if non-existent
         // If a new menu is created, add it as a sub-menu.
         
         JMenu subMenu = (JMenu)map.get(family);
@@ -20430,7 +20430,7 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
 
     setMode(Mode.GENERATED);
     
-    enableRecording(); // TRIAL
+    //enableRecording(); // TRIAL Commented out for autoImprovisation, reconsider
     
     return lick;
   }
@@ -24069,7 +24069,7 @@ public void makeVisible(boolean createRoadMap)
 
 /**
  * Set the selection value on the CheckBox that will automatically
- * create a roadmap when this Notate is opened.
+ * createMelody a roadmap when this Notate is opened.
  * @param value 
  */
 
@@ -24080,7 +24080,7 @@ public void setAutoCreateRoadMap(boolean value)
 
 
 /**
- * Indicate whether or not this Notate frame has the create roadmap box checked.
+ * Indicate whether or not this Notate frame has the createMelody roadmap box checked.
  * @return 
  */
 
@@ -24135,7 +24135,7 @@ public void openEmptyRoadmap()
 
 /** 
  * If a roadmapFrame exists, clear it out. 
- * Otherwise create a roadmapFrame.
+ * Otherwise createMelody a roadmapFrame.
  */
 
 public void establishRoadMapFrame()
@@ -24269,7 +24269,7 @@ boolean selected = true;  // current default
  * ivFirst is 0 if Impro-Visor is to go first, 1 if not
  */
 
-int ivFirst = 1;
+int ivFirst = 0;
 
 Command improCommand = null;
 
@@ -24310,6 +24310,8 @@ int playAtSlot = 0;
 
 MelodyPart improLick = null;
 
+boolean firstTime = false;
+
 
 public void reset()
   {
@@ -24322,19 +24324,35 @@ public void reset()
 public boolean improviseNow(int slotInPlayback, int size)
   {
   generateAtSlot = (slotInPlayback + generationLeadSlots) % size;
+  
+  playAtSlot = (slotInPlayback + playLeadSlots) % size;
+
   return generateAtSlot % improInterval == ivFirst*halfInterval;
   }
 
 public boolean playNow(int slotInPlayback, int size)
   {
-    playAtSlot = (slotInPlayback + playLeadSlots) % size;
+
+//    if( improLick != null && slotInPlayback >= playLeadSlots )
+//      {
+//        return true;
+//      }
+    
+    if( firstTime ) 
+      {
+        return true;
+      }
+    
     return playAtSlot % improInterval == ivFirst*halfInterval;
   }
 
-public void create(MelodyPart currentMelodyPart)
+public MelodyPart createMelody(MelodyPart currentMelodyPart)
   {
     improLick = generate(lickgen, generateAtSlot, generateAtSlot + halfInterval - 1);
-
+    
+    System.out.println("create improLick to play at: " + playAtSlot 
+                     + " generated at " + generateAtSlot + ": " + improLick);
+    
     // If a lick was generated, copy it into the melodyPart for notation
     // and set up a command that will play
     if( improLick != null )
@@ -24362,20 +24380,49 @@ public void create(MelodyPart currentMelodyPart)
                                      0, // transposition
                                      false, // use drums
                                      -1));       // transposition
+      
+      }
+    return improLick;
+  }
+
+public void createInitialMelody(MelodyPart currentMelodyPart)
+  {
+    createMelody(currentMelodyPart);
+    
+    if( improLick != null )
+      {
+       Note firstNote = improLick.getFirstNote();
+//       int offset = firstNote.getRhythmValue();
+//       improLick.setNote(0, new Rest(offset));
+       playAtSlot = 0;
+       firstTime = true;
       }
   }
 
-public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart)
+public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart, boolean paste)
   {
       if( improCommand != null )
         {
-          currentMelodyPart.pasteOver(improLick, playAtSlot);
+          if( paste )
+            {
+            if( firstTime )
+              {
+                firstTime = false;
+               currentMelodyPart.pasteOver(improLick, 0);
+              }
+            else
+              {
+              currentMelodyPart.pasteOver(improLick, playAtSlot);
+              }
+            }
+          
           improCommand.execute();
-          autoImprovisation.setImproCommand(null); // Don't play twice
-          return improLick;
+          setImproCommand(null); // Don't play twice
         }
-      return null;
+    System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
+    return improLick;
   }
+
 
 public int getGenerationLeadSlots()
   {
@@ -24512,8 +24559,6 @@ public void actionPerformed(ActionEvent evt)
 // Recurrent lick generation
 // Caution: LickGenerator control should be opened first. 
     
-      int interval = autoImprovisation.getImproInterval();
-      
        if( autoImprovisation.isSelected() )
         {
           MelodyPart currentMelodyPart = getCurrentMelodyPart();
@@ -24524,15 +24569,27 @@ public void actionPerformed(ActionEvent evt)
 
           if( autoImprovisation.improviseNow(slotInPlayback, size) )
             {
-              autoImprovisation.create(currentMelodyPart);
+              autoImprovisation.createMelody(currentMelodyPart);
             }
 
           // Play the lick previously generated, and paste into the 
           // current melody part.
 
-          if( autoImprovisation.playNow(slotInPlayback, size) )
+          boolean playNow = autoImprovisation.playNow(slotInPlayback, size);
+          
+          if( playNow )
             {
-              autoImprovisation.playCreatedMelody(currentMelodyPart);
+            System.out.println("at " + slotInPlayback + " playNow = " + playNow);
+            }
+            
+          if(  playNow )
+            {
+            if( slotInPlayback == improviseStartSlot )
+              {
+              //currentMelodyPart.clear();
+              }
+          
+            autoImprovisation.playCreatedMelody(currentMelodyPart, true);
             }
         }
 

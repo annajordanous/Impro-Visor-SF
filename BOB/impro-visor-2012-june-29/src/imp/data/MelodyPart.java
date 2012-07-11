@@ -1680,4 +1680,26 @@ public int[] getSyncVector(int slotSpacing, int maxSize)
       }
     return result; 
   }
+
+
+/**
+ * Clears all units from this part, leaving size as is and placing a rest in
+ * the first slot.
+ */
+
+public void clear()
+  {
+    slots = new ArrayList<Unit>(size);
+    for( int i = 0; i < size; i++ )
+      {
+        slots.add(null);
+      }
+    
+    slots.set(0, new Rest(size));
+  }
+
+public Note getFirstNote()
+  {
+    return (Note)slots.get(0);
+  }
 }
