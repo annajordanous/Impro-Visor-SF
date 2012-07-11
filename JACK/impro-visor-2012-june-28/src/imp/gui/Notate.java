@@ -15030,8 +15030,9 @@ public void setBars(int bars)
     prefMeasTF.setText("" + bars);
 
     setTotalMeasures(bars);
+    getCurrentMelodyPart().setSize(bars * measureLength);
 
-    score.setLength(bars * measureLength);
+//    score.setLength(bars * measureLength);
 
     sectionInfo.setSize(bars * measureLength);
   }
