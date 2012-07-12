@@ -1697,4 +1697,10 @@ public int[] getSyncVector(int slotSpacing)
       }
     return result; 
   }
+
+
+public void setBars(int bars)
+  {
+    setSize(bars*metre[0]*BEAT);
+  }
 }

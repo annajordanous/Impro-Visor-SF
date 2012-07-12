@@ -121,5 +121,24 @@ public class MelodyPartAccompanied extends MelodyPart {
       extractTimeWarped(newPart, first, last, num, denom);
       return newPart;
   }
+    
+public void setBars(int bars)
+  {
+    if( chordProg != null )
+      {
+        chordProg.setBars(bars);
+      }
+    
+    super.setBars(bars);
+  }
 
+public SectionInfo getSectionInfo()
+  {
+    if( chordProg != null )
+      {
+        return chordProg.getSectionInfo();
+      }
+    
+    return null;
+  }
 }

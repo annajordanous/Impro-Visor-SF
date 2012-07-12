@@ -557,4 +557,8 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         }
     }
 
+    public void setBars(int bars)
+      {
+        setSize(bars*metre[0]*BEAT);
+      }
 }
