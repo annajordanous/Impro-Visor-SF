@@ -27,7 +27,7 @@ import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
-import imp.audio.PitchExtraction;
+import imp.audio.PitchExtractor;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
 import imp.data.*;
@@ -100,7 +100,7 @@ public class Notate
 
   MidiImport midiImport;
 
-  PitchExtraction extractor;
+  PitchExtractor extractor;
   static int captureInterval = 480;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
@@ -2104,10 +2104,10 @@ public class Notate
         pausePlayMI = new javax.swing.JMenuItem();
         recordMI = new javax.swing.JMenuItem();
         utilitiesMenu = new javax.swing.JMenu();
+        stepKeyboardMI = new javax.swing.JMenuItem();
         openLeadsheetEditorMI = new javax.swing.JMenuItem();
         lickGeneratorMI = new javax.swing.JMenuItem();
         pianoKeyboardMI = new javax.swing.JMenuItem();
-        stepKeyboardMI = new javax.swing.JMenuItem();
         styleGenerator1 = new javax.swing.JMenuItem();
         voicingTestMI = new javax.swing.JMenuItem();
         roadmapMenu = new javax.swing.JMenu();
@@ -8386,6 +8386,14 @@ public class Notate
         utilitiesMenu.setMnemonic('U');
         utilitiesMenu.setText("Utilities");
 
+        stepKeyboardMI.setText("Advice Keyboard");
+        stepKeyboardMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepKeyboardMIActionPerformed(evt);
+            }
+        });
+        utilitiesMenu.add(stepKeyboardMI);
+
         openLeadsheetEditorMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         openLeadsheetEditorMI.setMnemonic('l');
         openLeadsheetEditorMI.setText("Leadsheet Textual Editor");
@@ -8409,21 +8417,13 @@ public class Notate
 
         pianoKeyboardMI.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
         pianoKeyboardMI.setMnemonic('K');
-        pianoKeyboardMI.setText("Piano Keyboard");
+        pianoKeyboardMI.setText("Voicing Keyboard");
         pianoKeyboardMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pianoKeyboardMIActionPerformed(evt);
             }
         });
         utilitiesMenu.add(pianoKeyboardMI);
-
-        stepKeyboardMI.setText("Advice Keyboard");
-        stepKeyboardMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stepKeyboardMIActionPerformed(evt);
-            }
-        });
-        utilitiesMenu.add(stepKeyboardMI);
 
         styleGenerator1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         styleGenerator1.setMnemonic('S');
