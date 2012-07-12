@@ -20,7 +20,7 @@ import javax.sound.sampled.*;
  * @author Brian Howell
  * @version 22 June, 2012
  */
-public class PitchExtraction
+public class PitchExtractor
 {
 
     public volatile Boolean stopCapture = true;
@@ -57,7 +57,7 @@ public class PitchExtraction
         //new PitchExtraction();
     }//end main
 
-    public PitchExtraction(Notate notate, Score score, int captureInterval)
+    public PitchExtractor(Notate notate, Score score, int captureInterval)
     {
         this.notate = notate;
         this.score = score;
@@ -91,6 +91,11 @@ public class PitchExtraction
         {
             System.out.println("TargetLine error.");
         }
+    }
+
+    public int getCaptureInterval()
+    {
+        return this.captureInterval;
     }
 
     public void captureAudio()
@@ -174,11 +179,12 @@ public class PitchExtraction
             int slotPitch = 0;
             //check to see if pitch is valid
             if (fundamentalFrequency > 40.0)
-            {
-                slotPitch = //calculate equivalent MIDI pitch value for freq.
-                        jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
+            { //calculate equivalent MIDI pitch value for freq.
+                slotPitch =
+                       jm.music.data.Note.freqToMidiPitch(fundamentalFrequency);
             }
             //if all windows for this slot have been examined, determine pitch
+            //check to see if this window is part of the current slot
             if (currentSlotNumber != lastSlotNumber)
             {
                 System.out.println("Slot = " + lastSlotNumber);
@@ -196,7 +202,10 @@ public class PitchExtraction
                     if (pitch != lastPitch || noteOff)
                     {
                         duration = slotsFilled * 480 / RESOLUTION;
-                        setNote(lastPitch, startingPosition, duration, melodyPart);
+                        setNote(lastPitch,
+                                startingPosition,
+                                duration,
+                                melodyPart);
                         startingPosition += duration;
                         slotsFilled = 1; //reset slotsFilled when pitch changes
                     } //if this pitch is the same as that of the last slot,
@@ -220,7 +229,7 @@ public class PitchExtraction
                 }
                 oneSlot.clear(); //get rid of old list
                 oneSlot.add(slotPitch);
-                //check to see if this window is part of the current slot
+            //handle the last slot in this capture interval
             } else if (index + FRAME_SIZE + interval >= streamInput.length)
             {
                 oneSlot.add(slotPitch);
@@ -240,17 +249,21 @@ public class PitchExtraction
                 } else
                 {
                     duration = slotsFilled * 480 / RESOLUTION;
-                    setNote(lastPitch, startingPosition, duration, melodyPart);
+                    setNote(lastPitch,
+                            startingPosition,
+                            duration,
+                            melodyPart);
                     duration = 480 / RESOLUTION;
-                    setNote(pitch, startingPosition + duration, duration, melodyPart);
+                    setNote(pitch,
+                            startingPosition + duration,
+                            duration,
+                            melodyPart);
                 }
+            //if the slot hasn't changed, count this window as part of the slot
             } else if (currentSlotNumber == lastSlotNumber)
             {
                 oneSlot.add(slotPitch); //if so, continue collecting data
-            } else
-            {
-                //Do something to handle final sample window?
-            } //end else
+            }
             //increase the index by the designated interval
             index += (int) interval;
         } //end while
@@ -551,12 +564,12 @@ public class PitchExtraction
 //        if(swingVal > 0.5 && RESOLUTION >= 8)
 //        {
 //            if(slot % (2 ^ (RESOLUTION / 8)) == (2 ^ (RESOLUTION / 8 - 1)) + 1) {
-//                if(timeElapsed / msPerSlot < (slot + 1) * swingVal / 2) {
+//                if(timeElapsed / msPerSlot < (slot + 1) * swingVal){
 //                    return slot - 1;
 //                }
 //            }
 //        }
-        return slot;
+        else return slot;
     }
 
     /**
