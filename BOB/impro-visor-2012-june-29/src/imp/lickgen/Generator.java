@@ -189,20 +189,21 @@ public class Generator {
 //	        rhythm[index] = 1;
 //	    }
             int i = (int) (Math.random() * NUM_SLOTS * measures);
-            if (i < NUM_SLOTS * measures - 1) {
+            if (i < NUM_SLOTS * measures - 1) 
+            {
                 int index = i;
-                int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) + 1;
-                if (2 < desiredWeight && desiredWeight < 5) {
+                int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
+                if (0 <= desiredWeight && desiredWeight < 4) {
                     while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
                         i++;
                     }
                     if (i < rhythm.length) 
                     {
-                        if(rhythm[index] == 0)
+                        if(rhythm[i] == 0)
                         {
-                            rhythm[index] = 1;
+                            rhythm[i] = 1;
                         }
-                        rhythm[i] = 0;
+                        rhythm[index] = 0;
                     }
                 }
             }
@@ -219,8 +220,8 @@ public class Generator {
                     }
                     if (i < rhythm.length) 
                     {
-                        rhythm[index] = 0;
-                        rhythm[i] = 1;
+                        rhythm[index] = 1;
+                        rhythm[i] = 0;
                     }
                 }
             }
