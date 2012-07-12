@@ -681,7 +681,7 @@ public class Notate
 
   private SectionListModel sectionListModel = new SectionListModel();
 
-  private SectionInfo sectionInfo;
+  //private SectionInfo sectionInfo;
 
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
   
@@ -1153,7 +1153,7 @@ public class Notate
     
     //score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
-     sectionInfo = score.getChordProg().getSectionInfo().copy();
+     //sectionInfo = score.getChordProg().getSectionInfo().copy();
 
      showAdviceButton.setSelected(adviceInitiallyOpen);
 
@@ -6355,6 +6355,7 @@ public class Notate
         cancelTruncate.setText("Cancel truncation");
         cancelTruncate.setToolTipText("Do not truncate the part.");
         cancelTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        cancelTruncate.setOpaque(true);
         cancelTruncate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelTruncateActionPerformed(evt);
@@ -6377,6 +6378,7 @@ public class Notate
         acceptTruncate.setToolTipText("Truncates the part as specified.");
         acceptTruncate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         acceptTruncate.setDefaultCapable(false);
+        acceptTruncate.setOpaque(true);
         acceptTruncate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 acceptTruncateActionPerformed(evt);
@@ -8837,7 +8839,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
 
   public void reCaptureCurrentStyle()
     {
-    score.getChordProg().getSectionInfo().reloadStyles();
+    getCurrentSectionInfo().reloadStyles();
     }
 
     private void helpAboutMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutMIActionPerformed
@@ -8902,7 +8904,7 @@ private void setSectionParameters()
 
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
 
-      sectionInfo.newSection(sectionList.getSelectedIndex());
+      getCurrentSectionInfo().newSection(sectionList.getSelectedIndex());
 
       sectionListModel.refresh();
     }//GEN-LAST:event_newSectionButtonActionPerformed
@@ -8910,6 +8912,13 @@ private void setSectionParameters()
     private void delSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delSectionButtonActionPerformed
 
       int index = sectionList.getSelectedIndex();
+      
+      SectionInfo sectionInfo = getCurrentSectionInfo();
+      
+      if( sectionInfo == null )
+        {
+          return;
+        }
 
       sectionInfo.deleteSection(index);
 
@@ -11126,6 +11135,7 @@ public class SectionListModel
 
 public int getSize()
   {
+    SectionInfo sectionInfo = getCurrentSectionInfo();
     if( sectionInfo == null )
       {
         return 0;
@@ -11137,12 +11147,12 @@ public int getSize()
 
 public Object getElementAt(int index)
   {
-    return sectionInfo.getInfo(index);
+    return getCurrentSectionInfo().getInfo(index);
   }
 
 public void reset()
   {
-    sectionInfo = score.getChordProg().getSectionInfo().copy();
+    //sectionInfo = score.getChordProg().getSectionInfo().copy();
 
     refresh();
   }
@@ -11153,6 +11163,8 @@ public void reset()
 
 public void refresh()
   {
+    SectionInfo sectionInfo = getCurrentSectionInfo();
+
     fireContentsChanged(this, 0, sectionInfo.size());
 
     int index = sectionList.getSelectedIndex();
@@ -11371,19 +11383,23 @@ private void updateTempoFromTextField()
     
   public void setPartBars(String text)
     {
-    int scoreBarLength = Integer.parseInt(text);
-    if( scoreBarLength >= score.getActiveBarsInChorus() )
-      {
-      // Lengthening score is always ok.
-      setBars(scoreBarLength);
-      setStatus("Chorus length set to " + scoreBarLength);
-      repaintAndStaveRequestFocus();
-      return;
-      }
-
-    if( scoreBarLength < 1 )
+    int specifiedPartLength = Integer.parseInt(text);
+    
+    if( specifiedPartLength < 1 )
       {
       setStatus("Invalid Action");
+      return;
+      }
+    
+    MelodyPartAccompanied mp = getCurrentMelodyPart();
+    
+    if( specifiedPartLength >= mp.getBars() )
+      {
+      // Lengthening score is always ok.
+      mp.setBars(specifiedPartLength);
+      getCurrentStave().setMelodyPart(mp);
+      setStatus("Chorus length set to " + specifiedPartLength);
+      repaintAndStaveRequestFocus();
       return;
       }
 
@@ -11398,12 +11414,13 @@ private void updateTempoFromTextField()
 
     if( cancelTruncation )
       {
-      setBars(score.getBarsPerChorus());
+      //setBars(score.getBarsPerChorus());
       }
     else
       {
-      setBars(scoreBarLength);
-      setStatus("Chorus length set to " + scoreBarLength);
+      mp.setBars(specifiedPartLength);
+      getCurrentStave().setMelodyPart(mp);
+      setStatus("Chorus length set to " + specifiedPartLength);
       }
     repaintAndStaveRequestFocus();
     }
@@ -13106,9 +13123,23 @@ public MelodyPartAccompanied getMelodyPartAccompanied(Stave stave)
 
 public MelodyPartAccompanied getCurrentMelodyPart()
   {
-    return getCurrentStave().getMelodyPartAccompanied();
+    Stave stave = getCurrentStave();
+    if( stave == null )
+      {
+        return null;
+      }
+    return stave.getMelodyPartAccompanied();
   }
 
+public SectionInfo getCurrentSectionInfo()
+  {
+    MelodyPartAccompanied mp = getCurrentMelodyPart();
+    if( mp == null )
+      {
+        return null;
+      }
+    return mp.getSectionInfo();
+  }
 
   /**
    * Select all construction lines on the current Stave.
@@ -13676,13 +13707,19 @@ private boolean saveMidiLatency()
     
 private boolean saveSectionInfo()
   {
-    score.getChordProg().setSectionInfo(sectionInfo.copy());
+    //score.getChordProg().setSectionInfo(sectionInfo.copy());
 
     return true;
   }
 
 private boolean setSectionPrefs()
   {
+    SectionInfo sectionInfo = getCurrentSectionInfo();
+    
+    if( sectionInfo == null )
+      {
+        return false;
+      }
     try
       {
         int measure = Integer.valueOf(measureTF.getText());
@@ -13693,7 +13730,8 @@ private boolean setSectionPrefs()
 
         boolean isPhrase = phraseCheckBox.isSelected();
         
-        boolean usePreviousStyleChecked = !(currentMeasure==1) && usePreviousStyleCheckBox.isSelected();
+        boolean usePreviousStyleChecked = currentMeasure !=1
+                                      && usePreviousStyleCheckBox.isSelected();
 
         if( measure > 0 && measure <= sectionInfo.measures() )
           {
@@ -13725,7 +13763,7 @@ private boolean setSectionPrefs()
 
 private boolean saveStylePrefs()
   {
-    SectionRecord record = sectionInfo.getSectionRecordByIndex(sectionList.getSelectedIndex());
+    SectionRecord record = getCurrentSectionInfo().getSectionRecordByIndex(sectionList.getSelectedIndex());
 
     if( !record.getUsePreviousStyle() )
       {
@@ -13768,7 +13806,7 @@ public void updateStyleList(Style style)
       {
       swingTF.setText("" + style.getSwing());
  
-      sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
+      getCurrentSectionInfo().modifySection(style, sectionList.getSelectedIndex(), false);
       }
    }
 
@@ -14501,9 +14539,9 @@ private boolean saveGlobalPreferences()
     sectionList.setSelectedIndex(0);
 
 
-    if( sectionInfo != null )
+    if( getCurrentSectionInfo() != null )
       {
-      Style style = sectionInfo.getStyle(0);
+      Style style = getCurrentSectionInfo().getStyle(0);
       if( style != null )
         {
         styleList.setSelectedValue(style, true);
@@ -14664,6 +14702,8 @@ private boolean saveGlobalPreferences()
 
       return;
       }
+    
+    SectionInfo sectionInfo = getCurrentSectionInfo();
 
     int m1 = sectionInfo.getSectionMeasure(sectionIndex);
 
@@ -15034,7 +15074,7 @@ public void setBars(int bars)
 
 //    score.setLength(bars * measureLength);
 
-    sectionInfo.setSize(bars * measureLength);
+    getCurrentSectionInfo().setSize(bars * measureLength);
   }
 
 private void adjustLayout(Polylist layout)
@@ -15414,34 +15454,42 @@ private void setLayoutPreference(Polylist layout)
     
 public void addTab()
   {
-    int length = score.getLength();
+    MelodyPartAccompanied mp = getCurrentMelodyPart();
     
-    ChordPart newChordPart = getCurrentMelodyPart().getChordProg().copy();
+    int length = mp.size(); //score.getLength();
+    
+    ChordPart newChordPart = mp.getChordProg().copy();
+    
     String newChordPartName = score.genNewChordPartName();
+    
     newChordPart.setTitle(newChordPartName);
+    
     score.addChordPart(newChordPartName, newChordPart);
-    MelodyPartAccompanied mp = new MelodyPartAccompanied(length, newChordPart);
-    mp.setInstrument(score.getPart(0).getInstrument());
-    addChorus(mp);      
+    
+    MelodyPartAccompanied newmp = new MelodyPartAccompanied(length, newChordPart);
+    
+    newmp.setInstrument(mp.getInstrument());
+    
+    addChorus(newmp);      
   }
  
- public void addChorus(MelodyPartAccompanied mp)
+ public void addChorus(MelodyPartAccompanied newmp)
    {
       int keySig = getCurrentStave().getKeySignature();
 
-        int progSize = score.getChordProg().size();
-        if( mp.size() <  progSize)
-          {
-            // Pad the new melody part with rests so that there is no gap.
-            mp.addRest(new Rest(progSize-mp.size()));
-          }
-        else if( progSize < mp.size() )
-          {
-            score.setLength(mp.size());
-            setBars(score.getBarsPerChorus());
-          }
-        score.addPart(mp);
-        partList.add(mp);
+//        int progSize = score.getChordProg().size();
+//        if( newmp.size() <  progSize)
+//          {
+//            // Pad the new melody part with rests so that there is no gap.
+//            newmp.addRest(new Rest(progSize-newmp.size()));
+//          }
+//        else if( progSize < newmp.size() )
+//          {
+//            score.setLength(newmp.size());
+//            //??setBars(score.getBarsPerChorus());
+//          }
+        score.addPart(newmp);
+        partList.add(newmp);
 
       // reset the current scoreFrame
 
@@ -23791,7 +23839,7 @@ public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
 public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
   {
       score.fromRoadMapFrame(roadmap);
-      setBars(score.getBarsPerChorus());
+      //setBars(score.getBarsPerChorus());
       //TODO style isn't set correctly
       //TODO set name
       repaint();
@@ -23976,13 +24024,9 @@ public int getBarsPerChorus()
     return score.getBarsPerChorus();
   }
 
-public SectionInfo getSectionInfo()
-{
-    return sectionInfo;
-}
-
 public void setChordProg(ChordPart chordPart)
   {
+    //FIX!!??
     score.setChordProg(chordPart);
     score.setLength(chordPart.getSize());
     setBars(chordPart.getBars());

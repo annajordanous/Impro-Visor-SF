@@ -2463,6 +2463,11 @@ public void repaintDuringPlayback(int currentSlot)
             currentSlot = 0;
           }
 
+        if( currentSlot >= cstrLines.length )
+          {
+            return;
+          }
+        
         while( cstrLines[currentSlot] == null )
           {
             currentSlot--;
@@ -5906,4 +5911,9 @@ public int getNumMeasures()
     public void focusLost(FocusEvent e) {
      //notate.setBorderColor(new java.awt.Color(255, 255, 255));   
     }
+    
+public void setMelodyPart(MelodyPartAccompanied melodyPart)
+  {
+    origPart = melodyPart;
+  }
 }
