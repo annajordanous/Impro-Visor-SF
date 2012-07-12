@@ -6483,11 +6483,11 @@ public class Notate
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 notateWIndowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -7620,9 +7620,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7641,9 +7641,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8498,9 +8498,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8536,9 +8536,9 @@ public class Notate
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -15415,7 +15415,12 @@ private void setLayoutPreference(Polylist layout)
 public void addTab()
   {
     int length = score.getLength();
-    MelodyPartAccompanied mp = new MelodyPartAccompanied(length, getCurrentMelodyPart().getChordProg());
+    
+    ChordPart newChordPart = getCurrentMelodyPart().getChordProg().copy();
+    String newChordPartName = score.genNewChordPartName();
+    newChordPart.setTitle(newChordPartName);
+    score.addChordPart(newChordPartName, newChordPart);
+    MelodyPartAccompanied mp = new MelodyPartAccompanied(length, newChordPart);
     mp.setInstrument(score.getPart(0).getInstrument());
     addChorus(mp);      
   }

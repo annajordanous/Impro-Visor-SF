@@ -246,6 +246,7 @@ public class Leadsheet
     score.setTempo(160);			// default
 
     ChordPart chords = new ChordPart();	// in case these parts are not explicit
+    score.addDefaultChordPart(chords);
     
     MelodyPartAccompanied melody = new MelodyPartAccompanied(chords);
 
@@ -743,8 +744,8 @@ public class Leadsheet
           {
           headStarted = true;
           score.addPart(melody);
-          //score.setChordProg(chords);
-          //score.addChordPart(Score.DEFAULT_PROGRESSION, chords);
+          chords = new ChordPart();
+          score.addDefaultChordPart(chords);
           melody.setChordProg(chords);
           }
 
