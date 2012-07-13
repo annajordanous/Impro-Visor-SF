@@ -339,13 +339,6 @@ public class Notate
 
   /**
    *
-   * An array of Parts in the Score to be displayed
-   *
-   */
-  protected PartList partList;
-
-  /**
-   *
    * The chord progression of the Score
    *
    */
@@ -680,8 +673,6 @@ public class Notate
   private RecentStyleListModel recentStyleListModel = new RecentStyleListModel();
 
   private SectionListModel sectionListModel = new SectionListModel();
-
-  //private SectionInfo sectionInfo;
 
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
   
@@ -12759,7 +12750,7 @@ private void openAdviceFrame()
                 new SetChordsCommand(getCurrentSelectionStart(),
                                      parseListFromString(enteredText),
                                      getCurrentMelodyPart().getChordProg(),
-                                     partList.get(currTabIndex) ));
+                                     score.getPart(currTabIndex) ));
         }
         
         textEntry.setEnabled(false);
@@ -13197,7 +13188,8 @@ public SectionInfo getCurrentSectionInfo()
       Stave stave = getCurrentStave();
 
       cm.execute(
-              new CopyCommand(stave.getChordProg(),
+//              new CopyCommand(stave.getChordProg(),
+              new CopyCommand(getCurrentMelodyPart().getChordProg(),
               impro.getChordsClipboard(),
               getCurrentSelectionStart(),
               getCurrentSelectionEnd()));
@@ -13235,7 +13227,7 @@ public SectionInfo getCurrentSectionInfo()
       Stave stave = getCurrentStave();
 
       cm.execute(
-              new CutCommand(stave.getChordProg(),
+              new CutCommand(getCurrentMelodyPart().getChordProg(),
               impro.getChordsClipboard(),
               getCurrentSelectionStart(),
               getCurrentSelectionEnd()));
@@ -15489,7 +15481,6 @@ public void addTab()
 //            //??setBars(score.getBarsPerChorus());
 //          }
         score.addPart(newmp);
-        partList.add(newmp);
 
       // reset the current scoreFrame
 
@@ -16061,7 +16052,7 @@ public void setAdviceUsed()
     
     public void toggleChordEnharmonics() {
         cm.execute(new ToggleEnharmonicCommand(
-                getCurrentStave().getChordProg(),
+                getCurrentMelodyPart().getChordProg(),
                 getCurrentSelectionStart(),
                 getCurrentSelectionEnd()));
     }
@@ -16324,8 +16315,8 @@ private void enterBoth()
             cm.execute(new SetChordsCommand(
                     getCurrentSelectionStart(),
                     parseListFromString(chordText),
-                    chordProg,
-                    partList.get(currTabIndex)));
+                    getCurrentMelodyPart().getChordProg(),
+                    score.getPart(currTabIndex)));
             
             redoAdvice();
           }
@@ -16353,7 +16344,7 @@ void enterChords()
             cm.execute(new SetChordsCommand(
                     getCurrentSelectionStart(),
                     parseListFromString(windowText),
-                    chordProg,
+                    getCurrentMelodyPart().getChordProg(),
                     null));
 
             redoAdvice();
@@ -16386,7 +16377,7 @@ void enterMelody()
                     getCurrentSelectionStart(),
                     parseListFromString(windowText),
                     null,
-                    partList.get(currTabIndex)));
+                    score.getPart(currTabIndex)));
 
             redoAdvice();
           }
@@ -16490,7 +16481,7 @@ public void pasteMelody(Part part)
         if( impro.chordsClipboardNonEmpty() )
           {
             cm.execute(new SafePasteCommand(impro.getChordsClipboard(),
-                                            getCurrentStave().getChordProg(),
+                                            getCurrentMelodyPart().getChordProg(),
                                             getCurrentSelectionStart(), !alwaysPasteOver, true, this));
           }
 
@@ -20295,7 +20286,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
                                         maxInterval, 
                                         BEAT, 
                                         leapProb, 
-                                        chordProg,
+                                        getCurrentMelodyPart().getChordProg(),
                                         0, 
                                         avoidRepeats);
 
@@ -21858,11 +21849,6 @@ public void showNewVoicingDialog()
       return;
       }
 
-    // setup the arrays
-
-    partList = new PartList(size);
-    
-
     // set the chord progression for the score
 
     chordProg = score.getChordProg();
@@ -21921,18 +21907,18 @@ public void showNewVoicingDialog()
 
       // Setup the Stave component in the pane
 
-      partList.add(score.getPart(i));
+      MelodyPartAccompanied mp = score.getPart(i);
 
-      Stave stave = new Stave(partList.get(i).getStaveType(), this,
+      Stave stave = new Stave(mp.getStaveType(), this,
               score.getTitle());
 
       pane.setStave(stave);
 
-      stave.setChordProg(partList.get(i).getChordProg());
+      stave.setChordProg(mp.getChordProg());
 
-      stave.setPart(partList.get(i));
+      stave.setPart(mp);
 
-      stave.setKeySignature(partList.get(i).getKeySignature());
+      stave.setKeySignature(mp.getKeySignature());
 
       stave.setMetre(score.getMetre()[0], score.getMetre()[1]);
 
@@ -23805,7 +23791,7 @@ public void toGrammar()
 
     //System.out.println("Writing productions to grammar file: " + outFile);
     setLickGenStatus("Writing productions to grammar file: " + outFile);
-    CreateGrammar.create(chordProg,
+    CreateGrammar.create(getCurrentMelodyPart().getChordProg(),
                          inFile,
                          outFile,
                          lickgenFrame.getNumClusterReps(),
@@ -24133,12 +24119,14 @@ public void actionPerformed(ActionEvent evt)
     int chorusSize = getScore().getLength();
 
     int tab = currentPlaybackTab;
+    
+    int partIndex[] = score.partIndexFromSlot(slotInPlayback);
 
-    currentPlaybackTab = slotInPlayback / chorusSize;
+    currentPlaybackTab =  partIndex[0]; //slotInPlayback / chorusSize;
 
     //slotInPlayback %= chorusSize;
 
-    int slotInChorus = slotInPlayback % chorusSize;
+    int slotInChorus = partIndex[1]; // slotInPlayback % chorusSize;
 
     Chord currentChord = chordProg.getCurrentChord(slotInChorus);
 
@@ -24263,4 +24251,6 @@ public void actionPerformed(ActionEvent evt)
       }
   }
   }
+
+
 }

@@ -1161,7 +1161,7 @@ public class Score implements Constants, Serializable {
               {
               m.setSwing(style.getSwing());
               }
-            m.makeSwing(getDefaultChordPart().getSectionInfo());
+            m.makeSwing(getDefaultSectionInfo());
         }
     }
     
@@ -1173,7 +1173,7 @@ public class Score implements Constants, Serializable {
     
     public void setStyle(String styleName)
     {
-      if( getDefaultChordPart().getSectionInfo() == null || getDefaultChordPart().getSectionInfo().hasOneSection() )
+      if( getDefaultSectionInfo() == null || getDefaultSectionInfo().hasOneSection() )
         {
         getDefaultChordPart().setStyle(styleName);
         }
@@ -1186,7 +1186,7 @@ public class Score implements Constants, Serializable {
     
     public void setStyle(Style style)
     {
-      if( getDefaultChordPart().getSectionInfo() == null || getDefaultChordPart().getSectionInfo().hasOneSection() )
+      if( getDefaultSectionInfo() == null || getDefaultSectionInfo().hasOneSection() )
         {
         getDefaultChordPart().setStyle(style);
         }
@@ -1256,6 +1256,11 @@ public ChordPart getDefaultChordPart()
     return getChordPart(DEFAULT_PROGRESSION);
   }
 
+public SectionInfo getDefaultSectionInfo()
+  {
+    return getDefaultChordPart().getSectionInfo();
+  }
+
 static int chordPartNumber = 0;
 static String chordPartBase = "CP_";
 
@@ -1270,5 +1275,29 @@ public String genNewChordPartName()
     while( getChordPart(chordPartName) != null );
  
     return chordPartName;
+  }
+
+public int[] partIndexFromSlot(int slotIndex)
+  {
+    int[] result = {0, 0};
+    
+    int partIndex = 0;
+    int accumulatedSlots = 0;
+    int previousAccumulatedSlots;
+    ListIterator<MelodyPartAccompanied> i = partList.listIterator();
+    while( i.hasNext() )
+      {
+        previousAccumulatedSlots = accumulatedSlots;
+        accumulatedSlots += i.next().size();
+        if( slotIndex < accumulatedSlots )
+          {
+            result[0] = partIndex;
+            result[1] = slotIndex - previousAccumulatedSlots;
+            return result;
+          }
+        partIndex++;
+      }
+    
+    return result;
   }
 }

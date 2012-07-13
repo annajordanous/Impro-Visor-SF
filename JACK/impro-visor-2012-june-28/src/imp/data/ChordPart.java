@@ -23,10 +23,7 @@ package imp.data;
 import imp.brickdictionary.ChordBlock;
 import imp.roadmap.RoadMapFrame;
 import imp.util.ErrorLog;
-import imp.util.Preferences;
 import imp.util.Trace;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -262,11 +259,6 @@ public int getNextUniqueChordIndex(int slotIndex)
      */
     public Chord getPrevChord(int slotIndex) {
         return (Chord)getPrevUnit(slotIndex);
-    }
-    
-    public void getChordMetre(int metre[]){
-    //    System.out.println("SectionInfo = " + sectionInfo);
-        sectionInfo.getMetre(metre);
     }
     
     public int[] getChordMetre(){
