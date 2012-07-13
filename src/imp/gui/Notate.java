@@ -46,6 +46,8 @@ import javax.sound.midi.Sequencer;
 import javax.sound.sampled.AudioFormat;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -167,16 +169,12 @@ public class Notate
   private int loopsRemaining;
 
   /**
-   *
    * Tell whether advice is initially open or not.
-   *
    */
   public static boolean adviceInitiallyOpen = false;
 
   /**
-   *
    * Used as a prefix on window titles
-   *
    */
   public static String windowTitlePrefix = "Impro-Visor";
 
@@ -184,47 +182,35 @@ public class Notate
 
 
   /**
-   *
    * Used as a prefix on leadsheet titles
-   *
    */
   public static String leadsheetTitlePrefix = "Leadsheet: ";
 
 
   /**
-   *
    * Standard file for vocabulary
-   *
    */
   public String vocFile = "My.voc";
 
 
  /**
-  *
   * file for musicXML chord description
-  *
   */
   public String musicxmlFile = "chord_musicxml.xml";
 
 
   /**
-   *
    * Standard file for leadsheet
-   *
    */
   public String lsFile = "untitled";
 
   /**
-   *
    * Counter for untitled leadsheets
-   *
    */
   private int lsCount = 1;
 
   /**
-   *
    * Standard sub-directory for leadsheets and midi
-   *
    */
   String leadsheetDirName = ImproVisor.getLeadsheetDirectory().toString(); //"leadsheets";
 
@@ -233,38 +219,28 @@ public class Notate
   String midiDir; // = "leadsheets" + File.separator + "midi";
 
   /**
-   *
    * Standard extension vocabulary
-   *
    */
   public String vocabExt = ".voc";
 
   /**
-   *
    * Standard extension for leadsheets
-   *
    */
   public String leadsheetExt = ".ls";
 
   /**
-   *
    * Midi extension
-   *
    */
   public String midiExt = ".mid";
 
  /**
-  *
   * MusicXML extension
-  *
   */
   public String musicxmlExt = ".xml";
 
 
   /**
-   *
    * Default Filenames
-   *
    */
   public String lsDef = "untitled.ls";
 
@@ -274,18 +250,14 @@ public class Notate
 
 
   /**
-   *
    * The maximum number of measures per line.  I'm not sure quite why, but things
    *
    * break if this is exceeded.
-   *
    */
   public static final int maxMeasuresPerLine = 15;
 
   /**
-   *
    * The default stave type.
-   *
    */
   public StaveType DEFAULT_STAVE_TYPE = Preferences.getStaveTypeFromPreferences();
 
@@ -302,87 +274,66 @@ public class Notate
   ArrayList<Object> adviceMenuItemsQuotes;
 
   /**
-   *
    * The array of JScrollPanes that hold scoreBG panels, which hold Staves.
-   *
    */
   protected StaveScrollPane[] staveScrollPane;
 
   /**
-   *
    * beatValue is represents how many slots a beat takes up.  To account for different
    *
    * time signatures, it is scaled to (BEAT*4)/(timeSignatureBottom).  (Thus, for 4/4,
    *
    * beatValue is simply BEAT, and for 6/8, beatValue is BEAT/2.
-   *
    */
   private int beatValue = BEAT;
 
   /**
-   *
    * measureLength is the number of slots a measure takes up.  It's basically timeSignatureTop * beatValue.
    *
    * Thus, for 4/4, it's 4 * BEAT.
-   *
    */
   private int measureLength = 4 * BEAT;
 
   /**
-   *
    * The Score to be displayed
-   *
    */
   protected Score score;
 
   /**
-   *
    * An array of Parts in the Score to be displayed
-   *
    */
   protected PartList partList;
 
   /**
-   *
    * The chord progression of the Score
-   *
    */
   protected ChordPart chordProg;
 
   /**
-   *
    * The main Impro-Visor class. Needs to be passed for the clipboard
    *
    * variables.
-   *
    */
   protected ImproVisor impro;
 
   /**
-   *
    * Command manager for the Notate frame
-   *
    */
   public CommandManager cm;
 
   /**
-   *
    * Advisor for improvising
-   *
    */
   private Advisor adv;
 
   /**
-   *
    * Chord to insert from popup
    */
 
   private String chordToInsert = null;
 
  /**
-   *
    * Lick Generator
-   *
    */
   private LickGen lickgen;
 
@@ -398,9 +349,7 @@ public class Notate
   private boolean allMeasures = false;
 
   /**
-   *
    * Default values pertinent to lick generation
-   *
    */
 
   private double roundTo = BEAT;
@@ -471,9 +420,7 @@ public class Notate
   }
 
   /**
-   *
    * The file chooser for opening and saving leadsheets.
-   *
    */
   private JFileChooser openLSFC;
 
@@ -490,82 +437,61 @@ public class Notate
   private LeadsheetPreview lsSavePreview;
 
   /**
-   *
    * The file chooser for opening and saving vocabulary
-   *
    */
   private JFileChooser vocfc;
 
   /**
-   *
    * The file chooser for opening and saving midi files
-   *
    */
   private JFileChooser midfc;
 
  /**
-  *
   * The file chooser for opening and saving musicXML files
-  *
   */
   private JFileChooser musicxmlfc;
 
 
   /**
-   *
    * The file chooser for opening and saving the grammar
-   *
    */
   private JFileChooser grammarfc;
 
   /**
-   *
    * The width of the main frame
-   *
    */
   public static final int NOTATE_WIDTH = 1100;
 
 
   /**
-   *
    * Index of the current tab
-   *
    */
   private int currTabIndex;
 
   /**
-   *
    * The locked number of measures on each line
-   *
    */
   protected int[] lockedMeasures = null;
 
   /**
-   *
    * If the stave layout is locked or not
-   *
    */
   private boolean autoAdjustStaves = false;
 
   /**
-   *
    * If pasting should always overwrite notes
-   *
    */
   private boolean alwaysPasteOver = true;
 
   /**
-   *
    * Flag for whether the entry sound was muted before drawing mode.
    *
    * Remembered between mode toggles.
-   *
    */
   private boolean preDrawingEntryMuted = false;
 
 
   /**
-   *
    * Flag:
    *
    * I couldn't find a way to determine whether a changeEvent originated from
@@ -596,29 +522,23 @@ public class Notate
   private boolean mixerSliderIgnoreStateChangedEvt = false;
 
   /**
-   *
    * Flag for if the user has just pasted. Needed to display blue/green
    *
    * construction lines
-   *
    */
   protected boolean justPasted = false;
 
   /**
-   *
    * The file of the leadsheet if it is saved.
    *
    * Null if it is not saved.
-   *
    */
   private File savedLeadsheet;
 
   /**
-   *
    * The file of the advice if it is saved.
    *
    * Null if it is not saved.
-   *
    */
   private File savedVocab;
 
@@ -631,9 +551,7 @@ public class Notate
   private String lickTitle = "unnamed";
 
   /**
-   *
    * Midi Preferences reference to the midiManager and JComboBox models
-   *
    */
   private MidiSynth midiSynth = null; // one midiSynth is created for each Notate instance for volume control and MIDI sequencing
 
@@ -652,18 +570,14 @@ public class Notate
   private boolean stepInputActive = false;
 
   /**
-   *
    * Stores the index of stave tab where the playback indicator is currently
    *
    * located
-   *
    */
   private int currentPlaybackTab = 0;
 
   /**
-   *
    * Icons for the record button
-   *
    */
   private ImageIcon recordImageIcon =
     new ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/record.gif"));
@@ -677,8 +591,24 @@ public class Notate
 
   private RecentStyleListModel recentStyleListModel = new RecentStyleListModel();
 
+  //markermarkermarker
   private SectionListModel sectionListModel = new SectionListModel();
 
+  private SectionTableModel sectionTableModel = new SectionTableModel (
+          new Object [][] {{null, null, null, null, null, null, null},
+                           {null, null, null, null, null, null, null},
+                           {null, null, null, null, null, null, null},
+                           {null, null, null, null, null, null, null},
+                           {null, null, null, null, null, null, null},
+                           {null, null, null, null, null, null, null}
+          },
+          
+          new String [] {
+                "Phrase", "Start", "End", "Bars", "Style", 
+                /*"Tempo", "Time Sig.", "Key Sig.",*/ 
+                "Options"
+        });
+  
   private SectionInfo sectionInfo;
 
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
@@ -710,9 +640,7 @@ public class Notate
     };
 
   /**
-   *
    * Various Instrument Chooser objects for the different preferences
-   *
    */
   private InstrumentChooser melodyInst,  chordInst,  bassInst,  defMelodyInst,  defChordInst,  defBassInst;
 
@@ -723,9 +651,7 @@ public class Notate
   private StyleEditor styleEditor = null;
 
   /**
-   *
    * Various input mode names
-   *
    */
   public enum Mode
     {
@@ -748,9 +674,7 @@ public class Notate
     }
 
   /**
-   *
    * current mode, previous mode, play status
-   *
    */
   private Mode mode = Mode.NORMAL;
 
@@ -759,14 +683,11 @@ public class Notate
   private MidiPlayListener.Status playingStatus = MidiPlayListener.Status.STOPPED;
 
   /**
-   *
    * latency measurement tool for the preferences dialog
-   *
    */
   private MidiLatencyMeasurementTool midiLatencyMeasurement;
 
   /**
-   *
    * If playback indicator goes off the screen, autoscroll to show it again
    *
    * if this value is true.  This is always set to true when playback starts,
@@ -774,16 +695,13 @@ public class Notate
    * but if the user scrolls it is temporarily set to false until the next
    *
    * playback.
-   *
    */
   private boolean autoScrollOnPlayback;
 
   private CriticDialog criticDialog;
 
   /**
-   *
    * Handles slider events and playback time label updates
-   *
    */
   PlaybackSliderManager playbackManager;
 
@@ -800,13 +718,11 @@ public class Notate
 
 
   /**
-   *
    * Constructs a new Notate JFrame.
    *
    * Recursively calls Notate(Score, int, int) with a default blank Score and
    *
    * the (0,0) origin.
-   *
    */
   public Notate()
     {
@@ -814,7 +730,6 @@ public class Notate
     }
 
   /**
-   *
    * Constructs a new Notate JFrame.
    *
    * Recursively calls Notate(Score, int, int) with a default blank part and
@@ -822,11 +737,9 @@ public class Notate
    * the given x, y-coordinates.
    *
    *
-   *
    * @param x         x-coordiante of the top left corner of the frame
    *
    * @param y         y-coordinate of the top left corner of the frame
-   *
    */
   public Notate(int x, int y)
     {
@@ -834,7 +747,6 @@ public class Notate
     }
 
   /**
-   *
    * Constructs a new Notate JFrame.
    *
    * Recursively calls Notate(Score, int, int) with a given part inputted and
@@ -842,9 +754,7 @@ public class Notate
    * the (0,0) origin.
    *
    *
-   *
    * @param score      the score to be displayed in the scoreFrame
-   *
    */
   public Notate(Score score)
     {
@@ -857,9 +767,7 @@ public class Notate
     }
 
   /**
-   *
    * Needed in order to call the constructor with advice
-   *
    *
    *
    * @param score     the score to be displayed in the scoreFrame
@@ -867,7 +775,6 @@ public class Notate
    * @param x         x-coordinate of the top left corner of the frame
    *
    * @param y         y-coordinate of the top left corner of the frame
-   *
    */
   public Notate(Score score, int x, int y)
     {
@@ -875,13 +782,11 @@ public class Notate
     }
 
   /**
-   *
    * Constructs a new Notate JFrame.
    *
    * Sets the title to the score title, the starting location of the frame to
    *
    * the x, y-coordinates.
-   *
    *
    *
    * @param score     the score to be displayed in the scoreFrame
@@ -895,11 +800,9 @@ public class Notate
    * @param y         y-coordinate of the top left corner of the frame
    *
    *
-   *
    * @see #initComponents()
    *
    * @see #setupArrays()
-   *
    */
 
   public Notate(Score score, Advisor adv, ImproVisor impro, int x, int y)
@@ -994,7 +897,7 @@ public class Notate
 
     criticDialog = new CriticDialog(lickgenFrame);
 
-
+    
     // setup the file choosers' initial paths
 
     LeadsheetFileView lsfv = new LeadsheetFileView();
@@ -1111,6 +1014,12 @@ public class Notate
 
     initComponents();
 
+    //markermarkermarker
+    sectionTable.setModel(sectionTableModel);
+    sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    //sectionTable.setDefaultEditor(Boolean.class, sectionCellEditor);
+    //sectionTable.setDefaultRenderer(Boolean.class, sectionCellRenderer);
+    
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
@@ -1320,13 +1229,11 @@ public class Notate
     }
 
   /**
-   *
    * Returns if the staves continuously auto-adjust their layout
    *
    * @return boolean          flag for if the staves continuously adjust
    *
    *                          their layout
-   *
    */
   public boolean getAutoAdjust()
     {
@@ -1367,11 +1274,9 @@ public class Notate
     }
 
   /**
-   *
    * Returns whether paste should always overwrite notes
    *
    * @return boolean          true if paste should always overwrite
-   *
    */
   public boolean getAlwaysPasteOver()
     {
@@ -1379,11 +1284,9 @@ public class Notate
     }
 
   /**
-   *
    * Returns the currently selected tab
    *
    * @return int              the currently selected tab
-   *
    */
   public int getCurrTabIndex()
     {
@@ -1391,13 +1294,11 @@ public class Notate
     }
 
   /**
-   *
    * Returns the Stave at the given tab index
    *
    * @param index             the index of the StaveScrollPane
    *
    * @return Stave            the Stave at the given index
-   *
    */
   public Stave getStaveAtTab(int index)
     {
@@ -1418,7 +1319,6 @@ public class Notate
   }
 
   /**
-   *
    * This method is called from within the constructor to
    *
    * initialize the form.
@@ -1465,6 +1365,8 @@ public class Notate
         recentStyleLabel = new javax.swing.JLabel();
         recentStyleListScrollPane = new javax.swing.JScrollPane();
         recentStyleList = new javax.swing.JList();
+        SectionTableScrollPane = new javax.swing.JScrollPane();
+        sectionTable = new javax.swing.JTable();
         chorusPreferences = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jTabbedPane4 = new javax.swing.JTabbedPane();
@@ -2411,7 +2313,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
@@ -2428,7 +2330,7 @@ public class Notate
         measureLabel.setPreferredSize(new java.awt.Dimension(200, 16));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -2444,7 +2346,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -2468,7 +2370,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -2487,7 +2389,7 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         currentStyleTab.add(phraseCheckBox, gridBagConstraints);
 
@@ -2523,6 +2425,45 @@ public class Notate
         gridBagConstraints.weighty = 0.4;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(recentStyleListScrollPane, gridBagConstraints);
+
+        sectionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Phrase", "Start", "End", "Bars", "Style", "Options"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        SectionTableScrollPane.setViewportView(sectionTable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weighty = 1.0;
+        currentStyleTab.add(SectionTableScrollPane, gridBagConstraints);
 
         styleTabs.addTab("Styles by Section", currentStyleTab);
 
@@ -7615,12 +7556,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -7636,12 +7577,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -8493,12 +8434,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -8531,12 +8472,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -8830,13 +8771,34 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
 
     styleListModel.reset();
 
-    sectionListModel.reset();
+    //sectionListModel.reset();
+    
+    sectionTableModel.tableRefresh();
+    //markermarkermarker
     }
 
-  public void reCaptureCurrentStyle()
+  public void setTableColumnWidths()
+  {
+      for(int j = 0; j < sectionTableModel.getColumnCount();j++)
     {
-    score.getChordProg().getSectionInfo().reloadStyles();
+        sectionTable.getColumnModel().getColumn(j).
+                setPreferredWidth(sectionTableModel.getColumnWidths(j));
     }
+
+    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+    
+    for(int j = 1; j < sectionTableModel.getColumnCount(); j++)
+    {
+        renderer.setHorizontalAlignment( sectionTableModel.getColumnAdjustments(j));
+        sectionTable.getColumnModel().getColumn(j).setCellRenderer( renderer );
+    }
+    //sectionTable.getColumnModel().getColumn(0).setCellRenderer( sectionCellRenderer );
+  }
+  
+  public void reCaptureCurrentStyle()
+  {
+    score.getChordProg().getSectionInfo().reloadStyles();
+  }
 
     private void helpAboutMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpAboutMIActionPerformed
       showAboutDialog();
@@ -8895,18 +8857,31 @@ private void setSectionParameters()
   {
   setSectionPrefs();
 
-  sectionListModel.refresh();
+  //sectionListModel.refresh();
+  
+  sectionTableModel.tableRefresh();
+  //markermarkermarker
   }
 
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
 
-      sectionInfo.newSection(sectionList.getSelectedIndex());
+      //sectionInfo.newSection(sectionList.getSelectedIndex());
 
-      sectionListModel.refresh();
+      //sectionListModel.refresh();
+      
+      
+      int index = sectionTable.getSelectedRow();
+      if(index < 0)
+          return;
+      sectionTableModel.addARow();
+      sectionInfo.newSection(index);
+      sectionTableModel.tableRefresh();
+       
+      //markermarkermarker
     }//GEN-LAST:event_newSectionButtonActionPerformed
 
     private void delSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delSectionButtonActionPerformed
-
+      /*
       int index = sectionList.getSelectedIndex();
 
       sectionInfo.deleteSection(index);
@@ -8917,7 +8892,32 @@ private void setSectionParameters()
         }
 
       sectionListModel.refresh();
-
+      */
+      
+      int index = sectionTable.getSelectedRow();
+      if(index < 0)
+          return;
+      sectionInfo.deleteSection(index);
+      
+      /* code for selecting rows; currently does not work
+      if( index == 0)
+      {
+          sectionTable.addRowSelectionInterval(0,0);
+          //System.out.println(sectionTable.getSelectedRow() + "----" + "/n");
+          //sectionTable.updateUI();
+      }
+      else if( index >= sectionInfo.size() )
+      {
+          sectionTable.setRowSelectionInterval(sectionInfo.size() - 1,
+                                               sectionInfo.size() - 1);
+      }
+      else
+      {
+          sectionTable.setRowSelectionInterval(index-1,index-1);
+      }
+      */
+      sectionTableModel.tableRefresh();
+      //markermarkermarker
     }//GEN-LAST:event_delSectionButtonActionPerformed
 
 /**
@@ -8927,8 +8927,8 @@ private void setSectionParameters()
 
     private void sectionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_sectionListValueChanged
 
-      sectionListModel.refresh();
-
+      //sectionListModel.refresh();
+      //markermarkermarker
     }//GEN-LAST:event_sectionListValueChanged
 
     public void toCritic()
@@ -8993,7 +8993,9 @@ private void setStepInputBtn(boolean selected)
       Style style = (Style) styleList.getSelectedValue();
       //System.out.println("style = " + style);
       updateStyleList(style);
-      sectionListModel.refresh();
+      //sectionListModel.refresh();
+      sectionTableModel.tableRefresh();
+      //markermarkermarker
     }//GEN-LAST:event_styleListValueChanged
 
     private void defDrumVolSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_defDrumVolSliderStateChanged
@@ -10818,7 +10820,23 @@ void changePrefTab(JToggleButton button, JPanel tab)
     currentPrefTab = tab;
 
     //System.out.println("setting tab to " + tab);
-
+    
+    if(tab.equals(stylePreferences))
+    {
+        setTableColumnWidths();
+        sectionTable.setRowSelectionAllowed(true);
+        sectionTable.setColumnSelectionAllowed(false);
+        /*
+        if(sectionInfo != null)
+        {
+            for(int j = 0; j < sectionInfo.size(); j++)
+                System.out.print(sectionInfo.getSectionRecordByIndex(j).toString() + " ");
+            System.out.println("-----");
+        }
+        */
+    }
+    
+    //markermarkermarker
     preferencesScrollPane.setViewportView(tab);
 
     preferencesDialog.setSize(preferencesDialogDimension);
@@ -11188,6 +11206,141 @@ public void refresh()
 
     setNewSectionEnabled();
   }
+}
+
+//markermarkermarker
+//row gets sectionInfo's sectionRecord, column gets within sectionRecord
+/**
+ * When adjusting the number of columns, make sure:
+ *      to add the columns to the design/gui
+ *      to go to line ~697 where sectionTableModel is instantiated 
+ *          and uncomment/add the appropriate strings 
+ *      to change setTableColumnWidths() accordingly
+ *      to change the boolean [] canEdit accordingly
+ *      to change the int [] columnWidths and columnAdjustment accordingly
+ *      to change getValueAt accordingly
+ */
+public class SectionTableModel extends DefaultTableModel
+{
+    private static final int columnCount = 6;
+    
+    boolean[] canEdit = new boolean [] {
+              //phrase, start, end  , bars , style, options
+                true  , true , false, false, false, true
+            };
+    int [] columnWidths = new int [] { 
+                30    , 25   , 25   , 20   , 110  , 45
+            };
+    int [] columnAdjustment = new int [] {
+                JLabel.CENTER, JLabel.RIGHT, JLabel.RIGHT, JLabel.RIGHT, 
+                JLabel.LEFT  , JLabel.LEFT
+            };
+    
+    public SectionTableModel(Object [][] myTable, String [] columnHeaders)
+    {
+        super(myTable, columnHeaders);
+    }
+    
+    public int getColumnWidths(int index) {
+        return columnWidths[index];
+    }
+    
+    public int getColumnAdjustments(int index) {
+        return columnAdjustment[index];
+    }
+    
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+    }
+    
+    public void tableRefresh() {
+        fireTableDataChanged();
+        //for(int j = 0; j < sectionInfo.size(); j++)
+        //    System.out.print(getValueAt(j,0) + " ");
+        //System.out.println("------");
+    }
+
+    @Override
+    public Object getValueAt(int row, int column)
+    {
+        switch(column){
+            case 0: //phrase
+                return sectionInfo.getSectionRecordByIndex(row).getIsPhrase();
+            case 1: //startIndex
+                return sectionInfo.getSectionMeasure(row);
+            case 2: //endIndex
+            {
+                if(row + 1 < sectionInfo.size())
+                    return (sectionInfo.getSectionMeasure(row+1)-1);
+                return sectionInfo.measures();
+            }
+            case 3: //bars
+            {
+                if(row + 1 < sectionInfo.size())
+                    return (sectionInfo.getSectionMeasure(row+1)-1)-(sectionInfo.getSectionMeasure(row))+1;
+                return sectionInfo.measures() - sectionInfo.getSectionMeasure(row) + 1;
+            }
+            case 4: //styleName
+                return " " + sectionInfo.getSectionRecordByIndex(row).getStyleName();
+            case 5: //tempo
+                return null;
+            case 6: //Time Sig.
+                return null;
+            case 7: //Key Sig.
+                return null;
+            case 8: //Options
+                return null;
+            default:
+                return null;
+        }
+    }
+    
+    @Override
+    public void setValueAt(Object aValue, int row, int column)
+    {
+        switch(column)
+        {
+            case 0:
+                sectionInfo.getSectionRecordByIndex(row).setIsPhrase((Boolean)aValue);
+            default:
+                sectionInfo.setSpecificCell(aValue, row, column);
+        }    
+        tableRefresh();
+    }
+    
+    @Override
+    public int getRowCount() {
+        //return 0 if sectionInfo is null, else return sectionInfo.size()
+        return sectionInfo == null ? 0 : sectionInfo.size();
+    }
+    
+    @Override
+    public int getColumnCount() {
+        return columnCount;
+    }
+    
+    public void addARow()
+    {
+        sectionTableModel.insertRow(0, new Object [] {new Integer(0), 
+                                                    new Integer(0), 
+                                                    new Integer(0),
+                                                    "",
+                                                    null}
+              );
+    }
+    
+    @Override
+    public Class getColumnClass(int column)
+    {
+        switch(column)
+        {
+            case 0:
+                return Boolean.class;
+        }
+        return Object.class;
+    }
+    
 }
 
 @SuppressWarnings("serial")
@@ -13684,6 +13837,7 @@ private boolean saveSectionInfo()
     return true;
   }
 
+//markermarkermarker
 private boolean setSectionPrefs()
   {
     try
@@ -13725,7 +13879,7 @@ private boolean setSectionPrefs()
 
     return true;
   }
-
+//markermarkermarker
 private boolean saveStylePrefs()
   {
     SectionRecord record = sectionInfo.getSectionRecordByIndex(sectionList.getSelectedIndex());
@@ -13770,7 +13924,7 @@ public void updateStyleList(Style style)
     if( style != null )
       {
       swingTF.setText("" + style.getSwing());
-
+      //markermarkermarker
       sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
       }
    }
@@ -14500,9 +14654,9 @@ private boolean saveGlobalPreferences()
     drawColorTonesCheckBox.setSelected(drawTones.charAt(2) == '1');
 
     // ===== update Style panel
-
+    //markermarkermarker
     sectionList.setSelectedIndex(0);
-
+    sectionTable.getSelectionModel().setSelectionInterval(0,0);
 
     if( sectionInfo != null )
       {
@@ -14512,7 +14666,7 @@ private boolean saveGlobalPreferences()
         styleList.setSelectedValue(style, true);
         }
       }
-
+    //markermarkermarker
     sectionListModel.reset();
 
 
@@ -14654,7 +14808,7 @@ private boolean saveGlobalPreferences()
     {
     return score.getBreakpoint();
     }
-
+  //markermarkermarker
   private void setNewSectionEnabled()
     {
     int measureLength = score.getChordProg().getMeasureLength();
@@ -20762,7 +20916,7 @@ private void populateRecentLeadsheetNewWindow(javax.swing.event.MenuEvent evt) {
                   });
       }
 }//GEN-LAST:event_populateRecentLeadsheetNewWindow
-private boolean skippedBack = false; //markermarkermarker
+private boolean skippedBack = false;
 
     public void playAndCaptureChordAtIndex(int index)
     {
@@ -21098,7 +21252,9 @@ private void useBeamsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRS
 private void recentStyleListValueChanged(javax.swing.event.ListSelectionEvent evt)//GEN-FIRST:event_recentStyleListValueChanged
   {//GEN-HEADEREND:event_recentStyleListValueChanged
       updateStyleList((Style)recentStyleList.getSelectedValue());
-      sectionListModel.refresh();
+      //sectionListModel.refresh();
+      sectionTableModel.tableRefresh();
+      //markermarkermarker
   }//GEN-LAST:event_recentStyleListValueChanged
 
 private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearHistoryMIrevertLeadsheetActionPerformed
@@ -21253,7 +21409,7 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
       openStepKeyboard();
     }//GEN-LAST:event_stepKeyboardMIActionPerformed
 
-    private int indexOfLastChordPlayed = 0; //markermarkermarker
+    private int indexOfLastChordPlayed = 0; 
 
     private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
 
@@ -22795,6 +22951,7 @@ public void showNewVoicingDialog()
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane SectionTableScrollPane;
     private javax.swing.JMenuItem aboutMI;
     private javax.swing.JButton acceptTruncate;
     private javax.swing.JMenuItem addRestMI;
@@ -23322,6 +23479,7 @@ public void showNewVoicingDialog()
     private javax.swing.JList sectionList;
     private javax.swing.JScrollPane sectionListScrollPane;
     private javax.swing.JButton sectionPreferencesBtn;
+    private javax.swing.JTable sectionTable;
     private javax.swing.JLabel selectAStyleLabel;
     private javax.swing.JMenuItem selectAllMI;
     private javax.swing.JCheckBox sendSetBankCheckBox;

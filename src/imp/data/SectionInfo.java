@@ -183,6 +183,10 @@ public class SectionInfo implements Constants, Serializable {
                    record.getIsPhrase());
     }
 
+    public void nWaySplit(int index) {
+        
+    }
+    
     public Integer getPrevSectionIndex(int n) {
         ListIterator<SectionRecord> k = records.listIterator();
         while( k.hasNext() )
@@ -338,6 +342,7 @@ public SectionRecord getSectionRecordByIndex(int n)
         return records.size() == 1;
       }
 
+    //markermarkermarker
     public String getInfo(int index) {
         SectionRecord record = records.get(index);
         
@@ -352,6 +357,29 @@ public SectionRecord getSectionRecordByIndex(int n)
             info = "m. " + startIndex + ": " + styleName;
 
         return info;
+    }
+    
+    public void setSpecificCell(Object aValue, int row, int column){
+        
+        switch(column){
+            case 1:
+                int intValue;
+                try
+                {
+                    intValue = Integer.parseInt(aValue.toString());
+                    adjustSection(row, 
+                                  intValue,
+                                  records.get(row).getIsPhrase(), 
+                                  false);
+                }
+                catch( NumberFormatException e )
+                {
+                }
+                break;
+                
+            default:
+                getSectionRecordByIndex(row).setColumn(aValue, column);
+        }
     }
     
     public int getSectionMeasure(int index) {
@@ -372,7 +400,7 @@ public SectionRecord getSectionRecordByIndex(int n)
         int measureLength = chords.getMeasureLength();
         return chords.size()/measureLength;
     }
-    
+                            //row      , startIndex
     public void adjustSection(int index, int newMeasure, boolean isPhrase, boolean usePreviousStyleChecked) {
          //System.out.println("1 records = " + records);
          
@@ -381,7 +409,8 @@ public SectionRecord getSectionRecordByIndex(int n)
         
         
          SectionRecord record = records.get(index);
-
+            //gets the start measure # of the section
+         //if user wants to change start index to what it is already -_-
          if(getSectionMeasure(index) == newMeasure)
           {
             record.setIsPhrase(isPhrase);
@@ -391,31 +420,42 @@ public SectionRecord getSectionRecordByIndex(int n)
               }
             return;
           }
-
-        String styleName = usePreviousStyleChecked ? Style.USE_PREVIOUS_STYLE : record.getStyleName();
-        deleteSection(index);
-        addSection(styleName, measureToSlotIndex(newMeasure), isPhrase);
+         
+         if (index > 0 && newMeasure == getSectionMeasure(index-1))
+         {
+            return;
+         }
+         
+         String styleName = usePreviousStyleChecked ? Style.USE_PREVIOUS_STYLE : record.getStyleName();
+         deleteSection(index);
+         addSection(styleName, measureToSlotIndex(newMeasure), isPhrase);
     }
-  
-    // Not sure about this:
-    
+
     public void deleteSection(int index) {
         if(size() <= 1)
             return;
+        SectionRecord fillSpot = null;
+        if(index == 0)
+            fillSpot = records.get(1);
+        
+        if(index < size()-1)
+        {
+            SectionRecord nextRecord = records.get(index+1);
+            if(nextRecord.usePreviousStyle())
+                nextRecord.setStyleName(records.get(index).getStyleName());
+        }
         
         ListIterator<SectionRecord> k = records.listIterator(index);
-        SectionRecord record = k.next();
+        k.next();
+        
+        int newStartIndex = getSectionMeasure(index);
+        
         k.remove();
         
-        String styleName = record.getStyleName();
-        
-        if( index == 0 )
-          {
-            k = records.listIterator(0);
-            k.next();
-            k.remove();
-            k.add(new SectionRecord(styleName, 0, false));
-          }
+        if(fillSpot != null)
+        {
+            fillSpot.setIndex(measureToSlotIndex(newStartIndex));
+        }
         
     }
     

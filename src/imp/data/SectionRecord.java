@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.brickdictionary.Block;
+import java.util.*;
 
 /**
  * SectionRecord records the information about a section. It was added when
@@ -34,6 +35,11 @@ String styleName;
 Style style = null;
 int index;
 boolean isPhrase;
+
+int tempo;
+String timeSig;
+String keySig;
+
 
 SectionRecord(String styleName, int index, boolean isPhrase)
   {
@@ -51,6 +57,26 @@ SectionRecord(SectionRecord orig)
   {
     this(orig.getStyleName(), orig.getIndex(), orig.getIsPhrase());
   }
+
+public void setColumn(Object aValue, int column)
+{
+    
+    switch(column){
+            case 4: //styleName
+                setStyleName((String)aValue);
+            case 5: //tempo
+                break;
+            case 6: //Time Sig.
+                break;
+            case 7: //Key Sig.
+                break;
+            case 8: //Options
+                break;
+            default:
+                break;
+    }
+    
+}
 
 public boolean getIsPhrase()
   {
@@ -83,10 +109,15 @@ public String getStyleName()
     return styleName;
   }
 
-private void setStyleName(String name)
+public void setStyleName(String name)
   {
     this.styleName = name;
   }
+
+public boolean usePreviousStyle()
+{
+    return styleName.equals(Style.USE_PREVIOUS_STYLE);
+}
 
 public void setStyle(Style style)
   {
@@ -123,7 +154,7 @@ public int getSectionType()
 @Override
 public String toString()
   {
-    return "(Section " + styleName + " " + index + " " + isPhrase + ")";
+    return "(Section " + styleName + " " + index + " " + isPhrase + ")"; 
   }
 
 }
