@@ -47,7 +47,17 @@ import polya.Polylist;
  * @author      Stephen Jones (rewritten from code written by Andrew Sorensen
  *              and Andrew Brown)
  */
+
+@SuppressWarnings("serial")
 public class Score implements Constants, Serializable {
+
+/**
+ * Counter used for generating titles CP_2, CP_3, ...
+ */
+
+static int chordPartNumber = 1;
+
+static final String chordPartBase = "CP_";
 
     /**
      * Default bars per line layout. Note that, in general, the layout
@@ -139,24 +149,15 @@ public class Score implements Constants, Serializable {
      */
     private PartList partList;
 
-//    /**
-//     * The chord Progression
-//     */
-//    private ChordPart chordProg;
     
     /*
-     * Mapping from name to ChordPart
+     * Mapping from names to ChordParts
      */
     private ConcurrentHashMap<String, ChordPart> chordPartList 
             = new ConcurrentHashMap<String,ChordPart>();
     
-//    /*
-//     * The ArrayList controlling the order of the ChordParts
-//     */
-//    private ArrayList chordPartOrder = new ArrayList();
-
     /**
-     * The count-in Progression
+     * The count-in Progression for this Score, if any.
      */
     private ChordPart countInProg = null;
 
@@ -953,7 +954,7 @@ public class Score implements Constants, Serializable {
                                            transposition, 
                                            endLimitIndex);
             
-            long chTime = melodyPart.getChordProg().render(seq, 
+            long chTime = melodyPart.getChordPart().render(seq, 
                                            time, 
                                            seq.getChordTrack(), 
                                            transposition, 
@@ -1260,9 +1261,6 @@ public SectionInfo getDefaultSectionInfo()
   {
     return getDefaultChordPart().getSectionInfo();
   }
-
-static int chordPartNumber = 0;
-static String chordPartBase = "CP_";
 
 public String genNewChordPartName()
   {

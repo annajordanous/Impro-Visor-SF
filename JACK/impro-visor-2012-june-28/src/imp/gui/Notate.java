@@ -1144,7 +1144,7 @@ public class Notate
     
     //score.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
-     //sectionInfo = score.getChordProg().getSectionInfo().copy();
+     //sectionInfo = score.getChordPart().getSectionInfo().copy();
 
      showAdviceButton.setSelected(adviceInitiallyOpen);
 
@@ -9230,7 +9230,7 @@ private void setStepInputBtn(boolean selected)
      */
     public void playChordAtIndex(int index)
     {
-        Chord chordToPlay = getCurrentMelodyPart().getChordProg().getChord(index);
+        Chord chordToPlay = getCurrentMelodyPart().getChordPart().getChord(index);
         if( chordToPlay == null )
           {
             return;
@@ -11143,7 +11143,7 @@ public Object getElementAt(int index)
 
 public void reset()
   {
-    //sectionInfo = score.getChordProg().getSectionInfo().copy();
+    //sectionInfo = score.getChordPart().getSectionInfo().copy();
 
     refresh();
   }
@@ -12749,7 +12749,7 @@ private void openAdviceFrame()
         cm.execute(
                 new SetChordsCommand(getCurrentSelectionStart(),
                                      parseListFromString(enteredText),
-                                     getCurrentMelodyPart().getChordProg(),
+                                     getCurrentMelodyPart().getChordPart(),
                                      score.getPart(currTabIndex) ));
         }
         
@@ -12972,6 +12972,11 @@ static private void invalidInteger(String text)
 public Stave getCurrentStave()
   {
     //System.out.println("staveScrollPane = " + staveScrollPane + ", currTabIndex = " + currTabIndex);
+    if( staveScrollPane == null || staveScrollPane[currTabIndex] == null )
+      {
+        return null;
+      }
+
     return staveScrollPane[currTabIndex].getStave();
   }
 
@@ -13188,8 +13193,8 @@ public SectionInfo getCurrentSectionInfo()
       Stave stave = getCurrentStave();
 
       cm.execute(
-//              new CopyCommand(stave.getChordProg(),
-              new CopyCommand(getCurrentMelodyPart().getChordProg(),
+//              new CopyCommand(stave.getChordPart(),
+              new CopyCommand(getCurrentMelodyPart().getChordPart(),
               impro.getChordsClipboard(),
               getCurrentSelectionStart(),
               getCurrentSelectionEnd()));
@@ -13227,7 +13232,7 @@ public SectionInfo getCurrentSectionInfo()
       Stave stave = getCurrentStave();
 
       cm.execute(
-              new CutCommand(getCurrentMelodyPart().getChordProg(),
+              new CutCommand(getCurrentMelodyPart().getChordPart(),
               impro.getChordsClipboard(),
               getCurrentSelectionStart(),
               getCurrentSelectionEnd()));
@@ -13699,7 +13704,7 @@ private boolean saveMidiLatency()
     
 private boolean saveSectionInfo()
   {
-    //score.getChordProg().setSectionInfo(sectionInfo.copy());
+    //score.getChordPart().setSectionInfo(sectionInfo.copy());
 
     return true;
   }
@@ -14765,13 +14770,25 @@ private boolean saveGlobalPreferences()
 
   public void refreshTabTitle(int i)
     {
-    String title = staveScrollPane[i].getStave().getPartTitle();
-
-    if( title.trim().equals("") )
+    String title = staveScrollPane[i].getTitle().trim();
+    
+    String chordPartTitle = staveScrollPane[i].getChordPartTitle();
+    
+    if( title.equals("") )
       {
-      title = "Chorus " + (i + 1);
+        title = "Chorus " + (i + 1);
       }
-    scoreTab.setTitleAt(i, title);
+        
+    if( ChordPart.DEFAULT_TITLE.equals(chordPartTitle) )
+      {
+        chordPartTitle = "";
+      }
+    else
+      {
+        chordPartTitle = " ( " + chordPartTitle + ")";
+      }
+    
+    scoreTab.setTitleAt(i, title + chordPartTitle);
     }
     
     
@@ -14919,7 +14936,7 @@ private boolean saveGlobalPreferences()
     
     // For illustration purposes:
     
-    // ChordPart chordPart = score.getChordProg();
+    // ChordPart chordPart = score.getChordPart();
             
     // System.out.println("chord symbols: " + chordPart.getChordSymbols()); 
     // System.out.println("chord durations: " + chordPart.getChordDurations());       
@@ -15450,7 +15467,7 @@ public void addTab()
     
     int length = mp.size(); //score.getLength();
     
-    ChordPart newChordPart = mp.getChordProg().copy();
+    ChordPart newChordPart = mp.getChordPart().copy();
     
     String newChordPartName = score.genNewChordPartName();
     
@@ -15469,7 +15486,7 @@ public void addTab()
    {
       int keySig = getCurrentStave().getKeySignature();
 
-//        int progSize = score.getChordProg().size();
+//        int progSize = score.getChordPart().size();
 //        if( newmp.size() <  progSize)
 //          {
 //            // Pad the new melody part with rests so that there is no gap.
@@ -16052,7 +16069,7 @@ public void setAdviceUsed()
     
     public void toggleChordEnharmonics() {
         cm.execute(new ToggleEnharmonicCommand(
-                getCurrentMelodyPart().getChordProg(),
+                getCurrentMelodyPart().getChordPart(),
                 getCurrentSelectionStart(),
                 getCurrentSelectionEnd()));
     }
@@ -16315,7 +16332,7 @@ private void enterBoth()
             cm.execute(new SetChordsCommand(
                     getCurrentSelectionStart(),
                     parseListFromString(chordText),
-                    getCurrentMelodyPart().getChordProg(),
+                    getCurrentMelodyPart().getChordPart(),
                     score.getPart(currTabIndex)));
             
             redoAdvice();
@@ -16344,7 +16361,7 @@ void enterChords()
             cm.execute(new SetChordsCommand(
                     getCurrentSelectionStart(),
                     parseListFromString(windowText),
-                    getCurrentMelodyPart().getChordProg(),
+                    getCurrentMelodyPart().getChordPart(),
                     null));
 
             redoAdvice();
@@ -16481,7 +16498,7 @@ public void pasteMelody(Part part)
         if( impro.chordsClipboardNonEmpty() )
           {
             cm.execute(new SafePasteCommand(impro.getChordsClipboard(),
-                                            getCurrentMelodyPart().getChordProg(),
+                                            getCurrentMelodyPart().getChordPart(),
                                             getCurrentSelectionStart(), !alwaysPasteOver, true, this));
           }
 
@@ -20286,7 +20303,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
                                         maxInterval, 
                                         BEAT, 
                                         leapProb, 
-                                        getCurrentMelodyPart().getChordProg(),
+                                        getCurrentMelodyPart().getChordPart(),
                                         0, 
                                         avoidRepeats);
 
@@ -21914,7 +21931,7 @@ public void showNewVoicingDialog()
 
       pane.setStave(stave);
 
-      stave.setChordProg(mp.getChordProg());
+      stave.setChordProg(mp.getChordPart());
 
       stave.setPart(mp);
 
@@ -23791,7 +23808,7 @@ public void toGrammar()
 
     //System.out.println("Writing productions to grammar file: " + outFile);
     setLickGenStatus("Writing productions to grammar file: " + outFile);
-    CreateGrammar.create(getCurrentMelodyPart().getChordProg(),
+    CreateGrammar.create(getCurrentMelodyPart().getChordPart(),
                          inFile,
                          outFile,
                          lickgenFrame.getNumClusterReps(),
@@ -24095,15 +24112,6 @@ public void actionPerformed(ActionEvent evt)
     int slotInPlayback = midiSynth.getSlot() - slotDelay;
     int slot = slotInPlayback;
     int totalSlots = midiSynth.getTotalSlots();
-  
-//    //Poll for audio input every x slots
-//    if( slot % 239 == 0) {
-//        extractor.stopCapture();
-//        notFirstMeasure = true;
-//    }
-//    else if(notFirstMeasure && slot % 240 == 0) {
-//        extractor.captureAudio();
-//    }
 
     //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
     //System.out.println("Slot in playback: " + slotInPlayback);
@@ -24116,7 +24124,7 @@ public void actionPerformed(ActionEvent evt)
 
     //slotInPlayback += playbackOffset;
 
-    int chorusSize = getScore().getLength();
+    //int chorusSize = getScore().getLength();
 
     int tab = currentPlaybackTab;
     
