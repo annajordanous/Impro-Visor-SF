@@ -23,12 +23,11 @@ package imp.gui;
 import imp.Constants;
 import imp.ImproVisor;
 import imp.data.*;
+import imp.data.MidiImport.ChannelInfo;
 import imp.util.LeadsheetFileView;
 import imp.util.MidiFilter;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -55,6 +54,7 @@ private int bassChannel = 0;
 private int chordChannel = 0;
 private int chordResolution = HALF;
 
+private ChannelInfo[] channelInfo = null;
 
 String filenameDisplay;
 
@@ -90,6 +90,10 @@ public MidiImportFrame(Notate notate)
     noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
     
     midiDirectory = ImproVisor.getMidiDirectory();
+    
+    //for chord extraction
+    bassChannelNumberComboBox.setSelectedIndex(bassChannelNumberComboBox.getSelectedIndex());
+    chordChannelNumberComboBox.setSelectedIndex(chordChannelNumberComboBox.getSelectedIndex());
   }
 
 public void loadFileAndMenu()
@@ -152,6 +156,7 @@ public void loadMenu()
       }
     selectTrack(0);
     }
+  initChannelInfo();
   }
 
 private void reloadMenu()
@@ -183,6 +188,14 @@ public String getFilenameDisplay()
   {
     return filenameDisplay;
   }
+
+private void initChannelInfo()
+{
+    channelInfo = midiImport.getChannelInfo();
+    bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+    chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+}
+
 /**
  * This method is called from within the constructor to initialize the form.
  * WARNING: Do NOT modify this code. The content of this method is always
@@ -374,26 +387,41 @@ public String getFilenameDisplay()
         midiImportButtonPanel.add(noteResolutionComboBox, gridBagConstraints);
 
         chordExtractPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Channel #", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        chordExtractPanel.setMinimumSize(new java.awt.Dimension(180, 130));
+        chordExtractPanel.setPreferredSize(new java.awt.Dimension(180, 120));
+        chordExtractPanel.setRequestFocusEnabled(false);
+        chordExtractPanel.setLayout(new java.awt.GridBagLayout());
 
-        bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
+        bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
         bassChannelNumberComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bass", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
         bassChannelNumberComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bassChannelNumberComboBoxActionPerformed(evt);
             }
         });
-        chordExtractPanel.add(bassChannelNumberComboBox);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(28, 65, 0, 65);
+        chordExtractPanel.add(bassChannelNumberComboBox, gridBagConstraints);
 
-        chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
+        chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None" }));
         chordChannelNumberComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP));
         chordChannelNumberComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordChannelNumberComboBoxActionPerformed(evt);
             }
         });
-        chordExtractPanel.add(chordChannelNumberComboBox);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 65, 20, 65);
+        chordExtractPanel.add(chordChannelNumberComboBox, gridBagConstraints);
 
-        midiImportButtonPanel.add(chordExtractPanel, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        midiImportButtonPanel.add(chordExtractPanel, gridBagConstraints);
 
         extractChords.setText("Extract Chords");
         extractChords.addActionListener(new java.awt.event.ActionListener() {
@@ -501,11 +529,15 @@ private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//G
     }//GEN-LAST:event_extractChordsActionPerformed
 
     private void bassChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassChannelNumberComboBoxActionPerformed
-        bassChannel = bassChannelNumberComboBox.getSelectedIndex();
+        ChannelInfo bassInfo = (ChannelInfo) bassChannelNumberComboBox.getSelectedItem();
+        bassChannel = bassInfo.getChannelNum()-1;
+        bassChannelNumberComboBox.setSelectedIndex(bassChannelNumberComboBox.getSelectedIndex());
     }//GEN-LAST:event_bassChannelNumberComboBoxActionPerformed
 
     private void chordChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordChannelNumberComboBoxActionPerformed
-        chordChannel = chordChannelNumberComboBox.getSelectedIndex();
+        ChannelInfo chordInfo = (ChannelInfo) chordChannelNumberComboBox.getSelectedItem();
+        chordChannel = chordInfo.getChannelNum()-1;
+        chordChannelNumberComboBox.setSelectedIndex(chordChannelNumberComboBox.getSelectedIndex());
     }//GEN-LAST:event_chordChannelNumberComboBoxActionPerformed
 
 private void setJmVolume()
@@ -624,7 +656,9 @@ private void stopPlaying()
 //method which extracts the chords from the given midi file, must specify bass track, chord track, and/or melody track
 private void extractChords()
 {
+    //add cases for melody, bass, and chords
     int startSlot = (Integer)startBeatSpinner.getValue();
+    
     //sets the note resolution to 1/8
     noteResolutionComboBox.setSelectedIndex(8);
     reloadMenu();
@@ -692,7 +726,6 @@ private void extractChords()
             notate.setChordProg(chords);
         }
     }
-    importSelectedTrack();
 }
 
 @Override
