@@ -105,4 +105,13 @@ public int getNumLines()
     return stave.getNumLines();
   }
 
+public String getTitle()
+  {
+    return stave.getTitle();
+  }
+
+public String getChordPartTitle()
+  {
+    return stave.getChordPartTitle();
+  }
 }

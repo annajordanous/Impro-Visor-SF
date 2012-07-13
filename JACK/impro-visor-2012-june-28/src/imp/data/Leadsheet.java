@@ -685,7 +685,7 @@ public class Leadsheet
                               ChordPart chordPart = score.getChordPart(chordsTitleString);
                               if( chordPart != null )
                                 {
-                                melody.setChordProg(chordPart);
+                                melody.setChordPart(chordPart);
                                 }
                               else
                                 {
@@ -746,7 +746,7 @@ public class Leadsheet
           score.addPart(melody);
           chords = new ChordPart();
           score.addDefaultChordPart(chords);
-          melody.setChordProg(chords);
+          melody.setChordPart(chords);
           }
 
         if( firstChar == BAR || firstChar == COMMA )
@@ -835,7 +835,7 @@ public class Leadsheet
 
     // Jim: Uncomment this to see note classifications on standard out
 
-    //classifyNotes(score.getPart(0), score.getChordProg());
+    //classifyNotes(score.getPart(0), score.getChordPart());
     
     // Thee following two lines are only for testing:
     

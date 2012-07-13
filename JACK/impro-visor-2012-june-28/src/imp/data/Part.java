@@ -134,7 +134,7 @@ protected double swing;
  * the default title
  */
 
-public static final String DEFAULT_TITLE = "";
+public static final String DEFAULT_PART_TITLE = "";
 
 
 /**
@@ -181,7 +181,7 @@ protected StaveType staveType = Preferences.getStaveTypeFromPreferences();
     
 public Part(int size)
   {
-    title = DEFAULT_TITLE;
+    title = DEFAULT_PART_TITLE;
     volume = DEFAULT_VOLUME;
     instrument = DEFAULT_INSTRUMENT;
 
@@ -1449,7 +1449,7 @@ public void saveLeadsheet(BufferedWriter out, String type) throws IOException
 
     if( this instanceof MelodyPartAccompanied )
       {
-        out.write("    (use-chords " + ((MelodyPartAccompanied)this).getChordProg().getTitle() + ")");
+        out.write("    (use-chords " + ((MelodyPartAccompanied)this).getChordPart().getTitle() + ")");
         out.newLine();
       }
 

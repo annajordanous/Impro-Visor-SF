@@ -47,6 +47,8 @@ public class ChordPart extends Part implements Serializable{
      * the default chord volume
      */
     public static final int DEFAULT_CHORD_VOLUME = DEFAULT_VOLUME - 20;
+    
+    public static final String DEFAULT_TITLE = "Untitled Part";
 
     /**
      * Creates an empty ChordPart.

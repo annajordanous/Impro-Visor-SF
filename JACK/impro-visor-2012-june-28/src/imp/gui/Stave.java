@@ -611,7 +611,7 @@ public Stave(MelodyPartAccompanied part, StaveType type, Notate notate,
     this.origPart = part;
     this.partTitle = part.getTitle();
     this.sheetTitle = staveTitle;
-    this.chordProg = origPart.getChordProg();
+    this.chordProg = origPart.getChordPart();
 
     // set the notate frame
     this.notate = notate;
@@ -1074,6 +1074,16 @@ public void setShowTitle(String title)
       {
         this.notate.score.setShowTitle(title);
       }
+  }
+
+public String getTitle()
+  {
+    return partTitle;
+  }
+
+public String getChordPartTitle()
+  {
+    return getMelodyPartAccompanied().getChordPartTitle();
   }
 
 /**

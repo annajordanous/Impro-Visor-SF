@@ -1,7 +1,7 @@
 /**
  * This Java Class is part of the Impro-Visor Application
  *
- * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
+ * Copyright (C) 2012 Robert Keller and Harvey Mudd College
  *
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,25 +28,23 @@ package imp.data;
 @SuppressWarnings("serial")
 public class MelodyPartAccompanied extends MelodyPart {
     
-    private ChordPart chordProg;
-    
-    private String chordProgName;
+    private ChordPart chordPart;
     
     public MelodyPartAccompanied(){
         super();
     }
     
-    public MelodyPartAccompanied(int size, ChordPart chordProg){
-//        System.out.println("chordProg = " + chordProg);
+    public MelodyPartAccompanied(int size, ChordPart chordPart){
+//        System.out.println("chordPart = " + chordPart);
         super(size);
-        if(chordProg != null){
-        this.chordProg = chordProg.copy();
+        if(chordPart != null){
+        this.chordPart = chordPart.copy();
         }
         }
     
-    public MelodyPartAccompanied(ChordPart chordProg){
+    public MelodyPartAccompanied(ChordPart chordPart){
         super();
-        this.chordProg = chordProg;
+        this.chordPart = chordPart;
     }
     
     /**
@@ -56,7 +54,7 @@ public class MelodyPartAccompanied extends MelodyPart {
      */
     public MelodyPartAccompanied(MelodyPartAccompanied melodyPartAccompanied){
         super(melodyPartAccompanied.size());
-        this.chordProg = melodyPartAccompanied.getChordProg().copy();
+        this.chordPart = melodyPartAccompanied.getChordPart().copy();
     }
     
     @Override
@@ -78,37 +76,31 @@ public class MelodyPartAccompanied extends MelodyPart {
       
       if( newSize <= 0 )
         {
-          return new MelodyPartAccompanied(0, chordProg);
+          return new MelodyPartAccompanied(0, chordPart);
         }
 
-      MelodyPartAccompanied result = new MelodyPartAccompanied(newSize, chordProg);
+      MelodyPartAccompanied result = new MelodyPartAccompanied(newSize, chordPart);
       copy(startingIndex, endingIndex, result);
       return result;
 }
-    public ChordPart getChordProg() {
-        return chordProg;
+    public ChordPart getChordPart() {
+        return chordPart;
     }
     
-    public void setChordProg(ChordPart chordProg){
-        this.chordProg = chordProg;
-        chordProgName = chordProg.getTitle();
-    }
-    
-     public String getChordProgName()
-      {
-        return chordProg.getTitle();
-      }
+    public void setChordPart(ChordPart chordPart){
+        this.chordPart = chordPart;
+     }
     
     public int[] getChordMetre() {
-        return chordProg.getChordMetre();
+        return chordPart.getChordMetre();
     }
     
     public void setChordMetre(int top, int bottom){
-        chordProg.setChordMetre(top, bottom);
+        chordPart.setChordMetre(top, bottom);
     }
     
     public void setChordMetre(int metre[]) {
-        chordProg.setChordMetre(metre);
+        chordPart.setChordMetre(metre);
     }
     
     @Override
@@ -118,11 +110,12 @@ public class MelodyPartAccompanied extends MelodyPart {
       return newPart;
   }
     
+@Override
 public void setBars(int bars)
   {
-    if( chordProg != null )
+    if( chordPart != null )
       {
-        chordProg.setBars(bars);
+        chordPart.setBars(bars);
       }
     
     super.setBars(bars);
@@ -130,11 +123,16 @@ public void setBars(int bars)
 
 public SectionInfo getSectionInfo()
   {
-    if( chordProg != null )
+    if( chordPart != null )
       {
-        return chordProg.getSectionInfo();
+        return chordPart.getSectionInfo();
       }
     
     return null;
+  }
+
+public String getChordPartTitle()
+  {
+    return chordPart.getTitle();
   }
 }
