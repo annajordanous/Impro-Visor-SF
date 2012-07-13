@@ -5926,4 +5926,9 @@ public void setMelodyPart(MelodyPartAccompanied melodyPart)
   {
     origPart = melodyPart;
   }
+
+public int getBars()
+  {
+    return origPart.getBars();
+  }
 }

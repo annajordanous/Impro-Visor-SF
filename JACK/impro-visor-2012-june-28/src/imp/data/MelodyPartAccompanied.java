@@ -121,6 +121,12 @@ public void setBars(int bars)
     super.setBars(bars);
   }
 
+@Override
+public int getBars()
+  {
+    return chordPart.getBars();
+  }
+
 public SectionInfo getSectionInfo()
   {
     if( chordPart != null )
