@@ -1561,7 +1561,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
          Note note = this.getNote(i);
          if (note==null && i==0)
          {
-             return;
+             //do nothing
          }
          if (note==null)
          {

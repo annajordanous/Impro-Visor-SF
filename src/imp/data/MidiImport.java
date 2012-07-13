@@ -22,10 +22,7 @@ package imp.data;
 
 import imp.util.ErrorLog;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Midi File Importing
@@ -43,7 +40,7 @@ private int resolution;
 private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
 private LinkedList<MidiImportRecord> melodies;
-
+private Map<Integer, String> channelNames = new HashMap<Integer, String>();
 
 public MidiImport()
   {
@@ -111,6 +108,9 @@ public void scoreToMelodies()
 
     melodies = new LinkedList<MidiImportRecord>();
     
+    //create channel names
+    channelNames.clear();
+    
     for( int i = 0; i < importMelody.size(); i++ )
       {
       try
@@ -119,6 +119,15 @@ public void scoreToMelodies()
         int channel = part.getChannel();
         //System.out.println("part " + i + " raw = " + part);
         int numTracks = part.getSize();
+        
+        //add instrument names to channel
+        if (part!=null&&channel!=9)
+        {
+            String instrumentName = MIDIBeast.getInstrumentForPart(part);
+            instrumentName = instrumentName.replaceAll("_"," ");
+            channelNames.put(channel+1,instrumentName);
+        }
+        
         for( int j = 0; j < numTracks; j++ )
           {
             //System.out.println("---------------------------------------------");
@@ -153,17 +162,66 @@ public void scoreToMelodies()
     
     }
   }
+    
+    public class ChannelInfo {
 
+        private int channelNum;
+        private String channelName;
+        
+        public ChannelInfo(int num, String name) {
+            this.channelNum = num;
+            this.channelName = name;
+        }
+        
+        public ChannelInfo() {
+            this.channelNum = 0;
+            this.channelName = null;
+        }
+        
+        public int getChannelNum() {
+            return this.channelNum;
+        }
+        
+        public void setChannelNum(int num) {
+            this.channelNum = num;
+        }
+        
+        public void setChannelName(String name) {
+            this.channelName = name;
+        }
+        
+        @Override
+        public String toString() {
+            if (channelNum != 0) {
+                return channelNum + " : " + channelName;
+            } else {
+                return channelName;
+            }
+        }
+    }
+    
+    public jm.music.data.Score getScore() {
+        return score;
+    }
 
+    public LinkedList<MidiImportRecord> getMelodies() {
+        return melodies;
+    }
 
-
-public jm.music.data.Score getScore()
-  {
-    return score;
-  }
-
-public LinkedList<MidiImportRecord> getMelodies()
-  {
-    return melodies;
-  }
+    public ChannelInfo[] getChannelInfo() {
+        ChannelInfo[] channelInfo = null;
+        channelInfo = new ChannelInfo[channelNames.size() + 1];
+        int index = 0;
+        channelInfo[index] = new ChannelInfo();
+        channelInfo[index].setChannelNum(0);
+        channelInfo[index].setChannelName("None");
+        index = index + 1;
+        for (Map.Entry<Integer, String> entry : channelNames.entrySet()) {
+            channelInfo[index] = new ChannelInfo();
+            channelInfo[index].setChannelNum(entry.getKey());
+            channelInfo[index].setChannelName(entry.getValue());
+            index = index + 1;
+    }
+        return channelInfo;
+    }
 }
