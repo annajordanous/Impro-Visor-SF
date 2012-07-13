@@ -2253,6 +2253,12 @@ public void keyPressed(KeyEvent e)
         case KeyEvent.VK_R:
           notate.cm.execute(new SetRestCommand(stave.getSelectionStart(),
                                                stave.getMelodyPart()));
+          int index = notate.getCurrentSelectionStart();
+          int next = stave.getNextCstrLine(index);
+        
+          if (next >= 0)
+            stave.setSelection(next, next);
+
           stave.repaint();
 
           return;

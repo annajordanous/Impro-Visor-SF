@@ -23635,7 +23635,6 @@ public void showNewVoicingDialog()
     lickgen.loadGrammar(grammarFilename);
     }
 
-
   void playbackGoToTab(int tab)
     {
 

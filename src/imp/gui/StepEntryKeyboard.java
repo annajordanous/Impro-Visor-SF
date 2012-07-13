@@ -1303,11 +1303,6 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         getContentPane().add(jLabel1, gridBagConstraints);
 
         EditMenu.setText("Edit");
-        EditMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditMenuActionPerformed(evt);
-            }
-        });
 
         undoBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, 0));
         undoBtn.setText("Undo");
@@ -1691,7 +1686,6 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     public void keyPressed(KeyEvent e)
     {
-        System.out.println("keys are being pressed!");
         notate.getCurrentStaveActionHandler().keyPressed(e);           
     }
     
@@ -2488,16 +2482,13 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
 
         }
     }
-    System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-
+    requestFocus();
 }//GEN-LAST:event_keyboardLPMouseClicked
 
 private void startPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPlayMIActionPerformed
 
     playback = true;
     notate.playScore();
-            System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-
 }//GEN-LAST:event_startPlayMIActionPerformed
 
 private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayMIActionPerformed
@@ -2505,8 +2496,6 @@ private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     playback = false;
     notate.stopPlaying();
     clearKeyboard();
-            System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-
 }//GEN-LAST:event_stopPlayMIActionPerformed
 
 private void startSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSelPlayMIActionPerformed
@@ -2558,9 +2547,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private void inputRestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputRestBtnActionPerformed
         
         inputRestToStave();
-        keyboardLP.requestFocus();
-                System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());
-
+        requestFocus();
     }//GEN-LAST:event_inputRestBtnActionPerformed
 
     private void adviceNumSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_adviceNumSpinnerStateChanged
@@ -2591,30 +2578,25 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         {
             // do nothing
         }
-        keyboardLP.requestFocus();
+        requestFocus();
     }//GEN-LAST:event_adviceNumSpinnerStateChanged
 
     private void SkipBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkipBtnActionPerformed
         
         nextStaveSlot();
-        keyboardLP.requestFocus();
+        requestFocus();
     }//GEN-LAST:event_SkipBtnActionPerformed
 
     private void BackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBtnActionPerformed
         
         previousStaveSlot();
-        keyboardLP.requestFocus();
+        requestFocus();
     }//GEN-LAST:event_BackBtnActionPerformed
-
-    private void keyboardLPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyboardLPKeyPressed
-        
-        keyPressed(evt);
-    }//GEN-LAST:event_keyboardLPKeyPressed
 
     private void refreshAdviceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshAdviceBtnActionPerformed
 
         resetAdvice();
-        keyboardLP.requestFocus();
+        requestFocus();
     }//GEN-LAST:event_refreshAdviceBtnActionPerformed
 
     private void subDivComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subDivComboBoxActionPerformed
@@ -2634,7 +2616,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         {
             // do nothing
         }
-        
     }//GEN-LAST:event_subDivComboBoxActionPerformed
 
     private void defaultSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultSettingsBtnActionPerformed
@@ -2684,39 +2665,46 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         }
         
         resetAdvice();
+        requestFocus();
     }//GEN-LAST:event_useAdviceCBMIActionPerformed
 
     private void useExpectanciesCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useExpectanciesCBMIActionPerformed
         
         if (useExpectanciesCBMI.isSelected()) useExpectancies = true;
         else useExpectancies = false;
-                
+        
         resetAdvice();
+        requestFocus();
     }//GEN-LAST:event_useExpectanciesCBMIActionPerformed
 
     private void HelpMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HelpMenuMouseClicked
         
         openHelpDialog();
         HelpMenu.setSelected(false);
-        keyboardLP.requestFocus();
+        requestFocus();
     }//GEN-LAST:event_HelpMenuMouseClicked
 
-    private void EditMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditMenuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EditMenuActionPerformed
-
     private void undoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoBtnActionPerformed
+        
         notate.undoCommand();
+        requestFocus();
     }//GEN-LAST:event_undoBtnActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
         notate.redoCommand();
+        requestFocus();
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        System.out.println("Called from form");
         keyPressed(evt);
     }//GEN-LAST:event_formKeyPressed
+
+    private void keyboardLPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyboardLPKeyPressed
+
+        keyPressed(evt);
+    }//GEN-LAST:event_keyboardLPKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel A0Label;
@@ -2933,5 +2921,4 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
-    
 }
