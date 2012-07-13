@@ -114,4 +114,9 @@ public String getChordPartTitle()
   {
     return stave.getChordPartTitle();
   }
+
+public int getBars()
+  {
+    return stave.getBars();
+  }
 }

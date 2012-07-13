@@ -1983,9 +1983,9 @@ public class Notate
         tempoPanel = new javax.swing.JPanel();
         tempoSet = new javax.swing.JTextField();
         tempoSlider = new javax.swing.JSlider();
-        transposeSpinner = new javax.swing.JSpinner();
         partBarsPanel = new javax.swing.JPanel();
         partBarsTF1 = new javax.swing.JTextField();
+        transposeSpinner = new javax.swing.JSpinner();
         trackerDelayPanel = new javax.swing.JPanel();
         trackerDelayTextField2 = new javax.swing.JTextField();
         parallaxSpinner = new javax.swing.JSpinner();
@@ -7334,19 +7334,6 @@ public class Notate
 
         playToolBar.add(tempoPanel);
 
-        transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
-        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
-        transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
-        transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
-        transposeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
-        transposeSpinner.setValue(0);
-        transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                transposeSpinnerStateChanged(evt);
-            }
-        });
-        playToolBar.add(transposeSpinner);
-
         partBarsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         partBarsPanel.setToolTipText("Set the number of measures in one chorus.");
         partBarsPanel.setMaximumSize(new java.awt.Dimension(50, 50));
@@ -7394,6 +7381,19 @@ public class Notate
         partBarsPanel.add(partBarsTF1, java.awt.BorderLayout.CENTER);
 
         playToolBar.add(partBarsPanel);
+
+        transposeSpinner.setToolTipText("Transposes the playback the specified number of half steps (e.g. use -2 for Bb instruments, +3 for Eb).");
+        transposeSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Transpose", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 10))); // NOI18N
+        transposeSpinner.setMaximumSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setMinimumSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setPreferredSize(new java.awt.Dimension(65, 45));
+        transposeSpinner.setValue(0);
+        transposeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                transposeSpinnerStateChanged(evt);
+            }
+        });
+        playToolBar.add(transposeSpinner);
 
         trackerDelayPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Delay", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         trackerDelayPanel.setMaximumSize(new java.awt.Dimension(50, 50));
@@ -15394,6 +15394,8 @@ private void setLayoutPreference(Polylist layout)
         // reset the viewport
 
         staveScrollPane[currTabIndex].resetViewportView();
+        
+        partBarsTF1.setText("" + staveScrollPane[currTabIndex].getBars());
 
         staveRequestFocus();
 
