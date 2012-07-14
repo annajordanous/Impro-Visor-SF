@@ -765,10 +765,18 @@ Polylist evaluateSplice(Polylist form)
       }
     if(SYNCOPATION.equals(operator))
     {
-        int synco = ((Long)args.first()).intValue();
-        int[] rhythm = Generator.generateSyncopation(4, synco);
+        MelodyPart melody = notate.getCurrentMelodyPart();    
+        MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
+        int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
+        int synco = Tension.getSyncopation(syncVector, measures);
+        System.out.println(synco);
+        int[] rhythm = Generator.generateSyncopation(measures, synco);
+        System.out.println(Arrays.toString(rhythm));
+        System.out.println(Tension.getSyncopation(rhythm, measures));
         String[] rhythmArray = Generator.generateString(rhythm);
         Polylist rhythmList = Polylist.PolylistFromArray(rhythmArray);
+        System.out.println(rhythmList.toString());
         return rhythmList;
     }
     
