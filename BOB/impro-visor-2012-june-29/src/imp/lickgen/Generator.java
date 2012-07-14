@@ -14,11 +14,18 @@ import polya.Polylist;
 public class Generator {
 
     private static int[] WEIGHTS = {0, -5, -4, -5, -3, -5, -4, -5, -2, -5, -4, -5, -3, -5, -4, -5, -1, -5, -4, -5, -3, -5, -4, -5, -2, -5, -4, -5, -3, -5, -4, -5};
+    private static int WHOLE_WEIGHT = 0;
+    private static int HALF_WEIGHT = 1;
+    private static int QUARTER_WEIGHT = 2;
+    private static int EIGHTH_WEIGHT = 3;
+    private static int SIXTEENTH_WEIGHT = 4;
+    private static int THIRTY_SECOND_WEIGHT = 5;
     private static int NUM_SLOTS = WEIGHTS.length;
     private static int MOD = 8;
     private static int NUM_QUARTERS = 4;
     private static int NUM_SLOTS2 = 120;
-    private static double HIGHTEST_NOTE_PROBABILITY = .5;
+    private static double HIGHTEST_NOTE_PROBABILITY = .75;
+    private static double APPROACH_PROBABILITY = .5;
     private static int THIRTY_SECOND = 1;
     private static String THIRTY_SECOND_NOTE = "C32";
     private static String THIRTY_SECOND_REST = "R32";
@@ -56,7 +63,7 @@ public class Generator {
             if (rhythm[i] == 1) {
                 if (prev != -1) {
                     int diff = i - prev;
-                    if((WEIGHTS[prev % NUM_SLOTS] * -1) >= 3)
+                    if((WEIGHTS[prev % NUM_SLOTS] * -1) >= EIGHTH_WEIGHT)
                     {
                         rhythms += getString(diff, false, true);
                     }
@@ -80,7 +87,7 @@ public class Generator {
         else if (prev != rhythm.length) 
         {
             int diff = rhythm.length - prev;
-            if((WEIGHTS[prev % NUM_SLOTS] * -1) >= 3)
+            if((WEIGHTS[prev % NUM_SLOTS] * -1) >= EIGHTH_WEIGHT)
             {
                 rhythms += getString(diff, false, true);
             }
@@ -113,7 +120,7 @@ public class Generator {
             {
                 if(offbeat)
                 {
-                    if(Math.random() > .5)
+                    if(Math.random() > APPROACH_PROBABILITY)
                     {
                         return EIGHTH_NOTE_APPROACH + " " + getString(diff - EIGHTH, true, false) + " ";
                     }
@@ -131,7 +138,7 @@ public class Generator {
             {
                 if(offbeat)
                 {
-                    if(Math.random() > .5)
+                    if(Math.random() > APPROACH_PROBABILITY)
                     {
                         return SIXTEENTH_NOTE_APPROACH + " " + getString(diff - SIXTEENTH, true, false) + " ";
                     }
@@ -180,7 +187,7 @@ public class Generator {
     public static int[] generateSyncopation(int measures, int mySynco) {
         int[] rhythm = generateRhythm(measures);
         int synco = Tension.getSyncopation(rhythm, measures);
-        while (synco > mySynco)
+        while (synco > mySynco && synco > 2)
         {
 //            int i = (int)(Math.random() * MOD * measures);
 //	    int index = i * NUM_QUARTERS;
@@ -193,39 +200,63 @@ public class Generator {
             {
                 int index = i;
                 int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
-                if (0 <= desiredWeight && desiredWeight < 4) {
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < SIXTEENTH_WEIGHT) {
                     while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
                         i++;
                     }
+                    int prevI = 0;
+                    int prevIndex = rhythm[index];
                     if (i < rhythm.length) 
                     {
-                        if(rhythm[i] == 0)
-                        {
-                            rhythm[i] = 1;
-                        }
+                        prevI = rhythm[i];
+                        rhythm[i] = 1;
                         rhythm[index] = 0;
+                        System.out.println("i = " + i);
+                        System.out.println("index = " + index);
                     }
+                    int synco2 = Tension.getSyncopation(rhythm, measures);
+                    if(synco2 > synco)
+                    {
+                        rhythm[index] = prevIndex;
+                        rhythm[i] = prevI;
+                    }
+                    synco = Tension.getSyncopation(rhythm, measures);
                 }
             }
-            synco = Tension.getSyncopation(rhythm, measures);
+            System.out.println("lower " + synco);
+            System.out.println(Arrays.toString(generateString(rhythm)));
         }
         while (synco < mySynco) {
             int i = (int) (Math.random() * NUM_SLOTS * measures);
-            if (i < NUM_SLOTS * measures - 1) {
+            if (i < NUM_SLOTS * measures - 1) 
+            {
                 int index = i;
                 int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
-                if (0 <= desiredWeight && desiredWeight < 3) {
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < EIGHTH_WEIGHT) {
                     while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
                         i++;
                     }
+                    int prevI = 0;
+                    int prevIndex = rhythm[index];
                     if (i < rhythm.length) 
                     {
+                        prevI = rhythm[i];
                         rhythm[index] = 1;
                         rhythm[i] = 0;
+                        System.out.println("i = " + i);
+                        System.out.println("index = " + index);
                     }
+                    int synco2 = Tension.getSyncopation(rhythm, measures);
+                    if(synco2 < synco)
+                    {
+                        rhythm[index] = prevIndex;
+                        rhythm[i] = prevI;
+                    }
+                    synco = Tension.getSyncopation(rhythm, measures);
                 }
             }
-            synco = Tension.getSyncopation(rhythm, measures);
+            System.out.println("higher " + synco);
+            System.out.println(Arrays.toString(generateString(rhythm)));
         }
         return rhythm;
     }
@@ -238,15 +269,27 @@ public class Generator {
      */
     public static int[] generateRhythm(int measures) {
         int[] rhythm = new int[measures * NUM_SLOTS];
+        int prevIndex = 0;
         for (int i = 0; i < rhythm.length; i++) {
             int invMetHier = (WEIGHTS[i % NUM_SLOTS] * -1) + 1;
             double weight = 0;
-            if (invMetHier != 6) {
+            if (invMetHier != 6) 
+            {
                 weight = (double) 1 / invMetHier;
             }
+            if(invMetHier == 5 && prevIndex != i - SIXTEENTH)
+            {
+                    weight = 0;
+            }
+            if(invMetHier < 5 && prevIndex == i - SIXTEENTH)
+            {
+                    weight = 1;
+            }
             double random = Math.random();
-            if (random <= (weight * HIGHTEST_NOTE_PROBABILITY)) {
+            if (random <= (weight * HIGHTEST_NOTE_PROBABILITY)) 
+            {
                 rhythm[i] = 1;
+                prevIndex = i;
             } else {
                 rhythm[i] = 0;
             }
