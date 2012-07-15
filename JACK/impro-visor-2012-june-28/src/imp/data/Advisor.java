@@ -817,7 +817,7 @@ public Polylist getAdviceTree(Score score, int index, Note note)
 
   // Get this area's chord, if any
 
-  ChordPart chordPart = score.getChordProg();
+  ChordPart chordPart = score.getChordPart();
 
   Chord chord = chordPart.getCurrentChord(index);
 

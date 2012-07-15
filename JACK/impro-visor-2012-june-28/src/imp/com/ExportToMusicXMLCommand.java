@@ -143,7 +143,7 @@ public class ExportToMusicXMLCommand implements Command, Constants {
 		osw.write("	<part id=\"P1\">\n");
 
 		MelodyPart mp = score.getPart(melodyPartIndex);
-		ChordPart cp = score.getChordProg();
+		ChordPart cp = score.getChordPart();
 
 		int top = metre[0];
 		int bottom = metre[1];

@@ -21,6 +21,8 @@
 package imp.data;
 
 import imp.brickdictionary.Block;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 /**
  * SectionRecord records the information about a section. It was added when
@@ -126,4 +128,23 @@ public String toString()
     return "(Section " + styleName + " " + index + " " + isPhrase + ")";
   }
 
+public void saveToLeadsheet(BufferedWriter out) throws IOException
+  {
+    String name = getUsePreviousStyle() ? "" : " " + getStyleName();
+    
+    if( getIsPhrase() )
+      {
+        out.newLine();
+        out.write("(phrase (style" + name + ")) ");
+        out.newLine();
+      }
+    else
+      {
+        out.newLine();
+        out.newLine();
+        out.write("(section (style" + name + ")) ");
+        out.newLine();
+        out.newLine();
+      }
+  }
 }

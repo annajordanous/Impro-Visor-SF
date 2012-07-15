@@ -26,9 +26,12 @@ import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.Preferences;
 import imp.util.Trace;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.sound.midi.InvalidMidiDataException;
@@ -1702,5 +1705,52 @@ public int[] getSyncVector(int slotSpacing)
 public void setBars(int bars)
   {
     setSize(bars*metre[0]*BEAT);
+  }
+
+
+/**
+ * Writes the MelodyPart to the passed BufferedWriter in Leadsheet notation.
+ *
+ * @param out the BufferedWriter to write the Part onto
+ */
+public void saveToLeadsheet(BufferedWriter out) throws IOException
+  {
+    out.write("(part");
+    out.newLine();
+    out.write("    (type melody)");
+    out.newLine();
+    out.write("    (title " + title + ")");
+    out.newLine();
+    out.write("    (composer " + composer + ")");
+    out.newLine();
+    out.write("    (instrument " + instrument + ")");
+    out.newLine();
+    out.write("    (volume " + volume + ")");
+    out.newLine();
+    out.write("    (key " + keySig + ")");
+    out.newLine();
+
+    if( this instanceof MelodyPartAccompanied )
+      {
+        out.write("    (use-chords " + ((MelodyPartAccompanied) this).getChordPart().getTitle() + ")");
+        out.newLine();
+      }
+
+    out.write("    (stave " + staveType.toString().toLowerCase() + ")");
+    out.newLine();
+
+    out.write(")");
+    out.newLine();
+
+    Note.initializeSaveLeadsheet();
+
+    PartIterator i = iterator();
+
+    // Should be refactored into separate methods for each derived class
+
+    while( i.hasNext() )
+      {
+        i.next().saveLeadsheet(out, metre);
+      }
   }
 }

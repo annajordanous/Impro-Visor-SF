@@ -24,6 +24,8 @@ import imp.brickdictionary.ChordBlock;
 import imp.roadmap.RoadMapFrame;
 import imp.util.ErrorLog;
 import imp.util.Trace;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,9 +41,11 @@ import polya.Polylist;
  * @see         Part
  * @author      Stephen Jones
 */
+@SuppressWarnings("serial")
+
 public class ChordPart extends Part implements Serializable{
 
-    private SectionInfo sectionInfo = new SectionInfo(this);
+    private SectionInfo sectionInfo;
 
     /**
      * the default chord volume
@@ -55,6 +59,7 @@ public class ChordPart extends Part implements Serializable{
      */
     public ChordPart() {
         super();
+        sectionInfo = new SectionInfo(this);
         volume = DEFAULT_CHORD_VOLUME;
     }
 
@@ -65,6 +70,7 @@ public class ChordPart extends Part implements Serializable{
     public ChordPart(int size) {
         super(size);
         Trace.log(3, "creating new chord part of size " + size);
+        sectionInfo = new SectionInfo(this);
         if(size != 0)
             slots.set(0, new Chord(size));
         volume = DEFAULT_CHORD_VOLUME;
@@ -84,6 +90,13 @@ public class ChordPart extends Part implements Serializable{
         super.setSize(size);
         sectionInfo.setSize(size);
     }
+  
+  public void setBars(int bars)
+      {
+        int sizeInSlots = bars*metre[0]*BEAT;
+        setSize(sizeInSlots);
+      }
+
     
   @Override
     public int getMeasureLength() {
@@ -441,7 +454,8 @@ public long render(MidiSequence seq,
         newPart.keySig = keySig;
         newPart.setMetre(metre[0], metre[1]);
         newPart.swing = swing;
-        newPart.sectionInfo = sectionInfo.copy();
+        newPart.sectionInfo = sectionInfo.chordlessCopy();
+        newPart.sectionInfo.setChordPart(newPart);
 
         return newPart;
     }
@@ -551,8 +565,122 @@ public void addFromRoadMapFrame(RoadMapFrame roadmap)
         }
     }
 
-    public void setBars(int bars)
+    /**
+     * Writes the ChordPart to the passed BufferedWriter in Leadsheet notation.
+     * @param out       the BufferedWriter to write the Part onto
+     */
+    
+public void saveToLeadsheet(BufferedWriter out) throws IOException
+  {
+    out.write("(part");
+    out.newLine();
+    out.write("    (type chords)");
+    out.newLine();
+    out.write("    (title " + title + ")");
+    out.newLine();
+    out.write("    (composer " + composer + ")");
+    out.newLine();
+    out.write("    (instrument " + instrument + ")");
+    out.newLine();
+    out.write("    (volume " + volume + ")");
+    out.newLine();
+    out.write("    (key " + keySig + ")");
+    out.newLine();
+
+    out.write(")");
+    out.newLine();
+
+    Note.initializeSaveLeadsheet();
+
+    PartIterator i = iterator();
+    Iterator<SectionRecord> sec = sectionInfo.iterator();
+
+    SectionRecord record = sec.next();
+
+    int slot = 0;
+
+    int slotLimit = size();
+
+    int nextSectionStart;
+
+    //iSystem.out.println("slotLimit = " + slotLimit);
+
+    Chord chord = null;
+
+    int sectionsToGo = sectionInfo.size();
+
+    //System.out.println("saving  " + getTitle() + ", sectionInfo.size() = " + sectionsToGo);
+
+    do // do-while
       {
-        setSize(bars*metre[0]*BEAT);
+        //System.out.println("\nrecord = " + record);
+
+        // Save the section record
+        record.saveToLeadsheet(out);
+
+        // Get the next section record, if any.
+        if( sec.hasNext() )
+          {
+            record = sec.next();
+            nextSectionStart = record.getIndex();
+          }
+        else
+          {
+            nextSectionStart = slotLimit;
+          }
+
+        //System.out.println("next section start = " + nextSectionStart);
+
+        // Pack Chords into section
+
+        while( (chord != null || i.hasNext()) && slot < nextSectionStart )
+          {
+            if( chord == null )
+              {
+                Chord nextChord = (Chord) i.next();
+                if( nextChord != null )
+                  {
+                    chord = nextChord.copy();
+                  }
+              }
+            // Otherwise use the residue of previous chord
+
+            // Where the next slot would normally be
+            int nextSlot = slot + chord.getRhythmValue();
+
+            if( nextSlot <= nextSectionStart )
+              {
+                // This chord fits in the current section.
+
+                chord.saveLeadsheet(out, metre);
+                chord = null;
+                slot = nextSlot;
+              }
+            else
+              {
+                // This chord does not fit in the current section.
+                // Calculate how much of this section can be used.
+                int available = nextSectionStart - slot;
+                chord.setRhythmValue(available);
+                chord.saveLeadsheet(out, metre);
+
+                // Determine what is left over.
+                int residual = nextSlot - nextSectionStart;
+                chord.setRhythmValue(residual);
+
+                //System.out.println("overflow at slot " + slot + ", next section start = " + nextSectionStart + " " + chord + ", residual = " + residual);
+
+                // This should force the end of this while, among other things
+
+                slot = nextSectionStart;
+              }
+
+          }
+        sectionsToGo--;
       }
+    while( sectionsToGo > 0 ); // end of do-while
+
+  }
+   
+
 }

@@ -164,7 +164,7 @@ public void execute()
 
     if( !useDrums )
       {
-        ChordPart chords = score.getChordProg();
+        ChordPart chords = score.getChordPart();
 
         // If there is no chord on the slot starting the selection,
         // we try to find the previous chord and use it.

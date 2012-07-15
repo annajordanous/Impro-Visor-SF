@@ -162,7 +162,7 @@ public class Leadsheet
     out.write("(" + keyword[ROADMAP_LAYOUT] + " " + score.getRoadmapLayout() + ")");
     out.newLine();
 
-    Style style = score.getChordProg().getStyle();
+    Style style = score.getChordPart().getStyle();
     if( style == null )
       {
       out.newLine();
@@ -173,7 +173,7 @@ public class Leadsheet
       style.saveLeadsheet(out);
       }
     // Write out the parts
-    score.saveLeadsheet(out);
+    score.saveToLeadsheet(out);
     }
 
   public static String concatElements(Polylist item)

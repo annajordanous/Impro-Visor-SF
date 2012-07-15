@@ -133,7 +133,7 @@ public void init() throws Exception
     File chordFile = new File(MIDIBeast.chordFileName);
     Score s = new Score();
     (new OpenLeadsheetCommand(chordFile, s)).execute();
-    ChordPart c = s.getChordProg();
+    ChordPart c = s.getChordPart();
     int slotCount = 0;
     Chord chord = c.getChord(slotCount);
     while( chord != null )
