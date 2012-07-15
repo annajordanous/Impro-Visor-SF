@@ -290,7 +290,7 @@ static final String chordPartBase = "CP_";
       this.chordFontSize = fontSize;
     }
 
-    public int getBarsPerChorus()
+    public int getDefaultBarsPerChorus()
     {
       return getDefaultChordPart().getBars();
     }
@@ -661,7 +661,7 @@ static final String chordPartBase = "CP_";
     /**
      * Returns the Score's chord progression.
      */
-    public ChordPart getChordProg() {
+    public ChordPart getChordPart() {
         //return chordProg;
         return getDefaultChordPart();
     }
@@ -984,33 +984,42 @@ static final String chordPartBase = "CP_";
         return (int)(getCountInOffset() / BEAT / tempo * 60.0);
     }
 
-    /**
-     * Writes the Score to the BufferedWriter passed to this method
-     * in Leadsheet notation.
-     * @param out       a BufferedWriter to save the score onto
-     */
-    public void saveLeadsheet(BufferedWriter out) throws IOException {
-        Chord.initSaveToLeadsheet();
-        
-        for( Iterator<String> it = chordPartList.keySet().iterator(); it.hasNext(); )
-          {
-            String key = it.next();
-            ChordPart part = chordPartList.get(key);
-            part.saveLeadsheet(out, "chords");
-            out.newLine();
-          }
-        
-    	//chordProg.saveLeadsheet(out, "chords");
-        //out.newLine();
+/**
+ * Writes the Score to the BufferedWriter passed to this method in Leadsheet
+ * notation.
+ *
+ * @param out a BufferedWriter to save the score onto
+ */
+    
+public void saveToLeadsheet(BufferedWriter out) throws IOException
+  {
+    Chord.initSaveToLeadsheet();
 
-        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
-        while(i.hasNext()) {
-            i.next().saveLeadsheet(out, "melody");
-            out.newLine();
-        }
+    // Save Chord Parts
+    
+    out.newLine();
+
+    for( Iterator<String> it = chordPartList.keySet().iterator(); it.hasNext(); )
+      {
+        String key = it.next();
+        ChordPart part = chordPartList.get(key);
+        part.saveToLeadsheet(out);
+        out.newLine();
+      }
+
+    // Save Melody Parts
+    
+    out.newLine();
+
+    ListIterator<MelodyPartAccompanied> i = partList.listIterator();
+    while( i.hasNext() )
+      {
+        i.next().saveToLeadsheet(out);
+        out.newLine();
+      }
     }
     
-    public void dumpMelody()
+public void dumpMelody()
     {
       dumpMelody(System.out);
     }
@@ -1157,12 +1166,13 @@ static final String chordPartBase = "CP_";
         ListIterator<MelodyPartAccompanied> i = partList.listIterator();
         while(i.hasNext()) {
             MelodyPartAccompanied m = i.next();
-            Style style = getDefaultChordPart().getStyle();
-            if( style != null )
-              {
-              m.setSwing(style.getSwing());
-              }
-            m.makeSwing(getDefaultSectionInfo());
+//            Style style = getDefaultChordPart().getStyle();
+//            if( style != null )
+//              {
+//              m.setSwing(style.getSwing());
+//              }
+            m.makeSwing(m.getSectionInfo());
+//            m.makeSwing(getDefaultSectionInfo());
         }
     }
     
@@ -1245,6 +1255,18 @@ public void addDefaultChordPart(ChordPart part)
   {
     part.setTitle(DEFAULT_PROGRESSION);
     addChordPart(DEFAULT_PROGRESSION, part);
+  }
+
+public void setDefaultChordPart(ChordPart part)
+  {
+    if( getDefaultChordPart() == null )
+      {
+        addDefaultChordPart(part);
+      }
+    else
+      {
+        chordPartList.put(DEFAULT_PROGRESSION, part);
+      }
   }
 
 public ChordPart getChordPart(String name)

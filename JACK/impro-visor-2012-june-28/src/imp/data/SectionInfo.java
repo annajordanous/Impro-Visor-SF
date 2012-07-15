@@ -40,6 +40,8 @@ import javax.sound.midi.Track;
  * @author keller
  */
 
+@SuppressWarnings("serial")
+
 public class SectionInfo implements Constants, Serializable {
     private ChordPart chords;
     
@@ -108,21 +110,6 @@ public class SectionInfo implements Constants, Serializable {
         addSection(Preferences.getPreference(Preferences.DEFAULT_STYLE), 0, false);
     }
 
-    public SectionInfo copy() {
-        SectionInfo si = new SectionInfo(chords);
-        
-        si.records = new ArrayList<SectionRecord>();
-        si.metre[0] = metre[0];
-        si.metre[1] = metre[1];
-        
-        for(SectionRecord record: records )
-          {
-            si.records.add(new SectionRecord(record));
-          }
-
-        return si;
-    }
-    
     public SectionInfo chordlessCopy() {
         SectionInfo si = new SectionInfo(null);
         
@@ -445,7 +432,7 @@ public SectionRecord getSectionRecordByIndex(int n)
     }
     
     public void setSize(int size) {
-        
+        System.out.print("sectionInfo setSize from " + records.size() + " to ");
         Iterator<SectionRecord> k = records.iterator();
         
         while(k.hasNext()) {
@@ -455,6 +442,8 @@ public SectionRecord getSectionRecordByIndex(int n)
                 k.remove();
             }
         }
+     System.out.println(records.size());
+
     }
 
     public boolean setStyle(String name) {

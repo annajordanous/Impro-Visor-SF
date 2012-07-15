@@ -2197,7 +2197,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
                 if( score.getPart(0).size() > 0 )
                     ErrorLog.log(ErrorLog.WARNING, "Melody notes entered with chord part will be ignored.");
 
-            roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true); 
+            roadMapPanel.addBlocksBeforeSelection(score.getChordPart().toBlockList(), true); 
             roadMapPanel.placeBricks();
             roadMapPanel.deselectBricks();
             activateButtons();
@@ -3571,7 +3571,7 @@ public void saveToNewNotate()
     score.setDefaultLayout();
     score.setRoadmapLayout(settings.barsPerLine);
 
-    // System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordProg());
+    // System.out.println("new score, style: " +  score.getStyle() + ", " + score.getChordPart());
 
 
     if( auxNotate == null )

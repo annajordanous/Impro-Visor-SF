@@ -4,7 +4,7 @@
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
  * XML export code is also Copyright (C) 2009-2011 Nicolas Froment (aka Lasconic).
  *
- * Impro-Visor is free software; you can redistribute it and/or modifyc
+ * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
@@ -43,7 +43,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
-import javax.sound.sampled.AudioFormat;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -342,7 +341,7 @@ public class Notate
    * The chord progression of the Score
    *
    */
-  protected ChordPart chordProg;
+  //protected ChordPart chordProg;
 
   /**
    *
@@ -1176,9 +1175,7 @@ public class Notate
 
     setChordFontSizeSpinner(score.getChordFontSize());
 
-     //setBars(defaultBarsPerPart);
-
-    setBars(score.getBarsPerChorus());
+    setBars(score.getDefaultBarsPerChorus());
 
     updateSelection();
 
@@ -1984,7 +1981,7 @@ public class Notate
         tempoSet = new javax.swing.JTextField();
         tempoSlider = new javax.swing.JSlider();
         partBarsPanel = new javax.swing.JPanel();
-        partBarsTF1 = new javax.swing.JTextField();
+        partBarsTF = new javax.swing.JTextField();
         transposeSpinner = new javax.swing.JSpinner();
         trackerDelayPanel = new javax.swing.JPanel();
         trackerDelayTextField2 = new javax.swing.JTextField();
@@ -7342,43 +7339,43 @@ public class Notate
         partBarsPanel.setPreferredSize(new java.awt.Dimension(45, 50));
         partBarsPanel.setLayout(new java.awt.BorderLayout());
 
-        partBarsTF1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        partBarsTF1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        partBarsTF1.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
-        partBarsTF1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        partBarsTF1.setMaximumSize(new java.awt.Dimension(45, 15));
-        partBarsTF1.setMinimumSize(new java.awt.Dimension(30, 15));
-        partBarsTF1.setPreferredSize(new java.awt.Dimension(35, 15));
-        partBarsTF1.addMouseListener(new java.awt.event.MouseAdapter() {
+        partBarsTF.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        partBarsTF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        partBarsTF.setToolTipText("Set the number of bars in one chorus (the same for all choruses)");
+        partBarsTF.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        partBarsTF.setMaximumSize(new java.awt.Dimension(45, 15));
+        partBarsTF.setMinimumSize(new java.awt.Dimension(30, 15));
+        partBarsTF.setPreferredSize(new java.awt.Dimension(35, 15));
+        partBarsTF.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                partBarsTF1MousePressed(evt);
+                partBarsTFMousePressed(evt);
             }
         });
-        partBarsTF1.addActionListener(new java.awt.event.ActionListener() {
+        partBarsTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                partBarsTF1ActionPerformed(evt);
+                partBarsTFActionPerformed(evt);
             }
         });
-        partBarsTF1.addFocusListener(new java.awt.event.FocusAdapter() {
+        partBarsTF.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                partBarsTF1FocusGained(evt);
+                partBarsTFFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                partBarsTF1FocusLost(evt);
+                partBarsTFFocusLost(evt);
             }
         });
-        partBarsTF1.addKeyListener(new java.awt.event.KeyAdapter() {
+        partBarsTF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                partBarsTF1KeyTyped(evt);
+                partBarsTFKeyTyped(evt);
             }
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                partBarsTF1KeyPressed(evt);
+                partBarsTFKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                partBarsTF1KeyReleased(evt);
+                partBarsTFKeyReleased(evt);
             }
         });
-        partBarsPanel.add(partBarsTF1, java.awt.BorderLayout.CENTER);
+        partBarsPanel.add(partBarsTF, java.awt.BorderLayout.CENTER);
 
         playToolBar.add(partBarsPanel);
 
@@ -9035,8 +9032,7 @@ private void setStepInputBtn(boolean selected)
 
     private void insertVoicingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertVoicingButtonActionPerformed
      
-      Style currentStyle =
-              ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+      Style currentStyle = getCurrentChordPart().getStyle();
 
       String v = voicingEntryTF.getText();
 
@@ -9164,7 +9160,7 @@ private void setStepInputBtn(boolean selected)
     
     public Style getCurrentStyle()
       {
-      return ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+      return getCurrentChordPart().getStyle();
       }
     
     
@@ -9236,7 +9232,7 @@ private void setStepInputBtn(boolean selected)
             return;
           }
 //        System.out.println("playChord");
-        Style currStyle = ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+        Style currStyle = getCurrentChordPart().getStyle();
         Score tempScore = new Score();
         tempScore.addPart();
         tempScore.getPart(0).addRest(new Rest(chordToPlay.getRhythmValue()));
@@ -9520,8 +9516,7 @@ private String getChordRedirectName(int row)
 
             String e = "";
 
-            Style s =
-                    ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+            Style s = getCurrentChordPart().getStyle();
 
             if( ChordPattern.goodVoicing(c, s) )
               {
@@ -9620,8 +9615,9 @@ private String getChordRedirectName(int row)
 
     Chord c = new Chord(o, BEAT * 2);
 
-    new SetChordCommand(index, c,
-            ImproVisor.getCurrentWindow().score.getChordProg()).execute();
+    new SetChordCommand(index, 
+                        c,
+                        getCurrentChordPart()).execute();
 
 
 
@@ -9643,7 +9639,7 @@ private String getChordRedirectName(int row)
 
     Chord c = new Chord(o, BEAT * 4);
 
-    Style s = score.getChordProg().getStyle().copy();
+    Style s = getCurrentChordPart().getStyle().copy();
 
     s.setNoStyle(true);
     
@@ -10433,7 +10429,7 @@ public void chordVolumeChanged()
 
     chordVolume.setEnabled(!chordMute.isSelected());
 
-    Style style = score.getChordProg().getStyle();
+    Style style = getCurrentChordPart().getStyle();
 
     if( style != null )
       {
@@ -10976,7 +10972,7 @@ public void setChordRoot(String root, String bass, NoteSymbol low,
   {
     chordRoot = root;
 
-    Style s = score.getChordProg().getStyle().copy();
+    Style s = getCurrentChordPart().getStyle().copy();
 
     s.setChordHigh(high);
 
@@ -11166,7 +11162,7 @@ public void refresh()
 
         //System.out.println("index = " + index + ", selected record = " + record);
         
-        measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
+        measureTF.setText(String.valueOf(record.getSectionMeasure(getCurrentChordPart())));
         
         phraseCheckBox.setSelected(record.getIsPhrase());
         
@@ -11405,7 +11401,7 @@ private void updateTempoFromTextField()
 
     if( cancelTruncation )
       {
-      //setBars(score.getBarsPerChorus());
+      //setBars(score.getDefaultBarsPerChorus());
       }
     else
       {
@@ -11921,9 +11917,18 @@ public String[] getNoteLabels(int location)
     Polylist preferredScale = lickgen.getPreferredScale();
 
     Polylist scaleTones;
-
-    Polylist scales = chordProg.getCurrentChord(location).getScales();
-
+    
+    Polylist scales = null;
+            
+    ChordPart chordPart = getCurrentChordPart();
+    
+    Chord currentChord = chordPart == null ? null : chordPart.getCurrentChord(location);
+    
+    if( currentChord != null )
+      {
+      scales = chordPart.getCurrentChord(location).getScales();
+      }
+    
     if( scales == null 
      || scales.isEmpty()
      || preferredScale.isEmpty()
@@ -11933,7 +11938,7 @@ public String[] getNoteLabels(int location)
       }
     else if( ((String) preferredScale.second()).equals(FIRST_SCALE) )
       {
-        scaleTones = chordProg.getCurrentChord(location).getFirstScale();
+        scaleTones = chordPart.getCurrentChord(location).getFirstScale();
       }
     else
       {
@@ -11941,7 +11946,7 @@ public String[] getNoteLabels(int location)
       }
 
     boolean[] enh = score.getCurrentEnharmonics(location,
-                                                scaleTones.append(chordProg.getCurrentChord(location).getPriority()));
+                          scaleTones.append(currentChord == null ? Polylist.nil : currentChord.getPriority()));
 
     notes[0] = "C";
 
@@ -12083,7 +12088,7 @@ private MelodyPart makeLick(Polylist rhythm, int start, int stop)
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
     
-    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, start);
+    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, getCurrentChordPart(), start);
     
     int actualSize = lick.size();
     int desiredSize = stop - start + 1;
@@ -12114,7 +12119,7 @@ private MelodyPart makeLick(Polylist rhythm)
     // it can only generate things in terms of number of quarter notes.
     // This is why BEAT is getting passed into the generator.
     
-    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, chordProg, getCurrentSelectionStart());
+    MelodyPart lick = lickgenFrame.fillMelody(BEAT, rhythm, getCurrentChordPart(), getCurrentSelectionStart());
     
     int actualSize = lick.size();
     int desiredSize = score.getLength() - getCurrentSelectionStart() + 1;
@@ -12151,7 +12156,7 @@ public boolean putLick(MelodyPart lick)
     
     int stop = getCurrentSelectionEnd();
     
-    int chorusSize = getChordProg().getSize();
+    int chorusSize = getCurrentChordPart().getSize();
     
     if( start >= chorusSize || stop >= chorusSize )
       {
@@ -12256,7 +12261,7 @@ private void adjustLickToHead(MelodyPart lick)
       {
         //select the head with matching title and length, if there is one
         if( heads.get(i).getTitle().equals(this.getTitle())
-                && heads.get(i).getBarsPerChorus() == this.score.getBarsPerChorus() )
+                && heads.get(i).getDefaultBarsPerChorus() == this.score.getDefaultBarsPerChorus() )
           {
             head = heads.get(i);
           }
@@ -12779,7 +12784,7 @@ private void openAdviceFrame()
     
 /**
  *
- * Common point within notate for invoking saveLeadsheet command
+ * Common point within notate for invoking saveToLeadsheet command
  *
  */
     
@@ -14599,7 +14604,7 @@ private boolean saveGlobalPreferences()
 
     timeSignatureBottomTF.setText("" + getCurrentMelodyPart().getMetre()[1]);
 
-    Style style = score.getChordProg().getStyle();
+    Style style = getCurrentChordPart().getStyle();
 
     if( alwaysUseChord.isSelected() )
       {
@@ -14689,7 +14694,7 @@ private boolean saveGlobalPreferences()
 
   private void setNewSectionEnabled()
     {
-    int measureLength = score.getChordProg().getMeasureLength();
+    int measureLength = getCurrentChordPart().getMeasureLength();
 
     int sectionIndex = sectionList.getSelectedIndex();
 
@@ -15075,7 +15080,7 @@ private boolean saveGlobalPreferences()
     
 public void setBars(int bars)
   {
-    partBarsTF1.setText("" + bars);
+    partBarsTF.setText("" + bars);
     prefMeasTF.setText("" + bars);
 
     setTotalMeasures(bars);
@@ -15140,7 +15145,7 @@ private void adjustLayout(Polylist layout)
     // at least one element.  There should not be any zero or
     // negative elements.
 
-    int measuresLeft = score.getBarsPerChorus(); //currentMeasures;
+    int measuresLeft = score.getDefaultBarsPerChorus(); //currentMeasures;
 
     int arrayElements;
 
@@ -15188,7 +15193,7 @@ private void adjustLayout(Polylist layout)
 
     // Finally populate the new array
 
-    measuresLeft = score.getBarsPerChorus(); //;
+    measuresLeft = score.getDefaultBarsPerChorus(); //;
 
     T = layout;
 
@@ -15395,7 +15400,7 @@ private void setLayoutPreference(Polylist layout)
 
         staveScrollPane[currTabIndex].resetViewportView();
         
-        partBarsTF1.setText("" + staveScrollPane[currTabIndex].getBars());
+        partBarsTF.setText("" + staveScrollPane[currTabIndex].getBars());
 
         staveRequestFocus();
 
@@ -15497,7 +15502,7 @@ public void addTab()
 //        else if( progSize < newmp.size() )
 //          {
 //            score.setLength(newmp.size());
-//            //??setBars(score.getBarsPerChorus());
+//            //??setBars(score.getDefaultBarsPerChorus());
 //          }
         score.addPart(newmp);
 
@@ -17999,7 +18004,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
                     setCursor(new Cursor(Cursor.WAIT_CURSOR));
                     //setupScore(newNotate);
 
-                    ChordPart chords = newScore.getChordProg();
+                    ChordPart chords = newScore.getChordPart();
                     MelodyPart melody = newScore.getPart(0);
 
                     objOut.writeObject(newScore);
@@ -18194,10 +18199,10 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     newScore.setChordFontSize(chordFontSize);
     
     newScore.setTempo(getDefaultTempo());
+    
+    ChordPart newChordPart = new ChordPart();
 
-    newScore.setChordProg(new ChordPart());
-
-    newScore.addPart(new MelodyPartAccompanied(defaultBarsPerPart * measureLength, chordProg));
+    newScore.addPart(new MelodyPartAccompanied(defaultBarsPerPart * measureLength, newChordPart));
     
     newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
@@ -18324,40 +18329,40 @@ public ArrayList<String> getMelodyData(int chorusNumber)
       // TODO add your handling code here:
 }//GEN-LAST:event_trackerDelayTextField2MousePressed
 
-    private void partBarsTF1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_partBarsTF1ActionPerformed
-    {//GEN-HEADEREND:event_partBarsTF1ActionPerformed
-      setPartBars(partBarsTF1.getText());
-}//GEN-LAST:event_partBarsTF1ActionPerformed
+    private void partBarsTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_partBarsTFActionPerformed
+    {//GEN-HEADEREND:event_partBarsTFActionPerformed
+      setPartBars(partBarsTF.getText());
+}//GEN-LAST:event_partBarsTFActionPerformed
 
-    private void partBarsTF1FocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_partBarsTF1FocusGained
-    {//GEN-HEADEREND:event_partBarsTF1FocusGained
+    private void partBarsTFFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_partBarsTFFocusGained
+    {//GEN-HEADEREND:event_partBarsTFFocusGained
       // TODO add your handling code here:
-}//GEN-LAST:event_partBarsTF1FocusGained
+}//GEN-LAST:event_partBarsTFFocusGained
 
-    private void partBarsTF1FocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_partBarsTF1FocusLost
-    {//GEN-HEADEREND:event_partBarsTF1FocusLost
+    private void partBarsTFFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_partBarsTFFocusLost
+    {//GEN-HEADEREND:event_partBarsTFFocusLost
       // TODO add your handling code here:
-}//GEN-LAST:event_partBarsTF1FocusLost
+}//GEN-LAST:event_partBarsTFFocusLost
 
-    private void partBarsTF1KeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_partBarsTF1KeyTyped
-    {//GEN-HEADEREND:event_partBarsTF1KeyTyped
+    private void partBarsTFKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_partBarsTFKeyTyped
+    {//GEN-HEADEREND:event_partBarsTFKeyTyped
       // TODO add your handling code here:
-}//GEN-LAST:event_partBarsTF1KeyTyped
+}//GEN-LAST:event_partBarsTFKeyTyped
 
-    private void partBarsTF1KeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_partBarsTF1KeyPressed
-    {//GEN-HEADEREND:event_partBarsTF1KeyPressed
+    private void partBarsTFKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_partBarsTFKeyPressed
+    {//GEN-HEADEREND:event_partBarsTFKeyPressed
       // TODO add your handling code here:
-}//GEN-LAST:event_partBarsTF1KeyPressed
+}//GEN-LAST:event_partBarsTFKeyPressed
 
-    private void partBarsTF1KeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_partBarsTF1KeyReleased
-    {//GEN-HEADEREND:event_partBarsTF1KeyReleased
+    private void partBarsTFKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_partBarsTFKeyReleased
+    {//GEN-HEADEREND:event_partBarsTFKeyReleased
       // TODO add your handling code here:
-}//GEN-LAST:event_partBarsTF1KeyReleased
+}//GEN-LAST:event_partBarsTFKeyReleased
 
-    private void partBarsTF1MousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_partBarsTF1MousePressed
-    {//GEN-HEADEREND:event_partBarsTF1MousePressed
+    private void partBarsTFMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_partBarsTFMousePressed
+    {//GEN-HEADEREND:event_partBarsTFMousePressed
       // TODO add your handling code here:
-}//GEN-LAST:event_partBarsTF1MousePressed
+}//GEN-LAST:event_partBarsTFMousePressed
 
     private void prefMeasTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_prefMeasTFActionPerformed
     {//GEN-HEADEREND:event_prefMeasTFActionPerformed
@@ -18982,8 +18987,7 @@ public void populateChordSelMenu()
                //System.out.println("You selected " + chordToInsert);
             
             // Insert the voicing into the leadsheet   
-            Style currentStyle =
-                ImproVisor.getCurrentWindow().score.getChordProg().getStyle();
+            Style currentStyle = getCurrentChordPart().getStyle();
             String v = voicingEntryTF.getText();
             String e = extEntryTF.getText();
 
@@ -19073,7 +19077,7 @@ public Polylist makeFutureChordsList()
 
 public Polylist makeFutureChordsList(int startingSlot)
   {
-    int chorusLength = chordProg.size();
+    int chorusLength = getCurrentChordPart().size();
     Polylist result = getCurrentStave().extractChordNamePolylist(startingSlot % chorusLength, chorusLength-1);
     result = removeDuplicates(result);
     return result;
@@ -20305,7 +20309,7 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
                                         maxInterval, 
                                         BEAT, 
                                         leapProb, 
-                                        getCurrentMelodyPart().getChordPart(),
+                                        getCurrentChordPart(),
                                         0, 
                                         avoidRepeats);
 
@@ -20838,13 +20842,16 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
         int modedIndex=0;
         int increment=0;
         autoScrollOnPlayback = true;
+        
+        ChordPart chordPart = getCurrentChordPart();
+        
         if(skippedBack)
         {
             // will play current chord iff back button was pressed; will not move forward
             currIndex = midiSynth.getSlot();
-            if(currIndex > chordProg.getSize())
+            if(currIndex > chordPart.getSize())
             {
-                modedIndex = currIndex % chordProg.getSize();
+                modedIndex = currIndex % chordPart.getSize();
             }
             midiSynth.setSlot(currIndex);
             playAndCaptureChordAtIndex(modedIndex);
@@ -20858,21 +20865,21 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                 case PLAYING:
                     midiSynth.pause();
                     currIndex = midiSynth.getSlot();
-                    nextChordIndex = chordProg.getNextChordIndex(currIndex);
-                    if(currIndex >= chordProg.getSize())
+                    nextChordIndex = chordPart.getNextChordIndex(currIndex);
+                    if(currIndex >= chordPart.getSize())
                     {
-                        modedIndex = currIndex%chordProg.getSize();
-                        indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
+                        modedIndex = currIndex%chordPart.getSize();
+                        indexOfChordToPlay = chordPart.getNextChordIndex(modedIndex);
                         increment = indexOfChordToPlay - modedIndex;
                         nextChordIndex = currIndex+increment;
-                        indexOfChordToPlay = nextChordIndex % chordProg.getSize();
+                        indexOfChordToPlay = nextChordIndex % chordPart.getSize();
                         if(nextChordIndex >= -1 && increment >=0)
                         {
                             midiSynth.setSlot((long)nextChordIndex);
                         }
                         else
                         {
-                            indexOfChordToPlay = (indexOfChordToPlay+1) % chordProg.getSize();
+                            indexOfChordToPlay = (indexOfChordToPlay+1) % chordPart.getSize();
                             nextChordIndex = nextChordIndex+1;
                             midiSynth.setSlot((long)nextChordIndex);
                         }
@@ -20893,21 +20900,21 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                     break;
                 case PAUSED:
                     currIndex = midiSynth.getSlot();
-                    nextChordIndex = chordProg.getNextChordIndex(currIndex);
-                    if(currIndex >= chordProg.getSize())
+                    nextChordIndex = chordPart.getNextChordIndex(currIndex);
+                    if(currIndex >= chordPart.getSize())
                     {
-                        modedIndex = currIndex%chordProg.getSize();
-                        indexOfChordToPlay = chordProg.getNextChordIndex(modedIndex);
+                        modedIndex = currIndex%chordPart.getSize();
+                        indexOfChordToPlay = chordPart.getNextChordIndex(modedIndex);
                         increment = indexOfChordToPlay - modedIndex;
                         nextChordIndex = currIndex+increment;
-                        indexOfChordToPlay = nextChordIndex % chordProg.getSize();
+                        indexOfChordToPlay = nextChordIndex % chordPart.getSize();
                         if(nextChordIndex >= -1 && increment >=0)
                         {
                             midiSynth.setSlot((long)nextChordIndex);
                         }
                         else
                         {
-                            indexOfChordToPlay = (indexOfChordToPlay+1) % chordProg.getSize();
+                            indexOfChordToPlay = (indexOfChordToPlay+1) % chordPart.getSize();
                             nextChordIndex = nextChordIndex+1;
                             midiSynth.setSlot((long)nextChordIndex);
                         }
@@ -20931,30 +20938,30 @@ private void chordStepForwardButtonActionPerformed(java.awt.event.ActionEvent ev
                     Stave tempStave = getCurrentStave();
                     if(tempStave.getSelectionStart() >= 0)
                     {
-                        currIndex = tempStave.getSelectionStart() + ((chordProg.getSize())*(currTabIndex));
+                        currIndex = tempStave.getSelectionStart() + ((chordPart.getSize())*(currTabIndex));
                         playScoreBody(currIndex);
                         midiSynth.pause();
-                        if(currIndex >= chordProg.getSize())
+                        if(currIndex >= chordPart.getSize())
                         {
-                            modedIndex = currIndex % chordProg.getSize();
-                            indexOfChordToPlay = chordProg.getCurrentChordIndex(modedIndex);
+                            modedIndex = currIndex % chordPart.getSize();
+                            indexOfChordToPlay = chordPart.getCurrentChordIndex(modedIndex);
                             increment = indexOfChordToPlay - modedIndex;
                             nextChordIndex = currIndex + increment;
-                            indexOfChordToPlay = nextChordIndex % chordProg.getSize();
+                            indexOfChordToPlay = nextChordIndex % chordPart.getSize();
                             if(nextChordIndex >= -1)
                             {
                                 midiSynth.setSlot((long)nextChordIndex);
                             }
                             else
                             {
-                                indexOfChordToPlay = (indexOfChordToPlay+1)%chordProg.getSize();
+                                indexOfChordToPlay = (indexOfChordToPlay+1)%chordPart.getSize();
                                 nextChordIndex = nextChordIndex+1;
                                 midiSynth.setSlot((long)nextChordIndex);
                             }
                         }
                         else
                         {
-                            nextChordIndex = chordProg.getCurrentChordIndex(currIndex);
+                            nextChordIndex = chordPart.getCurrentChordIndex(currIndex);
                             if(nextChordIndex >= 0)
                             {
                                 midiSynth.setSlot((long)nextChordIndex);
@@ -20992,11 +20999,14 @@ private void chordStepBackButtonActionPerformed(java.awt.event.ActionEvent evt) 
         autoScrollOnPlayback = true;
         skippedBack = true;
         currChordIndex = midiSynth.getSlot();
-        int prevChordIndex = chordProg.getPrevUniqueChordIndex(currChordIndex);
-        if(currChordIndex >= chordProg.getSize())
+        
+        ChordPart chordPart = getCurrentChordPart();
+        
+        int prevChordIndex = chordPart.getPrevUniqueChordIndex(currChordIndex);
+        if(currChordIndex >= chordPart.getSize())
         {
-            int modedIndex = currChordIndex%chordProg.getSize();
-            int prevChordMod = chordProg.getPrevUniqueChordIndex(modedIndex);
+            int modedIndex = currChordIndex%chordPart.getSize();
+            int prevChordMod = chordPart.getPrevUniqueChordIndex(modedIndex);
             int interval;
             if(prevChordMod != -1)
             {
@@ -21870,7 +21880,7 @@ public void showNewVoicingDialog()
 
     // set the chord progression for the score
 
-    chordProg = score.getChordProg();
+    ChordPart chordProg = score.getChordPart();
 
     scoreTab.removeAll();
 
@@ -23281,7 +23291,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton overwriteLickButton;
     private javax.swing.JSpinner parallaxSpinner;
     private javax.swing.JPanel partBarsPanel;
-    private javax.swing.JTextField partBarsTF1;
+    private javax.swing.JTextField partBarsTF;
     private javax.swing.JLabel partComposerLabel;
     private javax.swing.JTextField partComposerTF;
     private javax.swing.JLabel partTitleLabel;
@@ -23755,7 +23765,7 @@ public void showNewVoicingDialog()
 
   public ChordPart getChordProg()
   {
-      return score.getChordProg();
+      return score.getChordPart();
   }
 
   public void setLickTitle(String title)
@@ -23831,7 +23841,7 @@ public void toGrammar()
 
 public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
   {
-      ChordPart chordPart = score.getChordProg();
+      ChordPart chordPart = score.getChordPart();
       chordPart.toRoadMapFrame(roadmap);
   }
 
@@ -23844,7 +23854,7 @@ public void chordPartToRoadMapFrame(RoadMapFrame roadmap)
 public void addToChordPartFromRoadMapFrame(RoadMapFrame roadmap)
   {
       score.fromRoadMapFrame(roadmap);
-      //setBars(score.getBarsPerChorus());
+      //setBars(score.getDefaultBarsPerChorus());
       //TODO style isn't set correctly
       //TODO set name
       repaint();
@@ -24026,10 +24036,10 @@ public MidiSynth getMidiSynthRM()
 
 public int getBarsPerChorus()
   {
-    return score.getBarsPerChorus();
+    return score.getDefaultBarsPerChorus();
   }
 
-public void setChordProg(ChordPart chordPart)
+public void setChordPart(ChordPart chordPart)
   {
     //FIX!!??
     score.setChordProg(chordPart);
@@ -24138,7 +24148,7 @@ public void actionPerformed(ActionEvent evt)
 
     int slotInChorus = partIndex[1]; // slotInPlayback % chorusSize;
 
-    Chord currentChord = chordProg.getCurrentChord(slotInChorus);
+    Chord currentChord = getCurrentChordPart().getCurrentChord(slotInChorus);
 
 //    currentChord.getChordForm();
 
@@ -24262,5 +24272,16 @@ public void actionPerformed(ActionEvent evt)
   }
   }
 
+public ChordPart getCurrentChordPart()
+  {
+    MelodyPartAccompanied mp = getCurrentMelodyPart();
+    
+    if( mp == null )
+      {
+        return null;
+      }
+    
+    return mp.getChordPart();
+  }
 
 }

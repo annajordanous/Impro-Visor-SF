@@ -730,7 +730,7 @@ private void extractChords()
         ChordExtract chordExtract = new ChordExtract();
         ChordPart chords = chordExtract.arrayMelodyPartsToChordPart(arrayMelodyParts, chordResolution, noteResolution);
         if (chords != null) {
-            notate.setChordProg(chords);
+            notate.setChordPart(chords);
         }
     }
 }

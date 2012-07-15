@@ -454,12 +454,12 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
             } else {
                 if(score != null) {
                     int[] metre = score.getMetre();
-                    ChordPart chords = score.getChordProg();
+                    ChordPart chords = score.getChordPart();
                     switch(row) {
                         case 0: returnValue = score.getTitle(); break;
                         case 1: returnValue = score.getComposer(); break;
                         case 2: {
-                                Style style = score.getChordProg().getStyle();
+                                Style style = score.getChordPart().getStyle();
                                 String styleName = style == null ?
                                     "unknown" : style.getName();
                                 returnValue = styleName; break;

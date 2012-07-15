@@ -153,7 +153,7 @@ public class ExportToMidiCommand implements Command, Constants
         Track[] tracks = seq.getTracks();
         
         // write volume messages to tracks
-        Style currentStyle = score.getChordProg().getStyle();
+        Style currentStyle = score.getChordPart().getStyle();
 
         try {
             ShortMessage volMsg = new ShortMessage();

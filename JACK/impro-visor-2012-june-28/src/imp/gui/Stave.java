@@ -5429,7 +5429,7 @@ public String extract(String title, ExtractMode mode, int grade,
 
                         prevNote = unit.copy();
                         prevIndex = index;
-                        //unit.saveLeadsheet(out, metre, false); // no linebreaks
+                        //unit.saveToLeadsheet(out, metre, false); // no linebreaks
                       }
                   }
 
@@ -5548,7 +5548,7 @@ public String extract(String title, ExtractMode mode, int grade,
           {
             case CELL:
             case IDIOM:
-                //prevChord.saveLeadsheet(out, metre, false);
+                //prevChord.saveToLeadsheet(out, metre, false);
                 out.write((prevChord).toLeadsheet());
                 out.write(") (name " + title);
                 break;
