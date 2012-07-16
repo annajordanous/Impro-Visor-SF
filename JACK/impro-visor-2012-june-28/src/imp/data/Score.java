@@ -30,8 +30,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.ListIterator;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Sequence;
 import polya.Polylist;
@@ -41,7 +41,7 @@ import polya.Polylist;
  * parallel Parts, including melodies and chord progressions.
  * A Score contains several Parts stored in a PartList.
  * It contains information about the total Score, such as volume, tempo,
- * and title.  Parts should be added with the addPart method.
+ * and title.  Parts should be added with the addMelodyPart method.
  * 
  * @see         Part
  * @author      Stephen Jones (rewritten from code written by Andrew Sorensen
@@ -70,8 +70,10 @@ static final String chordPartBase = "CP_";
     /**
      * The default title
      */
-    public static String DEFAULT_TITLE = "";
-
+    public static String DEFAULT_TITLE = "Untitled Score";
+    
+    public static final String TITLE_BASE = "Score #";
+    
     /**
      * The default composer
      */
@@ -101,7 +103,9 @@ static final String chordPartBase = "CP_";
     /**
      * The title of the Score
      */
-    private String title = "";
+    private String title = DEFAULT_TITLE;
+
+    private static int titleCounter = 0;
 
     /**
      * The composer of the Score
@@ -153,8 +157,8 @@ static final String chordPartBase = "CP_";
     /*
      * Mapping from names to ChordParts
      */
-    private ConcurrentHashMap<String, ChordPart> chordPartList 
-            = new ConcurrentHashMap<String,ChordPart>();
+    private LinkedHashMap<String, ChordPart> chordPartList 
+            = new LinkedHashMap<String,ChordPart>();
     
     /**
      * The count-in Progression for this Score, if any.
@@ -191,36 +195,39 @@ static final String chordPartBase = "CP_";
     
 
     /**
-     * Creates an empty Score with default title, tempo, and volume.
+     * Creates an empty Score with generated title, tempo, and volume.
      */
     public Score() {
-        this(DEFAULT_TITLE);
+        this(generateTitle(), DEFAULT_TEMPO, DEFAULT_VOLUME);
+       
     }
 
-    /**
-     * Creates an empty Score with the specified title.
-     * @param title     a String containing the title of the Score
-     */
-    public Score(String title) {
-        this(title, DEFAULT_TEMPO);
-    }
+//    /**
+//     * Currently only one use, in Notate, and the title is ""
+//     * Creates an empty Score with the specified title.
+//     * @param title     a String containing the title of the Score
+//     */
+//    public Score(String title) {
+//        this(title, DEFAULT_TEMPO);
+//    }
 
-    /**
-     * Creates an empty Score with the specified tempo.
-     * @param tempo     a double containing the tempo of the Score
-     */
-    public Score(double tempo) {
-        this(DEFAULT_TITLE, tempo);
-    }
+//    /**
+//     * Creates an empty Score with the specified tempo.
+//     * @param tempo     a double containing the tempo of the Score
+//     */
+//    public Score(double tempo) {
+//        this(DEFAULT_TITLE, tempo);
+//    }
 
-    /**
-     * Creates an empty Score with the specified title and tempo.
-     * @param title     a String containing the title of the Score
-     * @param tempo     a double contianing the tempo of the Score
-     */
-    public Score(String title, double tempo) {
-        this(title, tempo, DEFAULT_VOLUME);
-    }
+//    /**
+//     * Only used in this class currently
+//     * Creates an empty Score with the specified title and tempo.
+//     * @param title     a String containing the title of the Score
+//     * @param tempo     a double contianing the tempo of the Score
+//     */
+//    public Score(String title, double tempo) {
+//        this(title, tempo, DEFAULT_VOLUME);
+//    }
     
     /**
      * Creates an empty Score with the specified title, tempo, and volume.
@@ -246,6 +253,11 @@ static final String chordPartBase = "CP_";
         setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
     }
 
+    /**
+     * Currently used only in ImproVisor and PatternDisplay, once each.
+     * 
+     * @param length 
+     */
     public Score(int length) {
         this();
         this.length = length;
@@ -253,10 +265,15 @@ static final String chordPartBase = "CP_";
         addDefaultChordPart(new ChordPart(length));
     }
 
+    /**
+     * Currently used in ExtractionEditor and RoadMapFrame
+     * @param chordPart 
+     */
+    
     public Score(ChordPart chordPart) {
         this();
         addPart();
-        setLength(chordPart.size());
+        //setLength(chordPart.size());
         addDefaultChordPart(chordPart);
     }
 
@@ -456,9 +473,9 @@ static final String chordPartBase = "CP_";
      * @param parts     the number of Parts to add
      */
     public void addParts(int parts) {
-        Trace.log(2, "adding " + parts + " new parts to score");
+        Trace.log(2, "adding " + parts + " new parts to score " + title);
         for(int i = 0; i < parts; i++) {
-            MelodyPartAccompanied mp = new MelodyPartAccompanied(length, getDefaultChordPart().copy());
+            MelodyPartAccompanied mp = new MelodyPartAccompanied(0, getDefaultChordPart());
             if(partList.size() > 0)
                 {
                 mp.setInstrument(partList.get(0).getInstrument());
@@ -471,12 +488,12 @@ static final String chordPartBase = "CP_";
      * Adds the specified Part to the Score.
      * @param part      Part to add
      */
-    public void addPart(MelodyPartAccompanied part) {
-        Trace.log(2, "adding existing melody part to score");
-        if( length < part.size() )
-          {
-            setLength(part.size());
-          }
+    public void addMelodyPart(MelodyPartAccompanied part) {
+       System.out.println("adding melody part " + part.getTitle() + " to score " + title);
+//        if( length < part.size() )
+//          {
+//            setLength(part.size());
+//          }
         partList.add(part);
     }
     
@@ -579,15 +596,12 @@ static final String chordPartBase = "CP_";
             {
             getDefaultChordPart().setSize(length);
             }
-        if ( getDefaultChordPart() != null)
-            {
-            getDefaultChordPart().setSize(length);
-            }
-        Iterator<MelodyPartAccompanied> i = partList.listIterator();
-        while( i.hasNext() )
-            {
-            i.next().setSize(length);
-            }
+
+//        Iterator<MelodyPartAccompanied> i = partList.listIterator();
+//        while( i.hasNext() )
+//            {
+//            i.next().setSize(length);
+//            }
       }
     
     public int getLength()
@@ -598,7 +612,15 @@ static final String chordPartBase = "CP_";
 
     public int getTotalLength()
       {
-      return length * partList.size();
+        int sum = 0;
+        Iterator<MelodyPartAccompanied> i = partList.listIterator();
+        while( i.hasNext() )
+            {
+            sum += i.next().size();
+            }
+        return sum;
+        
+//      return length * partList.size();
       }
 
 
@@ -655,7 +677,7 @@ static final String chordPartBase = "CP_";
     public void setChordProg(ChordPart chordProg) {
 //        setLength(chordProg.size());
 //        this.chordProg = chordProg;
-        addDefaultChordPart(chordProg);
+        setDefaultChordPart(chordProg);
     }
 
     /**
@@ -702,7 +724,7 @@ static final String chordPartBase = "CP_";
      */
     public Score copy() {
         //Trace.log(2, "copying Score of size " + size());
-        Score newScore = new Score(title, tempo);
+        Score newScore = new Score(title, tempo, DEFAULT_VOLUME);
 	newScore.setMetre(metre[0], metre[1]);
         PartList newPartList = new PartList(partList.size());
         ListIterator<MelodyPartAccompanied> i = partList.listIterator();
@@ -875,7 +897,7 @@ static final String chordPartBase = "CP_";
                 maxLength = part.size();
         }
 	
-        setLength(maxLength);
+        //setLength(maxLength);
     }
     
     /**
@@ -1211,7 +1233,7 @@ public void dumpMelody()
   public void fromRoadMapFrame(RoadMapFrame roadmap)
     {
         getDefaultChordPart().addFromRoadMapFrame(roadmap);
-        setLength(getDefaultChordPart().size());
+        //setLength(getDefaultChordPart().size());
     }
 
   
@@ -1243,18 +1265,30 @@ public void addChord(Chord chord)
 
 public void addChordPart(String name, ChordPart part)
   {
-//System.out.println("adding chord part " + name + " to " + title);
     if( name.equals("") )
       {
         name = DEFAULT_PROGRESSION;
       }
     chordPartList.put(name, part);
+System.out.println("adding chord part " + part.getTitle() + " to score " + title + " under name " + name);
   }
 
 public void addDefaultChordPart(ChordPart part)
   {
     part.setTitle(DEFAULT_PROGRESSION);
     addChordPart(DEFAULT_PROGRESSION, part);
+  }
+
+public ChordPart ensureDefaultChordPart()
+  {
+    ChordPart defaultChordPart = getDefaultChordPart();
+    
+    if( defaultChordPart == null )
+      {
+        defaultChordPart = new ChordPart();
+        addDefaultChordPart(defaultChordPart);
+      }
+    return defaultChordPart;
   }
 
 public void setDefaultChordPart(ChordPart part)
@@ -1319,5 +1353,12 @@ public int[] partIndexFromSlot(int slotIndex)
       }
     
     return result;
+  }
+
+
+private static String generateTitle()
+  {
+    titleCounter++;
+    return TITLE_BASE + titleCounter;
   }
 }

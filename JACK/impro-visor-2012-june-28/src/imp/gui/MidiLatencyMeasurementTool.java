@@ -177,7 +177,7 @@ public class MidiLatencyMeasurementTool
     part.addNote(new Note(60, BEAT));
     part.addRest(new Rest(BEAT * 2));
     testScore.setTempo(60);
-    testScore.addPart(part);
+    testScore.addMelodyPart(part);
     }
 
   public void startLatencyMeasurement()
