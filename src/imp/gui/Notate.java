@@ -591,9 +591,6 @@ public class Notate
 
   private RecentStyleListModel recentStyleListModel = new RecentStyleListModel();
 
-  //markermarkermarker
-  private SectionListModel sectionListModel = new SectionListModel();
-
   private SectionTableModel sectionTableModel = new SectionTableModel (
           new Object [][] {{null, null, null, null, null, null, null},
                            {null, null, null, null, null, null, null},
@@ -1014,11 +1011,8 @@ public class Notate
 
     initComponents();
 
-    //markermarkermarker
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    //sectionTable.setDefaultEditor(Boolean.class, sectionCellEditor);
-    //sectionTable.setDefaultRenderer(Boolean.class, sectionCellRenderer);
     
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
@@ -1349,24 +1343,17 @@ public class Notate
         styleTabs = new javax.swing.JTabbedPane();
         currentStyleTab = new javax.swing.JPanel();
         selectAStyleLabel = new javax.swing.JLabel();
-        usePreviousStyleCheckBox = new javax.swing.JCheckBox();
-        swingLabel = new javax.swing.JLabel();
-        swingTF = new javax.swing.JTextField();
         styleListScrollPane = new javax.swing.JScrollPane();
         styleList = new javax.swing.JList();
-        sectionListScrollPane = new javax.swing.JScrollPane();
-        sectionList = new javax.swing.JList();
         newSectionButton = new javax.swing.JButton();
-        measureLabel = new javax.swing.JLabel();
-        measureTF = new javax.swing.JTextField();
         sectionLabel = new javax.swing.JLabel();
         delSectionButton = new javax.swing.JButton();
-        phraseCheckBox = new javax.swing.JCheckBox();
         recentStyleLabel = new javax.swing.JLabel();
         recentStyleListScrollPane = new javax.swing.JScrollPane();
         recentStyleList = new javax.swing.JList();
         SectionTableScrollPane = new javax.swing.JScrollPane();
         sectionTable = new javax.swing.JTable();
+        usePreviousStyleButton = new javax.swing.JButton();
         chorusPreferences = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jTabbedPane4 = new javax.swing.JTabbedPane();
@@ -2202,62 +2189,13 @@ public class Notate
         currentStyleTab.setLayout(new java.awt.GridBagLayout());
 
         selectAStyleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        selectAStyleLabel.setText("Style:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
-
-        usePreviousStyleCheckBox.setToolTipText("If checked, whatever style was in effect for the previous section will also be used for this section.");
-        usePreviousStyleCheckBox.setLabel("Use style of previous section");
-        usePreviousStyleCheckBox.setMaximumSize(new java.awt.Dimension(250, 23));
-        usePreviousStyleCheckBox.setMinimumSize(new java.awt.Dimension(250, 23));
-        usePreviousStyleCheckBox.setPreferredSize(new java.awt.Dimension(250, 23));
-        usePreviousStyleCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usePreviousStyleCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        currentStyleTab.add(usePreviousStyleCheckBox, gridBagConstraints);
-
-        swingLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        swingLabel.setText("Swing:");
-        swingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(swingLabel, gridBagConstraints);
-
-        swingTF.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        swingTF.setText(" ");
-        swingTF.setToolTipText("Enter the melody swing value (.5 for no swing, .67 for nominal swing.)");
-        swingTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        swingTF.setNextFocusableComponent(autoStaveBtn);
-        swingTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        swingTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                swingTFActionPerformed(evt);
-            }
-        });
+        selectAStyleLabel.setText("Style");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.05;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(swingTF, gridBagConstraints);
+        currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
 
         styleListScrollPane.setMinimumSize(new java.awt.Dimension(260, 130));
 
@@ -2271,38 +2209,14 @@ public class Notate
         styleListScrollPane.setViewportView(styleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
         gridBagConstraints.weighty = 0.4;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(styleListScrollPane, gridBagConstraints);
-
-        sectionListScrollPane.setMaximumSize(new java.awt.Dimension(300, 32767));
-        sectionListScrollPane.setMinimumSize(new java.awt.Dimension(300, 23));
-        sectionListScrollPane.setPreferredSize(new java.awt.Dimension(300, 132));
-
-        sectionList.setModel(sectionListModel);
-        sectionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        sectionList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                sectionListValueChanged(evt);
-            }
-        });
-        sectionListScrollPane.setViewportView(sectionList);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.75;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(sectionListScrollPane, gridBagConstraints);
 
         newSectionButton.setText("Split Selected Section\n");
         newSectionButton.setToolTipText("Splits the currently-selected Section approximately in two. Then set Starting Measure on second Section.");
@@ -2312,53 +2226,23 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.05;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.weightx = 0.33;
         currentStyleTab.add(newSectionButton, gridBagConstraints);
 
-        measureLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        measureLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        measureLabel.setText("Section's Starting Measure:");
-        measureLabel.setMaximumSize(new java.awt.Dimension(200, 16));
-        measureLabel.setMinimumSize(new java.awt.Dimension(200, 16));
-        measureLabel.setPreferredSize(new java.awt.Dimension(200, 16));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(measureLabel, gridBagConstraints);
-
-        measureTF.setMaximumSize(new java.awt.Dimension(50, 2147483647));
-        measureTF.setMinimumSize(new java.awt.Dimension(50, 19));
-        measureTF.setPreferredSize(new java.awt.Dimension(50, 19));
-        measureTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                measureTFActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        currentStyleTab.add(measureTF, gridBagConstraints);
-
         sectionLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        sectionLabel.setText("Sections:");
+        sectionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sectionLabel.setText("Sections");
+        sectionLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(sectionLabel, gridBagConstraints);
 
@@ -2370,36 +2254,21 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.05;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         currentStyleTab.add(delSectionButton, gridBagConstraints);
 
-        phraseCheckBox.setText("End Section as Phrase\n");
-        phraseCheckBox.setToolTipText("If Phrase is checked, will not cause new line on Road Map, yet will function similar to a Section. On the lead sheet, a phrase will end with an apostrophe above the staff, rather than a double bar.");
-        phraseCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        phraseCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                phraseCheckBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        currentStyleTab.add(phraseCheckBox, gridBagConstraints);
-
+        recentStyleLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         recentStyleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        recentStyleLabel.setText("Recent Styles:");
-        recentStyleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        recentStyleLabel.setText("Recent Styles");
+        recentStyleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(recentStyleLabel, gridBagConstraints);
 
@@ -2416,15 +2285,16 @@ public class Notate
         recentStyleListScrollPane.setViewportView(recentStyleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 0.75;
         gridBagConstraints.weighty = 0.4;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(recentStyleListScrollPane, gridBagConstraints);
+
+        SectionTableScrollPane.setAlignmentY(1.0F);
 
         sectionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2454,16 +2324,36 @@ public class Notate
                 return canEdit [columnIndex];
             }
         });
+        sectionTable.setAlignmentY(1.0F);
+        sectionTable.setName("");
+        sectionTable.setRowSelectionAllowed(false);
         SectionTableScrollPane.setViewportView(sectionTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipady = 1;
         gridBagConstraints.weightx = 0.4;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
         currentStyleTab.add(SectionTableScrollPane, gridBagConstraints);
+
+        usePreviousStyleButton.setText("Use Previous Style");
+        usePreviousStyleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usePreviousStyleButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.01;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        currentStyleTab.add(usePreviousStyleButton, gridBagConstraints);
 
         styleTabs.addTab("Styles by Section", currentStyleTab);
 
@@ -2563,7 +2453,6 @@ public class Notate
 
         layoutTF.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         layoutTF.setToolTipText("Set a specific layout (bars per line).");
-        layoutTF.setNextFocusableComponent(swingTF);
         layoutTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 layoutTFActionPerformed(evt);
@@ -6404,7 +6293,6 @@ public class Notate
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
         setMinimumSize(new java.awt.Dimension(800, 600));
         setName("notateFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(3002, 800));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -8770,11 +8658,8 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     reCaptureCurrentStyle();
 
     styleListModel.reset();
-
-    //sectionListModel.reset();
     
     sectionTableModel.tableRefresh();
-    //markermarkermarker
     }
 
   public void setTableColumnWidths()
@@ -8856,80 +8741,29 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
 private void setSectionParameters()
   {
   setSectionPrefs();
-
-  //sectionListModel.refresh();
   
   sectionTableModel.tableRefresh();
-  //markermarkermarker
   }
 
     private void newSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSectionButtonActionPerformed
-
-      //sectionInfo.newSection(sectionList.getSelectedIndex());
-
-      //sectionListModel.refresh();
-      
-      
       int index = sectionTable.getSelectedRow();
       if(index < 0)
           return;
       sectionTableModel.addARow();
       sectionInfo.newSection(index);
       sectionTableModel.tableRefresh();
-       
-      //markermarkermarker
+      sectionTable.getSelectionModel().setSelectionInterval(index, index);
     }//GEN-LAST:event_newSectionButtonActionPerformed
 
     private void delSectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delSectionButtonActionPerformed
-      /*
-      int index = sectionList.getSelectedIndex();
-
-      sectionInfo.deleteSection(index);
-
-      if( index >= sectionInfo.size() )
-        {
-        sectionList.setSelectedIndex(sectionInfo.size() - 1);
-        }
-
-      sectionListModel.refresh();
-      */
-      
       int index = sectionTable.getSelectedRow();
       if(index < 0)
           return;
       sectionInfo.deleteSection(index);
-      
-      /* code for selecting rows; currently does not work
-      if( index == 0)
-      {
-          sectionTable.addRowSelectionInterval(0,0);
-          //System.out.println(sectionTable.getSelectedRow() + "----" + "/n");
-          //sectionTable.updateUI();
-      }
-      else if( index >= sectionInfo.size() )
-      {
-          sectionTable.setRowSelectionInterval(sectionInfo.size() - 1,
-                                               sectionInfo.size() - 1);
-      }
-      else
-      {
-          sectionTable.setRowSelectionInterval(index-1,index-1);
-      }
-      */
       sectionTableModel.tableRefresh();
-      //markermarkermarker
+      if(index == sectionInfo.size())
+        sectionTable.getSelectionModel().setSelectionInterval(index-1, index-1);
     }//GEN-LAST:event_delSectionButtonActionPerformed
-
-/**
- * Called when the Section List state changes
- * @param evt
- */
-
-    private void sectionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_sectionListValueChanged
-
-      //sectionListModel.refresh();
-      //markermarkermarker
-    }//GEN-LAST:event_sectionListValueChanged
 
     public void toCritic()
   {
@@ -8991,11 +8825,10 @@ private void setStepInputBtn(boolean selected)
 
     private void styleListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_styleListValueChanged
       Style style = (Style) styleList.getSelectedValue();
-      //System.out.println("style = " + style);
-      updateStyleList(style);
-      //sectionListModel.refresh();
+      int currentIndex = sectionTable.getSelectionModel().getLeadSelectionIndex();
+      updateStyleList(style, currentIndex);
       sectionTableModel.tableRefresh();
-      //markermarkermarker
+      sectionTable.getSelectionModel().setSelectionInterval(currentIndex, currentIndex);
     }//GEN-LAST:event_styleListValueChanged
 
     private void defDrumVolSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_defDrumVolSliderStateChanged
@@ -10836,7 +10669,6 @@ void changePrefTab(JToggleButton button, JPanel tab)
         */
     }
     
-    //markermarkermarker
     preferencesScrollPane.setViewportView(tab);
 
     preferencesDialog.setSize(preferencesDialogDimension);
@@ -11137,6 +10969,8 @@ public void adjust()
 /**
  * This is the Model for the list of Sections that appear in the Style Preferences
  * Dialog.
+ * 
+ * This is no longer needed; has been replaced with SectionTableModel
  */
 
 @SuppressWarnings("serial")
@@ -11160,22 +10994,22 @@ public Object getElementAt(int index)
   {
     return sectionInfo.getInfo(index);
   }
-
+/*
 public void reset()
   {
     sectionInfo = score.getChordProg().getSectionInfo().copy();
 
     refresh();
   }
-
+*/
 /**
  * Called when the Section List state changes
  */
-
+/*
 public void refresh()
   {
     fireContentsChanged(this, 0, sectionInfo.size());
-
+    
     int index = sectionList.getSelectedIndex();
 
     if( index >= 0 )
@@ -11184,9 +11018,9 @@ public void refresh()
 
         //System.out.println("index = " + index + ", selected record = " + record);
 
-        measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
+        //measureTF.setText(String.valueOf(record.getSectionMeasure(chordProg)));
 
-        phraseCheckBox.setSelected(record.getIsPhrase());
+        //phraseCheckBox.setSelected(record.getIsPhrase());
 
         if( record.getUsePreviousStyle() )
           {
@@ -11206,9 +11040,9 @@ public void refresh()
 
     setNewSectionEnabled();
   }
+*/
 }
 
-//markermarkermarker
 //row gets sectionInfo's sectionRecord, column gets within sectionRecord
 /**
  * When adjusting the number of columns, make sure:
@@ -11255,10 +11089,21 @@ public class SectionTableModel extends DefaultTableModel
     }
     
     public void tableRefresh() {
+        int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
         fireTableDataChanged();
-        //for(int j = 0; j < sectionInfo.size(); j++)
-        //    System.out.print(getValueAt(j,0) + " ");
-        //System.out.println("------");
+        if(index >= 0)
+        {
+            if(index == sectionInfo.size())
+                addRecentStyle(sectionInfo.getSectionRecordByIndex(index-1).getStyle());
+            else
+                addRecentStyle(sectionInfo.getSectionRecordByIndex(index).getStyle());
+        }
+    }
+    
+    public void tableReset() {
+        sectionInfo = score.getChordProg().getSectionInfo().copy();
+        
+        tableRefresh();
     }
 
     @Override
@@ -13773,7 +13618,6 @@ public static double quietDoubleFromTextField(javax.swing.JTextField field,
  * dialog.
  *
  */
-
 private void savePrefs()
   {
     /*
@@ -13837,78 +13681,35 @@ private boolean saveSectionInfo()
     return true;
   }
 
-//markermarkermarker
 private boolean setSectionPrefs()
   {
     try
       {
-        int measure = Integer.valueOf(measureTF.getText());
-
-        int index = sectionList.getSelectedIndex();
+        int index = sectionTable.getSelectionModel().getLeadSelectionIndex(); 
 
         int currentMeasure = sectionInfo.getSectionMeasure(index);
 
-        boolean isPhrase = phraseCheckBox.isSelected();
-
-        boolean usePreviousStyleChecked = !(currentMeasure==1) && usePreviousStyleCheckBox.isSelected();
-
-        if( measure > 0 && measure <= sectionInfo.measures() )
-          {
-            if( measure != currentMeasure && currentMeasure == 1 )
-              {
-                //ErrorLog.log(ErrorLog.WARNING, "Cannot move the first section.");
-
-                return false;
-              }
-
-          }
-        else
-          {
-            ErrorLog.log(ErrorLog.WARNING, "That measure number doesn't exist.");
-
-            return false;
-          }
-      sectionInfo.adjustSection(index, measure, isPhrase, usePreviousStyleChecked);
+        sectionInfo.adjustSection(index, 0, false, false);
       }
     catch( NumberFormatException e )
       {
-        invalidInteger(measureTF.getText());
-
         return false;
       }
 
     return true;
   }
-//markermarkermarker
+
 private boolean saveStylePrefs()
   {
-    SectionRecord record = sectionInfo.getSectionRecordByIndex(sectionList.getSelectedIndex());
+    if(sectionTable.getSelectionModel().getLeadSelectionIndex() < 0)
+        sectionTable.getSelectionModel().setSelectionInterval(0,0);
+    
+    SectionRecord record = sectionInfo.getSectionRecordByIndex(
+            sectionTable.getSelectionModel().getLeadSelectionIndex());
 
     if( !record.getUsePreviousStyle() )
       {
         Style style = record.getStyle();
-        try
-          {
-            double swingVal = Double.valueOf(swingTF.getText()).doubleValue();
-
-            if( 0 <= swingVal && swingVal <= 1 )
-              {
-                style.setSwing(swingVal);
-              }
-            else
-              {
-                ErrorLog.log(ErrorLog.WARNING,
-                             "The swing value must be between 0 and 1.");
-
-                return false;
-              }
-          }
-        catch( NumberFormatException e )
-          {
-            invalidInteger(swingTF.getText());
-
-            return false;
-          }
       }
     return true;
   }
@@ -13917,17 +13718,16 @@ private boolean saveStylePrefs()
  * Called when the StyleList is changed
  */
 
-public void updateStyleList(Style style)
+public void updateStyleList(Style style, int currentIndex)
   {
-    usePreviousStyleCheckBox.setSelected(false);
-
     if( style != null )
-      {
-      swingTF.setText("" + style.getSwing());
-      //markermarkermarker
-      sectionInfo.modifySection(style, sectionList.getSelectedIndex(), false);
-      }
-   }
+    {
+      if(currentIndex < 0)
+          sectionInfo.modifySection(style, 0, false);
+      else
+          sectionInfo.modifySection(style, currentIndex, false);
+    }
+  }
 
 public int getTimeSigTop() {
     return Integer.parseInt(timeSignatureTopTF.getText());
@@ -14653,10 +14453,7 @@ private boolean saveGlobalPreferences()
     drawChordTonesCheckBox.setSelected(drawTones.charAt(1) == '1');
     drawColorTonesCheckBox.setSelected(drawTones.charAt(2) == '1');
 
-    // ===== update Style panel
-    //markermarkermarker
-    sectionList.setSelectedIndex(0);
-    sectionTable.getSelectionModel().setSelectionInterval(0,0);
+    // ===== update Style table
 
     if( sectionInfo != null )
       {
@@ -14666,9 +14463,7 @@ private boolean saveGlobalPreferences()
         styleList.setSelectedValue(style, true);
         }
       }
-    //markermarkermarker
-    sectionListModel.reset();
-
+    sectionTableModel.tableReset();
 
     // ===== update Leadsheet panel
 
@@ -14796,7 +14591,9 @@ private boolean saveGlobalPreferences()
     {
         numStavesPerPage.setText(Integer.toString(numStavesPP));
     }
-    }
+    sectionTableModel.tableRefresh();
+    sectionTable.getSelectionModel().setSelectionInterval(0,0);
+  }
 
   public void setRoadMapCheckBox(boolean value)
   {
@@ -14808,12 +14605,16 @@ private boolean saveGlobalPreferences()
     {
     return score.getBreakpoint();
     }
-  //markermarkermarker
-  private void setNewSectionEnabled()
+/*
+  private void setNewSectionEnabled() //connected only to the method refresh()
+                                      //in the class SectionListModel
+                                      //no longer needed
     {
     int measureLength = score.getChordProg().getMeasureLength();
 
     int sectionIndex = sectionList.getSelectedIndex();
+                     
+                     //sectionTable.getSelectionModel().getLeadSelectionIndex()
 
     if( sectionIndex == -1 )
       {
@@ -14834,8 +14635,7 @@ private boolean saveGlobalPreferences()
     newSectionButton.setEnabled((m2 - m1) > 0);
 
     }
-
-
+*/
 
   private void setFreezeLayout(Boolean frozen)
     {
@@ -18516,11 +18316,6 @@ public ArrayList<String> getMelodyData(int chorusNumber)
       setCheckBoxPreferences(2, alwaysUseMelody);
 }//GEN-LAST:event_alwaysUseMelodyActionPerformed
 
-    private void measureTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_measureTFActionPerformed
-    {//GEN-HEADEREND:event_measureTFActionPerformed
-      setSectionParameters();
-    }//GEN-LAST:event_measureTFActionPerformed
-
     private void adviceScrollListCellsMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_adviceScrollListCellsMouseClicked
     {//GEN-HEADEREND:event_adviceScrollListCellsMouseClicked
       adviceSelected(adviceScrollListCells.getSelectedValue());
@@ -21209,14 +21004,6 @@ private void layoutTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     savePrefs();
 }//GEN-LAST:event_layoutTFActionPerformed
 
-private void phraseCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phraseCheckBoxActionPerformed
-    setSectionParameters();
-}//GEN-LAST:event_phraseCheckBoxActionPerformed
-
-private void swingTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_swingTFActionPerformed
-        setSectionParameters();
-}//GEN-LAST:event_swingTFActionPerformed
-
 private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
   {//GEN-HEADEREND:event_playSelectionMIActionPerformed
     noCountIn();
@@ -21239,11 +21026,6 @@ private void midiLatencyTFactionPerformed(java.awt.event.ActionEvent evt)//GEN-F
     saveMidiLatency();
   }//GEN-LAST:event_midiLatencyTFactionPerformed
 
-private void usePreviousStyleCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_usePreviousStyleCheckBoxActionPerformed
-  {//GEN-HEADEREND:event_usePreviousStyleCheckBoxActionPerformed
-    setSectionParameters();
-  }//GEN-LAST:event_usePreviousStyleCheckBoxActionPerformed
-
 private void useBeamsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useBeamsMIActionPerformed
   {//GEN-HEADEREND:event_useBeamsMIActionPerformed
       getCurrentStave().setBeaming(useBeamsMI.isSelected());
@@ -21251,10 +21033,11 @@ private void useBeamsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRS
 
 private void recentStyleListValueChanged(javax.swing.event.ListSelectionEvent evt)//GEN-FIRST:event_recentStyleListValueChanged
   {//GEN-HEADEREND:event_recentStyleListValueChanged
-      updateStyleList((Style)recentStyleList.getSelectedValue());
-      //sectionListModel.refresh();
+      int currentIndex = sectionTable.getSelectionModel().getLeadSelectionIndex();
+      updateStyleList((Style)recentStyleList.getSelectedValue(), currentIndex);
+
       sectionTableModel.tableRefresh();
-      //markermarkermarker
+      sectionTable.getSelectionModel().setSelectionInterval(currentIndex, currentIndex);
   }//GEN-LAST:event_recentStyleListValueChanged
 
 private void clearHistoryMIrevertLeadsheetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearHistoryMIrevertLeadsheetActionPerformed
@@ -21418,6 +21201,18 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
 
 
     }//GEN-LAST:event_chordReplayButtonActionPerformed
+
+    private void usePreviousStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usePreviousStyleButtonActionPerformed
+        //markermarkermarker
+        int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
+        if(index <= 0 || index >= sectionInfo.size())
+            return;
+        SectionRecord record = sectionInfo.getSectionRecordByIndex(index);
+        record.setUsePreviousStyle();
+        sectionTableModel.tableRefresh();
+        sectionTable.getSelectionModel().setSelectionInterval(index,index);
+        
+    }//GEN-LAST:event_usePreviousStyleButtonActionPerformed
 
 /**
  * Focus on input from textEntry field, until return is pressed,
@@ -23314,8 +23109,6 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField lowRangeTF2;
     private javax.swing.JPanel masterVolumePanel;
     private javax.swing.JLabel measErrorLabel;
-    private javax.swing.JLabel measureLabel;
-    private javax.swing.JTextField measureTF;
     private javax.swing.JLabel measuresPerPartLabel;
     private javax.swing.JSpinner melodyChannelSpinner;
     private javax.swing.JPanel melodyInstPanel;
@@ -23395,7 +23188,6 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBoxMenuItem pasteOverMI;
     private javax.swing.JToggleButton pauseBtn;
     private javax.swing.JMenuItem pausePlayMI;
-    private javax.swing.JCheckBox phraseCheckBox;
     private javax.swing.JCheckBoxMenuItem phrasemarksMI;
     private javax.swing.JButton pianoKeyboardButton;
     private javax.swing.JMenuItem pianoKeyboardMI;
@@ -23476,8 +23268,6 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane scrollQuotes;
     private javax.swing.JScrollPane scrollScales;
     private javax.swing.JLabel sectionLabel;
-    private javax.swing.JList sectionList;
-    private javax.swing.JScrollPane sectionListScrollPane;
     private javax.swing.JButton sectionPreferencesBtn;
     private javax.swing.JTable sectionTable;
     private javax.swing.JLabel selectAStyleLabel;
@@ -23511,8 +23301,6 @@ public void showNewVoicingDialog()
     private javax.swing.JPanel stylePreferences;
     private javax.swing.JMenuItem stylePrefsMI;
     private javax.swing.JTabbedPane styleTabs;
-    private javax.swing.JLabel swingLabel;
-    private javax.swing.JTextField swingTF;
     private javax.swing.JLabel tempoLabel;
     private javax.swing.JPanel tempoPanel;
     private javax.swing.JTextField tempoSet;
@@ -23551,7 +23339,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
     private javax.swing.JCheckBoxMenuItem useBeamsMI;
-    private javax.swing.JCheckBox usePreviousStyleCheckBox;
+    private javax.swing.JButton usePreviousStyleButton;
     private javax.swing.JMenu utilitiesMenu;
     private javax.swing.JMenu viewMenu;
     private javax.swing.JLabel visAdviceLabel;
