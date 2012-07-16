@@ -15506,7 +15506,7 @@ public void addTab()
 //            score.setLength(newmp.size());
 //            //??setBars(score.getDefaultBarsPerChorus());
 //          }
-        score.addPart(newmp);
+        score.addMelodyPart(newmp);
 
       // reset the current scoreFrame
 
@@ -18192,7 +18192,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 
   public void newNotate()
     {
-    Score newScore = new Score("");
+    Score newScore = new Score();
     
     ensureChordFontSize();
 
@@ -18204,7 +18204,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     
     ChordPart newChordPart = new ChordPart();
 
-    newScore.addPart(new MelodyPartAccompanied(defaultBarsPerPart * measureLength, newChordPart));
+    newScore.addMelodyPart(new MelodyPartAccompanied(defaultBarsPerPart * measureLength, newChordPart));
     
     newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
 
@@ -24045,7 +24045,7 @@ public void setChordPart(ChordPart chordPart)
   {
     //FIX!!??
     score.setChordProg(chordPart);
-    score.setLength(chordPart.getSize());
+    //score.setLength(chordPart.getSize());
     setBars(chordPart.getBars());
     setupArrays();
   }

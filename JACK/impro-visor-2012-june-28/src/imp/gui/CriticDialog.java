@@ -267,7 +267,7 @@ public class CriticDialog extends javax.swing.JDialog implements Constants {
 
             Score score = new Score();
             score.setChordProg(chords);
-            score.addPart(melody);
+            score.addMelodyPart(melody);
 
             new PlayScoreCommand(score, 
                                  0, 

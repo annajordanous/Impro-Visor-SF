@@ -33,7 +33,7 @@ public class PlayPartCommand implements Command {
     public void execute() {
         Trace.log(2, "executing PlayPartCommand");
         Score score = new Score();
-        score.addPart(part.copy());
+        score.addMelodyPart(part.copy());
 
 //??        Command scoreCommand = new PlayScoreCommand(score, 0, true);
 //        scoreCommand.execute();

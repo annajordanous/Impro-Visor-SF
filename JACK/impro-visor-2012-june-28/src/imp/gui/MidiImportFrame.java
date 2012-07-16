@@ -633,7 +633,7 @@ private void playSelectedTrack()
       {
         stopPlaying();
         Score score = new Score();
-        score.addPart(part);
+        score.addMelodyPart(part);
         //System.out.println("score = " + score);
         notate.playAscore(score);
       }

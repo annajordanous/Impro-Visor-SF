@@ -229,6 +229,9 @@ public class Leadsheet
                                       boolean overrideStaveType, 
                                       StaveType useStaveType)
     {
+      
+    System.out.println("\nReading Leadsheet into " + score.getTitle());
+    
     int rise = 0;
 
     boolean headStarted = false;
@@ -247,14 +250,15 @@ public class Leadsheet
 
     score.setTempo(160);			// default
 
-    ChordPart defaultChordPart = new ChordPart();	// in case these parts are not explicit
-    score.addDefaultChordPart(defaultChordPart);
+    ChordPart defaultChordPart = score.ensureDefaultChordPart();
     
-    ChordPart chordPart = defaultChordPart;
+    ChordPart currentChordPart = defaultChordPart;
     
-    MelodyPartAccompanied melody = new MelodyPartAccompanied(defaultChordPart);
+    Part partReferenced = currentChordPart;
+
+    MelodyPartAccompanied melodyPart = new MelodyPartAccompanied(defaultChordPart);
     
-    melody.setKeySignature(0);		// default
+    melodyPart.setKeySignature(0);		// default
 
     Key key = Key.getKey(0);		// default
 
@@ -262,14 +266,11 @@ public class Leadsheet
 
     score.setBassInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_BASS_INSTRUMENT)) - 1);
     defaultChordPart.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_CHORD_INSTRUMENT)) - 1);
-    melody.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
+    melodyPart.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
 
     Object ob;
 
     boolean firstUnitPassed = false;
-    boolean pickupExists = true;	// unless starts with bar
-
-    Part partReferenced = defaultChordPart;
 
     Polylist chordInputReversed = Polylist.nil;
 
@@ -280,7 +281,7 @@ public class Leadsheet
     while( (ob = in.nextSexp()) != Tokenizer.eof )
       {
       // Polylists are directives
-      // Atoms by themselves are defaultChordPart and melody
+      // Atoms by themselves are defaultChordPart and melodyPart
 
       if( ob instanceof Polylist )
         {
@@ -303,7 +304,10 @@ public class Leadsheet
               case TITLE: // for LEADSHEET
                   {
                   titleString = concatElements(item);
-                  score.setTitle(titleString);
+                  if( !"".equals(titleString) )
+                    {
+                    score.setTitle(titleString);
+                    }
                   }
                 break;
 
@@ -459,7 +463,7 @@ public class Leadsheet
 
                 measureLength = beatsPerBar * beatValue;
                 score.setMetre(beatsPerBar, WHOLE / beatValue);
-                chordPart.setMetre(beatsPerBar, WHOLE / beatValue);
+                currentChordPart.setMetre(beatsPerBar, WHOLE / beatValue);
 
                 break;
 
@@ -521,34 +525,38 @@ public class Leadsheet
                                           {
                                             // save existing chords, if any
                                           addToChordPart(chordInputReversed, 
-                                                         chordPart, 
+                                                         currentChordPart, 
                                                          rise, 
                                                          measureLength, 
                                                          key);
                                           chordInputReversed = Polylist.nil;
+                                          melodyPart.setChordPart(currentChordPart);
                                           }
                                       isChordPart = true;
-                                      chordPart = new ChordPart();
-                                      partReferenced = chordPart;
+                                      currentChordPart = new ChordPart();
+                                      partReferenced = currentChordPart;
                                       handled = true;
                                       }
                                     else if( type.equals(keyword[MELODY]) )
                                       {
-                                      // Start a new melody part iff head not already started
+                                      // Start a new melodyPart part iff head not already started
                                       isChordPart = false;
                                       if( headStarted && melodyInputReversed.nonEmpty() )
                                         {
-                                        // process accumulated melody
+                                        // process accumulated melodyPart
 
                                         addToMelodyPart(melodyInputReversed,
-                                                melody, rise, beatValue, key);
+                                                        melodyPart, 
+                                                        rise, 
+                                                        beatValue, 
+                                                        key);
                                         melodyInputReversed = Polylist.nil;
 
-                                        melody = new MelodyPartAccompanied(defaultChordPart); // temporarily
-                                        score.addPart(melody);
+                                        melodyPart = new MelodyPartAccompanied(defaultChordPart); // temporarily
+                                        score.addMelodyPart(melodyPart);
                                         }
                                       handled = true;
-                                      partReferenced = melody;
+                                      partReferenced = melodyPart;
                                       }
                                     }
                                   }
@@ -645,10 +653,11 @@ public class Leadsheet
                             case TITLE: // for a PART
                                 {
                                 String title = concatElements(subitem.rest());
+                            System.out.println("Title of part = " + title);
                                 partReferenced.setTitle(title);
                                 if( isChordPart )
                                   {
-                                  score.addChordPart(title, chordPart);
+                                  score.addChordPart(title, currentChordPart);
                                   }
                                 handled = true;
                                 }
@@ -700,7 +709,7 @@ public class Leadsheet
                               ChordPart referencedChordPart = score.getChordPart(chordsTitleString);
                               if( referencedChordPart != null )
                                 {
-                                melody.setChordPart(referencedChordPart);
+                                melodyPart.setChordPart(referencedChordPart);
                                 }
                               else
                                 {
@@ -758,12 +767,11 @@ public class Leadsheet
         if( !headStarted )
           {
           headStarted = true;
-          score.addPart(melody);
-          defaultChordPart = new ChordPart();
-          score.addDefaultChordPart(defaultChordPart);
-          melody.setChordPart(defaultChordPart);
-          chordPart = defaultChordPart;
-          }
+          defaultChordPart = score.ensureDefaultChordPart();
+          currentChordPart = defaultChordPart;
+          melodyPart.setChordPart(defaultChordPart);
+          score.addMelodyPart(melodyPart);
+           }
 
         if( firstChar == BAR || firstChar == COMMA )
           {
@@ -777,7 +785,6 @@ public class Leadsheet
           if( !firstUnitPassed )
             {
             firstUnitPassed = true;
-            pickupExists = false;
             }
 
           chordInputReversed = chordInputReversed.cons(BARSTRING);
@@ -841,15 +848,19 @@ public class Leadsheet
       chordInputReversed = chordInputReversed.cons(BARSTRING);
       }
 
-    addToChordPart(chordInputReversed, chordPart, rise, measureLength, key);
-    addToMelodyPart(melodyInputReversed, melody, rise, beatValue, key);
+    addToChordPart(chordInputReversed, currentChordPart, rise, measureLength, key);
     
-    if( melody.getUnit(0) == null )
+    if( melodyInputReversed.nonEmpty() )
       {
-        melody.addRest(new Rest(BEAT));
+      addToMelodyPart(melodyInputReversed, melodyPart, rise, beatValue, key);
       }
-
-    // Jim: Uncomment this to see note classifications on standard out
+    
+    if( melodyPart.getUnit(0) == null )
+      {
+        melodyPart.addRest(new Rest(BEAT));
+      }
+   
+     // Uncomment this to see note classifications on standard out
 
     //classifyNotes(score.getPart(0), score.getChordPart());
     
@@ -859,8 +870,8 @@ public class Leadsheet
     //System.out.println("chord durations: " + defaultChordPart.getChordDurations()); 
  
 //    // Test code for getSyncVector
-//    System.out.print("syncVector for leadsheet's melody: ");
-//    int[] syncVector = melody.getSyncVector(15);
+//    System.out.print("syncVector for leadsheet's melodyPart: ");
+//    int[] syncVector = melodyPart.getSyncVector(15);
 //    for( int i = 0; i < syncVector.length; i++ )
 //      {
 //        System.out.print(syncVector[i] + " ");
@@ -961,7 +972,7 @@ public class Leadsheet
    * Add a Polylist of MelodySymbols or Strings that can be converted to
    * MelodySymbols, in reverse, to a MelodyPart.
    * @param melodyInputReversed
-   * @param melody
+   * @param melodyPart
    * @param rise
    * @param beatValue
    * @param key 
@@ -1127,7 +1138,7 @@ static void addToChordPart(Polylist chordInputReversed,
                            int slotsPerBar, 
                            Key key)
   {
-
+System.out.println("adding to chordPart " + chordPart.getTitle() + chordInputReversed.reverse());
     Style previousStyle = null;
 
     Polylist chordInput = chordInputReversed.cons(NOCHORD).reverse();
@@ -1403,7 +1414,7 @@ static void addToChordPart(Polylist chordInputReversed,
    */
   /* sample prototype
    *
-   * Classifies notes in a melody with respect to defaultChordPart.
+   * Classifies notes in a melodyPart with respect to defaultChordPart.
    * Classes are numbers: CHORD_TONE, etc. as defined in Constants.javaclas
    */
   static void classifyNotes(MelodyPart melody, ChordPart chordPart)
