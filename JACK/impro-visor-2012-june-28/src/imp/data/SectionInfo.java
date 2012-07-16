@@ -432,7 +432,7 @@ public SectionRecord getSectionRecordByIndex(int n)
     }
     
     public void setSize(int size) {
-        System.out.print("sectionInfo setSize from " + records.size() + " to ");
+        //System.out.print("sectionInfo setSize from " + records.size() + " to ");
         Iterator<SectionRecord> k = records.iterator();
         
         while(k.hasNext()) {
@@ -442,7 +442,7 @@ public SectionRecord getSectionRecordByIndex(int n)
                 k.remove();
             }
         }
-     System.out.println(records.size());
+     //System.out.println(records.size());
 
     }
 

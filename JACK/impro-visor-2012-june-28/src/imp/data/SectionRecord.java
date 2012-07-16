@@ -141,9 +141,7 @@ public void saveToLeadsheet(BufferedWriter out) throws IOException
     else
       {
         out.newLine();
-        out.newLine();
         out.write("(section (style" + name + ")) ");
-        out.newLine();
         out.newLine();
       }
   }

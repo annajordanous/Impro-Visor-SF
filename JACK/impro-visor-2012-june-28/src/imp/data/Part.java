@@ -24,11 +24,8 @@ import imp.Constants;
 import imp.util.ErrorLog;
 import imp.util.Preferences;
 import imp.util.Trace;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**
@@ -118,7 +115,7 @@ protected int keySig;
  * the metre of the part
  */
 
-protected int metre[] = new int[2];
+protected int metre[] = {DEFAULT_METRE[0], DEFAULT_METRE[1]};
 protected int beatValue;
 protected int measureLength;
 
@@ -213,10 +210,10 @@ public Part(int size)
   }
 
 
-StaveType getPreferredStaveType()
-  {
-    return staveType;
-  }
+//StaveType getPreferredStaveType()
+//  {
+//    return staveType;
+//  }
 
 
 /**
@@ -367,7 +364,8 @@ public void setMetre(int top, int bottom)
 
 public int[] getMetre()
   {
-    return metre;
+    int[] result = {metre[0], metre[1]};
+    return result;
   }
 
 
@@ -555,7 +553,7 @@ public ArrayList<Unit> getUnitList()
 
 public void setSize(int newSize)
   {
-    Trace.log(0, "setting size of part to " + newSize + "(" + newSize / BEAT + " beats)");
+    Trace.log(2, "setting size of part to " + newSize + "(" + newSize / BEAT + " beats)");
 
     if( newSize == size )
       {

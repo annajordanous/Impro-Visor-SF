@@ -9980,7 +9980,7 @@ public void stopRecording()
     if( mode == Mode.RECORDING )
       {
         setMode(previousMode);
-        extractor.stopCapture();
+        //extractor.stopCapture();
       }
 
     playBtn.setEnabled(true);
@@ -11409,6 +11409,8 @@ private void updateTempoFromTextField()
       getCurrentStave().setMelodyPart(mp);
       setStatus("Chorus length set to " + specifiedPartLength);
       }
+    
+    System.out.println("New Score: " + score);
     repaintAndStaveRequestFocus();
     }
         
@@ -24010,14 +24012,14 @@ public void disestablishRoadMapFrame()
   }
 
 
-/**
- * Copy this Notate's Score's metre setting into the argument array of dimension 2.
- * @param metre 
- */
-public void getMetre(int metre[])
-  {
-    score.getMetre(metre);
-  }
+///**
+// * Copy this Notate's Score's metre setting into the argument array of dimension 2.
+// * @param metre 
+// */
+//public void getMetre(int metre[])
+//  {
+//    score.getMetre(metre);
+//  }
 
 public void setRoadMapMidiListener(MidiPlayListener listener)
 {

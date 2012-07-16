@@ -19,6 +19,10 @@
  */
 package imp.data;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+
 /**
  * MelodyPartAccompanied is an extension of the MelodyPart class that is used
  * so that a MelodyPart can access information contained in the ChordPart class.
@@ -37,9 +41,11 @@ public class MelodyPartAccompanied extends MelodyPart {
     public MelodyPartAccompanied(int size, ChordPart chordPart){
 //        System.out.println("chordPart = " + chordPart);
         super(size);
-        if(chordPart != null){
-        this.chordPart = chordPart.copy();
-        }
+//        if(chordPart != null){
+//        this.chordPart = chordPart.copy();
+//        }
+    
+        this.chordPart = chordPart;
         }
     
     public MelodyPartAccompanied(ChordPart chordPart){
@@ -91,17 +97,17 @@ public class MelodyPartAccompanied extends MelodyPart {
         this.chordPart = chordPart;
      }
     
-    public int[] getChordMetre() {
-        return chordPart.getChordMetre();
-    }
+//    public int[] getChordMetre() {
+//        return chordPart.getChordMetre();
+//    }
     
-    public void setChordMetre(int top, int bottom){
-        chordPart.setChordMetre(top, bottom);
-    }
+//    public void setChordMetre(int top, int bottom){
+//        chordPart.setChordMetre(top, bottom);
+//    }
     
-    public void setChordMetre(int metre[]) {
-        chordPart.setChordMetre(metre);
-    }
+//    public void setChordMetre(int metre[]) {
+//        chordPart.setChordMetre(metre);
+//    }
     
     @Override
     public MelodyPartAccompanied extractTimeWarped(int first, int last, int num, int denom){
@@ -119,6 +125,8 @@ public void setBars(int bars)
       }
     
     super.setBars(bars);
+    System.out.println("Setting bars to " + bars + " in MelodyPartAccompanied " + this);
+
   }
 
 @Override
@@ -140,5 +148,18 @@ public SectionInfo getSectionInfo()
 public String getChordPartTitle()
   {
     return chordPart.getTitle();
+  }
+
+@Override
+public String toString()
+  {
+    StringBuilder buffer = new StringBuilder();
+    
+    buffer.append("Melody part: ");
+    buffer.append(super.toString());
+    buffer.append("Chord accompaniment: ");
+    buffer.append(chordPart.toString());
+    
+    return buffer.toString();
   }
 }
