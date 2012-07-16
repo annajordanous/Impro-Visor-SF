@@ -525,13 +525,13 @@ static final String chordPartBase = "CP_";
      * @param metre 
      */
     
-    public void getMetre(int metre[])
-      {
-        metre[0] = getDefaultChordPart().getChordMetre()[0];
-        metre[1] = getDefaultChordPart().getChordMetre()[1];
-//        metre[0] = this.metre[0];
-//        metre[1] = this.metre[1];
-      }
+//    public void getMetre(int metre[])
+//      {
+//        metre[0] = getDefaultChordPart().getChordMetre()[0];
+//        metre[1] = getDefaultChordPart().getChordMetre()[1];
+////        metre[0] = this.metre[0];
+////        metre[1] = this.metre[1];
+//      }
     
     /**
      * Returns the Score's metre
@@ -703,7 +703,7 @@ static final String chordPartBase = "CP_";
     public Score copy() {
         //Trace.log(2, "copying Score of size " + size());
         Score newScore = new Score(title, tempo);
-	    newScore.setMetre(metre[0], metre[1]);
+	newScore.setMetre(metre[0], metre[1]);
         PartList newPartList = new PartList(partList.size());
         ListIterator<MelodyPartAccompanied> i = partList.listIterator();
 

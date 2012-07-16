@@ -277,16 +277,17 @@ public int getNextUniqueChordIndex(int slotIndex)
     }
     
     public int[] getChordMetre(){
-        return sectionInfo.getMetre();
+        return super.getMetre();
     }
     
     public void setChordMetre(int top, int bottom){
+        super.setMetre(top, bottom);
         sectionInfo.setMetre(top, bottom);
     }
     
-    public void setChordMetre(int metre[]){
-        sectionInfo.setMetre(metre);
-    }
+//    public void setChordMetre(int metre[]){
+//        sectionInfo.setMetre(metre);
+//    }
     
 /**
  * Returns an exact copy of this Part
