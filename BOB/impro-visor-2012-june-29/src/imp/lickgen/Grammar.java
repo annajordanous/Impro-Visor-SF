@@ -770,24 +770,20 @@ Polylist evaluateSplice(Polylist form)
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
         int synco = Tension.getSyncopation(syncVector, measures);
-        System.out.println(synco);
         int[] rhythm = Generator.generateSyncopation(measures, synco);
-        System.out.println(Arrays.toString(rhythm));
-        System.out.println(Tension.getSyncopation(rhythm, measures));
         String[] rhythmArray = Generator.generateString(rhythm);
         Polylist rhythmList = Polylist.PolylistFromArray(rhythmArray);
-        System.out.println(rhythmList.toString());
         return rhythmList;
-    }
-    if(EXPECTANCY.equals(operator))
-    {
-        
     }
     // default
     
     return Polylist.nil;
   }
 
+public int getCurrentSlot()
+{
+    return currentSlot;
+}
 
 // For testing purposes only:
 
