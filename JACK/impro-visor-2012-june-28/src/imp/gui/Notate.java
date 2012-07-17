@@ -17069,7 +17069,7 @@ public void playScoreBody(int startAt)
 
       // reset playback offset
 
-      initCurrentPlaybackTab(0, 0);
+      initCurrentPlaybackTab(0);
 
       getStaveAtTab(0).playSelection(startAt, score.getTotalLength()-1, getLoopCount(), true, "playScoreBody");
       //getCurrentStave().play(startAt);
@@ -17276,25 +17276,12 @@ public ChordPart makeCountIn()
   }
 
 
- 
-  public void initCurrentPlaybackTab(int offset)
+  public void initCurrentPlaybackTab(int tab)
     {
-
-    initCurrentPlaybackTab(offset, currTabIndex);
-
-    }
-
-  private int playbackOffset = 0;
-
-  public void initCurrentPlaybackTab(int offset, int tab)
-    {
-
-    playbackOffset = tab * getScore().getLength() + offset;
-
     currentPlaybackTab = tab;
-
     }
 
+  
   public void enableStopButton(boolean enabled)
     {
     stopBtn.setEnabled(enabled);
@@ -18159,8 +18146,6 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     clearLayoutPreference();
 
     closeAdviceFrame();
-
-    int bars = score.getLength();
 
     setPrefsDialog();
 

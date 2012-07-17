@@ -286,14 +286,10 @@ public int getNextUniqueChordIndex(int slotIndex)
         sectionInfo.setMetre(top, bottom);
     }
     
-//    public void setChordMetre(int metre[]){
-//        sectionInfo.setMetre(metre);
-//    }
-    
+ 
 /**
- * Returns an exact copy of this Part
  *
- * @return Part copy
+ * @return an exact copy of this ChordPart
  */
 
 @Override
@@ -326,7 +322,6 @@ public ChordPart copy()
     newPart.swing = swing;
     
     newPart.sectionInfo.setChordPart(newPart);
-System.out.println("copied ChordPart " + title + " new ScetionInfo = " + newPart.sectionInfo);
     return newPart;
   }
 

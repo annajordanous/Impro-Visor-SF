@@ -5264,24 +5264,23 @@ public void playSelection(int startIndex, int stopIndex, int loopCount, boolean 
     notate.chordVolumeChanged();
 
     //System.out.println("*** Play Selection from startIndex = " + startIndex + " to stopIndex = " + stopIndex + ", loopCount = " + loopCount + " " + message);
-
-    int partSize = getChordProg().getSize();
-
-    int chorusStart = partSize * notate.getCurrTabIndex();
-
-    startIndex += chorusStart;
-
-    stopIndex += chorusStart;
-
-    notate.initCurrentPlaybackTab(startIndex);
-
-    notate.setPlaybackStop(stopIndex, "in Stave: playSelection");
-
-    notate.setShowPlayLine(true);
-    notate.setKeyboardPlayback(true);
+   
+    // Compute global indices from ones local to this Stave.
     
     Score score = notate.getScore();
 
+    int partIndex = notate.getCurrTabIndex();
+    
+    startIndex = score.slotFromPartIndices(partIndex, startIndex);
+            
+    stopIndex = score.slotFromPartIndices(partIndex, stopIndex);
+            
+    notate.setPlaybackStop(stopIndex, "in Stave: playSelection");
+
+    notate.setShowPlayLine(true);
+    
+    notate.setKeyboardPlayback(true);
+    
     new PlayScoreCommand(score, 
                          startIndex, 
                          true,
