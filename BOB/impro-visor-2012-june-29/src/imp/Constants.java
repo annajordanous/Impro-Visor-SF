@@ -846,7 +846,8 @@ public interface Constants {
                                T_RANDOM = 'X',
                                T_OUTSIDE = 'Y',
                                T_BASS = 'B',
-                               T_GOAL = 'G';
+                               T_GOAL = 'G',
+                               T_EXPECTANCY = 'E';
    
     public static final String NONE = "None";
     public static final String FIRST_SCALE = "Use First Scale";

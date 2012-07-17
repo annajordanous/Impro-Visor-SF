@@ -24,6 +24,7 @@ import imp.Constants;
 import imp.ImproVisor;
 import imp.cluster.*;
 import imp.data.*;
+import imp.gui.Expectancy;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import java.io.File;
@@ -56,6 +57,7 @@ public class LickGen implements Constants
     public static final int BASS     = 1006;
     public static final int GOAL     = 1007;
     public static final int OUTSIDE  = 1008;
+    public static final int EXPECTANCY  = 1009;
     
     // Parameter strings
     // Strings used as labels in the grammar file
@@ -104,6 +106,7 @@ public class LickGen implements Constants
     ArrayList<Integer> chordUsedSection = new ArrayList<Integer>();    // Indices that are global to an instance
     int position = 0;
     int oldPitch = 0;
+    int oldOldPitch = 0;
 
     boolean useOutlines = false;
     boolean soloistLoaded = false;
@@ -1177,7 +1180,7 @@ public MelodyPart fillPartOfMelody(int minPitch,
     return lick;
   }
 
-    boolean traceLickGen = false;
+    boolean traceLickGen = true;
     /**
      * Track previous note for purposes of rest merging.
      * This should be moved into addNote of MelodyPart eventually.
@@ -1319,6 +1322,7 @@ public boolean fillMelody(MelodyPart lick,
                               minPitch, maxPitch, section);
       }
 
+    oldOldPitch = oldPitch;
     oldPitch = pitch;
 
     // Set all pitchUsed values to 1.
@@ -1539,8 +1543,9 @@ public boolean fillMelody(MelodyPart lick,
                                       }
                                   }
                                 // Remember old pitch in case it is needed.
+                                oldOldPitch = oldPitch;
                                 oldPitch = pitch;
-
+                                
                                 // Move on to next note in inner, if any.
                                 inner = inner.rest();
                               }
@@ -1641,6 +1646,7 @@ public boolean fillMelody(MelodyPart lick,
                               }
                           }
 
+                        oldOldPitch = oldPitch;
                         oldPitch = nextPitch;
 
                         addNote(note, lick, rhythmString, avoidRepeats, "approach", item);
@@ -1652,6 +1658,7 @@ public boolean fillMelody(MelodyPart lick,
                         pitch = getRandomNote(oldPitch, minInterval, maxInterval,
                                               minPitch, maxPitch, section);
                         note.setPitch(pitch);
+                        oldOldPitch = oldPitch;
                         oldPitch = pitch;
                         addNote(note, lick, rhythmString, avoidRepeats, "approach->random", item);
                       }
@@ -1675,6 +1682,7 @@ public boolean fillMelody(MelodyPart lick,
                           }
                       }
                     note.setPitch(pitch);
+                    oldOldPitch = oldPitch;
                     oldPitch = pitch;
                     addNote(note, lick, rhythmString, avoidRepeats, "random", item);
                   }
@@ -1695,6 +1703,7 @@ public boolean fillMelody(MelodyPart lick,
                 case OUTSIDE:
                   // Transposes a semitone from the default
                   {
+                    oldOldPitch = oldPitch;
                     if( bernoulli(leapProb) )
                       {
                         if( Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch) )
@@ -1726,6 +1735,53 @@ public boolean fillMelody(MelodyPart lick,
                     note.setPitch(pitch);
                     addNote(note, lick, rhythmString, avoidRepeats, "default", item);
                   }
+                break;
+                    
+                //Generates a note based on the expectancy value
+                case EXPECTANCY:
+                {
+                    int expectancy = 200; //Should be user inputted myExpectancy
+                    ArrayList<Integer> midiArray = new ArrayList<Integer>();
+                    ArrayList<Double> expectDiffs = new ArrayList<Double>();
+                    for (int midi = minPitch ; midi <= maxPitch; midi++)
+                    {
+                        double expect = Expectancy.getExpectancy(midi, oldPitch, oldOldPitch,chordProg.getCurrentChord(position));
+                        double invExpectDiff = 1/Math.abs(expectancy - expect);
+                        if(Math.abs(expectancy - expect) < .1)
+                        {
+                            invExpectDiff = 15;
+                        }
+                        if(Math.abs(expectancy - expect) > 80)
+                        {
+                            invExpectDiff = 0;
+                        }
+                        midiArray.add(midi);
+                        expectDiffs.add(invExpectDiff);
+                        System.out.println("Inverse Expect Diff " + invExpectDiff);
+                    }
+                    double expectDiffSum = 0;
+                    for(double e : expectDiffs)
+                    {
+                        expectDiffSum += e;
+                    }
+                    System.out.println("Expect Diff Sum " + expectDiffSum);
+                    double rand = Math.random();
+                    double offset = 0;
+                    for( int i = 0; i < expectDiffs.size(); ++i )
+                    {
+                        System.out.println((expectDiffs.get(i) / expectDiffSum));
+                        // If the random number falls between the range of the probability 
+                        // for that rule, we choose it and break out of the loop.
+                        if( rand >= offset && rand < offset + (expectDiffs.get(i) / expectDiffSum) )
+                        {
+                            System.out.println("NOTE!");
+                            note.setPitch(midiArray.get(i));
+                        }
+                        offset += (expectDiffs.get(i) / expectDiffSum);
+                    }
+                    System.out.println(note.toString());
+                    addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                }
                 break;
 
                 default:
@@ -2251,6 +2307,9 @@ private boolean checkNote(int pos, int pitch, String pitchString,
                 break;
             case T_OUTSIDE:
                 note = new Note(OUTSIDE, Accidental.NATURAL, duration);
+                break;
+            case T_EXPECTANCY:
+                note = new Note(EXPECTANCY, Accidental.NATURAL, duration);
                 break;
             case T_REST:
                 note = Note.makeRest(duration);
