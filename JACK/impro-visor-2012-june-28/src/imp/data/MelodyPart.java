@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import javax.sound.midi.InvalidMidiDataException;
@@ -104,8 +103,7 @@ public class MelodyPart
   public MelodyPart()
     {
     super();
-
-    this.volume = ImproVisor.getEntryVolume();
+    init();
     }
 
   /** 
@@ -120,7 +118,7 @@ public class MelodyPart
     // Use the entry volume as the default.  Any non-entered/pasted/generated
     // sample of code will will override this volume setting from the
     // playback slider, but for instant sounds we want the entry volume.
-    this.volume = ImproVisor.getEntryVolume();
+    init();
     }
 
   /**
@@ -130,7 +128,7 @@ public class MelodyPart
   public MelodyPart(String notes)
     {
     super();
-    this.volume = ImproVisor.getEntryVolume();
+    init();
     String[] noteList = notes.split(" ");
     for( int i = 0; i < Array.getLength(noteList); ++i )
       {
@@ -138,6 +136,12 @@ public class MelodyPart
       }
     }
 
+  private void init()
+    {
+    this.volume = ImproVisor.getEntryVolume();
+    setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
+    }
+  
 /**
  * Adds a Note to the end of the MelodyPart, extending its length.
  *

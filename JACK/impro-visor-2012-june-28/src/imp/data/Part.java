@@ -108,7 +108,7 @@ protected int volume;
  * the key signature of the part
  */
 
-protected int keySig;
+protected int keySig = 0; // default
 
 
 /**
