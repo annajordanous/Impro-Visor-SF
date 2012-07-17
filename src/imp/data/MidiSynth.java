@@ -21,6 +21,7 @@
 package imp.data;
 
 import imp.Constants;
+import imp.audio.PitchExtractor;
 import imp.util.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,17 +32,17 @@ import javax.sound.midi.*;
 /**
  * Created: Mon May 07 11:21:30 2001
  *
- * @author Mark Elston (enhanced by Andrew Brown and 
+ * @author Mark Elston (enhanced by Andrew Brown and
  *                      endSequence by Stephen Jones)
  *
  * Integrated with the MidiManager by Martin Hunt, June 2006
  *    added volume control
  *    support for multiple windows, each with its own mixer
  *
- * Notes: 
+ * Notes:
  *  - if you close the sequencer, you can't just reopen it because the transmitter
- *    is no longer in existence, so you need to get a new transmitter and 
- *    register it with the MidiSystem so that receiver can play the notes 
+ *    is no longer in existence, so you need to get a new transmitter and
+ *    register it with the MidiSystem so that receiver can play the notes
  *    transmitted
  */
 
@@ -87,6 +88,12 @@ private static long playCounter = 0;
 
 private int countInOffset = 0;
 
+PitchExtractor extractor;
+
+private long startTime;
+
+private long playbackStartTime;
+
 ArrayList<MidiNoteListener> noteListeners = new ArrayList<MidiNoteListener>();
 
 
@@ -94,6 +101,11 @@ public MidiSynth(MidiManager midiManager)
   {
     this(midiManager, DEFAULT_PPQ);
   }
+
+//public MidiSynth(MidiManager midiManager, PitchExtractor extractor) {
+//    this(midiManager, DEFAULT_PPQ);
+//    this.extractor = extractor;
+//}
 
 
 public MidiSynth(MidiManager midiManager, short ppqn)
@@ -189,7 +201,7 @@ public double getCountInFraction()
       }
 
     int totalSlots = getTotalSlots();
-    
+
     if( totalSlots == 0 )
       {
         return 0;
@@ -340,6 +352,10 @@ public int getTotalSlots()
       }
   }
 
+public long getPlaybackStartTime() {
+    return playbackStartTime;
+}
+
 
 public boolean finishedPlaying()
   {
@@ -347,50 +363,50 @@ public boolean finishedPlaying()
   }
 
 
-public void play(Score score, 
-                 long startTime, 
-                 int loopCount, 
+public void play(Score score,
+                 long startTime,
+                 int loopCount,
                  int transposition)
     throws InvalidMidiDataException
   {
-    play(score, 
-         startTime, 
-         loopCount, 
-         transposition, 
+    play(score,
+         startTime,
+         loopCount,
+         transposition,
          true);
   }
 
 
-public void play(Score score, 
-                 long startTime, 
-                 int loopCount, 
+public void play(Score score,
+                 long startTime,
+                 int loopCount,
                  int transposition,
                  boolean useDrums)
     throws InvalidMidiDataException
   {
-    play(score, 
-         startTime, 
-         loopCount, 
-         transposition, 
-         useDrums, 
+    play(score,
+         startTime,
+         loopCount,
+         transposition,
+         useDrums,
          -1); // RK 6/11/2010 The last parameter was omitted, causing an infinite loop. I hope this value makes sense.
   }
 
 
-public void play(Score score, 
-                 long startIndex, 
-                 int loopCount, 
+public void play(Score score,
+                 long startIndex,
+                 int loopCount,
                  int transposition,
-                 boolean useDrums, 
+                 boolean useDrums,
                  int endLimitIndex)
     throws InvalidMidiDataException
   {
-    play(score, 
-         startIndex, 
-         loopCount, 
-         transposition, 
-         useDrums, 
-         endLimitIndex, 
+    play(score,
+         startIndex,
+         loopCount,
+         transposition,
+         useDrums,
+         endLimitIndex,
          0);
 }
 
@@ -400,20 +416,20 @@ public void play(Score score,
  * @param score   Score data to change to SMF
  * @exception Exception
  */
-public void play(Score score, 
-                 long startIndex, 
-                 int loopCount, 
+public void play(Score score,
+                 long startIndex,
+                 int loopCount,
                  int transposition,
-                 boolean useDrums, 
-                 int endLimitIndex, 
+                 boolean useDrums,
+                 int endLimitIndex,
                  int countInOffset)
     throws InvalidMidiDataException
   {
 //   Trace.log(0,
-//              (++playCounter) + ": Starting MIDI sequencer, startTime = " 
+//              (++playCounter) + ": Starting MIDI sequencer, startTime = "
 //              + startIndex + " loopCount = " + loopCount + " endIndex = "
 //              + endLimitIndex);
-    
+
     if( sequencer == null )
       {
         setSequencer();
@@ -446,7 +462,7 @@ public void play(Score score,
         setTempo(tempo);
 
         // Clear possible old values
-        
+
         setLoopStartPoint(0);
         setLoopEndPoint(ENDSCORE);
 
@@ -463,7 +479,7 @@ public void play(Score score,
          // the start time is too large.
 
 // CAUTION: Changing this code may break the combination of countIn with looping.
- 
+
         if( endLimitIndex == ENDSCORE )
           {
           setLoopEndPoint(ENDSCORE);
@@ -504,8 +520,11 @@ public void play(Score score,
         }
 
         // Here's where the playback actually starts:
+        playbackStartTime = System.currentTimeMillis();
 
         sequencer.start();
+
+        System.out.println("Playback start = " + playbackStartTime);
 
         playing = true;
         paused = false;
@@ -554,9 +573,9 @@ public void meta(MetaMessage metaEvent)
     Trace.log(3, playCounter + ": MidiSynth metaEvent: " + metaEvent);
     //if( metaEvent.getType() == StopType )
       {
-        System.out.print("meta event of type " + metaEvent.getType() 
+        System.out.print("meta event of type " + metaEvent.getType()
                        + " encountered, data: ");
-         
+
         for( byte x: metaEvent.getData() )
           {
             System.out.print(x);
@@ -603,14 +622,14 @@ public void setPlayListener(MidiPlayListener listener)
  */
 public void stop(String reason)
   {
-    
+
     //debug System.out.println("Stopping sequencer because: " + reason);
-    
+
     if( sequencer != null )
       {
       //showSequencerStatus();
       }
-    
+
     playing = false;
     paused = false;
 
@@ -619,7 +638,7 @@ public void stop(String reason)
       {
         sequencer.stop();
       }
-    
+
     // this should be the LAST thing this function does before returning
     if( playListener != null )
       {
