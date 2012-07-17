@@ -606,7 +606,7 @@ static final String chordPartBase = "CP_";
     
     public int getLength()
       {
-      return length;
+      return getTotalLength();
       }
 
 

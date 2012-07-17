@@ -284,6 +284,10 @@ public SectionRecord getSectionRecordBySlot(int slot)
 
 public SectionRecord getSectionRecordByIndex(int n)
   {
+    if( n >= records.size() )
+      {
+        return null;
+      }
     return records.get(n);
   }
 
@@ -317,7 +321,15 @@ public SectionRecord getSectionRecordByIndex(int n)
           {
             return null;
           }
-        return records.get(n).getStyle();
+        
+        SectionRecord record = records.get(n);
+        
+        if( record == null )
+          {
+            return null;
+          }
+        
+        return record.getStyle();
     }
 
     public String getStyleName(int n) {
@@ -325,7 +337,14 @@ public SectionRecord getSectionRecordByIndex(int n)
           {
             return null;
           }
-        return records.get(n).getStyleName();
+        
+        SectionRecord record = records.get(n);
+        
+        if( record == null )
+          {
+            return null;
+          }
+        return record.getStyleName();
     }
         
     public int getStyleIndex(int n) {

@@ -11384,7 +11384,7 @@ private void updateTempoFromTextField()
       {
       // Lengthening score is always ok.
       mp.setBars(specifiedPartLength);
-      getCurrentStave().setMelodyPart(mp);
+      //getCurrentStave().setMelodyPart(mp);
       setStatus("Chorus length set to " + specifiedPartLength);
       repaintAndStaveRequestFocus();
       return;
@@ -11406,7 +11406,7 @@ private void updateTempoFromTextField()
     else
       {
       mp.setBars(specifiedPartLength);
-      getCurrentStave().setMelodyPart(mp);
+      //getCurrentStave().setMelodyPart(mp);
       setStatus("Chorus length set to " + specifiedPartLength);
       }
     
@@ -13711,6 +13711,7 @@ private boolean saveMidiLatency()
     
 private boolean saveSectionInfo()
   {
+    //??
     //score.getChordPart().setSectionInfo(sectionInfo.copy());
 
     return true;
@@ -13769,6 +13770,10 @@ private boolean saveStylePrefs()
   {
     SectionRecord record = getCurrentSectionInfo().getSectionRecordByIndex(sectionList.getSelectedIndex());
 
+    if( record == null )
+      {
+        return false; // FIX!!
+      }
     if( !record.getUsePreviousStyle() )
       {
         Style style = record.getStyle();
