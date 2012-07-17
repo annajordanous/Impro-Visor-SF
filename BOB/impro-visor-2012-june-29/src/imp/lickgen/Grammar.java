@@ -779,7 +779,10 @@ Polylist evaluateSplice(Polylist form)
         System.out.println(rhythmList.toString());
         return rhythmList;
     }
-    
+    if(EXPECTANCY.equals(operator))
+    {
+        
+    }
     // default
     
     return Polylist.nil;
