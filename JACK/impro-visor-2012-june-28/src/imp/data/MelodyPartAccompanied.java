@@ -19,16 +19,13 @@
  */
 package imp.data;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-
 /**
  * MelodyPartAccompanied is an extension of the MelodyPart class that is used
  * so that a MelodyPart can access information contained in the ChordPart class.
  * Initially implemented to help with the implementation of mixed meters.
- * @author Jack Davison
+ * @author Jack Davison, Robert Keller
  */
+
 @SuppressWarnings("serial")
 public class MelodyPartAccompanied extends MelodyPart {
     
@@ -95,6 +92,7 @@ public class MelodyPartAccompanied extends MelodyPart {
     
     public void setChordPart(ChordPart chordPart){
         this.chordPart = chordPart;
+     System.out.println("setting chordPart of " + title + " to " + chordPart.getTitle());
      }
     
 //    public int[] getChordMetre() {
@@ -155,9 +153,11 @@ public String toString()
   {
     StringBuilder buffer = new StringBuilder();
     
-    buffer.append("Melody part: ");
+    buffer.append("\nMelody part ");
+    buffer.append(getTitle());
+    buffer.append(":\n");
     buffer.append(super.toString());
-    buffer.append("Chord accompaniment: ");
+    buffer.append("\nChord accompaniment:\n");
     buffer.append(chordPart.toString());
     
     return buffer.toString();

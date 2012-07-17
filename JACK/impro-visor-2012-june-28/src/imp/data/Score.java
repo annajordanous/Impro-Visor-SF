@@ -756,23 +756,29 @@ static final String chordPartBase = "CP_";
         return newScore;
     }
     
-    /**
-     * Creates and returns a String representation of the Score.
-     * @return String   the Score as a String
-     */
-    public String toString() {
-        String scoreData = "Score: " + '\n';
-        
-        scoreData += "getDefaultChordPart(): " + '\n' + getDefaultChordPart().toString() + '\n';
+/**
+ * Creates and returns a String representation of the Score.
+ *
+ * @return String the Score as a String
+ */
+    
+@Override
+public String toString()
+  {
+    StringBuilder buffer = new StringBuilder();
 
-        ListIterator<MelodyPartAccompanied> i = partList.listIterator();
-        while(i.hasNext())
-            {
-            scoreData += "Part " + i.nextIndex() + ":" + '\n' +
-                         i.next().toString() + '\n';
-            }
-        return scoreData;
-    }
+    buffer.append("Score ");
+    buffer.append(title);
+    buffer.append('\n');
+
+    ListIterator<MelodyPartAccompanied> i = partList.listIterator();
+    while( i.hasNext() )
+      {
+        MelodyPartAccompanied mp = i.next();
+        buffer.append(mp.toString());
+      }
+    return buffer.toString();
+  }
 
     /**
      * Sets the tempo of the Score to the specified double.

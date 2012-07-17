@@ -27,6 +27,7 @@ import imp.util.Trace;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.sound.midi.InvalidMidiDataException;
@@ -352,6 +353,10 @@ public void addSection(String styleName, int n, boolean isPhrase)
 
 public Style getStyle()
   {
+    if( sectionInfo == null )
+      {
+        return null;
+      }
     return sectionInfo.getStyle();
   }
 
@@ -593,8 +598,25 @@ public void saveToLeadsheet(BufferedWriter out) throws IOException
 
     Note.initializeSaveLeadsheet();
 
+    if( sectionInfo == null )
+      {
+      ErrorLog.log(ErrorLog.SEVERE, 
+                   "cannot save ChordPart " + getTitle() 
+                + " with no sectionInfo");
+      return;
+      }
+    
     PartIterator i = iterator();
+    
     Iterator<SectionRecord> sec = sectionInfo.iterator();
+    
+    if( !sec.hasNext() )
+      {
+     ErrorLog.log(ErrorLog.SEVERE, 
+                   "cannot save ChordPart " + getTitle() 
+                 + " with empty sectionInfo");
+      return;        
+      }
 
     SectionRecord record = sec.next();
 
@@ -683,5 +705,22 @@ public void saveToLeadsheet(BufferedWriter out) throws IOException
 
   }
    
-
+@Override
+public String toString()
+  {
+    Chord.initSaveToLeadsheet();
+    StringWriter stringWriter = new StringWriter();
+    BufferedWriter bufferedWriter = new BufferedWriter(stringWriter);
+    try
+      {
+       saveToLeadsheet(bufferedWriter);
+       bufferedWriter.close();
+      }
+    catch( IOException e)
+      {
+        
+      }
+    
+    return stringWriter.toString();
+  }
 }
