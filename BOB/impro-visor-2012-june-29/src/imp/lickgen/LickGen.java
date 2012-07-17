@@ -107,7 +107,8 @@ public class LickGen implements Constants
     int position = 0;
     int oldPitch = 0;
     int oldOldPitch = 0;
-
+    double expectancy = -1;
+    private static int DEFAULT_EXPECTANCY = 200;
     boolean useOutlines = false;
     boolean soloistLoaded = false;
     
@@ -495,6 +496,8 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
     Polylist currentSection;
 
     int startIndex = mStart;
+    
+    expectancy = getExpectancyPerNote();
 
     //start creating the MelodyPart
     DataPoint point1;
@@ -1134,6 +1137,10 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
+    System.out.println("fillPartOfMelody " + expectancy);
+    expectancy = getExpectancyPerNote();
+    System.out.println("Expectancy " + expectancy);
+    
     int previousPitch = oldPitch;
 
     for( int i = 0; i < MELODY_GEN_LIMIT; i++ )
@@ -1740,7 +1747,11 @@ public boolean fillMelody(MelodyPart lick,
                 //Generates a note based on the expectancy value
                 case EXPECTANCY:
                 {
-                    int expectancy = 200; //Should be user inputted myExpectancy
+                    if(expectancy <= 0)
+                    {
+                        expectancy = DEFAULT_EXPECTANCY;
+                    }
+                    System.out.println("Expectancy " + expectancy);
                     ArrayList<Integer> midiArray = new ArrayList<Integer>();
                     ArrayList<Double> expectDiffs = new ArrayList<Double>();
                     for (int midi = minPitch ; midi <= maxPitch; midi++)
@@ -1757,29 +1768,24 @@ public boolean fillMelody(MelodyPart lick,
                         }
                         midiArray.add(midi);
                         expectDiffs.add(invExpectDiff);
-                        System.out.println("Inverse Expect Diff " + invExpectDiff);
                     }
                     double expectDiffSum = 0;
                     for(double e : expectDiffs)
                     {
                         expectDiffSum += e;
                     }
-                    System.out.println("Expect Diff Sum " + expectDiffSum);
                     double rand = Math.random();
                     double offset = 0;
                     for( int i = 0; i < expectDiffs.size(); ++i )
                     {
-                        System.out.println((expectDiffs.get(i) / expectDiffSum));
                         // If the random number falls between the range of the probability 
                         // for that rule, we choose it and break out of the loop.
                         if( rand >= offset && rand < offset + (expectDiffs.get(i) / expectDiffSum) )
                         {
-                            System.out.println("NOTE!");
                             note.setPitch(midiArray.get(i));
                         }
                         offset += (expectDiffs.get(i) / expectDiffSum);
                     }
-                    System.out.println(note.toString());
                     addNote(note, lick, rhythmString, avoidRepeats, "default", item);
                 }
                 break;
@@ -1830,7 +1836,49 @@ public boolean fillMelody(MelodyPart lick,
     return false;
   }
 
+private static int LENGTH_OF_TRADE = 4*480;
 
+/**
+ * Gets the average expectancy per note of the previous 4 bars
+ * @return 
+ */
+private double getExpectancyPerNote()
+{
+    MelodyPart melody = notate.getCurrentMelodyPart();
+    int currentSlot = grammar.getCurrentSlot();
+    ChordPart chords = notate.getChordProg();
+    MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+    int firstIndex = 0;
+    int secondIndex = currMelody.getNextIndex(firstIndex);
+    if(!currMelody.getNote(firstIndex).nonRest())
+    {
+        firstIndex = secondIndex;
+        secondIndex = currMelody.getNextIndex(firstIndex);
+    }
+    System.out.println(currMelody.getNote(firstIndex));
+    if(!currMelody.getNote(firstIndex).nonRest() || !currMelody.getNote(secondIndex).nonRest())
+    {
+        return -1;
+    }
+    Part.PartIterator pi = currMelody.iterator(secondIndex);
+    int numPitches = 0;
+    double totalExpectancy = 0;
+    while(pi.hasNext())
+    {
+        int nextIndex = pi.nextIndex() + currentSlot - LENGTH_OF_TRADE;
+        Chord c = chords.getCurrentChord(nextIndex);
+        int first = currMelody.getNote(firstIndex).getPitch();
+        int second = currMelody.getNote(secondIndex).getPitch();
+        int curr = currMelody.getNote(pi.nextIndex()).getPitch();
+        double mExpectancy = Expectancy.getExpectancy(curr, second, first, c);
+        totalExpectancy += mExpectancy;
+        numPitches ++;
+        firstIndex = secondIndex;
+        secondIndex = pi.nextIndex();
+        pi.next();
+    }
+    return (totalExpectancy/numPitches);
+}
 
     /**
      * Use to avoid array out of bounds in getting value of pitchUsed
