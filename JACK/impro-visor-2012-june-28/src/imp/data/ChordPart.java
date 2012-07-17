@@ -326,7 +326,7 @@ public ChordPart copy()
     newPart.swing = swing;
     
     newPart.sectionInfo.setChordPart(newPart);
-
+System.out.println("copied ChordPart " + title + " new ScetionInfo = " + newPart.sectionInfo);
     return newPart;
   }
 
