@@ -1337,6 +1337,14 @@ public String genNewChordPartName()
     return chordPartName;
   }
 
+/**
+ * Given a slotIndex, returns array of two ints:
+ * The first is index of the Part containing that slot.
+ * The second is the index of a slot within that Part.
+ * 
+ * @param slotIndex
+ * @return 
+ */
 public int[] partIndexFromSlot(int slotIndex)
   {
     int[] result = {0, 0};
@@ -1361,6 +1369,36 @@ public int[] partIndexFromSlot(int slotIndex)
     return result;
   }
 
+/**
+ * Returns the slot in the overall Score, given a specific part and
+ * slot within the part.
+ * @param partIndex
+ * @param slotWithinPart
+ * @return 
+ */
+
+public int slotFromPartIndices(int partIndex, int slotWithinPart)
+  {
+    //System.out.print("Part Indices: " + partIndex + ", " + slotWithinPart + " -> ");
+    
+    ListIterator<MelodyPartAccompanied> i = partList.listIterator();
+    int accumulatedSlots = 0;
+    for( int j = 0; j < partIndex; j++ )
+      {
+        accumulatedSlots += i.next().size();
+      }
+    
+    //System.out.println(accumulatedSlots + slotWithinPart);
+    
+    return accumulatedSlots + slotWithinPart; 
+  }
+
+
+/**
+ * Generates a title so that otherwise-unnamed Scores can have a title
+ * for reference and debugging.
+ * @return 
+ */
 
 private static String generateTitle()
   {
