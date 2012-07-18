@@ -210,12 +210,6 @@ public Part(int size)
   }
 
 
-//StaveType getPreferredStaveType()
-//  {
-//    return staveType;
-//  }
-
-
 /**
  * Creates a Part with the default size.
  */
@@ -553,7 +547,7 @@ public ArrayList<Unit> getUnitList()
 
 public void setSize(int newSize)
   {
-    Trace.log(2, "setting size of part to " + newSize + "(" + newSize / BEAT + " beats)");
+    Trace.log(0, "setting size of part " + getTitle() + " to " + newSize + "(" + newSize / BEAT + " beats)");
 
     if( newSize == size )
       {

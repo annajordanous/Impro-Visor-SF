@@ -17,12 +17,14 @@
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+
 package imp.data;
 
 /**
  * MelodyPartAccompanied is an extension of the MelodyPart class that is used
  * so that a MelodyPart can access information contained in the ChordPart class.
- * Initially implemented to help with the implementation of mixed meters.
+ * Introduced as a basis for the implementation of mixed choruses (different
+ * lengths, progressions, sections, styles).
  * @author Jack Davison, Robert Keller
  */
 
@@ -36,12 +38,7 @@ public class MelodyPartAccompanied extends MelodyPart {
     }
     
     public MelodyPartAccompanied(int size, ChordPart chordPart){
-//        System.out.println("chordPart = " + chordPart);
         super(size);
-//        if(chordPart != null){
-//        this.chordPart = chordPart.copy();
-//        }
-    
         this.chordPart = chordPart;
         }
     
@@ -52,7 +49,8 @@ public class MelodyPartAccompanied extends MelodyPart {
     
     /**
      * CAUTION: This constructor does not copy the actual melody. It only
-     * gives a melody of size identical to the original.
+     * gives a melody of size identical to the original, with a copy of the
+     * original chord part.
      * @param melodyPartAccompanied 
      */
     public MelodyPartAccompanied(MelodyPartAccompanied melodyPartAccompanied){
@@ -92,20 +90,8 @@ public class MelodyPartAccompanied extends MelodyPart {
     
     public void setChordPart(ChordPart chordPart){
         this.chordPart = chordPart;
-     System.out.println("setting chordPart of " + title + " to " + chordPart.getTitle());
+     //System.out.println("setting chordPart of " + title + " to " + chordPart.getTitle());
      }
-    
-//    public int[] getChordMetre() {
-//        return chordPart.getChordMetre();
-//    }
-    
-//    public void setChordMetre(int top, int bottom){
-//        chordPart.setChordMetre(top, bottom);
-//    }
-    
-//    public void setChordMetre(int metre[]) {
-//        chordPart.setChordMetre(metre);
-//    }
     
     @Override
     public MelodyPartAccompanied extractTimeWarped(int first, int last, int num, int denom){
@@ -123,7 +109,6 @@ public void setBars(int bars)
       }
     
     super.setBars(bars);
-    System.out.println("Setting bars to " + bars + " in MelodyPartAccompanied " + this);
 
   }
 

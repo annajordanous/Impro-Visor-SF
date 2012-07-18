@@ -44,12 +44,12 @@ import javax.sound.midi.Track;
  * @see         Note
  * @see         Rest
  * @see         Part
- * @author      Stephen Jones
+ * @author      Stephen Jones, Robert Keller
  */
 @SuppressWarnings("serial")
 
 public class MelodyPart
-        extends Part
+     extends Part
   {
   /**
    *
@@ -79,13 +79,6 @@ public class MelodyPart
 
   private boolean fudgeEnding = false;
   
-  /* Move to Constants.java
-  // 48 is a 5-tuple eigth note... 
-  private static int[] knownNoteValue =
-          {0, 10, 12, 15, 20, 24, 30, 40, 45, 48, 50, 60, 80, 90, 100, 120, 160, 180,
-           240, 360, 480
-  };
-*/
   
   /**
    * Volume to be explicitly given for one-time melodies, for
@@ -1656,7 +1649,6 @@ public int getInitialBeatsRest()
     Note note = (Note)slots.get(i);
     if( note != null )
       {
-      //System.out.println("note volume = " + note.getVolume());
       if( note.getVolume() != currentVolume )
         {
           currentVolume = note.getVolume();
@@ -1670,16 +1662,6 @@ public int getInitialBeatsRest()
     }
   return buffer.toString ();
   }
- 
- //Unfinished
-//public void insertPartAt(int start, int finish, MelodyPart insert)
-//  {
-//    int j = 0;
-//    for( int i = start; i <= finish; i++, j++ )
-//      {
-//        slots.set(i, insert.getUnit(j));
-//      }
-//  }
  
  
 /**

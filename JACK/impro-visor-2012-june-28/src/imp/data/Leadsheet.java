@@ -230,9 +230,6 @@ public class Leadsheet
                                       boolean overrideStaveType, 
                                       StaveType useStaveType)
     {
-      
-    System.out.println("\nReading Leadsheet into " + score.getTitle());
-    
     int rise = 0;
 
     boolean headStarted = false;
@@ -257,9 +254,7 @@ public class Leadsheet
     
     Part partReferenced = currentChordPart;
 
-    MelodyPartAccompanied currentMelodyPart = new MelodyPartAccompanied();
-    
-    // already default currentMelodyPart.setKeySignature(0);		// default
+    MelodyPartAccompanied currentMelodyPart = new MelodyPartAccompanied(defaultChordPart);
 
     Key key = Key.getKey(0);		// default
 
@@ -267,8 +262,7 @@ public class Leadsheet
 
     score.setBassInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_BASS_INSTRUMENT)) - 1);
     defaultChordPart.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_CHORD_INSTRUMENT)) - 1);
-    //melodyPart.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
-
+ 
     Object ob;
 
     boolean firstUnitPassed = false;
@@ -505,7 +499,6 @@ public class Leadsheet
 
                   if( chordInputReversed.nonEmpty() )
                         {
-                          System.out.println("closing chordPart " + currentChordPart.getTitle());
                           // Save existing chords.
                           addToChordPart(chordInputReversed,
                                          currentChordPart,
@@ -520,7 +513,6 @@ public class Leadsheet
                       
                       if( melodyInputReversed.nonEmpty() )
                         {
-                          System.out.println("closing melodyPart " + currentMelodyPart.getTitle());
                           // Save existing melody.
 
                           addToMelodyPart(melodyInputReversed,
@@ -530,6 +522,8 @@ public class Leadsheet
                                           key);
                           melodyInputReversed = Polylist.nil;
 
+                          // defaultChordPart is temporary
+                          
                           currentMelodyPart = new MelodyPartAccompanied(defaultChordPart); // temporarily
                           score.addMelodyPart(currentMelodyPart);
                           partReferenced = currentMelodyPart;
@@ -570,7 +564,6 @@ public class Leadsheet
                             case TITLE: // for a PART
                                 {
                                 String title = concatElements(subitem.rest());
-                            System.out.println("\nTitle of part = " + title);
                                 partReferenced.setTitle(title);
                                 if( isChordPart )
                                   {
@@ -769,8 +762,7 @@ public class Leadsheet
           headStarted = true;
           defaultChordPart = score.ensureDefaultChordPart();
           currentChordPart = defaultChordPart;
-          currentMelodyPart = new MelodyPartAccompanied();
-          currentMelodyPart.setChordPart(defaultChordPart);
+          currentMelodyPart = new MelodyPartAccompanied(defaultChordPart);
           score.addMelodyPart(currentMelodyPart);
           }
 
@@ -851,20 +843,18 @@ public class Leadsheet
 
         if( chordInputReversed.nonEmpty() )
           {
-            System.out.println("closing chordPart " + currentChordPart.getTitle());
             // Save existing chords.
             addToChordPart(chordInputReversed,
                            currentChordPart,
                            rise,
                            measureLength,
                            key);
-            chordInputReversed = Polylist.nil;
+            
             currentMelodyPart.setChordPart(currentChordPart);
           }
 
         if( melodyInputReversed.nonEmpty() )
           {
-            System.out.println("closing melodyPart " + currentMelodyPart.getTitle());
             // Save existing melody.
 
             addToMelodyPart(melodyInputReversed,
@@ -872,23 +862,15 @@ public class Leadsheet
                             rise,
                             beatValue,
                             key);
-            melodyInputReversed = Polylist.nil;
+            
+    // Install a rest if the part was empty
+    if( currentMelodyPart.getUnit(0) == null )
+      {
+        currentMelodyPart.addRest(new Rest(BEAT));
+      }
 
-//            score.addMelodyPart(currentMelodyPart);
-          }
-                      
-    //addToChordPart(chordInputReversed, currentChordPart, rise, measureLength, key);
-//System.out.println("melodyInputReversed = " + melodyInputReversed);    
-//    if( melodyInputReversed.nonEmpty() )
-//      {
-//      addToMelodyPart(melodyInputReversed, currentMelodyPart, rise, beatValue, key);
-//      }
-    
-//    if( currentMelodyPart.getUnit(0) == null )
-//      {
-//        currentMelodyPart.addRest(new Rest(BEAT));
-//      }
-    
+    }
+                       
      // Uncomment this to see note classifications on standard out
 
     //classifyNotes(score.getPart(0), score.getChordPart());
@@ -907,7 +889,8 @@ public class Leadsheet
 //      }
 //    System.out.println();
     
-    System.out.println("\nFinal " + score);
+    //System.out.println("\nFinal " + score);
+        
     return true;
     } // readLeadsheet
 
@@ -1168,7 +1151,6 @@ static void addToChordPart(Polylist chordInputReversed,
                            int slotsPerBar, 
                            Key key)
   {
-System.out.println("adding to chordPart " + chordPart.getTitle() + chordInputReversed.reverse());
     Style previousStyle = null;
 
     Polylist chordInput = chordInputReversed.cons(NOCHORD).reverse();

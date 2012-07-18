@@ -15091,11 +15091,6 @@ public void setBars(int bars)
     prefMeasTF.setText("" + bars);
 
     setTotalMeasures(bars);
-    getCurrentMelodyPart().setSize(bars * measureLength);
-
-//    score.setLength(bars * measureLength);
-
-    getCurrentSectionInfo().setSize(bars * measureLength);
   }
 
 private void adjustLayout(Polylist layout)
@@ -24040,7 +24035,7 @@ public void setChordPart(ChordPart chordPart)
     //FIX!!??
     score.setChordPart(chordPart);
     //score.setLength(chordPart.getSize());
-    setBars(chordPart.getBars());
+    //setBars(chordPart.getBars());
     setupArrays();
   }
 
