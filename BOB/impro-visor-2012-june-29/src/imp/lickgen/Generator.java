@@ -221,7 +221,7 @@ public class Generator {
             {
                 int index = i;
                 int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
-                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < SIXTEENTH_WEIGHT) {
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < EIGHTH_WEIGHT) {
                     while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
                         i++;
                     }
@@ -249,7 +249,7 @@ public class Generator {
             {
                 int index = i;
                 int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
-                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < EIGHTH_WEIGHT) {
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < SIXTEENTH_WEIGHT) {
                     while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
                         i++;
                     }
@@ -290,11 +290,11 @@ public class Generator {
             {
                 weight = (double) 1 / invMetHier;
             }
-            if(invMetHier == 5 && prevIndex != i - SIXTEENTH)
+            if(invMetHier == SIXTEENTH_WEIGHT + 1 && prevIndex != i - SIXTEENTH)
             {
                     weight = 0;
             }
-            if(invMetHier < 5 && prevIndex == i - SIXTEENTH)
+            if(invMetHier < SIXTEENTH_WEIGHT + 1 && prevIndex == i - SIXTEENTH)
             {
                     weight = 1;
             }
@@ -307,6 +307,7 @@ public class Generator {
                 rhythm[i] = 0;
             }
         }
+        System.out.println("Rhythm: " + Arrays.toString(generateString(rhythm, "E")));
         return rhythm;
     }
 }
