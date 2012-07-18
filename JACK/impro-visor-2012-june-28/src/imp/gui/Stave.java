@@ -187,40 +187,66 @@ static private Image[] crotchetUp,
  * The notation window containing this Stave
  */
 protected Notate notate;
+
 /**
  * The original Part passed to the Stave
  */
-private MelodyPartAccompanied origPart;
+private MelodyPartAccompanied melodyPart;
+
 /**
  * The Part to be displayed on the Stave
  */
 private MelodyPartAccompanied displayPart;
+
 /**
  * The chord progression to be displayed on the Stave
  */
-private ChordPart chordProg;
+private ChordPart chordPart;
+
 /**
  * The array of construction lines
  */
 protected CstrLine cstrLines[];
-// the last note entered, used with drawing ties
+
+
+/**
+ * the last note entered, used with drawing ties
+ */
 Note lastNote = null;
-// The index of lastNote
+
+/**
+ * The index of lastNote
+ */
 int ilast = -1;
-// Whether or not lastNote was beamed
+
+/**
+ * Whether or not lastNote was beamed
+ */
 boolean lastNoteBeamed = false;
-// Whether or not lastNote had stem up (used for beaming)
+
+/**
+ * Whether or not lastNote had stem up (used for beaming)
+ */
 boolean lastNoteStemUp = true;
-// Whether stems are up in a beam
+
+/**
+ * Whether stems are up in a beam
+ */
 boolean beamStemUp = true;
-// Next note: use for beaming
+
+
+/**
+ * Next note: use for beaming
+ */
 Note nextNote = null;
+
 /**
  * The metre of the Stave
  */
 private int[] metre = new int[2];
+
 private int beatValue = BEAT;                // default for 4/4
-private int measureLength = 4 * beatValue;        // default for 4/4
+private int measureLength = 4 * beatValue;   // default for 4/4
 
 private boolean doubleBar = false;
 
@@ -229,33 +255,42 @@ private boolean doubleBar = false;
  * negative indicate flats
  */
 private int keySignature = 0;
+
 /**
  * Sets the maximum pitch for the Stave.
  * NOTE: Was set to 127, but had to set it lower to reflect leger lines.
  */
 private int maxPitch = 97;
+
 /**
  * Sets the minimum pitch for the Stave.
  * NOTE: Was set to 0, but had to set it higher to reflect leger lines.
  */
 private int minPitch = 24;
-// Used for setting the key signature
+
+/**
+ * Used for setting the key signature
+ */
 static final private int[] notePosOffset =
   {
     24, 24, 20, 20, 16, 12, 12, 8, 8, 4, 4, 0
   };
+
 static final private int[] sharps =
   {
     77, 72, 79, 74, 69, 76, 71
   };
+
 static final private int[] flats =
   {
     71, 76, 69, 74, 67, 72, 65
   };
+
 static final private int[] lineNotes =
   {
     0, 1, 4, 7, 8, 11, 14, 15, 17, 18, 21, 22
   };
+
 // Arrays of pitches corresponding to treble, bass, and grand values
 // Determines if a leger line should be drawn
 // NOTE: These values were in jMusic, I just moved them
@@ -285,37 +320,40 @@ static final int[] grandOffset =
   {
     88, 96, 104, 112, 120, -8, -16, -24, -32, -40
   };
-/**
- * The title for the leadsheet
- */
-private String sheetTitle;
+
 /**
  * The title for the Stave
  */
 private String partTitle;
+
 /**
  * The composer for the Stave
  */
 private String composer;
+
 /**
  * The title for the "show", if any
  */
 private String showTitle;
+
 /**
  * The year
  */
 private String year;
+
 /**
  * The font for the Title
  */
 private Font sheetTitleFont = new Font("Helvetia", Font.BOLD, 20);
 private Font partTitleFont = new Font("Helvetia", Font.BOLD, 14);
+
 /**
  * The font for the bar numbers
  */
 private Font barNumFont = new Font("Helvetica", Font.PLAIN, 12);
 private Font composerFont = barNumFont;
 private Font phraseMarkFont = new Font("TimesRoman", Font.PLAIN, 24);
+
 /**
  * The font for the chord symbols
  */
@@ -338,12 +376,7 @@ private boolean showAllCL = false;
 private boolean showSheetTitle = true;
 private boolean showPartTitle = true;
 private boolean showEmptyTitles = true;
-/**
- * Flag for if the Stave should be editable
- */
-private boolean editable = true;
-private Color titleColor = new Color(0, 0, 40);
-private Color titleBGHighlightColor = new Color(250, 250, 250);
+
 /**
  * The measure that the mouse is currently over.
  * For use with StaveActionHandler and drawing construction lines.
@@ -390,10 +423,7 @@ int durationMax = 4 * BEAT;
  * Minimum duration for last chord of an extracted part
  */
 int durationMin = BEAT;
-/**
- * The bounds of the part title
- */
-private Rectangle partTitleBounds = null;
+
 /**
  * Flag to determine if printing
  */
@@ -558,43 +588,43 @@ public Component getFirstComponent(Container focusCycleRoot)
 
 }
 
-/**
- * Constructs a new <code>Stave</code> to display a blank <code>Part</code>
- * using the default stave <code>images</code>.
- * Calls the constructor Stave(Part, String, Notate)
- *
- * @param notate        the notation window for the Stave
- */
-public Stave(Notate notate)
-  {
-    this(new MelodyPartAccompanied(), notate, "");
-  }
+///**
+// * Constructs a new <code>Stave</code> to display a blank <code>Part</code>
+// * using the default stave <code>images</code>.
+// * Calls the constructor Stave(Part, String, Notate)
+// *
+// * @param notate        the notation window for the Stave
+// */
+//public Stave(Notate notate)
+//  {
+//    this(new MelodyPartAccompanied(), notate, "");
+//  }
 
-/**
- * Constructs a new <code>Stave</code> to display a blank <code>Part</code>
- * with a specified <code>type</code>.
- * Calls the constructor Stave(Part, String, Notate).
- *
- * @param type          an enum representing the type of Stave
- * @param notate        the notation window for the Stave
- */
-public Stave(StaveType type, Notate notate, String staveTitle)
-  {
-    this(new MelodyPartAccompanied(), type, notate, staveTitle);
-  }
+///**
+// * Constructs a new <code>Stave</code> to display a blank <code>Part</code>
+// * with a specified <code>type</code>.
+// * Calls the constructor Stave(Part, String, Notate).
+// *
+// * @param type          an enum representing the type of Stave
+// * @param notate        the notation window for the Stave
+// */
+//public Stave(StaveType type, Notate notate, String staveTitle)
+//  {
+//    this(new MelodyPartAccompanied(), type, notate, staveTitle);
+//  }
 
-/**
- * Constructs a new <code>Stave</code> to display a given <code>Part</code>
- * using the default <code>type</code> GRAND.
- * Calls the constructor Stave(Part, String, Notate).
- *
- * @param part          Part to be displayed in stave
- * @param notate        the notation window for the Stave
- */
-public Stave(MelodyPartAccompanied part, Notate notate, String staveTitle)
-  {
-    this(part, StaveType.GRAND, notate, staveTitle);
-  }
+///**
+// * Constructs a new <code>Stave</code> to display a given <code>Part</code>
+// * using the default <code>type</code> GRAND.
+// * Calls the constructor Stave(Part, String, Notate).
+// *
+// * @param part          Part to be displayed in stave
+// * @param notate        the notation window for the Stave
+// */
+//public Stave(MelodyPartAccompanied part, Notate notate, String staveTitle)
+//  {
+//    this(part, StaveType.GRAND, notate, staveTitle);
+//  }
 
 /**
  * Constructs a new <code>Stave</code> to display the specified
@@ -604,14 +634,17 @@ public Stave(MelodyPartAccompanied part, Notate notate, String staveTitle)
  * @param type          an enum representing the type of Stave
  * @param notate        the notation window for the Stave
  */
-public Stave(MelodyPartAccompanied part, StaveType type, Notate notate,
+public Stave(MelodyPartAccompanied melodyPart, 
+             StaveType type, 
+             Notate notate,
              String staveTitle)
   {
     super();
-    this.origPart = part;
-    this.partTitle = part.getTitle();
-    this.sheetTitle = staveTitle;
-    this.chordProg = origPart.getChordPart();
+    setMelodyPart(melodyPart);
+    setChordPart(melodyPart.getChordPart());
+    //this.melodyPart = melodyPart;
+//    this.partTitle  = melodyPart.getTitle();
+//    this.chordPart  = melodyPart.getChordPart();
 
     // set the notate frame
     this.notate = notate;
@@ -883,11 +916,11 @@ public void changeType(StaveType type)
       }
     else if( type == StaveType.AUTO )
       {
-        if( origPart.getLowestPitch() > notate.getBreakpoint() )
+        if( melodyPart.getLowestPitch() > notate.getBreakpoint() )
           {
             this.type = StaveType.TREBLE;
           }
-        else if( origPart.getHighestPitch() <= notate.getBreakpoint() )
+        else if( melodyPart.getHighestPitch() <= notate.getBreakpoint() )
           {
             this.type = StaveType.BASS;
           }
@@ -940,36 +973,36 @@ public StaveType getStaveType()
 
 /**
  * Sets the current chord progression for this Stave instance
- * @param chordProg     the chord progression Part to be set in the Stave
+ * @param chordPart  the chord progression Part to be set in the Stave
  */
-public void setChordProg(ChordPart chordProg)
+public void setChordPart(ChordPart chordPart)
   {
-    this.chordProg = chordProg;
+    this.chordPart = chordPart;
   }
 
 /**
  * Returns the chord progression for the stave
- * @return Part         returns the chord progression
+ * @return Part returns the chord part
  */
-public ChordPart getChordProg()
+public ChordPart getChordPart()
   {
-    return chordProg;
+    return chordPart;
   }
 
 /**
  * Sets the current Part for this Stave instance.
- * @param part          the Part to be set in the Stave
+ * @param melodyPart          the Part to be set in the Stave
  */
-public void setPart(MelodyPartAccompanied part)
+public void setMelodyPart(MelodyPartAccompanied melodyPart)
   {
-    setPartTitle(part.getTitle());
-    setComposer(part.getComposer());
+    setPartTitle(melodyPart.getTitle());
+    setComposer(melodyPart.getComposer());
 
-    // make a copy of the part and put tie flags on notes that are needed
-    this.origPart = part;
-    this.displayPart = part.copy();
+    // make a copy of the melodyPart and put tie flags on notes that are needed
+    this.melodyPart = melodyPart;
+    this.displayPart = melodyPart.copy();
 
-    // Set the display part to have the correct accidentals and ties
+    // Set the display melodyPart to have the correct accidentals and ties
     this.displayPart.makeAccidentals();
     this.displayPart.makeTies();
 
@@ -1025,7 +1058,7 @@ public int getPreviousCstrLine(int index)
  */
 public MelodyPartAccompanied getMelodyPartAccompanied()
   {
-    return this.origPart;
+    return this.melodyPart;
   }
 
 /**
@@ -1044,9 +1077,9 @@ public MelodyPartAccompanied getDisplayPart()
 public void setPartTitle(String title)
   {
     this.partTitle = title;
-    if( this.origPart != null )
+    if( this.melodyPart != null )
       {
-        this.origPart.setTitle(title);
+        this.melodyPart.setTitle(title);
       }
   }
 
@@ -1057,9 +1090,9 @@ public void setPartTitle(String title)
 public void setComposer(String composer)
   {
     this.composer = composer;
-    if( this.origPart != null )
+    if( this.melodyPart != null )
       {
-        this.origPart.setComposer(composer);
+        this.melodyPart.setComposer(composer);
       }
   }
 
@@ -1184,7 +1217,7 @@ public void setMetre(int top, int bottom)
     beatValue = WHOLE / bottom;
     measureLength = top * beatValue;
 
-    origPart.setMetre(top, bottom);
+    melodyPart.setMetre(top, bottom);
   }
 
 public int getMeasureLength()
@@ -1225,7 +1258,7 @@ public void setKeySignature(int key)
   {
     this.keySignature = key;
     notate.score.setKeySignature(key);
-    origPart.setKeySignature(key);
+    melodyPart.setKeySignature(key);
   }
 
 /**
@@ -1370,15 +1403,6 @@ public int getMaxPitch()
   }
 
 /**
- * Decide to allow stave to be editable or not
- * @param state         true or false for the stave to be editable
- */
-public void setEditable(boolean state)
-  {
-    this.editable = state;
-  }
-
-/**
  * Gets the size of the Stave
  * @return Dimension    set with a width and a height
  */
@@ -1485,7 +1509,7 @@ public int getSelectionStart()
 
 public void setSelectionToEnd()
   {
-    setSelectionEnd(origPart.size() - 1);
+    setSelectionEnd(melodyPart.size() - 1);
   }
 
 /**
@@ -1497,7 +1521,7 @@ public int getNonRestSelectionStart()
   {
     for( int index = selectionStart; index <= selectionEnd; index++ )
       {
-        Unit unit = origPart.getUnit(index);
+        Unit unit = melodyPart.getUnit(index);
         if( unit instanceof Note && ((Note) unit).nonRest() )
           {
             return index;
@@ -1514,7 +1538,7 @@ public int getNonRestSelectionEnd()
   {
     for( int index = selectionEnd; index >= selectionStart; index-- )
       {
-        Unit unit = origPart.getUnit(index);
+        Unit unit = melodyPart.getUnit(index);
         if( unit instanceof Note )
           {
             Note note = (Note) unit;
@@ -1632,7 +1656,7 @@ public int getSelectionEndNote(int selectionEnd)
     // System.out.println("selectionEnd = " + ((float)selectionEnd)/BEAT);
     MelodyPartAccompanied melody = getMelodyPartAccompanied();
 
-    ChordPart chords = getChordProg();
+    ChordPart chords = getChordPart();
 
     int start = getSelectionStart();
     if( selectionEnd == start )
@@ -1750,16 +1774,18 @@ private void initCstrLines()
   }
 
 /**
- * Resizes the construction line array to the part's size
- * @param part          the part whose size the cstrLines' length needs
+ * Resizes the construction line array to the melodyPart's size
+ * @param melodyPart          the melodyPart whose size the cstrLines' length needs
  *                      to equal
  */
-private void resizeCstrLines(MelodyPart part)
+private void resizeCstrLines(MelodyPart melodyPart)
   {
-    CstrLine[] tempCstrLines = new CstrLine[(part.size())];
+    int partSize = melodyPart.size();
+    
+    CstrLine[] tempCstrLines = new CstrLine[partSize];
 
     // increment cstrLines' length
-    if( part.size() > cstrLines.length )
+    if( partSize > cstrLines.length )
       {
         for( int i = 0; i < cstrLines.length; i++ )
           {
@@ -1776,7 +1802,7 @@ private void resizeCstrLines(MelodyPart part)
         int oldLength = cstrLines.length;
         cstrLines = tempCstrLines;
 
-        for( int i = oldLength / beatValue; i < part.size() / beatValue; i++ )
+        for( int i = oldLength / beatValue; i < partSize / beatValue; i++ )
           {
             int subDivs = calcSubDivs(i);
             if( subDivs < defaultSubDivs && defaultSubDivs % subDivs == 0 )
@@ -1787,9 +1813,9 @@ private void resizeCstrLines(MelodyPart part)
           }
       }
     // decrement cstrLines' length
-    else if( cstrLines.length > part.size() )
+    else if( cstrLines.length > partSize )
       {
-        for( int i = 0; i < part.size(); i++ )
+        for( int i = 0; i < partSize; i++ )
           {
             if( cstrLines[i] != null )
               {
@@ -1818,7 +1844,8 @@ public void setSubDivs(int beat, int subdivs)
         return;
       }  // prevent divide-by-0 error
 
-    for( int i = beatValue * beat; i < cstrLines.length && i < beatValue * (beat + 1); i++ )
+    for( int i = beatValue * beat; i < cstrLines.length 
+          && i < beatValue * (beat + 1); i++ )
       {
         if( i % slotsPerDiv == 0 )
           {
@@ -1839,7 +1866,9 @@ public void setSubDivs(int beat, int subdivs)
 public int getSubDivs(int beat)
   {
     int subdivs = 0;
-    for( int i = beatValue * beat; i < cstrLines.length && i < beatValue * (beat + 1); i++ )
+    for( int i = beatValue * beat; 
+             i < cstrLines.length && i < beatValue * (beat + 1); 
+             i++ )
       {
         if( cstrLines[i] != null )
           {
@@ -1861,7 +1890,9 @@ public int incSubDivs(int beat)
     int minSubDivs = calcSubDivs(beat);
 
     int i;
-    for( i = curSubDivs + 1; (i % minSubDivs != 0) || (beatValue % i != 0); i++ )  // beatValue was 120
+    for( i = curSubDivs + 1; 
+        (i % minSubDivs != 0) || (beatValue % i != 0); 
+         i++ )
       {
         continue;
       }
@@ -1878,7 +1909,9 @@ public int decSubDivs(int beat)
     int curSubDivs = getSubDivs(beat);
     int minSubDivs = calcSubDivs(beat);
     int i;
-    for( i = curSubDivs - 1; (i > minSubDivs) && ((i % minSubDivs != 0) || (beatValue % i != 0)); i-- )                                        // beatValue was 120
+    for( i = curSubDivs - 1; 
+        (i > minSubDivs) && ((i % minSubDivs != 0) || (beatValue % i != 0)); 
+         i-- )                                        // beatValue was 120
       {
         continue;
       }
@@ -1924,10 +1957,10 @@ public int calcSubDivs(int beat)
 
     index = beatValue * beat;
     int chordGcd = beatValue;
-if(chordProg != null){
-     while( index < beatValue * (beat + 1) && index < chordProg.size() )
+if(chordPart != null){
+     while( index < beatValue * (beat + 1) && index < chordPart.size() )
       {
-        Unit chord = chordProg.getUnit(index);
+        Unit chord = chordPart.getUnit(index);
 
         if( chord != null )
           {
@@ -2269,7 +2302,7 @@ protected void paintComponent(Graphics g)
 
     // Every time a paint occurs, an entire part is copied!
 
-    this.displayPart = this.origPart.copy();
+    this.displayPart = this.melodyPart.copy();
     this.displayPart.makeAccidentals();
     this.displayPart.makeTies();
 
@@ -2618,7 +2651,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
 
     Note pitchDeterminer = null;
     
-    SectionInfo sectionInfo = chordProg.getSectionInfo();
+    SectionInfo sectionInfo = chordPart.getSectionInfo();
 
     Iterator<SectionRecord> sectionIter = sectionInfo.iterator();
     
@@ -2648,7 +2681,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
       }
     else
       {
-        nextSectionStart = chordProg.getSize(); // i.e. "infinity"
+        nextSectionStart = chordPart.getSize(); // i.e. "infinity"
       }
 
     Style previousStyle = null;
@@ -2668,7 +2701,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
            }
                   
         Note note = part.getNote(i);
-        Note orignote = origPart.getNote(i);
+        Note orignote = melodyPart.getNote(i);
 
         if( orignote != null )
           {
@@ -2702,7 +2735,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
                 }
               else
                 {
-                nextSectionStart = chordProg.getSize(); // i.e. "infinity"
+                nextSectionStart = chordPart.getSize(); // i.e. "infinity"
                 }
 
               if( previousSectionType == Block.SECTION_END || previousSectionType == Block.PHRASE_END )
@@ -2956,7 +2989,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
 
             // if there's a chord progression at the given index, draw the
             // name of the chord
-            if( i < chordProg.size() && chordProg.getChord(i) != null )
+            if( i < chordPart.size() && chordPart.getChord(i) != null )
               {
                 // calculate the height to draw the chord at
                 int chordHeight = headSpace + (staveLine * lineSpacing) - 25;
@@ -2990,7 +3023,7 @@ private boolean drawPart(MelodyPart part, Graphics g)
                   }
 
                 g.setFont(chordFont);
-                g.drawString(chordProg.getChord(i).getName(),
+                g.drawString(chordPart.getChord(i).getName(),
                              xCoordinate - 4, chordHeight);
                 g.setFont(barNumFont);
 
@@ -3240,7 +3273,7 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
   {
     int beatToPlace = metre[0] / 2;
 
-    Chord c = chordProg.getCurrentChord(i);
+    Chord c = chordPart.getCurrentChord(i);
 
     // get the rhythm value and pitch of the note
     int rhythmValue = note.getRhythmValue();
@@ -3664,7 +3697,7 @@ public int determineColor(Note note, Note pitchDeterminer, int i, Graphics g,
       {
         return 0;
       }
-    Chord c = chordProg.getCurrentChord(i);
+    Chord c = chordPart.getCurrentChord(i);
 
     // Deal with note coloration
 
@@ -5199,7 +5232,7 @@ public void rectifySelection(int startIndex, int endIndex, boolean directional, 
             new RectifyPitchesCommand(getMelodyPartAccompanied(),
                                       startIndex,
                                       endIndex,
-                                      getChordProg(),
+                                      getChordPart(),
                                       directional,
                                       direction));
 
@@ -5238,7 +5271,7 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
     //System.out.println("\nplaySelection, toEND = " + playToEndOfChorus + " loopCount = " + loopCount + ", useDrums = " + useDrums + " " + message);
     //debug System.out.println("playing " + message);
     
-    int partSize = getChordProg().getSize();
+    int partSize = getChordPart().getSize();
 
     int startIndex = getSelectionStart();
     int stopIndex = (playToEndOfChorus ? (partSize - 1) : getSelectionEndNote(selectionEnd));
@@ -5251,6 +5284,8 @@ public void playSelection(boolean playToEndOfChorus, int loopCount, boolean useD
         stopIndex = BEAT*(1 + stopIndex/BEAT);
       }
 
+    // startIndex and stopIndex are converted to global indices in the next method.
+    
     playSelection(startIndex, stopIndex, loopCount, useDrums, "from Stave playSelection/4");
   }
 
@@ -5312,7 +5347,7 @@ public void playSelectionNote(Note note, int selectedIndex)
     int i = selectedIndex + 1;
     int stopper = selectedIndex + StaveActionHandler.getEntryDuration(note);
 
-    ChordPart chords = getChordProg();
+    ChordPart chords = getChordPart();
     MelodyPart part = getMelodyPartAccompanied();
 
     for( ; i < stopper; i++ )
@@ -5361,7 +5396,7 @@ public String extract(String title, ExtractMode mode, int grade,
 
     MelodyPartAccompanied melody = getMelodyPartAccompanied();
 
-    ChordPart chords = getChordProg();
+    ChordPart chords = getChordPart();
 
     Chord.initSaveToLeadsheet();
     Note.initializeSaveLeadsheet();
@@ -5614,7 +5649,7 @@ public Polylist extractChordNamePolylist(int startIndex, int stopIndex)
       {
         return Polylist.nil;
       }
-    ChordPart chords = getChordProg();
+    ChordPart chords = getChordPart();
 
     startIndex %= chords.size();
     stopIndex %= chords.size();
@@ -5678,7 +5713,7 @@ public void shiftChords(int startIndex, int endIndex, boolean up)
 
     notate.cm.execute(
             new ShiftChordsCommand(shift,
-                                   getChordProg(),
+                                   getChordPart(),
                                    startIndex,
                                    endIndex,
                                    Key.Ckey));                        // FIX later
@@ -5921,13 +5956,9 @@ public int getNumMeasures()
      //notate.setBorderColor(new java.awt.Color(255, 255, 255));   
     }
     
-public void setMelodyPart(MelodyPartAccompanied melodyPart)
-  {
-    origPart = melodyPart;
-  }
 
 public int getBars()
   {
-    return origPart.getBars();
+    return melodyPart.getBars();
   }
 }

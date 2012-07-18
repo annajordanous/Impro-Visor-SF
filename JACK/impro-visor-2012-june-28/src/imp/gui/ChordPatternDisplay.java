@@ -233,7 +233,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score score)
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
-            score.setChordProg(c);
+            score.setChordPart(c);
             notate.setChordVolume(styleEditor.getVolume());
             score.setTempo(tempo);
             //score.setVolumes(notate.getMidiSynth());

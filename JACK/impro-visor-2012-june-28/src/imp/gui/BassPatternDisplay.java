@@ -115,7 +115,7 @@ public boolean playMe(double swingVal, int loopCount, double tempo, Score s)
             c.addChord(chord, duration);
             c.setStyle(tempStyle);
 
-            s.setChordProg(c);
+            s.setChordPart(c);
 
             if( muteChord )
               {

@@ -21866,13 +21866,12 @@ public void showNewVoicingDialog()
 
     if( size <= 0 )
       {
-
       return;
       }
 
     // set the chord progression for the score
 
-    ChordPart chordProg = score.getChordPart();
+    //ChordPart chordProg = score.getChordPart();
 
     scoreTab.removeAll();
 
@@ -21930,14 +21929,16 @@ public void showNewVoicingDialog()
 
       MelodyPartAccompanied mp = score.getPart(i);
 
-      Stave stave = new Stave(mp.getStaveType(), this,
-              score.getTitle());
+      Stave stave = new Stave(mp,
+                              mp.getStaveType(), 
+                              this,
+                              score.getTitle());
 
       pane.setStave(stave);
 
-      stave.setChordProg(mp.getChordPart());
-
-      stave.setPart(mp);
+//      stave.setChordPart(mp.getChordPart());
+//
+//      stave.setMelodyPart(mp);
 
       stave.setKeySignature(mp.getKeySignature());
 
@@ -24026,15 +24027,18 @@ public MidiSynth getMidiSynthRM()
     return midiSynth3;
 }
 
-public int getBarsPerChorus()
-  {
-    return score.getDefaultBarsPerChorus();
-  }
+//public int getBarsPerChorus()
+//  {
+//    return score.getDefaultBarsPerChorus();
+//  }
+
+// Only called from MidiImportFrame currently. 
+// Need to specify WHICH ChordPart to set.
 
 public void setChordPart(ChordPart chordPart)
   {
     //FIX!!??
-    score.setChordProg(chordPart);
+    score.setChordPart(chordPart);
     //score.setLength(chordPart.getSize());
     setBars(chordPart.getBars());
     setupArrays();
