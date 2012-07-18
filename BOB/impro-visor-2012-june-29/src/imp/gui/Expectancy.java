@@ -48,10 +48,10 @@ public class Expectancy
     private static final int LOW_BASS = 24;
     private static final int ROOT_STABILITY = 6;   // Stability of a root note
     private static final int CHORD_STABILITY = 5;  // Stability of a chord tone
-    private static final int SCALE_STABILITY = 4;  // Stability of a scale tone
-    private static final int COLOR_STABILITY = 3;  // Stability of a color tone
+    private static final int COLOR_STABILITY = 4;  // Stability of a color tone
+//    private static final int SCALE_STABILITY = 3;  // Stability of a scale tone
     private static final int OUTSIDE_STABILITY = 2;// Stability of an outside note
-    private static final int NOCHORD_STABILITY = 1;// Stability of an outside note
+    private static final int NOCHORD_STABILITY = 1;// Stability of an no chord note
     private static final double PROXIMITY_0 = 38;     // Proximity rating for a distance of 0
     private static final double PROXIMITY_1 = 36;     // Proximity rating for a distance of 1
     private static final double PROXIMITY_2 = 32;     // Proximity rating for a distance of 2
@@ -92,6 +92,14 @@ public class Expectancy
 //        
 //    }
     
+    /**
+     * Gets the expectancy value of a pitch given the previous two pitches and the current chord
+     * @param pitch
+     * @param prevPitch
+     * @param prevPrevPitch
+     * @param currentChord
+     * @return 
+     */
     public static double getExpectancy(int pitch, int prevPitch, int prevPrevPitch, Chord currentChord)
     {
         int stability = stability(pitch, currentChord);
@@ -117,10 +125,10 @@ public class Expectancy
             return ROOT_STABILITY;
         else if(isChordTone(pitch, currentChord))
             return CHORD_STABILITY;
-        else if(isScaleTone(pitch, currentChord))
-            return SCALE_STABILITY;
         else if(isColorTone(pitch, currentChord))
             return COLOR_STABILITY;
+//        else if(isScaleTone(pitch, currentChord))
+//            return SCALE_STABILITY;
         else
             return OUTSIDE_STABILITY;
     }
