@@ -588,43 +588,6 @@ public Component getFirstComponent(Container focusCycleRoot)
 
 }
 
-///**
-// * Constructs a new <code>Stave</code> to display a blank <code>Part</code>
-// * using the default stave <code>images</code>.
-// * Calls the constructor Stave(Part, String, Notate)
-// *
-// * @param notate        the notation window for the Stave
-// */
-//public Stave(Notate notate)
-//  {
-//    this(new MelodyPartAccompanied(), notate, "");
-//  }
-
-///**
-// * Constructs a new <code>Stave</code> to display a blank <code>Part</code>
-// * with a specified <code>type</code>.
-// * Calls the constructor Stave(Part, String, Notate).
-// *
-// * @param type          an enum representing the type of Stave
-// * @param notate        the notation window for the Stave
-// */
-//public Stave(StaveType type, Notate notate, String staveTitle)
-//  {
-//    this(new MelodyPartAccompanied(), type, notate, staveTitle);
-//  }
-
-///**
-// * Constructs a new <code>Stave</code> to display a given <code>Part</code>
-// * using the default <code>type</code> GRAND.
-// * Calls the constructor Stave(Part, String, Notate).
-// *
-// * @param part          Part to be displayed in stave
-// * @param notate        the notation window for the Stave
-// */
-//public Stave(MelodyPartAccompanied part, Notate notate, String staveTitle)
-//  {
-//    this(part, StaveType.GRAND, notate, staveTitle);
-//  }
 
 /**
  * Constructs a new <code>Stave</code> to display the specified
@@ -642,11 +605,8 @@ public Stave(MelodyPartAccompanied melodyPart,
     super();
     setMelodyPart(melodyPart);
     setChordPart(melodyPart.getChordPart());
-    //this.melodyPart = melodyPart;
-//    this.partTitle  = melodyPart.getTitle();
-//    this.chordPart  = melodyPart.getChordPart();
-
-    // set the notate frame
+    
+     // set the notate frame
     this.notate = notate;
 
     chordFont = new Font("Helvetica", Font.BOLD, notate.getScore().getChordFontSize());
@@ -2685,8 +2645,12 @@ private boolean drawPart(MelodyPart part, Graphics g)
       }
 
     Style previousStyle = null;
-//System.out.println();    
-    // cycle through the entire part
+    
+    // Cycle through the entire part.
+    // This is the loop that draws the individual staves on the page.
+    // Iteration is governed by cstrLines, and new staves are added as
+    // needed, rather than precomputing the number of staves.
+    
     for( int i = 0; i < cstrLines.length; i++ )
       {
          if( indicateStyle && style != previousStyle && !styleName.equals(Style.USE_PREVIOUS_STYLE) )
@@ -3342,13 +3306,13 @@ private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2
           {
             int j = i;
             while( cstrLines[j + beatToPlace * beatValue] == null
-                    || cstrLines[j + beatToPlace * beatValue].getX() == -1 )
+                || cstrLines[j + beatToPlace * beatValue].getX() == -1 )
               {
                 --j;
               }
 
             x = cstrLines[j + beatToPlace * beatValue].getX()
-                    + cstrLines[j + beatToPlace * beatValue].getSpacing();
+              + cstrLines[j + beatToPlace * beatValue].getSpacing();
           }
 
         g.drawImage(unitImage, x, yCoordinate, this);
@@ -4067,7 +4031,9 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
       }
 
     // while a measure is not a multiple of 2, is a multiple of 3, and > 1  //rk was >= 1
-    while( (notate.getAutoAdjust() || notate.noLockedMeasures()) && ((lineMeasureCount % 2 != 0) || (lineMeasureCount % 3 == 0)) && (lineMeasureCount > 1) )
+    while( (notate.getAutoAdjust() || notate.noLockedMeasures()) 
+        && ((lineMeasureCount % 2 != 0) || (lineMeasureCount % 3 == 0))
+        && (lineMeasureCount > 1) )
       {
         // reduce the number of full measures
         lineMeasureCount--;
@@ -4127,7 +4093,8 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
         spacingMod = 0;
       }
     // if the cstr lines will overextend too far cut the spacing mod back
-    else if( remainderWidth < 0 && (((remainderWidth / numCstrLines) + cstrLineSpacing) * (numCstrLines - 2)) + initWidth > STAVE_WIDTH )
+    else if( remainderWidth < 0 
+          && (((remainderWidth / numCstrLines) + cstrLineSpacing) * (numCstrLines - 2)) + initWidth > STAVE_WIDTH )
       {
         spacingMod = (remainderWidth / numCstrLines) - 1;
       }
@@ -4154,8 +4121,8 @@ private int findSpacing(int i, int staveLine, MelodyPart part)
  */
 private void drawStave(int staveLine, int x1, int x2, Graphics g)
   {
-    for( int i = (staveLine * lineSpacing); i < ((staveLine * lineSpacing)
-            + (numPitchLines * staveSpaceHeight));
+    for( int i = (staveLine * lineSpacing); 
+            i < ((staveLine * lineSpacing) + (numPitchLines * staveSpaceHeight));
             i += staveSpaceHeight )
       {
 
@@ -4181,8 +4148,9 @@ private void drawStave(int staveLine, int x1, int x2, Graphics g)
 private void whiteOutStave(int staveLine, int x1, int x2, Graphics g)
   {
     g.setColor(Color.white);
-    for( int i = (staveLine * lineSpacing); i < ((staveLine * lineSpacing) + (numPitchLines * staveSpaceHeight));
-            i += staveSpaceHeight )
+    for( int i = (staveLine * lineSpacing); 
+             i < ((staveLine * lineSpacing) + (numPitchLines * staveSpaceHeight));
+             i += staveSpaceHeight )
       {
 
         // checks to see if the line shouldn't be drawn for middle C in a

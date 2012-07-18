@@ -44,8 +44,8 @@ import polya.Polylist;
  * and title.  Parts should be added with the addMelodyPart method.
  * 
  * @see         Part
- * @author      Stephen Jones (rewritten from code written by Andrew Sorensen
- *              and Andrew Brown)
+ * @author      Stephen Jones, Robert Keller
+ *              (rewritten from code written by Andrew Sorensen and Andrew Brown)
  */
 
 @SuppressWarnings("serial")
@@ -59,223 +59,194 @@ static int chordPartNumber = 1;
 
 static final String chordPartBase = "CP_";
 
-    /**
-     * Default bars per line layout. Note that, in general, the layout
-     * specification is a list of bars per line, the last of which is used
-     * if there are more lines than list entries.
-     */
+/**
+ * Default bars per line layout. Note that, in general, the layout specification
+ * is a list of bars per line, the last of which is used if there are more lines
+ * than list entries.
+ */
+public static String DEFAULT_BARS_PER_LINE = "4";
 
-    public static String DEFAULT_BARS_PER_LINE = "4";
-    
-    /**
-     * The default title
-     */
-    public static String DEFAULT_TITLE = "Untitled Score";
-    
-    public static final String TITLE_BASE = "Score #";
-    
-    /**
-     * The default composer
-     */
-    public static String DEFAULT_COMPOSER = "";
+/**
+ * The default title
+ */
+public static String DEFAULT_TITLE = "Untitled Score";
+public static final String TITLE_BASE = "Score #";
 
-    /**
-     * The default tempo
-     */
-    public static final double DEFAULT_TEMPO = Double.parseDouble(Preferences.getPreference(Preferences.DEFAULT_TEMPO));
+/**
+ * The default composer
+ */
+public static String DEFAULT_COMPOSER = "";
 
-    /**
-     * The default volume
-     */
-    public static final int DEFAULT_VOLUME = MAX_VOLUME;
+/**
+ * The default tempo
+ */
+public static final double DEFAULT_TEMPO = Double.parseDouble(Preferences.getPreference(Preferences.DEFAULT_TEMPO));
 
-    /**
-     * The default key signature
-     */
-    public static final int DEFAULT_KEYSIG = 0;
-    
-    /**
-     * Name of the default chord progression
-     */
-    
-    public static final String DEFAULT_PROGRESSION = "Untitled Part";
-    
-    /**
-     * The title of the Score
-     */
-    private String title = DEFAULT_TITLE;
+/**
+ * The default volume
+ */
+public static final int DEFAULT_VOLUME = MAX_VOLUME;
 
-    private static int titleCounter = 0;
+/**
+ * The default key signature
+ */
+public static final int DEFAULT_KEYSIG = 0;
 
-    /**
-     * The composer of the Score
-     */
-    private String composer= "";
+/**
+ * Name of the default chord progression
+ */
+public static final String DEFAULT_PROGRESSION = "Untitled Part";
 
-    /**
-     * The name of the show, if any
-     */
-    private String showTitle = "";
+/**
+ * The title of the Score
+ */
+private String title = DEFAULT_TITLE;
+private static int titleCounter = 0;
 
-    /**
-     * The year, if specified
-     */
-    private String year = "";
+/**
+ * The composer of the Score
+ */
+private String composer = "";
 
-    /**
-     * Comments on this score
-     */
-    private String comments = "";
+/**
+ * The name of the show, if any
+ */
+private String showTitle = "";
 
-    /**
-     * The length of the Score
-     */
-    private int length;
-    
-    /**
-     * The metre of the score
-     */
-    private int[] metre = new int[2];
-    
-    /**
-     * The key signature of the score
-     */
-    private int keySig;
-    
-    /**
-     * The breakpoint pitch indicating where the treble stave should start drawing and
-     * the bass stave should end drawing, or vice versa.
-     */
-    private int breakpoint = FS3;
-    
-    /**
-     * The Parts in the Score
-     */
-    private PartList partList;
+/**
+ * The year, if specified
+ */
+private String year = "";
 
-    
-    /*
-     * Mapping from names to ChordParts
-     */
-    private LinkedHashMap<String, ChordPart> chordPartList 
-            = new LinkedHashMap<String,ChordPart>();
-    
-    /**
-     * The count-in Progression for this Score, if any.
-     */
-    private ChordPart countInProg = null;
+/**
+ * Comments on this score
+ */
+private String comments = "";
 
-    /**
-     * The tempo of the Score
-     */
-    private double tempo;
+/**
+ * The length of the Score
+ */
+private int length;
 
-    /**
-     * The playback transposition of the Score
-     */
-    
-    private int transposition = 0;
+/**
+ * The metre of the score
+ */
+private int[] metre = new int[2];
 
-    private int chordFontSize = 16; // Default
+/**
+ * The key signature of the score
+ */
+private int keySig;
 
-    private String voicingType = "";
+/**
+ * The breakpoint pitch indicating where the treble stave should start drawing
+ * and the bass stave should end drawing, or vice versa.
+ */
+private int breakpoint = FS3;
 
-    /**
-     * The layout, if any. This can be null if no layout specified.
-     */
+/**
+ * The Parts in the Score
+ */
+private PartList partList;
 
-    private Polylist layout = Polylist.nil;
-    
-    /**
-     * Layout for generated roadmap. Currently it is only a single number,
-     * bars per line.
-     */
-    
-    private int roadmapLayout = 8;
-    
+/*
+ * Mapping from names to ChordParts
+ */
+private LinkedHashMap<String, ChordPart> chordPartList = new LinkedHashMap<String, ChordPart>();
 
-    /**
-     * Creates an empty Score with generated title, tempo, and volume.
-     */
-    public Score() {
-        this(generateTitle(), DEFAULT_TEMPO, DEFAULT_VOLUME);
-       
-    }
+/**
+ * The count-in Progression for this Score, if any.
+ */
+private ChordPart countInProg = null;
 
-//    /**
-//     * Currently only one use, in Notate, and the title is ""
-//     * Creates an empty Score with the specified title.
-//     * @param title     a String containing the title of the Score
-//     */
-//    public Score(String title) {
-//        this(title, DEFAULT_TEMPO);
-//    }
+/**
+ * The tempo of the Score
+ */
+private double tempo;
 
-//    /**
-//     * Creates an empty Score with the specified tempo.
-//     * @param tempo     a double containing the tempo of the Score
-//     */
-//    public Score(double tempo) {
-//        this(DEFAULT_TITLE, tempo);
-//    }
+/**
+ * The playback transposition of the Score
+ */
+private int transposition = 0;
+private int chordFontSize = 16; // Default
+private String voicingType = "";
 
-//    /**
-//     * Only used in this class currently
-//     * Creates an empty Score with the specified title and tempo.
-//     * @param title     a String containing the title of the Score
-//     * @param tempo     a double contianing the tempo of the Score
-//     */
-//    public Score(String title, double tempo) {
-//        this(title, tempo, DEFAULT_VOLUME);
-//    }
-    
-    /**
-     * Creates an empty Score with the specified title, tempo, and volume.
-     * @param title     a String containing the title of the Score
-     * @param tempo     a double contianing the tempo of the Score
-     * @param volume    a number indicating the volume of the Score
-     */
-    public Score(String title, double tempo, int volume) {
-        this.title = title;
-        this.tempo = tempo;
-        this.masterVolume = volume;
-        this.length = 0;
-        
-        this.composer = DEFAULT_COMPOSER;
-        this.metre[0] = DEFAULT_METRE[0];
-        this.metre[1] = DEFAULT_METRE[1];
-//        this.chordProg = new ChordPart();
-//        this.setMetre(DEFAULT_METRE[0], DEFAULT_METRE[1]);
-        this.keySig = DEFAULT_KEYSIG;
-        
-        this.partList = new PartList(1);
-        addDefaultChordPart(new ChordPart());
-        setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
-    }
+/**
+ * The layout, if any. This can be null if no layout specified.
+ */
+private Polylist layout = Polylist.nil;
 
-    /**
-     * Currently used only in ImproVisor and PatternDisplay, once each.
-     * 
-     * @param length 
-     */
-    public Score(int length) {
-        this();
-        this.length = length;
-        addPart();
-        addDefaultChordPart(new ChordPart(length));
-    }
+/**
+ * Layout for generated roadmap. Currently it is only a single number, bars per
+ * line.
+ */
+private int roadmapLayout = 8;
 
-    /**
-     * Currently used in ExtractionEditor and RoadMapFrame
-     * @param chordPart 
-     */
-    
-    public Score(ChordPart chordPart) {
-        this();
-        addPart();
-        //setLength(chordPart.size());
-        addDefaultChordPart(chordPart);
-    }
+/**
+ * Creates an empty Score with generated title, tempo, and volume.
+ */
+public Score()
+  {
+    this(generateTitle(), DEFAULT_TEMPO, DEFAULT_VOLUME);
+
+  }
+
+
+/**
+ * Create an empty Score with the specified title, tempo, and volume.
+ *
+ * @param title a String containing the title of the Score
+ * @param tempo a double contianing the tempo of the Score
+ * @param volume a number indicating the volume of the Score
+ */
+
+public Score(String title, double tempo, int volume)
+  {
+    this.title = title;
+    this.tempo = tempo;
+    this.masterVolume = volume;
+    this.length = 0;
+
+    this.composer = DEFAULT_COMPOSER;
+    this.metre[0] = DEFAULT_METRE[0];
+    this.metre[1] = DEFAULT_METRE[1];
+    this.keySig = DEFAULT_KEYSIG;
+
+    this.partList = new PartList(1);
+    addDefaultChordPart(new ChordPart());
+    setChordFontSize(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE)).intValue());
+  }
+
+
+ /**
+ * Currently used only in ImproVisor and PatternDisplay, once each.
+ *
+ * @param length
+ */
+
+public Score(int length)
+  {
+    this();
+    this.length = length;
+    addPart();
+    addDefaultChordPart(new ChordPart(length));
+  }
+
+
+/**
+ * Currently used in ExtractionEditor and RoadMapFrame
+ *
+ * @param chordPart
+ */
+
+public Score(ChordPart chordPart)
+  {
+    this();
+    addPart();
+    //setLength(chordPart.size());
+    addDefaultChordPart(chordPart);
+  }
+
 
     public void setCountIn(ChordPart countInProg)
     {
@@ -489,11 +460,7 @@ static final String chordPartBase = "CP_";
      * @param part      Part to add
      */
     public void addMelodyPart(MelodyPartAccompanied part) {
-       System.out.println("adding melody part " + part.getTitle() + " to score " + title);
-//        if( length < part.size() )
-//          {
-//            setLength(part.size());
-//          }
+        //System.out.println("adding melody part " + part.getTitle() + " to score " + title);
         partList.add(part);
     }
     
@@ -517,9 +484,6 @@ static final String chordPartBase = "CP_";
      * element is the bottom.
      */
     public void setMetre(int top, int bottom) {
-//        System.out.println("score.setMetre called");
-//        metre[0] = top;
-//        metre[1] = bottom;
         getDefaultChordPart().setMetre(top, bottom);
         getDefaultChordPart().setChordMetre(top, bottom);
         getDefaultChordPart().setMetre(top, bottom);
@@ -537,26 +501,12 @@ static final String chordPartBase = "CP_";
         setMetre(metre[0],metre[1]);
       }
     
-    /**
-     * Copy this Score's metre setting into the argument array of dimension 2.
-     * @param metre 
-     */
-    
-//    public void getMetre(int metre[])
-//      {
-//        metre[0] = getDefaultChordPart().getChordMetre()[0];
-//        metre[1] = getDefaultChordPart().getChordMetre()[1];
-////        metre[0] = this.metre[0];
-////        metre[1] = this.metre[1];
-//      }
     
     /**
      * Returns the Score's metre
      * @return int              the metre of the Score
      */
     public int[] getMetre() {
-//        System.out.println("score.getMetre called");
-//        return metre;
         return getDefaultChordPart().getChordMetre();
     }
     
@@ -583,26 +533,7 @@ static final String chordPartBase = "CP_";
     public int getKeySignature() {
         return keySig;
     }
-    
-//    public void setLength(int newLength)
-//      {
-//        if( newLength == length )
-//            {
-//            return;	// avoid unnecessary setting
-//            }
-//        Trace.log(3, "setting score length to " + newLength);
-//        length = newLength;
-//        if( getDefaultChordPart() != null )
-//            {
-//            getDefaultChordPart().setSize(length);
-//            }
-//
-////        Iterator<MelodyPartAccompanied> i = partList.listIterator();
-////        while( i.hasNext() )
-////            {
-////            i.next().setSize(length);
-////            }
-//      }
+  
     
     public int getLength()
       {
@@ -673,8 +604,6 @@ static final String chordPartBase = "CP_";
      * 
      */
     public void setChordPart(ChordPart chordPart) {
-//        setLength(chordProg.size());
-//        this.chordProg = chordProg;
         setDefaultChordPart(chordPart);
     }
 
