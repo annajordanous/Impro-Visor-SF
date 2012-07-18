@@ -771,7 +771,7 @@ Polylist evaluateSplice(Polylist form)
         int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
         int synco = Tension.getSyncopation(syncVector, measures);
         int[] rhythm = Generator.generateSyncopation(measures, synco);
-        String[] rhythmArray = Generator.generateString(rhythm);
+        String[] rhythmArray = Generator.generateString(rhythm, (String)args.first());
         Polylist rhythmList = Polylist.PolylistFromArray(rhythmArray);
         return rhythmList;
     }

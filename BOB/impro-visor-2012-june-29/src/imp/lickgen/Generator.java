@@ -27,24 +27,24 @@ public class Generator {
     private static double HIGHTEST_NOTE_PROBABILITY = .75;
     private static double APPROACH_PROBABILITY = .5;
     private static int THIRTY_SECOND = 1;
-    private static String THIRTY_SECOND_NOTE = "C32";
+    private static String THIRTY_SECOND_NOTE = "32";
     private static String THIRTY_SECOND_REST = "R32";
     private static int SIXTEENTH = 2;
-    private static String SIXTEENTH_NOTE = "C16";
+    private static String SIXTEENTH_NOTE = "16";
     private static String SIXTEENTH_NOTE_APPROACH = "A16";
     private static String SIXTEENTH_REST = "R16";
     private static int EIGHTH = 4;
-    private static String EIGHTH_NOTE = "C8";
+    private static String EIGHTH_NOTE = "8";
     private static String EIGHTH_NOTE_APPROACH = "A8";
     private static String EIGHTH_REST = "R8";
     private static int QUARTER = 8;
-    private static String QUARTER_NOTE = "C4";
+    private static String QUARTER_NOTE = "4";
     private static String QUARTER_REST = "R4";
     private static int HALF = 16;
-    private static String HALF_NOTE = "C2";
+    private static String HALF_NOTE = "2";
     private static String HALF_REST = "R2";
     private static int WHOLE = 32;
-    private static String WHOLE_NOTE = "C1";
+    private static String WHOLE_NOTE = "1";
     private static String WHOLE_REST = "R1";
 
     public Generator() {
@@ -56,7 +56,14 @@ public class Generator {
      * @param rhythm
      * @return
      */
-    public static String[] generateString(int[] rhythm) {
+    public static String[] generateString(int[] rhythm, String noteType) 
+    {
+        noteType = noteType.toUpperCase();
+        boolean approach = false;
+        if(noteType.equals("C"))
+        {
+            approach = true;
+        }
         String rhythms = "";
         int prev = -1;
         for (int i = 0; i < rhythm.length; i++) {
@@ -65,35 +72,35 @@ public class Generator {
                     int diff = i - prev;
                     if((WEIGHTS[prev % NUM_SLOTS] * -1) >= EIGHTH_WEIGHT)
                     {
-                        rhythms += getString(diff, false, true);
+                        rhythms += getString(diff, false, true, noteType, approach);
                     }
                     else
                     {
-                        rhythms += getString(diff, false, false);
+                        rhythms += getString(diff, false, false, noteType, approach);
                     }
                     prev = i;
                 } 
                 else if (i > 0) 
                 {
-                    rhythms += getString(i, true, false);
+                    rhythms += getString(i, true, false, noteType, approach);
                 }
                 prev = i;
             }
         }
         if (prev == -1) 
         {
-            rhythms += getString(rhythm.length, true, false);
+            rhythms += getString(rhythm.length, true, false, noteType, approach);
         } 
         else if (prev != rhythm.length) 
         {
             int diff = rhythm.length - prev;
             if((WEIGHTS[prev % NUM_SLOTS] * -1) >= EIGHTH_WEIGHT)
             {
-                rhythms += getString(diff, false, true);
+                rhythms += getString(diff, false, true, noteType, approach);
             }
             else
             {
-                rhythms += getString(diff, false, false);
+                rhythms += getString(diff, false, false, noteType, approach);
             }
         }
         String[] rhythmsArray = rhythms.split("\\s+");
@@ -108,69 +115,89 @@ public class Generator {
      * @param rest
      * @return
      */
-    private static String getString(int diff, boolean rest, boolean offbeat) {
+    private static String getString(int diff, boolean rest, boolean offbeat, String noteType, boolean approach) 
+    {
         if (!rest) {
-            if (diff >= WHOLE) {
-                return WHOLE_NOTE + " " + getString(diff - WHOLE, true, false) + " ";
-            } else if (diff >= HALF) {
-                return HALF_NOTE + " " + getString(diff - HALF, true, false) + " ";
-            } else if (diff >= QUARTER) {
-                return QUARTER_NOTE + " " + getString(diff - QUARTER, true, false) + " ";
-            } else if (diff >= EIGHTH) 
+            if (diff >= WHOLE) 
             {
-                if(offbeat)
+                return noteType + WHOLE_NOTE + " " + getString(diff - WHOLE, true, false, noteType, approach) + " ";
+            } 
+            else if (diff >= HALF) 
+            {
+                return noteType + HALF_NOTE + " " + getString(diff - HALF, true, false, noteType, approach) + " ";
+            } 
+            else if (diff >= QUARTER) 
+            {
+                return noteType + QUARTER_NOTE + " " + getString(diff - QUARTER, true, false, noteType, approach) + " ";
+            } 
+            else if (diff >= EIGHTH) 
+            {
+                if(offbeat && approach)
                 {
                     if(Math.random() > APPROACH_PROBABILITY)
                     {
-                        return EIGHTH_NOTE_APPROACH + " " + getString(diff - EIGHTH, true, false) + " ";
+                        return EIGHTH_NOTE_APPROACH + " " + getString(diff - EIGHTH, true, false, noteType, approach) + " ";
                     }
                     else
                     {
-                        return EIGHTH_NOTE + " " + getString(diff - EIGHTH, true, false) + " ";
+                        return noteType + EIGHTH_NOTE + " " + getString(diff - EIGHTH, true, false, noteType, approach) + " ";
                     }
                 }
                 else
                 {
-                    return EIGHTH_NOTE + " " + getString(diff - EIGHTH, true, false) + " ";
+                    return noteType + EIGHTH_NOTE + " " + getString(diff - EIGHTH, true, false, noteType, approach) + " ";
                 }
             } 
             else if (diff >= SIXTEENTH) 
             {
-                if(offbeat)
+                if(offbeat && approach)
                 {
                     if(Math.random() > APPROACH_PROBABILITY)
                     {
-                        return SIXTEENTH_NOTE_APPROACH + " " + getString(diff - SIXTEENTH, true, false) + " ";
+                        return SIXTEENTH_NOTE_APPROACH + " " + getString(diff - SIXTEENTH, true, false, noteType, approach) + " ";
                     }
                     else
                     {
-                        return SIXTEENTH_NOTE + " " + getString(diff - SIXTEENTH, true, false) + " ";
+                        return noteType + SIXTEENTH_NOTE + " " + getString(diff - SIXTEENTH, true, false, noteType, approach) + " ";
                     }
                 }
                 else
                 {
-                    return SIXTEENTH_NOTE + " " + getString(diff - SIXTEENTH, true, false) + " ";
+                    return noteType + SIXTEENTH_NOTE + " " + getString(diff - SIXTEENTH, true, false, noteType, approach) + " ";
                 }
             } 
-            else if (diff >= THIRTY_SECOND) {
-                return THIRTY_SECOND_NOTE + " " + getString(diff - THIRTY_SECOND, true, false) + " ";
-            } else {
+            else if (diff >= THIRTY_SECOND) 
+            {
+                return THIRTY_SECOND_NOTE + " " + getString(diff - THIRTY_SECOND, true, false, noteType, approach) + " ";
+            } else 
+            {
                 return "";
             }
         } else {
-            if (diff >= WHOLE) {
-                return WHOLE_REST + " " + getString(diff - WHOLE, true, false);
-            } else if (diff >= HALF) {
-                return HALF_REST + " " + getString(diff - HALF, true, false);
-            } else if (diff >= QUARTER) {
-                return QUARTER_REST + " " + getString(diff - QUARTER, true, false);
-            } else if (diff >= EIGHTH) {
-                return EIGHTH_REST + " " + getString(diff - EIGHTH, true, false);
-            } else if (diff >= SIXTEENTH) {
-                return SIXTEENTH_REST + " " + getString(diff - SIXTEENTH, true, false);
-            } else if (diff >= THIRTY_SECOND) {
-                return THIRTY_SECOND_REST + " " + getString(diff - THIRTY_SECOND, true, false);
-            } else {
+            if (diff >= WHOLE) 
+            {
+                return WHOLE_REST + " " + getString(diff - WHOLE, true, false, noteType, approach);
+            } 
+            else if (diff >= HALF) 
+            {
+                return HALF_REST + " " + getString(diff - HALF, true, false, noteType, approach);
+            } 
+            else if (diff >= QUARTER) 
+            {
+                return QUARTER_REST + " " + getString(diff - QUARTER, true, false, noteType, approach);
+            } 
+            else if (diff >= EIGHTH) 
+            {
+                return EIGHTH_REST + " " + getString(diff - EIGHTH, true, false, noteType, approach);
+            } 
+            else if (diff >= SIXTEENTH) 
+            {
+                return SIXTEENTH_REST + " " + getString(diff - SIXTEENTH, true, false, noteType, approach);
+            } 
+            else if (diff >= THIRTY_SECOND) {
+                return THIRTY_SECOND_REST + " " + getString(diff - THIRTY_SECOND, true, false, noteType, approach);
+            } 
+            else {
                 return "";
             }
         }
@@ -189,12 +216,6 @@ public class Generator {
         int synco = Tension.getSyncopation(rhythm, measures);
         while (synco > mySynco && synco > 2)
         {
-//            int i = (int)(Math.random() * MOD * measures);
-//	    int index = i * NUM_QUARTERS;
-//	    if(i < NUM_SLOTS * measures - 1)
-//	    {
-//	        rhythm[index] = 1;
-//	    }
             int i = (int) (Math.random() * NUM_SLOTS * measures);
             if (i < NUM_SLOTS * measures - 1) 
             {
@@ -211,8 +232,6 @@ public class Generator {
                         prevI = rhythm[i];
                         rhythm[i] = 1;
                         rhythm[index] = 0;
-                        System.out.println("i = " + i);
-                        System.out.println("index = " + index);
                     }
                     int synco2 = Tension.getSyncopation(rhythm, measures);
                     if(synco2 > synco)
@@ -223,8 +242,6 @@ public class Generator {
                     synco = Tension.getSyncopation(rhythm, measures);
                 }
             }
-            System.out.println("lower " + synco);
-            System.out.println(Arrays.toString(generateString(rhythm)));
         }
         while (synco < mySynco) {
             int i = (int) (Math.random() * NUM_SLOTS * measures);
@@ -243,8 +260,6 @@ public class Generator {
                         prevI = rhythm[i];
                         rhythm[index] = 1;
                         rhythm[i] = 0;
-                        System.out.println("i = " + i);
-                        System.out.println("index = " + index);
                     }
                     int synco2 = Tension.getSyncopation(rhythm, measures);
                     if(synco2 < synco)
@@ -255,8 +270,6 @@ public class Generator {
                     synco = Tension.getSyncopation(rhythm, measures);
                 }
             }
-            System.out.println("higher " + synco);
-            System.out.println(Arrays.toString(generateString(rhythm)));
         }
         return rhythm;
     }
