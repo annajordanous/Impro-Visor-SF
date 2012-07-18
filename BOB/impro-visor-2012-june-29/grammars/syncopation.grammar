@@ -18,6 +18,6 @@
 (parameter (use-grammar true))
 (base (P 0) () 1.0)
 (rule (P Y) (Seg16 (P (- Y 1920))) 1.0)
-(rule (Seg16) ((splice syncopation)) 1.0)
+(rule (Seg16) ((splice syncopation E)) 1.0)
 (startsymbol P)
-(terminals X2 X2. X4 X4. X8 X16 X4/3 X8/3 C2 C4 C4. C8 C16 C4/3 C8/3 A4 A8 A8/3 A16 C2 C4 C8 L4 L8 R4 R8 R16 S4 S8 S16 S8/3 S8/5 S16/5 slope)
+(terminals X2 X2. X4 X4. X8 X16 X4/3 X8/3 E1 E2 E4 E8 E16 C1 C2 C4 C4. C8 C16 C4/3 C8/3 A4 A8 A8/3 A16 L4 L8 R4 R8 R16 S4 S8 S16 S8/3 S8/5 S16/5 slope)
