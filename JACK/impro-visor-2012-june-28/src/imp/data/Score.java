@@ -584,25 +584,25 @@ static final String chordPartBase = "CP_";
         return keySig;
     }
     
-    public void setLength(int newLength)
-      {
-        if( newLength == length )
-            {
-            return;	// avoid unnecessary setting
-            }
-        Trace.log(3, "setting score length to " + newLength);
-        length = newLength;
-        if( getDefaultChordPart() != null )
-            {
-            getDefaultChordPart().setSize(length);
-            }
-
-//        Iterator<MelodyPartAccompanied> i = partList.listIterator();
-//        while( i.hasNext() )
+//    public void setLength(int newLength)
+//      {
+//        if( newLength == length )
 //            {
-//            i.next().setSize(length);
+//            return;	// avoid unnecessary setting
 //            }
-      }
+//        Trace.log(3, "setting score length to " + newLength);
+//        length = newLength;
+//        if( getDefaultChordPart() != null )
+//            {
+//            getDefaultChordPart().setSize(length);
+//            }
+//
+////        Iterator<MelodyPartAccompanied> i = partList.listIterator();
+////        while( i.hasNext() )
+////            {
+////            i.next().setSize(length);
+////            }
+//      }
     
     public int getLength()
       {
@@ -619,11 +619,9 @@ static final String chordPartBase = "CP_";
             sum += i.next().size();
             }
         return sum;
-        
-//      return length * partList.size();
       }
 
-
+// FIX: layoutList stuff needs to move into individual melodyParts and Staves
     public Polylist getLayoutList()
       {
       return layout;
@@ -674,10 +672,10 @@ static final String chordPartBase = "CP_";
      * @param chordProg         ChordPart to set as chordProg
      * 
      */
-    public void setChordProg(ChordPart chordProg) {
+    public void setChordPart(ChordPart chordPart) {
 //        setLength(chordProg.size());
 //        this.chordProg = chordProg;
-        setDefaultChordPart(chordProg);
+        setDefaultChordPart(chordPart);
     }
 
     /**
@@ -1276,7 +1274,7 @@ public void addChordPart(String name, ChordPart part)
         name = DEFAULT_PROGRESSION;
       }
     chordPartList.put(name, part);
-System.out.println("adding chord part " + part.getTitle() + " to score " + title + " under name " + name);
+//System.out.println("adding chord part " + part.getTitle() + " to score " + title + " under name " + name);
   }
 
 public void addDefaultChordPart(ChordPart part)

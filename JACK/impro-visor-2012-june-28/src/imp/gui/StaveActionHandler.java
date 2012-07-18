@@ -661,7 +661,7 @@ public void mouseClicked(MouseEvent e)
     if( selectedIndex != OUT_OF_BOUNDS )
      {
       stave.setSelection(selectedIndex);
-      addNote(e, stave.getChordProg().getCurrentChord(selectedIndex));
+      addNote(e, stave.getChordPart().getCurrentChord(selectedIndex));
       stave.repaint();
      }
    }
@@ -786,7 +786,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
     return addNote(x, y, play);
    }
 
-  ChordPart prog = stave.getChordProg();
+  ChordPart prog = stave.getChordPart();
 
   Polylist approachTones = new Polylist();
 
@@ -1181,7 +1181,7 @@ public void mousePressed(MouseEvent e)
         selectingGroup = false;
        }
 
-      ChordPart chordProg = stave.getChordProg();
+      ChordPart chordProg = stave.getChordPart();
       if( chordProg != null )
         {
         Chord chord = chordProg.getCurrentChord(selectedIndex);
@@ -1433,7 +1433,7 @@ public void mouseDragged(MouseEvent e)
          {
           // Adding note in drawing mode; don't play
 
-          addNote(e, stave.getChordProg().getCurrentChord(selectedIndex), false);
+          addNote(e, stave.getChordPart().getCurrentChord(selectedIndex), false);
          }
 
         if( firstIndexDrawn == OUT_OF_BOUNDS )
@@ -1855,7 +1855,7 @@ void redoAdvice(int selectedIndex)
      }
 
     Chord currentChord =
-      stave.getChordProg().getCurrentChord(selectedIndex);
+      stave.getChordPart().getCurrentChord(selectedIndex);
 
     if( currentChord == null || currentChord.getName().equals(NOCHORD) )
      {
@@ -1872,7 +1872,7 @@ void redoAdvice(int selectedIndex)
      }
 
     Chord currentNext =
-      stave.getChordProg().getNextUniqueChord(selectedIndex);
+      stave.getChordPart().getNextUniqueChord(selectedIndex);
 
     Note currentNote =
       stave.getMelodyPartAccompanied().getNote(selectedIndex);

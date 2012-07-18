@@ -1686,7 +1686,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         
         if (useAdvice)
         {              
-            ChordPart chordProg = currentStave.getChordProg();
+            ChordPart chordProg = currentStave.getChordPart();
             Chord currentChord = chordProg.getCurrentChord(selectedSlot);
             
             String chordName = currentChord.getName();
@@ -1809,7 +1809,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         int prevPitch = lastRealNote(selectedSlot);
         int prevPrevPitch = secondToLastRealNote(selectedSlot);
          
-        Chord chord = stave.getChordProg().getCurrentChord(prevSlot);
+        Chord chord = stave.getChordPart().getCurrentChord(prevSlot);
 
         // if we don't have two real notes to base our 
         // expectancies on, we won't bother.
@@ -1914,7 +1914,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
      */
     private boolean isBlue(int midiValue, int selectedSlot, Stave stave)
     {
-        ChordPart chords = stave.getChordProg();
+        ChordPart chords = stave.getChordPart();
         // Get the chord that was current when the last note was played
         Chord currentChord = chords.getCurrentChord(stave.getPreviousCstrLine(selectedSlot));
 
