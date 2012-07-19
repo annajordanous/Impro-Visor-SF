@@ -102,12 +102,6 @@ public MidiSynth(MidiManager midiManager)
     this(midiManager, DEFAULT_PPQ);
   }
 
-//public MidiSynth(MidiManager midiManager, PitchExtractor extractor) {
-//    this(midiManager, DEFAULT_PPQ);
-//    this.extractor = extractor;
-//}
-
-
 public MidiSynth(MidiManager midiManager, short ppqn)
   {
     this.midiManager = midiManager;
@@ -520,10 +514,10 @@ public void play(Score score,
         }
 
         // Here's where the playback actually starts:
-        playbackStartTime = System.currentTimeMillis();
 
         sequencer.start();
 
+        playbackStartTime = System.currentTimeMillis();
         System.out.println("Playback start = " + playbackStartTime);
 
         playing = true;
