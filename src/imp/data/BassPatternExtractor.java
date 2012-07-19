@@ -173,14 +173,14 @@ private void makeHalfStepArray()
  * terms of number of slots per beat Format for chord file ex: C / / / |/ / / /
  * |E7 / / / |
  */
-private void createChordInfo()
+  private void createChordInfo()
   {
       //modified for using chord extraction instead of leadsheet:
       String fileName = MIDIBeast.chordFileName;
       //use the extracted chords from MIDI, unless leadsheet is provided
       ChordPart c = MIDIBeast.extractedChordPart;
       //if leadsheet is provided, use it instead
-      if (!fileName.isEmpty()) {
+      if (MIDIBeast.useLeadsheet) {
           File chordFile = new File(MIDIBeast.chordFileName);
           Score s = new Score();
           (new OpenLeadsheetCommand(chordFile, s)).execute();
