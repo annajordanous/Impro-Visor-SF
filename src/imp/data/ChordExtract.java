@@ -110,20 +110,24 @@ public class ChordExtract implements Constants{
      * @return 
      */
     private Chord matchBitChordToChord(boolean[] bitChord, int transpose) {
-        for (int i = 0; i < lengthOfChordList; i++) {
-            //check simple pattern matching
-            if (Arrays.equals(bitChord, bitChordList[i])) {
-                String chordName = chordList[i];
-                Chord chord = new Chord(chordName);
-                //Chord chord = Chord.makeChord(symbol, duration);
-                chord.transpose(transpose);
-                return chord;
+
+        //check if the bitChord is 1>
+        if (checkChord(bitChord)) {
+            for (int i = 0; i < lengthOfChordList; i++) {
+                //check simple pattern matching
+                if (Arrays.equals(bitChord, bitChordList[i])) {
+                    String chordName = chordList[i];
+                    Chord chord = new Chord(chordName);
+                    //Chord chord = Chord.makeChord(symbol, duration);
+                    chord.transpose(transpose);
+                    return chord;
+                }
+                //System.out.println(NoteSymbol.showContents(bitChord));
+                //System.out.println(transpose);
             }
-            //System.out.println(NoteSymbol.showContents(bitChord));
-            //System.out.println(transpose);
         }
-        //check if the bitChord is empty
-        if (checkEmpty(bitChord)) {
+        if (!checkChord(bitChord)) {
+
             Chord noChord = new Chord("NC");
             return noChord;
         }
@@ -173,7 +177,8 @@ public class ChordExtract implements Constants{
             }
         }
         //things to add: inversions, duration?
-        return null;
+        Chord noChord = new Chord("NC");
+        return noChord;
     }
     
     /**
@@ -400,9 +405,9 @@ public class ChordExtract implements Constants{
         //normalize each melody part
         for(int j = 0; j < arrayMelodyParts.length; j++)
         {
-            arrayMelodyParts[j].normalize(EIGHTH);
+            //normalize(EIGHTH, arrayMelodyParts[j]);
         }
-        chords = arrayMelodyPartsToChordPart(arrayMelodyParts, QUARTER, EIGHTH);
+        chords = arrayMelodyPartsToChordPart(arrayMelodyParts, QUARTER);
         return chords;
     }
     
@@ -435,7 +440,7 @@ public class ChordExtract implements Constants{
      * @param noteResolution
      * @return 
      */
-    private ChordPart arrayMelodyPartsToChordPart(MelodyPart[] arrayMelodyParts, int chordResolution, int noteResolution) {
+    private ChordPart arrayMelodyPartsToChordPart(MelodyPart[] arrayMelodyParts, int chordResolution) {
 
 
         //find max length of arrayMelodyParts to avoid out of bounds error
@@ -521,7 +526,7 @@ public class ChordExtract implements Constants{
             * 
             */
             
-            if (root !=-1 && !checkEmpty(bitChord) && Arrays.equals(bitChord, prevBitChord))
+            if (root !=-1 && !checkChord(bitChord) && Arrays.equals(bitChord, prevBitChord))
             {
                 //do nothing
             }
@@ -542,7 +547,6 @@ public class ChordExtract implements Constants{
                         prevBitChord[j] = bitChord[j];
                     }
                 }
-                prevRoot = root;
                 bitChord[root] = true;
                 shiftedBitChord = shiftBitsLeft(bitChord, root);
                 Chord chord = matchBitChordToChord(shiftedBitChord, root);
@@ -555,5 +559,19 @@ public class ChordExtract implements Constants{
         }
         chordpart.fixDuplicateChords(chordpart, chordResolution);
         return chordpart;
+    }
+
+    private void normalize(int resolution, MelodyPart melodyPart) {
+        for (int i = 0; i < melodyPart.size; i = i + resolution) {
+            Note note = melodyPart.getNote(i);
+            if (note == null && i == 0) {
+                //do nothing
+            }
+            if (note == null) {
+                Note prevNote = melodyPart.getNote(i - resolution);
+                prevNote.setRhythmValue(resolution);
+                melodyPart.setNote(i, prevNote);
+            }
+        }
     }
 }
