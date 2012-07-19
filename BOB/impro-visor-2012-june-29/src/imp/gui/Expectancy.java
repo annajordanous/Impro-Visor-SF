@@ -50,7 +50,7 @@ public class Expectancy
     private static final int CHORD_STABILITY = 5;  // Stability of a chord tone
     private static final int COLOR_STABILITY = 4;  // Stability of a color tone
 //    private static final int SCALE_STABILITY = 3;  // Stability of a scale tone
-    private static final int OUTSIDE_STABILITY = 2;// Stability of an outside note
+    private static final int OUTSIDE_STABILITY = 1;// Stability of an outside note
     private static final int NOCHORD_STABILITY = 1;// Stability of an no chord note
     private static final double PROXIMITY_0 = 38;     // Proximity rating for a distance of 0
     private static final double PROXIMITY_1 = 36;     // Proximity rating for a distance of 1
