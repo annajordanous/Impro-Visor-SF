@@ -656,59 +656,37 @@ private void stopPlaying()
 //method which extracts the chords from the given midi file, must specify bass track, chord track, and/or melody track
 private void extractChords()
 {
+    
     //add cases for melody, bass, and chords
-    int startSlot = (Integer)startBeatSpinner.getValue();
-    
+    int startSlot = BEAT*((Integer)startBeatSpinner.getValue() - 1);
+    int endSlot;
+
     //sets the note resolution to 1/8
-    noteResolutionComboBox.setSelectedIndex(8);
-    reloadMenu();
-    startBeatSpinner.setValue(startSlot);
-    
-    //get size of the channel list
-    int size = trackListModel.size();
+    midiImport.setResolution(EIGHTH);
+    melodies = midiImport.getMelodies();
     
     //create two separate arrays for the bass MelodyParts and the chord MelodyParts
-    List<MelodyPart> bassMelodyParts = new ArrayList<MelodyPart>();
-    List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();
-    
-    //extract the corresponding bass and chord channels
-    int copyStartSlot = BEAT*(startSlot - 1);
-    int endSlot;
-    int copyEndSlot;
-    for (int i = 0; i < size; i++) {
-            Object ob = trackListModel.get(i);
-            if (ob instanceof MidiImportRecord) {
-                MidiImportRecord record = (MidiImportRecord) ob;
-                MelodyPart currentMelodyPart = record.getPart();
-                endSlot = (Integer)endBeatSpinner.getValue();
-                if (record.getChannel()==bassChannel && currentMelodyPart != null)
-                {
-                    while (endSlot - startSlot < 4)
-                    {
-                        endSlot=endSlot+1;
-                    }
-                    endBeatSpinner.setValue(endSlot);
-                    
-                    copyEndSlot = Math.min(currentMelodyPart.getSize() - 1,
-                            BEAT*(endSlot));
-                    currentMelodyPart = currentMelodyPart.copy(copyStartSlot, copyEndSlot);
-                    bassMelodyParts.add(currentMelodyPart);
-                }
-                if (record.getChannel()==chordChannel && currentMelodyPart != null)
-                {
-                    while (endSlot - startSlot < 4)
-                    {
-                        endSlot=endSlot+1;
-                    }
-                    endBeatSpinner.setValue(endSlot);
-                    
-                    copyEndSlot = Math.min(currentMelodyPart.getSize() - 1,
-                            BEAT*(endSlot));
-                    currentMelodyPart = currentMelodyPart.copy(copyStartSlot, copyEndSlot);
-                    chordMelodyParts.add(currentMelodyPart);
-                }
-            }
-    }
+          List<MelodyPart> bassMelodyParts = new ArrayList<MelodyPart>();
+          List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();
+          MelodyPart currentMelodyPart;
+          for (final MidiImportRecord record : melodies) {
+              currentMelodyPart = record.getPart();
+              endSlot = Math.min(currentMelodyPart.getSize() - 1, 
+                             BEAT*((Integer)endBeatSpinner.getValue()));
+              while (endSlot - startSlot < 4)
+              {
+                  endSlot++;
+              }
+              if (record.getChannel() == bassChannel && currentMelodyPart != null) {
+                  currentMelodyPart.copy(startSlot, endSlot);
+                  bassMelodyParts.add(currentMelodyPart);
+              }
+              if (record.getChannel() == chordChannel && currentMelodyPart != null) {
+                  currentMelodyPart.copy(startSlot, endSlot);
+                  chordMelodyParts.add(currentMelodyPart);
+              }
+          }
+
     
     //fix/improve: obtain the union of all the melodyparts in the bass channel
     
