@@ -36,7 +36,7 @@ import javax.sound.midi.Track;
 
 
 /**
- * An extension of the Part class that contains only Note (or, by extension, 
+ * An extension of the Part class that contains only Note (or, by extension,
  * Rest) objects.  This is useful to contain drawing functions that are
  * specific to Notes, such as ties and accidentals.
  * @see         Note
@@ -76,15 +76,15 @@ public class MelodyPart
           {0, 10, 12, 15, 20, 24, 30, 40, 60, 80, 120, 160, 240, 480};
 
   private boolean fudgeEnding = false;
-  
+
   /* Move to Constants.java
-  // 48 is a 5-tuple eigth note... 
+  // 48 is a 5-tuple eigth note...
   private static int[] knownNoteValue =
           {0, 10, 12, 15, 20, 24, 30, 40, 45, 48, 50, 60, 80, 90, 100, 120, 160, 180,
            240, 360, 480
   };
 */
-  
+
   /**
    * Volume to be explicitly given for one-time melodies, for
    * use with entered melodies.  "Playback" melodies will instead
@@ -105,7 +105,7 @@ public class MelodyPart
     this.volume = ImproVisor.getEntryVolume();
     }
 
-  /** 
+  /**
    * Creates a MelodyPart with the given size.
    * @param size      the number of slots in the MelodyPart
    */
@@ -145,7 +145,7 @@ public void addNote(Note note)
     // Ideally, if the note being added is a rest, and the last note is a rest,
     // the new rest should be merged in with the existing one. But my attempt
     // at this failed for some reason.
-    
+
     if( note.isRest() )
       {
       }
@@ -210,6 +210,31 @@ public void addNote(Note note)
     }
 
   /**
+   * Just like setNote(), but without the stopIndex check.
+   * @param slotIndex         the index of the slot to set at
+   * @param note              the note to put at the slot index
+   */
+  public void setNoteFromCapture(int slotIndex, Note note)
+    {
+    if( slotIndex < 0 )
+      {
+        slotIndex = 0;
+      }
+    if( note != null && note.nonRest() )
+      {
+      if( note.getPitch() < lowestPitch )
+        {
+        lowestPitch = note.getPitch();
+        }
+      else if( note.getPitch() > highestPitch )
+        {
+        highestPitch = note.getPitch();
+        }
+      }
+    setUnit(slotIndex, note);
+    }
+
+  /**
    *
    */
   public synchronized void setNoteAndLength(int slotIndex, Note note,
@@ -227,7 +252,7 @@ public void addNote(Note note)
       Part newMeasures = new Part(measuresToAdd * measureLength);
       (new InsertPartCommand(parent, this, size, newMeasures)).execute();
       }
-       
+
     // make room if needed by setting rests at the locations of notes that will be covered by the new note
     setRest(slotIndex);
     int freeSlots = getFreeSlots(slotIndex);
@@ -254,7 +279,7 @@ public void addNote(Note note)
       }
     }
 
-  
+
   /**
    * Sets the specified slot to the given rest
    * @param slotIndex         the index of the slot to set at
@@ -266,7 +291,7 @@ public void addNote(Note note)
     setUnit(slotIndex, rest);
     }
 
-  
+
   /**
    * sets a Rest at the given slot index
    * @param slotIndex         the index of the slot to set at
@@ -276,7 +301,7 @@ public void addNote(Note note)
     setRest(slotIndex, new Rest());
     }
 
-  
+
   /**
    * Returns the note at the given slot index
    * @param slotIndex         the index of the note to get
@@ -287,7 +312,7 @@ public void addNote(Note note)
     return (Note)getUnit(slotIndex);
     }
 
-  
+
   /**
    * Returns the Note after the indicated slot index.
    * @param slotIndex         the index to start searching at
@@ -298,7 +323,7 @@ public void addNote(Note note)
     return (Note)getNextUnit(slotIndex);
     }
 
-  
+
   /**
    * Returns the Note before the indicated slot index.
    * @param slotIndex         the index to start searching at
@@ -309,7 +334,7 @@ public void addNote(Note note)
     return (Note)getPrevUnit(slotIndex);
     }
 
-  
+
   /**
    * Gets the lowest pitch in the MelodyPart
    * @return int              lowest pitch
@@ -319,7 +344,7 @@ public void addNote(Note note)
     return lowestPitch;
     }
 
-  
+
   /**
    * Gets the highest pitch in the MelodyPart
    * @return int              highest pitch
@@ -329,7 +354,7 @@ public void addNote(Note note)
     return highestPitch;
     }
 
-  
+
   /**
    * Returns the number of slots from the index to the next Note.
    * @param index     the index to get the free slots
@@ -359,7 +384,7 @@ public void addNote(Note note)
     return size - index;
     }
 
-  
+
   public int getFreeSlotsFromEnd()
     {
     int slotIndex = getSize() - 1;
@@ -389,7 +414,7 @@ public void addNote(Note note)
     return restSlots;
     }
 
-  
+
   public synchronized void mergeFreeSlots(int index)
     {
     if( index < 0 )
@@ -431,7 +456,7 @@ public void addNote(Note note)
       }
     }
 
-  
+
   /**
    * Returns an exact copy of this Part
    * @return Part   copy
@@ -441,7 +466,7 @@ public void addNote(Note note)
     {
       return copy(0);
     }
-    
+
   /**
    * Returns an exact copy of this Part from startingIndex
    * @return Part   copy
@@ -451,30 +476,30 @@ public void addNote(Note note)
 {
   return copy(startingIndex, size-1);
 }
-  
+
 
 //      int newSize = size - startingIndex;
-//      
+//
 //      if( newSize <= 0 )
 //        {
 //          return new MelodyPart(0);
 //        }
 //
 //      int newUnitCount = 0;
-//      
+//
 //      try
 //      {
 //      MelodyPart newPart = new MelodyPart(newSize);
-// 
+//
 //       int i = startingIndex;
-//       
+//
 //       if( slots.get(startingIndex) == null )
 //         {
 //           // Find first non-null slot, and place a rest at
 //           // startingIndex.
-//           
+//
 //           int j = startingIndex + 1;
-//           
+//
 //           for( ; j < size; j++ )
 //             {
 //               if( slots.get(j) != null )
@@ -482,13 +507,13 @@ public void addNote(Note note)
 //                   break;
 //                 }
 //             }
-//           
+//
 //           newPart.slots.set(0, new Rest(j - startingIndex));
-// 
+//
 //           unitCount = 1;
 //           i = j;
 //         }
-//       
+//
 //       for( ; i < size; i++ )
 //        {
 //          Unit unit = slots.get(i);
@@ -514,43 +539,43 @@ public void addNote(Note note)
 //      }
 //    catch( Error e )
 //      {
-//        ErrorLog.log(ErrorLog.FATAL, 
+//        ErrorLog.log(ErrorLog.FATAL,
 //                     "Not enough memory to copy part of size " + newSize + ".");
 //        return null;
 //      }
 //    }
 //
-//  
-//  
+//
+//
   /**
    * Returns an exact copy of this Part from startingIndex to endingIndex
-   * @return 
+   * @return
    */
 
 public MelodyPart copy(int startingIndex, int endingIndex)
 {
       int newSize = endingIndex + 1 - startingIndex;
-      
+
       if( newSize <= 0 )
         {
           return new MelodyPart(0);
         }
 
       int newUnitCount = 0;
-      
+
       try
       {
       MelodyPart newPart = new MelodyPart(newSize);
-      //System.out.println("melodyPart with size " + newPart.getSize() + " start = " + startingIndex + ", end = " + endingIndex); 
+      //System.out.println("melodyPart with size " + newPart.getSize() + " start = " + startingIndex + ", end = " + endingIndex);
        int i = startingIndex;
-       
+
        if( slots.get(startingIndex) == null )
          {
            // Find first non-null slot, and place a rest at
            // startingIndex.
-           
+
            i++;
-           
+
            for( ; i <= endingIndex; i++ )
              {
                if( slots.get(i) != null )
@@ -558,13 +583,13 @@ public MelodyPart copy(int startingIndex, int endingIndex)
                    break;
                  }
              }
-           
+
            newPart.slots.set(0, new Rest(i - startingIndex));
- 
+
            unitCount = 1;
 
          }
-       
+
        for( ; i <= endingIndex && i < size ; i++ )
         {
           Unit unit = slots.get(i);
@@ -597,13 +622,13 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       }
     catch( Error e )
       {
-        ErrorLog.log(ErrorLog.FATAL, 
+        ErrorLog.log(ErrorLog.FATAL,
                      "Not enough memory to copy part of size " + newSize + ".");
         return null;
       }
     }
-  
-  
+
+
       public int getPitchSounding(int index) {
         //if there is a note struck at the index, return its pitch
         Note curr = this.getNote(index);
@@ -627,8 +652,8 @@ public MelodyPart copy(int startingIndex, int endingIndex)
         }
         return -1;
     }
-  
-  
+
+
   /**
    * Returns a reverse copy of this Part
    * @return Part   copy
@@ -673,7 +698,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       // For now, let's use it as an early exit.
       }
     }
- 
+
   /**
    * Changes Notes in the Part so ties are proper and the Part
    * can be drawn.
@@ -704,7 +729,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    @param note
    @param level
    */
-  
+
   public void tieThis(int slotIndex, Note note, int level)
     {
     if( note == null )
@@ -719,7 +744,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
     // Note: we need rest index even if it is a note, for the purpose of
     // non-tied exit.
-    
+
     int knownRestIndex = java.util.Arrays.binarySearch(knownRestValue, rhythmValue);
     int knownNoteIndex = java.util.Arrays.binarySearch(knownNoteValue, rhythmValue);
     int knownTupletIndex = java.util.Arrays.binarySearch(knownTupletValue, rhythmValue);
@@ -738,18 +763,18 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
     int firstNoteRV = -1;
     int secondNoteRV = -1;
-    
+
     if( slotIndex + rhythmValue <= nextMeasure  && (knownTupletIndex >= 0 ) )
       {
       return;
       }
-    
+
      // If the note starts on an off beat and crosses over the next beat, then
     // we want to cut off the note at the beat, and create a new note with the
     // residual value.
-    
+
     // What about notes such as tuplets? Not sure how it works then.
-    
+
     if( slotIndex % beatValue != 0 && slotIndex + rhythmValue > nextBeat )
       {
       firstNoteRV = nextBeat - slotIndex;
@@ -759,11 +784,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       //if(note.getPitch() != Note.REST)
       //    System.out.println("BEAT: " + firstNoteRV + " " + secondNoteRV);
       }
-    
+
     // If the note crosses a barline, then we cut the note off at the end of the
     // measure and create a new note with the residual duration.
     // Ok.
-    
+
     else if( slotIndex + rhythmValue > nextMeasure )
       {
       firstNoteRV = nextMeasure - slotIndex;
@@ -773,7 +798,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 //            if(note.getPitch() != Note.REST)
 //                System.out.println("MEASURE: " + firstNoteRV + " " + secondNoteRV);
       }
-    
+
     // If the note is longer than a beat, and the next note is not on a beat ...
     // Do we always want to do this? Why?
 
@@ -786,16 +811,16 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 //            if(note.getPitch() != Note.REST)
 //                System.out.println("Overlap: beat: " + beatValue + ", 1: " + firstNoteRV + ", 2: " + secondNoteRV + ", total: " + rhythmValue);
       }
-    
+
     // special case:  triplets:  value: 5/8 * BEAT
     // Why this case ??
-    
+
     else if( !note.isRest() && rhythmValue < beatValue )
       {
       if( knownRhythmIndex < 0 )
         {
         //System.out.println("Resolving note (" + rhythmValue + "), beatValue: " + beatValue);
-        
+
         knownRhythmIndex = -knownRhythmIndex - 2;
 
         // if it's less than a beat, try to split it evenly
@@ -815,8 +840,8 @@ public MelodyPart copy(int startingIndex, int endingIndex)
           }
         }
       }
-    
-    // for now, only apply the next bit of code to rests... 
+
+    // for now, only apply the next bit of code to rests...
     // If the note is not a known value, we need to split it into known
     // values
     else if( note.isRest() && (knownRhythmIndex =
@@ -863,17 +888,17 @@ public MelodyPart copy(int startingIndex, int endingIndex)
      * Notes smaller than a beatValue are split using the largest beatValue
      */
     // Choose one of two arrays:
-    
-    int[] knownRhythmValue = 
+
+    int[] knownRhythmValue =
             note.isRest() ? knownRestValue : knownNoteValue;
-    
-    // Get the duration of the note or rest; 
+
+    // Get the duration of the note or rest;
     // If if it is a note and too long, then we need to tie.
-    
+
 
 //        if(note.nonRest())
 //            System.out.println(rhythmValue);
-    
+
     if( firstNoteRV == -1 && (knownRhythmIndex =
             java.util.Arrays.binarySearch(knownRhythmValue, rhythmValue)) < 0 )
       {
@@ -881,7 +906,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       // not larger than the current RhythmValue:
       //  "-knownRhythmIndex - 1" is the first index with value greater than rhythmValue
       // so "-knownRhythmIndex - 2" is the first index with largest value not greater than rhythmValue
-      
+
       knownRhythmIndex = -knownRhythmIndex - 2;
 
 //            System.out.println("Note of value " + rhythmValue);
@@ -904,7 +929,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
         }
       else
         {
-        // Only continue with the split if it doesn't lead to an extremely small note (the remainder has to be at least as large 
+        // Only continue with the split if it doesn't lead to an extremely small note (the remainder has to be at least as large
         // as the first known note
         if( knownRhythmIndex > 0 && remainder >= knownRhythmValue[1] )
           {
@@ -1025,44 +1050,44 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    * @param seq     the Sequence to add a Track to
    * @param ch      the channel to put the Track on
    */
-  public long render(MidiSequence seq, 
-                     int ch, 
+  public long render(MidiSequence seq,
+                     int ch,
                      long time,
                      Track track,
-                     int transposition, 
+                     int transposition,
                      int endLimitIndex)
           throws InvalidMidiDataException
     {
-      
+
     boolean sendBankSelect = Preferences.getMidiSendBankSelect();
     // to trace sequencing:
     //System.out.println("Sequencing MelodyPart on track " + track + " time = " + time + " endLimitIndex = " + endLimitIndex);
-      
+
     PartIterator i = iterator();
 
     // Note that you can't have two instruments playing on the same
     // channel at the same time.  So we can never have more than 16
     // instruments playing at once, and we should add code somewhere
     // to make sure instruments are sorted to the right channels
-    
-    // Select Bank 0 before program change. 
+
+    // Select Bank 0 before program change.
     // Not sure this is correct. Check before releasing
     // both here and in Style.java
-    
+
     // set program change. Do we need this for every call?
-    
+
     track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
     if( sendBankSelect )
-      { 
+      {
       track.add(MidiSynth.createBankSelectEventMSB(0, time));
       track.add(MidiSynth.createBankSelectEventLSB(0, time));
       }
-    
+
     // the absolute time is advanced and returned by the next render
     // function
 
-    endLimitIndex *= magicFactor; 
+    endLimitIndex *= magicFactor;
 
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
@@ -1072,11 +1097,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
     return time;
     }
-  
+
 
   /**
    * Returns an ArrayList of Accidentals corresponding to all possible pitches.
-   * The weird thing about this is that we only end up marking the 
+   * The weird thing about this is that we only end up marking the
    * accidental independent pitches: C1, D1, E1, G4, A4, etc.
    * This is to make an easy mapping between the pitches as they are
    * stored for playback and elements of this Vector.
@@ -1084,13 +1109,13 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    */
   public ArrayList<Accidental> getKeySigVector()
     {
-    ArrayList<Accidental> keySigVector = new ArrayList<Accidental>(TOTALPITCHES); 
-    
+    ArrayList<Accidental> keySigVector = new ArrayList<Accidental>(TOTALPITCHES);
+
      for( int i = 0; i < TOTALPITCHES; i++ )
       {
         keySigVector.add(Accidental.NOTHING);
-      }    
-     
+      }
+
     switch( keySig )
       {
       case CBMAJOR:
@@ -1324,18 +1349,18 @@ public MelodyPart copy(int startingIndex, int endingIndex)
    * Sets whether in extracting a melodypart, the ending should be truncated
    * if necessary
    * @param b   boolean whether or not to truncate the endings
-   */ 
+   */
   public void truncateEndings(boolean b) {
       fudgeEnding = b;
   }
-  
+
   /**
    * Returns a MelodyPart that contains the Units within the slot range specified.
    * @param first     the first slot in the range
    * @param last      the last slot in the range
    * @return MelodyPart     the MelodyPart that contains the extracted chunk
    */
-  
+
   @Override
   public MelodyPart extract(int first, int last)
     {
@@ -1369,11 +1394,11 @@ public MelodyPart copy(int startingIndex, int endingIndex)
         lastUnitIndex = i;
         }
       }
-    
+
     if(fudgeEnding) {
         // Truncate the last Unit, if necessary.
         Unit lastUnit = newPart.getPrevUnit(newPart.getSize());
-        
+
         if( lastUnit != null && lastUnitIndex + lastUnit.getRhythmValue() > last)
         {
             int oldRhythmValue = lastUnit.getRhythmValue();
@@ -1383,7 +1408,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
             newPart.setSize(newPart.size() - amountTruncated);
         }
     }
-     
+
 
     return newPart;
     }
@@ -1530,23 +1555,23 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       }
     return newPart;
     }
- 
+
  /**
   * returns the last note in the melodypart that is not a rest
   */
  public Note getLastNote() {
      int tracker = this.getPrevIndex(size);
- 
+
      Note n = this.getNote(tracker);
-     
+
      while(n.isRest()) {
          tracker = this.getPrevIndex(tracker);
          n = this.getNote(tracker);
      }
-     
+
      return n;
  }
- 
+
 
      /**
      * The only current use is in LickgenFrame.
@@ -1564,9 +1589,9 @@ public MelodyPart copy(int startingIndex, int endingIndex)
         }
         //if there is a note at the start, it's not empty
         n = this.getNote(selectionStart);
-        if(n != null && (!n.isRest()) ) 
+        if(n != null && (!n.isRest()) )
             return false;
-        
+
         //now check for notes in the rest
         tracker = this.getNextIndex(selectionStart);
         while(tracker < selectionStart + numSlots) {
@@ -1578,7 +1603,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
         return true;
     }
- 
+
 public int getInitialBeatsRest()
   {
   int count = 0;
@@ -1592,16 +1617,16 @@ public int getInitialBeatsRest()
     }
    return count/BEAT;
    }
-     
+
  @Override
  public String toString()
   {
   StringBuilder buffer = new StringBuilder();
-  
+
   int n = slots.size();
-  
+
   int currentVolume = 127;
-  
+
   for( int i = 0; i < n; i++ )
     {
     Note note = (Note)slots.get(i);
@@ -1621,7 +1646,7 @@ public int getInitialBeatsRest()
     }
   return buffer.toString ();
   }
- 
+
  //Unfinished
 //public void insertPartAt(int start, int finish, MelodyPart insert)
 //  {
@@ -1631,8 +1656,8 @@ public int getInitialBeatsRest()
 //        slots.set(i, insert.getUnit(j));
 //      }
 //  }
- 
- 
+
+
 /**
  * getSyncVector gets an array of 1's and 0's from a MelodyPart
  * representing note onsets, for the purpose of a synchronization
@@ -1641,9 +1666,9 @@ public int getInitialBeatsRest()
  * a 1 is returned in that position. Otherwise a 0 is returned.
  * For this purpose, rests are not considered to be notes.
  * For example, slotSpacing might be 15.
- * @return 
+ * @return
  */
- 
+
 public int[] getSyncVector(int slotSpacing, int maxSize)
   {
     int n = Math.min(size(), maxSize);
@@ -1653,6 +1678,6 @@ public int[] getSyncVector(int slotSpacing, int maxSize)
         Note note = (Note)slots.get(i);
         result[j] = note != null && note.nonRest() ? 1 : 0;
       }
-    return result; 
+    return result;
   }
 }
