@@ -24,7 +24,7 @@ public class Generator {
     private static int MOD = 8;
     private static int NUM_QUARTERS = 4;
     private static int NUM_SLOTS2 = 120;
-    private static double HIGHTEST_NOTE_PROBABILITY = .75;
+    private static double HIGHTEST_NOTE_PROBABILITY = .95;
     private static double APPROACH_PROBABILITY = .5;
     private static int THIRTY_SECOND = 1;
     private static String THIRTY_SECOND_NOTE = "32";
@@ -213,6 +213,7 @@ public class Generator {
      */
     public static int[] generateSyncopation(int measures, int mySynco) {
         int[] rhythm = generateRhythm(measures);
+        System.out.println(Arrays.toString(generateString(rhythm, "E")));
         int synco = Tension.getSyncopation(rhythm, measures);
         while (synco > mySynco && synco > 2)
         {
@@ -232,6 +233,10 @@ public class Generator {
                         prevI = rhythm[i];
                         rhythm[i] = 1;
                         rhythm[index] = 0;
+                        if(index >= 2 && i <= rhythm.length - 3 && (rhythm[index - SIXTEENTH] == 1 || rhythm[index + SIXTEENTH] == 1))
+                        {
+                            rhythm[index] = 1;
+                        }
                     }
                     int synco2 = Tension.getSyncopation(rhythm, measures);
                     if(synco2 > synco)
@@ -249,7 +254,7 @@ public class Generator {
             {
                 int index = i;
                 int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
-                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < SIXTEENTH_WEIGHT) {
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < EIGHTH_WEIGHT) {
                     while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
                         i++;
                     }
@@ -260,6 +265,10 @@ public class Generator {
                         prevI = rhythm[i];
                         rhythm[index] = 1;
                         rhythm[i] = 0;
+                        if(i >= 2 && i <= rhythm.length - 3 && (rhythm[i - SIXTEENTH] == 1 || rhythm[i + SIXTEENTH] == 1))
+                        {
+                            rhythm[i] = 1;
+                        }
                     }
                     int synco2 = Tension.getSyncopation(rhythm, measures);
                     if(synco2 < synco)
@@ -280,13 +289,14 @@ public class Generator {
      * @param measures
      * @return
      */
-    public static int[] generateRhythm(int measures) {
+    public static int[] generateRhythm(int measures) 
+    {
         int[] rhythm = new int[measures * NUM_SLOTS];
         int prevIndex = 0;
         for (int i = 0; i < rhythm.length; i++) {
             int invMetHier = (WEIGHTS[i % NUM_SLOTS] * -1) + 1;
             double weight = 0;
-            if (invMetHier != 6) 
+            if (invMetHier <= SIXTEENTH_WEIGHT + 1) 
             {
                 weight = (double) 1 / invMetHier;
             }
@@ -296,9 +306,10 @@ public class Generator {
             }
             if(invMetHier < SIXTEENTH_WEIGHT + 1 && prevIndex == i - SIXTEENTH)
             {
-                    weight = 1;
+                    weight = 2;
             }
             double random = Math.random();
+            System.out.println("random: " + random);
             if (random <= (weight * HIGHTEST_NOTE_PROBABILITY)) 
             {
                 rhythm[i] = 1;
@@ -310,4 +321,19 @@ public class Generator {
         System.out.println("Rhythm: " + Arrays.toString(generateString(rhythm, "E")));
         return rhythm;
     }
+    
+//    public static int[] rArray = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//    
+//    public static int[] generateBoringRhythm(int measures)
+//    {
+//        int totalLength = rArray.length * measures;
+//        int[] rhythmArray = Arrays.copyOf(rArray, totalLength);
+//        int offset = rArray.length;
+//        for(int i = measures; i > 1; i --)
+//        {
+//            System.arraycopy(rArray, 0, rhythmArray, offset, rArray.length);
+//            offset += rArray.length;
+//        }
+//        return rhythmArray;
+//    }
 }
