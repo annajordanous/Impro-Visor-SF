@@ -731,6 +731,7 @@ private void extractChords()
 @Override
 public void dispose()
   {
+    stopPlaying();
     notate.closeMidiImportFrame();
     WindowRegistry.unregisterWindow(this);
     super.dispose();

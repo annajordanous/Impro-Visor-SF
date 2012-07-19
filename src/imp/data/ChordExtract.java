@@ -37,6 +37,7 @@ public class ChordExtract implements Constants{
     private int[] bass;
     private boolean[][] bitChords;
     private final static int FIFTH = 7;
+    private final static String[] notes = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 
     
     // add support for other resolutions, possibly by "building up" from the smallest resolution
@@ -109,11 +110,6 @@ public class ChordExtract implements Constants{
      * @return 
      */
     private Chord matchBitChordToChord(boolean[] bitChord, int transpose) {
-        //check if the bitChord is empty
-        if (checkEmpty(bitChord)) {
-            Chord noChord = new Chord("NC");
-            return noChord;
-        }
         for (int i = 0; i < lengthOfChordList; i++) {
             //check simple pattern matching
             if (Arrays.equals(bitChord, bitChordList[i])) {
@@ -126,19 +122,54 @@ public class ChordExtract implements Constants{
             //System.out.println(NoteSymbol.showContents(bitChord));
             //System.out.println(transpose);
         }
-        //check if missing fifth
-        if (bitChord[FIFTH] == false) {
-            bitChord[FIFTH] = true;
-            for (int i = 0; i < lengthOfChordList; i++) {
-                if (Arrays.equals(bitChord, bitChordList[i])) {
-                    String chordName = chordList[i];
-                    Chord chord = new Chord(chordName);
-                    //Chord chord = Chord.makeChord(symbol, duration);
-                    chord.transpose(transpose);
-                    return chord;
+        //check if the bitChord is empty
+        if (checkEmpty(bitChord)) {
+            Chord noChord = new Chord("NC");
+            return noChord;
+        }
+        else
+        {
+            int root = transpose;
+            int totalShift = 0;
+            int numNotes = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                if (bitChord[i]==true)
+                {
+                    numNotes = numNotes+1;
                 }
-                //System.out.println(NoteSymbol.showContents(bitChord));
-                //System.out.println(transpose);
+            }
+            int count = numNotes - 1;
+            while (count != 0) {
+            int shift = 0;
+            //get next
+                for (int i = 1; i < 12; i++)
+                {
+                    if (bitChord[i]==true)
+                    {
+                        shift = i;
+                        break;
+                    }
+                }
+                totalShift = shift + totalShift;
+                //shift to next
+                shiftBitsLeft(bitChord, shift);
+                //match chords
+                    for (int j = 0; j < lengthOfChordList; j++) {
+                        //check simple pattern matching
+                        if (Arrays.equals(bitChord, bitChordList[j])) {
+                            String chordName = chordList[j];
+                            //keeps track of which note is bass
+                            //find bass location
+                            Chord chord = new Chord(chordName);
+                            chord.transpose((transpose+totalShift)%12);
+                            String name = chord.getName();
+                            name = name + "/" + notes[root];
+                            chord.setName(name);
+                            return chord;
+                        }
+                    }
+                count = count - 1;
             }
         }
         //things to add: inversions, duration?
@@ -257,6 +288,7 @@ public class ChordExtract implements Constants{
      */
         private void normalizeComp (boolean[][] bitChords, int[] bass)
     {
+        //improve it a lot!
         //normalizeComp deals with any offbeat comping, in this order:
         // quarter note after beat, eighth note after beat, eighth note before beat
         
@@ -300,12 +332,39 @@ public class ChordExtract implements Constants{
                     }
                 }
             }
+            
+            //bass
+            if(bass[beat]==-1)
+            {
+                //check forward movement of very first beat
+                if(beat==0 && beat+eighth<length && bass[beat+eighth]!=-1)
+                {
+                    bass[beat] = bass[beat + eighth];
+                    //bass[beat + eighth] = -1;
+                }
+                //check if forward movement
+                else if(beat+eighth < length && bass[beat+eighth]!=-1)
+                {
+                    bass[beat] = bass[beat + eighth];
+                    //bass[beat+eighth] = -1;
+                }
+                //check harmonic anticipation
+                else if(beat>1 && bass[beat-eighth]!=-1)
+                {
+                    if(bass[beat-eighth]==bass[beat-quarter])
+                    {
+                        bass[beat] = bass[beat-eighth];
+                        //bass[beat-eighth] = -1;
+                    }
+                }
+            }
         }
+        //quickfix
         
         for(int i = 0; i < length; i = i + quarter)
         {
             beat = i;
-            if(!checkChord(bitChords[beat]) && bass[beat]!=-1)
+            if(beat%4==0 && !checkChord(bitChords[beat]) && bass[beat]!=-1)
             {
                 if(beat==0 && beat+quarter<length && checkChord(bitChords[beat+quarter]))
                 {
@@ -324,10 +383,6 @@ public class ChordExtract implements Constants{
     public ChordPart importChords(MelodyPart[] bassMelodyParts, MelodyPart[] chordMelodyParts)
     {
         ChordPart chords = null;
-        if(bassMelodyParts.equals(null)||chordMelodyParts.equals(null))
-        {
-            return chords;
-        }
         //combine basslines
         getBassline(bassMelodyParts);
         
@@ -404,11 +459,9 @@ public class ChordExtract implements Constants{
                 if (j == 0) {
                     Note note = arrayMelodyParts[j].getNote(i);
                     int bassAddress = noteToBitAddress(note);
-                    if (bassAddress != -1) {
                     bass[chordCount] = bassAddress;
                     //System.out.println("Bass at " + i);
                     //System.out.println("Note is " + bassAddress);
-                    }
                 }
                 //accompaniment MelodyParts:
                 else {

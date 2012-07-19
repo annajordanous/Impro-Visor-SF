@@ -135,7 +135,7 @@ public void init() throws Exception
       //use the extracted chords from MIDI, unless leadsheet is provided
       ChordPart c = MIDIBeast.extractedChordPart;
       //if leadsheet is provided, use it instead
-      if (!fileName.isEmpty()) {
+      if (MIDIBeast.useLeadsheet) {
           File chordFile = new File(MIDIBeast.chordFileName);
           Score s = new Score();
           (new OpenLeadsheetCommand(chordFile, s)).execute();

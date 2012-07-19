@@ -208,11 +208,7 @@ public class StyleEditor
   
   StyleMixer styleMixer = null;
   
-  // channel numbers for chord extraction
-  
-  private int bassChannel = 0;
-  private int chordChannel = 0;
-  
+
   
   public StyleEditor(Notate notate, File styleFile)
       {
@@ -2689,7 +2685,7 @@ void playBassColumn(int colIndex)
         }
         
         //if useLeadsheet is unchecked, use chord extraction given the bass/chord channels
-      MIDIBeast.initialize(midiFile, chordFile, bassChannel, chordChannel);
+      MIDIBeast.initialize(midiFile, chordFile);
 
       int minDuration = getMinDuration();
  
@@ -2849,10 +2845,6 @@ void playBassColumn(int colIndex)
         chordTonesCheckBox = new javax.swing.JCheckBox();
         extractButton = new javax.swing.JButton();
         useLeadsheetCheckBox = new javax.swing.JCheckBox();
-        bassChannelNumber = new javax.swing.JLabel();
-        bassChannelNumberComboBox = new javax.swing.JComboBox();
-        chordChannelNumberComboBox = new javax.swing.JComboBox();
-        chordChannelNumber = new javax.swing.JLabel();
         globalAttrPanel = new javax.swing.JPanel();
         bassAttrPanel = new javax.swing.JPanel();
         bassHighLabel = new javax.swing.JLabel();
@@ -3332,41 +3324,6 @@ void playBassColumn(int colIndex)
         gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 2;
         importInstrumentsPanel.add(useLeadsheetCheckBox, gridBagConstraints);
-
-        bassChannelNumber.setText("Bass Channel #");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        importInstrumentsPanel.add(bassChannelNumber, gridBagConstraints);
-
-        bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
-        bassChannelNumberComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bassChannelNumberComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        importInstrumentsPanel.add(bassChannelNumberComboBox, gridBagConstraints);
-
-        chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" }));
-        chordChannelNumberComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordChannelNumberComboBoxActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        importInstrumentsPanel.add(chordChannelNumberComboBox, gridBagConstraints);
-
-        chordChannelNumber.setText("Chord Channel #");
-        chordChannelNumber.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        importInstrumentsPanel.add(chordChannelNumber, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -6251,14 +6208,6 @@ private void openStyleMixer()
         MIDIBeast.useLeadsheet = useLeadsheetCheckBox.isSelected();
     }//GEN-LAST:event_useLeadsheetCheckBoxActionPerformed
 
-    private void chordChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordChannelNumberComboBoxActionPerformed
-        chordChannel = chordChannelNumberComboBox.getSelectedIndex();
-    }//GEN-LAST:event_chordChannelNumberComboBoxActionPerformed
-
-    private void bassChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassChannelNumberComboBoxActionPerformed
-        bassChannel = bassChannelNumberComboBox.getSelectedIndex();
-    }//GEN-LAST:event_bassChannelNumberComboBoxActionPerformed
-
 private void usePianoRoll()
 {
   int selectedColumns[] = columnModel.getSelectedColumns();
@@ -6302,8 +6251,6 @@ public void unusePianoRoll()
     private javax.swing.JLabel bassBaseLabel;
     private javax.swing.JComboBox bassBaseNote;
     private javax.swing.JSpinner bassBaseOctave;
-    private javax.swing.JLabel bassChannelNumber;
-    private javax.swing.JComboBox bassChannelNumberComboBox;
     private javax.swing.JLabel bassHighLabel;
     private javax.swing.JComboBox bassHighNote;
     private javax.swing.JSpinner bassHighOctave;
@@ -6324,8 +6271,6 @@ public void unusePianoRoll()
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JPanel cellsPanel;
     private javax.swing.JPanel chordAttrPanel;
-    private javax.swing.JLabel chordChannelNumber;
-    private javax.swing.JComboBox chordChannelNumberComboBox;
     private javax.swing.JLabel chordHighLabel;
     private javax.swing.JComboBox chordHighNote;
     private javax.swing.JSpinner chordHighOctave;
