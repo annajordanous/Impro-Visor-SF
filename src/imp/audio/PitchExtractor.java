@@ -43,10 +43,12 @@ public class PitchExtractor
     int captureInterval;
     int startingPosition = 0;
     int positionOffset;
+    List<Integer> oneSlot = new ArrayList<Integer>();
     int slotsFilled; //# of slots filled before pitch change is detected
     int lastPitch = 0; //initialize most recent pitch to a rest
     int analysesCompleted; //# of analyses completed thus far.
     //if capture has trouble finishing the first capture, increase this value.
+    private final double OFFSET_ADJUSTMENT = 1.75;
     private final int FIRST_CAPTURE_TRUNCATION = 0;
     private final float SAMPLE_RATE = 44100.0F; //in Hertz
     private final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
@@ -172,13 +174,12 @@ public class PitchExtractor
         float tempo = (float) (score.getMetre()[0] * 60000.0 / score.getTempo());
         int slotSize = RESOLUTION; //smallest subdivision allowed
         if (TRIPLETS)
-        { //adjust minimum slot size if triplets are allowed
+        { //adjust # of subdivisions if triplets are allowed
             slotSize *= 3;
         }
         boolean firstSlot = true;
         int lastSlotNumber = 1;
         int currentSlotNumber;
-        List<Integer> oneSlot = new ArrayList<Integer>();
         int duration = 0;
         while (index + FRAME_SIZE < streamInput.length)
         {
@@ -219,7 +220,7 @@ public class PitchExtractor
             //System.out.println("Time elapsed = " + timeElapsed);
             currentSlotNumber = resolveSlot(timeElapsed,
                     tempo / slotSize, slotSize) + 1;
-            System.out.println(timeElapsed + ": Slot = " + currentSlotNumber);
+            //System.out.println(timeElapsed + ": Slot = " + currentSlotNumber);
             int slotPitch = 0;
             //check to see if pitch is valid
             if (fundamentalFrequency > 40.0)
@@ -231,7 +232,7 @@ public class PitchExtractor
             //check to see if this window is part of the current slot
             if (currentSlotNumber != lastSlotNumber)
             {
-                //System.out.println("Slot = " + lastSlotNumber);
+                System.out.println("Slot = " + lastSlotNumber);
                 int pitch = calculatePitch(oneSlot);
                 //check to see whether or not pitch has changed from that
                 //which fills the previous slot
@@ -273,6 +274,15 @@ public class PitchExtractor
             {
                 oneSlot.add(slotPitch);
                 System.out.println("Slot = " + currentSlotNumber);
+                //Determine whether the first slot in the next capture is part
+                //of the same note
+                double nextTime = timeElapsed +
+                        ((interval + tenMSOffset) / interval * POLL_RATE);
+                if (currentSlotNumber == resolveSlot(nextTime,
+                    tempo / slotSize, slotSize) + 1)
+                {
+                    //return;
+                }
                 int pitch = calculatePitch(oneSlot);
                 if (pitch == lastPitch)
                 { //if the last pitch in the capture interval is a continuation
@@ -307,6 +317,7 @@ public class PitchExtractor
                                 melodyPart);
                         incrementStartingPosition(duration);
                         System.out.println("Mode = " + notate.getMode());
+                        oneSlot.clear();
                     } else
                     { //otherwise, remember this pitch and reset slots filled.
                         lastPitch = pitch;
@@ -472,7 +483,8 @@ public class PitchExtractor
             noteOff = true;
         }
         //if the pitch has at least 5 windows and no pitch
-        if (pitches.length > 4 && maxO < 3 && numZeros >= pitches.length * 0.75)
+        if ((pitches.length > 4) && ((maxO < 3 && numZeros >= pitches.length
+                * 0.75) || (maxO < 3 && pitches[maxLoc] < 40)))
         {
             return 0;
         } else if (secondPlaceO > 0)
@@ -733,10 +745,9 @@ public class PitchExtractor
         double d = y0;
 
         // Take derivative
-        double da, db, dc;
-        da = 3 * a;
-        db = 2 * b;
-        dc = c;
+        double da = 3 * a;
+        double db = 2 * b;
+        double dc = c;
 
         // Find zeroes of derivative using quadratic equation
         double discriminant = db * db - 4 * da * dc;
@@ -789,9 +800,8 @@ public class PitchExtractor
         public void run()
         {
             //number of samples to capture before putting data in the queue
-            double samplesToCapture = (SAMPLE_RATE
-                    / (score.getTempo() / score.getMetre()[0] / 60.0))
-                    * captureInterval / 480;
+            double samplesToCapture = (SAMPLE_RATE / (score.getTempo()
+                    / score.getMetre()[0] / 60.0)) * captureInterval / 480;
             try
             {//Loop until stopCapture is set.
                 while (!stopCapture)
@@ -828,8 +838,8 @@ public class PitchExtractor
                         }
                         if (n >= limit - 2)
                         {
-                            System.out.println("Frame " + n + " finished at time "
-                                    + System.currentTimeMillis());
+                            System.out.println("Finished capturing frame " + n
+                                    + "at time " + System.currentTimeMillis());
                         }
                     }
                     System.out.println("Audio capture interval finished.");
@@ -844,7 +854,7 @@ public class PitchExtractor
                         }
                         positionOffset = (int) Math.ceil((difference / 1000.)
                                 * SAMPLE_RATE * 2.);
-                        positionOffset *= 1.75;
+                        //positionOffset *= OFFSET_ADJUSTMENT;
                         System.out.println("positionOffset = " + positionOffset);
                     }
                     if (outputStream.size() > 0)
@@ -863,7 +873,7 @@ public class PitchExtractor
                                 processingQueue.notify();
                             } catch (Exception e)
                             {
-                                System.out.println("Processing queue error: \n" + e);
+                                System.out.println("Processing queue error:\n" + e);
                             }
                         }
                         isCapturing = false;
