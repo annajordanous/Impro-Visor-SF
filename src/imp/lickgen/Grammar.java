@@ -201,6 +201,49 @@ public Polylist addStart(int numSlots)
   return null;
   }
 
+public static boolean isScaleDegree(Object ob)
+  {
+    if( !(ob instanceof Polylist ) )
+      {
+        return false;
+      }
+    
+    Polylist oblist = (Polylist)ob;
+    
+    if( oblist.length() != 3 )
+      {
+        return false;
+      }
+    
+    Object first = oblist.first();
+    
+    if( !(first instanceof String) )
+      {
+        return false;
+      }
+       
+    if( !("X".equals((String)first)) )
+      {
+        return false;
+      }
+    
+    Object second = oblist.second();
+    
+    if( !(second instanceof Long || second instanceof String ) )
+      {
+        return false;
+      }
+    
+    Object third = oblist.third();
+ 
+    if( !(third instanceof Long || third instanceof String ) )
+      {
+        return false;
+      }
+    return true;
+  }
+
+
 // Take the first character off the string, and apply the given rules to it.
 // Any lower case values are treated as terminals and outputted.
 
@@ -231,10 +274,11 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
         {
         //System.out.println("pop = " + pop);
         
-        while( (pop.first() instanceof String &&
-                terminals.contains((String)(pop.first()))) )
+        while( isScaleDegree(pop)
+            || ( pop.first() instanceof String 
+              && terminals.contains((String)(pop.first()))) )
           {
-          if( pop.first().equals("slope") )
+          if( isScaleDegree(pop) || pop.first().equals("slope"))
             {
             terminalString = terminalString.cons(pop); // use whole expression
            }
@@ -324,11 +368,13 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           {
           Object symbol = next.second();
           Polylist derivation = (Polylist)next.third();
+          
+          //System.out.println(" derivation before evaluation  " + derivation);
 
           // The first symbol can never be a variable, it will give the "name" of the
           // rule.  All additional symbols will contain information.
 
-          if( pop.first() instanceof String )
+          if( pop.first() instanceof String || isScaleDegree(pop.first()) )
             {
 
             if( ((String)(pop.first())).equals(((Polylist)symbol).first()) )
@@ -336,12 +382,12 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
               // Fill in variables with their given numeric values.
               derivation = setVars((Polylist)pop, (Polylist)symbol, derivation);
 
-              //System.out.print("evaluating " + derivation);
+              //System.out.println(" derivation after setVars " + derivation);
               
               // Evaluate any expressions that need to be evaluated.
               derivation = (Polylist)evaluate(derivation);
               
-              //System.out.println(" to  " + derivation);
+              //System.out.println(" derivation after evaluation " + derivation);
 
               // Check for negative arguments in RHS,
               // In which case don't use RHS

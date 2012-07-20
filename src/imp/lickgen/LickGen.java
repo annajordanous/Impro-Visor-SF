@@ -999,7 +999,30 @@ public boolean goesOutOfBounds(MelodyPart lick)
       }
   }
 
- 
+public static boolean isPolylistStartingWith(String keyword, Object ob)
+  {
+    if( !(ob instanceof Polylist) )
+      {
+        return false;
+      }
+    
+    Polylist oblist = (Polylist)ob;
+    
+    if( oblist.isEmpty() )
+      {
+        return false;
+      }
+    
+    Object first = oblist.first();
+    
+    if( !(first instanceof String) )
+      {
+        return false;
+      }
+    
+    return keyword.equals((String)first);
+  }
+
 public MelodyPart fillMelody(int minPitch, 
                              int maxPitch, 
                              int minInterval,
@@ -1015,6 +1038,7 @@ public MelodyPart fillMelody(int minPitch,
     //to keep oldPitch
 
     //System.out.println("Oldpitch:" + oldPitch);
+    //System.out.println("rhythmString = " + rhythmString);
 
     if( !useOutlines )
       {
@@ -1028,6 +1052,7 @@ public MelodyPart fillMelody(int minPitch,
     for( Polylist L = rhythmString; L.nonEmpty(); L = L.rest() )
       {
         Polylist first;
+        //System.out.println("L = " + L);
         if( L.first() instanceof Polylist )
           {
             first = (Polylist) L.first();
@@ -1040,7 +1065,8 @@ public MelodyPart fillMelody(int minPitch,
           }
         if( L.length() == 1 )
           {
-            if( first.toString().startsWith("(slope") )
+            if( isPolylistStartingWith("slope", first) || isPolylistStartingWith("X", first) )
+            //if( first.toString().startsWith("(slope") )
               {
                 section = section.addToEnd(first);
               }
@@ -1068,7 +1094,8 @@ public MelodyPart fillMelody(int minPitch,
               }
             else
               {
-                if( first.toString().startsWith("(slope") )
+                if( isPolylistStartingWith("slope", first) || isPolylistStartingWith("X", first) )
+                //if( first.toString().startsWith("(slope") )
                   {
                     section = section.addToEnd(first);
                   }
@@ -1079,6 +1106,8 @@ public MelodyPart fillMelody(int minPitch,
               }
           }
       }
+    
+//System.out.println("newRhythmString = " + newRhythmString);
 
     try  // I have seen this fail once, hence the try/catch. RK
       // However, someone needs to follow up on what happens if this
@@ -1351,9 +1380,26 @@ public boolean fillMelody(MelodyPart lick,
         // Recalculate probabilities to reuse a given pitch
         recalcPitchArray();
 
-        // New code 10 June 2008:
+     //System.out.println("item = " + item);
 
-        if( item instanceof Polylist )
+        if( Grammar.isScaleDegree(item) )
+           {
+                    // first is of the form (X degree duration)
+           int rootOffset = 60; // middle C for now
+
+           Chord chord = chordProg.getCurrentChord(position);
+                        
+           int root = chord.getRootSemitones() + rootOffset;
+
+           Note note = makeRelativeNote(item, root);
+                        
+           //System.out.println("generated note is " + note.toLeadsheet());
+                        
+           addNote(note, lick, rhythmString, avoidRepeats, "relative", item);
+           }
+        
+        // New code 10 June 2008:
+        else if( item instanceof Polylist )
           {
             // Handle inner-structure by calling fillMelody recursively
             // Example of inner is (slope 1 3 S16 S16 S16 S16)
@@ -1364,7 +1410,7 @@ public boolean fillMelody(MelodyPart lick,
             if( inner.nonEmpty() )
               {
                 Object first = inner.first();
-                if( first.equals("slope") )
+                 if( first.equals("slope") )
                   {
                     // Process "slope" specification, a phrase of a specified slope
                     // (slope Min Max ... notes ...)
@@ -1774,6 +1820,150 @@ public boolean fillMelody(MelodyPart lick,
     return false;
   }
 
+
+
+/**
+ * The following is based on code from BassPatternElement.
+ * It makes a note based on the scale degree notation,
+ * e.g. (X 4 8) means an 8th note on the 4th scale degree.
+ */
+    
+public static Note makeRelativeNote(Object ob, int chordRoot)
+  {
+  int pitch = chordRoot;
+  int duration = 60;
+  //System.out.println("makeRelativeNote " + ob); 
+  if( ob instanceof Polylist )
+      {
+        Polylist listOb = (Polylist) ob;
+        int len = listOb.length();
+        if( len == 3 )
+          {
+            if( listOb.first().equals("X") )
+              {
+                // Handle scale note, e.g. (X 5 8+16/3 U)
+
+                BassPatternElement.AccidentalType accidental = BassPatternElement.AccidentalType.NONE;
+
+                // Get the scale degree
+
+                Object second = listOb.second();
+
+                int degreeValue = 1;
+
+                if( second instanceof Long )
+                  {
+                    degreeValue = ((Long) listOb.second()).intValue();
+
+                    if( degreeValue < -1 || degreeValue > 13 )
+                      {
+                        ErrorLog.log(ErrorLog.WARNING,
+                                     "Scale degree out of range 1 to 7 in grammar note : " + ob);
+                        return null;
+                      }
+                  }
+                else if( second instanceof String )
+                  {
+                    String secondString = (String) second;
+                    String degreeString = secondString.substring(1);
+
+                    try
+                      {
+                        degreeValue = Integer.parseInt(degreeString);
+                      }
+                    catch( Exception e )
+                      {
+                        ErrorLog.log(ErrorLog.WARNING,
+                                     "Scale degree is wrong in grammar note : " + ob);
+                        return null;
+                      }
+                    
+                      switch( secondString.charAt(0) )
+                      {
+                        case 'b':
+                            pitch--;
+                            break;   // flat
+
+                        case '#':
+                            pitch++;
+                            break; // sharp
+
+                        default:
+                      }
+                  }
+
+                  switch(degreeValue)
+                      {
+                        case 1:  pitch+=0; break;
+                        case 2:  pitch+=2; break;
+                        case 3:  pitch+=4; break;
+                        case 4:  pitch+=5; break;
+                        case 5:  pitch+=7; break;
+                        case 6:  pitch+=9; break;
+                        case 7:  pitch+=11; break;
+                        case 8:  pitch+=12; break;
+                        case 9:  pitch+=14; break;
+                        case 10: pitch+=16; break;
+                        case 11: pitch+=17; break;
+                        case 13: pitch+=21; break;
+                        case -1: pitch-=1;  break;
+                        default:
+                      }
+
+                // Get the duration
+
+                String durationString;
+
+                Object third = listOb.third();
+
+                if( third instanceof Long || third instanceof String )
+                  {
+
+                    durationString = "" + third;
+
+                    // for checking purposes
+
+                    duration = Duration.getDuration(durationString);
+
+                    if( duration == 0 )
+                      {
+                        ErrorLog.log(ErrorLog.WARNING,
+                                     "Grammar relative element has incorrect duration: " + ob);
+                        return null;
+                      }
+                  }
+
+//
+//                // Ge the direction, if there is one.
+//
+//                BassPatternElement.DirectionType direction = BassPatternElement.DirectionType.ANY;
+//
+//                if( len == 4 )
+//                  {
+//                    if( listOb.fourth().equals("U") )
+//                      {
+//                        direction = BassPatternElement.DirectionType.UP;
+//                      }
+//                    else if( listOb.fourth().equals("D") )
+//                      {
+//                        direction = BassPatternElement.DirectionType.DOWN;
+//                      }
+//                    else
+//                      {
+//                        ErrorLog.log(ErrorLog.WARNING,
+//                                     "Direction must be U or D in bass note : " + ob);
+//                        return null;
+//                      }
+//
+//                  }
+
+                return new Note(pitch, duration);
+              }
+          }
+      }
+    ErrorLog.log(ErrorLog.WARNING, "Unrecognized relative note : " + ob);
+    return null;
+  }
 
 
     /**
