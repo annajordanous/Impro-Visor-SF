@@ -4,6 +4,7 @@
  */
 package imp.lickgen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import polya.Polylist;
 
@@ -106,6 +107,72 @@ public class Generator {
         String[] rhythmsArray = rhythms.split("\\s+");
         return rhythmsArray;
     }
+    
+    public static int[] getArray(Polylist rhythmString)
+    {
+        ArrayList<Integer> r = getArray(rhythmString, new ArrayList<Integer>());
+        int[] rhythms = new int[r.size()];
+        for(int i = 0; i < rhythms.length; i ++)
+        {
+            rhythms[i] = r.get(i);
+        }
+        return rhythms;
+    }
+    
+    private static ArrayList<Integer> getArray(Polylist rhythmString, ArrayList<Integer> r)
+    {
+        ArrayList<Integer> rhythms = r;
+        String rString = (String) rhythmString.first();
+        rString = rString.substring(1);
+        if(rString.equals(WHOLE_NOTE))
+        {
+            rhythms.add(1);
+            for(int i = 1; i < WHOLE; i ++)
+            {
+                rhythms.add(0);
+            }
+        }
+        else if(rString.equals(HALF_NOTE))
+        {
+            rhythms.add(1);
+            for(int i = 1; i < HALF; i ++)
+            {
+                rhythms.add(0);
+            }
+        }
+        else if(rString.equals(QUARTER_NOTE))
+        {
+            rhythms.add(1);
+            for(int i = 1; i < QUARTER; i ++)
+            {
+                rhythms.add(0);
+            }
+        }
+        else if(rString.equals(EIGHTH_NOTE))
+        {
+            rhythms.add(1);
+            for(int i = 1; i < EIGHTH; i ++)
+            {
+                rhythms.add(0);
+            }
+        }
+        else
+        {
+            rhythms.add(1);
+            for(int i = 1; i < SIXTEENTH; i ++)
+            {
+                rhythms.add(0);
+            }
+        }
+        if(rhythmString.rest().nonEmpty())
+        {
+            return getArray(rhythmString.rest(), rhythms);
+        }
+        else
+        {
+            return rhythms;
+        }
+    }
 
     /**
      * Generates a string for a note length given the inter-onset interval and
@@ -203,6 +270,87 @@ public class Generator {
         }
     }
 
+    /**
+     * Generates a rhythm that has a length of measures and a syncopation value
+     * of mySynco
+     *
+     * @param measures
+     * @param mySynco
+     * @return
+     */
+    public static int[] generateSyncopation(int measures, int mySynco, int[] rArray) 
+    {
+        int[] rhythm = rArray;
+        System.out.println(Arrays.toString(generateString(rhythm, "E")));
+        int synco = Tension.getSyncopation(rhythm, measures);
+        while (synco > mySynco && synco > 2)
+        {
+            int i = (int) (Math.random() * NUM_SLOTS * measures);
+            if (i < NUM_SLOTS * measures - 1) 
+            {
+                int index = i;
+                int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < EIGHTH_WEIGHT) {
+                    while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
+                        i++;
+                    }
+                    int prevI = 0;
+                    int prevIndex = rhythm[index];
+                    if (i < rhythm.length) 
+                    {
+                        prevI = rhythm[i];
+                        rhythm[i] = 1;
+                        rhythm[index] = 0;
+                        if(index >= 2 && i <= rhythm.length - 3 && (rhythm[index - SIXTEENTH] == 1 || rhythm[index + SIXTEENTH] == 1))
+                        {
+                            rhythm[index] = 1;
+                        }
+                    }
+                    int synco2 = Tension.getSyncopation(rhythm, measures);
+                    if(synco2 > synco)
+                    {
+                        rhythm[index] = prevIndex;
+                        rhythm[i] = prevI;
+                    }
+                    synco = Tension.getSyncopation(rhythm, measures);
+                }
+            }
+        }
+        while (synco < mySynco) {
+            int i = (int) (Math.random() * NUM_SLOTS * measures);
+            if (i < NUM_SLOTS * measures - 1) 
+            {
+                int index = i;
+                int desiredWeight = (WEIGHTS[index % NUM_SLOTS] * -1) - 1;
+                if (WHOLE_WEIGHT <= desiredWeight && desiredWeight < EIGHTH_WEIGHT) {
+                    while ((WEIGHTS[i % NUM_SLOTS] * -1) != desiredWeight) {
+                        i++;
+                    }
+                    int prevI = 0;
+                    int prevIndex = rhythm[index];
+                    if (i < rhythm.length) 
+                    {
+                        prevI = rhythm[i];
+                        rhythm[index] = 1;
+                        rhythm[i] = 0;
+                        if(i >= 2 && i <= rhythm.length - 3 && (rhythm[i - SIXTEENTH] == 1 || rhythm[i + SIXTEENTH] == 1))
+                        {
+                            rhythm[i] = 1;
+                        }
+                    }
+                    int synco2 = Tension.getSyncopation(rhythm, measures);
+                    if(synco2 < synco)
+                    {
+                        rhythm[index] = prevIndex;
+                        rhythm[i] = prevI;
+                    }
+                    synco = Tension.getSyncopation(rhythm, measures);
+                }
+            }
+        }
+        return rhythm;
+    }
+    
     /**
      * Generates a rhythm that has a length of measures and a syncopation value
      * of mySynco
