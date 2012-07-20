@@ -44,7 +44,6 @@ public class StaveActionHandler
 /**
  * Whether to use cursor shaped like a note for entering notes.
  */
-
 boolean useNoteCursor = false;
 
 /**
@@ -528,8 +527,8 @@ public void mouseMoved(MouseEvent e)
   
   boolean withinNoteArea = inNoteArea(e);
   
-  if( withinNoteArea )
-    setCursor(noteCursor);
+  if( withinNoteArea && useNoteCursor)
+      chooseAndSetCursor(e);
 
   else
     maybeSetCursor(e);   
@@ -587,6 +586,72 @@ public void mouseMoved(MouseEvent e)
    }
  }
 
+private void chooseAndSetCursor(MouseEvent e)
+{
+    int x = e.getX() + 0;
+    int y = e.getY() + 0;
+    
+    ChordPart prog = stave.getChordProg();
+    Chord currentChord = prog.getPrevChord(searchForCstrLine(x, y));
+    
+    //System.out.println(currentChord);
+    
+    int pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+    // reset the pitch to the max or min pitch of the Stave if
+    // they are out of bounds
+    if( pitch < stave.getMinPitch() )
+    {
+        pitch = stave.getMinPitch();
+    }
+    else if( pitch > stave.getMaxPitch() )
+    {
+        pitch = stave.getMaxPitch();
+    }
+    
+    System.out.println( pitch);
+    
+    if (currentChord != null && !currentChord.getName().equals(Constants.NOCHORD))
+    {
+        ChordForm curChordForm = currentChord.getChordForm();
+        String root = currentChord.getRoot();
+
+        ArrayList<Integer> chordMIDIs = curChordForm.getSpellMIDIarray(root);
+        ArrayList<Integer> colorMIDIs = curChordForm.getColorMIDIarray(root);
+
+ 
+        for(int i = 0; i < chordMIDIs.size(); i++)
+        {
+            int note = chordMIDIs.get(i);
+            chordMIDIs.set(i, note%12);
+        }
+
+        for(int i = 0; i < colorMIDIs.size(); i++)
+        {
+            int note = colorMIDIs.get(i);
+            colorMIDIs.set(i, note%12);
+        }
+        
+        if (chordMIDIs.contains(pitch%12))
+        {
+            noteCursor = makeCursor("graphics/blackNoteCursor.png", "Note", true);
+            System.out.println("black");
+        }
+  
+        if (colorMIDIs.contains(pitch%12))
+        {
+            noteCursor = makeCursor("graphics/greenNoteCursor.png", "Note", true);
+            System.out.println("green");
+        }
+        
+        else
+        {
+            noteCursor = makeCursor("graphics/redNoteCursor.png", "Note", true);
+            //System.out.println("red");
+        }
+    }
+    
+    setCursor(noteCursor);
+}
 
 boolean isDrawing()
  {

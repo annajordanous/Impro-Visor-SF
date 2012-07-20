@@ -566,6 +566,8 @@ public class Notate
   private MidiRecorder midiRecorder = null; // action handler for recording from midi
 
   private MidiStepEntryActionHandler midiStepInput = null; // action handler for step input from midi
+  
+  private MidiStepEntryActionHandler voicingInput = null;
 
   private boolean stepInputActive = false;
 
@@ -734,7 +736,7 @@ public class Notate
    * the given x, y-coordinates.
    *
    *
-   * @param x         x-coordiante of the top left corner of the frame
+   * @param x         x-coordinate of the top left corner of the frame
    *
    * @param y         y-coordinate of the top left corner of the frame
    */
@@ -889,6 +891,8 @@ public class Notate
     midiSynth3 = new MidiSynth(midiManager);
 
     midiStepInput = new MidiStepEntryActionHandler(this);
+    
+    voicingInput = new MidiStepEntryActionHandler(this);
 
     setStepInput(false);
 
@@ -15792,12 +15796,6 @@ public void setAdviceUsed()
         getCurrentStave().repaint();
         break;
 
-      case KeyEvent.VK_ENTER:
-          /* Now handled by accelerator
-        keyboard.setPlayback(true);
-        getCurrentStave().playSelection(true, 0);
-           */
-        break;
       }
     staveRequestFocus();
   }
@@ -19293,6 +19291,7 @@ public void openKeyboard()
         clearVoicingEntryTF();
     }
 
+    midiSynth.registerReceiver(voicingInput);
     keyboard.setVisible(true);
 
 }
@@ -19313,6 +19312,10 @@ public void openStepKeyboard()
     stepKeyboard.resetAdvice();
 }
 
+public VoicingKeyboard getCurrentVoicingKeyboard()
+{
+    return keyboard;
+}
 
 public StepEntryKeyboard getCurrentStepKeyboard()
 {
@@ -24164,6 +24167,11 @@ public void actionPerformed(ActionEvent evt)
 
           }
       }
+    
+    if (stepKeyboard != null)
+    {
+        stepKeyboard.resetAdvice(slot);
+    }
   }
   }
 }
