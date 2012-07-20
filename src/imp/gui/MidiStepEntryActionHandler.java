@@ -42,6 +42,7 @@ public class MidiStepEntryActionHandler implements Constants, Receiver {
      * This function is called to send a MIDI message to this object for processing
      */
     public void send(MidiMessage message, long timeStamp) {
+        
         byte[] m = message.getMessage();
         int note, channel, velocity;
         int highNibble = (m[0] & 0xF0) >> 4;
@@ -68,17 +69,29 @@ public class MidiStepEntryActionHandler implements Constants, Receiver {
     }
     
     void handleNoteOn(int note) {
-        int index = notate.getCurrentSelectionStart();
-        Stave stave = notate.getCurrentStave();
-        Note newNote = new Note(note);
-        newNote.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
-        notate.cm.execute(new SetNoteCommand(index, newNote, notate.getCurrentMelodyPart()));
-        int next = stave.getNextCstrLine(index);
         
-        if(next > 0)
-            stave.setSelection(next, next);
+        VoicingKeyboard voicingKeyboard = notate.getCurrentVoicingKeyboard();
         
-        notate.getCurrentStave().repaint();
+        if (voicingKeyboard != null && voicingKeyboard.isVisible())
+        {
+            voicingKeyboard.setKeyboard(voicingKeyboard.FROM_MIDI_KEYBOARD, note);
+        }
+             
+        else
+        {
+            int index = notate.getCurrentSelectionStart();
+            Stave stave = notate.getCurrentStave();
+            Note newNote = new Note(note);
+            newNote.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
+
+            notate.cm.execute(new SetNoteCommand(index, newNote, notate.getCurrentMelodyPart()));
+            int next = stave.getNextCstrLine(index);
+        
+            if(next > 0)
+                stave.setSelection(next, next);
+        
+            notate.getCurrentStave().repaint();
+        }
     }
     
     void handleNoteOff(int note, int velocity, int channel) {

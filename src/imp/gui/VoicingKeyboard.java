@@ -33,6 +33,8 @@ import javax.swing.KeyStroke;
 import polya.Polylist;
 import polya.Tokenizer;
 
+import java.util.Calendar;
+import java.util.Date;
 /**
  *
  * @author  Emma Carlson, 2009
@@ -945,6 +947,10 @@ public final String SHIFTCLICK = "Shift+Button1";
 
 public final String CTRLSHFTCLICK = "Ctrl+Shift+Button1";
 
+public final String NO_MODIFIER = "";
+
+public final String FROM_MIDI_KEYBOARD = "from MIDI keyboard";
+
 public final String SHARP = "#";
 
 public final String FLAT = "b";
@@ -961,6 +967,11 @@ public final String UP = "up";
 
 public final String DOWN = "down";
 
+private long LAST_MIDI_ENTRY = 0;
+
+private long CHORD_GAP = 3000; // The amount of time (in milliseconds) that must
+                               // elapse between two keys played in order for
+                               // the keyboard to be cleared.
 
 private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
 
@@ -1085,12 +1096,16 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         if (octave == 0) {
             midiValue = baseMidi;
         }
-        
-        // Pressing the keys and playing the notes
-        PianoKey keyPlayed = pianoKeys()[midiValue - A];
-        
         int m = evt.getModifiers();
         String mod = evt.getMouseModifiersText(m);
+        setKeyboard(mod, midiValue);
+    }
+}//GEN-LAST:event_keyboardLPMouseClicked
+
+public void setKeyboard(String mod, int midiValue)
+{       
+        // Pressing the keys and playing the notes
+        PianoKey keyPlayed = pianoKeys()[midiValue - A];
         
         // to change bass note
         if (mod.equals(CTRLCLICK))
@@ -1167,6 +1182,32 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             return;
         }
         
+        else if (mod.equals(FROM_MIDI_KEYBOARD))
+        {
+            long curTime = Calendar.getInstance().getTime().getTime();
+            
+            if (curTime - LAST_MIDI_ENTRY > CHORD_GAP)
+            {
+                clearKeyboard();
+            }
+            
+            LAST_MIDI_ENTRY = curTime;
+            
+            keyPlayed.setPressed(true);
+
+            if (singleNoteMode)
+            {
+                pressSingleKey(keyPlayed);
+            }
+            else
+            {
+                pressKey(keyPlayed);
+            }
+
+            // display voicing in text field
+            setVoicingEntryTFfromKeys();
+        }    
+        
         // if the key is just plain clicked
         else
         {
@@ -1195,8 +1236,7 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
             String c = notate.getChordRootTFText();
             notate.constructAndPlayChord(c,s);
         }
-    }
-}//GEN-LAST:event_keyboardLPMouseClicked
+}
 
 /**
  * Finds the highest note in a given voicing

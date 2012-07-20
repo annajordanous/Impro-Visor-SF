@@ -1569,29 +1569,36 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         return notate;
     }
 
+    
+    public void resetAdvice()
+    {
+        int slot = notate.getCurrentStave().getSelectionStart();
+        resetAdvice(slot);
+    }
+    
     /**
      * Colors the keyboard based on the current midiValue. If useAdvice is
      * on, it also colors suggested notes and the bass lastNote.
      *
      * @param midiValue
      */
-    public void resetAdvice()
+    public void resetAdvice(int selectedSlot)
     {
+
         // Don't bother if the keyboard isn't open
         if (!notate.getCurrentStepKeyboard().isVisible())
             return;
         
         // housekeeping
         setSubDivComboBox();
-        
-        // Get some data we need
+         
+       // Get some data we need
         Stave currentStave = notate.getCurrentStave();
-        int selectedSlot = currentStave.getSelectionStart();
         MelodyPart melodyPart = currentStave.getMelodyPart();
         Note lastNote = melodyPart.getPrevNote(selectedSlot);
 
         
-        // Set the midi to no lastNote initially. That way we can tell whether
+        // Set the curMidi to no lastNote initially. That way we can tell whether
         // we get a pitch from the lastNote played
         int midiValue = NO_NOTE;
         boolean displayNote = false; // Decides whether the last note played
@@ -1636,13 +1643,13 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
                 ChordForm curChordForm = currentChord.getChordForm();
                 String root = currentChord.getRoot();
 
-                // Get lists of the actual midi values we want to color
-                chordMIDIs = // the midi values for the notes in the chord
-                        chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
-                colorMIDIs = // the midi values for the color notes
-                        chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
+                // Get lists of the actual curMidi values we want to color
+                chordMIDIs = // the curMidi values for the notes in the chord
+                    chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
+                colorMIDIs = // the curMidi values for the color notes
+                    chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
 
-                // Get a midi value for the bass note
+                // Get a curMidi value for the bass note
                 Integer bassMidi = findBass(root);
                 StepPianoKey bass = pianoKeys()[bassMidi - A];
                 
@@ -1653,12 +1660,12 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
                  
                 if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, chordProg))
                 {
-                    clearKeyboard();
+                    clearAllButPossibleBlueNotes(midiValue, bassMidi);
                     findAndPressBlueNotes(midiValue, chordMIDIs, colorMIDIs);
                 }
                 else
                 {
-                    pressPianoKeys(chordMIDIs, colorMIDIs, chordName, midiValue);
+                    pressPianoKeys(chordMIDIs, colorMIDIs, chordName, midiValue, bassMidi);
                 }
 
                 bass.setPressed(true);
@@ -1741,7 +1748,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         // is a fair initial value
         double maxExpect = 0;
         
-        // Sort the midi values of the notes in the advice range
+        // Sort the curMidi values of the notes in the advice range
         // by their expectancies
         for (int midi = minNote ; midi <= maxNote; midi++ )
         {
@@ -1778,32 +1785,65 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     private void findAndPressBlueNotes(int midiValue, ArrayList<Integer> chordMIDIs, ArrayList<Integer> colorMIDIs)
     {
+
+        
+        StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
+        
         if (chordMIDIs.contains(midiValue - HALF_STEP))
         {
-            StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
             nextDown.setPressed(true);
             pressKey(nextDown, nextDown.getChordIcon());
         }
         
-        if (colorMIDIs.contains(midiValue - HALF_STEP))
+        else if (colorMIDIs.contains(midiValue - HALF_STEP))
         {
-            StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
             nextDown.setPressed(true);
             pressKey(nextDown, nextDown.getColorIcon());
         }
+        
+        else
+        {
+            nextDown.setPressed(false);
+            pressKey(nextDown, nextDown.getOffIcon());
+        }
+        
+        StepPianoKey nextUp = pianoKeys()[midiValue + HALF_STEP - A];
         
         if (chordMIDIs.contains(midiValue + HALF_STEP))
         {
-            StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
-            nextDown.setPressed(true);
-            pressKey(nextDown, nextDown.getChordIcon());
+            nextUp.setPressed(true);
+            pressKey(nextUp, nextUp.getChordIcon());
         }
         
-        if (colorMIDIs.contains(midiValue + HALF_STEP))
+        else if (colorMIDIs.contains(midiValue + HALF_STEP))
         {
-            StepPianoKey nextDown = pianoKeys()[midiValue - HALF_STEP - A];
-            nextDown.setPressed(true);
-            pressKey(nextDown, nextDown.getColorIcon());
+            nextUp.setPressed(true);
+            pressKey(nextUp, nextUp.getColorIcon());
+        }
+        
+        else
+        {
+            nextUp.setPressed(false);
+            pressKey(nextUp, nextUp.getOffIcon());
+        }
+        
+    }
+    
+    private void clearAllButPossibleBlueNotes(int midiValue, int bassMidi)
+    {
+        for (StepPianoKey pk : pianoKeys())
+        {
+            pk.getNumLabel().setText("");
+            int curMidi = pk.getMIDI();
+            
+            if (Math.abs(curMidi-midiValue) <= 1 || curMidi == bassMidi)
+                continue;
+            
+            if (pk.isPressed())
+            {
+                pk.setPressed(false);
+                pressKey(pk, pk.getOffIcon());
+            }
         }
     }
     
@@ -1828,9 +1868,9 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         ChordForm curChordForm = currentChord.getChordForm();
         String root = currentChord.getRoot();
 
-        ArrayList<Integer> chordMIDIs = // the midi values for the chord tones
+        ArrayList<Integer> chordMIDIs = // the curMidi values for the chord tones
                 chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
-        ArrayList<Integer> colorMIDIs = // the midi values for the color tones
+        ArrayList<Integer> colorMIDIs = // the curMidi values for the color tones
                 chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
 
         return !(chordMIDIs.contains(midiValue) ||
@@ -1909,15 +1949,11 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             ChordForm curChordForm = currentChord.getChordForm();
             String root = currentChord.getRoot();
 
-            // Get lists of the actual midi values we want to color
-            ArrayList<Integer> chordMIDIs = // the midi values for the notes in the chord
+            // Get lists of the actual curMidi values we want to color
+            ArrayList<Integer> chordMIDIs = // the curMidi values for the notes in the chord
                     chordToAdvice(curChordForm.getSpellMIDIarray(root), midi);
-            ArrayList<Integer> colorMIDIs = // the midi values for the color notes
+            ArrayList<Integer> colorMIDIs = // the curMidi values for the color notes
                     chordToAdvice(curChordForm.getColorMIDIarray(root), midi);
-
-            // Get a midi value for the bass note
-            Integer bassMidi = findBass(root);
-            StepPianoKey bass = pianoKeys()[bassMidi - A];
 
             int down = midi;
             int up = midi;
@@ -1956,8 +1992,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * Finds the midi value of the first note preceding the given slot that has 
-     * a nonnegative midi value. If there are none, it returns NO_NOTE.
+     * Finds the curMidi value of the first note preceding the given slot that has 
+     * a nonnegative curMidi value. If there are none, it returns NO_NOTE.
      *
      * @param stave the current stave
      * @param melody the MelodyPart for the current stave
@@ -1983,7 +2019,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     
     /**
      * Finds the second note preceding the given slot that has a nonnegative
-     * midi value. This is the note immediately before the one returned by 
+     * curMidi value. This is the note immediately before the one returned by 
      * lastRealNote.
      * 
      * @param stave
@@ -2097,13 +2133,15 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     public void pressKey(StepPianoKey keyPlayed, Icon icon)
     {
         JLabel label = keyPlayed.getLabel();
-        label.setIcon(icon);
+        
+        if (label.getIcon() != icon)
+            label.setIcon(icon);
 
         forcePaint();
     }
     
     /**
-     * Colors the piano keys corresponding to the midi values in the two lists
+     * Colors the piano keys corresponding to the curMidi values in the two lists
      * appropriately and updates the coloring of the rest of the keyboard based
      * on the chord name and pressed note.
      * @param chordMIDIs
@@ -2114,11 +2152,16 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     private void pressPianoKeys(ArrayList<Integer> chordMIDIs,
                                 ArrayList<Integer> colorMIDIs,
                                 String chordName,
-                                int pressedMidi)
+                                int pressedMidi, int bassMidi)
     {   
         for (StepPianoKey currentKey : pianoKeys())
         {
+            
             int midi = currentKey.getMIDI();
+            
+            if (midi == pressedMidi || midi == bassMidi)
+                continue;
+            
             JLabel label = currentKey.getLabel();
             Icon offIcon = currentKey.getOffIcon();
             Icon colorIcon = currentKey.getColorIcon();
@@ -2473,16 +2516,9 @@ private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:
         if (notate.stepInputSelected()) {
             inputNoteToStave(midiValue);
         }
-          
-        Stave stave = notate.getCurrentStave();
 
-        this.requestFocus();
-        if (this.hasFocus() || true)
-        {
-
-        }
     }
-    requestFocus();
+    keyboardLP.requestFocus();
 }//GEN-LAST:event_keyboardLPMouseClicked
 
 private void startPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPlayMIActionPerformed
@@ -2921,4 +2957,6 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
+
+
 }
