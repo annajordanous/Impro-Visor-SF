@@ -31,10 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 import polya.Polylist;
 import polya.PolylistEnum;
 
@@ -501,7 +498,6 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
 
     int startIndex = mStart;
     
-    expectancy = getExpectancyPerNote();
 
     //start creating the MelodyPart
     DataPoint point1;
@@ -515,7 +511,7 @@ private MelodyPart buildSolo(Vector<ClusterSet> outline)
                              mLeapProb, currentSection, mChordProg, startIndex, mAvoidRepeats);
       }
     while( goesOutOfBounds(melpart) );
-
+    
     usedMelodies.put(point1.getCluster().getNumber(), currentAbstractMelody);
 
     //add the abstract melody to the rhythm string
@@ -1009,6 +1005,7 @@ public boolean goesOutOfBounds(MelodyPart lick)
       }
   }
 
+private boolean syncopation = true;
  
 public MelodyPart fillMelody(int minPitch, 
                              int maxPitch, 
@@ -1033,6 +1030,28 @@ public MelodyPart fillMelody(int minPitch,
 
     MelodyPart melPart = new MelodyPart();
 
+    System.out.println("Rhythm String: " + rhythmString);
+    if(syncopation)
+    {
+        MelodyPart melody = notate.getCurrentMelodyPart();
+        int currentSlot = grammar.getCurrentSlot();
+        ChordPart chords = notate.getChordProg();
+        MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        int[] rhythmArray = Generator.getArray(rhythmString);
+        System.out.println("Rhythm Array: " + Arrays.toString(rhythmArray));
+        int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
+        System.out.println("SyncVector: " + Arrays.toString(Generator.generateString(syncVector, "E")));
+        int measures = 4;
+        int synco = Tension.getSyncopation(syncVector, measures);
+        System.out.println("Synco: " + synco);
+        int[] rhythm = Generator.generateSyncopation(measures, synco, rhythmArray);
+        int newSynco = Tension.getSyncopation(rhythm, measures);
+        System.out.println("New Synco: " + newSynco);
+        String[] rhythmList = Generator.generateString(rhythm, "E");
+        System.out.println("New Rhythm: " + Arrays.toString(rhythmList));
+        rhythmString = Polylist.PolylistFromArray(rhythmList);
+    }
+    
     Polylist newRhythmString = new Polylist();
     Polylist section = new Polylist();
     for( Polylist L = rhythmString; L.nonEmpty(); L = L.rest() )
@@ -1191,7 +1210,7 @@ public MelodyPart fillPartOfMelody(int minPitch,
     return lick;
   }
 
-    boolean traceLickGen = true;
+    boolean traceLickGen = false;
     /**
      * Track previous note for purposes of rest merging.
      * This should be moved into addNote of MelodyPart eventually.
@@ -1753,7 +1772,6 @@ public boolean fillMelody(MelodyPart lick,
                     {
                         expectancy = DEFAULT_EXPECTANCY;
                     }
-                    System.out.println("Expectancy " + expectancy);
                     ArrayList<Integer> midiArray = new ArrayList<Integer>();
                     ArrayList<Double> expectDiffs = new ArrayList<Double>();
                     for (int midi = minPitch ; midi <= maxPitch; midi++)
@@ -1763,11 +1781,6 @@ public boolean fillMelody(MelodyPart lick,
                             prevPrevPitch = prevPitch;
                         }
                         double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch,chordProg.getCurrentChord(position));
-                        System.out.println(chordProg.getCurrentChord(position));
-                        System.out.println("PrevPitch: " + prevPitch);
-                        System.out.println("PrevPrevPitch: " + prevPrevPitch);
-                        System.out.println("MIDI: " + midi);
-                        System.out.println("Expectancy: " + expect);
                         double invExpectDiff = EXPECTANCY_LIMIT - Math.abs(expectancy - expect);
 //                        if(Math.abs(expectancy - expect) < .1)
 //                        {
@@ -1789,13 +1802,10 @@ public boolean fillMelody(MelodyPart lick,
                     double offset = 0;
                     for( int i = 0; i < expectDiffs.size(); ++i )
                     {
-                        System.out.println("Prob: " + (expectDiffs.get(i) / expectDiffSum));
-                        System.out.println("Midi: " + midiArray.get(i));
                         // If the random number falls between the range of the probability 
                         // for that rule, we choose it and break out of the loop.
                         if( rand >= offset && rand < offset + (expectDiffs.get(i) / expectDiffSum) )
                         {
-                            System.out.println("NOTE!");
                             note.setPitch(midiArray.get(i));
                             prevPrevPitch = prevPitch;
                             prevPitch = midiArray.get(i);
