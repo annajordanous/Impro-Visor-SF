@@ -59,24 +59,30 @@ public class LickGen implements Constants
     // Parameter strings
     // Strings used as labels in the grammar file
     
-    public static final String MIN_PITCH_STRING = "min-pitch";
-    public static final String MAX_PITCH_STRING = "max-pitch";
-    public static final String MIN_INTERVAL = "min-interval";
-    public static final String MAX_INTERVAL = "max-interval";
-    public static final String MIN_DURATION = "min-duration";
-    public static final String MAX_DURATION = "max-duration";
-    public static final String REST_PROB = "rest-prob";
-    public static final String LEAP_PROB = "leap-prob";
-    public static final String CHORD_TONE_WEIGHT = "chord-tone-weight";
-    public static final String COLOR_TONE_WEIGHT = "color-tone-weight";
-    public static final String SCALE_TONE_WEIGHT = "scale-tone-weight";
-    public static final String CHORD_TONE_DECAY = "chord-tone-decay";
-    public static final String SCALE_TYPE = "scale-type";
-    public static final String SCALE_ROOT = "scale-root";
-    public static final String USE_GRAMMAR = "use-grammar";
-    public static final String AVOID_REPEATS = "avoid-repeats";
-    public static final String AUTO_FILL = "auto-fill";
-    public static final String RECTIFY = "rectify";
+    public static final String MIN_PITCH_STRING      = "min-pitch";
+    public static final String MAX_PITCH_STRING      = "max-pitch";
+    public static final String MIN_INTERVAL          = "min-interval";
+    public static final String MAX_INTERVAL          = "max-interval";
+    public static final String MIN_DURATION          = "min-duration";
+    public static final String MAX_DURATION          = "max-duration";
+    public static final String REST_PROB             = "rest-prob";
+    public static final String LEAP_PROB             = "leap-prob";
+    public static final String CHORD_TONE_WEIGHT     = "chord-tone-weight";
+    public static final String COLOR_TONE_WEIGHT     = "color-tone-weight";
+    public static final String SCALE_TONE_WEIGHT     = "scale-tone-weight";
+    public static final String CHORD_TONE_DECAY      = "chord-tone-decay";
+    public static final String SCALE_TYPE            = "scale-type";
+    public static final String SCALE_ROOT            = "scale-root";
+    public static final String USE_GRAMMAR           = "use-grammar";
+    public static final String AVOID_REPEATS         = "avoid-repeats";
+    public static final String AUTO_FILL             = "auto-fill";
+    public static final String RECTIFY               = "rectify";
+    public static final String USE_SYNCOPATION       = "use-syncopation";
+    public static final String SYNCOPATION_TYPE      = "syncopation-type";
+    public static final String SYNCOPATION_VALUE     = "syncopation-value"; 
+    public static final String EXPECTANCY_MULTIPLIER = "expectancy-multiplier";
+    public static final String EXPECTANCY_CONSTANT   = "expectancy-constant";
+    
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
@@ -1948,58 +1954,110 @@ public boolean fillMelody(MelodyPart lick,
         return preferredScale;
     }
 
-    public void setParameter(String paramName, Object param) {
-        grammar.addRule(Polylist.list(Grammar.PARAM, Polylist.list(paramName, param)));
-    }
+/**
+ * Set a grammar or lickgen parameter.
+ *
+ * @param paramName
+ * @param param
+ */
+    
+public void setParameter(String paramName, Object param)
+  {
+    grammar.addRule(Polylist.list(Grammar.PARAM, Polylist.list(paramName, param)));
+  }
 
-    public String getParameter(String paramName) {
-        ArrayList<Polylist> params = grammar.getParams();
-        for (int i = 0; i < params.size(); ++i) {
-            Polylist p = params.get(i);
-            if (((String) p.first()).equals(paramName) && p.length() >= 2) {
-                return Advisor.concatListWithSpaces(p.rest());
-            }
-        }
 
-        ErrorLog.log(ErrorLog.WARNING, paramName + " does not exist.");
-        return null;
-    }
+/**
+ * Get a grammar or lickgen parameter. Conversion from String is up to the client.
+ * Complains through the ErrorLog if parameter does not exist.
+ *
+ * @param paramName
+  */
 
-// Use to figure out what the current section is.
-    private int calcSection(ChordPart chordProg, int pos, int index, int oldSection) {
-        int section = oldSection;
+public String getParameter(String paramName)
+  {
+    ArrayList<Polylist> params = grammar.getParams();
+    for( int i = 0; i < params.size(); ++i )
+      {
+        Polylist p = params.get(i);
+        if( ((String) p.first()).equals(paramName) && p.length() >= 2 )
+          {
+            return Advisor.concatListWithSpaces(p.rest());
+          }
+      }
 
-        // Calculate what section we're in if we've gone past the end of the
-        // old section:
-        if (pos >= index && index != -1) {
-            // If we've already seen the chord, then get the index of that occurence, and
-            // use that as the current section; otherwise, we mark the current chord as seen,
-            // and increment the section.
-            
-            // An out-of-range problem arose here May 11, 2012. RK tried to clean it up.
-            
-            String name = chordProg.getCurrentChord(pos).getName();
-            int nameIndex = chordUsed.indexOf(name);
-            if( nameIndex != -1 && nameIndex < chordUsedSection.size() )
-              {
-                section = chordUsedSection.get(nameIndex);
-              }
-            else
-              {
-                section = chordUsedSection.size();
-                chordUsed.add(name);
-                chordUsedSection.add(section);
-              }
-        }
+    ErrorLog.log(ErrorLog.WARNING, paramName + " does not exist.");
+    return null;
+  }
+
+/**
+ * Get a grammar or lickgen parameter. Conversion from String is up to the client.
+ * Throws NonExistentParameterException if not present.
+ *
+ * @param paramName
+  */
+
+public String getParameterQuietly(String paramName) throws NonExistentParameterException
+  {
+    ArrayList<Polylist> params = grammar.getParams();
+    for( int i = 0; i < params.size(); ++i )
+      {
+        Polylist p = params.get(i);
+        if( ((String) p.first()).equals(paramName) && p.length() >= 2 )
+          {
+            return Advisor.concatListWithSpaces(p.rest());
+          }
+      }
+
+    throw new NonExistentParameterException(paramName);
+  }
+
+
+/**
+ * Use to compute the current section.
+ */
+
+private int calcSection(ChordPart chordProg, int pos, int index, int oldSection)
+  {
+    int section = oldSection;
+
+    // Calculate what section we're in if we've gone past the end of the
+    // old section:
+    if( pos >= index && index != -1 )
+      {
+        // If we've already seen the chord, then get the index of that occurence, and
+        // use that as the current section; otherwise, we mark the current chord as seen,
+        // and increment the section.
+
+        // An out-of-range problem arose here May 11, 2012. RK tried to clean it up.
+
+        String name = chordProg.getCurrentChord(pos).getName();
+        int nameIndex = chordUsed.indexOf(name);
+        if( nameIndex != -1 && nameIndex < chordUsedSection.size() )
+          {
+            section = chordUsedSection.get(nameIndex);
+          }
+        else
+          {
+            section = chordUsedSection.size();
+            chordUsed.add(name);
+            chordUsedSection.add(section);
+          }
+      }
 //System.out.println("calcSection, index = " + index + " oldSection = " + oldSection + " section = " + section);
-        return section;
-    }
+    return section;
+  }
 
-// Make certain types of notes, such as bass (modeled on checkNote)
-    private void makeBassNote(Note note, int pos, ChordPart chordProg) {
-        note.setPitch(
-                chordProg.getCurrentChord(pos).getRootPitchClass().getSemitones() + 48); // FIX!
-    }
+
+/**
+ * Make certain types of notes, such as bass (modeled on checkNote)
+ */
+
+private void makeBassNote(Note note, int pos, ChordPart chordProg)
+  {
+    note.setPitch(
+            chordProg.getCurrentChord(pos).getRootPitchClass().getSemitones() + 48); // FIX!
+  }
 
 // Sets probabilities of note types
     private int[] setProb(int chord, int color, int random, int scale) {

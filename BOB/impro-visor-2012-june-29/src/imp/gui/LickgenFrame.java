@@ -34,6 +34,7 @@ import imp.com.*;
 import imp.data.*;
 import imp.lickgen.Grammar;
 import imp.lickgen.LickGen;
+import imp.lickgen.NonExistentParameterException;
 import imp.util.ProfileFilter;
 import java.awt.*;
 import java.io.*;
@@ -50,6 +51,8 @@ import polya.Tokenizer;
  *
  * @author David Morrison, Robert Keller
  */
+@SuppressWarnings("serial")
+
 public class LickgenFrame
     extends javax.swing.JFrame
     implements imp.Constants
@@ -106,6 +109,15 @@ private boolean avoidRepeats = true;
 private boolean useGrammar = true;
 
 private boolean autoFill = true;
+
+// Syncopation and Expectancy Parameters
+
+private boolean useSyncopation      = true;
+private String syncopationType      = "C";
+private double syncopationValue     = 0.5;
+private double expectancyMultiplier = 0.5;
+private double expectancyConstant   = 0.1;
+    
 
 private int recurrentIteration = 1;
 
@@ -3749,6 +3761,50 @@ public void resetTriageParameters(boolean menu)
     rectify = Boolean.parseBoolean(lickgen.getParameter(LickGen.RECTIFY));
 
     rectifyCheckBox.setSelected(rectify);
+     
+    // These will fail silently if the parameter is not present, resulting in
+    // the current value being left as is.
+    
+    try
+      {
+      useSyncopation = Boolean.parseBoolean(lickgen.getParameterQuietly(LickGen.USE_SYNCOPATION));
+      }
+    catch(NonExistentParameterException e)
+      {
+      }
+    
+    try
+      {
+      syncopationType = lickgen.getParameterQuietly(LickGen.SYNCOPATION_TYPE);
+       }
+    catch(NonExistentParameterException e)
+      {
+      }
+    
+    try
+      {
+      syncopationValue = Double.parseDouble(lickgen.getParameterQuietly(LickGen.SYNCOPATION_VALUE));
+      }
+    catch(NonExistentParameterException e)
+      {
+      }
+    
+    try
+      {
+      expectancyMultiplier = Double.parseDouble(lickgen.getParameterQuietly(LickGen.EXPECTANCY_MULTIPLIER));
+      }
+    catch(NonExistentParameterException e)
+      {
+      }
+    
+    try
+      {
+      expectancyConstant = Double.parseDouble(lickgen.getParameterQuietly(LickGen.EXPECTANCY_CONSTANT));
+      }
+    catch(NonExistentParameterException e)
+      {
+      }
+    
 
    // useGrammarMI.setSelected(Boolean.parseBoolean(lickgen.getParameter(
    //     LickGen.USE_GRAMMAR)));
@@ -3780,6 +3836,32 @@ public void resetTriageParameters(boolean menu)
     }
   }
 
+public boolean getUseSyncopation()
+  {
+    return useSyncopation;
+  }
+
+public String getSyncopationType()
+  {
+    return syncopationType;
+  }
+
+public Double getSyncopationValue()
+  {
+    return syncopationValue;
+  }
+
+public Double getExpectancyMultiplier()
+  {
+    return expectancyMultiplier;
+  }
+
+public Double getExpectancyConstant()
+  {
+    return expectancyConstant;
+  }
+
+ 
 
 public void saveTriageParameters()
   {
@@ -3820,6 +3902,12 @@ public void saveTriageParameters()
     lickgen.setParameter(LickGen.SCALE_ROOT, rootComboBox.getSelectedItem());
 
     lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
+    
+    lickgen.setParameter(LickGen.USE_SYNCOPATION,       useSyncopation);
+    lickgen.setParameter(LickGen.SYNCOPATION_TYPE,      syncopationType);
+    lickgen.setParameter(LickGen.SYNCOPATION_VALUE,     syncopationValue); 
+    lickgen.setParameter(LickGen.EXPECTANCY_MULTIPLIER, expectancyMultiplier);
+    lickgen.setParameter(LickGen.EXPECTANCY_CONSTANT,   expectancyConstant);
   }
 
 private void verifyAndFill()
@@ -3841,27 +3929,27 @@ private void verifyAndFill()
         }//GEN-LAST:event_chordToneWeightFieldFocusLost
 
         private void colorToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorToneWeightFieldActionPerformed
-        verifyAndFill();
+            verifyAndFill();
             }//GEN-LAST:event_colorToneWeightFieldActionPerformed
 
             private void colorToneWeightFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_colorToneWeightFieldFocusLost
-         verifyAndFill();
+                verifyAndFill();
                 }//GEN-LAST:event_colorToneWeightFieldFocusLost
 
                 private void scaleToneWeightFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleToneWeightFieldActionPerformed
-        verifyAndFill();
+                    verifyAndFill();
                     }//GEN-LAST:event_scaleToneWeightFieldActionPerformed
 
                     private void scaleToneWeightFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_scaleToneWeightFieldFocusLost
-        verifyAndFill();
+                        verifyAndFill();
                         }//GEN-LAST:event_scaleToneWeightFieldFocusLost
 
                         private void chordToneDecayFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordToneDecayFieldActionPerformed
-        verifyAndFill();
+                            verifyAndFill();
                         }//GEN-LAST:event_chordToneDecayFieldActionPerformed
 
                         private void chordToneDecayFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_chordToneDecayFieldFocusLost
-        verifyAndFill();
+                            verifyAndFill();
                         }//GEN-LAST:event_chordToneDecayFieldFocusLost
 
                         private void scaleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxActionPerformed
