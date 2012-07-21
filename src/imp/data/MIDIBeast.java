@@ -351,21 +351,11 @@ public static void initialize(String midiFile, String chordFile)
       midiImport.setResolution(EIGHTH);
       midiImport.readMidiFile(midiFileName);
       if (chordFileName.isEmpty()) {
+          bassChannel = midiImport.getBassChannel();
+          chordChannel = midiImport.getChordChannel();
           //get chord part channel
-          for (int i = 0; i < temp.length; i++) {
-              int currentInstrument = temp[i].getInstrument();
-              if (currentInstrument >= 0 && currentInstrument <= 31 && temp[i].getChannel() != DRUM_CHANNEL) {
-                  //If the instrument is a kind of keyboard or guitar, it is read as a chords part.
-                  chordChannel = temp[i].getChannel();
-              }
-          }
           //MIDIBeast.addError("Could not find a chord part.  Go to Generate-->Preferences for Generation to choose a chord part from available instruments.");
-          for (int i = 0; i < temp.length; i++) {
-              int currentInstrument = temp[i].getInstrument();
-              if (currentInstrument >= 32 && currentInstrument <= 38) {
-                  bassChannel = temp[i].getChannel();
-              }
-          }
+
 
           //use midi import to extract melody parts from midi file
 
@@ -404,6 +394,14 @@ public static void initialize(String midiFile, String chordFile)
       }
   }
 
+    public static int getChordChannel() {
+        return chordChannel;
+    }
+
+    public static int getBassChannel() {
+        return bassChannel;
+    }
+
 
 /**
  * Calls null constructors on various objects of this class
@@ -424,29 +422,14 @@ public static void invoke()
         numerator = score.getNumerator();
         denominator = score.getDenominator();
 
-        jm.music.data.Part[] temp = score.getPartArray();
+        
         //use chord extraction, check if leadsheet is available
         MidiImport midiImport = new MidiImport();
         midiImport.setResolution(EIGHTH);
         midiImport.readMidiFile(midiFileName);
-        //get chord part channel
-        for (int i = 0; i < temp.length; i++) {
-            int currentInstrument = temp[i].getInstrument();
-            if (currentInstrument >= 0 && currentInstrument <= 31 && temp[i].getChannel() != DRUM_CHANNEL) {
-                //If the instrument is a kind of keyboard or guitar, it is read as a chords part.
-                chordChannel = temp[i].getChannel();
-            }
-        }
-        //MIDIBeast.addError("Could not find a chord part.  Go to Generate-->Preferences for Generation to choose a chord part from available instruments.");
-        for (int i = 0; i < temp.length; i++) {
-            int currentInstrument = temp[i].getInstrument();
-            if (currentInstrument >= 32 && currentInstrument <= 38) {
-                bassChannel = temp[i].getChannel();
-            }
-        }
+        //add error stuff if chord part or bass part can't be found
 
         //use midi import to extract melody parts from midi file
-
         melodies = midiImport.getMelodies();
         List<MelodyPart> bassMelodyParts = new ArrayList<MelodyPart>();
         List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();

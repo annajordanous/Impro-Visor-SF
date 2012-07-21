@@ -118,6 +118,20 @@ public ExtractionEditor(java.awt.Frame parent,
     chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
     
     useLeadsheet.setSelected(MIDIBeast.useLeadsheet);
+    
+    int bassChannel = MIDIBeast.getBassChannel()+1;
+    int chordChannel = MIDIBeast.getChordChannel()+1;
+    for (int j = 0; j < channelInfo.length; j++)
+    {
+        if( channelInfo[j].getChannelNum() == bassChannel )
+        {
+            bassChannelName.setSelectedItem(channelInfo[j]);
+        }
+        if( channelInfo[j].getChannelNum() == chordChannel )
+        {
+            chordChannelName.setSelectedItem(channelInfo[j]);
+        }
+    }
   }
 
 public void setBass()
@@ -815,8 +829,8 @@ public void playRawRule(int type, String raw)
         reExtractBtnDrum = new javax.swing.JButton();
         closeWindowBtn = new javax.swing.JButton();
         filler = new javax.swing.JPanel();
-        chordChannel = new javax.swing.JLabel();
-        bassChannel = new javax.swing.JLabel();
+        chordChannelTitle = new javax.swing.JLabel();
+        bassChannelTitle = new javax.swing.JLabel();
         chordChannelName = new javax.swing.JComboBox();
         bassChannelName = new javax.swing.JComboBox();
         extractChords = new javax.swing.JButton();
@@ -1711,17 +1725,17 @@ public void playRawRule(int type, String raw)
         gridBagConstraints.ipady = 200;
         getContentPane().add(filler, gridBagConstraints);
 
-        chordChannel.setText("Chord Channel");
+        chordChannelTitle.setText("Chord Channel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        getContentPane().add(chordChannel, gridBagConstraints);
+        getContentPane().add(chordChannelTitle, gridBagConstraints);
 
-        bassChannel.setText("Bass Channel");
+        bassChannelTitle.setText("Bass Channel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        getContentPane().add(bassChannel, gridBagConstraints);
+        getContentPane().add(bassChannelTitle, gridBagConstraints);
 
         chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         chordChannelName.addActionListener(new java.awt.event.ActionListener() {
@@ -2227,12 +2241,12 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel bassChannel;
     private javax.swing.JComboBox bassChannelName;
+    private javax.swing.JLabel bassChannelTitle;
     private javax.swing.JPanel bassPanel;
     private javax.swing.JMenuItem cascadeMI;
-    private javax.swing.JLabel chordChannel;
     private javax.swing.JComboBox chordChannelName;
+    private javax.swing.JLabel chordChannelTitle;
     private javax.swing.JPanel chordPanel;
     private javax.swing.JButton closeWindowBtn;
     private javax.swing.JMenuItem closeWindowMI;

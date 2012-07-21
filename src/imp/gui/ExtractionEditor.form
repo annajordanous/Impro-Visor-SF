@@ -1217,7 +1217,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
     </Container>
-    <Component class="javax.swing.JLabel" name="chordChannel">
+    <Component class="javax.swing.JLabel" name="chordChannelTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="Chord Channel"/>
       </Properties>
@@ -1227,7 +1227,7 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Component class="javax.swing.JLabel" name="bassChannel">
+    <Component class="javax.swing.JLabel" name="bassChannelTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="Bass Channel"/>
       </Properties>
