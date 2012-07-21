@@ -30,7 +30,6 @@ import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import polya.Arith;
 import polya.Polylist;
@@ -120,12 +119,11 @@ public Grammar(String file)
 public Polylist run(int startSlot, int numSlots, Notate myNotate)
   {
     currentSlot = startSlot;
-    boolean failure = true;
     int savedRetryCount = retryCount;
     int maxRetries = 20;
     notate = myNotate;
     
-    while( failure && (retryCount - savedRetryCount) <= maxRetries )
+    while( (retryCount - savedRetryCount) <= maxRetries )
       {
         try
           {
@@ -145,7 +143,6 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
               }
 
             // terminalString is built up within applyRules.
-            failure = false;
             return terminalString;
           }
         catch( RuleApplicationException e )
@@ -345,7 +342,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
             if( ((String)(pop.first())).equals(((Polylist)symbol).first()) )
               {
               // Fill in variables with their given numeric values.
-              derivation = setVars((Polylist)pop, (Polylist)symbol, derivation);
+              derivation = setVars(pop, (Polylist)symbol, derivation);
 
               //System.out.print("evaluating " + derivation);
               
