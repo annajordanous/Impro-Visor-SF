@@ -41,6 +41,8 @@ private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
 private LinkedList<MidiImportRecord> melodies;
 private Map<Integer, String> channelNames = new HashMap<Integer, String>();
+private int chordChannel = 0;
+private int bassChannel = 0;
 
 public MidiImport()
   {
@@ -126,7 +128,22 @@ public void scoreToMelodies()
             String instrumentName = MIDIBeast.getInstrumentForPart(part);
             instrumentName = instrumentName.replaceAll("_"," ");
             channelNames.put(channel+1,instrumentName);
-        }
+            
+            //choose chord and bass channel
+            int instrumentNum = part.getInstrument();
+            int channelNum = part.getChannel();
+                if (instrumentNum >= 0 && instrumentNum <=5) {
+                    //If the instrument is a kind of keyboard or guitar, it is read as a chords part.
+                    chordChannel = channelNum;
+                }
+                else if (instrumentNum >= 24 && instrumentNum <= 28)
+                {
+                    chordChannel = channelNum;
+                }
+                else if (instrumentNum >= 32 && instrumentNum <= 38) {
+                    bassChannel = channelNum;
+                }
+            }
         
         for( int j = 0; j < numTracks; j++ )
           {
@@ -223,5 +240,12 @@ public void scoreToMelodies()
             index = index + 1;
     }
         return channelInfo;
+    }
+    
+    public int getChordChannel(){
+        return chordChannel;
+    }
+    public int getBassChannel(){
+        return bassChannel;
     }
 }

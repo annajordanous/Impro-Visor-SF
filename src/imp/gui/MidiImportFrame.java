@@ -194,6 +194,20 @@ private void initChannelInfo()
     channelInfo = midiImport.getChannelInfo();
     bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
     chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+
+    bassChannel = midiImport.getBassChannel()+1;
+    chordChannel = midiImport.getChordChannel()+1;
+    for (int j = 0; j < channelInfo.length; j++)
+    {
+        if( channelInfo[j].getChannelNum() == bassChannel )
+        {
+            bassChannelNumberComboBox.setSelectedItem(channelInfo[j]);
+        }
+        if( channelInfo[j].getChannelNum() == chordChannel )
+        {
+            chordChannelNumberComboBox.setSelectedItem(channelInfo[j]);
+        }
+    }
 }
 
 /**
@@ -224,6 +238,7 @@ private void initChannelInfo()
         bassChannelNumberComboBox = new javax.swing.JComboBox();
         chordChannelNumberComboBox = new javax.swing.JComboBox();
         extractChords = new javax.swing.JButton();
+        chordResolutionComboBox = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         MIDIimportFileMenu = new javax.swing.JMenu();
         openAnotherFileMI = new javax.swing.JMenuItem();
@@ -289,6 +304,8 @@ private void initChannelInfo()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         midiImportButtonPanel.add(playMIDIfile, gridBagConstraints);
 
         playMIDIimportTrack.setText("Play Track");
@@ -301,6 +318,7 @@ private void initChannelInfo()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(playMIDIimportTrack, gridBagConstraints);
@@ -314,6 +332,8 @@ private void initChannelInfo()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         midiImportButtonPanel.add(stopPlayingTrackButton, gridBagConstraints);
 
         importTrackToLeadsheet.setText("Copy Track to Leadsheet");
@@ -326,6 +346,7 @@ private void initChannelInfo()
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
         midiImportButtonPanel.add(importTrackToLeadsheet, gridBagConstraints);
@@ -339,6 +360,8 @@ private void initChannelInfo()
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         midiImportButtonPanel.add(volumeSpinner, gridBagConstraints);
 
         startBeatSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
@@ -348,6 +371,8 @@ private void initChannelInfo()
         startBeatSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         midiImportButtonPanel.add(startBeatSpinner, gridBagConstraints);
 
         endBeatSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
@@ -357,6 +382,8 @@ private void initChannelInfo()
         endBeatSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         midiImportButtonPanel.add(endBeatSpinner, gridBagConstraints);
 
         meterSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 1, 16, 1));
@@ -366,6 +393,8 @@ private void initChannelInfo()
         meterSpinner.setPreferredSize(new java.awt.Dimension(75, 56));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         midiImportButtonPanel.add(meterSpinner, gridBagConstraints);
 
         noteResolutionComboBox.setMaximumRowCount(16);
@@ -373,7 +402,7 @@ private void initChannelInfo()
         noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
         noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
         noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Bright", 1, 13))); // NOI18N
         noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
         noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
         noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -420,6 +449,9 @@ private void initChannelInfo()
         chordExtractPanel.add(chordChannelNumberComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 11;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         midiImportButtonPanel.add(chordExtractPanel, gridBagConstraints);
 
@@ -429,7 +461,28 @@ private void initChannelInfo()
                 extractChordsActionPerformed(evt);
             }
         });
-        midiImportButtonPanel.add(extractChords, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 12;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        midiImportButtonPanel.add(extractChords, gridBagConstraints);
+
+        chordResolutionComboBox.setMaximumRowCount(16);
+        chordResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        chordResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        chordResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
+        chordResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Bright", 1, 13))); // NOI18N
+        chordResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        chordResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
+        chordResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordResolutionComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 10;
+        gridBagConstraints.gridy = 1;
+        midiImportButtonPanel.add(chordResolutionComboBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -528,17 +581,21 @@ private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//G
         extractChords();
     }//GEN-LAST:event_extractChordsActionPerformed
 
+    private void chordChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordChannelNumberComboBoxActionPerformed
+        ChannelInfo chordInfo = (ChannelInfo) chordChannelNumberComboBox.getSelectedItem();
+        chordChannel = chordInfo.getChannelNum() - 1;
+        chordChannelNumberComboBox.setSelectedIndex(chordChannelNumberComboBox.getSelectedIndex());
+    }//GEN-LAST:event_chordChannelNumberComboBoxActionPerformed
+
     private void bassChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassChannelNumberComboBoxActionPerformed
         ChannelInfo bassInfo = (ChannelInfo) bassChannelNumberComboBox.getSelectedItem();
-        bassChannel = bassInfo.getChannelNum()-1;
+        bassChannel = bassInfo.getChannelNum() - 1;
         bassChannelNumberComboBox.setSelectedIndex(bassChannelNumberComboBox.getSelectedIndex());
     }//GEN-LAST:event_bassChannelNumberComboBoxActionPerformed
 
-    private void chordChannelNumberComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordChannelNumberComboBoxActionPerformed
-        ChannelInfo chordInfo = (ChannelInfo) chordChannelNumberComboBox.getSelectedItem();
-        chordChannel = chordInfo.getChannelNum()-1;
-        chordChannelNumberComboBox.setSelectedIndex(chordChannelNumberComboBox.getSelectedIndex());
-    }//GEN-LAST:event_chordChannelNumberComboBoxActionPerformed
+    private void chordResolutionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordResolutionComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chordResolutionComboBoxActionPerformed
 
 private void setJmVolume()
   {
@@ -656,32 +713,33 @@ private void stopPlaying()
 //method which extracts the chords from the given midi file, must specify bass track, chord track, and/or melody track
 private void extractChords()
 {
-    
     //add cases for melody, bass, and chords
     int startSlot = BEAT*((Integer)startBeatSpinner.getValue() - 1);
     int endSlot;
 
     //sets the note resolution to 1/8
-    midiImport.setResolution(EIGHTH);
-    melodies = midiImport.getMelodies();
+    MidiImport newImport = new MidiImport();
+    newImport.importMidi(file);
+    newImport.setResolution(EIGHTH);
+    LinkedList<MidiImportRecord> newMelodies = newImport.getMelodies();
     
     //create two separate arrays for the bass MelodyParts and the chord MelodyParts
           List<MelodyPart> bassMelodyParts = new ArrayList<MelodyPart>();
           List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();
           MelodyPart currentMelodyPart;
-          for (final MidiImportRecord record : melodies) {
-              currentMelodyPart = record.getPart();
+          for (final MidiImportRecord newRecord : newMelodies) {
+              currentMelodyPart = newRecord.getPart();
               endSlot = Math.min(currentMelodyPart.getSize() - 1, 
                              BEAT*((Integer)endBeatSpinner.getValue()));
               while (endSlot - startSlot < 4)
               {
                   endSlot++;
               }
-              if (record.getChannel() == bassChannel && currentMelodyPart != null) {
+              if (newRecord.getChannel() == bassChannel && currentMelodyPart != null) {
                   currentMelodyPart.copy(startSlot, endSlot);
                   bassMelodyParts.add(currentMelodyPart);
               }
-              if (record.getChannel() == chordChannel && currentMelodyPart != null) {
+              if (newRecord.getChannel() == chordChannel && currentMelodyPart != null) {
                   currentMelodyPart.copy(startSlot, endSlot);
                   chordMelodyParts.add(currentMelodyPart);
               }
@@ -720,6 +778,7 @@ public void dispose()
     private javax.swing.JComboBox bassChannelNumberComboBox;
     private javax.swing.JComboBox chordChannelNumberComboBox;
     private javax.swing.JPanel chordExtractPanel;
+    private javax.swing.JComboBox chordResolutionComboBox;
     private javax.swing.JSpinner endBeatSpinner;
     private javax.swing.JButton extractChords;
     private javax.swing.JButton importTrackToLeadsheet;
