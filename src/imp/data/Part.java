@@ -996,6 +996,39 @@ public Unit getNextUnit(int slotIndex)
 
 
 /**
+ * Return the first index of a slot not containing null.
+ * If no such index, return -1.
+ * @return 
+ */
+public int getFirstIndex()
+  {
+    for( int i = 0; i < size; i++ )
+      {
+        Unit unit = slots.get(i);
+        if( unit != null )
+          {
+            return i;
+          }
+      }
+    return -1;
+  }
+
+/**
+ * Return the first (non-null) Unit.
+ * If there is none, return null;
+ * @return 
+ */
+public Unit getFirstUnit()
+  {
+    int i = getFirstIndex();
+    if( i < 0 )
+      {
+        return null;
+      }
+    return slots.get(i);
+  }
+
+/**
  * Returns the index of the next Unit after the indicated slot.
  *
  * @param slotIndex the index of the slot to start searching from
@@ -1013,6 +1046,8 @@ public int getNextIndex(int slotIndex)
           }
       }
     return size;
+    
+
 //    
 //    Unit unit = slots.get(slotIndex);
 //    int nextIndex = size;

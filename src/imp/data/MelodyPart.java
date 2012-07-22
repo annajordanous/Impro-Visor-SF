@@ -312,6 +312,26 @@ public void addNote(Note note)
     return (Note)getUnit(slotIndex);
     }
 
+  /**
+   * return the first note (non-rest).
+   * If there is none, returns null.
+   * @return 
+   */
+  
+public Note getFirstNote()
+  {
+    PartIterator it = iterator();
+    while( it.hasNext() )
+      {
+        Note note = (Note)it.next();
+        if( note.nonRest() )
+          {
+            return note;
+          }
+      }
+    return null;
+  }
+
 
   /**
    * Returns the Note after the indicated slot index.
