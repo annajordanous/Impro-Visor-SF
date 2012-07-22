@@ -43,12 +43,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.Sequencer;
-import javax.sound.sampled.AudioFormat;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -18458,7 +18456,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
 public void generateFromButton()
       {
       Stave stave = getCurrentStave();
-      generate(lickgen, stave.getSelectionStart(), stave.getSelectionEnd());
+      originalGenerate(lickgen, stave.getSelectionStart(), stave.getSelectionEnd());
       }
 
 public void rectifySelection()
@@ -20062,105 +20060,14 @@ private void adjustSelection()
   }
 
 
-//public void generateChorus(LickGen lickgen)
-//  {
-//    int selectionStart = improviseStartSlot;
-//
-//    saveConstructionLineState = showConstructionLinesMI.isSelected();
-//    // Don't construction show lines while generating
-//    setShowConstructionLinesAndBoxes(false);
-//
-//    setMode(Mode.GENERATING);
-//
-//    Stave stave = getCurrentStave();
-//
-//    stave.setSelection(improviseStartSlot, improviseEndSlot);
-//
-//    totalSlots = improviseEndSlot - improviseStartSlot + 1;
-//
-//    System.out.println("\ngenerateChorus: " + improviseStartSlot + " to " + improviseEndSlot + ", total = " + totalSlots/BEAT + " beats");
-//
-//    verifyTriageFields();
-//
-//    Polylist rhythm = null;
-//
-//    boolean useOutlines = lickgenFrame.useSoloistSelected();
-//
-//    if( useOutlines )
-//      {
-//        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
-//        // was commented out:
-//        lickgen.getFillMelodyParameters(minPitch,
-//                                        maxPitch,
-//                                        minInterval,
-//                                        maxInterval,
-//                                        BEAT,
-//                                        leapProb,
-//                                        chordProg,
-//                                        0,
-//                                        avoidRepeats);
-//
-//        MelodyPart solo = lickgen.generateSoloFromOutline(totalSlots);
-//
-//        if( solo != null )
-//          {
-//            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
-//            if( lickgenFrame.useHeadSelected() )
-//              {
-//                adjustLickToHead(solo);
-//              }
-//            putLick(solo);
-//          }
-//      }
-//
-//    // If the outline is unable to generate a solo, which might
-//    // happen if there are no outlines of the correct length or the soloist
-//    // file was not correctly loaded, use the grammar.
-//
-//    if( rhythm == null || !useOutlines )
-//      {
-//
-//        if( lickgenFrame.getUseGrammar() )
-//          {
-//            rhythm = lickgen.generateRhythmFromGrammar(totalSlots);
-//          }
-//        else
-//          {
-//            rhythm = lickgen.generateRandomRhythm(totalSlots,
-//                                                  minDuration,
-//                                                  maxDuration,
-//                                                  restProb);
-//          }
-//
-//        MelodyPart lick = generateLick(rhythm);
-//
-//        System.out.println("generated " + (lick == null ? "null" : (lick.size()/BEAT + " beats")));
-//
-//        // Critical point for recurrent generation
-//        if( lick != null )
-//          {
-//            putLick(lick);
-//          }
-//        else
-//          {
-//            System.out.println("panic: null lick");
-//            setMode(Mode.GENERATION_FAILED);
-//            return;
-//          }
-//      }
-//
-//    if( rhythm != null )
-//      {
-//        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
-//      }
-//
-//    setMode(Mode.GENERATED);
-//
-//    // needed? enableRecording(); // TRIAL
-//  }
 
-
-public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
+/**
+ * Original version of generate: does not return MelodyPart
+ * @param lickgen
+ * @param improviseStartSlot
+ * @param improviseEndSlot 
+ */
+public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
@@ -20267,6 +20174,134 @@ public void generate(LickGen lickgen, int improviseStartSlot, int improviseEndSl
     setMode(Mode.GENERATED);
 
     enableRecording(); // TRIAL
+  }
+
+
+/**
+ * New version of generate
+ * @param lickgen
+ * @param improviseStartSlot
+ * @param improviseEndSlot
+ * @return 
+ */
+
+public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
+{
+    MelodyPart lick = null;
+    
+    saveConstructionLineState = showConstructionLinesMI.isSelected();
+    // Don't construction show lines while generating
+    setShowConstructionLinesAndBoxes(false);
+    
+    setMode(Mode.GENERATING);
+//
+//    adjustSelection();
+//
+//    Stave stave = getCurrentStave();
+
+//    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
+
+    totalSlots = improviseEndSlot - improviseStartSlot + 1;
+    
+    int beatsRequested = totalSlots/BEAT;
+
+    //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
+
+    verifyTriageFields();
+
+    Polylist rhythm = null;
+
+    boolean useOutlines = lickgenFrame.useSoloistSelected();
+
+    if( useOutlines )
+      {
+        // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
+        // was commented out:
+        lickgen.getFillMelodyParameters(minPitch, 
+                                        maxPitch, 
+                                        minInterval,
+                                        maxInterval, 
+                                        BEAT, 
+                                        leapProb, 
+                                        chordProg,
+                                        0, 
+                                        avoidRepeats);
+
+        lick = lickgen.generateSoloFromOutline(totalSlots);
+        if( lick != null )
+          {
+            rhythm = lickgen.getRhythmFromSoloist(); //get the abstract melody for display
+            if( lickgenFrame.useHeadSelected() )
+              {
+                adjustLickToHead(lick);
+              }
+            putLick(lick);
+          }
+      }
+
+    // If the outline is unable to generate a solo, which might
+    // happen if there are no outlines of the correct length or the soloist
+    // file was not correctly loaded, use the grammar.
+
+    if( rhythm == null || !useOutlines )
+      {
+
+        if( lickgenFrame.getUseGrammar() )
+          {
+            rhythm = lickgen.generateRhythmFromGrammar(improviseStartSlot, totalSlots);
+          }
+        else
+          {
+            rhythm = lickgen.generateRandomRhythm(totalSlots, 
+                                                  minDuration,
+                                                  maxDuration,
+                                                  restProb);
+          }
+        
+        //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
+        
+        lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
+        //System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
+        //playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + improviseStartSlot + " - " + improviseEndSlot);
+       
+        // Critical point for recurrent generation
+        if( lick != null )
+          {
+          //getCurrentMelodyPart().pasteOver(lick, improviseStartSlot);
+          repaint();
+
+          int beatsGenerated = lick.size()/BEAT;
+            
+          if( beatsGenerated != beatsRequested )
+              {
+              //debug System.out.println("generated " + beatsGenerated 
+              //              + " beats, but " + beatsRequested + " requested");
+              }
+            //putLick(improLick);
+          }
+        else
+          {
+            //debug System.out.println("panic: generated null improLick");
+            setMode(Mode.GENERATION_FAILED);
+            return lick;
+          }
+     }
+
+    if( rhythm != null )
+      {
+        lickgenFrame.setRhythmFieldText(Formatting.prettyFormat(rhythm));
+      }
+//
+//    if( oneSlotWasSelected )
+//      {
+//        stave.setSelection(selectionStart);
+//      }
+
+    setMode(Mode.GENERATED);
+    
+    //enableRecording(); // TRIAL Commented out for autoImprovisation, reconsider
+    
+    return lick;
   }
 
 
@@ -21257,7 +21292,7 @@ public void improviseButtonToggled()
 
         recurrentIteration = 1;
         //debug System.out.println("Start improvising: " + improviseStartSlot + " to " + improviseEndSlot);
-        generate(lickgen, improviseStartSlot, improviseEndSlot);
+        originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Quit</center></html>");
 
@@ -23987,6 +24022,249 @@ public int getRecordSnapValue()
     return Integer.parseInt(midiRecordSnapSpinner.getValue().toString());
   }
 
+
+/**
+ * New inner class for autoimprovisation
+ */
+
+class AutoImprovisation
+{
+boolean selected = true;  // current default
+
+/**
+ * ivFirst is 0 if Impro-Visor is to go first, 1 if not
+ */
+
+int ivFirst = 0;
+
+Command improCommand = null;
+
+/**
+ * Parameters for trading
+ */
+
+/**
+ * The number of slots in one full cycle of trading.
+ */
+
+int improInterval = 3840;
+int halfInterval = 1920;
+
+
+/**
+ * The number of slots by which generation will lead use
+ * 
+ * Ultimately this should be made to depend on tempo, etc.
+ */
+
+int generationLeadSlots = 240;
+
+
+/**
+ * The number of slots by which the midiSynth should be
+ * started before playing is required
+ * 
+ * Ultimately this should be made to depend on tempo, etc.
+ */
+
+int playLeadSlots = 90;
+
+
+int generateAtSlot = 0;
+
+int playAtSlot = 0;
+
+MelodyPart improLick = null;
+
+boolean firstTime = false;
+
+
+public void reset()
+  {
+    generateAtSlot = 0;
+    playAtSlot = 0;
+    improLick = null;
+    improCommand = null;
+  }
+
+public boolean improviseNow(int slotInPlayback, int size)
+  {
+  generateAtSlot = (slotInPlayback + generationLeadSlots) % size;
+  
+  playAtSlot = (slotInPlayback + playLeadSlots) % size;
+
+  return generateAtSlot % improInterval == ivFirst*halfInterval;
+  }
+
+public boolean playNow(int slotInPlayback, int size)
+  {
+
+//    if( improLick != null && slotInPlayback >= playLeadSlots )
+//      {
+//        return true;
+//      }
+    
+    if( firstTime ) 
+      {
+        return true;
+      }
+    
+    return playAtSlot % improInterval == ivFirst*halfInterval;
+  }
+
+public MelodyPart createMelody(MelodyPart currentMelodyPart)
+  {
+    improLick = generate(lickgen, generateAtSlot, generateAtSlot + halfInterval - 1);
+    
+    System.out.println("create improLick to play at: " + playAtSlot 
+                     + " generated at " + generateAtSlot + ": " + improLick);
+    
+    // If a lick was generated, copy it into the melodyPart for notation
+    // and set up a command that will play
+    if( improLick != null )
+      {
+        Score improScore = new Score();
+        improScore.setTempo(score.getTempo());
+
+        //currentMelodyPart.truncateEndings(true);
+        //MelodyPart extracted = currentMelodyPart.extract(generateAtSlot, lastSlotAhead);
+        improLick.setInstrument(11); // vibraphone
+        improLick.setSwing(currentMelodyPart.getSwing());
+
+        //System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
+        improScore.addPart(improLick);
+
+        // Create command now, for execution on a subsequent slot
+
+        setImproCommand(
+                new PlayScoreCommand(improScore,
+                                     0, // startTime
+                                     true, // swing
+                                     midiSynth2,
+                                     null, // play listener
+                                     0, // loopCount,
+                                     0, // transposition
+                                     false, // use drums
+                                     -1));       // transposition
+      
+      }
+    return improLick;
+  }
+
+public void createInitialMelody(MelodyPart currentMelodyPart)
+  {
+    createMelody(currentMelodyPart);
+    
+    if( improLick != null )
+      {
+       Note firstNote = improLick.getFirstNote();
+//       int offset = firstNote.getRhythmValue();
+//       improLick.setNote(0, new Rest(offset));
+       playAtSlot = 0;
+       firstTime = true;
+      }
+  }
+
+public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart, boolean paste)
+  {
+      if( improCommand != null )
+        {
+          if( paste )
+            {
+            if( firstTime )
+              {
+                firstTime = false;
+               currentMelodyPart.pasteOver(improLick, 0);
+              }
+            else
+              {
+              currentMelodyPart.pasteOver(improLick, playAtSlot);
+              }
+            }
+          
+          improCommand.execute();
+          setImproCommand(null); // Don't play twice
+        }
+    System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
+    return improLick;
+  }
+
+
+public int getGenerationLeadSlots()
+  {
+    return generationLeadSlots;
+  }
+
+public void setGenerationLeadSlots(int generationLeadSlots)
+  {
+    this.generationLeadSlots = generationLeadSlots;
+  }
+
+public Command getImproCommand()
+  {
+    return improCommand;
+  }
+
+public void setImproCommand(Command improCommand)
+  {
+    this.improCommand = improCommand;
+  }
+
+public int getImproInterval()
+  {
+    return improInterval;
+  }
+
+public void setImproInterval(int improInterval)
+  {
+    this.improInterval = improInterval;
+    halfInterval = improInterval/2;
+  }
+
+public int getPlayLeadSlots()
+  {
+    return playLeadSlots;
+  }
+
+public void setPlayLeadSlots(int playLeadSlots)
+  {
+    this.playLeadSlots = playLeadSlots;
+  }
+
+public void setSelected(boolean selected)
+  {
+    this.selected = selected;
+  }
+
+public boolean isSelected()
+  {
+    return selected;
+  }
+
+public void setIVfirst(boolean value)
+  {
+    ivFirst = value? 0 : 1;
+  }
+
+public int getIVFirst()
+  {
+    return ivFirst;
+  }
+
+public boolean improviseAtStart()
+  {
+    return selected && ivFirst == 0; 
+  }
+
+ }
+
+/**
+ * Select which improvisation type to use.
+ */
+private boolean originalGeneration = true;
+
+private AutoImprovisation autoImprovisation = null;
+
 /*
  * This was formerly embedded inside executable code.
  */
@@ -24052,7 +24330,12 @@ public void actionPerformed(ActionEvent evt)
       }
 
     // Recurrent generation option
-
+    // There are two separate branches for the time being, reflecting
+    // an intended change 
+    
+    if( originalGeneration )
+      {
+      // Original form of improvisation
     if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
             && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
       {
@@ -24063,7 +24346,7 @@ public void actionPerformed(ActionEvent evt)
 //                             + " chorus # " + recurrentIteration);
         setStatus("Chorus " + recurrentIteration);
 
-        generate(lickgen, improviseStartSlot, improviseEndSlot);
+        originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
 
 
         //generate(lickgen, improviseStartSlot+1920, improviseStartSlot+3839); //TEST
@@ -24071,6 +24354,47 @@ public void actionPerformed(ActionEvent evt)
         slotInPlayback = improviseStartSlot; // TRIAL
       }
 
+      }
+    else
+      {
+        // New form of improvisation
+        // Caution: LickGenerator control should be opened first. 
+    
+       if( autoImprovisation.isSelected() )
+        {
+          MelodyPart currentMelodyPart = getCurrentMelodyPart();
+          
+          int size = currentMelodyPart.size();
+          
+          // Create a lick if it is now time
+
+          if( autoImprovisation.improviseNow(slotInPlayback, size) )
+            {
+              autoImprovisation.createMelody(currentMelodyPart);
+            }
+
+          // Play the lick previously generated, and paste into the 
+          // current melody part.
+
+          boolean playNow = autoImprovisation.playNow(slotInPlayback, size);
+          
+          if( playNow )
+            {
+            System.out.println("at " + slotInPlayback + " playNow = " + playNow);
+            }
+            
+          if(  playNow )
+            {
+            if( slotInPlayback == improviseStartSlot )
+              {
+              //currentMelodyPart.clear();
+              }
+          
+            autoImprovisation.playCreatedMelody(currentMelodyPart, true);
+            }
+        }
+        
+      }
     // if( midiSynth.finishedPlaying() ) original
 
     // The following variant was originally added to stop playback at the end of a selection
@@ -24174,4 +24498,8 @@ public void actionPerformed(ActionEvent evt)
     }
   }
   }
+
+
+
+
 }
