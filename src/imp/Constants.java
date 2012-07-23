@@ -845,6 +845,7 @@ public interface Constants {
 			       T_REST = 'R',
                                T_RANDOM = 'X',
                                T_OUTSIDE = 'Y',
+                               T_EXPECTANCY = 'E',
                                T_BASS = 'B',
                                T_GOAL = 'G';
    
@@ -867,4 +868,3 @@ public interface Constants {
     public static final int ENDSCORE = -1;
     
 }
-

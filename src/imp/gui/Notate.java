@@ -8337,7 +8337,7 @@ public class Notate
         });
         improvMenu.add(trade2userFirstCheckBoxMI);
 
-        trade1userFirstCheckBoxMI.setText("User plays first 4 bar");
+        trade1userFirstCheckBoxMI.setText("User plays first bar");
         trade1userFirstCheckBoxMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trade1userFirstCheckBoxMIActionPerformed(evt);
@@ -12262,6 +12262,7 @@ private MelodyPart makeLick(Polylist rhythm)
 
 public boolean putLick(MelodyPart lick)
   {
+    //System.out.println("putLick " + lick);
     if( lick == null )
       {
         // redundant ErrorLog.log(ErrorLog.WARNING, "No lick was generated.");
@@ -20218,12 +20219,12 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
     setShowConstructionLinesAndBoxes(false);
 
     setMode(Mode.GENERATING);
-//
-//    adjustSelection();
-//
-//    Stave stave = getCurrentStave();
 
-//    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
+    adjustSelection();
+
+    Stave stave = getCurrentStave();
+
+    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
 
     totalSlots = improviseEndSlot - improviseStartSlot + 1;
 
@@ -23406,7 +23407,7 @@ public void showNewVoicingDialog()
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSeparator jSeparator10;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
     private javax.swing.JSeparator jSeparator13;
     private javax.swing.JSeparator jSeparator14;
     private javax.swing.JSeparator jSeparator16;
@@ -24597,7 +24598,7 @@ public boolean improviseAtStart()
 /**
  * Select which improvisation type to use.
  */
-private boolean originalGeneration = false;
+private boolean originalGeneration = true;
 
 private AutoImprovisation autoImprovisation = null;
 

@@ -7540,7 +7540,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade1userFirstCheckBoxMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="User plays first 4 bar"/>
+                <Property name="text" type="java.lang.String" value="User plays first bar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade1userFirstCheckBoxMIActionPerformed"/>
