@@ -7431,6 +7431,82 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="improvMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Auto-Improv"/>
+            <Property name="toolTipText" type="java.lang.String" value="Set the type of auto-improvisation, if any"/>
+          </Properties>
+          <Events>
+            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="improvMenuMenuSelected"/>
+          </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="noImprovCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="No Improvisation"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="noImprovCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade16IVfirstCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Trade 16&apos;s, Impro-Visor first"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade16IVfirstCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade12IVfirstCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Trade 12&apos;s, Impro-Visor first"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade12IVfirstCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade8IVfirstCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Trade 8&apos;s, Impro-Visor first"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade8IVfirstCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVfirstCheckBoxMI">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Trade 4&apos;s, Impro-Visor first"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade4IVfirstCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade2IVfirstCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Trade 2&apos;s, Impro-Visor first"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade2IVfirstCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade1IVfirstCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Trade 1&apos;s, Impro-Visor first"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade1IVfirstCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="trade4IVsecondCheckBoxMI">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Trade 4&apos;s, Impro-Visor second"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="trade4IVsecondCheckBoxMIActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="utilitiesMenu">
           <Properties>
             <Property name="mnemonic" type="int" value="85"/>
