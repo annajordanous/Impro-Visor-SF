@@ -114,9 +114,9 @@ private boolean autoFill = true;
 
 private boolean useSyncopation      = true;
 private String syncopationType      = "C";
-private double syncopationValue     = 0.5;
-private double expectancyMultiplier = 0.5;
-private double expectancyConstant   = 0.1;
+private double syncopationValue     = 0;
+private double expectancyMultiplier = 1;
+private double expectancyConstant   = 0.8;
     
 
 private int recurrentIteration = 1;
@@ -3808,7 +3808,7 @@ public void resetTriageParameters(boolean menu)
 
    // useGrammarMI.setSelected(Boolean.parseBoolean(lickgen.getParameter(
    //     LickGen.USE_GRAMMAR)));
-
+            
     useGrammar = true; // Boolean.parseBoolean(lickgen.getParameter(LickGen.USE_GRAMMAR));
 
     avoidRepeats = Boolean.parseBoolean(lickgen.getParameter(

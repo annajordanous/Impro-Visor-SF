@@ -83,6 +83,7 @@ public class LickGen implements Constants
     public static final String EXPECTANCY_MULTIPLIER = "expectancy-multiplier";
     public static final String EXPECTANCY_CONSTANT   = "expectancy-constant";
     
+    public static final String SYNCOPATION = "syncopation";
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
@@ -1036,7 +1037,7 @@ public MelodyPart fillMelody(int minPitch,
 
     MelodyPart melPart = new MelodyPart();
 
-    System.out.println("Rhythm String: " + rhythmString);
+    //Generates a rhythm with matched syncopation
     if(syncopation)
     {
         MelodyPart melody = notate.getCurrentMelodyPart();
@@ -1044,17 +1045,12 @@ public MelodyPart fillMelody(int minPitch,
         ChordPart chords = notate.getChordProg();
         MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
         int[] rhythmArray = Generator.getArray(rhythmString);
-        System.out.println("Rhythm Array: " + Arrays.toString(rhythmArray));
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
-        System.out.println("SyncVector: " + Arrays.toString(Generator.generateString(syncVector, "E")));
-        int measures = 4;
+        int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
         int synco = Tension.getSyncopation(syncVector, measures);
-        System.out.println("Synco: " + synco);
         int[] rhythm = Generator.generateSyncopation(measures, synco, rhythmArray);
         int newSynco = Tension.getSyncopation(rhythm, measures);
-        System.out.println("New Synco: " + newSynco);
         String[] rhythmList = Generator.generateString(rhythm, "E");
-        System.out.println("New Rhythm: " + Arrays.toString(rhythmList));
         rhythmString = Polylist.PolylistFromArray(rhythmList);
     }
     
@@ -1780,6 +1776,7 @@ public boolean fillMelody(MelodyPart lick,
                     }
                     ArrayList<Integer> midiArray = new ArrayList<Integer>();
                     ArrayList<Double> expectDiffs = new ArrayList<Double>();
+                    //Gets all of the possible pitches and their expectancy values
                     for (int midi = minPitch ; midi <= maxPitch; midi++)
                     {
                         if(prevPrevPitch == 0)
@@ -1804,6 +1801,7 @@ public boolean fillMelody(MelodyPart lick,
                     {
                         expectDiffSum += e;
                     }
+                    //Chooses a note with a probability derived from expectancy value
                     double rand = Math.random();
                     double offset = 0;
                     for( int i = 0; i < expectDiffs.size(); ++i )
@@ -1869,6 +1867,7 @@ public boolean fillMelody(MelodyPart lick,
   }
 
     private static int LENGTH_OF_TRADE = 4*480;
+    private static int SLOTS_PER_MEASURE = 480;
 
     /**
     * Gets the average expectancy per note of the previous 4 bars
@@ -1876,6 +1875,7 @@ public boolean fillMelody(MelodyPart lick,
     */
     private double getExpectancyPerNote()
     {
+        //Gets first two notes of melody
         MelodyPart melody = notate.getCurrentMelodyPart();
         int currentSlot = grammar.getCurrentSlot();
         ChordPart chords = notate.getChordProg();
@@ -1895,6 +1895,7 @@ public boolean fillMelody(MelodyPart lick,
         Part.PartIterator pi = currMelody.iterator(secondIndex);
         int numPitches = 0;
         double totalExpectancy = 0;
+        //Calculates expectancy of each following note
         while(pi.hasNext())
         {
             int nextIndex = pi.nextIndex() + currentSlot - LENGTH_OF_TRADE;
