@@ -767,6 +767,7 @@ Polylist evaluateSplice(Polylist form)
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
         int synco = Tension.getSyncopation(syncVector, measures);
+        //Generates a syncopation that matches the syncopation of the previous 4 bars
         int[] rhythm = Generator.generateSyncopation(measures, synco);
         String[] rhythmArray = Generator.generateString(rhythm, (String)args.first());
         Polylist rhythmList = Polylist.PolylistFromArray(rhythmArray);
@@ -790,6 +791,13 @@ int syncopationValue = 1;
 private static int LENGTH_OF_TRADE = 4*480;
 private static int SLOTS_PER_MEASURE = 480;
 
+/**
+ * Evaluates the arguments following the builtin operator. 
+ * So far only implemented for expectancy and syncopation
+ * @param arg1
+ * @param arg2
+ * @return 
+ */
 private Object evaluateBuiltin(Object arg1, Object arg2)
 {
     MelodyPart melody = notate.getCurrentMelodyPart();    
