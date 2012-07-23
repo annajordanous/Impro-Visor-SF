@@ -169,7 +169,11 @@ public void execute()
         // If there is no chord on the slot starting the selection,
         // we try to find the previous chord and use it.
 
-        int startSlot = (int) (startTime % chords.size());
+        int chordPartSize = chords.size();
+        
+        // Not sure why chords.size() would be 0, but it is happening. FIX!
+        
+        int startSlot = chordPartSize > 0 ? (int) (startTime % chordPartSize) : 0;
 
         if( chords.getChord(startSlot) == null )
           {
