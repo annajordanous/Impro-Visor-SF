@@ -24,6 +24,7 @@ import imp.Constants;
 import imp.ImproVisor;
 import imp.cluster.*;
 import imp.data.*;
+import imp.gui.Expectancy;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import java.io.File;
@@ -47,15 +48,16 @@ public class LickGen implements Constants
     // Some notes are initialized to these pitch values; use really big numbers to
     // stay out of the way of midi numbers.
 
-    public static final int NOTE     = 1000;
-    public static final int CHORD    = 1001;
-    public static final int SCALE    = 1002;
-    public static final int COLOR    = 1003;
-    public static final int APPROACH = 1004;
-    public static final int RANDOM   = 1005;
-    public static final int BASS     = 1006;
-    public static final int GOAL     = 1007;
-    public static final int OUTSIDE  = 1008;
+    public static final int NOTE       = 1000;
+    public static final int CHORD      = 1001;
+    public static final int SCALE      = 1002;
+    public static final int COLOR      = 1003;
+    public static final int APPROACH   = 1004;
+    public static final int RANDOM     = 1005;
+    public static final int BASS       = 1006;
+    public static final int GOAL       = 1007;
+    public static final int OUTSIDE    = 1008;
+    public static final int EXPECTANCY = 1009;
     
     // Parameter strings
     // Strings used as labels in the grammar file
@@ -77,14 +79,14 @@ public class LickGen implements Constants
     public static final String USE_GRAMMAR = "use-grammar";
     public static final String AVOID_REPEATS = "avoid-repeats";
     public static final String AUTO_FILL = "auto-fill";
-    
+    public static final String RECTIFY = "rectify";
     public static final String USE_SYNCOPATION       = "use-syncopation";
     public static final String SYNCOPATION_TYPE      = "syncopation-type";
     public static final String SYNCOPATION_VALUE     = "syncopation-value"; 
     public static final String EXPECTANCY_MULTIPLIER = "expectancy-multiplier";
     public static final String EXPECTANCY_CONSTANT   = "expectancy-constant";
 
-    public static final String RECTIFY = "rectify";
+    public static final String SYNCOPATION           = "syncopation";
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
@@ -111,7 +113,10 @@ public class LickGen implements Constants
     ArrayList<Integer> chordUsedSection = new ArrayList<Integer>();    // Indices that are global to an instance
     int position = 0;
     int oldPitch = 0;
-
+    int oldOldPitch = 0;
+    double expectancy = -1;
+    private static int DEFAULT_EXPECTANCY = 200;
+    private static int EXPECTANCY_LIMIT = 60;
     boolean useOutlines = false;
     boolean soloistLoaded = false;
     
@@ -149,7 +154,8 @@ public class LickGen implements Constants
     private boolean lastWasTied = false;
 
     private Notate notate;
-
+    private int prevPitch = (int)(Math.random() * 20 + 60);
+    private int prevPrevPitch = 0;
     /**
      * Constructor -- loads the grammar in from the specified filename, and
      * sets all note probabilities to 1.
@@ -1030,6 +1036,8 @@ public static boolean isPolylistStartingWith(String keyword, Object ob)
     return keyword.equals((String)first);
   }
 
+private boolean syncopation = false;
+
 public MelodyPart fillMelody(int minPitch, 
                              int maxPitch, 
                              int minInterval,
@@ -1054,6 +1062,23 @@ public MelodyPart fillMelody(int minPitch,
 
     MelodyPart melPart = new MelodyPart();
 
+   //Generates a rhythm with matched syncopation
+    if(syncopation)
+    {
+        MelodyPart melody = notate.getCurrentMelodyPart();
+        int currentSlot = grammar.getCurrentSlot();
+        ChordPart chords = notate.getChordProg();
+        MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        int[] rhythmArray = Generator.getArray(rhythmString);
+        int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
+        int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
+        int synco = Tension.getSyncopation(syncVector, measures);
+        int[] rhythm = Generator.generateSyncopation(measures, synco, rhythmArray);
+        int newSynco = Tension.getSyncopation(rhythm, measures);
+        String[] rhythmList = Generator.generateString(rhythm, "E");
+        rhythmString = Polylist.PolylistFromArray(rhythmList);
+    }
+    
     Polylist newRhythmString = new Polylist();
     Polylist section = new Polylist();
     for( Polylist L = rhythmString; L.nonEmpty(); L = L.rest() )
@@ -1085,21 +1110,22 @@ public MelodyPart fillMelody(int minPitch,
           }
         else
           {
-            if( false && first.toString().startsWith("(slope 0 0") )
-              {
-                //System.out.println("3 first: " + first);
-                if( !section.isEmpty() )
-                  {
-                    newRhythmString = newRhythmString.addToEnd(section);
-                    section = new Polylist();
-                    section = section.addToEnd(first);
-                  }
-                else
-                  {
-                    section = section.addToEnd(first);
-                  }
-              }
-            else
+// The "if" branch could not possible be executed
+//            if( false && first.toString().startsWith("(slope 0 0") )
+//              {
+//                //System.out.println("3 first: " + first);
+//                if( !section.isEmpty() )
+//                  {
+//                    newRhythmString = newRhythmString.addToEnd(section);
+//                    section = new Polylist();
+//                    section = section.addToEnd(first);
+//                  }
+//                else
+//                  {
+//                    section = section.addToEnd(first);
+//                  }
+//              }
+//            else
               {
                 if( isPolylistStartingWith("slope", first) || isPolylistStartingWith("X", first) )
                 //if( first.toString().startsWith("(slope") )
@@ -1167,6 +1193,10 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
+//    System.out.println("fillPartOfMelody " + expectancy);
+    expectancy = getExpectancyPerNote();
+//    System.out.println("Expectancy " + expectancy);
+    
     int previousPitch = oldPitch;
 
     for( int i = 0; i < MELODY_GEN_LIMIT; i++ )
@@ -1266,7 +1296,7 @@ private void addNote(Note note, MelodyPart part, Polylist rhythmString,
         // Deal with non-rests
         if( note.isBlack() )
           {
-            note.setAccidental(Accidental.SHARP);
+            note.setAccidental(Constants.Accidental.SHARP);
           }
 
         /*
@@ -1592,6 +1622,7 @@ public boolean fillMelody(MelodyPart lick,
                                       }
                                   }
                                 // Remember old pitch in case it is needed.
+                                oldOldPitch = oldPitch;
                                 oldPitch = pitch;
 
                                 // Move on to next note in inner, if any.
@@ -1694,6 +1725,7 @@ public boolean fillMelody(MelodyPart lick,
                               }
                           }
 
+                        oldOldPitch = oldPitch;
                         oldPitch = nextPitch;
 
                         addNote(note, lick, rhythmString, avoidRepeats, "approach", item);
@@ -1705,6 +1737,7 @@ public boolean fillMelody(MelodyPart lick,
                         pitch = getRandomNote(oldPitch, minInterval, maxInterval,
                                               minPitch, maxPitch, section);
                         note.setPitch(pitch);
+                        oldOldPitch = oldPitch;
                         oldPitch = pitch;
                         addNote(note, lick, rhythmString, avoidRepeats, "approach->random", item);
                       }
@@ -1728,6 +1761,7 @@ public boolean fillMelody(MelodyPart lick,
                           }
                       }
                     note.setPitch(pitch);
+                    oldOldPitch = oldPitch;
                     oldPitch = pitch;
                     addNote(note, lick, rhythmString, avoidRepeats, "random", item);
                   }
@@ -1748,6 +1782,7 @@ public boolean fillMelody(MelodyPart lick,
                 case OUTSIDE:
                   // Transposes a semitone from the default
                   {
+                    oldOldPitch = oldPitch;
                     if( bernoulli(leapProb) )
                       {
                         if( Math.abs(oldPitch - maxPitch) > Math.abs(oldPitch - minPitch) )
@@ -1779,6 +1814,59 @@ public boolean fillMelody(MelodyPart lick,
                     note.setPitch(pitch);
                     addNote(note, lick, rhythmString, avoidRepeats, "default", item);
                   }
+                break;
+
+                //Generates a note based on the expectancy value
+                case EXPECTANCY:
+                {
+                    if(expectancy <= 0)
+                    {
+                        expectancy = DEFAULT_EXPECTANCY;
+                    }
+                    ArrayList<Integer> midiArray = new ArrayList<Integer>();
+                    ArrayList<Double> expectDiffs = new ArrayList<Double>();
+                    //Gets all of the possible pitches and their expectancy values
+                    for (int midi = minPitch ; midi <= maxPitch; midi++)
+                    {
+                        if(prevPrevPitch == 0)
+                        {
+                            prevPrevPitch = prevPitch;
+                        }
+                        double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch,chordProg.getCurrentChord(position));
+                        double invExpectDiff = EXPECTANCY_LIMIT - Math.abs(expectancy - expect);
+//                        if(Math.abs(expectancy - expect) < .1)
+//                        {
+//                            invExpectDiff = 15;
+//                        }
+                        if(Math.abs(expectancy - expect) > EXPECTANCY_LIMIT || invExpectDiff < 0)
+                        {
+                            invExpectDiff = 0;
+                        }
+                        midiArray.add(midi);
+                        expectDiffs.add(invExpectDiff);
+                    }
+                    double expectDiffSum = 0;
+                    for(double e : expectDiffs)
+                    {
+                        expectDiffSum += e;
+                    }
+                    //Chooses a note with a probability derived from expectancy value
+                    double rand = Math.random();
+                    double offset = 0;
+                    for( int i = 0; i < expectDiffs.size(); ++i )
+                    {
+                        // If the random number falls between the range of the probability 
+                        // for that rule, we choose it and break out of the loop.
+                        if( rand >= offset && rand < offset + (expectDiffs.get(i) / expectDiffSum) )
+                        {
+                            note.setPitch(midiArray.get(i));
+                            prevPrevPitch = prevPitch;
+                            prevPitch = midiArray.get(i);
+                        }
+                        offset += (expectDiffs.get(i) / expectDiffSum);
+                    }
+                    addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                }
                 break;
 
                 default:
@@ -1828,7 +1916,54 @@ public boolean fillMelody(MelodyPart lick,
   }
 
 
+    private static int LENGTH_OF_TRADE = 4*480;
+    private static int SLOTS_PER_MEASURE = 480;
 
+    /**
+    * Gets the average expectancy per note of the previous 4 bars
+    * @return 
+    */
+    private double getExpectancyPerNote()
+    {
+        //Gets first two notes of melody
+        MelodyPart melody = notate.getCurrentMelodyPart();
+        int currentSlot = grammar.getCurrentSlot();
+        ChordPart chords = notate.getChordProg();
+        MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        int firstIndex = 0;
+        int secondIndex = currMelody.getNextIndex(firstIndex);
+        if(!currMelody.getNote(firstIndex).nonRest())
+        {
+            firstIndex = secondIndex;
+            secondIndex = currMelody.getNextIndex(firstIndex);
+        }
+        //System.out.println(currMelody.getNote(firstIndex));
+        if(!currMelody.getNote(firstIndex).nonRest() || !currMelody.getNote(secondIndex).nonRest())
+        {
+            return -1;
+        }
+        Part.PartIterator pi = currMelody.iterator(secondIndex);
+        int numPitches = 0;
+        double totalExpectancy = 0;
+        //Calculates expectancy of each following note
+        while(pi.hasNext())
+        {
+            int nextIndex = pi.nextIndex() + currentSlot - LENGTH_OF_TRADE;
+            Chord c = chords.getCurrentChord(nextIndex);
+            int first = currMelody.getNote(firstIndex).getPitch();
+            int second = currMelody.getNote(secondIndex).getPitch();
+            int curr = currMelody.getNote(pi.nextIndex()).getPitch();
+            double mExpectancy = Expectancy.getExpectancy(curr, second, first, c);
+            totalExpectancy += mExpectancy;
+            numPitches ++;
+            firstIndex = secondIndex;
+            secondIndex = pi.nextIndex();
+            pi.next();
+        }
+        return (totalExpectancy/numPitches);
+    }
+    
+    
 /**
  * The following is based on code from BassPatternElement.
  * It makes a note based on the scale degree notation,
@@ -1912,7 +2047,6 @@ public static Note makeRelativeNote(Object ob, int chordRoot)
                         case 9:  pitch+=14; break;
                         case 10: pitch+=16; break;
                         case 11: pitch+=17; break;
-                        case 12: pitch+=19; break;
                         case 13: pitch+=21; break;
                         case -1: pitch-=1;  break;
                         default:
@@ -2076,41 +2210,51 @@ public String getParameterQuietly(String paramName) throws NonExistentParameterE
   }
 
 
-// Use to figure out what the current section is.
-    private int calcSection(ChordPart chordProg, int pos, int index, int oldSection) {
-        int section = oldSection;
+/**
+ * Use to compute the current section.
+ */
 
-        // Calculate what section we're in if we've gone past the end of the
-        // old section:
-        if (pos >= index && index != -1) {
-            // If we've already seen the chord, then get the index of that occurence, and
-            // use that as the current section; otherwise, we mark the current chord as seen,
-            // and increment the section.
-            
-            // An out-of-range problem arose here May 11, 2012. RK tried to clean it up.
-            
-            String name = chordProg.getCurrentChord(pos).getName();
-            int nameIndex = chordUsed.indexOf(name);
-            if( nameIndex != -1 && nameIndex < chordUsedSection.size() )
-              {
-                section = chordUsedSection.get(nameIndex);
-              }
-            else
-              {
-                section = chordUsedSection.size();
-                chordUsed.add(name);
-                chordUsedSection.add(section);
-              }
-        }
+private int calcSection(ChordPart chordProg, int pos, int index, int oldSection)
+  {
+    int section = oldSection;
+
+    // Calculate what section we're in if we've gone past the end of the
+    // old section:
+    if( pos >= index && index != -1 )
+      {
+        // If we've already seen the chord, then get the index of that occurence, and
+        // use that as the current section; otherwise, we mark the current chord as seen,
+        // and increment the section.
+
+        // An out-of-range problem arose here May 11, 2012. RK tried to clean it up.
+
+        String name = chordProg.getCurrentChord(pos).getName();
+        int nameIndex = chordUsed.indexOf(name);
+        if( nameIndex != -1 && nameIndex < chordUsedSection.size() )
+          {
+            section = chordUsedSection.get(nameIndex);
+          }
+        else
+          {
+            section = chordUsedSection.size();
+            chordUsed.add(name);
+            chordUsedSection.add(section);
+          }
+      }
 //System.out.println("calcSection, index = " + index + " oldSection = " + oldSection + " section = " + section);
-        return section;
-    }
+    return section;
+  }
 
-// Make certain types of notes, such as bass (modeled on checkNote)
-    private void makeBassNote(Note note, int pos, ChordPart chordProg) {
-        note.setPitch(
-                chordProg.getCurrentChord(pos).getRootPitchClass().getSemitones() + 48); // FIX!
-    }
+
+/**
+ * Make certain types of notes, such as bass (modeled on checkNote)
+ */
+
+private void makeBassNote(Note note, int pos, ChordPart chordProg)
+  {
+    note.setPitch(
+            chordProg.getCurrentChord(pos).getRootPitchClass().getSemitones() + 48); // FIX!
+  }
 
 // Sets probabilities of note types
     private int[] setProb(int chord, int color, int random, int scale) {
@@ -2473,37 +2617,40 @@ private boolean checkNote(int pos, int pitch, String pitchString,
 
         switch (rhythmVal.charAt(0)) {
             case T_NOTE:
-                note = new Note(NOTE, Accidental.NATURAL, duration);
+                note = new Note(NOTE, Constants.Accidental.NATURAL, duration);
                 break;
             case T_CHORD:
-                note = new Note(CHORD, Accidental.NATURAL, duration);
+                note = new Note(CHORD, Constants.Accidental.NATURAL, duration);
                 break;
             case T_SCALE:
-                note = new Note(SCALE, Accidental.NATURAL, duration);
+                note = new Note(SCALE, Constants.Accidental.NATURAL, duration);
                 break;
             case T_COLOR:
-                note = new Note(COLOR, Accidental.NATURAL, duration);
+                note = new Note(COLOR, Constants.Accidental.NATURAL, duration);
                 break;
             case T_APPROACH:
-                note = new Note(APPROACH, Accidental.NATURAL, duration);
+                note = new Note(APPROACH, Constants.Accidental.NATURAL, duration);
                 break;
             case T_RANDOM:
-                note = new Note(RANDOM, Accidental.NATURAL, duration);
+                note = new Note(RANDOM, Constants.Accidental.NATURAL, duration);
                 break;
             case T_OUTSIDE:
-                note = new Note(OUTSIDE, Accidental.NATURAL, duration);
+                note = new Note(OUTSIDE, Constants.Accidental.NATURAL, duration);
+                break;
+            case T_EXPECTANCY:
+                note = new Note(EXPECTANCY, Constants.Accidental.NATURAL, duration);
                 break;
             case T_REST:
                 note = Note.makeRest(duration);
                 break;
             case T_BASS:
-                note = new Note(BASS, Accidental.NATURAL, duration);
+                note = new Note(BASS, Constants.Accidental.NATURAL, duration);
                 break;
             case T_GOAL:
-                note = new Note(GOAL, Accidental.NATURAL, duration);
+                note = new Note(GOAL, Constants.Accidental.NATURAL, duration);
                 break;
             default:
-                note = new Note(NOTE, Accidental.NATURAL, duration);
+                note = new Note(NOTE, Constants.Accidental.NATURAL, duration);
                 break;
         }
 
