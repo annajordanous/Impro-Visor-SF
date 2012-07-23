@@ -1912,6 +1912,7 @@ public static Note makeRelativeNote(Object ob, int chordRoot)
                         case 9:  pitch+=14; break;
                         case 10: pitch+=16; break;
                         case 11: pitch+=17; break;
+                        case 12: pitch+=19; break;
                         case 13: pitch+=21; break;
                         case -1: pitch-=1;  break;
                         default:
