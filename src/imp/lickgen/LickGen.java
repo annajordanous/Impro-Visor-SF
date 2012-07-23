@@ -77,6 +77,13 @@ public class LickGen implements Constants
     public static final String USE_GRAMMAR = "use-grammar";
     public static final String AVOID_REPEATS = "avoid-repeats";
     public static final String AUTO_FILL = "auto-fill";
+    
+    public static final String USE_SYNCOPATION       = "use-syncopation";
+    public static final String SYNCOPATION_TYPE      = "syncopation-type";
+    public static final String SYNCOPATION_VALUE     = "syncopation-value"; 
+    public static final String EXPECTANCY_MULTIPLIER = "expectancy-multiplier";
+    public static final String EXPECTANCY_CONSTANT   = "expectancy-constant";
+
     public static final String RECTIFY = "rectify";
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
@@ -2008,22 +2015,65 @@ public static Note makeRelativeNote(Object ob, int chordRoot)
         return preferredScale;
     }
 
-    public void setParameter(String paramName, Object param) {
-        grammar.addRule(Polylist.list(Grammar.PARAM, Polylist.list(paramName, param)));
-    }
 
-    public String getParameter(String paramName) {
-        ArrayList<Polylist> params = grammar.getParams();
-        for (int i = 0; i < params.size(); ++i) {
-            Polylist p = params.get(i);
-            if (((String) p.first()).equals(paramName) && p.length() >= 2) {
-                return Advisor.concatListWithSpaces(p.rest());
-            }
-        }
+/**
+ * Set a grammar or lickgen parameter.
+ *
+ * @param paramName
+ * @param param
+ */
+    
+public void setParameter(String paramName, Object param)
+  {
+    grammar.addRule(Polylist.list(Grammar.PARAM, Polylist.list(paramName, param)));
+  }
 
-        ErrorLog.log(ErrorLog.WARNING, paramName + " does not exist.");
-        return null;
-    }
+
+/**
+ * Get a grammar or lickgen parameter. Conversion from String is up to the client.
+ * Complains through the ErrorLog if parameter does not exist.
+ *
+ * @param paramName
+  */
+
+public String getParameter(String paramName)
+  {
+    ArrayList<Polylist> params = grammar.getParams();
+    for( int i = 0; i < params.size(); ++i )
+      {
+        Polylist p = params.get(i);
+        if( ((String) p.first()).equals(paramName) && p.length() >= 2 )
+          {
+            return Advisor.concatListWithSpaces(p.rest());
+          }
+      }
+
+    ErrorLog.log(ErrorLog.WARNING, paramName + " does not exist.");
+    return null;
+  }
+
+/**
+ * Get a grammar or lickgen parameter. Conversion from String is up to the client.
+ * Throws NonExistentParameterException if not present.
+ *
+ * @param paramName
+  */
+
+public String getParameterQuietly(String paramName) throws NonExistentParameterException
+  {
+    ArrayList<Polylist> params = grammar.getParams();
+    for( int i = 0; i < params.size(); ++i )
+      {
+        Polylist p = params.get(i);
+        if( ((String) p.first()).equals(paramName) && p.length() >= 2 )
+          {
+            return Advisor.concatListWithSpaces(p.rest());
+          }
+      }
+
+    throw new NonExistentParameterException(paramName);
+  }
+
 
 // Use to figure out what the current section is.
     private int calcSection(ChordPart chordProg, int pos, int index, int oldSection) {
