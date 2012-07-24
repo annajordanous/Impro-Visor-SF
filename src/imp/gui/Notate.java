@@ -27,7 +27,6 @@ import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
-import imp.audio.CaptureTimerTask;
 import imp.audio.PitchExtractor;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
@@ -56,7 +55,6 @@ import polya.Formatting;
 import polya.Polylist;
 import polya.PolylistBuffer;
 import polya.Tokenizer;
-import java.util.Timer;
 
 /**
  *
@@ -104,8 +102,6 @@ public class Notate
 
   PitchExtractor extractor;
   static int captureInterval = 480;
-  java.util.Timer captureTimer;
-  CaptureTimerTask task;
 
   static int LEADSHEET_EDITOR_ROWS = 1000;
 
@@ -568,7 +564,7 @@ public class Notate
   private MidiRecorder midiRecorder = null; // action handler for recording from midi
 
   private MidiStepEntryActionHandler midiStepInput = null; // action handler for step input from midi
-
+  
   private MidiStepEntryActionHandler voicingInput = null;
 
   private boolean stepInputActive = false;
@@ -603,13 +599,13 @@ public class Notate
                            {null, null, null, null, null, null, null},
                            {null, null, null, null, null, null, null}
           },
-
+          
           new String [] {
-                "Phrase", "Start", "End", "Bars", "Style",
-                /*"Tempo", "Time Sig.", "Key Sig.",*/
+                "Phrase", "Start", "End", "Bars", "Style", 
+                /*"Tempo", "Time Sig.", "Key Sig.",*/ 
                 "Options"
         });
-
+  
   private SectionInfo sectionInfo;
 
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
@@ -891,18 +887,18 @@ public class Notate
     midiSynth2 = new MidiSynth(midiManager);
 
     midiSynth3 = new MidiSynth(midiManager);
-
+    
     autoImprovisation = new AutoImprovisation();
 
     midiStepInput = new MidiStepEntryActionHandler(this);
-
+    
     voicingInput = new MidiStepEntryActionHandler(this);
 
     setStepInput(false);
 
     criticDialog = new CriticDialog(lickgenFrame);
 
-
+    
     // setup the file choosers' initial paths
 
     LeadsheetFileView lsfv = new LeadsheetFileView();
@@ -1021,7 +1017,7 @@ public class Notate
 
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+    
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
@@ -1144,9 +1140,9 @@ public class Notate
     midiRecordSnapSpinner.setValue(Preferences.getMidiRecordSnap());
 
     setNormalMode();
-
+    
     setAutoImprovisation(false);
-
+    
     } // end of Notate constructor
 
 
@@ -8170,7 +8166,7 @@ public class Notate
         });
         viewMenu.add(useBeamsMI);
 
-        noteCursorCBMI.setSelected(true);
+        noteCursorCBMI.setSelected(false);
         noteCursorCBMI.setText("Use Smart Cursor");
         noteCursorCBMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -8807,7 +8803,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     reCaptureCurrentStyle();
 
     styleListModel.reset();
-
+    
     sectionTableModel.tableRefresh();
     }
 
@@ -8820,7 +8816,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     }
 
     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-
+    
     for(int j = 1; j < sectionTableModel.getColumnCount(); j++)
     {
         renderer.setHorizontalAlignment( sectionTableModel.getColumnAdjustments(j));
@@ -8828,7 +8824,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     }
     //sectionTable.getColumnModel().getColumn(0).setCellRenderer( sectionCellRenderer );
   }
-
+  
   public void reCaptureCurrentStyle()
   {
     score.getChordProg().getSectionInfo().reloadStyles();
@@ -8890,7 +8886,7 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
 private void setSectionParameters()
   {
   setSectionPrefs();
-
+  
   sectionTableModel.tableRefresh();
   }
 
@@ -9962,19 +9958,11 @@ public Mode getMode()
 
 public void stopRecording()
   {
-      if (mode == Mode.RECORDING)
+    if( mode == Mode.RECORDING )
       {
-          setMode(previousMode);
-//          try
-//          {
-//              extractor.stopCapture();
-//              extractor.closeTargetLine();
-//              captureTimer.cancel();
-//              task.cancel();
-//          } catch (Exception e)
-//          {
-//              System.out.println("Error stopping audio capture: \n" + e);
-//          }
+        setMode(previousMode);
+//        extractor.stopCapture();
+//        extractor.closeTargetLine();
       }
 
     playBtn.setEnabled(true);
@@ -10016,17 +10004,14 @@ private void startRecording()
         return;
       }
 
-//    extractor = new PitchExtractor(this, score, midiSynth, captureInterval);
+//    extractor = new PitchExtraction(this, score, captureInterval);
 //    extractor.openTargetLine();
-//    extractor.captureAudio();
 //    extractor.setThisMeasure(true);
-//    synchronized (extractor.captureStart)
+//    extractor.captureAudio();
+//    synchronized (extractor.thisMeasure)
 //    {
-//        System.out.println("Audio capture initialized.");
-//        extractor.captureStart.notify();
+//        extractor.thisMeasure.notify();
 //    }
-//    firstCapture = false;
-
 
     playBtn.setEnabled(false);
 
@@ -10842,7 +10827,7 @@ void changePrefTab(JToggleButton button, JPanel tab)
     currentPrefTab = tab;
 
     //System.out.println("setting tab to " + tab);
-
+    
     if(tab.equals(stylePreferences))
     {
         setTableColumnWidths();
@@ -10857,7 +10842,7 @@ void changePrefTab(JToggleButton button, JPanel tab)
         }
         */
     }
-
+    
     preferencesScrollPane.setViewportView(tab);
 
     preferencesDialog.setSize(preferencesDialogDimension);
@@ -11158,7 +11143,7 @@ public void adjust()
 /**
  * This is the Model for the list of Sections that appear in the Style Preferences
  * Dialog.
- *
+ * 
  * This is no longer needed; has been replaced with SectionTableModel
  */
 
@@ -11198,7 +11183,7 @@ public void reset()
 public void refresh()
   {
     fireContentsChanged(this, 0, sectionInfo.size());
-
+    
     int index = sectionList.getSelectedIndex();
 
     if( index >= 0 )
@@ -11236,8 +11221,8 @@ public void refresh()
 /**
  * When adjusting the number of columns, make sure:
  *      to add the columns to the design/gui
- *      to go to line ~697 where sectionTableModel is instantiated
- *          and uncomment/add the appropriate strings
+ *      to go to line ~697 where sectionTableModel is instantiated 
+ *          and uncomment/add the appropriate strings 
  *      to change setTableColumnWidths() accordingly
  *      to change the boolean [] canEdit accordingly
  *      to change the int [] columnWidths and columnAdjustment accordingly
@@ -11246,37 +11231,37 @@ public void refresh()
 public class SectionTableModel extends DefaultTableModel
 {
     private static final int columnCount = 6;
-
+    
     boolean[] canEdit = new boolean [] {
               //phrase, start, end  , bars , style, options
                 true  , true , false, false, false, true
             };
-    int [] columnWidths = new int [] {
+    int [] columnWidths = new int [] { 
                 30    , 25   , 25   , 20   , 110  , 45
             };
     int [] columnAdjustment = new int [] {
-                JLabel.CENTER, JLabel.RIGHT, JLabel.RIGHT, JLabel.RIGHT,
+                JLabel.CENTER, JLabel.RIGHT, JLabel.RIGHT, JLabel.RIGHT, 
                 JLabel.LEFT  , JLabel.LEFT
             };
-
+    
     public SectionTableModel(Object [][] myTable, String [] columnHeaders)
     {
         super(myTable, columnHeaders);
     }
-
+    
     public int getColumnWidths(int index) {
         return columnWidths[index];
     }
-
+    
     public int getColumnAdjustments(int index) {
         return columnAdjustment[index];
     }
-
+    
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return canEdit [columnIndex];
     }
-
+    
     public void tableRefresh() {
         int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
         fireTableDataChanged();
@@ -11288,10 +11273,10 @@ public class SectionTableModel extends DefaultTableModel
                 addRecentStyle(sectionInfo.getSectionRecordByIndex(index).getStyle());
         }
     }
-
+    
     public void tableReset() {
         sectionInfo = score.getChordProg().getSectionInfo().copy();
-
+        
         tableRefresh();
     }
 
@@ -11329,7 +11314,7 @@ public class SectionTableModel extends DefaultTableModel
                 return null;
         }
     }
-
+    
     @Override
     public void setValueAt(Object aValue, int row, int column)
     {
@@ -11339,31 +11324,31 @@ public class SectionTableModel extends DefaultTableModel
                 sectionInfo.getSectionRecordByIndex(row).setIsPhrase((Boolean)aValue);
             default:
                 sectionInfo.setSpecificCell(aValue, row, column);
-        }
+        }    
         tableRefresh();
     }
-
+    
     @Override
     public int getRowCount() {
         //return 0 if sectionInfo is null, else return sectionInfo.size()
         return sectionInfo == null ? 0 : sectionInfo.size();
     }
-
+    
     @Override
     public int getColumnCount() {
         return columnCount;
     }
-
+    
     public void addARow()
     {
-        sectionTableModel.insertRow(0, new Object [] {new Integer(0),
-                                                    new Integer(0),
+        sectionTableModel.insertRow(0, new Object [] {new Integer(0), 
+                                                    new Integer(0), 
                                                     new Integer(0),
                                                     "",
                                                     null}
               );
     }
-
+    
     @Override
     public Class getColumnClass(int column)
     {
@@ -11374,7 +11359,7 @@ public class SectionTableModel extends DefaultTableModel
         }
         return Object.class;
     }
-
+    
 }
 
 @SuppressWarnings("serial")
@@ -11906,7 +11891,7 @@ private void updateTempoFromTextField()
     private void lickGeneratorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_lickGeneratorMIActionPerformed
 
     {//GEN-HEADEREND:event_lickGeneratorMIActionPerformed
-    openLickGenerator();
+    openLickGenerator();   
     }//GEN-LAST:event_lickGeneratorMIActionPerformed
 
 
@@ -13849,7 +13834,7 @@ private boolean setSectionPrefs()
   {
     try
       {
-        int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
+        int index = sectionTable.getSelectionModel().getLeadSelectionIndex(); 
 
         int currentMeasure = sectionInfo.getSectionMeasure(index);
 
@@ -13867,7 +13852,7 @@ private boolean saveStylePrefs()
   {
     if(sectionTable.getSelectionModel().getLeadSelectionIndex() < 0)
         sectionTable.getSelectionModel().setSelectionInterval(0,0);
-
+    
     SectionRecord record = sectionInfo.getSectionRecordByIndex(
             sectionTable.getSelectionModel().getLeadSelectionIndex());
 
@@ -14777,7 +14762,7 @@ private boolean saveGlobalPreferences()
     int measureLength = score.getChordProg().getMeasureLength();
 
     int sectionIndex = sectionList.getSelectedIndex();
-
+                     
                      //sectionTable.getSelectionModel().getLeadSelectionIndex()
 
     if( sectionIndex == -1 )
@@ -17067,7 +17052,7 @@ private void setCurrentStaveType(StaveType t)
  public void playScore()
   {
     autoImprovisation.reset();
-
+    
     MelodyPart currentMelodyPart = getCurrentMelodyPart();
     if( autoImprovisation.improviseAtStart() )
       {
@@ -17087,60 +17072,41 @@ private void setCurrentStaveType(StaveType t)
 
 
 public void playScoreBody(int startAt)
-{
-    if (playingPaused())
     {
-        Trace.log(2, "Notate: playScore() - unpausing");
+      if( playingPaused() )
+      {
+      Trace.log(2, "Notate: playScore() - unpausing");
 
-        pauseScore();
-    } else
-    {
+      pauseScore();
+      }
+    else
+      {
 
-        Trace.log(2, "Notate: playScore() - starting or restarting playback");
+      Trace.log(2, "Notate: playScore() - starting or restarting playback");
 
-        // makes playback indicator always visible
-        // set to false upon user scroll
+      // makes playback indicator always visible
+      // set to false upon user scroll
 
-        autoScrollOnPlayback = true;
+      autoScrollOnPlayback = true;
 
-        if (playingStopped())
+      if( playingStopped() )
         {
-            // possible loss of precision below: check this
-            startAt = (int) playbackManager.getMicrosecondsFromSlider();
+        // possible loss of precision below: check this
+        startAt = (int)playbackManager.getMicrosecondsFromSlider();
 
-            clearKeyboard();
-            clearVoicingEntryTF();
-            resetChordDisplay();
+        clearKeyboard();
+        clearVoicingEntryTF();
+        resetChordDisplay();
         }
 
-        // reset playback offset
+      // reset playback offset
 
-        initCurrentPlaybackTab(0, 0);
+      initCurrentPlaybackTab(0, 0);
 
-        setMode(Mode.RECORDING);
-        //sets up a Timer to handle audio capture
-//        if (mode == Mode.RECORDING)
-//        {
-//            startAudioTimer();
-//            System.out.println("Capture timer started.");
-//        }
-
-        getStaveAtTab(0).playSelection(startAt, score.getTotalLength() - 1, getLoopCount(), true, "playScoreBody");
-        //getCurrentStave().play(startAt);
-    }
+      getStaveAtTab(0).playSelection(startAt, score.getTotalLength()-1, getLoopCount(), true, "playScoreBody");
+      //getCurrentStave().play(startAt);
+      }
     setMode(Mode.PLAYING);
-}
-
-public void startAudioTimer()
-    {
-        task = new CaptureTimerTask(extractor);
-        captureTimer = new Timer();
-        //convert captureInterval to milliseconds
-        int interval = (int) (score.getMetre()[0] * 60000.0
-                / score.getTempo() * captureInterval / 480.0);
-        captureTimer.scheduleAtFixedRate(task,
-                score.getCountInTime() * 1000,
-                interval);
     }
 
 
@@ -20254,7 +20220,7 @@ private void adjustSelection()
  * Original version of generate: does not return MelodyPart
  * @param lickgen
  * @param improviseStartSlot
- * @param improviseEndSlot
+ * @param improviseEndSlot 
  */
 public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
@@ -20371,17 +20337,17 @@ public void originalGenerate(LickGen lickgen, int improviseStartSlot, int improv
  * @param lickgen
  * @param improviseStartSlot
  * @param improviseEndSlot
- * @return
+ * @return 
  */
 
 public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improviseEndSlot)
 {
     MelodyPart lick = null;
-
+    
     saveConstructionLineState = showConstructionLinesMI.isSelected();
     // Don't construction show lines while generating
     setShowConstructionLinesAndBoxes(false);
-
+    
     setMode(Mode.GENERATING);
 //
 //    adjustSelection();
@@ -20391,7 +20357,7 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
 //    getCurrentStave().setSelection(improviseStartSlot, improviseEndSlot);
 
     totalSlots = improviseEndSlot - improviseStartSlot + 1;
-
+    
     int beatsRequested = totalSlots/BEAT;
 
     //System.out.println("\ngenerate: " + improviseStartSlot + " to " + improviseEndSlot + ", requesting " + beatsRequested + " beats");
@@ -20406,14 +20372,14 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
       {
         // was new lickgenFrame.fillMelody(BEAT, rhythm, chordProg, 0);
         // was commented out:
-        lickgen.getFillMelodyParameters(minPitch,
-                                        maxPitch,
+        lickgen.getFillMelodyParameters(minPitch, 
+                                        maxPitch, 
                                         minInterval,
-                                        maxInterval,
-                                        BEAT,
-                                        leapProb,
+                                        maxInterval, 
+                                        BEAT, 
+                                        leapProb, 
                                         chordProg,
-                                        0,
+                                        0, 
                                         avoidRepeats);
 
         lick = lickgen.generateSoloFromOutline(totalSlots);
@@ -20441,18 +20407,18 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
           }
         else
           {
-            rhythm = lickgen.generateRandomRhythm(totalSlots,
+            rhythm = lickgen.generateRandomRhythm(totalSlots, 
                                                   minDuration,
                                                   maxDuration,
                                                   restProb);
           }
-
+        
         //System.out.println("\nrhythm at " + improviseStartSlot + " to " + improviseEndSlot + " = " + rhythm);
-
+        
         lick = generateLick(rhythm, improviseStartSlot, improviseEndSlot);
         //System.out.println("generated lick at " + improviseStartSlot + " to " + improviseEndSlot + " = " + lick);
         //playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS, "putLick " + improviseStartSlot + " - " + improviseEndSlot);
-
+       
         // Critical point for recurrent generation
         if( lick != null )
           {
@@ -20460,10 +20426,10 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
           repaint();
 
           int beatsGenerated = lick.size()/BEAT;
-
+            
           if( beatsGenerated != beatsRequested )
               {
-              //debug System.out.println("generated " + beatsGenerated
+              //debug System.out.println("generated " + beatsGenerated 
               //              + " beats, but " + beatsRequested + " requested");
               }
             //putLick(improLick);
@@ -20487,9 +20453,9 @@ public MelodyPart generate(LickGen lickgen, int improviseStartSlot, int improvis
 //      }
 
     setMode(Mode.GENERATED);
-
+    
     //enableRecording(); // TRIAL Commented out for autoImprovisation, reconsider
-
+    
     return lick;
   }
 
@@ -21419,7 +21385,7 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
       openStepKeyboard();
     }//GEN-LAST:event_stepKeyboardMIActionPerformed
 
-    private int indexOfLastChordPlayed = 0;
+    private int indexOfLastChordPlayed = 0; 
 
     private void chordReplayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordReplayButtonActionPerformed
 
@@ -21438,7 +21404,7 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
         record.setUsePreviousStyle();
         sectionTableModel.tableRefresh();
         sectionTable.getSelectionModel().setSelectionInterval(index,index);
-
+        
     }//GEN-LAST:event_usePreviousStyleButtonActionPerformed
 
 private void trade16IVfirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade16IVfirstCheckBoxMIActionPerformed
@@ -21537,9 +21503,9 @@ private void setUseImproviseCheckBox()
   {
    resetImprovCheckBoxes();
    setAutoImprovisation(false);
-   useImproviseButtonCheckBoxMI.setSelected(true);
+   useImproviseButtonCheckBoxMI.setSelected(true);    
   }
-
+        
 private void trade12userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_trade12userFirstCheckBoxMIActionPerformed
   {//GEN-HEADEREND:event_trade12userFirstCheckBoxMIActionPerformed
     resetImprovCheckBoxes();
@@ -21592,11 +21558,11 @@ private void trade1userFirstCheckBoxMIActionPerformed(java.awt.event.ActionEvent
 
 /**
  * Enable or disable auto improvisation.
- * Disabled means that only the original style of improvisation is used,
+ * Disabled means that only the original style of improvisation is used, 
  * pressing a button to generate.
- * Enabled means that improvisation may occur automatically with playback,
+ * Enabled means that improvisation may occur automatically with playback, 
  * trading in a manner specified in the menu.
- * @param value
+ * @param value 
  */
 public void setAutoImprovisation(boolean value)
   {
@@ -21605,7 +21571,7 @@ public void setAutoImprovisation(boolean value)
     if( value )
       {
       openLickGenerator();  //FIX.
-      lickgenFrame.toBack();
+      lickgenFrame.toBack();    
       }
   }
 
@@ -21643,9 +21609,9 @@ public void improviseButtonToggled()
       {
         // Auto-improvisation is not compatible with using this button,
         // so the checkboxes are reverted to using the button.
-
+        
         setUseImproviseCheckBox();
-
+        
         // Count-in not currently compatible with improvising,
         // so it is forced off.
         countInCheckBox.setSelected(false);
@@ -24438,7 +24404,7 @@ int halfInterval = 1920;
 
 /**
  * The number of slots by which generation will lead use
- *
+ * 
  * Ultimately this should be made to depend on tempo, etc.
  */
 
@@ -24448,7 +24414,7 @@ int generationLeadSlots = 240;
 /**
  * The number of slots by which the midiSynth should be
  * started before playing is required
- *
+ * 
  * Ultimately this should be made to depend on tempo, etc.
  */
 
@@ -24475,7 +24441,7 @@ public void reset()
 public boolean improviseNow(int slotInPlayback, int size)
   {
   generateAtSlot = (slotInPlayback + generationLeadSlots) % size;
-
+  
   playAtSlot = (slotInPlayback + playLeadSlots) % size;
 
   return generateAtSlot % improInterval == ivFirst*halfInterval;
@@ -24488,22 +24454,22 @@ public boolean playNow(int slotInPlayback, int size)
 //      {
 //        return true;
 //      }
-
-    if( firstTime )
+    
+    if( firstTime ) 
       {
         return true;
       }
-
+    
     return playAtSlot % improInterval == ivFirst*halfInterval;
   }
 
 public MelodyPart createMelody(MelodyPart currentMelodyPart)
   {
     improLick = generate(lickgen, generateAtSlot, generateAtSlot + halfInterval - 1);
-
-//    System.out.println("create improLick to play at: " + playAtSlot
+    
+//    System.out.println("create improLick to play at: " + playAtSlot 
 //                     + " generated at " + generateAtSlot + ": " + improLick);
-//
+//    
     // If a lick was generated, copy it into the melodyPart for notation
     // and set up a command that will play
     if( improLick != null )
@@ -24531,7 +24497,7 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
                                      0, // transposition
                                      false, // use drums
                                      -1));       // transposition
-
+      
       }
     return improLick;
   }
@@ -24539,7 +24505,7 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
 public void createInitialMelody(MelodyPart currentMelodyPart)
   {
     createMelody(currentMelodyPart);
-
+    
     if( improLick != null )
       {
        Note firstNote = improLick.getFirstNote();
@@ -24568,7 +24534,7 @@ public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart, boolean paste)
               currentMelodyPart.pasteOver(improLick, playAtSlot);
               }
             }
-
+          
           improCommand.execute();
           setImproCommand(null); // Don't play twice
         }
@@ -24640,7 +24606,7 @@ public int getIVFirst()
 
 public boolean improviseAtStart()
   {
-    return selected && ivFirst == 0;
+    return selected && ivFirst == 0; 
   }
 
  }
@@ -24677,29 +24643,15 @@ public void actionPerformed(ActionEvent evt)
     int slot = slotInPlayback;
     int totalSlots = midiSynth.getTotalSlots();
 
-//Poll for audio input every (captureInterval) slots
-//    if (mode == Mode.RECORDING && !firstCapture)
-//      {
-//          if (slot % captureInterval == 0 && !extractor.isCapturing)
-//          {
-//              extractor.setThisMeasure(true);
-//              extractor.isCapturing = true;
-//              System.out.println("Notate initialized audio capture at time "
-//                      + System.currentTimeMillis());
-//              synchronized (extractor.captureStart)
-//              {
-//                  extractor.captureStart.notify();
-//              }
-//              captureStopped = false;
-//          } else if (slot % captureInterval >= 478 && !captureStopped)
-//          {
-//              captureStopTime = System.currentTimeMillis();
-//              System.out.println("Notate stopped audio capture at time "
-//                          + captureStopTime);
-//              extractor.setThisMeasure(false);
-//              captureStopped = true;
-//          }
-//      }
+    //Poll for audio input every (captureInterval) slots
+//    if( mode == Mode.RECORDING) {
+//        if(slot % captureInterval == 0) {
+//            System.out.println("audio capture initialized at measure " + slot);
+//            synchronized (extractor.thisMeasure) {
+//                extractor.thisMeasure.notify();
+//            }
+//        }
+//    }
 
     //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
     //System.out.println("Slot in playback: " + slotInPlayback);
@@ -24733,7 +24685,7 @@ public void actionPerformed(ActionEvent evt)
 
     // Recurrent generation option
     // There are two separate branches for the time being, reflecting
-    // an intended change
+    // an intended change 
 
     if( originalGeneration )
       {
@@ -24757,7 +24709,7 @@ public void actionPerformed(ActionEvent evt)
     else
       {
         // New form of improvisation
-        // Caution: LickGenerator control should be opened first.
+        // Caution: LickGenerator control should be opened first. 
 
         if( autoImprovisation.isSelected() )
           {
@@ -24772,7 +24724,7 @@ public void actionPerformed(ActionEvent evt)
                 autoImprovisation.createMelody(currentMelodyPart);
               }
 
-            // Play the lick previously generated, and paste into the
+            // Play the lick previously generated, and paste into the 
             // current melody part.
 
             boolean playNow = autoImprovisation.playNow(slotInPlayback, size);
