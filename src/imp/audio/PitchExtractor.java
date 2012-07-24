@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import javax.sound.sampled.*;
 //import org.apache.commons.math3.complex.Complex;
 
@@ -27,7 +27,7 @@ public class PitchExtractor
 
     public volatile boolean isCapturing;
     public volatile Boolean stopCapture = true;
-    public volatile Boolean thisMeasure = false;
+    public final Boolean thisCapture = false;
     boolean stopAnalysis;
     AudioInputStream inputStream;
     AudioFormat format;
@@ -41,8 +41,11 @@ public class PitchExtractor
     boolean processingStarted = false;
     double swingVal;
     int captureInterval;
+    int lastSlotNumber = 1;
     int startingPosition = 0;
     int positionOffset;
+    //timeDifference keeps track of time offset between captures
+    double timeDifference = 0;
     List<Integer> oneSlot = new ArrayList<Integer>();
     int slotsFilled; //# of slots filled before pitch change is detected
     int lastPitch = 0; //initialize most recent pitch to a rest
@@ -56,17 +59,17 @@ public class PitchExtractor
     private final float POLL_RATE = 20; //in milliseconds
     private final int tenMSOffset = (int) ((10.0 / 1000.0) * SAMPLE_RATE * 2.0);
     private final double interval = (POLL_RATE / 1000.0) * SAMPLE_RATE * 2.0;
-    private int RESOLUTION = 8; //smallest subdivision allowed
+    private int RESOLUTION = 16; //smallest subdivision allowed
     private int slotConversion = 480 / RESOLUTION;
     private boolean TRIPLETS = false;
     private boolean noteOff; //flag indicating terminal note
     //only windows with a RMS above this threshold will be examined
-    private final double RMS_THRESHOLD = 4.75;
+    private final double RMS_THRESHOLD = Math.exp(4.75);
     private final double CONFIDENCE_THRESHOLD = 0.45;
     private double CONFIDENCE;
     //sets threshold for detecting peaks in normalized SDF
     private final double K_CONSTANT = 0.875;
-    private Queue<byte[]> processingQueue;
+    private final Queue<byte[]> processingQueue;
 
     public static void main(String args[])
     {
@@ -84,7 +87,7 @@ public class PitchExtractor
         //swingVal = score.getChordProg().getStyle().getSwing();
         this.captureInterval = captureInterval;
         format = getAudioFormat();
-        processingQueue = new ConcurrentLinkedQueue<byte[]>();
+        processingQueue = new ArrayBlockingQueue<byte[]>(10);
     }
 
     public void openTargetLine()
@@ -178,44 +181,46 @@ public class PitchExtractor
             slotSize *= 3;
         }
         boolean firstSlot = true;
-        int lastSlotNumber = 1;
+
         int currentSlotNumber;
         int duration = 0;
         while (index + FRAME_SIZE < streamInput.length)
         {
             byte[] oneFrame = new byte[FRAME_SIZE];
             //break input into frames
-            for (int i = index; i < index + FRAME_SIZE; i++)
+            int limit = index + FRAME_SIZE;
+            for (int i = index; i < limit; i++)
             {
                 oneFrame[i - index] = streamInput[i];
             }
-            ByteBuffer bBuf = ByteBuffer.wrap(oneFrame);
-            //new array to store double values
-            double[] preCorrelatedData = new double[size];
-            for (int i = 0; i < size; i++)
-            { //populate array
-                preCorrelatedData[i] = (double) bBuf.getShort();
-            }
-            double fundamentalFrequency;
-            //only attempt to determine pitch if RMS is above threshold
-            if (checkRMS(preCorrelatedData))
+            double fundamentalFrequency = 0;
+            if (oneFrame.length > 0)
             {
-                double[] correlatedData = new double[size];
-                correlatedData = computeAutocorrelation(preCorrelatedData);
-                double[] computedData = new double[size];
-                computedData = computeNSD(preCorrelatedData, correlatedData);
-                fundamentalFrequency = pickPeak(computedData);
-            } else
-            { //otherwise, assign fundamental to zero
-                fundamentalFrequency = 0;
+                ByteBuffer bBuf = ByteBuffer.wrap(oneFrame);
+                //new array to store double values
+                double[] preCorrelatedData = new double[size];
+                for (int i = 0; i < size; i++)
+                { //populate array
+                    preCorrelatedData[i] = (double) bBuf.getShort();
+                }
+                //only attempt to determine pitch if RMS is above threshold
+                if (checkRMS(preCorrelatedData))
+                {
+                    double[] correlatedData = computeAutocorrelation(preCorrelatedData);
+                    double[] computedData = computeNSD(preCorrelatedData, correlatedData);
+                    fundamentalFrequency = pickPeak(computedData);
+                }
             }
+            //otherwise, keep fundamental at zero (rest)
+            //keeps track of how much time has elapsed within a capture interval
             double timeElapsed = 0;
             if (analysesCompleted == 0)
             {
                 timeElapsed = ((index - positionOffset) / interval) * POLL_RATE;
             } else
             {
-                timeElapsed = index / interval * POLL_RATE;
+                timeElapsed = (index / interval * POLL_RATE);
+                //System.out.println("Time elapsed = " + timeElapsed);
             }
             //System.out.println("Time elapsed = " + timeElapsed);
             currentSlotNumber = resolveSlot(timeElapsed,
@@ -273,57 +278,59 @@ public class PitchExtractor
             } else if (index + FRAME_SIZE + interval >= streamInput.length)
             {
                 oneSlot.add(slotPitch);
-                System.out.println("Slot = " + currentSlotNumber);
                 //Determine whether the first slot in the next capture is part
-                //of the same note
-                double nextTime = timeElapsed +
-                        ((interval + tenMSOffset) / interval * POLL_RATE);
-                if (currentSlotNumber == resolveSlot(nextTime,
-                    tempo / slotSize, slotSize) + 1)
+                //of the slot for which windows are currently being collected
+                double nextTime = timeElapsed
+                        + ((interval + tenMSOffset) / interval * POLL_RATE);
+                int nextSlot = resolveSlot(nextTime, tempo / slotSize, slotSize) + 1;
+                if (analysesCompleted < 1 && currentSlotNumber == nextSlot)
                 {
-                    //return;
-                }
-                int pitch = calculatePitch(oneSlot);
-                if (pitch == lastPitch)
-                { //if the last pitch in the capture interval is a continuation
-                    //of the previous pitch...
-                    if (analysesCompleted < 3 && notate.getMode() == Mode.RECORDING)
-                    {
-                        slotsFilled++;
-                        System.out.println("Note " + pitch + " *possibly* "
-                                + "carried over between capture intervals.\n"
-                                + "Mode = " + notate.getMode());
-                    } else
-                    {
-                        duration = slotsFilled * slotConversion;
-                        setNote(lastPitch, startingPosition, duration, melodyPart);
-                        incrementStartingPosition(duration);
-                    }
+                    timeDifference = timeElapsed;
+                    lastSlotNumber = currentSlotNumber;
                 } else
-                { //otherwise, handle previous pitch and last pitch in slot
-                    //separately
-                    duration = slotsFilled * slotConversion;
-                    setNote(lastPitch,
-                            startingPosition,
-                            duration,
-                            melodyPart);
-                    incrementStartingPosition(duration);
-                    if (analysesCompleted == 3 || notate.getMode() != Mode.RECORDING)
-                    { //if this is the last capture, go ahead and set the note.
-                        duration = slotConversion;
-                        setNote(pitch,
+                {
+                    int pitch = calculatePitch(oneSlot);
+                    if (pitch == lastPitch)
+                    { //if the last pitch in the capture interval is a continuation
+                        //of the previous pitch...
+                        if (analysesCompleted < 3 && notate.getMode() == Mode.RECORDING)
+                        {
+                            slotsFilled++;
+                            System.out.println("Note " + pitch + " *possibly* "
+                                    + "carried over between capture intervals.\n"
+                                    + "Mode = " + notate.getMode());
+                        } else
+                        {
+                            duration = slotsFilled * slotConversion;
+                            setNote(lastPitch, startingPosition, duration, melodyPart);
+                            incrementStartingPosition(duration);
+                        }
+                    } else
+                    { //otherwise, handle previous pitch and last pitch in slot
+                        //separately
+                        duration = slotsFilled * slotConversion;
+                        setNote(lastPitch,
                                 startingPosition,
                                 duration,
                                 melodyPart);
                         incrementStartingPosition(duration);
-                        System.out.println("Mode = " + notate.getMode());
-                        oneSlot.clear();
-                    } else
-                    { //otherwise, remember this pitch and reset slots filled.
-                        lastPitch = pitch;
-                        slotsFilled = 1;
-                        System.out.println("Note " + pitch + " carried over "
-                                + "between capture intervals.");
+                        if (analysesCompleted == 3 || notate.getMode() != Mode.RECORDING)
+                        { //if this is the last capture, go ahead and set the note.
+                            duration = slotConversion;
+                            setNote(pitch,
+                                    startingPosition,
+                                    duration,
+                                    melodyPart);
+                            incrementStartingPosition(duration);
+                            System.out.println("Mode = " + notate.getMode());
+                            oneSlot.clear();
+                        } else
+                        { //otherwise, remember this pitch and reset slots filled.
+                            lastPitch = pitch;
+                            slotsFilled = 1;
+                            System.out.println("Note " + pitch + " carried over "
+                                    + "between capture intervals.");
+                        }
                     }
                 }
                 //if the slot hasn't changed, count this window as part of the slot
@@ -384,7 +391,7 @@ public class PitchExtractor
         {
             sum += (data[i] * data[i]);
         }
-        double rms = Math.log(Math.sqrt(sum / data.length));
+        double rms = Math.sqrt(sum / data.length);
         //System.out.println("RMS = " + rms);
         return rms > RMS_THRESHOLD;
     }
@@ -398,8 +405,9 @@ public class PitchExtractor
     {
         //System.out.println("New pitch calculated...");
         noteOff = false;
-        int[] pitches = new int[pitchList.size()];
-        for (int a = 0; a < pitchList.size(); a++)
+        int size = pitchList.size();
+        int[] pitches = new int[size];
+        for (int a = 0; a < size; a++)
         {
             pitches[a] = pitchList.get(a);
         }
@@ -410,7 +418,7 @@ public class PitchExtractor
         boolean tie = false;
         boolean d = false; //discrepancy test boolean
         int i = 0;
-        while (!d && i < pitches.length)
+        while (!d && i < size)
         { //search for discrepancies in data
             if (pitches[i] == 0)
             {
@@ -428,7 +436,7 @@ public class PitchExtractor
             }
             i++;
         } //end while
-        int[] occurrences = new int[pitches.length];
+        int[] occurrences = new int[size];
         int maxLoc = 0;
         int maxO = 0;
         int secondPlaceLoc = -1;
@@ -439,13 +447,13 @@ public class PitchExtractor
         } else
         { //otherwise, find most frequently detected pitch
             testPitch = 0;
-            for (i = 0; i < pitches.length; i++)
+            for (i = 0; i < size; i++)
             {
                 if (pitches[i] != 0 && pitches[i] != testPitch)
                 {
                     occurrences[i] = 1;
                     testPitch = pitches[i]; //don't check same pitch twice...
-                    for (int j = i + 1; j < pitches.length; j++)
+                    for (int j = i + 1; j < size; j++)
                     {
                         if (pitches[i] == pitches[j])
                         {
@@ -476,14 +484,14 @@ public class PitchExtractor
             } //end for
         } //end else
         //check to see whether or not this tone is terminal
-        if ((pitches.length > 2 && pitches[pitches.length - 2] == 0
-                && pitches[pitches.length - 1] == 0)
-                || (pitches.length < 3 && pitches[pitches.length - 1] == 0))
+        if ((size > 2 && pitches[size - 2] == 0
+                && pitches[size - 1] == 0)
+                || (size < 3 && pitches[size - 1] == 0))
         {
             noteOff = true;
         }
         //if the pitch has at least 5 windows and no pitch
-        if ((pitches.length > 4) && ((maxO < 3 && numZeros >= pitches.length
+        if ((size > 4) && ((maxO < 3 && numZeros >= size
                 * 0.75) || (maxO < 3 && pitches[maxLoc] < 40)))
         {
             return 0;
@@ -501,7 +509,7 @@ public class PitchExtractor
             else if (tie)
             {
                 //algorithm is more prone to sub-fundamental errors
-                if (secondPlaceLoc >= pitches.length / 2 && absDifference < 12)
+                if (secondPlaceLoc >= size / 2 && absDifference < 12)
                 {
                     return pitches[secondPlaceLoc];
                 } else
@@ -526,7 +534,8 @@ public class PitchExtractor
     private int resolveSlot(double timeElapsed,
                             double msPerSlot, int slotSize)
     {
-        int slot = (int) (Math.floor(timeElapsed / msPerSlot)) % slotSize;
+        int slot = (int) (Math.floor((timeElapsed + timeDifference)
+                / msPerSlot)) % slotSize;
         if (TRIPLETS && (slot % (RESOLUTION / 2) == RESOLUTION / 2 - 1
                 || slot % (RESOLUTION / 2) == 1))
         {
@@ -601,6 +610,23 @@ public class PitchExtractor
             original[i] = (2.0 * correlated[i]) / squared[i];
         }
         return original;
+
+//        int size = original.length;
+//        double squared[] = new double[size];
+//        //this is the m'(tau) component of the SDF
+//        for (int tau = 0; tau < size - 1; tau++)
+//        {
+//            double x = original[j];
+//            double y = original[j+tau];
+//            squared[tau] = x*x + y*y;
+//        }
+//        //Normalization: n'(tau) = 2 * r'(tau) / m'(tau).
+//        //Range should be [-1, 1].
+//        for (int i = 0; i < size; i++)
+//        {
+//            original[i] = (2.0 * correlated[i]) / squared[i];
+//        }
+//        return original;
     }
 
     /**
@@ -680,44 +706,59 @@ public class PitchExtractor
         {
             numberOfMaxima--;  //otherwise, decrement # of maxima
         }
-        //find highest local maximum
-        double highestMax = localMaxima.get(0);
-        int j = 1;
-        while (j < localMaxima.size())
+        if (numberOfMaxima > 0)
         {
-            double toCheck = localMaxima.get(j);
-            if (toCheck > highestMax)
+            //find highest local maximum
+            double highestMax = localMaxima.get(0);
+            int j = 1;
+            int size = localMaxima.size();
+            while (j < size)
             {
-                highestMax = toCheck;
-                CONFIDENCE = highestMax;
+                double toCheck = localMaxima.get(j);
+                if (toCheck > highestMax)
+                {
+                    highestMax = toCheck;
+                    CONFIDENCE = highestMax;
+                }
+                j++;
             }
-            j++;
-        }
-        //System.out.println("Confidence = " + CONFIDENCE);
-        if (highestMax < CONFIDENCE_THRESHOLD)
-        { //clarity/confidence check
-            return 0; //ignore frequency if confidence is below above value
-        }
-        double threshold = highestMax * K_CONSTANT;
-        j = 0;
-        double testPitch = localMaxima.get(0);
-        while (testPitch < threshold)
-        { //find first local maximum
-            j++;                        //above threshold
-            testPitch = localMaxima.get(j);
-        }
-        //perform cubic interpolation to refine index of pitch period
-        double refinedIndex = SAMPLE_RATE;
-        if (0 < indices.get(j) - 1 && indices.get(j) + 2 < input.length)
+            //System.out.println("Confidence = " + CONFIDENCE);
+            if (highestMax < CONFIDENCE_THRESHOLD)
+            { //clarity/confidence check
+                return 0; //ignore frequency if confidence is below above value
+            }
+            double threshold = highestMax * K_CONSTANT;
+            j = 0;
+            double testPitch = localMaxima.get(0);
+            while (testPitch < threshold)
+            { //find first local maximum
+                j++;                        //above threshold
+                testPitch = localMaxima.get(j);
+            }
+            //perform cubic interpolation to refine index of pitch period
+            double refinedIndex = SAMPLE_RATE;
+            if (0 < indices.get(j) - 1 && indices.get(j) + 2 < input.length)
+            {
+                int currentMaxLocation = indices.get(j);
+                double refinedMax = refineMax(input[currentMaxLocation - 1],
+                        input[currentMaxLocation], input[currentMaxLocation + 1],
+                        input[currentMaxLocation + 2]);
+                if (refinedMax > 0)
+                {
+                    double newMaxLocation = (currentMaxLocation - 1)
+                            + refinedMax;
+                    refinedIndex = newMaxLocation;
+                } else
+                {
+                    refinedIndex = currentMaxLocation;
+                }
+            }
+            return SAMPLE_RATE / refinedIndex;
+        } else
         {
-            int currentMaxLocation = indices.get(j);
-            double newMaxLocation = (currentMaxLocation - 1)
-                    + refineMax(input[currentMaxLocation - 1],
-                    input[currentMaxLocation], input[currentMaxLocation + 1],
-                    input[currentMaxLocation + 2]);
-            refinedIndex = newMaxLocation;
+            System.out.println("ALERT!!! No maxima found in correlated data.");
+            return 0;
         }
-        return SAMPLE_RATE / refinedIndex;
     }
 
     /**
@@ -789,11 +830,10 @@ public class PitchExtractor
         stopCapture = true;
     }
 
-    public void setThisMeasure(boolean isIt)
-    {
-        thisMeasure = isIt;
-    }
-
+//    public void setThisMeasure(boolean isIt)
+//    {
+//        thisMeasure = isIt;
+//    }
     public class CaptureThread extends Thread
     {
 
@@ -801,50 +841,55 @@ public class PitchExtractor
         {
             //number of samples to capture before putting data in the queue
             double samplesToCapture = (SAMPLE_RATE / (score.getTempo()
-                    / score.getMetre()[0] / 60.0)) * captureInterval / 480;
+                    / score.getMetre()[0] / 60.)) * (captureInterval / 480.);
             try
             {//Loop until stopCapture is set.
                 while (!stopCapture)
                 {
                     //wait for notification from Notate/Timer
-                    synchronized (thisMeasure)
+                    synchronized (thisCapture)
                     {
-                        thisMeasure.wait();
+                        thisCapture.wait();
                     }
                     ByteArrayOutputStream outputStream =
                             new ByteArrayOutputStream();
                     byte tempBuffer[] = new byte[FRAME_SIZE];
+                    int cnt;
                     int limit = (int) (samplesToCapture / (FRAME_SIZE / 2));
-                    if (!processingStarted)
-                    {
-                        limit -= FIRST_CAPTURE_TRUNCATION;
-                        startTime = System.currentTimeMillis();
-                        System.out.println("First capture start = "
-                                + startTime);
-                    } else
-                    {
-                        System.out.println("Next capture started at time "
-                                + System.currentTimeMillis());
-                    }
+//                    if (!processingStarted)
+//                    {
+//                        limit -= FIRST_CAPTURE_TRUNCATION;
+//                        startTime = System.currentTimeMillis();
+//                        System.out.println("First capture start = "
+//                                + startTime);
+//                    } else
+//                    {
+//                        System.out.println("Next capture started at time "
+//                                + System.currentTimeMillis());
+//                    }
                     //collect 1 captureInterval's worth of data
                     for (int n = 0; n < limit; n++)
                     {
                         //byte tempBuffer[] = new byte[FRAME_SIZE];
                         //cnt = number of bytes read
-                        int cnt = target.read(tempBuffer, 0, tempBuffer.length);
+                        cnt = target.read(tempBuffer, 0, tempBuffer.length);
                         if (cnt > 0)
                         {   //Save data in output stream object.
                             outputStream.write(tempBuffer, 0, cnt);
                         }
-                        if (n >= limit - 2)
-                        {
-                            System.out.println("Finished capturing frame " + n
-                                    + "at time " + System.currentTimeMillis());
-                        }
+//                        if (n >= limit - 2)
+//                        {
+//                            System.out.println("Finished capturing frame " + n
+//                                    + " at time " + System.currentTimeMillis());
+//                        }
                     }
-                    System.out.println("Audio capture interval finished.");
+                    //System.out.println("Audio capture interval finished.");
                     if (!processingStarted)
                     {
+                        startTime = System.currentTimeMillis();
+                        startTime -= (long) (1000. * samplesToCapture / SAMPLE_RATE);
+                        System.out.println("First capture start = "
+                                + startTime);
                         long difference = (midiSynth.getPlaybackStartTime()
                                 + score.getCountInTime() * 1000 - startTime);
                         System.out.println("difference = " + difference);
@@ -852,8 +897,12 @@ public class PitchExtractor
                         {
                             difference = 0;
                         }
-                        positionOffset = (int) Math.ceil((difference / 1000.)
+                        positionOffset = (int) ((difference / 1000.)
                                 * SAMPLE_RATE * 2.);
+                        if (positionOffset % 2 != 0)
+                        {
+                            positionOffset += 1;
+                        }
                         //positionOffset *= OFFSET_ADJUSTMENT;
                         System.out.println("positionOffset = " + positionOffset);
                     }
@@ -871,6 +920,8 @@ public class PitchExtractor
                             try
                             {
                                 processingQueue.notify();
+                                System.out.println("AnalyzeThread notified to "
+                                        + "poll processing queue.");
                             } catch (Exception e)
                             {
                                 System.out.println("Processing queue error:\n" + e);
@@ -884,7 +935,7 @@ public class PitchExtractor
                 }//end while
             } catch (Exception e)
             {
-                System.out.println("Capture thread error: \n" + e);
+                System.out.println("Capture thread error:\n" + e);
             }//end catch
         }//end run
     }//end inner class CaptureThread
@@ -906,29 +957,25 @@ public class PitchExtractor
                         processingQueue.wait();
                     } catch (Exception e)
                     {
-                        System.out.println("wait error: \n" + e);
+                        System.out.println("wait error:\n" + e);
                     }
                 }
-                try
+
+                if (!processingQueue.isEmpty())
                 {
-                    if (!processingQueue.isEmpty())
+                    byte result[] = processingQueue.poll();
+                    System.out.println("Array removed from processing queue."
+                            + "\n____________New Capture_____________");
+                    processingStarted = true;
+                    if (result.length > 0)
                     {
-                        byte result[] = processingQueue.poll();
-                        System.out.println("Array removed from processing queue."
-                                + "\n____________New Capture_____________");
-                        processingStarted = true;
                         parseNotes(result);
-                    } else
-                    {
-                        System.out.println("Queue is empty.");
                     }
-                } catch (Exception e)
+                } else
                 {
-                    System.out.println("AnalyzeThread error: \n" + e);
-                    analysesCompleted++;
-                    startingPosition += captureInterval;
+                    System.out.println("Queue is empty.");
                 }
             }
-        } //end run
-    }//end AnalyzeThread
+        }//end run
+    }
 }
