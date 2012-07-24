@@ -1693,7 +1693,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     public void keyPressed(KeyEvent e)
     {
-        notate.getCurrentStaveActionHandler().keyPressed(e);           
+        notate.keyPressed(e);           
     }
     
     /**

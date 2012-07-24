@@ -1992,6 +1992,7 @@ public class Notate
         showBracketsAllMeasuresMI = new javax.swing.JCheckBoxMenuItem();
         showConstructionLinesMI = new javax.swing.JCheckBoxMenuItem();
         useBeamsMI = new javax.swing.JCheckBoxMenuItem();
+        noteCursorCBMI = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
         playSelectionMI = new javax.swing.JMenuItem();
         playSelectionToEndMI = new javax.swing.JMenuItem();
@@ -8164,6 +8165,15 @@ public class Notate
             }
         });
         viewMenu.add(useBeamsMI);
+
+        noteCursorCBMI.setSelected(true);
+        noteCursorCBMI.setText("Use Smart Cursor");
+        noteCursorCBMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteCursorCBMIActionPerformed(evt);
+            }
+        });
+        viewMenu.add(noteCursorCBMI);
 
         menuBar.add(viewMenu);
 
@@ -21566,6 +21576,11 @@ public void setAutoImprovisation(boolean value)
   }
 
 
+    private void noteCursorCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorCBMIActionPerformed
+        boolean checked = noteCursorCBMI.isSelected();
+        getCurrentStave().getActionHandler().setUseNoteCursor(checked);
+    }//GEN-LAST:event_noteCursorCBMIActionPerformed
+
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called
@@ -23514,6 +23529,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel newVoicingTypeLabel;
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
+    private javax.swing.JCheckBoxMenuItem noteCursorCBMI;
     private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
