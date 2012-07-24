@@ -85,6 +85,19 @@ public class LickGen implements Constants
     public static final String SYNCOPATION_VALUE     = "syncopation-value"; 
     public static final String EXPECTANCY_MULTIPLIER = "expectancy-multiplier";
     public static final String EXPECTANCY_CONSTANT   = "expectancy-constant";
+    
+    // Syncopation and Expectancy Parameters
+private static final boolean defaultUseSyncopation      = false;
+private static final String defaultSyncopationType      = "C";
+private static final double defaultSyncopationValue     = 0.5;
+private static final double defaultExpectancyMultiplier = 0.5;
+private static final double defaultExpectancyConstant   = 0.1;
+
+private boolean useSyncopation      = defaultUseSyncopation;
+private String syncopationType      = defaultSyncopationType;
+private double syncopationValue     = defaultSyncopationValue;
+private double expectancyMultiplier = defaultExpectancyMultiplier;
+private double expectancyConstant   = defaultExpectancyConstant;
 
     public static final String SYNCOPATION           = "syncopation";
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
@@ -658,6 +671,14 @@ private Cluster pickRandomCluster(Vector<Cluster> clusterList)
 public void loadGrammar(String grammarFile)
   {
     //System.out.println("LickGen loadGrammar: " + grammarFile);
+    
+    // Setup defaults for syncopation and expectation values.
+    useSyncopation       = defaultUseSyncopation;
+    syncopationType      = defaultSyncopationType;
+    syncopationValue     = defaultSyncopationValue;
+    expectancyMultiplier = defaultExpectancyMultiplier;
+    expectancyConstant   = defaultExpectancyConstant;
+    
     grammar.clear();
     grammar.loadGrammar(grammarFile);
 
@@ -676,6 +697,52 @@ public void loadGrammar(String grammarFile)
       {
         soloistLoaded = false;
         //System.out.println("in loadGrammar, no soloist file named:" + soloistFileName);
+      }
+    
+     // Load syncopation and expectation parameters if they are present.
+     try
+      {
+      useSyncopation = Boolean.parseBoolean(getParameterQuietly(USE_SYNCOPATION));
+      }
+    catch(NonExistentParameterException e)
+      {
+      setParameter(USE_SYNCOPATION, defaultUseSyncopation);
+      }
+    
+    try
+      {
+      syncopationType = getParameterQuietly(SYNCOPATION_TYPE);
+       }
+    catch(NonExistentParameterException e)
+      {
+      setParameter(SYNCOPATION_TYPE, defaultUseSyncopation);
+      }
+    
+    try
+      {
+      syncopationValue = Double.parseDouble(getParameterQuietly(SYNCOPATION_VALUE));
+      }
+    catch(NonExistentParameterException e)
+      {
+      setParameter(SYNCOPATION_VALUE, defaultSyncopationValue);
+      }
+    
+    try
+      {
+      expectancyMultiplier = Double.parseDouble(getParameterQuietly(EXPECTANCY_MULTIPLIER));
+      }
+    catch(NonExistentParameterException e)
+      {
+      setParameter(EXPECTANCY_MULTIPLIER, defaultExpectancyMultiplier);
+      }
+    
+    try
+      {
+      expectancyConstant = Double.parseDouble(getParameterQuietly(EXPECTANCY_CONSTANT));
+      }
+    catch(NonExistentParameterException e)
+      {
+      setParameter(EXPECTANCY_CONSTANT, defaultExpectancyConstant);
       }
   }
 
@@ -701,6 +768,31 @@ public void saveSoloist(String grammarFile)
     notate.setLickGenStatus("Saving soloist file: " + soloistFileName);
     CreateGrammar.createSoloistFile(dataPoints, clusters, clusterSets,
                                     transitions, reverseTransitions, outlines, soloistFile);
+  }
+
+public boolean getUseSyncopation()
+  {
+    return useSyncopation;
+  }
+
+public String getSyncopationType()
+  {
+    return syncopationType;
+  }
+
+public Double getSyncopationValue()
+  {
+    return syncopationValue;
+  }
+
+public Double getExpectancyMultiplier()
+  {
+    return expectancyMultiplier;
+  }
+
+public Double getExpectancyConstant()
+  {
+    return expectancyConstant;
   }
 
 public void clearParams()
@@ -1036,8 +1128,6 @@ public static boolean isPolylistStartingWith(String keyword, Object ob)
     return keyword.equals((String)first);
   }
 
-private boolean syncopation = false;
-
 public MelodyPart fillMelody(int minPitch, 
                              int maxPitch, 
                              int minInterval,
@@ -1063,7 +1153,7 @@ public MelodyPart fillMelody(int minPitch,
     MelodyPart melPart = new MelodyPart();
 
    //Generates a rhythm with matched syncopation
-    if(syncopation)
+    if(useSyncopation)
     {
         MelodyPart melody = notate.getCurrentMelodyPart();
         int currentSlot = grammar.getCurrentSlot();

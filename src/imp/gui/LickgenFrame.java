@@ -108,15 +108,6 @@ private boolean useGrammar = true;
 
 private boolean autoFill = true;
 
-// Syncopation and Expectancy Parameters
-
-private boolean useSyncopation      = true;
-private String syncopationType      = "C";
-private double syncopationValue     = 0.5;
-private double expectancyMultiplier = 0.5;
-private double expectancyConstant   = 0.1;
-
-
 private int recurrentIteration = 1;
 
 private LickGen lickgen;
@@ -3760,52 +3751,6 @@ public void resetTriageParameters(boolean menu)
 
     rectifyCheckBox.setSelected(rectify);
 
-        // These will fail silently if the parameter is not present, resulting in
-    // the current value being left as is.
-    
-    try
-      {
-      useSyncopation = Boolean.parseBoolean(lickgen.getParameterQuietly(LickGen.USE_SYNCOPATION));
-      }
-    catch(NonExistentParameterException e)
-      {
-      }
-    
-    try
-      {
-      syncopationType = lickgen.getParameterQuietly(LickGen.SYNCOPATION_TYPE);
-       }
-    catch(NonExistentParameterException e)
-      {
-      }
-    
-    try
-      {
-      syncopationValue = Double.parseDouble(lickgen.getParameterQuietly(LickGen.SYNCOPATION_VALUE));
-      }
-    catch(NonExistentParameterException e)
-      {
-      }
-    
-    try
-      {
-      expectancyMultiplier = Double.parseDouble(lickgen.getParameterQuietly(LickGen.EXPECTANCY_MULTIPLIER));
-      }
-    catch(NonExistentParameterException e)
-      {
-      }
-    
-    try
-      {
-      expectancyConstant = Double.parseDouble(lickgen.getParameterQuietly(LickGen.EXPECTANCY_CONSTANT));
-      }
-    catch(NonExistentParameterException e)
-      {
-      }
-    
-   // useGrammarMI.setSelected(Boolean.parseBoolean(lickgen.getParameter(
-   //     LickGen.USE_GRAMMAR)));
-
     useGrammar = true; // Boolean.parseBoolean(lickgen.getParameter(LickGen.USE_GRAMMAR));
 
     avoidRepeats = Boolean.parseBoolean(lickgen.getParameter(
@@ -3833,30 +3778,10 @@ public void resetTriageParameters(boolean menu)
     }
   }
 
-public boolean getUseSyncopation()
-  {
-    return useSyncopation;
-  }
-
-public String getSyncopationType()
-  {
-    return syncopationType;
-  }
-
-public Double getSyncopationValue()
-  {
-    return syncopationValue;
-  }
-
-public Double getExpectancyMultiplier()
-  {
-    return expectancyMultiplier;
-  }
-
-public Double getExpectancyConstant()
-  {
-    return expectancyConstant;
-  }
+/**
+ * Builds an association list with all of the parameters of the grammar.
+ * On saving a file, additional parameters may be added within Lickgen.
+ */
 
  
 public void saveTriageParameters()
@@ -3899,11 +3824,18 @@ public void saveTriageParameters()
 
     lickgen.setParameter(LickGen.SCALE_TYPE, scaleComboBox.getSelectedItem());
     
-    lickgen.setParameter(LickGen.USE_SYNCOPATION,       useSyncopation);
-    lickgen.setParameter(LickGen.SYNCOPATION_TYPE,      syncopationType);
-    lickgen.setParameter(LickGen.SYNCOPATION_VALUE,     syncopationValue); 
-    lickgen.setParameter(LickGen.EXPECTANCY_MULTIPLIER, expectancyMultiplier);
-    lickgen.setParameter(LickGen.EXPECTANCY_CONSTANT,   expectancyConstant);
+    // These should not have to go to Lickgen to set stuff back in Lickgen,
+    // but it's convenient to do it this way for now.
+    
+    lickgen.setParameter(LickGen.USE_SYNCOPATION, lickgen.getUseSyncopation());
+    
+    lickgen.setParameter(LickGen.SYNCOPATION_TYPE, lickgen.getSyncopationType());
+    
+    lickgen.setParameter(LickGen.SYNCOPATION_VALUE, lickgen.getSyncopationValue());
+    
+    lickgen.setParameter(LickGen.EXPECTANCY_MULTIPLIER, lickgen.getExpectancyMultiplier());
+    
+    lickgen.setParameter(LickGen.EXPECTANCY_CONSTANT, lickgen.getExpectancyConstant());
   }
 
 private void verifyAndFill()
