@@ -1511,14 +1511,10 @@ public boolean fillMelody(MelodyPart lick,
 
         if( Grammar.isScaleDegree(item) )
            {
-                    // first is of the form (X degree duration)
-           int rootOffset = 60; // middle C for now
-
+           // first is of the form (X degree duration)
            Chord chord = chordProg.getCurrentChord(position);
                         
-           int root = chord.getRootSemitones() + rootOffset;
-
-           Note note = makeRelativeNote(item, root);
+           Note note = makeRelativeNote(item, chord);
                         
            //System.out.println("generated note is " + note.toLeadsheet());
                         
@@ -2060,9 +2056,12 @@ public boolean fillMelody(MelodyPart lick,
  * e.g. (X 4 8) means an 8th note on the 4th scale degree.
  */
     
-public static Note makeRelativeNote(Object ob, int chordRoot)
+public static Note makeRelativeNote(Object ob, Chord chord)
   {
-  int pitch = chordRoot;
+  int rootOffset = 60; // middle C for now
+  int root = chord.getRootSemitones() + rootOffset;
+
+  int pitch = root;
   int duration = 60;
   //System.out.println("makeRelativeNote " + ob); 
   if( ob instanceof Polylist )
@@ -2123,25 +2122,157 @@ public static Note makeRelativeNote(Object ob, int chordRoot)
                         default:
                       }
                   }
-
+              String chordFamily = chord.getFamily();
+              //System.out.println(chord + " is family " + chordFamily);
+              
+              if( chordFamily.equals("minor") )
+                {
                   switch(degreeValue)
                       {
-                        case 1:  pitch+=0; break;
-                        case 2:  pitch+=2; break;
-                        case 3:  pitch+=4; break;
-                        case 4:  pitch+=5; break;
-                        case 5:  pitch+=7; break;
-                        case 6:  pitch+=9; break;
-                        case 7:  pitch+=11; break;
-                        case 8:  pitch+=12; break;
-                        case 9:  pitch+=14; break;
-                        case 10: pitch+=16; break;
-                        case 11: pitch+=17; break;
-                        case 13: pitch+=21; break;
-                        case -1: pitch-=1;  break;
+                        case -1:  pitch-=1; break;
+                        case  1:  pitch+=0; break;
+                        case  2:  pitch+=2; break;
+                        case  3:  pitch+=3; break;
+                        case  4:  pitch+=5; break;
+                        case  5:  pitch+=7; break;
+                        case  6:  pitch+=9; break;
+                        case  7:  pitch+=11; break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=15; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=19; break;
+                        case 13:  pitch+=21; break;
                         default:
                       }
-
+                }
+              else if( chordFamily.equals("minor7") )
+                {
+                  switch(degreeValue)
+                      {
+                        case -1:  pitch-=1;  break;
+                        case  1:  pitch+=0;  break;
+                        case  2:  pitch+=2;  break;
+                        case  3:  pitch+=3;  break;
+                        case  4:  pitch+=5;  break;
+                        case  5:  pitch+=7;  break;
+                        case  6:  pitch+=9;  break;
+                        case  7:  pitch+=10; break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=15; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=19; break;
+                        case 13:  pitch+=21; break;
+                        default:
+                      }
+                }
+              else if( chordFamily.equals("minor7") )
+                {
+                  switch(degreeValue)
+                      {
+                        case -1:  pitch-=1;  break;
+                        case  1:  pitch+=0;  break;
+                        case  2:  pitch+=2;  break;
+                        case  3:  pitch+=3;  break;
+                        case  4:  pitch+=5;  break;
+                        case  5:  pitch+=7;  break;
+                        case  6:  pitch+=9;  break;
+                        case  7:  pitch+=10; break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=15; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=19; break;
+                        case 13:  pitch+=21; break;
+                        default:
+                      }
+                }
+              else if( chordFamily.equals("half-diminished") )
+                {
+                  switch(degreeValue)
+                      {
+                        case -1:  pitch-=1;  break;
+                        case  1:  pitch+=0;  break;
+                        case  2:  pitch+=2;  break;
+                        case  3:  pitch+=3;  break;
+                        case  4:  pitch+=5;  break;
+                        case  5:  pitch+=6;  break;
+                        case  6:  pitch+=9;  break;
+                        case  7:  pitch+=10; break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=15; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=18; break;
+                        case 13:  pitch+=21; break;
+                        default:
+                      }
+                }
+              else if( chordFamily.equals("diminished") )
+                {
+                  switch(degreeValue)
+                      {
+                        case -1:  pitch-=1;  break;
+                        case  1:  pitch+=0;  break;
+                        case  2:  pitch+=2;  break;
+                        case  3:  pitch+=3;  break;
+                        case  4:  pitch+=5;  break;
+                        case  5:  pitch+=6;  break;
+                        case  6:  pitch+=8;  break;
+                        case  7:  pitch+=9;  break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=15; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=18; break;
+                        case 13:  pitch+=20; break;
+                        default:
+                      }
+                }
+              else if( chordFamily.equals("augmented") )
+                {
+                  switch(degreeValue)
+                      {
+                        case -1:  pitch-=1;  break;
+                        case  1:  pitch+=0;  break;
+                        case  2:  pitch+=2;  break;
+                        case  3:  pitch+=4;  break;
+                        case  4:  pitch+=5;  break;
+                        case  5:  pitch+=8;  break;
+                        case  6:  pitch+=9;  break;
+                        case  7:  pitch+=10; break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=16; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=20; break;
+                        case 13:  pitch+=21; break;
+                        default:
+                      }
+                }
+              else // major, or anything else for now
+                {
+                  switch(degreeValue)
+                      {
+                        case -1:  pitch-=1;  break;
+                        case  1:  pitch+=0;  break;
+                        case  2:  pitch+=2;  break;
+                        case  3:  pitch+=4;  break;
+                        case  4:  pitch+=5;  break;
+                        case  5:  pitch+=7;  break;
+                        case  6:  pitch+=9;  break;
+                        case  7:  pitch+=11; break;
+                        case  8:  pitch+=12; break;
+                        case  9:  pitch+=14; break;
+                        case 10:  pitch+=16; break;
+                        case 11:  pitch+=17; break;
+                        case 12:  pitch+=19; break;
+                        case 13:  pitch+=21; break;
+                        default:
+                      }
+              }
+                  
                 // Get the duration
 
                 String durationString;

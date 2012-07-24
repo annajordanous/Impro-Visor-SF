@@ -226,6 +226,14 @@ public class Chord implements Constants, Unit, Serializable {
         return symbol.getChordForm();
     }
 
+    /**
+     * Returns the Chord's Family
+     * @return String   the Chord's name
+     */
+    public String getFamily() {
+        return symbol.getFamily();
+    }
+    
     public Polylist getSpell()
     {
         if (getName().equals(NOCHORD))
