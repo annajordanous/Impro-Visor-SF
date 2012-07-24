@@ -1030,6 +1030,14 @@ public MelodyPart copy(int startingIndex, int endingIndex)
       note = (Note)getUnit(i);
 
       int pitch = note.getPitch();
+      
+      if( pitch < 0 || pitch > 127 )
+        {
+          // This has happened. It is unclear how, but it seems to be 
+          // associated with the syncopation grammr.
+          System.out.println("out-of-range pitch " + pitch + " in makeAccidentals");
+          return;
+        }
 
       // The easiest way to do this is to adjust the pitch so that
       // it is on the letter, independent of accidental
