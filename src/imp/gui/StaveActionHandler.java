@@ -463,7 +463,7 @@ StaveActionHandler(Stave stave, Notate notate)
 
   penCursor = makeCursor("graphics/toolbar/pencilCursor.png", "Pencil", true);
   
-  noteCursor = useNoteCursor? makeCursor("graphics/noteCursor.png", "Note", true) : defaultCursor;
+  noteCursor = useNoteCursor ? makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true) : defaultCursor;
  }
 
 
@@ -576,7 +576,7 @@ public void mouseMoved(MouseEvent e)
      }
     else
      {
-      setCursor(noteCursor); 
+      //chooseAndSetCursor(e);
      }
    }
 
@@ -596,19 +596,18 @@ private void chooseAndSetCursor(MouseEvent e)
     
     //System.out.println(currentChord);
     
-    int pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+    int pitch;
+    if (notate.getSmartEntry())
+        pitch = lastApproachPitch;
+        //pitch = yPosToKeyPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+    else
+        pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+    
+
     // reset the pitch to the max or min pitch of the Stave if
     // they are out of bounds
-    if( pitch < stave.getMinPitch() )
-    {
-        pitch = stave.getMinPitch();
-    }
-    else if( pitch > stave.getMaxPitch() )
-    {
-        pitch = stave.getMaxPitch();
-    }
     
-    System.out.println( pitch);
+    boolean noteOnLegerLine = noteOnLegerLine(pitch);
     
     if (currentChord != null && !currentChord.getName().equals(Constants.NOCHORD))
     {
@@ -631,26 +630,52 @@ private void chooseAndSetCursor(MouseEvent e)
             colorMIDIs.set(i, note%12);
         }
         
-        if (chordMIDIs.contains(pitch%12))
+        if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
         {
-            noteCursor = makeCursor("graphics/blackNoteCursor.png", "Note", true);
+            if (noteOnLegerLine)
+                noteCursor = makeCursor("graphics/cursors/blueNoteLineCursor.png", "Note", true);
+            else
+                noteCursor = makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true);                
+            System.out.println("blue");
+        }
+        
+        else if (chordMIDIs.contains(pitch%12))
+        {
+            if (noteOnLegerLine)
+                noteCursor = makeCursor("graphics/cursors/blackNoteLineCursor.png", "Note", true);
+            else
+                noteCursor = makeCursor("graphics/cursors/blackNoteCursor.png", "Note", true);
             System.out.println("black");
         }
   
-        if (colorMIDIs.contains(pitch%12))
+        else if (colorMIDIs.contains(pitch%12))
         {
-            noteCursor = makeCursor("graphics/greenNoteCursor.png", "Note", true);
+            if (noteOnLegerLine)
+                noteCursor = makeCursor("graphics/cursors/greenNoteLineCursor.png", "Note", true);
+            else
+                noteCursor = makeCursor("graphics/cursors/greenNoteCursor.png", "Note", true); 
             System.out.println("green");
         }
         
         else
         {
-            noteCursor = makeCursor("graphics/redNoteCursor.png", "Note", true);
-            //System.out.println("red");
+            if (noteOnLegerLine)
+                noteCursor = makeCursor("graphics/cursors/redNoteLineCursor.png", "Note", true);
+            else
+                noteCursor = makeCursor("graphics/cursors/redNoteCursor.png", "Note", true); 
+            System.out.println("red");
         }
     }
     
     setCursor(noteCursor);
+}
+
+private boolean noteOnLegerLine(int midi)
+{
+    int norm = midi%24;
+    
+    return (norm == 2 || norm ==5 || norm==9 || norm == 12 ||
+            norm == 16 || norm == 19 || norm == 23 );
 }
 
 boolean isDrawing()
@@ -2905,6 +2930,8 @@ public void setCursor(Cursor cursor)
   switch( notate.getMode() )
    {
     case NORMAL:
+        stave.setCursor(cursor);
+        break;
     case RECORDING:
       stave.setCursor(cursor);
       break;
@@ -2949,6 +2976,16 @@ public int getLastMeasureSelected()
 public void setLastMeasureSelected(int value)
 {
     lastMeasureSelected = value;
+}
+
+public boolean getUseNoteCursor()
+{
+    return useNoteCursor;
+}
+
+public void setUseNoteCursor(boolean on)
+{
+    useNoteCursor = on;
 }
 
 }

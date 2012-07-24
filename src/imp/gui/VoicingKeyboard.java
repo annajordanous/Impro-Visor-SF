@@ -969,9 +969,10 @@ public final String DOWN = "down";
 
 private long LAST_MIDI_ENTRY = 0;
 
-private long CHORD_GAP = 3000; // The amount of time (in milliseconds) that must
-                               // elapse between two keys played in order for
-                               // the keyboard to be cleared.
+private long CHORD_GAP = 1000; // The amount of time (in milliseconds) that must
+                               // elapse between two keys played on the MIDI
+                               // keyboard in order for the keyboard to be
+                               // cleared.
 
 private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
 

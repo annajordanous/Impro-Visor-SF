@@ -2060,8 +2060,8 @@ private boolean firstAccidentalDisplayed = false;
  */
 private int startOfTie;
 /**
- * Ending x-axis position of a tie
- */
+ * Ending x-axis position of a tie 
+*/
 private int endOfTie;
 /**
  * How much pixel spacing the construction lines should get
