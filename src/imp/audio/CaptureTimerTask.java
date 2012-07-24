@@ -36,9 +36,9 @@ public class CaptureTimerTask extends TimerTask
             }
             extractor.isCapturing = true;
             long time = System.currentTimeMillis();
-            synchronized (extractor.thisMeasure)
+            synchronized (extractor.thisCapture)
         {
-            extractor.thisMeasure.notify();
+            extractor.thisCapture.notify();
         }
             System.out.println("Timer triggered audio capture at time " + time);
     }
