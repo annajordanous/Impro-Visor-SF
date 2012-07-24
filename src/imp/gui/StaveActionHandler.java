@@ -588,8 +588,8 @@ public void mouseMoved(MouseEvent e)
 
 private void chooseAndSetCursor(MouseEvent e)
 {
-    int x = e.getX() + 0;
-    int y = e.getY() + 0;
+    int x = e.getX();
+    int y = e.getY();
     
     ChordPart prog = stave.getChordProg();
     Chord currentChord = prog.getPrevChord(searchForCstrLine(x, y));
@@ -598,10 +598,11 @@ private void chooseAndSetCursor(MouseEvent e)
     
     int pitch;
     if (notate.getSmartEntry())
-        pitch = lastApproachPitch;
-        //pitch = yPosToKeyPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+        pitch = yPosToRectifiedPitch(y - (notate.getParallax() + parallaxBias),
+                            currentChord, getCurrentLine(y), e.isShiftDown());
     else
-        pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias), currentLine);
+        pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias),
+                            getCurrentLine(y));
     
 
     // reset the pitch to the max or min pitch of the Stave if
@@ -631,13 +632,7 @@ private void chooseAndSetCursor(MouseEvent e)
         }
         
         if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
-        {
-            if (noteOnLegerLine)
-                noteCursor = makeCursor("graphics/cursors/blueNoteLineCursor.png", "Note", true);
-            else
-                noteCursor = makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true);                
-            System.out.println("blue");
-        }
+            noteCursor = makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true);                
         
         else if (chordMIDIs.contains(pitch%12))
         {
@@ -645,7 +640,6 @@ private void chooseAndSetCursor(MouseEvent e)
                 noteCursor = makeCursor("graphics/cursors/blackNoteLineCursor.png", "Note", true);
             else
                 noteCursor = makeCursor("graphics/cursors/blackNoteCursor.png", "Note", true);
-            System.out.println("black");
         }
   
         else if (colorMIDIs.contains(pitch%12))
@@ -654,7 +648,6 @@ private void chooseAndSetCursor(MouseEvent e)
                 noteCursor = makeCursor("graphics/cursors/greenNoteLineCursor.png", "Note", true);
             else
                 noteCursor = makeCursor("graphics/cursors/greenNoteCursor.png", "Note", true); 
-            System.out.println("green");
         }
         
         else
@@ -663,7 +656,6 @@ private void chooseAndSetCursor(MouseEvent e)
                 noteCursor = makeCursor("graphics/cursors/redNoteLineCursor.png", "Note", true);
             else
                 noteCursor = makeCursor("graphics/cursors/redNoteCursor.png", "Note", true); 
-            System.out.println("red");
         }
     }
     
@@ -2880,6 +2872,112 @@ private int yPosToAnyPitch(int yPos, int currentLine)
   return pitch;
  }
 
+private int yPosToRectifiedPitch(int yPos, Chord chord, int currentLine, boolean shiftDown)
+{
+    int unRectPitch = yPosToPitch(yPos, currentLine);
+    //System.out.println("adding note at " + x + ", " + y + " chord = " + chord);
+    
+  stave.setSelection(selectedIndex, selectedIndex);
+
+  /* Default to context-free note addition if there are no chords. */
+  if( chord == null || chord.getName().equals("NC") )
+   {
+    return unRectPitch;
+   }
+
+  ChordPart prog = stave.getChordProg();
+
+  drawScaleTones = stave.notate.getScaleTonesSelected();
+  drawChordTones = stave.notate.getChordTonesSelected();
+  //drawColorTones = stave.notate.getColorTonesSelected();
+
+  // Are approaches user-enabled?
+  boolean approachEnabled = (aPressed && shiftDown);
+  boolean apprch = false; // Is this particular note going to be an
+  // approach tone?
+
+  /* Is this index the one right before a chord change?  If it is, and
+   * if we've enabled approaching with Shift-A, tag this as an
+   * approach tone.
+   */
+  apprch =
+    ((selectedIndex + stave.getMelodyPart().getUnitRhythmValue(selectedIndex)
+    == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
+
+
+  Chord nextChord = prog.getNextUniqueChord(selectedIndex);
+
+  clearPasteFrom();
+
+  // add new note close to mouse clicked pitch
+
+  int pitch =
+    (lastToneApproach && !apprch) ? 
+         lastApproachPitch 
+       : yPosToAnyPitch(yPos - (notate.getParallax() + parallaxBias), currentLine);
+
+  // adjust pitch to respect chord!
+
+  ChordForm form = chord.getChordSymbol().getChordForm();
+
+  String root = chord.getRoot();
+
+  Polylist scaleTones = form.getFirstScaleTones(root);
+  Polylist chordTones = form.getSpell(root);
+  Polylist colorTones = form.getColor(root);
+
+  /* So far, the list of accpetable pitches to draw.
+   * We want to disregard this in a moment if we're going to force
+   * an approach tone.
+   */
+  Polylist m = new Polylist();
+  if( drawScaleTones )
+   {
+    m = m.append(scaleTones);
+   }
+  if( drawChordTones )
+   {
+    m = m.append(chordTones);
+   }
+  if( drawColorTones )
+   {
+    // too liberal? m = m.append(colorTones);
+   }
+
+  if( apprch )
+   {
+    ChordForm nextForm = nextChord.getChordSymbol().getChordForm();
+
+    // The list of lists of (chordTone approach1 approach2 etc)
+    Polylist approachList = nextForm.getApproach(nextChord.getRoot());
+
+    /* Build a list of approach tones to the next chord */
+    Polylist tones = new Polylist();
+    while( approachList.nonEmpty() )
+     {
+      tones = tones.append(((Polylist) approachList.first()).rest());
+      approachList = approachList.rest();
+     }
+
+    /* If it isn't empty, use it */
+    if( tones.nonEmpty() )
+     {
+      m = tones;
+     }
+   }
+
+  // This must be a chord tone since it follows an approach tone.
+  if( lastToneApproach && !apprch )
+   {
+    m = chordTones;
+   }
+
+  Note note = Note.getClosestMatch(pitch, m);
+
+  pitch = note.getPitch();
+
+  return pitch;
+}
 
 /**
  * Moves the selected index to the right by one construction line

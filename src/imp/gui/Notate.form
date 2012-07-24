@@ -7350,7 +7350,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="noteCursorCBMI">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
+                <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="false" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Use Smart Cursor"/>
               </Properties>
               <Events>
