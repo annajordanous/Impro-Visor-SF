@@ -1187,7 +1187,8 @@ public MelodyPart fillMelody(int minPitch,
         int[] rhythmArray = Generator.getArray(rhythmString);
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
-        int synco = (int)(syncopationMultiplier * Tension.getSyncopation(syncVector, measures) + syncopationConstant);
+        int origSynco = Tension.getSyncopation(syncVector, measures);
+        int synco = (int)(syncopationMultiplier * origSynco + syncopationConstant);
         if(synco > MAX_SYNCO * MEASURES)
         {
             synco = MAX_SYNCO * MEASURES;
@@ -1312,13 +1313,12 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
-//    System.out.println("fillPartOfMelody " + expectancy);
     expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
-    if(expectancy < MAX_EXPECTANCY)
+    System.out.println("Expectancy " + expectancy);
+    if(expectancy > MAX_EXPECTANCY)
     {
         expectancy = MAX_EXPECTANCY;
     }
-//    System.out.println("Expectancy " + expectancy);
     
     int previousPitch = oldPitch;
 
@@ -2045,12 +2045,16 @@ public boolean fillMelody(MelodyPart lick,
         int currentSlot = grammar.getCurrentSlot();
         ChordPart chords = notate.getChordProg();
         MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        System.out.println("GEPN slot: " + currentSlot);
         int firstIndex = 0;
-        int secondIndex = currMelody.getNextIndex(firstIndex);
-        if(!currMelody.getNote(firstIndex).nonRest())
+        while(!currMelody.getNote(firstIndex).nonRest() && firstIndex < LENGTH_OF_TRADE)
         {
-            firstIndex = secondIndex;
-            secondIndex = currMelody.getNextIndex(firstIndex);
+            firstIndex = currMelody.getNextIndex(firstIndex);
+        }
+        int secondIndex = currMelody.getNextIndex(firstIndex);
+        while(!currMelody.getNote(secondIndex).nonRest() && secondIndex < LENGTH_OF_TRADE)
+        {
+            secondIndex = currMelody.getNextIndex(secondIndex);
         }
         //System.out.println(currMelody.getNote(firstIndex));
         if(!currMelody.getNote(firstIndex).nonRest() || !currMelody.getNote(secondIndex).nonRest())
@@ -2066,7 +2070,9 @@ public boolean fillMelody(MelodyPart lick,
             int nextIndex = pi.nextIndex() + currentSlot - LENGTH_OF_TRADE;
             Chord c = chords.getCurrentChord(nextIndex);
             int first = currMelody.getNote(firstIndex).getPitch();
+            System.out.println("First: " + first);
             int second = currMelody.getNote(secondIndex).getPitch();
+            System.out.println("Second: " + second);
             int curr = currMelody.getNote(pi.nextIndex()).getPitch();
             double mExpectancy = Expectancy.getExpectancy(curr, second, first, c);
             totalExpectancy += mExpectancy;
@@ -2074,6 +2080,12 @@ public boolean fillMelody(MelodyPart lick,
             firstIndex = secondIndex;
             secondIndex = pi.nextIndex();
             pi.next();
+            while(!currMelody.getNote(secondIndex).nonRest() && pi.hasNext())
+            {
+                System.out.println("Second Index Loop: " + secondIndex);
+                secondIndex = pi.nextIndex();
+                pi.next();
+            }
         }
         return (totalExpectancy/numPitches);
     }
