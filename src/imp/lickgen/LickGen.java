@@ -1314,7 +1314,6 @@ public MelodyPart fillPartOfMelody(int minPitch,
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
     expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
-    System.out.println("Expectancy " + expectancy);
     if(expectancy > MAX_EXPECTANCY)
     {
         expectancy = MAX_EXPECTANCY;
@@ -2070,9 +2069,7 @@ public boolean fillMelody(MelodyPart lick,
             int nextIndex = pi.nextIndex() + currentSlot - LENGTH_OF_TRADE;
             Chord c = chords.getCurrentChord(nextIndex);
             int first = currMelody.getNote(firstIndex).getPitch();
-            System.out.println("First: " + first);
             int second = currMelody.getNote(secondIndex).getPitch();
-            System.out.println("Second: " + second);
             int curr = currMelody.getNote(pi.nextIndex()).getPitch();
             double mExpectancy = Expectancy.getExpectancy(curr, second, first, c);
             totalExpectancy += mExpectancy;
@@ -2082,7 +2079,6 @@ public boolean fillMelody(MelodyPart lick,
             pi.next();
             while(!currMelody.getNote(secondIndex).nonRest() && pi.hasNext())
             {
-                System.out.println("Second Index Loop: " + secondIndex);
                 secondIndex = pi.nextIndex();
                 pi.next();
             }
