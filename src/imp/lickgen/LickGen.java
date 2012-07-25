@@ -82,24 +82,29 @@ public class LickGen implements Constants
     public static final String RECTIFY = "rectify";
     public static final String USE_SYNCOPATION       = "use-syncopation";
     public static final String SYNCOPATION_TYPE      = "syncopation-type";
-    public static final String SYNCOPATION_VALUE     = "syncopation-value"; 
+    public static final String SYNCOPATION_MULTIPLIER = "syncopation-multiplier";
+    public static final String SYNCOPATION_CONSTANT     = "syncopation-constant"; 
     public static final String EXPECTANCY_MULTIPLIER = "expectancy-multiplier";
     public static final String EXPECTANCY_CONSTANT   = "expectancy-constant";
     
     // Syncopation and Expectancy Parameters
 private static final boolean defaultUseSyncopation      = false;
 private static final String defaultSyncopationType      = "C";
-private static final double defaultSyncopationValue     = 0.5;
-private static final double defaultExpectancyMultiplier = 0.5;
-private static final double defaultExpectancyConstant   = 0.1;
+private static final double defaultSyncopationMultiplier    = 1;
+private static final double defaultSyncopationConstant    = 0.5;
+private static final double defaultExpectancyMultiplier = 1;
+private static final double defaultExpectancyConstant   = 0;
 
 private boolean useSyncopation      = defaultUseSyncopation;
 private String syncopationType      = defaultSyncopationType;
-private double syncopationValue     = defaultSyncopationValue;
+private double syncopationConstant     = defaultSyncopationConstant;
+private double syncopationMultiplier     = defaultSyncopationMultiplier;
 private double expectancyMultiplier = defaultExpectancyMultiplier;
 private double expectancyConstant   = defaultExpectancyConstant;
 
-    public static final String SYNCOPATION           = "syncopation";
+    private static int LENGTH_OF_TRADE = 4*480;
+    private static int SLOTS_PER_MEASURE = 480;
+    private static int MEASURES = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
@@ -116,6 +121,8 @@ private double expectancyConstant   = defaultExpectancyConstant;
     };
     public static final String NOTE_SYMBOL = "N";
     public static final String REST_SYMBOL = "R";
+    private static final int MAX_EXPECTANCY = 216;
+    private static final int MAX_SYNCO = 12;
     public static int MELODY_GEN_LIMIT = 15;
     private int NOTE_GEN_LIMIT = 100;    
     public ArrayList<double[]> probs;  // Array of note probabilities
@@ -177,6 +184,7 @@ private double expectancyConstant   = defaultExpectancyConstant;
     //System.out.println("Lickgen constructor grammarFile = " + grammarFile);
         this.notate = notate;
         grammar = new Grammar(grammarFile);
+        loadGrammar(grammarFile);
         probs = new ArrayList<double[]>();
         
         chordUsed.clear();
@@ -675,7 +683,8 @@ public void loadGrammar(String grammarFile)
     // Setup defaults for syncopation and expectation values.
     useSyncopation       = defaultUseSyncopation;
     syncopationType      = defaultSyncopationType;
-    syncopationValue     = defaultSyncopationValue;
+    syncopationConstant    = defaultSyncopationConstant;
+    syncopationMultiplier   = defaultSyncopationMultiplier;
     expectancyMultiplier = defaultExpectancyMultiplier;
     expectancyConstant   = defaultExpectancyConstant;
     
@@ -715,16 +724,27 @@ public void loadGrammar(String grammarFile)
        }
     catch(NonExistentParameterException e)
       {
-      setParameter(SYNCOPATION_TYPE, defaultUseSyncopation);
+      setParameter(SYNCOPATION_TYPE, defaultSyncopationType);
       }
     
     try
       {
-      syncopationValue = Double.parseDouble(getParameterQuietly(SYNCOPATION_VALUE));
+      syncopationMultiplier = Double.parseDouble(getParameterQuietly(SYNCOPATION_MULTIPLIER));
+      System.out.println("Syncopation multiplier: " + syncopationMultiplier);
       }
     catch(NonExistentParameterException e)
       {
-      setParameter(SYNCOPATION_VALUE, defaultSyncopationValue);
+      setParameter(SYNCOPATION_MULTIPLIER, defaultSyncopationMultiplier);
+      }
+    
+    try
+      {
+      syncopationConstant = Double.parseDouble(getParameterQuietly(SYNCOPATION_CONSTANT)) * MAX_SYNCO * MEASURES;
+      System.out.println("Syncopation constant: " + syncopationConstant);
+      }
+    catch(NonExistentParameterException e)
+      {
+      setParameter(SYNCOPATION_CONSTANT, defaultSyncopationConstant);
       }
     
     try
@@ -738,7 +758,7 @@ public void loadGrammar(String grammarFile)
     
     try
       {
-      expectancyConstant = Double.parseDouble(getParameterQuietly(EXPECTANCY_CONSTANT));
+      expectancyConstant = Double.parseDouble(getParameterQuietly(EXPECTANCY_CONSTANT)) * MAX_EXPECTANCY;
       }
     catch(NonExistentParameterException e)
       {
@@ -780,9 +800,14 @@ public String getSyncopationType()
     return syncopationType;
   }
 
-public Double getSyncopationValue()
+public Double getSyncopationConstant()
   {
-    return syncopationValue;
+    return syncopationConstant;
+  }
+
+public Double getSyncopationMultiplier()
+  {
+    return syncopationMultiplier;
   }
 
 public Double getExpectancyMultiplier()
@@ -1162,7 +1187,11 @@ public MelodyPart fillMelody(int minPitch,
         int[] rhythmArray = Generator.getArray(rhythmString);
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
-        int synco = Tension.getSyncopation(syncVector, measures);
+        int synco = (int)(syncopationMultiplier * Tension.getSyncopation(syncVector, measures) + syncopationConstant);
+        if(synco > MAX_SYNCO * MEASURES)
+        {
+            synco = MAX_SYNCO * MEASURES;
+        }
         int[] rhythm = Generator.generateSyncopation(measures, synco, rhythmArray);
         int newSynco = Tension.getSyncopation(rhythm, measures);
         String[] rhythmList = Generator.generateString(rhythm, "E");
@@ -1284,7 +1313,11 @@ public MelodyPart fillPartOfMelody(int minPitch,
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
 //    System.out.println("fillPartOfMelody " + expectancy);
-    expectancy = getExpectancyPerNote();
+    expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
+    if(expectancy < MAX_EXPECTANCY)
+    {
+        expectancy = MAX_EXPECTANCY;
+    }
 //    System.out.println("Expectancy " + expectancy);
     
     int previousPitch = oldPitch;
@@ -2000,10 +2033,6 @@ public boolean fillMelody(MelodyPart lick,
 
     return false;
   }
-
-
-    private static int LENGTH_OF_TRADE = 4*480;
-    private static int SLOTS_PER_MEASURE = 480;
 
     /**
     * Gets the average expectancy per note of the previous 4 bars

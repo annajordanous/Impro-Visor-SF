@@ -606,7 +606,7 @@ public Polylist getRules()
 
 public int loadGrammar(String filename)
   {
-  //System.out.println("Grammar loadGrammar " + filename);
+  System.out.println("Grammar loadGrammar " + filename);
   try
     {
     Tokenizer in = new Tokenizer(new FileInputStream(filename));

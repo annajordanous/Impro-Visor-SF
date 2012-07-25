@@ -3831,7 +3831,9 @@ public void saveTriageParameters()
     
     lickgen.setParameter(LickGen.SYNCOPATION_TYPE, lickgen.getSyncopationType());
     
-    lickgen.setParameter(LickGen.SYNCOPATION_VALUE, lickgen.getSyncopationValue());
+    lickgen.setParameter(LickGen.SYNCOPATION_MULTIPLIER, lickgen.getSyncopationMultiplier());
+    
+    lickgen.setParameter(LickGen.SYNCOPATION_CONSTANT, lickgen.getSyncopationConstant());
     
     lickgen.setParameter(LickGen.EXPECTANCY_MULTIPLIER, lickgen.getExpectancyMultiplier());
     
