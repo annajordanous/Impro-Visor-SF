@@ -92,13 +92,13 @@ ArrayList<String> terminals = new ArrayList<String>();
 
 Polylist rules = new Polylist();
 
-Polylist terminalString;
-
 String startSymbol = null; // to be set
 
 private int retryCount = 0;
 
 private Notate notate;
+
+Polylist terminalString;
 
 private int currentSlot;
 
@@ -108,6 +108,15 @@ public Grammar(String file)
   loadGrammar(file);
   }
 
+
+private void accumulateTerminals(Object ob)
+  {
+    ChordPart chords = notate.getChordProg();
+    Chord currentChord = chords.getCurrentChord(currentSlot);
+    //System.out.println("at slot " + currentSlot + " " + currentChord + " accumulate " + ob);
+    terminalString = terminalString.cons(ob);
+    currentSlot += getDuration(ob);
+  }
 
 /**
  * Applies grammar rules to generate a lick
@@ -134,12 +143,14 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
             terminalString = new Polylist();
             
             Polylist gen = addStart(numSlots);
+            
             // gen is a list representing the undeveloped frontier of the derivation tree
             // symbols in gen are expanded one at a time, left-to-right
-            // If a non-terminal is expanded into other non-terminals, the latter
-            // replace the former on the left of gen.
-            // If a non-terminal is expanded into terminals, the latter are 
-            // added to terminalString instead.
+            // As non-terminal are expanded, the RHS replaces the non-terminal
+            // on the left of gen.
+            // If the top of gen is a terminal, it is flipped over onto terminalString,
+            // effectively reversing the pushing action that put it there in the first place.
+
             // So the combination of terminalString and gen represent the total
             // frontier of the derivation tree.
             // The variable terminalString is modified implicitly within applyRules.
@@ -155,7 +166,7 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
                   //return null;
                   }
               }
-
+//System.out.println("run returns " + terminalString);
             // terminalString is built up within applyRules.
             return terminalString;
           }
@@ -305,11 +316,14 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
       gen = gen.rest();
       Polylist search = rules;
 
-      // Print out any terminal values.
+      // Accumulate any terminal values.
       // If the user has provided us with a list of terminals, use those; otherwise,
       // we assume that terminal values are strings that begin with a lowercase letter.
 
-      if( !terminals.isEmpty() )
+      // I don't see what it would matter if terminals is empty or not, 
+      // since terminals is the accumulator.
+      
+      //if( !terminals.isEmpty() )
         {
         //System.out.println("pop = " + pop);
         
@@ -319,17 +333,13 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           {
           if( isScaleDegree(pop) || pop.first().equals("slope"))
             {
-            terminalString = terminalString.cons(pop); // use whole expression
-            currentSlot += getDuration(pop); 
+            accumulateTerminals(pop); 
            }
           else
             {
             // use first element, assuming that pop is a singleton
-            terminalString = terminalString.cons(pop.first());
-            currentSlot += getDuration(pop.first()); 
+            accumulateTerminals(pop.first());
             }
-          
-          //System.out.println("terminalString = " + terminalString);
 
           if( !gen.isEmpty() && gen.first() instanceof Polylist )
             {
@@ -342,19 +352,23 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           gen = gen.rest();
           }
         }
-      else
+      //else
         {
+        // Which cases does this handle? (slope ...) ?
+        // What about (X ...)?
         while( pop.first() instanceof String &&
-                Character.isLowerCase((((String)pop.first()).charAt(0))) )
+                (pop.first().equals("slope") || pop.first().equals("X")) )
+          // was      Character.isLowerCase((((String)pop.first()).charAt(0))) )
           {
-          terminalString = terminalString.cons(pop.first());
+          accumulateTerminals(pop.first());
+          
           if( !gen.isEmpty() && gen.first() instanceof Polylist )
             {
             pop = (Polylist)gen.first();
             }
           else
             {
-            return gen;
+            return gen; // This is where generation ends, the basis
             }
           gen = gen.rest();
           }
@@ -638,7 +652,7 @@ public Polylist getRules()
 
 public int loadGrammar(String filename)
   {
-  System.out.println("Grammar loadGrammar " + filename);
+  //System.out.println("Grammar loadGrammar " + filename);
   try
     {
     Tokenizer in = new Tokenizer(new FileInputStream(filename));
