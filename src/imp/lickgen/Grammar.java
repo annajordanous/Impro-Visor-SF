@@ -22,6 +22,7 @@ package imp.lickgen;
 
 import imp.data.Chord;
 import imp.data.ChordPart;
+import imp.data.Duration;
 import imp.data.MelodyPart;
 import imp.data.Part.PartIterator;
 import imp.gui.Expectancy;
@@ -73,6 +74,8 @@ public static final String TIMES = "*";
 public static final String DIVIDE = "/";
 
 // Builtin variables:
+
+public static final String CHORD_FAMILY = "chord-family";
 
 public static final String EXPECTANCY = "expectancy";
 
@@ -129,7 +132,17 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
         try
           {
             terminalString = new Polylist();
+            
             Polylist gen = addStart(numSlots);
+            // gen is a list representing the undeveloped frontier of the derivation tree
+            // symbols in gen are expanded one at a time, left-to-right
+            // If a non-terminal is expanded into other non-terminals, the latter
+            // replace the former on the left of gen.
+            // If a non-terminal is expanded into terminals, the latter are 
+            // added to terminalString instead.
+            // So the combination of terminalString and gen represent the total
+            // frontier of the derivation tree.
+            // The variable terminalString is modified implicitly within applyRules.
 
             while( gen.nonEmpty() )
               {
@@ -160,8 +173,11 @@ public Polylist run(int startSlot, int numSlots, Notate myNotate)
   }
 
 
-// Search through the rules and find the start symbol.  Note that it will
-// take the first start symbol it finds.  Returns null if there is an error.
+/**
+ * Take the first character off the gen list, and apply the given rules to it.
+ * Terminals are added to terminalString as a side-effect.
+ * The return value is the rest of the gen list.
+ */
 
 public Polylist addStart(int numSlots)
   {
@@ -253,6 +269,20 @@ public static boolean isScaleDegree(Object ob)
   }
 
 
+public int getDuration(Object ob)
+  {
+    if( ob instanceof String )
+      {
+        return Duration.getDuration(((String)ob).substring(1));
+      }
+    if( isScaleDegree(ob) )
+      {
+        return Duration.getDuration(((Polylist) ob).third().toString());
+      }
+    return 0;
+  }
+
+
 // Take the first character off the string, and apply the given rules to it.
 // Any lower case values are treated as terminals and outputted.
 
@@ -290,11 +320,13 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
           if( isScaleDegree(pop) || pop.first().equals("slope"))
             {
             terminalString = terminalString.cons(pop); // use whole expression
+            currentSlot += getDuration(pop); 
            }
           else
             {
             // use first element, assuming that pop is a singleton
             terminalString = terminalString.cons(pop.first());
+            currentSlot += getDuration(pop.first()); 
             }
           
           //System.out.println("terminalString = " + terminalString);
@@ -830,9 +862,34 @@ private static int SLOTS_PER_MEASURE = 480;
  */
 private Object evaluateBuiltin(Object arg1, Object arg2)
 {
+  //System.out.println("\nevaluate-builtin " + arg1 + " " + arg2);
+  
+    ChordPart chords = notate.getChordProg();
+    if( arg1 instanceof String && ((String)arg1).equals(CHORD_FAMILY) )
+      {
+        if( !(arg2 instanceof Polylist) )
+          {
+            return 0;
+          }
+        
+        Polylist families = (Polylist)arg2;
+        
+        Chord currentChord = chords.getCurrentChord(currentSlot);
+        
+        if( currentChord == null )
+          {
+            return new Double(0);
+          }
+        
+        Double result = new Double(families.member(currentChord.getFamily()) ? 1 : 0);
+        
+        //System.out.println("currentChord = " + currentChord + " " + currentChord.getFamily());
+        //System.out.println("families = " + families + " " + result);
+        
+        return result;
+      }
     MelodyPart melody = notate.getCurrentMelodyPart();    
     MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
-    ChordPart chords = notate.getChordProg();
     if( EXPECTANCY.equals(arg1) )
     {
         int firstIndex = currMelody.getNextIndex(0);
