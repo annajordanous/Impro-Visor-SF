@@ -1964,21 +1964,22 @@ public boolean fillMelody(MelodyPart lick,
                         {
                             limit = EXPECTANCY_LIMIT2;
                         }
-                        double invExpectDiff = limit - Math.abs(expectancy - expect);
-//                        if(Math.abs(expectancy - expect) < .1)
+//                        double invExpectDiff = limit - Math.abs(expectancy - expect);
+////                        if(Math.abs(expectancy - expect) < .1)
+////                        {
+////                            invExpectDiff = 15;
+////                        }
+//                        if(expect > expectancy)
 //                        {
-//                            invExpectDiff = 15;
+//                            invExpectDiff = limit;
 //                        }
-                        if(expect > expectancy)
+                        double invSurpriseTension =  1 - 1/(expect);
+                        if(Math.abs(expectancy - expect) > limit || invSurpriseTension < 0)
                         {
-                            invExpectDiff = limit;
-                        }
-                        else if(Math.abs(expectancy - expect) > limit || invExpectDiff < 0)
-                        {
-                            invExpectDiff = 0;
+                            invSurpriseTension = 0;
                         }
                         midiArray.add(midi);
-                        expectDiffs.add(invExpectDiff);
+                        expectDiffs.add(invSurpriseTension);
                     }
                     double expectDiffSum = 0;
                     for(double e : expectDiffs)
