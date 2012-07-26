@@ -892,28 +892,36 @@ public class VoicingKeyboard extends javax.swing.JFrame {
  * Getting the piano key images.
  */
 public javax.swing.ImageIcon whiteKey = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/whitekey.jpg"));
 
 public javax.swing.ImageIcon whiteKeyPressed = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekeypressed.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/whitekeypressed.jpg"));
 
 public javax.swing.ImageIcon blackKey = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/blackkey.jpg"));
 
 public javax.swing.ImageIcon blackKeyPressed = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkeypressed.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/blackkeypressed.jpg"));
 
 public javax.swing.ImageIcon bassKey = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.JPG"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/rootkey.jpg"));
 
 public javax.swing.ImageIcon bassKeyPressed = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkeypressed.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/rootkeypressed.jpg"));
 
 public javax.swing.ImageIcon blackBassKey = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackrootkey.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/blackrootkey.jpg"));
 
 public javax.swing.ImageIcon blackBassKeyPressed = 
-        new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackrootkeypressed.jpg"));
+    new javax.swing.ImageIcon(
+        getClass().getResource("/imp/gui/graphics/blackrootkeypressed.jpg"));
 
 /**
  * Setting some useful constants.
@@ -1607,16 +1615,16 @@ private void downOctaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 }//GEN-LAST:event_downOctaveMIActionPerformed
 
-
 /**
  * Transposes the chord root based on the chord root text field and the bass range.
  * 
- * @param chordRoot
+ * @param root
  * @param lowRange
  * @param highRange
  * @param direction
  */
-public void transposeRoot(String chordRoot, int lowRange, int highRange, String direction)
+public void transposeRoot(String chordRoot, int lowRange,
+                          int highRange, String direction)
 {
     if (notate.rootEqualBassCheckboxChecked())
     {
@@ -1671,7 +1679,6 @@ public void clearKeyboard()
         }
     }
 }
-
 
 /**
  * Creates a boolean array for determining whether two voicings are equal
@@ -2384,8 +2391,6 @@ private void forcePaint()
   {
   paint(getGraphics());
   }
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addToSequenceMI;
