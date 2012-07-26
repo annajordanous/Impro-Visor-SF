@@ -379,7 +379,7 @@ public static void initialize(String midiFile, String chordFile)
 
               //extract the chords using the import chords method
               ChordExtract chordExtract = new ChordExtract();
-              extractedChordPart = chordExtract.importChords(arrayBassMelodyParts, arrayChordMelodyParts);
+              extractedChordPart = chordExtract.importChords(arrayBassMelodyParts, arrayChordMelodyParts, QUARTER);
           }
       }
       initChannelInfo(midiImport);
@@ -450,7 +450,7 @@ public static void invoke()
 
             //extract the chords using the import chords method
             ChordExtract chordExtract = new ChordExtract();
-            extractedChordPart = chordExtract.importChords(arrayBassMelodyParts, arrayChordMelodyParts);
+            extractedChordPart = chordExtract.importChords(arrayBassMelodyParts, arrayChordMelodyParts, QUARTER);
         }
     }
 
