@@ -136,7 +136,11 @@ private double expectancyConstant   = defaultExpectancyConstant;
     int oldOldPitch = 0;
     double expectancy = -1;
     private static int DEFAULT_EXPECTANCY = 200;
-    private static int EXPECTANCY_LIMIT = 60;
+    private static int EXPECTANCY_LIMIT1 = 30;
+    private static int EXPECTANCY_LIMIT2 = 45;
+    private static int EXPECTANCY_LIMIT3 = 60;
+    private static int EXPECTANCY_CUTOFF1 = 100;
+    private static int EXPECTANCY_CUTOFF2 = 200;
     boolean useOutlines = false;
     boolean soloistLoaded = false;
     
@@ -1313,11 +1317,11 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
-//    expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
-//    if(expectancy > MAX_EXPECTANCY)
-//    {
-//        expectancy = MAX_EXPECTANCY;
-//    }
+    expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
+    if(expectancy > MAX_EXPECTANCY)
+    {
+        expectancy = MAX_EXPECTANCY;
+    }
     
     int previousPitch = oldPitch;
 
@@ -1951,12 +1955,21 @@ public boolean fillMelody(MelodyPart lick,
                             prevPrevPitch = prevPitch;
                         }
                         double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch,chordProg.getCurrentChord(position));
-                        double invExpectDiff = EXPECTANCY_LIMIT - Math.abs(expectancy - expect);
+                        int limit = EXPECTANCY_LIMIT3;
+                        if(expectancy < EXPECTANCY_CUTOFF1)
+                        {
+                            limit = EXPECTANCY_LIMIT1;
+                        }
+                        else if(expectancy < EXPECTANCY_CUTOFF2)
+                        {
+                            limit = EXPECTANCY_LIMIT2;
+                        }
+                        double invExpectDiff = limit - Math.abs(expectancy - expect);
 //                        if(Math.abs(expectancy - expect) < .1)
 //                        {
 //                            invExpectDiff = 15;
 //                        }
-                        if(Math.abs(expectancy - expect) > EXPECTANCY_LIMIT || invExpectDiff < 0)
+                        if(Math.abs(expectancy - expect) > limit || invExpectDiff < 0)
                         {
                             invExpectDiff = 0;
                         }
