@@ -294,6 +294,10 @@ public class ChordSymbol implements Constants, Serializable {
      * @return the ChordSymbol's family.
      */
     public String getFamily() {
+        if( chordForm == null )
+          {
+            return "other";
+          }
         return chordForm.getFamily();
     }
 
