@@ -529,8 +529,8 @@ private void chooseAndSetNoteCursor(MouseEvent e)
     int y = e.getY();
     
     ChordPart prog = stave.getChordProg();
-    Chord currentChord = prog.getPrevChord(searchForCstrLine(x, y));
-    
+    Chord currentChord = prog.getPrevChord(stave.getNextCstrLine(searchForCstrLine(x, y)));
+
     int pitch;
     
     // Get the pitch that would be input if the mouse was clicked here. If
@@ -544,7 +544,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                             getCurrentLine(y));
     
     // This currently only deals with natural pitches correctly
-    boolean noteOnLegerLine = noteOnLegerLine(pitch);
+    boolean noteOnLegerLine = noteOnLegerLine(pitch, getCurrentLine(y));
     
     if (currentChord != null && !currentChord.getName().equals(Constants.NOCHORD))
     {
@@ -610,13 +610,18 @@ private void chooseAndSetNoteCursor(MouseEvent e)
  * @param midi
  * @return 
  */
-private boolean noteOnLegerLine(int midi)
+private boolean noteOnLegerLine(int midi, int curLine)
 {
     int norm = midi%24;
     
-    //Note note = new Note(norm);
-    //note.setEnharmonic(enh);
-    
+    Note note = new Note(norm);
+    note.setEnharmonic(notate.getScore().getCurrentEnharmonics(curLine));
+
+    if (note.getAccidental().equals(Accidental.FLAT))
+        norm++;
+    if (note.getAccidental().equals(Accidental.SHARP))
+        norm--;
+
     return (norm == 2 || norm ==5 || norm==9 || norm == 12 ||
             norm == 16 || norm == 19 || norm == 23 );
 }
