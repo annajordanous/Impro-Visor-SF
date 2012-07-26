@@ -254,7 +254,6 @@ public class ChordExtract implements Constants{
                 max = length;
             }
         }
-        //System.out.println(max);
         return max;
     }
     
@@ -408,7 +407,7 @@ public class ChordExtract implements Constants{
     }
     
  
-    public ChordPart importChords(MelodyPart[] bassMelodyParts, MelodyPart[] chordMelodyParts)
+    public ChordPart importChords(MelodyPart[] bassMelodyParts, MelodyPart[] chordMelodyParts, int chordResolution)
     {
         ChordPart chords = null;
         //combine basslines
@@ -430,7 +429,7 @@ public class ChordExtract implements Constants{
         {
             normalize(EIGHTH, arrayMelodyParts[j]);
         }
-        chords = arrayMelodyPartsToChordPart(arrayMelodyParts, QUARTER);
+        chords = arrayMelodyPartsToChordPart(arrayMelodyParts, chordResolution);
         return chords;
     }
     
@@ -517,7 +516,7 @@ public class ChordExtract implements Constants{
         int root;
         for (int i = 0; i < max; i = i + chordResolution) {
             //!!optimized for eighth note resolution... fix later?
-            chordCount = 2 * (i / chordResolution);
+            chordCount = 8 * (i / 480);
             
             root = bass[chordCount];
             bitChord = bitChords[chordCount];
