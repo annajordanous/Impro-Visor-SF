@@ -1969,7 +1969,11 @@ public boolean fillMelody(MelodyPart lick,
 //                        {
 //                            invExpectDiff = 15;
 //                        }
-                        if(Math.abs(expectancy - expect) > limit || invExpectDiff < 0)
+                        if(expect > expectancy)
+                        {
+                            invExpectDiff = limit;
+                        }
+                        else if(Math.abs(expectancy - expect) > limit || invExpectDiff < 0)
                         {
                             invExpectDiff = 0;
                         }
