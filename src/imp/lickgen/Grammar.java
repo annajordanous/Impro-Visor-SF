@@ -102,6 +102,7 @@ Polylist terminalString;
 
 private int currentSlot;
 
+private int chordSlot;
 
 public Grammar(String file)
   {
@@ -115,7 +116,7 @@ private void accumulateTerminals(Object ob)
     Chord currentChord = chords.getCurrentChord(currentSlot);
     //System.out.println("at slot " + currentSlot + " " + currentChord + " accumulate " + ob);
     terminalString = terminalString.cons(ob);
-    currentSlot += getDuration(ob);
+    chordSlot += getDuration(ob);
   }
 
 /**
@@ -132,6 +133,7 @@ private void accumulateTerminals(Object ob)
 public Polylist run(int startSlot, int numSlots, Notate myNotate)
   {
     currentSlot = startSlot;
+    chordSlot = startSlot;
     int savedRetryCount = retryCount;
     int maxRetries = 20;
     notate = myNotate;
@@ -888,7 +890,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         
         Polylist families = (Polylist)arg2;
         
-        Chord currentChord = chords.getCurrentChord(currentSlot);
+        Chord currentChord = chords.getCurrentChord(chordSlot);
         
         if( currentChord == null )
           {

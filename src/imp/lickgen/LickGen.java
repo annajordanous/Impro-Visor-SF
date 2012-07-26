@@ -1983,6 +1983,11 @@ public boolean fillMelody(MelodyPart lick,
                         }
                         offset += (expectDiffs.get(i) / expectDiffSum);
                     }
+                    if( note.getPitch() > 127 )
+                        {
+                        System.out.println("Bad note in fillMelody " + note);
+                        note = new Rest(note.getRhythmValue());
+                        }
                     addNote(note, lick, rhythmString, avoidRepeats, "default", item);
                 }
                 break;
