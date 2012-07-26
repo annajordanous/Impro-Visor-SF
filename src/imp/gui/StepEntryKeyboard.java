@@ -247,10 +247,10 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         optionsMenu = new javax.swing.JMenu();
         clearKeyboardMI = new javax.swing.JMenuItem();
         defaultSettingsBtn = new javax.swing.JMenuItem();
-        useAdviceCBMI = new javax.swing.JCheckBoxMenuItem();
-        useExpectanciesCBMI = new javax.swing.JCheckBoxMenuItem();
-        useBlueAdviceCBMI = new javax.swing.JCheckBoxMenuItem();
-        fixNotesCBMI = new javax.swing.JCheckBoxMenuItem();
+        useAdviceMI = new javax.swing.JCheckBoxMenuItem();
+        useExpectanciesMI = new javax.swing.JCheckBoxMenuItem();
+        useBlueAdviceMI = new javax.swing.JCheckBoxMenuItem();
+        fixNotesMI = new javax.swing.JCheckBoxMenuItem();
         playbackMenu = new javax.swing.JMenu();
         startPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
@@ -1343,41 +1343,41 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         });
         optionsMenu.add(defaultSettingsBtn);
 
-        useAdviceCBMI.setSelected(useAdvice);
-        useAdviceCBMI.setText("Use Advice");
-        useAdviceCBMI.addActionListener(new java.awt.event.ActionListener() {
+        useAdviceMI.setSelected(useAdvice);
+        useAdviceMI.setText("Use Advice");
+        useAdviceMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useAdviceCBMIActionPerformed(evt);
+                useAdviceMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(useAdviceCBMI);
+        optionsMenu.add(useAdviceMI);
 
-        useExpectanciesCBMI.setSelected(useExpectancies);
-        useExpectanciesCBMI.setText("Show Expected Notes");
-        useExpectanciesCBMI.addActionListener(new java.awt.event.ActionListener() {
+        useExpectanciesMI.setSelected(useExpectancies);
+        useExpectanciesMI.setText("Show Expected Notes");
+        useExpectanciesMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useExpectanciesCBMIActionPerformed(evt);
+                useExpectanciesMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(useExpectanciesCBMI);
+        optionsMenu.add(useExpectanciesMI);
 
-        useBlueAdviceCBMI.setSelected(useBlueAdvice);
-        useBlueAdviceCBMI.setText("Use Blue Note Awareness");
-        useBlueAdviceCBMI.addActionListener(new java.awt.event.ActionListener() {
+        useBlueAdviceMI.setSelected(useBlueAdvice);
+        useBlueAdviceMI.setText("Use Blue Note Awareness");
+        useBlueAdviceMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useBlueAdviceCBMIActionPerformed(evt);
+                useBlueAdviceMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(useBlueAdviceCBMI);
+        optionsMenu.add(useBlueAdviceMI);
 
-        fixNotesCBMI.setSelected(fixNotes);
-        fixNotesCBMI.setText("Auto-Rectify Notes");
-        fixNotesCBMI.addActionListener(new java.awt.event.ActionListener() {
+        fixNotesMI.setSelected(fixNotes);
+        fixNotesMI.setText("Auto-Rectify Notes");
+        fixNotesMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fixNotesCBMIActionPerformed(evt);
+                fixNotesMIActionPerformed(evt);
             }
         });
-        optionsMenu.add(fixNotesCBMI);
+        optionsMenu.add(fixNotesMI);
 
         jMenuBar1.add(optionsMenu);
 
@@ -1488,25 +1488,35 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      * Getting the piano key images.
      */
     public javax.swing.ImageIcon whiteKey =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekey.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/whitekey.jpg"));
     public javax.swing.ImageIcon whiteKeyPressed =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekeypurple.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/whitekeypurple.jpg"));
     public javax.swing.ImageIcon whiteKeyChord =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekeypressedgrayscale.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/whitekeypressedgrayscale.jpg"));
     public javax.swing.ImageIcon whiteKeyColor =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/whitekeypressed.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/whitekeypressed.jpg"));
     public javax.swing.ImageIcon blackKey =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkey.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/blackkey.jpg"));
     public javax.swing.ImageIcon blackKeyPressed =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkeypurple.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/blackkeypurple.jpg"));
     public javax.swing.ImageIcon blackKeyChord =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkeypressedgrayscale.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/blackkeypressedgrayscale.jpg"));
     public javax.swing.ImageIcon blackKeyColor =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackkeypressed.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/blackkeypressed.jpg"));
     public javax.swing.ImageIcon bassKey =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/rootkey.JPG"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/rootkey.JPG"));
     public javax.swing.ImageIcon blackBassKey =
-            new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/blackrootkey.jpg"));
+        new javax.swing.ImageIcon(getClass().getResource(
+            "/imp/gui/graphics/blackrootkey.jpg"));
     
     /**
      * Setting some useful constants.
@@ -1521,16 +1531,16 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     public final int P_OCTAVE = 12;     // 12 notes per octave
     public final int A = 21;            // MIDI value of 1st key on keyboard
     public final int C_EIGHTH = 108;    // MIDI value of last key on keyboard
-    public final int MIDDLE_C = 60;
-    public final int LOW_BASS = 24;
-    public final int HALF_STEP = 1;
+    public final int MIDDLE_C = 60;     // MIDI value of C4
+    public final int LOW_BASS = 24;     // The lowest possible bass note
+    public final int HALF_STEP = 1;     // MIDI difference between half-steps
     public final int SLOTS_PER_BEAT = 120;
-    
-    private final int NO_NOTE = -1; // DON'T CHANGE THIS VALUE. This is the same as the value
-                             // that MelodyPart.getPitch() returns if the previous lastNote
-                             // was a rest, which is important.
-    private final int ADVICE_NUM_MIN = 0;
-    private final int ADVICE_NUM_MAX = 88;
+    private final int NO_NOTE = -1; // DON'T CHANGE THIS VALUE. This is the same
+                                    // as the value that MelodyPart.getPitch()
+                                    // returns if the previous lastNote was a
+                                    // rest, which is important.
+    private final int ADVICE_NUM_MIN = 0;   // The minimum advice window size
+    private final int ADVICE_NUM_MAX = 88;  // The maximum advice window size
     private final int ADVICE_NUM_INIT = P_OCTAVE;
     private int ADVICE_OFF = 0;
     private final boolean USE_BLUE_ADVICE_INIT = true;
@@ -1551,7 +1561,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     public static final int HELP_DIALOG_HEIGHT = 600;
   
     /**
-     * Creates new form VoicingKeyboard
+     * Creates new form StepEntryKeyboard
      */
     public StepEntryKeyboard(Notate notate, int x, int y)
     {
@@ -1568,8 +1578,11 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     {
         return notate;
     }
-
     
+    /**
+     * Colors the keyboard based on the selected slot on the stave and the the
+     * last played midi value.
+     */
     public void resetAdvice()
     {
         int slot = notate.getCurrentStave().getSelectionStart();
@@ -1577,10 +1590,11 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * Colors the keyboard based on the current midiValue. If useAdvice is
-     * on, it also colors suggested notes and the bass lastNote.
+     * Colors the keyboard based on the last played midi value and the given
+     * slot. If useAdvice is on, it also colors suggested notes and the
+     * bass lastNote.
      *
-     * @param midiValue
+     * @param selectedSlot
      */
     public void resetAdvice(int selectedSlot)
     {
@@ -1598,7 +1612,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Note lastNote = melodyPart.getPrevNote(selectedSlot);
 
         
-        // Set the curMidi to no lastNote initially. That way we can tell whether
+        // Set the midi to no lastNote initially. That way we can tell whether
         // we get a pitch from the lastNote played
         int midiValue = NO_NOTE;
         boolean displayNote = false; // Decides whether the last note played
@@ -1640,38 +1654,39 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             
             if (!chordName.equals(Constants.NOCHORD))
             {
-                ChordForm curChordForm = currentChord.getChordForm();
+                ChordForm curForm = currentChord.getChordForm();
                 String root = currentChord.getRoot();
 
-                // Get lists of the actual curMidi values we want to color
-                chordMIDIs = // the curMidi values for the notes in the chord
-                    chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
-                colorMIDIs = // the curMidi values for the color notes
-                    chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
+                // Get lists of the actual midi values we want to color
+                chordMIDIs = // the midi values for the notes in the chord
+                    chordToAdvice(curForm.getSpellMIDIarray(root), midiValue);
+                colorMIDIs = // the midi values for the color notes
+                    chordToAdvice(curForm.getColorMIDIarray(root), midiValue);
 
-                // Get a curMidi value for the bass note
+                // Get a midi value for the bass note
                 Integer bassMidi = findBass(root);
                 StepPianoKey bass = pianoKeys()[bassMidi - A];
                 
-                // We only want to use blue advice if (a) blue advice is turned on
-                // (b) the reference note we're using is actually adjacent to the
-                // current selected slot and (c) the reference note is outside of 
-                // the chord.
+                // We only want to use blue advice if (a) blue advice is turned
+                // on (b) the reference note we're using is actually adjacent to
+                // the current selected slot and (c) the reference note is
+                // outside of the chord.
                  
-                if (useBlueAdvice && displayNote && isBlue(midiValue, selectedSlot, chordProg))
+                if (useBlueAdvice && displayNote
+                    && isBlue(midiValue, selectedSlot, chordProg))
                 {
-                    clearAllButPossibleBlueNotes(midiValue, bassMidi);
+                    clearUnusedNotes(midiValue, bassMidi);
                     findAndPressBlueNotes(midiValue, chordMIDIs, colorMIDIs);
                 }
                 else
                 {
-                    pressPianoKeys(chordMIDIs, colorMIDIs, chordName, midiValue, bassMidi);
+                    pressPianoKeys(chordMIDIs, colorMIDIs, chordName,
+                                   midiValue, bassMidi);
                 }
 
                 bass.setPressed(true);
                 pressKey(bass, bass.getBassIcon());
             }
-            
          
             lastChord = chordName;
         }
@@ -1687,7 +1702,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * This method mostly passes keyEvents to the stave action handler for
+     * This method passes keyEvents to notate for
      * processing.
      * @param e 
      */
@@ -1697,9 +1712,9 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * Given a selected slot and the current melody, determines how expected each
-     * lastNote within the advice window is, normalizes it, and displays the positive
-     * numbers on the keyboard.
+     * Given a selected slot and the current melody, determines how expected
+     * each lastNote within the advice window is, normalizes it, and displays
+     * the positive numbers on the keyboard.
      * 
      * @param selectedSlot
      * @param melody 
@@ -1748,12 +1763,12 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         // is a fair initial value
         double maxExpect = 0;
         
-        // Sort the curMidi values of the notes in the advice range
+        // Sort the midi values of the notes in the advice range
         // by their expectancies
         for (int midi = minNote ; midi <= maxNote; midi++ )
         {
-            double expect = Expectancy.getExpectancy(midi, prevPitch,prevPrevPitch,chord);
-
+            double expect = Expectancy.getExpectancy(midi, prevPitch,
+                                                     prevPrevPitch, chord);
             midiArray.add(midi);
             expectancies.add(expect);
             
@@ -1777,13 +1792,16 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * Colors the notes in the that are a half-step away from the
-     * midiValue
+     * Colors the notes in the given arrays that are a half-step away from the
+     * midiValue.
+     * 
      * @param midiValue
      * @param chordMIDIs
      * @param colorMIDIs
      */
-    private void findAndPressBlueNotes(int midiValue, ArrayList<Integer> chordMIDIs, ArrayList<Integer> colorMIDIs)
+    private void findAndPressBlueNotes(int midiValue,
+                                       ArrayList<Integer> chordMIDIs,
+                                       ArrayList<Integer> colorMIDIs)
     {
 
         
@@ -1829,7 +1847,13 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         
     }
     
-    private void clearAllButPossibleBlueNotes(int midiValue, int bassMidi)
+    /**
+     * 
+     * 
+     * @param midiValue
+     * @param bassMidi 
+     */
+    private void clearUnusedNotes(int midiValue, int bassMidi)
     {
         for (StepPianoKey pk : pianoKeys())
         {
@@ -1868,9 +1892,9 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         ChordForm curChordForm = currentChord.getChordForm();
         String root = currentChord.getRoot();
 
-        ArrayList<Integer> chordMIDIs = // the curMidi values for the chord tones
+        ArrayList<Integer> chordMIDIs = // the midi values for the chord tones
                 chordToAdvice(curChordForm.getSpellMIDIarray(root), midiValue);
-        ArrayList<Integer> colorMIDIs = // the curMidi values for the color tones
+        ArrayList<Integer> colorMIDIs = // the midi values for the color tones
                 chordToAdvice(curChordForm.getColorMIDIarray(root), midiValue);
 
         return !(chordMIDIs.contains(midiValue) ||
@@ -1887,7 +1911,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      * @param reference
      * @return
      */
-    private ArrayList<Integer> chordToAdvice(ArrayList<Integer> MIDIarray, int reference)
+    private ArrayList<Integer> chordToAdvice(ArrayList<Integer> MIDIarray,
+                                             int reference)
     {
         ArrayList<Integer> newMIDIs = new ArrayList();
         int minNote = reference - (int) Math.floor(adviceNum / 2.0);
@@ -1932,14 +1957,18 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         return newMIDIs;
     }
     
-    /*
+    /**
      * 
+     * 
+     * @param midi
+     * @return 
      */
     private int fixNote(int midi)
     {
         Stave currentStave = notate.getCurrentStave();
         ChordPart chordProg = currentStave.getChordProg();
-        Chord currentChord = chordProg.getCurrentChord(currentStave.getSelectionStart());
+        Chord currentChord = chordProg.getCurrentChord(
+                                currentStave.getSelectionStart());
 
         String chordName = currentChord.getName();
         chordNameDisplay.setText(chordName);
@@ -1949,10 +1978,10 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             ChordForm curChordForm = currentChord.getChordForm();
             String root = currentChord.getRoot();
 
-            // Get lists of the actual curMidi values we want to color
-            ArrayList<Integer> chordMIDIs = // the curMidi values for the notes in the chord
+            // Get lists of the actual midi values we want to color
+            ArrayList<Integer> chordMIDIs = // the values for the chord tones
                     chordToAdvice(curChordForm.getSpellMIDIarray(root), midi);
-            ArrayList<Integer> colorMIDIs = // the curMidi values for the color notes
+            ArrayList<Integer> colorMIDIs = // the values for the color notes
                     chordToAdvice(curChordForm.getColorMIDIarray(root), midi);
 
             int down = midi;
@@ -1992,8 +2021,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * Finds the curMidi value of the first note preceding the given slot that has 
-     * a nonnegative curMidi value. If there are none, it returns NO_NOTE.
+     * Finds the midi value of the first note preceding the given slot that has 
+     * a nonnegative midi value. If there are none, it returns NO_NOTE.
      *
      * @param stave the current stave
      * @param melody the MelodyPart for the current stave
@@ -2019,7 +2048,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     
     /**
      * Finds the second note preceding the given slot that has a nonnegative
-     * curMidi value. This is the note immediately before the one returned by 
+     * midi value. This is the note immediately before the one returned by 
      * lastRealNote.
      * 
      * @param stave
@@ -2054,7 +2083,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
 
     /**
      * Inputs a note corresponding to the midiValue to the stave and advances
-     * the selected slot
+     * the selected slot.
      *
      * @param midiValue
      */
@@ -2068,7 +2097,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Note newNote = new Note(midiValue);
         
         newNote.setEnharmonic(notate.getScore().getCurrentEnharmonics(index));
-        notate.cm.execute(new SetNoteCommand(index, newNote, notate.getCurrentMelodyPart()));
+        notate.cm.execute(new SetNoteCommand(index, newNote,
+                          notate.getCurrentMelodyPart()));
         
         int next = stave.getNextCstrLine(index);
         
@@ -2088,7 +2118,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         Stave stave = notate.getCurrentStave();
         int index = notate.getCurrentSelectionStart();
         
-        notate.cm.execute(new SetRestCommand(index, notate.getCurrentMelodyPart()));
+        notate.cm.execute(new SetRestCommand(index,
+                          notate.getCurrentMelodyPart()));
         
         int next = stave.getNextCstrLine(index);
         
@@ -2141,7 +2172,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
     
     /**
-     * Colors the piano keys corresponding to the curMidi values in the two lists
+     * Colors the piano keys corresponding to the midi values in the two lists
      * appropriately and updates the coloring of the rest of the keyboard based
      * on the chord name and pressed note.
      * @param chordMIDIs
@@ -2208,7 +2239,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
 
     /**
-     * determines whether the keyboard is in playback mode
+     * Determines whether the keyboard is in playback mode
      *
      * @return true if the keyboard is playing, false otherwise
      */
@@ -2264,110 +2295,198 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     {
         pkeys = new StepPianoKey[88];
         // 0th octave keys
-        pkeys[0] = new StepPianoKey(21, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA0, A0Label);
-        pkeys[1] = new StepPianoKey(22, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb0, Bb0Label);
-        pkeys[2] = new StepPianoKey(23, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB0, B0Label);
+        pkeys[0] = new StepPianoKey(21, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA0, A0Label);
+        pkeys[1] = new StepPianoKey(22, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb0, Bb0Label);
+        pkeys[2] = new StepPianoKey(23, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB0, B0Label);
 
         // 1st octave keys
-        pkeys[3] = new StepPianoKey(24, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC1, C1Label);
-        pkeys[4] = new StepPianoKey(25, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp1, Csharp1Label);
-        pkeys[5] = new StepPianoKey(26, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD1, D1Label);
-        pkeys[6] = new StepPianoKey(27, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb1, Eb1Label);
-        pkeys[7] = new StepPianoKey(28, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE1, E1Label);
-        pkeys[8] = new StepPianoKey(29, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF1, F1Label);
-        pkeys[9] = new StepPianoKey(30, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp1, Fsharp1Label);
-        pkeys[10] = new StepPianoKey(31, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG1, G1Label);
-        pkeys[11] = new StepPianoKey(32, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp1, Gsharp1Label);
-        pkeys[12] = new StepPianoKey(33, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA1, A1Label);
-        pkeys[13] = new StepPianoKey(34, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb1, Bb1Label);
-        pkeys[14] = new StepPianoKey(35, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB1, B1Label);
+        pkeys[3] = new StepPianoKey(24, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC1, C1Label);
+        pkeys[4] = new StepPianoKey(25, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp1, Csharp1Label);
+        pkeys[5] = new StepPianoKey(26, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD1, D1Label);
+        pkeys[6] = new StepPianoKey(27, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb1, Eb1Label);
+        pkeys[7] = new StepPianoKey(28, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE1, E1Label);
+        pkeys[8] = new StepPianoKey(29, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyF1, F1Label);
+        pkeys[9] = new StepPianoKey(30, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp1, Fsharp1Label);
+        pkeys[10] = new StepPianoKey(31, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG1, G1Label);
+        pkeys[11] = new StepPianoKey(32, blackKeyChord, blackKeyColor, 
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp1, Gsharp1Label);
+        pkeys[12] = new StepPianoKey(33, whiteKeyChord, whiteKeyColor, 
+            whiteKeyPressed, whiteKey, bassKey, keyA1, A1Label);
+        pkeys[13] = new StepPianoKey(34, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb1, Bb1Label);
+        pkeys[14] = new StepPianoKey(35, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB1, B1Label);
 
         // 2nd octave keys
-        pkeys[15] = new StepPianoKey(36, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC2, C2Label);
-        pkeys[16] = new StepPianoKey(37, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp2, Csharp2Label);
-        pkeys[17] = new StepPianoKey(38, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD2, D2Label);
-        pkeys[18] = new StepPianoKey(39, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb2, Eb2Label);
-        pkeys[19] = new StepPianoKey(40, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE2, E2Label);
-        pkeys[20] = new StepPianoKey(41, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF2, F2Label);
-        pkeys[21] = new StepPianoKey(42, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp2, Fsharp2Label);
-        pkeys[22] = new StepPianoKey(43, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG2, G2Label);
-        pkeys[23] = new StepPianoKey(44, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp2, Gsharp2Label);
-        pkeys[24] = new StepPianoKey(45, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA2, A2Label);
-        pkeys[25] = new StepPianoKey(46, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb2, Bb2Label);
-        pkeys[26] = new StepPianoKey(47, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB2, B2Label);
+        pkeys[15] = new StepPianoKey(36, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC2, C2Label);
+        pkeys[16] = new StepPianoKey(37, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp2, Csharp2Label);
+        pkeys[17] = new StepPianoKey(38, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD2, D2Label);
+        pkeys[18] = new StepPianoKey(39, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb2, Eb2Label);
+        pkeys[19] = new StepPianoKey(40, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE2, E2Label);
+        pkeys[20] = new StepPianoKey(41, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyF2, F2Label);
+        pkeys[21] = new StepPianoKey(42, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp2, Fsharp2Label);
+        pkeys[22] = new StepPianoKey(43, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG2, G2Label);
+        pkeys[23] = new StepPianoKey(44, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp2, Gsharp2Label);
+        pkeys[24] = new StepPianoKey(45, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA2, A2Label);
+        pkeys[25] = new StepPianoKey(46, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb2, Bb2Label);
+        pkeys[26] = new StepPianoKey(47, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB2, B2Label);
 
         // 3rd octave keys
-        pkeys[27] = new StepPianoKey(48, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC3, C3Label);
-        pkeys[28] = new StepPianoKey(49, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp3, Csharp3Label);
-        pkeys[29] = new StepPianoKey(50, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD3, D3Label);
-        pkeys[30] = new StepPianoKey(51, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb3, Eb3Label);
-        pkeys[31] = new StepPianoKey(52, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE3, E3Label);
-        pkeys[32] = new StepPianoKey(53, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF3, F3Label);
-        pkeys[33] = new StepPianoKey(54, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp3, Fsharp3Label);
-        pkeys[34] = new StepPianoKey(55, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG3, G3Label);
-        pkeys[35] = new StepPianoKey(56, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp3, Gsharp3Label);
-        pkeys[36] = new StepPianoKey(57, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA3, A3Label);
-        pkeys[37] = new StepPianoKey(58, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb3, Bb3Label);
-        pkeys[38] = new StepPianoKey(59, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB3, B3Label);
+        pkeys[27] = new StepPianoKey(48, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC3, C3Label);
+        pkeys[28] = new StepPianoKey(49, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp3, Csharp3Label);
+        pkeys[29] = new StepPianoKey(50, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD3, D3Label);
+        pkeys[30] = new StepPianoKey(51, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb3, Eb3Label);
+        pkeys[31] = new StepPianoKey(52, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE3, E3Label);
+        pkeys[32] = new StepPianoKey(53, whiteKeyChord, whiteKeyColor, 
+            whiteKeyPressed, whiteKey, bassKey, keyF3, F3Label);
+        pkeys[33] = new StepPianoKey(54, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp3, Fsharp3Label);
+        pkeys[34] = new StepPianoKey(55, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG3, G3Label);
+        pkeys[35] = new StepPianoKey(56, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp3, Gsharp3Label);
+        pkeys[36] = new StepPianoKey(57, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA3, A3Label);
+        pkeys[37] = new StepPianoKey(58, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb3, Bb3Label);
+        pkeys[38] = new StepPianoKey(59, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB3, B3Label);
 
         // 4th octave keys
-        pkeys[39] = new StepPianoKey(60, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC4, C4Label);
-        pkeys[40] = new StepPianoKey(61, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp4, Csharp4Label);
-        pkeys[41] = new StepPianoKey(62, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD4, D4Label);
-        pkeys[42] = new StepPianoKey(63, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb4, Eb4Label);
-        pkeys[43] = new StepPianoKey(64, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE4, E4Label);
-        pkeys[44] = new StepPianoKey(65, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF4, F4Label);
-        pkeys[45] = new StepPianoKey(66, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp4, Fsharp4Label);
-        pkeys[46] = new StepPianoKey(67, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG4, G4Label);
-        pkeys[47] = new StepPianoKey(68, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp4, Gsharp4Label);
-        pkeys[48] = new StepPianoKey(69, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA4, A4Label);
-        pkeys[49] = new StepPianoKey(70, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb4, Bb4Label);
-        pkeys[50] = new StepPianoKey(71, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB4, B4Label);
+        pkeys[39] = new StepPianoKey(60, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC4, C4Label);
+        pkeys[40] = new StepPianoKey(61, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp4, Csharp4Label);
+        pkeys[41] = new StepPianoKey(62, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD4, D4Label);
+        pkeys[42] = new StepPianoKey(63, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb4, Eb4Label);
+        pkeys[43] = new StepPianoKey(64, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE4, E4Label);
+        pkeys[44] = new StepPianoKey(65, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyF4, F4Label);
+        pkeys[45] = new StepPianoKey(66, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp4, Fsharp4Label);
+        pkeys[46] = new StepPianoKey(67, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG4, G4Label);
+        pkeys[47] = new StepPianoKey(68, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp4, Gsharp4Label);
+        pkeys[48] = new StepPianoKey(69, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA4, A4Label);
+        pkeys[49] = new StepPianoKey(70, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb4, Bb4Label);
+        pkeys[50] = new StepPianoKey(71, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB4, B4Label);
 
         // 5th octave keys
-        pkeys[51] = new StepPianoKey(72, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC5, C5Label);
-        pkeys[52] = new StepPianoKey(73, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp5, Csharp5Label);
-        pkeys[53] = new StepPianoKey(74, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD5, D5Label);
-        pkeys[54] = new StepPianoKey(75, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb5, Eb5Label);
-        pkeys[55] = new StepPianoKey(76, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE5, E5Label);
-        pkeys[56] = new StepPianoKey(77, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF5, F5Label);
-        pkeys[57] = new StepPianoKey(78, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp5, Fsharp5Label);
-        pkeys[58] = new StepPianoKey(79, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG5, G5Label);
-        pkeys[59] = new StepPianoKey(80, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp5, Gsharp5Label);
-        pkeys[60] = new StepPianoKey(81, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA5, A5Label);
-        pkeys[61] = new StepPianoKey(82, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb5, Bb5Label);
-        pkeys[62] = new StepPianoKey(83, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB5, B5Label);
+        pkeys[51] = new StepPianoKey(72, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC5, C5Label);
+        pkeys[52] = new StepPianoKey(73, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp5, Csharp5Label);
+        pkeys[53] = new StepPianoKey(74, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD5, D5Label);
+        pkeys[54] = new StepPianoKey(75, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb5, Eb5Label);
+        pkeys[55] = new StepPianoKey(76, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE5, E5Label);
+        pkeys[56] = new StepPianoKey(77, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyF5, F5Label);
+        pkeys[57] = new StepPianoKey(78, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp5, Fsharp5Label);
+        pkeys[58] = new StepPianoKey(79, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG5, G5Label);
+        pkeys[59] = new StepPianoKey(80, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp5, Gsharp5Label);
+        pkeys[60] = new StepPianoKey(81, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA5, A5Label);
+        pkeys[61] = new StepPianoKey(82, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb5, Bb5Label);
+        pkeys[62] = new StepPianoKey(83, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB5, B5Label);
 
         // 6th octave keys
-        pkeys[63] = new StepPianoKey(84, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC6, C6Label);
-        pkeys[64] = new StepPianoKey(85, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp6, Csharp5Label);
-        pkeys[65] = new StepPianoKey(86, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD6, D6Label);
-        pkeys[66] = new StepPianoKey(87, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb6, Eb6Label);
-        pkeys[67] = new StepPianoKey(88, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE6, E6Label);
-        pkeys[68] = new StepPianoKey(89, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF6, F6Label);
-        pkeys[69] = new StepPianoKey(90, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp6, Fsharp6Label);
-        pkeys[70] = new StepPianoKey(91, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG6, G6Label);
-        pkeys[71] = new StepPianoKey(92, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp6, Gsharp6Label);
-        pkeys[72] = new StepPianoKey(93, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA6, A6Label);
-        pkeys[73] = new StepPianoKey(94, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb6, Bb6Label);
-        pkeys[74] = new StepPianoKey(95, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB6, B6Label);
+        pkeys[63] = new StepPianoKey(84, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC6, C6Label);
+        pkeys[64] = new StepPianoKey(85, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp6, Csharp5Label);
+        pkeys[65] = new StepPianoKey(86, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD6, D6Label);
+        pkeys[66] = new StepPianoKey(87, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb6, Eb6Label);
+        pkeys[67] = new StepPianoKey(88, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE6, E6Label);
+        pkeys[68] = new StepPianoKey(89, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyF6, F6Label);
+        pkeys[69] = new StepPianoKey(90, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp6, Fsharp6Label);
+        pkeys[70] = new StepPianoKey(91, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG6, G6Label);
+        pkeys[71] = new StepPianoKey(92, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp6, Gsharp6Label);
+        pkeys[72] = new StepPianoKey(93, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA6, A6Label);
+        pkeys[73] = new StepPianoKey(94, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb6, Bb6Label);
+        pkeys[74] = new StepPianoKey(95, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB6, B6Label);
 
         // 7th octave keys
-        pkeys[75] = new StepPianoKey(96, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC7, C7Label);
-        pkeys[76] = new StepPianoKey(97, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyCsharp7, Csharp7Label);
-        pkeys[77] = new StepPianoKey(98, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyD7, D7Label);
-        pkeys[78] = new StepPianoKey(99, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyEb7, Eb7Label);
-        pkeys[79] = new StepPianoKey(100, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyE7, E7Label);
-        pkeys[80] = new StepPianoKey(101, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyF7, F7Label);
-        pkeys[81] = new StepPianoKey(102, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyFsharp7, Fsharp7Label);
-        pkeys[82] = new StepPianoKey(103, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyG7, G7Label);
-        pkeys[83] = new StepPianoKey(104, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyGsharp7, Gsharp7Label);
-        pkeys[84] = new StepPianoKey(105, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyA7, A7Label);
-        pkeys[85] = new StepPianoKey(106, blackKeyChord, blackKeyColor, blackKeyPressed, blackKey, blackBassKey, keyBb7, Bb7Label);
-        pkeys[86] = new StepPianoKey(107, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyB7, B7Label);
+        pkeys[75] = new StepPianoKey(96, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC7, C7Label);
+        pkeys[76] = new StepPianoKey(97, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyCsharp7, Csharp7Label);
+        pkeys[77] = new StepPianoKey(98, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyD7, D7Label);
+        pkeys[78] = new StepPianoKey(99, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyEb7, Eb7Label);
+        pkeys[79] = new StepPianoKey(100, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyE7, E7Label);
+        pkeys[80] = new StepPianoKey(101, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyF7, F7Label);
+        pkeys[81] = new StepPianoKey(102, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyFsharp7, Fsharp7Label);
+        pkeys[82] = new StepPianoKey(103, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyG7, G7Label);
+        pkeys[83] = new StepPianoKey(104, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyGsharp7, Gsharp7Label);
+        pkeys[84] = new StepPianoKey(105, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyA7, A7Label);
+        pkeys[85] = new StepPianoKey(106, blackKeyChord, blackKeyColor,
+            blackKeyPressed, blackKey, blackBassKey, keyBb7, Bb7Label);
+        pkeys[86] = new StepPianoKey(107, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyB7, B7Label);
 
         // 8th octave keys
-        pkeys[87] = new StepPianoKey(108, whiteKeyChord, whiteKeyColor, whiteKeyPressed, whiteKey, bassKey, keyC8, C8Label);
+        pkeys[87] = new StepPianoKey(108, whiteKeyChord, whiteKeyColor,
+            whiteKeyPressed, whiteKey, bassKey, keyC8, C8Label);
     }
 
     public StepPianoKey[] pianoKeys()
@@ -2376,11 +2495,10 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
     }
 
     /**
- *
- * Opens the help dialog.
- *
- */
-
+     *
+    * Opens the help dialog.
+    *
+    */
     public void openHelpDialog()
     {
         keyboardHelpDialog.setVisible(true);
@@ -2537,13 +2655,15 @@ private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 private void startSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSelPlayMIActionPerformed
 
     playback = true;
-    notate.getCurrentStave().playSelection(false, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
+    notate.getCurrentStave().playSelection(false, 0, PlayScoreCommand.USEDRUMS,
+                                           "VoicingKeyboard");
 }//GEN-LAST:event_startSelPlayMIActionPerformed
 
 private void stopSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSelPlayMIActionPerformed
 
     playback = false;
-    notate.getCurrentStave().playSelection(true, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
+    notate.getCurrentStave().playSelection(true, 0, PlayScoreCommand.USEDRUMS,
+                                           "VoicingKeyboard");
 }//GEN-LAST:event_stopSelPlayMIActionPerformed
 
 private void pausePlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausePlayMIActionPerformed
@@ -2570,7 +2690,9 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     windowMenu.add(windowMenuSeparator);
 
     for (WindowMenuItem w : WindowRegistry.getWindows())
-        windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        windowMenu.add(w.getMI(this));  // these are static, and calling getMI
+                                        // updates the name on them too in case
+                                        // the window title changed
 
     windowMenu.repaint();
 }//GEN-LAST:event_windowMenuMenuSelected
@@ -2594,12 +2716,12 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
             if (newValue <= ADVICE_NUM_MIN)
             {
                 useAdvice = false;
-                useAdviceCBMI.setSelected(false);
+                useAdviceMI.setSelected(false);
             }
             else if (newValue > ADVICE_NUM_MAX)
             {
                 useAdvice = true;
-                useAdviceCBMI.setSelected(true);
+                useAdviceMI.setSelected(true);
                 adviceNum = ADVICE_NUM_MAX;
                 adviceNumSpinner.setValue(adviceNum);        
             }            
@@ -2607,7 +2729,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
             {
                 adviceNum = newValue;
                 useAdvice = true;
-                useAdviceCBMI.setSelected(true);
+                useAdviceMI.setSelected(true);
             }
         }
         catch (NumberFormatException e)
@@ -2657,37 +2779,37 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private void defaultSettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultSettingsBtnActionPerformed
         
         useAdvice = USE_ADVICE_INIT;
-        useAdviceCBMI.setSelected(USE_ADVICE_INIT);
+        useAdviceMI.setSelected(USE_ADVICE_INIT);
         
         useBlueAdvice = USE_BLUE_ADVICE_INIT;
-        useBlueAdviceCBMI.setSelected(USE_BLUE_ADVICE_INIT);
+        useBlueAdviceMI.setSelected(USE_BLUE_ADVICE_INIT);
         
         useExpectancies = USE_EXPECTANCIES_INIT;
-        useExpectanciesCBMI.setSelected(USE_EXPECTANCIES_INIT);
+        useExpectanciesMI.setSelected(USE_EXPECTANCIES_INIT);
         
         fixNotes = FIX_NOTES_INIT;
-        fixNotesCBMI.setSelected(FIX_NOTES_INIT);
+        fixNotesMI.setSelected(FIX_NOTES_INIT);
         
         resetAdvice();
     }//GEN-LAST:event_defaultSettingsBtnActionPerformed
 
-    private void fixNotesCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixNotesCBMIActionPerformed
+    private void fixNotesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixNotesMIActionPerformed
         
-        if (fixNotesCBMI.isSelected()) fixNotes = true;
+        if (fixNotesMI.isSelected()) fixNotes = true;
         else fixNotes = false;
-    }//GEN-LAST:event_fixNotesCBMIActionPerformed
+    }//GEN-LAST:event_fixNotesMIActionPerformed
 
-    private void useBlueAdviceCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useBlueAdviceCBMIActionPerformed
+    private void useBlueAdviceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useBlueAdviceMIActionPerformed
         
-        if (useBlueAdviceCBMI.isSelected()) useBlueAdvice = true;
+        if (useBlueAdviceMI.isSelected()) useBlueAdvice = true;
         else useBlueAdvice = false;
         
         resetAdvice();
-    }//GEN-LAST:event_useBlueAdviceCBMIActionPerformed
+    }//GEN-LAST:event_useBlueAdviceMIActionPerformed
 
-    private void useAdviceCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAdviceCBMIActionPerformed
+    private void useAdviceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAdviceMIActionPerformed
         
-        if (useAdviceCBMI.isSelected())
+        if (useAdviceMI.isSelected())
         {
             useAdvice = true;
             adviceNum = ADVICE_NUM_INIT;
@@ -2702,16 +2824,16 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         
         resetAdvice();
         requestFocus();
-    }//GEN-LAST:event_useAdviceCBMIActionPerformed
+    }//GEN-LAST:event_useAdviceMIActionPerformed
 
-    private void useExpectanciesCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useExpectanciesCBMIActionPerformed
+    private void useExpectanciesMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useExpectanciesMIActionPerformed
         
-        if (useExpectanciesCBMI.isSelected()) useExpectancies = true;
+        if (useExpectanciesMI.isSelected()) useExpectancies = true;
         else useExpectancies = false;
         
         resetAdvice();
         requestFocus();
-    }//GEN-LAST:event_useExpectanciesCBMIActionPerformed
+    }//GEN-LAST:event_useExpectanciesMIActionPerformed
 
     private void HelpMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HelpMenuMouseClicked
         
@@ -2842,7 +2964,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem clearKeyboardMI;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JMenuItem defaultSettingsBtn;
-    private javax.swing.JCheckBoxMenuItem fixNotesCBMI;
+    private javax.swing.JCheckBoxMenuItem fixNotesMI;
     private javax.swing.JButton inputRestBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
@@ -2951,9 +3073,9 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem stopSelPlayMI;
     private javax.swing.JComboBox subDivComboBox;
     private javax.swing.JMenuItem undoBtn;
-    private javax.swing.JCheckBoxMenuItem useAdviceCBMI;
-    private javax.swing.JCheckBoxMenuItem useBlueAdviceCBMI;
-    private javax.swing.JCheckBoxMenuItem useExpectanciesCBMI;
+    private javax.swing.JCheckBoxMenuItem useAdviceMI;
+    private javax.swing.JCheckBoxMenuItem useBlueAdviceMI;
+    private javax.swing.JCheckBoxMenuItem useExpectanciesMI;
     private javax.swing.JMenu windowMenu;
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables

@@ -19592,7 +19592,6 @@ public void addToVoicingSequence()
 private void voicingSequenceAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voicingSequenceAddButtonActionPerformed
 
     addToVoicingSequence();
-
 }//GEN-LAST:event_voicingSequenceAddButtonActionPerformed
 
 /**

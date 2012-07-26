@@ -52,33 +52,26 @@ boolean useNoteCursor = false;
  */
 private static int parallaxBias = 1;
 
-
 /**
  * magic offset for bass-only staves
  */
 private static final int bassOnlyOffset = 48;
-
 
 /**
  * Shifts the mouse clicked position slightly for click accuracy
  */
 private static final int verticalAdjustment = 2;
 
-
 /**
  * Threshold for determining if additional vertical drag has occurred
  */
 private static int VERTICAL_DRAG_THRESHOLD = 1;
 
-
 Note lastAdviceNote;
-
 
 Chord lastAdviceChord;
 
-
 Chord lastAdviceNext;
-
 
 /**
  * This is used in mapping Y offsets to pitches.
@@ -89,250 +82,207 @@ public static final int pitchFromSpacing[] =
   c4, d4, e4, f4, g4, a4, b4, c5
  };
 
-
 public static final int allPitchesFromSpacing[] =
  {
   c4, cs4, d4, ds4, e4, f4, fs4, g4, gs4, a4, as4, b4, c5
  };
-
 
 /**
  * The stave to set all of the actions to
  */
 private Stave stave;
 
-
 /**
  * The notation window for the Stave
  */
 private Notate notate;
-
 
 /**
  * What single index is currently selected
  */
 private int selectedIndex = OUT_OF_BOUNDS;
 
-
 /**
  * What beat is currently selected
  */
 private int selectedBeat = OUT_OF_BOUNDS;
-
 
 /**
  * What measure is the mouse currently over
  */
 private int selectedMeasure = OUT_OF_BOUNDS;
 
-
 /**
  * The last measure the mouse was over
  */
 private int lastMeasureSelected = OUT_OF_BOUNDS;
-
 
 /**
  * Value for if the time signature is selected
  */
 private boolean timeSelected = false;
 
-
 /**
  * Value for if the key signature is selected
  */
 private boolean keySelected = false;
-
 
 /**
  * Last x position to have been clicked
  */
 private int clickedPosX;
 
-
 /**
  * Last y position to have been clicked
  */
 private int clickedPosY;
-
 
 /**
  * The current line the mouse is on
  */
 private int currentLine;
 
-
 /**
  * Last pitch to have been entered
  */
 private Note storedNote = null;
-
 
 /**
  * Indicates whether button1 has been clicked
  */
 private boolean button1Down = false;
 
-
 /**
  * Indicates if the last mouse click was on a construction line
  */
 private boolean clickedOnCstrLine = false;
-
 
 /**
  * Indicates if the last mouse click was on a beat bracket
  */
 private boolean clickedOnBracket = false;
 
-
 /**
  * The starting index of a dragging note
  */
 private int startingIndex = OUT_OF_BOUNDS;
-
 
 /**
  * Flag for if you can drag a note's pitch or not
  */
 private boolean draggingPitch = false;
 
-
 /**
  * Flag for if you can drag a note or not
  */
 private boolean draggingNote = false;
-
 
 /**
  * Flag for if you can drag a group of notes or not
  */
 private boolean draggingGroup = false;
 
-
 private int draggingGroupOffset = 0;
-
 
 private int draggingGroupOrigSelectionStart = 0;
 
-
 private int draggingGroupOrigSelectionEnd = 0;
-
 
 /**
  * Flag for if you are currently dragging the selection box handles
  */
 private boolean draggingSelectionHandle = false;
 
-
 /**
  * Directional Flag for which handle is being dragged (true: left, false: right)
  */
 private boolean draggingSelectionHandleLeft = false;
-
 
 /**
  * Locks the dragging of a note to either pitch or position
  */
 private boolean lockDragging = false;
 
-
 /**
  * Flag for if the note is being dragged for the first time
  */
 private boolean firstDrag = false;
-
 
 /**
  * The starting x-axis position for dragging
  */
 private int startDragX = OUT_OF_BOUNDS;
 
-
 /**
  * The starting y-axis position for dragging
  */
 private int startDragY = OUT_OF_BOUNDS;
-
 
 /**
  * The ending x-axis position for dragging
  */
 private int endDragX = OUT_OF_BOUNDS;
 
-
 /**
  * The ending y-axis position for dragging
  */
 private int endDragY = OUT_OF_BOUNDS;
-
 
 /**
  * The most recent y-axis position for dragging
  */
 private int lastDragY = OUT_OF_BOUNDS;
 
-
 /**
  * The lowest slot index encountered during dragging
  */
 private int dragMin;
-
 
 /**
  * The highest slot index encountered during dragging
  */
 private int dragMax;
 
-
 /**
  * Flag for if the user is selecting notes
  */
 private boolean selectingGroup = false;
-
 
 /**
  * Flag for if the user is drawing a contour line
  */
 private boolean drawing = false;
 
-
 /**
  * Last index drawn with contour tool
  */
 private int lastIndexDrawn = OUT_OF_BOUNDS;
-
 
 /**
  * First index drawn with contour tool
  **/
 private int firstIndexDrawn = OUT_OF_BOUNDS;
 
-
 /**
  * Was the last tone added an approach tone?
  */
 private boolean lastToneApproach = false;
-
 
 /**
  * What was the last index approached?
  */
 private int lastIndexApproached = OUT_OF_BOUNDS;
 
-
 /**
  * Last approach drawn
  */
 private int lastApproachPitch = OUT_OF_BOUNDS;
-
 
 /**
  * Last point drawn with contour tool; for use with 'flat-lining' a curve
  * to extend a note's duration;
  */
 private Point lastPointDrawn = null;
-
 
 /**
  * Indices added during a draw stroke.  Any untriggered note additions
@@ -341,37 +291,30 @@ private Point lastPointDrawn = null;
  */
 private java.util.List<Integer> firedIndices = new ArrayList<Integer>();
 
-
 /**
  * Line that we're drawing on; we are restricted to drawing on a single line
  * per stroke.
  */
 private int drawingLine = OUT_OF_BOUNDS;
 
-
 /**
  * Flags for allowable tones in fitting notes to a drawn contour.
  */
 private boolean drawScaleTones = true;
 
-
 private boolean drawChordTones = true;
 
-
 private boolean drawColorTones = false;
-
 
 /**
  * Left bound of curve
  */
 private int curveLeftBound;
 
-
 /**
  * Right bound of curve
  */
 private int curveRightBound;
-
 
 /**
  * What was the last change on the x-axis of the curve?  This is used
@@ -379,30 +322,24 @@ private int curveRightBound;
  */
 private int oldDiff;
 
-
 /**
  * Flag for if the user is shift-clicking
  */
 private boolean shiftClicking = false;
-
 
 /**
  * Flag for if the user is holding 'a' down - used for contour drawing
  */
 private boolean aPressed = false;
 
-
 /**
  * Cursors
  */
 private Cursor defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
 
-
 private Cursor crosshair = new Cursor(Cursor.CROSSHAIR_CURSOR);
 
-
 private Cursor resizeEastCursor = new Cursor(Cursor.E_RESIZE_CURSOR);
-
 
 private Cursor resizeWestCursor = new Cursor(Cursor.W_RESIZE_CURSOR);
 
@@ -412,14 +349,11 @@ private Cursor penCursor = null;
 
 private Cursor noteCursor = null;
 
-
-
 /**
  * Location of cursor during last mouseMove event, used to detect
  * when the cursor is inside hotspot rectangles such as the selection handles
  */
 private Point cursorLocation = new Point(-1, -1);
-
 
 /**
  * Flag for whether the handles should be displayed, when the flag changes
@@ -427,8 +361,14 @@ private Point cursorLocation = new Point(-1, -1);
  */
 private boolean overHandles = false;
 
-//    MelodyContour[] contours = new MelodyContour[2];
-
+private String blueNoteCursorImg = "graphics/cursors/blueNoteCursor.png";
+private String blackNoteCursorImg = "graphics/cursors/blackNoteCursor.png";
+private String greenNoteCursorImg = "graphics/cursors/greenNoteCursor.png";
+private String redNoteCursorImg = "graphics/cursors/redNoteCursor.png";
+private String blueNoteLineCursorImg = "graphics/cursor/blueNoteLineCursor.png";
+private String blackNoteLineCursorImg = "graphics/cursors/blackNoteLineCursor.png";
+private String greenNoteLineCursorImg = "graphics/cursors/greenNoteLineCursor.png";
+private String redNoteLineCursorImg = "graphics/cursors/redNoteLineCursor.png";
 
 private Cursor makeCursor(String filename, String cursorName, boolean offset)
  {
@@ -463,9 +403,8 @@ StaveActionHandler(Stave stave, Notate notate)
 
   penCursor = makeCursor("graphics/toolbar/pencilCursor.png", "Pencil", true);
   
-  noteCursor = useNoteCursor ? makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true) : defaultCursor;
+  noteCursor = useNoteCursor? makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true) : defaultCursor;
  }
-
 
 /***
  * Mouse Listener stubs
@@ -474,22 +413,18 @@ StaveActionHandler(Stave stave, Notate notate)
 /**
  * Mouse entereds
  */
-
 public void mouseEntered(MouseEvent e)
  {
    
  }
 
-
 /**
  * Mouse exited
  */
-
 public void mouseExited(MouseEvent e)
  {
   
  }
-
 
 public void maybeSetCursor(MouseEvent e)
  {
@@ -512,11 +447,9 @@ public void maybeSetCursor(MouseEvent e)
    }
  }
 
-
 /**
  * Mouse moved
  */
-
 public void mouseMoved(MouseEvent e)
  {            
   Trace.log(2, "mouse moved " + e);
@@ -528,7 +461,7 @@ public void mouseMoved(MouseEvent e)
   boolean withinNoteArea = inNoteArea(e);
   
   if( withinNoteArea && useNoteCursor)
-      chooseAndSetCursor(e);
+      chooseAndSetNoteCursor(e);
 
   else
     maybeSetCursor(e);   
@@ -576,7 +509,7 @@ public void mouseMoved(MouseEvent e)
      }
     else
      {
-      //chooseAndSetCursor(e);
+      setCursor(noteCursor);
      }
    }
 
@@ -586,7 +519,11 @@ public void mouseMoved(MouseEvent e)
    }
  }
 
-private void chooseAndSetCursor(MouseEvent e)
+/**
+ * Chooses the appropriate note cursor to use based on the given event.
+ * @param e 
+ */
+private void chooseAndSetNoteCursor(MouseEvent e)
 {
     int x = e.getX();
     int y = e.getY();
@@ -594,9 +531,11 @@ private void chooseAndSetCursor(MouseEvent e)
     ChordPart prog = stave.getChordProg();
     Chord currentChord = prog.getPrevChord(searchForCstrLine(x, y));
     
-    //System.out.println(currentChord);
-    
     int pitch;
+    
+    // Get the pitch that would be input if the mouse was clicked here. If
+    // smart entry is turned on, the pitch will be rectified, so the cursor
+    // will be colored based on a different note than it would be otherwise
     if (notate.getSmartEntry())
         pitch = yPosToRectifiedPitch(y - (notate.getParallax() + parallaxBias),
                             currentChord, getCurrentLine(y), e.isShiftDown());
@@ -604,10 +543,7 @@ private void chooseAndSetCursor(MouseEvent e)
         pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias),
                             getCurrentLine(y));
     
-
-    // reset the pitch to the max or min pitch of the Stave if
-    // they are out of bounds
-    
+    // This currently only deals with natural pitches correctly
     boolean noteOnLegerLine = noteOnLegerLine(pitch);
     
     if (currentChord != null && !currentChord.getName().equals(Constants.NOCHORD))
@@ -618,53 +554,68 @@ private void chooseAndSetCursor(MouseEvent e)
         ArrayList<Integer> chordMIDIs = curChordForm.getSpellMIDIarray(root);
         ArrayList<Integer> colorMIDIs = curChordForm.getColorMIDIarray(root);
 
- 
+        // Put all the pitches in the same octave so we can compare them
         for(int i = 0; i < chordMIDIs.size(); i++)
         {
             int note = chordMIDIs.get(i);
-            chordMIDIs.set(i, note%12);
+            chordMIDIs.set(i, note%Constants.OCTAVE);
         }
 
         for(int i = 0; i < colorMIDIs.size(); i++)
         {
             int note = colorMIDIs.get(i);
-            colorMIDIs.set(i, note%12);
+            colorMIDIs.set(i, note%Constants.OCTAVE);
         }
         
+        // pitch is invalid
         if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
-            noteCursor = makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true);                
+            noteCursor = makeCursor(blueNoteCursorImg, "Note", true);                
         
-        else if (chordMIDIs.contains(pitch%12))
+        // pitch is a chord tone
+        else if (chordMIDIs.contains(pitch%Constants.OCTAVE))
         {
             if (noteOnLegerLine)
-                noteCursor = makeCursor("graphics/cursors/blackNoteLineCursor.png", "Note", true);
+                noteCursor = makeCursor(blackNoteLineCursorImg, "Note", true);
             else
-                noteCursor = makeCursor("graphics/cursors/blackNoteCursor.png", "Note", true);
-        }
-  
-        else if (colorMIDIs.contains(pitch%12))
-        {
-            if (noteOnLegerLine)
-                noteCursor = makeCursor("graphics/cursors/greenNoteLineCursor.png", "Note", true);
-            else
-                noteCursor = makeCursor("graphics/cursors/greenNoteCursor.png", "Note", true); 
+                noteCursor = makeCursor(blackNoteCursorImg, "Note", true);
         }
         
+        // pitch is a color tone
+        else if (colorMIDIs.contains(pitch%Constants.OCTAVE))
+        {
+            if (noteOnLegerLine)
+                noteCursor = makeCursor(greenNoteLineCursorImg, "Note", true);
+            else
+                noteCursor = makeCursor(greenNoteCursorImg, "Note", true); 
+        }
+        
+        // pitch is out of key
         else
         {
             if (noteOnLegerLine)
-                noteCursor = makeCursor("graphics/cursors/redNoteLineCursor.png", "Note", true);
+                noteCursor = makeCursor(redNoteLineCursorImg, "Note", true);
             else
-                noteCursor = makeCursor("graphics/cursors/redNoteCursor.png", "Note", true); 
+                noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
     }
     
     setCursor(noteCursor);
+
 }
 
+/**
+ * Determines whether the given midi value would be input to the staff on a
+ * ledger line.
+ * 
+ * @param midi
+ * @return 
+ */
 private boolean noteOnLegerLine(int midi)
 {
     int norm = midi%24;
+    
+    //Note note = new Note(norm);
+    //note.setEnharmonic(enh);
     
     return (norm == 2 || norm ==5 || norm==9 || norm == 12 ||
             norm == 16 || norm == 19 || norm == 23 );
@@ -702,19 +653,15 @@ boolean activeHandles()
   return false;
  }
 
-// determine if mouse is over a handle
-
 boolean mouseOverLHandle()
  {
   return stave.selectionLHandle.contains(cursorLocation);
  }
 
-
 boolean mouseOverRHandle()
  {
   return stave.selectionRHandle.contains(cursorLocation);
  }
-
 
 /**
  * Mouse clicked
@@ -743,19 +690,15 @@ public void mouseClicked(MouseEvent e)
    }
  }
 
-
-
 /**
  * The maximum duration a note should sound on entry.
  */
 private static int MAX_NOTE_ENTRY_LENGTH = BEAT / 2;
 
-
 public static int getEntryDuration(Note note)
  {
   return Math.max(0, Math.min(note.getRhythmValue(), MAX_NOTE_ENTRY_LENGTH) - 1);
  }
-
 
 /**
  * Add a note as determined by MouseEvent e.
@@ -765,7 +708,6 @@ private int addNote(MouseEvent e)
   return addNote(e.getX(), e.getY());
  }
 
-
 /**
  * Add a note as determined by MouseEvent e.
  * Note that different methods are called, depending on whether or not there is a chord!
@@ -774,7 +716,6 @@ private int addNote(int x, int y)
  {
   return addNote(x, y, true);
  }
-
 
 /**
  * Add a note as determined by MouseEvent e.
@@ -823,7 +764,6 @@ private int addNote(int x, int y, boolean play)
 
  }
 
-
 /**
  * Add and play a note as determined by MouseEvent e, within a particular chordal context.
  */
@@ -832,7 +772,6 @@ private int addNote(MouseEvent e, Chord chord)
   return addNote(e, chord, true);
  }
 
-
 /**
  * Add a note as determined by MouseEvent e, within a particular chordal context.
  */
@@ -840,7 +779,6 @@ private int addNote(MouseEvent e, Chord chord, boolean play)
  {
   return addNote(e.getX(), e.getY(), chord, e.isShiftDown(), play);
  }
-
 
 /**
  * Add a note as determined by MouseEvent e, within a particular chordal context.
@@ -857,7 +795,7 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
    }
 
   /* Default to context-free note addition if there are no chords. */
-  if( chord == null || chord.getName().equals("NC") )
+  if( chord == null || chord.getName().equals(Constants.NOCHORD) )
    {
     return addNote(x, y, play);
    }
@@ -1020,7 +958,6 @@ private int addNote(int x, int y, Chord chord, boolean shiftDown, boolean play)
   return pitch;
  }
 
-
 private int yPosToKeyPitch(int y, int currentLine)
  {
 
@@ -1051,7 +988,6 @@ private int yPosToKeyPitch(int y, int currentLine)
   return pitch;
  }
 
-
 /**
  * Basic contains method for an array of integers.
  * Returns the matched index, or -1 if no match.
@@ -1068,7 +1004,6 @@ private int arrayContains(int pitch, int[] pitches)
   return OUT_OF_BOUNDS;
  }
 
-
 /**
  * Clear the "paste from" selection.
  */
@@ -1077,7 +1012,6 @@ protected void clearPasteFrom()
   stave.setPasteFromStart(OUT_OF_BOUNDS);
   stave.setPasteFromEnd(OUT_OF_BOUNDS);
  }
-
 
 /**
  * Mouse pressed
@@ -1310,12 +1244,10 @@ public void mousePressed(MouseEvent e)
 
  }
 
-
 public boolean getDraggingSelection()
  {
   return draggingSelectionHandle;
  }
-
 
 /**
  * Mouse dragged
@@ -1907,7 +1839,6 @@ public void mouseDragged(MouseEvent e)
    }
  }
 
-
 void redoAdvice(int selectedIndex)
  {
   // checks to see if the advice frame is opened and the chord for
@@ -1983,7 +1914,6 @@ void redoAdvice(int selectedIndex)
     lastAdviceNote = currentNote;
    }
  }
-
 
 /**
  * Mouse released
@@ -2127,7 +2057,6 @@ public void mouseReleased(MouseEvent e)
   setCursor();
  }
 
-
 /**
  * Will march through the drawing, determine which slots didn't fire during
  * the note addition phase (e.g. if you moved the mouse too quickly and the
@@ -2217,7 +2146,6 @@ private void fitUnfiredNotes()
   stave.repaint();
  }
 
-
 /**
  * Undo last action
  */
@@ -2225,17 +2153,6 @@ public void undo()
  {
   notate.undoMIActionPerformed(null);
  }
-
-
-///**
-// * Play selection
-// */
-//public void playSelection()
-// {
-//  notate.noCountIn();
-//  stave.playSelection(true, notate.getLoopCount(), PlayScoreCommand.USEDRUMS);
-// }
-
 
 /**
  * Key pressed
@@ -2382,7 +2299,6 @@ public void keyPressed(KeyEvent e)
    }
  }
 
-
 /**
  * Handle grid-line spacing short cuts.
  */
@@ -2447,7 +2363,6 @@ public void handleGridLineSpacing(KeyEvent e)
    }
  }
 
-
 /**
  * set every beat touched to the selected subdivisions
  */
@@ -2456,7 +2371,6 @@ void setSubDivs(int subDivs)
   setSubDivs(subDivs, stave.getSelectionStart(), stave.getSelectionEnd());
   return;
  }
-
 
 /**
  * set every beat touched to the subdivisions in a range
@@ -2481,7 +2395,6 @@ void setSubDivs(int subDivs, int start, int end)
   return;
  }
 
-
 /**
  * Key released
  */
@@ -2502,7 +2415,6 @@ public void keyReleased(KeyEvent e)
    }
  }
 
-
 /**
  * Key typed
  */
@@ -2510,10 +2422,6 @@ public void keyTyped(KeyEvent e)
  {
  }
 
-
-/***
- * Helper functions
- **/
 /**
  * Checks what line the y value corresponds to.
  *
@@ -2531,7 +2439,6 @@ private int getCurrentLine(int y)
 
   return currLine;
  }
-
 
 /**
  * Searches to see if the mouse has been clicked in the note area. The note
@@ -2587,7 +2494,6 @@ boolean inNoteArea(MouseEvent e)
 
   return result;
  }
-
 
 /**
  * Searches to see if a construction line has been clicked on, returning the
@@ -2651,7 +2557,6 @@ private int searchForCstrLine(int x, int y)
   return OUT_OF_BOUNDS;
  }
 
-
 /**
  * Searches to see if a beat bracket has been clicked on, returning the
  * selected beat if one has. The user must click on or very close to the
@@ -2700,7 +2605,6 @@ private int searchForBracket(MouseEvent e)
   return OUT_OF_BOUNDS;
  }
 
-
 /**
  * Finds the measure that the mouse is currently over. Does this by finding
  * what construction line the mouse is closest to, and deducing the measure
@@ -2735,7 +2639,6 @@ private int findMeasure(MouseEvent e)
 
   return OUT_OF_BOUNDS;
  }
-
 
 /**
  * Finds the y-axis position for a given mouse position yPos and the current
@@ -2804,7 +2707,6 @@ private int yPosToPitch(int yPos, int currentLine)
   return pitch;
  }
 
-
 /**
  * Like yPosToPitch, but maps to all 12 pitches, rather than the 7 natural
  * tones.
@@ -2872,111 +2774,113 @@ private int yPosToAnyPitch(int yPos, int currentLine)
   return pitch;
  }
 
-private int yPosToRectifiedPitch(int yPos, Chord chord, int currentLine, boolean shiftDown)
+/**
+ * Given a y position on the staff and the context, finds the pitch that will
+ * be input into the staff if rectification is turned on.
+ * 
+ * @param yPos
+ * @param chord
+ * @param staveLine
+ * @param shiftDown
+ * @return 
+ */
+private int yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean shiftDown)
 {
-    int unRectPitch = yPosToPitch(yPos, currentLine);
-    //System.out.println("adding note at " + x + ", " + y + " chord = " + chord);
+    int unRectPitch = yPosToPitch(yPos, staveLine);
     
-  stave.setSelection(selectedIndex, selectedIndex);
+    stave.setSelection(selectedIndex, selectedIndex);
 
-  /* Default to context-free note addition if there are no chords. */
-  if( chord == null || chord.getName().equals("NC") )
-   {
-    return unRectPitch;
-   }
+    // If there is no chord, we can't rectify the pitch
+    if( chord == null || chord.getName().equals("NC") )
+        return unRectPitch;
 
-  ChordPart prog = stave.getChordProg();
+    ChordPart prog = stave.getChordProg();
 
-  drawScaleTones = stave.notate.getScaleTonesSelected();
-  drawChordTones = stave.notate.getChordTonesSelected();
-  //drawColorTones = stave.notate.getColorTonesSelected();
+    drawScaleTones = stave.notate.getScaleTonesSelected();
+    drawChordTones = stave.notate.getChordTonesSelected();
+    //drawColorTones = stave.notate.getColorTonesSelected();
 
-  // Are approaches user-enabled?
-  boolean approachEnabled = (aPressed && shiftDown);
-  boolean apprch = false; // Is this particular note going to be an
-  // approach tone?
+    // Are approaches user-enabled?
+    boolean approachEnabled = (aPressed && shiftDown);
+    boolean apprch = false; // Is this particular note going to be an
+    // approach tone?
 
-  /* Is this index the one right before a chord change?  If it is, and
-   * if we've enabled approaching with Shift-A, tag this as an
-   * approach tone.
-   */
-  apprch =
-    ((selectedIndex + stave.getMelodyPart().getUnitRhythmValue(selectedIndex)
-    == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
+    /* Is this index the one right before a chord change?  If it is, and
+    * if we've enabled approaching with Shift-A, tag this as an
+    * approach tone.
+    */
+    apprch =
+        ((selectedIndex + stave.getMelodyPart().getUnitRhythmValue(selectedIndex)
+        == prog.getNextUniqueChordIndex(selectedIndex)) && approachEnabled);
 
 
-  Chord nextChord = prog.getNextUniqueChord(selectedIndex);
+    Chord nextChord = prog.getNextUniqueChord(selectedIndex);
 
-  clearPasteFrom();
+    clearPasteFrom();
 
-  // add new note close to mouse clicked pitch
+    // add new note close to mouse clicked pitch
+    int pitch =
+        (lastToneApproach && !apprch) ? 
+            lastApproachPitch 
+        : yPosToAnyPitch(yPos - (notate.getParallax() + parallaxBias), staveLine);
 
-  int pitch =
-    (lastToneApproach && !apprch) ? 
-         lastApproachPitch 
-       : yPosToAnyPitch(yPos - (notate.getParallax() + parallaxBias), currentLine);
+    // adjust pitch to respect chord!
 
-  // adjust pitch to respect chord!
+    ChordForm form = chord.getChordSymbol().getChordForm();
 
-  ChordForm form = chord.getChordSymbol().getChordForm();
+    String root = chord.getRoot();
 
-  String root = chord.getRoot();
+    Polylist scaleTones = form.getFirstScaleTones(root);
+    Polylist chordTones = form.getSpell(root);
+    //Polylist colorTones = form.getColor(root);
 
-  Polylist scaleTones = form.getFirstScaleTones(root);
-  Polylist chordTones = form.getSpell(root);
-  Polylist colorTones = form.getColor(root);
+    /* So far, the list of accpetable pitches to draw.
+    * We want to disregard this in a moment if we're going to force
+    * an approach tone.
+    */
+    Polylist m = new Polylist();
+    if( drawScaleTones )
+    {
+        m = m.append(scaleTones);
+    }
+    if( drawChordTones )
+    {
+        m = m.append(chordTones);
+    }
+    if( drawColorTones )
+    {
+        // too liberal? m = m.append(colorTones);
+    }
 
-  /* So far, the list of accpetable pitches to draw.
-   * We want to disregard this in a moment if we're going to force
-   * an approach tone.
-   */
-  Polylist m = new Polylist();
-  if( drawScaleTones )
-   {
-    m = m.append(scaleTones);
-   }
-  if( drawChordTones )
-   {
-    m = m.append(chordTones);
-   }
-  if( drawColorTones )
-   {
-    // too liberal? m = m.append(colorTones);
-   }
+    if( apprch )
+    {
+        ChordForm nextForm = nextChord.getChordSymbol().getChordForm();
 
-  if( apprch )
-   {
-    ChordForm nextForm = nextChord.getChordSymbol().getChordForm();
+        // The list of lists of (chordTone approach1 approach2 etc)
+        Polylist approachList = nextForm.getApproach(nextChord.getRoot());
 
-    // The list of lists of (chordTone approach1 approach2 etc)
-    Polylist approachList = nextForm.getApproach(nextChord.getRoot());
+        /* Build a list of approach tones to the next chord */
+        Polylist tones = new Polylist();
+        while( approachList.nonEmpty() )
+        {
+            tones = tones.append(((Polylist) approachList.first()).rest());
+            approachList = approachList.rest();
+        }
 
-    /* Build a list of approach tones to the next chord */
-    Polylist tones = new Polylist();
-    while( approachList.nonEmpty() )
-     {
-      tones = tones.append(((Polylist) approachList.first()).rest());
-      approachList = approachList.rest();
-     }
+        /* If it isn't empty, use it */
+        if( tones.nonEmpty() )
+            m = tones;
+    }
 
-    /* If it isn't empty, use it */
-    if( tones.nonEmpty() )
-     {
-      m = tones;
-     }
-   }
+    // This must be a chord tone since it follows an approach tone.
+    if( lastToneApproach && !apprch )
+        m = chordTones;
 
-  // This must be a chord tone since it follows an approach tone.
-  if( lastToneApproach && !apprch )
-   {
-    m = chordTones;
-   }
+    Note note = Note.getClosestMatch(pitch, m);
 
-  Note note = Note.getClosestMatch(pitch, m);
+    pitch = note.getPitch();
 
-  pitch = note.getPitch();
-
-  return pitch;
+    return pitch;
 }
 
 /**
@@ -2997,7 +2901,6 @@ public void moveSelectionRight(int index)
    }
  }
 
-
 /**
  * Moves the selected index to the left by one construction line
  * @param index             the index at which to start
@@ -3016,20 +2919,18 @@ public void moveSelectionLeft(int index)
    }
  }
 
-
 public void setCursor()
  {
   setCursor(defaultCursor);
  }
-
 
 public void setCursor(Cursor cursor)
  {
   switch( notate.getMode() )
    {
     case NORMAL:
-        stave.setCursor(cursor);
-        break;
+        //stave.setCursor(cursor);
+        //break;
     case RECORDING:
       stave.setCursor(cursor);
       break;
@@ -3039,12 +2940,10 @@ public void setCursor(Cursor cursor)
    }
  }
 
-
 public void setDrawScaleTones(boolean draw)
  {
   drawScaleTones = draw;
  }
-
 
 public void setDrawChordTones(boolean draw)
  {
@@ -3059,7 +2958,6 @@ public int getBeatValue()
  {
   return WHOLE / stave.getMetre()[1];
  }
-
 
 public int getMeasureLength()
  {
