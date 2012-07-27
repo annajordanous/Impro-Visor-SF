@@ -1317,6 +1317,7 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
+
     if(useSyncopation || expectancyMultiplier != 0 || expectancyConstant != 0)
     {
         expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;

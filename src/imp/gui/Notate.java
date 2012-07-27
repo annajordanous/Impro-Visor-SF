@@ -1340,6 +1340,7 @@ public class Notate
         styleBtn = new javax.swing.JToggleButton();
         midiBtn = new javax.swing.JToggleButton();
         contourBtn = new javax.swing.JToggleButton();
+        audioBtn = new javax.swing.JToggleButton();
         okcancelPanel = new javax.swing.JPanel();
         cancelBtn = new javax.swing.JButton();
         resetBtn = new javax.swing.JButton();
@@ -1531,6 +1532,17 @@ public class Notate
         drawScaleTonesCheckBox = new javax.swing.JCheckBox();
         drawChordTonesCheckBox = new javax.swing.JCheckBox();
         drawColorTonesCheckBox = new javax.swing.JCheckBox();
+        audioPreferences = new javax.swing.JPanel();
+        jTabbedPane6 = new javax.swing.JTabbedPane();
+        audioInputTab = new javax.swing.JPanel();
+        noteResolutionComboBox = new javax.swing.JComboBox();
+        frameSizeComboBox = new javax.swing.JComboBox();
+        pollRateComboBox = new javax.swing.JComboBox();
+        playTripletsCheckBox = new javax.swing.JCheckBox();
+        maxFinderThresholdSlider = new javax.swing.JSlider();
+        rmsThresholdSlider = new javax.swing.JSlider();
+        confidenceThresholdSlider = new javax.swing.JSlider();
+        jLabel5 = new javax.swing.JLabel();
         staveButtonGroup = new javax.swing.ButtonGroup();
         popupMenu = new javax.swing.JPopupMenu();
         overrideMeasPMI = new javax.swing.JMenuItem();
@@ -1785,6 +1797,9 @@ public class Notate
         currDirectoryLabel = new javax.swing.JLabel();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -1861,6 +1876,7 @@ public class Notate
         sectionPreferencesBtn = new javax.swing.JButton();
         midiPreferencesBtn = new javax.swing.JButton();
         contourPreferencesBtn = new javax.swing.JButton();
+        audioPreferencesBtn = new javax.swing.JButton();
         playToolBar = new javax.swing.JToolBar();
         loopPanel = new javax.swing.JPanel();
         loopButton = new javax.swing.JToggleButton();
@@ -2160,6 +2176,22 @@ public class Notate
         });
         buttonPanel.add(contourBtn);
 
+        prefsTabBtnGrp.add(audioBtn);
+        audioBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largeMicrophone.png"))); // NOI18N
+        audioBtn.setText("Audio");
+        audioBtn.setToolTipText("Audio Input preferences");
+        audioBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        audioBtn.setIconTextGap(0);
+        audioBtn.setNextFocusableComponent(contourBtn);
+        audioBtn.setPreferredSize(new java.awt.Dimension(100, 85));
+        audioBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        audioBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                audioBtnActionPerformed(evt);
+            }
+        });
+        buttonPanel.add(audioBtn);
+
         preferencesDialog.getContentPane().add(buttonPanel, java.awt.BorderLayout.WEST);
 
         okcancelPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
@@ -2349,6 +2381,7 @@ public class Notate
             }
         });
         sectionTable.setAlignmentY(1.0F);
+        sectionTable.setGridColor(new java.awt.Color(153, 153, 153));
         sectionTable.setName("");
         sectionTable.setRowSelectionAllowed(false);
         SectionTableScrollPane.setViewportView(sectionTable);
@@ -3963,6 +3996,136 @@ public class Notate
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         contourPreferences.add(jTabbedPane3, gridBagConstraints);
+
+        audioPreferences.setBackground(new java.awt.Color(255, 255, 255));
+        audioPreferences.setToolTipText("settings for audio input");
+        audioPreferences.setAlignmentX(0.0F);
+        audioPreferences.setAlignmentY(0.0F);
+        audioPreferences.setPreferredSize(new java.awt.Dimension(390, 370));
+        audioPreferences.setLayout(new java.awt.GridBagLayout());
+
+        audioInputTab.setLayout(new java.awt.GridBagLayout());
+
+        noteResolutionComboBox.setMaximumRowCount(16);
+        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
+        noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
+        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
+        noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
+        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
+        noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteResolutionComboBoxChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        audioInputTab.add(noteResolutionComboBox, gridBagConstraints);
+
+        frameSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1024", "2048", "4096", "8192", " " }));
+        frameSizeComboBox.setSelectedIndex(1);
+        frameSizeComboBox.setToolTipText("Number of bytes in one audio sample");
+        frameSizeComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Frame Size", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        frameSizeComboBox.setMinimumSize(new java.awt.Dimension(88, 50));
+        frameSizeComboBox.setPreferredSize(new java.awt.Dimension(88, 50));
+        frameSizeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frameSizeComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        audioInputTab.add(frameSizeComboBox, gridBagConstraints);
+
+        pollRateComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "20", "40", " " }));
+        pollRateComboBox.setSelectedIndex(1);
+        pollRateComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Poll Rate", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        pollRateComboBox.setMinimumSize(new java.awt.Dimension(72, 50));
+        pollRateComboBox.setPreferredSize(new java.awt.Dimension(72, 50));
+        pollRateComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pollRateComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        audioInputTab.add(pollRateComboBox, gridBagConstraints);
+
+        playTripletsCheckBox.setSelected(midiManager.getEcho());
+        playTripletsCheckBox.setText("Play Triplets");
+        playTripletsCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playTripletsCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
+        audioInputTab.add(playTripletsCheckBox, gridBagConstraints);
+
+        maxFinderThresholdSlider.setMajorTickSpacing(10);
+        maxFinderThresholdSlider.setMinimum(80);
+        maxFinderThresholdSlider.setPaintTicks(true);
+        maxFinderThresholdSlider.setSnapToTicks(true);
+        maxFinderThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max-Finder Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        audioInputTab.add(maxFinderThresholdSlider, gridBagConstraints);
+
+        rmsThresholdSlider.setMajorTickSpacing(5);
+        rmsThresholdSlider.setMaximum(70);
+        rmsThresholdSlider.setMinimum(25);
+        rmsThresholdSlider.setPaintTicks(true);
+        rmsThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RMS Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        audioInputTab.add(rmsThresholdSlider, gridBagConstraints);
+
+        confidenceThresholdSlider.setMajorTickSpacing(5);
+        confidenceThresholdSlider.setMaximum(65);
+        confidenceThresholdSlider.setMinimum(30);
+        confidenceThresholdSlider.setPaintTicks(true);
+        confidenceThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confidence Threshold", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        audioInputTab.add(confidenceThresholdSlider, gridBagConstraints);
+
+        jTabbedPane6.addTab("Audio Input", audioInputTab);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        audioPreferences.add(jTabbedPane6, gridBagConstraints);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/largeMicrophone.png"))); // NOI18N
+        jLabel5.setText("  Audio Settings");
+        jLabel5.setToolTipText("Settings for MIDI input and output devices");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
+        audioPreferences.add(jLabel5, gridBagConstraints);
 
         overrideMeasPMI.setText("Override Measures for this Line");
         overrideMeasPMI.setToolTipText("Enter the number of measure for this line.");
@@ -6312,6 +6475,12 @@ public class Notate
 
         jMenuItem2.setText("jMenuItem2");
 
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
@@ -6766,6 +6935,22 @@ public class Notate
             }
         });
         standardToolbar.add(contourPreferencesBtn);
+
+        audioPreferencesBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/preferences/smallMicrophone.png"))); // NOI18N
+        audioPreferencesBtn.setToolTipText("Open Audio Preferences dialog.");
+        audioPreferencesBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        audioPreferencesBtn.setFocusable(false);
+        audioPreferencesBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        audioPreferencesBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        audioPreferencesBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        audioPreferencesBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        audioPreferencesBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        audioPreferencesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                audioPreferencesBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(audioPreferencesBtn);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -21580,6 +21765,37 @@ public void setAutoImprovisation(boolean value)
         getCurrentStave().getActionHandler().setUseNoteCursor(checked);
     }//GEN-LAST:event_noteCursorCBMIActionPerformed
 
+private void frameSizeComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_frameSizeComboBoxActionPerformed
+  {//GEN-HEADEREND:event_frameSizeComboBoxActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_frameSizeComboBoxActionPerformed
+
+private void pollRateComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pollRateComboBoxActionPerformed
+  {//GEN-HEADEREND:event_pollRateComboBoxActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_pollRateComboBoxActionPerformed
+
+private void playTripletsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playTripletsCheckBoxActionPerformed
+  {//GEN-HEADEREND:event_playTripletsCheckBoxActionPerformed
+    // TODO add your handling code here:
+  }//GEN-LAST:event_playTripletsCheckBoxActionPerformed
+
+private void noteResolutionComboBoxChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChanged
+  {//GEN-HEADEREND:event_noteResolutionComboBoxChanged
+
+  }//GEN-LAST:event_noteResolutionComboBoxChanged
+
+private void audioBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_audioBtnActionPerformed
+  {//GEN-HEADEREND:event_audioBtnActionPerformed
+    changePrefTab(audioBtn, audioPreferences);
+  }//GEN-LAST:event_audioBtnActionPerformed
+
+private void audioPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_audioPreferencesBtnActionPerformed
+  {//GEN-HEADEREND:event_audioPreferencesBtnActionPerformed
+      changePrefTab(audioBtn, audioPreferences);
+      showPreferencesDialog();
+  }//GEN-LAST:event_audioPreferencesBtnActionPerformed
+
 /**
  * Focus on input from textEntry field, until return is pressed,
  * at which point staveRequestFocus() will be called
@@ -23144,6 +23360,10 @@ public void showNewVoicingDialog()
     private javax.swing.ButtonGroup approachColorBtnGrp;
     private javax.swing.JLabel approachToneLabel;
     private javax.swing.JCheckBox approachTones;
+    private javax.swing.JToggleButton audioBtn;
+    private javax.swing.JPanel audioInputTab;
+    private javax.swing.JPanel audioPreferences;
+    private javax.swing.JButton audioPreferencesBtn;
     private javax.swing.JCheckBoxMenuItem autoAdjustMI;
     private javax.swing.JRadioButton autoStave;
     private javax.swing.JRadioButton autoStaveBtn;
@@ -23225,6 +23445,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField commentsTF;
     private javax.swing.JTextField composerField;
     private javax.swing.JLabel composerLabel;
+    private javax.swing.JSlider confidenceThresholdSlider;
     private javax.swing.JPanel contToneChoices;
     private javax.swing.JToggleButton contourBtn;
     private javax.swing.JPanel contourPreferences;
@@ -23328,6 +23549,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel fileStepLabel;
     private javax.swing.JMenuItem fileStepMI;
     private javax.swing.JMenuItem firstTimePrefsMI;
+    private javax.swing.JComboBox frameSizeComboBox;
     private javax.swing.JToggleButton freezeLayoutButton;
     private javax.swing.JPanel generalContourTab;
     private javax.swing.JMenuItem generateLickInSelection;
@@ -23386,9 +23608,13 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JList jList4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
@@ -23447,6 +23673,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JTabbedPane jTabbedPane5;
+    private javax.swing.JTabbedPane jTabbedPane6;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
@@ -23482,6 +23709,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField lowRangeTF;
     private javax.swing.JTextField lowRangeTF2;
     private javax.swing.JPanel masterVolumePanel;
+    private javax.swing.JSlider maxFinderThresholdSlider;
     private javax.swing.JLabel measErrorLabel;
     private javax.swing.JLabel measuresPerPartLabel;
     private javax.swing.JSpinner melodyChannelSpinner;
@@ -23529,6 +23757,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
     private javax.swing.JCheckBoxMenuItem noteCursorCBMI;
+    private javax.swing.JComboBox noteResolutionComboBox;
     private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
@@ -23572,11 +23801,13 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem playSelectionMI;
     private javax.swing.JMenuItem playSelectionToEndMI;
     private javax.swing.JToolBar playToolBar;
+    private javax.swing.JCheckBox playTripletsCheckBox;
     private javax.swing.JButton playVoicingButton;
     private javax.swing.JPanel playbackPanel;
     private javax.swing.JSlider playbackSlider;
     private javax.swing.JLabel playbackTime;
     private javax.swing.JLabel playbackTotalTime;
+    private javax.swing.JComboBox pollRateComboBox;
     protected javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTextField prefMeasTF;
     private javax.swing.JMenuItem preferencesAcceleratorMI;
@@ -23614,6 +23845,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem resolvePitches;
     private javax.swing.JMenuItem reverseMelody;
     private javax.swing.JMenuItem revertToSavedMI;
+    private javax.swing.JSlider rmsThresholdSlider;
     private javax.swing.JMenuItem roadMapThisAnalyze;
     private javax.swing.JMenuItem roadMapThisMI;
     private javax.swing.JMenu roadmapMenu;
