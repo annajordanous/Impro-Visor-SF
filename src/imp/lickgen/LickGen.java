@@ -92,7 +92,7 @@ private static final boolean defaultUseSyncopation      = false;
 private static final String defaultSyncopationType      = "C";
 private static final double defaultSyncopationMultiplier    = 1;
 private static final double defaultSyncopationConstant    = 0.5;
-private static final double defaultExpectancyMultiplier = 1;
+private static final double defaultExpectancyMultiplier = 0;
 private static final double defaultExpectancyConstant   = 0;
 
 private boolean useSyncopation      = defaultUseSyncopation;
@@ -1317,7 +1317,10 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
-    expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
+    if(useSyncopation || expectancyMultiplier != 0 || expectancyConstant != 0)
+    {
+        expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
+    }
     if(expectancy > MAX_EXPECTANCY)
     {
         expectancy = MAX_EXPECTANCY;
@@ -1998,6 +2001,7 @@ public boolean fillMelody(MelodyPart lick,
                             note.setPitch(midiArray.get(i));
                             prevPrevPitch = prevPitch;
                             prevPitch = midiArray.get(i);
+                            break;
                         }
                         offset += (expectDiffs.get(i) / expectDiffSum);
                     }
