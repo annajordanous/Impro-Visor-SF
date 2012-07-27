@@ -20,6 +20,7 @@
 
 package imp.util;
 
+import imp.Constants;
 import imp.ImproVisor;
 import imp.com.Command;
 import imp.com.CommandManager;
@@ -225,7 +226,10 @@ public class Preferences implements imp.Constants
   
   public static final String DEFAULT_DRUM_CHANNEL = "10";
   
-  
+  public static final String IMPROV_MENU_SETTING = "improv-menu-setting";
+          
+  public static final String DEFAULT_IMPROV_MENU_SETTING = "No Improvisation";
+          
   public static final String DEFAULT_RECENT_STYLE_FILE = "swing.sty";
   /**
    * The ALWAYS_USE_BUTTONS are y or n standing for CHORD, BASS, DRUMS, STAVE.
@@ -250,7 +254,7 @@ public class Preferences implements imp.Constants
     try
       {
       inputStream = new FileInputStream(prefsFile);
-      cm.execute(new LoadPrefsCommand(inputStream));
+      cm.execute(new Preferences.LoadPrefsCommand(inputStream));
       }
     catch( Exception e )
       {
@@ -264,7 +268,7 @@ public class Preferences implements imp.Constants
       try
         {
         inputStream = new FileInputStream(prefsFile);
-        cm.execute(new LoadPrefsCommand(inputStream));
+        cm.execute(new Preferences.LoadPrefsCommand(inputStream));
 
         }
       catch( Exception j )
@@ -284,7 +288,7 @@ public class Preferences implements imp.Constants
       {
       file.createNewFile();
       outputStream = new PrintStream(new FileOutputStream(file));
-      cm.execute(new SavePrefsCommand(outputStream));
+      cm.execute(new Preferences.SavePrefsCommand(outputStream));
       }
     catch( Exception e )
       {
@@ -375,7 +379,7 @@ public class Preferences implements imp.Constants
     return "";
     }
   
-public static StaveType getStavePreference(String staveString, boolean useDefault)
+public static Constants.StaveType getStavePreference(String staveString, boolean useDefault)
   {
   if( useDefault || getAlwaysUseStave() )
     {
@@ -383,22 +387,22 @@ public static StaveType getStavePreference(String staveString, boolean useDefaul
     }
   if( staveString.equals(TREBLE_STRING) )
     {
-    return StaveType.TREBLE;
+    return Constants.StaveType.TREBLE;
     }
  if( staveString.equals(BASS_STRING) )
     {
-    return StaveType.BASS;
+    return Constants.StaveType.BASS;
     }
   if( staveString.equals(GRAND_STRING)  )
     {
-    return StaveType.GRAND;
+    return Constants.StaveType.GRAND;
     }
-  return StaveType.AUTO;
+  return Constants.StaveType.AUTO;
   }
 
- public static StaveType getStaveTypeFromPreferences()
+ public static Constants.StaveType getStaveTypeFromPreferences()
   {
-  return StaveType.values()[
+  return Constants.StaveType.values()[
           defaultingIntFromString(DEFAULT_STAVE_TYPE, 
                                   getPreference(DEFAULT_LOAD_STAVE))];
   }
@@ -532,6 +536,7 @@ public static boolean getAlwaysUse(int index)
       out.println("(" + CHORD_CHANNEL + " " + DEFAULT_CHORD_CHANNEL + ")");
       out.println("(" + BASS_CHANNEL + " " + DEFAULT_BASS_CHANNEL + ")");
       out.println("(" + DRUM_CHANNEL + " " + DEFAULT_DRUM_CHANNEL + ")");
+      out.println("(" + IMPROV_MENU_SETTING + " " + DEFAULT_IMPROV_MENU_SETTING + ")");
       out.println("(" + RECENT_STYLE_FILE + DEFAULT_RECENT_STYLE_FILE + ")");
       }
     catch( Exception e )
@@ -718,5 +723,3 @@ public static int getDrumChannel()
   }
 }
   
-  
-
