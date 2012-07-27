@@ -31,10 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 import polya.Polylist;
 import polya.PolylistEnum;
 
@@ -136,9 +133,9 @@ private double expectancyConstant   = defaultExpectancyConstant;
     int oldOldPitch = 0;
     double expectancy = -1;
     private static int DEFAULT_EXPECTANCY = 200;
-    private static int EXPECTANCY_LIMIT1 = 30;
-    private static int EXPECTANCY_LIMIT2 = 45;
-    private static int EXPECTANCY_LIMIT3 = 60;
+    private static int EXPECTANCY_LIMIT1 = 60;
+    private static int EXPECTANCY_LIMIT2 = 80;
+    private static int EXPECTANCY_LIMIT3 = 100;
     private static int EXPECTANCY_CUTOFF1 = 100;
     private static int EXPECTANCY_CUTOFF2 = 200;
     boolean useOutlines = false;
@@ -1317,10 +1314,13 @@ public MelodyPart fillPartOfMelody(int minPitch,
 
     //try MELODY_GEN_LIMIT times to get a lick that doesn't go outside the pitch bounds
 
-
-    if(useSyncopation || expectancyMultiplier != 0 || expectancyConstant != 0)
+    if(useSyncopation || expectancyMultiplier != 0)
     {
-        expectancy = getExpectancyPerNote() * expectancyMultiplier + expectancyConstant;
+        expectancy = (getExpectancyPerNote() * expectancyMultiplier) + (expectancyConstant * MAX_EXPECTANCY);
+    }
+    else
+    {
+        expectancy = expectancyConstant * MAX_EXPECTANCY;
     }
     if(expectancy > MAX_EXPECTANCY)
     {
@@ -2008,8 +2008,8 @@ public boolean fillMelody(MelodyPart lick,
                     }
                     if( note.getPitch() > 127 )
                         {
-                        System.out.println("Bad note in fillMelody " + note);
-                        note = new Rest(note.getRhythmValue());
+                            System.out.println("Bad note in fillMelody " + note);
+                            note = new Rest(note.getRhythmValue());
                         }
                     addNote(note, lick, rhythmString, avoidRepeats, "default", item);
                 }
