@@ -109,7 +109,7 @@ public class SetNoteCommand
     }
 
   /**
-   * Replaces the previously placed Note with whatever used to be there.
+   * Replaces the previously placed Note with whatever used to be there. 
    */
   public void undo()
     {

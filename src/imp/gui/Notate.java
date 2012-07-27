@@ -11845,17 +11845,31 @@ private void updateTempoFromTextField()
 
         Stave stave = getCurrentStave();
 
-        if( getMode() != Mode.DRAWING )
+        if( getMode() != Mode.DRAWING ) // either in cursor or note mode
           {
-            setMode(Mode.DRAWING);
+              if (stave.getActionHandler().getUseNoteCursor())
+              {   // switch to cursor mode
 
-            preDrawingEntryMuted = entryMute.isSelected();
+                  drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                          "graphics/toolbar/pencil.gif")));
+                  stave.getActionHandler().setUseNoteCursor(false);
+              }
+              
+              else
+              { // switch to pencil mode
+                setMode(Mode.DRAWING);
 
-            drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "graphics/toolbar/cursor.gif")));
+                preDrawingEntryMuted = entryMute.isSelected();
+
+                drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                "graphics/cursors/blueNoteLineCursor.png")));
+
+              }
+
           }
         else
-          {
+          { // switch to note mode
+              
             setMode(Mode.NORMAL);
 
             stave.clearCurvePoints();
@@ -11865,7 +11879,8 @@ private void updateTempoFromTextField()
             entryMuteActionPerformed(null);
 
             drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "graphics/toolbar/pencil.gif")));
+                "graphics/toolbar/cursor.gif")));
+            stave.getActionHandler().setUseNoteCursor(true);
           }
 
         stave.requestFocusInWindow();

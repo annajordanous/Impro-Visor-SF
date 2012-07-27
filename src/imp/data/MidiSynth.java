@@ -518,7 +518,6 @@ public void play(Score score,
         sequencer.start();
 
         playbackStartTime = System.currentTimeMillis();
-        System.out.println("Playback start = " + playbackStartTime);
 
         playing = true;
         paused = false;

@@ -4538,6 +4538,16 @@ private void drawTupletBracket(int n,
       }
   }
 
+public void updateLegerLines(int pitch, int x, int staveLine, Graphics g)
+{
+    if (Math.abs(getActionHandler().oldx - x) > 2)
+    {
+        repaint();
+        getActionHandler().oldx = x;
+    }
+    drawLegerLine(pitch, getActionHandler().oldx, staveLine, g);
+}
+
 /**
  * Draws a leger line for given integers for x-position, stave number, and
  * beat position offset. Assumes that pitch > -1 and rhythmValue != 0.0.
