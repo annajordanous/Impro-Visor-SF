@@ -186,8 +186,6 @@ public void addNote(Note note)
       }
     if( note != null && note.nonRest() )
       {
-      //System.out.println("setNote at " + slotIndex + " to " + note);
-
       int currentMeasure = slotIndex / measureLength;
 
       int stopIndex = measureLength * (currentMeasure + 2);

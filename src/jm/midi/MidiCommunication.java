@@ -113,17 +113,17 @@ public abstract class MidiCommunication implements Receiver {
     public void sendMidiOutput(int status, int channel, int data1, int data2) {
         try {
             ShortMessage message = new ShortMessage ();
-            message.setMessage (status, channel, data1, data2);
-            this.midiReceiver.send (message, -1L);
+            message.setMessage(status, channel, data1, data2);
+            this.midiReceiver.send(message, -1L);
         } catch (javax.sound.midi.InvalidMidiDataException e) {};
     }
     
     /**
-     * The method required by the recieve interface - It has a stupid name so we
+     * The method required by the receive interface - It has a stupid name so we
      * pass data for short messages to handleMidiInput (a better name).
      */
     // This method is based on test code in Plumbstone - OSX Core MIDI package.
-    public void send (MidiMessage message, long timeStamp) {
+    public void send(MidiMessage message, long timeStamp) {
         // Get the message bytes
         byte [] m = message.getMessage ();
         int status = message.getStatus();
@@ -196,7 +196,7 @@ public abstract class MidiCommunication implements Receiver {
     //--------------------------------------
     
     private void setupMidiInput() {
-        try {
+        try { 
             // display MIDI device picker
             final Frame f = new Frame("MIDI Input port: Double-click to select.");
             // See all the midi devices on the system

@@ -349,6 +349,8 @@ private Cursor penCursor = null;
 
 private Cursor noteCursor = null;
 
+public int oldx = 0;
+
 /**
  * Location of cursor during last mouseMove event, used to detect
  * when the cursor is inside hotspot rectangles such as the selection handles
@@ -509,7 +511,11 @@ public void mouseMoved(MouseEvent e)
      }
     else
      {
-      setCursor(noteCursor);
+        if( withinNoteArea && useNoteCursor)
+            setCursor(noteCursor);
+
+        else
+            setCursor();   
      }
    }
 
@@ -598,7 +604,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                 noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
     }
-    
+    stave.updateLegerLines(pitch, x,  getCurrentLine(y), stave.getGraphics());
     setCursor(noteCursor);
 
 }
@@ -2927,15 +2933,15 @@ public void moveSelectionLeft(int index)
 public void setCursor()
  {
   setCursor(defaultCursor);
- }
+}
 
 public void setCursor(Cursor cursor)
  {
   switch( notate.getMode() )
    {
     case NORMAL:
-        //stave.setCursor(cursor);
-        //break;
+        stave.setCursor(cursor);
+        break;
     case RECORDING:
       stave.setCursor(cursor);
       break;
@@ -2987,6 +2993,7 @@ public boolean getUseNoteCursor()
 public void setUseNoteCursor(boolean on)
 {
     useNoteCursor = on;
+    setCursor(defaultCursor);
 }
 
 }

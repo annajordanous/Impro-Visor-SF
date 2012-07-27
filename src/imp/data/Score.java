@@ -197,7 +197,7 @@ public class Score implements Constants, Serializable {
     /**
      * Creates an empty Score with the specified title and tempo.
      * @param title     a String containing the title of the Score
-     * @param tempo     a double contianing the tempo of the Score
+     * @param tempo     a double containing the tempo of the Score
      */
     public Score(String title, double tempo) {
         this(title, tempo, DEFAULT_VOLUME);
@@ -206,7 +206,7 @@ public class Score implements Constants, Serializable {
     /**
      * Creates an empty Score with the specified title, tempo, and volume.
      * @param title     a String containing the title of the Score
-     * @param tempo     a double contianing the tempo of the Score
+     * @param tempo     a double containing the tempo of the Score
      * @param volume    a number indicating the volume of the Score
      */
     public Score(String title, double tempo, int volume) {
