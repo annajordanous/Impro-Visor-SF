@@ -24710,7 +24710,7 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
 
         //currentMelodyPart.truncateEndings(true);
         //MelodyPart extracted = currentMelodyPart.extract(generateAtSlot, lastSlotAhead);
-        improLick.setInstrument(11); // vibraphone
+        improLick.setInstrument(currentMelodyPart.getInstrument()); // vibraphone
         improLick.setSwing(currentMelodyPart.getSwing());
 
         //System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
