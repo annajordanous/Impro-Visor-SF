@@ -828,13 +828,11 @@ public void playRawRule(int type, String raw)
         copySelectionsBtnDrum = new javax.swing.JButton();
         reExtractBtnDrum = new javax.swing.JButton();
         closeWindowBtn = new javax.swing.JButton();
-        filler = new javax.swing.JPanel();
-        chordChannelTitle = new javax.swing.JLabel();
-        bassChannelTitle = new javax.swing.JLabel();
-        chordChannelName = new javax.swing.JComboBox();
-        bassChannelName = new javax.swing.JComboBox();
         extractChords = new javax.swing.JButton();
         useLeadsheet = new javax.swing.JCheckBox();
+        jPanel1 = new javax.swing.JPanel();
+        bassChannelName = new javax.swing.JComboBox();
+        chordChannelName = new javax.swing.JComboBox();
         extractionEditorMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -1714,52 +1712,14 @@ public void playRawRule(int type, String raw)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 8;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.7;
         getContentPane().add(extractionTabbedPane, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipady = 200;
-        getContentPane().add(filler, gridBagConstraints);
-
-        chordChannelTitle.setText("Chord Channel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        getContentPane().add(chordChannelTitle, gridBagConstraints);
-
-        bassChannelTitle.setText("Bass Channel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        getContentPane().add(bassChannelTitle, gridBagConstraints);
-
-        chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        chordChannelName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chordChannelNameActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        getContentPane().add(chordChannelName, gridBagConstraints);
-
-        bassChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        bassChannelName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bassChannelNameActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        getContentPane().add(bassChannelName, gridBagConstraints);
 
         extractChords.setText("Extract Chords");
+        extractChords.setToolTipText("Extracts the chords for the given chord resolution and chord/bass channel number.");
         extractChords.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 extractChordsActionPerformed(evt);
@@ -1767,7 +1727,10 @@ public void playRawRule(int type, String raw)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 50;
+        gridBagConstraints.ipady = 50;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(extractChords, gridBagConstraints);
 
         useLeadsheet.setText("Use Leadsheet");
@@ -1778,8 +1741,47 @@ public void playRawRule(int type, String raw)
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipadx = 5;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(useLeadsheet, gridBagConstraints);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Channel #"));
+        jPanel1.setMinimumSize(new java.awt.Dimension(180, 140));
+        jPanel1.setPreferredSize(new java.awt.Dimension(180, 140));
+
+        bassChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        bassChannelName.setToolTipText("Sets the bass channel number for chord extraction.");
+        bassChannelName.setBorder(javax.swing.BorderFactory.createTitledBorder("Bass"));
+        bassChannelName.setMinimumSize(new java.awt.Dimension(160, 50));
+        bassChannelName.setPreferredSize(new java.awt.Dimension(160, 50));
+        bassChannelName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bassChannelNameActionPerformed(evt);
+            }
+        });
+        jPanel1.add(bassChannelName);
+
+        chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        chordChannelName.setToolTipText("Sets the chord/accompaniment channel number for chord extraction.");
+        chordChannelName.setBorder(javax.swing.BorderFactory.createTitledBorder("Chord"));
+        chordChannelName.setMinimumSize(new java.awt.Dimension(160, 50));
+        chordChannelName.setPreferredSize(new java.awt.Dimension(160, 50));
+        chordChannelName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordChannelNameActionPerformed(evt);
+            }
+        });
+        jPanel1.add(chordChannelName);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.weightx = 0.1;
+        getContentPane().add(jPanel1, gridBagConstraints);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -2242,11 +2244,9 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox bassChannelName;
-    private javax.swing.JLabel bassChannelTitle;
     private javax.swing.JPanel bassPanel;
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JComboBox chordChannelName;
-    private javax.swing.JLabel chordChannelTitle;
     private javax.swing.JPanel chordPanel;
     private javax.swing.JButton closeWindowBtn;
     private javax.swing.JMenuItem closeWindowMI;
@@ -2264,7 +2264,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     private javax.swing.JButton extractChords;
     private javax.swing.JMenuBar extractionEditorMenuBar;
     private javax.swing.JTabbedPane extractionTabbedPane;
-    private javax.swing.JPanel filler;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton leftPlayPatternBtnBass;
     private javax.swing.JButton leftPlayPatternBtnChord;
     private javax.swing.JButton leftPlayPatternBtnDrum;
