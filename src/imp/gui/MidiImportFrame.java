@@ -50,9 +50,9 @@ DefaultListModel trackListModel;
 private LinkedList<MidiImportRecord> melodies;
 MelodyPart selectedPart = null;
 // used in chord extract:
-private int melodyChannel = 0;
-private int bassChannel = 0;
-private int chordChannel = 0;
+private int melodyChannel = -1;
+private int bassChannel = -1;
+private int chordChannel = -1;
 private int chordResolution = HALF;
 
 private ChannelInfo[] channelInfo = null;
@@ -194,16 +194,18 @@ private void initChannelInfo()
     chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
     melodyChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
 
-        bassChannel = midiImport.getBassChannel() + 1;
-        chordChannel = midiImport.getChordChannel() + 1;
-        for (int j = 0; j < channelInfo.length; j++) {
-            if (channelInfo[j].getChannelNum() == bassChannel) {
-                bassChannelNumberComboBox.setSelectedItem(channelInfo[j]);
-            }
-            if (channelInfo[j].getChannelNum() == chordChannel) {
-                chordChannelNumberComboBox.setSelectedItem(channelInfo[j]);
-            }
+    bassChannel = midiImport.getBassChannel() + 1;
+    chordChannel = midiImport.getChordChannel() + 1;
+    melodyChannel = -1;
+    melodyChannelNumberComboBox.setSelectedIndex(0);
+    for (int j = 0; j < channelInfo.length; j++) {
+        if (channelInfo[j].getChannelNum() == bassChannel) {
+            bassChannelNumberComboBox.setSelectedItem(channelInfo[j]);
         }
+        if (channelInfo[j].getChannelNum() == chordChannel) {
+            chordChannelNumberComboBox.setSelectedItem(channelInfo[j]);
+        }
+    }
 }
 
 /**
@@ -768,7 +770,7 @@ private void extractChords()
 
     //crude melodyimport
     
-    if (melodyChannel != 0) {
+    if (melodyChannel != -1) {
         LinkedList<MidiImportRecord> newMelodies = midiImport.getMelodies();
         //create two separate arrays for the bass MelodyParts and the chord MelodyParts
         List<MelodyPart> melodyMelodyParts = new ArrayList<MelodyPart>();
