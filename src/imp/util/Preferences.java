@@ -24,6 +24,8 @@ import imp.Constants;
 import imp.ImproVisor;
 import imp.com.Command;
 import imp.com.CommandManager;
+import imp.data.Leadsheet;
+import imp.lickgen.NonExistentParameterException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -228,7 +230,7 @@ public class Preferences implements imp.Constants
   
   public static final String IMPROV_MENU_SETTING = "improv-menu-setting";
           
-  public static final String DEFAULT_IMPROV_MENU_SETTING = "No Improvisation";
+  public static final String DEFAULT_IMPROV_MENU_SETTING = "Use Improvise Button";
           
   public static final String DEFAULT_RECENT_STYLE_FILE = "swing.sty";
   /**
@@ -346,6 +348,13 @@ public class Preferences implements imp.Constants
     savePreferences();
     }
 
+  /**
+   * Return the value of a given preference.
+   * Log an error if the preference is not found, then return the empty String.
+   * @param pref
+   * @return 
+   */
+  
   public static String getPreference(String pref)
     {
     Polylist search = prefs;
@@ -358,27 +367,71 @@ public class Preferences implements imp.Constants
       // Look at the next pref, make sure it's a string.
       Polylist nextPref = (Polylist)search.first();
       //System.out.println("nextPref = " + nextPref);
-      if( !(nextPref.first() instanceof String) )
+      if( (nextPref.first() instanceof String) )
         {
-        ErrorLog.log(ErrorLog.SEVERE, "Malformed Preferences File.");
-        }
-      // If it is, see if it's the string we're looking for, then return the value.
-      else if( pref.equals((String)nextPref.first()) )
-        {
-        String value = nextPref.second().toString();
-
-        //System.out.println("getting preference for " + pref + " as " + value);
-        
-        return value;
-        }
-
-      search = search.rest();
-      }
+        if( pref.equals((String)nextPref.first()) )
+          {
+          Object value = nextPref.second();
+          
+          if( value instanceof Polylist) 
+            {
+              return Leadsheet.concatElements((Polylist)value);
+            }
+          else
+            {
+              return value.toString();
+            }
+          }
+         }
+       search = search.rest();
+       }
 
     ErrorLog.log(ErrorLog.WARNING, "Preference " + pref + " does not exist");
-    return "";
+    return null;
     }
   
+ /**
+   * Return the value of a given preference.
+   * Throw an NonExistentParameterException if the preference is not found.
+   * @param pref
+   * @return 
+   */
+  public static String getPreferenceQuietly(String pref)
+        throws NonExistentParameterException
+    {
+    Polylist search = prefs;
+
+    //System.out.println("\ngetPreference for " + pref);
+
+    // While the search list isn't empty...
+    while( search.nonEmpty() )
+      {
+      // Look at the next pref, make sure it's a string.
+      Polylist nextPref = (Polylist)search.first();
+      //System.out.println("nextPref = " + nextPref);
+      if( (nextPref.first() instanceof String) )
+        {
+        if( pref.equals((String)nextPref.first()) )
+          {
+          Object value = nextPref.second();
+          
+          if( value instanceof Polylist) 
+            {
+              return Leadsheet.concatElements((Polylist)value);
+            }
+          else
+            {
+              return value.toString();
+            }
+          }
+         }
+       search = search.rest();
+       }
+
+    throw new NonExistentParameterException(pref);
+    }
+
+
 public static Constants.StaveType getStavePreference(String staveString, boolean useDefault)
   {
   if( useDefault || getAlwaysUseStave() )
