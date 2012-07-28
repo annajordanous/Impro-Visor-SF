@@ -2666,7 +2666,7 @@ void playBassColumn(int colIndex)
         nameForDisplay = midiFileChooser.getSelectedFile().getName();
         
         //if useLeadsheet is checked, use leadsheet
-        if (MIDIBeast.useLeadsheet && MIDIBeast.importDrums) {
+        if (MIDIBeast.useLeadsheet) {
             // use chord file with same name as midi file, IF one exists
             String path = midiFileEntire.getAbsolutePath();
             String stem = path.substring(0, path.length() - 4);

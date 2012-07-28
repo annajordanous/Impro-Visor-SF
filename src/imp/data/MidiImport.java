@@ -41,8 +41,8 @@ private static jm.music.data.Score score;
 private static ArrayList<jm.music.data.Part> allParts;
 private LinkedList<MidiImportRecord> melodies;
 private Map<Integer, String> channelNames = new HashMap<Integer, String>();
-private int chordChannel = 0;
-private int bassChannel = 0;
+private int chordChannel = -1;
+private int bassChannel = -1;
 
 public MidiImport()
   {

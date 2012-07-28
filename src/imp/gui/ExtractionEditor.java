@@ -25,9 +25,13 @@ import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
 import imp.util.ErrorLog;
+import imp.util.LeadsheetFileView;
+import imp.util.LeadsheetFilter;
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import polya.Polylist;
@@ -81,6 +85,8 @@ public static final int CHORD = 2;
 //for chord extract
 private MidiImport.ChannelInfo[] channelInfo = null;
 
+private JFileChooser chordFileChooser = new JFileChooser();
+
 /**
  * Creates new form ExtractionEditor
  */
@@ -116,6 +122,16 @@ public ExtractionEditor(java.awt.Frame parent,
     channelInfo = MIDIBeast.getChannelInfo();
     bassChannelName.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
     chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+    
+    File styleExtractDir = ImproVisor.getStyleExtractDirectory();
+    LeadsheetFileView styView = new LeadsheetFileView();
+    chordFileChooser.setCurrentDirectory(styleExtractDir);
+    chordFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+    chordFileChooser.setDialogTitle("Open Leadsheet");
+    chordFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    chordFileChooser.resetChoosableFileFilters();
+    chordFileChooser.addChoosableFileFilter(new LeadsheetFilter());
+    chordFileChooser.setFileView(styView);
     
     useLeadsheet.setSelected(MIDIBeast.useLeadsheet);
     
@@ -1734,6 +1750,7 @@ public void playRawRule(int type, String raw)
         getContentPane().add(extractChords, gridBagConstraints);
 
         useLeadsheet.setText("Use Leadsheet");
+        useLeadsheet.setToolTipText("If ticked, will prompt leadsheet file when Extract Chords button is pressed. Otherwise, Extract Chords will extract chords from the midi file given the corresponding bass and chord channel info.");
         useLeadsheet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useLeadsheetActionPerformed(evt);
@@ -1786,12 +1803,12 @@ public void playRawRule(int type, String raw)
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -2233,7 +2250,21 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_bassChannelNameActionPerformed
 
     private void extractChordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extractChordsActionPerformed
-        MIDIBeast.extractChords();
+        if (MIDIBeast.useLeadsheet) {
+            String chordFile = "";
+            int chordChoice = chordFileChooser.showOpenDialog(this);
+            if (chordChoice == JFileChooser.CANCEL_OPTION) {
+                return;
+            }
+            if (chordChoice == JFileChooser.APPROVE_OPTION) {
+                chordFile = chordFileChooser.getSelectedFile().getAbsolutePath();
+            }
+            MIDIBeast.chordFileName = chordFile;
+        }
+        else
+        {
+            MIDIBeast.extractChords();
+        }
     }//GEN-LAST:event_extractChordsActionPerformed
 
     private void useLeadsheetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useLeadsheetActionPerformed
