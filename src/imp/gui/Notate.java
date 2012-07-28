@@ -27,6 +27,7 @@ import imp.Constants.StaveType;
 import imp.Directories;
 import imp.ImproVisor;
 import imp.RecentFiles;
+import imp.audio.AudioSettings;
 import imp.audio.PitchExtractor;
 import imp.cluster.CreateGrammar;
 import imp.com.*;
@@ -410,6 +411,11 @@ public class Notate
    */
 
   private RoadMapFrame createdByRoadmap = null;
+  
+  
+  private AudioSettings audioSettings;
+  
+  private NoteResolutionComboBoxModel audioSettingsNoteResolutionModel;
 
 
   synchronized public void setPlaybackStop(int slot, String message)
@@ -1159,6 +1165,8 @@ public class Notate
     
     setMenuSelection(improvMenu, improvMenuSelection);
     
+    audioSettings = new AudioSettings(this);
+    
     } // end of Notate constructor
 
 
@@ -1581,7 +1589,7 @@ public class Notate
         frameSizeComboBox = new javax.swing.JComboBox();
         pollRateComboBox = new javax.swing.JComboBox();
         playTripletsCheckBox = new javax.swing.JCheckBox();
-        maxFinderThresholdSlider = new javax.swing.JSlider();
+        k_constantSlider = new javax.swing.JSlider();
         rmsThresholdSlider = new javax.swing.JSlider();
         confidenceThresholdSlider = new javax.swing.JSlider();
         jLabel5 = new javax.swing.JLabel();
@@ -4114,22 +4122,37 @@ public class Notate
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         audioInputTab.add(playTripletsCheckBox, gridBagConstraints);
 
-        maxFinderThresholdSlider.setMajorTickSpacing(10);
-        maxFinderThresholdSlider.setMinimum(80);
-        maxFinderThresholdSlider.setPaintTicks(true);
-        maxFinderThresholdSlider.setSnapToTicks(true);
-        maxFinderThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max-Finder Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        k_constantSlider.setMajorTickSpacing(10);
+        k_constantSlider.setMaximum(1000);
+        k_constantSlider.setMinimum(800);
+        k_constantSlider.setPaintLabels(true);
+        k_constantSlider.setPaintTicks(true);
+        k_constantSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max-Finder Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        k_constantSlider.setMaximumSize(new java.awt.Dimension(32767, 100));
+        k_constantSlider.setMinimumSize(new java.awt.Dimension(36, 80));
+        k_constantSlider.setPreferredSize(new java.awt.Dimension(190, 80));
+        k_constantSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                k_constantSliderStateChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        audioInputTab.add(maxFinderThresholdSlider, gridBagConstraints);
+        audioInputTab.add(k_constantSlider, gridBagConstraints);
 
         rmsThresholdSlider.setMajorTickSpacing(5);
         rmsThresholdSlider.setMaximum(70);
         rmsThresholdSlider.setMinimum(25);
+        rmsThresholdSlider.setPaintLabels(true);
         rmsThresholdSlider.setPaintTicks(true);
         rmsThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RMS Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        rmsThresholdSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rmsThresholdSliderStateChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -4139,8 +4162,15 @@ public class Notate
         confidenceThresholdSlider.setMajorTickSpacing(5);
         confidenceThresholdSlider.setMaximum(65);
         confidenceThresholdSlider.setMinimum(30);
+        confidenceThresholdSlider.setPaintLabels(true);
         confidenceThresholdSlider.setPaintTicks(true);
+        confidenceThresholdSlider.setValue(45);
         confidenceThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confidence Threshold", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        confidenceThresholdSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                confidenceThresholdStateChanged(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -21785,20 +21815,39 @@ private void frameSizeComboBoxActionPerformed(java.awt.event.ActionEvent evt)//G
     // TODO add your handling code here:
   }//GEN-LAST:event_frameSizeComboBoxActionPerformed
 
+public void setFrameSize(int value)
+  {
+    frameSizeComboBox.setSelectedItem(new Integer(value));
+  }
 private void pollRateComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pollRateComboBoxActionPerformed
   {//GEN-HEADEREND:event_pollRateComboBoxActionPerformed
     // TODO add your handling code here:
   }//GEN-LAST:event_pollRateComboBoxActionPerformed
+
+public void setPollRate(int value)
+  {
+    pollRateComboBox.setSelectedItem(new Integer(value));
+  }
 
 private void playTripletsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playTripletsCheckBoxActionPerformed
   {//GEN-HEADEREND:event_playTripletsCheckBoxActionPerformed
     // TODO add your handling code here:
   }//GEN-LAST:event_playTripletsCheckBoxActionPerformed
 
+public void setAudioplayTriplets(boolean value)
+  {
+    playTripletsCheckBox.setSelected(value);
+  }
+
 private void noteResolutionComboBoxChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChanged
   {//GEN-HEADEREND:event_noteResolutionComboBoxChanged
 
   }//GEN-LAST:event_noteResolutionComboBoxChanged
+
+public void setAudioNoteResolution(int value)
+  {
+    //FIX: noteResolutionComboBox.setSelectedItem(new Integer(value));
+  }
 
 private void audioBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_audioBtnActionPerformed
   {//GEN-HEADEREND:event_audioBtnActionPerformed
@@ -21810,6 +21859,40 @@ private void audioPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)/
       changePrefTab(audioBtn, audioPreferences);
       showPreferencesDialog();
   }//GEN-LAST:event_audioPreferencesBtnActionPerformed
+
+private void k_constantSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_k_constantSliderStateChanged
+  {//GEN-HEADEREND:event_k_constantSliderStateChanged
+    // TODO add your handling code here:
+  }//GEN-LAST:event_k_constantSliderStateChanged
+
+public void setKconstantSlider(double value)
+  {
+    int intValue = (int)(1000*value);
+    k_constantSlider.setValue(intValue);
+  }
+
+private void confidenceThresholdStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_confidenceThresholdStateChanged
+  {//GEN-HEADEREND:event_confidenceThresholdStateChanged
+    // TODO add your handling code here:
+  }//GEN-LAST:event_confidenceThresholdStateChanged
+
+private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_rmsThresholdSliderStateChanged
+  {//GEN-HEADEREND:event_rmsThresholdSliderStateChanged
+    // TODO add your handling code here:
+  }//GEN-LAST:event_rmsThresholdSliderStateChanged
+
+public void setRMSThreshold(double value)
+  {
+    int intValue = (int)(10*value);
+    rmsThresholdSlider.setValue(intValue);
+  }
+
+public void setConfidenceThreshold(double value)
+  {
+    int intValue = (int)(100*value);
+    confidenceThresholdSlider.setValue(intValue);
+  }
+
 
 /**
  * Focus on input from textEntry field, until return is pressed,
@@ -23699,6 +23782,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JSlider k_constantSlider;
     private javax.swing.ButtonGroup keySigBtnGroup;
     private javax.swing.JLabel keySignatureLabel;
     private javax.swing.JTextField keySignatureTF;
@@ -23724,7 +23808,6 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField lowRangeTF;
     private javax.swing.JTextField lowRangeTF2;
     private javax.swing.JPanel masterVolumePanel;
-    private javax.swing.JSlider maxFinderThresholdSlider;
     private javax.swing.JLabel measErrorLabel;
     private javax.swing.JLabel measuresPerPartLabel;
     private javax.swing.JSpinner melodyChannelSpinner;
