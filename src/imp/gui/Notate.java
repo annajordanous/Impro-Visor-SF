@@ -4054,6 +4054,7 @@ public class Notate
         audioPreferences.setPreferredSize(new java.awt.Dimension(390, 370));
         audioPreferences.setLayout(new java.awt.GridBagLayout());
 
+        audioInputTab.setBackground(new java.awt.Color(225, 225, 225));
         audioInputTab.setLayout(new java.awt.GridBagLayout());
 
         noteResolutionComboBox.setMaximumRowCount(16);
@@ -4127,10 +4128,8 @@ public class Notate
         k_constantSlider.setMinimum(800);
         k_constantSlider.setPaintLabels(true);
         k_constantSlider.setPaintTicks(true);
-        k_constantSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max-Finder Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        k_constantSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Max-Finder Threshold (k_constant) x 1000", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         k_constantSlider.setMaximumSize(new java.awt.Dimension(32767, 100));
-        k_constantSlider.setMinimumSize(new java.awt.Dimension(36, 80));
-        k_constantSlider.setPreferredSize(new java.awt.Dimension(190, 80));
         k_constantSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 k_constantSliderStateChanged(evt);
@@ -4147,7 +4146,7 @@ public class Notate
         rmsThresholdSlider.setMinimum(25);
         rmsThresholdSlider.setPaintLabels(true);
         rmsThresholdSlider.setPaintTicks(true);
-        rmsThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RMS Threshold", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        rmsThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RMS Threshold x 10", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         rmsThresholdSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 rmsThresholdSliderStateChanged(evt);
@@ -4165,7 +4164,7 @@ public class Notate
         confidenceThresholdSlider.setPaintLabels(true);
         confidenceThresholdSlider.setPaintTicks(true);
         confidenceThresholdSlider.setValue(45);
-        confidenceThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confidence Threshold", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        confidenceThresholdSlider.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Confidence Threshold x 100", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
         confidenceThresholdSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 confidenceThresholdStateChanged(evt);
@@ -21812,7 +21811,9 @@ public void setAutoImprovisation(boolean value)
 
 private void frameSizeComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_frameSizeComboBoxActionPerformed
   {//GEN-HEADEREND:event_frameSizeComboBoxActionPerformed
-    // TODO add your handling code here:
+    int value = Integer.parseInt(frameSizeComboBox.getSelectedItem().toString());
+    System.out.println("audio: input frame size = " + value);
+    audioSettings.setFRAME_SIZE(value);
   }//GEN-LAST:event_frameSizeComboBoxActionPerformed
 
 public void setFrameSize(int value)
@@ -21821,7 +21822,9 @@ public void setFrameSize(int value)
   }
 private void pollRateComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pollRateComboBoxActionPerformed
   {//GEN-HEADEREND:event_pollRateComboBoxActionPerformed
-    // TODO add your handling code here:
+    int value = Integer.parseInt(pollRateComboBox.getSelectedItem().toString());
+    System.out.println("audio: poll rate = " + value);
+    audioSettings.setPOLL_RATE(value);
   }//GEN-LAST:event_pollRateComboBoxActionPerformed
 
 public void setPollRate(int value)
@@ -21831,7 +21834,12 @@ public void setPollRate(int value)
 
 private void playTripletsCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playTripletsCheckBoxActionPerformed
   {//GEN-HEADEREND:event_playTripletsCheckBoxActionPerformed
-    // TODO add your handling code here:
+    if( audioSettings != null )
+      {
+        boolean value = playTripletsCheckBox.isSelected();
+        System.out.println("audio: playTriplets = " + value);
+        audioSettings.setTRIPLETS(value);
+      }
   }//GEN-LAST:event_playTripletsCheckBoxActionPerformed
 
 public void setAudioplayTriplets(boolean value)
@@ -21841,12 +21849,31 @@ public void setAudioplayTriplets(boolean value)
 
 private void noteResolutionComboBoxChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChanged
   {//GEN-HEADEREND:event_noteResolutionComboBoxChanged
-
+  NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
+  int slots = NoteResolutionComboBoxModel.getResolution();
+  int subDivisions = 4*BEAT/slots;
+  if( audioSettings != null )
+    {
+    System.out.println("audio: note resolution = " + subDivisions + " subdivisions");
+    audioSettings.setRESOLUTION(subDivisions);
+    }
   }//GEN-LAST:event_noteResolutionComboBoxChanged
 
-public void setAudioNoteResolution(int value)
+public void setAudioNoteResolution(int subdivisions)
   {
-    //FIX: noteResolutionComboBox.setSelectedItem(new Integer(value));
+  // Need to search for menu item of desired resolution
+  NoteResolutionComboBoxModel model = NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel();
+  int n = model.getSize();
+  for( int i = 0; i < n; i++ )
+    {
+      NoteResolutionInfo info = (NoteResolutionInfo)model.getElementAt(i);
+      if( info.getWholeNoteSubdivisions() == subdivisions )
+        {
+          model.setSelectedItem(info);
+          return;
+        }
+    }
+  ErrorLog.log(ErrorLog.WARNING, "audio: specified resolution " + subdivisions + " subdivisions not found");
   }
 
 private void audioBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_audioBtnActionPerformed
@@ -21862,7 +21889,16 @@ private void audioPreferencesBtnActionPerformed(java.awt.event.ActionEvent evt)/
 
 private void k_constantSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_k_constantSliderStateChanged
   {//GEN-HEADEREND:event_k_constantSliderStateChanged
-    // TODO add your handling code here:
+    int value = k_constantSlider.getValue();
+    double actualValue = ((double)value)/1000;
+    System.out.println("audio: k_constant value = " + actualValue);
+    
+    // Not sure how audioSettings can be null for sliders but not for comboBoxes
+    
+    if( audioSettings != null )
+      {
+      audioSettings.setK_CONSTANT(actualValue);
+      }
   }//GEN-LAST:event_k_constantSliderStateChanged
 
 public void setKconstantSlider(double value)
@@ -21873,12 +21909,24 @@ public void setKconstantSlider(double value)
 
 private void confidenceThresholdStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_confidenceThresholdStateChanged
   {//GEN-HEADEREND:event_confidenceThresholdStateChanged
-    // TODO add your handling code here:
+    int value = confidenceThresholdSlider.getValue();
+    double actualValue = ((double)value)/100;
+    System.out.println("audio: confidence threshold value = " + actualValue);
+    if( audioSettings != null )
+      {
+      audioSettings.setCONFIDENCE_THRESHOLD(actualValue);
+      }
   }//GEN-LAST:event_confidenceThresholdStateChanged
 
 private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_rmsThresholdSliderStateChanged
   {//GEN-HEADEREND:event_rmsThresholdSliderStateChanged
-    // TODO add your handling code here:
+    int value = rmsThresholdSlider.getValue();
+    double actualValue = ((double)value)/10;
+    System.out.println("audio: RMS threshold value = " + actualValue);
+    if( audioSettings != null )
+      {
+      audioSettings.setRMS_THRESHOLD(actualValue);
+      }
   }//GEN-LAST:event_rmsThresholdSliderStateChanged
 
 public void setRMSThreshold(double value)

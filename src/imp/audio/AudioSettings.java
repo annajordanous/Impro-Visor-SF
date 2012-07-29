@@ -26,7 +26,7 @@ import imp.gui.Notate;
  * Handles settings for audio capture.
  *
  * @version 27 July, 2012
- * @author Brian Howell
+ * @author Brian Howell and Robert Keller
  */
 
 public class AudioSettings

@@ -49,6 +49,16 @@ public int getSlots()
     return slots;
     }
 
+public int getBeatSubdivisions()
+  {
+    return BEAT/slots;
+  }
+
+public int getWholeNoteSubdivisions()
+  {
+    return 4*BEAT/slots;
+  }
+
 @Override
 public String toString()
   {
