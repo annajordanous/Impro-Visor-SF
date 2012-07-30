@@ -23,19 +23,19 @@ public class CaptureTimerTask extends TimerTask
 
     public void run()
     {
-            while (extractor.isCapturing)
+            while (extractor.isCapturing())
             {
                 try
                 {
                     //System.out.println("Timer delayed by 2 milliseconds");
-                    Thread.sleep(2);
+                    Thread.sleep(1, 500);
                 } catch (Exception e)
                 {
                     System.out.println("Sleep error:\n" + e);
                 }
             }
             extractor.isCapturing = true;
-            long time = System.currentTimeMillis();
+            long time = System.nanoTime();
             synchronized (extractor.thisCapture)
         {
             extractor.thisCapture.notify();
