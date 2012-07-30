@@ -613,6 +613,8 @@ public class Notate
                 "Options"
         });
   
+  private NWaySplitComboBoxModel nWaySplitComboBoxModel = new NWaySplitComboBoxModel();
+  
   private SectionInfo sectionInfo;
 
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
@@ -1027,6 +1029,18 @@ public class Notate
 
     sectionTable.setModel(sectionTableModel);
     sectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    sectionTable.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+            if(e.getClickCount() >= 1) {
+                JTable target = (JTable)e.getSource();
+                int row = target.getSelectedRow();
+                System.out.println("HII: " + row);
+                //markermarkermarker
+            }
+        }
+    });
+    
+    nWaySplitComboBox.setModel(nWaySplitComboBoxModel);
     
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
@@ -1442,6 +1456,7 @@ public class Notate
         SectionTableScrollPane = new javax.swing.JScrollPane();
         sectionTable = new javax.swing.JTable();
         usePreviousStyleButton = new javax.swing.JButton();
+        nWaySplitComboBox = new javax.swing.JComboBox();
         chorusPreferences = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jTabbedPane4 = new javax.swing.JTabbedPane();
@@ -2327,13 +2342,14 @@ public class Notate
         selectAStyleLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         selectAStyleLabel.setText("Style");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(selectAStyleLabel, gridBagConstraints);
 
-        styleListScrollPane.setMinimumSize(new java.awt.Dimension(260, 130));
+        styleListScrollPane.setMinimumSize(new java.awt.Dimension(200, 130));
+        styleListScrollPane.setName("");
+        styleListScrollPane.setPreferredSize(new java.awt.Dimension(200, 130));
 
         styleList.setModel(styleListModel);
         styleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -2345,9 +2361,8 @@ public class Notate
         styleListScrollPane.setViewportView(styleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 0.4;
@@ -2362,11 +2377,9 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.weightx = 0.25;
         currentStyleTab.add(newSectionButton, gridBagConstraints);
 
         sectionLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -2376,13 +2389,17 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(sectionLabel, gridBagConstraints);
 
         delSectionButton.setText("Delete Selected Section");
+        delSectionButton.setToolTipText("Deletes the selected section.");
+        delSectionButton.setMaximumSize(new java.awt.Dimension(135, 23));
+        delSectionButton.setMinimumSize(new java.awt.Dimension(135, 23));
+        delSectionButton.setPreferredSize(new java.awt.Dimension(135, 23));
         delSectionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delSectionButtonActionPerformed(evt);
@@ -2391,9 +2408,8 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.33;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         currentStyleTab.add(delSectionButton, gridBagConstraints);
 
@@ -2402,14 +2418,13 @@ public class Notate
         recentStyleLabel.setText("Recent Styles");
         recentStyleLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         currentStyleTab.add(recentStyleLabel, gridBagConstraints);
 
-        recentStyleListScrollPane.setMinimumSize(new java.awt.Dimension(260, 130));
-        recentStyleListScrollPane.setPreferredSize(new java.awt.Dimension(260, 130));
+        recentStyleListScrollPane.setMinimumSize(new java.awt.Dimension(200, 130));
+        recentStyleListScrollPane.setPreferredSize(new java.awt.Dimension(200, 130));
 
         recentStyleList.setModel(recentStyleListModel);
         recentStyleList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -2421,9 +2436,8 @@ public class Notate
         recentStyleListScrollPane.setViewportView(recentStyleList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 0.4;
@@ -2469,11 +2483,11 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 1;
-        gridBagConstraints.weightx = 0.4;
+        gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
         currentStyleTab.add(SectionTableScrollPane, gridBagConstraints);
 
@@ -2484,13 +2498,26 @@ public class Notate
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.01;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         currentStyleTab.add(usePreviousStyleButton, gridBagConstraints);
+
+        nWaySplitComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        nWaySplitComboBox.setMinimumSize(new java.awt.Dimension(135, 20));
+        nWaySplitComboBox.setPreferredSize(new java.awt.Dimension(135, 20));
+        nWaySplitComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nWaySplitComboBoxActionHandler(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.25;
+        currentStyleTab.add(nWaySplitComboBox, gridBagConstraints);
 
         styleTabs.addTab("Styles by Section", currentStyleTab);
 
@@ -7754,12 +7781,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -7775,12 +7802,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -8753,12 +8780,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -8791,12 +8818,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -11520,7 +11547,7 @@ public class SectionTableModel extends DefaultTableModel
     
     boolean[] canEdit = new boolean [] {
               //phrase, start, end  , bars , style, options
-                true  , true , false, false, false, true
+                true  , true , true, false, false, true
             };
     int [] columnWidths = new int [] { 
                 30    , 25   , 25   , 20   , 110  , 45
@@ -11644,6 +11671,34 @@ public class SectionTableModel extends DefaultTableModel
                 return Boolean.class;
         }
         return Object.class;
+    }
+    
+}
+//markermarkermarker
+@SuppressWarnings("serial")
+
+public class NWaySplitComboBoxModel
+    extends AbstractListModel
+    implements ComboBoxModel
+{
+    String [] items = {"2", "3", "4"};
+    
+    String selectedItem;
+    
+    public int getSize() {
+        return items.length;
+    }
+
+    public Object getElementAt(int i) {
+        return items[i];
+    }
+
+    public void setSelectedItem(Object o) {
+        selectedItem = o.toString();
+    }
+
+    public Object getSelectedItem() {
+        return selectedItem;
     }
     
 }
@@ -21696,7 +21751,7 @@ private void stopBtn1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:
     }//GEN-LAST:event_chordReplayButtonActionPerformed
 
     private void usePreviousStyleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usePreviousStyleButtonActionPerformed
-        //markermarkermarker
+        
         int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
         if(index <= 0 || index >= sectionInfo.size())
             return;
@@ -22016,6 +22071,13 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
       audioSettings.setRMS_THRESHOLD(actualValue);
       }
   }//GEN-LAST:event_rmsThresholdSliderStateChanged
+//markermarkermarker
+    private void nWaySplitComboBoxActionHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nWaySplitComboBoxActionHandler
+        int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
+        
+        if(index < 0 || index >= sectionInfo.size())
+        {}
+    }//GEN-LAST:event_nWaySplitComboBoxActionHandler
 
 public void setRMSThreshold(double value)
   {
@@ -23980,6 +24042,7 @@ public void showNewVoicingDialog()
     private javax.swing.JDialog mixerDialog;
     private javax.swing.JMenuItem mostRecentLeadsheetMI;
     private javax.swing.JMenuItem mostRecentLeadsheetNewWindowMI;
+    private javax.swing.JComboBox nWaySplitComboBox;
     private javax.swing.JButton newBtn;
     private javax.swing.JMenuItem newMI;
     private javax.swing.JButton newSectionButton;
