@@ -43,7 +43,7 @@ public class PitchExtractor
     int captureInterval;
     int lastSlotNumber = 1;
     int startingPosition = 0;
-    double positionOffset;
+    int positionOffset;
     //timeDifference keeps track of time offset between captures
     double timeDifference = 0;
     List<Integer> oneSlot = new ArrayList<Integer>();
@@ -51,41 +51,51 @@ public class PitchExtractor
     int lastPitch = 0; //initialize most recent pitch to a rest
     int analysesCompleted; //# of analyses completed thus far.
     //if capture has trouble finishing the first capture, increase this value.
-//    private final double OFFSET_ADJUSTMENT = 1.75;
+//    private final double OFFSET_ADJUSTMENT = 2.;
 //    private final int FIRST_CAPTURE_TRUNCATION = 0;
     private final float SAMPLE_RATE = 44100.0F; //in Hertz
     private final int SAMPLE_SIZE = 16; //1 sample = SAMPLE_SIZE bits
-    private final int FRAME_SIZE = 2048; //# of BYTES examined per poll
-    private final float POLL_RATE = 20; //in milliseconds
-    private final double tenMSOffset = ((10. / 1000.) * SAMPLE_RATE * 2.);
-    private final double interval = ((POLL_RATE / 1000.) * SAMPLE_RATE * 2.);
-    private int RESOLUTION = 32; //smallest subdivision allowed
-    private int slotConversion = 480 / RESOLUTION;
-    private boolean TRIPLETS = false;
+    private int FRAME_SIZE; //# of BYTES examined per poll
+    private float POLL_RATE; //in milliseconds
+    private final int tenMSOffset = (int) ((10.0 / 1000.0) * SAMPLE_RATE * 2.0);
+    private final double interval;
+    private int RESOLUTION; //smallest subdivision allowed
+    private int slotConversion;
+    private boolean TRIPLETS;
     private boolean noteOff; //flag indicating terminal note
     //only windows with a RMS above this threshold will be examined
-    private final double RMS_THRESHOLD = Math.exp(4.75);
-    private final double CONFIDENCE_THRESHOLD = 0.45;
+    private double RMS_THRESHOLD;
+    private double CONFIDENCE_THRESHOLD;
     private double CONFIDENCE;
     //sets threshold for detecting peaks in normalized SDF
-    private final double K_CONSTANT = 0.875;
+    private double K_CONSTANT;
     private final Queue<byte[]> processingQueue;
-
-    public static void main(String args[])
-    {
-        //new PitchExtraction();
-    }//end main
+    //private AudioSettings settings;
 
     public PitchExtractor(Notate notate,
                           Score score,
                           MidiSynth midiSynth,
+                          AudioSettings settings,
                           int captureInterval)
     {
         this.notate = notate;
         this.score = score;
         this.midiSynth = midiSynth;
+        //this.settings = settings;
         //swingVal = score.getChordProg().getStyle().getSwing();
         this.captureInterval = captureInterval;
+
+        RMS_THRESHOLD = settings.getRMS_THRESHOLD();
+        CONFIDENCE_THRESHOLD = settings.getCONFIDENCE_THRESHOLD();
+        TRIPLETS = settings.isTRIPLETS();
+        RESOLUTION = settings.getRESOLUTION();
+        K_CONSTANT = settings.getK_CONSTANT();
+        POLL_RATE = settings.getPOLL_RATE();
+        FRAME_SIZE = settings.getFRAME_SIZE();
+        slotConversion = 480 / RESOLUTION;
+        interval = (POLL_RATE / 1000.0) * SAMPLE_RATE * 2.0;
+
+
         format = getAudioFormat();
         processingQueue = new ArrayBlockingQueue<byte[]>(10);
     }
@@ -99,7 +109,7 @@ public class PitchExtractor
             target = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
             //System.out.println("TargetDataLine buffer size = " + target.getBufferSize());
             target.open(format);
-            target.start();
+            //target.start();
         } catch (Exception e)
         {
             System.out.println(e);
@@ -142,6 +152,9 @@ public class PitchExtractor
             CaptureThread captureThread = new CaptureThread();
             captureThread.setPriority(Thread.MAX_PRIORITY);
             captureThread.start();
+//            SlotGetterThread slotThread = new SlotGetterThread();
+//            slotThread.setPriority(Thread.MAX_PRIORITY - 1);
+//            slotThread.start();
             AnalyzeThread analyzeThread = new AnalyzeThread();
             analyzeThread.setPriority(Thread.MAX_PRIORITY - 1);
             analyzeThread.start();
@@ -166,16 +179,16 @@ public class PitchExtractor
         if (analysesCompleted == 0)
         {
             //positionOffset = 0;
-            index = (int) (positionOffset + tenMSOffset);
+            index = positionOffset + tenMSOffset;
             //firstMeasure = false;
         } else
-        { //ignore first 10ms of input data; begin examining frames thereafter
-            index = (int) tenMSOffset;
+        { //ignore first 10ms of input data; begin polling thereafter
+            index = tenMSOffset;
         }
         //System.out.println("index = " + index + ", positionOffset = " + positionOffset);
         int size = FRAME_SIZE / 2;
         //convert tempo to ms per measure
-        float tempo = (float) (score.getMetre()[0] * 60000. / score.getTempo());
+        float tempo = (float) (score.getMetre()[0] * 60000.0 / score.getTempo());
         int slotSize = RESOLUTION; //smallest subdivision allowed
         if (TRIPLETS)
         { //adjust # of subdivisions if triplets are allowed
@@ -214,7 +227,7 @@ public class PitchExtractor
             }
             //otherwise, keep fundamental at zero (rest)
             //keeps track of how much time has elapsed within a capture interval
-            double timeElapsed;
+            double timeElapsed = 0;
             if (analysesCompleted == 0)
             {
                 timeElapsed = ((index - positionOffset) / interval) * POLL_RATE;
@@ -223,7 +236,7 @@ public class PitchExtractor
                 timeElapsed = (index / interval * POLL_RATE);
                 //System.out.println("Time elapsed = " + timeElapsed);
             }
-            System.out.println("Time elapsed = " + timeElapsed);
+            //System.out.println("Time elapsed = " + timeElapsed);
             currentSlotNumber = resolveSlot(timeElapsed,
                     tempo / slotSize, slotSize) + 1;
             //System.out.println(timeElapsed + ": Slot = " + currentSlotNumber);
@@ -303,7 +316,10 @@ public class PitchExtractor
                         } else
                         {
                             duration = slotsFilled * slotConversion;
-                            setNote(lastPitch, startingPosition, duration, melodyPart);
+                            setNote(lastPitch,
+                                    startingPosition,
+                                    duration,
+                                    melodyPart);
                             incrementStartingPosition(duration);
                         }
                     } else
@@ -340,7 +356,7 @@ public class PitchExtractor
                 oneSlot.add(slotPitch); //if so, continue collecting data
             }
             //increase the index by the designated interval
-            index += interval;
+            index += (int) interval;
         } //end while
         analysesCompleted++;
         System.out.println("Finished analyzing capture " + analysesCompleted + ".");
@@ -550,8 +566,7 @@ public class PitchExtractor
                 || slot % (RESOLUTION / 2) == 1))
         {
             return slot - 1;
-        }
-        else
+        } else
         {
             return slot;
         }
@@ -570,10 +585,10 @@ public class PitchExtractor
         int size = input.length;
         double correlated[] = new double[size];
         //this is the m'(tau) component of the SDF
-        for (int tau = 0; tau < size - 1; tau++)
+        for (int tau = 0; tau < size; tau++)
         {
             double sum = 0;
-            for (int j = 0; j < size - 1 - tau; j++)
+            for (int j = 0; j < size - tau; j++)
             {
                 sum += input[j] * input[j + tau];
             }
@@ -596,10 +611,10 @@ public class PitchExtractor
         int size = original.length;
         double squared[] = new double[size];
         //this is the m'(tau) component of the SDF
-        for (int tau = 0; tau < size - 1; tau++)
+        for (int tau = 0; tau < size; tau++)
         {
             double sum = 0;
-            for (int j = 0; j < size - 1 - tau; j++)
+            for (int j = 0; j < size - tau; j++)
             {
                 sum += Math.pow(original[j], 2.0)
                         + Math.pow(original[j + tau], 2.0);
@@ -837,14 +852,26 @@ public class PitchExtractor
 //    {
 //        thisMeasure = isIt;
 //    }
+
+    public boolean isCapturing()
+    {
+        return isCapturing;
+    }
+
     public class CaptureThread extends Thread
     {
 
         public void run()
         {
-            //number of samples to capture before putting data in the queue
-            double samplesToCapture = (SAMPLE_RATE / (score.getTempo()
-                    / score.getMetre()[0] / 60.)) * (captureInterval / 480.);
+            //number of bytes to capture before putting data in the queue
+            int bytesToCapture = (int) (((SAMPLE_RATE * 2.) / (score.getTempo()
+                    / score.getMetre()[0] / 60.)) * (captureInterval / 480.));
+            System.out.println(bytesToCapture + " bytes will be captured.");
+            byte tempBuffer[] = new byte[target.getBufferSize() / 5];
+            int limit = bytesToCapture / tempBuffer.length;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bytesToCapture);
+            int bytesRead;
+
             try
             {//Loop until stopCapture is set.
                 while (!stopCapture)
@@ -854,20 +881,21 @@ public class PitchExtractor
                     {
                         thisCapture.wait();
                     }
-                    ByteArrayOutputStream outputStream =
-                            new ByteArrayOutputStream();
-                    byte tempBuffer[] = new byte[400];
-                    int bytesRead;
-                    int limit = (int) (samplesToCapture / (tempBuffer.length / 2));
-//                    if (!processingStarted)
-//                    {
-//                        //limit -= FIRST_CAPTURE_TRUNCATION;
-//                        startTime = System.currentTimeMillis();
-//                    } else
-//                    {
-//                        System.out.println("Next capture started at time "
-//                                + System.currentTimeMillis());
-//                    }
+                    isCapturing = true;
+
+                    if (!processingStarted)
+                    {
+                        //the time at which audio capture begins
+                        startTime = System.nanoTime();
+                        System.out.println("Audio capture initialized at time "
+                                + startTime);
+                    } else
+                    {
+                        System.out.println("Next capture started at time "
+                                + System.nanoTime());
+                    }
+                    //start the TargetDataLine, from which audio data is read
+                    target.start();
                     //collect 1 captureInterval's worth of data
                     for (int n = 0; n < limit; n++)
                     {
@@ -875,44 +903,44 @@ public class PitchExtractor
                         if (bytesRead > 0)
                         {   //Append data to output stream.
                             outputStream.write(tempBuffer, 0, bytesRead);
-                        }
-                        else
+                        } else
                         {
                             System.out.println("No data read at frame " + n);
                         }
 //                        if (n >= limit - 2)
 //                        {
 //                            System.out.println("Finished capturing frame " + n
-//                                    + " at time " + System.currentTimeMillis());
+//                                    + " at time " + System.nanoTime());
 //                        }
                     }
                     //System.out.println("Audio capture interval finished.");
                     if (!processingStarted)
                     {
-                        startTime = System.currentTimeMillis();
-                        startTime -= (long) (1000. * samplesToCapture / SAMPLE_RATE);
-                        System.out.println("First capture start = "
-                                + startTime);
+//                        startTime = System.nanoTime();
+//                        startTime -= (long) ((1000. * bytesToCapture)
+//                                / (SAMPLE_RATE * 2.));
+//                        System.out.println("First capture start = "
+//                                + startTime);
                         long difference = (midiSynth.getPlaybackStartTime()
-                                + score.getCountInTime() * 1000 - startTime);
+                                + (long) score.getCountInTime() * 1000000000
+                                - startTime);
                         System.out.println("difference = " + difference);
                         if (difference < 0)
                         {
                             difference = 0;
                         }
-                        positionOffset = (int) ((difference / 1000.)
+                        positionOffset = (int) ((difference / 1000000000.)
                                 * SAMPLE_RATE * 2.);
+                        //positionOffset *= OFFSET_ADJUSTMENT;
                         if (positionOffset % 2 != 0)
                         {
                             positionOffset += 1;
                         }
-                        //positionOffset *= OFFSET_ADJUSTMENT;
                         System.out.println("positionOffset = " + positionOffset);
                     }
                     if (outputStream.size() > 0)
                     {
                         byte[] capturedAudioData = outputStream.toByteArray();
-
                         processingQueue.add(capturedAudioData);
                         System.out.println("Array containing "
                                 + capturedAudioData.length + " elements added "
@@ -928,6 +956,7 @@ public class PitchExtractor
                                 System.out.println("Processing queue error:\n" + e);
                             }
                         }
+                        outputStream.reset();
                         isCapturing = false;
                     } else
                     {
