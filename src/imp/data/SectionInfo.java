@@ -183,6 +183,7 @@ public class SectionInfo implements Constants, Serializable {
                    record.getIsPhrase());
     }
 
+    //markermarkermarker
     public void nWaySplit(int index) {
         
     }
@@ -342,7 +343,6 @@ public SectionRecord getSectionRecordByIndex(int n)
         return records.size() == 1;
       }
 
-    //markermarkermarker
     public String getInfo(int index) {
         SectionRecord record = records.get(index);
         
@@ -359,6 +359,7 @@ public SectionRecord getSectionRecordByIndex(int n)
         return info;
     }
     
+    //markermarkermarker
     public void setSpecificCell(Object aValue, int row, int column){
         
         switch(column){
@@ -376,7 +377,19 @@ public SectionRecord getSectionRecordByIndex(int n)
                 {
                 }
                 break;
-                
+            case 2:
+                int endValue;
+                try {
+                    endValue = (int)(Integer.parseInt(aValue.toString()));
+                    adjustEndOfSection(row,
+                                       endValue,
+                                       records.get(row).getIsPhrase(),
+                                       false);
+                }
+                catch( NumberFormatException e )
+                {
+                }
+                break;
             default:
                 getSectionRecordByIndex(row).setColumn(aValue, column);
         }
@@ -407,28 +420,71 @@ public SectionRecord getSectionRecordByIndex(int n)
         // Do not move first record
         // Its phrase value can be set in place
         
+        if( newMeasure <= 0 )
+            return;
         
-         SectionRecord record = records.get(index);
-            //gets the start measure # of the section
-         //if user wants to change start index to what it is already -_-
-         if(getSectionMeasure(index) == newMeasure)
-          {
+        if( index > 0 && newMeasure <= getSectionMeasure(index-1) )
+           return;
+         
+        int endTemp = (index + 1 < size()) ? getSectionMeasure(index+1)-1 : measures();
+        
+        if( newMeasure > endTemp )
+           return;
+         
+        SectionRecord record = records.get(index);
+           //gets the start measure # of the section
+        //if user wants to change start index to what it is already -_-
+        if(getSectionMeasure(index) == newMeasure) 
+        {
+           record.setIsPhrase(isPhrase);
+           if( usePreviousStyleChecked )
+               record.setUsePreviousStyle();
+           return;
+        }
+        
+        String styleName = usePreviousStyleChecked ? Style.USE_PREVIOUS_STYLE : record.getStyleName();
+        deleteSection(index);
+        addSection(styleName, measureToSlotIndex(newMeasure), isPhrase);
+    }
+    
+    //markermarkermarker
+    public void adjustEndOfSection(int index, int endIndex, boolean isPhrase, boolean usePreviousStyleChecked) {
+        //*
+        if( endIndex <= 0 )
+            return;
+        
+        SectionRecord record = records.get(index);
+        
+        int endTemp = (index + 1 < size()) ? getSectionMeasure(index+1)-1 : measures();
+        
+        int nextSectionEnd = (index + 2 < size()) ? getSectionMeasure(index + 2) - 1 : measures();
+        
+        if(index < size() - 1 && endIndex >= nextSectionEnd)
+            return;
+         
+        if( endIndex < getSectionMeasure(index) )
+            return;
+        
+        //if user wants to change end index to what it is already -_-
+        if( endIndex == endTemp )
+        {
             record.setIsPhrase(isPhrase);
             if( usePreviousStyleChecked )
-              {
                 record.setUsePreviousStyle();
-              }
             return;
-          }
-         
-         if (index > 0 && newMeasure == getSectionMeasure(index-1))
-         {
+        }
+        
+        String styleName = usePreviousStyleChecked ? Style.USE_PREVIOUS_STYLE : record.getStyleName();
+        
+        if( size() <= 1)
             return;
-         }
-         
-         String styleName = usePreviousStyleChecked ? Style.USE_PREVIOUS_STYLE : record.getStyleName();
-         deleteSection(index);
-         addSection(styleName, measureToSlotIndex(newMeasure), isPhrase);
+        if( index < size() - 1 )
+        {
+            SectionRecord nextRecord = records.get( index+1 );
+            nextRecord.setIndex( measureToSlotIndex(endIndex + 1) );
+        }
+        //*/
+        
     }
 
     public void deleteSection(int index) {
