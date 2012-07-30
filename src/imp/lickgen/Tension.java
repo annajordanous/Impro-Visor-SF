@@ -84,6 +84,16 @@ public class Tension
         return averageNote/notes.length;
     }
     
+    /**
+     * Returns meter accent based on Eerola 2003 (The Dynamics of Musical Expectancy: Cross-Cultural and 
+     * Statistical Approaches to Melodic Expectations. Doctoral dissertation. Jyvskyla Studies in Arts) 
+     * and Jones 1987 Dynamic pattern structure in music: Recent theory and research.
+     * Perception and Psychophysics, 41, 621-634.
+     * @param onsets
+     * @param notes
+     * @param tempo
+     * @return 
+     */
     public double getMeterAccent(int[] onsets, int[] notes, int tempo)
     {
         int[] mh = getMetricalHierarchyList(onsets);
@@ -97,6 +107,11 @@ public class Tension
         return sum/mh.length;
     }
     
+    /**
+     * Returns a list of metrical hierarchies for each note
+     * @param onsets
+     * @return 
+     */
     public static int[] getMetricalHierarchyList(int[] onsets)
     {
         int[] metricalHierarchyList = new int[onsets.length];
@@ -112,6 +127,12 @@ public class Tension
         return metricalHierarchyList;
     }
     
+    /**
+     * Given an index within a rhythm array, returns the metrical hierarchy value of that metrical position
+     * (Based on Lerdahl and Jackendoff 1983)
+     * @param index
+     * @return 
+     */
     public static int getMetricalHierarchy(int index)
     {
         if(index % WHOLE_NOTE == 0)
@@ -327,6 +348,11 @@ public class Tension
         return synco;
     }
     
+    /**
+     * Returns syncopation using a different (better) method than before. Can actually handle triplets
+     * @param onsets
+     * @return 
+     */
     public static int getSyncopation2(int[] onsets)
     {
         int synco = 0;
@@ -352,6 +378,13 @@ public class Tension
         return synco;
     }
     
+    /**
+     * Returns windowed syncopation using same method as getSyncopation2
+     * @param onsets
+     * @param measures
+     * @param windowSize
+     * @return 
+     */
      public static int[] getWindowedSyncopation2(int[] onsets, int measures, int windowSize)
     {
         int slotsPerWindow = SLOTS_PER_MEASURE2 * windowSize;

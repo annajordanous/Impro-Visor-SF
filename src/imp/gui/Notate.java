@@ -21813,6 +21813,25 @@ private void setImprovMenu(JMenuItem menuItem, int improInterval, int lead, bool
     Preferences.setPreference(Preferences.IMPROV_MENU_SETTING, "(" + improvMenuSelection + ")");
   }
 
+/**
+ * Returns the length of trading
+ * @return 
+ */
+public int getTradeLength()
+{
+    int tradeLength = autoImprovisation.getImproInterval()/2;
+    return tradeLength;
+}
+
+/**
+ * Returns true if trading
+ * @return 
+ */
+public boolean getAutoImprovisation()
+{
+    return !originalGeneration;
+}
+
 public void setTrading(boolean ivFirst, int bars)
   {
     if( ivFirst )
