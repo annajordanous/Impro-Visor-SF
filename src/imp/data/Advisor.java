@@ -379,8 +379,12 @@ public Polylist getChordNames()
   while( L.nonEmpty() )
     {
     Polylist entry = (Polylist)L.first();
-    R = R.cons(entry.first());
-    L = L.rest();
+    // Do not include synonyms
+    if( entry.assoc("same") == null )
+      {
+      R = R.cons(entry.first());
+      L = L.rest();
+      }
     }   
   return R;
   }
