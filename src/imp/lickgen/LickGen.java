@@ -99,9 +99,8 @@ private double syncopationMultiplier     = defaultSyncopationMultiplier;
 private double expectancyMultiplier = defaultExpectancyMultiplier;
 private double expectancyConstant   = defaultExpectancyConstant;
 
-    private static int LENGTH_OF_TRADE = 4*480;
+    private int lengthOfTrade;
     private static int SLOTS_PER_MEASURE = 480;
-    private static int MEASURES = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
@@ -133,9 +132,9 @@ private double expectancyConstant   = defaultExpectancyConstant;
     int oldOldPitch = 0;
     double expectancy = -1;
     private static int DEFAULT_EXPECTANCY = 200;
-    private static int EXPECTANCY_LIMIT1 = 60;
-    private static int EXPECTANCY_LIMIT2 = 80;
-    private static int EXPECTANCY_LIMIT3 = 100;
+    private static int EXPECTANCY_LIMIT1 = 30;
+    private static int EXPECTANCY_LIMIT2 = 45;
+    private static int EXPECTANCY_LIMIT3 = 60;
     private static int EXPECTANCY_CUTOFF1 = 100;
     private static int EXPECTANCY_CUTOFF2 = 200;
     boolean useOutlines = false;
@@ -205,6 +204,10 @@ private double expectancyConstant   = defaultExpectancyConstant;
             soloistLoaded = false;
          //System.out.println("LickGen constructor, no soloist file = " + soloistFileName);
        }
+        if(notate.getAutoImprovisation())
+        {
+            lengthOfTrade = notate.getTradeLength();
+        }
     }
 
     public Polylist getRhythmFromSoloist() {
@@ -740,7 +743,7 @@ public void loadGrammar(String grammarFile)
     
     try
       {
-      syncopationConstant = Double.parseDouble(getParameterQuietly(SYNCOPATION_CONSTANT)) * MAX_SYNCO * MEASURES;
+      syncopationConstant = Double.parseDouble(getParameterQuietly(SYNCOPATION_CONSTANT)) * MAX_SYNCO * (lengthOfTrade/SLOTS_PER_MEASURE);
       System.out.println("Syncopation constant: " + syncopationConstant);
       }
     catch(NonExistentParameterException e)
@@ -1177,6 +1180,8 @@ public MelodyPart fillMelody(int minPitch,
       }
 
     MelodyPart melPart = new MelodyPart();
+    
+    lengthOfTrade = notate.getTradeLength();
 
    //Generates a rhythm with matched syncopation
     if(useSyncopation)
@@ -1184,15 +1189,15 @@ public MelodyPart fillMelody(int minPitch,
         MelodyPart melody = notate.getCurrentMelodyPart();
         int currentSlot = grammar.getCurrentSlot();
         ChordPart chords = notate.getChordProg();
-        MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        MelodyPart currMelody = melody.extract(currentSlot - lengthOfTrade, currentSlot);
         int[] rhythmArray = Generator.getArray(rhythmString);
-        int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
-        int measures = LENGTH_OF_TRADE/SLOTS_PER_MEASURE;
+        int[] syncVector = currMelody.getSyncVector(15, lengthOfTrade);
+        int measures = lengthOfTrade/SLOTS_PER_MEASURE;
         int origSynco = Tension.getSyncopation(syncVector, measures);
         int synco = (int)(syncopationMultiplier * origSynco + syncopationConstant);
-        if(synco > MAX_SYNCO * MEASURES)
+        if(synco > MAX_SYNCO * measures)
         {
-            synco = MAX_SYNCO * MEASURES;
+            synco = MAX_SYNCO * measures;
         }
         int[] rhythm = Generator.generateSyncopation(measures, synco, rhythmArray);
         int newSynco = Tension.getSyncopation(rhythm, measures);
@@ -1978,7 +1983,11 @@ public boolean fillMelody(MelodyPart lick,
 //                            invExpectDiff = limit;
 //                        }
                         double invSurpriseTension =  1 - 1/(expect);
-                        if(Math.abs(expectancy - expect) > limit || invSurpriseTension < 0)
+                        if(expect > expectancy)
+                        {
+                            invSurpriseTension = 1 - 1/(expectancy);
+                        }
+                        else if(Math.abs(expectancy - expect) > limit || invSurpriseTension < 0)
                         {
                             invSurpriseTension = 0;
                         }
@@ -2071,15 +2080,15 @@ public boolean fillMelody(MelodyPart lick,
         MelodyPart melody = notate.getCurrentMelodyPart();
         int currentSlot = grammar.getCurrentSlot();
         ChordPart chords = notate.getChordProg();
-        MelodyPart currMelody = melody.extract(currentSlot - LENGTH_OF_TRADE, currentSlot);
+        MelodyPart currMelody = melody.extract(currentSlot - lengthOfTrade, currentSlot);
         System.out.println("GEPN slot: " + currentSlot);
         int firstIndex = 0;
-        while(!currMelody.getNote(firstIndex).nonRest() && firstIndex < LENGTH_OF_TRADE)
+        while(!currMelody.getNote(firstIndex).nonRest() && firstIndex < lengthOfTrade)
         {
             firstIndex = currMelody.getNextIndex(firstIndex);
         }
         int secondIndex = currMelody.getNextIndex(firstIndex);
-        while(!currMelody.getNote(secondIndex).nonRest() && secondIndex < LENGTH_OF_TRADE)
+        while(!currMelody.getNote(secondIndex).nonRest() && secondIndex < lengthOfTrade)
         {
             secondIndex = currMelody.getNextIndex(secondIndex);
         }
@@ -2094,7 +2103,7 @@ public boolean fillMelody(MelodyPart lick,
         //Calculates expectancy of each following note
         while(pi.hasNext())
         {
-            int nextIndex = pi.nextIndex() + currentSlot - LENGTH_OF_TRADE;
+            int nextIndex = pi.nextIndex() + currentSlot - lengthOfTrade;
             Chord c = chords.getCurrentChord(nextIndex);
             int first = currMelody.getNote(firstIndex).getPitch();
             int second = currMelody.getNote(secondIndex).getPitch();
