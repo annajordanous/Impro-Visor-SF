@@ -2996,4 +2996,9 @@ public void setUseNoteCursor(boolean on)
     setCursor(defaultCursor);
 }
 
+public Cursor getNoteCursor()
+{
+    return noteCursor;
+}
+
 }

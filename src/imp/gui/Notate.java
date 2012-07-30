@@ -1949,6 +1949,7 @@ public class Notate
             }
         });
         drawButton = new javax.swing.JButton();
+        noteCursorBtn = new javax.swing.JButton();
         showAdviceButton = new javax.swing.JToggleButton();
         improviseButton = new javax.swing.JToggleButton();
         stopBtn1 = new javax.swing.JButton();
@@ -2103,7 +2104,6 @@ public class Notate
         showBracketsAllMeasuresMI = new javax.swing.JCheckBoxMenuItem();
         showConstructionLinesMI = new javax.swing.JCheckBoxMenuItem();
         useBeamsMI = new javax.swing.JCheckBoxMenuItem();
-        noteCursorCBMI = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
         playSelectionMI = new javax.swing.JMenuItem();
         playSelectionToEndMI = new javax.swing.JMenuItem();
@@ -2111,6 +2111,7 @@ public class Notate
         stopPlayMI = new javax.swing.JMenuItem();
         pausePlayMI = new javax.swing.JMenuItem();
         recordMI = new javax.swing.JMenuItem();
+        useAudioInputMI = new javax.swing.JCheckBoxMenuItem();
         improvMenu = new javax.swing.JMenu();
         useImproviseButtonCheckBoxMI = new javax.swing.JCheckBoxMenuItem();
         jSeparator4 = new javax.swing.JToolBar.Separator();
@@ -6796,6 +6797,22 @@ public class Notate
         });
         standardToolbar.add(drawButton);
 
+        noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/cursors/blueNoteLineCursor.png"))); // NOI18N
+        noteCursorBtn.setToolTipText("Toggle note cursor.");
+        noteCursorBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        noteCursorBtn.setFocusable(false);
+        noteCursorBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        noteCursorBtn.setMaximumSize(new java.awt.Dimension(30, 30));
+        noteCursorBtn.setMinimumSize(new java.awt.Dimension(30, 30));
+        noteCursorBtn.setPreferredSize(new java.awt.Dimension(30, 30));
+        noteCursorBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        noteCursorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noteCursorBtnActionPerformed(evt);
+            }
+        });
+        standardToolbar.add(noteCursorBtn);
+
         showAdviceButton.setBackground(adviceBtnColorClosed);
         showAdviceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imp/gui/graphics/toolbar/advice.gif"))); // NOI18N
         showAdviceButton.setToolTipText("Show advice for chords.");
@@ -7781,12 +7798,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
+            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
             }
         });
 
@@ -7802,12 +7819,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
+            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -8479,15 +8496,6 @@ public class Notate
         });
         viewMenu.add(useBeamsMI);
 
-        noteCursorCBMI.setSelected(false);
-        noteCursorCBMI.setText("Use Smart Cursor");
-        noteCursorCBMI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteCursorCBMIActionPerformed(evt);
-            }
-        });
-        viewMenu.add(noteCursorCBMI);
-
         menuBar.add(viewMenu);
 
         playMenu.setMnemonic('p');
@@ -8555,6 +8563,10 @@ public class Notate
             }
         });
         playMenu.add(recordMI);
+
+        useAudioInputMI.setSelected(false);
+        useAudioInputMI.setText("Use Audio Input");
+        playMenu.add(useAudioInputMI);
 
         menuBar.add(playMenu);
 
@@ -8780,12 +8792,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
+            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
             }
         });
 
@@ -8818,12 +8830,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
+            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -12003,25 +12015,12 @@ private void updateTempoFromTextField()
 
         if( getMode() != Mode.DRAWING ) // either in cursor or note mode
           {
-              if (stave.getActionHandler().getUseNoteCursor())
-              {   // switch to cursor mode
+  
+            setMode(Mode.DRAWING);
 
-                  drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                          "graphics/toolbar/pencil.gif")));
-                  stave.getActionHandler().setUseNoteCursor(false);
-              }
-              
-              else
-              { // switch to pencil mode
-                setMode(Mode.DRAWING);
-
-                preDrawingEntryMuted = entryMute.isSelected();
-
+            preDrawingEntryMuted = entryMute.isSelected();
                 drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "graphics/cursors/blueNoteLineCursor.png")));
-
-              }
-
+                    "graphics/toolbar/noPencil.gif")));
           }
         else
           { // switch to note mode
@@ -12035,8 +12034,7 @@ private void updateTempoFromTextField()
             entryMuteActionPerformed(null);
 
             drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "graphics/toolbar/cursor.gif")));
-            stave.getActionHandler().setUseNoteCursor(true);
+                "graphics/toolbar/pencil.gif")));
           }
 
         stave.requestFocusInWindow();
@@ -14725,7 +14723,7 @@ private boolean saveGlobalPreferences()
 
   /**
    * Ensure that there is a chord-font-size preference.
-   * Iif there wasn't one, create one.
+   * If there wasn't one, create one.
    */
 
   private void ensureChordFontSize()
@@ -17321,24 +17319,30 @@ private void setCurrentStaveType(StaveType t)
 
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
     Stave stave = getCurrentStave();
-
+    StaveActionHandler handler = stave.getActionHandler();
+    System.out.println("changing staff");
+    System.out.println(handler.getUseNoteCursor());
     // set stave buttons
 
     switch( t )
       {
         case TREBLE:
+            System.out.println("1");
             trebleStaveBtn.setSelected(true);
             break;
 
         case BASS:
+            System.out.println("2");
             bassStaveBtn.setSelected(true);
             break;
 
         case GRAND:
+            System.out.println("3");
             grandStaveBtn.setSelected(true);
             break;
 
         case AUTO:
+            System.out.println("4");
             autoStaveBtn.setSelected(true);
             break;
 
@@ -17347,7 +17351,12 @@ private void setCurrentStaveType(StaveType t)
 
     stave.changeType(t);
     getCurrentMelodyPart().setStaveType(t);
-    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    if (handler.getUseNoteCursor())
+        setCursor(handler.getNoteCursor());
+    else
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    
+    System.out.println(handler.getUseNoteCursor());
   }
 
 
@@ -19008,7 +19017,7 @@ private void alwaysUseStaveActionPerformed(java.awt.event.ActionEvent evt) {//GE
 }//GEN-LAST:event_alwaysUseStaveActionPerformed
 
 private void newVoicingCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingCancelButtonActionPerformed
-newVoicingDialog.setVisible(false);
+    newVoicingDialog.setVisible(false);
 }//GEN-LAST:event_newVoicingCancelButtonActionPerformed
 
 private void newVoicingSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newVoicingSaveButtonActionPerformed
@@ -21947,11 +21956,6 @@ public void setAutoImprovisation(boolean value)
   }
 
 
-    private void noteCursorCBMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorCBMIActionPerformed
-        boolean checked = noteCursorCBMI.isSelected();
-        getCurrentStave().getActionHandler().setUseNoteCursor(checked);
-    }//GEN-LAST:event_noteCursorCBMIActionPerformed
-
 private void frameSizeComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_frameSizeComboBoxActionPerformed
   {//GEN-HEADEREND:event_frameSizeComboBoxActionPerformed
     int value = Integer.parseInt(frameSizeComboBox.getSelectedItem().toString());
@@ -22078,6 +22082,24 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         if(index < 0 || index >= sectionInfo.size())
         {}
     }//GEN-LAST:event_nWaySplitComboBoxActionHandler
+
+    private void noteCursorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteCursorBtnActionPerformed
+       
+        StaveActionHandler handler = getCurrentStave().getActionHandler();
+        
+        if (handler.getUseNoteCursor())
+        {
+            handler.setUseNoteCursor(false);
+            noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                    "graphics/Cursors/blueNoteLineCursor.png")));
+        }
+        else
+        {
+            handler.setUseNoteCursor(true);
+            noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+                    "graphics/toolbar/cursor.gif")));
+        }
+    }//GEN-LAST:event_noteCursorBtnActionPerformed
 
 public void setRMSThreshold(double value)
   {
@@ -22675,7 +22697,7 @@ public void showNewVoicingDialog()
 
       AdjustmentListener scrollListener = new AdjustmentListener()
         {
-        public void adjustmentValueChanged(AdjustmentEvent e)
+         public void adjustmentValueChanged(AdjustmentEvent e)
           {
           if( e.getValueIsAdjusting() )
             {
@@ -24058,7 +24080,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel newVoicingTypeLabel;
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
-    private javax.swing.JCheckBoxMenuItem noteCursorCBMI;
+    private javax.swing.JButton noteCursorBtn;
     private javax.swing.JComboBox noteResolutionComboBox;
     private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
@@ -24259,6 +24281,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton undoBtn;
     private javax.swing.JMenuItem undoMI;
     private javax.swing.JMenuItem undoPMI;
+    private javax.swing.JCheckBoxMenuItem useAudioInputMI;
     private javax.swing.JCheckBoxMenuItem useBeamsMI;
     private javax.swing.JCheckBoxMenuItem useImproviseButtonCheckBoxMI;
     private javax.swing.JButton usePreviousStyleButton;
