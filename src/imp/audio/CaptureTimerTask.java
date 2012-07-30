@@ -23,23 +23,21 @@ public class CaptureTimerTask extends TimerTask
 
     public void run()
     {
-            while (extractor.isCapturing())
-            {
-                try
-                {
-                    //System.out.println("Timer delayed by 2 milliseconds");
-                    Thread.sleep(1, 500);
-                } catch (Exception e)
-                {
-                    System.out.println("Sleep error:\n" + e);
-                }
-            }
-            extractor.isCapturing = true;
-            long time = System.nanoTime();
-            synchronized (extractor.thisCapture)
+        while (extractor.isCapturing())
         {
-            extractor.thisCapture.notify();
+            try
+            {
+                Thread.sleep(1);
+            } catch (Exception e)
+            {
+                System.out.println("Sleep error:\n" + e);
+            }
         }
-            System.out.println("Timer triggered audio capture at time " + time);
+        long time = System.nanoTime();
+        synchronized (extractor.thisCapture)
+        {
+            extractor.thisCapture.notifyAll();
+        }
+        System.out.println("Timer triggered audio capture at time " + time);
     }
 }
