@@ -25,7 +25,6 @@ import imp.data.ChordPart;
 import imp.data.Duration;
 import imp.data.MelodyPart;
 import imp.data.Part.PartIterator;
-import imp.gui.Expectancy;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;

@@ -21,6 +21,7 @@
 package imp.gui;
 
 
+import imp.lickgen.Expectancy;
 import imp.Constants;
 import imp.com.PlayScoreCommand;
 import imp.com.SetNoteCommand;
