@@ -24,7 +24,6 @@ import imp.Constants;
 import imp.ImproVisor;
 import imp.cluster.*;
 import imp.data.*;
-import imp.gui.Expectancy;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import java.io.File;
