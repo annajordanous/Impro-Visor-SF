@@ -41,10 +41,6 @@ import polya.Polylist;
 public class StaveActionHandler
   implements Constants, MouseListener, MouseMotionListener, KeyListener
 {
-/**
- * Whether to use cursor shaped like a note for entering notes.
- */
-boolean useNoteCursor = false;
 
 /**
  * bias estimate for parallax
@@ -405,7 +401,7 @@ StaveActionHandler(Stave stave, Notate notate)
 
   penCursor = makeCursor("graphics/toolbar/pencilCursor.png", "Pencil", true);
   
-  noteCursor = useNoteCursor? makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true) : defaultCursor;
+  noteCursor = notate.getUseNoteCursor()? makeCursor("graphics/cursors/blueNoteCursor.png", "Note", true) : defaultCursor;
  }
 
 /***
@@ -462,7 +458,7 @@ public void mouseMoved(MouseEvent e)
   
   boolean withinNoteArea = inNoteArea(e);
   
-  if( withinNoteArea && useNoteCursor)
+  if( withinNoteArea && notate.getUseNoteCursor())
       chooseAndSetNoteCursor(e);
 
   else
@@ -511,7 +507,7 @@ public void mouseMoved(MouseEvent e)
      }
     else
      {
-        if( withinNoteArea && useNoteCursor)
+        if( withinNoteArea && notate.getUseNoteCursor())
             setCursor(noteCursor);
 
         else
@@ -2983,17 +2979,6 @@ public int getLastMeasureSelected()
 public void setLastMeasureSelected(int value)
 {
     lastMeasureSelected = value;
-}
-
-public boolean getUseNoteCursor()
-{
-    return useNoteCursor;
-}
-
-public void setUseNoteCursor(boolean on)
-{
-    useNoteCursor = on;
-    setCursor(defaultCursor);
 }
 
 public Cursor getNoteCursor()

@@ -411,6 +411,8 @@ public class Notate
 
   private static int QUANTUM = BEAT/2;
 
+  private boolean useNoteCursor = false;  
+  
   /**
    * Set this value if a roadmap created this frame.
    */
@@ -12033,12 +12035,12 @@ private void updateTempoFromTextField()
 
         if( getMode() != Mode.DRAWING ) // either in cursor or note mode
           {
-              if (stave.getActionHandler().getUseNoteCursor())
+              if (useNoteCursor)
               {   // switch to cursor mode
 
                   drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
                           "graphics/toolbar/pencil.gif")));
-                  stave.getActionHandler().setUseNoteCursor(false);
+                  setUseNoteCursor(false);
               }
 
               else
@@ -17350,29 +17352,23 @@ private void setCurrentStaveType(StaveType t)
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
     Stave stave = getCurrentStave();
     StaveActionHandler handler = stave.getActionHandler();
-    System.out.println("changing staff");
-    System.out.println(handler.getUseNoteCursor());
     // set stave buttons
 
     switch( t )
       {
         case TREBLE:
-            System.out.println("1");
             trebleStaveBtn.setSelected(true);
             break;
 
         case BASS:
-            System.out.println("2");
             bassStaveBtn.setSelected(true);
             break;
 
         case GRAND:
-            System.out.println("3");
             grandStaveBtn.setSelected(true);
             break;
 
         case AUTO:
-            System.out.println("4");
             autoStaveBtn.setSelected(true);
             break;
 
@@ -17381,12 +17377,12 @@ private void setCurrentStaveType(StaveType t)
 
     stave.changeType(t);
     getCurrentMelodyPart().setStaveType(t);
-    if (handler.getUseNoteCursor())
+    if (useNoteCursor)
         setCursor(handler.getNoteCursor());
     else
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
-    System.out.println(handler.getUseNoteCursor());
+    System.out.println(useNoteCursor);
   }
 
 
@@ -22135,15 +22131,15 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
 
         StaveActionHandler handler = getCurrentStave().getActionHandler();
 
-        if (handler.getUseNoteCursor())
+        if (useNoteCursor)
         {
-            handler.setUseNoteCursor(false);
+            setUseNoteCursor(false);
             noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(
                     "graphics/Cursors/blueNoteLineCursor.png")));
         }
         else
         {
-            handler.setUseNoteCursor(true);
+            setUseNoteCursor(true);
             noteCursorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(
                     "graphics/toolbar/cursor.gif")));
         }
@@ -24949,7 +24945,16 @@ public void setLayoutTF(String text)
     layoutTF.setText(text);
   }
 
+public boolean getUseNoteCursor()
+{
+    return useNoteCursor;
+}
 
+public void setUseNoteCursor(boolean on)
+{
+    useNoteCursor = on;
+    setCursor(getCurrentStaveActionHandler().getNoteCursor());
+}
 
 public String getDefaultGrammarName()
   {
