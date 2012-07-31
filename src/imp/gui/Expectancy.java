@@ -21,10 +21,7 @@
 package imp.gui;
 
 import imp.Constants;
-import imp.data.Chord;
-import imp.data.ChordForm;
-import imp.data.ChordPart;
-import imp.data.NoteSymbol;
+import imp.data.*;
 import java.util.ArrayList;
 
 /**
@@ -52,7 +49,7 @@ public class Expectancy
     private static final int COLOR_STABILITY = 4;  // Stability of a color tone
     private static final int OUTSIDE_STABILITY = 1;// Stability of an outside note
     private static final int NOCHORD_STABILITY = 1;// Stability of an outside note
-    private static final double PROXIMITY_0 = 38;     // Proximity rating for a distance of 0
+    private static final double PROXIMITY_0 = 24;     // Proximity rating for a distance of 0
     private static final double PROXIMITY_1 = 36;     // Proximity rating for a distance of 1
     private static final double PROXIMITY_2 = 32;     // Proximity rating for a distance of 2
     private static final double PROXIMITY_3 = 25;     // Proximity rating for a distance of 3
@@ -86,6 +83,9 @@ public class Expectancy
     private static int suggestionNumMax = 88;
     private static int suggestionNumInit = P_OCTAVE;
     private static int suggestionNum = suggestionNumInit;
+    private static int QUARTER_NOTE = 120;
+    private static int BASE_WEIGHT = 15;
+    private static int QUARTER_WEIGHT = 5;
     
 //    public static double getAverageExpectancy(int[] pitches)
 //    {
@@ -100,6 +100,75 @@ public class Expectancy
         double mobility = mobility(pitch, prevPitch);
         double expectancy = (stability * proximity * mobility) + direction;
         return expectancy;
+    }
+    
+    public static double getExpectancyPerNote(MelodyPart currMelody, int lengthOfTrade, ChordPart chords, int currentSlot)
+    {
+        int quarter = 0;
+        int[] quarterLevel = new int[4];
+        double highestExpectancy = 0;
+        int highestIndex = 0;
+        int qLIndex = 0;
+        int firstIndex = 0;
+        while(!currMelody.getNote(firstIndex).nonRest() && firstIndex < lengthOfTrade)
+        {
+            firstIndex = currMelody.getNextIndex(firstIndex);
+        }
+        int secondIndex = currMelody.getNextIndex(firstIndex);
+        while(!currMelody.getNote(secondIndex).nonRest() && secondIndex < lengthOfTrade)
+        {
+            secondIndex = currMelody.getNextIndex(secondIndex);
+        }
+        //System.out.println(currMelody.getNote(firstIndex));
+        if(!currMelody.getNote(firstIndex).nonRest() || !currMelody.getNote(secondIndex).nonRest())
+        {
+            return -1;
+        }
+        Part.PartIterator pi = currMelody.iterator(secondIndex);
+        int numPitches = 0;
+        double totalExpectancy = 0;
+        int firstQuarter = 0;
+        int secondQuarter = 0;
+        //Calculates expectancy of each following note
+        while(pi.hasNext())
+        {
+            int nextIndex = pi.nextIndex() + currentSlot - lengthOfTrade;
+            Chord c = chords.getCurrentChord(nextIndex);
+            int first = currMelody.getNote(firstIndex).getPitch();
+            int second = currMelody.getNote(secondIndex).getPitch();
+            firstQuarter = first;
+            secondQuarter = second;
+            int curr = currMelody.getNote(pi.nextIndex()).getPitch();
+            double mExpectancy = getExpectancy(curr, second, first, c);
+            if(quarter > QUARTER_NOTE)
+            {
+                firstQuarter = quarterLevel[highestIndex];
+                secondQuarter = firstQuarter;
+                quarter = quarter % QUARTER_NOTE;
+                quarterLevel = new int[4];
+                highestExpectancy = 0;
+            }
+            double quarterExpect = getExpectancy(curr, firstQuarter, secondQuarter, c);
+            double weightedExpectancy = ((BASE_WEIGHT * mExpectancy) + (QUARTER_WEIGHT * quarterExpect)) / (BASE_WEIGHT + QUARTER_WEIGHT);
+            quarterLevel[qLIndex] = curr;
+            if(mExpectancy > highestExpectancy)
+            {
+                highestIndex = qLIndex;
+                highestExpectancy = mExpectancy;
+            }
+            quarter += currMelody.getNote(pi.nextIndex()).getRhythmValue();
+            totalExpectancy += weightedExpectancy;
+            numPitches ++;
+            firstIndex = secondIndex;
+            secondIndex = pi.nextIndex();
+            pi.next();
+            while(!currMelody.getNote(secondIndex).nonRest() && pi.hasNext())
+            {
+                secondIndex = pi.nextIndex();
+                pi.next();
+            }
+        }
+        return (totalExpectancy/numPitches);
     }
     
     /**
