@@ -131,12 +131,8 @@ private double expectancyConstant   = defaultExpectancyConstant;
     int oldPitch = 0;
     int oldOldPitch = 0;
     double expectancy = -1;
-    private static int DEFAULT_EXPECTANCY = 200;
-    private static int EXPECTANCY_LIMIT1 = 30;
-    private static int EXPECTANCY_LIMIT2 = 45;
-    private static int EXPECTANCY_LIMIT3 = 60;
-    private static int EXPECTANCY_CUTOFF1 = 100;
-    private static int EXPECTANCY_CUTOFF2 = 200;
+    private static int DEFAULT_EXPECTANCY_LIMIT = 30;
+    private static int MINIMAX_EXPECTANCY = 128;
     boolean useOutlines = false;
     boolean soloistLoaded = false;
     
@@ -1952,10 +1948,11 @@ public boolean fillMelody(MelodyPart lick,
                 {
                     if(expectancy <= 0)
                     {
-                        expectancy = DEFAULT_EXPECTANCY;
+                        expectancy = MAX_EXPECTANCY;
                     }
                     ArrayList<Integer> midiArray = new ArrayList<Integer>();
                     ArrayList<Double> expectDiffs = new ArrayList<Double>();
+                    double expectDiffSum = 0;
                     //Gets all of the possible pitches and their expectancy values
                     for (int midi = minPitch ; midi <= maxPitch; midi++)
                     {
@@ -1964,14 +1961,10 @@ public boolean fillMelody(MelodyPart lick,
                             prevPrevPitch = prevPitch;
                         }
                         double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch,chordProg.getCurrentChord(position));
-                        int limit = EXPECTANCY_LIMIT3;
-                        if(expectancy < EXPECTANCY_CUTOFF1)
+                        int limit = DEFAULT_EXPECTANCY_LIMIT;
+                        if(expectancy > MINIMAX_EXPECTANCY + DEFAULT_EXPECTANCY_LIMIT)
                         {
-                            limit = EXPECTANCY_LIMIT1;
-                        }
-                        else if(expectancy < EXPECTANCY_CUTOFF2)
-                        {
-                            limit = EXPECTANCY_LIMIT2;
+                            limit = (int)expectancy - MINIMAX_EXPECTANCY;
                         }
 //                        double invExpectDiff = limit - Math.abs(expectancy - expect);
 ////                        if(Math.abs(expectancy - expect) < .1)
@@ -1982,10 +1975,10 @@ public boolean fillMelody(MelodyPart lick,
 //                        {
 //                            invExpectDiff = limit;
 //                        }
-                        double invSurpriseTension =  1 - 1/(expect);
+                        double invSurpriseTension =  expect;
                         if(expect > expectancy)
                         {
-                            invSurpriseTension = 1 - 1/(expectancy);
+                            invSurpriseTension = expectancy;
                         }
                         else if(Math.abs(expectancy - expect) > limit || invSurpriseTension < 0)
                         {
@@ -1993,11 +1986,7 @@ public boolean fillMelody(MelodyPart lick,
                         }
                         midiArray.add(midi);
                         expectDiffs.add(invSurpriseTension);
-                    }
-                    double expectDiffSum = 0;
-                    for(double e : expectDiffs)
-                    {
-                        expectDiffSum += e;
+                        expectDiffSum += invSurpriseTension;
                     }
                     //Chooses a note with a probability derived from expectancy value
                     double rand = Math.random();
