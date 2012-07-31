@@ -101,6 +101,9 @@ private double expectancyConstant   = defaultExpectancyConstant;
 
     private int lengthOfTrade;
     private static int SLOTS_PER_MEASURE = 480;
+    private static int QUARTER_NOTE = 120;
+    private static int BASE_WEIGHT = 15;
+    private static int QUARTER_WEIGHT = 5;
     public static final double REPEAT_PROB = 1.0 / 512.0;    //used in chooseNote - should be able to be varied
     public static final int PERCENT_REPEATED_NOTES_TO_REMOVE = 98;
     public static final int MIN_JUMP_UPPER_BOUND = 6;
@@ -172,6 +175,9 @@ private double expectancyConstant   = defaultExpectancyConstant;
     private Notate notate;
     private int prevPitch = (int)(Math.random() * 20 + 60);
     private int prevPrevPitch = 0;
+    private int prevQuarter = prevPitch;
+    private int prevPrevQuarter = prevPrevPitch;
+    
     /**
      * Constructor -- loads the grammar in from the specified filename, and
      * sets all note probabilities to 1.
@@ -1497,6 +1503,12 @@ public boolean fillMelody(MelodyPart lick,
         System.out.println("\nlick: " + rhythmString);
       }
     
+    int quarter = 0;
+    int[] quarterLevel = new int[4];
+    double highestExpectancy = 0;
+    int highestIndex = 0;
+    int qLIndex = 0;
+            
     //debug System.out.println("lickgen: fillMelody");
     
     int section = 0;
@@ -1775,7 +1787,7 @@ public boolean fillMelody(MelodyPart lick,
                              "Invalid note string: " + rhythmVal + "; no melody will be generated.");
                 return false;
               }
-
+                    
             switch( type )
               {
                 case REST:
@@ -1960,7 +1972,25 @@ public boolean fillMelody(MelodyPart lick,
                         {
                             prevPrevPitch = prevPitch;
                         }
-                        double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch,chordProg.getCurrentChord(position));
+                        Chord currentChord = chordProg.getCurrentChord(position);
+                        double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch, currentChord);
+                        if(quarter > QUARTER_NOTE)
+                        {
+                            prevQuarter = quarterLevel[highestIndex];
+                            prevPrevQuarter = prevQuarter;
+                            quarter = quarter % QUARTER_NOTE;
+                            quarterLevel = new int[4];
+                            highestExpectancy = 0;
+                        }
+                        double quarterExpect = Expectancy.getExpectancy(midi, prevQuarter, prevPrevQuarter, currentChord);
+                        double weightedExpectancy = ((BASE_WEIGHT * expect) + (QUARTER_WEIGHT * quarterExpect)) / (BASE_WEIGHT + QUARTER_WEIGHT);
+                        quarterLevel[qLIndex] = midi;
+                        if(expect > highestExpectancy)
+                        {
+                            highestIndex = qLIndex;
+                            highestExpectancy = expect;
+                        }
+                        quarter += note.getRhythmValue();
                         int limit = DEFAULT_EXPECTANCY_LIMIT;
                         if(expectancy > MINIMAX_EXPECTANCY + DEFAULT_EXPECTANCY_LIMIT)
                         {
@@ -1975,12 +2005,12 @@ public boolean fillMelody(MelodyPart lick,
 //                        {
 //                            invExpectDiff = limit;
 //                        }
-                        double invSurpriseTension =  expect;
-                        if(expect > expectancy)
+                        double invSurpriseTension =  weightedExpectancy;
+                        if(invSurpriseTension > expectancy)
                         {
                             invSurpriseTension = expectancy;
                         }
-                        else if(Math.abs(expectancy - expect) > limit || invSurpriseTension < 0)
+                        else if(Math.abs(expectancy - weightedExpectancy) > limit || invSurpriseTension < 0)
                         {
                             invSurpriseTension = 0;
                         }
@@ -2071,45 +2101,7 @@ public boolean fillMelody(MelodyPart lick,
         ChordPart chords = notate.getChordProg();
         MelodyPart currMelody = melody.extract(currentSlot - lengthOfTrade, currentSlot);
         System.out.println("GEPN slot: " + currentSlot);
-        int firstIndex = 0;
-        while(!currMelody.getNote(firstIndex).nonRest() && firstIndex < lengthOfTrade)
-        {
-            firstIndex = currMelody.getNextIndex(firstIndex);
-        }
-        int secondIndex = currMelody.getNextIndex(firstIndex);
-        while(!currMelody.getNote(secondIndex).nonRest() && secondIndex < lengthOfTrade)
-        {
-            secondIndex = currMelody.getNextIndex(secondIndex);
-        }
-        //System.out.println(currMelody.getNote(firstIndex));
-        if(!currMelody.getNote(firstIndex).nonRest() || !currMelody.getNote(secondIndex).nonRest())
-        {
-            return -1;
-        }
-        Part.PartIterator pi = currMelody.iterator(secondIndex);
-        int numPitches = 0;
-        double totalExpectancy = 0;
-        //Calculates expectancy of each following note
-        while(pi.hasNext())
-        {
-            int nextIndex = pi.nextIndex() + currentSlot - lengthOfTrade;
-            Chord c = chords.getCurrentChord(nextIndex);
-            int first = currMelody.getNote(firstIndex).getPitch();
-            int second = currMelody.getNote(secondIndex).getPitch();
-            int curr = currMelody.getNote(pi.nextIndex()).getPitch();
-            double mExpectancy = Expectancy.getExpectancy(curr, second, first, c);
-            totalExpectancy += mExpectancy;
-            numPitches ++;
-            firstIndex = secondIndex;
-            secondIndex = pi.nextIndex();
-            pi.next();
-            while(!currMelody.getNote(secondIndex).nonRest() && pi.hasNext())
-            {
-                secondIndex = pi.nextIndex();
-                pi.next();
-            }
-        }
-        return (totalExpectancy/numPitches);
+        return Expectancy.getExpectancyPerNote(currMelody, lengthOfTrade, chords, currentSlot);
     }
     
     
