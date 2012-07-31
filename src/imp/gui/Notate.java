@@ -25000,6 +25000,7 @@ Command improCommand = null;
 
 /**
  * The number of slots in one full cycle of trading.
+ * This will be set by setImproInterval.
  */
 
 int improInterval = 3840;
@@ -25039,6 +25040,8 @@ boolean generated = false;
 
 int leadAllowance = 120;
 
+int melodyStartsAtSlot = 0;
+
 public void reset()
   {
     generateAtSlot = 0;
@@ -25049,15 +25052,17 @@ public void reset()
 
 public boolean improviseNow(int slotInPlayback, int size)
   {
+    
   generateAtSlot = (slotInPlayback + generationLeadSlots) % size;
 
+  melodyStartsAtSlot = improInterval*(slotInPlayback/improInterval) + ivFirst*halfInterval;
+  
   playAtSlot = (slotInPlayback + playLeadSlots) % size;
 
   int difference = Math.abs(generateAtSlot % improInterval - ivFirst*halfInterval);
   boolean result = difference < leadAllowance && !generated;
   if( result )
     {
-      System.out.print("generating at " + slotInPlayback + " ... ");
       generated = true;
       played = false;
     }
@@ -25094,11 +25099,12 @@ public boolean playNow(int slotInPlayback, int size)
 
 public MelodyPart createMelody(MelodyPart currentMelodyPart)
   {
-    improLick = generate(lickgen, generateAtSlot, generateAtSlot + halfInterval - 1);
+    improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
 
-//    System.out.println("create improLick to play at: " + playAtSlot
-//                     + " generated at " + generateAtSlot + ": " + improLick);
-//
+    System.out.println("at " + generateAtSlot +
+                       " generate melody to play at: " + melodyStartsAtSlot
+                     + ": " + improLick);
+
     // If a lick was generated, copy it into the melodyPart for notation
     // and set up a command that will play
     if( improLick != null )
@@ -25209,6 +25215,7 @@ public void setImproInterval(int improInterval)
   {
     this.improInterval = improInterval;
     halfInterval = improInterval/2;
+  System.out.println("improInterval = " + improInterval + ", halfInterval = " + halfInterval);
   }
 
 public int getPlayLeadSlots()
