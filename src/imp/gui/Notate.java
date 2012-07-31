@@ -12034,26 +12034,14 @@ private void updateTempoFromTextField()
         Stave stave = getCurrentStave();
 
         if( getMode() != Mode.DRAWING ) // either in cursor or note mode
-          {
-              if (useNoteCursor)
-              {   // switch to cursor mode
-
-                  drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                          "graphics/toolbar/pencil.gif")));
-                  setUseNoteCursor(false);
-              }
-
-              else
-              { // switch to pencil mode
+            {   
+               // switch to pencil mode
                 setMode(Mode.DRAWING);
 
                 preDrawingEntryMuted = entryMute.isSelected();
-
-            preDrawingEntryMuted = entryMute.isSelected();
                 drawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource(
                     "graphics/toolbar/noPencil.gif")));
-          }
-        }
+            }
         else
           { // switch to note mode
 
@@ -17378,11 +17366,9 @@ private void setCurrentStaveType(StaveType t)
     stave.changeType(t);
     getCurrentMelodyPart().setStaveType(t);
     if (useNoteCursor)
-        setCursor(handler.getNoteCursor());
-    else
-        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        handler.setCursor(handler.getNoteCursor());
+    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
-    System.out.println(useNoteCursor);
   }
 
 
@@ -24953,7 +24939,7 @@ public boolean getUseNoteCursor()
 public void setUseNoteCursor(boolean on)
 {
     useNoteCursor = on;
-    setCursor(getCurrentStaveActionHandler().getNoteCursor());
+    getCurrentStaveActionHandler().setCursor(getCurrentStaveActionHandler().getNoteCursor());
 }
 
 public String getDefaultGrammarName()
