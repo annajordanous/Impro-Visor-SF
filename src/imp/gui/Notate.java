@@ -25025,10 +25025,7 @@ int generationLeadSlots = 240;
 
 int playLeadSlots = 90;
 
-
 int generateAtSlot = 0;
-
-int playAtSlot = 0;
 
 MelodyPart improLick = null;
 
@@ -25042,56 +25039,68 @@ int leadAllowance = 120;
 
 int melodyStartsAtSlot = 0;
 
+int nextGenerateCycle = 0;
+
+int nextPlayCycle = 0;
+
+int numCycles;
+
 public void reset()
   {
     generateAtSlot = 0;
-    playAtSlot = 0;
+    melodyStartsAtSlot = 0;
     improLick = null;
     improCommand = null;
+    generated = false;
+    played = false;
+    numCycles = getCurrentMelodyPart().size() / improInterval;
+    nextGenerateCycle = 0;
+    nextPlayCycle = 0;
   }
 
 public boolean improviseNow(int slotInPlayback, int size)
   {
-    
-  generateAtSlot = (slotInPlayback + generationLeadSlots) % size;
-
-  melodyStartsAtSlot = improInterval*(slotInPlayback/improInterval) + ivFirst*halfInterval;
+  int currentCycle = slotInPlayback/improInterval;
   
-  playAtSlot = (slotInPlayback + playLeadSlots) % size;
-
-  int difference = Math.abs(generateAtSlot % improInterval - ivFirst*halfInterval);
-  boolean result = difference < leadAllowance && !generated;
+  if( currentCycle != nextGenerateCycle )
+    {
+      return false;
+    }
+  
+  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
+                                    : improInterval*currentCycle + halfInterval;
+  
+  generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
+  
+  boolean result = !generated && slotInPlayback >= generateAtSlot;
+  
   if( result )
     {
-      generated = true;
-      played = false;
+        System.out.println("slot = " + slotInPlayback
+                   + ": currentCycle = " + currentCycle 
+                   + ", melodyStart = " + melodyStartsAtSlot
+                   + ", generate at " + generateAtSlot);
     }
+  
   return result;
   }
 
 public boolean playNow(int slotInPlayback, int size)
   {
-
-//    if( improLick != null && slotInPlayback >= playLeadSlots )
-//      {
-//        return true;
-//      }
-
-    if( firstTime )
-      {
-        played = true;
-        generated = false;
-        return true;
-      }
-
-  int difference = ivFirst*halfInterval - playAtSlot % improInterval;
-
-
-  boolean result = difference == 0 && !played;
+  int currentCycle = slotInPlayback/improInterval;
+  
+  if( currentCycle != nextPlayCycle )
+    {
+      return false;
+    }
+  
+  boolean result = !played && slotInPlayback >= melodyStartsAtSlot;
   if( result )
     {
-      played = true;
-      generated = false;
+    nextPlayCycle = (nextPlayCycle + 1) % numCycles;
+  
+    played = true;
+    generated = false;
     }
 
   return result;
@@ -25101,13 +25110,26 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
   {
     improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
 
-    System.out.println("at " + generateAtSlot +
-                       " generate melody to play at: " + melodyStartsAtSlot
+    generated = improLick != null && improLick.size() > 0;
+
+    if( generated )
+      {
+       System.out.println("at " + generateAtSlot +
+                       " generated melody to play at: " + melodyStartsAtSlot
                      + ": " + improLick);
 
+      nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
+  
+      played = false;
+      }
+    else
+      {
+        System.out.println("at " + generateAtSlot + " melody generation failed.");
+      }
+    
     // If a lick was generated, copy it into the melodyPart for notation
     // and set up a command that will play
-    if( improLick != null )
+    if( generated )
       {
         Score improScore = new Score();
         improScore.setTempo(score.getTempo());
@@ -25140,19 +25162,24 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
     return improLick;
   }
 
+/**
+ * This creates the first melody at slot 0 when Impro-Visor is to being
+ * trading.
+ * @param currentMelodyPart 
+ */
+
 public void createInitialMelody(MelodyPart currentMelodyPart)
   {
-      System.out.print("generating at " + 0 + " ... ");
-      createMelody(currentMelodyPart);
+    createMelody(currentMelodyPart);
 
-    if( improLick != null )
+    if( improLick != null && improLick.size() > 0 )
       {
        Note firstNote = improLick.getFirstNote();
        if( firstNote == null )
          {
            return; // FIX: What to do?
          }
-       playAtSlot = 0;
+       melodyStartsAtSlot = 0;
        firstTime = true;
        generated = true;
        played = false;
@@ -25172,13 +25199,13 @@ public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart, boolean paste)
               }
             else
               {
-              currentMelodyPart.pasteOver(improLick, playAtSlot);
+              currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
               }
             }
 
           improCommand.execute();
           setImproCommand(null); // Don't play twice
-          System.out.println("playing at " + playAtSlot);
+          System.out.println("playing at " + melodyStartsAtSlot);
 
         }
     //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
