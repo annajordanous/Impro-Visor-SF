@@ -305,6 +305,8 @@ private String showTitle;
  * The year
  */
 private String year;
+
+private String mouseOverNoteName = "";
 /**
  * The font for the Title
  */
@@ -2372,6 +2374,11 @@ protected void paintComponent(Graphics g)
       {
         selectionBoxDrawn = false;
       }
+    
+    repaint(new Rectangle( 598, 29, 15, 15));
+    g.setColor(Color.RED);
+    g.drawString(mouseOverNoteName, 600, 40);
+    
   }
 
 private boolean selectionBoxDrawn = false;
@@ -2418,6 +2425,18 @@ public Stroke getCurveStroke()
   {
     return curveStroke;
   }
+
+public String getMouseOverNoteName()
+{
+    return mouseOverNoteName;
+
+}
+
+public void setMouseOverNoteName(String str)
+{
+    if (!str.isEmpty())
+        mouseOverNoteName = str;
+}
 
 /**
  * draw the selection box, and the handles (if needed)

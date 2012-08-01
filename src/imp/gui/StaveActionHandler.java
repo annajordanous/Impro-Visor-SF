@@ -541,16 +541,18 @@ private void chooseAndSetNoteCursor(MouseEvent e)
     
     //System.out.println(searchForCstrLine(x, y));
     Note oldNote = melody.getNote(searchForCstrLine(x, y));
+    
+    int curLine = getCurrentLine(y);
    
     // Get the pitch that would be input if the mouse was clicked here. If
     // smart entry is turned on, the pitch will be rectified, so the cursor
     // will be colored based on a different note than it would be otherwise
     if (notate.getSmartEntry())
         pitch = yPosToRectifiedPitch(y - (notate.getParallax() + parallaxBias),
-                            currentChord, getCurrentLine(y), e.isShiftDown());
+                            currentChord, curLine, e.isShiftDown());
     else
         pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias),
-                            getCurrentLine(y));
+                            curLine);
     
     // MAGIC VALUE
     if (oldNote != null && Math.abs(oldNote.getPitch() - pitch) <= 2 && stave.getSelectionStart() == searchForCstrLine(x, y))
@@ -559,11 +561,11 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                 return;
             }
 
-    System.out.println(pitch);
-    // This currently only deals with natural pitches correctly
-    boolean noteOnLegerLine = noteOnLegerLine(pitch, getCurrentLine(y));
+    System.out.println();
+
+    boolean noteOnLegerLine = noteOnLegerLine(pitch, curLine);
     
-    if (currentChord != null && !currentChord.getName().equals(Constants.NOCHORD))
+    if (currentChord != null && !currentChord.getName().equals(NOCHORD))
     {
 
         ChordForm curChordForm = currentChord.getChordForm();
@@ -576,21 +578,25 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         for(int i = 0; i < chordMIDIs.size(); i++)
         {
             int note = chordMIDIs.get(i);
-            chordMIDIs.set(i, note%Constants.OCTAVE);
+            chordMIDIs.set(i, note%OCTAVE);
         }
 
         for(int i = 0; i < colorMIDIs.size(); i++)
         {
             int note = colorMIDIs.get(i);
-            colorMIDIs.set(i, note%Constants.OCTAVE);
+            colorMIDIs.set(i, note%OCTAVE);
         }
 
         // pitch is invalid
         if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
-            noteCursor = makeCursor(blueNoteCursorImg, "Note", true);                
-        
+        {
+            stave.repaint();
+            noteCursor = makeCursor(blueNoteCursorImg, "Note", true);
+            setCursor(noteCursor);
+            return;
+        }
         // pitch is a chord tone
-        else if (chordMIDIs.contains(pitch%Constants.OCTAVE))
+        else if (chordMIDIs.contains(pitch%OCTAVE))
         {
             if (noteOnLegerLine)
                 noteCursor = makeCursor(blackNoteLineCursorImg, "Note", true);
@@ -599,7 +605,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         }
         
         // pitch is a color tone
-        else if (colorMIDIs.contains(pitch%Constants.OCTAVE))
+        else if (colorMIDIs.contains(pitch%OCTAVE))
         {
             if (noteOnLegerLine)
                 noteCursor = makeCursor(greenNoteLineCursorImg, "Note", true);
@@ -615,9 +621,17 @@ private void chooseAndSetNoteCursor(MouseEvent e)
             else
                 noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
+        
+        
+        Graphics g = stave.getGraphics();
+        //stave.repaint();
+        //g.setColor(Color.red);
+        stave.setMouseOverNoteName(noteNameFromMidi(pitch, curLine));
+        stave.updateLegerLines(pitch, x,  curLine, stave.getGraphics());
     }
 
-    stave.updateLegerLines(pitch, x,  getCurrentLine(y), stave.getGraphics());
+    
+
     setCursor(noteCursor);
 }
 
@@ -642,6 +656,62 @@ private boolean noteOnLegerLine(int midi, int curLine)
 
     return (norm == 2 || norm ==5 || norm==9 || norm == 12 ||
             norm == 16 || norm == 19 || norm == 23 );
+}
+
+private String noteNameFromMidi(int midi, int curLine)
+{
+    int norm = midi%OCTAVE;
+    
+    Note note = new Note(norm);
+    note.setEnharmonic(notate.getScore().getCurrentEnharmonics(curLine));
+
+    if (note.getAccidental().equals(Accidental.FLAT))
+        norm++;
+    if (note.getAccidental().equals(Accidental.SHARP))
+        norm--;
+    
+    String str;
+    
+    switch (norm)
+    {
+        case 0:
+            str = "c";
+            break;
+        case 2:
+            str = "d";
+            break;
+        case 4:
+            str = "e";
+            break;
+        case 5:
+            str = "f";
+            break;
+        case 7:
+            str = "g";
+            break;      
+        case 9:
+            str = "a";
+            break;       
+        case 11:
+            str = "b";
+            break;        
+
+        default:
+            str = Integer.toString(norm);
+            break;                
+    }
+    
+    if (note.getAccidental().equals(Accidental.FLAT))
+    {
+        str += "b";
+    }
+    
+    if (note.getAccidental().equals(Accidental.SHARP))
+    {
+        str += "#";
+    }
+    
+    return str;
 }
 
 boolean isDrawing()
