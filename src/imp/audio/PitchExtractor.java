@@ -882,14 +882,14 @@ public class PitchExtractor
 //                    }
                     //start the TargetDataLine, from which audio data is read
                     target.start();
-                    //System.out.println("Count in time = " + score.getCountInTime());
+
+                    long countInMicroseconds = score.getCountInTime() * 1000000;
                     //wait for sequencer to start
                     Sequencer sequencer = midiSynth.getSequencer();
                     while(sequencer == null) {
                         Thread.sleep(1);
                         sequencer = midiSynth.getSequencer();
                     }
-                    long countInMicroseconds = score.getCountInTime() * 1000000;
                     long usPos = sequencer.getMicrosecondPosition();
                     //System.out.println("Sequencer time = " + (usPos - countInMicroseconds));
                     long delay = 0;
@@ -923,7 +923,7 @@ public class PitchExtractor
                         }
                     }
                     //System.out.println("Capture ACTUALLY started at time " + System.nanoTime());
-                    System.out.println("Capture started at time " + System.currentTimeMillis() + "ms");
+                    System.out.println("Capture started at time " + System.currentTimeMillis() + " ms");
                     //collect 1 captureInterval's worth of data
                     for (int n = 0; n < limit; n++)
                     {
@@ -970,10 +970,10 @@ public class PitchExtractor
                     {
                         byte[] capturedAudioData = outputStream.toByteArray();
                         processingQueue.add(capturedAudioData);
-                        System.out.println("Array containing "
-                                + capturedAudioData.length + " elements added "
-                                + "to processing queue. " + "Queue now contains "
-                                + processingQueue.size() + " element(s).");
+//                        System.out.println("Array containing "
+//                                + capturedAudioData.length + " elements added "
+//                                + "to processing queue. " + "Queue now contains "
+//                                + processingQueue.size() + " element(s).");
                         synchronized (processingQueue)
                         {
                             try
