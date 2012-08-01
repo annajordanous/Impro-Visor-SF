@@ -1599,7 +1599,6 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
      */
     public void resetAdvice(int selectedSlot)
     {
-
         // Don't bother if the keyboard isn't open
         if (!notate.getCurrentStepKeyboard().isVisible())
             return;
@@ -1641,6 +1640,8 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
         
         if (useExpectancies)
             findAndDisplayExpectancies(selectedSlot);
+        
+        else clearKeyLabels();
         
         if (useAdvice)
         {              
@@ -1692,7 +1693,7 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             lastChord = chordName;
         }
         
-        else clearKeyboard();
+        else clearKeyColors(midiValue);
 
         if (displayNote)
         {
@@ -2238,9 +2239,35 @@ public class StepEntryKeyboard extends javax.swing.JFrame {
             }
         }
     }
+    
+    /**
+     * Clears all keys except for the key corresponding to the given midi.
+     * @param midi 
+     */
+    
+    public void clearKeyColors(int midi)
+    {
+        for (StepPianoKey pk : pianoKeys())
+            if (pk.isPressed() && pk.getMIDI() != midi)
+            {
+                pk.setPressed(false);
+                pressKey(pk, pk.getOffIcon());
+            }
+    }
+    
+    /**
+     * Clears all the number labels on the keys and
+     * sets them to the empty string.
+     */
+    public void clearKeyLabels()
+    {
+        for (StepPianoKey pk : pianoKeys())
+            pk.getNumLabel().setText("");
+
+    }
 
     /**
-     * Determines whether the keyboard is in playback mode
+     * Determines whether the keyboard is in playback mode.
      *
      * @return true if the keyboard is playing, false otherwise
      */
