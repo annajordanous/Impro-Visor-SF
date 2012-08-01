@@ -559,6 +559,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                 return;
             }
 
+    System.out.println(pitch);
     // This currently only deals with natural pitches correctly
     boolean noteOnLegerLine = noteOnLegerLine(pitch, getCurrentLine(y));
     
