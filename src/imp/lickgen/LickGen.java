@@ -1158,6 +1158,276 @@ public static boolean isPolylistStartingWith(String keyword, Object ob)
     return keyword.equals((String)first);
   }
 
+/*
+ * These are the various methods and values needed for the implementation
+ * of George Garzone's Triadic Chromatic approach to improvisation.
+ * 
+ * @author Jack Davison 2012
+ */
+
+public static final int ROOT_STORAGE_NUMBER = 6; // number of roots remembered to not repeat
+
+public Note[] recentRoots = new Note[ROOT_STORAGE_NUMBER]; // this is for keeping track of recently used roots
+
+public int[] recentTypes = new int[ROOT_STORAGE_NUMBER]; // for keeping track of the corresponding chordtype for recentRoots
+
+public int rootCounter = 0; // for keeping the previous two lists up-to-date
+
+public boolean lastMajor; // for keeping track of whether or not the last triad was a major triad
+
+public int maxPitch; // maximum pitch to be used in the segment
+
+public int minPitch; // minimum pitch to be used in the segment
+
+public Note[] newtriad = new Note[3]; // the triad
+
+public int lastInversion; // the most recent inversion
+
+public int rand (int Min, int Max) {
+    return Min + (int)(Math.random() * ((Max - Min) + 1));
+}
+
+public Note getBase (Note noteIn) {
+    
+    int randNum = rand(0,19);
+    Note noteOut = noteIn.copy();
+    
+    if (randNum <= 8) {
+        if (noteIn.getPitch()-1 >= minPitch) {
+            noteOut.setPitch(noteIn.getPitch()-1);
+        } else {
+            noteOut.setPitch(noteIn.getPitch()+1);
+        }
+    } else if (randNum <= 17) {
+        if (noteIn.getPitch()+1 <= maxPitch) {
+            noteOut.setPitch(noteIn.getPitch()+1);
+        } else {
+            noteOut.setPitch(noteIn.getPitch()-1);
+        }        
+    }
+    
+    return noteOut;    
+}
+
+public Note getTrueRoot (Note base, int inversion) {
+
+	Note trueRoot = base.copy();
+
+	switch(inversion) {
+		case 4: trueRoot.setPitch(base.getPitch());
+			break;
+		case 3: trueRoot.setPitch(base.getPitch());
+			break;
+		case 2: trueRoot.setPitch(base.getPitch()+5);
+			break;
+		case 1: if (lastMajor) {
+				trueRoot.setPitch(base.getPitch()+8);
+			} else {
+				trueRoot.setPitch(base.getPitch()+9);
+			}
+			break;
+		case 0: trueRoot.setPitch(base.getPitch());
+	}
+
+	return trueRoot;
+
+}
+
+public boolean inRootList (Note base, int inversion) {
+
+	Note trueRoot = getTrueRoot(base,inversion);
+        
+	for (int i = 0; i < ROOT_STORAGE_NUMBER; i++) {
+		if (trueRoot.getPitch() == recentRoots[i].getPitch()) {
+                    return true;
+                }
+	}
+        
+        return false;
+}
+
+public void addToRootList (Note base, int inversion) {
+
+	recentRoots[rootCounter] = getTrueRoot(base,inversion);
+	rootCounter = (rootCounter+1) % ROOT_STORAGE_NUMBER;
+}
+
+public Note putInRange (Note note) {
+
+        Note newNote = note.copy();
+
+        do {
+            if (newNote.getPitch() > maxPitch) {
+                newNote.setPitch(newNote.getPitch() - 12);
+            } else if (newNote.getPitch() < minPitch) {
+                newNote.setPitch(newNote.getPitch() + 12);
+            }
+        } while (newNote.getPitch() < minPitch || newNote.getPitch() > maxPitch);
+        
+        return newNote;
+}
+
+public Note[] makeTriad (Note base, int inversion) {
+
+	int newInversion = 11; // got an error that I needed to initialize this (even though it's been assigned by the time the while is called)
+	int newInversion2;
+	int[] returnTriad = new int[3];
+        Note[] actualReturnTriad = new Note[3];
+        actualReturnTriad[0] = base.copy();
+        actualReturnTriad[1] = base.copy();
+        actualReturnTriad[2] = base.copy();
+
+	do {
+		newInversion2 = rand(0,10);
+		switch(newInversion2) {
+			case 0:
+			case 1:
+			case 2: newInversion = 0;
+				break;
+			case 3:
+			case 4:
+			case 5: newInversion = 1;
+				break;
+			case 6:
+			case 7:
+			case 8: newInversion = 2;
+				break;
+			case 9: newInversion = 3;
+				break;
+			case 10: newInversion = 4;
+				break;
+		}
+	} while (newInversion == inversion || inRootList(base,newInversion));
+        
+        returnTriad[0] = base.getPitch();
+
+	switch (newInversion) {
+		case 4: returnTriad[1] = base.getPitch()+4;
+                        returnTriad[2] = base.getPitch()+8; //augmented
+			break;
+		case 3: returnTriad[1] = base.getPitch()+3;
+                        returnTriad[2] = base.getPitch()+6; //diminished
+			break;
+		case 2: returnTriad[1] = base.getPitch()+5;
+                        if (rand(0,1) == 0) {
+				lastMajor = true;
+				returnTriad[2] = base.getPitch()+9;
+			} else {
+				lastMajor = false;
+				returnTriad[2] = base.getPitch()+8;
+			} //2nd inversion
+			break;
+		case 1: if (rand(0,1) == 0) {
+				lastMajor = true;
+				returnTriad[1] = base.getPitch()+3;
+                                returnTriad[2] = base.getPitch()+8;
+			} else {
+				lastMajor = false;
+				returnTriad[1] = base.getPitch()+4;
+                                returnTriad[2] = base.getPitch()+9;
+			} //1st inversion
+			break;
+		case 0: returnTriad[2] = base.getPitch()+7;
+                        if (rand(0,1) == 0) {
+				lastMajor = true;
+				returnTriad[1] = base.getPitch()+4;
+			} else {
+				lastMajor = false;
+				returnTriad[1] = base.getPitch()+3;
+			} //No inversion
+			break;
+	}
+
+	addToRootList(base, newInversion);
+	lastInversion = newInversion;
+	
+	int temp;
+
+	if (rand(0,1) == 0) {
+		temp = returnTriad[2];
+		returnTriad[2] = returnTriad[1];
+		returnTriad[1] = temp;
+	}
+
+	if (rand(0,1) == 0) {
+		returnTriad[1] = returnTriad[1] - 12;
+	}
+
+	if (rand(0,1) == 0) {
+		returnTriad[2] = returnTriad[2] - 12;
+	}
+        
+        actualReturnTriad[0].setPitch(returnTriad[0]);
+        actualReturnTriad[1].setPitch(returnTriad[1]);
+        actualReturnTriad[2].setPitch(returnTriad[2]);
+        
+        putInRange(actualReturnTriad[0]);
+	putInRange(actualReturnTriad[1]);
+	putInRange(actualReturnTriad[2]);
+
+	return actualReturnTriad;
+
+}
+
+public void makeTriadic (Note noteIn, Note noteOut, int lengthInSlots) {
+
+	Note base = getBase(noteIn);
+	int lengthInEighths = lengthInSlots / 60;
+	int lengthInEightTriples = lengthInSlots / 3;
+	lastInversion = rand(0,4); // this is initialized to zero, but can be any value from 0-4, 0,1,2 representing inversions, and 3,4 representing diminished,augmented
+        Note[] newTriad = new Note[3];
+
+	for (int x = 0; x < lengthInEightTriples - 1; x++) {
+
+		newTriad = makeTriad(base,lastInversion);
+//		addnote(newtriad[0]);
+//		addnote(newtriad[1]);
+//		addnote(newtriad[2]);
+		base = getBase(newtriad[2]);
+	}
+
+//	switch (lengthInEighths - (lengthInEightTriples * 3)) {
+//
+//		case 0: getToNote(root,noteOut);
+//			addnote(newtriad[0]);
+//			addnote(newtriad[1]);
+//			addnote(newtriad[2]);
+//			break;
+//		case 1: if (rand(0,1) == 0) {
+//				getToNote(root,noteOut+1);
+//				addnote(newtriad[0]);
+//				addnote(newtriad[1]);
+//				addnote(newtriad[2]);
+//				addnote(noteOut+1);
+//			} else {
+//				getToNote(root,noteOut-1);
+//				addnote(newtriad[0]);
+//				addnote(newtriad[1]);
+//				addnote(newtriad[2]);
+//				addnote(noteOut-1);
+//			}
+//			break;
+//		case 2: if (rand(0,1) == 0) {
+//				getToNote(root,noteOut+1);
+//				addnote(newtriad[0]);
+//				addnote(newtriad[1]);
+//				addnote(newtriad[2]);
+//				addnote(noteOut+1);
+//				addnote(noteOut-1);
+//			} else {
+//				getToNote(root,noteOut-1);
+//				addnote(newtriad[0]);
+//				addnote(newtriad[1]);
+//				addnote(newtriad[2]);
+//				addnote(noteOut-1);
+//				addnote(noteOut+1);
+//				break;
+//			}
+//		}
+
+
+}
+
 public MelodyPart fillMelody(int minPitch, 
                              int maxPitch, 
                              int minInterval,
@@ -1769,6 +2039,8 @@ public boolean fillMelody(MelodyPart lick,
                           }
                       }
                   } // end of slope processing
+                 if ( first.equals("triadic") ) {
+              }
               } // end of non-empty inner processing
 
           } // end of Polylist processing
