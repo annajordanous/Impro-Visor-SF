@@ -39,7 +39,10 @@ public class AudioSettings
     private double CONFIDENCE_THRESHOLD = DEFAULT_CONFIDENCE_THRESHOLD;
     //sets threshold for detecting peaks in normalized SDF
     private double K_CONSTANT           = DEFAULT_K_CONSTANT;
-    
+
+    private int MIN_PITCH              = DEFAULT_MIN_PITCH;
+    private int MAX_PITCH              = DEFAULT_MAX_PITCH;
+
     private static int     DEFAULT_FRAME_SIZE = 2048; //# of BYTES examined per poll
     private static int     DEFAULT_POLL_RATE = 20; //in milliseconds
     private static int     DEFAULT_RESOLUTION = 16; //smallest subdivision allowed
@@ -47,7 +50,10 @@ public class AudioSettings
     private static double  DEFAULT_RMS_THRESHOLD = 4.75;
     private static double  DEFAULT_CONFIDENCE_THRESHOLD = 0.45;
     private static double  DEFAULT_K_CONSTANT = 0.875;
-    
+
+    private static int     DEFAULT_MIN_PITCH = 45;
+    private static int     DEFAULT_MAX_PITCH = 120;
+
      Notate notate;
 
 public AudioSettings(Notate notate)
@@ -64,7 +70,9 @@ public final void setDefaults()
     setTRIPLETS(DEFAULT_TRIPLETS);
     setRMS_THRESHOLD(DEFAULT_RMS_THRESHOLD);
     setCONFIDENCE_THRESHOLD(DEFAULT_CONFIDENCE_THRESHOLD);
-    setK_CONSTANT(DEFAULT_K_CONSTANT);        
+    setK_CONSTANT(DEFAULT_K_CONSTANT);
+    setMIN_PITCH(DEFAULT_MIN_PITCH);
+    setMAX_PITCH(DEFAULT_MAX_PITCH);
   }
 
     public void setCONFIDENCE_THRESHOLD(double confidence_threshold)
@@ -109,6 +117,28 @@ public final void setDefaults()
         notate.setAudioplayTriplets(triplets);
     }
 
+    public void setMAX_PITCH(int maxPitch)
+    {
+        MAX_PITCH = maxPitch;
+        notate.setMaxPitch(maxPitch);
+    }
+
+    public void setMIN_PITCH(int minPitch)
+    {
+        MIN_PITCH = minPitch;
+        notate.setMinPitch(minPitch);
+    }
+
+    public int getMIN_PITCH()
+    {
+        return MIN_PITCH;
+    }
+
+    public int getMAX_PITCH()
+    {
+        return MAX_PITCH;
+    }
+
     public double getCONFIDENCE_THRESHOLD()
     {
         return CONFIDENCE_THRESHOLD;
@@ -136,7 +166,7 @@ public final void setDefaults()
 
     /**
      * Note that this getter returns the exp of the stored value
-     * @return 
+     * @return
      */
     public double getRMS_THRESHOLD()
     {
