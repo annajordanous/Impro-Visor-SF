@@ -4,7 +4,6 @@
  */
 package imp.audio;
 
-import imp.audio.PitchExtractor;
 import java.util.TimerTask;
 
 /**
