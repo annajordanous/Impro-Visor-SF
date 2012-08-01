@@ -449,7 +449,8 @@ public void maybeSetCursor(MouseEvent e)
  * Mouse moved
  */
 public void mouseMoved(MouseEvent e)
- {            
+ { 
+  
   Trace.log(2, "mouse moved " + e);
 
   cursorLocation = e.getPoint();
@@ -457,13 +458,13 @@ public void mouseMoved(MouseEvent e)
   boolean doRepaint = false;
   
   boolean withinNoteArea = inNoteArea(e);
-  
+
   if( withinNoteArea && notate.getUseNoteCursor())
-      chooseAndSetNoteCursor(e);
+    chooseAndSetNoteCursor(e);
 
   else
     maybeSetCursor(e);   
-
+  
   // draws construction lines for the current measure if the flag for
   // drawing them is active
   if( withinNoteArea && stave.getShowMeasureCL() && !stave.getShowAllCL() )
@@ -507,9 +508,10 @@ public void mouseMoved(MouseEvent e)
      }
     else
      {
+         
         if( withinNoteArea && notate.getUseNoteCursor())
-            setCursor(noteCursor);
-
+            chooseAndSetNoteCursor(e);
+            //setCursor(noteCursor);
         else
             setCursor();   
      }
@@ -535,6 +537,11 @@ private void chooseAndSetNoteCursor(MouseEvent e)
 
     int pitch;
     
+    MelodyPart melody = stave.getMelodyPart();
+    
+    //System.out.println(searchForCstrLine(x, y));
+    Note oldNote = melody.getNote(searchForCstrLine(x, y));
+   
     // Get the pitch that would be input if the mouse was clicked here. If
     // smart entry is turned on, the pitch will be rectified, so the cursor
     // will be colored based on a different note than it would be otherwise
@@ -545,11 +552,19 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         pitch = yPosToPitch(y - (notate.getParallax() + parallaxBias),
                             getCurrentLine(y));
     
+    // MAGIC VALUE
+    if (oldNote != null && Math.abs(oldNote.getPitch() - pitch) <= 2 && stave.getSelectionStart() == searchForCstrLine(x, y))
+            {
+                setCursor(defaultCursor);
+                return;
+            }
+
     // This currently only deals with natural pitches correctly
     boolean noteOnLegerLine = noteOnLegerLine(pitch, getCurrentLine(y));
     
     if (currentChord != null && !currentChord.getName().equals(Constants.NOCHORD))
     {
+
         ChordForm curChordForm = currentChord.getChordForm();
         String root = currentChord.getRoot();
 
@@ -568,7 +583,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
             int note = colorMIDIs.get(i);
             colorMIDIs.set(i, note%Constants.OCTAVE);
         }
-        
+
         // pitch is invalid
         if( pitch < stave.getMinPitch() ||pitch > stave.getMaxPitch() )
             noteCursor = makeCursor(blueNoteCursorImg, "Note", true);                
@@ -600,9 +615,9 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                 noteCursor = makeCursor(redNoteCursorImg, "Note", true); 
         }
     }
+
     stave.updateLegerLines(pitch, x,  getCurrentLine(y), stave.getGraphics());
     setCursor(noteCursor);
-
 }
 
 /**
@@ -2794,8 +2809,6 @@ private int yPosToAnyPitch(int yPos, int currentLine)
 private int yPosToRectifiedPitch(int yPos, Chord chord, int staveLine, boolean shiftDown)
 {
     int unRectPitch = yPosToPitch(yPos, staveLine);
-    
-    stave.setSelection(selectedIndex, selectedIndex);
 
     // If there is no chord, we can't rectify the pitch
     if( chord == null || chord.getName().equals("NC") )
