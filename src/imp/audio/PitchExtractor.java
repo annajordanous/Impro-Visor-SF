@@ -882,9 +882,13 @@ public class PitchExtractor
 //                    }
                     //start the TargetDataLine, from which audio data is read
                     target.start();
+                    //System.out.println("Count in time = " + score.getCountInTime());
                     //wait for sequencer to start
                     Sequencer sequencer = midiSynth.getSequencer();
-                    //System.out.println("Count in time = " + score.getCountInTime());
+                    while(sequencer == null) {
+                        Thread.sleep(1);
+                        sequencer = midiSynth.getSequencer();
+                    }
                     long countInMicroseconds = score.getCountInTime() * 1000000;
                     long usPos = sequencer.getMicrosecondPosition();
                     //System.out.println("Sequencer time = " + (usPos - countInMicroseconds));
