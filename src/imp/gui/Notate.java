@@ -4123,6 +4123,7 @@ public class Notate
         audioPreferences.setLayout(new java.awt.GridBagLayout());
 
         audioInputTab.setBackground(new java.awt.Color(225, 225, 225));
+        audioInputTab.setToolTipText("Sets the minimum MIDI pitch value recognized when capturing audio.");
         audioInputTab.setLayout(new java.awt.GridBagLayout());
 
         noteResolutionComboBox.setMaximumRowCount(16);
@@ -4182,6 +4183,7 @@ public class Notate
         audioInputTab.add(pollRateComboBox, gridBagConstraints);
 
         playTripletsCheckBox.setText("Recognize Triplets");
+        playTripletsCheckBox.setToolTipText("If checked, triplets will be recognized. The smallest triplet subdivision allowed will correspond to the note resolution.");
         playTripletsCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playTripletsCheckBoxActionPerformed(evt);
@@ -4190,7 +4192,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         audioInputTab.add(playTripletsCheckBox, gridBagConstraints);
 
         k_constantSlider.setMajorTickSpacing(10);
@@ -4250,6 +4252,7 @@ public class Notate
         audioInputTab.add(confidenceThresholdSlider, gridBagConstraints);
 
         minPitchSpinner.setModel(new javax.swing.SpinnerNumberModel(45, 0, 100, 1));
+        minPitchSpinner.setToolTipText("Sets the minimum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests.");
         minPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Min. Pitch"));
         minPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 40));
         minPitchSpinner.setName("Minimum MIDI Pitch");
@@ -4262,10 +4265,11 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.insets = new java.awt.Insets(5, 23, 5, 23);
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
         audioInputTab.add(minPitchSpinner, gridBagConstraints);
 
         maxPitchSpinner.setModel(new javax.swing.SpinnerNumberModel(110, 50, 127, 1));
+        maxPitchSpinner.setToolTipText("Sets the maximum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests.");
         maxPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Max. Pitch"));
         maxPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 40));
         maxPitchSpinner.setName("Maximum MIDI Pitch");
@@ -4282,7 +4286,7 @@ public class Notate
         audioInputTab.add(maxPitchSpinner, gridBagConstraints);
 
         pitchRangePresetComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Default", "Soprano", "Alto", "Tenor", "Bass", "High Pass", "Low Pass", "Full Range" }));
-        pitchRangePresetComboBox.setToolTipText("Presets that specify the minimum and maximum MIDI pitch to be detected.");
+        pitchRangePresetComboBox.setToolTipText("Presets that specify the minimum and maximum MIDI pitch to be detected when capturing audio.");
         pitchRangePresetComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pitch Range Presets", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.black));
         pitchRangePresetComboBox.setMinimumSize(new java.awt.Dimension(140, 42));
         pitchRangePresetComboBox.setName("rangePresetComboBox");
@@ -22232,7 +22236,7 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         int choice = pitchRangePresetComboBox.getSelectedIndex();
         switch (choice)
         {
-            case 0:         // None
+            case 0:         // Default
                 setMinPitch(45);
                 setMaxPitch(120);
                 break;

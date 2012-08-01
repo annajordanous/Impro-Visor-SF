@@ -3039,6 +3039,7 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="e1" green="e1" red="e1" type="rgb"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Sets the minimum MIDI pitch value recognized when capturing audio."/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
@@ -3159,13 +3160,14 @@
                 <Component class="javax.swing.JCheckBox" name="playTripletsCheckBox">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Recognize Triplets"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If checked, triplets will be recognized. The smallest triplet subdivision allowed will correspond to the note resolution."/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playTripletsCheckBoxActionPerformed"/>
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="1" gridY="5" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="11" insetsBottom="10" insetsRight="11" anchor="10" weightX="0.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="1" gridY="5" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="5" insetsBottom="5" insetsRight="5" anchor="10" weightX="0.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3250,6 +3252,7 @@
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="45" maximum="100" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Sets the minimum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                         <TitledBorder title="Min. Pitch"/>
@@ -3268,7 +3271,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                      <GridBagConstraints gridX="1" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="23" insetsBottom="5" insetsRight="23" anchor="10" weightX="0.0" weightY="0.0"/>
+                      <GridBagConstraints gridX="1" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="10" weightX="0.0" weightY="0.0"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3277,6 +3280,7 @@
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="110" maximum="127" minimum="50" numberType="java.lang.Integer" stepSize="1" type="number"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="Sets the maximum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                         <TitledBorder title="Max. Pitch"/>
@@ -3313,7 +3317,7 @@
                         <StringItem index="7" value="Full Range"/>
                       </StringArray>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="Presets that specify the minimum and maximum MIDI pitch to be detected."/>
+                    <Property name="toolTipText" type="java.lang.String" value="Presets that specify the minimum and maximum MIDI pitch to be detected when capturing audio."/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                         <TitledBorder title="Pitch Range Presets">
