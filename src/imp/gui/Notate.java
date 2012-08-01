@@ -411,8 +411,8 @@ public class Notate
 
   private static int QUANTUM = BEAT/2;
 
-  private boolean useNoteCursor = false;  
-  
+  private boolean useNoteCursor = false;
+
   /**
    * Set this value if a roadmap created this frame.
    */
@@ -1644,6 +1644,9 @@ public class Notate
         k_constantSlider = new javax.swing.JSlider();
         rmsThresholdSlider = new javax.swing.JSlider();
         confidenceThresholdSlider = new javax.swing.JSlider();
+        minPitchSpinner = new javax.swing.JSpinner();
+        maxPitchSpinner = new javax.swing.JSpinner();
+        pitchRangePresetComboBox = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         staveButtonGroup = new javax.swing.ButtonGroup();
         popupMenu = new javax.swing.JPopupMenu();
@@ -4138,6 +4141,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         audioInputTab.add(noteResolutionComboBox, gridBagConstraints);
 
@@ -4155,6 +4159,7 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         audioInputTab.add(frameSizeComboBox, gridBagConstraints);
 
@@ -4171,19 +4176,20 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         audioInputTab.add(pollRateComboBox, gridBagConstraints);
 
-        playTripletsCheckBox.setText("Play Triplets");
+        playTripletsCheckBox.setText("Recognize Triplets");
         playTripletsCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playTripletsCheckBoxActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(10, 11, 10, 11);
         audioInputTab.add(playTripletsCheckBox, gridBagConstraints);
 
@@ -4201,7 +4207,8 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         audioInputTab.add(k_constantSlider, gridBagConstraints);
 
@@ -4218,7 +4225,8 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         audioInputTab.add(rmsThresholdSlider, gridBagConstraints);
 
@@ -4236,9 +4244,59 @@ public class Notate
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         audioInputTab.add(confidenceThresholdSlider, gridBagConstraints);
+
+        minPitchSpinner.setModel(new javax.swing.SpinnerNumberModel(45, 0, 100, 1));
+        minPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Min. Pitch"));
+        minPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 40));
+        minPitchSpinner.setName("Minimum MIDI Pitch");
+        minPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 40));
+        minPitchSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                minPitchSpinnerStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(5, 23, 5, 23);
+        audioInputTab.add(minPitchSpinner, gridBagConstraints);
+
+        maxPitchSpinner.setModel(new javax.swing.SpinnerNumberModel(110, 50, 127, 1));
+        maxPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Max. Pitch"));
+        maxPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 40));
+        maxPitchSpinner.setName("Maximum MIDI Pitch");
+        maxPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 40));
+        maxPitchSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                maxPitchSpinnerStateChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        audioInputTab.add(maxPitchSpinner, gridBagConstraints);
+
+        pitchRangePresetComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Default", "Soprano", "Alto", "Tenor", "Bass", "High Pass", "Low Pass", "Full Range" }));
+        pitchRangePresetComboBox.setToolTipText("Presets that specify the minimum and maximum MIDI pitch to be detected.");
+        pitchRangePresetComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pitch Range Presets", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.black));
+        pitchRangePresetComboBox.setMinimumSize(new java.awt.Dimension(140, 42));
+        pitchRangePresetComboBox.setName("rangePresetComboBox");
+        pitchRangePresetComboBox.setPreferredSize(new java.awt.Dimension(140, 42));
+        pitchRangePresetComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pitchRangePresetComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        audioInputTab.add(pitchRangePresetComboBox, gridBagConstraints);
 
         jTabbedPane6.addTab("Audio Input", audioInputTab);
 
@@ -7804,12 +7862,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7825,12 +7883,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8798,12 +8856,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8836,12 +8894,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -12034,7 +12092,7 @@ private void updateTempoFromTextField()
         Stave stave = getCurrentStave();
 
         if( getMode() != Mode.DRAWING ) // either in cursor or note mode
-            {   
+            {
                // switch to pencil mode
                 setMode(Mode.DRAWING);
 
@@ -22131,35 +22189,110 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         }
     }//GEN-LAST:event_noteCursorBtnActionPerformed
 
+    public void setMinPitch(int value)
+    {
+        minPitchSpinner.setValue(value);
+    }
+
+    public void setMaxPitch(int value)
+    {
+        maxPitchSpinner.setValue(value);
+    }
+
+    private void minPitchSpinnerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_minPitchSpinnerStateChanged
+    {//GEN-HEADEREND:event_minPitchSpinnerStateChanged
+        int value = Integer.parseInt(minPitchSpinner.getValue().toString());
+        if (audioSettings != null)
+        {
+            if (value > audioSettings.getMAX_PITCH() - 12)
+            {
+                value = audioSettings.getMAX_PITCH() - 12;
+                minPitchSpinner.setValue(value);
+            }
+            audioSettings.setMIN_PITCH(value);
+        }
+    }//GEN-LAST:event_minPitchSpinnerStateChanged
+
+    private void maxPitchSpinnerStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_maxPitchSpinnerStateChanged
+    {//GEN-HEADEREND:event_maxPitchSpinnerStateChanged
+        int value = Integer.parseInt(maxPitchSpinner.getValue().toString());
+        if (audioSettings != null)
+        {
+            if (value < audioSettings.getMIN_PITCH() + 12)
+            {
+                value = audioSettings.getMIN_PITCH() + 12;
+                maxPitchSpinner.setValue(value);
+            }
+            audioSettings.setMAX_PITCH(value);
+        }
+    }//GEN-LAST:event_maxPitchSpinnerStateChanged
+
+    private void pitchRangePresetComboBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_pitchRangePresetComboBoxActionPerformed
+    {//GEN-HEADEREND:event_pitchRangePresetComboBoxActionPerformed
+        int choice = pitchRangePresetComboBox.getSelectedIndex();
+        switch (choice)
+        {
+            case 0:         // None
+                setMinPitch(45);
+                setMaxPitch(120);
+                break;
+            case 1:         // Soprano
+                setMinPitch(60);
+                setMaxPitch(89);
+                break;
+            case 2:         // Alto
+                setMinPitch(50);
+                setMaxPitch(77);
+                break;
+            case 3:         // Tenor
+                setMinPitch(48);
+                setMaxPitch(72);
+                break;
+            case 4:         // Bass
+                setMinPitch(43);
+                setMaxPitch(64);
+                break;
+            case 5:         // High Pass
+                setMinPitch(60);
+                setMaxPitch(127);
+                break;
+            case 6:         // Low Pass
+                setMinPitch(0);
+                setMaxPitch(60);
+                break;
+            case 7:         // Full Range
+                setMinPitch(0);
+                setMaxPitch(127);
+                break;
+        }
+    }//GEN-LAST:event_pitchRangePresetComboBoxActionPerformed
+
 public void setRMSThreshold(double value)
-  {
-    int intValue = (int)(10*value);
+{
+    int intValue = (int) (10 * value);
     rmsThresholdSlider.setValue(intValue);
-  }
+}
 
 public void setConfidenceThreshold(double value)
-  {
-    int intValue = (int)(100*value);
+{
+    int intValue = (int) (100 * value);
     confidenceThresholdSlider.setValue(intValue);
-  }
-
+}
 
 /**
- * Focus on input from textEntry field, until return is pressed,
- * at which point staveRequestFocus() will be called
- * (in textEntryActionHandler).
- */
-
+    * Focus on input from textEntry field, until return is pressed, at which
+    * point staveRequestFocus() will be called (in textEntryActionHandler).
+    */
 public void textRequestFocus()
-  {
-  String text = textEntry.getText();
+{
+    String text = textEntry.getText();
 
-  textEntry.requestFocusInWindow();
-  textEntry.setEnabled(true);
-  int length = text.length();
-  //textEntry.setSelectionStart(length-1);
-  //textEntry.setSelectionEnd(length);
- }
+    textEntry.requestFocusInWindow();
+    textEntry.setEnabled(true);
+    int length = text.length();
+    //textEntry.setSelectionStart(length-1);
+    //textEntry.setSelectionEnd(length);
+}
 
 int improviseStartSlot, improviseEndSlot;
 
@@ -24063,6 +24196,7 @@ public void showNewVoicingDialog()
     private javax.swing.JTextField lowRangeTF;
     private javax.swing.JTextField lowRangeTF2;
     private javax.swing.JPanel masterVolumePanel;
+    private javax.swing.JSpinner maxPitchSpinner;
     private javax.swing.JLabel measErrorLabel;
     private javax.swing.JLabel measuresPerPartLabel;
     private javax.swing.JSpinner melodyChannelSpinner;
@@ -24090,6 +24224,7 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem midiPrefsMI;
     private javax.swing.JSpinner midiRecordSnapSpinner;
     private javax.swing.JFrame midiStyleSpec;
+    private javax.swing.JSpinner minPitchSpinner;
     private javax.swing.JButton mixerBtn;
     private javax.swing.JDialog mixerDialog;
     private javax.swing.JMenuItem mostRecentLeadsheetMI;
@@ -24149,6 +24284,7 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBoxMenuItem phrasemarksMI;
     private javax.swing.JButton pianoKeyboardButton;
     private javax.swing.JMenuItem pianoKeyboardMI;
+    private javax.swing.JComboBox pitchRangePresetComboBox;
     private javax.swing.JMenuItem playAllMI;
     private javax.swing.JButton playBtn;
     private javax.swing.JMenu playMenu;
@@ -25052,44 +25188,44 @@ public void reset()
 public boolean improviseNow(int slotInPlayback, int size)
   {
   int currentCycle = slotInPlayback/improInterval;
-  
+
   if( currentCycle != nextGenerateCycle )
     {
       return false;
     }
-  
+
   melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
                                     : improInterval*currentCycle + halfInterval;
-  
+
   generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
-  
+
   boolean result = !generated && slotInPlayback >= generateAtSlot;
-  
+
   if( result )
     {
         System.out.println("slot = " + slotInPlayback
-                   + ": currentCycle = " + currentCycle 
+                   + ": currentCycle = " + currentCycle
                    + ", melodyStart = " + melodyStartsAtSlot
                    + ", generate at " + generateAtSlot);
     }
-  
+
   return result;
   }
 
 public boolean playNow(int slotInPlayback, int size)
   {
   int currentCycle = slotInPlayback/improInterval;
-  
+
   if( currentCycle != nextPlayCycle )
     {
       return false;
     }
-  
+
   boolean result = !played && slotInPlayback >= melodyStartsAtSlot;
   if( result )
     {
     nextPlayCycle = (nextPlayCycle + 1) % numCycles;
-  
+
     played = true;
     generated = false;
     }
@@ -25110,14 +25246,14 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
                      + ": " + improLick);
 
       nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
-  
+
       played = false;
       }
     else
       {
         System.out.println("at " + generateAtSlot + " melody generation failed.");
       }
-    
+
     // If a lick was generated, copy it into the melodyPart for notation
     // and set up a command that will play
     if( generated )
@@ -25156,7 +25292,7 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
 /**
  * This creates the first melody at slot 0 when Impro-Visor is to being
  * trading.
- * @param currentMelodyPart 
+ * @param currentMelodyPart
  */
 
 public void createInitialMelody(MelodyPart currentMelodyPart)
