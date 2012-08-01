@@ -183,9 +183,39 @@ public class SectionInfo implements Constants, Serializable {
                    record.getIsPhrase());
     }
 
-    //markermarkermarker
-    public void nWaySplit(int index) {
+    /**
+     * m = nq + r 
+     * (m-r) sections would get q bars
+     * r sections would get q+1 bars
+     * 
+     * m = the original number of bars
+     * n = split
+     * q = m/n
+     * r = m%n
+     */
+    public void nWaySplit(int index, int split) {
+        int m;        
+        if(index + 1 < size())
+            m = getSectionMeasure(index + 1) - getSectionMeasure(index);
+        else
+            m = measures() - getSectionMeasure(index) + 1;
+        int q = (int)(m/split);
+        int r = m%split;
         
+        SectionRecord delete = getSectionRecordByIndex(index);
+        String styleName = delete.getStyleName();
+        int newIndex = delete.getIndex(); //slots
+        boolean isPhrase = delete.getIsPhrase();
+        
+        records.remove(index);
+        
+        for(int j = 0; j < split; j++)
+        {
+            if(j != 0)
+                styleName = Style.USE_PREVIOUS_STYLE;
+            records.add(index + j, new SectionRecord(styleName, newIndex, isPhrase));
+            newIndex = measureToSlotIndex(slotIndexToMeasure(newIndex) + q);
+        }
     }
     
     public Integer getPrevSectionIndex(int n) {
