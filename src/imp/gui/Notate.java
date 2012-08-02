@@ -105,8 +105,7 @@ public class Notate
   MidiImport midiImport;
 
   PitchExtractor extractor;
-  static int captureInterval = 480;
-
+  private final int captureInterval = 480;//# of slots per audio capture interval
   java.util.Timer captureTimer;
   CaptureTimerTask task;
 
@@ -10418,16 +10417,16 @@ private void startRecording()
   {
     turnStepInputOff();
 
-    if( midiManager.getInDevice() == null )
+    if (useAudioInputMI.isSelected())
       {
-        ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
-
-        return;
-      }
-
-      if (useAudioInputMI.isSelected())
-      {
-          extractor = new PitchExtractor(this, score, midiSynth, audioSettings, captureInterval);
+          if (extractor == null)
+          {
+              extractor = new PitchExtractor(this,
+                                             score,
+                                             midiSynth,
+                                             audioSettings,
+                                             captureInterval);
+          }
           extractor.openTargetLine();
           extractor.captureAudio();
 //    extractor.setThisMeasure(true);
@@ -10435,6 +10434,13 @@ private void startRecording()
 //    {
 //        System.out.println("Audio capture initialized.");
 //        extractor.captureStart.notify();
+      }
+
+    else if( midiManager.getInDevice() == null )
+      {
+        ErrorLog.log(ErrorLog.COMMENT, "No valid MIDI in devices found.  \n\nPlease check your device connection and the MIDI Preferences. It is possible another program is currently using this device.");
+
+        return;
       }
 
     playBtn.setEnabled(false);
