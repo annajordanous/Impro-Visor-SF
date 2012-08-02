@@ -343,7 +343,7 @@ public boolean isWrappedTerminal(Object ob)
         return false;
       }
     
-    if( isScaleDegree(ob) || isSlope(ob) )
+    if( isScaleDegree(ob) || isSlope(ob) || isTriadic(ob) )
       {
         return false;
       }
@@ -380,6 +380,29 @@ public static boolean isSlope(Object ob)
     return true;
   }
 
+public static boolean isTriadic(Object ob)
+  {
+    if( !(ob instanceof Polylist) )
+      {
+        return false;
+      }
+    
+    Polylist oblist = (Polylist)ob;
+    
+    if( oblist.length() != 3 )
+      {
+        return false;
+      }
+    
+    if( !oblist.first().equals("triadic") )
+      {
+        return false;
+      }
+    
+    return true;
+  }
+
+
 // Take the first character off the string, and apply the given rules to it.
 // Any lower case values are treated as terminals and outputted.
 
@@ -402,7 +425,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
      accumulator = Polylist.nil;
       
-      while( isScaleDegree(pop) || isSlope(pop) || isTerminal(pop) || isWrappedTerminal(pop))
+      while( isScaleDegree(pop) || isSlope(pop) || isTriadic(pop) || isTerminal(pop) || isWrappedTerminal(pop))
         {
           if( isWrappedTerminal(pop) )
             {
@@ -481,10 +504,10 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
           // The first symbol can never be a variable, it will give the "name" of the
           // rule.  All additional symbols will contain information.
+System.out.println("pop = " + pop);
 
           if( pop instanceof Polylist && ((Polylist)pop).first() instanceof String )
             {
-
             if( ((String)((Polylist)pop).first()).equals(((Polylist)symbol).first()) )
               {
               // Fill in variables with their given numeric values.
