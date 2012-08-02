@@ -185,40 +185,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JScrollPane" name="lickGenSettingsPane">
-          <Properties>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[500, 800]"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[600, 900]"/>
-            </Property>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Lick Generator">
-                <Property name="tabTitle" type="java.lang.String" value="Lick Generator"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTextArea" name="lickGenSettings">
-              <Properties>
-                <Property name="columns" type="int" value="20"/>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Lucida Console" size="13" style="0"/>
-                </Property>
-                <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Help for the Lick Generator&#xa;&#xa;The lick generator and triage tool is a powerful and customizable&#xa;utility that will create original licks over a given series of chord&#xa;changes.&#xa;&#xa;The lick generator creates things in two steps; first, it generates&#xa;a rhythm using a context-free grammar.  Then, it fills in this&#xa;rhythm probabilistically.  This allows for a large variety of &#xa;different melodys.  The grammar is specified in the text field under&#xa;&quot;Grammar File.&quot;  This file is customizable and uses the following&#xa;format for terminal values:&#xa;&#xa;&lt;Note type&gt;&lt;Value&gt;&#xa;&#xa;Note type can be one of&#xa;     * X - any note&#xa;     * R - a rest&#xa;     * C - a chord tone (as specified in the vocabulary file)&#xa;     * L - a color tone (as specified in the vocabulary file)&#xa;     * S - a scale tone (as specified by the user.  If &quot;None&quot; is chosen, &#xa;&#x9;this is ignored.  If use first scale is chosen, it looks&#xa;&#x9;at the first scale in the vocabulary file associated &#xa;&#x9;with the given chord.  If there is no such scale, this&#xa;&#x9;is ignored).&#xa;     * A - an approach tone (forces the following note to be a&#xa; &#x9;chord tone, and approaches from a half step&#xa;&#x9;above or below).&#xa;&#xa;Value can be from 1 (4 beats) to 16/3 (sixteenth note triplets).  &#xa;Longer note values are not currently supported in the grammar.&#xa;&#xa;For a more detailed explanation of how to modify the grammar&#xa;file, please see the &quot;Lick Generator&quot; tutorial.&#xa;&#xa;If you do not wish to use the context-free grammar to generate a&#xa;rhythm, deselect the &quot;Use Grammar&quot; button.  This tends to create&#xa;less listenable fragments, however.&#xa;&#xa;By default, the lick generator will tend to avoid repeating the same&#xa;note multiple times in a row.  If you would like to turn this off,&#xa;deselect the &quot;Avoid Repeat Pitch&quot; button.&#xa;&#xa;&quot;Generate&quot; creates a rhythm and fills it in using the probabilities.&#xa;&#xa;&quot;Generate Rhythm&quot; only creates a rhythm.&#xa;&#xa;&quot;Fill Melody&quot; generates a melody for a given rhythm (the rhythm&#xa;is specified in the large text box; note that you can manually enter&#xa;longer note values here using leadsheet notation, as in X2+4 for&#xa;a three beat note)&#xa;&#xa;&quot;Get Selected Rhythm&quot; will read the rhythmic pattern of whatever&#xa;is currently selected.&#xa;&#xa;&quot;Replay&quot; replays the current selection.&#xa;&#xa;&quot;Help&quot; displays this dialog.&#xa;&#xa;&quot;Reload&quot; will re-parse the grammar file.&#xa;&#xa;&quot;Save Lick&quot; saves the lick into the vocabulary.&#xa;&#xa;The lick generator will automatically determine note probabilities &#xa;for all chords in the from the current selection start up to the&#xa;total number of beats specified.  If you would like to disable this&#xa;feature, deselect the &quot;Auto-fill probabilities&quot; check box.  The&#xa;&quot;Fill&quot; button will reset them to their defaults, and the &quot;Clear&quot; button&#xa;sets them all to zero.&#xa;&#xa;Other options:&#xa;     * Min/Max Pitch: Do not use pitches higher or lower than these&#xa;&#x9;values.&#xa;&#xa;     * Min/Max Interval: Do not jump higher or lower than this interval&#xa;&#x9;unless a jump probability is set.&#xa;&#xa;     * Min/Max Duration (only used if the grammar is disabled): Do&#xa;&#x9;not generate notes with rhythmic values longer or&#xa;&#x9;shorter than these; note that these are inverse, so&#xa;&#x9;32 indicates a 32nd note and 1 indicates a whole note.&#xa;&#xa;     * Beats: The length of the lick to generate in beats.  This value is &#xa;&#x9;based off of the current selection.&#xa;&#xa;     * Rest Probability (only used if the grammar is disabled): The&#xa;&#x9;probability of a given note being a rest.&#xa;&#xa;     * Leap Probability: The probability of jumping outside the&#xa;&#x9;maximum interval (see above)."/>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="lickGenSettings.setEditable(false);"/>
-              </AuxValues>
-            </Component>
-          </SubComponents>
-        </Container>
         <Container class="javax.swing.JScrollPane" name="styleHelpPane">
           <Properties>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -317,6 +283,40 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="roadmapHelp.setEditable(false);"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JScrollPane" name="lickGenSettingsPane">
+          <Properties>
+            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[500, 800]"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[600, 900]"/>
+            </Property>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Lick Generator">
+                <Property name="tabTitle" type="java.lang.String" value="Lick Generator"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="lickGenSettings">
+              <Properties>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Lucida Console" size="13" style="0"/>
+                </Property>
+                <Property name="rows" type="int" value="5"/>
+                <Property name="text" type="java.lang.String" value="Help for the Lick Generator&#xa;&#xa;The lick generator and triage tool is a powerful and customizable&#xa;utility that will create original licks over a given series of chord&#xa;changes.&#xa;&#xa;The lick generator creates things in two steps; first, it generates&#xa;a rhythm using a context-free grammar.  Then, it fills in this&#xa;rhythm probabilistically.  This allows for a large variety of &#xa;different melodys.  The grammar is specified in the text field under&#xa;&quot;Grammar File.&quot;  This file is customizable and uses the following&#xa;format for terminal values:&#xa;&#xa;&lt;Note type&gt;&lt;Value&gt;&#xa;&#xa;Note type can be one of&#xa;     * X - any note&#xa;     * R - a rest&#xa;     * C - a chord tone (as specified in the vocabulary file)&#xa;     * L - a color tone (as specified in the vocabulary file)&#xa;     * S - a scale tone (as specified by the user.  If &quot;None&quot; is chosen, &#xa;&#x9;this is ignored.  If use first scale is chosen, it looks&#xa;&#x9;at the first scale in the vocabulary file associated &#xa;&#x9;with the given chord.  If there is no such scale, this&#xa;&#x9;is ignored).&#xa;     * A - an approach tone (forces the following note to be a&#xa; &#x9;chord tone, and approaches from a half step&#xa;&#x9;above or below).&#xa;&#xa;Value can be from 1 (4 beats) to 16/3 (sixteenth note triplets).  &#xa;Longer note values are not currently supported in the grammar.&#xa;&#xa;For a more detailed explanation of how to modify the grammar&#xa;file, please see the &quot;Lick Generator&quot; tutorial.&#xa;&#xa;A few notes on parameter setting in grammars:&#xa;The expectancy for the generated line is calculated as &#xa;(expectancy-multiplier)(expectancy value of previous line) + &#xa;(normalized expectancy-constant (where 1 is the highest value)). &#xa;A higher expectancy value means more highly expected notes will show up &#xa;in the generated line.&#xa;While this gives many options for expectancies, most users will not find&#xa;a use for expectancy-multiplier that is not 1 or 0 (i.e. follows the user or&#xa;uses a constant expectancy value).&#xa;Expectancy-constant can range from 0 to 1 but a pretty normal value for&#xa;this is around a 0.6 to 0.7&#xa;&#xa;The syncopation-multiplier and syncopation-constant work in exactly &#xa;the same way but a typical value for syncopation-constant is around 0.15&#xa;&#xa;If you do not wish to use the context-free grammar to generate a&#xa;rhythm, deselect the &quot;Use Grammar&quot; button.  This tends to create&#xa;less listenable fragments, however.&#xa;&#xa;By default, the lick generator will tend to avoid repeating the same&#xa;note multiple times in a row.  If you would like to turn this off,&#xa;deselect the &quot;Avoid Repeat Pitch&quot; button.&#xa;&#xa;&quot;Generate&quot; creates a rhythm and fills it in using the probabilities.&#xa;&#xa;&quot;Generate Rhythm&quot; only creates a rhythm.&#xa;&#xa;&quot;Fill Melody&quot; generates a melody for a given rhythm (the rhythm&#xa;is specified in the large text box; note that you can manually enter&#xa;longer note values here using leadsheet notation, as in X2+4 for&#xa;a three beat note)&#xa;&#xa;&quot;Get Selected Rhythm&quot; will read the rhythmic pattern of whatever&#xa;is currently selected.&#xa;&#xa;&quot;Replay&quot; replays the current selection.&#xa;&#xa;&quot;Help&quot; displays this dialog.&#xa;&#xa;&quot;Reload&quot; will re-parse the grammar file.&#xa;&#xa;&quot;Save Lick&quot; saves the lick into the vocabulary.&#xa;&#xa;The lick generator will automatically determine note probabilities &#xa;for all chords in the from the current selection start up to the&#xa;total number of beats specified.  If you would like to disable this&#xa;feature, deselect the &quot;Auto-fill probabilities&quot; check box.  The&#xa;&quot;Fill&quot; button will reset them to their defaults, and the &quot;Clear&quot; button&#xa;sets them all to zero.&#xa;&#xa;Other options:&#xa;     * Min/Max Pitch: Do not use pitches higher or lower than these&#xa;&#x9;values.&#xa;&#xa;     * Min/Max Interval: Do not jump higher or lower than this interval&#xa;&#x9;unless a jump probability is set.&#xa;&#xa;     * Min/Max Duration (only used if the grammar is disabled): Do&#xa;&#x9;not generate notes with rhythmic values longer or&#xa;&#x9;shorter than these; note that these are inverse, so&#xa;&#x9;32 indicates a 32nd note and 1 indicates a whole note.&#xa;&#xa;     * Beats: The length of the lick to generate in beats.  This value is &#xa;&#x9;based off of the current selection.&#xa;&#xa;     * Rest Probability (only used if the grammar is disabled): The&#xa;&#x9;probability of a given note being a rest.&#xa;&#xa;     * Leap Probability: The probability of jumping outside the&#xa;&#x9;maximum interval (see above)."/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="lickGenSettings.setEditable(false);"/>
               </AuxValues>
             </Component>
           </SubComponents>

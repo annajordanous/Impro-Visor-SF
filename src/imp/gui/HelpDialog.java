@@ -52,14 +52,14 @@ public class HelpDialog extends javax.swing.JDialog {
         melodyNotationHelp = new javax.swing.JTextArea();
         chordListingPane = new javax.swing.JScrollPane();
         chordList = new javax.swing.JTextArea();
-        lickGenSettingsPane = new javax.swing.JScrollPane();
-        lickGenSettings = new javax.swing.JTextArea();
         styleHelpPane = new javax.swing.JScrollPane();
         styleHelpList1 = new javax.swing.JTextArea();
         drawingHelpPane = new javax.swing.JScrollPane();
         drawingHelp = new javax.swing.JTextArea();
         roadmapHelpPane = new javax.swing.JScrollPane();
         roadmapHelp = new javax.swing.JTextArea();
+        lickGenSettingsPane = new javax.swing.JScrollPane();
+        lickGenSettings = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(680, 800));
@@ -121,18 +121,6 @@ public class HelpDialog extends javax.swing.JDialog {
 
         helpTabbedPane.addTab("Chords", chordListingPane);
 
-        lickGenSettingsPane.setMinimumSize(new java.awt.Dimension(500, 800));
-        lickGenSettingsPane.setPreferredSize(new java.awt.Dimension(600, 900));
-
-        lickGenSettings.setColumns(20);
-        lickGenSettings.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
-        lickGenSettings.setRows(5);
-        lickGenSettings.setText("Help for the Lick Generator\n\nThe lick generator and triage tool is a powerful and customizable\nutility that will create original licks over a given series of chord\nchanges.\n\nThe lick generator creates things in two steps; first, it generates\na rhythm using a context-free grammar.  Then, it fills in this\nrhythm probabilistically.  This allows for a large variety of \ndifferent melodys.  The grammar is specified in the text field under\n\"Grammar File.\"  This file is customizable and uses the following\nformat for terminal values:\n\n<Note type><Value>\n\nNote type can be one of\n     * X - any note\n     * R - a rest\n     * C - a chord tone (as specified in the vocabulary file)\n     * L - a color tone (as specified in the vocabulary file)\n     * S - a scale tone (as specified by the user.  If \"None\" is chosen, \n\tthis is ignored.  If use first scale is chosen, it looks\n\tat the first scale in the vocabulary file associated \n\twith the given chord.  If there is no such scale, this\n\tis ignored).\n     * A - an approach tone (forces the following note to be a\n \tchord tone, and approaches from a half step\n\tabove or below).\n\nValue can be from 1 (4 beats) to 16/3 (sixteenth note triplets).  \nLonger note values are not currently supported in the grammar.\n\nFor a more detailed explanation of how to modify the grammar\nfile, please see the \"Lick Generator\" tutorial.\n\nIf you do not wish to use the context-free grammar to generate a\nrhythm, deselect the \"Use Grammar\" button.  This tends to create\nless listenable fragments, however.\n\nBy default, the lick generator will tend to avoid repeating the same\nnote multiple times in a row.  If you would like to turn this off,\ndeselect the \"Avoid Repeat Pitch\" button.\n\n\"Generate\" creates a rhythm and fills it in using the probabilities.\n\n\"Generate Rhythm\" only creates a rhythm.\n\n\"Fill Melody\" generates a melody for a given rhythm (the rhythm\nis specified in the large text box; note that you can manually enter\nlonger note values here using leadsheet notation, as in X2+4 for\na three beat note)\n\n\"Get Selected Rhythm\" will read the rhythmic pattern of whatever\nis currently selected.\n\n\"Replay\" replays the current selection.\n\n\"Help\" displays this dialog.\n\n\"Reload\" will re-parse the grammar file.\n\n\"Save Lick\" saves the lick into the vocabulary.\n\nThe lick generator will automatically determine note probabilities \nfor all chords in the from the current selection start up to the\ntotal number of beats specified.  If you would like to disable this\nfeature, deselect the \"Auto-fill probabilities\" check box.  The\n\"Fill\" button will reset them to their defaults, and the \"Clear\" button\nsets them all to zero.\n\nOther options:\n     * Min/Max Pitch: Do not use pitches higher or lower than these\n\tvalues.\n\n     * Min/Max Interval: Do not jump higher or lower than this interval\n\tunless a jump probability is set.\n\n     * Min/Max Duration (only used if the grammar is disabled): Do\n\tnot generate notes with rhythmic values longer or\n\tshorter than these; note that these are inverse, so\n\t32 indicates a 32nd note and 1 indicates a whole note.\n\n     * Beats: The length of the lick to generate in beats.  This value is \n\tbased off of the current selection.\n\n     * Rest Probability (only used if the grammar is disabled): The\n\tprobability of a given note being a rest.\n\n     * Leap Probability: The probability of jumping outside the\n\tmaximum interval (see above).");
-        lickGenSettingsPane.setViewportView(lickGenSettings);
-        lickGenSettings.setEditable(false);
-
-        helpTabbedPane.addTab("Lick Generator", lickGenSettingsPane);
-
         styleHelpPane.setMinimumSize(new java.awt.Dimension(500, 800));
         styleHelpPane.setPreferredSize(new java.awt.Dimension(600, 900));
 
@@ -168,6 +156,18 @@ public class HelpDialog extends javax.swing.JDialog {
         roadmapHelp.setEditable(false);
 
         helpTabbedPane.addTab("Roadmap", roadmapHelpPane);
+
+        lickGenSettingsPane.setMinimumSize(new java.awt.Dimension(500, 800));
+        lickGenSettingsPane.setPreferredSize(new java.awt.Dimension(600, 900));
+
+        lickGenSettings.setColumns(20);
+        lickGenSettings.setFont(new java.awt.Font("Lucida Console", 0, 13)); // NOI18N
+        lickGenSettings.setRows(5);
+        lickGenSettings.setText("Help for the Lick Generator\n\nThe lick generator and triage tool is a powerful and customizable\nutility that will create original licks over a given series of chord\nchanges.\n\nThe lick generator creates things in two steps; first, it generates\na rhythm using a context-free grammar.  Then, it fills in this\nrhythm probabilistically.  This allows for a large variety of \ndifferent melodys.  The grammar is specified in the text field under\n\"Grammar File.\"  This file is customizable and uses the following\nformat for terminal values:\n\n<Note type><Value>\n\nNote type can be one of\n     * X - any note\n     * R - a rest\n     * C - a chord tone (as specified in the vocabulary file)\n     * L - a color tone (as specified in the vocabulary file)\n     * S - a scale tone (as specified by the user.  If \"None\" is chosen, \n\tthis is ignored.  If use first scale is chosen, it looks\n\tat the first scale in the vocabulary file associated \n\twith the given chord.  If there is no such scale, this\n\tis ignored).\n     * A - an approach tone (forces the following note to be a\n \tchord tone, and approaches from a half step\n\tabove or below).\n\nValue can be from 1 (4 beats) to 16/3 (sixteenth note triplets).  \nLonger note values are not currently supported in the grammar.\n\nFor a more detailed explanation of how to modify the grammar\nfile, please see the \"Lick Generator\" tutorial.\n\nA few notes on parameter setting in grammars:\nThe expectancy for the generated line is calculated as \n(expectancy-multiplier)(expectancy value of previous line) + \n(normalized expectancy-constant (where 1 is the highest value)). \nA higher expectancy value means more highly expected notes will show up \nin the generated line.\nWhile this gives many options for expectancies, most users will not find\na use for expectancy-multiplier that is not 1 or 0 (i.e. follows the user or\nuses a constant expectancy value).\nExpectancy-constant can range from 0 to 1 but a pretty normal value for\nthis is around a 0.6 to 0.7\n\nThe syncopation-multiplier and syncopation-constant work in exactly \nthe same way but a typical value for syncopation-constant is around 0.15\n\nIf you do not wish to use the context-free grammar to generate a\nrhythm, deselect the \"Use Grammar\" button.  This tends to create\nless listenable fragments, however.\n\nBy default, the lick generator will tend to avoid repeating the same\nnote multiple times in a row.  If you would like to turn this off,\ndeselect the \"Avoid Repeat Pitch\" button.\n\n\"Generate\" creates a rhythm and fills it in using the probabilities.\n\n\"Generate Rhythm\" only creates a rhythm.\n\n\"Fill Melody\" generates a melody for a given rhythm (the rhythm\nis specified in the large text box; note that you can manually enter\nlonger note values here using leadsheet notation, as in X2+4 for\na three beat note)\n\n\"Get Selected Rhythm\" will read the rhythmic pattern of whatever\nis currently selected.\n\n\"Replay\" replays the current selection.\n\n\"Help\" displays this dialog.\n\n\"Reload\" will re-parse the grammar file.\n\n\"Save Lick\" saves the lick into the vocabulary.\n\nThe lick generator will automatically determine note probabilities \nfor all chords in the from the current selection start up to the\ntotal number of beats specified.  If you would like to disable this\nfeature, deselect the \"Auto-fill probabilities\" check box.  The\n\"Fill\" button will reset them to their defaults, and the \"Clear\" button\nsets them all to zero.\n\nOther options:\n     * Min/Max Pitch: Do not use pitches higher or lower than these\n\tvalues.\n\n     * Min/Max Interval: Do not jump higher or lower than this interval\n\tunless a jump probability is set.\n\n     * Min/Max Duration (only used if the grammar is disabled): Do\n\tnot generate notes with rhythmic values longer or\n\tshorter than these; note that these are inverse, so\n\t32 indicates a 32nd note and 1 indicates a whole note.\n\n     * Beats: The length of the lick to generate in beats.  This value is \n\tbased off of the current selection.\n\n     * Rest Probability (only used if the grammar is disabled): The\n\tprobability of a given note being a rest.\n\n     * Leap Probability: The probability of jumping outside the\n\tmaximum interval (see above).");
+        lickGenSettingsPane.setViewportView(lickGenSettings);
+        lickGenSettings.setEditable(false);
+
+        helpTabbedPane.addTab("Lick Generator", lickGenSettingsPane);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
