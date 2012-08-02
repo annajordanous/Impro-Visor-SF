@@ -89,10 +89,10 @@ public class LickGen implements Constants
     // Syncopation and Expectancy Parameters
 private static final boolean defaultUseSyncopation      = false;
 private static final String defaultSyncopationType      = "C";
-private static final double defaultSyncopationMultiplier    = 1;
-private static final double defaultSyncopationConstant    = 0.5;
+private static final double defaultSyncopationMultiplier    = 0;
+private static final double defaultSyncopationConstant    = 0.2;
 private static final double defaultExpectancyMultiplier = 0;
-private static final double defaultExpectancyConstant   = 0;
+private static final double defaultExpectancyConstant   = 0.7;
 
 private boolean useSyncopation      = defaultUseSyncopation;
 private String syncopationType      = defaultSyncopationType;
@@ -1576,6 +1576,8 @@ public MelodyPart fillPartOfMelody(int minPitch,
         expectancy = MAX_EXPECTANCY;
     }
     
+    System.out.println("Expectancy: " + expectancy);
+    
     int previousPitch = oldPitch;
 
     for( int i = 0; i < MELODY_GEN_LIMIT; i++ )
@@ -2268,7 +2270,7 @@ public boolean fillMelody(MelodyPart lick,
                     pitch = pitch + 1; //adds one to what the default returns
                     //System.out.println("Color Chord Pitch Plus one: " + pitch);
                     note.setPitch(pitch);
-                    addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                    addNote(note, lick, rhythmString, avoidRepeats, "outside", item);
                   }
                 break;
 
@@ -2291,6 +2293,7 @@ public boolean fillMelody(MelodyPart lick,
                         }
                         Chord currentChord = chordProg.getCurrentChord(position);
                         double expect = Expectancy.getExpectancy(midi, prevPitch, prevPrevPitch, currentChord);
+                        //Getting higher order expectancies
                         if(quarter > QUARTER_NOTE)
                         {
                             prevQuarter = quarterLevel[highestIndex];
@@ -2356,7 +2359,7 @@ public boolean fillMelody(MelodyPart lick,
                             System.out.println("Bad note in fillMelody " + note);
                             note = new Rest(note.getRhythmValue());
                         }
-                    addNote(note, lick, rhythmString, avoidRepeats, "default", item);
+                    addNote(note, lick, rhythmString, avoidRepeats, "expectancy", item);
                 }
                 break;
 

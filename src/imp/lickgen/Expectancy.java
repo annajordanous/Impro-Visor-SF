@@ -140,6 +140,7 @@ public class Expectancy
             secondQuarter = second;
             int curr = currMelody.getNote(pi.nextIndex()).getPitch();
             double mExpectancy = getExpectancy(curr, second, first, c);
+            //Getting higher order expectancies
             if(quarter > QUARTER_NOTE)
             {
                 firstQuarter = quarterLevel[highestIndex];
