@@ -39,7 +39,7 @@ public class PitchExtractor
     MidiSynth midiSynth;
     long startTime;
     int additionalSamples;
-    boolean processingStarted = false;
+    boolean processingStarted;
     double swingVal;
     int captureInterval;
     int lastSlotNumber = 1;
@@ -74,6 +74,7 @@ public class PitchExtractor
     private int minPitch = 0;
     private int maxPitch = 127;
     AudioSettings settings;
+    MelodyPart melodyPart;
 
     public PitchExtractor(Notate notate,
                           Score score,
@@ -102,14 +103,49 @@ public class PitchExtractor
         processingQueue = new ArrayBlockingQueue<byte[]>(10);
     }
 
-    public void openTargetLine()
+    public void captureAudio()
+    {
+        stopCapture = false;
+        stopAnalysis = false;
+        processingStarted = false;
+        //erase old data if overwriting
+        if (analysesCompleted > 0)
+        {
+            int start;
+            for (int i = 0; i < analysesCompleted; i++)
+            {
+                start = i * captureInterval;
+                melodyPart.delUnits(start, start + captureInterval);
+            }
+            analysesCompleted = 0;
+        }
+        slotsFilled = 1;
+        minPitch = settings.getMIN_PITCH();
+        maxPitch = settings.getMAX_PITCH();
+        try
+        {
+            CaptureThread captureThread = new CaptureThread();
+            captureThread.setPriority(Thread.MAX_PRIORITY);
+            captureThread.start();
+//            SlotGetterThread slotThread = new SlotGetterThread();
+//            slotThread.setPriority(Thread.MAX_PRIORITY - 1);
+//            slotThread.start();
+            AnalyzeThread analyzeThread = new AnalyzeThread();
+            analyzeThread.setPriority(Thread.MAX_PRIORITY - 1);
+            analyzeThread.start();
+        } catch (Exception e)
+        {
+            System.out.println("Error initializing audio capture:\n" + e);
+        }//end catch
+    }//end captureAudio method
+
+        public void openTargetLine()
     {
         try
         {
             DataLine.Info dataLineInfo =
                     new DataLine.Info(TargetDataLine.class, format);
             target = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
-            //System.out.println("TargetDataLine buffer size = " + target.getBufferSize());
             target.open(format);
             //target.start();
         } catch (Exception e)
@@ -134,40 +170,6 @@ public class PitchExtractor
         return this.captureInterval;
     }
 
-//    public void setResolution(int newResolution)
-//    {
-//        if (newResolution > 2 && newResolution < 64
-//                && newResolution % 2 == 0)
-//        {
-//            RESOLUTION = newResolution;
-//        }
-//    }
-    public void captureAudio()
-    {
-        stopCapture = false;
-        stopAnalysis = false;
-        analysesCompleted = 0;
-        slotsFilled = 1;
-        minPitch = settings.getMIN_PITCH();
-        maxPitch = settings.getMAX_PITCH();
-        try
-        {
-            CaptureThread captureThread = new CaptureThread();
-            captureThread.setPriority(Thread.MAX_PRIORITY);
-            captureThread.start();
-//            SlotGetterThread slotThread = new SlotGetterThread();
-//            slotThread.setPriority(Thread.MAX_PRIORITY - 1);
-//            slotThread.start();
-            AnalyzeThread analyzeThread = new AnalyzeThread();
-            analyzeThread.setPriority(Thread.MAX_PRIORITY - 1);
-            analyzeThread.start();
-        } catch (Exception e)
-        {
-            System.out.println("Error initializing audio capture:\n" + e);
-            //System.exit(0);
-        }//end catch
-    }//end captureAudio method
-
     /**
      * Breaks input data into frames and determines pitch for each frame.
      *
@@ -175,7 +177,7 @@ public class PitchExtractor
      */
     private void parseNotes(byte[] streamInput)
     {
-        MelodyPart melodyPart = notate.getCurrentMelodyPart();
+        melodyPart = notate.getCurrentMelodyPart();
         //where the first note is to be inserted in the melody
         //startingPosition = analysesCompleted * captureInterval;
         int index;
@@ -315,7 +317,8 @@ public class PitchExtractor
                     if (pitch == lastPitch)
                     { //if the last pitch in the capture interval is a continuation
                         //of the previous pitch...
-                        if (analysesCompleted < 3 && notate.getMode() == Mode.RECORDING)
+                        if (analysesCompleted < 3 && notate.getMode() == Mode.RECORDING
+                                && (startingPosition + duration) % captureInterval != 0)
                         {
                             slotsFilled++;
                             System.out.println("Note " + pitch + " *possibly* "
@@ -326,7 +329,8 @@ public class PitchExtractor
                             duration = slotsFilled * slotConversion;
                             setNote(lastPitch,
                                     startingPosition,
-                                    duration,
+                                    duration + ((analysesCompleted * captureInterval
+                                    - (startingPosition + duration)) % captureInterval),
                                     melodyPart);
                             incrementStartingPosition(duration);
                         }
@@ -344,7 +348,8 @@ public class PitchExtractor
                             duration = slotConversion;
                             setNote(pitch,
                                     startingPosition,
-                                    duration,
+                                    duration + ((analysesCompleted * captureInterval
+                                    - (startingPosition + duration)) % captureInterval),
                                     melodyPart);
                             incrementStartingPosition(duration);
                             System.out.println("Mode = " + notate.getMode());
