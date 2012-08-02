@@ -35,7 +35,7 @@ import imp.com.*;
 import imp.data.*;
 import imp.data.musicXML.ChordDescription;
 import imp.lickgen.LickGen;
-import imp.lickgen.NonExistentParameterException;
+import imp.util.NonExistentParameterException;
 import imp.roadmap.RoadMapFrame;
 import imp.util.*;
 import java.awt.*;
@@ -654,7 +654,14 @@ public class Notate
   /**
    * Various Instrument Chooser objects for the different preferences
    */
-  private InstrumentChooser melodyInst,  chordInst,  bassInst,  defMelodyInst,  defChordInst,  defBassInst;
+  private InstrumentChooser melodyInst,  
+                            auxInst, 
+                            chordInst,  
+                            bassInst,  
+                            defMelodyInst,  
+                            defAuxInst, 
+                            defChordInst,  
+                            defBassInst;
 
   private SourceEditorDialog leadsheetEditor = null;
 
@@ -1012,11 +1019,15 @@ public class Notate
 
     melodyInst = new InstrumentChooser();
 
+    auxInst = new InstrumentChooser();
+
     chordInst = new InstrumentChooser();
 
     bassInst = new InstrumentChooser();
 
     defMelodyInst = new InstrumentChooser();
+
+    defAuxInst = new InstrumentChooser();
 
     defChordInst = new InstrumentChooser();
 
@@ -1277,11 +1288,15 @@ public class Notate
 
     melodyInst.setDialog(preferencesDialog);
 
+    auxInst.setDialog(preferencesDialog);
+
     chordInst.setDialog(preferencesDialog);
 
     bassInst.setDialog(preferencesDialog);
 
     defMelodyInst.setDialog(preferencesDialog);
+
+    defAuxInst.setDialog(preferencesDialog);
 
     defChordInst.setDialog(preferencesDialog);
 
@@ -1481,6 +1496,8 @@ public class Notate
         bassStaveBtn = new javax.swing.JRadioButton();
         grandStaveBtn = new javax.swing.JRadioButton();
         melodyInstPanel = melodyInst;
+        auxInstPanel = auxInst;
+        auxInstLabel = new javax.swing.JLabel();
         leadsheetPreferences = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTabbedPane5 = new javax.swing.JTabbedPane();
@@ -1905,6 +1922,7 @@ public class Notate
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jCheckBox1 = new javax.swing.JCheckBox();
         toolbarPanel = new javax.swing.JPanel();
         standardToolbar = new javax.swing.JToolBar();
         newBtn = new javax.swing.JButton();
@@ -2589,6 +2607,7 @@ public class Notate
         melodyInsttLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         melodyInsttLabel.setText("Melody Instrument MIDI Number:");
         melodyInsttLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        melodyInsttLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -2687,7 +2706,7 @@ public class Notate
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -2698,7 +2717,28 @@ public class Notate
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.1;
         chorusSpecificPanel.add(melodyInstPanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 0.1;
+        chorusSpecificPanel.add(auxInstPanel, gridBagConstraints);
+
+        auxInstLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        auxInstLabel.setText("Aux Instrument MIDI Number:");
+        auxInstLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        auxInstLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        chorusSpecificPanel.add(auxInstLabel, gridBagConstraints);
 
         jTabbedPane4.addTab("Chorus", chorusSpecificPanel);
 
@@ -4292,7 +4332,7 @@ public class Notate
 
         pitchRangePresetComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Default", "Soprano", "Alto", "Tenor", "Bass", "High Pass", "Low Pass", "Full Range" }));
         pitchRangePresetComboBox.setToolTipText("Presets that specify the minimum and maximum MIDI pitch to be detected when capturing audio.");
-        pitchRangePresetComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pitch Range Presets", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.black));
+        pitchRangePresetComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Pitch Range Presets"));
         pitchRangePresetComboBox.setMinimumSize(new java.awt.Dimension(140, 42));
         pitchRangePresetComboBox.setName("rangePresetComboBox");
         pitchRangePresetComboBox.setPreferredSize(new java.awt.Dimension(140, 42));
@@ -6683,6 +6723,8 @@ public class Notate
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
+        jCheckBox1.setText("jCheckBox1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImage((new ImageIcon(getClass().getResource("/imp/gui/graphics/icons/trumpetsmall.png"))).getImage());
@@ -7871,12 +7913,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7892,12 +7934,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8865,12 +8907,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8903,12 +8945,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -14439,6 +14481,8 @@ private boolean saveGlobalPreferences()
 
         String strMelody = defMelodyInst.getText();
 
+        String strAux = defAuxInst.getText();
+
         String strChord = defChordInst.getText();
 
         String strBass = defBassInst.getText();
@@ -14454,6 +14498,8 @@ private boolean saveGlobalPreferences()
         double tempo = doubleFromTextField(defaultTempoTF, MIN_TEMPO, MAX_TEMPO, getDefaultTempo());
 
         int melody = intFromString(strMelody.trim());
+
+        int aux = intFromString(strAux.trim());
 
         int chord = intFromString(strChord.trim());
 
@@ -14503,6 +14549,17 @@ private boolean saveGlobalPreferences()
         else
           {
             Preferences.setPreference(Preferences.DEFAULT_MELODY_INSTRUMENT, defMelodyInst.getText());
+          }
+
+       if( aux < 1 || aux > 128 )
+          {
+           ErrorLog.log(ErrorLog.SEVERE, "The auxiliary instrument must be between 1 and 128");
+
+            close = false;
+          }
+        else
+          {
+            Preferences.setPreference(Preferences.DEFAULT_AUX_INSTRUMENT, defAuxInst.getText());
           }
 
 
@@ -14910,6 +14967,15 @@ private boolean saveGlobalPreferences()
 
     defMelodyInst.setText(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT));
 
+    try
+      {
+      defAuxInst.setText(Preferences.getPreferenceQuietly(Preferences.DEFAULT_AUX_INSTRUMENT));
+      }
+    catch( NonExistentParameterException e)
+      {
+        defAuxInst.setText(Preferences.DAI_VAL);
+      }
+
 
     defMasterVolSlider.setValue(Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_MIXER_ALL)));
 
@@ -15128,6 +15194,16 @@ private boolean saveGlobalPreferences()
       melodyInst.setText("" + (getCurrentMelodyPart().getInstrument() + 1));
       //System.out.println("assigning melody instrument from score: " + inst);
       }
+
+    try
+      {
+        auxInst.setText(Preferences.getPreferenceQuietly(Preferences.DEFAULT_AUX_INSTRUMENT));
+      }
+    catch( NonExistentParameterException e)
+      {
+        auxInst.setText(Preferences.DAI_VAL);
+      }
+
 
     // display the current score title
 
@@ -23922,6 +23998,8 @@ public void showNewVoicingDialog()
     private javax.swing.JCheckBoxMenuItem autoAdjustMI;
     private javax.swing.JRadioButton autoStave;
     private javax.swing.JRadioButton autoStaveBtn;
+    private javax.swing.JLabel auxInstLabel;
+    private javax.swing.JPanel auxInstPanel;
     private javax.swing.JCheckBoxMenuItem barNumsMI;
     private javax.swing.JSpinner bassChannelSpinner;
     private javax.swing.JLabel bassInstLabel;
@@ -24144,6 +24222,7 @@ public void showNewVoicingDialog()
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -25332,7 +25411,9 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
 
         //currentMelodyPart.truncateEndings(true);
         //MelodyPart extracted = currentMelodyPart.extract(generateAtSlot, lastSlotAhead);
-        improLick.setInstrument(currentMelodyPart.getInstrument()); // vibraphone
+        //improLick.setInstrument(currentMelodyPart.getInstrument()); // vibraphone
+        improLick.setInstrument(auxInst.getValue());
+        //System.out.println("impro inst = " + improLick.getInstrument() + " vs melody inst = " + currentMelodyPart.getInstrument());
         improLick.setSwing(currentMelodyPart.getSwing());
 
         //System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);

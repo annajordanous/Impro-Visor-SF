@@ -34,7 +34,7 @@ import imp.com.*;
 import imp.data.*;
 import imp.lickgen.Grammar;
 import imp.lickgen.LickGen;
-import imp.lickgen.NonExistentParameterException;
+import imp.util.NonExistentParameterException;
 import imp.util.ProfileFilter;
 import java.awt.*;
 import java.io.*;

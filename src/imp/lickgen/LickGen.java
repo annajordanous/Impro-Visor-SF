@@ -20,6 +20,7 @@
 
 package imp.lickgen;
 
+import imp.util.NonExistentParameterException;
 import imp.Constants;
 import imp.ImproVisor;
 import imp.cluster.*;
