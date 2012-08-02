@@ -380,11 +380,17 @@ public Polylist getChordNames()
     {
     Polylist entry = (Polylist)L.first();
     // Do not include synonyms
-    if( entry.assoc("same") == null )
+    //System.out.print("entry = " + entry);
+    if( !((ChordForm)entry.second()).isSynonym() )
       {
+      //System.out.println(" accepted");
       R = R.cons(entry.first());
-      L = L.rest();
       }
+    else
+      {
+      //System.out.println(" ignored");
+      }
+    L = L.rest();
     }   
   return R;
   }

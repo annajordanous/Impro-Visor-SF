@@ -571,15 +571,13 @@ public String getSame()
   return same;
   }
 
-
 /**
- * Returns true if the chord name is a synonym for another chord, else false
- @return true if the chord name is a synonym for another chord, else false
+ @return true if this chord is a synonym for another chord,
+ * as indicated by a non-null 'same' field
  */
-
 public boolean isSynonym()
   {
-  return same != null;
+    return same != null;
   }
 
 
