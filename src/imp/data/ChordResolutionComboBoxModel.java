@@ -33,7 +33,7 @@ public class ChordResolutionComboBoxModel extends DefaultComboBoxModel
 {
 private static ChordResolutionComboBoxModel theModel = null;
 
-private static int selectedIndex = 2;
+private static int selectedIndex = 4;
 
 public static ChordResolutionComboBoxModel getChordResolutionComboBoxModel()
   {
@@ -46,7 +46,7 @@ public static ChordResolutionComboBoxModel getChordResolutionComboBoxModel()
 
 private ChordResolutionComboBoxModel()
   {
-      super(Arrays.copyOfRange(NoteResolutionInfo.getNoteResolutions(), 10, 14));
+      super(Arrays.copyOfRange(NoteResolutionInfo.getNoteResolutions(), 10, 15));
   }
 
 public static void setSelectedIndex(int index) {
