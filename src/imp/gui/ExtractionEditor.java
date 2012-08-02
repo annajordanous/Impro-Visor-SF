@@ -24,6 +24,7 @@ import imp.Constants;
 import imp.ImproVisor;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
+import imp.data.MidiChannelInfo.ChannelInfo;
 import imp.util.ErrorLog;
 import imp.util.LeadsheetFileView;
 import imp.util.LeadsheetFilter;
@@ -83,8 +84,7 @@ public static final int CHORD = 2;
 
 
 //for chord extract
-private MidiImport.ChannelInfo[] channelInfo = null;
-
+private ChannelInfo[] channelInfo;
 private JFileChooser chordFileChooser = new JFileChooser();
 
 /**
@@ -119,7 +119,8 @@ public ExtractionEditor(java.awt.Frame parent,
     
     
     //for chord extraction
-    channelInfo = MIDIBeast.getChannelInfo();
+    MidiChannelInfo midiChannelInfo = new MidiChannelInfo(MIDIBeast.midiFileName);
+    channelInfo = midiChannelInfo.getChannelInfo();
     bassChannelName.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
     chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
     
@@ -849,6 +850,7 @@ public void playRawRule(int type, String raw)
         jPanel1 = new javax.swing.JPanel();
         bassChannelName = new javax.swing.JComboBox();
         chordChannelName = new javax.swing.JComboBox();
+        chordResolutionComboBox = new javax.swing.JComboBox();
         extractionEditorMenuBar = new javax.swing.JMenuBar();
         windowMenu = new javax.swing.JMenu();
         closeWindowMI = new javax.swing.JMenuItem();
@@ -1728,7 +1730,7 @@ public void playRawRule(int type, String raw)
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 0.7;
@@ -1742,7 +1744,7 @@ public void playRawRule(int type, String raw)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 50;
         gridBagConstraints.ipady = 50;
@@ -1757,7 +1759,7 @@ public void playRawRule(int type, String raw)
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 5;
         gridBagConstraints.ipady = 10;
@@ -1765,40 +1767,66 @@ public void playRawRule(int type, String raw)
         getContentPane().add(useLeadsheet, gridBagConstraints);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Channel #"));
-        jPanel1.setMinimumSize(new java.awt.Dimension(180, 140));
-        jPanel1.setPreferredSize(new java.awt.Dimension(180, 140));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        bassChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         bassChannelName.setToolTipText("Sets the bass channel number for chord extraction.");
-        bassChannelName.setBorder(javax.swing.BorderFactory.createTitledBorder("Bass"));
-        bassChannelName.setMinimumSize(new java.awt.Dimension(160, 50));
-        bassChannelName.setPreferredSize(new java.awt.Dimension(160, 50));
+        bassChannelName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bass", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        bassChannelName.setMaximumSize(null);
+        bassChannelName.setMinimumSize(null);
+        bassChannelName.setPreferredSize(null);
         bassChannelName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bassChannelNameActionPerformed(evt);
             }
         });
-        jPanel1.add(bassChannelName);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel1.add(bassChannelName, gridBagConstraints);
 
-        chordChannelName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         chordChannelName.setToolTipText("Sets the chord/accompaniment channel number for chord extraction.");
-        chordChannelName.setBorder(javax.swing.BorderFactory.createTitledBorder("Chord"));
-        chordChannelName.setMinimumSize(new java.awt.Dimension(160, 50));
-        chordChannelName.setPreferredSize(new java.awt.Dimension(160, 50));
+        chordChannelName.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        chordChannelName.setMaximumSize(null);
+        chordChannelName.setMinimumSize(null);
+        chordChannelName.setPreferredSize(null);
         chordChannelName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordChannelNameActionPerformed(evt);
             }
         });
-        jPanel1.add(chordChannelName);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel1.add(chordChannelName, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
-        gridBagConstraints.weightx = 0.1;
         getContentPane().add(jPanel1, gridBagConstraints);
+
+        chordResolutionComboBox.setMaximumRowCount(16);
+        chordResolutionComboBox.setModel(ChordResolutionComboBoxModel.getChordResolutionComboBoxModel());
+        chordResolutionComboBox.setSelectedIndex(ChordResolutionComboBoxModel.getSelectedIndex());
+        chordResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[ChordResolutionComboBoxModel.getSelectedIndex()]);
+        chordResolutionComboBox.setToolTipText("Sets the resolution with which the MIDI channels are converted to Impro-Visor chords. Quarter note and half note resolution recommended.");
+        chordResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chord Resolution", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        chordResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 60));
+        chordResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 75));
+        chordResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chordResolutionComboBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(chordResolutionComboBox, gridBagConstraints);
 
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
@@ -2238,13 +2266,13 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
   }//GEN-LAST:event_windowMenuMenuSelected
 
     private void chordChannelNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordChannelNameActionPerformed
-        MidiImport.ChannelInfo chordInfo = (MidiImport.ChannelInfo) chordChannelName.getSelectedItem();
+        ChannelInfo chordInfo = (ChannelInfo) chordChannelName.getSelectedItem();
         MIDIBeast.changeBassChannel(chordInfo.getChannelNum()-1);
         chordChannelName.setSelectedIndex(chordChannelName.getSelectedIndex());
     }//GEN-LAST:event_chordChannelNameActionPerformed
 
     private void bassChannelNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassChannelNameActionPerformed
-        MidiImport.ChannelInfo bassInfo = (MidiImport.ChannelInfo) bassChannelName.getSelectedItem();
+        ChannelInfo bassInfo = (ChannelInfo) bassChannelName.getSelectedItem();
         MIDIBeast.changeBassChannel(bassInfo.getChannelNum()-1);
         bassChannelName.setSelectedIndex(bassChannelName.getSelectedIndex());
     }//GEN-LAST:event_bassChannelNameActionPerformed
@@ -2254,6 +2282,8 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
             String chordFile = "";
             int chordChoice = chordFileChooser.showOpenDialog(this);
             if (chordChoice == JFileChooser.CANCEL_OPTION) {
+                useLeadsheet.setSelected(false);
+                MIDIBeast.useLeadsheet = false;
                 return;
             }
             if (chordChoice == JFileChooser.APPROVE_OPTION) {
@@ -2271,6 +2301,11 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
         MIDIBeast.useLeadsheet = useLeadsheet.isSelected();
     }//GEN-LAST:event_useLeadsheetActionPerformed
 
+    private void chordResolutionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordResolutionComboBoxActionPerformed
+        ChordResolutionComboBoxModel.setSelectedIndex(chordResolutionComboBox.getSelectedIndex());
+        MIDIBeast.chordResolution = ChordResolutionComboBoxModel.getResolution();
+    }//GEN-LAST:event_chordResolutionComboBoxActionPerformed
+
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2279,6 +2314,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
     private javax.swing.JMenuItem cascadeMI;
     private javax.swing.JComboBox chordChannelName;
     private javax.swing.JPanel chordPanel;
+    private javax.swing.JComboBox chordResolutionComboBox;
     private javax.swing.JButton closeWindowBtn;
     private javax.swing.JMenuItem closeWindowMI;
     private javax.swing.JButton copySelectionsBtnBass;
