@@ -1102,7 +1102,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
     // set program change. Do we need this for every call?
 
-    track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
+    //track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
 
     if( sendBankSelect )
       {
@@ -1117,6 +1117,7 @@ public MelodyPart copy(int startingIndex, int endingIndex)
 
     while( i.hasNext() && Style.limitNotReached(time,  endLimitIndex) )
       {
+      track.add(MidiSynth.createProgramChangeEvent(ch, instrument, time));
       Note note = (Note)i.next();
       time = note.render(seq.getSequence(), track, time, ch, transposition, sendBankSelect);
       }

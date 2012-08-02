@@ -25,7 +25,6 @@ import imp.ImproVisor;
 import imp.com.Command;
 import imp.com.CommandManager;
 import imp.data.Leadsheet;
-import imp.lickgen.NonExistentParameterException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -83,7 +82,12 @@ public class Preferences implements imp.Constants
   public static final String DEFAULT_MELODY_INSTRUMENT =
           "default-melody-instrument";
 
-  public static final String DMI_VAL = "12";
+  public static final String DEFAULT_AUX_INSTRUMENT =
+          "default-aux-instrument";
+
+  public static final String DMI_VAL = "12"; // Default melody instrument
+
+  public static final String DAI_VAL = "57";  // Default aux instrument
 
   public static final String DEFAULT_CHORD_INSTRUMENT =
           "default-chord-instrument";
@@ -555,7 +559,8 @@ public static boolean getAlwaysUse(int index)
 
       out.println("(" + ADV_CACHE_ENABLED + " " + ACE_VAL + ")");
       out.println("(" + DEFAULT_LOAD_STAVE + " " + DLS_VAL + ")");
-      out.println("(" + DEFAULT_MELODY_INSTRUMENT + " " + DMI_VAL + ")");
+      out.println("(" + DEFAULT_MELODY_INSTRUMENT + " " + DAI_VAL + ")");
+      out.println("(" + DEFAULT_AUX_INSTRUMENT + " " + DMI_VAL + ")");
       out.println("(" + DEFAULT_CHORD_INSTRUMENT + " " + DCI_VAL + ")");
       out.println("(" + DEFAULT_BASS_INSTRUMENT + " " + DBI_VAL + ")");
 
