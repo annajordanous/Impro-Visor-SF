@@ -518,7 +518,7 @@ public void play(Score score,
         sequencer.start();
 
         playbackStartTime = System.nanoTime();
-        System.out.println("Playback started at time " + playbackStartTime);
+        //System.out.println("Playback started at time " + playbackStartTime);
 
         playing = true;
         paused = false;

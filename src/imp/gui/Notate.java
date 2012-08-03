@@ -6978,7 +6978,7 @@ public class Notate
         });
         standardToolbar.add(stopBtn1);
 
-        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(1.05d, 0.0d, 9.99d, 0.01d));
+        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -9.99d, 9.99d, 0.01d));
         generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
         generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         generationGapSpinner.setInheritsPopupMenu(true);
@@ -25369,7 +25369,9 @@ public boolean playNow(int slotInPlayback, int size)
       return false;
     }
 
-  boolean result = !played && slotInPlayback >= melodyStartsAtSlot;
+  int gapSlots = (int)(120*(Double)generationGapSpinner.getValue());
+  //System.out.println("gapSlots = " + gapSlots);
+  boolean result = !played && slotInPlayback + gapSlots >= melodyStartsAtSlot;
   if( result )
     {
     nextPlayCycle = (nextPlayCycle + 1) % numCycles;
@@ -25389,9 +25391,9 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
 
     if( generated )
       {
-       System.out.println("at " + generateAtSlot +
-                       " generated melody to play at: " + melodyStartsAtSlot
-                     + ": " + improLick);
+       //System.out.println("at " + generateAtSlot +
+       //                " generated melody to play at: " + melodyStartsAtSlot
+       //              + ": " + improLick);
 
       nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
 
@@ -25399,7 +25401,7 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
       }
     else
       {
-        System.out.println("at " + generateAtSlot + " melody generation failed.");
+        //System.out.println("at " + generateAtSlot + " melody generation failed.");
       }
 
     // If a lick was generated, copy it into the melodyPart for notation
@@ -25482,7 +25484,7 @@ public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart, boolean paste)
 
           improCommand.execute();
           setImproCommand(null); // Don't play twice
-          System.out.println("playing at " + melodyStartsAtSlot);
+          //System.out.println("playing at " + melodyStartsAtSlot);
 
         }
     //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);

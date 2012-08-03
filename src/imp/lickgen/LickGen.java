@@ -20,22 +20,23 @@
 
 package imp.lickgen;
 
-import imp.util.NonExistentParameterException;
 import imp.Constants;
 import imp.ImproVisor;
 import imp.cluster.*;
 import imp.data.*;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
+import imp.util.NonExistentParameterException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Random;
+import java.util.Vector;
 import polya.Polylist;
 import polya.PolylistEnum;
-import imp.data.Duration;
-import java.lang.Integer;
 
 /**
  @author David Morrison
@@ -285,13 +286,13 @@ private void addMelody(MelodyPart melpart,
 
     if( curr.getSize() > slotsPerMeasure )
       {
-        System.out.println("MEASURE TOO BIG");
+        //System.out.println("MEASURE TOO BIG");
         curr = curr.extract(0, slotsPerMeasure);
       }
 
     if( curr.getSize() < slotsPerMeasure )
       {
-        System.out.println("MEASURE TOO SMALL");
+        //System.out.println("MEASURE TOO SMALL");
         int s = curr.getSize();
         Rest r = new Rest(slotsPerMeasure - s);
         curr.addRest(r);
@@ -302,22 +303,22 @@ private void addMelody(MelodyPart melpart,
 
     if( startTied && lastWasTied )
       {
-        System.out.println("Should be tying.");
+        //System.out.println("Should be tying.");
         //System.out.println(position/480);
         //System.out.println("Pitch 1: " + ((Note)units.get(0)).getPitch() +
         //        "Pitch 2: " + melpart.getLastNote().getPitch());
         if( ((Note) units.get(0)).getPitch() != -1 && melpart.getLastNote().getPitch() != -1 )
           {
-            System.out.println("Tying");
-            System.out.println(position / 480);
-            System.out.println("Pitch 1: " + ((Note) units.get(0)).getPitch()
-                    + "Pitch 2: " + melpart.getLastNote().getPitch());
+            //System.out.println("Tying");
+            //System.out.println(position / 480);
+            //System.out.println("Pitch 1: " + ((Note) units.get(0)).getPitch()
+            //        + "Pitch 2: " + melpart.getLastNote().getPitch());
             Note last = melpart.getLastNote();
-            System.out.println("First time: " + last.getRhythmValue());
+            //System.out.println("First time: " + last.getRhythmValue());
             last.setRhythmValue(last.getRhythmValue() + ((Note) units.get(0)).getRhythmValue());
             melpart.setSize(melpart.getSize() + ((Note) units.get(0)).getRhythmValue());
             last = melpart.getLastNote();
-            System.out.println("Second time: " + last.getRhythmValue());
+            //System.out.println("Second time: " + last.getRhythmValue());
             units.remove(0);
           }
       }
@@ -740,7 +741,7 @@ public void loadGrammar(String grammarFile)
     try
       {
       syncopationMultiplier = Double.parseDouble(getParameterQuietly(SYNCOPATION_MULTIPLIER));
-      System.out.println("Syncopation multiplier: " + syncopationMultiplier);
+      //System.out.println("Syncopation multiplier: " + syncopationMultiplier);
       }
     catch(NonExistentParameterException e)
       {
@@ -750,7 +751,7 @@ public void loadGrammar(String grammarFile)
     try
       {
       syncopationConstant = Double.parseDouble(getParameterQuietly(SYNCOPATION_CONSTANT)) * MAX_SYNCO * (lengthOfTrade/SLOTS_PER_MEASURE);
-      System.out.println("Syncopation constant: " + syncopationConstant);
+      //System.out.println("Syncopation constant: " + syncopationConstant);
       }
     catch(NonExistentParameterException e)
       {
@@ -1413,7 +1414,7 @@ public MelodyPart fillMelody(int minPitch,
     //to keep oldPitch
 
     //System.out.println("Oldpitch:" + oldPitch);
-    System.out.println("outer rhythmString = " + rhythmString);
+    //System.out.println("outer rhythmString = " + rhythmString);
 
     if( !useOutlines )
       {
@@ -1510,7 +1511,7 @@ public MelodyPart fillMelody(int minPitch,
           }
       }
     
-System.out.println("newRhythmString = " + newRhythmString);
+    //System.out.println("newRhythmString = " + newRhythmString);
 
     try  // I have seen this fail once, hence the try/catch. RK
       // However, someone needs to follow up on what happens if this
@@ -1576,7 +1577,7 @@ public MelodyPart fillPartOfMelody(int minPitch,
         expectancy = MAX_EXPECTANCY;
     }
     
-    System.out.println("Expectancy: " + expectancy);
+    //System.out.println("Expectancy: " + expectancy);
     
     int previousPitch = oldPitch;
 
@@ -1624,7 +1625,7 @@ public MelodyPart fillPartOfMelody(int minPitch,
     return lick;
   }
 
-    boolean traceLickGen = true;
+    boolean traceLickGen = false;
     /**
      * Track previous note for purposes of rest merging.
      * This should be moved into addNote of MelodyPart eventually.
@@ -1642,7 +1643,7 @@ public MelodyPart fillPartOfMelody(int minPitch,
 private void addNote(Note note, MelodyPart part, Polylist rhythmString,
                      boolean avoidRepeats, String reason, Object item)
   {
-      System.out.println("addNote " + note);
+    //System.out.println("addNote " + note);
     int slotsInserted = note.getRhythmValue();
     position += slotsInserted;
     if( note.isRest() )
@@ -1805,7 +1806,7 @@ public boolean fillMelody(MelodyPart lick,
         // Recalculate probabilities to reuse a given pitch
         recalcPitchArray();
 
-     System.out.println("item = " + item);
+        //System.out.println("item = " + item);
 
         if( Grammar.isScaleDegree(item) )
            {
@@ -1831,7 +1832,7 @@ public boolean fillMelody(MelodyPart lick,
             if( inner.nonEmpty() )
               {
                 Object first = inner.first();
-           System.out.println("inner = " + inner + ", first = " + first);
+                //System.out.println("inner = " + inner + ", first = " + first);
                  if( first.equals("slope") )
                   {
                     // Process "slope" specification, a phrase of a specified slope
@@ -2420,7 +2421,7 @@ public boolean fillMelody(MelodyPart lick,
         int currentSlot = grammar.getCurrentSlot();
         ChordPart chords = notate.getChordProg();
         MelodyPart currMelody = melody.extract(currentSlot - lengthOfTrade, currentSlot);
-        System.out.println("GEPN slot: " + currentSlot);
+        //System.out.println("GEPN slot: " + currentSlot);
         return Expectancy.getExpectancyPerNote(currMelody, lengthOfTrade, chords, currentSlot);
     }
     
