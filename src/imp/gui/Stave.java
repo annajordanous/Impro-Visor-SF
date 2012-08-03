@@ -2538,6 +2538,82 @@ public void repaintLineFromCstrLine(int i)
             y2 - y1 + lineSpacing + lineOffset);
   }
 
+private boolean usePhi = false;
+private boolean useDelta = false;
+public boolean getPhi() {
+    return usePhi;
+}
+public boolean getDelta() {
+    return useDelta;
+}
+public void setPhi(boolean phi) {
+    usePhi = phi;
+}
+public void setDelta(boolean delta) {
+    useDelta = delta;
+}
+
+/**
+ * changes m7b5 into a phi symbol
+ * changes M7 into a delta symbol
+ */
+public String toSymbols(String chordName)
+{
+    String result = chordName;
+    
+    if(useDelta)
+        result = toDelta(result);
+    if(usePhi)
+        result = toPhi(result);
+   
+    if(result.length()==0)
+        result = chordName;
+
+    return result;
+}
+
+public String toPhi(String chordName)
+{
+    if(!contains(chordName, "m7b5"))
+        return chordName;
+    else
+    {
+        if(chordName.substring(0,4).equals("m7b5"))
+            return "\u03D5" + toPhi(chordName.substring(4));
+        else if(chordName.substring(1,5).equals("m7b5"))
+            return chordName.substring(0,1) + "\u03D5" + toPhi(chordName.substring(5));
+        else if(chordName.substring(2,6).equals("m7b5"))
+            return chordName.substring(0,2) + "\u03D5" + toPhi(chordName.substring(6));
+        else if(chordName.substring(3,7).equals("m7b5"))
+            return chordName.substring(0,3) + "\u03D5" + toPhi(chordName.substring(7));
+        else
+            return chordName.substring(0,4) + toPhi(chordName.substring(4));
+    }
+}
+
+public String toDelta(String chordName)
+{
+    if(!contains(chordName, "M7"))
+        return chordName;
+    else
+    {
+        if(chordName.substring(0,2).equals("M7"))
+            return "\u0394" + toDelta(chordName.substring(2));
+        else if(chordName.substring(1,3).equals("M7"))
+            return chordName.substring(0,1) + "\u0394" + toDelta(chordName.substring(3));
+        else
+            return chordName.substring(0,2) + toDelta(chordName.substring(2));
+    }
+}
+
+public boolean contains(String chordName, String target)
+{
+    for(int j = 0; j <= chordName.length() - target.length(); j++)
+        if(chordName.substring(j,j+target.length()).equals(target))
+            return true;
+    return false;
+}
+
 /**
  * Cycles through the slots in a given MelodyPart, part, and draws the
  * entire stave consisting of the construction lines, notes, accidentals,
@@ -2992,8 +3068,13 @@ private boolean drawPart(MelodyPart part, Graphics g)
                   }
 
                 g.setFont(chordFont);
-                g.drawString(chordProg.getChord(i).getName(),
-                             xCoordinate - 4, chordHeight);
+                
+                String chordName = toSymbols(chordProg.getChord(i).getName());
+                
+                g.drawString(chordName,
+                             xCoordinate - 4,
+                             chordHeight);
+                
                 g.setFont(barNumFont);
 
                 g.setColor(Color.BLACK);
