@@ -1048,7 +1048,6 @@ public class Notate
             if(e.getClickCount() >= 1) {
                 JTable target = (JTable)e.getSource();
                 int row = target.getSelectedRow();
-                //markermarkermarker
                 nWaySplitComboBoxModel.createItems(row);
                 nWaySplitComboBox.setSelectedItem("");
             }
@@ -1057,6 +1056,9 @@ public class Notate
 
     nWaySplitComboBox.setModel(nWaySplitComboBoxModel);
 
+    replaceWithPhi.setState(false);
+    replaceWithDelta.setState(false);
+    
     lickgenFrame = new LickgenFrame(this, lickgen, cm);
 
     populateNotateGrammarMenu();
@@ -2129,6 +2131,8 @@ public class Notate
         showBracketsAllMeasuresMI = new javax.swing.JCheckBoxMenuItem();
         showConstructionLinesMI = new javax.swing.JCheckBoxMenuItem();
         useBeamsMI = new javax.swing.JCheckBoxMenuItem();
+        replaceWithPhi = new javax.swing.JCheckBoxMenuItem();
+        replaceWithDelta = new javax.swing.JCheckBoxMenuItem();
         playMenu = new javax.swing.JMenu();
         playSelectionMI = new javax.swing.JMenuItem();
         playSelectionToEndMI = new javax.swing.JMenuItem();
@@ -7913,12 +7917,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentFileMenu(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentFileMenu(evt);
             }
         });
 
@@ -7934,12 +7938,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                populateRecentLeadsheetNewWindow(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                populateRecentLeadsheetNewWindow(evt);
             }
         });
 
@@ -8611,6 +8615,24 @@ public class Notate
         });
         viewMenu.add(useBeamsMI);
 
+        replaceWithPhi.setSelected(true);
+        replaceWithPhi.setText("Use \u03D5 for m7b5");
+        replaceWithPhi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithPhiActionPerformed(evt);
+            }
+        });
+        viewMenu.add(replaceWithPhi);
+
+        replaceWithDelta.setSelected(true);
+        replaceWithDelta.setText("Use \u0394 for M7");
+        replaceWithDelta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithDeltaActionPerformed(evt);
+            }
+        });
+        viewMenu.add(replaceWithDelta);
+
         menuBar.add(viewMenu);
 
         playMenu.setMnemonic('p');
@@ -8907,12 +8929,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                windowMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                windowMenuMenuSelected(evt);
             }
         });
 
@@ -8945,12 +8967,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                notateGrammarMenuMenuSelected(evt);
-            }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                notateGrammarMenuMenuSelected(evt);
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -11833,7 +11855,7 @@ public class SectionTableModel extends DefaultTableModel
     }
 
 }
-//markermarkermarker
+
 @SuppressWarnings("serial")
 
 public class NWaySplitComboBoxModel
@@ -18245,6 +18267,8 @@ public int getNewYlocation()
 
 public void openLeadsheet(boolean openCorpus)
   {
+    boolean phi = getCurrentStave().getPhi();
+    boolean delta = getCurrentStave().getDelta();
     if( openLSFC.getCurrentDirectory().getAbsolutePath().equals("/") )
       {
         openLSFC.setCurrentDirectory(ImproVisor.getLeadsheetDirectory());
@@ -18369,6 +18393,12 @@ public void openLeadsheet(boolean openCorpus)
 
         setChordFontSizeSpinner(score.getChordFontSize());
       }
+    
+    replaceWithPhi.setState(phi);
+    replaceWithDelta.setState(delta);
+    getCurrentStave().setPhi(phi);
+    getCurrentStave().setDelta(delta);
+    
     setNormalStatus();
     staveRequestFocus();
     }
@@ -22294,7 +22324,7 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
       audioSettings.setRMS_THRESHOLD(actualValue);
       }
   }//GEN-LAST:event_rmsThresholdSliderStateChanged
-//markermarkermarker
+
     private void nWaySplitComboBoxActionHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nWaySplitComboBoxActionHandler
         int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
         
@@ -22411,6 +22441,18 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
                 break;
         }
     }//GEN-LAST:event_pitchRangePresetComboBoxActionPerformed
+
+    private void replaceWithPhiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithPhiActionPerformed
+        boolean checked = replaceWithPhi.getState();
+        //System.out.println("PHI: " + checked);
+        getCurrentStave().setPhi(checked);
+    }//GEN-LAST:event_replaceWithPhiActionPerformed
+
+    private void replaceWithDeltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithDeltaActionPerformed
+        boolean checked = replaceWithDelta.getState();
+        //System.out.println("Delta: " + checked);
+        getCurrentStave().setDelta(checked);
+    }//GEN-LAST:event_replaceWithDeltaActionPerformed
 
 public void setRMSThreshold(double value)
 {
@@ -24476,6 +24518,8 @@ public void showNewVoicingDialog()
     private javax.swing.JButton redoBtn;
     private javax.swing.JMenuItem redoMI;
     private javax.swing.JMenuItem redoPMI;
+    private javax.swing.JCheckBoxMenuItem replaceWithDelta;
+    private javax.swing.JCheckBoxMenuItem replaceWithPhi;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton resetBtn1;
     private javax.swing.JButton resetBtn2;
