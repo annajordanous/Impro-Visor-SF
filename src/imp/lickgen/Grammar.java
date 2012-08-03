@@ -504,7 +504,7 @@ public Polylist applyRules(Polylist gen) throws RuleApplicationException
 
           // The first symbol can never be a variable, it will give the "name" of the
           // rule.  All additional symbols will contain information.
-System.out.println("pop = " + pop);
+          //System.out.println("pop = " + pop);
 
           if( pop instanceof Polylist && ((Polylist)pop).first() instanceof String )
             {
@@ -1002,14 +1002,14 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
     {
         int[] syncVector = currMelody.getSyncVector(15, LENGTH_OF_TRADE);
         int synco = Tension.getSyncopation(syncVector, (LENGTH_OF_TRADE/SLOTS_PER_MEASURE));
-        System.out.println(synco);
+        //System.out.println(synco);
         double syncoPerMeasure = synco/(LENGTH_OF_TRADE/SLOTS_PER_MEASURE);
-        System.out.println("Syncopation per measure " + syncoPerMeasure);
+        //System.out.println("Syncopation per measure " + syncoPerMeasure);
         if(arg2.equals(HIGH))
         {
             if(syncoPerMeasure >= 8)
             {
-                System.out.println("High");
+                //System.out.println("High");
                 return new Double(0.8);
             }
             else
@@ -1021,7 +1021,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         {
             if(syncoPerMeasure < 8 && syncoPerMeasure >= 4)
             {
-                System.out.println("Medium");
+                //System.out.println("Medium");
                 return new Double(0.8);
             }
             else
@@ -1033,7 +1033,7 @@ private Object evaluateBuiltin(Object arg1, Object arg2)
         {
             if(syncoPerMeasure < 4)
             {
-                System.out.println("Low");
+                //System.out.println("Low");
                 return new Double(0.8);
             }
             else
