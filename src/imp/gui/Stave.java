@@ -40,6 +40,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import polya.Polylist;
 import polya.PolylistBuffer;
@@ -306,7 +307,7 @@ private String showTitle;
  */
 private String year;
 
-private String mouseOverNoteName = "";
+JLabel noteCursorLabel = new javax.swing.JLabel();
 /**
  * The font for the Title
  */
@@ -840,6 +841,9 @@ public Stave(MelodyPart part, StaveType type, Notate notate,
     // Select the first slot on the stave.
 
     setSelection(0);
+    
+    this.add(noteCursorLabel);
+    
   }
 
 /**
@@ -2374,12 +2378,21 @@ protected void paintComponent(Graphics g)
       {
         selectionBoxDrawn = false;
       }
-    
-    repaint(new Rectangle( 598, 29, 15, 15));
-    g.setColor(Color.RED);
-    g.drawString(mouseOverNoteName, 600, 40);
-    
   }
+
+public void setNoteCursorLabel(String str, int x, int y)
+{
+    noteCursorLabel.setForeground(Color.RED);
+    noteCursorLabel.setLocation(x + 17,  y - 3);
+    noteCursorLabel.setText(str);
+    noteCursorLabel.setOpaque(false);
+    noteCursorLabel.setSize(18, 15);
+}
+
+public void clearNoteCursorLabel()
+{
+    setNoteCursorLabel("", 0, 0);
+}
 
 private boolean selectionBoxDrawn = false;
 
@@ -2425,18 +2438,6 @@ public Stroke getCurveStroke()
   {
     return curveStroke;
   }
-
-public String getMouseOverNoteName()
-{
-    return mouseOverNoteName;
-
-}
-
-public void setMouseOverNoteName(String str)
-{
-    if (!str.isEmpty())
-        mouseOverNoteName = str;
-}
 
 /**
  * draw the selection box, and the handles (if needed)
