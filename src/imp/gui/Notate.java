@@ -421,9 +421,6 @@ public class Notate
 
   private AudioSettings audioSettings;
 
-  private NoteResolutionComboBoxModel audioSettingsNoteResolutionModel;
-
-
   synchronized public void setPlaybackStop(int slot, String message)
   {
    stopPlaybackAtSlot = slot;
@@ -1654,7 +1651,7 @@ public class Notate
         audioPreferences = new javax.swing.JPanel();
         jTabbedPane6 = new javax.swing.JTabbedPane();
         audioInputTab = new javax.swing.JPanel();
-        noteResolutionComboBox = new javax.swing.JComboBox();
+        audioInputResolutionComboBox = new javax.swing.JComboBox();
         frameSizeComboBox = new javax.swing.JComboBox();
         pollRateComboBox = new javax.swing.JComboBox();
         playTripletsCheckBox = new javax.swing.JCheckBox();
@@ -4171,17 +4168,17 @@ public class Notate
         audioInputTab.setToolTipText("Sets the minimum MIDI pitch value recognized when capturing audio.");
         audioInputTab.setLayout(new java.awt.GridBagLayout());
 
-        noteResolutionComboBox.setMaximumRowCount(16);
-        noteResolutionComboBox.setModel(NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel());
-        noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
-        noteResolutionComboBox.setSelectedItem(NoteResolutionInfo.getNoteResolutions()[NoteResolutionComboBoxModel.getSelectedIndex()]);
-        noteResolutionComboBox.setToolTipText("Sets the resolution with which MIDI tracks are converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. Low numbers take more memory and may fail.");
-        noteResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
-        noteResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
-        noteResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
-        noteResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
+        audioInputResolutionComboBox.setMaximumRowCount(16);
+        audioInputResolutionComboBox.setModel(AudioInputResolutionComboBoxModel.getAudioInputResolutionComboBoxModel());
+        audioInputResolutionComboBox.setSelectedIndex(4);
+        audioInputResolutionComboBox.setSelectedItem(AudioInputResolutionComboBoxModel.getSelection());
+        audioInputResolutionComboBox.setToolTipText("Sets the resolution with which the monophonic audio input is converted to Impro-Visor notes. Select the highest number of slots that gives satisfactory results. ");
+        audioInputResolutionComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Note Resolution", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 1, 13))); // NOI18N
+        audioInputResolutionComboBox.setMinimumSize(new java.awt.Dimension(300, 50));
+        audioInputResolutionComboBox.setPreferredSize(new java.awt.Dimension(300, 50));
+        audioInputResolutionComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                noteResolutionComboBoxChanged(evt);
+                audioInputResolutionComboBoxChanged(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -4189,7 +4186,7 @@ public class Notate
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        audioInputTab.add(noteResolutionComboBox, gridBagConstraints);
+        audioInputTab.add(audioInputResolutionComboBox, gridBagConstraints);
 
         frameSizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1024", "2048", "4096", "8192", " " }));
         frameSizeComboBox.setSelectedIndex(1);
@@ -4299,9 +4296,9 @@ public class Notate
         minPitchSpinner.setModel(new javax.swing.SpinnerNumberModel(45, 0, 100, 1));
         minPitchSpinner.setToolTipText("Sets the minimum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests.");
         minPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Min. Pitch"));
-        minPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 40));
+        minPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 50));
         minPitchSpinner.setName("Minimum MIDI Pitch");
-        minPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 40));
+        minPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 50));
         minPitchSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 minPitchSpinnerStateChanged(evt);
@@ -4310,15 +4307,16 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.weighty = 0.05;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
         audioInputTab.add(minPitchSpinner, gridBagConstraints);
 
         maxPitchSpinner.setModel(new javax.swing.SpinnerNumberModel(110, 50, 127, 1));
         maxPitchSpinner.setToolTipText("Sets the maximum MIDI pitch value recognized when capturing audio. Pitches outside this range will be counted as rests.");
         maxPitchSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Max. Pitch"));
-        maxPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 40));
+        maxPitchSpinner.setMinimumSize(new java.awt.Dimension(84, 50));
         maxPitchSpinner.setName("Maximum MIDI Pitch");
-        maxPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 40));
+        maxPitchSpinner.setPreferredSize(new java.awt.Dimension(84, 50));
         maxPitchSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 maxPitchSpinnerStateChanged(evt);
@@ -4333,9 +4331,9 @@ public class Notate
         pitchRangePresetComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Default", "Soprano", "Alto", "Tenor", "Bass", "High Pass", "Low Pass", "Full Range" }));
         pitchRangePresetComboBox.setToolTipText("Presets that specify the minimum and maximum MIDI pitch to be detected when capturing audio.");
         pitchRangePresetComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Pitch Range Presets"));
-        pitchRangePresetComboBox.setMinimumSize(new java.awt.Dimension(140, 42));
+        pitchRangePresetComboBox.setMinimumSize(new java.awt.Dimension(140, 50));
         pitchRangePresetComboBox.setName("rangePresetComboBox");
-        pitchRangePresetComboBox.setPreferredSize(new java.awt.Dimension(140, 42));
+        pitchRangePresetComboBox.setPreferredSize(new java.awt.Dimension(140, 50));
         pitchRangePresetComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pitchRangePresetComboBoxActionPerformed(evt);
@@ -4344,6 +4342,8 @@ public class Notate
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weighty = 0.05;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
         audioInputTab.add(pitchRangePresetComboBox, gridBagConstraints);
 
@@ -22213,22 +22213,22 @@ public void setAudioplayTriplets(boolean value)
     playTripletsCheckBox.setSelected(value);
   }
 
-private void noteResolutionComboBoxChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_noteResolutionComboBoxChanged
-  {//GEN-HEADEREND:event_noteResolutionComboBoxChanged
-  NoteResolutionComboBoxModel.setSelectedIndex(noteResolutionComboBox.getSelectedIndex());
-  int slots = NoteResolutionComboBoxModel.getResolution();
+private void audioInputResolutionComboBoxChanged(java.awt.event.ActionEvent evt)//GEN-FIRST:event_audioInputResolutionComboBoxChanged
+  {//GEN-HEADEREND:event_audioInputResolutionComboBoxChanged
+  AudioInputResolutionComboBoxModel.setSelectedIndex(audioInputResolutionComboBox.getSelectedIndex());
+  int slots = AudioInputResolutionComboBoxModel.getResolution();
   int subDivisions = 4*BEAT/slots;
   if( audioSettings != null )
     {
-    System.out.println("audio: note resolution = " + subDivisions + " subdivisions");
+    System.out.println("audio: note resolution = " + slots + " slots, " + subDivisions + " subdivisions per 4-beats");
     audioSettings.setRESOLUTION(subDivisions);
     }
-  }//GEN-LAST:event_noteResolutionComboBoxChanged
+  }//GEN-LAST:event_audioInputResolutionComboBoxChanged
 
 public void setAudioNoteResolution(int subdivisions)
   {
   // Need to search for menu item of desired resolution
-  NoteResolutionComboBoxModel model = NoteResolutionComboBoxModel.getNoteResolutionComboBoxModel();
+  AudioInputResolutionComboBoxModel model = AudioInputResolutionComboBoxModel.getAudioInputResolutionComboBoxModel();
   int n = model.getSize();
   for( int i = 0; i < n; i++ )
     {
@@ -23992,6 +23992,7 @@ public void showNewVoicingDialog()
     private javax.swing.JLabel approachToneLabel;
     private javax.swing.JCheckBox approachTones;
     private javax.swing.JToggleButton audioBtn;
+    private javax.swing.JComboBox audioInputResolutionComboBox;
     private javax.swing.JPanel audioInputTab;
     private javax.swing.JPanel audioPreferences;
     private javax.swing.JButton audioPreferencesBtn;
@@ -24394,7 +24395,6 @@ public void showNewVoicingDialog()
     private javax.swing.JMenu notateGrammarMenu;
     private javax.swing.JLabel noteColoringLabel;
     private javax.swing.JButton noteCursorBtn;
-    private javax.swing.JComboBox noteResolutionComboBox;
     private javax.swing.JTextField numStavesPerPage;
     private javax.swing.JButton okMeasBtn;
     private javax.swing.JButton okSaveButton;
