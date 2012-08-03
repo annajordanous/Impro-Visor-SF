@@ -22257,7 +22257,7 @@ private void k_constantSliderStateChanged(javax.swing.event.ChangeEvent evt)//GE
   {//GEN-HEADEREND:event_k_constantSliderStateChanged
     int value = k_constantSlider.getValue();
     double actualValue = ((double)value)/1000;
-    System.out.println("audio: k_constant value = " + actualValue);
+    //System.out.println("audio: k_constant value = " + actualValue);
 
     // Not sure how audioSettings can be null for sliders but not for comboBoxes
 
@@ -22288,7 +22288,7 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
   {//GEN-HEADEREND:event_rmsThresholdSliderStateChanged
     int value = rmsThresholdSlider.getValue();
     double actualValue = ((double)value)/10;
-    System.out.println("audio: RMS threshold value = " + actualValue);
+    //System.out.println("audio: RMS threshold value = " + actualValue);
     if( audioSettings != null )
       {
       audioSettings.setRMS_THRESHOLD(actualValue);
@@ -25351,10 +25351,10 @@ public boolean improviseNow(int slotInPlayback, int size)
 
   if( result )
     {
-        System.out.println("slot = " + slotInPlayback
-                   + ": currentCycle = " + currentCycle
-                   + ", melodyStart = " + melodyStartsAtSlot
-                   + ", generate at " + generateAtSlot);
+//        System.out.println("slot = " + slotInPlayback
+//                   + ": currentCycle = " + currentCycle
+//                   + ", melodyStart = " + melodyStartsAtSlot
+//                   + ", generate at " + generateAtSlot);
     }
 
   return result;
@@ -25521,7 +25521,7 @@ public void setImproInterval(int improInterval)
   {
     this.improInterval = improInterval;
     halfInterval = improInterval/2;
-  System.out.println("improInterval = " + improInterval + ", halfInterval = " + halfInterval);
+  //System.out.println("improInterval = " + improInterval + ", halfInterval = " + halfInterval);
   }
 
 public int getPlayLeadSlots()
@@ -25575,6 +25575,11 @@ private AutoImprovisation autoImprovisation = null;
 class PlayActionListener implements ActionListener
 {
 
+/**
+ * This is called repeatedly as play of the leadsheet progresses.
+ * @param evt 
+ */
+
 public void actionPerformed(ActionEvent evt)
   {
     if( playingStopped() )
@@ -25583,17 +25588,134 @@ public void actionPerformed(ActionEvent evt)
           {
             keyboard.setPlayback(false);
           }
-        //return;
       }
 
     int slotDelay =
-            (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
+        (int) (midiSynth.getTotalSlots() * (1e6 * trackerDelay / midiSynth.getTotalMicroseconds()));
 
     int slotInPlayback = midiSynth.getSlot() - slotDelay;
     int slot = slotInPlayback;
     int totalSlots = midiSynth.getTotalSlots();
+    
+    handleAudioInput(slotInPlayback);
 
-//Poll for audio input every (captureInterval) slots
+    handleAutoImprov(slotInPlayback);
+
+    // The following variant was originally added to stop playback at the end of a selection
+    // However, it also truncates the drum patterns etc. so that needs to be fixed.
+
+    if( midiSynth.finishedPlaying() )
+      {
+        stopPlaying("midiSynth finished playing");
+        return;
+      }
+
+    // Stop playback when a specified slot is reached.
+
+    if( slotInPlayback > stopPlaybackAtSlot )
+      {
+//        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
+
+        stopPlaying("slotInPlayback > stopPlaybackAtSlot " + slotInPlayback + " > " + stopPlaybackAtSlot);
+        return;
+      }
+
+    int chorusSize = getScore().getLength();
+
+    int slotInChorus = slotInPlayback % chorusSize;
+
+    Chord currentChord = chordProg.getCurrentChord(slotInChorus);
+
+    currentChord.getChordForm();
+
+    currentPlaybackTab = slotInPlayback / chorusSize;
+
+    int tab = currentPlaybackTab;
+
+    if( keyboard != null && keyboard.isVisible() && keyboard.isPlaying() )
+      {
+        keyboardPlayback(currentChord, tab, slotInChorus, slot, totalSlots);
+      }
+
+    handlePlayline(slotInChorus);
+
+    if( stepKeyboard != null )
+      {
+        stepKeyboard.resetAdvice(slot);
+      }
+  } // actionPerformed
+
+
+/**
+ * Handle automatic improvisation
+ * @param slotInPlayback 
+ */
+
+private void handleAutoImprov(int slotInPlayback)
+  {
+    // Gap between the start of next generation and end of previous playback.
+
+    int gap = lickgenFrame.getGap();
+
+    // Recurrent generation option
+    // There are two separate branches for the time being, reflecting
+    // an intended change
+
+    if( originalGeneration )
+      {
+        // Original form of improvisation
+        if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
+                && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
+          {
+            recurrentIteration++;
+
+//     debug    System.out.println("Continue improvising: " + improviseStartSlot
+//                             + " to " + improviseEndSlot
+//                             + " chorus # " + recurrentIteration);
+            setStatus("Chorus " + recurrentIteration);
+
+            originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
+          }
+      }
+    else
+      {
+        // New form of improvisation
+        // Caution: LickGenerator control should be opened first
+        // so that parameters are set.
+
+        if( autoImprovisation.isSelected() )
+          {
+            MelodyPart currentMelodyPart = getCurrentMelodyPart();
+
+            int size = currentMelodyPart.size();
+
+            // Create a lick if it is now time
+
+            if( autoImprovisation.improviseNow(slotInPlayback, size) )
+              {
+                autoImprovisation.createMelody(currentMelodyPart);
+              }
+
+            // Play the lick previously generated, and paste into the
+            // current melody part.
+
+            if( autoImprovisation.playNow(slotInPlayback, size) )
+              {
+                autoImprovisation.playCreatedMelody(currentMelodyPart, true);
+              }
+          }
+      }
+  } // handleAutoImprov
+
+
+/**
+ * Handle input from an audio line
+ * @param slot 
+ */
+
+private void handleAudioInput(int slot)
+  {
+    //Poll for audio input every (captureInterval) slots
 //    if (useAudioInputMI.isSelected() && !firstCapture)
 //      {
 //          if (slot % captureInterval == 0 && !extractor.isCapturing)
@@ -25616,115 +25738,16 @@ public void actionPerformed(ActionEvent evt)
 //              captureStopped = true;
 //          }
 //      }
+  } // handleAudioInput
 
-    //System.out.println("Total Slots: " + midiSynth.getTotalSlots());
-    //System.out.println("Slot in playback: " + slotInPlayback);
 
-    // Exploratory set up for recurrent generation of choruses:
+/**
+ * Handle updating of tracker, aka "playline"
+ * @param slotInChorus 
+ */
 
-    // Gap between the start of next generation and end of previous playback.
-
-    int gap = lickgenFrame.getGap();
-
-    //slotInPlayback += playbackOffset;
-
-    int chorusSize = getScore().getLength();
-
-    int tab = currentPlaybackTab;
-
-    currentPlaybackTab = slotInPlayback / chorusSize;
-
-    //slotInPlayback %= chorusSize;
-
-    int slotInChorus = slotInPlayback % chorusSize;
-
-    Chord currentChord = chordProg.getCurrentChord(slotInChorus);
-
-    currentChord.getChordForm();
-
-    if( keyboard != null && keyboard.isVisible() && keyboard.isPlaying() )
-      {
-        keyboardPlayback(currentChord, tab, slotInChorus, slot, totalSlots);
-      }
-
-    // Recurrent generation option
-    // There are two separate branches for the time being, reflecting
-    // an intended change
-
-    if( originalGeneration )
-      {
-        // Original form of improvisation
-        if( lickgenFrame.getRecurrent() // recurrentCheckbox.isSelected()
-                && (slotInPlayback >= stopPlaybackAtSlot - gap) ) // was totalSlots - gap) )
-          {
-            recurrentIteration++;
-
-//     debug    System.out.println("Continue improvising: " + improviseStartSlot
-//                             + " to " + improviseEndSlot
-//                             + " chorus # " + recurrentIteration);
-            setStatus("Chorus " + recurrentIteration);
-
-            originalGenerate(lickgen, improviseStartSlot, improviseEndSlot);
-
-            slotInPlayback = improviseStartSlot; // TRIAL
-          }
-
-      }
-    else
-      {
-        // New form of improvisation
-        // Caution: LickGenerator control should be opened first.
-
-        if( autoImprovisation.isSelected() )
-          {
-            MelodyPart currentMelodyPart = getCurrentMelodyPart();
-
-            int size = currentMelodyPart.size();
-
-            // Create a lick if it is now time
-
-            if( autoImprovisation.improviseNow(slotInPlayback, size) )
-              {
-                autoImprovisation.createMelody(currentMelodyPart);
-              }
-
-            // Play the lick previously generated, and paste into the
-            // current melody part.
-
-            boolean playNow = autoImprovisation.playNow(slotInPlayback, size);
-
-            if( playNow )
-              {
-                //System.out.println("at " + slotInPlayback + " playNow = " + playNow);
-                if( slotInPlayback == improviseStartSlot )
-                  {
-                    //currentMelodyPart.clear();
-                  }
-
-                autoImprovisation.playCreatedMelody(currentMelodyPart, true);
-              }
-          }
-      }
-
-    // The following variant was originally added to stop playback at the end of a selection
-    // However, it also truncates the drum patterns etc. so that needs to be fixed.
-
-    if( midiSynth.finishedPlaying() )
-      {
-        stopPlaying("midiSynth finished playing");
-        return;
-      }
-
-    // Stop playback when a specified slot is reached.
-
-    if( slotInPlayback > stopPlaybackAtSlot )
-      {
-//        System.out.println("stop at " + slotInPlayback + " vs. " + stopPlaybackAtSlot);
-
-        stopPlaying("slotInPlayback > stopPlaybackAtSlot " + slotInPlayback + " > " + stopPlaybackAtSlot);
-        return;
-      }
-
+private void handlePlayline(int slotInChorus)
+  {
     if( autoScrollOnPlayback && currentPlaybackTab != currTabIndex && showPlayLine() )
       {
         playbackGoToTab(currentPlaybackTab);
@@ -25740,7 +25763,6 @@ public void actionPerformed(ActionEvent evt)
 
         if( autoScrollOnPlayback && showPlayLine() )
           {
-
             Rectangle playline = stave.getPlayLine();
 
             if( playline.height == 0 )
@@ -25797,14 +25819,10 @@ public void actionPerformed(ActionEvent evt)
               {
                 setCurrentScrollPosition(viewport);
               }
-
           }
       }
+  } // handlePlayline
 
-    if( stepKeyboard != null )
-      {
-        stepKeyboard.resetAdvice(slot);
-      }
-  }
 } // PlayActionListener
-}
+
+} //Notate
