@@ -511,7 +511,6 @@ public void mouseMoved(MouseEvent e)
          
         if( withinNoteArea && notate.getUseNoteCursor())
             chooseAndSetNoteCursor(e);
-            //setCursor(noteCursor);
         else
             setCursor();   
      }
@@ -529,6 +528,8 @@ public void mouseMoved(MouseEvent e)
  */
 private void chooseAndSetNoteCursor(MouseEvent e)
 {
+    stave.clearNoteCursorLabel();;
+    
     int x = e.getX();
     int y = e.getY();
     
@@ -561,8 +562,6 @@ private void chooseAndSetNoteCursor(MouseEvent e)
                 return;
             }
 
-    System.out.println();
-
     boolean noteOnLegerLine = noteOnLegerLine(pitch, curLine);
     
     if (currentChord != null && !currentChord.getName().equals(NOCHORD))
@@ -593,6 +592,7 @@ private void chooseAndSetNoteCursor(MouseEvent e)
             stave.repaint();
             noteCursor = makeCursor(blueNoteCursorImg, "Note", true);
             setCursor(noteCursor);
+            stave.clearNoteCursorLabel();
             return;
         }
         // pitch is a chord tone
@@ -626,8 +626,8 @@ private void chooseAndSetNoteCursor(MouseEvent e)
         Graphics g = stave.getGraphics();
         //stave.repaint();
         //g.setColor(Color.red);
-        stave.setMouseOverNoteName(noteNameFromMidi(pitch, curLine));
         stave.updateLegerLines(pitch, x,  curLine, stave.getGraphics());
+        stave.setNoteCursorLabel(noteNameFromMidi(pitch, curLine), x, y);
     }
 
     
@@ -3012,7 +3012,11 @@ public void moveSelectionLeft(int index)
 
 public void setCursor()
  {
-  setCursor(defaultCursor);
+     if (!notate.getUseNoteCursor())
+     {
+        setCursor(defaultCursor);
+     }
+    stave.clearNoteCursorLabel();
 }
 
 public void setCursor(Cursor cursor)
@@ -3024,9 +3028,11 @@ public void setCursor(Cursor cursor)
         break;
     case RECORDING:
       stave.setCursor(cursor);
+      stave.clearNoteCursorLabel();
       break;
     case DRAWING:
       stave.setCursor(penCursor);
+      stave.clearNoteCursorLabel();
       break;
    }
  }
