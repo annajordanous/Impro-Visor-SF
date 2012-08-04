@@ -8912,7 +8912,7 @@
             <Component class="javax.swing.JSpinner" name="generationGapSpinner">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="0.99" maximum="9.99" minimum="-9.99" numberType="java.lang.Double" stepSize="0.01" type="number"/>
+                  <SpinnerModel initial="0.99" maximum="20.0" minimum="-20.0" numberType="java.lang.Double" stepSize="0.01" type="number"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on."/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
