@@ -410,7 +410,7 @@ public void play(Score score,
  * @param score   Score data to change to SMF
  * @exception Exception
  */
-public void play(Score score,
+public void origPlay(Score score,
                  long startIndex,
                  int loopCount,
                  int transposition,
@@ -529,6 +529,174 @@ public void play(Score score,
           }
       }
 }
+
+/**
+ * Refactored version of the original play method.
+ * Separates into prePlay and actualPlay, for purposes of reducing latency
+ * when playback starts.
+ * 
+ * @param score
+ * @param startIndex
+ * @param loopCount
+ * @param transposition
+ * @param useDrums
+ * @param endLimitIndex
+ * @param countInOffset
+ * @throws InvalidMidiDataException 
+ */
+public void play(Score score,
+                 long startIndex,
+                 int loopCount,
+                 int transposition,
+                 boolean useDrums,
+                 int endLimitIndex,
+                 int countInOffset)
+    throws InvalidMidiDataException
+  {
+    prePlay(score,
+            startIndex,
+            loopCount,
+            transposition,
+            useDrums,
+            endLimitIndex,
+            countInOffset);
+    
+    actualPlay(transposition);
+  }
+/**
+ * Does most of what's in play(...) except for starting the sequencer.
+ * This is so priming can take place, and start will have less latency.
+ * @param score   Score data to change to SMF
+ * @exception Exception
+ */
+public void prePlay(Score score,
+                    long startIndex,
+                    int loopCount,
+                    int transposition,
+                    boolean useDrums,
+                    int endLimitIndex,
+                    int countInOffset)
+        throws InvalidMidiDataException
+  {
+//   Trace.log(0,
+//              (++playCounter) + ": Starting MIDI sequencer, startTime = "
+//              + startIndex + " loopCount = " + loopCount + " endIndex = "
+//              + endLimitIndex);
+
+    if( sequencer == null )
+      {
+        setSequencer();
+      }
+
+    setCountInOffset(countInOffset);
+
+    scoreTitle = score.getTitle();
+
+    tempo = (float) score.getTempo();
+
+    Sequence seq = score.render(m_ppqn, transposition, useDrums, endLimitIndex);
+
+    int magicFactor = Style.getMagicFactor();
+
+    if( null != seq )
+      {
+        try
+          {
+            sequencer.open();
+          }
+        catch( MidiUnavailableException e )
+          {
+            ErrorLog.log(ErrorLog.SEVERE, "MIDI System Unavailable:" + e);
+            return;
+          }
+        sequencer.setSequence(seq);
+        // needed? sequencer.addMetaEventListener(this);
+
+        setTempo(tempo);
+
+        // Clear possible old values
+
+        setLoopStartPoint(0);
+        setLoopEndPoint(ENDSCORE);
+
+        setLoopCount(0);
+
+        setSlot(startIndex);
+
+        System.runFinalization();
+        System.gc();
+
+        if( loopCount != 0 )
+          {
+            // set end time first, otherwise there might be an exception because
+            // the start time is too large.
+
+// CAUTION: Changing this code may break the combination of countIn with looping.
+
+            if( endLimitIndex == ENDSCORE )
+              {
+                setLoopEndPoint(ENDSCORE);
+              }
+            else
+              {
+                setLoopEndPoint((endLimitIndex /*
+                         * + countInOffset
+                         */) * magicFactor);
+              }
+
+            if( countInOffset > 0 )
+              {
+                setLoopStartPoint((1 + countInOffset) * magicFactor);
+              }
+            else
+              {
+                setLoopStartPoint(startIndex * magicFactor);
+              }
+
+            if( loopCount < 0 )
+              {
+                setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+              }
+            else if( loopCount > 0 )
+              {
+                try
+                  {
+                    setLoopCount(loopCount);
+
+                  }
+                catch( IllegalArgumentException e )
+                  {
+                    ErrorLog.log(ErrorLog.SEVERE,
+                                 "internal problem looping: start = "
+                            + startIndex + ", end = " + endLimitIndex
+                            + " tempoFactor = " + sequencer.getTempoFactor());
+                  }
+              }
+          }
+
+      }
+  }
+
+
+public void actualPlay(int transposition)
+  {
+    // Here's where the playback actually starts:
+
+    sequencer.start();
+
+    //playbackStartTime = System.nanoTime();
+    //System.out.println("Playback started at time " + playbackStartTime);
+
+    playing = true;
+    paused = false;
+    if( playListener != null && sequencer.isRunning() )
+      {
+        playListener.setPlaying(MidiPlayListener.Status.PLAYING,
+                                transposition);
+      }
+  }
+
+
 
 public boolean isRunning()
   {
