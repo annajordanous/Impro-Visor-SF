@@ -7013,7 +7013,7 @@ public class Notate
         });
         standardToolbar.add(stopBtn1);
 
-        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -9.99d, 9.99d, 0.01d));
+        generationGapSpinner.setModel(new javax.swing.SpinnerNumberModel(0.99d, -20.0d, 20.0d, 0.01d));
         generationGapSpinner.setToolTipText("Specifies the lead time, in beats, for generating next chorus before the end of the current chorus, if Recur is toggled on.");
         generationGapSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lead Beats", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 10))); // NOI18N
         generationGapSpinner.setInheritsPopupMenu(true);
@@ -7948,12 +7948,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7969,12 +7969,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8960,12 +8960,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8998,12 +8998,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
             }
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -25433,6 +25433,8 @@ int leadAllowance = 120;
 
 int melodyStartsAtSlot = 0;
 
+int playAtSlot = 0;
+
 int nextGenerateCycle = 0;
 
 int nextPlayCycle = 0;
@@ -25452,55 +25454,34 @@ public void reset()
     nextPlayCycle = 0;
   }
 
-public boolean improviseNow(int slotInPlayback, int size)
-  {
-  int currentCycle = slotInPlayback/improInterval;
-
-  if( currentCycle != nextGenerateCycle )
-    {
-      return false;
-    }
-
-  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
-                                    : improInterval*currentCycle + halfInterval;
-
-  generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
-
-  boolean result = !generated && slotInPlayback >= generateAtSlot;
-
-  if( result )
-    {
-//        System.out.println("slot = " + slotInPlayback
-//                   + ": currentCycle = " + currentCycle
-//                   + ", melodyStart = " + melodyStartsAtSlot
-//                   + ", generate at " + generateAtSlot);
-    }
-
-  return result;
-  }
-
-public boolean playNow(int slotInPlayback, int size)
-  {
-  int currentCycle = slotInPlayback/improInterval;
-
-  if( currentCycle != nextPlayCycle )
-    {
-      return false;
-    }
-
-  int gapSlots = (int)(120*(Double)generationGapSpinner.getValue());
-  //System.out.println("gapSlots = " + gapSlots);
-  boolean result = !played && slotInPlayback + gapSlots >= melodyStartsAtSlot;
-  if( result )
-    {
-    nextPlayCycle = (nextPlayCycle + 1) % numCycles;
-
-    played = true;
-    generated = false;
-    }
-
-  return result;
-  }
+//public boolean improviseNow(int slotInPlayback, int size)
+//  {
+//  int currentCycle = slotInPlayback/improInterval;
+//
+//  if( currentCycle != nextGenerateCycle )
+//    {
+//      return false;
+//    }
+//
+//  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
+//                                    : improInterval*currentCycle + halfInterval;
+//
+//  playAtSlot = melodyStartsAtSlot - 120;
+//
+//  generateAtSlot = melodyStartsAtSlot - 480; //generationLeadSlots;
+//  
+//  boolean result = !generated && slotInPlayback >= generateAtSlot;
+//
+//  if( result )
+//    {
+////        System.out.println("slot = " + slotInPlayback
+////                   + ": currentCycle = " + currentCycle
+////                   + ", melodyStart = " + melodyStartsAtSlot
+////                   + ", generate at " + generateAtSlot);
+//    }
+//
+//  return result;
+//  }
 
 public MelodyPart createMelody(MelodyPart currentMelodyPart)
   {
@@ -25510,9 +25491,10 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
 
     if( generated )
       {
-       //System.out.println("at " + generateAtSlot +
-       //                " generated melody to play at: " + melodyStartsAtSlot
-       //              + ": " + improLick);
+       System.out.println("\nat " + generateAtSlot +
+                       " generate melody to play at " + playAtSlot +
+                       " and sound at " + melodyStartsAtSlot);
+                     //+ ": " + improLick);
 
       nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
 
@@ -25560,6 +25542,69 @@ public MelodyPart createMelody(MelodyPart currentMelodyPart)
     return improLick;
   }
 
+
+public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelodyPart)
+  {
+  int currentCycle = slotInPlayback/improInterval;
+
+  if( currentCycle != nextGenerateCycle )
+    {
+      return null;
+    }
+
+  melodyStartsAtSlot = ivFirst == 0 ? improInterval*currentCycle
+                                    : improInterval*currentCycle + halfInterval;
+
+  playAtSlot = melodyStartsAtSlot - playLeadSlots;
+
+  generateAtSlot = melodyStartsAtSlot - generationLeadSlots;
+  
+  boolean result = !generated && slotInPlayback >= generateAtSlot;
+
+  if( result )
+   {
+    improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
+
+    generated = improLick != null && improLick.size() > 0;
+
+    if( generated )
+      {
+       System.out.println("\nat " + generateAtSlot +
+                       " generate melody to play at " + playAtSlot +
+                       " and sound at " + melodyStartsAtSlot);
+                     //+ ": " + improLick);
+
+      nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
+
+      played = false;
+        Score improScore = new Score();
+        improScore.setTempo(score.getTempo());
+
+        improLick.setInstrument(auxInst.getValue());
+        improLick.setSwing(currentMelodyPart.getSwing());
+
+        improScore.addPart(improLick);
+
+         // Create command now, for execution on a subsequent slot
+        Style style = chordProg.getStyle();
+
+        setImproCommand(
+                new PlayScoreCommand(improScore,
+                                     0, // startTime
+                                     true, // swing
+                                     midiSynth2,
+                                     null, // play listener
+                                     0, // loopCount,
+                                     score.getTransposition(), // transposition
+                                     false, // use drums
+                                     -1));       // end
+      }
+    return improLick;
+    }
+  return null;
+  }
+
+
 /**
  * This creates the first melody at slot 0 when Impro-Visor is to being
  * trading.
@@ -25584,32 +25629,60 @@ public void createInitialMelody(MelodyPart currentMelodyPart)
       }
   }
 
-public MelodyPart playCreatedMelody(MelodyPart currentMelodyPart, boolean paste)
+
+
+public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
   {
-      if( improCommand != null )
-        {
-          if( paste )
-            {
-            if( firstTime )
-              {
-               firstTime = false;
-               currentMelodyPart.pasteOver(improLick, 0);
-              }
-            else
-              {
-              currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
-              }
-            }
+    boolean paste = true;
 
-          improCommand.execute();
-          setImproCommand(null); // Don't play twice
-          //System.out.println("playing at " + melodyStartsAtSlot);
+//    int currentCycle = slotInPlayback / improInterval;
 
-        }
-    //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
-    return improLick;
+//    if( currentCycle != nextPlayCycle )
+//      {
+//        return null;
+//      }
+
+   boolean timeOk = slotInPlayback >= playAtSlot;
+   boolean result = generated && timeOk;  //!played 
+ 
+    if( result )
+      {
+        System.out.println("at " + slotInPlayback
+                         + " >= " + playAtSlot 
+                          + " playing");
+
+       nextPlayCycle = (nextPlayCycle + 1) % numCycles;
+
+        played = true;
+        generated = false;
+
+        if( improCommand != null )
+          {
+            improCommand.execute();
+
+            if( paste )
+              {
+                if( firstTime )
+                  {
+                    firstTime = false;
+                    currentMelodyPart.pasteOver(improLick, 0);
+                  }
+                else
+                  {
+                    currentMelodyPart.pasteOver(improLick, melodyStartsAtSlot);
+                  }
+              }
+
+            setImproCommand(null); // Don't play twice
+            //System.out.println("playing at " + melodyStartsAtSlot);
+
+          }
+        //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
+        return improLick;
+      }
+
+    return null;
   }
-
 
 public int getGenerationLeadSlots()
   {
@@ -25718,7 +25791,7 @@ public void actionPerformed(ActionEvent evt)
 
     handleAudioInput(slotInPlayback);
 
-    handleAutoImprov(slotInPlayback);
+    handleAutoImprov(midiSynth.getSlot());
 
     // The following variant was originally added to stop playback at the end of a selection
     // However, it also truncates the drum patterns etc. so that needs to be fixed.
@@ -25810,18 +25883,24 @@ private void handleAutoImprov(int slotInPlayback)
 
             // Create a lick if it is now time
 
-            if( autoImprovisation.improviseNow(slotInPlayback, size) )
-              {
-                autoImprovisation.createMelody(currentMelodyPart);
-              }
+//            if( autoImprovisation.improviseNow(slotInPlayback, size) )
+//              {
+//                autoImprovisation.createMelody(currentMelodyPart);
+//              }
 
+            // Maybe create a melody, to be played in a future cycle, not this one.
+            
+            autoImprovisation.maybeCreateMelody(slotInPlayback, currentMelodyPart);
+            
             // Play the lick previously generated, and paste into the
             // current melody part.
 
-            if( autoImprovisation.playNow(slotInPlayback, size) )
-              {
-                autoImprovisation.playCreatedMelody(currentMelodyPart, true);
-              }
+            autoImprovisation.maybePlay(slotInPlayback, currentMelodyPart);
+
+//            if( autoImprovisation.playNow(slotInPlayback, size) )
+//              {
+//                autoImprovisation.playCreatedMelody(currentMelodyPart, true);
+//              }
           }
       }
   } // handleAutoImprov

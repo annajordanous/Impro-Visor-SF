@@ -639,7 +639,7 @@ public void stop(String reason)
     if( playListener != null )
       {
         playListener.setPlaying(MidiPlayListener.Status.STOPPED, 0);
-        System.out.println("Sequencer stopped from stop()");
+        //System.out.println("Sequencer stopped from stop()");
       }
 
   }
