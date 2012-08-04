@@ -2303,7 +2303,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt)//GEN-FIRST:
 
     private void chordResolutionComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordResolutionComboBoxActionPerformed
         ChordResolutionComboBoxModel.setSelectedIndex(chordResolutionComboBox.getSelectedIndex());
-        MIDIBeast.chordResolution = ChordResolutionComboBoxModel.getResolution();
+        MIDIBeast.setChordResolution(ChordResolutionComboBoxModel.getResolution());
     }//GEN-LAST:event_chordResolutionComboBoxActionPerformed
 
 

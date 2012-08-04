@@ -846,6 +846,25 @@ static String showContents(boolean[] array)
     return buffer.toString();
   }
 
+/**
+ * Show the notes of an array of booleans;
+ * @param array
+ * @return 
+ */
+static String showNoteContents(boolean[] array)
+  {
+    String[] notes = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+    StringBuilder buffer = new StringBuilder();
+    buffer.append("[");
+    for(int i = 0; i < array.length; i++)
+      {
+          if(array[i]==true){
+        buffer.append(notes[i] + " ");
+          }
+      }
+    buffer.append("]");
+    return buffer.toString();
+  }
 
 /**
  * Convert a list of NoteSymbols to a bitVector, i.e. an array of booleans

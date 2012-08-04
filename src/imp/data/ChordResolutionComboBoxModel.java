@@ -49,11 +49,10 @@ private ChordResolutionComboBoxModel()
       super(Arrays.copyOfRange(NoteResolutionInfo.getNoteResolutions(), 10, 15));
   }
 
-public static void setSelectedIndex(int index) {
-        selectedIndex = index;
-        int newResolution = ((NoteResolutionInfo) theModel.getElementAt(index)).getSlots();
-        MIDIBeast.setResolution(newResolution);
-    }
+public static void setSelectedIndex(int index)
+  {
+    selectedIndex = index;
+  }
 
 public static int getSelectedIndex()
   {

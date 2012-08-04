@@ -109,13 +109,12 @@ public static boolean invoked = false;
 //used for chord extraction
 public static boolean useLeadsheet = false;
 public static ChordPart extractedChordPart = null;
-private static LinkedList<MidiImportRecord> melodies;
 //end
 
 //chord extraction channel nums
 private static int chordChannel;
 private static int bassChannel;
-public static int chordResolution = WHOLE;
+private static int chordResolution = WHOLE;
 
 public static final String[] GMinstrumentNames = 
   {
@@ -319,6 +318,11 @@ public static void setResolution(int resolution)
     precision = resolution;
   }
 
+public static void setChordResolution(int resolution)
+  {
+    chordResolution = resolution;
+  }
+
 public static int getResolution()
   {
     return precision;
@@ -390,8 +394,8 @@ public static void invoke()
 
         //use midi import to extract melody parts from midi file
         if (chordFileName.isEmpty()) {
-            ChordExtract chordextract = new ChordExtract(midiFileName, MIDIBeast.chordResolution,
-                    MIDIBeast.getBassChannel(), MIDIBeast.getChordChannel());
+            ChordExtract chordextract = new ChordExtract(midiFileName, chordResolution,
+                    bassChannel, chordChannel);
             extractedChordPart = chordextract.extract();
         }
     }
