@@ -30,7 +30,7 @@ import polya.Polylist;
 
 /**
  * Extracts chords from a MIDI input, given bass and chord channels
- * @author Kevin
+ * @author Kevin Choi Summer 2012
  */
 
 public class ChordExtract implements Constants{
@@ -40,6 +40,9 @@ public class ChordExtract implements Constants{
     private final static String[] notes = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
     private final static int importResolution = THIRTYSECOND_TRIPLET;
     private final static int slotResolution = EIGHTH;
+    private final static int FIFTH = 7;
+    private final static int DIMFIFTH = 6;
+    private final static int AUGFIFTH = 8;
     
     private int chordResolution;
     private int bassChannel;
@@ -48,7 +51,7 @@ public class ChordExtract implements Constants{
     
     /**
      * Initializes a list of all chord names from the chords Polylist
-     * @return 
+     * @return String[]     the list of all chord names
      */
     private static String[] initializeChordNames()
     {
@@ -61,7 +64,7 @@ public class ChordExtract implements Constants{
     
     /**
      * Initializes a list of all chords in bitmap form
-     * @return 
+     * @return boolean[][]      the list of all chord bitmaps
      */
     private static boolean[][] initializeChordBitMaps()
     {
@@ -81,9 +84,9 @@ public class ChordExtract implements Constants{
     
     /**
      * ChordExtract initializes the midi file name, bass channel number, and chord channel number
-     * @param chordFileName
-     * @param bassChannelNum
-     * @param chordChannelNum 
+     * @param chordFileName     file path to the midi file
+     * @param bassChannelNum        midi channel number from 0-15; channel number -1 means no channel selected
+     * @param chordChannelNum       midi channel number from 0-15; channel number -1 means no channel selected
      */
     public ChordExtract(String chordFileName, int resolution, int bassChannelNum, int chordChannelNum)
     {
@@ -91,10 +94,14 @@ public class ChordExtract implements Constants{
         bassChannel = bassChannelNum;
         chordChannel = chordChannelNum;
         chordResolution = resolution;
+        // for debugging
+        /*
         System.out.println("Chord file name: " + chordFile);
         System.out.println("Bass channel number: " + bassChannel);
         System.out.println("Chord channel number: " + chordChannel);
         System.out.println("Chord resolution: " + chordResolution);
+        * 
+        */
     }
     
     /**
@@ -105,11 +112,13 @@ public class ChordExtract implements Constants{
     public ChordPart extract(int startBeat, int endBeat)
     {
         int start = BEAT * (startBeat - 1);
+        
         MidiImport newImport = new MidiImport();
         
         newImport.setResolution(importResolution);
         newImport.readMidiFile(chordFile);
         
+        //take the accompaniment and bass channels from the midi file
         List<MelodyPart> bassMelodyParts = new ArrayList<MelodyPart>();
         List<MelodyPart> chordMelodyParts = new ArrayList<MelodyPart>();
         MelodyPart currentMelodyPart;
@@ -118,10 +127,6 @@ public class ChordExtract implements Constants{
         {
             currentMelodyPart = record.getPart();
             int end = Math.min(currentMelodyPart.getSize() - 1, (BEAT * endBeat)-1);
-            while (end - start < 4) //4=meter
-              {
-                  end++;
-              }
             if (record.getChannel() == bassChannel && currentMelodyPart != null)
             {
                 currentMelodyPart = currentMelodyPart.copy(start, end);
@@ -137,6 +142,7 @@ public class ChordExtract implements Constants{
         MelodyPart[] arrayBassMelodyParts = bassMelodyParts.toArray(new MelodyPart[bassMelodyParts.size()]);
         MelodyPart[] arrayChordMelodyParts = chordMelodyParts.toArray(new MelodyPart[chordMelodyParts.size()]);
         
+        //normalize the melodyparts
         normalize(arrayBassMelodyParts, importResolution);
         normalize(arrayChordMelodyParts, importResolution);
         
@@ -145,35 +151,45 @@ public class ChordExtract implements Constants{
         
         int[] bassline = getBassline(arrayBassMelodyParts, numSlots);
         boolean[][] comp = getComp(arrayChordMelodyParts, numSlots);
+        
+        // for debugging
         /*
-        for(int i=0; i<numSlots; i++)
+        for(int i=0; i<numSlots; i=i+4)
         {
             System.out.println("Slot # " + i);
-            System.out.println("Bass: " + bassline[i]);
-            System.out.println("Comp: " + NoteSymbol.showContents(comp[i]));
+            if(bassline[i]!=-1)
+            {
+            System.out.println("Bass: " + notes[bassline[i]]);
+            }
+            System.out.println("Comp: " + NoteSymbol.showNoteContents(comp[i]));
         }
         * 
         */
-        normalizeComp(bassline, comp);
         
+        fixComp(bassline, comp);
         /*
         System.out.println("After comp normalization:");
-        for(int i=0; i<numSlots; i++)
+        for(int i=0; i<numSlots; i=i+4)
         {
             System.out.println("Slot # " + i);
+            if(bassline[i]!=-1)
+            {
             System.out.println("Bass: " + notes[bassline[i]]);
-            System.out.println("Comp: " + NoteSymbol.showContents(comp[i]));
+            }
+            System.out.println("Comp: " + NoteSymbol.showNoteContents(comp[i]));
         }
         * 
         */
         
         ChordPart chordpart = getChordPart(bassline, comp, maxSize);
+        //remove duplicate chords
         chordpart.fixDuplicateChords(chordpart, chordResolution);
         return chordpart;
-    }
+    }   
     
     /**
-     * Extracts chords for the whole midi file with the specified chord resolution
+     * Extract chords from beginning of midi file to the end
+     * @return 
      */
     public ChordPart extract()
     {
@@ -210,7 +226,7 @@ public class ChordExtract implements Constants{
         int[] bassline = getBassline(arrayBassMelodyParts, numSlots);
         boolean[][] comp = getComp(arrayChordMelodyParts, numSlots);
         
-        normalizeComp(bassline, comp);
+        fixComp(bassline, comp);
         
         ChordPart chordpart = getChordPart(bassline, comp, maxSize);
         chordpart.fixDuplicateChords(chordpart, chordResolution);
@@ -224,49 +240,25 @@ public class ChordExtract implements Constants{
      * @param slotSize
      * @return 
      */
-    /*
-    private int[] getBassline(MelodyPart[] bassMelodyParts, int slotSize) {
-        int[] bassline = new int[slotSize];
-        for (int i = 0; i < findMax(bassMelodyParts); i = i + slotResolution) {
-            Note bassnote = bassMelodyParts[0].getNote(i);
-            for (int j = 1; j < bassMelodyParts.length; j++) {
-                Note currentnote = bassMelodyParts[j].getNote(i);
-                if (bassnote != null && currentnote != null
-                        && bassnote.nonRest() && currentnote.nonRest()
-                        && currentnote.getPitch() < bassnote.getPitch()) {
-                    bassMelodyParts[0].setNote(i, currentnote);
-                }
-            }
-            int slotCount = i / slotResolution;
-            Note currentnote = bassMelodyParts[0].getNote(i);
-            bassline[slotCount] = noteToBitAddress(currentnote);
-        }
-        return bassline;
-    }
-    * 
-    */
     private int[] getBassline(MelodyPart[] bassMelodyParts, int slotSize)
     {
         int length = findMax(bassMelodyParts);
         int[] bass = new int[length];
+        //take the lowest note in array of bass melodyparts
         for (int i = 0; i < length; i++) {
             Note bassnote = bassMelodyParts[0].getNote(i);
-            /*
             for (int j = 1; j < bassMelodyParts.length; j++) {
                 Note currentnote = bassMelodyParts[j].getNote(i);
                 if (bassnote != null && currentnote != null
                         && bassnote.nonRest() && currentnote.nonRest()
-                        && currentnote.getPitch() < bassnote.getPitch()) {
-                    bassMelodyParts[0].setNote(i, currentnote);
-                    bassnote = currentnote;
+                        && currentnote.getPitch() < bassnote.getPitch())
+                {
+                    bassnote = currentnote.copy();
                 }
             }
-            * 
-            */
-            Note note = bassMelodyParts[0].getNote(i);
-            bass[i] = noteToBitAddress(note);
+            bass[i] = noteToBitAddress(bassnote);
         }
-        //fix comp
+        
         int[] bassline = new int[slotSize];
         for(int i = 0; i < length; i=i+slotResolution)
         {
@@ -356,27 +348,12 @@ public class ChordExtract implements Constants{
         }
         return comp;
     }
-    /*
-    private boolean[][] getComp(MelodyPart[] chordMelodyParts, int slotSize) {
-        boolean[][] chordstuff = new boolean[slotSize][SEMITONES];
-        for (int i = 0; i < chordMelodyParts.length; i++)
-        {
-            for (int j = 0; j < chordMelodyParts[i].size(); j = j + slotResolution)
-            {
-                int slotCount = j / slotResolution;
-                Note note  = chordMelodyParts[i].getNote(j);
-                int noteAddress = noteToBitAddress(note);
-                if (noteAddress!=-1)
-                {
-                    chordstuff[slotCount][noteAddress] = true;
-                }  
-            }
-        }
-        return chordstuff;
-    }
-    * 
-    */
     
+    /**
+     * Returns the length of the largest MelodyPart given an array of MelodyParts
+     * @param arrayMelodyParts
+     * @return 
+     */
     private int findMax(MelodyPart[] arrayMelodyParts)
     {
         int max = 0;
@@ -403,6 +380,13 @@ public class ChordExtract implements Constants{
         }
     }
     
+    /**
+     * Normalizes the array of MelodyParts such that it contains Units for each
+     *  resolution slot. eg With a quarter note resolution, a whole note will
+     *  be normalized into 4 quarter notes
+     * @param arrayMelodyPart
+     * @param resolution 
+     */
     private void normalize(MelodyPart[] arrayMelodyPart, int resolution) {
         Note note;
         Note prevNote;
@@ -425,55 +409,20 @@ public class ChordExtract implements Constants{
         }
     }
     
-    private void normalizeComp(int[] bass, boolean[][] comp)
+    /**
+     * Fixes offbeat comping in the accompaniment part
+     * @param bass
+     * @param comp 
+     */
+    private void fixComp(int[] bass, boolean[][] comp)
     {
         int count = chordResolution/slotResolution;
         int eighth = slotResolution/EIGHTH;
         int quarter = eighth + eighth;
         int length = bass.length;
+        
         for (int i = 0; i < length; i = i+count)
         {
-            /*
-            if(bass[i]==-1)
-            {
-                if(i==0 && i+eighth<length && bass[i+eighth]!=-1)
-                {
-                    bass[i] = bass[i+eighth];
-                }
-                else if(i+eighth<length && bass[i+eighth]!=-1)
-                {
-                    if(i>eighth && bass[i-eighth]==-1)
-                    {
-                        bass[i] = bass[i+eighth];
-                    }
-                    else if(i>quarter && bass[i-eighth]!=-1 && bass[i-quarter]!=bass[i-eighth])
-                    {
-                        bass[i] = bass[i-eighth];
-                    }
-                    else
-                    {
-                        bass[i] = bass[i+eighth];
-                    }
-                }
-                else if(i>eighth && bass[i-eighth]!=-1)
-                {
-                    if(i>quarter && bass[i-eighth]!=-1 && bass[i-quarter]!=bass[i-eighth])
-                    {
-                        bass[i] = bass[i-eighth];
-                    }
-                    else if(i+quarter<length && bass[i+quarter]!=-1)
-                    {
-                        bass[i] = bass[i+quarter];
-                    }
-                }
-                else if(i+quarter<length && bass[i+quarter]!=-1)
-                {
-                    bass[i] = bass[i+quarter];
-                }
-            }
-            * 
-            */
-            int beat = i;
             if (bass[i] == -1) {
                 if (i == 0 && i + count < length) {
                     for (int j = i + 1; j < i +count; j++) {
@@ -520,6 +469,11 @@ public class ChordExtract implements Constants{
         }
     }
     
+    /**
+     * Returns the number of notes in the bitmap chord
+     * @param bitmap
+     * @return 
+     */
     private int numNotes(boolean[] bitmap)
     {
         int count = 0;
@@ -537,6 +491,13 @@ public class ChordExtract implements Constants{
         return count;
     }
     
+    /**
+     * Returns a ChordPart that includes the extract chords
+     * @param bass
+     * @param comp
+     * @param size
+     * @return 
+     */
     private ChordPart getChordPart(int[] bass, boolean[][] comp, int size)
     {
         ChordPart chordpart = new ChordPart(size);
@@ -556,6 +517,13 @@ public class ChordExtract implements Constants{
         return chordpart;
     }
     
+    /**
+     * Shifts the bitmap chord a specific amount - used for transposing a bitmap
+     *  chord, so it can be pattern matched with the chord dictionary
+     * @param bitChord
+     * @param shift
+     * @return 
+     */
     private boolean[] shiftBitsLeft(boolean[] bitChord, int shift)
     {
         int numShift = 0;
@@ -572,9 +540,24 @@ public class ChordExtract implements Constants{
         return bitChord;
     }
     
+    /**
+     * Matches the bitmap chord with the chord name from the dictionary
+     * @param bitChord
+     * @param transpose
+     * @return 
+     */
     private Chord matchChords(boolean[] bitChord, int transpose)
     {
         if(numNotes(bitChord)<1)
+        {
+            return null;
+        }
+        //quick fifth missing fix
+        if(bitChord[FIFTH]==false&&bitChord[DIMFIFTH]==false&&bitChord[AUGFIFTH]==false)
+        {
+            bitChord[FIFTH]=true;
+        }
+        if(numNotes(bitChord)<3)
         {
             return null;
         }
@@ -594,6 +577,7 @@ public class ChordExtract implements Constants{
                 numNotes = numNotes + 1;
             }
         }
+        //inversions
         int count = numNotes - 1;
         while (count != 0) {
             int shift = 0;

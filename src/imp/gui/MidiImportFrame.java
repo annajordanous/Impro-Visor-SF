@@ -716,11 +716,6 @@ private MelodyPart getSelectedTrackMelody()
       {
           int startBeat = (Integer) startBeatSpinner.getValue() - 1;
           int endBeat = (Integer) endBeatSpinner.getValue();
-          int bpmeasure = (Integer) meterSpinner.getValue();
-          while ((endBeat - startBeat)%bpmeasure!=0)
-          {
-              endBeat++;
-          }
           endBeatSpinner.setValue(endBeat);
           int startSlot = BEAT * startBeat;
           int endSlot = (BEAT * endBeat) - 1;
