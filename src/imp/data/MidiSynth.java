@@ -602,11 +602,13 @@ public void pause()
 public void setPlayListener(MidiPlayListener listener)
   {
     Trace.log(3, playCounter + ": Setting MidiPlayListener ");
-    if( playListener != null )
-      {
-
-        playListener.setPlaying(MidiPlayListener.Status.STOPPED, 0);
-      }
+    //I don't know why this was here - Brian
+//    if( playListener != null )
+//      {
+//
+//        playListener.setPlaying(MidiPlayListener.Status.STOPPED, 0);
+//        System.out.println("Sequencer stopped from setPlayListener()");
+//      }
     playListener = listener;
   }
 
@@ -637,6 +639,7 @@ public void stop(String reason)
     if( playListener != null )
       {
         playListener.setPlaying(MidiPlayListener.Status.STOPPED, 0);
+        System.out.println("Sequencer stopped from stop()");
       }
 
   }

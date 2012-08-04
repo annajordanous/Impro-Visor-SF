@@ -27,29 +27,29 @@ public class PitchExtractor
 {
 
     public volatile boolean isCapturing;
-    public volatile Boolean stopCapture = true;
+    public volatile Boolean stopCapture;
     public final Boolean thisCapture = false;
     boolean stopAnalysis;
     AudioInputStream inputStream;
     AudioFormat format;
-    SourceDataLine source;
+    //SourceDataLine source;
     TargetDataLine target;
     Score score;
     Notate notate;
     MidiSynth midiSynth;
-    long startTime;
-    int additionalSamples;
-    boolean processingStarted;
-    double swingVal;
-    int captureInterval;
-    int lastSlotNumber = 1;
-    int startingPosition = 0;
+    private long startTime;
+    private int additionalSamples;
+    private boolean processingStarted;
+    private double swingVal;
+    private int captureInterval;
+    private int lastSlotNumber = 1;
+    private int startingPosition;
     int positionOffset;
     //timeDifference keeps track of time offset between captures
     double timeDifference = 0;
     List<Integer> oneSlot = new ArrayList<Integer>();
     int slotsFilled; //# of slots filled before pitch change is detected
-    int lastPitch = 0; //initialize most recent pitch to a rest
+    int lastPitch;
     int analysesCompleted; //# of analyses completed thus far.
     //if capture has trouble finishing the first capture, increase this value.
 //    private final double OFFSET_ADJUSTMENT = 2.;
@@ -76,6 +76,8 @@ public class PitchExtractor
     AudioSettings settings;
     MelodyPart melodyPart;
 
+    Mixer mainMixer;
+
     public PitchExtractor(Notate notate,
                           Score score,
                           MidiSynth midiSynth,
@@ -101,6 +103,31 @@ public class PitchExtractor
 
         format = getAudioFormat();
         processingQueue = new ArrayBlockingQueue<byte[]>(10);
+
+//        for (Mixer.Info thisMixerInfo : AudioSystem.getMixerInfo())
+//            {
+//                Mixer thisMixer = AudioSystem.getMixer(thisMixerInfo);
+//                if(thisMixer.getTargetLines().length > 0)
+//                {
+//                    mainMixer = thisMixer;
+//                    System.out.println("Mixer: " + thisMixerInfo.getDescription()
+//                        + " [" + thisMixerInfo.getName() + "] # TDLs = " + mainMixer.getTargetLines().length);
+//                    break;
+//                }
+//                else
+//                {
+////                    System.out.println(thisMixerInfo.getName() + " (Mixer) "
+////                            + thisMixerInfo.getName() + " has no TDLs.");
+//                }
+//            }
+//        Mixer.Info mainMixerInfo = AudioSystem.getMixerInfo()[0];
+//        mainMixer = AudioSystem.getMixer(mainMixerInfo);
+//        System.out.println("Mixer = " + mainMixerInfo.getDescription()
+//                + ", " +mainMixerInfo.getName());
+//        for (Line.Info thisSourceInfo : mainMixer.getSourceLineInfo())
+//            {
+//                System.out.println("SourceLineInfo:" + thisSourceInfo.toString());
+//            }
     }
 
     public void captureAudio()
@@ -108,18 +135,15 @@ public class PitchExtractor
         stopCapture = false;
         stopAnalysis = false;
         processingStarted = false;
-        //erase old data if overwriting
+        startingPosition = 0;
         if (analysesCompleted > 0)
         {
-            int start;
-            for (int i = 0; i < analysesCompleted; i++)
-            {
-                start = i * captureInterval;
-                melodyPart.delUnits(start, start + captureInterval);
-            }
+            clearNotes(0); //erase old data if overwriting
             analysesCompleted = 0;
         }
+        openTargetLine();
         slotsFilled = 1;
+        lastPitch = 0; //initialize most recent pitch to a rest
         minPitch = settings.getMIN_PITCH();
         maxPitch = settings.getMAX_PITCH();
         try
@@ -127,9 +151,9 @@ public class PitchExtractor
             CaptureThread captureThread = new CaptureThread();
             captureThread.setPriority(Thread.MAX_PRIORITY);
             captureThread.start();
-//            SlotGetterThread slotThread = new SlotGetterThread();
-//            slotThread.setPriority(Thread.MAX_PRIORITY - 1);
-//            slotThread.start();
+//            MixerGetterThread mixerThread = new MixerGetterThread();
+//            mixerThread.setPriority(Thread.MAX_PRIORITY - 1);
+//            mixerThread.start();
             AnalyzeThread analyzeThread = new AnalyzeThread();
             analyzeThread.setPriority(Thread.MAX_PRIORITY - 1);
             analyzeThread.start();
@@ -143,14 +167,50 @@ public class PitchExtractor
     {
         try
         {
+            //print out mixer & target/source line info
+//            for (Mixer.Info thisMixerInfo : AudioSystem.getMixerInfo())
+//            {
+//                System.out.println("Mixer: " + thisMixerInfo.getDescription()
+//                        + " [" + thisMixerInfo.getName() + "]");
+//                Mixer thisMixer = AudioSystem.getMixer(thisMixerInfo);
+//                for (Line.Info thisLineInfo : thisMixer.getSourceLineInfo())
+//                {
+//                    if (thisLineInfo.getLineClass().getName().equals(
+//                            "javax.sound.sampled.Port"))
+//                    {
+//                        Line thisLine = thisMixer.getLine(thisLineInfo);
+//                        thisLine.open();
+//                        System.out.println("  Source Port: "
+//                                + thisLineInfo.toString());
+//                        thisLine.close();
+//                    }
+//                }
+//            }
+
             DataLine.Info dataLineInfo =
                     new DataLine.Info(TargetDataLine.class, format);
             target = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
             target.open(format);
+            //System.out.println("TDL info:\n" + target.getLineInfo().toString());
             //target.start();
+
+            //synchronizeLines();
+
         } catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println("Error opening Target Line:\n" + e);
+        }
+    }
+
+    public void synchronizeLines()
+    {
+        //synchronize the TargetDataLine with the main source line for audio output
+        Line[] lines = new Line[2];
+        if (mainMixer.getSourceLines()[0] != null)
+        {
+            lines[0] = mainMixer.getSourceLines()[0];
+            lines[1] = target;
+            mainMixer.synchronize(lines, false);
         }
     }
 
@@ -159,10 +219,21 @@ public class PitchExtractor
         try
         {
             target.close();
+            //target.stop();
         } catch (Exception e)
         {
-            System.out.println("TargetLine error.");
+            System.out.println("TargetLine stoppage error.");
         }
+    }
+
+    private void clearNotes(int startingIndex)
+    {
+        int start;
+            for (int i = 0; i < analysesCompleted; i++)
+            {
+                start = startingIndex + i * captureInterval;
+                melodyPart.delUnits(start, start + captureInterval);
+            }
     }
 
     public int getCaptureInterval()
@@ -307,7 +378,7 @@ public class PitchExtractor
                 double nextTime = timeElapsed
                         + ((interval + tenMSOffset) / interval * POLL_RATE);
                 int nextSlot = resolveSlot(nextTime, tempo / slotSize, slotSize) + 1;
-                if (analysesCompleted < 1 && currentSlotNumber == nextSlot)
+                if (analysesCompleted == 0 && currentSlotNumber == nextSlot)
                 {
                     timeDifference = timeElapsed;
                     lastSlotNumber = currentSlotNumber;
@@ -317,7 +388,9 @@ public class PitchExtractor
                     if (pitch == lastPitch)
                     { //if the last pitch in the capture interval is a continuation
                         //of the previous pitch...
-                        if (analysesCompleted < 3 && notate.getMode() == Mode.RECORDING
+                        System.out.println("Trade length = " + notate.getTradeLength());
+                        if (analysesCompleted < (notate.getTradeLength() / captureInterval) - 1
+                                && notate.getMode() == Mode.RECORDING
                                 && (startingPosition + duration) % captureInterval != 0)
                         {
                             slotsFilled++;
@@ -343,7 +416,9 @@ public class PitchExtractor
                                 duration,
                                 melodyPart);
                         incrementStartingPosition(duration);
-                        if (analysesCompleted == 3 || notate.getMode() != Mode.RECORDING)
+                        System.out.println("Trade length = " + notate.getTradeLength());
+                        if (analysesCompleted == (notate.getTradeLength() / captureInterval) - 1
+                                || notate.getMode() != Mode.RECORDING)
                         { //if this is the last capture, go ahead and set the note.
                             duration = slotConversion;
                             setNote(pitch,
@@ -391,7 +466,7 @@ public class PitchExtractor
             melodyPart.setNoteFromCapture(startingPosition, newRest);
             System.out.println("______________________________\n"
                     + "rest, duration = " + duration + " slots.\nposition = "
-                    + (startingPosition % 480) + "\n______________________________");
+                    + startingPosition + "\n______________________________");
         } else
         {
             imp.data.Note newNote = new imp.data.Note(pitch, duration);
@@ -400,7 +475,7 @@ public class PitchExtractor
                     + newNote.getPitchClassName()
                     + (newNote.getPitch() / 12 - 1) + "(" + newNote.getPitch() + ")"
                     + "\nduration = " + duration + " slots\nposition = "
-                    + (startingPosition % 480) + ".\n" + "______________________________");
+                    + startingPosition + ".\n" + "______________________________");
         }
         System.out.println("Note off = " + noteOff);
     }
@@ -842,6 +917,7 @@ public class PitchExtractor
     public void stopCapture()
     {
         stopCapture = true;
+        closeTargetLine();
     }
 
     public boolean isCapturing()
@@ -889,6 +965,16 @@ public class PitchExtractor
                     target.start();
 
                     long countInMicroseconds = score.getCountInTime() * 1000000;
+//
+//                    long delay = System.nanoTime();
+//                    long usPos = midiSynth.getMicrosecond();
+//                    while(!(usPos > 0)) {
+//                        Thread.sleep(1);
+//                        usPos = midiSynth.getMicrosecond();
+//                    }
+//                    delay = System.nanoTime() - delay;
+//                    System.out.println("Delay = " + delay + " nanoseconds.");
+
                     //wait for sequencer to start
                     Sequencer sequencer = midiSynth.getSequencer();
                     while(sequencer == null) {
@@ -896,7 +982,8 @@ public class PitchExtractor
                         sequencer = midiSynth.getSequencer();
                     }
                     long usPos = sequencer.getMicrosecondPosition();
-                    //System.out.println("Sequencer time = " + (usPos - countInMicroseconds));
+
+                    System.out.println("Sequencer time = " + (usPos - countInMicroseconds));
                     long delay = 0;
                     if (!processingStarted)
                     {
@@ -910,7 +997,8 @@ public class PitchExtractor
                             {
                                 System.out.println("Sleep error:\n" + e);
                             }
-                            usPos = sequencer.getMicrosecondPosition();
+                            //usPos = sequencer.getMicrosecondPosition();
+                              usPos = midiSynth.getMicrosecond();
 //                            System.out.println("CaptureThread waiting... "
 //                                    + "Sequencer time = " + (usPos
 //                                    - countInMicroseconds) + " microseconds.");
@@ -928,7 +1016,7 @@ public class PitchExtractor
                         }
                     }
                     //System.out.println("Capture ACTUALLY started at time " + System.nanoTime());
-                    System.out.println("Capture started at time " + System.currentTimeMillis() + " ms");
+                    System.out.println("Capture started at time " + System.nanoTime() + " nanoseconds.");
                     //collect 1 captureInterval's worth of data
                     for (int n = 0; n < limit; n++)
                     {
@@ -975,10 +1063,10 @@ public class PitchExtractor
                     {
                         byte[] capturedAudioData = outputStream.toByteArray();
                         processingQueue.add(capturedAudioData);
-//                        System.out.println("Array containing "
-//                                + capturedAudioData.length + " elements added "
-//                                + "to processing queue. " + "Queue now contains "
-//                                + processingQueue.size() + " element(s).");
+                        System.out.println("Array containing "
+                                + capturedAudioData.length + " elements added "
+                                + "to processing queue. " + "Queue now contains "
+                                + processingQueue.size() + " element(s).");
                         synchronized (processingQueue)
                         {
                             try
@@ -996,6 +1084,7 @@ public class PitchExtractor
                         //CaptureThread.sleep(0, 10);
                     }
                 }//end while
+                System.out.println("Capture stopped. stopCapture = " + stopCapture);
             } catch (Exception e)
             {
                 System.out.println("Capture thread error:\n" + e);
@@ -1039,6 +1128,40 @@ public class PitchExtractor
                     System.out.println("Queue is empty.");
                 }
             }
+            System.out.println("Analysis stopped.");
         }//end run
     }//end inner class AnalyzeThread
+
+
+//    public class MixerGetterThread extends Thread
+//    {
+//
+//        public void run()
+//        {
+//            while (mainMixer == null)
+//            {
+//                for (Mixer.Info thisMixerInfo : AudioSystem.getMixerInfo())
+//                {
+//                    Mixer thisMixer = AudioSystem.getMixer(thisMixerInfo);
+//
+//                    if (thisMixer.getTargetLines().length > 0)
+//                    {
+//                        mainMixer = thisMixer;
+//                        System.out.println("Mixer: " + thisMixerInfo.getDescription()
+//                                + " [" + thisMixerInfo.getName() + "]");
+//                    } else
+//                    {
+//                        try
+//                        {
+//                            MixerGetterThread.sleep(0, 500);
+//                        } catch (Exception e)
+//                        {
+//                            //Do it!
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }//end MixerGetterThread
+
 }
