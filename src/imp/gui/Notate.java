@@ -1573,6 +1573,8 @@ public class Notate
         defaultTempoTF = new javax.swing.JTextField();
         defTempoLabel = new javax.swing.JLabel();
         numStavesPerPage = new javax.swing.JTextField();
+        replaceWithDeltaCheckBox = new javax.swing.JCheckBox();
+        replaceWithPhiCheckBox = new javax.swing.JCheckBox();
         appearanceTab = new javax.swing.JPanel();
         visAdvicePanel = new javax.swing.JPanel();
         cells = new javax.swing.JCheckBox();
@@ -3247,11 +3249,16 @@ public class Notate
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel11.setText("Default Volumes:");
+        jLabel11.setFocusable(false);
+        jLabel11.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jLabel11.setMaximumSize(new java.awt.Dimension(30, 14));
+        jLabel11.setMinimumSize(new java.awt.Dimension(30, 14));
+        jLabel11.setPreferredSize(new java.awt.Dimension(30, 14));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         defaultsTab.add(jLabel11, gridBagConstraints);
 
@@ -3393,7 +3400,7 @@ public class Notate
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
@@ -3533,6 +3540,30 @@ public class Notate
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 10);
         defaultsTab.add(numStavesPerPage, gridBagConstraints);
+
+        replaceWithDeltaCheckBox.setText("Use \u0394 for M7");
+        replaceWithDeltaCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithDeltaCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        defaultsTab.add(replaceWithDeltaCheckBox, gridBagConstraints);
+
+        replaceWithPhiCheckBox.setText("Use \u03D5 for m7b5");
+        replaceWithPhiCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceWithPhiCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        defaultsTab.add(replaceWithPhiCheckBox, gridBagConstraints);
 
         globalTabs.addTab("Defaults", defaultsTab);
 
@@ -7917,12 +7948,12 @@ public class Notate
 
         openRecentLeadsheetMenu.setText("Open Recent Leadsheet (same window)");
         openRecentLeadsheetMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentFileMenu(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -7938,12 +7969,12 @@ public class Notate
 
         openRecentLeadsheetNewWindowMenu.setText("Open Recent Leadsheet (new window)");
         openRecentLeadsheetNewWindowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 populateRecentLeadsheetNewWindow(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8929,12 +8960,12 @@ public class Notate
         windowMenu.setMnemonic('W');
         windowMenu.setText("Window");
         windowMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
 
@@ -8967,12 +8998,12 @@ public class Notate
             }
         });
         notateGrammarMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 notateGrammarMenuMenuSelected(evt);
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
         });
         notateGrammarMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -9287,6 +9318,16 @@ public void playCurrentSelection(boolean playToEndOfChorus, int loopCount, boole
     //sectionTable.getColumnModel().getColumn(0).setCellRenderer( sectionCellRenderer );
   }
 
+  public void updatePhiAndDelta(boolean phi, boolean delta)
+  {
+      setPhiStatus(phi);
+      setDeltaStatus(delta);
+      replaceWithPhiCheckBox.setSelected(phi);
+      replaceWithDeltaCheckBox.setSelected(delta);
+      getCurrentStave().setPhi(phi);
+      getCurrentStave().setDelta(delta);
+  }
+  
   public void reCaptureCurrentStyle()
   {
     score.getChordProg().getSectionInfo().reloadStyles();
@@ -18393,11 +18434,8 @@ public void openLeadsheet(boolean openCorpus)
 
         setChordFontSizeSpinner(score.getChordFontSize());
       }
-    
-    replaceWithPhi.setState(phi);
-    replaceWithDelta.setState(delta);
-    getCurrentStave().setPhi(phi);
-    getCurrentStave().setDelta(delta);
+    //markermarkermarker
+    updatePhiAndDelta(phi, delta);
     
     setNormalStatus();
     staveRequestFocus();
@@ -18459,6 +18497,9 @@ public void cmReset()
 
 public boolean setupLeadsheet(File file, boolean openCorpus)
   {
+    boolean phi = getCurrentStave().getPhi();
+    boolean delta = getCurrentStave().getDelta();
+    
     Score newScore = new Score();
 
     //cm.execute(new OpenLeadsheetCommand(file, newScore));
@@ -18480,6 +18521,9 @@ public boolean setupLeadsheet(File file, boolean openCorpus)
         setLickGenStatus("Reading leadsheet from file " + file);
 
       }
+    //markermarkermarker
+    updatePhiAndDelta(phi, delta);
+    
     staveRequestFocus();
     return true;
   }
@@ -18839,7 +18883,7 @@ public ArrayList<String> getMelodyData(int chorusNumber)
     }//GEN-LAST:event_newMIActionPerformed
 
   public void newNotate()
-    {
+  {
     Score newScore = new Score("");
 
     ensureChordFontSize();
@@ -18865,6 +18909,8 @@ public ArrayList<String> getMelodyData(int chorusNumber)
                        getNewXlocation(),
                        getNewYlocation());
 
+    newNotate.updatePhiAndDelta(this.getPhiStatus(), this.getDeltaStatus());
+    
     newNotate.makeVisible(this);
 
     // set the menu and button states
@@ -22441,19 +22487,46 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
                 break;
         }
     }//GEN-LAST:event_pitchRangePresetComboBoxActionPerformed
-
+//view selection
     private void replaceWithPhiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithPhiActionPerformed
         boolean checked = replaceWithPhi.getState();
-        //System.out.println("PHI: " + checked);
-        getCurrentStave().setPhi(checked);
+        updatePhiAndDelta(checked, replaceWithDelta.getState());
     }//GEN-LAST:event_replaceWithPhiActionPerformed
 
     private void replaceWithDeltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithDeltaActionPerformed
         boolean checked = replaceWithDelta.getState();
-        //System.out.println("Delta: " + checked);
-        getCurrentStave().setDelta(checked);
+        updatePhiAndDelta(replaceWithPhi.getState(), checked);
     }//GEN-LAST:event_replaceWithDeltaActionPerformed
+//global pref
+    private void replaceWithPhiCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithPhiCheckBoxActionPerformed
+        //markermarkermarker
+        boolean checked = replaceWithPhiCheckBox.isSelected();
+        updatePhiAndDelta(checked, replaceWithDeltaCheckBox.isSelected());
+    }//GEN-LAST:event_replaceWithPhiCheckBoxActionPerformed
 
+    private void replaceWithDeltaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithDeltaCheckBoxActionPerformed
+        //markermarkermarker
+        boolean checked = replaceWithDeltaCheckBox.isSelected();
+        updatePhiAndDelta(replaceWithPhiCheckBox.isSelected(), checked);
+    }//GEN-LAST:event_replaceWithDeltaCheckBoxActionPerformed
+
+public boolean getPhiStatus()
+{
+    return replaceWithPhi.getState();
+}
+public void setPhiStatus(boolean phi)
+{
+    replaceWithPhi.setState(phi);
+}
+public boolean getDeltaStatus()
+{
+    return replaceWithDelta.getState();
+}
+public void setDeltaStatus(boolean delta)
+{
+    replaceWithDelta.setState(delta);
+}
+    
 public void setRMSThreshold(double value)
 {
     int intValue = (int) (10 * value);
@@ -24519,7 +24592,9 @@ public void showNewVoicingDialog()
     private javax.swing.JMenuItem redoMI;
     private javax.swing.JMenuItem redoPMI;
     private javax.swing.JCheckBoxMenuItem replaceWithDelta;
+    private javax.swing.JCheckBox replaceWithDeltaCheckBox;
     private javax.swing.JCheckBoxMenuItem replaceWithPhi;
+    private javax.swing.JCheckBox replaceWithPhiCheckBox;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton resetBtn1;
     private javax.swing.JButton resetBtn2;
