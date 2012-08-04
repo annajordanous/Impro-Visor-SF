@@ -25507,7 +25507,7 @@ public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelody
         Style style = chordProg.getStyle();
 
         setImproCommand(
-                new PlayScoreCommand(improScore,
+                new PlayScoreFastCommand(improScore,
                                      0, // startTime
                                      true, // swing
                                      midiSynth2,
