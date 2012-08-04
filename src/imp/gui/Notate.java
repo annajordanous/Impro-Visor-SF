@@ -25459,7 +25459,7 @@ public void reset()
 
 public MelodyPart maybeCreateMelody(int slotInPlayback, MelodyPart currentMelodyPart)
   {
-  int currentCycle = slotInPlayback/improInterval;
+  int currentCycle = (slotInPlayback + generationLeadSlots)/improInterval;
 
     // This prevents multiple generations within one cycle.
     // Trying to hinge on generated does not work.
@@ -25527,19 +25527,14 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
   {
     boolean paste = true;
 
-//    int currentCycle = slotInPlayback / improInterval;
-
-//    if( currentCycle != nextPlayCycle )
-//      {
-//        return null;
-//      }
-
     boolean timeOk = slotInPlayback >= playAtSlot;
     boolean commandOk = improCommand != null;
-    boolean result = generated && commandOk && timeOk;  //!played 
+    boolean result = !played && generated && commandOk && timeOk;
 
     if( result )
       {
+        improCommand.execute();
+
         System.out.println("at " + slotInPlayback
                          + " >= " + playAtSlot
                          + " playing");
@@ -25548,8 +25543,6 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
 
         played = true;
         generated = false;
-
-        improCommand.execute();
 
         if( paste )
           {
@@ -25565,9 +25558,7 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
           }
 
         setImproCommand(null); // Don't play twice
-        //System.out.println("playing at " + melodyStartsAtSlot);
 
-        //System.out.println("playCreatedMelody at " + playAtSlot + " improLick = " + improLick);
         return improLick;
       }
 
@@ -25583,77 +25574,17 @@ public MelodyPart maybePlay(int slotInPlayback, MelodyPart currentMelodyPart)
 
 public void createInitialMelody(MelodyPart currentMelodyPart)
   {
-    createMelody(currentMelodyPart);
-
+    maybeCreateMelody(0, currentMelodyPart);
+    
     if( improLick != null && improLick.size() > 0 )
       {
-       melodyStartsAtSlot = 0;
-       playAtSlot = 0;
-       firstTime = true;
-       generated = true;
-       played = false;
+        melodyStartsAtSlot = 0;
+        playAtSlot = 0;
+        firstTime = true;
+        generated = true;
+        played = false;
       }
   }
-
-public MelodyPart createMelody(MelodyPart currentMelodyPart)
-  {
-    improLick = generate(lickgen, melodyStartsAtSlot, melodyStartsAtSlot + halfInterval - 1);
-
-    generated = improLick != null && improLick.size() > 0;
-
-    if( generated )
-      {
-       System.out.println("\nat " + generateAtSlot +
-                       " generate melody to play at " + playAtSlot +
-                       " and sound at " + melodyStartsAtSlot);
-                     //+ ": " + improLick);
-
-      nextGenerateCycle = (nextGenerateCycle + 1) % numCycles;
-
-      played = false;
-      }
-    else
-      {
-        //System.out.println("at " + generateAtSlot + " melody generation failed.");
-      }
-
-    // If a lick was generated, copy it into the melodyPart for notation
-    // and set up a command that will play
-    if( generated )
-      {
-        Score improScore = new Score();
-        improScore.setTempo(score.getTempo());
-
-        //currentMelodyPart.truncateEndings(true);
-        //MelodyPart extracted = currentMelodyPart.extract(generateAtSlot, lastSlotAhead);
-        //improLick.setInstrument(currentMelodyPart.getInstrument()); // vibraphone
-        improLick.setInstrument(auxInst.getValue());
-        //System.out.println("impro inst = " + improLick.getInstrument() + " vs melody inst = " + currentMelodyPart.getInstrument());
-        improLick.setSwing(currentMelodyPart.getSwing());
-
-        //System.out.println("at slot " + slotInPlayback + " improLick = " + improLick);
-        improScore.addPart(improLick);
-
-        //improScore.makeSwing(); // Causes swing to show as triplets
-
-        // Create command now, for execution on a subsequent slot
-        Style style = chordProg.getStyle();
-
-        setImproCommand(
-                new PlayScoreCommand(improScore,
-                                     0, // startTime
-                                     true, // swing
-                                     midiSynth2,
-                                     null, // play listener
-                                     0, // loopCount,
-                                     score.getTransposition(), // transposition
-                                     false, // use drums
-                                     -1));       // end
-
-      }
-    return improLick;
-  }
-
 
 
 public int getGenerationLeadSlots()
