@@ -619,7 +619,7 @@ public class Notate
   private NWaySplitComboBoxModel nWaySplitComboBoxModel = new NWaySplitComboBoxModel();
 
   private SectionInfo sectionInfo;
-  
+
   private VoicingTableModel voicingTableModel = new VoicingTableModel();
 
   private DefaultListModel voicingSequenceListModel = new DefaultListModel();
@@ -651,13 +651,13 @@ public class Notate
   /**
    * Various Instrument Chooser objects for the different preferences
    */
-  private InstrumentChooser melodyInst,  
-                            auxInst, 
-                            chordInst,  
-                            bassInst,  
-                            defMelodyInst,  
-                            defAuxInst, 
-                            defChordInst,  
+  private InstrumentChooser melodyInst,
+                            auxInst,
+                            chordInst,
+                            bassInst,
+                            defMelodyInst,
+                            defAuxInst,
+                            defChordInst,
                             defBassInst;
 
   private SourceEditorDialog leadsheetEditor = null;
@@ -10532,7 +10532,7 @@ private void startRecording()
                                              audioSettings,
                                              captureInterval);
           }
-          extractor.openTargetLine();
+          //extractor.openTargetLine();
           extractor.captureAudio();
 //    extractor.setThisMeasure(true);
 //    synchronized (extractor.captureStart)
@@ -11904,7 +11904,7 @@ public class NWaySplitComboBoxModel
     implements ComboBoxModel
 {
     ArrayList<String> items = new ArrayList<String>();
-    
+
     String selectedItem;
 
     public int getSize() {
@@ -11922,7 +11922,7 @@ public class NWaySplitComboBoxModel
     public Object getSelectedItem() {
         return selectedItem;
     }
-    
+
     public void createItems(int row) {
         int bars = (Integer)(sectionTableModel.getValueAt(row, 3));
         //System.out.println(bars+"");
@@ -11937,11 +11937,11 @@ public class NWaySplitComboBoxModel
             for(int j = temp+1; j <= bars; j++)
                 items.add("" + j);
         }
-        
+
         //checkItems();
         splitRefresh();
     }
-    
+
     public void splitRefresh() {
         fireContentsChanged(this, 0, getSize());
     }
@@ -18035,7 +18035,7 @@ public ChordPart makeCountIn()
 
         recordBtn.setEnabled(true);
 
-        if( mode == Mode.RECORDING )
+        if( mode == Mode.RECORDING)
           {
           stopRecording();
           }
@@ -22373,19 +22373,19 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
 
     private void nWaySplitComboBoxActionHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nWaySplitComboBoxActionHandler
         int index = sectionTable.getSelectionModel().getLeadSelectionIndex();
-        
+
         int split = nWaySplitComboBox.getSelectedIndex() + 2;
-        
+
         if(index < 0 || index >= sectionInfo.size() || split < 2)
             return;
-        
+
         //System.out.println("SPLIT: " + split);
         //*
         for(int j = 0; j < split; j++)
             sectionTableModel.addARow();
-        
+
         sectionInfo.nWaySplit(index, split);
-        
+
         sectionTableModel.tableRefresh();
         sectionTable.getSelectionModel().setSelectionInterval(index, index);
         nWaySplitComboBoxModel.createItems(index);
@@ -22455,7 +22455,7 @@ private void rmsThresholdSliderStateChanged(javax.swing.event.ChangeEvent evt)//
         {
             case 0:         // Default
                 setMinPitch(45);
-                setMaxPitch(120);
+                setMaxPitch(100);
                 break;
             case 1:         // Soprano
                 setMinPitch(60);
@@ -25696,7 +25696,7 @@ class PlayActionListener implements ActionListener
 
 /**
  * This is called repeatedly as play of the leadsheet progresses.
- * @param evt 
+ * @param evt
  */
 
 public void actionPerformed(ActionEvent evt)
@@ -25715,7 +25715,7 @@ public void actionPerformed(ActionEvent evt)
     int slotInPlayback = midiSynth.getSlot() - slotDelay;
     int slot = slotInPlayback;
     int totalSlots = midiSynth.getTotalSlots();
-    
+
     handleAudioInput(slotInPlayback);
 
     handleAutoImprov(slotInPlayback);
@@ -25767,7 +25767,7 @@ public void actionPerformed(ActionEvent evt)
 
 /**
  * Handle automatic improvisation
- * @param slotInPlayback 
+ * @param slotInPlayback
  */
 
 private void handleAutoImprov(int slotInPlayback)
@@ -25829,7 +25829,7 @@ private void handleAutoImprov(int slotInPlayback)
 
 /**
  * Handle input from an audio line
- * @param slot 
+ * @param slot
  */
 
 private void handleAudioInput(int slot)
@@ -25862,7 +25862,7 @@ private void handleAudioInput(int slot)
 
 /**
  * Handle updating of tracker, aka "playline"
- * @param slotInChorus 
+ * @param slotInChorus
  */
 
 private void handlePlayline(int slotInChorus)

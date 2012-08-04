@@ -52,7 +52,7 @@ public class AudioSettings
     private static double  DEFAULT_K_CONSTANT = 0.875;
 
     private static int     DEFAULT_MIN_PITCH = 45;
-    private static int     DEFAULT_MAX_PITCH = 120;
+    private static int     DEFAULT_MAX_PITCH = 100;
 
      Notate notate;
 
